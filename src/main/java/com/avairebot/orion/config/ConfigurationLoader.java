@@ -7,10 +7,10 @@ import java.lang.reflect.Type;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
-public class Configuration implements ConfigurationInterface {
+public class ConfigurationLoader implements ConfigurationInterface {
 
     @Override
-    public ConfigurationCastableInterface loadConfiguration(String fileName, Class<?> type) throws IOException {
+    public ConfigurationCastableInterface load(String fileName, Class<?> type) throws IOException {
         File file = new File(fileName);
         if (!file.exists()) {
             try {
