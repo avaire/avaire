@@ -1,5 +1,7 @@
 package com.avairebot.orion;
 
+import com.avairebot.orion.commands.CommandHandler;
+import com.avairebot.orion.commands.utility.PingCommand;
 import com.avairebot.orion.config.ConfigurationLoader;
 import com.avairebot.orion.config.MainConfiguration;
 import com.avairebot.orion.handlers.EventHandler;
@@ -28,9 +30,10 @@ public class Orion {
             System.exit(0);
         }
 
+        this.registerCommands();
+
         try {
             this.prepareJDA().buildAsync();
-            ;
         } catch (LoginException | RateLimitedException ex) {
             this.logger.severe("Something went wrong while trying to connect to Discord, exiting program...");
             this.logger.exception(ex);
@@ -38,7 +41,11 @@ public class Orion {
         }
     }
 
-    public JDABuilder prepareJDA() {
+    private void registerCommands() {
+        CommandHandler.register(new PingCommand(this));
+    }
+
+    private JDABuilder prepareJDA() {
         JDABuilder builder = new JDABuilder(AccountType.BOT).setToken(this.config.botAuth().getToken());
 
         Class[] eventArguments = new Class[1];
