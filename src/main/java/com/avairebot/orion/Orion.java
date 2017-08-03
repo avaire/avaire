@@ -2,15 +2,16 @@ package com.avairebot.orion;
 
 import com.avairebot.orion.config.ConfigurationLoader;
 import com.avairebot.orion.config.MainConfiguration;
+import com.avairebot.orion.handlers.EventHandler;
 import com.avairebot.orion.handlers.EventTypes;
 import com.avairebot.orion.logger.Logger;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.exceptions.RateLimitedException;
-import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
 import javax.security.auth.login.LoginException;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 
 public class Orion {
 
@@ -29,6 +30,7 @@ public class Orion {
 
         try {
             this.prepareJDA().buildAsync();
+            ;
         } catch (LoginException | RateLimitedException ex) {
             this.logger.severe("Something went wrong while trying to connect to Discord, exiting program...");
             this.logger.exception(ex);
@@ -39,14 +41,17 @@ public class Orion {
     public JDABuilder prepareJDA() {
         JDABuilder builder = new JDABuilder(AccountType.BOT).setToken(this.config.botAuth().getToken());
 
+        Class[] eventArguments = new Class[1];
+        eventArguments[0] = Orion.class;
+
         for (EventTypes event : EventTypes.values()) {
             try {
-                Object instance = event.getInstance().newInstance();
+                Object instance = event.getInstance().getDeclaredConstructor(eventArguments).newInstance(this);
 
-                if (instance instanceof ListenerAdapter) {
+                if (instance instanceof EventHandler) {
                     builder.addEventListener(instance);
                 }
-            } catch (InstantiationException ex) {
+            } catch (InstantiationException | NoSuchMethodException | InvocationTargetException ex) {
                 this.logger.severe("Invalid listener adapter object parsed, failed to create a new instance!");
                 this.logger.exception(ex);
             } catch (IllegalAccessException ex) {
