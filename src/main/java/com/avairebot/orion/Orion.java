@@ -2,16 +2,16 @@ package com.avairebot.orion;
 
 import com.avairebot.orion.config.ConfigurationLoader;
 import com.avairebot.orion.config.MainConfiguration;
+import com.avairebot.orion.handlers.EventTypes;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDABuilder;
-import net.dv8tion.jda.core.events.Event;
 import net.dv8tion.jda.core.exceptions.RateLimitedException;
-import net.dv8tion.jda.core.hooks.EventListener;
+import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
 import javax.security.auth.login.LoginException;
 import java.io.IOException;
 
-public class Orion implements EventListener {
+public class Orion {
 
     public final MainConfiguration config;
 
@@ -24,7 +24,7 @@ public class Orion implements EventListener {
         }
 
         try {
-            new JDABuilder(AccountType.BOT).setToken(this.config.botAuth().getToken()).addEventListener(this).buildAsync();
+            this.prepareJDA().buildAsync();
         } catch (LoginException | RateLimitedException e) {
             System.err.println("Something went wrong while trying to connect to Discord, exiting program...");
             e.printStackTrace();
@@ -32,8 +32,23 @@ public class Orion implements EventListener {
         }
     }
 
-    @Override
-    public void onEvent(Event e) {
-        System.out.println(e.getClass().getName());
+    public JDABuilder prepareJDA() {
+        JDABuilder builder = new JDABuilder(AccountType.BOT).setToken(this.config.botAuth().getToken());
+
+        for (EventTypes event : EventTypes.values()) {
+            try {
+                Object instance = event.getInstance().newInstance();
+
+                if (instance instanceof ListenerAdapter) {
+                    builder.addEventListener(instance);
+                }
+            } catch (InstantiationException ex) {
+                System.err.println("Invalid listener adapter object parsed, failed to create a new instance!");
+            } catch (IllegalAccessException ex) {
+                System.err.printf("An attempt was made to register a event listener called %s but it failed somewhere!", event, ex);
+            }
+        }
+
+        return builder;
     }
 }
