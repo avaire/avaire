@@ -1,6 +1,7 @@
 package com.avairebot.orion;
 
 import com.avairebot.orion.commands.CommandHandler;
+import com.avairebot.orion.commands.utility.InviteCommand;
 import com.avairebot.orion.commands.utility.PingCommand;
 import com.avairebot.orion.config.ConfigurationLoader;
 import com.avairebot.orion.config.MainConfiguration;
@@ -43,6 +44,7 @@ public class Orion {
 
     private void registerCommands() {
         CommandHandler.register(new PingCommand(this));
+        CommandHandler.register(new InviteCommand(this));
     }
 
     private JDABuilder prepareJDA() {
