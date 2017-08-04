@@ -27,7 +27,7 @@ public class PingCommand extends Command {
 
     @Override
     public List<String> getTriggers() {
-        return Collections.singletonList("!ping");
+        return Collections.singletonList("ping");
     }
 
     @Override

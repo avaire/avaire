@@ -26,7 +26,7 @@ public class InviteCommand extends Command {
 
     @Override
     public List<String> getTriggers() {
-        return Arrays.asList("!invite", "!join");
+        return Arrays.asList("invite", "join");
     }
 
     @Override

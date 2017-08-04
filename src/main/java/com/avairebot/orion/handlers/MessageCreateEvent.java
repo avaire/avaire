@@ -1,7 +1,7 @@
 package com.avairebot.orion.handlers;
 
 import com.avairebot.orion.Orion;
-import com.avairebot.orion.commands.Command;
+import com.avairebot.orion.commands.CommandContainer;
 import com.avairebot.orion.commands.CommandHandler;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
@@ -25,13 +25,13 @@ public class MessageCreateEvent extends EventHandler {
             return;
         }
 
-        Command command = CommandHandler.getCommand(e.getMessage());
-        if (command != null) {
+        CommandContainer container = CommandHandler.getCommand(e.getMessage());
+        if (container != null) {
             String[] arguments = this.argumentsRegEX.split(e.getMessage().getContent());
 
             User author = e.getMessage().getAuthor();
             this.orion.logger.info("Executing Command <" + e.getMessage().getContent() + "> from " + author.getName() + "#" + author.getDiscriminator());
-            command.onCommand(e, Arrays.copyOfRange(arguments, 1, arguments.length));
+            container.getCommand().onCommand(e, Arrays.copyOfRange(arguments, 1, arguments.length));
         }
     }
 }
