@@ -22,12 +22,12 @@ public class Orion {
     public final Logger logger;
 
     public Orion() throws IOException {
-        this.logger = new Logger();
+        this.logger = new Logger(this);
 
         ConfigurationLoader configLoader = new ConfigurationLoader();
         this.config = (MainConfiguration) configLoader.load("config.json", MainConfiguration.class);
         if (this.config == null) {
-            this.logger.severe("Something went wrong while trying to load the configuration, exiting program...");
+            this.logger.error("Something went wrong while trying to load the configuration, exiting program...");
             System.exit(0);
         }
 
@@ -36,7 +36,7 @@ public class Orion {
         try {
             this.prepareJDA().buildAsync();
         } catch (LoginException | RateLimitedException ex) {
-            this.logger.severe("Something went wrong while trying to connect to Discord, exiting program...");
+            this.logger.error("Something went wrong while trying to connect to Discord, exiting program...");
             this.logger.exception(ex);
             System.exit(0);
         }
@@ -61,10 +61,10 @@ public class Orion {
                     builder.addEventListener(instance);
                 }
             } catch (InstantiationException | NoSuchMethodException | InvocationTargetException ex) {
-                this.logger.severe("Invalid listener adapter object parsed, failed to create a new instance!");
+                this.logger.error("Invalid listener adapter object parsed, failed to create a new instance!");
                 this.logger.exception(ex);
             } catch (IllegalAccessException ex) {
-                this.logger.severe("An attempt was made to register a event listener called " + event + " but it failed somewhere!");
+                this.logger.error("An attempt was made to register a event listener called " + event + " but it failed somewhere!");
                 this.logger.exception(ex);
             }
         }
