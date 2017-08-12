@@ -2,10 +2,9 @@ package com.avairebot.orion.commands.utility;
 
 import com.avairebot.orion.Orion;
 import com.avairebot.orion.commands.Command;
-import net.dv8tion.jda.core.EmbedBuilder;
+import com.avairebot.orion.factories.MessageFactory;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
-import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
 
@@ -31,13 +30,9 @@ public class InviteCommand extends Command {
 
     @Override
     public void onCommand(MessageReceivedEvent e, String[] args) {
-        e.getMessage().getChannel().sendMessage(new EmbedBuilder()
-                .setColor(Color.decode("#3A71C1"))
-                .setDescription(new StringBuilder()
-                        .append("You can invite me to your server by [clicking here](")
-                        .append(this.orion.config.botAuth().getOAuth())
-                        .append(") or use the link below:\n\n")
-                        .append(this.orion.config.botAuth().getOAuth()).toString()
-                ).build()).queue();
+        MessageFactory.makeInfo(e.getMessage(),
+                "You can invite me to your server by [clicking here](%s) or use the link below:\n\n%s",
+                orion.config.botAuth().getOAuth(), orion.config.botAuth().getOAuth())
+                .queue();
     }
 }

@@ -2,10 +2,9 @@ package com.avairebot.orion.commands.utility;
 
 import com.avairebot.orion.Orion;
 import com.avairebot.orion.commands.Command;
-import net.dv8tion.jda.core.EmbedBuilder;
+import com.avairebot.orion.factories.MessageFactory;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
-import java.awt.*;
 import java.util.Collections;
 import java.util.List;
 
@@ -32,9 +31,6 @@ public class PingCommand extends Command {
 
     @Override
     public void onCommand(MessageReceivedEvent e, String[] args) {
-        e.getMessage().getChannel().sendMessage(new EmbedBuilder()
-                .setColor(Color.decode("#3A71C1"))
-                .setDescription("Pong! Time taken " + e.getJDA().getPing() + " ms!")
-                .build()).queue();
+        MessageFactory.makeInfo(e.getMessage(), "Pong! Time taken %s ms!", e.getJDA().getPing()).queue();
     }
 }
