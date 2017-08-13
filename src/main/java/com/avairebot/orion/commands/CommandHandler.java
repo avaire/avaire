@@ -12,8 +12,10 @@ public class CommandHandler {
     private static final Map<List<String>, CommandContainer> commands = new HashMap<>();
 
     public static CommandContainer getCommand(Message message) {
-        String commandTrigger = message.getContent().split(" ")[0].toLowerCase();
+        return getCommand(message.getContent().split(" ")[0].toLowerCase());
+    }
 
+    public static CommandContainer getCommand(String commandTrigger) {
         for (Map.Entry<List<String>, CommandContainer> entry : commands.entrySet()) {
             for (String trigger : entry.getKey()) {
                 if (commandTrigger.equalsIgnoreCase(entry.getValue().getDefaultPrefix() + trigger)) {
