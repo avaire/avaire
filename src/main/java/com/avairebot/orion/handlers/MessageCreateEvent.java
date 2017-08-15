@@ -1,6 +1,7 @@
 package com.avairebot.orion.handlers;
 
 import com.avairebot.orion.Orion;
+import com.avairebot.orion.Statistics;
 import com.avairebot.orion.commands.CommandContainer;
 import com.avairebot.orion.commands.CommandHandler;
 import net.dv8tion.jda.core.entities.User;
@@ -21,12 +22,16 @@ public class MessageCreateEvent extends EventHandler {
 
     @Override
     public void onMessageReceived(MessageReceivedEvent e) {
+        Statistics.addMessage();
+
         if (e.getAuthor().isBot()) {
             return;
         }
 
         CommandContainer container = CommandHandler.getCommand(e.getMessage());
         if (container != null) {
+            Statistics.addCommands();
+
             String[] arguments = this.argumentsRegEX.split(e.getMessage().getContent());
 
             User author = e.getMessage().getAuthor();

@@ -4,6 +4,7 @@ import com.avairebot.orion.commands.CommandHandler;
 import com.avairebot.orion.commands.utility.InviteCommand;
 import com.avairebot.orion.commands.utility.PingCommand;
 import com.avairebot.orion.commands.utility.SourceCommand;
+import com.avairebot.orion.commands.utility.StatsCommand;
 import com.avairebot.orion.config.ConfigurationLoader;
 import com.avairebot.orion.config.MainConfiguration;
 import com.avairebot.orion.handlers.EventHandler;
@@ -44,9 +45,11 @@ public class Orion {
     }
 
     private void registerCommands() {
+        // Utility
         CommandHandler.register(new PingCommand(this));
         CommandHandler.register(new InviteCommand(this));
         CommandHandler.register(new SourceCommand(this));
+        CommandHandler.register(new StatsCommand(this));
     }
 
     private JDABuilder prepareJDA() {
