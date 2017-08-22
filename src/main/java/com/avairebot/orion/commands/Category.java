@@ -1,6 +1,7 @@
 package com.avairebot.orion.commands;
 
 public enum Category {
+    SYSTEM("System", ";"),
     UTILITY("Utility", "!");
 
     private final String name;
