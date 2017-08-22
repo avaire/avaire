@@ -78,6 +78,6 @@ public class Orion {
             }
         }
 
-        return builder;
+        return builder.setAutoReconnect(true);
     }
 }
