@@ -34,7 +34,6 @@ public class EvalCommand extends Command {
 
     @Override
     public void onCommand(MessageReceivedEvent event, String[] args) {
-        event.getMessage().getMember().
         try {
             Object out = createScriptEngine(event).eval("(function() { with (imports) { return " + String.join(" ", args) + "}})();");
             String output = out == null ? "Executed without error, void was returned so there is nothing to show." : out.toString();

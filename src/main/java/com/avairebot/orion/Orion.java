@@ -2,6 +2,7 @@ package com.avairebot.orion;
 
 import com.avairebot.orion.commands.CommandHandler;
 import com.avairebot.orion.commands.system.EvalCommand;
+import com.avairebot.orion.commands.system.SetStatusCommand;
 import com.avairebot.orion.commands.utility.InviteCommand;
 import com.avairebot.orion.commands.utility.PingCommand;
 import com.avairebot.orion.commands.utility.SourceCommand;
@@ -48,6 +49,7 @@ public class Orion {
     private void registerCommands() {
         // System
         CommandHandler.register(new EvalCommand(this));
+        CommandHandler.register(new SetStatusCommand(this));
 
         // Utility
         CommandHandler.register(new PingCommand(this));
