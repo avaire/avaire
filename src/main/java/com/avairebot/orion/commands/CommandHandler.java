@@ -1,5 +1,6 @@
 package com.avairebot.orion.commands;
 
+import com.avairebot.orion.contracts.commands.AbstractCommand;
 import net.dv8tion.jda.core.entities.Message;
 
 import java.util.Collection;
@@ -27,7 +28,7 @@ public class CommandHandler {
         return null;
     }
 
-    public static boolean register(Command command) {
+    public static boolean register(AbstractCommand command) {
         for (String trigger : command.getTriggers()) {
             for (Map.Entry<List<String>, CommandContainer> entry : commands.entrySet()) {
                 if (entry.getKey().contains(trigger.toLowerCase())) {

@@ -9,7 +9,7 @@ import com.avairebot.orion.commands.utility.SourceCommand;
 import com.avairebot.orion.commands.utility.StatsCommand;
 import com.avairebot.orion.config.ConfigurationLoader;
 import com.avairebot.orion.config.MainConfiguration;
-import com.avairebot.orion.handlers.EventHandler;
+import com.avairebot.orion.contracts.handlers.EventHandler;
 import com.avairebot.orion.handlers.EventTypes;
 import com.avairebot.orion.logger.Logger;
 import net.dv8tion.jda.core.AccountType;

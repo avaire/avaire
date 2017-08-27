@@ -1,16 +1,18 @@
 package com.avairebot.orion.commands;
 
+import com.avairebot.orion.contracts.commands.AbstractCommand;
+
 public class CommandContainer {
 
-    public final Command command;
+    public final AbstractCommand command;
     public final Category category;
 
-    public CommandContainer(Command command, Category category) {
+    public CommandContainer(AbstractCommand command, Category category) {
         this.command = command;
         this.category = category;
     }
 
-    public Command getCommand() {
+    public AbstractCommand getCommand() {
         return command;
     }
 

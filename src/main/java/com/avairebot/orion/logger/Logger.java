@@ -2,6 +2,7 @@ package com.avairebot.orion.logger;
 
 import com.avairebot.orion.Constants;
 import com.avairebot.orion.Orion;
+import com.avairebot.orion.contracts.logger.AbstractLogger;
 
 import java.io.*;
 import java.text.SimpleDateFormat;

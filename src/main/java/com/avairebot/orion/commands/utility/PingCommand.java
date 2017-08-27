@@ -1,14 +1,14 @@
 package com.avairebot.orion.commands.utility;
 
 import com.avairebot.orion.Orion;
-import com.avairebot.orion.commands.Command;
+import com.avairebot.orion.contracts.commands.AbstractCommand;
 import com.avairebot.orion.factories.MessageFactory;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 import java.util.Collections;
 import java.util.List;
 
-public class PingCommand extends Command {
+public class PingCommand extends AbstractCommand {
 
     public PingCommand(Orion orion) {
         super(orion);

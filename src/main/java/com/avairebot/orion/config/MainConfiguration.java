@@ -1,8 +1,10 @@
 package com.avairebot.orion.config;
 
+import com.avairebot.orion.contracts.config.CastableInterface;
+
 import java.util.ArrayList;
 
-public class MainConfiguration implements ConfigurationCastableInterface {
+public class MainConfiguration implements CastableInterface {
     private String environment;
     private BotAuth bot;
     private Database database;

@@ -1,5 +1,7 @@
 package com.avairebot.orion.commands;
 
+import com.avairebot.orion.contracts.commands.AbstractCommand;
+
 public enum Category {
     SYSTEM("System", ";"),
     UTILITY("Utility", "!");
@@ -12,7 +14,7 @@ public enum Category {
         this.prefix = prefix;
     }
 
-    public static Category fromCommand(Command command) {
+    public static Category fromCommand(AbstractCommand command) {
         String commandPackage = command.getClass().getName().split("\\.")[4];
 
         for (Category category : Category.values()) {

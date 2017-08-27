@@ -4,6 +4,7 @@ import com.avairebot.orion.Orion;
 import com.avairebot.orion.Statistics;
 import com.avairebot.orion.commands.CommandContainer;
 import com.avairebot.orion.commands.CommandHandler;
+import com.avairebot.orion.contracts.handlers.EventHandler;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 

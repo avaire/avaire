@@ -1,6 +1,7 @@
-package com.avairebot.orion.logger;
+package com.avairebot.orion.contracts.logger;
 
 import com.avairebot.orion.Orion;
+import com.avairebot.orion.logger.Level;
 
 public abstract class AbstractLogger {
 
