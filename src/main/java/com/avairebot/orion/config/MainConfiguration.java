@@ -29,6 +29,10 @@ public class MainConfiguration implements CastableInterface {
         return botAccess;
     }
 
+    public Database getDatabase() {
+        return database;
+    }
+
     public class BotAuth {
         private String token;
         private String oauth;

@@ -10,6 +10,7 @@ import com.avairebot.orion.commands.utility.StatsCommand;
 import com.avairebot.orion.config.ConfigurationLoader;
 import com.avairebot.orion.config.MainConfiguration;
 import com.avairebot.orion.contracts.handlers.EventHandler;
+import com.avairebot.orion.database.DatabaseManager;
 import com.avairebot.orion.handlers.EventTypes;
 import com.avairebot.orion.logger.Logger;
 import net.dv8tion.jda.core.AccountType;
@@ -24,6 +25,7 @@ public class Orion {
 
     public final MainConfiguration config;
     public final Logger logger;
+    public final DatabaseManager database;
 
     public Orion() throws IOException {
         this.logger = new Logger(this);
@@ -44,6 +46,8 @@ public class Orion {
             this.logger.exception(ex);
             System.exit(0);
         }
+
+        database = new DatabaseManager(this);
     }
 
     private void registerCommands() {
