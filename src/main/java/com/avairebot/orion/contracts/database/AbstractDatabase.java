@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class AbstractDatabase extends DatabaseInterface {
+public abstract class AbstractDatabase implements DatabaseInterface {
 
     protected DatabaseManager dbm = null;
 

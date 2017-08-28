@@ -3,7 +3,7 @@ package com.avairebot.orion.contracts.database;
 import java.sql.SQLException;
 import java.sql.SQLTimeoutException;
 
-public abstract class DatabaseInterface {
+public interface DatabaseInterface {
 
     /**
      * Attempts to open the database connection to the database
@@ -17,7 +17,7 @@ public abstract class DatabaseInterface {
      *                             has been exceeded and has at least tried to cancel the
      *                             current database connection attempt
      */
-    public abstract boolean open() throws SQLException, SQLTimeoutException;
+    boolean open() throws SQLException;
 
     /**
      * Attempts to get the database statement from the query.
@@ -30,7 +30,7 @@ public abstract class DatabaseInterface {
      *                      <code>ResultSet</code> object, the method is called on a
      *                      <code>PreparedStatement</code> or <code>CallableStatement</code>
      */
-    public abstract StatementInterface getStatement(String query) throws SQLException;
+    StatementInterface getStatement(String query) throws SQLException;
 
     /**
      * Attempts to find out if the parsed string is a table.
@@ -38,7 +38,7 @@ public abstract class DatabaseInterface {
      * @param table The table name to check.
      * @return true if the table exists, false otherwise.
      */
-    public abstract boolean hasTable(String table);
+    boolean hasTable(String table);
 
     /**
      * Attempts to truncate the given table, this will delete
@@ -47,5 +47,5 @@ public abstract class DatabaseInterface {
      * @param table The table name to truncate.
      * @return true if the table was successfully reset, false otherwise.
      */
-    public abstract boolean truncate(String table);
+    boolean truncate(String table);
 }
