@@ -2,6 +2,7 @@ package com.avairebot.orion.database.connections;
 
 import com.avairebot.orion.contracts.database.StatementInterface;
 import com.avairebot.orion.contracts.database.connections.HostnameDatabase;
+import com.avairebot.orion.database.DatabaseManager;
 
 import java.sql.*;
 
@@ -10,13 +11,18 @@ public class MySQL extends HostnameDatabase {
     /**
      * Creates a MySQL database connection instance with the parsed information, the port used will default to <code>3306</code>.
      *
-     * @param hostname The hostname the database should connection to.
-     * @param database The database name the database should connect to.
-     * @param username The username to login to the database.
-     * @param password The password to login to the database.
+     * @param dbm The database manager class instance.
      */
-    public MySQL(String hostname, String database, String username, String password) {
-        super(hostname, 3306, database, username, password);
+    public MySQL(DatabaseManager dbm) {
+        super(
+                dbm.getOrion().config.getDatabase().getHostname(),
+                3306,
+                dbm.getOrion().config.getDatabase().getDatabase(),
+                dbm.getOrion().config.getDatabase().getUsername(),
+                dbm.getOrion().config.getDatabase().getPassword()
+        );
+
+        setDatabaseManager(dbm);
     }
 
     @Override

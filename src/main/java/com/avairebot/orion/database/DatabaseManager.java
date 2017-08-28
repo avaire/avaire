@@ -24,16 +24,9 @@ public class DatabaseManager {
 
     public AbstractDatabase getConnection() throws SQLException, DatabaseException {
         if (connection == null) {
-            MainConfiguration.Database configDatabase = orion.config.getDatabase();
-
-            switch (configDatabase.getType().toLowerCase()) {
+            switch (orion.config.getDatabase().getType().toLowerCase()) {
                 case "mysql":
-                    connection = new MySQL(
-                            configDatabase.getHostname(),
-                            configDatabase.getDatabase(),
-                            configDatabase.getUsername(),
-                            configDatabase.getPassword()
-                    );
+                    connection = new MySQL(this);
                     break;
 
                 default:
