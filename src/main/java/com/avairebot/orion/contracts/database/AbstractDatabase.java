@@ -1,6 +1,7 @@
 package com.avairebot.orion.contracts.database;
 
 import com.avairebot.orion.database.DatabaseManager;
+import com.avairebot.orion.database.query.QueryBuilder;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -167,6 +168,20 @@ public abstract class AbstractDatabase implements DatabaseInterface {
         }
 
         return getConnection().createStatement().executeQuery("SELECT " + (lastUpdate = statement.getUpdateCount()));
+    }
+
+    /**
+     * Queries the database with the given query, the
+     * query should be a <code>SELECT</code> query.
+     *
+     * @param query The query to run.
+     * @return the current result as a <code>ResultSet</code> object or
+     * <code>null</code> if the result is an update count or there are no more results
+     * @throws SQLException if a database access error occurs or this method is called on a
+     *                      closed <code>Statement</code>
+     */
+    public final synchronized ResultSet query(QueryBuilder query) throws SQLException {
+        return query(query.toSQL());
     }
 
     /**

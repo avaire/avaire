@@ -1,13 +1,16 @@
 package com.avairebot.orion.database.schema;
 
 import com.avairebot.orion.database.DatabaseManager;
+import com.avairebot.orion.database.grammar.CreateParser;
+import com.avairebot.orion.database.query.QueryType;
+import com.avairebot.orion.database.schema.contracts.DatabaseClosure;
 
 import java.sql.DatabaseMetaData;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 public class Schema {
-
     /**
      * The DBM main instance.
      */
@@ -54,6 +57,98 @@ public class Schema {
     }
 
     /**
+     * Creates a new table using the {@link DatabaseClosure} and {@link Blueprint} classes.
+     *
+     * @param table   The table that should be created
+     * @param closure The database closure that creates the blueprint
+     * @return <code>TRUE</code> if the table was created successfully, <code>FALSE</code> otherwise.
+     * @throws SQLException if a database access error occurs,
+     *                      this method is called on a closed <code>Statement</code>, the given
+     *                      SQL statement produces anything other than a single
+     *                      <code>ResultSet</code> object, the method is called on a
+     *                      <code>PreparedStatement</code> or <code>CallableStatement</code>
+     */
+    public boolean create(String table, DatabaseClosure closure) throws SQLException {
+        Blueprint blueprint = createAndRunBlueprint(table, closure);
+        CreateParser grammar = createGrammar(true);
+
+        String query = grammar.parse(dbm, blueprint);
+        Statement stmt = dbm.getConnection().prepare(query);
+
+        if (stmt instanceof PreparedStatement) {
+            return !((PreparedStatement) stmt).execute();
+        }
+
+        return !stmt.execute(query);
+    }
+
+    /**
+     * Creates a new table if it doesn't exists using the {@link DatabaseClosure} and {@link Blueprint} classes.
+     *
+     * @param table   The table that should be created
+     * @param closure The database closure that creates the blueprint
+     * @return <code>TRUE</code> if the table was created successfully, <code>FALSE</code> otherwise.
+     * @throws SQLException if a database access error occurs,
+     *                      this method is called on a closed <code>Statement</code>, the given
+     *                      SQL statement produces anything other than a single
+     *                      <code>ResultSet</code> object, the method is called on a
+     *                      <code>PreparedStatement</code> or <code>CallableStatement</code>
+     */
+    public boolean createIfNotExists(String table, DatabaseClosure closure) throws SQLException {
+        if (dbm.getConnection().hasTable(table)) {
+            return false;
+        }
+
+        Blueprint blueprint = createAndRunBlueprint(table, closure);
+        CreateParser grammar = createGrammar(false);
+
+        String query = grammar.parse(dbm, blueprint);
+        Statement stmt = dbm.getConnection().prepare(query);
+
+        if (stmt instanceof PreparedStatement) {
+            return !((PreparedStatement) stmt).execute();
+        }
+
+        return !stmt.execute(query);
+    }
+
+    /**
+     * Creates and runs a blueprint for the provided closure for the given table.
+     *
+     * @param table   The table the blueprint should be created for
+     * @param closure The closure that should run the blueprint
+     * @return The blueprint that was created.
+     */
+    private Blueprint createAndRunBlueprint(String table, DatabaseClosure closure) {
+        Blueprint blueprint = new Blueprint(table);
+
+        closure.run(blueprint);
+
+        return blueprint;
+    }
+
+    /**
+     * Creates a {@link QueryType#CREATE} grammar instance with the provided settings.
+     *
+     * @param shouldIgnoreExistingTable Determines if the grammar instance should ignore existing tables
+     * @return The {@link QueryType#CREATE} grammar instance.
+     */
+    private CreateParser createGrammar(boolean shouldIgnoreExistingTable) {
+        try {
+            CreateParser grammar = (CreateParser) QueryType.CREATE.getGrammar().newInstance();
+            grammar.setOption("ignoreExistingTable", shouldIgnoreExistingTable);
+
+            return grammar;
+        } catch (InstantiationException ex) {
+            dbm.getOrion().logger.exception("Invalid grammar object parsed, failed to create a new instance!", ex);
+        } catch (IllegalAccessException ex) {
+            dbm.getOrion().logger.exception("An attempt was made to create a grammar instance on an object that is not accessible!", ex);
+        }
+
+        return null;
+    }
+
+    /**
      * Drops the provided table, if the table doesn't exist an exception will be thrown.
      *
      * @param table The table that should be dropped
@@ -82,7 +177,6 @@ public class Schema {
     public boolean dropIfExists(String table) throws SQLException {
         return alterQuery(format("DROP TABLE IF EXISTS `%s`;", table));
     }
-
 
     /**
      * Renames the provided table to the new name using the database prefix, if
@@ -119,8 +213,11 @@ public class Schema {
      *                      <code>PreparedStatement</code> or <code>CallableStatement</code>
      */
     public boolean renameIfExists(String from, String to) throws SQLException {
-        return hasTable(from) && rename(from, to);
+        if (!hasTable(from)) {
+            return false;
+        }
 
+        return rename(from, to);
     }
 
     /**
@@ -136,7 +233,9 @@ public class Schema {
      *                      <code>PreparedStatement</code> or <code>CallableStatement</code>
      */
     private boolean alterQuery(String query) throws SQLException {
-        return !dbm.getConnection().getConnection().createStatement().execute(query);
+        Statement stmt = dbm.getConnection().getConnection().createStatement();
+
+        return !stmt.execute(query);
     }
 
     /**
