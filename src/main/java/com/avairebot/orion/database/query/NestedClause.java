@@ -1,6 +1,7 @@
 package com.avairebot.orion.database.query;
 
 import com.avairebot.orion.contracts.database.QueryClause;
+import com.avairebot.orion.database.DatabaseManager;
 
 import java.util.List;
 
@@ -9,7 +10,7 @@ public class NestedClause implements QueryClause {
      * The query builder instance that should be parsed to the clause
      * consumer, used for building the separate where clauses.
      */
-    private final QueryBuilder builder = new QueryBuilder();
+    private final QueryBuilder builder;
 
     /**
      * The operator that should be used along with the nested clauses.
@@ -18,17 +19,24 @@ public class NestedClause implements QueryClause {
 
     /**
      * Creates a new nested clause with an {@link OperatorType#AND} operator.
+     *
+     * @param dbm The database manager instance.
      */
-    public NestedClause() {
+    public NestedClause(DatabaseManager dbm) {
+        builder = new QueryBuilder(dbm);
+
         this.operator = OperatorType.AND;
     }
 
     /**
      * Creates a new nested clause with the provided operator type.
      *
+     * @param dbm      The database manager instance.
      * @param operator The operator type to use.
      */
-    public NestedClause(OperatorType operator) {
+    public NestedClause(DatabaseManager dbm, OperatorType operator) {
+        builder = new QueryBuilder(dbm);
+
         this.operator = operator;
     }
 

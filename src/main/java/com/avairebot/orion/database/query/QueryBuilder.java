@@ -1,10 +1,10 @@
 package com.avairebot.orion.database.query;
 
 import com.avairebot.orion.contracts.database.QueryClause;
+import com.avairebot.orion.contracts.database.grammar.GrammarParser;
 import com.avairebot.orion.contracts.database.query.ClauseConsumer;
 import com.avairebot.orion.database.DatabaseManager;
 import com.avairebot.orion.database.collection.Collection;
-import com.avairebot.orion.contracts.database.grammar.GrammarParser;
 
 import java.sql.SQLException;
 import java.util.*;
@@ -56,10 +56,6 @@ public final class QueryBuilder {
      * to -1 it should be ignored by the grammar generator.
      */
     private int skip = -1;
-
-    public QueryBuilder() {
-        this.dbm = null;
-    }
 
     /**
      * Creates a new Query Builder instance.
@@ -285,7 +281,7 @@ public final class QueryBuilder {
     }
 
     public QueryBuilder where(ClauseConsumer consumer) {
-        NestedClause clause = new NestedClause();
+        NestedClause clause = new NestedClause(dbm);
 
         consumer.build(clause);
 
@@ -320,7 +316,7 @@ public final class QueryBuilder {
     }
 
     public QueryBuilder andWhere(ClauseConsumer consumer) {
-        NestedClause clause = new NestedClause(OperatorType.AND);
+        NestedClause clause = new NestedClause(dbm, OperatorType.AND);
 
         consumer.build(clause);
 
@@ -355,7 +351,7 @@ public final class QueryBuilder {
     }
 
     public QueryBuilder orWhere(ClauseConsumer consumer) {
-        NestedClause clause = new NestedClause(OperatorType.OR);
+        NestedClause clause = new NestedClause(dbm, OperatorType.OR);
 
         consumer.build(clause);
 
