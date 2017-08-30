@@ -3,7 +3,6 @@ package com.avairebot.orion.database.schema;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-
 public class Blueprint {
     private final String table;
     private final LinkedHashMap<String, Field> fields = new LinkedHashMap<>();
