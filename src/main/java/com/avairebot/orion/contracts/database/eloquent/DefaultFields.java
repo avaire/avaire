@@ -2,7 +2,7 @@ package com.avairebot.orion.contracts.database.eloquent;
 
 public abstract class DefaultFields {
 
-    public abstract Modle instance();
+    public abstract Model instance();
 
     protected String table() {
         return getClass().getSimpleName() + "s";

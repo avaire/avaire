@@ -15,16 +15,16 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public abstract class Modle extends DefaultFields {
+public abstract class Model extends DefaultFields {
 
     protected final QueryBuilder builder;
 
-    public Modle(DatabaseManager dbm) {
+    public Model(DatabaseManager dbm) {
         builder = new QueryBuilder(dbm, table());
     }
 
     @Override
-    public Modle instance() {
+    public Model instance() {
         return this;
     }
 
@@ -40,95 +40,95 @@ public abstract class Modle extends DefaultFields {
         return get();
     }
 
-    public Modle select(String... columns) {
+    public Model select(String... columns) {
         builder.select(columns);
 
         return this;
     }
 
-    public Modle where(String column, Object field) {
+    public Model where(String column, Object field) {
         return where(column, "=", field);
     }
 
-    public Modle where(String column, String identifier, Object field) {
+    public Model where(String column, String identifier, Object field) {
         builder.where(column, identifier, field);
 
         return this;
     }
 
-    public Modle andWhere(String column, Object field) {
+    public Model andWhere(String column, Object field) {
         return andWhere(column, "=", field);
     }
 
-    public Modle andWhere(String column, String identifier, Object field) {
+    public Model andWhere(String column, String identifier, Object field) {
         builder.andWhere(column, identifier, field);
 
         return this;
     }
 
-    public Modle orWhere(String column, Object field) {
+    public Model orWhere(String column, Object field) {
         return orWhere(column, "=", field);
     }
 
-    public Modle orWhere(String column, String identifier, Object field) {
+    public Model orWhere(String column, String identifier, Object field) {
         builder.orWhere(column, identifier, field);
 
         return this;
     }
 
-    public Modle leftJoin(String table, String one, String two) {
+    public Model leftJoin(String table, String one, String two) {
         builder.leftJoin(table, one, two);
 
         return this;
     }
 
-    public Modle leftJoin(String table, String one, String identifier, String two) {
+    public Model leftJoin(String table, String one, String identifier, String two) {
         builder.leftJoin(table, one, identifier, two);
 
         return this;
     }
 
-    public Modle rightJoin(String table, String one, String two) {
+    public Model rightJoin(String table, String one, String two) {
         builder.rightJoin(table, one, two);
 
         return this;
     }
 
-    public Modle rightJoin(String table, String one, String identifier, String two) {
+    public Model rightJoin(String table, String one, String identifier, String two) {
         builder.rightJoin(table, one, identifier, two);
 
         return this;
     }
 
-    public Modle innerJoin(String table, String one, String two) {
+    public Model innerJoin(String table, String one, String two) {
         builder.innerJoin(table, one, two);
 
         return this;
     }
 
-    public Modle innerJoin(String table, String one, String identifier, String two) {
+    public Model innerJoin(String table, String one, String identifier, String two) {
         builder.innerJoin(table, one, identifier, two);
 
         return this;
     }
 
-    public Modle outerJoin(String table, String one, String two) {
+    public Model outerJoin(String table, String one, String two) {
         builder.outerJoin(table, one, two);
 
         return this;
     }
 
-    public Modle outerJoin(String table, String one, String identifier, String two) {
+    public Model outerJoin(String table, String one, String identifier, String two) {
         builder.outerJoin(table, one, identifier, two);
 
         return this;
     }
 
-    public Modle with(String... fields) {
+    public Model with(String... fields) {
         List<String> methods = new ArrayList<>();
         methods.addAll(Arrays.asList(fields));
 
-        Class<? extends Modle> iClass = instance().getClass();
+        Class<? extends Model> iClass = instance().getClass();
 
         for (Method method : iClass.getMethods()) {
             if (!methods.contains(method.getName())) {
@@ -152,7 +152,7 @@ public abstract class Modle extends DefaultFields {
                     method.setAccessible(true);
                     method.invoke(instance(), builder);
                 } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
-                    Logger.getLogger(Modle.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }
