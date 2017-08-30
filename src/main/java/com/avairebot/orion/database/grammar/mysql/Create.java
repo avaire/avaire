@@ -1,6 +1,6 @@
 package com.avairebot.orion.database.grammar.mysql;
 
-import com.avairebot.orion.database.grammar.contracts.CreateGrammar;
+import com.avairebot.orion.contracts.database.grammar.CreateGrammar;
 import com.avairebot.orion.database.schema.Blueprint;
 import com.avairebot.orion.database.schema.Field;
 import com.avairebot.orion.database.schema.FieldType;

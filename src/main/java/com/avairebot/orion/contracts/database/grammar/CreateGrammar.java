@@ -1,6 +1,4 @@
-package com.avairebot.orion.database.grammar.contracts;
-
-import com.avairebot.orion.contracts.database.grammar.AlterGrammar;
+package com.avairebot.orion.contracts.database.grammar;
 
 public abstract class CreateGrammar extends AlterGrammar {
     public CreateGrammar() {

@@ -1,8 +1,8 @@
-package com.avairebot.orion.database.eloquent;
+package com.avairebot.orion.contracts.database.eloquent;
 
-public abstract class EloquentDefaultFields {
+public abstract class DefaultFields {
 
-    public abstract Eloquent instance();
+    public abstract Modle instance();
 
     protected String table() {
         return getClass().getSimpleName() + "s";

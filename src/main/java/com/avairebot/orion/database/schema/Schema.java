@@ -3,7 +3,7 @@ package com.avairebot.orion.database.schema;
 import com.avairebot.orion.database.DatabaseManager;
 import com.avairebot.orion.database.grammar.CreateParser;
 import com.avairebot.orion.database.query.QueryType;
-import com.avairebot.orion.database.schema.contracts.DatabaseClosure;
+import com.avairebot.orion.contracts.database.schema.DatabaseClosure;
 
 import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;

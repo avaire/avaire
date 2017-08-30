@@ -4,7 +4,7 @@ import com.avairebot.orion.contracts.database.QueryClause;
 import com.avairebot.orion.contracts.database.query.ClauseConsumer;
 import com.avairebot.orion.database.DatabaseManager;
 import com.avairebot.orion.database.collection.Collection;
-import com.avairebot.orion.database.grammar.GrammarParser;
+import com.avairebot.orion.contracts.database.grammar.GrammarParser;
 
 import java.sql.SQLException;
 import java.util.*;

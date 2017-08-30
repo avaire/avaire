@@ -1,6 +1,4 @@
-package com.avairebot.orion.database.grammar.contracts;
-
-import com.avairebot.orion.contracts.database.grammar.TableGrammar;
+package com.avairebot.orion.contracts.database.grammar;
 
 import java.util.ArrayList;
 import java.util.List;

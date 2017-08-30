@@ -1,4 +1,4 @@
-package com.avairebot.orion.database.schema.contracts;
+package com.avairebot.orion.contracts.database.schema;
 
 import com.avairebot.orion.database.schema.Blueprint;
 

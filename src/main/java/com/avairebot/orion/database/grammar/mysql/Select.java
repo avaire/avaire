@@ -1,6 +1,6 @@
 package com.avairebot.orion.database.grammar.mysql;
 
-import com.avairebot.orion.database.grammar.contracts.SelectGrammar;
+import com.avairebot.orion.contracts.database.grammar.SelectGrammar;
 import com.avairebot.orion.database.query.*;
 
 import java.util.List;

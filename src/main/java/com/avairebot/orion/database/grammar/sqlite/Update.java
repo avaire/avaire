@@ -1,6 +1,6 @@
 package com.avairebot.orion.database.grammar.sqlite;
 
-import com.avairebot.orion.database.grammar.contracts.UpdateGrammar;
+import com.avairebot.orion.contracts.database.grammar.UpdateGrammar;
 import com.avairebot.orion.database.query.QueryBuilder;
 
 import java.util.List;

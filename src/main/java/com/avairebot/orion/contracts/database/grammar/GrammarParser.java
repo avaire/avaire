@@ -1,8 +1,6 @@
-package com.avairebot.orion.database.grammar;
+package com.avairebot.orion.contracts.database.grammar;
 
 import com.avairebot.orion.contracts.database.AbstractDatabase;
-import com.avairebot.orion.contracts.database.grammar.AlterGrammar;
-import com.avairebot.orion.contracts.database.grammar.TableGrammar;
 import com.avairebot.orion.database.DatabaseManager;
 import com.avairebot.orion.database.connections.MySQL;
 import com.avairebot.orion.database.connections.SQLite;

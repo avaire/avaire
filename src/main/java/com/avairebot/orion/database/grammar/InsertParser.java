@@ -1,5 +1,6 @@
 package com.avairebot.orion.database.grammar;
 
+import com.avairebot.orion.contracts.database.grammar.GrammarParser;
 import com.avairebot.orion.database.DatabaseManager;
 import com.avairebot.orion.database.query.QueryBuilder;
 
