@@ -22,7 +22,7 @@ public final class Carbon {
     private static final Day GLOBAL_WEEK_START_AT = Day.MONDAY;
     private static final Day GLOBAL_WEEK_END_AT = Day.SUNDAY;
     private static final List<Day> WEEKEND_DAYS = Arrays.asList(Day.SATURDAY, Day.SUNDAY);
-    private static String toStringFormat = SupportedFormat.DATE_TIME.getFormat();
+    private static String toStringFormat = Formats.DATE_TIME.getFormat();
     private final Calendar time;
     private Day WEEK_START_AT;
     private Day WEEK_END_AT;
@@ -64,7 +64,7 @@ public final class Carbon {
 
         this.time.setFirstDayOfWeek(WEEK_START_AT.getId());
 
-        for (SupportedFormat supportedFormat : SupportedFormat.values()) {
+        for (Formats supportedFormat : Formats.values()) {
             try {
                 this.time.setTime(supportedFormat.parse(time));
 
@@ -97,7 +97,7 @@ public final class Carbon {
 
         this.time.setFirstDayOfWeek(WEEK_START_AT.getId());
 
-        for (SupportedFormat supportedFormat : SupportedFormat.values()) {
+        for (Formats supportedFormat : Formats.values()) {
             try {
                 this.time.setTime(supportedFormat.parse(time));
 
@@ -522,7 +522,7 @@ public final class Carbon {
 
     /**
      * Sets the global {@link #toString() } format, by default
-     * the {@link SupportedFormat#DATE_TIME date time} is used.
+     * the {@link Formats#DATE_TIME date time} is used.
      *
      * @param format The format to set
      */
@@ -532,10 +532,10 @@ public final class Carbon {
 
     /**
      * Resets the global {@link #toString() } format back to the
-     * default {@link SupportedFormat#DATE_TIME date time} format.
+     * default {@link Formats#DATE_TIME date time} format.
      */
     public static void resetToStringFormat() {
-        toStringFormat = SupportedFormat.DATE_TIME.getFormat();
+        toStringFormat = Formats.DATE_TIME.getFormat();
     }
 
     /**
@@ -741,6 +741,16 @@ public final class Carbon {
      */
     public Carbon setMonth(int month) {
         return set(Calendar.MONTH, month - 1);
+    }
+
+    /**
+     * Sets the month to the carbon instance.
+     *
+     * @param month the month to set
+     * @return the Carbon instance
+     */
+    public Carbon setMonth(Month month) {
+        return set(Calendar.MONTH, month.getId());
     }
 
     /**
@@ -1901,7 +1911,7 @@ public final class Carbon {
      * @return The generated date string
      */
     public String toDateString() {
-        return format(SupportedFormat.DATE);
+        return format(Formats.DATE);
     }
 
     /**
@@ -1912,7 +1922,7 @@ public final class Carbon {
      * @return The generated formatted date string
      */
     public String toFormattedDateString() {
-        return format(SupportedFormat.FORMATTED_DATE);
+        return format(Formats.FORMATTED_DATE);
     }
 
     /**
@@ -1923,7 +1933,7 @@ public final class Carbon {
      * @return The generated time string
      */
     public String toTimeString() {
-        return format(SupportedFormat.TIME);
+        return format(Formats.TIME);
     }
 
     /**
@@ -1934,7 +1944,7 @@ public final class Carbon {
      * @return The generated time offset time string
      */
     public String toTimeOffsetString() {
-        return format(SupportedFormat.TIME_OFFSET);
+        return format(Formats.TIME_OFFSET);
     }
 
     /**
@@ -1945,7 +1955,7 @@ public final class Carbon {
      * @return The generated date time string
      */
     public String toDateTimeString() {
-        return format(SupportedFormat.DATE_TIME);
+        return format(Formats.DATE_TIME);
     }
 
     /**
@@ -1956,7 +1966,7 @@ public final class Carbon {
      * @return The generated day date time string
      */
     public String toDayDateTimeString() {
-        return format(SupportedFormat.DAY_DATE_TIME);
+        return format(Formats.DAY_DATE_TIME);
     }
 
     /**
@@ -1978,7 +1988,7 @@ public final class Carbon {
      * @return The generated cookie time string
      */
     public String toCookieString() {
-        return format(SupportedFormat.COOKIE);
+        return format(Formats.COOKIE);
     }
 
     /**
@@ -2000,7 +2010,7 @@ public final class Carbon {
      * @return The generated RFC 822 time string
      */
     public String toRfc822String() {
-        return format(SupportedFormat.RFC_822);
+        return format(Formats.RFC_822);
     }
 
     /**
@@ -2011,7 +2021,7 @@ public final class Carbon {
      * @return The generated RFC 850 time string
      */
     public String toRfc850String() {
-        return format(SupportedFormat.RFC_850);
+        return format(Formats.RFC_850);
     }
 
     /**
@@ -2022,7 +2032,7 @@ public final class Carbon {
      * @return The generated RFC 1036 time string
      */
     public String toRfc1036String() {
-        return format(SupportedFormat.RFC_1036);
+        return format(Formats.RFC_1036);
     }
 
     /**
@@ -2044,7 +2054,7 @@ public final class Carbon {
      * @return The generated RSS time string
      */
     public String toRssString() {
-        return format(SupportedFormat.RSS);
+        return format(Formats.RSS);
     }
 
     /**
@@ -2080,7 +2090,7 @@ public final class Carbon {
      * @param format the string to use to generate the time string
      * @return the formatted datetime string
      */
-    public String format(SupportedFormat format) {
+    public String format(Formats format) {
         return format(format.getFormat());
     }
 
@@ -2092,244 +2102,5 @@ public final class Carbon {
      */
     public Carbon copy() {
         return new Carbon(this);
-    }
-
-    private enum Time {
-        YEARS_PER_CENTURY(100),
-        YEARS_PER_DECADE(10),
-        MONTHS_PER_YEAR(12),
-        WEEKS_PER_YEAR(52),
-        DAYS_PER_WEEK(7),
-        HOURS_PER_DAY(24),
-        MINUTES_PER_HOUR(60),
-        SECONDS_PER_MINUTE(60);
-
-        private final int time;
-
-        private Time(int time) {
-            this.time = time;
-        }
-
-        /**
-         * Gets the time.
-         *
-         * @return the integer time value
-         */
-        public int getTime() {
-            return time;
-        }
-    }
-
-    public enum Day {
-        /**
-         * Value of the {@link java.util.Calendar#DAY_OF_WEEK} field indicating
-         * Monday.
-         */
-        MONDAY("Monday", Calendar.MONDAY),
-        /**
-         * Value of the {@link java.util.Calendar#DAY_OF_WEEK} field indicating
-         * Tuesday.
-         */
-        TUESDAY("Tuesday", Calendar.TUESDAY),
-        /**
-         * Value of the {@link java.util.Calendar#DAY_OF_WEEK} field indicating
-         * Wednesday.
-         */
-        WEDNESDAY("Wednesday", Calendar.WEDNESDAY),
-        /**
-         * Value of the {@link java.util.Calendar#DAY_OF_WEEK} field indicating
-         * Thursday.
-         */
-        THURSDAY("Thursday", Calendar.THURSDAY),
-        /**
-         * Value of the {@link java.util.Calendar#DAY_OF_WEEK} field indicating
-         * Friday.
-         */
-        FRIDAY("Friday", Calendar.FRIDAY),
-        /**
-         * Value of the {@link java.util.Calendar#DAY_OF_WEEK} field indicating
-         * Saturday.
-         */
-        SATURDAY("Saturday", Calendar.SATURDAY),
-        /**
-         * Value of the {@link java.util.Calendar#DAY_OF_WEEK} field indicating
-         * Sunday.
-         */
-        SUNDAY("Sunday", Calendar.SUNDAY);
-
-        private final String name;
-        private final int id;
-
-        private Day(String name, int id) {
-            this.name = name;
-            this.id = id;
-        }
-
-        /**
-         * Gets the day from the id, if an invalid id was
-         * given, <code>NULL</code> will returned instead.
-         *
-         * @param id the id to match with the day
-         * @return the day that match the provided id
-         */
-        public static Day fromId(int id) {
-            for (Day day : values()) {
-                if (day.getId() == id) {
-                    return day;
-                }
-            }
-
-            return null;
-        }
-
-        /**
-         * Gets the day name.
-         *
-         * @return the day name
-         */
-        public String getName() {
-            return name;
-        }
-
-        /**
-         * Gets the day ID.
-         *
-         * @return the day id
-         */
-        public int getId() {
-            return id;
-        }
-
-        /**
-         * Gets the day before the current day.
-         *
-         * @return the day before the current day
-         */
-        public Day getYesterday() {
-            int day = getId() - 1;
-
-            return day <= 0 ? SATURDAY : fromId(day);
-        }
-
-        /**
-         * Gets the day after the current day.
-         *
-         * @return the day after the current day
-         */
-        public Day getTomorrow() {
-            int day = getId() + 1;
-
-            return day > 7 ? SUNDAY : fromId(day);
-        }
-
-    }
-
-    public enum SupportedFormat {
-        /**
-         * Generates a date time string, example:
-         * <p>
-         * 1975-12-25 14:15:16
-         */
-        DATE_TIME("yyyy-MM-dd HH:mm:ss"),
-        /**
-         * Generates a date string, example:
-         * <p>
-         * 1975-12-25
-         */
-        DATE("yyyy-MM-dd"),
-        /**
-         * Generates a formatted date string, example:
-         * <p>
-         * Dec 25, 1975
-         */
-        FORMATTED_DATE("MMMMM dd, yyyy"),
-        /**
-         * Generates a time string, example:
-         * <p>
-         * 14:15:16
-         */
-        TIME("HH:mm:ss"),
-        /**
-         * Generates a time offset time string, example:
-         * <p>
-         * 14:15:16-05:00
-         */
-        TIME_OFFSET("HH:mm:ssXXX"),
-        /**
-         * Generates a day date time string, example:
-         * <p>
-         * Thu, Dec 25, 1975 2:15 PM
-         */
-        DAY_DATE_TIME("EEE, MMM dd, yyyy h:mm aaa"),
-        /**
-         * Generates a cookie time string, example:
-         * <p>
-         * Thursday, 25-Dec-1975 14:15:16 EST
-         */
-        COOKIE("EEEEEEEE, dd-MMM-yyyy HH:mm:ss z"),
-        /**
-         * Generates a RFC 822 time string, example:
-         * <p>
-         * Thu, 25 Dec 1975 14:15:16 -0500
-         */
-        RFC_822("EEE, dd MMM yyyy HH:mm:ss Z"),
-        /**
-         * Generates a RFC 850 time string, example:
-         * <p>
-         * Thursday, 25-Dec-1975 14:15:16 EST
-         */
-        RFC_850("EEEEEEEE, dd-MMM-yyyy HH:mm:ss z"),
-        /**
-         * Generates a RFC 1036 time string, example:
-         * <p>
-         * 1975-12-25T14:15:16-05:00
-         */
-        RFC_1036("EEE, dd MMM yyyy HH:mm:ssXXX"),
-        /**
-         * Generates a RSS time string, example:
-         * <p>
-         * Thu, 25 Dec 1975 14:15:16 -0500
-         */
-        RSS("EEE, dd MMM yyyy HH:mm:ss Z");
-
-        private final String string;
-
-        private SupportedFormat(String string) {
-            this.string = string;
-        }
-
-        /**
-         * Gets the {@link java.text.SimpleDateFormat} format as a string.
-         *
-         * @return the {@link java.text.SimpleDateFormat} format as a string.
-         */
-        public String getFormat() {
-            return string;
-        }
-
-        /**
-         * Creates a {@link java.text.SimpleDateFormat} object from the format string.
-         *
-         * @return the {@link java.text.SimpleDateFormat} format what was created.
-         */
-        public SimpleDateFormat make() {
-            return new SimpleDateFormat(string);
-        }
-
-        /**
-         * Attempts to parse the provided time string with the format.
-         *
-         * @param time The time string to try and parse
-         * @return the created {@link java.util.Date} object from the time string.
-         * @throws ParseException if the provided time doesn't match the provided format.
-         */
-        public Date parse(String time) throws ParseException {
-            return make().parse(time);
-        }
-
-        @Override
-        public String toString() {
-            return string;
-        }
     }
 }
