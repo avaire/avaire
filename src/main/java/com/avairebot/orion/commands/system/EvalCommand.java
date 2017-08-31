@@ -33,6 +33,11 @@ public class EvalCommand extends AbstractCommand {
     }
 
     @Override
+    public List<String> getMiddleware() {
+        return Collections.singletonList("isBotAdmin");
+    }
+
+    @Override
     public void onCommand(MessageReceivedEvent event, String[] args) {
         try {
             Object out = createScriptEngine(event).eval("(function() { with (imports) { return " + String.join(" ", args) + "}})();");

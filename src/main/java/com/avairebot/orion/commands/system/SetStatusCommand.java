@@ -6,6 +6,7 @@ import net.dv8tion.jda.core.entities.Game;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class SetStatusCommand extends AbstractCommand {
@@ -27,6 +28,11 @@ public class SetStatusCommand extends AbstractCommand {
     @Override
     public List<String> getTriggers() {
         return Arrays.asList("setstatus", "status");
+    }
+
+    @Override
+    public List<String> getMiddleware() {
+        return Collections.singletonList("isBotAdmin");
     }
 
     @Override

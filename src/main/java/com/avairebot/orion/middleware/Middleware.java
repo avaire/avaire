@@ -2,6 +2,7 @@ package com.avairebot.orion.middleware;
 
 public enum Middleware {
 
+    IS_BOT_ADMIN("isBotAdmin", IsBotAdmin.class),
     PROCESS_COMMAND("process-command", ProcessCommand.class);
 
     private final String name;
