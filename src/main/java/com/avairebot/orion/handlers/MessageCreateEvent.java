@@ -5,20 +5,13 @@ import com.avairebot.orion.Statistics;
 import com.avairebot.orion.commands.CommandContainer;
 import com.avairebot.orion.commands.CommandHandler;
 import com.avairebot.orion.contracts.handlers.EventHandler;
-import net.dv8tion.jda.core.entities.User;
+import com.avairebot.orion.middleware.MiddlewareStack;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
-
-import java.util.Arrays;
-import java.util.regex.Pattern;
 
 public class MessageCreateEvent extends EventHandler {
 
-    private final Pattern argumentsRegEX;
-
     public MessageCreateEvent(Orion orion) {
         super(orion);
-
-        this.argumentsRegEX = Pattern.compile("[\\s\"]+|\"([^\"]*)\"", Pattern.MULTILINE);
     }
 
     @Override
@@ -33,11 +26,7 @@ public class MessageCreateEvent extends EventHandler {
         if (container != null) {
             Statistics.addCommands();
 
-            String[] arguments = this.argumentsRegEX.split(e.getMessage().getContent());
-
-            User author = e.getMessage().getAuthor();
-            this.orion.logger.info("Executing Command <" + e.getMessage().getContent() + "> from " + author.getName() + "#" + author.getDiscriminator());
-            container.getCommand().onCommand(e, Arrays.copyOfRange(arguments, 1, arguments.length));
+            (new MiddlewareStack(orion, e, container)).next();
         }
     }
 }
