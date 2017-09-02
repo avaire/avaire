@@ -61,6 +61,7 @@ public class EvalCommand extends AbstractCommand {
         engine.put("message", event.getMessage());
         engine.put("channel", event.getChannel());
         engine.put("jda", event.getJDA());
+        engine.put("orion", orion);
 
         if (event.isFromType(ChannelType.TEXT)) {
             engine.put("guild", event.getGuild());
