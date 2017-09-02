@@ -1,5 +1,6 @@
 package com.avairebot.orion;
 
+import com.avairebot.orion.cache.CacheManager;
 import com.avairebot.orion.commands.CommandHandler;
 import com.avairebot.orion.commands.system.EvalCommand;
 import com.avairebot.orion.commands.system.SetStatusCommand;
@@ -26,9 +27,11 @@ public class Orion {
     public final MainConfiguration config;
     public final Logger logger;
     public final DatabaseManager database;
+    public final CacheManager cache;
 
     public Orion() throws IOException {
         this.logger = new Logger(this);
+        this.cache = new CacheManager(this);
 
         ConfigurationLoader configLoader = new ConfigurationLoader();
         this.config = (MainConfiguration) configLoader.load("config.json", MainConfiguration.class);
