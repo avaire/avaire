@@ -8,6 +8,7 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -39,8 +40,11 @@ public class EvalCommand extends AbstractCommand {
 
     @Override
     public void onCommand(MessageReceivedEvent event, String[] args) {
+        String[] rawArguments = event.getMessage().getRawContent().split(" ");
+        String evalMessage = String.join(" ", Arrays.copyOfRange(rawArguments, 1, rawArguments.length));
+
         try {
-            Object out = createScriptEngine(event).eval("(function() { with (imports) { return " + String.join(" ", args) + "}})();");
+            Object out = createScriptEngine(event).eval("(function() { with (imports) { return " + evalMessage + "}})();");
             String output = out == null ? "Executed without error, void was returned so there is nothing to show." : out.toString();
 
             if (output.length() > 1890) {
