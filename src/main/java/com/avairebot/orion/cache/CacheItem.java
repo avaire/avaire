@@ -1,13 +1,11 @@
 package com.avairebot.orion.cache;
 
-import com.avairebot.orion.time.Carbon;
-
 public class CacheItem {
     private final String key;
     private final Object value;
-    private final Carbon time;
+    private final long time;
 
-    public CacheItem(String key, Object value, Carbon time) {
+    public CacheItem(String key, Object value, long time) {
         this.key = key;
         this.value = value;
         this.time = time;
@@ -21,7 +19,11 @@ public class CacheItem {
         return value;
     }
 
-    public Carbon getTime() {
+    public long getTime() {
         return time;
+    }
+
+    public boolean lastForever() {
+        return time == -1;
     }
 }

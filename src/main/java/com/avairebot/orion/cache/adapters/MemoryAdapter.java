@@ -3,7 +3,6 @@ package com.avairebot.orion.cache.adapters;
 import com.avairebot.orion.cache.CacheItem;
 import com.avairebot.orion.contracts.cache.CacheAdapter;
 import com.avairebot.orion.contracts.cache.CacheClosure;
-import com.avairebot.orion.time.Carbon;
 
 import java.util.Collections;
 import java.util.Map;
@@ -15,7 +14,7 @@ public class MemoryAdapter extends CacheAdapter {
 
     @Override
     public synchronized boolean put(String token, Object value, int seconds) {
-        caches.put(token, new CacheItem(token, value, Carbon.now().addSeconds(seconds)));
+        caches.put(token, new CacheItem(token, value, System.currentTimeMillis() + (seconds * 1000)));
         return true;
     }
 
@@ -25,7 +24,7 @@ public class MemoryAdapter extends CacheAdapter {
             return get(token);
         }
 
-        CacheItem item = new CacheItem(token, closure.run(), Carbon.now().addSeconds(seconds));
+        CacheItem item = new CacheItem(token, closure.run(), System.currentTimeMillis() + (seconds * 1000));
         caches.put(token, item);
 
         return item.getValue();
@@ -33,7 +32,7 @@ public class MemoryAdapter extends CacheAdapter {
 
     @Override
     public synchronized boolean forever(String token, Object value) {
-        caches.put(token, new CacheItem(token, value, Carbon.now().addYears(999)));
+        caches.put(token, new CacheItem(token, value, -1));
 
         return true;
     }
@@ -64,7 +63,7 @@ public class MemoryAdapter extends CacheAdapter {
 
         CacheItem item = getRaw(token);
 
-        return (item.getTime() == null) || item.getTime().isPast();
+        return item.lastForever() || item.getTime() > System.currentTimeMillis();
     }
 
     @Override
