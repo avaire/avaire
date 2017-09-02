@@ -23,6 +23,10 @@ public class CacheItem {
         return time;
     }
 
+    public boolean isExpired() {
+        return !lastForever() && getTime() > System.currentTimeMillis();
+    }
+
     public boolean lastForever() {
         return time == -1;
     }

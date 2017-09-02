@@ -57,13 +57,7 @@ public class MemoryAdapter extends CacheAdapter {
 
     @Override
     public synchronized boolean has(String token) {
-        if (!caches.containsKey(token)) {
-            return false;
-        }
-
-        CacheItem item = getRaw(token);
-
-        return item.lastForever() || item.getTime() > System.currentTimeMillis();
+        return caches.containsKey(token) && getRaw(token).isExpired();
     }
 
     @Override
