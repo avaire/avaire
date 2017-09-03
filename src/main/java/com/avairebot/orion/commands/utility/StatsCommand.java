@@ -11,6 +11,7 @@ import net.dv8tion.jda.core.entities.MessageEmbed;
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class StatsCommand extends AbstractCommand {
@@ -27,6 +28,11 @@ public class StatsCommand extends AbstractCommand {
     @Override
     public String getDescription() {
         return "Tells you information about the bot itself.";
+    }
+
+    @Override
+    public List<String> getUsageInstructions() {
+        return Collections.singletonList("`!stats` - Shows some stats about the bot.");
     }
 
     @Override

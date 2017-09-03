@@ -5,6 +5,7 @@ import com.avairebot.orion.contracts.commands.AbstractCommand;
 import com.avairebot.orion.factories.MessageFactory;
 import net.dv8tion.jda.core.entities.Message;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -22,6 +23,11 @@ public class PingCommand extends AbstractCommand {
     @Override
     public String getDescription() {
         return "Can be used to check if the bot is still alive.";
+    }
+
+    @Override
+    public List<String> getUsageInstructions() {
+        return Collections.singletonList("`!ping` - Returns the latency of the bot.");
     }
 
     @Override

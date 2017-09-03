@@ -7,6 +7,7 @@ import com.avairebot.orion.contracts.commands.AbstractCommand;
 import com.avairebot.orion.factories.MessageFactory;
 import net.dv8tion.jda.core.entities.Message;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -27,6 +28,14 @@ public class SourceCommand extends AbstractCommand {
     @Override
     public String getDescription() {
         return "Gives you the source code for the Bot, or the code for a given command.";
+    }
+
+    @Override
+    public List<String> getUsageInstructions() {
+        return Arrays.asList(
+                "`!source` - Returns the full source code for the bot.",
+                "`!source <command>` - Returns the source code for the given command."
+        );
     }
 
     @Override

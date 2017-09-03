@@ -6,6 +6,7 @@ import com.avairebot.orion.factories.MessageFactory;
 import net.dv8tion.jda.core.entities.Message;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class InviteCommand extends AbstractCommand {
@@ -21,6 +22,11 @@ public class InviteCommand extends AbstractCommand {
     @Override
     public String getDescription() {
         return "Returns a link that can be used to invite to bot to other servers.";
+    }
+
+    @Override
+    public List<String> getUsageInstructions() {
+        return Collections.singletonList("`!invite` - Gives you an invite link that can be used to invite Orion to servers.");
     }
 
     @Override

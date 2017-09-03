@@ -23,6 +23,8 @@ public abstract class AbstractCommand {
 
     public abstract String getDescription();
 
+    public abstract List<String> getUsageInstructions();
+
     public abstract List<String> getTriggers();
 
     public List<String> getMiddleware() {

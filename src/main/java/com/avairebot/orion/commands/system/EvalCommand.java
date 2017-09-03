@@ -30,6 +30,11 @@ public class EvalCommand extends AbstractCommand {
     }
 
     @Override
+    public List<String> getUsageInstructions() {
+        return Collections.singletonList("`;eval <code>` - Evaluates and executes the given code.");
+    }
+
+    @Override
     public List<String> getTriggers() {
         return Collections.singletonList("eval");
     }
