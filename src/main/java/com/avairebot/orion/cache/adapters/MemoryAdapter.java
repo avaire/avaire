@@ -52,12 +52,15 @@ public class MemoryAdapter extends CacheAdapter {
 
     @Override
     public synchronized CacheItem getRaw(String token) {
+        if (!has(token)) {
+            return null;
+        }
         return caches.getOrDefault(token, null);
     }
 
     @Override
     public synchronized boolean has(String token) {
-        return caches.containsKey(token) && getRaw(token).isExpired();
+        return caches.containsKey(token) && caches.get(token).isExpired();
     }
 
     @Override
