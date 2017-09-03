@@ -56,7 +56,7 @@ public class MiddlewareStack {
         }
     }
 
-    public void next() {
+    public boolean next() {
         if (index == -1) {
             index = middlewares.size();
         }
@@ -68,7 +68,7 @@ public class MiddlewareStack {
             MiddlewareContainer middlewareContainer = middlewares.get(--index);
             AbstractMiddleware middleware = (AbstractMiddleware) middlewareContainer.getMiddleware().getInstance().getDeclaredConstructor(arguments).newInstance(orion);
 
-            middleware.handle(event, this, middlewareContainer.getArguments());
+            return middleware.handle(event, this, middlewareContainer.getArguments());
         } catch (InstantiationException | NoSuchMethodException | InvocationTargetException ex) {
             orion.logger.error("Invalid middleware object parsed, failed to create a new instance!");
             orion.logger.exception(ex);
@@ -76,6 +76,7 @@ public class MiddlewareStack {
             orion.logger.error("An attempt was made to create a new middleware instance!");
             orion.logger.exception(ex);
         }
+        return false;
     }
 
     public AbstractCommand getCommand() {

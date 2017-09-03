@@ -16,15 +16,13 @@ public class HasRole extends AbstractMiddleware {
     }
 
     @Override
-    public void handle(MessageReceivedEvent event, MiddlewareStack stack, String... args) {
+    public boolean handle(MessageReceivedEvent event, MiddlewareStack stack, String... args) {
         if (!event.getChannelType().isGuild()) {
-            stack.next();
-            return;
+            return stack.next();
         }
 
         if (event.getMember().hasPermission(Permissions.ADMINISTRATOR.getPermission())) {
-            stack.next();
-            return;
+            return stack.next();
         }
 
         List<Role> roles = event.getMessage().getMember().getRoles();
@@ -35,12 +33,12 @@ public class HasRole extends AbstractMiddleware {
                         "You don't have the required role to execute this command:\n`%s`",
                         roleName
                 ).queue();
-                return;
+                return false;
             }
 
         }
 
-        stack.next();
+        return stack.next();
     }
 
     private boolean hasRole(List<Role> roles, String roleName) {

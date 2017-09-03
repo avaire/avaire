@@ -12,5 +12,5 @@ public abstract class AbstractMiddleware {
         this.orion = orion;
     }
 
-    public abstract void handle(MessageReceivedEvent event, MiddlewareStack stack, String... args);
+    public abstract boolean handle(MessageReceivedEvent event, MiddlewareStack stack, String... args);
 }

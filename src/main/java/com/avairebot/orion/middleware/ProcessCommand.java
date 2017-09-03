@@ -19,7 +19,7 @@ public class ProcessCommand extends AbstractMiddleware {
     }
 
     @Override
-    public void handle(MessageReceivedEvent event, MiddlewareStack stack, String... args) {
+    public boolean handle(MessageReceivedEvent event, MiddlewareStack stack, String... args) {
         String[] arguments = argumentsRegEX.split(event.getMessage().getContent());
 
         User author = event.getMessage().getAuthor();
@@ -29,6 +29,6 @@ public class ProcessCommand extends AbstractMiddleware {
                 author.getDiscriminator()
         );
 
-        stack.getCommand().onCommand(event, Arrays.copyOfRange(arguments, 1, arguments.length));
+        return stack.getCommand().onCommand(event, Arrays.copyOfRange(arguments, 1, arguments.length));
     }
 }

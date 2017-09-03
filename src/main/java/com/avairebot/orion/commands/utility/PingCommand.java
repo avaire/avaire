@@ -30,7 +30,8 @@ public class PingCommand extends AbstractCommand {
     }
 
     @Override
-    public void onCommand(MessageReceivedEvent e, String[] args) {
+    public boolean onCommand(MessageReceivedEvent e, String[] args) {
         MessageFactory.makeInfo(e.getMessage(), "Pong! Time taken %s ms!", e.getJDA().getPing()).queue();
+        return true;
     }
 }

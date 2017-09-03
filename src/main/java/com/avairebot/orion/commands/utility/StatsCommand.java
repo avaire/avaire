@@ -35,7 +35,7 @@ public class StatsCommand extends AbstractCommand {
     }
 
     @Override
-    public void onCommand(MessageReceivedEvent event, String[] args) {
+    public boolean onCommand(MessageReceivedEvent event, String[] args) {
         Guild guild = event.getMessage().getGuild();
         MessageFactory.makeEmbeddedMessage(event.getMessage().getChannel(), MessageFactory.MessageType.INFO,
                 new MessageEmbed.Field("Author", "Senither#8023", true),
@@ -51,6 +51,8 @@ public class StatsCommand extends AbstractCommand {
                 new MessageEmbed.Field("Channels", "" + guild.getTextChannels().size() + guild.getVoiceChannels().size(), true),
                 new MessageEmbed.Field("Servers", "" + event.getJDA().getGuilds().size(), true)
         ).queue();
+
+        return true;
     }
 
     private String applicationUptime() {

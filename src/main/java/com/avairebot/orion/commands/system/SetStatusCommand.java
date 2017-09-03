@@ -36,14 +36,14 @@ public class SetStatusCommand extends AbstractCommand {
     }
 
     @Override
-    public void onCommand(MessageReceivedEvent event, String[] args) {
+    public boolean onCommand(MessageReceivedEvent event, String[] args) {
         if (args.length == 0) {
-            return;
+            return false;
         }
 
         if (!Game.isValidStreamingUrl(args[0])) {
             event.getJDA().getPresence().setGame(Game.of(String.join(" ", args)));
-            return;
+            return true;
         }
 
         String url = args[0];
@@ -54,5 +54,6 @@ public class SetStatusCommand extends AbstractCommand {
         }
 
         event.getJDA().getPresence().setGame(Game.of(status, url));
+        return true;
     }
 }

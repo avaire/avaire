@@ -13,11 +13,10 @@ public class Throttle extends AbstractMiddleware {
     }
 
     @Override
-    public void handle(MessageReceivedEvent event, MiddlewareStack stack, String... args) {
+    public boolean handle(MessageReceivedEvent event, MiddlewareStack stack, String... args) {
         if (args.length < 3) {
             orion.logger.warning("\"%s\" is parsing invalid amount of arguments to the throttle middleware, 3 arguments are required.", stack.getCommand());
-            stack.next();
-            return;
+            return stack.next();
         }
 
         ThrottleType type = ThrottleType.fromName(args[0]);
@@ -41,14 +40,15 @@ public class Throttle extends AbstractMiddleware {
                         stack.getCommand().getName(),
                         ((item.getTime() - System.currentTimeMillis()) / 1000) + 1
                 ).queue();
-                return;
+                return false;
             }
 
             orion.cache.put(fingerprint, ++attempts, decaySeconds);
-            stack.next();
+            return stack.next();
         } catch (NumberFormatException e) {
             orion.logger.warning("Invalid integers given to throttle command by \"%s\", args: (%s, %s)", stack.getCommand().getName(), args[1], args[2]);
         }
+        return false;
     }
 
     private enum ThrottleType {

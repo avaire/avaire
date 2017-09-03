@@ -12,12 +12,12 @@ public class IsBotAdmin extends AbstractMiddleware {
     }
 
     @Override
-    public void handle(MessageReceivedEvent event, MiddlewareStack stack, String... args) {
+    public boolean handle(MessageReceivedEvent event, MiddlewareStack stack, String... args) {
         if (!orion.config.getBotAccess().contains(event.getAuthor().getId())) {
             MessageFactory.makeError(event.getMessage(), ":warning: You must be a bot administrator to use this command!").queue();
-            return;
+            return false;
         }
 
-        stack.next();
+        return stack.next();
     }
 }

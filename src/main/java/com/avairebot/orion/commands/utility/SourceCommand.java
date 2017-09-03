@@ -35,16 +35,16 @@ public class SourceCommand extends AbstractCommand {
     }
 
     @Override
-    public void onCommand(MessageReceivedEvent event, String[] args) {
+    public boolean onCommand(MessageReceivedEvent event, String[] args) {
         if (args.length == 0) {
             MessageFactory.makeInfo(event.getMessage(), "Orion source code:\n\n%s", rootUrl).queue();
-            return;
+            return true;
         }
 
         CommandContainer command = CommandHandler.getCommand(args[0]);
         if (command == null) {
             MessageFactory.makeInfo(event.getMessage(), "Invalid command given, here is the full source code instead.\n\n%s", rootUrl).queue();
-            return;
+            return true;
         }
 
         String[] split = command.getCommand().getClass().toString().split("\\.");
@@ -54,5 +54,7 @@ public class SourceCommand extends AbstractCommand {
         MessageFactory.makeInfo(event.getMessage(), "AvaIre source code for the **%s** command:\n\n" + commandUrl,
                 command.getCommand().getName(), category, name
         ).queue();
+
+        return true;
     }
 }

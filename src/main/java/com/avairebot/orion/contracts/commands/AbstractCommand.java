@@ -23,5 +23,5 @@ public abstract class AbstractCommand {
         return new ArrayList<>();
     }
 
-    public abstract void onCommand(MessageReceivedEvent event, String[] args);
+    public abstract boolean onCommand(MessageReceivedEvent event, String[] args);
 }

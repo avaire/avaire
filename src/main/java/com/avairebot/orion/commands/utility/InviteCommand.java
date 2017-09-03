@@ -29,10 +29,12 @@ public class InviteCommand extends AbstractCommand {
     }
 
     @Override
-    public void onCommand(MessageReceivedEvent e, String[] args) {
+    public boolean onCommand(MessageReceivedEvent e, String[] args) {
         MessageFactory.makeInfo(e.getMessage(),
                 "You can invite me to your server by [clicking here](%s) or use the link below:\n\n%s",
                 orion.config.botAuth().getOAuth(), orion.config.botAuth().getOAuth())
                 .queue();
+
+        return true;
     }
 }

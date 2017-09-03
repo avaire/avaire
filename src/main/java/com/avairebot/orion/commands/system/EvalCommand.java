@@ -39,7 +39,7 @@ public class EvalCommand extends AbstractCommand {
     }
 
     @Override
-    public void onCommand(MessageReceivedEvent event, String[] args) {
+    public boolean onCommand(MessageReceivedEvent event, String[] args) {
         String[] rawArguments = event.getMessage().getRawContent().split(" ");
         String evalMessage = String.join(" ", Arrays.copyOfRange(rawArguments, 1, rawArguments.length));
 
@@ -55,6 +55,8 @@ public class EvalCommand extends AbstractCommand {
         } catch (ScriptException e) {
             event.getChannel().sendMessage("**Error:**\n```xl\n" + e.toString() + "```").queue();
         }
+        
+        return true;
     }
 
     private ScriptEngine createScriptEngine(MessageReceivedEvent event) throws ScriptException {

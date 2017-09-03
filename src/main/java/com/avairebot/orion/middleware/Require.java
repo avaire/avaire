@@ -18,24 +18,22 @@ public class Require extends AbstractMiddleware {
     }
 
     @Override
-    public void handle(MessageReceivedEvent event, MiddlewareStack stack, String... args) {
+    public boolean handle(MessageReceivedEvent event, MiddlewareStack stack, String... args) {
         if (!event.getChannelType().isGuild()) {
-            stack.next();
-            return;
+            return stack.next();
         }
 
         if (event.getMember().hasPermission(Permissions.ADMINISTRATOR.getPermission())) {
-            stack.next();
-            return;
+            return stack.next();
         }
-        
+
         List<Permissions> missingPermissions = new ArrayList<>();
 
         for (String permissionNode : args) {
             Permissions permission = Permissions.fromNode(permissionNode);
             if (permission == null) {
                 orion.logger.warning("Invalid permission node given for the \"%s\" command: %s", stack.getCommand().getName(), permissionNode);
-                return;
+                return false;
             }
 
             if (!event.getMember().hasPermission(permission.getPermission())) {
@@ -52,9 +50,9 @@ public class Require extends AbstractMiddleware {
                             .map(Permission::getName)
                             .collect(Collectors.joining("`, `"))
             ).queue();
-            return;
+            return true;
         }
 
-        stack.next();
+        return stack.next();
     }
 }
