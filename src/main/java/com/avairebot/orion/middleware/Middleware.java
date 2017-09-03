@@ -3,6 +3,7 @@ package com.avairebot.orion.middleware;
 public enum Middleware {
 
     REQUIRE("require", Require.class),
+    HAS_ROLE("has-role", HasRole.class),
     THROTTLE("throttle", Throttle.class),
     IS_BOT_ADMIN("isBotAdmin", IsBotAdmin.class),
     PROCESS_COMMAND("process-command", ProcessCommand.class);
