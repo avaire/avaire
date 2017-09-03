@@ -2,6 +2,7 @@ package com.avairebot.orion.commands.system;
 
 import com.avairebot.orion.Orion;
 import com.avairebot.orion.contracts.commands.AbstractCommand;
+import com.avairebot.orion.factories.MessageFactory;
 import net.dv8tion.jda.core.entities.ChannelType;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
@@ -40,6 +41,11 @@ public class EvalCommand extends AbstractCommand {
 
     @Override
     public boolean onCommand(MessageReceivedEvent event, String[] args) {
+        if (args.length == 0) {
+            MessageFactory.makeWarning(event.getMessage(), "No arguments given, there are nothing to evaluate.").queue();
+            return false;
+        }
+
         String[] rawArguments = event.getMessage().getRawContent().split(" ");
         String evalMessage = String.join(" ", Arrays.copyOfRange(rawArguments, 1, rawArguments.length));
 
@@ -55,7 +61,7 @@ public class EvalCommand extends AbstractCommand {
         } catch (ScriptException e) {
             event.getChannel().sendMessage("**Error:**\n```xl\n" + e.toString() + "```").queue();
         }
-        
+
         return true;
     }
 
