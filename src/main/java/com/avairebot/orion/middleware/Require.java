@@ -5,7 +5,7 @@ import com.avairebot.orion.contracts.middleware.AbstractMiddleware;
 import com.avairebot.orion.factories.MessageFactory;
 import com.avairebot.orion.permissions.Permissions;
 import net.dv8tion.jda.core.Permission;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.entities.Message;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,12 +18,12 @@ public class Require extends AbstractMiddleware {
     }
 
     @Override
-    public boolean handle(MessageReceivedEvent event, MiddlewareStack stack, String... args) {
-        if (!event.getChannelType().isGuild()) {
+    public boolean handle(Message message, MiddlewareStack stack, String... args) {
+        if (!message.getChannelType().isGuild()) {
             return stack.next();
         }
 
-        if (event.getMember().hasPermission(Permissions.ADMINISTRATOR.getPermission())) {
+        if (message.getMember().hasPermission(Permissions.ADMINISTRATOR.getPermission())) {
             return stack.next();
         }
 
@@ -36,14 +36,14 @@ public class Require extends AbstractMiddleware {
                 return false;
             }
 
-            if (!event.getMember().hasPermission(permission.getPermission())) {
+            if (!message.getMember().hasPermission(permission.getPermission())) {
                 missingPermissions.add(permission);
             }
         }
 
         if (!missingPermissions.isEmpty()) {
             MessageFactory.makeError(
-                    event.getMessage(),
+                    message,
                     "You're missing the required permission node for this command:\n`%s`",
                     missingPermissions.stream()
                             .map(Permissions::getPermission)

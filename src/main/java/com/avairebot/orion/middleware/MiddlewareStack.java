@@ -4,7 +4,7 @@ import com.avairebot.orion.Orion;
 import com.avairebot.orion.commands.CommandContainer;
 import com.avairebot.orion.contracts.commands.AbstractCommand;
 import com.avairebot.orion.contracts.middleware.AbstractMiddleware;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.entities.Message;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -15,15 +15,15 @@ import java.util.concurrent.atomic.AtomicReference;
 public class MiddlewareStack {
 
     private final Orion orion;
-    private final MessageReceivedEvent event;
+    private final Message message;
     private final CommandContainer command;
     private final List<MiddlewareContainer> middlewares = new ArrayList<>();
 
     private int index = -1;
 
-    public MiddlewareStack(Orion orion, MessageReceivedEvent event, CommandContainer command) {
+    public MiddlewareStack(Orion orion, Message message, CommandContainer command) {
         this.orion = orion;
-        this.event = event;
+        this.message = message;
         this.command = command;
 
         middlewares.add(new MiddlewareContainer(Middleware.PROCESS_COMMAND));
@@ -68,7 +68,7 @@ public class MiddlewareStack {
             MiddlewareContainer middlewareContainer = middlewares.get(--index);
             AbstractMiddleware middleware = (AbstractMiddleware) middlewareContainer.getMiddleware().getInstance().getDeclaredConstructor(arguments).newInstance(orion);
 
-            return middleware.handle(event, this, middlewareContainer.getArguments());
+            return middleware.handle(message, this, middlewareContainer.getArguments());
         } catch (InstantiationException | NoSuchMethodException | InvocationTargetException ex) {
             orion.logger.error("Invalid middleware object parsed, failed to create a new instance!");
             orion.logger.exception(ex);

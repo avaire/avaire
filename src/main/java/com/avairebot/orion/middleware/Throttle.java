@@ -4,7 +4,7 @@ import com.avairebot.orion.Orion;
 import com.avairebot.orion.cache.CacheItem;
 import com.avairebot.orion.contracts.middleware.AbstractMiddleware;
 import com.avairebot.orion.factories.MessageFactory;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.entities.Message;
 
 public class Throttle extends AbstractMiddleware {
 
@@ -13,7 +13,7 @@ public class Throttle extends AbstractMiddleware {
     }
 
     @Override
-    public boolean handle(MessageReceivedEvent event, MiddlewareStack stack, String... args) {
+    public boolean handle(Message message, MiddlewareStack stack, String... args) {
         if (args.length < 3) {
             orion.logger.warning("\"%s\" is parsing invalid amount of arguments to the throttle middleware, 3 arguments are required.", stack.getCommand());
             return stack.next();
@@ -25,7 +25,7 @@ public class Throttle extends AbstractMiddleware {
             int maxAttempts = Integer.parseInt(args[1]);
             int decaySeconds = Integer.parseInt(args[2]);
 
-            String fingerprint = type.generateCacheString(event, stack);
+            String fingerprint = type.generateCacheString(message, stack);
 
             CacheItem item = orion.cache.getRaw(fingerprint);
             if (item == null) {
@@ -35,7 +35,7 @@ public class Throttle extends AbstractMiddleware {
             int attempts = (Integer) item.getValue();
             if (attempts >= maxAttempts) {
                 MessageFactory.makeWarning(
-                        event.getMessage(),
+                        message,
                         "Too many `%s` attempts. Please try again in **%s** seconds.",
                         stack.getCommand().getName(),
                         ((item.getTime() - System.currentTimeMillis()) / 1000) + 1
@@ -79,24 +79,24 @@ public class Throttle extends AbstractMiddleware {
             return name;
         }
 
-        public String generateCacheString(MessageReceivedEvent event, MiddlewareStack stack) {
+        public String generateCacheString(Message message, MiddlewareStack stack) {
             switch (this) {
                 case USER:
                     return String.format(cache,
-                            event.getGuild().getId(),
-                            event.getMessage().getAuthor().getId(),
+                            message.getGuild().getId(),
+                            message.getAuthor().getId(),
                             stack.getCommand().getName());
                 case CHANNEL:
                     return String.format(cache,
-                            event.getGuild().getId(),
-                            event.getChannel().getId(),
+                            message.getGuild().getId(),
+                            message.getChannel().getId(),
                             stack.getCommand().getName());
                 case GUILD:
                     return String.format(cache,
-                            event.getGuild().getId(),
+                            message.getGuild().getId(),
                             stack.getCommand().getName());
                 default:
-                    return ThrottleType.USER.generateCacheString(event, stack);
+                    return ThrottleType.USER.generateCacheString(message, stack);
             }
         }
     }

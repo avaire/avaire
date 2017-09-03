@@ -15,18 +15,18 @@ public class MessageCreateEvent extends EventHandler {
     }
 
     @Override
-    public void onMessageReceived(MessageReceivedEvent e) {
+    public void onMessageReceived(MessageReceivedEvent event) {
         Statistics.addMessage();
 
-        if (e.getAuthor().isBot()) {
+        if (event.getAuthor().isBot()) {
             return;
         }
 
-        CommandContainer container = CommandHandler.getCommand(e.getMessage());
+        CommandContainer container = CommandHandler.getCommand(event.getMessage());
         if (container != null) {
             Statistics.addCommands();
 
-            (new MiddlewareStack(orion, e, container)).next();
+            (new MiddlewareStack(orion, event.getMessage(), container)).next();
         }
     }
 }

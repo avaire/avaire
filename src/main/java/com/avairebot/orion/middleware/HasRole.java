@@ -4,6 +4,7 @@ import com.avairebot.orion.Orion;
 import com.avairebot.orion.contracts.middleware.AbstractMiddleware;
 import com.avairebot.orion.factories.MessageFactory;
 import com.avairebot.orion.permissions.Permissions;
+import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
@@ -16,20 +17,20 @@ public class HasRole extends AbstractMiddleware {
     }
 
     @Override
-    public boolean handle(MessageReceivedEvent event, MiddlewareStack stack, String... args) {
-        if (!event.getChannelType().isGuild()) {
+    public boolean handle(Message message, MiddlewareStack stack, String... args) {
+        if (!message.getChannelType().isGuild()) {
             return stack.next();
         }
 
-        if (event.getMember().hasPermission(Permissions.ADMINISTRATOR.getPermission())) {
+        if (message.getMember().hasPermission(Permissions.ADMINISTRATOR.getPermission())) {
             return stack.next();
         }
 
-        List<Role> roles = event.getMessage().getMember().getRoles();
+        List<Role> roles = message.getMember().getRoles();
         for (String roleName : args) {
             if (!hasRole(roles, roleName)) {
                 MessageFactory.makeError(
-                        event.getMessage(),
+                        message,
                         "You don't have the required role to execute this command:\n`%s`",
                         roleName
                 ).queue();

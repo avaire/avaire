@@ -3,7 +3,7 @@ package com.avairebot.orion.middleware;
 import com.avairebot.orion.Orion;
 import com.avairebot.orion.contracts.middleware.AbstractMiddleware;
 import com.avairebot.orion.factories.MessageFactory;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.entities.Message;
 
 public class IsBotAdmin extends AbstractMiddleware {
 
@@ -12,9 +12,9 @@ public class IsBotAdmin extends AbstractMiddleware {
     }
 
     @Override
-    public boolean handle(MessageReceivedEvent event, MiddlewareStack stack, String... args) {
-        if (!orion.config.getBotAccess().contains(event.getAuthor().getId())) {
-            MessageFactory.makeError(event.getMessage(), ":warning: You must be a bot administrator to use this command!").queue();
+    public boolean handle(Message message, MiddlewareStack stack, String... args) {
+        if (!orion.config.getBotAccess().contains(message.getAuthor().getId())) {
+            MessageFactory.makeError(message, ":warning: You must be a bot administrator to use this command!").queue();
             return false;
         }
 

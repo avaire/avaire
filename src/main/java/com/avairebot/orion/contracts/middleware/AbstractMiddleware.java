@@ -2,6 +2,7 @@ package com.avairebot.orion.contracts.middleware;
 
 import com.avairebot.orion.Orion;
 import com.avairebot.orion.middleware.MiddlewareStack;
+import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 public abstract class AbstractMiddleware {
@@ -12,5 +13,5 @@ public abstract class AbstractMiddleware {
         this.orion = orion;
     }
 
-    public abstract boolean handle(MessageReceivedEvent event, MiddlewareStack stack, String... args);
+    public abstract boolean handle(Message message, MiddlewareStack stack, String... args);
 }

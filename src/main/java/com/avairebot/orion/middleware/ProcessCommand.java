@@ -2,8 +2,8 @@ package com.avairebot.orion.middleware;
 
 import com.avairebot.orion.Orion;
 import com.avairebot.orion.contracts.middleware.AbstractMiddleware;
+import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.User;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 import java.util.Arrays;
 import java.util.regex.Pattern;
@@ -19,16 +19,16 @@ public class ProcessCommand extends AbstractMiddleware {
     }
 
     @Override
-    public boolean handle(MessageReceivedEvent event, MiddlewareStack stack, String... args) {
-        String[] arguments = argumentsRegEX.split(event.getMessage().getContent());
+    public boolean handle(Message message, MiddlewareStack stack, String... args) {
+        String[] arguments = argumentsRegEX.split(message.getContent());
 
-        User author = event.getMessage().getAuthor();
+        User author = message.getAuthor();
         orion.logger.info("Executing Command <%s> from %s#%s",
-                event.getMessage().getContent(),
+                message.getContent(),
                 author.getName(),
                 author.getDiscriminator()
         );
 
-        return stack.getCommand().onCommand(event.getMessage(), Arrays.copyOfRange(arguments, 1, arguments.length));
+        return stack.getCommand().onCommand(message, Arrays.copyOfRange(arguments, 1, arguments.length));
     }
 }
