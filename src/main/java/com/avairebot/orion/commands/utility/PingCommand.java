@@ -5,7 +5,6 @@ import com.avairebot.orion.contracts.commands.AbstractCommand;
 import com.avairebot.orion.factories.MessageFactory;
 import net.dv8tion.jda.core.entities.Message;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 

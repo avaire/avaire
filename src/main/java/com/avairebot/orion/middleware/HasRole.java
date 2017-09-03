@@ -6,7 +6,6 @@ import com.avairebot.orion.factories.MessageFactory;
 import com.avairebot.orion.permissions.Permissions;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.Role;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 import java.util.List;
 
