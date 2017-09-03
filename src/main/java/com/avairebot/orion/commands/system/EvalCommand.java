@@ -4,7 +4,7 @@ import com.avairebot.orion.Orion;
 import com.avairebot.orion.contracts.commands.AbstractCommand;
 import com.avairebot.orion.factories.MessageFactory;
 import net.dv8tion.jda.core.entities.ChannelType;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.entities.Message;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
@@ -40,44 +40,43 @@ public class EvalCommand extends AbstractCommand {
     }
 
     @Override
-    public boolean onCommand(MessageReceivedEvent event, String[] args) {
+    public boolean onCommand(Message message, String[] args) {
         if (args.length == 0) {
-            MessageFactory.makeWarning(event.getMessage(), "No arguments given, there are nothing to evaluate.").queue();
+            MessageFactory.makeWarning(message, "No arguments given, there are nothing to evaluate.").queue();
             return false;
         }
 
-        String[] rawArguments = event.getMessage().getRawContent().split(" ");
+        String[] rawArguments = message.getRawContent().split(" ");
         String evalMessage = String.join(" ", Arrays.copyOfRange(rawArguments, 1, rawArguments.length));
 
         try {
-            Object out = createScriptEngine(event).eval("(function() { with (imports) { return " + evalMessage + "}})();");
+            Object out = createScriptEngine(message).eval("(function() { with (imports) { return " + evalMessage + "}})();");
             String output = out == null ? "Executed without error, void was returned so there is nothing to show." : out.toString();
 
             if (output.length() > 1890) {
                 output = output.substring(0, 1890) + "...";
             }
 
-            event.getChannel().sendMessage("```xl\n" + output + "```").queue();
+            message.getChannel().sendMessage("```xl\n" + output + "```").queue();
         } catch (ScriptException e) {
-            event.getChannel().sendMessage("**Error:**\n```xl\n" + e.toString() + "```").queue();
+            message.getChannel().sendMessage("**Error:**\n```xl\n" + e.toString() + "```").queue();
         }
 
         return true;
     }
 
-    private ScriptEngine createScriptEngine(MessageReceivedEvent event) throws ScriptException {
+    private ScriptEngine createScriptEngine(Message message) throws ScriptException {
         ScriptEngineManager manager = new ScriptEngineManager();
         ScriptEngine engine = manager.getEngineByName("nashorn");
 
-        engine.put("event", event);
-        engine.put("message", event.getMessage());
-        engine.put("channel", event.getChannel());
-        engine.put("jda", event.getJDA());
+        engine.put("message", message);
+        engine.put("channel", message.getChannel());
+        engine.put("jda", message.getJDA());
         engine.put("orion", orion);
 
-        if (event.isFromType(ChannelType.TEXT)) {
-            engine.put("guild", event.getGuild());
-            engine.put("member", event.getMember());
+        if (message.isFromType(ChannelType.TEXT)) {
+            engine.put("guild", message.getGuild());
+            engine.put("member", message.getMember());
         }
 
         engine.eval("var imports = new JavaImporter(" +

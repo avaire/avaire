@@ -3,6 +3,7 @@ package com.avairebot.orion.commands.system;
 import com.avairebot.orion.Orion;
 import com.avairebot.orion.contracts.commands.AbstractCommand;
 import net.dv8tion.jda.core.entities.Game;
+import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 import java.util.Arrays;
@@ -36,13 +37,13 @@ public class SetStatusCommand extends AbstractCommand {
     }
 
     @Override
-    public boolean onCommand(MessageReceivedEvent event, String[] args) {
+    public boolean onCommand(Message message, String[] args) {
         if (args.length == 0) {
             return false;
         }
 
         if (!Game.isValidStreamingUrl(args[0])) {
-            event.getJDA().getPresence().setGame(Game.of(String.join(" ", args)));
+            message.getJDA().getPresence().setGame(Game.of(String.join(" ", args)));
             return true;
         }
 
@@ -53,7 +54,7 @@ public class SetStatusCommand extends AbstractCommand {
             status = "Streaming on Twitch.tv";
         }
 
-        event.getJDA().getPresence().setGame(Game.of(status, url));
+        message.getJDA().getPresence().setGame(Game.of(status, url));
         return true;
     }
 }

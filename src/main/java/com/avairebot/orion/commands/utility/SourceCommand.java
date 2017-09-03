@@ -5,7 +5,7 @@ import com.avairebot.orion.commands.CommandContainer;
 import com.avairebot.orion.commands.CommandHandler;
 import com.avairebot.orion.contracts.commands.AbstractCommand;
 import com.avairebot.orion.factories.MessageFactory;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.entities.Message;
 
 import java.util.Collections;
 import java.util.List;
@@ -35,15 +35,15 @@ public class SourceCommand extends AbstractCommand {
     }
 
     @Override
-    public boolean onCommand(MessageReceivedEvent event, String[] args) {
+    public boolean onCommand(Message message, String[] args) {
         if (args.length == 0) {
-            MessageFactory.makeInfo(event.getMessage(), "Orion source code:\n\n%s", rootUrl).queue();
+            MessageFactory.makeInfo(message, "Orion source code:\n\n%s", rootUrl).queue();
             return true;
         }
 
         CommandContainer command = CommandHandler.getCommand(args[0]);
         if (command == null) {
-            MessageFactory.makeInfo(event.getMessage(), "Invalid command given, here is the full source code instead.\n\n%s", rootUrl).queue();
+            MessageFactory.makeInfo(message, "Invalid command given, here is the full source code instead.\n\n%s", rootUrl).queue();
             return true;
         }
 
@@ -51,7 +51,7 @@ public class SourceCommand extends AbstractCommand {
         String category = split[split.length - 2];
         String name = split[split.length - 1];
 
-        MessageFactory.makeInfo(event.getMessage(), "AvaIre source code for the **%s** command:\n\n" + commandUrl,
+        MessageFactory.makeInfo(message, "AvaIre source code for the **%s** command:\n\n" + commandUrl,
                 command.getCommand().getName(), category, name
         ).queue();
 

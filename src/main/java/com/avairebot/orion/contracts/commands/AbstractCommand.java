@@ -1,7 +1,7 @@
 package com.avairebot.orion.contracts.commands;
 
 import com.avairebot.orion.Orion;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.entities.Message;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,5 +23,5 @@ public abstract class AbstractCommand {
         return new ArrayList<>();
     }
 
-    public abstract boolean onCommand(MessageReceivedEvent event, String[] args);
+    public abstract boolean onCommand(Message message, String[] args);
 }

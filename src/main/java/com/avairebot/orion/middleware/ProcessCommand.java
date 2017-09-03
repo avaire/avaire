@@ -29,6 +29,6 @@ public class ProcessCommand extends AbstractMiddleware {
                 author.getDiscriminator()
         );
 
-        return stack.getCommand().onCommand(event, Arrays.copyOfRange(arguments, 1, arguments.length));
+        return stack.getCommand().onCommand(event.getMessage(), Arrays.copyOfRange(arguments, 1, arguments.length));
     }
 }

@@ -3,7 +3,7 @@ package com.avairebot.orion.commands.utility;
 import com.avairebot.orion.Orion;
 import com.avairebot.orion.contracts.commands.AbstractCommand;
 import com.avairebot.orion.factories.MessageFactory;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.entities.Message;
 
 import java.util.Arrays;
 import java.util.List;
@@ -29,8 +29,8 @@ public class InviteCommand extends AbstractCommand {
     }
 
     @Override
-    public boolean onCommand(MessageReceivedEvent e, String[] args) {
-        MessageFactory.makeInfo(e.getMessage(),
+    public boolean onCommand(Message message, String[] args) {
+        MessageFactory.makeInfo(message,
                 "You can invite me to your server by [clicking here](%s) or use the link below:\n\n%s",
                 orion.config.botAuth().getOAuth(), orion.config.botAuth().getOAuth())
                 .queue();

@@ -5,8 +5,8 @@ import com.avairebot.orion.Statistics;
 import com.avairebot.orion.contracts.commands.AbstractCommand;
 import com.avairebot.orion.factories.MessageFactory;
 import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageEmbed;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
@@ -35,11 +35,11 @@ public class StatsCommand extends AbstractCommand {
     }
 
     @Override
-    public boolean onCommand(MessageReceivedEvent event, String[] args) {
-        Guild guild = event.getMessage().getGuild();
-        MessageFactory.makeEmbeddedMessage(event.getMessage().getChannel(), MessageFactory.MessageType.INFO,
+    public boolean onCommand(Message message, String[] args) {
+        Guild guild = message.getGuild();
+        MessageFactory.makeEmbeddedMessage(message.getChannel(), MessageFactory.MessageType.INFO,
                 new MessageEmbed.Field("Author", "Senither#8023", true),
-                new MessageEmbed.Field("Bot ID", event.getJDA().getSelfUser().getId(), true),
+                new MessageEmbed.Field("Bot ID", message.getJDA().getSelfUser().getId(), true),
                 new MessageEmbed.Field("Library", "[JDA](https://github.com/DV8FromTheWorld/JDA)", true),
                 new MessageEmbed.Field("DB Queries run", "" + Statistics.getQueries(), true),
                 new MessageEmbed.Field("Messages Received", "" + Statistics.getMessages(), true),
@@ -49,7 +49,7 @@ public class StatsCommand extends AbstractCommand {
                 new MessageEmbed.Field("Uptime", "" + applicationUptime(), true),
                 new MessageEmbed.Field("Members", "" + guild.getMembers().size(), true),
                 new MessageEmbed.Field("Channels", "" + guild.getTextChannels().size() + guild.getVoiceChannels().size(), true),
-                new MessageEmbed.Field("Servers", "" + event.getJDA().getGuilds().size(), true)
+                new MessageEmbed.Field("Servers", "" + message.getJDA().getGuilds().size(), true)
         ).queue();
 
         return true;
