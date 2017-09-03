@@ -19,6 +19,16 @@ public class Require extends AbstractMiddleware {
 
     @Override
     public void handle(MessageReceivedEvent event, MiddlewareStack stack, String... args) {
+        if (!event.getChannelType().isGuild()) {
+            stack.next();
+            return;
+        }
+
+        if (event.getMember().hasPermission(Permissions.ADMINISTRATOR.getPermission())) {
+            stack.next();
+            return;
+        }
+        
         List<Permissions> missingPermissions = new ArrayList<>();
 
         for (String permissionNode : args) {
