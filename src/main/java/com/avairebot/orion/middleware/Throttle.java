@@ -43,8 +43,10 @@ public class Throttle extends AbstractMiddleware {
                 return false;
             }
 
-            orion.cache.put(fingerprint, ++attempts, decaySeconds);
-            return stack.next();
+            if (stack.next()) {
+                orion.cache.put(fingerprint, ++attempts, decaySeconds);
+            }
+
         } catch (NumberFormatException e) {
             orion.logger.warning("Invalid integers given to throttle command by \"%s\", args: (%s, %s)", stack.getCommand().getName(), args[1], args[2]);
         }
