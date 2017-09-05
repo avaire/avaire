@@ -12,7 +12,7 @@ import com.avairebot.orion.database.DatabaseManager;
 import com.avairebot.orion.handlers.EventTypes;
 import com.avairebot.orion.logger.Logger;
 import com.avairebot.orion.scheduler.ChangeGameJob;
-import com.avairebot.orion.scheduler.ScheduleManager;
+import com.avairebot.orion.scheduler.ScheduleHandler;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
@@ -28,7 +28,6 @@ public class Orion {
     public final Logger logger;
     public final CacheManager cache;
     public final DatabaseManager database;
-    public final ScheduleManager schedule;
 
     private JDA jda;
 
@@ -52,7 +51,6 @@ public class Orion {
         }
 
         database = new DatabaseManager(this);
-        schedule = new ScheduleManager(this);
 
         this.registerCommands();
         this.registerJobs();
@@ -76,7 +74,7 @@ public class Orion {
     }
 
     private void registerJobs() {
-        schedule.registerJob(new ChangeGameJob(this));
+        ScheduleHandler.registerJob(new ChangeGameJob(this));
     }
 
     private JDABuilder prepareJDA() {
