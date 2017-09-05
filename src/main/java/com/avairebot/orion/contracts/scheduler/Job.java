@@ -2,6 +2,7 @@ package com.avairebot.orion.contracts.scheduler;
 
 import com.avairebot.orion.Orion;
 
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 public abstract class Job implements Runnable {
@@ -10,6 +11,8 @@ public abstract class Job implements Runnable {
     private final long delay;
     private final long period;
     private final TimeUnit unit;
+
+    private final String unique;
 
     public Job(Orion orion) {
         this(orion, 0, 1);
@@ -24,6 +27,8 @@ public abstract class Job implements Runnable {
         this.delay = delay;
         this.period = period;
         this.unit = unit;
+
+        this.unique = Long.toHexString(System.nanoTime());
     }
 
     public long getDelay() {
@@ -36,5 +41,14 @@ public abstract class Job implements Runnable {
 
     public TimeUnit getUnit() {
         return unit;
+    }
+
+    public String getUniqueId() {
+        return Integer.toHexString(hashCode()) + unique;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(orion, delay, period, unit, unique);
     }
 }
