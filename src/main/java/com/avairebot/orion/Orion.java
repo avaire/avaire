@@ -11,6 +11,7 @@ import com.avairebot.orion.contracts.handlers.EventHandler;
 import com.avairebot.orion.database.DatabaseManager;
 import com.avairebot.orion.handlers.EventTypes;
 import com.avairebot.orion.logger.Logger;
+import com.avairebot.orion.scheduler.ChangeGameJob;
 import com.avairebot.orion.scheduler.ScheduleManager;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
@@ -75,7 +76,7 @@ public class Orion {
     }
 
     private void registerJobs() {
-        //
+        schedule.registerJob(new ChangeGameJob(this));
     }
 
     private JDABuilder prepareJDA() {
