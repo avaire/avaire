@@ -34,13 +34,17 @@ public class MessageFactory {
     }
 
     public static RestAction<Message> makeEmbeddedMessage(MessageChannel channel, Color color, String message) {
-        return channel.sendMessage(new EmbedBuilder().setColor(color).setDescription(message).build());
+        return channel.sendMessage(createEmbeddedBuilder().setColor(color).setDescription(message).build());
     }
 
     public static RestAction<Message> makeEmbeddedMessage(MessageChannel channel, MessageType type, Field... fields) {
-        EmbedBuilder embed = new EmbedBuilder().setColor(type.getColor());
+        EmbedBuilder embed = createEmbeddedBuilder().setColor(type.getColor());
         Arrays.stream(fields).forEachOrdered(embed::addField);
         return channel.sendMessage(embed.build());
+    }
+
+    public static EmbedBuilder createEmbeddedBuilder() {
+        return new EmbedBuilder();
     }
 
     private static String prepareMessage(Message jdaMessage, String message, Object... args) {
