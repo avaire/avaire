@@ -12,6 +12,7 @@ import com.avairebot.orion.database.DatabaseManager;
 import com.avairebot.orion.handlers.EventTypes;
 import com.avairebot.orion.logger.Logger;
 import net.dv8tion.jda.core.AccountType;
+import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.exceptions.RateLimitedException;
 
@@ -26,6 +27,8 @@ public class Orion {
     public final DatabaseManager database;
     public final CacheManager cache;
 
+    private JDA jda;
+
     public Orion() throws IOException {
         this.logger = new Logger(this);
         this.cache = new CacheManager(this);
@@ -37,17 +40,21 @@ public class Orion {
             System.exit(0);
         }
 
-        this.registerCommands();
-
         try {
-            this.prepareJDA().buildAsync();
-        } catch (LoginException | RateLimitedException ex) {
+            jda = prepareJDA().buildBlocking();
+        } catch (LoginException | RateLimitedException | InterruptedException ex) {
             this.logger.error("Something went wrong while trying to connect to Discord, exiting program...");
             this.logger.exception(ex);
             System.exit(0);
         }
 
         database = new DatabaseManager(this);
+
+        this.registerCommands();
+    }
+
+    public JDA getJDA() {
+        return jda;
     }
 
     private void registerCommands() {
