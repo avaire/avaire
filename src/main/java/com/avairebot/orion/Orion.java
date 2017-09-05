@@ -4,10 +4,7 @@ import com.avairebot.orion.cache.CacheManager;
 import com.avairebot.orion.commands.CommandHandler;
 import com.avairebot.orion.commands.system.EvalCommand;
 import com.avairebot.orion.commands.system.SetStatusCommand;
-import com.avairebot.orion.commands.utility.InviteCommand;
-import com.avairebot.orion.commands.utility.PingCommand;
-import com.avairebot.orion.commands.utility.SourceCommand;
-import com.avairebot.orion.commands.utility.StatsCommand;
+import com.avairebot.orion.commands.utility.*;
 import com.avairebot.orion.config.ConfigurationLoader;
 import com.avairebot.orion.config.MainConfiguration;
 import com.avairebot.orion.contracts.handlers.EventHandler;
@@ -59,6 +56,7 @@ public class Orion {
         CommandHandler.register(new SetStatusCommand(this));
 
         // Utility
+        CommandHandler.register(new HelpCommand(this));
         CommandHandler.register(new PingCommand(this));
         CommandHandler.register(new InviteCommand(this));
         CommandHandler.register(new SourceCommand(this));
