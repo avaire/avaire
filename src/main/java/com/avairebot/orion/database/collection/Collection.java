@@ -11,7 +11,7 @@ import java.util.*;
 
 public class Collection implements Cloneable, Iterable<DataRow> {
 
-    private static final Random random = new Random();
+    private static final Random RANDOM = new Random();
 
     private final HashMap<String, String> keys;
     private final List<DataRow> items;
@@ -490,16 +490,16 @@ public class Collection implements Cloneable, Iterable<DataRow> {
     }
 
     /**
-     * Gets a random item from the collection
+     * Gets a RANDOM item from the collection
      *
-     * @return a random item from the collection
+     * @return a RANDOM item from the collection
      */
     public DataRow random() {
         if (isEmpty()) {
             return null;
         }
 
-        return items.get(random.nextInt(items.size()));
+        return items.get(RANDOM.nextInt(items.size()));
     }
 
     /**
@@ -558,7 +558,7 @@ public class Collection implements Cloneable, Iterable<DataRow> {
      * @return the newly shuffled collection.
      */
     public Collection shuffle() {
-        Collections.shuffle(items, random);
+        Collections.shuffle(items, RANDOM);
 
         return this;
     }

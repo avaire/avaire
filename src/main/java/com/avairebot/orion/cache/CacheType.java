@@ -11,7 +11,7 @@ public enum CacheType {
 
     MEMORY("Memory", true, MemoryAdapter.class);
 
-    private static final Map<CacheType, CacheAdapter> instances = new HashMap<>();
+    private static final Map<CacheType, CacheAdapter> INSTANCES = new HashMap<>();
 
     static {
         for (CacheType type : values()) {
@@ -19,7 +19,7 @@ public enum CacheType {
                 Object instance = type.getInstance().getDeclaredConstructor().newInstance();
 
                 if (instance instanceof CacheAdapter) {
-                    instances.put(type, (CacheAdapter) instance);
+                    INSTANCES.put(type, (CacheAdapter) instance);
                 }
             } catch (InstantiationException | NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
                 System.out.printf("Invalid cache type given: %s", e.getMessage());
@@ -64,6 +64,6 @@ public enum CacheType {
     }
 
     public CacheAdapter getAdapter() {
-        return instances.get(this);
+        return INSTANCES.get(this);
     }
 }

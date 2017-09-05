@@ -10,14 +10,14 @@ import java.util.Map;
 
 public class CommandHandler {
 
-    private static final Map<List<String>, CommandContainer> commands = new HashMap<>();
+    private static final Map<List<String>, CommandContainer> COMMANDS = new HashMap<>();
 
     public static CommandContainer getCommand(Message message) {
         return getCommand(message.getContent().split(" ")[0].toLowerCase());
     }
 
     public static CommandContainer getCommand(String commandTrigger) {
-        for (Map.Entry<List<String>, CommandContainer> entry : commands.entrySet()) {
+        for (Map.Entry<List<String>, CommandContainer> entry : COMMANDS.entrySet()) {
             for (String trigger : entry.getKey()) {
                 if (commandTrigger.equalsIgnoreCase(entry.getValue().getDefaultPrefix() + trigger)) {
                     return entry.getValue();
@@ -30,7 +30,7 @@ public class CommandHandler {
 
     public static boolean register(AbstractCommand command) {
         for (String trigger : command.getTriggers()) {
-            for (Map.Entry<List<String>, CommandContainer> entry : commands.entrySet()) {
+            for (Map.Entry<List<String>, CommandContainer> entry : COMMANDS.entrySet()) {
                 if (entry.getKey().contains(trigger.toLowerCase())) {
                     return false;
                 }
@@ -42,11 +42,11 @@ public class CommandHandler {
             return false;
         }
 
-        commands.put(command.getTriggers(), new CommandContainer(command, category));
+        COMMANDS.put(command.getTriggers(), new CommandContainer(command, category));
         return true;
     }
 
     public static Collection<CommandContainer> getCommands() {
-        return commands.values();
+        return COMMANDS.values();
     }
 }
