@@ -84,7 +84,7 @@ public class CacheManager extends CacheAdapter {
         return getAdapter(type).flush();
     }
 
-    private CacheAdapter getAdapter(CacheType type) {
+    public CacheAdapter getAdapter(CacheType type) {
         if (type != null) {
             type.getAdapter();
         }
