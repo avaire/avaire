@@ -21,7 +21,7 @@ public class InviteCommand extends AbstractCommand {
 
     @Override
     public String getDescription() {
-        return "Returns a link that can be used to invite to bot to other servers.";
+        return "Returns a link that can be used to invite the bot to other servers.";
     }
 
     @Override
