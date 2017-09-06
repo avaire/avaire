@@ -10,11 +10,11 @@ import java.util.WeakHashMap;
 
 public class MemoryAdapter extends CacheAdapter {
 
-    private final Map<String, CacheItem> caches = Collections.synchronizedMap(new WeakHashMap<String, CacheItem>());
+    private static final Map<String, CacheItem> CACHES = Collections.synchronizedMap(new WeakHashMap<String, CacheItem>());
 
     @Override
     public synchronized boolean put(String token, Object value, int seconds) {
-        caches.put(token, new CacheItem(token, value, System.currentTimeMillis() + (seconds * 1000)));
+        CACHES.put(token, new CacheItem(token, value, System.currentTimeMillis() + (seconds * 1000)));
         return true;
     }
 
@@ -25,14 +25,14 @@ public class MemoryAdapter extends CacheAdapter {
         }
 
         CacheItem item = new CacheItem(token, closure.run(), System.currentTimeMillis() + (seconds * 1000));
-        caches.put(token, item);
+        CACHES.put(token, item);
 
         return item.getValue();
     }
 
     @Override
     public synchronized boolean forever(String token, Object value) {
-        caches.put(token, new CacheItem(token, value, -1));
+        CACHES.put(token, new CacheItem(token, value, -1));
 
         return true;
     }
@@ -55,22 +55,22 @@ public class MemoryAdapter extends CacheAdapter {
         if (!has(token)) {
             return null;
         }
-        return caches.getOrDefault(token, null);
+        return CACHES.getOrDefault(token, null);
     }
 
     @Override
     public synchronized boolean has(String token) {
-        return caches.containsKey(token) && caches.get(token).isExpired();
+        return CACHES.containsKey(token) && CACHES.get(token).isExpired();
     }
 
     @Override
     public synchronized CacheItem forget(String token) {
-        return caches.remove(token);
+        return CACHES.remove(token);
     }
 
     @Override
     public synchronized boolean flush() {
-        caches.clear();
+        CACHES.clear();
         return true;
     }
 }
