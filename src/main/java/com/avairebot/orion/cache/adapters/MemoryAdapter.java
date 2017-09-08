@@ -6,6 +6,7 @@ import com.avairebot.orion.contracts.cache.CacheClosure;
 
 import java.util.Collections;
 import java.util.Map;
+import java.util.Set;
 import java.util.WeakHashMap;
 
 public class MemoryAdapter extends CacheAdapter {
@@ -72,5 +73,9 @@ public class MemoryAdapter extends CacheAdapter {
     public synchronized boolean flush() {
         CACHES.clear();
         return true;
+    }
+
+    public synchronized Set<String> getCacheKeys() {
+        return CACHES.keySet();
     }
 }
