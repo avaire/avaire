@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Random;
 
 public enum Category {
+    FUN("Fun", ">"),
     SYSTEM("System", ";"),
     UTILITY("Utility", "!");
 
