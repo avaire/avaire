@@ -1,6 +1,5 @@
 package com.avairebot.orion.contracts.database.eloquent;
 
-import com.avairebot.orion.contracts.eloquent.QueryScope;
 import com.avairebot.orion.database.DatabaseManager;
 import com.avairebot.orion.database.collection.Collection;
 import com.avairebot.orion.database.query.QueryBuilder;

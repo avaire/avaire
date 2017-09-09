@@ -1,4 +1,4 @@
-package com.avairebot.orion.contracts.eloquent;
+package com.avairebot.orion.contracts.database.eloquent;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
