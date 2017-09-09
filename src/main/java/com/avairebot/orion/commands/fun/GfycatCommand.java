@@ -44,6 +44,11 @@ public class GfycatCommand extends AbstractCommand {
     }
 
     @Override
+    public List<String> getMiddleware() {
+        return Arrays.asList("throttle:user,2,5");
+    }
+
+    @Override
     public boolean onCommand(Message message, String[] args) {
         if (args.length == 0) {
             return sendErrorMessage(message, "Missing arguments `queue`");
