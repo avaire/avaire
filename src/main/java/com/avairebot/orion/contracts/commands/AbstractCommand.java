@@ -25,6 +25,8 @@ public abstract class AbstractCommand {
 
     public abstract List<String> getUsageInstructions();
 
+    public abstract String getExampleUsage();
+
     public abstract List<String> getTriggers();
 
     public List<String> getMiddleware() {

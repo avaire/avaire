@@ -34,6 +34,11 @@ public class SetStatusCommand extends AbstractCommand {
     }
 
     @Override
+    public String getExampleUsage() {
+        return "`;setstatus with some stuff`";
+    }
+
+    @Override
     public List<String> getTriggers() {
         return Arrays.asList("setstatus", "status");
     }

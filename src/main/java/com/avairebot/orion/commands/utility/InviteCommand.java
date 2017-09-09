@@ -30,6 +30,11 @@ public class InviteCommand extends AbstractCommand {
     }
 
     @Override
+    public String getExampleUsage() {
+        return null;
+    }
+
+    @Override
     public List<String> getTriggers() {
         return Arrays.asList("invite", "join");
     }

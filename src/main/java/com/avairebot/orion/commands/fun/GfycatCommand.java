@@ -35,6 +35,11 @@ public class GfycatCommand extends AbstractCommand {
     }
 
     @Override
+    public String getExampleUsage() {
+        return "`>gif cats`";
+    }
+
+    @Override
     public List<String> getTriggers() {
         return Arrays.asList("gfycat", "gif");
     }

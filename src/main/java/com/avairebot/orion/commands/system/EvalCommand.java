@@ -35,6 +35,11 @@ public class EvalCommand extends AbstractCommand {
     }
 
     @Override
+    public String getExampleUsage() {
+        return "`;eval 5*(5+9)`";
+    }
+
+    @Override
     public List<String> getTriggers() {
         return Collections.singletonList("eval");
     }
