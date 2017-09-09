@@ -2,7 +2,6 @@ package com.avairebot.orion.commands.fun;
 
 import com.avairebot.orion.Orion;
 import com.avairebot.orion.contracts.commands.AbstractCommand;
-import com.avairebot.orion.factories.MessageFactory;
 import com.avairebot.orion.factories.RequestFactory;
 import com.avairebot.orion.requests.Response;
 import com.avairebot.orion.requests.service.GfycatService;
@@ -47,8 +46,7 @@ public class GfycatCommand extends AbstractCommand {
     @Override
     public boolean onCommand(Message message, String[] args) {
         if (args.length == 0) {
-            MessageFactory.makeError(message, "Missing arguments `queue`, use `!help >gif` for more information.").queue();
-            return false;
+            return sendErrorMessage(message, "Missing arguments `queue`");
         }
 
         try {
