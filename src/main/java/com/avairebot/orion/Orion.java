@@ -5,6 +5,8 @@ import com.avairebot.orion.commands.CommandHandler;
 import com.avairebot.orion.commands.fun.CoinflipCommand;
 import com.avairebot.orion.commands.fun.GfycatCommand;
 import com.avairebot.orion.commands.fun.RollCommand;
+import com.avairebot.orion.commands.music.PlayCommand;
+import com.avairebot.orion.commands.music.SkipCommand;
 import com.avairebot.orion.commands.system.EvalCommand;
 import com.avairebot.orion.commands.system.SetStatusCommand;
 import com.avairebot.orion.commands.utility.*;
@@ -69,6 +71,10 @@ public class Orion {
         CommandHandler.register(new CoinflipCommand(this));
         CommandHandler.register(new GfycatCommand(this));
         CommandHandler.register(new RollCommand(this));
+
+        // Music
+        CommandHandler.register(new PlayCommand(this));
+        CommandHandler.register(new SkipCommand(this));
 
         // System
         CommandHandler.register(new EvalCommand(this));
