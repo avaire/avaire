@@ -44,7 +44,7 @@ public class AudioHandler {
                         musicManager.scheduler.getQueue().size()
                 ).queue();
 
-                play(message.getGuild(), musicManager, track);
+                play(message, musicManager, track);
             }
 
             @Override
@@ -58,7 +58,7 @@ public class AudioHandler {
                 ).queue();
 
                 for (AudioTrack track : playlist.getTracks()) {
-                    play(message.getGuild(), musicManager, track);
+                    play(message, musicManager, track);
                 }
             }
 
@@ -79,10 +79,10 @@ public class AudioHandler {
         musicManager.scheduler.nextTrack();
     }
 
-    private static void play(Guild guild, GuildMusicManager musicManager, AudioTrack track) {
-        connectToFirstVoiceChannel(guild.getAudioManager());
+    private static void play(Message message, GuildMusicManager musicManager, AudioTrack track) {
+        connectToFirstVoiceChannel(message.getGuild().getAudioManager());
 
-        musicManager.scheduler.queue(track);
+        musicManager.scheduler.queue(track, message.getAuthor());
     }
 
     private static void connectToFirstVoiceChannel(AudioManager audioManager) {
