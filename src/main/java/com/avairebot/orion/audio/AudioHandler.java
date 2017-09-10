@@ -42,7 +42,7 @@ public class AudioHandler {
                             message.getAuthor().getId(),
                             track.getInfo().title,
                             track.getInfo().uri,
-                            musicManager.scheduler.getQueue().size()
+                            getQueueSize(musicManager)
                     ).queue();
                 }
 
@@ -56,7 +56,7 @@ public class AudioHandler {
                         playlist.getTracks().size(),
                         playlist.getName(),
                         trackUrl,
-                        musicManager.scheduler.getQueue().size()
+                        getQueueSize(musicManager)
                 ).queue();
 
                 for (AudioTrack track : playlist.getTracks()) {
@@ -108,5 +108,11 @@ public class AudioHandler {
         guild.getAudioManager().setSendingHandler(musicManager.getSendHandler());
 
         return musicManager;
+    }
+
+    private static int getQueueSize(GuildMusicManager manager) {
+        return manager.getPlayer().getPlayingTrack() == null ?
+                manager.scheduler.getQueue().size() :
+                manager.scheduler.getQueue().size() + 1;
     }
 }
