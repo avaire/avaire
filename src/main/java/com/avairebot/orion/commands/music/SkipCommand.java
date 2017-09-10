@@ -41,7 +41,7 @@ public class SkipCommand extends AbstractCommand {
 
     @Override
     public boolean onCommand(Message message, String[] args) {
-        AudioHandler.skipTrack(message.getTextChannel());
+        AudioHandler.skipTrack(message);
         return true;
     }
 }

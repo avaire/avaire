@@ -1,5 +1,6 @@
 package com.avairebot.orion.audio;
 
+import com.avairebot.orion.factories.MessageFactory;
 import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
@@ -8,7 +9,7 @@ import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.TextChannel;
+import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.VoiceChannel;
 import net.dv8tion.jda.core.managers.AudioManager;
 
@@ -28,47 +29,52 @@ public class AudioHandler {
         AudioSourceManagers.registerLocalSource(AUDIO_PLAYER_MANAGER);
     }
 
-    public static void loadAndPlay(final TextChannel channel, final String trackUrl) {
-        GuildMusicManager musicManager = getGuildAudioPlayer(channel.getGuild());
+    public static void loadAndPlay(final Message message, final String trackUrl) {
+        GuildMusicManager musicManager = getGuildAudioPlayer(message.getGuild());
 
         AUDIO_PLAYER_MANAGER.loadItemOrdered(musicManager, trackUrl, new AudioLoadResultHandler() {
             @Override
             public void trackLoaded(AudioTrack track) {
-                channel.sendMessage("Adding to queue " + track.getInfo().title).queue();
+                MessageFactory.makeSuccess(message, "<@%s> has added [%s](%s) to the queue. There are `%s` song(s) ahead of it in the queue.",
+                        message.getAuthor().getId(),
+                        track.getInfo().title,
+                        track.getInfo().uri,
+                        musicManager.scheduler.getQueue().size()
+                ).queue();
 
-                play(channel.getGuild(), musicManager, track);
+                play(message.getGuild(), musicManager, track);
             }
 
             @Override
             public void playlistLoaded(AudioPlaylist playlist) {
-                AudioTrack firstTrack = playlist.getSelectedTrack();
+                MessageFactory.makeSuccess(message, "<@%s> has added %s songs from the [%s](%s) playlist to the queue. There are `%s` song(s) ahead of it in the queue.",
+                        message.getAuthor().getId(),
+                        playlist.getTracks().size(),
+                        playlist.getName(),
+                        trackUrl,
+                        musicManager.scheduler.getQueue().size()
+                ).queue();
 
-                if (firstTrack == null) {
-                    firstTrack = playlist.getTracks().get(0);
+                for (AudioTrack track : playlist.getTracks()) {
+                    play(message.getGuild(), musicManager, track);
                 }
-
-                channel.sendMessage("Adding to queue " + firstTrack.getInfo().title + " (first track of playlist " + playlist.getName() + ")").queue();
-
-                play(channel.getGuild(), musicManager, firstTrack);
             }
 
             @Override
             public void noMatches() {
-                channel.sendMessage("Nothing found by " + trackUrl).queue();
+                MessageFactory.makeWarning(message, "I found nothing with the given query `%s`", trackUrl).queue();
             }
 
             @Override
             public void loadFailed(FriendlyException exception) {
-                channel.sendMessage("Could not play: " + exception.getMessage()).queue();
+                MessageFactory.makeError(message, "I couldn't add that to the queue: %s", exception.getMessage()).queue();
             }
         });
     }
 
-    public static void skipTrack(TextChannel channel) {
-        GuildMusicManager musicManager = getGuildAudioPlayer(channel.getGuild());
+    public static void skipTrack(Message message) {
+        GuildMusicManager musicManager = getGuildAudioPlayer(message.getGuild());
         musicManager.scheduler.nextTrack();
-
-        channel.sendMessage("Skipped to next track.").queue();
     }
 
     private static void play(Guild guild, GuildMusicManager musicManager, AudioTrack track) {

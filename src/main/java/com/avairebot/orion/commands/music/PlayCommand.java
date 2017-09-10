@@ -46,7 +46,7 @@ public class PlayCommand extends AbstractCommand {
             return sendErrorMessage(message, "Missing music `query`, you must include a link to the song you want to listen to!");
         }
 
-        AudioHandler.loadAndPlay(message.getTextChannel(), String.join("", args));
+        AudioHandler.loadAndPlay(message, String.join("", args));
         return true;
     }
 }

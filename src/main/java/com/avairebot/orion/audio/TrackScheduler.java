@@ -54,4 +54,8 @@ public class TrackScheduler extends AudioEventAdapter {
             nextTrack();
         }
     }
+
+    public BlockingQueue<AudioTrack> getQueue() {
+        return queue;
+    }
 }
