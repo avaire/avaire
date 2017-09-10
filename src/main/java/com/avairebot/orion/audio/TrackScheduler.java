@@ -37,8 +37,15 @@ public class TrackScheduler extends AudioEventAdapter {
         // Calling startTrack with the noInterrupt set to true will start the track only if nothing is currently playing. If
         // something is playing, it returns false and does nothing. In that case the player was already playing so this
         // track goes to the queue instead.
+        AudioTrackContainer container = new AudioTrackContainer(track, requester);
+
         if (!player.startTrack(track, true)) {
-            queue.offer(new AudioTrackContainer(track, requester));
+            queue.offer(container);
+            return;
+        }
+
+        if (manager.getLastActiveMessage() != null) {
+            sendNowPlaying(container);
         }
     }
 
@@ -52,12 +59,7 @@ public class TrackScheduler extends AudioEventAdapter {
         player.startTrack(container.getAudioTrack(), false);
 
         if (manager.getLastActiveMessage() != null) {
-            MessageFactory.makeSuccess(manager.getLastActiveMessage(), "Now playing: [%s](%s)\n`%s` - Requested by <@%s>",
-                    container.getAudioTrack().getInfo().title,
-                    container.getAudioTrack().getInfo().uri,
-                    container.getFormattedDuration(),
-                    container.getRequester().getId()
-            ).queue();
+            sendNowPlaying(container);
         }
     }
 
@@ -71,5 +73,14 @@ public class TrackScheduler extends AudioEventAdapter {
 
     public BlockingQueue<AudioTrackContainer> getQueue() {
         return queue;
+    }
+
+    protected void sendNowPlaying(AudioTrackContainer container) {
+        MessageFactory.makeSuccess(manager.getLastActiveMessage(), "Now playing: [%s](%s)\n`%s` - Requested by <@%s>",
+                container.getAudioTrack().getInfo().title,
+                container.getAudioTrack().getInfo().uri,
+                container.getFormattedDuration(),
+                container.getRequester().getId()
+        ).queue();
     }
 }

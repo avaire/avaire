@@ -37,12 +37,14 @@ public class AudioHandler {
         AUDIO_PLAYER_MANAGER.loadItemOrdered(musicManager, trackUrl, new AudioLoadResultHandler() {
             @Override
             public void trackLoaded(AudioTrack track) {
-                MessageFactory.makeSuccess(message, "<@%s> has added [%s](%s) to the queue. There are `%s` song(s) ahead of it in the queue.",
-                        message.getAuthor().getId(),
-                        track.getInfo().title,
-                        track.getInfo().uri,
-                        musicManager.scheduler.getQueue().size()
-                ).queue();
+                if (musicManager.getPlayer().getPlayingTrack() != null) {
+                    MessageFactory.makeSuccess(message, "<@%s> has added [%s](%s) to the queue. There are `%s` song(s) ahead of it in the queue.",
+                            message.getAuthor().getId(),
+                            track.getInfo().title,
+                            track.getInfo().uri,
+                            musicManager.scheduler.getQueue().size()
+                    ).queue();
+                }
 
                 play(message, musicManager, track);
             }
