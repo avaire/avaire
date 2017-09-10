@@ -32,6 +32,8 @@ public class AudioHandler {
     public static void loadAndPlay(final Message message, final String trackUrl) {
         GuildMusicManager musicManager = getGuildAudioPlayer(message.getGuild());
 
+        musicManager.setLastActiveMessage(message);
+
         AUDIO_PLAYER_MANAGER.loadItemOrdered(musicManager, trackUrl, new AudioLoadResultHandler() {
             @Override
             public void trackLoaded(AudioTrack track) {

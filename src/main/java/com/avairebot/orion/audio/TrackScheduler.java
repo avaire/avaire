@@ -1,5 +1,6 @@
 package com.avairebot.orion.audio;
 
+import com.avairebot.orion.factories.MessageFactory;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
@@ -13,13 +14,15 @@ import java.util.concurrent.LinkedBlockingQueue;
  */
 public class TrackScheduler extends AudioEventAdapter {
 
+    private final GuildMusicManager manager;
     private final AudioPlayer player;
     private final BlockingQueue<AudioTrack> queue;
 
     /**
      * @param player The audio player this scheduler uses
      */
-    public TrackScheduler(AudioPlayer player) {
+    public TrackScheduler(GuildMusicManager manager, AudioPlayer player) {
+        this.manager = manager;
         this.player = player;
         this.queue = new LinkedBlockingQueue<>();
     }
@@ -44,7 +47,16 @@ public class TrackScheduler extends AudioEventAdapter {
     public void nextTrack() {
         // Start the next track, regardless of if something is already playing or not. In case queue was empty, we are
         // giving null to startTrack, which is a valid argument and will simply stop the player.
-        player.startTrack(queue.poll(), false);
+        AudioTrack track = queue.poll();
+        player.startTrack(track, false);
+
+        if (manager.getLastActiveMessage() != null && track != null) {
+            MessageFactory.makeSuccess(manager.getLastActiveMessage(), "Now playing: [%s](%s)\\n`%s` - Requested by **Filler Text**",
+                    track.getInfo().title,
+                    track.getInfo().uri,
+                    track.getDuration()
+            ).queue();
+        }
     }
 
     @Override
