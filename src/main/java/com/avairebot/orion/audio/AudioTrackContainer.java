@@ -30,4 +30,15 @@ public class AudioTrackContainer {
     public List<Long> getSkips() {
         return skips;
     }
+
+    public String getFormattedDuration() {
+        long durationInSeconds = getAudioTrack().getDuration() / 1000;
+        long minutes = durationInSeconds / 60;
+        long seconds = durationInSeconds % 60;
+
+        if (minutes < 1) {
+            return (seconds < 10) ? "0" + seconds : "" + seconds;
+        }
+        return String.format("%s:%s", minutes, (seconds < 10) ? "0" + seconds : seconds);
+    }
 }

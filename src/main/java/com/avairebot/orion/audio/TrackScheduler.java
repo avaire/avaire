@@ -52,10 +52,10 @@ public class TrackScheduler extends AudioEventAdapter {
         player.startTrack(container.getAudioTrack(), false);
 
         if (manager.getLastActiveMessage() != null) {
-            MessageFactory.makeSuccess(manager.getLastActiveMessage(), "Now playing: [%s](%s)\\n`%s` - Requested by <@%s>",
+            MessageFactory.makeSuccess(manager.getLastActiveMessage(), "Now playing: [%s](%s)\n`%s` - Requested by <@%s>",
                     container.getAudioTrack().getInfo().title,
                     container.getAudioTrack().getInfo().uri,
-                    container.getAudioTrack().getDuration(),
+                    container.getFormattedDuration(),
                     container.getRequester().getId()
             ).queue();
         }
