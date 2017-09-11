@@ -82,18 +82,26 @@ public class AudioHandler {
     }
 
     private static void play(Message message, GuildMusicManager musicManager, AudioTrack track) {
-        connectToFirstVoiceChannel(message.getGuild().getAudioManager());
+        if (!connectToVoiceChannel(message)) {
+            MessageFactory.makeWarning(message, "You have to be connected to a voice channel.").queue();
+            return;
+        }
 
         musicManager.scheduler.queue(track, message.getAuthor());
     }
 
-    private static void connectToFirstVoiceChannel(AudioManager audioManager) {
+    private static boolean connectToVoiceChannel(Message message) {
+        AudioManager audioManager = message.getGuild().getAudioManager();
         if (!audioManager.isConnected() && !audioManager.isAttemptingToConnect()) {
-            for (VoiceChannel voiceChannel : audioManager.getGuild().getVoiceChannels()) {
-                audioManager.openAudioConnection(voiceChannel);
-                break;
+            VoiceChannel channel = message.getMember().getVoiceState().getChannel();
+
+            if (channel == null) {
+                return false;
             }
+
+            audioManager.openAudioConnection(message.getMember().getVoiceState().getChannel());
         }
+        return true;
     }
 
     private static synchronized GuildMusicManager getGuildAudioPlayer(Guild guild) {
