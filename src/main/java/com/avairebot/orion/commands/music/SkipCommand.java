@@ -2,6 +2,7 @@ package com.avairebot.orion.commands.music;
 
 import com.avairebot.orion.Orion;
 import com.avairebot.orion.audio.AudioHandler;
+import com.avairebot.orion.audio.GuildMusicManager;
 import com.avairebot.orion.contracts.commands.AbstractCommand;
 import net.dv8tion.jda.core.entities.Message;
 
@@ -31,7 +32,7 @@ public class SkipCommand extends AbstractCommand {
 
     @Override
     public String getExampleUsage() {
-        return null;
+        return "`!skip`";
     }
 
     @Override
@@ -41,6 +42,12 @@ public class SkipCommand extends AbstractCommand {
 
     @Override
     public boolean onCommand(Message message, String[] args) {
+        GuildMusicManager musicManager = AudioHandler.getGuildAudioPlayer(message.getGuild());
+
+        if (musicManager.getPlayer().getPlayingTrack() == null) {
+            return sendErrorMessage(message, "Nothing to skip, request music first with `!play`");
+        }
+
         AudioHandler.skipTrack(message);
         return true;
     }
