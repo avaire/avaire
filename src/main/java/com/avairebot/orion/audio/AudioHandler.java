@@ -64,6 +64,8 @@ public class AudioHandler {
 
         if (musicManager == null) {
             musicManager = new GuildMusicManager(AUDIO_PLAYER_MANAGER);
+            musicManager.getPlayer().setVolume(50);
+
             MUSIC_MANAGER.put(guildId, musicManager);
         }
 
