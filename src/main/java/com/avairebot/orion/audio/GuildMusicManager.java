@@ -6,8 +6,8 @@ import net.dv8tion.jda.core.entities.Message;
 
 public class GuildMusicManager {
 
-    public final AudioPlayer player;
-    public final TrackScheduler scheduler;
+    private final AudioPlayer player;
+    private final TrackScheduler scheduler;
 
     private Message lastActiveMessage = null;
 
@@ -31,5 +31,9 @@ public class GuildMusicManager {
 
     public AudioPlayer getPlayer() {
         return player;
+    }
+
+    public TrackScheduler getScheduler() {
+        return scheduler;
     }
 }

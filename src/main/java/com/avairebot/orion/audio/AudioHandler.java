@@ -1,12 +1,9 @@
 package com.avairebot.orion.audio;
 
 import com.avairebot.orion.factories.MessageFactory;
-import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
-import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
-import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
@@ -35,7 +32,7 @@ public class AudioHandler {
 
     public static void skipTrack(Message message) {
         GuildMusicManager musicManager = getGuildAudioPlayer(message.getGuild());
-        musicManager.scheduler.nextTrack();
+        musicManager.getScheduler().nextTrack();
     }
 
     public static void play(Message message, GuildMusicManager musicManager, AudioTrack track) {
@@ -44,7 +41,7 @@ public class AudioHandler {
             return;
         }
 
-        musicManager.scheduler.queue(track, message.getAuthor());
+        musicManager.getScheduler().queue(track, message.getAuthor());
     }
 
     public static boolean connectToVoiceChannel(Message message) {
@@ -77,7 +74,7 @@ public class AudioHandler {
 
     public static int getQueueSize(GuildMusicManager manager) {
         return manager.getPlayer().getPlayingTrack() == null ?
-                manager.scheduler.getQueue().size() :
-                manager.scheduler.getQueue().size() + 1;
+                manager.getScheduler().getQueue().size() :
+                manager.getScheduler().getQueue().size() + 1;
     }
 }
