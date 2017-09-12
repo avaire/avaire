@@ -1,5 +1,7 @@
 package com.avairebot.orion.requests;
 
+import com.avairebot.orion.contracts.async.Future;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
@@ -12,17 +14,12 @@ import java.util.Map;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
-public class Request {
+public class Request extends Future {
     private final String url;
     private final RequestType type;
 
     private final Map<String, Object> parameters = new HashMap<>();
     private final Map<String, String> headers = new HashMap<>();
-
-    private Consumer<Throwable> DEFAULT_FAILURE = (t) -> {
-    };
-    private Consumer<Response> DEFAULT_SUCCESS = (Response) -> {
-    };
 
     public Request(String url) {
         this(url, RequestType.GET);
@@ -45,48 +42,30 @@ public class Request {
         return this;
     }
 
-    public void send() {
-        this.send(null, null);
-    }
+    @Override
+    public void handle(Consumer success, Consumer<Throwable> failure) {
+        try {
+            HttpURLConnection con = (HttpURLConnection) buildUrl().openConnection();
 
-    public void send(Consumer success) {
-        this.send(success, null);
-    }
+            con.setRequestMethod(type.name());
 
-    public void send(final Consumer<Response> success, final Consumer<Throwable> failure) {
-        new Thread(() -> {
-            try {
-                HttpURLConnection con = (HttpURLConnection) buildUrl().openConnection();
-
-                con.setRequestMethod(type.name());
-
-                for (Map.Entry<String, String> entry : headers.entrySet()) {
-                    con.setRequestProperty(entry.getKey(), entry.getValue());
-                }
-
-                String inputLine;
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(con.getInputStream()));
-                StringBuffer buffer = new StringBuffer();
-
-                while ((inputLine = bufferedReader.readLine()) != null) {
-                    buffer.append(inputLine);
-                }
-                bufferedReader.close();
-
-                Response response = new Response(buffer.toString());
-                if (success != null) {
-                    success.accept(response);
-                } else {
-                    DEFAULT_SUCCESS.accept(response);
-                }
-            } catch (Exception ex) {
-                if (failure != null) {
-                    failure.accept(ex);
-                } else {
-                    DEFAULT_FAILURE.accept(ex);
-                }
+            for (Map.Entry<String, String> entry : headers.entrySet()) {
+                con.setRequestProperty(entry.getKey(), entry.getValue());
             }
-        }).start();
+
+            String inputLine;
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(con.getInputStream()));
+            StringBuffer buffer = new StringBuffer();
+
+            while ((inputLine = bufferedReader.readLine()) != null) {
+                buffer.append(inputLine);
+            }
+            bufferedReader.close();
+
+            success.accept(new Response(buffer.toString()));
+        } catch (Exception ex) {
+            failure.accept(ex);
+        }
     }
 
     private URL buildUrl() throws MalformedURLException {
