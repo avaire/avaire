@@ -65,7 +65,14 @@ public class TrackScheduler extends AudioEventAdapter {
 
     @Override
     public void onTrackEnd(AudioPlayer player, AudioTrack track, AudioTrackEndReason endReason) {
-        // Only start the next track if the end reason is suitable for it (FINISHED or LOAD_FAILED)
+        if (endReason.equals(AudioTrackEndReason.FINISHED) && queue.isEmpty()) {
+            if (manager.getLastActiveMessage() != null) {
+                MessageFactory.makeSuccess(manager.getLastActiveMessage(), "Queue has ended, leaving voice.").queue();
+                manager.getLastActiveMessage().getGuild().getAudioManager().closeAudioConnection();
+            }
+            return;
+        }
+
         if (endReason.mayStartNext) {
             nextTrack();
         }
