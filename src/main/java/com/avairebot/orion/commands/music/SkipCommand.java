@@ -4,6 +4,7 @@ import com.avairebot.orion.Orion;
 import com.avairebot.orion.audio.AudioHandler;
 import com.avairebot.orion.audio.GuildMusicManager;
 import com.avairebot.orion.contracts.commands.AbstractCommand;
+import com.avairebot.orion.factories.MessageFactory;
 import net.dv8tion.jda.core.entities.Message;
 
 import java.util.Arrays;
@@ -48,7 +49,16 @@ public class SkipCommand extends AbstractCommand {
             return sendErrorMessage(message, "Nothing to skip, request music first with `!play`");
         }
 
-        AudioHandler.skipTrack(message);
+        if (!musicManager.getScheduler().getQueue().isEmpty()) {
+            AudioHandler.skipTrack(message);
+            return true;
+        }
+
+        MessageFactory.makeSuccess(message, "Queue has ended, leaving voice.").queue();
+
+        musicManager.getPlayer().stopTrack();
+        message.getGuild().getAudioManager().closeAudioConnection();
+
         return true;
     }
 }
