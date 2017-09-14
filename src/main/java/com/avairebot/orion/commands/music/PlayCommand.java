@@ -53,8 +53,12 @@ public class PlayCommand extends AbstractCommand {
 
         AudioHandler.loadAndPlay(message, String.join("", args)).handle((Consumer<TrackResponse>) (TrackResponse response) -> {
             message.delete().reason("Song request, removing song to cleanup chat").queue();
-            if (response.getMusicManager().getPlayer().getPlayingTrack() != null) {
 
+            if (response.getMusicManager().getPlayer().isPaused()) {
+                response.getMusicManager().getPlayer().setPaused(false);
+            }
+
+            if (response.getMusicManager().getPlayer().getPlayingTrack() != null) {
                 if (response.isPlaylist()) sendPlaylistResponse(message, response);
                 else sendTrackResponse(message, response);
             }
