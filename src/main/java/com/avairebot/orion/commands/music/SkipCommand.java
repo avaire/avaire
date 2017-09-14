@@ -7,7 +7,7 @@ import com.avairebot.orion.contracts.commands.AbstractCommand;
 import com.avairebot.orion.factories.MessageFactory;
 import net.dv8tion.jda.core.entities.Message;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class SkipCommand extends AbstractCommand {
@@ -28,7 +28,7 @@ public class SkipCommand extends AbstractCommand {
 
     @Override
     public List<String> getUsageInstructions() {
-        return Arrays.asList("`!skip` - Skips to the next song in the queue");
+        return Collections.singletonList("`!skip` - Skips to the next song in the queue");
     }
 
     @Override
@@ -38,7 +38,7 @@ public class SkipCommand extends AbstractCommand {
 
     @Override
     public List<String> getTriggers() {
-        return Arrays.asList("skip");
+        return Collections.singletonList("skip");
     }
 
     @Override
