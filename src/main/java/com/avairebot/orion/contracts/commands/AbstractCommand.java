@@ -14,7 +14,7 @@ public abstract class AbstractCommand {
     protected final boolean allowDM;
 
     public AbstractCommand(Orion orion) {
-        this(orion, false);
+        this(orion, true);
     }
 
     public AbstractCommand(Orion orion, boolean allowDM) {
