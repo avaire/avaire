@@ -9,6 +9,8 @@ import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import net.dv8tion.jda.core.entities.Message;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -51,7 +53,7 @@ public class PlayCommand extends AbstractCommand {
             return sendErrorMessage(message, "Missing music `query`, you must include a link to the song you want to listen to!");
         }
 
-        AudioHandler.loadAndPlay(message, String.join("", args)).handle((Consumer<TrackResponse>) (TrackResponse response) -> {
+        AudioHandler.loadAndPlay(message, buildTrackRequestString(args)).handle((Consumer<TrackResponse>) (TrackResponse response) -> {
             message.delete().reason("Song request, removing song to cleanup chat").queue();
 
             if (response.getMusicManager().getPlayer().isPaused()) {
@@ -89,5 +91,17 @@ public class PlayCommand extends AbstractCommand {
                 track.getInfo().uri,
                 AudioHandler.getQueueSize(response.getMusicManager())
         ).queue();
+    }
+
+    private String buildTrackRequestString(String[] args) {
+        String string = String.join(" ", args);
+
+        try {
+            new URL(string);
+
+            return string;
+        } catch (MalformedURLException ex) {
+            return "ytsearch:" + string;
+        }
     }
 }

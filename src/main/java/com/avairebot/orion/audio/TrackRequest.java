@@ -37,6 +37,11 @@ public class TrackRequest extends Future {
 
             @Override
             public void playlistLoaded(AudioPlaylist playlist) {
+                if (trackUrl.startsWith("ytsearch:")) {
+                    trackLoaded(playlist.getTracks().get(0));
+                    return;
+                }
+
                 success.accept(new TrackResponse(musicManager, playlist, trackUrl));
 
                 for (AudioTrack track : playlist.getTracks()) {
