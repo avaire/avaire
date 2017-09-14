@@ -13,7 +13,7 @@ import java.util.List;
 public class PauseCommand extends AbstractCommand {
 
     public PauseCommand(Orion orion) {
-        super(orion);
+        super(orion, false);
     }
 
     @Override

@@ -13,7 +13,7 @@ import java.util.List;
 public class VolumeCommand extends AbstractCommand {
 
     public VolumeCommand(Orion orion) {
-        super(orion);
+        super(orion, false);
     }
 
     @Override
