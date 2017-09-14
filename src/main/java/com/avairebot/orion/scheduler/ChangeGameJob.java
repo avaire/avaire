@@ -19,7 +19,19 @@ public class ChangeGameJob extends Job {
         }
 
         orion.getJDA().getPresence().setGame(
-                Game.of(orion.config.getPlaying().get(index++))
+                Game.of(formatGame(orion.config.getPlaying().get(index++)))
         );
+    }
+
+    private String formatGame(String game) {
+        game = game.replaceAll("%users%", "" + orion.getJDA().getUsers().size());
+        game = game.replaceAll("%guilds%", "" + orion.getJDA().getGuilds().size());
+
+        if (orion.getJDA().getShardInfo() != null) {
+            game = game.replaceAll("%shard-id%", "" + orion.getJDA().getShardInfo().getShardId());
+            game = game.replaceAll("%shard-total%", "" + orion.getJDA().getShardInfo().getShardTotal());
+        }
+
+        return game;
     }
 }
