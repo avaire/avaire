@@ -44,7 +44,7 @@ public class PlayCommand extends AbstractCommand {
 
     @Override
     public List<String> getTriggers() {
-        return Arrays.asList("play", "queue", "request");
+        return Arrays.asList("play", "request");
     }
 
     @Override
