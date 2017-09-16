@@ -19,6 +19,8 @@ public class TrackScheduler extends AudioEventAdapter {
     private final AudioPlayer player;
     private final BlockingQueue<AudioTrackContainer> queue;
 
+    private AudioTrackContainer audioTrackContainer;
+
     /**
      * @param player The audio player this scheduler uses
      */
@@ -45,6 +47,7 @@ public class TrackScheduler extends AudioEventAdapter {
         }
 
         if (manager.getLastActiveMessage() != null) {
+            audioTrackContainer = container;
             sendNowPlaying(container);
         }
     }
@@ -56,8 +59,9 @@ public class TrackScheduler extends AudioEventAdapter {
         // Start the next track, regardless of if something is already playing or not. In case queue was empty, we are
         // giving null to startTrack, which is a valid argument and will simply stop the player.
         AudioTrackContainer container = queue.poll();
-        player.startTrack(container.getAudioTrack(), false);
 
+        audioTrackContainer = container;
+        player.startTrack(container.getAudioTrack(), false);
         if (manager.getLastActiveMessage() != null) {
             sendNowPlaying(container);
         }
@@ -80,6 +84,10 @@ public class TrackScheduler extends AudioEventAdapter {
 
     public BlockingQueue<AudioTrackContainer> getQueue() {
         return queue;
+    }
+
+    public AudioTrackContainer getAudioTrackContainer() {
+        return audioTrackContainer;
     }
 
     protected void sendNowPlaying(AudioTrackContainer container) {
