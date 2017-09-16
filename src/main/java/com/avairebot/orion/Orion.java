@@ -18,6 +18,7 @@ import com.avairebot.orion.logger.Logger;
 import com.avairebot.orion.scheduler.ChangeGameJob;
 import com.avairebot.orion.scheduler.GarbageCollectorJob;
 import com.avairebot.orion.scheduler.ScheduleHandler;
+import com.avairebot.orion.scheduler.UpdateAudioPlayedTimeJob;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
@@ -93,6 +94,7 @@ public class Orion {
     private void registerJobs() {
         ScheduleHandler.registerJob(new ChangeGameJob(this));
         ScheduleHandler.registerJob(new GarbageCollectorJob(this));
+        ScheduleHandler.registerJob(new UpdateAudioPlayedTimeJob(this));
     }
 
     private JDABuilder prepareJDA() {

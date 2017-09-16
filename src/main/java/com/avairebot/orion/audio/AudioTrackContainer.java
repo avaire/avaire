@@ -11,12 +11,14 @@ public class AudioTrackContainer {
     private final AudioTrack audioTrack;
     private final User requester;
     private final List<Long> skips;
+    private int playedTime;
 
     public AudioTrackContainer(AudioTrack audioTrack, User requester) {
         this.audioTrack = audioTrack;
         this.requester = requester;
 
         skips = new ArrayList<>();
+        playedTime = 0;
     }
 
     public AudioTrack getAudioTrack() {
@@ -31,8 +33,27 @@ public class AudioTrackContainer {
         return skips;
     }
 
+    public int getPlayedTime() {
+        return playedTime;
+    }
+
+    public void incrementPlayedTime() {
+        playedTime++;
+    }
+
+    public String getFormattedPlayedTime() {
+        return formatTime(getPlayedTime() == 0 ? 0 : getPlayedTime() / 4);
+    }
+
     public String getFormattedDuration() {
-        long durationInSeconds = getAudioTrack().getDuration() / 1000;
+        return formatTime(getAudioTrack().getDuration() / 1000);
+    }
+
+    public String getFormattedTotalTimeLeft() {
+        return formatTime((getAudioTrack().getDuration() / 1000) - (getPlayedTime() == 0 ? 0 : getPlayedTime() / 4));
+    }
+
+    private String formatTime(long durationInSeconds) {
         long minutes = durationInSeconds / 60;
         long seconds = durationInSeconds % 60;
 
