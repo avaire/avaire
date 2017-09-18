@@ -23,6 +23,7 @@ import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.exceptions.RateLimitedException;
+import net.dv8tion.jda.core.requests.SessionReconnectQueue;
 
 import javax.security.auth.login.LoginException;
 import java.io.IOException;
@@ -122,6 +123,6 @@ public class Orion {
             }
         }
 
-        return builder.setAutoReconnect(true);
+        return builder.setReconnectQueue(new SessionReconnectQueue()).setAutoReconnect(true);
     }
 }
