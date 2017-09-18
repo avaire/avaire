@@ -3,6 +3,7 @@ package com.avairebot.orion.commands.music;
 import com.avairebot.orion.Orion;
 import com.avairebot.orion.audio.AudioHandler;
 import com.avairebot.orion.audio.TrackResponse;
+import com.avairebot.orion.audio.VoiceConnectStatus;
 import com.avairebot.orion.contracts.commands.AbstractCommand;
 import com.avairebot.orion.factories.MessageFactory;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
@@ -51,6 +52,13 @@ public class PlayCommand extends AbstractCommand {
     public boolean onCommand(Message message, String[] args) {
         if (args.length == 0) {
             return sendErrorMessage(message, "Missing music `query`, you must include a link to the song you want to listen to!");
+        }
+
+        VoiceConnectStatus voiceConnectStatus = AudioHandler.connectToVoiceChannel(message);
+        System.out.println("voiceConnectStatus: " + voiceConnectStatus.name());
+        if (!voiceConnectStatus.isSuccess()) {
+            MessageFactory.makeWarning(message, voiceConnectStatus.getErrorMessage()).queue();
+            return false;
         }
 
         AudioHandler.loadAndPlay(message, buildTrackRequestString(args)).handle((Consumer<TrackResponse>) (TrackResponse response) -> {
