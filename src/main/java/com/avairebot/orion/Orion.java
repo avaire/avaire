@@ -74,6 +74,7 @@ public class Orion {
 
         // Music
         CommandHandler.register(new ClearQueueCommand(this));
+        CommandHandler.register(new MoveHereCommand(this));
         CommandHandler.register(new PauseCommand(this));
         CommandHandler.register(new PlayCommand(this));
         CommandHandler.register(new ResumeCommand(this));
