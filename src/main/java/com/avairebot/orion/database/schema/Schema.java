@@ -1,5 +1,6 @@
 package com.avairebot.orion.database.schema;
 
+import com.avairebot.orion.Statistics;
 import com.avairebot.orion.contracts.database.schema.DatabaseClosure;
 import com.avairebot.orion.database.DatabaseManager;
 import com.avairebot.orion.database.grammar.CreateParser;
@@ -37,6 +38,8 @@ public class Schema {
      *                      <code>PreparedStatement</code> or <code>CallableStatement</code>
      */
     public boolean hasTable(String table) throws SQLException {
+        Statistics.addQueries();
+
         return dbm.getConnection().hasTable(table);
     }
 
@@ -53,6 +56,8 @@ public class Schema {
      *                      <code>PreparedStatement</code> or <code>CallableStatement</code>
      */
     public boolean hasColumn(String table, String column) throws SQLException {
+        Statistics.addQueries();
+
         return getMetaData().getColumns(null, null, table, column).next();
     }
 
@@ -71,6 +76,7 @@ public class Schema {
     public boolean create(String table, DatabaseClosure closure) throws SQLException {
         Blueprint blueprint = createAndRunBlueprint(table, closure);
         CreateParser grammar = createGrammar(true);
+        Statistics.addQueries();
 
         String query = grammar.parse(dbm, blueprint);
         Statement stmt = dbm.getConnection().prepare(query);
@@ -101,6 +107,7 @@ public class Schema {
 
         Blueprint blueprint = createAndRunBlueprint(table, closure);
         CreateParser grammar = createGrammar(false);
+        Statistics.addQueries();
 
         String query = grammar.parse(dbm, blueprint);
         Statement stmt = dbm.getConnection().prepare(query);
@@ -233,6 +240,7 @@ public class Schema {
      *                      <code>PreparedStatement</code> or <code>CallableStatement</code>
      */
     private boolean alterQuery(String query) throws SQLException {
+        Statistics.addQueries();
         Statement stmt = dbm.getConnection().getConnection().createStatement();
 
         return !stmt.execute(query);
