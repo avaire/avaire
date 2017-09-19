@@ -52,7 +52,6 @@ public class RipCommand extends AbstractCommand {
 
     @Override
     public boolean onCommand(Message message, String[] args) {
-        int totalRespects = getTotalRespects();
         Statistics.addRespects();
 
         try {
@@ -67,7 +66,7 @@ public class RipCommand extends AbstractCommand {
                 .setColor(Color.decode("#2A2C31"))
                 .setDescription(String.format("**%s** has paid their respects.", message.getMember().getEffectiveName()))
                 .setFooter(String.format("%s Today, %s Overall",
-                        Statistics.getRespects(), totalRespects
+                        Statistics.getRespects(), getTotalRespects()
                 ), null);
 
         message.getChannel().sendMessage(embed.build()).queue();
@@ -77,7 +76,7 @@ public class RipCommand extends AbstractCommand {
     private int getTotalRespects() {
         try {
             return orion.database.newQueryBuilder(Constants.STATISTICS_TABLE_NAME).get().first()
-                    .getInt("respects", 0) + 1;
+                    .getInt("respects", Statistics.getRespects()) + 1;
         } catch (SQLException e) {
             e.printStackTrace();
             return 1;
