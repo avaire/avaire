@@ -4,6 +4,7 @@ import com.avairebot.orion.cache.CacheManager;
 import com.avairebot.orion.commands.CommandHandler;
 import com.avairebot.orion.commands.fun.CoinflipCommand;
 import com.avairebot.orion.commands.fun.GfycatCommand;
+import com.avairebot.orion.commands.fun.RipCommand;
 import com.avairebot.orion.commands.fun.RollCommand;
 import com.avairebot.orion.commands.music.*;
 import com.avairebot.orion.commands.system.EvalCommand;
@@ -15,10 +16,7 @@ import com.avairebot.orion.contracts.handlers.EventHandler;
 import com.avairebot.orion.database.DatabaseManager;
 import com.avairebot.orion.handlers.EventTypes;
 import com.avairebot.orion.logger.Logger;
-import com.avairebot.orion.scheduler.ChangeGameJob;
-import com.avairebot.orion.scheduler.GarbageCollectorJob;
-import com.avairebot.orion.scheduler.ScheduleHandler;
-import com.avairebot.orion.scheduler.UpdateAudioPlayedTimeJob;
+import com.avairebot.orion.scheduler.*;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
@@ -71,6 +69,7 @@ public class Orion {
         // Fun
         CommandHandler.register(new CoinflipCommand(this));
         CommandHandler.register(new GfycatCommand(this));
+        CommandHandler.register(new RipCommand(this));
         CommandHandler.register(new RollCommand(this));
 
         // Music
@@ -99,6 +98,7 @@ public class Orion {
         ScheduleHandler.registerJob(new ChangeGameJob(this));
         ScheduleHandler.registerJob(new GarbageCollectorJob(this));
         ScheduleHandler.registerJob(new UpdateAudioPlayedTimeJob(this));
+        ScheduleHandler.registerJob(new ResetRespectStatisticsJob(this));
     }
 
     private JDABuilder prepareJDA() {

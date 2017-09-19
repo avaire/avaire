@@ -5,6 +5,7 @@ public class Statistics {
     private static int messages = 0;
     private static int commands = 0;
     private static int queries = 0;
+    private static int respects = 0;
 
     public static void addMessage() {
         messages++;
@@ -18,6 +19,10 @@ public class Statistics {
         queries++;
     }
 
+    public static void addRespects() {
+        respects++;
+    }
+
     public static int getMessages() {
         return messages;
     }
@@ -28,5 +33,13 @@ public class Statistics {
 
     public static int getQueries() {
         return queries;
+    }
+
+    public static int getRespects() {
+        return respects;
+    }
+
+    public static void resetRespects() {
+        respects = 0;
     }
 }
