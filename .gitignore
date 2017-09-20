@@ -1,4 +1,5 @@
 storage/
+docs/
 /config.json
 *.class
 
