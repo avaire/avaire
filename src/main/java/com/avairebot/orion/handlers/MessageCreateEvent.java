@@ -72,13 +72,19 @@ public class MessageCreateEvent extends EventHandler {
                     items.put("id", event.getGuild().getId());
                     items.put("owner", event.getGuild().getOwner().getUser().getId());
                     items.put("name", event.getGuild().getName());
-                    items.put("icon", event.getGuild().getIconId());
                     items.put("channels_data", buildChannelData(event.getGuild().getTextChannels()));
+                    if (event.getGuild().getIconId() != null) {
+                        items.put("icon", event.getGuild().getIconId());
+                    }
 
                     transformer = new GuildTransformer(new DataRow(items));
                     orion.cache.getAdapter(CacheType.MEMORY).put("guilds." + event.getGuild().getId(), transformer, 2);
 
-                    orion.database.newQueryBuilder(Constants.GUILD_TABLE_NAME).insert(items);
+                    try {
+                        orion.database.newQueryBuilder(Constants.GUILD_TABLE_NAME).insert(items);
+                    } catch (Exception ex) {
+                        orion.logger.exception(ex);
+                    }
 
                     return transformer;
                 }
@@ -86,8 +92,8 @@ public class MessageCreateEvent extends EventHandler {
                 orion.cache.getAdapter(CacheType.MEMORY).put("guilds." + event.getGuild().getId(), transformer, 300);
 
                 return transformer;
-            } catch (SQLException e) {
-                e.printStackTrace();
+            } catch (SQLException ex) {
+                orion.logger.exception(ex);
                 return null;
             }
         });
