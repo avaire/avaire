@@ -45,7 +45,7 @@ public class GfycatCommand extends AbstractCommand {
 
     @Override
     public List<String> getMiddleware() {
-        return Arrays.asList("throttle:user,2,5");
+        return Collections.singletonList("throttle:user,2,5");
     }
 
     @Override
@@ -61,7 +61,7 @@ public class GfycatCommand extends AbstractCommand {
                     .send((Consumer<Response>) response -> {
                         GfycatService gfyCat = (GfycatService) response.toJson(GfycatService.class);
 
-                        message.getChannel().sendMessage(gfyCat.getGfycats().get(0).get("url").toString()).queue();
+                        message.getChannel().sendMessage(gfyCat.getRandomGfycatsItem().get("gifUrl").toString()).queue();
                     });
         } catch (Exception e) {
             e.printStackTrace();

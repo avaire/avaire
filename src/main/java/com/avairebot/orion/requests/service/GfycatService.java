@@ -1,5 +1,7 @@
 package com.avairebot.orion.requests.service;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -10,6 +12,13 @@ public class GfycatService {
 
     public List<Map<String, Object>> getGfycats() {
         return gfycats;
+    }
+
+    public Map<String, Object> getRandomGfycatsItem() {
+        ArrayList<Map<String, Object>> items = new ArrayList<>(getGfycats());
+        Collections.shuffle(items);
+
+        return items.get(0);
     }
 
     public int getFound() {
