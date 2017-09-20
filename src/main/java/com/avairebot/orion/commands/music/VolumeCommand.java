@@ -78,7 +78,7 @@ public class VolumeCommand extends AbstractCommand {
     private String getVolumeString(int volume, int multiplier) {
         StringBuilder volumeString = new StringBuilder();
         for (int i = 1; i <= multiplier; i++) {
-            volumeString.append((i - 1) * (100 / multiplier) < volume ? '▒' : '░');
+            volumeString.append((i - 1) * (100 / multiplier) < volume ? "\u2592" : "\u2591");
         }
         return volumeString.toString();
     }

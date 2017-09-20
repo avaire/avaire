@@ -10,7 +10,7 @@ import net.dv8tion.jda.core.audio.AudioSendHandler;
  * provide20MsAudio().
  */
 public class AudioPlayerSendHandler implements AudioSendHandler {
-    
+
     private final AudioPlayer audioPlayer;
     private AudioFrame lastFrame;
 
