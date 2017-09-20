@@ -26,6 +26,10 @@ public class Schema {
         this.dbm = dbm;
     }
 
+    public DatabaseManager getDbm() {
+        return dbm;
+    }
+
     /**
      * Checks if the default connection has the provided table name.
      *

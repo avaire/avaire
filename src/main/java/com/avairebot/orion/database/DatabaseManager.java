@@ -5,6 +5,7 @@ import com.avairebot.orion.contracts.database.AbstractDatabase;
 import com.avairebot.orion.database.collection.Collection;
 import com.avairebot.orion.database.connections.MySQL;
 import com.avairebot.orion.database.exceptions.DatabaseException;
+import com.avairebot.orion.database.migrate.Migrations;
 import com.avairebot.orion.database.query.QueryBuilder;
 import com.avairebot.orion.database.schema.Schema;
 
@@ -16,12 +17,14 @@ public class DatabaseManager {
 
     private final Orion orion;
     private final Schema schema;
+    private final Migrations migrations;
 
     private AbstractDatabase connection = null;
 
     public DatabaseManager(Orion orion) {
         this.orion = orion;
         this.schema = new Schema(this);
+        this.migrations = new Migrations(this);
     }
 
     public Orion getOrion() {
@@ -30,6 +33,10 @@ public class DatabaseManager {
 
     public Schema getSchema() {
         return schema;
+    }
+
+    public Migrations getMigrations() {
+        return migrations;
     }
 
     public AbstractDatabase getConnection() throws SQLException, DatabaseException {

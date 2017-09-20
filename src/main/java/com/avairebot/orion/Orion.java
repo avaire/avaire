@@ -14,6 +14,7 @@ import com.avairebot.orion.config.ConfigurationLoader;
 import com.avairebot.orion.config.MainConfiguration;
 import com.avairebot.orion.contracts.handlers.EventHandler;
 import com.avairebot.orion.database.DatabaseManager;
+import com.avairebot.orion.database.migrate.migrations.*;
 import com.avairebot.orion.handlers.EventTypes;
 import com.avairebot.orion.logger.Logger;
 import com.avairebot.orion.scheduler.*;
@@ -26,6 +27,7 @@ import net.dv8tion.jda.core.requests.SessionReconnectQueue;
 import javax.security.auth.login.LoginException;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.sql.SQLException;
 
 public class Orion {
 
@@ -36,7 +38,7 @@ public class Orion {
 
     private JDA jda;
 
-    public Orion() throws IOException {
+    public Orion() throws IOException, SQLException {
         this.logger = new Logger(this);
         this.cache = new CacheManager(this);
 
@@ -47,6 +49,19 @@ public class Orion {
             System.exit(0);
         }
 
+        database = new DatabaseManager(this);
+        database.getMigrations().register(
+                new CreateGuildTableMigration(),
+                new CreateGuildTypeTableMigration(),
+                new CreateBlacklistTableMigration(),
+                new CreatePlayerExperiencesTableMigration(),
+                new CreateFeedbackTableMigration(),
+                new CreateMusicPlaylistsTableMigration(),
+                new CreateStatisticsTableMigration(),
+                new CreateShardsTableMigration()
+        );
+        database.getMigrations().up();
+
         try {
             jda = prepareJDA().buildBlocking();
         } catch (LoginException | RateLimitedException | InterruptedException ex) {
@@ -54,8 +69,6 @@ public class Orion {
             this.logger.exception(ex);
             System.exit(0);
         }
-
-        database = new DatabaseManager(this);
 
         this.registerCommands();
         this.registerJobs();

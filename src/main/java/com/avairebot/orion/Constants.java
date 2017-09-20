@@ -8,5 +8,11 @@ public class Constants {
 
     // Database Tables
     public static final String GUILD_TABLE_NAME = "guilds";
+    public static final String GUILD_TYPES_TABLE_NAME = "guild_types";
     public static final String STATISTICS_TABLE_NAME = "statistics";
+    public static final String BLACKLIST_TABLE_NAME = "blacklists";
+    public static final String PLAYER_EXPERIENCE_TABLE_NAME = "experiences";
+    public static final String FEEDBACK_TABLE_NAME = "feedback";
+    public static final String MUSIC_PLAYLIST_TABLE_NAME = "playlists";
+    public static final String SHARDS_TABLE_NAME = "shards";
 }
