@@ -2,10 +2,7 @@ package com.avairebot.orion;
 
 import com.avairebot.orion.cache.CacheManager;
 import com.avairebot.orion.commands.CommandHandler;
-import com.avairebot.orion.commands.fun.CoinflipCommand;
-import com.avairebot.orion.commands.fun.GfycatCommand;
-import com.avairebot.orion.commands.fun.RipCommand;
-import com.avairebot.orion.commands.fun.RollCommand;
+import com.avairebot.orion.commands.fun.*;
 import com.avairebot.orion.commands.music.*;
 import com.avairebot.orion.commands.system.EvalCommand;
 import com.avairebot.orion.commands.system.SetStatusCommand;
@@ -80,6 +77,7 @@ public class Orion {
 
     private void registerCommands() {
         // Fun
+        CommandHandler.register(new ChuckNorrisCommand(this));
         CommandHandler.register(new CoinflipCommand(this));
         CommandHandler.register(new GfycatCommand(this));
         CommandHandler.register(new RipCommand(this));
