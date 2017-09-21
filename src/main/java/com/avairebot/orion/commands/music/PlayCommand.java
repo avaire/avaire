@@ -55,7 +55,6 @@ public class PlayCommand extends AbstractCommand {
         }
 
         VoiceConnectStatus voiceConnectStatus = AudioHandler.connectToVoiceChannel(message);
-        System.out.println("voiceConnectStatus: " + voiceConnectStatus.name());
         if (!voiceConnectStatus.isSuccess()) {
             MessageFactory.makeWarning(message, voiceConnectStatus.getErrorMessage()).queue();
             return false;
