@@ -83,6 +83,7 @@ public class Orion {
         CommandHandler.register(new GfycatCommand(this));
         CommandHandler.register(new RandomCatCommand(this));
         CommandHandler.register(new RandomDogCommand(this));
+        CommandHandler.register(new RepeatCommand(this));
         CommandHandler.register(new RipCommand(this));
         CommandHandler.register(new RollCommand(this));
 
