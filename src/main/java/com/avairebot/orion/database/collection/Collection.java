@@ -200,7 +200,7 @@ public class Collection implements Cloneable, Iterable<DataRow> {
 
     /**
      * Loops through every entity in the Collection and parses the key and
-     * {@link com.sendev.databasemanager.utils.DataRow} object to the consumer.
+     * {@link com.avairebot.orion.database.collection.DataRow} object to the consumer.
      *
      * @param comparator The collection consumer to use.
      * @return the collection instance.

@@ -1905,7 +1905,6 @@ public final class Carbon {
     /**
      * Generates a date string, example:
      * <p>
-     * <p>
      * 1975-12-25
      *
      * @return The generated date string

@@ -22,7 +22,8 @@ public class TrackScheduler extends AudioEventAdapter {
     private AudioTrackContainer audioTrackContainer;
 
     /**
-     * @param player The audio player this scheduler uses
+     * @param manager The guild music manager.
+     * @param player  The audio player this scheduler uses.
      */
     public TrackScheduler(GuildMusicManager manager, AudioPlayer player) {
         this.manager = manager;
@@ -33,7 +34,8 @@ public class TrackScheduler extends AudioEventAdapter {
     /**
      * Add the next track to queue or play right away if nothing is in the queue.
      *
-     * @param track The track to play or add to queue.
+     * @param track     The track to play or add to queue.
+     * @param requester The user who requested the audio track.
      */
     public void queue(AudioTrack track, User requester) {
         // Calling startTrack with the noInterrupt set to true will start the track only if nothing is currently playing. If
