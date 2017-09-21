@@ -86,6 +86,7 @@ public class Orion {
         CommandHandler.register(new RepeatCommand(this));
         CommandHandler.register(new RipCommand(this));
         CommandHandler.register(new RollCommand(this));
+        CommandHandler.register(new SayCommand(this));
 
         // Music
         CommandHandler.register(new ClearQueueCommand(this));
