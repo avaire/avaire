@@ -49,6 +49,11 @@ public class PlayCommand extends AbstractCommand {
     }
 
     @Override
+    public List<String> getMiddleware() {
+        return Collections.singletonList("throttle:guild,2,5");
+    }
+
+    @Override
     public boolean onCommand(Message message, String[] args) {
         if (args.length == 0) {
             return sendErrorMessage(message, "Missing music `query`, you must include a link to the song you want to listen to!");

@@ -26,7 +26,7 @@ public class MoveHereCommand extends AbstractCommand {
 
     @Override
     public String getDescription() {
-        return "Moves the bot to your current voice channel.\n**Must be connected to a voice channel to use this command**";
+        return "Moves the bot to your current voice channel.";
     }
 
     @Override
@@ -42,6 +42,11 @@ public class MoveHereCommand extends AbstractCommand {
     @Override
     public List<String> getTriggers() {
         return Arrays.asList("movehere", "moveh");
+    }
+
+    @Override
+    public List<String> getMiddleware() {
+        return Arrays.asList("has-role:DJ", "throttle:guild,1,4");
     }
 
     @Override

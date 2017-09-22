@@ -43,6 +43,11 @@ public class ClearQueueCommand extends AbstractCommand {
     }
 
     @Override
+    public List<String> getMiddleware() {
+        return Arrays.asList("has-role:DJ", "throttle:user,1,5");
+    }
+
+    @Override
     public boolean onCommand(Message message, String[] args) {
         GuildMusicManager musicManager = AudioHandler.getGuildAudioPlayer(message.getGuild());
 

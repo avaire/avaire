@@ -8,6 +8,7 @@ import com.avairebot.orion.requests.service.RandomDogService;
 import net.dv8tion.jda.core.entities.Message;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -40,6 +41,11 @@ public class RandomDogCommand extends AbstractCommand {
     @Override
     public List<String> getTriggers() {
         return Arrays.asList("randomdog", "dog");
+    }
+
+    @Override
+    public List<String> getMiddleware() {
+        return Collections.singletonList("throttle:user,2,5");
     }
 
     @Override

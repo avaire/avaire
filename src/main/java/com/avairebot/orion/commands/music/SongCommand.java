@@ -48,6 +48,11 @@ public class SongCommand extends AbstractCommand {
     }
 
     @Override
+    public List<String> getMiddleware() {
+        return Collections.singletonList("throttle:channel,1,5");
+    }
+
+    @Override
     public boolean onCommand(Message message, String[] args) {
         GuildMusicManager musicManager = AudioHandler.getGuildAudioPlayer(message.getGuild());
 

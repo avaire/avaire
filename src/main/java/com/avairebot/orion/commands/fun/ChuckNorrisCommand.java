@@ -45,6 +45,11 @@ public class ChuckNorrisCommand extends AbstractCommand {
     }
 
     @Override
+    public List<String> getMiddleware() {
+        return Collections.singletonList("throttle:user,2,5");
+    }
+
+    @Override
     public boolean onCommand(Message message, String[] args) {
         try {
             RequestFactory.makeGET("http://api.icndb.com/jokes/random")
