@@ -2,6 +2,7 @@ package com.avairebot.orion.commands;
 
 import com.avairebot.orion.contracts.commands.AbstractCommand;
 import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.core.utils.Checks;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -48,9 +49,9 @@ public class CommandHandler {
         }
 
         Category category = Category.fromCommand(command);
-        if (category == null) {
-            return false;
-        }
+
+        Checks.notNull(category, String.format("%s :: %s", command.getName(), "Invalid command category, command category"));
+        Checks.notNull(command.getDescription(), String.format("%s :: %s", command.getName(), "Command description"));
 
         COMMANDS.put(command.getTriggers(), new CommandContainer(command, category));
         return true;
