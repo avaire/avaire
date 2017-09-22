@@ -26,7 +26,7 @@ public class InviteCommand extends AbstractCommand {
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`!invite` - Gives you an invite link that can be used to invite Orion to servers.");
+        return Collections.singletonList("`:command` - Gives you an invite link that can be used to invite Orion to servers.");
     }
 
     @Override

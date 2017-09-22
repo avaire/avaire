@@ -32,12 +32,12 @@ public class RipCommand extends AbstractCommand {
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`>rip` - Pay your respects");
+        return Collections.singletonList("`:command` - Pay your respects");
     }
 
     @Override
     public String getExampleUsage() {
-        return "`>rip`";
+        return null;
     }
 
     @Override

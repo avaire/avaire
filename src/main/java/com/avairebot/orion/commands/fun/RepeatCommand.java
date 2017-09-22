@@ -26,12 +26,12 @@ public class RepeatCommand extends AbstractCommand {
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`>repeat <message>` - Repeats the given message");
+        return Collections.singletonList("`:command <message>` - Repeats the given message");
     }
 
     @Override
     public String getExampleUsage() {
-        return "`>repeat I am a BOT`";
+        return "`:command I am a BOT`";
     }
 
     @Override

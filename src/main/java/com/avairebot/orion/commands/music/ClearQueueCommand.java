@@ -29,12 +29,12 @@ public class ClearQueueCommand extends AbstractCommand {
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`!clearqueue` - Clears the music queue");
+        return Collections.singletonList("`:command` - Clears the music queue");
     }
 
     @Override
     public String getExampleUsage() {
-        return "`!clearqueue`";
+        return null;
     }
 
     @Override

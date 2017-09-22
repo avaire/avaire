@@ -28,12 +28,12 @@ public class SkipCommand extends AbstractCommand {
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`!skip` - Skips to the next song in the queue");
+        return Collections.singletonList(":command` - Skips to the next song in the queue");
     }
 
     @Override
     public String getExampleUsage() {
-        return "`!skip`";
+        return null;
     }
 
     @Override

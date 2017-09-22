@@ -28,15 +28,15 @@ public class RollCommand extends AbstractCommand {
     @Override
     public List<String> getUsageInstructions() {
         return Arrays.asList(
-                "`>roll`",
-                "`>roll [max]`",
-                "`>roll [min] [max]`"
+                "`:command`",
+                "`:command [max]`",
+                "`:command [min] [max]`"
         );
     }
 
     @Override
     public String getExampleUsage() {
-        return "`>roll 3 6`";
+        return "`:command 3 6`";
     }
 
     @Override

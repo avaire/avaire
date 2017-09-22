@@ -35,12 +35,12 @@ public class PlayCommand extends AbstractCommand {
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`!play <song>` - Plays the given song");
+        return Collections.singletonList("`:command <song>` - Plays the given song");
     }
 
     @Override
     public String getExampleUsage() {
-        return "`!play rick and morty`";
+        return null;
     }
 
     @Override

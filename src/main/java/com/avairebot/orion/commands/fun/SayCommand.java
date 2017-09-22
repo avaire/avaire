@@ -27,12 +27,12 @@ public class SayCommand extends AbstractCommand {
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`>say <message>` - Makes the bot say the given message");
+        return Collections.singletonList("`:command <message>` - Makes the bot say the given message");
     }
 
     @Override
     public String getExampleUsage() {
-        return "`>say I am a BOT`";
+        return "`:command I am a BOT`";
     }
 
     @Override

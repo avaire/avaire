@@ -32,7 +32,7 @@ public class StatsCommand extends AbstractCommand {
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`!stats` - Shows some stats about the bot.");
+        return Collections.singletonList("`:command` - Shows some stats about the bot.");
     }
 
     @Override

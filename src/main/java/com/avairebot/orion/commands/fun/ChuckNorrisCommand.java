@@ -31,12 +31,12 @@ public class ChuckNorrisCommand extends AbstractCommand {
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`>chucknorris` - Gets a random fact for you");
+        return Collections.singletonList("`:command` - Gets a random fact for you");
     }
 
     @Override
     public String getExampleUsage() {
-        return "`>chucknorris`";
+        return null;
     }
 
     @Override

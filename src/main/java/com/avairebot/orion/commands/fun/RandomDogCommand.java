@@ -8,7 +8,6 @@ import com.avairebot.orion.requests.service.RandomDogService;
 import net.dv8tion.jda.core.entities.Message;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -30,12 +29,12 @@ public class RandomDogCommand extends AbstractCommand {
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`>randomdog`");
+        return null;
     }
 
     @Override
     public String getExampleUsage() {
-        return "`>randomdog`";
+        return null;
     }
 
     @Override

@@ -31,12 +31,12 @@ public class MoveHereCommand extends AbstractCommand {
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`!movehere` - Moves the bot to your voice channel");
+        return Collections.singletonList("`:command` - Moves the bot to your voice channel");
     }
 
     @Override
     public String getExampleUsage() {
-        return "`!movehere`";
+        return null;
     }
 
     @Override

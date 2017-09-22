@@ -34,12 +34,12 @@ public class SongCommand extends AbstractCommand {
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`!song` - Shows info about the song");
+        return Collections.singletonList("`:command` - Shows info about the song");
     }
 
     @Override
     public String getExampleUsage() {
-        return "`!song`";
+        return null;
     }
 
     @Override

@@ -28,12 +28,12 @@ public class ResumeCommand extends AbstractCommand {
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`!resume` - Resumes the music");
+        return Collections.singletonList("`:command` - Resumes the music");
     }
 
     @Override
     public String getExampleUsage() {
-        return "`!resume`";
+        return null;
     }
 
     @Override

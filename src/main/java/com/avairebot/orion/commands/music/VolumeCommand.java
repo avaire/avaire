@@ -29,14 +29,14 @@ public class VolumeCommand extends AbstractCommand {
     @Override
     public List<String> getUsageInstructions() {
         return Arrays.asList(
-                "`!volume` - Shows the current music volume without changing it",
-                "`!volume <volume>` - Sets the music volume to the given number"
+                "`:command` - Shows the current music volume without changing it",
+                "`:command <volume>` - Sets the music volume to the given number"
         );
     }
 
     @Override
     public String getExampleUsage() {
-        return "`!volume 80`";
+        return "`:command 80`";
     }
 
     @Override

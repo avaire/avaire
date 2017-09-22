@@ -52,12 +52,12 @@ public class EightBallCommand extends AbstractCommand {
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`>8ball <question>`");
+        return Collections.singletonList("`:command <question>`");
     }
 
     @Override
     public String getExampleUsage() {
-        return "`>8bal will i have a good day today?`";
+        return "`:command will i have a good day today?`";
     }
 
     @Override

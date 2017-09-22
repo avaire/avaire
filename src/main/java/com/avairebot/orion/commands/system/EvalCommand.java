@@ -31,12 +31,12 @@ public class EvalCommand extends AbstractCommand {
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`;eval <code>` - Evaluates and executes the given code.");
+        return Collections.singletonList("`:command <code>` - Evaluates and executes the given code.");
     }
 
     @Override
     public String getExampleUsage() {
-        return "`;eval 5*(5+9)`";
+        return "`:command 5*(5+9)`";
     }
 
     @Override

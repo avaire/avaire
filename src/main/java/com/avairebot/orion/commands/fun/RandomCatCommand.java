@@ -29,12 +29,12 @@ public class RandomCatCommand extends AbstractCommand {
 
     @Override
     public List<String> getUsageInstructions() {
-        return Arrays.asList("`>randomcat`");
+        return null;
     }
 
     @Override
     public String getExampleUsage() {
-        return "`>randomcat`";
+        return null;
     }
 
     @Override

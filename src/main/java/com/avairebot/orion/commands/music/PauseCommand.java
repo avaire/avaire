@@ -28,12 +28,12 @@ public class PauseCommand extends AbstractCommand {
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`!pause` - Pauses the music");
+        return Collections.singletonList("`:command` - Pauses the music");
     }
 
     @Override
     public String getExampleUsage() {
-        return "`!pause`";
+        return null;
     }
 
     @Override

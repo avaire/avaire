@@ -41,9 +41,9 @@ public class HelpCommand extends AbstractCommand {
     @Override
     public List<String> getUsageInstructions() {
         return Arrays.asList(
-                "`!help` - Shows a list of command categories.",
-                "`!help <category>` - Shows a list of commands in the given category.",
-                "`!help <command>` - Shows detailed information on how to use the given command."
+                "`:command` - Shows a list of command categories.",
+                "`:command <category>` - Shows a list of commands in the given category.",
+                "`:command <command>` - Shows detailed information on how to use the given command."
 
         );
     }
@@ -119,7 +119,7 @@ public class HelpCommand extends AbstractCommand {
         EmbedBuilder embed = MessageFactory.createEmbeddedBuilder()
                 .setTitle(command.getCommand().getName())
                 .setColor(MessageFactory.MessageType.SUCCESS.getColor())
-                .addField("Usage", command.getCommand().getUsageInstructions().stream().collect(Collectors.joining("\n")), false)
+                .addField("Usage", command.getCommand().generateUsageInstructions(message), false)
                 .setFooter("Command category: " + command.getCategory().getName(), null);
 
         StringBuilder description = embed.getDescriptionBuilder()

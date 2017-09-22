@@ -28,14 +28,14 @@ public class SetStatusCommand extends AbstractCommand {
     @Override
     public List<String> getUsageInstructions() {
         return Arrays.asList(
-                "`;setstatus <game>` - Sets the bots playing status to the given game.",
-                "`;setstatus <twitch url>` - The URL that the bot should be broadcasting."
+                "`:command <game>` - Sets the bots playing status to the given game.",
+                "`:command <twitch url>` - The URL that the bot should be broadcasting."
         );
     }
 
     @Override
     public String getExampleUsage() {
-        return "`;setstatus with some stuff`";
+        return "`:command with some stuff`";
     }
 
     @Override

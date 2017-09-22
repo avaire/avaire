@@ -12,6 +12,16 @@ public class CommandHandler {
 
     private static final Map<List<String>, CommandContainer> COMMANDS = new HashMap<>();
 
+    public static CommandContainer getCommand(AbstractCommand command) {
+        for (Map.Entry<List<String>, CommandContainer> entry : COMMANDS.entrySet()) {
+            if (entry.getValue().getCommand().isSame(command)) {
+                return entry.getValue();
+            }
+        }
+
+        return null;
+    }
+
     public static CommandContainer getCommand(Message message) {
         return getCommand(message.getContent().split(" ")[0].toLowerCase());
     }

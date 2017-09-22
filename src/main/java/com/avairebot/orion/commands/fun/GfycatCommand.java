@@ -30,12 +30,12 @@ public class GfycatCommand extends AbstractCommand {
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`>gif <query>` - Finds a random image with the given query");
+        return Collections.singletonList("`:command <query>` - Finds a random image with the given query");
     }
 
     @Override
     public String getExampleUsage() {
-        return "`>gif cats`";
+        return "`:command cats`";
     }
 
     @Override

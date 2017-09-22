@@ -5,7 +5,6 @@ import com.avairebot.orion.contracts.commands.AbstractCommand;
 import net.dv8tion.jda.core.entities.Message;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -31,7 +30,7 @@ public class CoinflipCommand extends AbstractCommand {
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`>coinflip`");
+        return null;
     }
 
     @Override

@@ -33,8 +33,8 @@ public class SourceCommand extends AbstractCommand {
     @Override
     public List<String> getUsageInstructions() {
         return Arrays.asList(
-                "`!source` - Returns the full source code for the bot.",
-                "`!source <command>` - Returns the source code for the given command."
+                "`:command` - Returns the full source code for the bot.",
+                "`:command <command>` - Returns the source code for the given command."
         );
     }
 
