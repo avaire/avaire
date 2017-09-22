@@ -123,7 +123,7 @@ public class HelpCommand extends AbstractCommand {
                 .setFooter("Command category: " + command.getCategory().getName(), null);
 
         StringBuilder description = embed.getDescriptionBuilder()
-                .append(command.getCommand().getDescription());
+                .append(command.getCommand().generateDescription(message));
 
         if (command.getCommand().getTriggers().size() > 1) {
             embed.addField("Aliases", command.getCommand().getTriggers().stream()
