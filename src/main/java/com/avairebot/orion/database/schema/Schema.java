@@ -151,9 +151,11 @@ public class Schema {
 
             return grammar;
         } catch (InstantiationException ex) {
-            dbm.getOrion().logger.exception("Invalid grammar object parsed, failed to create a new instance!", ex);
+            dbm.getOrion().logger.fatal("Invalid grammar object parsed, failed to create a new instance!");
+            dbm.getOrion().logger.fatal(ex);
         } catch (IllegalAccessException ex) {
-            dbm.getOrion().logger.exception("An attempt was made to create a grammar instance on an object that is not accessible!", ex);
+            dbm.getOrion().logger.fatal("An attempt was made to create a grammar instance on an object that is not accessible!");
+            dbm.getOrion().logger.fatal(ex);
         }
 
         return null;

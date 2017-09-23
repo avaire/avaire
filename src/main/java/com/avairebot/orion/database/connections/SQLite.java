@@ -41,10 +41,11 @@ public class SQLite extends FilenameDatabase {
                 connection = DriverManager.getConnection("jdbc:sqlite:" + (getFile() == null ? ":memory:" : getFile().getAbsolutePath()));
 
                 return true;
-            } catch (SQLException e) {
-                String reason = "DBM - Could not establish an SQLite connection, SQLException: " + e.getMessage();
+            } catch (SQLException ex) {
+                String reason = "DBM - Could not establish an SQLite connection, SQLException: " + ex.getMessage();
 
-                dbm.getOrion().logger.exception(reason, e);
+                dbm.getOrion().logger.fatal(reason);
+                dbm.getOrion().logger.fatal(ex);
                 throw new SQLException(reason);
             }
         }
@@ -106,9 +107,10 @@ public class SQLite extends FilenameDatabase {
             }
 
             return true;
-        } catch (SQLException e) {
-            if ((!e.getMessage().toLowerCase().contains("locking")) && (!e.getMessage().toLowerCase().contains("locked")) && (!e.toString().contains("not return ResultSet"))) {
-                dbm.getOrion().logger.exception("DBM - Error in truncate() query: ", e);
+        } catch (SQLException ex) {
+            if ((!ex.getMessage().toLowerCase().contains("locking")) && (!ex.getMessage().toLowerCase().contains("locked")) && (!ex.toString().contains("not return ResultSet"))) {
+                dbm.getOrion().logger.fatal(String.format("Failed to truncate \"%s\": %s", table, ex.getMessage()));
+                dbm.getOrion().logger.fatal(ex);
             }
         }
 

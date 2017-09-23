@@ -1,6 +1,7 @@
 package com.avairebot.orion.contracts.async;
 
 import com.avairebot.orion.requests.Response;
+import net.dv8tion.jda.core.utils.SimpleLog;
 
 import java.util.function.Consumer;
 
@@ -9,7 +10,9 @@ public abstract class Future {
     private Consumer<Response> DEFAULT_SUCCESS = (Response) -> {
     };
     private Consumer<Throwable> DEFAULT_FAILURE = (Exception) -> {
-        System.err.printf("Future Consumer returned failure: [%s] %s", Exception.getClass().getSimpleName(), Exception.getMessage());
+        SimpleLog.getLog(Future.class).fatal(String.format(
+                "Future Consumer returned failure: [%s] %s", Exception.getClass().getSimpleName(), Exception.getMessage()
+        ));
     };
 
     public void send() {

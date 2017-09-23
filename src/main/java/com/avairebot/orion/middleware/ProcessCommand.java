@@ -23,11 +23,11 @@ public class ProcessCommand extends AbstractMiddleware {
         String[] arguments = argumentsRegEX.split(message.getContent());
 
         User author = message.getAuthor();
-        orion.logger.info("Executing Command <%s> from %s#%s",
+        orion.logger.info(String.format("Executing Command <%s> from %s#%s",
                 message.getContent(),
                 author.getName(),
                 author.getDiscriminator()
-        );
+        ));
 
         return stack.getCommand().onCommand(message, Arrays.copyOfRange(arguments, 1, arguments.length));
     }

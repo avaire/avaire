@@ -32,7 +32,7 @@ public class Require extends AbstractMiddleware {
         for (String permissionNode : args) {
             Permissions permission = Permissions.fromNode(permissionNode);
             if (permission == null) {
-                orion.logger.warning("Invalid permission node given for the \"%s\" command: %s", stack.getCommand().getName(), permissionNode);
+                orion.logger.warn(String.format("Invalid permission node given for the \"%s\" command: %s", stack.getCommand().getName(), permissionNode));
                 return false;
             }
 

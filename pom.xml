@@ -7,6 +7,12 @@
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
     <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources/orion.properties</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -39,11 +45,6 @@
             <groupId>net.dv8tion</groupId>
             <artifactId>JDA</artifactId>
             <version>LATEST</version>
-        </dependency>
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
-            <version>1.1.7</version>
         </dependency>
         <dependency>
             <groupId>com.sedmelluq</groupId>

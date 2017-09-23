@@ -83,7 +83,7 @@ public class MessageCreateEvent extends EventHandler {
                     try {
                         orion.database.newQueryBuilder(Constants.GUILD_TABLE_NAME).insert(items);
                     } catch (Exception ex) {
-                        orion.logger.exception(ex);
+                        orion.logger.fatal(ex);
                     }
 
                     return transformer;
@@ -93,7 +93,7 @@ public class MessageCreateEvent extends EventHandler {
 
                 return transformer;
             } catch (SQLException ex) {
-                orion.logger.exception(ex);
+                orion.logger.fatal(ex);
                 return null;
             }
         });

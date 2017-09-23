@@ -31,8 +31,9 @@ public class MySQL extends HostnameDatabase {
             Class.forName("com.mysql.jdbc.jdbc2.optional.MysqlDataSource");
 
             return true;
-        } catch (ClassNotFoundException e) {
-            dbm.getOrion().logger.exception("MySQL DataSource class missing.", e);
+        } catch (ClassNotFoundException ex) {
+            dbm.getOrion().logger.fatal("MySQL DataSource class missing.");
+            dbm.getOrion().logger.fatal(ex);
         }
 
         return false;
@@ -48,10 +49,11 @@ public class MySQL extends HostnameDatabase {
 
                 return true;
             }
-        } catch (SQLException e) {
-            String reason = "Could not establish a MySQL connection, SQLException: " + e.getMessage();
+        } catch (SQLException ex) {
+            String reason = "Could not establish a MySQL connection, SQLException: " + ex.getMessage();
 
-            dbm.getOrion().logger.exception(reason, e);
+            dbm.getOrion().logger.fatal(reason);
+            dbm.getOrion().logger.fatal(ex);
             throw new SQLException(reason);
         }
 
@@ -66,7 +68,8 @@ public class MySQL extends HostnameDatabase {
             case USE:
                 exception = new SQLException("Please create a new connection to use a different database.");
 
-                dbm.getOrion().logger.exception("Please create a new connection to use a different database.", exception);
+                dbm.getOrion().logger.fatal("Please create a new connection to use a different database.");
+                dbm.getOrion().logger.fatal(exception);
                 throw exception;
 
             case PREPARE:
@@ -74,7 +77,8 @@ public class MySQL extends HostnameDatabase {
             case DEALLOCATE:
                 exception = new SQLException("Please use the prepare() method to prepare a query.");
 
-                dbm.getOrion().logger.exception("Please use the prepare() method to prepare a query.", exception);
+                dbm.getOrion().logger.fatal("Please use the prepare() method to prepare a query.");
+                dbm.getOrion().logger.fatal(exception);
 
                 throw exception;
         }
@@ -86,8 +90,9 @@ public class MySQL extends HostnameDatabase {
 
         try {
             return MySQLStatement.valueOf(statement[0].toUpperCase());
-        } catch (IllegalArgumentException e) {
-            dbm.getOrion().logger.exception(String.format("Unknown statement: \"%s\"", statement[0]), e);
+        } catch (IllegalArgumentException ex) {
+            dbm.getOrion().logger.fatal(String.format("Unknown statement: \"%s\"", statement[0]));
+            dbm.getOrion().logger.fatal(ex);
         }
 
         return null;
@@ -105,8 +110,9 @@ public class MySQL extends HostnameDatabase {
                     return true;
                 }
             }
-        } catch (SQLException e) {
-            dbm.getOrion().logger.exception(String.format("Failed to check if table exists \"%s\": %s", table, e.getMessage()), e);
+        } catch (SQLException ex) {
+            dbm.getOrion().logger.fatal(String.format("Failed to check if table exists \"%s\": %s", table, ex.getMessage()));
+            dbm.getOrion().logger.fatal(ex);
         }
 
         return false;
@@ -124,8 +130,9 @@ public class MySQL extends HostnameDatabase {
             }
 
             return true;
-        } catch (SQLException e) {
-            dbm.getOrion().logger.exception(String.format("Failed to truncate \"%s\": %s", table, e.getMessage()), e);
+        } catch (SQLException ex) {
+            dbm.getOrion().logger.fatal(String.format("Failed to truncate \"%s\": %s", table, ex.getMessage()));
+            dbm.getOrion().logger.fatal(ex);
         }
 
         return false;

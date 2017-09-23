@@ -77,7 +77,7 @@ public class Migrations {
             migration.getMigration().up(dbm.getSchema());
             updateRemoteMigrationBatchValue(migration, 1);
 
-            dbm.getOrion().logger.info("Migration: Created \"%s\"", migration.getName());
+            dbm.getOrion().logger.info(String.format("Migration: Created \"%s\"", migration.getName()));
 
             ranMigrations = true;
         }
@@ -117,7 +117,7 @@ public class Migrations {
             migration.getMigration().down(dbm.getSchema());
             updateRemoteMigrationBatchValue(migration, 0);
 
-            dbm.getOrion().logger.info("Migration: Rolled back \"%s\"", migration.getName());
+            dbm.getOrion().logger.info(String.format("Migration: Rolled back \"%s\"", migration.getName()));
 
             ranMigrations = true;
         }
@@ -163,7 +163,7 @@ public class Migrations {
             migration.getMigration().down(dbm.getSchema());
             updateRemoteMigrationBatchValue(migration, 0);
 
-            dbm.getOrion().logger.info("Migration: Rolled back \"%s\"", migration.getName());
+            dbm.getOrion().logger.info(String.format("Migration: Rolled back \"%s\"", migration.getName()));
 
             ranMigrations = true;
         }

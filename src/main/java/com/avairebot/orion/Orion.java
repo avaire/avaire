@@ -13,40 +13,51 @@ import com.avairebot.orion.contracts.handlers.EventHandler;
 import com.avairebot.orion.database.DatabaseManager;
 import com.avairebot.orion.database.migrate.migrations.*;
 import com.avairebot.orion.handlers.EventTypes;
-import com.avairebot.orion.logger.Logger;
 import com.avairebot.orion.scheduler.*;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.exceptions.RateLimitedException;
 import net.dv8tion.jda.core.requests.SessionReconnectQueue;
+import net.dv8tion.jda.core.utils.SimpleLog;
 
 import javax.security.auth.login.LoginException;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
+import java.util.Properties;
 
 public class Orion {
 
     public final MainConfiguration config;
-    public final Logger logger;
+    public final SimpleLog logger;
     public final CacheManager cache;
     public final DatabaseManager database;
+
+    private final Properties properties = new Properties();
 
     private JDA jda;
 
     public Orion() throws IOException, SQLException {
-        this.logger = new Logger(this);
+        logger = SimpleLog.getLog("Orion");
+        properties.load(getClass().getClassLoader().getResourceAsStream("orion.properties"));
+
+        logger.info("Bootstrapping Orion v" + properties.getProperty("version"));
+
         this.cache = new CacheManager(this);
 
+        logger.info(" - Loading configuration");
         ConfigurationLoader configLoader = new ConfigurationLoader();
         this.config = (MainConfiguration) configLoader.load("config.json", MainConfiguration.class);
         if (this.config == null) {
-            this.logger.error("Something went wrong while trying to load the configuration, exiting program...");
+            this.logger.fatal("Something went wrong while trying to load the configuration, exiting program...");
             System.exit(0);
         }
 
+        logger.info(" - Registering and connecting to database");
         database = new DatabaseManager(this);
+
+        logger.info(" - Registering database table migrations");
         database.getMigrations().register(
                 new CreateGuildTableMigration(),
                 new CreateGuildTypeTableMigration(),
@@ -59,16 +70,17 @@ public class Orion {
         );
         database.getMigrations().up();
 
-        try {
-            jda = prepareJDA().buildBlocking();
-        } catch (LoginException | RateLimitedException | InterruptedException ex) {
-            this.logger.error("Something went wrong while trying to connect to Discord, exiting program...");
-            this.logger.exception(ex);
-            System.exit(0);
-        }
-
         this.registerCommands();
         this.registerJobs();
+
+        try {
+            logger.info(" - Creating bot instance and connecting to Discord network");
+            jda = prepareJDA().buildBlocking();
+        } catch (LoginException | RateLimitedException | InterruptedException ex) {
+            this.logger.fatal("Something went wrong while trying to connect to Discord, exiting program...");
+            this.logger.fatal(ex);
+            System.exit(0);
+        }
     }
 
     public JDA getJDA() {
@@ -76,6 +88,8 @@ public class Orion {
     }
 
     private void registerCommands() {
+        logger.info(" - Registering commands...");
+
         // Fun
         CommandHandler.register(new ChuckNorrisCommand(this));
         CommandHandler.register(new CoinflipCommand(this));
@@ -108,13 +122,19 @@ public class Orion {
         CommandHandler.register(new InviteCommand(this));
         CommandHandler.register(new SourceCommand(this));
         CommandHandler.register(new StatsCommand(this));
+
+        logger.info(String.format(" - Registered %s commands successfully!", CommandHandler.getCommands().size()));
     }
 
     private void registerJobs() {
+        logger.info(" - Registering jobs...");
+
         ScheduleHandler.registerJob(new ChangeGameJob(this));
         ScheduleHandler.registerJob(new GarbageCollectorJob(this));
         ScheduleHandler.registerJob(new UpdateAudioPlayedTimeJob(this));
         ScheduleHandler.registerJob(new ResetRespectStatisticsJob(this));
+
+        logger.info(String.format(" - Registered %s jobs successfully!", ScheduleHandler.entrySet().size()));
     }
 
     private JDABuilder prepareJDA() {
@@ -131,11 +151,11 @@ public class Orion {
                     builder.addEventListener(instance);
                 }
             } catch (InstantiationException | NoSuchMethodException | InvocationTargetException ex) {
-                this.logger.error("Invalid listener adapter object parsed, failed to create a new instance!");
-                this.logger.exception(ex);
+                this.logger.fatal("Invalid listener adapter object parsed, failed to create a new instance!");
+                this.logger.fatal(ex);
             } catch (IllegalAccessException ex) {
-                this.logger.error("An attempt was made to register a event listener called " + event + " but it failed somewhere!");
-                this.logger.exception(ex);
+                this.logger.fatal("An attempt was made to register a event listener called " + event + " but it failed somewhere!");
+                this.logger.fatal(ex);
             }
         }
 
