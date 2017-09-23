@@ -74,11 +74,10 @@ public class HelpCommand extends AbstractCommand {
     private boolean showCategories(Message message) {
         Category category = Category.random();
 
-        String note = String.format(
-                ":information_source: Type `!help <category>` to get a list of commands in that category.\nExample: `!help %s` or `!help %s`",
+        String note = String.format(":information_source: Type `:help <category>` to get a list of commands in that category.\nExample: `:help %s` or `:help %s`",
                 category.getName().toLowerCase(),
                 category.getName().toLowerCase().substring(0, 3)
-        );
+        ).replaceAll(":help", generateCommandTrigger(message));
 
         MessageEmbed embed = MessageFactory.createEmbeddedBuilder()
                 .setColor(MessageFactory.MessageType.INFO.getColor())
@@ -101,7 +100,7 @@ public class HelpCommand extends AbstractCommand {
                 "List of Commands",
                 CommandHandler.getCommands().stream()
                         .filter(commandContainer -> commandContainer.getCategory().equals(category))
-                        .map(container -> container.getDefaultPrefix() + container.getCommand().getTriggers().get(0))
+                        .map(container -> container.getCommand().generateCommandTrigger(message))
                         .collect(Collectors.joining("\n"))
         )).queue(sentMessage -> MessageFactory.makeInfo(sentMessage,
                 "**Type `:help <command>` to see the help for that specified command.**\nExample: `:help :command`"
