@@ -10,6 +10,7 @@ import java.util.Random;
 public enum Category {
 
     FUN("Fun", ">"),
+    HELP("Help", "."),
     MUSIC("Music", "!"),
     SYSTEM("System", ";"),
     UTILITY("Utility", "!");

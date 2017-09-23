@@ -1,4 +1,4 @@
-package com.avairebot.orion.commands.utility;
+package com.avairebot.orion.commands.help;
 
 import com.avairebot.orion.Orion;
 import com.avairebot.orion.commands.Category;
