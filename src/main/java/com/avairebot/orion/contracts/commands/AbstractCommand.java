@@ -137,6 +137,10 @@ public abstract class AbstractCommand {
         );
     }
 
+    public String generateCommandTrigger(Message message) {
+        return CommandHandler.getCommand(this).getDefaultPrefix() + getTriggers().get(0);
+    }
+
     public boolean isSame(AbstractCommand command) {
         return Objects.equals(command.getName(), getName())
                 && Objects.equals(command.getDescription(), command.getDescription())

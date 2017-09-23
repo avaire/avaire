@@ -104,7 +104,16 @@ public class HelpCommand extends AbstractCommand {
                         .map(container -> container.getDefaultPrefix() + container.getCommand().getTriggers().get(0))
                         .collect(Collectors.joining("\n"))
         )).queue(sentMessage -> MessageFactory.makeInfo(sentMessage,
-                "**Type `:help <command>` to see the help for that specified command.**\\nExample: `:help !fillerCommand`"
+                "**Type `:help <command>` to see the help for that specified command.**\nExample: `:help :command`"
+                        .replaceAll(":help", generateCommandTrigger(message))
+                        .replace(":command", CommandHandler.getCommands().stream()
+                                .filter(commandContainer -> commandContainer.getCategory().equals(category))
+                                .collect(Collectors.collectingAndThen(Collectors.toList(), collected -> {
+                                    Collections.shuffle(collected);
+                                    return collected.stream();
+                                }))
+                                .findFirst().get().getCommand().generateCommandTrigger(message)
+                        )
         ).queue());
 
         return true;
