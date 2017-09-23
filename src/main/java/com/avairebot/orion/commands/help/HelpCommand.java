@@ -100,7 +100,25 @@ public class HelpCommand extends AbstractCommand {
                 "List of Commands",
                 CommandHandler.getCommands().stream()
                         .filter(commandContainer -> commandContainer.getCategory().equals(category))
-                        .map(container -> container.getCommand().generateCommandTrigger(message))
+                        .map(container -> {
+                            String trigger = container.getCommand().generateCommandTrigger(message);
+
+                            for (int i = trigger.length(); i < 15; i++) {
+                                trigger += " ";
+                            }
+
+                            List<String> triggers = container.getCommand().getTriggers();
+                            if (triggers.size() == 1) {
+                                return trigger + "[]";
+                            }
+
+                            String prefix = container.getCommand().generateCommandPrefix(message);
+                            String[] aliases = new String[triggers.size() - 1];
+                            for (int i = 1; i < triggers.size(); i++) {
+                                aliases[i - 1] = prefix + triggers.get(i);
+                            }
+                            return String.format("%s[%s]", trigger, String.join(", ", aliases));
+                        })
                         .collect(Collectors.joining("\n"))
         )).queue(sentMessage -> MessageFactory.makeInfo(sentMessage,
                 "**Type `:help <command>` to see the help for that specified command.**\nExample: `:help :command`"
