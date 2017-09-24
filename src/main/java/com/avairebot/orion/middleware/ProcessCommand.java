@@ -48,7 +48,7 @@ public class ProcessCommand extends AbstractMiddleware {
     }
 
     private String generateServer(Message message) {
-        if (message.getChannelType().isGuild()) {
+        if (!message.getChannelType().isGuild()) {
             return "PRIVATE";
         }
 
@@ -59,7 +59,7 @@ public class ProcessCommand extends AbstractMiddleware {
     }
 
     private CharSequence generateChannel(Message message) {
-        if (message.getChannelType().isGuild()) {
+        if (!message.getChannelType().isGuild()) {
             return "PRIVATE";
         }
 
