@@ -7,12 +7,16 @@ import com.avairebot.orion.time.Carbon;
 public class GuildTransformer extends Transformer {
 
     private boolean levels = false;
+    private boolean levelAlerts = false;
+    private String levelChannel = null;
 
     public GuildTransformer(DataRow data) {
         super(data);
 
         if (hasData()) {
             levels = data.getBoolean("levels");
+            levelAlerts = data.getBoolean("level_alerts");
+            levelChannel = data.getString("level_channel");
         }
     }
 
@@ -53,11 +57,19 @@ public class GuildTransformer extends Transformer {
     }
 
     public boolean isLevelAlerts() {
-        return data.getBoolean("level_alerts");
+        return levelAlerts;
+    }
+
+    public void setLevelAlerts(boolean levelAlerts) {
+        this.levelAlerts = levelAlerts;
     }
 
     public String getLevelChannel() {
-        return data.getString("level_channel");
+        return levelChannel;
+    }
+
+    public void setLevelChannel(String levelChannel) {
+        this.levelChannel = levelChannel;
     }
 
     public Carbon getCreatedAt() {
