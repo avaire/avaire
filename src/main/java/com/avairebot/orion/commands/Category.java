@@ -9,6 +9,7 @@ import java.util.Random;
 
 public enum Category {
 
+    ADMINISTRATION("Administration", "."),
     FUN("Fun", ">"),
     HELP("Help", "."),
     MUSIC("Music", "!"),

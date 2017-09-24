@@ -6,8 +6,14 @@ import com.avairebot.orion.time.Carbon;
 
 public class GuildTransformer extends Transformer {
 
+    private boolean levels = false;
+
     public GuildTransformer(DataRow data) {
         super(data);
+
+        if (hasData()) {
+            levels = data.getBoolean("levels");
+        }
     }
 
     public String getId() {
@@ -39,7 +45,11 @@ public class GuildTransformer extends Transformer {
     }
 
     public boolean isLevels() {
-        return data.getBoolean("levels");
+        return levels;
+    }
+
+    public void setLevels(boolean level) {
+        levels = level;
     }
 
     public boolean isLevelAlerts() {
