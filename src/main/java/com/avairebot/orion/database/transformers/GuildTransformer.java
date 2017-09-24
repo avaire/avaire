@@ -43,7 +43,7 @@ public class GuildTransformer extends Transformer {
     }
 
     public boolean isLevelAlerts() {
-        return data.getBoolean("levels_alerts");
+        return data.getBoolean("level_alerts");
     }
 
     public String getLevelChannel() {

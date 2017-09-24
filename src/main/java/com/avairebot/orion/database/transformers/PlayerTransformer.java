@@ -6,8 +6,14 @@ import com.avairebot.orion.time.Carbon;
 
 public class PlayerTransformer extends Transformer {
 
+    private long experience = 0;
+
     public PlayerTransformer(DataRow data) {
         super(data);
+
+        if (hasData()) {
+            experience = data.getLong("experience", 0);
+        }
     }
 
     public String getUserId() {
@@ -31,7 +37,7 @@ public class PlayerTransformer extends Transformer {
     }
 
     public long getExperience() {
-        return data.getLong("experience", 0);
+        return experience;
     }
 
     public Carbon getCreatedAt() {
@@ -40,5 +46,9 @@ public class PlayerTransformer extends Transformer {
 
     public Carbon getUpdatedAt() {
         return data.getTimestamp("updated_at");
+    }
+
+    public void incrementExperienceBy(int amount) {
+        experience = experience + amount;
     }
 }

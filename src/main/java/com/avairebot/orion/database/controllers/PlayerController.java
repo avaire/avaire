@@ -20,10 +20,13 @@ public class PlayerController {
             return null;
         }
 
-        if (isCached(orion, message.getGuild().getId(), message.getAuthor().getId())) {
-            return (PlayerTransformer) orion.cache.getAdapter(CacheType.MEMORY).get(
-                    String.format(CACHE_STRING, message.getGuild().getId(), message.getAuthor().getId())
-            );
+        String cacheToken = String.format(CACHE_STRING,
+                message.getGuild().getId(),
+                message.getAuthor().getId()
+        );
+
+        if (orion.cache.getAdapter(CacheType.MEMORY).has(cacheToken)) {
+            return (PlayerTransformer) orion.cache.getAdapter(CacheType.MEMORY).get(cacheToken);
         }
 
         try {
@@ -40,13 +43,10 @@ public class PlayerController {
                 items.put("username", message.getAuthor().getName());
                 items.put("discriminator", message.getAuthor().getDiscriminator());
                 items.put("avatar", message.getAuthor().getAvatarId());
-                items.put("experience", 0);
+                items.put("experience", 100);
 
                 transformer = new PlayerTransformer(new DataRow(items));
-                orion.cache.getAdapter(CacheType.MEMORY).put(String.format(CACHE_STRING,
-                        message.getGuild().getId(),
-                        message.getAuthor().getId()
-                ), transformer, 2);
+                orion.cache.getAdapter(CacheType.MEMORY).put(cacheToken, transformer, 2);
 
                 try {
                     orion.database.newQueryBuilder(Constants.PLAYER_EXPERIENCE_TABLE_NAME).insert(items);
@@ -57,21 +57,12 @@ public class PlayerController {
                 return transformer;
             }
 
-            orion.cache.getAdapter(CacheType.MEMORY).put(String.format(CACHE_STRING,
-                    message.getGuild().getId(),
-                    message.getAuthor().getId()
-            ), transformer, 300);
+            orion.cache.getAdapter(CacheType.MEMORY).put(cacheToken, transformer, 300);
 
             return transformer;
         } catch (SQLException ex) {
             orion.logger.fatal(ex);
             return null;
         }
-    }
-
-    private static boolean isCached(Orion orion, String guildId, String playerId) {
-        return orion.cache.getAdapter(CacheType.MEMORY).has(
-                String.format(CACHE_STRING, guildId, playerId)
-        );
     }
 }
