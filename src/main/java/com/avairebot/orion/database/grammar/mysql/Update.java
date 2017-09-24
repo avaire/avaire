@@ -41,8 +41,15 @@ public class Update extends UpdateGrammar {
                     continue;
                 }
 
-                String value = row.get(key).toString();
                 String formatKey = formatField(key);
+
+                if (row.get(key) == null) {
+                    addPart(" %s = NULL, ", formatKey);
+
+                    continue;
+                }
+
+                String value = row.get(key).toString();
 
                 if (value.equalsIgnoreCase("true") || value.equalsIgnoreCase("false")) {
                     addPart(String.format(" %s = %s, ", formatKey, value.equalsIgnoreCase("true") ? 1 : 0));
