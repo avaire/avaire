@@ -51,6 +51,12 @@ public class Update extends UpdateGrammar {
 
                 String value = row.get(key).toString();
 
+                if (value.startsWith("RAW:")) {
+                    addPart(" %s = %s, ", formatKey, value.substring(4));
+
+                    continue;
+                }
+
                 if (value.equalsIgnoreCase("true") || value.equalsIgnoreCase("false")) {
                     addPart(String.format(" %s = %s, ", formatKey, value.equalsIgnoreCase("true") ? 1 : 0));
 
@@ -75,6 +81,8 @@ public class Update extends UpdateGrammar {
     @Override
     protected String finalize(QueryBuilder builder) {
         addPart(";");
+
+        System.out.println("Query: " + query);
 
         return query;
     }

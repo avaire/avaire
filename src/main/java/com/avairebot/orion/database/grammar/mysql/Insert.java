@@ -50,7 +50,19 @@ public class Insert extends InsertGrammar {
                     continue;
                 }
 
+                if (row.get(key) == null) {
+                    addPart("NULL, ");
+
+                    continue;
+                }
+
                 String value = row.get(key).toString();
+
+                if (value.startsWith("RAW:")) {
+                    addPart("%s, ", value.substring(4));
+
+                    continue;
+                }
 
                 if (value.equalsIgnoreCase("true") || value.equalsIgnoreCase("false")) {
                     addPart(String.format("%s, ", value.equalsIgnoreCase("true") ? 1 : 0));
