@@ -105,6 +105,27 @@ public class Blueprint {
     }
 
     /**
+     * Creates a {@link FieldType#LONG } column with the provided name and length.
+     *
+     * @param field The name of the column that should be created
+     * @return the field instance.
+     */
+    public Field Long(String field) {
+        return makeField(field, FieldType.LONG);
+    }
+
+    /**
+     * Creates a {@link FieldType#LONG } column with the provided name and length.
+     *
+     * @param field  The name of the column that should be created
+     * @param length The length of the column
+     * @return the field instance.
+     */
+    public Field Long(String field, int length) {
+        return makeField(field, FieldType.LONG, length);
+    }
+
+    /**
      * Creates a {@link #Decimal(java.lang.String, int) } column with the provided name, and a length of <code>17</code>.
      *
      * @param field The name of the column that should be created
