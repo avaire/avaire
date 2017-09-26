@@ -44,6 +44,7 @@ public class Insert extends InsertGrammar {
             addPart(" (");
 
             for (String key : keyset) {
+
                 if (!row.containsKey(key)) {
                     addPart("NULL, ");
 
@@ -76,7 +77,7 @@ public class Insert extends InsertGrammar {
                     continue;
                 }
 
-                addPart(String.format("'%s', ", value));
+                addPart("?, ");
             }
 
             removeLast(2).addPart("),");

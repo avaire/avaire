@@ -11,6 +11,7 @@ import com.avairebot.orion.database.schema.Schema;
 
 import java.sql.*;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 public class DatabaseManager {
@@ -202,8 +203,8 @@ public class DatabaseManager {
      * statement, such as <code>INSERT</code>; After the query has been executed the prepared statement
      * will be used to generate a set of keys, referring to the IDs of the inserted rows.
      *
-     * @param query a QueryBuilder instance that should be sent to the database, typically a
-     *              static SQL INSERT statement
+     * @param queryBuilder a QueryBuilder instance that should be sent to the database, typically a
+     *                     static SQL INSERT statement
      * @return a set of IDs referring to the insert rows
      * @throws SQLException        if a database access error occurs;
      *                             this method is called on a closed  <code>PreparedStatement</code>
@@ -213,7 +214,43 @@ public class DatabaseManager {
      *                             method has been exceeded and has at least attempted to cancel
      *                             the currently running {@code Statement}
      */
-    public Set<Integer> queryInsert(QueryBuilder query) throws SQLException {
-        return queryInsert(query.toSQL());
+    public Set<Integer> queryInsert(QueryBuilder queryBuilder) throws SQLException {
+        String query = queryBuilder.toSQL();
+        if (!query.startsWith("INSERT INTO")) {
+            throw new DatabaseException("queryInsert was called with a query without an INSERT statement!");
+        }
+
+        PreparedStatement stmt = getConnection().getConnection().prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+
+        int preparedIndex = 1;
+        for (Map<String, Object> row : queryBuilder.getItems()) {
+            for (Map.Entry<String, Object> item : row.entrySet()) {
+                if (item.getValue() == null) {
+                    continue;
+                }
+
+                String value = item.getValue().toString();
+
+                if (value.startsWith("RAW:") ||
+                        value.equalsIgnoreCase("true") ||
+                        value.equalsIgnoreCase("false") ||
+                        value.matches("[-+]?\\d*\\.?\\d+")) {
+                    continue;
+                }
+
+                stmt.setString(preparedIndex++, value);
+            }
+        }
+
+        stmt.executeUpdate();
+
+        Set<Integer> ids = new HashSet<>();
+
+        ResultSet keys = stmt.getGeneratedKeys();
+        while (keys.next()) {
+            ids.add(keys.getInt(1));
+        }
+
+        return ids;
     }
 }
