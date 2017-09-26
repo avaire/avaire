@@ -9,10 +9,7 @@ import com.avairebot.orion.commands.help.HelpCommand;
 import com.avairebot.orion.commands.music.*;
 import com.avairebot.orion.commands.system.EvalCommand;
 import com.avairebot.orion.commands.system.SetStatusCommand;
-import com.avairebot.orion.commands.utility.InviteCommand;
-import com.avairebot.orion.commands.utility.PingCommand;
-import com.avairebot.orion.commands.utility.SourceCommand;
-import com.avairebot.orion.commands.utility.StatsCommand;
+import com.avairebot.orion.commands.utility.*;
 import com.avairebot.orion.config.ConfigurationLoader;
 import com.avairebot.orion.config.MainConfiguration;
 import com.avairebot.orion.contracts.handlers.EventHandler;
@@ -129,6 +126,7 @@ public class Orion {
         // Utility
         CommandHandler.register(new HelpCommand(this));
         CommandHandler.register(new PingCommand(this));
+        CommandHandler.register(new RankCommand(this));
         CommandHandler.register(new InviteCommand(this));
         CommandHandler.register(new SourceCommand(this));
         CommandHandler.register(new StatsCommand(this));
