@@ -82,8 +82,6 @@ public class Update extends UpdateGrammar {
     protected String finalize(QueryBuilder builder) {
         addPart(";");
 
-        System.out.println("Query: " + query);
-
         return query;
     }
 }
