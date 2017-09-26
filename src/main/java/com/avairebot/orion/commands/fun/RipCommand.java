@@ -55,9 +55,8 @@ public class RipCommand extends AbstractCommand {
         Statistics.addRespects();
 
         try {
-            orion.database.queryUpdate(
-                    String.format("UPDATE `%s` SET `respects` = `respects` + 1;", Constants.STATISTICS_TABLE_NAME)
-            );
+            orion.database.newQueryBuilder(Constants.STATISTICS_TABLE_NAME)
+                    .update(statement -> statement.setRaw("respects", "`respects` + 1"));
         } catch (SQLException ex) {
             return false;
         }

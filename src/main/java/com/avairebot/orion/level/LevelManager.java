@@ -11,8 +11,6 @@ import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 
 public class LevelManager {
@@ -60,14 +58,11 @@ public class LevelManager {
 
         player.incrementExperienceBy(amount);
 
-        Map<String, Object> items = new HashMap<>();
-        items.put("experience", player.getExperience());
-
         try {
             orion.database.newQueryBuilder(Constants.PLAYER_EXPERIENCE_TABLE_NAME)
                     .where("user_id", player.getUserId())
                     .andWhere("guild_id", player.getGuildId())
-                    .update(items);
+                    .update(statement -> statement.set("experience", player.getExperience()));
 
             if (guild.isLevelAlerts() && getLevelFromXp(player.getExperience()) > lvl) {
                 getLevelUpChannel(message, guild).sendMessage(MessageFactory.createEmbeddedBuilder()

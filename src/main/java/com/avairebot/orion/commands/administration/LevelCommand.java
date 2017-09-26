@@ -9,7 +9,9 @@ import com.avairebot.orion.factories.MessageFactory;
 import net.dv8tion.jda.core.entities.Message;
 
 import java.sql.SQLException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 public class LevelCommand extends AbstractCommand {
 
@@ -57,12 +59,9 @@ public class LevelCommand extends AbstractCommand {
         guildTransformer.setLevels(!guildTransformer.isLevels());
 
         try {
-            Map<String, Object> items = new HashMap<>();
-            items.put("levels", guildTransformer.isLevels());
-
             orion.database.newQueryBuilder(Constants.GUILD_TABLE_NAME)
                     .andWhere("id", message.getGuild().getId())
-                    .update(items);
+                    .update(statement -> statement.set("levels", guildTransformer.isLevels()));
 
             String note = "";
             if (guildTransformer.isLevels()) {

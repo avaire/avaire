@@ -2,6 +2,7 @@ package com.avairebot.orion.database.query;
 
 import com.avairebot.orion.contracts.database.QueryClause;
 import com.avairebot.orion.contracts.database.grammar.GrammarParser;
+import com.avairebot.orion.contracts.database.query.ChangeableClosure;
 import com.avairebot.orion.contracts.database.query.ClauseConsumer;
 import com.avairebot.orion.database.DatabaseManager;
 import com.avairebot.orion.database.collection.Collection;
@@ -700,6 +701,28 @@ public final class QueryBuilder {
     }
 
     /**
+     * Runs the {@link com.avairebot.orion.database.DatabaseManager#queryUpdate(QueryBuilder)} method with
+     * the current instance of the query builder, and the given items from the changeable closure.
+     *
+     * @param closure The changeable closure that should be run.
+     * @return either (1) the row count for SQL Data Manipulation Language (DML) statements
+     * or (2) 0 for SQL statements that return nothing
+     * @throws SQLException if a database access error occurs;
+     *                      this method is called on a closed  <code>PreparedStatement</code>
+     *                      or the SQL statement returns a <code>ResultSet</code> object
+     */
+    public int update(ChangeableClosure closure) throws SQLException {
+        type = QueryType.UPDATE;
+
+        ChangeableStatement statement = new ChangeableStatement(this);
+        closure.run(statement);
+
+        this.items.addAll(Arrays.asList(statement.getItems()));
+
+        return dbm.queryUpdate(this);
+    }
+
+    /**
      * Runs the {@link com.avairebot.orion.database.DatabaseManager#queryUpdate(QueryBuilder)}
      * method with the current instance of the query builder.
      *
@@ -731,6 +754,36 @@ public final class QueryBuilder {
         this.items.addAll(Arrays.asList(items));
 
         return dbm.queryUpdate(this);
+    }
+
+    /**
+     * Runs the {@link com.avairebot.orion.database.DatabaseManager#queryInsert(QueryBuilder)} method with
+     * the current instance of the query builder, and the given items from the changeable closure.
+     *
+     * @param closure The changeable closure that should be run.
+     * @return a Collection of the generated IDs.
+     * @throws SQLException if a database access error occurs;
+     *                      this method is called on a closed  <code>PreparedStatement</code>
+     *                      or the SQL statement returns a <code>ResultSet</code> object
+     */
+    public Collection insert(ChangeableClosure closure) throws SQLException {
+        type = QueryType.INSERT;
+
+        ChangeableStatement statement = new ChangeableStatement(this);
+        closure.run(statement);
+
+        this.items.addAll(Arrays.asList(statement.getItems()));
+
+        Set<Integer> keys = dbm.queryInsert(this);
+        List<Map<String, Object>> collectionItems = new ArrayList<>();
+
+        for (int id : keys) {
+            Map<String, Object> row = new HashMap<>();
+            row.put("id", id);
+            collectionItems.add(row);
+        }
+
+        return new Collection(collectionItems);
     }
 
     /**

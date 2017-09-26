@@ -10,9 +10,7 @@ import net.dv8tion.jda.core.entities.Message;
 
 import java.sql.SQLException;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class LevelAlertsCommand extends AbstractCommand {
 
@@ -67,14 +65,13 @@ public class LevelAlertsCommand extends AbstractCommand {
         guildTransformer.setLevelAlerts(status);
         guildTransformer.setLevelChannel(channelId);
 
-        Map<String, Object> items = new HashMap<>();
-        items.put("level_alerts", guildTransformer.isLevelAlerts());
-        items.put("level_channel", guildTransformer.getLevelChannel());
-
         try {
             orion.database.newQueryBuilder(Constants.GUILD_TABLE_NAME)
                     .where("id", guildTransformer.getId())
-                    .update(items);
+                    .update(statement -> statement
+                            .set("level_alerts", guildTransformer.isLevelAlerts())
+                            .set("level_channel", guildTransformer.getLevelChannel())
+                    );
 
             MessageFactory.makeSuccess(message, "`Levels up alerts` has been `%s` for the server.%s",
                     status ? "Enabled" : "Disabled",

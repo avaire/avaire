@@ -5,7 +5,6 @@ import com.avairebot.orion.contracts.database.migrations.Migration;
 import com.avairebot.orion.database.schema.Schema;
 
 import java.sql.SQLException;
-import java.util.Arrays;
 
 public class CreateStatisticsTableMigration implements Migration {
 
@@ -20,9 +19,9 @@ public class CreateStatisticsTableMigration implements Migration {
             return false;
         }
 
-        return !schema.getDbm().newQueryBuilder(Constants.STATISTICS_TABLE_NAME).insert(
-                Arrays.asList("respects", "0")
-        ).isEmpty();
+        return !schema.getDbm().newQueryBuilder(Constants.STATISTICS_TABLE_NAME)
+                .insert(statement -> statement.set("respects", 0))
+                .isEmpty();
     }
 
     private boolean createTable(Schema schema) throws SQLException {

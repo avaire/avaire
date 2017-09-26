@@ -32,30 +32,31 @@ public class GuildController {
 
         try {
             GuildTransformer transformer = new GuildTransformer(orion.database.newQueryBuilder(Constants.GUILD_TABLE_NAME)
-                    .selectAll()
                     .where("id", message.getGuild().getId())
                     .get().first());
 
             if (!transformer.hasData()) {
-                Map<String, Object> items = new HashMap<>();
-                items.put("id", message.getGuild().getId());
-                items.put("owner", message.getGuild().getOwner().getUser().getId());
-                items.put("name", message.getGuild().getName());
-                items.put("channels_data", buildChannelData(message.getGuild().getTextChannels()));
-                if (message.getGuild().getIconId() != null) {
-                    items.put("icon", message.getGuild().getIconId());
-                }
-
-                transformer = new GuildTransformer(new DataRow(items));
-                orion.cache.getAdapter(CacheType.MEMORY).put(String.format(CACHE_STRING, message.getGuild().getId()), transformer, 2);
-
+                final String cacheToken = String.format(CACHE_STRING, message.getGuild().getId());
                 try {
-                    orion.database.newQueryBuilder(Constants.GUILD_TABLE_NAME).insert(items);
+                    orion.database.newQueryBuilder(Constants.GUILD_TABLE_NAME)
+                            .insert(statement -> {
+                                statement.set("id", message.getGuild().getId())
+                                        .set("owner", message.getGuild().getOwner().getUser().getId())
+                                        .set("name", message.getGuild().getName())
+                                        .set("channels_data", buildChannelData(message.getGuild().getTextChannels()));
+
+                                if (message.getGuild().getIconId() != null) {
+                                    statement.set("icon", message.getGuild().getIconId());
+                                }
+
+                                orion.cache.getAdapter(CacheType.MEMORY)
+                                        .put(cacheToken, new GuildTransformer(new DataRow(statement.getItems())), 2);
+                            });
                 } catch (Exception ex) {
                     orion.logger.fatal(ex);
                 }
 
-                return transformer;
+                return (GuildTransformer) orion.cache.getAdapter(CacheType.MEMORY).get(cacheToken);
             }
 
             orion.cache.getAdapter(CacheType.MEMORY).put(String.format(CACHE_STRING, message.getGuild().getId()), transformer, 300);

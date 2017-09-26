@@ -229,17 +229,16 @@ public class Migrations {
     }
 
     private void updateRemoteMigrationBatchValue(MigrationContainer migration, int batch) throws SQLException {
-        Map<String, Object> item = new HashMap<>();
-        item.put("batch", batch);
-
         // If the migration has ran before, but was rolled back(down), this will update the existing row
         if (migration.getBatch() != -1) {
-            makeQuery().where("name", migration.getName()).update(item);
+            makeQuery().where("name", migration.getName())
+                    .update(statement -> statement.set("batch", batch));
         } // If the migration has never run before, this will create a new row
         else {
-            item.put("name", migration.getName());
-
-            makeQuery().insert(item);
+            makeQuery().insert(statement -> {
+                statement.set("name", migration.getName());
+                statement.set("batch", batch);
+            });
         }
 
         migration.setBatch(batch);

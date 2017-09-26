@@ -8,8 +8,6 @@ import com.avairebot.orion.database.transformers.PlayerTransformer;
 import net.dv8tion.jda.core.entities.Message;
 
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
 
 public class PlayerController {
 
@@ -20,7 +18,7 @@ public class PlayerController {
             return null;
         }
 
-        String cacheToken = String.format(CACHE_STRING,
+        final String cacheToken = String.format(CACHE_STRING,
                 message.getGuild().getId(),
                 message.getAuthor().getId()
         );
@@ -31,30 +29,24 @@ public class PlayerController {
 
         try {
             PlayerTransformer transformer = new PlayerTransformer(orion.database.newQueryBuilder(Constants.PLAYER_EXPERIENCE_TABLE_NAME)
-                    .selectAll()
                     .where("user_id", message.getAuthor().getId())
                     .andWhere("guild_id", message.getGuild().getId())
                     .get().first());
 
             if (!transformer.hasData()) {
-                Map<String, Object> items = new HashMap<>();
-                items.put("guild_id", message.getGuild().getId());
-                items.put("user_id", message.getAuthor().getId());
-                items.put("username", message.getAuthor().getName());
-                items.put("discriminator", message.getAuthor().getDiscriminator());
-                items.put("avatar", message.getAuthor().getAvatarId());
-                items.put("experience", 100);
+                orion.database.newQueryBuilder(Constants.PLAYER_EXPERIENCE_TABLE_NAME)
+                        .insert(statement -> {
+                            statement.set("guild_id", message.getGuild().getId())
+                                    .set("user_id", message.getAuthor().getId())
+                                    .set("username", message.getAuthor().getName())
+                                    .set("discriminator", message.getAuthor().getDiscriminator())
+                                    .set("avatar", message.getAuthor().getAvatarId())
+                                    .set("experience", 100);
 
-                transformer = new PlayerTransformer(new DataRow(items));
-                orion.cache.getAdapter(CacheType.MEMORY).put(cacheToken, transformer, 2);
+                            orion.cache.getAdapter(CacheType.MEMORY).put(cacheToken, new PlayerTransformer(new DataRow(statement.getItems())), 2);
+                        });
 
-                try {
-                    orion.database.newQueryBuilder(Constants.PLAYER_EXPERIENCE_TABLE_NAME).insert(items);
-                } catch (Exception ex) {
-                    orion.logger.fatal(ex);
-                }
-
-                return transformer;
+                return (PlayerTransformer) orion.cache.getAdapter(CacheType.MEMORY).get(cacheToken);
             }
 
             orion.cache.getAdapter(CacheType.MEMORY).put(cacheToken, transformer, 300);
