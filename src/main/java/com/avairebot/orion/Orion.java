@@ -78,8 +78,8 @@ public class Orion {
 
         try {
             logger.info(" - Creating bot instance and connecting to Discord network");
-            jda = prepareJDA().buildBlocking();
-        } catch (LoginException | RateLimitedException | InterruptedException ex) {
+            jda = prepareJDA().buildAsync();
+        } catch (LoginException | RateLimitedException ex) {
             this.logger.fatal("Something went wrong while trying to connect to Discord, exiting program...");
             this.logger.fatal(ex);
             System.exit(0);
