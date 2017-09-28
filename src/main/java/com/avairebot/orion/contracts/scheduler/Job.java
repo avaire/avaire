@@ -15,7 +15,11 @@ public abstract class Job implements Runnable {
     private final String unique;
 
     public Job(Orion orion) {
-        this(orion, 0, 1);
+        this(orion, 0);
+    }
+
+    public Job(Orion orion, long delay) {
+        this(orion, delay, 1);
     }
 
     public Job(Orion orion, long delay, long period) {

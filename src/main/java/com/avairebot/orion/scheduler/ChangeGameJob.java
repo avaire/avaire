@@ -9,7 +9,7 @@ public class ChangeGameJob extends Job {
     private int index = 0;
 
     public ChangeGameJob(Orion orion) {
-        super(orion);
+        super(orion, 1);
     }
 
     @Override
