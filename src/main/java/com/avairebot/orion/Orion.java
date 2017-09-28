@@ -100,6 +100,7 @@ public class Orion {
         // Fun
         CommandHandler.register(new ChuckNorrisCommand(this));
         CommandHandler.register(new CoinflipCommand(this));
+        CommandHandler.register(new DiceCommand(this));
         CommandHandler.register(new EightBallCommand(this));
         CommandHandler.register(new GfycatCommand(this));
         CommandHandler.register(new RandomCatCommand(this));
