@@ -103,6 +103,7 @@ public class Orion {
         CommandHandler.register(new DiceCommand(this));
         CommandHandler.register(new EightBallCommand(this));
         CommandHandler.register(new GfycatCommand(this));
+        CommandHandler.register(new LennyCommand(this));
         CommandHandler.register(new RandomCatCommand(this));
         CommandHandler.register(new RandomDogCommand(this));
         CommandHandler.register(new RepeatCommand(this));
