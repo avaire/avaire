@@ -47,13 +47,13 @@ public class RankCommand extends AbstractCommand {
     @Override
     public List<String> getUsageInstructions() {
         return Arrays.asList(
-                "`!rank` - Displays your rank, level, xp and other stuff",
-                "`!rank @Senither` - Displays Senither's rank, level, xp...");
+                "`:command` - Displays your rank, level, xp and other stuff",
+                "`:command @Senither` - Displays Senither's rank, level, xp...");
     }
 
     @Override
     public String getExampleUsage() {
-        return "`!rank`";
+        return "`:command`";
     }
 
     @Override
