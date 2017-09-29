@@ -43,7 +43,7 @@ public class Request extends Future {
     }
 
     @Override
-    public void handle(Consumer success, Consumer<Throwable> failure) {
+    protected void handle(Consumer success, Consumer<Throwable> failure) {
         try {
             HttpURLConnection con = (HttpURLConnection) buildUrl().openConnection();
 

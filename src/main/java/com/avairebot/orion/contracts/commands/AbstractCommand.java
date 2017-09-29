@@ -18,39 +18,124 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 public abstract class AbstractCommand {
+
+    /**
+     * The Orion class instance, this is used to access
+     * and interact with the rest of the application.
+     */
     protected final Orion orion;
+
+    /**
+     * Determines if the command can be used in direct messages or not.
+     */
     protected final boolean allowDM;
 
+    /**
+     * Creates the given command instance by calling {@link #AbstractCommand(Orion, boolean)} with allowDM set to false.
+     *
+     * @param orion The Orion class instance.
+     */
     public AbstractCommand(Orion orion) {
         this(orion, true);
     }
 
+    /**
+     * Creates the given command instance with the given
+     * Orion instance and the allowDM settings.
+     *
+     * @param orion   The Orion class instance.
+     * @param allowDM Determines if the command can be used in DMs.
+     */
     public AbstractCommand(Orion orion, boolean allowDM) {
         this.orion = orion;
         this.allowDM = allowDM;
     }
 
+    /**
+     * Gets the command name, this is used in help and error
+     * messages as the title as well as log messages.
+     *
+     * @return Never-null, the command name.
+     */
     public abstract String getName();
 
+    /**
+     * Gets the command description, this is used in help messages to help
+     * users get a better understanding of what the command does.
+     *
+     * @return Never-null, the command description.
+     */
     public abstract String getDescription();
 
+    /**
+     * Gets the command usage instructions for the given command, if the usage instructions
+     * is set to null the {@link #generateUsageInstructions(Message)} method will just
+     * return the command trigger in code syntax quotes.
+     *
+     * @return Possibly-null, the command usage instructions.
+     */
     public abstract List<String> getUsageInstructions();
 
+    /**
+     * Get the example usage for the given command, this is used to help users with
+     * using the command by example, if the example usage is set to null the
+     * {@link #generateExampleUsage(Message)} method will just return the
+     * command trigger in code syntax quotes.
+     *
+     * @return Possibly-null, an example of how to use the command.
+     */
     public abstract String getExampleUsage();
 
+    /**
+     * Gets am immutable list of command triggers that can be used to invoke the current
+     * command, the first index in the list will be used when the `:command` placeholder
+     * is used in {@link #getDescription()} or {@link #getUsageInstructions()} methods.
+     *
+     * @return An immutable list of command triggers that should invoked the command.
+     */
     public abstract List<String> getTriggers();
 
+    /**
+     * Gets an immutable list of middlewares that should be added to the command stack
+     * before the command is executed, if the middleware that intercepts the
+     * command message event fails the command will never be executed.
+     *
+     * @return An immutable list of command middlewares that should be invoked before the command.
+     * @see com.avairebot.orion.middleware.Middleware
+     */
     public List<String> getMiddleware() {
         return new ArrayList<>();
     }
 
-    public boolean isAllowedInDM() {
+    /**
+     * Determines if the command can be used in direct messages.
+     *
+     * @return true if the command can be run in DMs, false otherwise.
+     */
+    public final boolean isAllowedInDM() {
         return allowDM;
     }
 
+    /**
+     * The command executor, this method is invoked by the command handler
+     * and the middleware stack when a user sends a message matching the
+     * commands prefix and one of its command triggers.
+     *
+     * @param message The JDA message object from the message received event.
+     * @param args    The arguments given to the command, if no arguments was given the array will just be empty.
+     * @return true on success, false on failure.
+     */
     public abstract boolean onCommand(Message message, String[] args);
 
-    protected boolean sendErrorMessage(Message message, String error) {
+    /**
+     * Builds and sends the given error message to the
+     * given channel for the JDA message object.
+     *
+     * @param message The JDA message object.
+     * @param error   The error message that should be sent.
+     * @return false since the error message should only be used on failure.
+     */
+    protected final boolean sendErrorMessage(Message message, String error) {
         Category category = Category.fromCommand(this);
 
         message.getChannel().sendMessage(MessageFactory.createEmbeddedBuilder()
@@ -64,7 +149,15 @@ public abstract class AbstractCommand {
         return false;
     }
 
-    public String generateDescription(Message message) {
+    /**
+     * Generates the command description, any middlewares assigned to the command
+     * will also be dynamically generated and added to the command description
+     * two lines below the actually description.
+     *
+     * @param message The JDA message object.
+     * @return The generated command description.
+     */
+    public final String generateDescription(Message message) {
         if (getMiddleware().isEmpty()) {
             return getDescription().trim();
         }
@@ -123,7 +216,15 @@ public abstract class AbstractCommand {
         return description.stream().collect(Collectors.joining("\n"));
     }
 
-    public String generateUsageInstructions(Message message) {
+    /**
+     * Generates the command usage instructions, if the {@link #getUsageInstructions()} is null
+     * then the command trigger will just be returned instead inside of markdown code syntax,
+     * if the usage instructions are not null, each item in the array will become a new line.
+     *
+     * @param message The JDA message object.
+     * @return The usage instructions for the current command.
+     */
+    public final String generateUsageInstructions(Message message) {
         return formatCommandGeneratorString(message,
                 getUsageInstructions() == null ? "`:command`" :
                         getUsageInstructions().stream()
@@ -131,21 +232,50 @@ public abstract class AbstractCommand {
         );
     }
 
-    public String generateExampleUsage(Message message) {
+    /**
+     * Generates the example usage, if the {@link #generateExampleUsage(Message)} is null then the
+     * command trigger will just be returned instead inside of markdown coe syntax.
+     *
+     * @param message The JDA message object.
+     * @return The example usage for the current command.
+     */
+    public final String generateExampleUsage(Message message) {
         return formatCommandGeneratorString(message,
                 getExampleUsage() == null ? "`:command`" : getExampleUsage()
         );
     }
 
-    public String generateCommandTrigger(Message message) {
+    /**
+     * Generates the command triggers, if a custom category prefix have
+     * been set for the current server then the correct category
+     * prefix will be added to the command trigger.
+     *
+     * @param message The JDA message object.
+     * @return The first command trigger from the command triggers method.
+     */
+    public final String generateCommandTrigger(Message message) {
         return generateCommandPrefix(message) + getTriggers().get(0);
     }
 
-    public String generateCommandPrefix(Message message) {
+    /**
+     * Generates the correct command prefix for the command, if no custom command
+     * prefix has been set the default command prefix will be used instead.
+     *
+     * @param message The JDA message object.
+     * @return The dynamic command prefix for the current server.
+     */
+    public final String generateCommandPrefix(Message message) {
         return CommandHandler.getCommand(this).getDefaultPrefix();
     }
 
-    public boolean isSame(AbstractCommand command) {
+    /**
+     * Checks if the given command matches the current command by comparing the name,
+     * description, usage instructions, example usage and command triggers.
+     *
+     * @param command The command that should be compared with the current class.
+     * @return
+     */
+    public final boolean isSame(AbstractCommand command) {
         return Objects.equals(command.getName(), getName())
                 && Objects.equals(command.getDescription(), command.getDescription())
                 && Objects.equals(command.getUsageInstructions(), getUsageInstructions())
@@ -153,6 +283,14 @@ public abstract class AbstractCommand {
                 && Objects.equals(command.getTriggers(), getTriggers());
     }
 
+    /**
+     * Formats the command generated string by replacing any placeholder variables
+     * that might exists in the given string with their actually values.
+     *
+     * @param message The JDA message object.
+     * @param string  The string that should be formatted.
+     * @return The formatted string.
+     */
     private String formatCommandGeneratorString(Message message, String string) {
         CommandContainer container = CommandHandler.getCommand(this);
         String command = container.getDefaultPrefix() + container.getCommand().getTriggers().get(0);

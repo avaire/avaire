@@ -3,6 +3,7 @@ package com.avairebot.orion.contracts.cache;
 import com.avairebot.orion.cache.CacheItem;
 
 public abstract class CacheAdapter {
+
     /**
      * Store an item in the cache for a given number of seconds.
      *
