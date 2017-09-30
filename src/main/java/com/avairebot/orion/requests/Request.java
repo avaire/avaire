@@ -1,11 +1,9 @@
 package com.avairebot.orion.requests;
 
 import com.avairebot.orion.contracts.async.Future;
+import okhttp3.OkHttpClient;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -18,6 +16,9 @@ public class Request extends Future {
     private final String url;
     private final RequestType type;
 
+    private final OkHttpClient client;
+    private final okhttp3.Request.Builder builder;
+
     private final Map<String, Object> parameters = new HashMap<>();
     private final Map<String, String> headers = new HashMap<>();
 
@@ -29,6 +30,8 @@ public class Request extends Future {
         this.url = url;
         this.type = type;
 
+        client = new OkHttpClient();
+        builder = new okhttp3.Request.Builder();
         headers.put("User-Agent", "Mozilla/5.0");
     }
 
@@ -45,24 +48,19 @@ public class Request extends Future {
     @Override
     protected void handle(Consumer success, Consumer<Throwable> failure) {
         try {
-            HttpURLConnection con = (HttpURLConnection) buildUrl().openConnection();
-
-            con.setRequestMethod(type.name());
+            builder.url(buildUrl());
 
             for (Map.Entry<String, String> entry : headers.entrySet()) {
-                con.setRequestProperty(entry.getKey(), entry.getValue());
+                builder.addHeader(entry.getKey(), entry.getValue());
             }
 
-            String inputLine;
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(con.getInputStream()));
-            StringBuffer buffer = new StringBuffer();
-
-            while ((inputLine = bufferedReader.readLine()) != null) {
-                buffer.append(inputLine);
+            switch (type) {
+                case GET:
+                    builder.get();
+                    break;
             }
-            bufferedReader.close();
 
-            success.accept(new Response(buffer.toString()));
+            success.accept(new Response(client.newCall(builder.build()).execute().body().string()));
         } catch (Exception ex) {
             failure.accept(ex);
         }
