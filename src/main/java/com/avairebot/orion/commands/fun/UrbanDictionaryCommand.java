@@ -54,40 +54,36 @@ public class UrbanDictionaryCommand extends AbstractCommand {
 
     @Override
     public boolean onCommand(Message message, String[] args) {
-        try {
-            RequestFactory.makeGET("https://api.urbandictionary.com/v0/define")
-                    .addParameter("term", String.join(" ", args))
-                    .send((Consumer<Response>) response -> {
-                        UrbanDictionaryService service = (UrbanDictionaryService) response.toJson(UrbanDictionaryService.class);
+        RequestFactory.makeGET("https://api.urbandictionary.com/v0/define")
+                .addParameter("term", String.join(" ", args))
+                .send((Consumer<Response>) response -> {
+                    UrbanDictionaryService service = (UrbanDictionaryService) response.toJson(UrbanDictionaryService.class);
 
-                        if (!service.hasData()) {
-                            MessageFactory.makeWarning(message, "<@%s> I found nothing for `%s`",
-                                    message.getAuthor().getId(),
-                                    String.join(" ", args)
-                            ).queue();
-                            return;
-                        }
+                    if (!service.hasData()) {
+                        MessageFactory.makeWarning(message, "<@%s> I found nothing for `%s`",
+                                message.getAuthor().getId(),
+                                String.join(" ", args)
+                        ).queue();
+                        return;
+                    }
 
-                        UrbanDictionaryService.UrbanDictionary definition = service.getList().get(0);
+                    UrbanDictionaryService.UrbanDictionary definition = service.getList().get(0);
 
-                        double percentage = (((double) definition.getThumbsUp() / definition.getThumbsDown()) * 100) - 100;
+                    double percentage = (((double) definition.getThumbsUp() / definition.getThumbsDown()) * 100) - 100;
 
-                        EmbedBuilder embed = MessageFactory.createEmbeddedBuilder()
-                                .setColor(Color.decode("#1D2439"))
-                                .setTitle(definition.getWord(), definition.getPermalink())
-                                .setDescription(definition.getDefinition())
-                                .addField("Example", definition.getExample(), false)
-                                .setFooter(String.format("%s%s percentage of people like this. %s\uD83D\uDC4D %s\uD83D\uDC4E",
-                                        new DecimalFormat("#.##").format(percentage), "%",
-                                        definition.getThumbsUp(),
-                                        definition.getThumbsDown()
-                                ), null);
+                    EmbedBuilder embed = MessageFactory.createEmbeddedBuilder()
+                            .setColor(Color.decode("#1D2439"))
+                            .setTitle(definition.getWord(), definition.getPermalink())
+                            .setDescription(definition.getDefinition())
+                            .addField("Example", definition.getExample(), false)
+                            .setFooter(String.format("%s%s percentage of people like this. %s\uD83D\uDC4D %s\uD83D\uDC4E",
+                                    new DecimalFormat("#.##").format(percentage), "%",
+                                    definition.getThumbsUp(),
+                                    definition.getThumbsDown()
+                            ), null);
 
-                        message.getChannel().sendMessage(embed.build()).queue();
-                    });
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+                    message.getChannel().sendMessage(embed.build()).queue();
+                });
         return true;
     }
 }

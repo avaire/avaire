@@ -54,18 +54,14 @@ public class GfycatCommand extends AbstractCommand {
             return sendErrorMessage(message, "Missing arguments `queue`");
         }
 
-        try {
-            RequestFactory.makeGET("https://api.gfycat.com/v1test/gfycats/search")
-                    .addParameter("count", 25)
-                    .addParameter("search_text", String.join(" ", args))
-                    .send((Consumer<Response>) response -> {
-                        GfycatService gfyCat = (GfycatService) response.toJson(GfycatService.class);
+        RequestFactory.makeGET("https://api.gfycat.com/v1test/gfycats/search")
+                .addParameter("count", 25)
+                .addParameter("search_text", String.join(" ", args))
+                .send((Consumer<Response>) response -> {
+                    GfycatService gfyCat = (GfycatService) response.toJson(GfycatService.class);
 
-                        message.getChannel().sendMessage(gfyCat.getRandomGfycatsItem().get("gifUrl").toString()).queue();
-                    });
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+                    message.getChannel().sendMessage(gfyCat.getRandomGfycatsItem().get("gifUrl").toString()).queue();
+                });
         return true;
     }
 }

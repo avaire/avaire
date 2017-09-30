@@ -51,17 +51,13 @@ public class ChuckNorrisCommand extends AbstractCommand {
 
     @Override
     public boolean onCommand(Message message, String[] args) {
-        try {
-            RequestFactory.makeGET("http://api.icndb.com/jokes/random")
-                    .addParameter("escape", "javascript")
-                    .send((Consumer<Response>) response -> {
-                        ChuckNorrisService service = (ChuckNorrisService) response.toJson(ChuckNorrisService.class);
+        RequestFactory.makeGET("http://api.icndb.com/jokes/random")
+                .addParameter("escape", "javascript")
+                .send((Consumer<Response>) response -> {
+                    ChuckNorrisService service = (ChuckNorrisService) response.toJson(ChuckNorrisService.class);
 
-                        MessageFactory.makeSuccess(message, service.getValue().getJoke()).queue();
-                    });
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+                    MessageFactory.makeSuccess(message, service.getValue().getJoke()).queue();
+                });
         return true;
     }
 }

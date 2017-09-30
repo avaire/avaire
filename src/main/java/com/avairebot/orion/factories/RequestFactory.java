@@ -4,7 +4,7 @@ import com.avairebot.orion.requests.Request;
 
 public class RequestFactory {
 
-    public static Request makeGET(String url) throws Exception {
+    public static Request makeGET(String url) {
         return new Request(url);
     }
 }

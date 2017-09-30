@@ -50,16 +50,12 @@ public class RandomDogCommand extends AbstractCommand {
 
     @Override
     public boolean onCommand(Message message, String[] args) {
-        try {
-            RequestFactory.makeGET("https://dog.ceo/api/breeds/image/random")
-                    .send((Consumer<Response>) response -> {
-                        RandomDogService service = (RandomDogService) response.toJson(RandomDogService.class);
+        RequestFactory.makeGET("https://dog.ceo/api/breeds/image/random")
+                .send((Consumer<Response>) response -> {
+                    RandomDogService service = (RandomDogService) response.toJson(RandomDogService.class);
 
-                        message.getChannel().sendMessage(service.getMessage()).queue();
-                    });
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+                    message.getChannel().sendMessage(service.getMessage()).queue();
+                });
         return true;
     }
 }

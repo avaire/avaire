@@ -50,18 +50,14 @@ public class RandomCatCommand extends AbstractCommand {
 
     @Override
     public boolean onCommand(Message message, String[] args) {
-        try {
-            RequestFactory.makeGET("http://random.cat/meow")
-                    .send((Consumer<Response>) response -> {
-                        RandomCatService service = (RandomCatService) response.toJson(RandomCatService.class);
+        RequestFactory.makeGET("http://random.cat/meow")
+                .send((Consumer<Response>) response -> {
+                    RandomCatService service = (RandomCatService) response.toJson(RandomCatService.class);
 
-                        message.getChannel().sendMessage(
-                                String.format("<@%s> %s", message.getAuthor().getId(), service.getFile())
-                        ).queue();
-                    });
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+                    message.getChannel().sendMessage(
+                            String.format("<@%s> %s", message.getAuthor().getId(), service.getFile())
+                    ).queue();
+                });
         return true;
     }
 }
