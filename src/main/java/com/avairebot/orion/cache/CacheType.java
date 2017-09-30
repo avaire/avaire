@@ -1,5 +1,6 @@
 package com.avairebot.orion.cache;
 
+import com.avairebot.orion.cache.adapters.FileAdapter;
 import com.avairebot.orion.cache.adapters.MemoryAdapter;
 import com.avairebot.orion.contracts.cache.CacheAdapter;
 
@@ -9,6 +10,7 @@ import java.util.Map;
 
 public enum CacheType {
 
+    FILE("File", false, FileAdapter.class),
     MEMORY("Memory", true, MemoryAdapter.class);
 
     private static final Map<CacheType, CacheAdapter> INSTANCES = new HashMap<>();
