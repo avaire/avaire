@@ -58,7 +58,7 @@ public class RankCommand extends AbstractCommand {
 
     @Override
     public List<String> getTriggers() {
-        return Arrays.asList("rank");
+        return Arrays.asList("rank", "level");
     }
 
     @Override
