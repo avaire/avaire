@@ -60,7 +60,7 @@ public class Request extends Future {
                     break;
             }
 
-            success.accept(new Response(client.newCall(builder.build()).execute().body().string()));
+            success.accept(new Response(client.newCall(builder.build()).execute()));
         } catch (Exception ex) {
             failure.accept(ex);
         }

@@ -2,11 +2,13 @@ package com.avairebot.orion.requests;
 
 import com.google.gson.Gson;
 
-public class Response {
-    private final String output;
+import java.io.IOException;
 
-    public Response(String output) {
-        this.output = output;
+public class Response {
+    private final okhttp3.Response response;
+
+    public Response(okhttp3.Response response) {
+        this.response = response;
     }
 
     public Object toJson(Class<?> clazz) {
@@ -15,7 +17,16 @@ public class Response {
         return gson.fromJson(toString(), clazz);
     }
 
+    public okhttp3.Response getResponse() {
+        return response;
+    }
+
     public String toString() {
-        return output;
+        try {
+            return response.body().string();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }
