@@ -1,13 +1,11 @@
 package com.avairebot.orion.commands;
 
 import com.avairebot.orion.contracts.commands.AbstractCommand;
+import com.avairebot.orion.exceptions.InvalidCommandPrefixException;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.utils.Checks;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class CommandHandler {
 
@@ -39,22 +37,22 @@ public class CommandHandler {
         return null;
     }
 
-    public static boolean register(AbstractCommand command) {
+    public static void register(AbstractCommand command) {
+        Category category = Category.fromCommand(command);
+        Checks.notNull(category, String.format("%s :: %s", command.getName(), "Invalid command category, command category"));
+        Checks.notNull(command.getDescription(), String.format("%s :: %s", command.getName(), "Command description"));
+
         for (String trigger : command.getTriggers()) {
             for (Map.Entry<List<String>, CommandContainer> entry : COMMANDS.entrySet()) {
-                if (entry.getKey().contains(trigger.toLowerCase())) {
-                    return false;
+                for (String subTrigger : entry.getKey()) {
+                    if (Objects.equals(category.getPrefix() + trigger, entry.getValue().getDefaultPrefix() + subTrigger)) {
+                        throw new InvalidCommandPrefixException(category.getPrefix() + trigger, command.getName(), entry.getValue().getCommand().getName());
+                    }
                 }
             }
         }
 
-        Category category = Category.fromCommand(command);
-
-        Checks.notNull(category, String.format("%s :: %s", command.getName(), "Invalid command category, command category"));
-        Checks.notNull(command.getDescription(), String.format("%s :: %s", command.getName(), "Command description"));
-
         COMMANDS.put(command.getTriggers(), new CommandContainer(command, category));
-        return true;
     }
 
     public static Collection<CommandContainer> getCommands() {
