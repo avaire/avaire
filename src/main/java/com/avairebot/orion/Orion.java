@@ -104,6 +104,7 @@ public class Orion {
         CommandHandler.register(new EightBallCommand(this));
         CommandHandler.register(new GfycatCommand(this));
         CommandHandler.register(new LennyCommand(this));
+        CommandHandler.register(new MemeCommand(this));
         CommandHandler.register(new RandomCatCommand(this));
         CommandHandler.register(new RandomDogCommand(this));
         CommandHandler.register(new RepeatCommand(this));
@@ -141,6 +142,7 @@ public class Orion {
         logger.info(" - Registering jobs...");
 
         ScheduleHandler.registerJob(new ChangeGameJob(this));
+        ScheduleHandler.registerJob(new FetchMemeTypesJob(this));
         ScheduleHandler.registerJob(new GarbageCollectorJob(this));
         ScheduleHandler.registerJob(new UpdateAudioPlayedTimeJob(this));
         ScheduleHandler.registerJob(new ResetRespectStatisticsJob(this));
