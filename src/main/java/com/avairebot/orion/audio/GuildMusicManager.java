@@ -9,6 +9,7 @@ public class GuildMusicManager {
     private final AudioPlayer player;
     private final TrackScheduler scheduler;
 
+    private boolean repeatQueue = false;
     private Message lastActiveMessage = null;
 
     public GuildMusicManager(AudioPlayerManager manager) {
@@ -35,5 +36,13 @@ public class GuildMusicManager {
 
     public TrackScheduler getScheduler() {
         return scheduler;
+    }
+
+    public boolean isRepeatQueue() {
+        return repeatQueue;
+    }
+
+    public void setRepeatQueue(boolean repeatQueue) {
+        this.repeatQueue = repeatQueue;
     }
 }

@@ -71,16 +71,20 @@ public class TrackScheduler extends AudioEventAdapter {
 
     @Override
     public void onTrackEnd(AudioPlayer player, AudioTrack track, AudioTrackEndReason endReason) {
+        if (endReason.mayStartNext) {
+            if (manager.isRepeatQueue()) {
+                queue.offer(new AudioTrackContainer(track.makeClone(), getAudioTrackContainer().getRequester()));
+            }
+
+            nextTrack();
+            return;
+        }
+
         if (endReason.equals(AudioTrackEndReason.FINISHED) && queue.isEmpty()) {
             if (manager.getLastActiveMessage() != null) {
                 MessageFactory.makeSuccess(manager.getLastActiveMessage(), "Queue has ended, leaving voice.").queue();
                 manager.getLastActiveMessage().getGuild().getAudioManager().closeAudioConnection();
             }
-            return;
-        }
-
-        if (endReason.mayStartNext) {
-            nextTrack();
         }
     }
 
