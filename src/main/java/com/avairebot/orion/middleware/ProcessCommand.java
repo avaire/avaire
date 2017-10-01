@@ -4,7 +4,10 @@ import com.avairebot.orion.Orion;
 import com.avairebot.orion.contracts.middleware.AbstractMiddleware;
 import net.dv8tion.jda.core.entities.Message;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ProcessCommand extends AbstractMiddleware {
@@ -20,12 +23,12 @@ public class ProcessCommand extends AbstractMiddleware {
     public ProcessCommand(Orion orion) {
         super(orion);
 
-        this.argumentsRegEX = Pattern.compile("[\\s\"]+|\"([^\"]*)\"", Pattern.MULTILINE);
+        this.argumentsRegEX = Pattern.compile("([^\"]\\S*|\".+?\")\\s*", Pattern.MULTILINE);
     }
 
     @Override
     public boolean handle(Message message, MiddlewareStack stack, String... args) {
-        String[] arguments = argumentsRegEX.split(message.getContent());
+        String[] arguments = generateCommandArguments(message);
 
         orion.logger.info(COMMAND_OUTPUT
                 .replace("%command%", stack.getCommand().getName())
@@ -37,6 +40,19 @@ public class ProcessCommand extends AbstractMiddleware {
         );
 
         return stack.getCommand().onCommand(message, Arrays.copyOfRange(arguments, 1, arguments.length));
+    }
+
+    private String[] generateCommandArguments(Message message) {
+        List<String> arguments = new ArrayList<>();
+
+        Matcher matcher = argumentsRegEX.matcher(message.getContent());
+        while (matcher.find()) {
+            arguments.add(matcher.group(0)
+                    .replaceAll("\"", "")
+                    .trim());
+        }
+
+        return arguments.toArray(new String[0]);
     }
 
     private String generateUsername(Message message) {
