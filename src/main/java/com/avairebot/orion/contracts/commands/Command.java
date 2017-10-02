@@ -31,7 +31,7 @@ public abstract class Command {
     protected final boolean allowDM;
 
     /**
-     * Creates the given command instance by calling {@link #Command(Orion, boolean)} with allowDM set to false.
+     * Creates the given command instance by calling {@link #Command(Orion, boolean)} with allowDM set to true.
      *
      * @param orion The Orion class instance.
      */

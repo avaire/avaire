@@ -1,15 +1,14 @@
 package com.avairebot.orion.commands.system;
 
 import com.avairebot.orion.Orion;
-import com.avairebot.orion.contracts.commands.Command;
+import com.avairebot.orion.contracts.commands.SystemCommand;
 import net.dv8tion.jda.core.entities.Game;
 import net.dv8tion.jda.core.entities.Message;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
-public class SetStatusCommand extends Command {
+public class SetStatusCommand extends SystemCommand {
 
     public SetStatusCommand(Orion orion) {
         super(orion);
@@ -41,11 +40,6 @@ public class SetStatusCommand extends Command {
     @Override
     public List<String> getTriggers() {
         return Arrays.asList("setstatus", "status");
-    }
-
-    @Override
-    public List<String> getMiddleware() {
-        return Collections.singletonList("isBotAdmin");
     }
 
     @Override

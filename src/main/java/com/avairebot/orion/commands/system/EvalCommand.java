@@ -1,7 +1,7 @@
 package com.avairebot.orion.commands.system;
 
 import com.avairebot.orion.Orion;
-import com.avairebot.orion.contracts.commands.Command;
+import com.avairebot.orion.contracts.commands.SystemCommand;
 import com.avairebot.orion.factories.MessageFactory;
 import net.dv8tion.jda.core.entities.ChannelType;
 import net.dv8tion.jda.core.entities.Message;
@@ -13,7 +13,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class EvalCommand extends Command {
+public class EvalCommand extends SystemCommand {
 
     public EvalCommand(Orion orion) {
         super(orion);
@@ -42,11 +42,6 @@ public class EvalCommand extends Command {
     @Override
     public List<String> getTriggers() {
         return Collections.singletonList("eval");
-    }
-
-    @Override
-    public List<String> getMiddleware() {
-        return Collections.singletonList("isBotAdmin");
     }
 
     @Override
