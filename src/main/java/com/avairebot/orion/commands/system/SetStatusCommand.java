@@ -1,7 +1,7 @@
 package com.avairebot.orion.commands.system;
 
 import com.avairebot.orion.Orion;
-import com.avairebot.orion.contracts.commands.AbstractCommand;
+import com.avairebot.orion.contracts.commands.Command;
 import net.dv8tion.jda.core.entities.Game;
 import net.dv8tion.jda.core.entities.Message;
 
@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class SetStatusCommand extends AbstractCommand {
+public class SetStatusCommand extends Command {
 
     public SetStatusCommand(Orion orion) {
         super(orion);

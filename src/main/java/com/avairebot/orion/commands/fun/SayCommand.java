@@ -1,14 +1,14 @@
 package com.avairebot.orion.commands.fun;
 
 import com.avairebot.orion.Orion;
-import com.avairebot.orion.contracts.commands.AbstractCommand;
+import com.avairebot.orion.contracts.commands.Command;
 import net.dv8tion.jda.core.entities.Message;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class SayCommand extends AbstractCommand {
+public class SayCommand extends Command {
 
     public SayCommand(Orion orion) {
         super(orion);

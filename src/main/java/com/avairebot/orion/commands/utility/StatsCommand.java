@@ -2,7 +2,7 @@ package com.avairebot.orion.commands.utility;
 
 import com.avairebot.orion.Orion;
 import com.avairebot.orion.Statistics;
-import com.avairebot.orion.contracts.commands.AbstractCommand;
+import com.avairebot.orion.contracts.commands.Command;
 import com.avairebot.orion.factories.MessageFactory;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
@@ -14,7 +14,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class StatsCommand extends AbstractCommand {
+public class StatsCommand extends Command {
 
     public StatsCommand(Orion orion) {
         super(orion);

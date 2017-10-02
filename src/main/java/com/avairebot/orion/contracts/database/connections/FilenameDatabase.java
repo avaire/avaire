@@ -1,12 +1,12 @@
 package com.avairebot.orion.contracts.database.connections;
 
 
-import com.avairebot.orion.contracts.database.AbstractDatabase;
+import com.avairebot.orion.contracts.database.Database;
 import com.avairebot.orion.database.exceptions.DatabaseException;
 
 import java.io.File;
 
-public abstract class FilenameDatabase extends AbstractDatabase {
+public abstract class FilenameDatabase extends Database {
 
     /**
      * The directory/folder the database is stored in.

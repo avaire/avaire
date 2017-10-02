@@ -5,7 +5,7 @@ import com.avairebot.orion.audio.AudioHandler;
 import com.avairebot.orion.audio.AudioTrackContainer;
 import com.avairebot.orion.audio.GuildMusicManager;
 import com.avairebot.orion.audio.TrackScheduler;
-import com.avairebot.orion.contracts.commands.AbstractCommand;
+import com.avairebot.orion.contracts.commands.Command;
 import com.avairebot.orion.factories.MessageFactory;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import net.dv8tion.jda.core.entities.Message;
@@ -16,7 +16,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-public class SongCommand extends AbstractCommand {
+public class SongCommand extends Command {
 
     public SongCommand(Orion orion) {
         super(orion, false);

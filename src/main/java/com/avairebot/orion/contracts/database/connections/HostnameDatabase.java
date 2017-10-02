@@ -1,9 +1,9 @@
 package com.avairebot.orion.contracts.database.connections;
 
-import com.avairebot.orion.contracts.database.AbstractDatabase;
+import com.avairebot.orion.contracts.database.Database;
 import com.avairebot.orion.database.exceptions.DatabaseException;
 
-public abstract class HostnameDatabase extends AbstractDatabase {
+public abstract class HostnameDatabase extends Database {
 
     /**
      * The database hostname that should be

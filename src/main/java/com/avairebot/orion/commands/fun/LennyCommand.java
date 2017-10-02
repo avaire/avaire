@@ -1,14 +1,14 @@
 package com.avairebot.orion.commands.fun;
 
 import com.avairebot.orion.Orion;
-import com.avairebot.orion.contracts.commands.AbstractCommand;
+import com.avairebot.orion.contracts.commands.Command;
 import net.dv8tion.jda.core.entities.Message;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-public class LennyCommand extends AbstractCommand {
+public class LennyCommand extends Command {
 
     private final Random random = new Random();
 

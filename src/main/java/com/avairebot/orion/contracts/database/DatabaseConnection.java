@@ -3,7 +3,7 @@ package com.avairebot.orion.contracts.database;
 import java.sql.SQLException;
 import java.sql.SQLTimeoutException;
 
-public interface DatabaseInterface {
+public interface DatabaseConnection {
 
     /**
      * Attempts to open the database connection to the database

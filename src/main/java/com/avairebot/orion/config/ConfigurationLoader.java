@@ -1,7 +1,7 @@
 package com.avairebot.orion.config;
 
-import com.avairebot.orion.contracts.config.CastableInterface;
-import com.avairebot.orion.contracts.config.ConfigurationInterface;
+import com.avairebot.orion.contracts.config.Castable;
+import com.avairebot.orion.contracts.config.Configuration;
 import com.google.gson.Gson;
 
 import java.io.*;
@@ -9,10 +9,10 @@ import java.lang.reflect.Type;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
-public class ConfigurationLoader implements ConfigurationInterface {
+public class ConfigurationLoader implements Configuration {
 
     @Override
-    public CastableInterface load(String fileName, Class<?> type) throws IOException {
+    public Castable load(String fileName, Class<?> type) throws IOException {
         File file = new File(fileName);
         if (!file.exists()) {
             try {
@@ -42,7 +42,7 @@ public class ConfigurationLoader implements ConfigurationInterface {
                 line = br.readLine();
             }
 
-            return (CastableInterface) new Gson().fromJson(sb.toString(), (Type) type);
+            return (Castable) new Gson().fromJson(sb.toString(), (Type) type);
         } catch (Exception e) {
             e.printStackTrace();
         }

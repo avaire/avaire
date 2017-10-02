@@ -2,7 +2,7 @@ package com.avairebot.orion.contracts.config;
 
 import java.io.IOException;
 
-public interface ConfigurationInterface {
+public interface Configuration {
 
     /**
      * Loads the configuration with the given file name and type.
@@ -12,7 +12,7 @@ public interface ConfigurationInterface {
      * @return The configurations castable interface value.
      * @throws IOException
      */
-    CastableInterface load(String fileName, Class<?> type) throws IOException;
+    Castable load(String fileName, Class<?> type) throws IOException;
 
     /**
      * Gets the default configuration with the given name, this should only be called if the

@@ -2,11 +2,11 @@ package com.avairebot.orion.middleware;
 
 import com.avairebot.orion.Orion;
 import com.avairebot.orion.cache.CacheItem;
-import com.avairebot.orion.contracts.middleware.AbstractMiddleware;
+import com.avairebot.orion.contracts.middleware.Middleware;
 import com.avairebot.orion.factories.MessageFactory;
 import net.dv8tion.jda.core.entities.Message;
 
-public class Throttle extends AbstractMiddleware {
+public class Throttle extends Middleware {
 
     public Throttle(Orion orion) {
         super(orion);

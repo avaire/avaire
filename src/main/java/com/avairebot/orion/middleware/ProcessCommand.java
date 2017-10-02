@@ -1,7 +1,7 @@
 package com.avairebot.orion.middleware;
 
 import com.avairebot.orion.Orion;
-import com.avairebot.orion.contracts.middleware.AbstractMiddleware;
+import com.avairebot.orion.contracts.middleware.Middleware;
 import net.dv8tion.jda.core.entities.Message;
 
 import java.util.ArrayList;
@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class ProcessCommand extends AbstractMiddleware {
+public class ProcessCommand extends Middleware {
 
     private final static String COMMAND_OUTPUT = "Executing Command \"%command%\" in \"%category%\" category:"
             + "\n\t\tUser:\t %author%"

@@ -1,7 +1,7 @@
 package com.avairebot.orion.commands.fun;
 
 import com.avairebot.orion.Orion;
-import com.avairebot.orion.contracts.commands.AbstractCommand;
+import com.avairebot.orion.contracts.commands.Command;
 import com.avairebot.orion.factories.MessageFactory;
 import net.dv8tion.jda.core.entities.Message;
 
@@ -11,7 +11,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-public class EightBallCommand extends AbstractCommand {
+public class EightBallCommand extends Command {
 
     private final Random random = new Random();
     private final List<String> answers = Arrays.asList("It is certain",

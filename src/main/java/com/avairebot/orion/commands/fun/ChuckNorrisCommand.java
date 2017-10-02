@@ -1,7 +1,7 @@
 package com.avairebot.orion.commands.fun;
 
 import com.avairebot.orion.Orion;
-import com.avairebot.orion.contracts.commands.AbstractCommand;
+import com.avairebot.orion.contracts.commands.Command;
 import com.avairebot.orion.factories.MessageFactory;
 import com.avairebot.orion.factories.RequestFactory;
 import com.avairebot.orion.requests.Response;
@@ -13,7 +13,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class ChuckNorrisCommand extends AbstractCommand {
+public class ChuckNorrisCommand extends Command {
 
     public ChuckNorrisCommand(Orion orion) {
         super(orion);

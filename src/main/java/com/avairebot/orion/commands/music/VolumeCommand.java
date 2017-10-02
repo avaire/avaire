@@ -3,7 +3,7 @@ package com.avairebot.orion.commands.music;
 import com.avairebot.orion.Orion;
 import com.avairebot.orion.audio.AudioHandler;
 import com.avairebot.orion.audio.GuildMusicManager;
-import com.avairebot.orion.contracts.commands.AbstractCommand;
+import com.avairebot.orion.contracts.commands.Command;
 import com.avairebot.orion.factories.MessageFactory;
 import com.avairebot.orion.permissions.Permissions;
 import net.dv8tion.jda.core.entities.Member;
@@ -14,7 +14,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class VolumeCommand extends AbstractCommand {
+public class VolumeCommand extends Command {
 
     public VolumeCommand(Orion orion) {
         super(orion, false);

@@ -1,7 +1,7 @@
 package com.avairebot.orion.middleware;
 
 import com.avairebot.orion.Orion;
-import com.avairebot.orion.contracts.middleware.AbstractMiddleware;
+import com.avairebot.orion.contracts.middleware.Middleware;
 import com.avairebot.orion.factories.MessageFactory;
 import com.avairebot.orion.permissions.Permissions;
 import net.dv8tion.jda.core.Permission;
@@ -12,7 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Require extends AbstractMiddleware {
+public class Require extends Middleware {
 
     public Require(Orion orion) {
         super(orion);

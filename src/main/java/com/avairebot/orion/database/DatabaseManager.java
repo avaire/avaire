@@ -1,7 +1,7 @@
 package com.avairebot.orion.database;
 
 import com.avairebot.orion.Orion;
-import com.avairebot.orion.contracts.database.AbstractDatabase;
+import com.avairebot.orion.contracts.database.Database;
 import com.avairebot.orion.database.collection.Collection;
 import com.avairebot.orion.database.connections.MySQL;
 import com.avairebot.orion.database.exceptions.DatabaseException;
@@ -20,7 +20,7 @@ public class DatabaseManager {
     private final Schema schema;
     private final Migrations migrations;
 
-    private AbstractDatabase connection = null;
+    private Database connection = null;
 
     public DatabaseManager(Orion orion) {
         this.orion = orion;
@@ -40,7 +40,7 @@ public class DatabaseManager {
         return migrations;
     }
 
-    public AbstractDatabase getConnection() throws SQLException, DatabaseException {
+    public Database getConnection() throws SQLException, DatabaseException {
         if (connection == null) {
             switch (orion.config.getDatabase().getType().toLowerCase()) {
                 case "mysql":

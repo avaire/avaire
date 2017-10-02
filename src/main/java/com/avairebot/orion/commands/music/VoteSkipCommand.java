@@ -3,7 +3,7 @@ package com.avairebot.orion.commands.music;
 import com.avairebot.orion.Orion;
 import com.avairebot.orion.audio.AudioHandler;
 import com.avairebot.orion.audio.GuildMusicManager;
-import com.avairebot.orion.contracts.commands.AbstractCommand;
+import com.avairebot.orion.contracts.commands.Command;
 import com.avairebot.orion.factories.MessageFactory;
 import net.dv8tion.jda.core.entities.Message;
 
@@ -12,7 +12,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class VoteSkipCommand extends AbstractCommand {
+public class VoteSkipCommand extends Command {
 
     public VoteSkipCommand(Orion orion) {
         super(orion, false);

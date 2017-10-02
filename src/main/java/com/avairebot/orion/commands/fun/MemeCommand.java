@@ -2,7 +2,7 @@ package com.avairebot.orion.commands.fun;
 
 import com.avairebot.orion.Orion;
 import com.avairebot.orion.cache.CacheType;
-import com.avairebot.orion.contracts.commands.AbstractCommand;
+import com.avairebot.orion.contracts.commands.Command;
 import com.avairebot.orion.factories.MessageFactory;
 import com.avairebot.orion.factories.RequestFactory;
 import com.avairebot.orion.requests.Response;
@@ -13,7 +13,7 @@ import net.dv8tion.jda.core.entities.User;
 import java.util.*;
 import java.util.function.Consumer;
 
-public class MemeCommand extends AbstractCommand {
+public class MemeCommand extends Command {
 
     private final String customUrl = "https://memegen.link/custom/%s/%s.jpg";
     private final String templateUrl = "https://memegen.link/%s/%s/%s.jpg";

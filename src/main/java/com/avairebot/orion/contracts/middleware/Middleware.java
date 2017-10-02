@@ -4,7 +4,7 @@ import com.avairebot.orion.Orion;
 import com.avairebot.orion.middleware.MiddlewareStack;
 import net.dv8tion.jda.core.entities.Message;
 
-public abstract class AbstractMiddleware {
+public abstract class Middleware {
 
     /**
      * The Orion class instance, this is used to access
@@ -17,7 +17,7 @@ public abstract class AbstractMiddleware {
      *
      * @param orion The Orion application class instance.
      */
-    public AbstractMiddleware(Orion orion) {
+    public Middleware(Orion orion) {
         this.orion = orion;
     }
 

@@ -3,14 +3,14 @@ package com.avairebot.orion.commands.music;
 import com.avairebot.orion.Orion;
 import com.avairebot.orion.audio.AudioHandler;
 import com.avairebot.orion.audio.GuildMusicManager;
-import com.avairebot.orion.contracts.commands.AbstractCommand;
+import com.avairebot.orion.contracts.commands.Command;
 import com.avairebot.orion.factories.MessageFactory;
 import net.dv8tion.jda.core.entities.Message;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class RepeatMusicQueueCommand extends AbstractCommand {
+public class RepeatMusicQueueCommand extends Command {
 
     public RepeatMusicQueueCommand(Orion orion) {
         super(orion, false);

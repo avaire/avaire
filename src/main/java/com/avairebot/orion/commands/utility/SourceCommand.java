@@ -3,7 +3,7 @@ package com.avairebot.orion.commands.utility;
 import com.avairebot.orion.Orion;
 import com.avairebot.orion.commands.CommandContainer;
 import com.avairebot.orion.commands.CommandHandler;
-import com.avairebot.orion.contracts.commands.AbstractCommand;
+import com.avairebot.orion.contracts.commands.Command;
 import com.avairebot.orion.factories.MessageFactory;
 import net.dv8tion.jda.core.entities.Message;
 
@@ -11,7 +11,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class SourceCommand extends AbstractCommand {
+public class SourceCommand extends Command {
 
     private final String rootUrl = "https://github.com/AvaIre/Orion";
     private final String commandUrl = "https://github.com/AvaIre/Orion/tree/master/src/main/java/com/avairebot/orion/commands/%s/%s.java";

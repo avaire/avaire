@@ -1,7 +1,7 @@
 package com.avairebot.orion.middleware;
 
 import com.avairebot.orion.Orion;
-import com.avairebot.orion.contracts.middleware.AbstractMiddleware;
+import com.avairebot.orion.contracts.middleware.Middleware;
 import com.avairebot.orion.factories.MessageFactory;
 import com.avairebot.orion.permissions.Permissions;
 import net.dv8tion.jda.core.entities.Message;
@@ -9,7 +9,7 @@ import net.dv8tion.jda.core.entities.Role;
 
 import java.util.List;
 
-public class HasRole extends AbstractMiddleware {
+public class HasRole extends Middleware {
 
     public HasRole(Orion orion) {
         super(orion);

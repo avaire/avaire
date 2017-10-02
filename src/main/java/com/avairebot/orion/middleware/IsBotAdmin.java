@@ -1,11 +1,11 @@
 package com.avairebot.orion.middleware;
 
 import com.avairebot.orion.Orion;
-import com.avairebot.orion.contracts.middleware.AbstractMiddleware;
+import com.avairebot.orion.contracts.middleware.Middleware;
 import com.avairebot.orion.factories.MessageFactory;
 import net.dv8tion.jda.core.entities.Message;
 
-public class IsBotAdmin extends AbstractMiddleware {
+public class IsBotAdmin extends Middleware {
 
     public IsBotAdmin(Orion orion) {
         super(orion);

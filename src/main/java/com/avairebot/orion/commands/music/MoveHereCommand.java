@@ -4,7 +4,7 @@ import com.avairebot.orion.Orion;
 import com.avairebot.orion.audio.AudioHandler;
 import com.avairebot.orion.audio.GuildMusicManager;
 import com.avairebot.orion.audio.VoiceConnectStatus;
-import com.avairebot.orion.contracts.commands.AbstractCommand;
+import com.avairebot.orion.contracts.commands.Command;
 import com.avairebot.orion.factories.MessageFactory;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.VoiceChannel;
@@ -13,7 +13,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class MoveHereCommand extends AbstractCommand {
+public class MoveHereCommand extends Command {
 
     public MoveHereCommand(Orion orion) {
         super(orion, false);

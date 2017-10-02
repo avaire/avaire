@@ -3,7 +3,7 @@ package com.avairebot.orion.commands.utility;
 import com.avairebot.orion.Constants;
 import com.avairebot.orion.Orion;
 import com.avairebot.orion.cache.CacheType;
-import com.avairebot.orion.contracts.commands.AbstractCommand;
+import com.avairebot.orion.contracts.commands.Command;
 import com.avairebot.orion.database.collection.Collection;
 import com.avairebot.orion.database.collection.DataRow;
 import com.avairebot.orion.database.controllers.GuildController;
@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
-public class RankCommand extends AbstractCommand {
+public class RankCommand extends Command {
 
     private final String cacheToken = "database-user-scores.";
 

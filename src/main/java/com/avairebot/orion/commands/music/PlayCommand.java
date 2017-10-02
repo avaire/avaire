@@ -4,7 +4,7 @@ import com.avairebot.orion.Orion;
 import com.avairebot.orion.audio.AudioHandler;
 import com.avairebot.orion.audio.TrackResponse;
 import com.avairebot.orion.audio.VoiceConnectStatus;
-import com.avairebot.orion.contracts.commands.AbstractCommand;
+import com.avairebot.orion.contracts.commands.Command;
 import com.avairebot.orion.factories.MessageFactory;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
@@ -17,7 +17,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class PlayCommand extends AbstractCommand {
+public class PlayCommand extends Command {
 
     public PlayCommand(Orion orion) {
         super(orion, false);

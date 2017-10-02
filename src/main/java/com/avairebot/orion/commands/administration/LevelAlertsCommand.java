@@ -2,7 +2,7 @@ package com.avairebot.orion.commands.administration;
 
 import com.avairebot.orion.Constants;
 import com.avairebot.orion.Orion;
-import com.avairebot.orion.contracts.commands.AbstractCommand;
+import com.avairebot.orion.contracts.commands.Command;
 import com.avairebot.orion.database.controllers.GuildController;
 import com.avairebot.orion.database.transformers.GuildTransformer;
 import com.avairebot.orion.factories.MessageFactory;
@@ -12,7 +12,7 @@ import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 
-public class LevelAlertsCommand extends AbstractCommand {
+public class LevelAlertsCommand extends Command {
 
     public LevelAlertsCommand(Orion orion) {
         super(orion, false);

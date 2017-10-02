@@ -1,6 +1,6 @@
 package com.avairebot.orion.commands;
 
-import com.avairebot.orion.contracts.commands.AbstractCommand;
+import com.avairebot.orion.contracts.commands.Command;
 import com.avairebot.orion.exceptions.InvalidCommandPrefixException;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.utils.Checks;
@@ -11,7 +11,7 @@ public class CommandHandler {
 
     private static final Map<List<String>, CommandContainer> COMMANDS = new HashMap<>();
 
-    public static CommandContainer getCommand(AbstractCommand command) {
+    public static CommandContainer getCommand(Command command) {
         for (Map.Entry<List<String>, CommandContainer> entry : COMMANDS.entrySet()) {
             if (entry.getValue().getCommand().isSame(command)) {
                 return entry.getValue();
@@ -37,7 +37,7 @@ public class CommandHandler {
         return null;
     }
 
-    public static void register(AbstractCommand command) {
+    public static void register(Command command) {
         Category category = Category.fromCommand(command);
         Checks.notNull(category, String.format("%s :: %s", command.getName(), "Invalid command category, command category"));
         Checks.notNull(command.getDescription(), String.format("%s :: %s", command.getName(), "Command description"));

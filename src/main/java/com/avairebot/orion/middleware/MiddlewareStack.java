@@ -2,8 +2,8 @@ package com.avairebot.orion.middleware;
 
 import com.avairebot.orion.Orion;
 import com.avairebot.orion.commands.CommandContainer;
-import com.avairebot.orion.contracts.commands.AbstractCommand;
-import com.avairebot.orion.contracts.middleware.AbstractMiddleware;
+import com.avairebot.orion.contracts.commands.Command;
+import com.avairebot.orion.contracts.middleware.Middleware;
 import net.dv8tion.jda.core.entities.Message;
 
 import java.lang.reflect.InvocationTargetException;
@@ -26,7 +26,7 @@ public class MiddlewareStack {
         this.message = message;
         this.command = command;
 
-        middlewares.add(new MiddlewareContainer(Middleware.PROCESS_COMMAND));
+        middlewares.add(new MiddlewareContainer(com.avairebot.orion.middleware.Middleware.PROCESS_COMMAND));
 
         this.buildMiddlewareStack();
     }
@@ -42,7 +42,7 @@ public class MiddlewareStack {
             String previous = (String) middlewareIterator.previous();
             String[] split = previous.split(":");
 
-            AtomicReference<Middleware> middlewareReference = new AtomicReference<>(Middleware.fromName(split[0]));
+            AtomicReference<com.avairebot.orion.middleware.Middleware> middlewareReference = new AtomicReference<>(com.avairebot.orion.middleware.Middleware.fromName(split[0]));
             if (middlewareReference.get() == null) {
                 continue;
             }
@@ -66,7 +66,7 @@ public class MiddlewareStack {
 
         try {
             MiddlewareContainer middlewareContainer = middlewares.get(--index);
-            AbstractMiddleware middleware = (AbstractMiddleware) middlewareContainer.getMiddleware().getInstance().getDeclaredConstructor(arguments).newInstance(orion);
+            Middleware middleware = (Middleware) middlewareContainer.getMiddleware().getInstance().getDeclaredConstructor(arguments).newInstance(orion);
 
             return middleware.handle(message, this, middlewareContainer.getArguments());
         } catch (InstantiationException | NoSuchMethodException | InvocationTargetException ex) {
@@ -79,7 +79,7 @@ public class MiddlewareStack {
         return false;
     }
 
-    public AbstractCommand getCommand() {
+    public Command getCommand() {
         return command.getCommand();
     }
 

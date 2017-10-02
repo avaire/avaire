@@ -1,7 +1,7 @@
 package com.avairebot.orion.commands.fun;
 
 import com.avairebot.orion.Orion;
-import com.avairebot.orion.contracts.commands.AbstractCommand;
+import com.avairebot.orion.contracts.commands.Command;
 import com.avairebot.orion.factories.RequestFactory;
 import com.avairebot.orion.requests.Response;
 import com.avairebot.orion.requests.service.GfycatService;
@@ -12,7 +12,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class GfycatCommand extends AbstractCommand {
+public class GfycatCommand extends Command {
 
     public GfycatCommand(Orion orion) {
         super(orion);

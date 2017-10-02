@@ -1,7 +1,7 @@
 package com.avairebot.orion.commands.fun;
 
 import com.avairebot.orion.Orion;
-import com.avairebot.orion.contracts.commands.AbstractCommand;
+import com.avairebot.orion.contracts.commands.Command;
 import com.avairebot.orion.factories.RequestFactory;
 import com.avairebot.orion.requests.Response;
 import com.avairebot.orion.requests.service.RandomCatService;
@@ -12,7 +12,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class RandomCatCommand extends AbstractCommand {
+public class RandomCatCommand extends Command {
 
     public RandomCatCommand(Orion orion) {
         super(orion);

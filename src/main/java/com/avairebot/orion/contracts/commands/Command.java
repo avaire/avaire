@@ -17,7 +17,7 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
-public abstract class AbstractCommand {
+public abstract class Command {
 
     /**
      * The Orion class instance, this is used to access
@@ -31,11 +31,11 @@ public abstract class AbstractCommand {
     protected final boolean allowDM;
 
     /**
-     * Creates the given command instance by calling {@link #AbstractCommand(Orion, boolean)} with allowDM set to false.
+     * Creates the given command instance by calling {@link #Command(Orion, boolean)} with allowDM set to false.
      *
      * @param orion The Orion class instance.
      */
-    public AbstractCommand(Orion orion) {
+    public Command(Orion orion) {
         this(orion, true);
     }
 
@@ -46,7 +46,7 @@ public abstract class AbstractCommand {
      * @param orion   The Orion class instance.
      * @param allowDM Determines if the command can be used in DMs.
      */
-    public AbstractCommand(Orion orion, boolean allowDM) {
+    public Command(Orion orion, boolean allowDM) {
         this.orion = orion;
         this.allowDM = allowDM;
     }
@@ -275,7 +275,7 @@ public abstract class AbstractCommand {
      * @param command The command that should be compared with the current class.
      * @return
      */
-    public final boolean isSame(AbstractCommand command) {
+    public final boolean isSame(Command command) {
         return Objects.equals(command.getName(), getName())
                 && Objects.equals(command.getDescription(), command.getDescription())
                 && Objects.equals(command.getUsageInstructions(), getUsageInstructions())

@@ -1,6 +1,6 @@
 package com.avairebot.orion.contracts.database.grammar;
 
-import com.avairebot.orion.contracts.database.AbstractDatabase;
+import com.avairebot.orion.contracts.database.Database;
 import com.avairebot.orion.database.DatabaseManager;
 import com.avairebot.orion.database.connections.MySQL;
 import com.avairebot.orion.database.connections.SQLite;
@@ -45,7 +45,7 @@ public abstract class GrammarParser {
         MySQL,
         SQLite;
 
-        public static ConnectionType getType(AbstractDatabase connection) {
+        public static ConnectionType getType(Database connection) {
             if (connection instanceof MySQL) {
                 return MySQL;
             }
