@@ -47,7 +47,7 @@ public class LevelCommand extends AbstractCommand {
     @Override
     public List<String> getMiddleware() {
         return Arrays.asList(
-                "require:general.manage_server",
+                "require:user,general.manage_server",
                 "throttle:user,1,5"
         );
     }

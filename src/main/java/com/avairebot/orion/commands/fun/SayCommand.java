@@ -3,7 +3,6 @@ package com.avairebot.orion.commands.fun;
 import com.avairebot.orion.Orion;
 import com.avairebot.orion.contracts.commands.AbstractCommand;
 import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.MessageEmbed;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -42,7 +41,7 @@ public class SayCommand extends AbstractCommand {
 
     @Override
     public List<String> getMiddleware() {
-        return Collections.singletonList("require:text.manage_messages");
+        return Collections.singletonList("require:all,text.manage_messages");
     }
 
     @Override

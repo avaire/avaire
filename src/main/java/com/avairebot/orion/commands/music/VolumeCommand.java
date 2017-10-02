@@ -11,6 +11,7 @@ import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.Role;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class VolumeCommand extends AbstractCommand {
@@ -49,7 +50,7 @@ public class VolumeCommand extends AbstractCommand {
 
     @Override
     public List<String> getMiddleware() {
-        return Arrays.asList("throttle:user,1,4");
+        return Collections.singletonList("throttle:user,1,4");
     }
 
     @Override

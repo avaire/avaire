@@ -47,6 +47,15 @@ public class LevelAlertsCommand extends AbstractCommand {
         return Arrays.asList("levelalerts", "lvlalert");
     }
 
+
+    @Override
+    public List<String> getMiddleware() {
+        return Arrays.asList(
+                "require:user,general.manage_server",
+                "throttle:user,1,5"
+        );
+    }
+
     @Override
     public boolean onCommand(Message message, String[] args) {
         GuildTransformer guildTransformer = GuildController.fetchGuild(orion, message);
