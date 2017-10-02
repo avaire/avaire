@@ -112,6 +112,7 @@ public class Orion {
         CommandHandler.register(new RollCommand(this));
         CommandHandler.register(new SayCommand(this));
         CommandHandler.register(new UrbanDictionaryCommand(this));
+        CommandHandler.register(new VoteSkipCommand(this));
 
         // Music
         CommandHandler.register(new ClearQueueCommand(this));
