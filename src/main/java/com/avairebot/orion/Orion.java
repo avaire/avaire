@@ -2,8 +2,7 @@ package com.avairebot.orion;
 
 import com.avairebot.orion.cache.CacheManager;
 import com.avairebot.orion.commands.CommandHandler;
-import com.avairebot.orion.commands.administration.LevelAlertsCommand;
-import com.avairebot.orion.commands.administration.LevelCommand;
+import com.avairebot.orion.commands.administration.*;
 import com.avairebot.orion.commands.fun.*;
 import com.avairebot.orion.commands.help.HelpCommand;
 import com.avairebot.orion.commands.music.*;
@@ -94,8 +93,11 @@ public class Orion {
         logger.info(" - Registering commands...");
 
         // Administration
+        CommandHandler.register(new ChannelIdCommand(this));
         CommandHandler.register(new LevelAlertsCommand(this));
         CommandHandler.register(new LevelCommand(this));
+        CommandHandler.register(new ServerIdCommand(this));
+        CommandHandler.register(new UserIdCommand(this));
 
         // Fun
         CommandHandler.register(new ChuckNorrisCommand(this));
