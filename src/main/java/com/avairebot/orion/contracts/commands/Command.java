@@ -208,6 +208,7 @@ public abstract class Command {
 
                 case REQUIRE:
                     String[] nodes = split[1].split(",");
+                    nodes = Arrays.copyOfRange(nodes, 1, nodes.length);
                     if (nodes.length == 1) {
                         description.add(String.format("**The `%s` permission is required to use this command!**",
                                 Permissions.fromNode(nodes[0]).getPermission().getName()
