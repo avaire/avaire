@@ -1,6 +1,7 @@
 package com.avairebot.orion.commands;
 
 import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.core.entities.MessageType;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.entities.impl.MessageImpl;
 
@@ -30,6 +31,13 @@ public class CommandMessage extends MessageImpl {
                 .setReactions(message.getReactions())
                 .setPinned(message.isPinned())
                 .setTTS(message.isTTS());
+    }
+
+    public CommandMessage(String message) {
+        super(0L, null, false, MessageType.UNKNOWN);
+
+        this.mentionableCommand = false;
+        this.setContent(message);
     }
 
     private String prepareRawContent(String content) {

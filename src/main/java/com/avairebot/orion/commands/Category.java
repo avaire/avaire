@@ -12,6 +12,7 @@ public enum Category {
     ADMINISTRATION("Administration", "."),
     FUN("Fun", ">"),
     HELP("Help", "."),
+    INTERACTION("Interaction", ">"),
     MUSIC("Music", "!"),
     SYSTEM("System", ";"),
     UTILITY("Utility", "!");

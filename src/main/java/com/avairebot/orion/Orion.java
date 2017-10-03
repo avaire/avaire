@@ -5,6 +5,7 @@ import com.avairebot.orion.commands.CommandHandler;
 import com.avairebot.orion.commands.administration.*;
 import com.avairebot.orion.commands.fun.*;
 import com.avairebot.orion.commands.help.HelpCommand;
+import com.avairebot.orion.commands.interaction.*;
 import com.avairebot.orion.commands.music.*;
 import com.avairebot.orion.commands.system.EvalCommand;
 import com.avairebot.orion.commands.system.SetStatusCommand;
@@ -116,6 +117,24 @@ public class Orion {
         CommandHandler.register(new UrbanDictionaryCommand(this));
         CommandHandler.register(new VoteSkipCommand(this));
 
+        // Help/Support
+        CommandHandler.register(new HelpCommand(this));
+
+        // Interactions
+        CommandHandler.register(new BiteCommand(this));
+        CommandHandler.register(new CuddleCommand(this));
+        CommandHandler.register(new DivorceCommand(this));
+        CommandHandler.register(new HelloCommand(this));
+        CommandHandler.register(new HighFiveCommand(this));
+        CommandHandler.register(new HugCommand(this));
+        CommandHandler.register(new KissCommand(this));
+        CommandHandler.register(new PatCommand(this));
+        CommandHandler.register(new PokeCommand(this));
+        CommandHandler.register(new PunchCommand(this));
+        CommandHandler.register(new SenpaiCommand(this));
+        CommandHandler.register(new SlapCommand(this));
+        CommandHandler.register(new TickleCommand(this));
+
         // Music
         CommandHandler.register(new ClearQueueCommand(this));
         CommandHandler.register(new MoveHereCommand(this));
@@ -132,7 +151,6 @@ public class Orion {
         CommandHandler.register(new SetStatusCommand(this));
 
         // Utility
-        CommandHandler.register(new HelpCommand(this));
         CommandHandler.register(new PingCommand(this));
         CommandHandler.register(new RankCommand(this));
         CommandHandler.register(new InviteCommand(this));
