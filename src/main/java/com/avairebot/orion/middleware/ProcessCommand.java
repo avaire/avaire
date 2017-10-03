@@ -1,6 +1,7 @@
 package com.avairebot.orion.middleware;
 
 import com.avairebot.orion.Orion;
+import com.avairebot.orion.commands.CommandMessage;
 import com.avairebot.orion.contracts.middleware.Middleware;
 import net.dv8tion.jda.core.entities.Message;
 
@@ -39,7 +40,10 @@ public class ProcessCommand extends Middleware {
                 .replace("%message%", message.getRawContent())
         );
 
-        return stack.getCommand().onCommand(message, Arrays.copyOfRange(arguments, 1, arguments.length));
+        return stack.getCommand().onCommand(
+                new CommandMessage(message, stack.isMentionableCommand()),
+                Arrays.copyOfRange(arguments, stack.isMentionableCommand() ? 2 : 1, arguments.length)
+        );
     }
 
     private String[] generateCommandArguments(Message message) {

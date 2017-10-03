@@ -2,7 +2,6 @@ package com.avairebot.orion;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.Properties;
 
 public class Main {
 

@@ -15,6 +15,7 @@ import com.avairebot.orion.middleware.MiddlewareStack;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 import java.util.concurrent.CompletableFuture;
+import java.util.regex.Pattern;
 
 public class MessageCreateEvent extends EventHandler {
 
@@ -36,17 +37,40 @@ public class MessageCreateEvent extends EventHandler {
             }
 
             CommandContainer container = CommandHandler.getCommand(event.getMessage());
-            if (container != null) {
+            if (container != null && canExecuteCommand(event, container)) {
                 Statistics.addCommands();
-
-                if (!container.getCommand().isAllowedInDM() && !event.getChannelType().isGuild()) {
-                    MessageFactory.makeWarning(event.getMessage(), ":warning: You can not use this command in direct messages!").queue();
-                    return;
-                }
 
                 (new MiddlewareStack(orion, event.getMessage(), container)).next();
             }
+
+            if (isMentionableCommand(event)) {
+                container = CommandHandler.getCommandWithPriority(event.getMessage().getContent().split(" ")[1]);
+                if (container != null && canExecuteCommand(event, container)) {
+                    Statistics.addCommands();
+
+                    (new MiddlewareStack(orion, event.getMessage(), container, true)).next();
+                }
+            }
         });
+    }
+
+    private boolean canExecuteCommand(MessageReceivedEvent event, CommandContainer container) {
+        if (!container.getCommand().isAllowedInDM() && !event.getChannelType().isGuild()) {
+            MessageFactory.makeWarning(event.getMessage(), ":warning: You can not use this command in direct messages!").queue();
+            return false;
+        }
+        return true;
+    }
+
+    private boolean isMentionableCommand(MessageReceivedEvent event) {
+        if (!event.getMessage().isMentioned(orion.getJDA().getSelfUser())) {
+            return false;
+        }
+
+        String[] args = event.getMessage().getRawContent().split(" ");
+        return args.length >= 2 && Pattern.compile("<@(!|)+" + orion.getJDA().getSelfUser().getId() + "+>", Pattern.CASE_INSENSITIVE)
+                .matcher(args[0]).matches();
+
     }
 
     private CompletableFuture<DatabaseProperties> loadDatabasePropertiesIntoMemory(final MessageReceivedEvent event) {

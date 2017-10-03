@@ -37,6 +37,37 @@ public class CommandHandler {
         return null;
     }
 
+    public static CommandContainer getCommandWithPriority(String commandTrigger) {
+        List<CommandContainer> commands = new ArrayList<>();
+        for (Map.Entry<List<String>, CommandContainer> entry : COMMANDS.entrySet()) {
+            if (entry.getValue().getPriority().equals(CommandPriority.IGNORED)) {
+                continue;
+            }
+
+            COMMAND_TRIGGER_LOOP:
+            for (String trigger : entry.getKey()) {
+                if (commandTrigger.equalsIgnoreCase(trigger)) {
+                    commands.add(entry.getValue());
+                }
+            }
+        }
+
+        if (commands.isEmpty()) {
+            return null;
+        }
+
+        if (commands.size() == 1) {
+            return commands.get(0);
+        }
+
+        return commands.stream().sorted((first, second) -> {
+            if (first.getPriority().equals(second.getPriority())) {
+                return 0;
+            }
+            return first.getPriority().isGreaterThan(second.getPriority()) ? -1 : 1;
+        }).findFirst().get();
+    }
+
     public static void register(Command command) {
         Category category = Category.fromCommand(command);
         Checks.notNull(category, String.format("%s :: %s", command.getName(), "Invalid command category, command category"));

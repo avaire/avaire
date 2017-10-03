@@ -18,17 +18,23 @@ public class MiddlewareStack {
     private final Message message;
     private final CommandContainer command;
     private final List<MiddlewareContainer> middlewares = new ArrayList<>();
+    private final boolean mentionableCommand;
 
     private int index = -1;
 
-    public MiddlewareStack(Orion orion, Message message, CommandContainer command) {
+    public MiddlewareStack(Orion orion, Message message, CommandContainer command, boolean mentionableCommand) {
         this.orion = orion;
         this.message = message;
         this.command = command;
+        this.mentionableCommand = mentionableCommand;
 
         middlewares.add(new MiddlewareContainer(com.avairebot.orion.middleware.Middleware.PROCESS_COMMAND));
 
         this.buildMiddlewareStack();
+    }
+
+    public MiddlewareStack(Orion orion, Message message, CommandContainer command) {
+        this(orion, message, command, false);
     }
 
     private void buildMiddlewareStack() {
@@ -85,5 +91,9 @@ public class MiddlewareStack {
 
     public CommandContainer getCommandContainer() {
         return command;
+    }
+
+    public boolean isMentionableCommand() {
+        return mentionableCommand;
     }
 }

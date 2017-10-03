@@ -3,6 +3,7 @@ package com.avairebot.orion.commands.utility;
 import com.avairebot.orion.Constants;
 import com.avairebot.orion.Orion;
 import com.avairebot.orion.cache.CacheType;
+import com.avairebot.orion.commands.CommandPriority;
 import com.avairebot.orion.contracts.commands.Command;
 import com.avairebot.orion.database.collection.Collection;
 import com.avairebot.orion.database.collection.DataRow;
@@ -64,6 +65,11 @@ public class RankCommand extends Command {
     @Override
     public List<String> getMiddleware() {
         return Collections.singletonList("throttle:user,1,5");
+    }
+
+    @Override
+    public CommandPriority getCommandPriority() {
+        return CommandPriority.HIGH;
     }
 
     @Override

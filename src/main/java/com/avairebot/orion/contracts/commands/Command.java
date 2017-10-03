@@ -4,6 +4,7 @@ import com.avairebot.orion.Orion;
 import com.avairebot.orion.commands.Category;
 import com.avairebot.orion.commands.CommandContainer;
 import com.avairebot.orion.commands.CommandHandler;
+import com.avairebot.orion.commands.CommandPriority;
 import com.avairebot.orion.factories.MessageFactory;
 import com.avairebot.orion.middleware.Middleware;
 import com.avairebot.orion.permissions.Permissions;
@@ -105,6 +106,17 @@ public abstract class Command {
      */
     public List<String> getMiddleware() {
         return new ArrayList<>();
+    }
+
+    /**
+     * Get the command priority, if a command is used via mentioning the bot and
+     * the trigger used is shared with another command, the command with the
+     * highest priority will be used.
+     *
+     * @return The command priority.
+     */
+    public CommandPriority getCommandPriority() {
+        return CommandPriority.NORMAL;
     }
 
     /**
