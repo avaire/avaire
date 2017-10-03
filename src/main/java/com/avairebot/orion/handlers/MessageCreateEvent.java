@@ -19,6 +19,8 @@ import java.util.regex.Pattern;
 
 public class MessageCreateEvent extends EventHandler {
 
+    private static final Pattern userRegEX = Pattern.compile("<@(!|)+[0-9]{16,}+>", Pattern.CASE_INSENSITIVE);
+
     public MessageCreateEvent(Orion orion) {
         super(orion);
     }
@@ -68,8 +70,9 @@ public class MessageCreateEvent extends EventHandler {
         }
 
         String[] args = event.getMessage().getRawContent().split(" ");
-        return args.length >= 2 && Pattern.compile("<@(!|)+" + orion.getJDA().getSelfUser().getId() + "+>", Pattern.CASE_INSENSITIVE)
-                .matcher(args[0]).matches();
+        return args.length >= 2 &&
+                userRegEX.matcher(args[0]).matches() &&
+                event.getMessage().getMentionedUsers().get(0).getId().equals(orion.getJDA().getSelfUser().getId());
 
     }
 
