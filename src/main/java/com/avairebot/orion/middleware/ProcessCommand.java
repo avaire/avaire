@@ -49,7 +49,7 @@ public class ProcessCommand extends Middleware {
     private String[] generateCommandArguments(Message message) {
         List<String> arguments = new ArrayList<>();
 
-        Matcher matcher = argumentsRegEX.matcher(message.getContent());
+        Matcher matcher = argumentsRegEX.matcher(message.getRawContent());
         while (matcher.find()) {
             arguments.add(matcher.group(0)
                     .replaceAll("\"", "")
