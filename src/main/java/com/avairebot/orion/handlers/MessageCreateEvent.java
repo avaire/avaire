@@ -46,7 +46,7 @@ public class MessageCreateEvent extends EventHandler {
             }
 
             if (isMentionableCommand(event)) {
-                container = CommandHandler.getCommandWithPriority(event.getMessage().getContent().split(" ")[1]);
+                container = CommandHandler.getLazyCommand(event.getMessage().getContent().split(" ")[1]);
                 if (container != null && canExecuteCommand(event, container)) {
                     Statistics.addCommands();
 
