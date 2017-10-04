@@ -15,6 +15,7 @@ public enum Permissions {
     NICKNAME_CHANGE("general.change_nickname", Permission.NICKNAME_CHANGE),
     MANAGE_EMOTES("general.manage_emojis", Permission.MANAGE_EMOTES),
     MANAGE_WEBHOOKS("general.manage_webhooks", Permission.MANAGE_WEBHOOKS),
+    VIEW_AUDIT_LOGS("general.view_audit_logs", Permission.VIEW_AUDIT_LOGS),
 
     // Text permissions,
     MESSAGE_READ("text.read_messages", Permission.MESSAGE_READ),
