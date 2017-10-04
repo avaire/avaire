@@ -9,7 +9,7 @@ import java.util.Map;
 public class Update extends UpdateGrammar {
     @Override
     public String format(QueryBuilder builder) {
-        addPart(String.format(" %s SET", formatField(builder.getTable())));
+        addPart(String.format(" %s SET ", formatField(builder.getTable())));
 
         buildKeyset(builder);
         buildValues(builder);
@@ -69,7 +69,7 @@ public class Update extends UpdateGrammar {
                     continue;
                 }
 
-                addPart(String.format("%s = %s, ", formatKey, value.toUpperCase()));
+                addPart(String.format("%s = '%s', ", formatKey, value.toUpperCase().replaceAll("'", "\'")));
             }
 
             removeLast(2).addPart(" ");
