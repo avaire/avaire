@@ -22,13 +22,14 @@ public class CommandHandler {
     }
 
     public static CommandContainer getCommand(Message message) {
-        return getCommand(message.getContent().split(" ")[0].toLowerCase());
+        return getCommand(message, message.getRawContent().split(" ")[0].toLowerCase());
     }
 
-    public static CommandContainer getCommand(String commandTrigger) {
+    public static CommandContainer getCommand(Message message, String commandTrigger) {
         for (Map.Entry<List<String>, CommandContainer> entry : COMMANDS.entrySet()) {
+            String commandPrefix = entry.getValue().getCommand().generateCommandPrefix(message);
             for (String trigger : entry.getKey()) {
-                if (commandTrigger.equalsIgnoreCase(entry.getValue().getDefaultPrefix() + trigger)) {
+                if (commandTrigger.equalsIgnoreCase(commandPrefix + trigger)) {
                     return entry.getValue();
                 }
             }

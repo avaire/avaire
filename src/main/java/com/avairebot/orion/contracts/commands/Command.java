@@ -5,6 +5,8 @@ import com.avairebot.orion.commands.Category;
 import com.avairebot.orion.commands.CommandContainer;
 import com.avairebot.orion.commands.CommandHandler;
 import com.avairebot.orion.commands.CommandPriority;
+import com.avairebot.orion.database.controllers.GuildController;
+import com.avairebot.orion.database.transformers.GuildTransformer;
 import com.avairebot.orion.factories.MessageFactory;
 import com.avairebot.orion.middleware.Middleware;
 import com.avairebot.orion.permissions.Permissions;
@@ -278,7 +280,13 @@ public abstract class Command {
      * @return The dynamic command prefix for the current server.
      */
     public final String generateCommandPrefix(Message message) {
-        return CommandHandler.getCommand(this).getDefaultPrefix();
+        GuildTransformer transformer = GuildController.fetchGuild(orion, message);
+        Category category = Category.fromCommand(this);
+
+        return transformer.getPrefixes().getOrDefault(
+                category.getName().toLowerCase(),
+                category.getPrefix()
+        );
     }
 
     /**

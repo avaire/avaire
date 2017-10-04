@@ -3,8 +3,15 @@ package com.avairebot.orion.database.transformers;
 import com.avairebot.orion.contracts.database.transformers.Transformer;
 import com.avairebot.orion.database.collection.DataRow;
 import com.avairebot.orion.time.Carbon;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class GuildTransformer extends Transformer {
+
+    private final Map<String, String> prefixes = new HashMap<>();
 
     private boolean levels = false;
     private boolean levelAlerts = false;
@@ -17,7 +24,20 @@ public class GuildTransformer extends Transformer {
             levels = data.getBoolean("levels");
             levelAlerts = data.getBoolean("level_alerts");
             levelChannel = data.getString("level_channel");
+
+            if (data.getString("prefixes", null) != null) {
+                HashMap<String, String> dbPrefixes = new Gson().fromJson(
+                        data.getString("prefixes"),
+                        new TypeToken<HashMap<String, String>>() {
+                        }.getType());
+
+                for (Map.Entry<String, String> item : dbPrefixes.entrySet()) {
+                    prefixes.put(item.getKey().toLowerCase(), item.getValue());
+                }
+            }
         }
+
+        System.out.println(prefixes);
     }
 
     public String getId() {
@@ -70,6 +90,10 @@ public class GuildTransformer extends Transformer {
 
     public void setLevelChannel(String levelChannel) {
         this.levelChannel = levelChannel;
+    }
+
+    public Map<String, String> getPrefixes() {
+        return prefixes;
     }
 
     public Carbon getCreatedAt() {

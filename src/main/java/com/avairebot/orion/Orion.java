@@ -94,6 +94,7 @@ public class Orion {
         logger.info(" - Registering commands...");
 
         // Administration
+        CommandHandler.register(new ChangePrefixCommand(this));
         CommandHandler.register(new ChannelIdCommand(this));
         CommandHandler.register(new LevelAlertsCommand(this));
         CommandHandler.register(new LevelCommand(this));
