@@ -52,7 +52,7 @@ public class RandomDogCommand extends Command {
     public boolean onCommand(Message message, String[] args) {
         RequestFactory.makeGET("https://dog.ceo/api/breeds/image/random")
                 .send((Consumer<Response>) response -> {
-                    RandomDogService service = (RandomDogService) response.toJson(RandomDogService.class);
+                    RandomDogService service = (RandomDogService) response.toService(RandomDogService.class);
 
                     message.getChannel().sendMessage(service.getMessage()).queue();
                 });

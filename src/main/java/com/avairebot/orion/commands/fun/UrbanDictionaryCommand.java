@@ -57,7 +57,7 @@ public class UrbanDictionaryCommand extends Command {
         RequestFactory.makeGET("https://api.urbandictionary.com/v0/define")
                 .addParameter("term", String.join(" ", args))
                 .send((Consumer<Response>) response -> {
-                    UrbanDictionaryService service = (UrbanDictionaryService) response.toJson(UrbanDictionaryService.class);
+                    UrbanDictionaryService service = (UrbanDictionaryService) response.toService(UrbanDictionaryService.class);
 
                     if (!service.hasData()) {
                         MessageFactory.makeWarning(message, "<@%s> I found nothing for `%s`",

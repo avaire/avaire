@@ -25,7 +25,7 @@ public class FetchMemeTypesJob extends Job {
                 .addHeader("Cache-Control", "no-cache")
                 .addHeader("Content-Type", "application/json")
                 .send((Consumer<Response>) response -> {
-                    HashMap<String, String> memes = (HashMap<String, String>) response.toJson(HashMap.class);
+                    HashMap<String, String> memes = (HashMap<String, String>) response.toService(HashMap.class);
                     HashMap<String, HashMap<String, String>> cache = new HashMap<>();
 
                     for (Map.Entry<String, String> entry : memes.entrySet()) {

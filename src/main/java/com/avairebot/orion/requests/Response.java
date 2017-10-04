@@ -11,16 +11,17 @@ public class Response {
         this.response = response;
     }
 
-    public Object toJson(Class<?> clazz) {
+    public okhttp3.Response getResponse() {
+        return response;
+    }
+
+    public Object toService(Class<?> clazz) {
         Gson gson = new Gson();
 
         return gson.fromJson(toString(), clazz);
     }
 
-    public okhttp3.Response getResponse() {
-        return response;
-    }
-
+    @Override
     public String toString() {
         try {
             return response.body().string();

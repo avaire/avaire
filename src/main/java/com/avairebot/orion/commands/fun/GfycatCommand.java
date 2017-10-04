@@ -58,7 +58,7 @@ public class GfycatCommand extends Command {
                 .addParameter("count", 25)
                 .addParameter("search_text", String.join(" ", args))
                 .send((Consumer<Response>) response -> {
-                    GfycatService gfyCat = (GfycatService) response.toJson(GfycatService.class);
+                    GfycatService gfyCat = (GfycatService) response.toService(GfycatService.class);
 
                     message.getChannel().sendMessage(gfyCat.getRandomGfycatsItem().get("gifUrl").toString()).queue();
                 });

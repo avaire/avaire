@@ -54,7 +54,7 @@ public class ChuckNorrisCommand extends Command {
         RequestFactory.makeGET("http://api.icndb.com/jokes/random")
                 .addParameter("escape", "javascript")
                 .send((Consumer<Response>) response -> {
-                    ChuckNorrisService service = (ChuckNorrisService) response.toJson(ChuckNorrisService.class);
+                    ChuckNorrisService service = (ChuckNorrisService) response.toService(ChuckNorrisService.class);
 
                     MessageFactory.makeSuccess(message, service.getValue().getJoke()).queue();
                 });
