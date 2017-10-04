@@ -8,7 +8,6 @@ import com.google.gson.reflect.TypeToken;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 public class GuildTransformer extends Transformer {
 
@@ -26,7 +25,7 @@ public class GuildTransformer extends Transformer {
             levelAlerts = data.getBoolean("level_alerts");
             levelChannel = data.getString("level_channel");
 
-            if (data.getString("prefixes", null) != null && !Objects.equals(data.getString("prefixes"), "null")) {
+            if (data.getString("prefixes", null) != null) {
                 HashMap<String, String> dbPrefixes = new Gson().fromJson(
                         data.getString("prefixes"),
                         new TypeToken<HashMap<String, String>>() {
