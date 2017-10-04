@@ -314,7 +314,7 @@ public abstract class Command {
      */
     private String formatCommandGeneratorString(Message message, String string) {
         CommandContainer container = CommandHandler.getCommand(this);
-        String command = container.getDefaultPrefix() + container.getCommand().getTriggers().get(0);
+        String command = generateCommandPrefix(message) + container.getCommand().getTriggers().get(0);
 
         return string.replaceAll(":command", command);
     }

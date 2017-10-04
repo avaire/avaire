@@ -68,7 +68,7 @@ public class HelpCommand extends Command {
             return showCategoryCommands(message, Category.fromLazyName(args[0]), args[0]);
         }
 
-        return showCommand(message, CommandHandler.getCommand(message), args[0]);
+        return showCommand(message, CommandHandler.getCommand(message, args[0]), args[0]);
     }
 
     private boolean showCategories(Message message) {
@@ -142,6 +142,8 @@ public class HelpCommand extends Command {
             return false;
         }
 
+        final String commandPrefix = command.getCommand().generateCommandPrefix(message);
+
         EmbedBuilder embed = MessageFactory.createEmbeddedBuilder()
                 .setTitle(command.getCommand().getName())
                 .setColor(MessageFactory.MessageType.SUCCESS.getColor())
@@ -154,7 +156,7 @@ public class HelpCommand extends Command {
         if (command.getCommand().getTriggers().size() > 1) {
             embed.addField("Aliases", command.getCommand().getTriggers().stream()
                     .skip(1)
-                    .map(trigger -> command.getDefaultPrefix() + trigger)
+                    .map(trigger -> commandPrefix + trigger)
                     .collect(Collectors.joining("`, `", "`", "`")), false);
         }
 
@@ -163,12 +165,8 @@ public class HelpCommand extends Command {
         return true;
     }
 
-    private boolean isCommand(Message message, String command) {
-        for (Category category : Category.values()) {
-            if (command.startsWith(category.getPrefix()) && CommandHandler.getCommand(message, command) != null) {
-                return true;
-            }
-        }
-        return false;
+    private boolean isCommand(Message message, String commandString) {
+        CommandContainer command = CommandHandler.getCommand(message, commandString);
+        return command != null && commandString.startsWith(command.getCommand().generateCommandPrefix(message));
     }
 }
