@@ -16,6 +16,7 @@ public class GuildTransformer extends Transformer {
     private boolean levels = false;
     private boolean levelAlerts = false;
     private String levelChannel = null;
+    private String autorole = null;
 
     public GuildTransformer(DataRow data) {
         super(data);
@@ -24,6 +25,7 @@ public class GuildTransformer extends Transformer {
             levels = data.getBoolean("levels");
             levelAlerts = data.getBoolean("level_alerts");
             levelChannel = data.getString("level_channel");
+            autorole = data.getString("autorole");
 
             if (data.getString("prefixes", null) != null) {
                 HashMap<String, String> dbPrefixes = new Gson().fromJson(
@@ -88,6 +90,14 @@ public class GuildTransformer extends Transformer {
 
     public void setLevelChannel(String levelChannel) {
         this.levelChannel = levelChannel;
+    }
+
+    public String getAutorole() {
+        return autorole;
+    }
+
+    public void setAutorole(String autorole) {
+        this.autorole = autorole;
     }
 
     public Map<String, String> getPrefixes() {
