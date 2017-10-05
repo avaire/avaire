@@ -21,6 +21,10 @@ public class GuildMemberJoin extends EventHandler {
 
     @Override
     public void onGuildMemberJoin(GuildMemberJoinEvent event) {
+        if (event.getUser().isBot()) {
+            return;
+        }
+
         GuildTransformer transformer = GuildController.fetchGuild(orion, event.getGuild());
 
         if (transformer.getAutorole() != null) {
