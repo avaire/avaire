@@ -53,7 +53,7 @@ public class AutoAssignRoleCommand extends Command {
     public List<String> getMiddleware() {
         return Arrays.asList(
                 "require:bot,general.manage_roles",
-//                "require:user,general.administrator",
+                "require:user,general.administrator",
                 "throttle:guild,1,5"
         );
     }
