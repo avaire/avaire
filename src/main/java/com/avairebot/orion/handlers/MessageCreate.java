@@ -17,11 +17,11 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import java.util.concurrent.CompletableFuture;
 import java.util.regex.Pattern;
 
-public class MessageCreateEvent extends EventHandler {
+public class MessageCreate extends EventHandler {
 
     private static final Pattern userRegEX = Pattern.compile("<@(!|)+[0-9]{16,}+>", Pattern.CASE_INSENSITIVE);
 
-    public MessageCreateEvent(Orion orion) {
+    public MessageCreate(Orion orion) {
         super(orion);
     }
 
