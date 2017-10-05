@@ -6,6 +6,7 @@ import com.avairebot.orion.cache.CacheType;
 import com.avairebot.orion.database.collection.DataRow;
 import com.avairebot.orion.database.transformers.GuildTransformer;
 import com.google.gson.Gson;
+import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.TextChannel;
 
@@ -24,29 +25,33 @@ public class GuildController {
             return null;
         }
 
-        if (isCached(orion, message.getGuild().getId())) {
+        return fetchGuild(orion, message.getGuild());
+    }
+
+    public static GuildTransformer fetchGuild(Orion orion, Guild guild) {
+        if (isCached(orion, guild.getId())) {
             return (GuildTransformer) orion.cache.getAdapter(CacheType.MEMORY).get(
-                    String.format(CACHE_STRING, message.getGuild().getId())
+                    String.format(CACHE_STRING, guild.getId())
             );
         }
 
         try {
             GuildTransformer transformer = new GuildTransformer(orion.database.newQueryBuilder(Constants.GUILD_TABLE_NAME)
-                    .where("id", message.getGuild().getId())
+                    .where("id", guild.getId())
                     .get().first());
 
             if (!transformer.hasData()) {
-                final String cacheToken = String.format(CACHE_STRING, message.getGuild().getId());
+                final String cacheToken = String.format(CACHE_STRING, guild.getId());
                 try {
                     orion.database.newQueryBuilder(Constants.GUILD_TABLE_NAME)
                             .insert(statement -> {
-                                statement.set("id", message.getGuild().getId())
-                                        .set("owner", message.getGuild().getOwner().getUser().getId())
-                                        .set("name", message.getGuild().getName())
-                                        .set("channels_data", buildChannelData(message.getGuild().getTextChannels()));
+                                statement.set("id", guild.getId())
+                                        .set("owner", guild.getOwner().getUser().getId())
+                                        .set("name", guild.getName())
+                                        .set("channels_data", buildChannelData(guild.getTextChannels()));
 
-                                if (message.getGuild().getIconId() != null) {
-                                    statement.set("icon", message.getGuild().getIconId());
+                                if (guild.getIconId() != null) {
+                                    statement.set("icon", guild.getIconId());
                                 }
 
                                 orion.cache.getAdapter(CacheType.MEMORY)
@@ -59,7 +64,7 @@ public class GuildController {
                 return (GuildTransformer) orion.cache.getAdapter(CacheType.MEMORY).get(cacheToken);
             }
 
-            orion.cache.getAdapter(CacheType.MEMORY).put(String.format(CACHE_STRING, message.getGuild().getId()), transformer, 300);
+            orion.cache.getAdapter(CacheType.MEMORY).put(String.format(CACHE_STRING, guild.getId()), transformer, 300);
 
             return transformer;
         } catch (SQLException ex) {
