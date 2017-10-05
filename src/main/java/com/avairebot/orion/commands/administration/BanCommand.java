@@ -3,6 +3,7 @@ package com.avairebot.orion.commands.administration;
 import com.avairebot.orion.Orion;
 import com.avairebot.orion.contracts.commands.Command;
 import com.avairebot.orion.factories.MessageFactory;
+import com.avairebot.orion.utilities.RoleUtil;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.Role;
@@ -82,24 +83,8 @@ public class BanCommand extends Command {
     }
 
     private boolean userHasHigherRole(User user, Member author) {
-        List<Role> roles = author.getGuild().getMember(user).getRoles();
-        if (roles.isEmpty()) {
-            return false;
-        }
-
-        int highestUserRole = roles.stream().sorted((first, second) -> {
-            if (first.getPosition() == second.getPosition()) {
-                return 0;
-            }
-            return first.getPosition() > second.getPosition() ? -1 : 1;
-        }).findFirst().get().getPosition();
-
-        for (Role role : author.getRoles()) {
-            if (role.getPosition() > highestUserRole) {
-                return false;
-            }
-        }
-        return true;
+        Role role = RoleUtil.getHighestFrom(author.getGuild().getMember(user));
+        return role != null && RoleUtil.isRoleHierarchyHigher(author.getRoles(), role);
     }
 
     private String generateMessage(String[] args) {

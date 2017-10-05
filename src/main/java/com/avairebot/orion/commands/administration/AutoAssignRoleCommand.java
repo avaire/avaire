@@ -6,6 +6,7 @@ import com.avairebot.orion.contracts.commands.Command;
 import com.avairebot.orion.database.controllers.GuildController;
 import com.avairebot.orion.database.transformers.GuildTransformer;
 import com.avairebot.orion.factories.MessageFactory;
+import com.avairebot.orion.utilities.RoleUtil;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.requests.RestAction;
@@ -80,7 +81,7 @@ public class AutoAssignRoleCommand extends Command {
         }
 
         Role role = roles.get(0);
-        if (!isRolePositionLower(role, message.getMember().getRoles())) {
+        if (!RoleUtil.isRoleHierarchyLower(message.getMember().getRoles(), role)) {
             MessageFactory.makeWarning(message,
                     "<@%s> The **%s** role is positioned higher in the hierarchy than any role you have, you can't add roles with a higher ranking than you have.",
                     message.getAuthor().getId(),
@@ -89,7 +90,7 @@ public class AutoAssignRoleCommand extends Command {
             return false;
         }
 
-        if (!isRolePositionLower(role, message.getGuild().getSelfMember().getRoles())) {
+        if (!RoleUtil.isRoleHierarchyLower(message.getGuild().getSelfMember().getRoles(), role)) {
             MessageFactory.makeWarning(message,
                     "<@%s> The **%s** role is positioned higher in the hierarchy, I can't give/remove this role from users.",
                     message.getAuthor().getId(),
@@ -147,15 +148,6 @@ public class AutoAssignRoleCommand extends Command {
         return MessageFactory.makeSuccess(message, "<@%s> The **auto assign role** is currently set to **%s**",
                 message.getAuthor().getId(), role.getName()
         );
-    }
-
-    private boolean isRolePositionLower(Role role, List<Role> userRoles) {
-        for (Role userRole : userRoles) {
-            if (userRole.getPosition() > role.getPosition()) {
-                return true;
-            }
-        }
-        return false;
     }
 
     private void updateAutorole(GuildTransformer transformer, Message message, String value) throws SQLException {
