@@ -47,8 +47,15 @@ public class Require extends Middleware {
                 missingUserPermissions.add(permission);
             }
 
-            if (type.isCheckBot() && !message.getGuild().getSelfMember().hasPermission(message.getTextChannel(), permission.getPermission())) {
-                missingBotPermissions.add(permission);
+            if (type.isCheckBot()) {
+                if (!message.getGuild().getSelfMember().hasPermission(permission.getPermission())) {
+                    missingBotPermissions.add(permission);
+                    continue;
+                }
+
+                if (!message.getGuild().getSelfMember().hasPermission(message.getTextChannel(), permission.getPermission())) {
+                    missingBotPermissions.add(permission);
+                }
             }
         }
 
