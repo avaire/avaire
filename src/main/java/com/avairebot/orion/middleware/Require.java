@@ -47,7 +47,7 @@ public class Require extends Middleware {
                 missingUserPermissions.add(permission);
             }
 
-            if (type.isChechBot() && !message.getGuild().getSelfMember().hasPermission(message.getTextChannel(), permission.getPermission())) {
+            if (type.isCheckBot() && !message.getGuild().getSelfMember().hasPermission(message.getTextChannel(), permission.getPermission())) {
                 missingBotPermissions.add(permission);
             }
         }
@@ -81,11 +81,11 @@ public class Require extends Middleware {
         USER(true, false), BOT(false, true), ALL(true, true);
 
         private final boolean checkUser;
-        private final boolean chechBot;
+        private final boolean checkBot;
 
-        RequireType(boolean checkUser, boolean chechBot) {
+        RequireType(boolean checkUser, boolean checkBot) {
             this.checkUser = checkUser;
-            this.chechBot = chechBot;
+            this.checkBot = checkBot;
         }
 
         public static RequireType fromName(String name) {
@@ -101,8 +101,8 @@ public class Require extends Middleware {
             return checkUser;
         }
 
-        public boolean isChechBot() {
-            return chechBot;
+        public boolean isCheckBot() {
+            return checkBot;
         }
     }
 }
