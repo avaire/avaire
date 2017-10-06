@@ -1,11 +1,11 @@
 package com.avairebot.orion.commands;
 
 import com.avairebot.orion.contracts.commands.Command;
+import com.avairebot.orion.utilities.RandomUtil;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 public enum Category {
 
@@ -18,7 +18,6 @@ public enum Category {
     UTILITY("Utility", "!");
 
     private static final List<Category> VALUES = Collections.unmodifiableList(Arrays.asList(values()));
-    private static final Random RANDOM = new Random();
 
     private final String name;
     private final String prefix;
@@ -51,7 +50,7 @@ public enum Category {
     }
 
     public static Category random() {
-        return VALUES.get(RANDOM.nextInt(VALUES.size()));
+        return VALUES.get(RandomUtil.getInteger(VALUES.size()));
     }
 
     public String getName() {

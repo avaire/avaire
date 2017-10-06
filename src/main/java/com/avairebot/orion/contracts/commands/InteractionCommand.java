@@ -5,16 +5,15 @@ import com.avairebot.orion.commands.CommandMessage;
 import com.avairebot.orion.commands.CommandPriority;
 import com.avairebot.orion.factories.RequestFactory;
 import com.avairebot.orion.requests.Response;
+import com.avairebot.orion.utilities.RandomUtil;
 import net.dv8tion.jda.core.entities.Message;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 import java.util.function.Consumer;
 
 public abstract class InteractionCommand extends Command {
 
-    private static final Random random = new Random();
     private final String interaction;
 
     public InteractionCommand(Orion orion, String interaction) {
@@ -56,7 +55,7 @@ public abstract class InteractionCommand extends Command {
             return sendErrorMessage(message, "You must mention a use you want to use the interaction for.");
         }
 
-        int imageIndex = random.nextInt(getInteractionImages().size());
+        int imageIndex = RandomUtil.getInteger(getInteractionImages().size());
 
         message.getChannel().sendTyping().queue();
         RequestFactory.makeGET(getInteractionImages().get(imageIndex))

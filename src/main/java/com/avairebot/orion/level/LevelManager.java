@@ -49,7 +49,7 @@ public class LevelManager {
     }
 
     public static void rewardPlayer(Orion orion, Message message, GuildTransformer guild, PlayerTransformer player) {
-        rewardPlayer(orion, message, guild, player, (RANDOM.nextInt(5) + 10));
+        giveExperience(orion, message, guild, player, (RandomUtil.getInteger(5) + 10));
     }
 
     public static void rewardPlayer(Orion orion, Message message, GuildTransformer guild, PlayerTransformer player, int amount) {

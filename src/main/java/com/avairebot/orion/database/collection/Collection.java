@@ -1,17 +1,17 @@
 package com.avairebot.orion.database.collection;
 
 import com.avairebot.orion.contracts.database.collection.CollectionEach;
+import com.avairebot.orion.utilities.RandomUtil;
 import com.google.gson.Gson;
 
 import java.math.BigDecimal;
+import java.security.SecureRandom;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.*;
 
 public class Collection implements Cloneable, Iterable<DataRow> {
-
-    private static final Random RANDOM = new Random();
 
     private final HashMap<String, String> keys;
     private final List<DataRow> items;
@@ -499,7 +499,7 @@ public class Collection implements Cloneable, Iterable<DataRow> {
             return null;
         }
 
-        return items.get(RANDOM.nextInt(items.size()));
+        return items.get(RandomUtil.getInteger(items.size()));
     }
 
     /**
@@ -558,7 +558,7 @@ public class Collection implements Cloneable, Iterable<DataRow> {
      * @return the newly shuffled collection.
      */
     public Collection shuffle() {
-        Collections.shuffle(items, RANDOM);
+        Collections.shuffle(items, new SecureRandom());
 
         return this;
     }

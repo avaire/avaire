@@ -3,18 +3,18 @@ package com.avairebot.orion.commands.fun;
 import com.avairebot.orion.Orion;
 import com.avairebot.orion.contracts.commands.Command;
 import com.avairebot.orion.factories.MessageFactory;
+import com.avairebot.orion.utilities.RandomUtil;
 import net.dv8tion.jda.core.entities.Message;
 
 import java.awt.*;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 public class EightBallCommand extends Command {
 
-    private final Random random = new Random();
-    private final List<String> answers = Arrays.asList("It is certain",
+    private final List<String> answers = Arrays.asList(
+            "It is certain",
             "It is decidedly so",
             "Without a doubt",
             "Yes definitely",
@@ -73,14 +73,10 @@ public class EightBallCommand extends Command {
 
         message.getChannel().sendMessage(MessageFactory.createEmbeddedBuilder()
                 .setColor(Color.decode("#2A2C31"))
-                .setDescription(getRandomAnswer())
+                .setDescription((CharSequence) RandomUtil.pickRandom(answers))
                 .build()
         ).queue();
 
         return true;
-    }
-
-    private CharSequence getRandomAnswer() {
-        return answers.get(random.nextInt(answers.size() + 1));
     }
 }

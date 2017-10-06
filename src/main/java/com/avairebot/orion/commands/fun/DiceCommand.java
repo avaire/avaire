@@ -3,18 +3,17 @@ package com.avairebot.orion.commands.fun;
 import com.avairebot.orion.Orion;
 import com.avairebot.orion.contracts.commands.Command;
 import com.avairebot.orion.factories.MessageFactory;
+import com.avairebot.orion.utilities.RandomUtil;
 import net.dv8tion.jda.core.entities.Message;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 import java.util.regex.Pattern;
 
 public class DiceCommand extends Command {
 
     private final Pattern diceRegEX = Pattern.compile("([0-9]+)d([0-9]+)", Pattern.CASE_INSENSITIVE);
-    private final Random random = new Random();
 
     public DiceCommand(Orion orion) {
         super(orion);
@@ -83,7 +82,7 @@ public class DiceCommand extends Command {
             DiceRoll diceRoll = new DiceRoll(arg);
 
             for (int x = 0; x < dice; x++) {
-                diceRoll.addNumber(random.nextInt(sides) + 1);
+                diceRoll.addNumber(RandomUtil.getInteger(sides) + 1);
             }
             items.add(diceRoll);
         }
