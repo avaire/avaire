@@ -12,7 +12,7 @@ import com.avairebot.orion.database.controllers.PlayerController;
 import com.avairebot.orion.database.transformers.GuildTransformer;
 import com.avairebot.orion.database.transformers.PlayerTransformer;
 import com.avairebot.orion.factories.MessageFactory;
-import com.avairebot.orion.level.LevelManager;
+import com.avairebot.orion.utilities.LevelUtil;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.User;
@@ -95,10 +95,10 @@ public class RankCommand extends Command {
                     "Unranked" : properties.getScore() + " / " + message.getGuild().getMembers().size();
 
             long experience = properties.getPlayer().getExperience();
-            long level = LevelManager.getLevelFromXp(experience);
-            long current = LevelManager.getLevelXp(level);
+            long level = LevelUtil.getLevelFromExperience(experience);
+            long current = LevelUtil.getExperienceFromLevel(level);
 
-            long diff = LevelManager.getLevelXp(level + 1) - current;
+            long diff = LevelUtil.getExperienceFromLevel(level + 1) - current;
             double percentage = ((double) (experience - current) / diff) * 100;
 
             String levelBar = "";

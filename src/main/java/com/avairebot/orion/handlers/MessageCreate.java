@@ -10,7 +10,7 @@ import com.avairebot.orion.database.controllers.PlayerController;
 import com.avairebot.orion.database.transformers.GuildTransformer;
 import com.avairebot.orion.database.transformers.PlayerTransformer;
 import com.avairebot.orion.factories.MessageFactory;
-import com.avairebot.orion.level.LevelManager;
+import com.avairebot.orion.utilities.LevelUtil;
 import com.avairebot.orion.middleware.MiddlewareStack;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
@@ -35,7 +35,7 @@ public class MessageCreate extends EventHandler {
 
         loadDatabasePropertiesIntoMemory(event).thenAccept(properties -> {
             if (properties.getGuild() != null && properties.getPlayer() != null) {
-                LevelManager.rewardPlayer(orion, event, properties.getGuild(), properties.getPlayer());
+                LevelUtil.rewardPlayer(orion, event, properties.getGuild(), properties.getPlayer());
             }
 
             CommandContainer container = CommandHandler.getCommand(event.getMessage());
