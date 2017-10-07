@@ -88,7 +88,7 @@ public class MemeCommand extends Command {
             return sendGeneratedMeme(message, args[0].toLowerCase(), Arrays.copyOfRange(args, 1, args.length));
         }
 
-        return sendErrorMessage(message, String.format("Invalid meme type given, `%s` is not a valid meme type!", args[0]));
+        return sendErrorMessage(message, "Invalid meme type given, `%s` is not a valid meme type!", args[0]);
     }
 
 

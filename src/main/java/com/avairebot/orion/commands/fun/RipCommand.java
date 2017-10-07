@@ -10,7 +10,6 @@ import net.dv8tion.jda.core.entities.Message;
 
 import java.awt.*;
 import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -47,7 +46,7 @@ public class RipCommand extends Command {
 
     @Override
     public List<String> getMiddleware() {
-        return Arrays.asList("throttle:user,1,5");
+        return Collections.singletonList("throttle:user,1,5");
     }
 
     @Override

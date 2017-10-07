@@ -74,7 +74,7 @@ public class ChangePrefixCommand extends Command {
 
         Category category = Category.fromLazyName(args[0]);
         if (category == null) {
-            return sendErrorMessage(message, String.format("Invalid `category` given, there are no command categories that are called, or starts with `%s`", args[0]));
+            return sendErrorMessage(message, "Invalid `category` given, there are no command categories that are called, or starts with `%s`", args[0]);
         }
 
         GuildTransformer transformer = GuildController.fetchGuild(orion, message);

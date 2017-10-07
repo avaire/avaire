@@ -164,6 +164,19 @@ public abstract class Command {
     }
 
     /**
+     * Builds and sends the given error message to the
+     * given channel for the JDA message object.
+     *
+     * @param message The JDA message object.
+     * @param error   The error message that should be sent.
+     * @param args    The array of arguments that should be replace in the error string.
+     * @return false since the error message should only be used on failure.
+     */
+    protected final boolean sendErrorMessage(Message message, String error, String... args) {
+        return sendErrorMessage(message, String.format(error, args));
+    }
+
+    /**
      * Generates the command description, any middlewares assigned to the command
      * will also be dynamically generated and added to the command description
      * two lines below the actually description.

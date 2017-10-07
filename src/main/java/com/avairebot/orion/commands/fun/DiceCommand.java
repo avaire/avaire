@@ -73,10 +73,10 @@ public class DiceCommand extends Command {
             try {
                 sides = Integer.parseInt(split[1]);
                 if (sides < 1 || sides > 127) {
-                    return sendErrorMessage(message, String.format("`%s` is not a valid dice format, the sides must be greater than 0 and less than 128", arg));
+                    return sendErrorMessage(message, "`%s` is not a valid dice format, the sides must be greater than 0 and less than 128", arg);
                 }
             } catch (NumberFormatException ex) {
-                return sendErrorMessage(message, String.format("`%s` is not a valid dice format, the sides amount must be a valid positive number between 1 and 128", arg));
+                return sendErrorMessage(message, "`%s` is not a valid dice format, the sides amount must be a valid positive number between 1 and 128", arg);
             }
 
             DiceRoll diceRoll = new DiceRoll(arg);
