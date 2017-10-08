@@ -76,7 +76,7 @@ public class AddSelfAssignableCommand extends Command {
         try {
             GuildTransformer transformer = GuildController.fetchGuild(orion, message);
 
-            transformer.getSelfAssignableRoles().put(role.getId(), role.getName());
+            transformer.getSelfAssignableRoles().put(role.getId(), role.getName().toLowerCase());
             orion.database.newQueryBuilder(Constants.GUILD_TABLE_NAME)
                     .where("id", message.getGuild().getId())
                     .update(statement -> {
