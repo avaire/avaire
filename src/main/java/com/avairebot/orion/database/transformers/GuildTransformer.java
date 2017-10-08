@@ -12,6 +12,7 @@ import java.util.Map;
 public class GuildTransformer extends Transformer {
 
     private final Map<String, String> prefixes = new HashMap<>();
+    private final Map<String, String> selfAssignableRoles = new HashMap<>();
 
     private boolean levels = false;
     private boolean levelAlerts = false;
@@ -35,6 +36,17 @@ public class GuildTransformer extends Transformer {
 
                 for (Map.Entry<String, String> item : dbPrefixes.entrySet()) {
                     prefixes.put(item.getKey().toLowerCase(), item.getValue());
+                }
+            }
+
+            if (data.getString("claimable_roles", null) != null) {
+                HashMap<String, String> dbSelfAssignableRoles = new Gson().fromJson(
+                        data.getString("claimable_roles"),
+                        new TypeToken<HashMap<String, String>>() {
+                        }.getType());
+
+                for (Map.Entry<String, String> item : dbSelfAssignableRoles.entrySet()) {
+                    selfAssignableRoles.put(item.getKey(), item.getValue().toLowerCase());
                 }
             }
         }
@@ -98,6 +110,10 @@ public class GuildTransformer extends Transformer {
 
     public void setAutorole(String autorole) {
         this.autorole = autorole;
+    }
+
+    public Map<String, String> getSelfAssignableRoles() {
+        return selfAssignableRoles;
     }
 
     public Map<String, String> getPrefixes() {

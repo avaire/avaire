@@ -94,6 +94,7 @@ public class Orion {
         logger.info(" - Registering commands...");
 
         // Administration
+        CommandHandler.register(new AddSelfAssignableCommand(this));
         CommandHandler.register(new AutoAssignRoleCommand(this));
         CommandHandler.register(new BanCommand(this));
         CommandHandler.register(new ChangePrefixCommand(this));
@@ -101,6 +102,7 @@ public class Orion {
         CommandHandler.register(new KickCommand(this));
         CommandHandler.register(new LevelAlertsCommand(this));
         CommandHandler.register(new LevelCommand(this));
+        CommandHandler.register(new RemoveSelfAssignableCommand(this));
         CommandHandler.register(new ServerIdCommand(this));
         CommandHandler.register(new UserIdCommand(this));
 

@@ -1,12 +1,32 @@
 package com.avairebot.orion.utilities;
 
+import com.avairebot.orion.factories.MessageFactory;
 import net.dv8tion.jda.core.entities.Member;
+import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.utils.Checks;
 
 import java.util.List;
 
 public class RoleUtil {
+
+    /**
+     * Gets the role from the mentioned roles list, if no roles was mentions
+     * the role will be fetch from the guilds role list by name instead,
+     * if no roles was found null is returned.
+     *
+     * @param message  The JDA message object for the current guild.
+     * @param roleName The name of the role that should be fetched if no role was mentioned.
+     * @return Possibly-null, if a role was mentioned the role will be returned, otherwise the role will be fetched from the guilds role list.
+     */
+    public static Role getRoleFromMentionsOrName(Message message, String roleName) {
+        if (!message.getMentionedRoles().isEmpty()) {
+            return message.getMentionedRoles().get(0);
+        }
+
+        List<Role> roles = message.getGuild().getRolesByName(roleName, true);
+        return roles.isEmpty() ? null : roles.get(0);
+    }
 
     /**
      * Get the role that is position highest in the role hierarchy for the given member.
@@ -86,5 +106,37 @@ public class RoleUtil {
             }
         }
         return false;
+    }
+
+    /**
+     * Checks if the user can interact with the given role by making sure the role is
+     * not higher in the role hierarchy then any role the user and the bot instance
+     * for the current guild has, if the method returns true the bot should be
+     * able to give the role to the users, and the given user has at least
+     * one role which is in a higher position in the role hierarchy.
+     *
+     * @param message The JDA message object for the current guild.
+     * @param role    The role that should be used in the checks.
+     * @return True if both the given user and bot can interact with the role, false otherwise.
+     */
+    public static boolean canInteractWithRole(Message message, Role role) {
+        if (RoleUtil.isRoleHierarchyHigher(message.getMember().getRoles(), role)) {
+            MessageFactory.makeWarning(message,
+                    "<@%s> The **%s** role is positioned higher in the hierarchy than any role you have, you can't add roles with a higher ranking than you have.",
+                    message.getAuthor().getId(), role.getName()
+            ).queue();
+            return false;
+        }
+
+        if (RoleUtil.isRoleHierarchyHigher(message.getGuild().getSelfMember().getRoles(), role)) {
+            MessageFactory.makeWarning(message,
+                    "<@%s> The **%s** role is positioned higher in the hierarchy, I can't give/remove this role from users.",
+                    message.getAuthor().getId(),
+                    role.getName()
+            ).queue();
+            return false;
+        }
+
+        return true;
     }
 }
