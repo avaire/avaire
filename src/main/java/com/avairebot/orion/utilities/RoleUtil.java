@@ -139,4 +139,20 @@ public class RoleUtil {
 
         return true;
     }
+
+    /**
+     * Checks if the given member has the given role.
+     *
+     * @param member The member that should check if they have the given role.
+     * @param role   The role the member should have.
+     * @return True if the member has the given role, false otherwise.
+     */
+    public static boolean hasRole(Member member, Role role) {
+        for (Role memberRole : member.getRoles()) {
+            if (memberRole.getId().equals(role.getId())) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
