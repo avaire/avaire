@@ -15,15 +15,15 @@ import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
 
-public class RemoveSelfAssignableCommand extends Command {
+public class RemoveSelfAssignableRoleCommand extends Command {
 
-    public RemoveSelfAssignableCommand(Orion orion) {
+    public RemoveSelfAssignableRoleCommand(Orion orion) {
         super(orion, false);
     }
 
     @Override
     public String getName() {
-        return "Remove Self Assignable Command";
+        return "Remove Self Assignable Role Command";
     }
 
     @Override

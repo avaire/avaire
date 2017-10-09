@@ -16,9 +16,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class AddSelfAssignableCommand extends Command {
+public class AddSelfAssignableRoleCommand extends Command {
 
-    public AddSelfAssignableCommand(Orion orion) {
+    public AddSelfAssignableRoleCommand(Orion orion) {
         super(orion, false);
     }
 
