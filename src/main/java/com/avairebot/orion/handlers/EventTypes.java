@@ -1,8 +1,10 @@
 package com.avairebot.orion.handlers;
 
 public enum EventTypes {
-    MessageReceivedEvent(MessageCreate.class),
-    GuildMemberJoinEvent(GuildMemberJoin.class);
+    GuildMemberJoinEvent(GuildMemberJoin.class),
+    GuildRoleDeleteEvent(GuildRoleDelete.class),
+    GuildRoleUpdateEvent(GuildRoleUpdate.class),
+    MessageReceivedEvent(MessageCreate.class);
 
     private final Class instance;
 
