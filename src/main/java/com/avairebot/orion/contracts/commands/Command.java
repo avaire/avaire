@@ -296,7 +296,7 @@ public abstract class Command {
         GuildTransformer transformer = GuildController.fetchGuild(orion, message);
         Category category = Category.fromCommand(this);
 
-        return transformer.getPrefixes().getOrDefault(
+        return transformer == null ? category.getPrefix() : transformer.getPrefixes().getOrDefault(
                 category.getName().toLowerCase(),
                 category.getPrefix()
         );
