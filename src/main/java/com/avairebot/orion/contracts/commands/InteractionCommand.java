@@ -15,11 +15,17 @@ import java.util.function.Consumer;
 public abstract class InteractionCommand extends Command {
 
     private final String interaction;
+    private final boolean overwrite;
 
-    public InteractionCommand(Orion orion, String interaction) {
+    public InteractionCommand(Orion orion, String interaction, boolean overwrite) {
         super(orion, false);
 
+        this.overwrite = overwrite;
         this.interaction = interaction;
+    }
+
+    public InteractionCommand(Orion orion, String interaction) {
+        this(orion, interaction, false);
     }
 
     @Override
@@ -62,12 +68,23 @@ public abstract class InteractionCommand extends Command {
                 .send((Consumer<Response>) response -> message.getChannel().sendFile(
                         response.getResponse().body().byteStream(),
                         interaction + "-" + imageIndex + ".gif",
-                        new CommandMessage(String.format("**%s** %s **%s**",
-                                message.getMember().getEffectiveName(),
-                                interaction,
-                                message.getGuild().getMember(message.getMentionedUsers().get(0)).getEffectiveName()
-                        ))
+                        buildCommandMessage(message)
                 ).queue());
         return true;
+    }
+
+    private CommandMessage buildCommandMessage(Message message) {
+        if (overwrite) {
+            return new CommandMessage(String.format(interaction,
+                    message.getMember().getEffectiveName(),
+                    message.getGuild().getMember(message.getMentionedUsers().get(0)).getEffectiveName()
+            ));
+        }
+
+        return new CommandMessage(String.format("**%s** %s **%s**",
+                message.getMember().getEffectiveName(),
+                interaction,
+                message.getGuild().getMember(message.getMentionedUsers().get(0)).getEffectiveName()
+        ));
     }
 }
