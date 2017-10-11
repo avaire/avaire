@@ -35,10 +35,10 @@ public class GuildRoleDelete extends EventHandler {
         try {
             transformer.getSelfAssignableRoles().remove(event.getRole().getId());
             orion.database.newQueryBuilder(Constants.GUILD_TABLE_NAME)
-                    .where("id", event.getGuild().getId())
-                    .update(statement -> {
-                        statement.set("claimable_roles", new Gson().toJson(transformer.getSelfAssignableRoles()));
-                    });
+                .where("id", event.getGuild().getId())
+                .update(statement -> {
+                    statement.set("claimable_roles", new Gson().toJson(transformer.getSelfAssignableRoles()));
+                });
         } catch (SQLException e) {
             e.printStackTrace();
         }

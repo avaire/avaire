@@ -49,18 +49,18 @@ public class StatsCommand extends Command {
     public boolean onCommand(Message message, String[] args) {
         Guild guild = message.getGuild();
         MessageFactory.makeEmbeddedMessage(message.getChannel(), MessageFactory.MessageType.INFO,
-                new MessageEmbed.Field("Author", "Senither#8023", true),
-                new MessageEmbed.Field("Bot ID", message.getJDA().getSelfUser().getId(), true),
-                new MessageEmbed.Field("Library", "[JDA](https://github.com/DV8FromTheWorld/JDA)", true),
-                new MessageEmbed.Field("DB Queries run", "" + Statistics.getQueries(), true),
-                new MessageEmbed.Field("Messages Received", "" + Statistics.getMessages(), true),
-                new MessageEmbed.Field("Shard", "Unknown", true),
-                new MessageEmbed.Field("Commands Run", "" + Statistics.getCommands(), true),
-                new MessageEmbed.Field("Memory Usage", "Unknown", true),
-                new MessageEmbed.Field("Uptime", "" + applicationUptime(), true),
-                new MessageEmbed.Field("Members", "" + guild.getMembers().size(), true),
-                new MessageEmbed.Field("Channels", "" + guild.getTextChannels().size() + guild.getVoiceChannels().size(), true),
-                new MessageEmbed.Field("Servers", "" + message.getJDA().getGuilds().size(), true)
+            new MessageEmbed.Field("Author", "Senither#8023", true),
+            new MessageEmbed.Field("Bot ID", message.getJDA().getSelfUser().getId(), true),
+            new MessageEmbed.Field("Library", "[JDA](https://github.com/DV8FromTheWorld/JDA)", true),
+            new MessageEmbed.Field("DB Queries run", "" + Statistics.getQueries(), true),
+            new MessageEmbed.Field("Messages Received", "" + Statistics.getMessages(), true),
+            new MessageEmbed.Field("Shard", "Unknown", true),
+            new MessageEmbed.Field("Commands Run", "" + Statistics.getCommands(), true),
+            new MessageEmbed.Field("Memory Usage", "Unknown", true),
+            new MessageEmbed.Field("Uptime", "" + applicationUptime(), true),
+            new MessageEmbed.Field("Members", "" + guild.getMembers().size(), true),
+            new MessageEmbed.Field("Channels", "" + guild.getTextChannels().size() + guild.getVoiceChannels().size(), true),
+            new MessageEmbed.Field("Servers", "" + message.getJDA().getGuilds().size(), true)
         ).queue();
 
         return true;

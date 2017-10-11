@@ -67,9 +67,9 @@ public class ListSelfAssignableRolesCommand extends Command {
 
 
         message.getChannel().sendMessage(MessageFactory.createEmbeddedBuilder()
-                .setColor(MessageFactory.MessageType.SUCCESS.getColor())
-                .setTitle(String.format("There are %s self-assignable roles", paginator.getTotal()))
-                .setDescription(String.join("\n", messages)).build()).queue();
+            .setColor(MessageFactory.MessageType.SUCCESS.getColor())
+            .setTitle(String.format("There are %s self-assignable roles", paginator.getTotal()))
+            .setDescription(String.join("\n", messages)).build()).queue();
 
         return true;
     }

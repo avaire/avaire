@@ -35,10 +35,10 @@ public class GuildRoleUpdate extends EventHandler {
         try {
             transformer.getSelfAssignableRoles().put(event.getRole().getId(), event.getRole().getName().toLowerCase());
             orion.database.newQueryBuilder(Constants.GUILD_TABLE_NAME)
-                    .where("id", event.getGuild().getId())
-                    .update(statement -> {
-                        statement.set("claimable_roles", new Gson().toJson(transformer.getSelfAssignableRoles()));
-                    });
+                .where("id", event.getGuild().getId())
+                .update(statement -> {
+                    statement.set("claimable_roles", new Gson().toJson(transformer.getSelfAssignableRoles()));
+                });
         } catch (SQLException e) {
             e.printStackTrace();
         }

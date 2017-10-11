@@ -16,9 +16,9 @@ public class PanCommand extends InteractionCommand {
     @Override
     public List<String> getInteractionImages() {
         return Arrays.asList(
-                "https://i.imgur.com/4x3JLai.gif",
-                "https://i.imgur.com/3IltdKo.gif",
-                "https://i.imgur.com/ruFqQkT.gif"
+            "https://i.imgur.com/4x3JLai.gif",
+            "https://i.imgur.com/3IltdKo.gif",
+            "https://i.imgur.com/ruFqQkT.gif"
         );
     }
 

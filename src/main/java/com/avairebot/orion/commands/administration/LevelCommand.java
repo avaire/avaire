@@ -47,8 +47,8 @@ public class LevelCommand extends Command {
     @Override
     public List<String> getMiddleware() {
         return Arrays.asList(
-                "require:user,general.manage_server",
-                "throttle:user,1,5"
+            "require:user,general.manage_server",
+            "throttle:user,1,5"
         );
     }
 
@@ -60,19 +60,19 @@ public class LevelCommand extends Command {
 
         try {
             orion.database.newQueryBuilder(Constants.GUILD_TABLE_NAME)
-                    .andWhere("id", message.getGuild().getId())
-                    .update(statement -> statement.set("levels", guildTransformer.isLevels()));
+                .andWhere("id", message.getGuild().getId())
+                .update(statement -> statement.set("levels", guildTransformer.isLevels()));
 
             String note = "";
             if (guildTransformer.isLevels()) {
                 note = String.format("\nLevel alerts are current `%s`, you can toggle them on or off with `.levelalerts`",
-                        guildTransformer.isLevelAlerts() ? "Enabled" : "Disabled"
+                    guildTransformer.isLevelAlerts() ? "Enabled" : "Disabled"
                 );
             }
 
             MessageFactory.makeSuccess(message, "`Levels & Experience` has been `%s` for the server.%s",
-                    guildTransformer.isLevels() ? "Enabled" : "Disabled",
-                    note
+                guildTransformer.isLevels() ? "Enabled" : "Disabled",
+                note
             ).queue();
         } catch (SQLException ex) {
             orion.logger.fatal(ex);

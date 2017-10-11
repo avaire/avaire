@@ -15,11 +15,11 @@ public class HighFiveCommand extends InteractionCommand {
     @Override
     public List<String> getInteractionImages() {
         return Arrays.asList(
-                "https://i.imgur.com/IxECtIA.gif",
-                "https://i.imgur.com/h9y9lzT.gif",
-                "https://i.imgur.com/mcbqQAx.gif",
-                "https://i.imgur.com/7IopcFX.gif",
-                "https://i.imgur.com/CjFaqDP.gif"
+            "https://i.imgur.com/IxECtIA.gif",
+            "https://i.imgur.com/h9y9lzT.gif",
+            "https://i.imgur.com/mcbqQAx.gif",
+            "https://i.imgur.com/7IopcFX.gif",
+            "https://i.imgur.com/CjFaqDP.gif"
         );
     }
 

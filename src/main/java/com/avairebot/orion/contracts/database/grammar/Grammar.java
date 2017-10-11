@@ -13,12 +13,12 @@ public abstract class Grammar {
      * validate operators to make sure they're valid.
      */
     protected final List<String> operators = Arrays.asList(
-            "=", "<", ">", "<=", ">=", "<>", "!=",
-            "like", "like binary", "not like", "between", "ilike",
-            "&", "|", "^", "<<", ">>",
-            "rlike", "regexp", "not regexp",
-            "~", "~*", "!~*", "similar to",
-            "not similar to"
+        "=", "<", ">", "<=", ">=", "<>", "!=",
+        "like", "like binary", "not like", "between", "ilike",
+        "&", "|", "^", "<<", ">>",
+        "rlike", "regexp", "not regexp",
+        "~", "~*", "!~*", "similar to",
+        "not similar to"
     );
     /**
      * A list of SQL order operators, this is used to compare

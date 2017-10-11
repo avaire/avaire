@@ -70,7 +70,7 @@ public class MoveHereCommand extends Command {
         }
 
         MessageFactory.makeSuccess(message, "I am now streaming music in **%s**",
-                channel.getName()
+            channel.getName()
         ).queue();
         return true;
 

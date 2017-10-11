@@ -1,28 +1,28 @@
 {
-  "environment": "production",
-  "bot": {
-    "token": "",
-    "oauth": "https://discordapp.com/oauth2/authorize?&client_id=<client_id>&scope=bot&permissions=66186303",
-    "activationDelay": "0"
-  },
-  "database": {
-    "type": "mysql",
-    "database": "avaire",
-    "hostname": "localhost",
-    "username": "username",
-    "password": "password"
-  },
-  "playing": [
-    ".help"
-  ],
-  "botAccess": [
-    "88739639380172800"
-  ],
-  "webbook": {
-    "id": "",
-    "token": ""
-  },
-  "apiKeys": {
-    "google": ""
-  }
+    "environment": "production",
+    "bot": {
+        "token": "",
+        "oauth": "https://discordapp.com/oauth2/authorize?&client_id=<client_id>&scope=bot&permissions=66186303",
+        "activationDelay": "0"
+    },
+    "database": {
+        "type": "mysql",
+        "database": "avaire",
+        "hostname": "localhost",
+        "username": "username",
+        "password": "password"
+    },
+    "playing": [
+        ".help"
+    ],
+    "botAccess": [
+        "88739639380172800"
+    ],
+    "webbook": {
+        "id": "",
+        "token": ""
+    },
+    "apiKeys": {
+        "google": ""
+    }
 }

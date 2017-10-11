@@ -15,10 +15,10 @@ public class HugCommand extends InteractionCommand {
     @Override
     public List<String> getInteractionImages() {
         return Arrays.asList(
-                "https://i.imgur.com/aBdIEEu.gif",
-                "https://i.imgur.com/03grRGj.gif",
-                "https://i.imgur.com/EuIBiLi.gif",
-                "https://i.imgur.com/8KgVR9j.gif"
+            "https://i.imgur.com/aBdIEEu.gif",
+            "https://i.imgur.com/03grRGj.gif",
+            "https://i.imgur.com/EuIBiLi.gif",
+            "https://i.imgur.com/8KgVR9j.gif"
         );
     }
 

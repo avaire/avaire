@@ -42,14 +42,14 @@ public class RankCommand extends Command {
     @Override
     public String getDescription() {
         return "Gets your rank, level, xp for the current server and total xp for all servers that you're on, you can tag a user to see their level stats instead."
-                + "\nThis command requires the `Levels & Experience` feature to be enabled for the server!";
+            + "\nThis command requires the `Levels & Experience` feature to be enabled for the server!";
     }
 
     @Override
     public List<String> getUsageInstructions() {
         return Arrays.asList(
-                "`:command` - Displays your rank, level, xp and other stuff",
-                "`:command @Senither` - Displays Senither's rank, level, xp...");
+            "`:command` - Displays your rank, level, xp and other stuff",
+            "`:command @Senither` - Displays Senither's rank, level, xp...");
     }
 
     @Override
@@ -92,7 +92,7 @@ public class RankCommand extends Command {
 
         loadProperties(message, author).thenAccept(properties -> {
             String score = properties.getScore().equals("Unranked") ?
-                    "Unranked" : properties.getScore() + " / " + message.getGuild().getMembers().size();
+                "Unranked" : properties.getScore() + " / " + message.getGuild().getMembers().size();
 
             long experience = properties.getPlayer().getExperience();
             long level = LevelUtil.getLevelFromExperience(experience);
@@ -107,16 +107,16 @@ public class RankCommand extends Command {
             }
 
             EmbedBuilder embed = MessageFactory.createEmbeddedBuilder().setColor(Color.decode("#E91E63"))
-                    .setAuthor(author.getName(), "https://avairebot.com/leaderboard/" + message.getGuild().getId(), author.getAvatarUrl())
-                    .setFooter("https://avairebot.com/leaderboard/" + message.getGuild().getId(), null)
-                    .addField("Rank", score, true)
-                    .addField("Level", "" + level, true)
-                    .addField("Experience", (experience - 100 < 0 ? "0" : String.format("%s (Total: %s)",
-                            experience - 100, properties.getTotal()
-                    )), true)
-                    .addField("Experience needed to next Level", String.format("[%s] %s%s",
-                            levelBar, new DecimalFormat("#.##").format(percentage), '%'
-                    ), false);
+                .setAuthor(author.getName(), "https://avairebot.com/leaderboard/" + message.getGuild().getId(), author.getAvatarUrl())
+                .setFooter("https://avairebot.com/leaderboard/" + message.getGuild().getId(), null)
+                .addField("Rank", score, true)
+                .addField("Level", "" + level, true)
+                .addField("Experience", (experience - 100 < 0 ? "0" : String.format("%s (Total: %s)",
+                    experience - 100, properties.getTotal()
+                )), true)
+                .addField("Experience needed to next Level", String.format("[%s] %s%s",
+                    levelBar, new DecimalFormat("#.##").format(percentage), '%'
+                ), false);
 
             message.getChannel().sendMessage(embed.build()).queue();
         });
@@ -129,9 +129,9 @@ public class RankCommand extends Command {
             try {
                 PlayerTransformer player = PlayerController.fetchPlayer(orion, message, author);
                 DataRow data = orion.database.newQueryBuilder(Constants.PLAYER_EXPERIENCE_TABLE_NAME)
-                        .selectRaw("sum(`experience`) - (count(`user_id`) * 100) as `total`")
-                        .where("user_id", author.getId())
-                        .get().first();
+                    .selectRaw("sum(`experience`) - (count(`user_id`) * 100) as `total`")
+                    .where("user_id", author.getId())
+                    .get().first();
 
                 long total = data == null ? player.getExperience() : data.getLong("total");
 
@@ -159,12 +159,12 @@ public class RankCommand extends Command {
         }
 
         orion.cache.getAdapter(CacheType.MEMORY).put(cacheToken + message.getGuild().getId(),
-                orion.database.newQueryBuilder(Constants.PLAYER_EXPERIENCE_TABLE_NAME)
-                        .select("user_id as id")
-                        .orderBy("experience", "desc")
-                        .where("guild_id", message.getGuild().getId())
-                        .get(),
-                120
+            orion.database.newQueryBuilder(Constants.PLAYER_EXPERIENCE_TABLE_NAME)
+                .select("user_id as id")
+                .orderBy("experience", "desc")
+                .where("guild_id", message.getGuild().getId())
+                .get(),
+            120
         );
 
         return getScore(message, userId);

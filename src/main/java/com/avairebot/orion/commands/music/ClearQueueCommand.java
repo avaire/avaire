@@ -61,7 +61,7 @@ public class ClearQueueCommand extends Command {
         }
 
         MessageFactory.makeSuccess(message, "I have removed **%s** songs from the queue, the queue is now empty!",
-                musicManager.getScheduler().getQueue().size()
+            musicManager.getScheduler().getQueue().size()
         ).queue();
         musicManager.getScheduler().getQueue().clear();
 

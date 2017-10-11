@@ -23,9 +23,9 @@ public class HelpCommand extends Command {
         super(orion);
 
         categories = Arrays.stream(Category.values())
-                .map(Category::getName)
-                .sorted()
-                .collect(Collectors.joining("\n• ", "• ", "\n\n"));
+            .map(Category::getName)
+            .sorted()
+            .collect(Collectors.joining("\n• ", "• ", "\n\n"));
     }
 
     @Override
@@ -41,9 +41,9 @@ public class HelpCommand extends Command {
     @Override
     public List<String> getUsageInstructions() {
         return Arrays.asList(
-                "`:command` - Shows a list of command categories.",
-                "`:command <category>` - Shows a list of commands in the given category.",
-                "`:command <command>` - Shows detailed information on how to use the given command."
+            "`:command` - Shows a list of command categories.",
+            "`:command <category>` - Shows a list of commands in the given category.",
+            "`:command <command>` - Shows detailed information on how to use the given command."
 
         );
     }
@@ -75,15 +75,15 @@ public class HelpCommand extends Command {
         Category category = Category.random();
 
         String note = String.format(":information_source: Type `:help <category>` to get a list of commands in that category.\nExample: `:help %s` or `:help %s`",
-                category.getName().toLowerCase(),
-                category.getName().toLowerCase().substring(0, 3)
+            category.getName().toLowerCase(),
+            category.getName().toLowerCase().substring(0, 3)
         ).replaceAll(":help", generateCommandTrigger(message));
 
         MessageEmbed embed = MessageFactory.createEmbeddedBuilder()
-                .setColor(MessageFactory.MessageType.INFO.getColor())
-                .setTitle(":scroll: Command Categories")
-                .setDescription(categories + note)
-                .build();
+            .setColor(MessageFactory.MessageType.INFO.getColor())
+            .setTitle(":scroll: Command Categories")
+            .setDescription(categories + note)
+            .build();
 
         message.getChannel().sendMessage(embed).queue();
         return true;
@@ -96,41 +96,41 @@ public class HelpCommand extends Command {
         }
 
         message.getChannel().sendMessage(String.format(
-                ":page_with_curl: **%s** ```css\n%s```\n",
-                "List of Commands",
-                CommandHandler.getCommands().stream()
-                        .filter(commandContainer -> commandContainer.getCategory().equals(category))
-                        .map(container -> {
-                            String trigger = container.getCommand().generateCommandTrigger(message);
+            ":page_with_curl: **%s** ```css\n%s```\n",
+            "List of Commands",
+            CommandHandler.getCommands().stream()
+                .filter(commandContainer -> commandContainer.getCategory().equals(category))
+                .map(container -> {
+                    String trigger = container.getCommand().generateCommandTrigger(message);
 
-                            for (int i = trigger.length(); i < 15; i++) {
-                                trigger += " ";
-                            }
+                    for (int i = trigger.length(); i < 15; i++) {
+                        trigger += " ";
+                    }
 
-                            List<String> triggers = container.getCommand().getTriggers();
-                            if (triggers.size() == 1) {
-                                return trigger + "[]";
-                            }
+                    List<String> triggers = container.getCommand().getTriggers();
+                    if (triggers.size() == 1) {
+                        return trigger + "[]";
+                    }
 
-                            String prefix = container.getCommand().generateCommandPrefix(message);
-                            String[] aliases = new String[triggers.size() - 1];
-                            for (int i = 1; i < triggers.size(); i++) {
-                                aliases[i - 1] = prefix + triggers.get(i);
-                            }
-                            return String.format("%s[%s]", trigger, String.join(", ", aliases));
-                        })
-                        .collect(Collectors.joining("\n"))
+                    String prefix = container.getCommand().generateCommandPrefix(message);
+                    String[] aliases = new String[triggers.size() - 1];
+                    for (int i = 1; i < triggers.size(); i++) {
+                        aliases[i - 1] = prefix + triggers.get(i);
+                    }
+                    return String.format("%s[%s]", trigger, String.join(", ", aliases));
+                })
+                .collect(Collectors.joining("\n"))
         )).queue(sentMessage -> MessageFactory.makeInfo(sentMessage,
-                "**Type `:help <command>` to see the help for that specified command.**\nExample: `:help :command`"
-                        .replaceAll(":help", generateCommandTrigger(message))
-                        .replace(":command", CommandHandler.getCommands().stream()
-                                .filter(commandContainer -> commandContainer.getCategory().equals(category))
-                                .collect(Collectors.collectingAndThen(Collectors.toList(), collected -> {
-                                    Collections.shuffle(collected);
-                                    return collected.stream();
-                                }))
-                                .findFirst().get().getCommand().generateCommandTrigger(message)
-                        )
+            "**Type `:help <command>` to see the help for that specified command.**\nExample: `:help :command`"
+                .replaceAll(":help", generateCommandTrigger(message))
+                .replace(":command", CommandHandler.getCommands().stream()
+                    .filter(commandContainer -> commandContainer.getCategory().equals(category))
+                    .collect(Collectors.collectingAndThen(Collectors.toList(), collected -> {
+                        Collections.shuffle(collected);
+                        return collected.stream();
+                    }))
+                    .findFirst().get().getCommand().generateCommandTrigger(message)
+                )
         ).queue());
 
         return true;
@@ -145,19 +145,19 @@ public class HelpCommand extends Command {
         final String commandPrefix = command.getCommand().generateCommandPrefix(message);
 
         EmbedBuilder embed = MessageFactory.createEmbeddedBuilder()
-                .setTitle(command.getCommand().getName())
-                .setColor(MessageFactory.MessageType.SUCCESS.getColor())
-                .addField("Usage", command.getCommand().generateUsageInstructions(message), false)
-                .setFooter("Command category: " + command.getCategory().getName(), null);
+            .setTitle(command.getCommand().getName())
+            .setColor(MessageFactory.MessageType.SUCCESS.getColor())
+            .addField("Usage", command.getCommand().generateUsageInstructions(message), false)
+            .setFooter("Command category: " + command.getCategory().getName(), null);
 
         StringBuilder description = embed.getDescriptionBuilder()
-                .append(command.getCommand().generateDescription(message));
+            .append(command.getCommand().generateDescription(message));
 
         if (command.getCommand().getTriggers().size() > 1) {
             embed.addField("Aliases", command.getCommand().getTriggers().stream()
-                    .skip(1)
-                    .map(trigger -> commandPrefix + trigger)
-                    .collect(Collectors.joining("`, `", "`", "`")), false);
+                .skip(1)
+                .map(trigger -> commandPrefix + trigger)
+                .collect(Collectors.joining("`, `", "`", "`")), false);
         }
 
 

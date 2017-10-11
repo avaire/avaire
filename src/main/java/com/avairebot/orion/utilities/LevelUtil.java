@@ -71,8 +71,8 @@ public class LevelUtil {
      */
     public static void rewardPlayer(Orion orion, MessageReceivedEvent event, GuildTransformer guild, PlayerTransformer player) {
         String cacheToken = String.format("user-message-xp-event.%s.%s",
-                player.getGuildId(),
-                player.getUserId()
+            player.getGuildId(),
+            player.getUserId()
         );
 
         if (orion.cache.getAdapter(CacheType.MEMORY).has(cacheToken)) {
@@ -133,17 +133,17 @@ public class LevelUtil {
 
         try {
             orion.database.newQueryBuilder(Constants.PLAYER_EXPERIENCE_TABLE_NAME)
-                    .where("user_id", player.getUserId())
-                    .andWhere("guild_id", player.getGuildId())
-                    .update(statement -> statement.set("experience", player.getExperience()));
+                .where("user_id", player.getUserId())
+                .andWhere("guild_id", player.getGuildId())
+                .update(statement -> statement.set("experience", player.getExperience()));
 
             if (guild.isLevelAlerts() && getLevelFromExperience(player.getExperience()) > lvl) {
                 getLevelUpChannel(message, guild).sendMessage(MessageFactory.createEmbeddedBuilder()
-                        .setColor(MessageFactory.MessageType.SUCCESS.getColor())
-                        .setDescription(String.format("GG <@%s>, you just reached **Level %s**",
-                                player.getUserId(),
-                                getLevelFromExperience(player.getExperience())
-                        )).build()
+                    .setColor(MessageFactory.MessageType.SUCCESS.getColor())
+                    .setDescription(String.format("GG <@%s>, you just reached **Level %s**",
+                        player.getUserId(),
+                        getLevelFromExperience(player.getExperience())
+                    )).build()
                 ).queue();
             }
         } catch (SQLException e) {

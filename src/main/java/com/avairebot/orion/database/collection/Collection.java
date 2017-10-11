@@ -185,8 +185,8 @@ public class Collection implements Cloneable, Iterable<DataRow> {
      */
     public boolean contains(Object item) {
         return items.stream().anyMatch((row)
-                -> (row.keySet().stream().anyMatch((key)
-                -> (row.get(key).equals(item)))));
+            -> (row.keySet().stream().anyMatch((key)
+            -> (row.get(key).equals(item)))));
     }
 
     /**

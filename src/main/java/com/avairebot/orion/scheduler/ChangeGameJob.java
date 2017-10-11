@@ -19,7 +19,7 @@ public class ChangeGameJob extends Job {
         }
 
         orion.getJDA().getPresence().setGame(
-                Game.of(formatGame(orion.config.getPlaying().get(index++)))
+            Game.of(formatGame(orion.config.getPlaying().get(index++)))
         );
     }
 

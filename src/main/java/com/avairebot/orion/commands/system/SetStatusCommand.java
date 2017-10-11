@@ -27,8 +27,8 @@ public class SetStatusCommand extends SystemCommand {
     @Override
     public List<String> getUsageInstructions() {
         return Arrays.asList(
-                "`:command <game>` - Sets the bots playing status to the given game.",
-                "`:command <twitch url>` - The URL that the bot should be broadcasting."
+            "`:command <game>` - Sets the bots playing status to the given game.",
+            "`:command <twitch url>` - The URL that the bot should be broadcasting."
         );
     }
 

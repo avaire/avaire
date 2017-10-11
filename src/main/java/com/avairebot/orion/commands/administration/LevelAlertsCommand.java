@@ -26,14 +26,14 @@ public class LevelAlertsCommand extends Command {
     @Override
     public String getDescription() {
         return "Toggles the Leveling alerts system on or off for the current server or channel."
-                + "\nThis command requires the `Levels & Experience` feature to be enabled for the server!";
+            + "\nThis command requires the `Levels & Experience` feature to be enabled for the server!";
     }
 
     @Override
     public List<String> getUsageInstructions() {
         return Arrays.asList(
-                "`:command` - Toggles the level alerts feature on/off",
-                "`:command <channel>` - Toggles the level alerts feature on for the given channel"
+            "`:command` - Toggles the level alerts feature on/off",
+            "`:command <channel>` - Toggles the level alerts feature on for the given channel"
         );
     }
 
@@ -51,8 +51,8 @@ public class LevelAlertsCommand extends Command {
     @Override
     public List<String> getMiddleware() {
         return Arrays.asList(
-                "require:user,general.manage_server",
-                "throttle:user,1,5"
+            "require:user,general.manage_server",
+            "throttle:user,1,5"
         );
     }
 
@@ -76,15 +76,15 @@ public class LevelAlertsCommand extends Command {
 
         try {
             orion.database.newQueryBuilder(Constants.GUILD_TABLE_NAME)
-                    .where("id", guildTransformer.getId())
-                    .update(statement -> statement
-                            .set("level_alerts", guildTransformer.isLevelAlerts())
-                            .set("level_channel", guildTransformer.getLevelChannel())
-                    );
+                .where("id", guildTransformer.getId())
+                .update(statement -> statement
+                    .set("level_alerts", guildTransformer.isLevelAlerts())
+                    .set("level_channel", guildTransformer.getLevelChannel())
+                );
 
             MessageFactory.makeSuccess(message, "`Levels up alerts` has been `%s` for the server.%s",
-                    status ? "Enabled" : "Disabled",
-                    channelId == null ? "" : String.format("\nAll level up messages will be logged into the <#%s> channel.", channelId)
+                status ? "Enabled" : "Disabled",
+                channelId == null ? "" : String.format("\nAll level up messages will be logged into the <#%s> channel.", channelId)
             ).queue();
 
             return true;

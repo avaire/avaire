@@ -29,22 +29,22 @@ public class ChangePrefixCommand extends Command {
     @Override
     public String getDescription() {
         return "Sets the prefix that should be used for all commands in a given category, if no prefix is provided the category prefix will be reset back to the default instead.\n" +
-                "**Note:** Command prefixes cannot contain spaces and if multiple categories are using the same prefix, some commands triggers may not run the indented command since multiple commands share the same triggers but has a different prefix by default.";
+            "**Note:** Command prefixes cannot contain spaces and if multiple categories are using the same prefix, some commands triggers may not run the indented command since multiple commands share the same triggers but has a different prefix by default.";
     }
 
     @Override
     public List<String> getUsageInstructions() {
         return Arrays.asList(
-                "`:command <category>` - Resets the category prefix back to its default prefix.",
-                "`:command <category> [prefix]` - Sets the category prefix to the given prefix.");
+            "`:command <category>` - Resets the category prefix back to its default prefix.",
+            "`:command <category> [prefix]` - Sets the category prefix to the given prefix.");
     }
 
     @Override
     public String getExampleUsage() {
         return String.join("\n", Arrays.asList(
-                "`:command fun`",
-                "`:command admin /`",
-                "`:command utility %`"
+            "`:command fun`",
+            "`:command admin /`",
+            "`:command utility %`"
         ));
     }
 
@@ -56,8 +56,8 @@ public class ChangePrefixCommand extends Command {
     @Override
     public List<String> getMiddleware() {
         return Arrays.asList(
-                "require:user,general.administrator",
-                "throttle:guild,1,5"
+            "require:user,general.administrator",
+            "throttle:guild,1,5"
         );
     }
 
@@ -91,7 +91,7 @@ public class ChangePrefixCommand extends Command {
             transformer.getPrefixes().put(category.getName().toLowerCase(), prefix);
             updateGuildPrefixes(message, transformer);
             MessageFactory.makeSuccess(message, "All commands in the `%s` command category now uses the `%s` prefix.",
-                    category.getName(), prefix
+                category.getName(), prefix
             ).queue();
 
             return true;
@@ -108,7 +108,7 @@ public class ChangePrefixCommand extends Command {
         try {
             updateGuildPrefixes(message, transformer);
             MessageFactory.makeSuccess(message, "All commands in the `%s` command category has been reset to use the `%s` prefix.",
-                    category.getName(), category.getPrefix()
+                category.getName(), category.getPrefix()
             ).queue();
 
             return true;
@@ -120,10 +120,10 @@ public class ChangePrefixCommand extends Command {
 
     private void updateGuildPrefixes(Message message, GuildTransformer transformer) throws SQLException {
         orion.database.newQueryBuilder(Constants.GUILD_TABLE_NAME)
-                .where("id", message.getGuild().getId())
-                .update(statement -> {
-                    statement.set("prefixes", new Gson().toJson(transformer.getPrefixes()));
-                });
+            .where("id", message.getGuild().getId())
+            .update(statement -> {
+                statement.set("prefixes", new Gson().toJson(transformer.getPrefixes()));
+            });
 
     }
 }

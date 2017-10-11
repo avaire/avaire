@@ -31,7 +31,7 @@ public class GuildMemberJoin extends EventHandler {
             Role role = event.getGuild().getRoleById(transformer.getAutorole());
             if (role != null && event.getMember().hasPermission(Permissions.MANAGE_ROLES.getPermission())) {
                 event.getGuild().getController().addSingleRoleToMember(
-                        event.getMember(), role
+                    event.getMember(), role
                 ).queue();
             }
         }

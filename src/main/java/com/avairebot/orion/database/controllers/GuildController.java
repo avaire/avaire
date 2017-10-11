@@ -31,32 +31,32 @@ public class GuildController {
     public static GuildTransformer fetchGuild(Orion orion, Guild guild) {
         if (isCached(orion, guild.getId())) {
             return (GuildTransformer) orion.cache.getAdapter(CacheType.MEMORY).get(
-                    String.format(CACHE_STRING, guild.getId())
+                String.format(CACHE_STRING, guild.getId())
             );
         }
 
         try {
             GuildTransformer transformer = new GuildTransformer(orion.database.newQueryBuilder(Constants.GUILD_TABLE_NAME)
-                    .where("id", guild.getId())
-                    .get().first());
+                .where("id", guild.getId())
+                .get().first());
 
             if (!transformer.hasData()) {
                 final String cacheToken = String.format(CACHE_STRING, guild.getId());
                 try {
                     orion.database.newQueryBuilder(Constants.GUILD_TABLE_NAME)
-                            .insert(statement -> {
-                                statement.set("id", guild.getId())
-                                        .set("owner", guild.getOwner().getUser().getId())
-                                        .set("name", guild.getName())
-                                        .set("channels_data", buildChannelData(guild.getTextChannels()));
+                        .insert(statement -> {
+                            statement.set("id", guild.getId())
+                                .set("owner", guild.getOwner().getUser().getId())
+                                .set("name", guild.getName())
+                                .set("channels_data", buildChannelData(guild.getTextChannels()));
 
-                                if (guild.getIconId() != null) {
-                                    statement.set("icon", guild.getIconId());
-                                }
+                            if (guild.getIconId() != null) {
+                                statement.set("icon", guild.getIconId());
+                            }
 
-                                orion.cache.getAdapter(CacheType.MEMORY)
-                                        .put(cacheToken, new GuildTransformer(new DataRow(statement.getItems())), 2);
-                            });
+                            orion.cache.getAdapter(CacheType.MEMORY)
+                                .put(cacheToken, new GuildTransformer(new DataRow(statement.getItems())), 2);
+                        });
                 } catch (Exception ex) {
                     orion.logger.fatal(ex);
                 }
@@ -75,7 +75,7 @@ public class GuildController {
 
     private static boolean isCached(Orion orion, String guildId) {
         return orion.cache.getAdapter(CacheType.MEMORY).has(
-                String.format(CACHE_STRING, guildId)
+            String.format(CACHE_STRING, guildId)
         );
     }
 

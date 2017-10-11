@@ -17,7 +17,7 @@ public class Throttle extends Middleware {
     public boolean handle(Message message, MiddlewareStack stack, String... args) {
         if (args.length < 3) {
             orion.logger.warn(String.format(
-                    "\"%s\" is parsing invalid amount of arguments to the throttle middleware, 3 arguments are required.", stack.getCommand()
+                "\"%s\" is parsing invalid amount of arguments to the throttle middleware, 3 arguments are required.", stack.getCommand()
             ));
             return stack.next();
         }
@@ -38,10 +38,10 @@ public class Throttle extends Middleware {
             int attempts = (Integer) item.getValue();
             if (attempts >= maxAttempts) {
                 MessageFactory.makeWarning(
-                        message,
-                        "Too many `%s` attempts. Please try again in **%s** seconds.",
-                        stack.getCommand().getName(),
-                        ((item.getTime() - System.currentTimeMillis()) / 1000) + 1
+                    message,
+                    "Too many `%s` attempts. Please try again in **%s** seconds.",
+                    stack.getCommand().getName(),
+                    ((item.getTime() - System.currentTimeMillis()) / 1000) + 1
                 ).queue();
                 return false;
             }
@@ -52,7 +52,7 @@ public class Throttle extends Middleware {
 
         } catch (NumberFormatException e) {
             orion.logger.warn(String.format(
-                    "Invalid integers given to throttle command by \"%s\", args: (%s, %s)", stack.getCommand().getName(), args[1], args[2]
+                "Invalid integers given to throttle command by \"%s\", args: (%s, %s)", stack.getCommand().getName(), args[1], args[2]
             ));
         }
         return false;
@@ -88,18 +88,18 @@ public class Throttle extends Middleware {
             switch (this) {
                 case USER:
                     return String.format(cache,
-                            message.getGuild().getId(),
-                            message.getAuthor().getId(),
-                            stack.getCommand().getName());
+                        message.getGuild().getId(),
+                        message.getAuthor().getId(),
+                        stack.getCommand().getName());
                 case CHANNEL:
                     return String.format(cache,
-                            message.getGuild().getId(),
-                            message.getChannel().getId(),
-                            stack.getCommand().getName());
+                        message.getGuild().getId(),
+                        message.getChannel().getId(),
+                        stack.getCommand().getName());
                 case GUILD:
                     return String.format(cache,
-                            message.getGuild().getId(),
-                            stack.getCommand().getName());
+                        message.getGuild().getId(),
+                        stack.getCommand().getName());
                 default:
                     return ThrottleType.USER.generateCacheString(message, stack);
             }

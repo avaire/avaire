@@ -51,7 +51,7 @@ public class Select extends SelectGrammar {
 
             for (Clause clause : join.clauses) {
                 String string = String.format(" %s %s %s",
-                        formatField(clause.getOne()), clause.getIdentifier(), formatField((String) clause.getTwo())
+                    formatField(clause.getOne()), clause.getIdentifier(), formatField((String) clause.getTwo())
                 );
 
                 if (clause.getOrder() == null) {

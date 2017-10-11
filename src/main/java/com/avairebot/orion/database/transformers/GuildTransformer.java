@@ -30,9 +30,9 @@ public class GuildTransformer extends Transformer {
 
             if (data.getString("prefixes", null) != null) {
                 HashMap<String, String> dbPrefixes = new Gson().fromJson(
-                        data.getString("prefixes"),
-                        new TypeToken<HashMap<String, String>>() {
-                        }.getType());
+                    data.getString("prefixes"),
+                    new TypeToken<HashMap<String, String>>() {
+                    }.getType());
 
                 for (Map.Entry<String, String> item : dbPrefixes.entrySet()) {
                     prefixes.put(item.getKey().toLowerCase(), item.getValue());
@@ -41,9 +41,9 @@ public class GuildTransformer extends Transformer {
 
             if (data.getString("claimable_roles", null) != null) {
                 HashMap<String, String> dbSelfAssignableRoles = new Gson().fromJson(
-                        data.getString("claimable_roles"),
-                        new TypeToken<HashMap<String, String>>() {
-                        }.getType());
+                    data.getString("claimable_roles"),
+                    new TypeToken<HashMap<String, String>>() {
+                    }.getType());
 
                 for (Map.Entry<String, String> item : dbSelfAssignableRoles.entrySet()) {
                     selfAssignableRoles.put(item.getKey(), item.getValue().toLowerCase());

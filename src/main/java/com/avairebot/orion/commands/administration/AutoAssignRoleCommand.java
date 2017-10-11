@@ -34,9 +34,9 @@ public class AutoAssignRoleCommand extends Command {
     @Override
     public List<String> getUsageInstructions() {
         return Arrays.asList(
-                "`:command` - Displays the current auto assignable role if one is set.",
-                "`:command <role>` - The role that should be auto assignable.",
-                "`:command disable` - Disables the auto assignable role."
+            "`:command` - Displays the current auto assignable role if one is set.",
+            "`:command <role>` - The role that should be auto assignable.",
+            "`:command disable` - Disables the auto assignable role."
         );
     }
 
@@ -53,9 +53,9 @@ public class AutoAssignRoleCommand extends Command {
     @Override
     public List<String> getMiddleware() {
         return Arrays.asList(
-                "require:bot,general.manage_roles",
-                "require:user,general.administrator",
-                "throttle:guild,1,5"
+            "require:bot,general.manage_roles",
+            "require:user,general.administrator",
+            "throttle:guild,1,5"
         );
     }
 
@@ -75,7 +75,7 @@ public class AutoAssignRoleCommand extends Command {
         List<Role> roles = message.getGuild().getRolesByName(args[0], true);
         if (roles.isEmpty()) {
             MessageFactory.makeWarning(message, "<@%s> Invalid role, I couldn't find any role called **%s**",
-                    message.getAuthor().getId(), args[0]
+                message.getAuthor().getId(), args[0]
             ).queue();
             return false;
         }
@@ -83,18 +83,18 @@ public class AutoAssignRoleCommand extends Command {
         Role role = roles.get(0);
         if (RoleUtil.isRoleHierarchyHigher(message.getMember().getRoles(), role)) {
             MessageFactory.makeWarning(message,
-                    "<@%s> The **%s** role is positioned higher in the hierarchy than any role you have, you can't add roles with a higher ranking than you have.",
-                    message.getAuthor().getId(),
-                    role.getName()
+                "<@%s> The **%s** role is positioned higher in the hierarchy than any role you have, you can't add roles with a higher ranking than you have.",
+                message.getAuthor().getId(),
+                role.getName()
             ).queue();
             return false;
         }
 
         if (RoleUtil.isRoleHierarchyHigher(message.getGuild().getSelfMember().getRoles(), role)) {
             MessageFactory.makeWarning(message,
-                    "<@%s> The **%s** role is positioned higher in the hierarchy, I can't give/remove this role from users.",
-                    message.getAuthor().getId(),
-                    role.getName()
+                "<@%s> The **%s** role is positioned higher in the hierarchy, I can't give/remove this role from users.",
+                message.getAuthor().getId(),
+                role.getName()
             ).queue();
             return false;
         }
@@ -103,8 +103,8 @@ public class AutoAssignRoleCommand extends Command {
             updateAutorole(transformer, message, role.getId());
 
             MessageFactory.makeSuccess(message, "<@%s> **Auto assign role** on user join has been **enabled** and set to  **%s**",
-                    message.getAuthor().getId(),
-                    role.getName()
+                message.getAuthor().getId(),
+                role.getName()
             ).queue();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -117,8 +117,8 @@ public class AutoAssignRoleCommand extends Command {
         try {
             transformer.setAutorole(null);
             orion.database.newQueryBuilder(Constants.GUILD_TABLE_NAME)
-                    .where("id", message.getGuild().getId())
-                    .update(statement -> statement.set("autorole", null));
+                .where("id", message.getGuild().getId())
+                .update(statement -> statement.set("autorole", null));
 
             MessageFactory.makeWarning(message, "<@%s> **Auto assign role** on user join is now **disabled**.", message.getAuthor().getId()).queue();
         } catch (SQLException e) {
@@ -146,14 +146,14 @@ public class AutoAssignRoleCommand extends Command {
         }
 
         return MessageFactory.makeSuccess(message, "<@%s> The **auto assign role** is currently set to **%s**",
-                message.getAuthor().getId(), role.getName()
+            message.getAuthor().getId(), role.getName()
         );
     }
 
     private void updateAutorole(GuildTransformer transformer, Message message, String value) throws SQLException {
         transformer.setAutorole(value);
         orion.database.newQueryBuilder(Constants.GUILD_TABLE_NAME)
-                .where("id", message.getGuild().getId())
-                .update(statement -> statement.set("autorole", value));
+            .where("id", message.getGuild().getId())
+            .update(statement -> statement.set("autorole", value));
     }
 }

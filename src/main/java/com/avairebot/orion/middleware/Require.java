@@ -26,7 +26,7 @@ public class Require extends Middleware {
 
         if (args.length < 2) {
             orion.logger.warn(String.format(
-                    "\"%s\" is parsing invalid amount of arguments to the throttle middleware, 2 arguments are required.", stack.getCommand()
+                "\"%s\" is parsing invalid amount of arguments to the throttle middleware, 2 arguments are required.", stack.getCommand()
             ));
             return stack.next();
         }
@@ -61,23 +61,23 @@ public class Require extends Middleware {
 
         if (!missingUserPermissions.isEmpty()) {
             MessageFactory.makeError(
-                    message,
-                    "You're missing the required permission node for this command:\n`%s`",
-                    missingUserPermissions.stream()
-                            .map(Permissions::getPermission)
-                            .map(Permission::getName)
-                            .collect(Collectors.joining("`, `"))
+                message,
+                "You're missing the required permission node for this command:\n`%s`",
+                missingUserPermissions.stream()
+                    .map(Permissions::getPermission)
+                    .map(Permission::getName)
+                    .collect(Collectors.joining("`, `"))
             ).queue();
         }
 
         if (!missingBotPermissions.isEmpty()) {
             MessageFactory.makeError(
-                    message,
-                    "I'm missing the following permission to run this command successfully:\n`%s`",
-                    missingBotPermissions.stream()
-                            .map(Permissions::getPermission)
-                            .map(Permission::getName)
-                            .collect(Collectors.joining("`, `"))
+                message,
+                "I'm missing the following permission to run this command successfully:\n`%s`",
+                missingBotPermissions.stream()
+                    .map(Permissions::getPermission)
+                    .map(Permission::getName)
+                    .collect(Collectors.joining("`, `"))
             ).queue();
         }
 

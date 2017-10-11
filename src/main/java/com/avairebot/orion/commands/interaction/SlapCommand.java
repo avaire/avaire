@@ -15,11 +15,11 @@ public class SlapCommand extends InteractionCommand {
     @Override
     public List<String> getInteractionImages() {
         return Arrays.asList(
-                "https://i.imgur.com/omhZ2aQ.gif",
-                "https://i.imgur.com/nSDYCNZ.gif",
-                "https://i.imgur.com/bF9ruep.gif",
-                "https://i.imgur.com/1aqwJq4.gif",
-                "https://i.imgur.com/xQYw5E6.gif"
+            "https://i.imgur.com/omhZ2aQ.gif",
+            "https://i.imgur.com/nSDYCNZ.gif",
+            "https://i.imgur.com/bF9ruep.gif",
+            "https://i.imgur.com/1aqwJq4.gif",
+            "https://i.imgur.com/xQYw5E6.gif"
         );
     }
 

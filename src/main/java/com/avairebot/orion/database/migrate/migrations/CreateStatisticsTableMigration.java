@@ -20,8 +20,8 @@ public class CreateStatisticsTableMigration implements Migration {
         }
 
         return !schema.getDbm().newQueryBuilder(Constants.STATISTICS_TABLE_NAME)
-                .insert(statement -> statement.set("respects", 0))
-                .isEmpty();
+            .insert(statement -> statement.set("respects", 0))
+            .isEmpty();
     }
 
     private boolean createTable(Schema schema) throws SQLException {

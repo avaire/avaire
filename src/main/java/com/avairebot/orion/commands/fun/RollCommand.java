@@ -28,9 +28,9 @@ public class RollCommand extends Command {
     @Override
     public List<String> getUsageInstructions() {
         return Arrays.asList(
-                "`:command`",
-                "`:command [max]`",
-                "`:command [min] [max]`"
+            "`:command`",
+            "`:command [max]`",
+            "`:command [min] [max]`"
         );
     }
 
@@ -66,8 +66,8 @@ public class RollCommand extends Command {
         double random = Math.floor(Math.random() * (max - min + 1)) + min;
 
         MessageFactory.makeInfo(message, "<@%s> rolled **%s** out of %s - %s",
-                message.getAuthor().getId(),
-                (int) random, (int) min, (int) max
+            message.getAuthor().getId(),
+            (int) random, (int) min, (int) max
         ).queue();
 
         return true;

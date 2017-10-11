@@ -55,9 +55,9 @@ public class RepeatMusicQueueCommand extends Command {
         }
 
         musicManager.setRepeatQueue(!musicManager.isRepeatQueue());
-        
+
         MessageFactory.makeSuccess(message, "Music queue looping has been turned `%s`.",
-                musicManager.isRepeatQueue() ? "ON" : "OFF"
+            musicManager.isRepeatQueue() ? "ON" : "OFF"
         ).queue();
 
         return true;

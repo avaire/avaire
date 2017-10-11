@@ -51,11 +51,11 @@ public class RandomDogCommand extends Command {
     @Override
     public boolean onCommand(Message message, String[] args) {
         RequestFactory.makeGET("https://dog.ceo/api/breeds/image/random")
-                .send((Consumer<Response>) response -> {
-                    RandomDogService service = (RandomDogService) response.toService(RandomDogService.class);
+            .send((Consumer<Response>) response -> {
+                RandomDogService service = (RandomDogService) response.toService(RandomDogService.class);
 
-                    message.getChannel().sendMessage(service.getMessage()).queue();
-                });
+                message.getChannel().sendMessage(service.getMessage()).queue();
+            });
         return true;
     }
 }

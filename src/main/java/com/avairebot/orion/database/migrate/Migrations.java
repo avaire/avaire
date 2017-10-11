@@ -232,7 +232,7 @@ public class Migrations {
         // If the migration has ran before, but was rolled back(down), this will update the existing row
         if (migration.getBatch() != -1) {
             makeQuery().where("name", migration.getName())
-                    .update(statement -> statement.set("batch", batch));
+                .update(statement -> statement.set("batch", batch));
         } // If the migration has never run before, this will create a new row
         else {
             makeQuery().insert(statement -> {

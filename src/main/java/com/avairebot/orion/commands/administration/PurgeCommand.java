@@ -37,16 +37,16 @@ public class PurgeCommand extends Command {
     @Override
     public List<String> getUsageInstructions() {
         return Arrays.asList(
-                "`:command` - Deletes the last 5 messages.",
-                "`:command [number]` - Deletes the given number of messages.",
-                "`:command [number] [user]` - Deletes the given number of messages for the mentioned users."
+            "`:command` - Deletes the last 5 messages.",
+            "`:command [number]` - Deletes the given number of messages.",
+            "`:command [number] [user]` - Deletes the given number of messages for the mentioned users."
         );
     }
 
     @Override
     public String getExampleUsage() {
         return "`:command 56`\n" +
-                "`:command 30 @Senither`";
+            "`:command 30 @Senither`";
     }
 
     @Override
@@ -57,9 +57,9 @@ public class PurgeCommand extends Command {
     @Override
     public List<String> getMiddleware() {
         return Arrays.asList(
-                "require:user,text.manage_messages",
-                "require:bot,text.manage_messages,text.read_message_history",
-                "throttle:channel,1,5"
+            "require:user,text.manage_messages",
+            "require:bot,text.manage_messages,text.read_message_history",
+            "throttle:channel,1,5"
         );
     }
 
@@ -80,7 +80,7 @@ public class PurgeCommand extends Command {
 
                 deleteMessages(message, messages).queue(aVoid -> {
                     MessageFactory.makeSuccess(message, ":white_check_mark: `%s` messages has been deleted!",
-                            messages.size()
+                        messages.size()
                     ).queue(successMessage -> successMessage.delete().queueAfter(8, TimeUnit.SECONDS));
                 });
             });
@@ -105,7 +105,7 @@ public class PurgeCommand extends Command {
                 }
 
                 MessageFactory.makeSuccess(message, ":white_check_mark: `%s` messages has been deleted from %s",
-                        messages.size(), String.join(", ", users)
+                    messages.size(), String.join(", ", users)
                 ).queue(successMessage -> successMessage.delete().queueAfter(8, TimeUnit.SECONDS));
             });
         });
@@ -144,7 +144,7 @@ public class PurgeCommand extends Command {
 
     private void sendNoMessagesMessage(Message message) {
         MessageFactory.makeSuccess(message, ":x: Nothing to delete, I am unable to delete messages older than 14 days.")
-                .queue(successMessage -> successMessage.delete().queueAfter(8, TimeUnit.SECONDS));
+            .queue(successMessage -> successMessage.delete().queueAfter(8, TimeUnit.SECONDS));
     }
 
     private RestAction<Void> deleteMessages(Message message, List<Message> messages) {

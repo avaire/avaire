@@ -61,11 +61,11 @@ public class SongCommand extends Command {
         }
 
         MessageEmbed embed = MessageFactory.createEmbeddedBuilder()
-                .setColor(MessageFactory.MessageType.SUCCESS.getColor())
-                .setTitle(musicManager.getPlayer().isPaused() ? "Currently Paused" : "Currently Playing")
-                .setDescription(buildTrackDescription(musicManager.getPlayer(), musicManager.getScheduler()))
-                .addField("Songs in queue", buildSongsInQueue(musicManager.getScheduler()), false)
-                .build();
+            .setColor(MessageFactory.MessageType.SUCCESS.getColor())
+            .setTitle(musicManager.getPlayer().isPaused() ? "Currently Paused" : "Currently Playing")
+            .setDescription(buildTrackDescription(musicManager.getPlayer(), musicManager.getScheduler()))
+            .addField("Songs in queue", buildSongsInQueue(musicManager.getScheduler()), false)
+            .build();
 
         message.getChannel().sendMessage(embed).queue();
         return true;
@@ -73,12 +73,12 @@ public class SongCommand extends Command {
 
     private String buildTrackDescription(AudioPlayer player, TrackScheduler scheduler) {
         return String.format(
-                "[%s](%s)\nPlaying at `%s` volume with `%s` left of the song - Requested by <@%s>",
-                player.getPlayingTrack().getInfo().title,
-                player.getPlayingTrack().getInfo().uri,
-                player.getVolume() + "%",
-                scheduler.getAudioTrackContainer().getFormattedTotalTimeLeft(),
-                scheduler.getAudioTrackContainer().getRequester().getId()
+            "[%s](%s)\nPlaying at `%s` volume with `%s` left of the song - Requested by <@%s>",
+            player.getPlayingTrack().getInfo().title,
+            player.getPlayingTrack().getInfo().uri,
+            player.getVolume() + "%",
+            scheduler.getAudioTrackContainer().getFormattedTotalTimeLeft(),
+            scheduler.getAudioTrackContainer().getRequester().getId()
         );
     }
 

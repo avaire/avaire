@@ -49,9 +49,9 @@ public class UserIdCommand extends Command {
         }
 
         MessageFactory.makeSuccess(message, "<@%s> :id: of the user **%s** is `%s`",
-                message.getAuthor().getId(),
-                String.format("%s#%s", user.getName(), user.getDiscriminator()),
-                user.getId()
+            message.getAuthor().getId(),
+            String.format("%s#%s", user.getName(), user.getDiscriminator()),
+            user.getId()
         ).queue();
         return true;
     }

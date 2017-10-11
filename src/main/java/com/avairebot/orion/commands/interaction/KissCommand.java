@@ -15,11 +15,11 @@ public class KissCommand extends InteractionCommand {
     @Override
     public List<String> getInteractionImages() {
         return Arrays.asList(
-                "https://i.imgur.com/B0qeWUA.gif",
-                "https://i.imgur.com/CEyl2rH.gif",
-                "https://i.imgur.com/gYkehjd.gif",
-                "https://i.imgur.com/k2nNews.gif",
-                "https://i.imgur.com/ehOIkBq.gif"
+            "https://i.imgur.com/B0qeWUA.gif",
+            "https://i.imgur.com/CEyl2rH.gif",
+            "https://i.imgur.com/gYkehjd.gif",
+            "https://i.imgur.com/k2nNews.gif",
+            "https://i.imgur.com/ehOIkBq.gif"
         );
     }
 

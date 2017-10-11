@@ -10,8 +10,8 @@ import com.avairebot.orion.database.controllers.PlayerController;
 import com.avairebot.orion.database.transformers.GuildTransformer;
 import com.avairebot.orion.database.transformers.PlayerTransformer;
 import com.avairebot.orion.factories.MessageFactory;
-import com.avairebot.orion.utilities.LevelUtil;
 import com.avairebot.orion.middleware.MiddlewareStack;
+import com.avairebot.orion.utilities.LevelUtil;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 import java.util.concurrent.CompletableFuture;
@@ -71,8 +71,8 @@ public class MessageCreate extends EventHandler {
 
         String[] args = event.getMessage().getRawContent().split(" ");
         return args.length >= 2 &&
-                userRegEX.matcher(args[0]).matches() &&
-                event.getMessage().getMentionedUsers().get(0).getId().equals(orion.getJDA().getSelfUser().getId());
+            userRegEX.matcher(args[0]).matches() &&
+            event.getMessage().getMentionedUsers().get(0).getId().equals(orion.getJDA().getSelfUser().getId());
 
     }
 

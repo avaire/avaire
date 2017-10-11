@@ -15,11 +15,11 @@ public class PatCommand extends InteractionCommand {
     @Override
     public List<String> getInteractionImages() {
         return Arrays.asList(
-                "https://i.imgur.com/J01NZCa.gif",
-                "https://i.imgur.com/gGfSj84.gif",
-                "https://i.imgur.com/17NzO6G.gif",
-                "https://i.imgur.com/rGMvRNn.gif",
-                "https://i.imgur.com/XuV9dUZ.gif"
+            "https://i.imgur.com/J01NZCa.gif",
+            "https://i.imgur.com/gGfSj84.gif",
+            "https://i.imgur.com/17NzO6G.gif",
+            "https://i.imgur.com/rGMvRNn.gif",
+            "https://i.imgur.com/XuV9dUZ.gif"
         );
     }
 

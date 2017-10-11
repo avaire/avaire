@@ -34,8 +34,8 @@ public class VolumeCommand extends Command {
     @Override
     public List<String> getUsageInstructions() {
         return Arrays.asList(
-                "`:command` - Shows the current music volume without changing it",
-                "`:command <volume>` - Sets the music volume to the given number"
+            "`:command` - Shows the current music volume without changing it",
+            "`:command <volume>` - Sets the music volume to the given number"
         );
     }
 
@@ -66,7 +66,7 @@ public class VolumeCommand extends Command {
 
         if (args.length == 0) {
             MessageFactory.makeSuccess(message, "\uD83C\uDFB5 Music is playing at **%s** volume\n%s",
-                    volume, getVolumeString(volume, 21)
+                volume, getVolumeString(volume, 21)
             ).queue();
             return true;
         }
@@ -80,7 +80,7 @@ public class VolumeCommand extends Command {
 
             musicManager.getPlayer().setVolume(newVolume);
             MessageFactory.makeSuccess(message, "\uD83C\uDFB5 Volume set to **%s** volume\n%s",
-                    newVolume, getVolumeString(newVolume, 18)
+                newVolume, getVolumeString(newVolume, 18)
             ).queue();
 
             return true;

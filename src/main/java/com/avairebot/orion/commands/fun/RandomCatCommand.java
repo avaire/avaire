@@ -51,13 +51,13 @@ public class RandomCatCommand extends Command {
     @Override
     public boolean onCommand(Message message, String[] args) {
         RequestFactory.makeGET("http://random.cat/meow")
-                .send((Consumer<Response>) response -> {
-                    RandomCatService service = (RandomCatService) response.toService(RandomCatService.class);
+            .send((Consumer<Response>) response -> {
+                RandomCatService service = (RandomCatService) response.toService(RandomCatService.class);
 
-                    message.getChannel().sendMessage(
-                            String.format("<@%s> %s", message.getAuthor().getId(), service.getFile())
-                    ).queue();
-                });
+                message.getChannel().sendMessage(
+                    String.format("<@%s> %s", message.getAuthor().getId(), service.getFile())
+                ).queue();
+            });
         return true;
     }
 }

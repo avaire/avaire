@@ -16,9 +16,9 @@ public class SenpaiCommand extends InteractionCommand {
     @Override
     public List<String> getInteractionImages() {
         return Arrays.asList(
-                "https://i.imgur.com/7X0TzmR.gif",
-                "https://i.imgur.com/j4vdwZh.gif",
-                "https://i.imgur.com/e1MXv4L.gif"
+            "https://i.imgur.com/7X0TzmR.gif",
+            "https://i.imgur.com/j4vdwZh.gif",
+            "https://i.imgur.com/e1MXv4L.gif"
         );
     }
 

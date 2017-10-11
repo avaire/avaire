@@ -98,10 +98,10 @@ public class TrackScheduler extends AudioEventAdapter {
 
     protected void sendNowPlaying(AudioTrackContainer container) {
         MessageFactory.makeSuccess(manager.getLastActiveMessage(), "Now playing: [%s](%s)\n`%s` - Requested by <@%s>",
-                container.getAudioTrack().getInfo().title,
-                container.getAudioTrack().getInfo().uri,
-                container.getFormattedDuration(),
-                container.getRequester().getId()
+            container.getAudioTrack().getInfo().title,
+            container.getAudioTrack().getInfo().uri,
+            container.getFormattedDuration(),
+            container.getRequester().getId()
         ).queue();
     }
 }

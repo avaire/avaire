@@ -90,16 +90,16 @@ public class DiceCommand extends Command {
         StringBuilder result = new StringBuilder();
         for (DiceRoll roll : items) {
             result.append(String.format("**%s** resulted in **%s**  (%s)",
-                    roll.getDice(),
-                    roll.getSum(),
-                    String.join(" + ", roll.getNumbers())
+                roll.getDice(),
+                roll.getSum(),
+                String.join(" + ", roll.getNumbers())
             )).append("\n");
         }
 
         MessageFactory.makeSuccess(message, String.format("<@%s>%s%s",
-                message.getAuthor().getId(),
-                getFormatSeparator(args),
-                result.toString().trim())
+            message.getAuthor().getId(),
+            getFormatSeparator(args),
+            result.toString().trim())
         ).queue();
         return true;
     }

@@ -65,26 +65,26 @@ public abstract class InteractionCommand extends Command {
 
         message.getChannel().sendTyping().queue();
         RequestFactory.makeGET(getInteractionImages().get(imageIndex))
-                .send((Consumer<Response>) response -> message.getChannel().sendFile(
-                        response.getResponse().body().byteStream(),
-                        interaction + "-" + imageIndex + ".gif",
-                        buildCommandMessage(message)
-                ).queue());
+            .send((Consumer<Response>) response -> message.getChannel().sendFile(
+                response.getResponse().body().byteStream(),
+                interaction + "-" + imageIndex + ".gif",
+                buildCommandMessage(message)
+            ).queue());
         return true;
     }
 
     private CommandMessage buildCommandMessage(Message message) {
         if (overwrite) {
             return new CommandMessage(String.format(interaction,
-                    message.getMember().getEffectiveName(),
-                    message.getGuild().getMember(message.getMentionedUsers().get(0)).getEffectiveName()
+                message.getMember().getEffectiveName(),
+                message.getGuild().getMember(message.getMentionedUsers().get(0)).getEffectiveName()
             ));
         }
 
         return new CommandMessage(String.format("**%s** %s **%s**",
-                message.getMember().getEffectiveName(),
-                interaction,
-                message.getGuild().getMember(message.getMentionedUsers().get(0)).getEffectiveName()
+            message.getMember().getEffectiveName(),
+            interaction,
+            message.getGuild().getMember(message.getMentionedUsers().get(0)).getEffectiveName()
         ));
     }
 }

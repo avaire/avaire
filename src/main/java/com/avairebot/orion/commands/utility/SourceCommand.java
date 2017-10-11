@@ -33,8 +33,8 @@ public class SourceCommand extends Command {
     @Override
     public List<String> getUsageInstructions() {
         return Arrays.asList(
-                "`:command` - Returns the full source code for the bot.",
-                "`:command <command>` - Returns the source code for the given command."
+            "`:command` - Returns the full source code for the bot.",
+            "`:command <command>` - Returns the source code for the given command."
         );
     }
 
@@ -66,7 +66,7 @@ public class SourceCommand extends Command {
         String name = split[split.length - 1];
 
         MessageFactory.makeInfo(message, "AvaIre source code for the **%s** command:\n\n" + commandUrl,
-                command.getCommand().getName(), category, name
+            command.getCommand().getName(), category, name
         ).queue();
 
         return true;

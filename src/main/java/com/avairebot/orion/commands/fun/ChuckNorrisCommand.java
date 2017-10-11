@@ -52,12 +52,12 @@ public class ChuckNorrisCommand extends Command {
     @Override
     public boolean onCommand(Message message, String[] args) {
         RequestFactory.makeGET("http://api.icndb.com/jokes/random")
-                .addParameter("escape", "javascript")
-                .send((Consumer<Response>) response -> {
-                    ChuckNorrisService service = (ChuckNorrisService) response.toService(ChuckNorrisService.class);
+            .addParameter("escape", "javascript")
+            .send((Consumer<Response>) response -> {
+                ChuckNorrisService service = (ChuckNorrisService) response.toService(ChuckNorrisService.class);
 
-                    MessageFactory.makeSuccess(message, service.getValue().getJoke()).queue();
-                });
+                MessageFactory.makeSuccess(message, service.getValue().getJoke()).queue();
+            });
         return true;
     }
 }

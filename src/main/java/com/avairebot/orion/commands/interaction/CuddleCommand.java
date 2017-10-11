@@ -15,9 +15,9 @@ public class CuddleCommand extends InteractionCommand {
     @Override
     public List<String> getInteractionImages() {
         return Arrays.asList(
-                "https://i.imgur.com/HqFckvG.gif",
-                "https://i.imgur.com/pH8TTOd.gif",
-                "https://i.imgur.com/3SqJTbV.gif"
+            "https://i.imgur.com/HqFckvG.gif",
+            "https://i.imgur.com/pH8TTOd.gif",
+            "https://i.imgur.com/3SqJTbV.gif"
         );
     }
 

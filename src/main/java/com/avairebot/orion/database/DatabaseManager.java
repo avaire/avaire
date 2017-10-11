@@ -232,9 +232,9 @@ public class DatabaseManager {
                 String value = item.getValue().toString();
 
                 if (value.startsWith("RAW:") ||
-                        value.equalsIgnoreCase("true") ||
-                        value.equalsIgnoreCase("false") ||
-                        value.matches("[-+]?\\d*\\.?\\d+")) {
+                    value.equalsIgnoreCase("true") ||
+                    value.equalsIgnoreCase("false") ||
+                    value.matches("[-+]?\\d*\\.?\\d+")) {
                     continue;
                 }
 

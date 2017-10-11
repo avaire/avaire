@@ -15,12 +15,12 @@ public class TickleCommand extends InteractionCommand {
     @Override
     public List<String> getInteractionImages() {
         return Arrays.asList(
-                "https://i.imgur.com/qrjkj6d.gif",
-                "https://i.imgur.com/fA3o4p4.gif",
-                "https://i.imgur.com/AfobFAt.gif",
-                "https://i.imgur.com/ExUivDr.gif",
-                "https://i.imgur.com/osnnduz.gif",
-                "https://i.imgur.com/hCbjjQ1.gif"
+            "https://i.imgur.com/qrjkj6d.gif",
+            "https://i.imgur.com/fA3o4p4.gif",
+            "https://i.imgur.com/AfobFAt.gif",
+            "https://i.imgur.com/ExUivDr.gif",
+            "https://i.imgur.com/osnnduz.gif",
+            "https://i.imgur.com/hCbjjQ1.gif"
         );
     }
 

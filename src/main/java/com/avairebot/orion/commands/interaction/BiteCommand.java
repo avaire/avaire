@@ -15,9 +15,9 @@ public class BiteCommand extends InteractionCommand {
     @Override
     public List<String> getInteractionImages() {
         return Arrays.asList(
-                "https://i.imgur.com/qcPNLOH.gif",
-                "https://i.imgur.com/t89dF2n.gif",
-                "https://i.imgur.com/fPCg6Or.gif"
+            "https://i.imgur.com/qcPNLOH.gif",
+            "https://i.imgur.com/t89dF2n.gif",
+            "https://i.imgur.com/fPCg6Or.gif"
         );
     }
 

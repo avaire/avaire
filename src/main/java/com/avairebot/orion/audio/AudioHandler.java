@@ -107,7 +107,7 @@ public class AudioHandler {
 
     public static int getQueueSize(GuildMusicManager manager) {
         return manager.getPlayer().getPlayingTrack() == null ?
-                manager.getScheduler().getQueue().size() :
-                manager.getScheduler().getQueue().size() + 1;
+            manager.getScheduler().getQueue().size() :
+            manager.getScheduler().getQueue().size() + 1;
     }
 }

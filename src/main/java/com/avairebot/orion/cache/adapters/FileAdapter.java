@@ -197,8 +197,8 @@ public class FileAdapter extends CacheAdapter {
     private File generateCacheFile(String string) {
         String cacheToken = encrypt(string);
         File cachePath = new File(storagePath,
-                cacheToken.substring(0, 2) + File.separator
-                        + cacheToken.substring(2, 4) + File.separator
+            cacheToken.substring(0, 2) + File.separator
+                + cacheToken.substring(2, 4) + File.separator
         );
 
         if (!cachePath.exists()) {

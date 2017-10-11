@@ -25,9 +25,9 @@ public class SimplePaginator extends Paginator {
 
     public String generateFooter(String command) {
         return String.format("Page **%s** out of **%s** pages.\n`%s [page]`",
-                getCurrentPage(),
-                getPages(),
-                command
+            getCurrentPage(),
+            getPages(),
+            command
         );
     }
 }

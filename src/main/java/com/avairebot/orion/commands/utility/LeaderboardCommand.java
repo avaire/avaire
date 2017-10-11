@@ -77,17 +77,17 @@ public class LeaderboardCommand extends Command {
             long experience = row.getLong("experience", 100);
 
             messages.add(String.format("**%s** is level **%s** with **%s** xp.",
-                    username,
-                    LevelUtil.getLevelFromExperience(experience),
-                    experience - 100
+                username,
+                LevelUtil.getLevelFromExperience(experience),
+                experience - 100
             ));
         });
 
         messages.add("\n" + paginator.generateFooter(generateCommandTrigger(message)));
 
         message.getTextChannel().sendMessage(MessageFactory.createEmbeddedBuilder()
-                .setTitle(message.getGuild().getName() + " Leaderboard", "https://avairebot.com/leaderboard/" + message.getGuild().getId())
-                .setDescription(String.join("\n", messages)).build()).queue();
+            .setTitle(message.getGuild().getName() + " Leaderboard", "https://avairebot.com/leaderboard/" + message.getGuild().getId())
+            .setDescription(String.join("\n", messages)).build()).queue();
 
         return true;
     }
@@ -96,10 +96,10 @@ public class LeaderboardCommand extends Command {
         return (Collection) orion.cache.getAdapter(CacheType.MEMORY).remember("database-xp-leaderboard." + message.getGuild().getId(), 60, () -> {
             try {
                 return orion.database.newQueryBuilder(Constants.PLAYER_EXPERIENCE_TABLE_NAME)
-                        .where("guild_id", message.getGuild().getId())
-                        .orderBy("experience", "desc")
-                        .take(100)
-                        .get();
+                    .where("guild_id", message.getGuild().getId())
+                    .orderBy("experience", "desc")
+                    .take(100)
+                    .get();
             } catch (SQLException e) {
                 e.printStackTrace();
                 orion.logger.fatal(e);

@@ -15,12 +15,12 @@ public class PokeCommand extends InteractionCommand {
     @Override
     public List<String> getInteractionImages() {
         return Arrays.asList(
-                "https://i.imgur.com/BWG6gvH.gif",
-                "https://i.imgur.com/xGlwJ3P.gif",
-                "https://i.imgur.com/UD2EUBE.gif",
-                "https://i.imgur.com/rFkrrdg.gif",
-                "https://i.imgur.com/JIWK6Ht.gif",
-                "https://i.imgur.com/rd9p6DQ.gif"
+            "https://i.imgur.com/BWG6gvH.gif",
+            "https://i.imgur.com/xGlwJ3P.gif",
+            "https://i.imgur.com/UD2EUBE.gif",
+            "https://i.imgur.com/rFkrrdg.gif",
+            "https://i.imgur.com/JIWK6Ht.gif",
+            "https://i.imgur.com/rd9p6DQ.gif"
         );
     }
 

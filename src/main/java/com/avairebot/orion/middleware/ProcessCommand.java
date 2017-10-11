@@ -14,10 +14,10 @@ import java.util.regex.Pattern;
 public class ProcessCommand extends Middleware {
 
     private final static String COMMAND_OUTPUT = "Executing Command \"%command%\" in \"%category%\" category:"
-            + "\n\t\tUser:\t %author%"
-            + "\n\t\tServer:\t %server%"
-            + "\n\t\tChannel: %channel%"
-            + "\n\t\tMessage: %message%";
+        + "\n\t\tUser:\t %author%"
+        + "\n\t\tServer:\t %server%"
+        + "\n\t\tChannel: %channel%"
+        + "\n\t\tMessage: %message%";
 
     private final Pattern argumentsRegEX;
 
@@ -32,17 +32,17 @@ public class ProcessCommand extends Middleware {
         String[] arguments = generateCommandArguments(message);
 
         orion.logger.info(COMMAND_OUTPUT
-                .replace("%command%", stack.getCommand().getName())
-                .replace("%category%", stack.getCommandContainer().getCategory().getName())
-                .replace("%author%", generateUsername(message))
-                .replace("%server%", generateServer(message))
-                .replace("%channel%", generateChannel(message))
-                .replace("%message%", message.getRawContent())
+            .replace("%command%", stack.getCommand().getName())
+            .replace("%category%", stack.getCommandContainer().getCategory().getName())
+            .replace("%author%", generateUsername(message))
+            .replace("%server%", generateServer(message))
+            .replace("%channel%", generateChannel(message))
+            .replace("%message%", message.getRawContent())
         );
 
         return stack.getCommand().onCommand(
-                new CommandMessage(message, stack.isMentionableCommand()),
-                Arrays.copyOfRange(arguments, stack.isMentionableCommand() ? 2 : 1, arguments.length)
+            new CommandMessage(message, stack.isMentionableCommand()),
+            Arrays.copyOfRange(arguments, stack.isMentionableCommand() ? 2 : 1, arguments.length)
         );
     }
 
@@ -52,8 +52,8 @@ public class ProcessCommand extends Middleware {
         Matcher matcher = argumentsRegEX.matcher(message.getRawContent());
         while (matcher.find()) {
             arguments.add(matcher.group(0)
-                    .replaceAll("\"", "")
-                    .trim());
+                .replaceAll("\"", "")
+                .trim());
         }
 
         return arguments.toArray(new String[0]);
@@ -61,9 +61,9 @@ public class ProcessCommand extends Middleware {
 
     private String generateUsername(Message message) {
         return String.format("%s#%s [%s]",
-                message.getAuthor().getName(),
-                message.getAuthor().getDiscriminator(),
-                message.getAuthor().getId()
+            message.getAuthor().getName(),
+            message.getAuthor().getDiscriminator(),
+            message.getAuthor().getId()
         );
     }
 
@@ -73,8 +73,8 @@ public class ProcessCommand extends Middleware {
         }
 
         return String.format("%s [%s]",
-                message.getGuild().getName(),
-                message.getGuild().getId()
+            message.getGuild().getName(),
+            message.getGuild().getId()
         );
     }
 
@@ -84,8 +84,8 @@ public class ProcessCommand extends Middleware {
         }
 
         return String.format("%s [%s]",
-                message.getChannel().getName(),
-                message.getChannel().getId()
+            message.getChannel().getName(),
+            message.getChannel().getId()
         );
     }
 }

@@ -19,18 +19,18 @@ public class CommandMessage extends MessageImpl {
 
         this.mentionableCommand = mentionableCommand;
         this.setContent(prepareRawContent(message.getRawContent()))
-                .setAuthor(message.getAuthor())
-                .setTime(message.getCreationTime())
-                .setEditedTime(message.getEditedTime())
-                .setAttachments(message.getAttachments())
-                .setEmbeds(message.getEmbeds())
-                .setMentionedChannels(message.getMentionedChannels())
-                .setMentionedRoles(message.getMentionedRoles())
-                .setMentionedUsers(prepareMentionedUsers(message.getMentionedUsers()))
-                .setMentionsEveryone(message.mentionsEveryone())
-                .setReactions(message.getReactions())
-                .setPinned(message.isPinned())
-                .setTTS(message.isTTS());
+            .setAuthor(message.getAuthor())
+            .setTime(message.getCreationTime())
+            .setEditedTime(message.getEditedTime())
+            .setAttachments(message.getAttachments())
+            .setEmbeds(message.getEmbeds())
+            .setMentionedChannels(message.getMentionedChannels())
+            .setMentionedRoles(message.getMentionedRoles())
+            .setMentionedUsers(prepareMentionedUsers(message.getMentionedUsers()))
+            .setMentionsEveryone(message.mentionsEveryone())
+            .setReactions(message.getReactions())
+            .setPinned(message.isPinned())
+            .setTTS(message.isTTS());
     }
 
     public CommandMessage(String message) {

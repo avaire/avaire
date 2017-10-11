@@ -24,8 +24,8 @@ public class PlayerController {
         }
 
         final String cacheToken = String.format(CACHE_STRING,
-                message.getGuild().getId(),
-                user.getId()
+            message.getGuild().getId(),
+            user.getId()
         );
 
         if (orion.cache.getAdapter(CacheType.MEMORY).has(cacheToken)) {
@@ -34,22 +34,22 @@ public class PlayerController {
 
         try {
             PlayerTransformer transformer = new PlayerTransformer(orion.database.newQueryBuilder(Constants.PLAYER_EXPERIENCE_TABLE_NAME)
-                    .where("user_id", user.getId())
-                    .andWhere("guild_id", message.getGuild().getId())
-                    .get().first());
+                .where("user_id", user.getId())
+                .andWhere("guild_id", message.getGuild().getId())
+                .get().first());
 
             if (!transformer.hasData()) {
                 orion.database.newQueryBuilder(Constants.PLAYER_EXPERIENCE_TABLE_NAME)
-                        .insert(statement -> {
-                            statement.set("guild_id", message.getGuild().getId())
-                                    .set("user_id", user.getId())
-                                    .set("username", user.getName())
-                                    .set("discriminator", user.getDiscriminator())
-                                    .set("avatar", user.getAvatarId())
-                                    .set("experience", 100);
+                    .insert(statement -> {
+                        statement.set("guild_id", message.getGuild().getId())
+                            .set("user_id", user.getId())
+                            .set("username", user.getName())
+                            .set("discriminator", user.getDiscriminator())
+                            .set("avatar", user.getAvatarId())
+                            .set("experience", 100);
 
-                            orion.cache.getAdapter(CacheType.MEMORY).put(cacheToken, new PlayerTransformer(new DataRow(statement.getItems())), 2);
-                        });
+                        orion.cache.getAdapter(CacheType.MEMORY).put(cacheToken, new PlayerTransformer(new DataRow(statement.getItems())), 2);
+                    });
 
                 return (PlayerTransformer) orion.cache.getAdapter(CacheType.MEMORY).get(cacheToken);
             }

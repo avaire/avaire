@@ -40,17 +40,17 @@ public class MemeCommand extends Command {
     @Override
     public List<String> getUsageInstructions() {
         return Arrays.asList(
-                "`:command list` - Lists all the available meme types.",
-                "`:command <meme> <top text> <bottom text>` - Generates the meme with the given text.",
-                "`:command <user> <top text> <bottom text>` - Generates a meme with the tagged users avatar and the given text."
+            "`:command list` - Lists all the available meme types.",
+            "`:command <meme> <top text> <bottom text>` - Generates the meme with the given text.",
+            "`:command <user> <top text> <bottom text>` - Generates a meme with the tagged users avatar and the given text."
         );
     }
 
     @Override
     public String getExampleUsage() {
         return String.join("\n", Arrays.asList(
-                "`:command buzz \"Memes\" \"Memes everywhere\"`",
-                "`:command @Senither \"Creates a Meme command for Orion\" \"Almost no one uses it\"`"
+            "`:command buzz \"Memes\" \"Memes everywhere\"`",
+            "`:command @Senither \"Creates a Meme command for Orion\" \"Almost no one uses it\"`"
 
         ));
     }
@@ -69,8 +69,8 @@ public class MemeCommand extends Command {
     public boolean onCommand(Message message, String[] args) {
         if (args.length == 0) {
             return sendErrorMessage(message,
-                    "Missing `action` argument, you must include the meme type or user you want to "
-                            + "generate a meme for, or `list` to display all the memes types available."
+                "Missing `action` argument, you must include the meme type or user you want to "
+                    + "generate a meme for, or `list` to display all the memes types available."
             );
         }
 
@@ -107,17 +107,17 @@ public class MemeCommand extends Command {
         final List<String> memesMessages = new ArrayList<>();
         paginator.forEach((key, val) -> {
             memesMessages.add(String.format("`%s` => `%s`",
-                    val, memes.get(val).get("name")
+                val, memes.get(val).get("name")
             ));
         });
 
         EmbedBuilder embed = MessageFactory.createEmbeddedBuilder()
-                .setTitle("Memes")
-                .setColor(MessageFactory.MessageType.SUCCESS.getColor())
-                .setDescription(String.format("%s\n\n%s",
-                        String.join("\n", memesMessages),
-                        paginator.generateFooter(generateCommandTrigger(message) + " list")
-                ));
+            .setTitle("Memes")
+            .setColor(MessageFactory.MessageType.SUCCESS.getColor())
+            .setDescription(String.format("%s\n\n%s",
+                String.join("\n", memesMessages),
+                paginator.generateFooter(generateCommandTrigger(message) + " list")
+            ));
 
         message.getChannel().sendMessage(embed.build()).queue();
 
@@ -134,11 +134,11 @@ public class MemeCommand extends Command {
 
         message.getChannel().sendTyping().queue();
         RequestFactory.makeGET(String.format(customUrl, formatMemeArgument(args[0]), formatMemeArgument(args[1])))
-                .addParameter("alt", user.getAvatarUrl())
-                .addParameter("size", 256)
-                .send((Consumer<Response>) response -> {
-                    message.getChannel().sendFile(response.getResponse().body().byteStream(), message.getAuthor().getAvatarId() + ".jpg", null).queue();
-                });
+            .addParameter("alt", user.getAvatarUrl())
+            .addParameter("size", 256)
+            .send((Consumer<Response>) response -> {
+                message.getChannel().sendFile(response.getResponse().body().byteStream(), message.getAuthor().getAvatarId() + ".jpg", null).queue();
+            });
         return true;
     }
 
@@ -149,23 +149,23 @@ public class MemeCommand extends Command {
 
         message.getChannel().sendTyping().queue();
         RequestFactory.makeGET(String.format(templateUrl, meme, formatMemeArgument(args[0]), formatMemeArgument(args[1])))
-                .addParameter("size", 256)
-                .send((Consumer<Response>) response -> {
-                    message.getChannel().sendFile(response.getResponse().body().byteStream(), meme + "-" + message.getAuthor().getAvatarId() + ".jpg", null).queue();
-                });
+            .addParameter("size", 256)
+            .send((Consumer<Response>) response -> {
+                message.getChannel().sendFile(response.getResponse().body().byteStream(), meme + "-" + message.getAuthor().getAvatarId() + ".jpg", null).queue();
+            });
         return true;
     }
 
     private String formatMemeArgument(String string) {
         return string.trim()
-                .replaceAll("_", "__")
-                .replaceAll("-", "--")
-                .replaceAll(" ", "_")
-                .replaceAll("\\?", "~q")
-                .replaceAll("%", "~p")
-                .replaceAll("#", "~h")
-                .replaceAll("/", "~s")
-                .replaceAll("''", "\"");
+            .replaceAll("_", "__")
+            .replaceAll("-", "--")
+            .replaceAll(" ", "_")
+            .replaceAll("\\?", "~q")
+            .replaceAll("%", "~p")
+            .replaceAll("#", "~h")
+            .replaceAll("/", "~s")
+            .replaceAll("''", "\"");
     }
 
     private void loadMemesIntoMemory() {

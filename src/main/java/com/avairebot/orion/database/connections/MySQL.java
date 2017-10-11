@@ -15,11 +15,11 @@ public class MySQL extends HostnameDatabase {
      */
     public MySQL(DatabaseManager dbm) {
         super(
-                dbm.getOrion().config.getDatabase().getHostname(),
-                3306,
-                dbm.getOrion().config.getDatabase().getDatabase(),
-                dbm.getOrion().config.getDatabase().getUsername(),
-                dbm.getOrion().config.getDatabase().getPassword()
+            dbm.getOrion().config.getDatabase().getHostname(),
+            3306,
+            dbm.getOrion().config.getDatabase().getDatabase(),
+            dbm.getOrion().config.getDatabase().getUsername(),
+            dbm.getOrion().config.getDatabase().getPassword()
         );
 
         setDatabaseManager(dbm);

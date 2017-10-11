@@ -55,17 +55,17 @@ public class RipCommand extends Command {
 
         try {
             orion.database.newQueryBuilder(Constants.STATISTICS_TABLE_NAME)
-                    .update(statement -> statement.setRaw("respects", "`respects` + 1"));
+                .update(statement -> statement.setRaw("respects", "`respects` + 1"));
         } catch (SQLException ex) {
             return false;
         }
 
         EmbedBuilder embed = MessageFactory.createEmbeddedBuilder()
-                .setColor(Color.decode("#2A2C31"))
-                .setDescription(String.format("**%s** has paid their respects.", message.getMember().getEffectiveName()))
-                .setFooter(String.format("%s Today, %s Overall",
-                        Statistics.getRespects(), getTotalRespects()
-                ), null);
+            .setColor(Color.decode("#2A2C31"))
+            .setDescription(String.format("**%s** has paid their respects.", message.getMember().getEffectiveName()))
+            .setFooter(String.format("%s Today, %s Overall",
+                Statistics.getRespects(), getTotalRespects()
+            ), null);
 
         message.getChannel().sendMessage(embed.build()).queue();
         return true;
@@ -74,7 +74,7 @@ public class RipCommand extends Command {
     private int getTotalRespects() {
         try {
             return orion.database.newQueryBuilder(Constants.STATISTICS_TABLE_NAME).get().first()
-                    .getInt("respects", Statistics.getRespects()) + 1;
+                .getInt("respects", Statistics.getRespects()) + 1;
         } catch (SQLException e) {
             e.printStackTrace();
             return 1;

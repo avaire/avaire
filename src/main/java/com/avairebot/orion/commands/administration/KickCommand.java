@@ -64,13 +64,13 @@ public class KickCommand extends Command {
         String reason = generateMessage(args);
         message.getGuild().getController().kick(user, reason).queue(aVoid -> {
             MessageFactory.makeSuccess(message, "**%s** was kicked by <@%s> for \"%s\"",
-                    user.getUser().getName() + "#" + user.getUser().getDiscriminator(),
-                    message.getAuthor().getId(),
-                    reason
+                user.getUser().getName() + "#" + user.getUser().getDiscriminator(),
+                message.getAuthor().getId(),
+                reason
             ).queue();
         }, throwable -> MessageFactory.makeWarning(message, "Failed to kick **%s** due to an error: %s",
-                user.getUser().getName() + "#" + user.getUser().getDiscriminator(),
-                throwable.getMessage()
+            user.getUser().getName() + "#" + user.getUser().getDiscriminator(),
+            throwable.getMessage()
         ).queue());
         return true;
     }
@@ -98,7 +98,7 @@ public class KickCommand extends Command {
 
     private String generateMessage(String[] args) {
         return args.length < 2 ?
-                "No reason was given." :
-                String.join(" ", Arrays.copyOfRange(args, 1, args.length));
+            "No reason was given." :
+            String.join(" ", Arrays.copyOfRange(args, 1, args.length));
     }
 }

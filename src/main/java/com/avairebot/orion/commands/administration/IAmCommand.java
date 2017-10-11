@@ -52,7 +52,7 @@ public class IAmCommand extends Command {
         Role role = RoleUtil.getRoleFromMentionsOrName(message, args[0]);
         if (role == null) {
             MessageFactory.makeWarning(message, "<@%s> Invalid role, I couldn't find any role called **%s**",
-                    message.getAuthor().getId(), args[0]
+                message.getAuthor().getId(), args[0]
             ).queue();
             return false;
         }
@@ -60,7 +60,7 @@ public class IAmCommand extends Command {
         GuildTransformer transformer = GuildController.fetchGuild(orion, message);
         if (!transformer.getSelfAssignableRoles().containsValue(role.getName().toLowerCase())) {
             MessageFactory.makeWarning(message, "<@%s> Invalid role, **%s** is not a self-assignable role.",
-                    message.getAuthor().getId(), args[0]
+                message.getAuthor().getId(), args[0]
             ).queue();
             return false;
         }
@@ -70,7 +70,7 @@ public class IAmCommand extends Command {
         }
 
         MessageFactory.makeSuccess(message, "<@%s> You now have the **%s** role!",
-                message.getAuthor().getId(), role.getName()
+            message.getAuthor().getId(), role.getName()
         ).queue();
         return true;
     }

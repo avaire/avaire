@@ -62,14 +62,14 @@ public class Orion {
 
         logger.info(" - Registering database table migrations");
         database.getMigrations().register(
-                new CreateGuildTableMigration(),
-                new CreateGuildTypeTableMigration(),
-                new CreateBlacklistTableMigration(),
-                new CreatePlayerExperiencesTableMigration(),
-                new CreateFeedbackTableMigration(),
-                new CreateMusicPlaylistsTableMigration(),
-                new CreateStatisticsTableMigration(),
-                new CreateShardsTableMigration()
+            new CreateGuildTableMigration(),
+            new CreateGuildTypeTableMigration(),
+            new CreateBlacklistTableMigration(),
+            new CreatePlayerExperiencesTableMigration(),
+            new CreateFeedbackTableMigration(),
+            new CreateMusicPlaylistsTableMigration(),
+            new CreateStatisticsTableMigration(),
+            new CreateShardsTableMigration()
         );
         database.getMigrations().up();
 

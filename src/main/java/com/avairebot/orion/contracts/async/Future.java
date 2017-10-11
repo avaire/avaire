@@ -18,7 +18,7 @@ public abstract class Future {
      */
     private Consumer<Throwable> DEFAULT_FAILURE = (Exception) -> {
         SimpleLog.getLog(Future.class).fatal(String.format(
-                "Future Consumer returned failure: [%s] %s", Exception.getClass().getSimpleName(), Exception.getMessage()
+            "Future Consumer returned failure: [%s] %s", Exception.getClass().getSimpleName(), Exception.getMessage()
         ));
     };
 
@@ -51,8 +51,8 @@ public abstract class Future {
     public void send(final Consumer success, final Consumer<Throwable> failure) {
         new Thread(() -> {
             handle(
-                    success == null ? DEFAULT_SUCCESS : success,
-                    failure == null ? DEFAULT_FAILURE : failure
+                success == null ? DEFAULT_SUCCESS : success,
+                failure == null ? DEFAULT_FAILURE : failure
 
             );
         }).start();

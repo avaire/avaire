@@ -55,7 +55,7 @@ public class RemoveSelfAssignableRoleCommand extends Command {
         Role role = RoleUtil.getRoleFromMentionsOrName(message, args[0]);
         if (role == null) {
             MessageFactory.makeWarning(message, "<@%s> Invalid role, I couldn't find any role called **%s**",
-                    message.getAuthor().getId(), args[0]
+                message.getAuthor().getId(), args[0]
             ).queue();
             return false;
         }
@@ -69,13 +69,13 @@ public class RemoveSelfAssignableRoleCommand extends Command {
 
             transformer.getSelfAssignableRoles().remove(role.getId());
             orion.database.newQueryBuilder(Constants.GUILD_TABLE_NAME)
-                    .where("id", message.getGuild().getId())
-                    .update(statement -> {
-                        statement.set("claimable_roles", new Gson().toJson(transformer.getSelfAssignableRoles()));
-                    });
+                .where("id", message.getGuild().getId())
+                .update(statement -> {
+                    statement.set("claimable_roles", new Gson().toJson(transformer.getSelfAssignableRoles()));
+                });
 
             MessageFactory.makeSuccess(message, "Role **%s** role has been removed from the self-assignable list.",
-                    role.getName()
+                role.getName()
             ).queue();
 
             return true;

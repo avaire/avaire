@@ -22,23 +22,23 @@ public class FetchMemeTypesJob extends Job {
     @Override
     public void run() {
         RequestFactory.makeGET(apiEndpoint)
-                .addHeader("Cache-Control", "no-cache")
-                .addHeader("Content-Type", "application/json")
-                .send((Consumer<Response>) response -> {
-                    HashMap<String, String> memes = (HashMap<String, String>) response.toService(HashMap.class);
-                    HashMap<String, HashMap<String, String>> cache = new HashMap<>();
+            .addHeader("Cache-Control", "no-cache")
+            .addHeader("Content-Type", "application/json")
+            .send((Consumer<Response>) response -> {
+                HashMap<String, String> memes = (HashMap<String, String>) response.toService(HashMap.class);
+                HashMap<String, HashMap<String, String>> cache = new HashMap<>();
 
-                    for (Map.Entry<String, String> entry : memes.entrySet()) {
-                        HashMap<String, String> meme = new HashMap<>();
-                        meme.put("name", entry.getKey());
-                        meme.put("url", entry.getValue());
+                for (Map.Entry<String, String> entry : memes.entrySet()) {
+                    HashMap<String, String> meme = new HashMap<>();
+                    meme.put("name", entry.getKey());
+                    meme.put("url", entry.getValue());
 
-                        cache.put(entry.getValue().substring(apiEndpoint.length(), entry.getValue().length()), meme);
+                    cache.put(entry.getValue().substring(apiEndpoint.length(), entry.getValue().length()), meme);
 
-                    }
+                }
 
-                    orion.cache.getAdapter(CacheType.FILE).forever("meme.types", cache);
-                });
+                orion.cache.getAdapter(CacheType.FILE).forever("meme.types", cache);
+            });
 
     }
 }

@@ -153,12 +153,12 @@ public abstract class Command {
         Category category = Category.fromCommand(this);
 
         message.getChannel().sendMessage(MessageFactory.createEmbeddedBuilder()
-                .setTitle(getName())
-                .setDescription(error)
-                .setColor(MessageFactory.MessageType.ERROR.getColor())
-                .addField("Usage", generateUsageInstructions(message), false)
-                .addField("Example Usage", generateExampleUsage(message), false)
-                .setFooter("Command category: " + category.getName(), null).build()).queue();
+            .setTitle(getName())
+            .setDescription(error)
+            .setColor(MessageFactory.MessageType.ERROR.getColor())
+            .addField("Usage", generateUsageInstructions(message), false)
+            .addField("Example Usage", generateExampleUsage(message), false)
+            .setFooter("Command category: " + category.getName(), null).build()).queue();
 
         return false;
     }
@@ -206,7 +206,7 @@ public abstract class Command {
                 case THROTTLE:
                     String[] args = split[1].split(",");
                     description.add(String.format("**This command can only be used `%s` time(s) every `%s` seconds per %s**",
-                            args[1], args[2], args[0].equalsIgnoreCase("guild") ? "server" : args[0]
+                        args[1], args[2], args[0].equalsIgnoreCase("guild") ? "server" : args[0]
                     ));
                     break;
 
@@ -217,7 +217,7 @@ public abstract class Command {
                         break;
                     }
                     description.add(String.format("**The `%s` roles is required to use this command!**",
-                            String.join("`, `", roles)
+                        String.join("`, `", roles)
                     ));
                     break;
 
@@ -226,16 +226,16 @@ public abstract class Command {
                     nodes = Arrays.copyOfRange(nodes, 1, nodes.length);
                     if (nodes.length == 1) {
                         description.add(String.format("**The `%s` permission is required to use this command!**",
-                                Permissions.fromNode(nodes[0]).getPermission().getName()
+                            Permissions.fromNode(nodes[0]).getPermission().getName()
                         ));
                         break;
                     }
                     description.add(String.format("**The `%s` permissions is required to use this command!**",
-                            Arrays.asList(nodes).stream()
-                                    .map(Permissions::fromNode)
-                                    .map(Permissions::getPermission)
-                                    .map(Permission::getName)
-                                    .collect(Collectors.joining("`, `"))
+                        Arrays.asList(nodes).stream()
+                            .map(Permissions::fromNode)
+                            .map(Permissions::getPermission)
+                            .map(Permission::getName)
+                            .collect(Collectors.joining("`, `"))
                     ));
                     break;
             }
@@ -254,9 +254,9 @@ public abstract class Command {
      */
     public final String generateUsageInstructions(Message message) {
         return formatCommandGeneratorString(message,
-                getUsageInstructions() == null ? "`:command`" :
-                        getUsageInstructions().stream()
-                                .collect(Collectors.joining("\n"))
+            getUsageInstructions() == null ? "`:command`" :
+                getUsageInstructions().stream()
+                    .collect(Collectors.joining("\n"))
         );
     }
 
@@ -269,7 +269,7 @@ public abstract class Command {
      */
     public final String generateExampleUsage(Message message) {
         return formatCommandGeneratorString(message,
-                getExampleUsage() == null ? "`:command`" : getExampleUsage()
+            getExampleUsage() == null ? "`:command`" : getExampleUsage()
         );
     }
 
@@ -297,8 +297,8 @@ public abstract class Command {
         Category category = Category.fromCommand(this);
 
         return transformer == null ? category.getPrefix() : transformer.getPrefixes().getOrDefault(
-                category.getName().toLowerCase(),
-                category.getPrefix()
+            category.getName().toLowerCase(),
+            category.getPrefix()
         );
     }
 
@@ -311,10 +311,10 @@ public abstract class Command {
      */
     public final boolean isSame(Command command) {
         return Objects.equals(command.getName(), getName())
-                && Objects.equals(command.getDescription(), command.getDescription())
-                && Objects.equals(command.getUsageInstructions(), getUsageInstructions())
-                && Objects.equals(command.getExampleUsage(), getExampleUsage())
-                && Objects.equals(command.getTriggers(), getTriggers());
+            && Objects.equals(command.getDescription(), command.getDescription())
+            && Objects.equals(command.getUsageInstructions(), getUsageInstructions())
+            && Objects.equals(command.getExampleUsage(), getExampleUsage())
+            && Objects.equals(command.getTriggers(), getTriggers());
     }
 
     /**

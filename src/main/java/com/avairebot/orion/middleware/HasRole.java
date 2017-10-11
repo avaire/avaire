@@ -29,9 +29,9 @@ public class HasRole extends Middleware {
         for (String roleName : args) {
             if (!hasRole(roles, roleName)) {
                 MessageFactory.makeError(
-                        message,
-                        "You don't have the required role to execute this command:\n`%s`",
-                        roleName
+                    message,
+                    "You don't have the required role to execute this command:\n`%s`",
+                    roleName
                 ).queue();
                 return false;
             }

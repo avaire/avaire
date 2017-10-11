@@ -81,9 +81,9 @@ public class VoteSkipCommand extends Command {
         int neededVotes = getNeededVotes(usersInVoiceLength, getSkipsFrom(musicManager).size());
 
         MessageFactory.makeWarning(message, hasVotedBefore ?
-                        "You can only vote skip once per song! `%s` more votes needed to skip the song." :
-                        "Your vote has been registered! `%s` more votes needed to skip the song.",
-                neededVotes
+                "You can only vote skip once per song! `%s` more votes needed to skip the song." :
+                "Your vote has been registered! `%s` more votes needed to skip the song.",
+            neededVotes
         ).queue();
 
         return true;
@@ -96,7 +96,7 @@ public class VoteSkipCommand extends Command {
 
     private int getAmountOfUsersConnectedToVoice(Message message) {
         return message.getGuild().getAudioManager().getConnectedChannel().getMembers().stream()
-                .filter(m -> !m.getUser().isBot()).collect(Collectors.toList()).size();
+            .filter(m -> !m.getUser().isBot()).collect(Collectors.toList()).size();
     }
 
     private double getVotePercentage(int usersInVoiceLength, int voteSkips) {

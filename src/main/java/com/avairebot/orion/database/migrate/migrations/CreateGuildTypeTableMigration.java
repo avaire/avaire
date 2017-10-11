@@ -23,8 +23,8 @@ public class CreateGuildTypeTableMigration implements Migration {
         }
 
         return schema.getDbm().newQueryBuilder(Constants.GUILD_TYPES_TABLE_NAME).insert(
-                createRecord("VIP", 10, 50, 50),
-                createRecord("VIP+", 25, 100, 150)
+            createRecord("VIP", 10, 50, 50),
+            createRecord("VIP+", 25, 100, 150)
         ).size() == 2;
     }
 

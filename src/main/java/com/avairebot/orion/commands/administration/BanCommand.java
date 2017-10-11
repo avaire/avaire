@@ -70,13 +70,13 @@ public class BanCommand extends Command {
         String reason = generateMessage(args);
         message.getGuild().getController().ban(user, 7, reason).queue(aVoid -> {
             MessageFactory.makeSuccess(message, "**%s** was permanently banned by <@%s> for \"%s\"",
-                    user.getName() + "#" + user.getDiscriminator(),
-                    message.getAuthor().getId(),
-                    reason
+                user.getName() + "#" + user.getDiscriminator(),
+                message.getAuthor().getId(),
+                reason
             ).queue();
         }, throwable -> MessageFactory.makeWarning(message, "Failed to ban **%s** due to an error: %s",
-                user.getName() + "#" + user.getDiscriminator(),
-                throwable.getMessage()
+            user.getName() + "#" + user.getDiscriminator(),
+            throwable.getMessage()
         ).queue());
 
         return true;
@@ -89,7 +89,7 @@ public class BanCommand extends Command {
 
     private String generateMessage(String[] args) {
         return args.length < 2 ?
-                "No reason was given." :
-                String.join(" ", Arrays.copyOfRange(args, 1, args.length));
+            "No reason was given." :
+            String.join(" ", Arrays.copyOfRange(args, 1, args.length));
     }
 }

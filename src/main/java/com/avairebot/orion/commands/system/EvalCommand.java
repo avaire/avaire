@@ -85,15 +85,15 @@ public class EvalCommand extends SystemCommand {
         }
 
         engine.eval("var imports = new JavaImporter(" +
-                "java.io," +
-                "java.lang," +
-                "java.util," +
-                "Packages.net.dv8tion.jda.core," +
-                "Packages.net.dv8tion.jda.core.entities," +
-                "Packages.net.dv8tion.jda.core.entities.impl," +
-                "Packages.net.dv8tion.jda.core.managers," +
-                "Packages.net.dv8tion.jda.core.managers.impl," +
-                "Packages.net.dv8tion.jda.core.utils);");
+            "java.io," +
+            "java.lang," +
+            "java.util," +
+            "Packages.net.dv8tion.jda.core," +
+            "Packages.net.dv8tion.jda.core.entities," +
+            "Packages.net.dv8tion.jda.core.entities.impl," +
+            "Packages.net.dv8tion.jda.core.managers," +
+            "Packages.net.dv8tion.jda.core.managers.impl," +
+            "Packages.net.dv8tion.jda.core.utils);");
 
         return engine;
     }

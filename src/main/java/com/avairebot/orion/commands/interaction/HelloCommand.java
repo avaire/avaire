@@ -15,14 +15,14 @@ public class HelloCommand extends InteractionCommand {
     @Override
     public List<String> getInteractionImages() {
         return Arrays.asList(
-                "https://i.imgur.com/odFyo1Q.gif",
-                "https://i.imgur.com/KyQN1RR.gif",
-                "https://i.imgur.com/LDxsTxv.gif",
-                "https://i.imgur.com/czWxIkd.gif",
-                "https://i.imgur.com/DIeaddE.gif",
-                "https://i.imgur.com/lUfKcOK.gif",
-                "https://i.imgur.com/bwwasl2.gif",
-                "https://i.imgur.com/cYsTgNK.gif"
+            "https://i.imgur.com/odFyo1Q.gif",
+            "https://i.imgur.com/KyQN1RR.gif",
+            "https://i.imgur.com/LDxsTxv.gif",
+            "https://i.imgur.com/czWxIkd.gif",
+            "https://i.imgur.com/DIeaddE.gif",
+            "https://i.imgur.com/lUfKcOK.gif",
+            "https://i.imgur.com/bwwasl2.gif",
+            "https://i.imgur.com/cYsTgNK.gif"
         );
     }
 

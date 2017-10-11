@@ -85,11 +85,11 @@ public class PlayCommand extends Command {
         AudioPlaylist playlist = (AudioPlaylist) response.getAudioItem();
 
         MessageFactory.makeSuccess(message, "<@%s> has added %s songs from the [%s](%s) playlist to the queue. There are `%s` song(s) ahead of it in the queue.",
-                message.getAuthor().getId(),
-                playlist.getTracks().size(),
-                playlist.getName(),
-                response.getTrackUrl(),
-                AudioHandler.getQueueSize(response.getMusicManager())
+            message.getAuthor().getId(),
+            playlist.getTracks().size(),
+            playlist.getName(),
+            response.getTrackUrl(),
+            AudioHandler.getQueueSize(response.getMusicManager())
         ).queue();
     }
 
@@ -97,11 +97,11 @@ public class PlayCommand extends Command {
         AudioTrack track = (AudioTrack) response.getAudioItem();
 
         MessageFactory.makeSuccess(message,
-                "<@%s> has added [%s](%s) to the queue. There are `%s` song(s) ahead of it in the queue.",
-                message.getAuthor().getId(),
-                track.getInfo().title,
-                track.getInfo().uri,
-                AudioHandler.getQueueSize(response.getMusicManager())
+            "<@%s> has added [%s](%s) to the queue. There are `%s` song(s) ahead of it in the queue.",
+            message.getAuthor().getId(),
+            track.getInfo().title,
+            track.getInfo().uri,
+            AudioHandler.getQueueSize(response.getMusicManager())
         ).queue();
     }
 

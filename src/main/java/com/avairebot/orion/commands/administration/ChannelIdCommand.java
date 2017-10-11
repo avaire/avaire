@@ -49,8 +49,8 @@ public class ChannelIdCommand extends Command {
         }
 
         MessageFactory.makeSuccess(message, "<@%s> :id: of the <#%s> channel is `%s`",
-                message.getAuthor().getId(),
-                channel.getId(), channel.getId()
+            message.getAuthor().getId(),
+            channel.getId(), channel.getId()
         ).queue();
         return true;
     }

@@ -55,13 +55,13 @@ public class GfycatCommand extends Command {
         }
 
         RequestFactory.makeGET("https://api.gfycat.com/v1test/gfycats/search")
-                .addParameter("count", 25)
-                .addParameter("search_text", String.join(" ", args))
-                .send((Consumer<Response>) response -> {
-                    GfycatService gfyCat = (GfycatService) response.toService(GfycatService.class);
+            .addParameter("count", 25)
+            .addParameter("search_text", String.join(" ", args))
+            .send((Consumer<Response>) response -> {
+                GfycatService gfyCat = (GfycatService) response.toService(GfycatService.class);
 
-                    message.getChannel().sendMessage(gfyCat.getRandomGfycatsItem().get("gifUrl").toString()).queue();
-                });
+                message.getChannel().sendMessage(gfyCat.getRandomGfycatsItem().get("gifUrl").toString()).queue();
+            });
         return true;
     }
 }
