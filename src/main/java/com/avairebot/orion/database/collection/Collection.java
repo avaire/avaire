@@ -253,6 +253,15 @@ public class Collection implements Cloneable, Iterable<DataRow> {
     }
 
     /**
+     * Get all the data row items.
+     *
+     * @return The data row items.
+     */
+    public List<DataRow> getItems() {
+        return items;
+    }
+
+    /**
      * Checks to see the collection contains the provided field.
      *
      * @param field the field to check if exists
