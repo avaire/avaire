@@ -1,10 +1,12 @@
 package com.avairebot.orion.commands.administration;
 
 import com.avairebot.orion.Orion;
+import com.avairebot.orion.chat.SimplePaginator;
 import com.avairebot.orion.contracts.commands.Command;
 import com.avairebot.orion.database.controllers.GuildController;
 import com.avairebot.orion.database.transformers.GuildTransformer;
 import com.avairebot.orion.factories.MessageFactory;
+import com.avairebot.orion.utilities.NumberUtil;
 import net.dv8tion.jda.core.entities.Message;
 
 import java.util.ArrayList;
@@ -51,40 +53,22 @@ public class ListSelfAssignableRolesCommand extends Command {
             return true;
         }
 
-        int pageNumber = 1;
-        if (args.length > 0) {
-            try {
-                pageNumber = Integer.parseInt(args[0], 10);
-                if (pageNumber < 1) {
-                    pageNumber = 1;
-                }
-            } catch (NumberFormatException ex) {
-                pageNumber = 1;
-            }
-        }
-
         ArrayList<String> items = new ArrayList<>(transformer.getSelfAssignableRoles().values());
         Collections.sort(items);
 
-        int pages = (int) Math.ceil(items.size() / 10);
-        pageNumber = Math.max(1, Math.min(pageNumber, pages));
-
-        List<String> messages = new ArrayList<>();
-        int start = 10 * (pageNumber - 1);
-        for (int i = start; i < start + 10; i++) {
-            if (items.size() <= i) {
-                break;
-            }
-
-            messages.add(String.format("**%s**", items.get(i)));
+        SimplePaginator paginator = new SimplePaginator(items, 10, 1);
+        if (args.length > 0) {
+            paginator.setCurrentPage(NumberUtil.parseInt(args[0], 1));
         }
 
-        messages.add(String.format("\nPage **%s** out of **%s** pages.", pageNumber, pages == 0 ? 1 : pageNumber));
-        messages.add(String.format("`%s [page number]`", generateCommandTrigger(message)));
+        List<String> messages = new ArrayList<>();
+        paginator.forEach((key, val) -> messages.add(String.format("**%s**", val)));
+        messages.add("\n" + paginator.generateFooter(generateCommandTrigger(message)));
+
 
         message.getChannel().sendMessage(MessageFactory.createEmbeddedBuilder()
                 .setColor(MessageFactory.MessageType.SUCCESS.getColor())
-                .setTitle(String.format("There are %s self-assignable roles", items.size()))
+                .setTitle(String.format("There are %s self-assignable roles", paginator.getTotal()))
                 .setDescription(String.join("\n", messages)).build()).queue();
 
         return true;

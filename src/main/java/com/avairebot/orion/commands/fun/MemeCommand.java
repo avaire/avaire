@@ -2,6 +2,7 @@ package com.avairebot.orion.commands.fun;
 
 import com.avairebot.orion.Orion;
 import com.avairebot.orion.cache.CacheType;
+import com.avairebot.orion.chat.SimplePaginator;
 import com.avairebot.orion.contracts.commands.Command;
 import com.avairebot.orion.factories.MessageFactory;
 import com.avairebot.orion.factories.RequestFactory;
@@ -98,37 +99,24 @@ public class MemeCommand extends Command {
             loadMemesIntoMemory();
         }
 
-        int pageNumber = 1;
+        SimplePaginator paginator = new SimplePaginator(memeKeys, 10, 1);
         if (args.length > 0) {
-            pageNumber = NumberUtil.parseInt(args[0], 1);
+            paginator.setCurrentPage(NumberUtil.parseInt(args[0], 1));
         }
 
-        int pages = (int) Math.ceil(memeKeys.size() / 10);
-        if (pageNumber > pages) {
-            pageNumber = pages;
-        }
-
-        List<String> memesMessages = new ArrayList<>();
-        int start = 10 * (pageNumber - 1);
-        for (int i = start; i < start + 10; i++) {
-            if (memeKeys.size() <= i) {
-                break;
-            }
-
-            String meme = memeKeys.get(i);
-
+        final List<String> memesMessages = new ArrayList<>();
+        paginator.forEach((key, val) -> {
             memesMessages.add(String.format("`%s` => `%s`",
-                    meme, memes.get(meme).get("name")
+                    val, memes.get(val).get("name")
             ));
-        }
+        });
 
         EmbedBuilder embed = MessageFactory.createEmbeddedBuilder()
                 .setTitle("Memes")
                 .setColor(MessageFactory.MessageType.SUCCESS.getColor())
-                .setDescription(String.format("%s\n\nPage **%s** out of **%s** pages.\n`%s list [page number]`",
+                .setDescription(String.format("%s\n\n%s",
                         String.join("\n", memesMessages),
-                        pageNumber, pages,
-                        generateCommandTrigger(message)
+                        paginator.generateFooter(generateCommandTrigger(message) + " list")
                 ));
 
         message.getChannel().sendMessage(embed.build()).queue();
