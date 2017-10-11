@@ -4,6 +4,7 @@ import com.avairebot.orion.Orion;
 import com.avairebot.orion.cache.CacheItem;
 import com.avairebot.orion.contracts.middleware.Middleware;
 import com.avairebot.orion.factories.MessageFactory;
+import com.avairebot.orion.utilities.NumberUtil;
 import net.dv8tion.jda.core.entities.Message;
 
 public class Throttle extends Middleware {
@@ -24,8 +25,8 @@ public class Throttle extends Middleware {
         ThrottleType type = ThrottleType.fromName(args[0]);
 
         try {
-            int maxAttempts = Integer.parseInt(args[1]);
-            int decaySeconds = Integer.parseInt(args[2]);
+            int maxAttempts = NumberUtil.parseInt(args[1], 2);
+            int decaySeconds = NumberUtil.parseInt(args[2], 5);
 
             String fingerprint = type.generateCacheString(message, stack);
 

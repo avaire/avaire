@@ -6,6 +6,7 @@ import com.avairebot.orion.audio.GuildMusicManager;
 import com.avairebot.orion.contracts.commands.Command;
 import com.avairebot.orion.factories.MessageFactory;
 import com.avairebot.orion.permissions.Permissions;
+import com.avairebot.orion.utilities.NumberUtil;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.Role;
@@ -75,7 +76,7 @@ public class VolumeCommand extends Command {
         }
 
         try {
-            int newVolume = Math.max(Math.min(Integer.parseInt(args[0], 10), 100), 0);
+            int newVolume = NumberUtil.getBetween(NumberUtil.parseInt(args[0]), 0, 100);
 
             musicManager.getPlayer().setVolume(newVolume);
             MessageFactory.makeSuccess(message, "\uD83C\uDFB5 Volume set to **%s** volume\n%s",

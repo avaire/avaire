@@ -3,6 +3,7 @@ package com.avairebot.orion.commands.administration;
 import com.avairebot.orion.Orion;
 import com.avairebot.orion.contracts.commands.Command;
 import com.avairebot.orion.factories.MessageFactory;
+import com.avairebot.orion.utilities.NumberUtil;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageHistory;
 import net.dv8tion.jda.core.entities.User;
@@ -66,11 +67,7 @@ public class PurgeCommand extends Command {
     public boolean onCommand(Message message, String[] args) {
         int toDelete = 100;
         if (args.length > 0) {
-            try {
-                toDelete = Math.min(100, Math.max(1, Integer.parseInt(args[0], 10)));
-            } catch (NumberFormatException ex) {
-                return sendErrorMessage(message, "Invalid argument given, the `number` must be an actually number between 1 and 100.");
-            }
+            toDelete = NumberUtil.getBetween(NumberUtil.parseInt(args[0]), 1, 100);
         }
 
         message.getChannel().sendTyping().queue();

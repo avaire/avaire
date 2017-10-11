@@ -6,6 +6,7 @@ import com.avairebot.orion.contracts.commands.Command;
 import com.avairebot.orion.factories.MessageFactory;
 import com.avairebot.orion.factories.RequestFactory;
 import com.avairebot.orion.requests.Response;
+import com.avairebot.orion.utilities.NumberUtil;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.User;
@@ -99,14 +100,7 @@ public class MemeCommand extends Command {
 
         int pageNumber = 1;
         if (args.length > 0) {
-            try {
-                pageNumber = Integer.parseInt(args[0], 10);
-                if (pageNumber < 1) {
-                    pageNumber = 1;
-                }
-            } catch (NumberFormatException ex) {
-                pageNumber = 1;
-            }
+            pageNumber = NumberUtil.parseInt(args[0], 1);
         }
 
         int pages = (int) Math.ceil(memeKeys.size() / 10);

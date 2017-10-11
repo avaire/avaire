@@ -2,6 +2,7 @@ package com.avairebot.orion.database.collection;
 
 import com.avairebot.orion.exceptions.InvalidFormatException;
 import com.avairebot.orion.time.Carbon;
+import com.avairebot.orion.utilities.NumberUtil;
 import com.google.gson.Gson;
 
 import java.util.HashMap;
@@ -170,11 +171,7 @@ public class DataRow {
         if (isString(value)) {
             String str = String.valueOf(value);
 
-            try {
-                return Integer.parseInt(str);
-            } catch (NumberFormatException ex) {
-                return def;
-            }
+            return NumberUtil.parseInt(str, def);
         }
 
         switch (getType(value)) {
