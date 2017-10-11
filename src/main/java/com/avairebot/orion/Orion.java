@@ -137,6 +137,7 @@ public class Orion {
         CommandHandler.register(new HelloCommand(this));
         CommandHandler.register(new HighFiveCommand(this));
         CommandHandler.register(new HugCommand(this));
+        CommandHandler.register(new KillCommand(this));
         CommandHandler.register(new KissCommand(this));
         CommandHandler.register(new PatCommand(this));
         CommandHandler.register(new PokeCommand(this));
