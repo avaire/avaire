@@ -4,15 +4,17 @@ import com.avairebot.orion.contracts.database.transformers.Transformer;
 import com.avairebot.orion.database.collection.DataRow;
 import com.avairebot.orion.time.Carbon;
 import com.google.gson.Gson;
+import com.google.gson.internal.LinkedTreeMap;
 import com.google.gson.reflect.TypeToken;
+import net.dv8tion.jda.core.entities.TextChannel;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class GuildTransformer extends Transformer {
 
     private final Map<String, String> prefixes = new HashMap<>();
     private final Map<String, String> selfAssignableRoles = new HashMap<>();
+    private final List<ChannelTransformer> channels = new ArrayList<>();
 
     private boolean levels = false;
     private boolean levelAlerts = false;
@@ -47,6 +49,20 @@ public class GuildTransformer extends Transformer {
 
                 for (Map.Entry<String, String> item : dbSelfAssignableRoles.entrySet()) {
                     selfAssignableRoles.put(item.getKey(), item.getValue().toLowerCase());
+                }
+            }
+
+            if (data.getString("channels", null) != null) {
+                HashMap<String, Object> dbChannels = new Gson().fromJson(
+                    data.getString("channels"),
+                    new TypeToken<HashMap<String, Object>>() {
+                    }.getType());
+
+                for (Map.Entry<String, Object> item : dbChannels.entrySet()) {
+                    LinkedTreeMap<String, Object> value = (LinkedTreeMap<String, Object>) item.getValue();
+                    value.put("id", item.getKey());
+
+                    channels.add(new ChannelTransformer(new DataRow(value)));
                 }
             }
         }
@@ -118,6 +134,50 @@ public class GuildTransformer extends Transformer {
 
     public Map<String, String> getPrefixes() {
         return prefixes;
+    }
+
+    public List<ChannelTransformer> getChannels() {
+        return channels;
+    }
+
+    public ChannelTransformer getChannel(String id) {
+        for (ChannelTransformer channel : channels) {
+            if (channel.getId().equals(id)) {
+                return channel;
+            }
+        }
+        return null;
+    }
+
+    public boolean createChannelTransformer(TextChannel channel) {
+        if (!Objects.equals(channel.getGuild().getId(), getId())) {
+            throw new RuntimeException(String.format("The given channel belongs to a different guild. Channel ID: %s Channel Guild ID: %s | Guild ID: %s",
+                channel.getId(), channel.getGuild().getId(), getId()
+            ));
+        }
+
+        if (getChannel(channel.getId()) != null) {
+            return false;
+        }
+
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("id", channel.getId());
+        channels.add(new ChannelTransformer(new DataRow(data)));
+
+        return true;
+    }
+
+    public String channelsToJson() {
+        Map<String, Object> objects = new HashMap<>();
+        if (channels.isEmpty()) {
+            return null;
+        }
+
+        for (ChannelTransformer transformer : channels) {
+            objects.put(transformer.getId(), transformer.toMap());
+        }
+
+        return new Gson().toJson(objects);
     }
 
     public Carbon getCreatedAt() {
