@@ -64,12 +64,12 @@ public class Update extends UpdateGrammar {
                 }
 
                 if (isNumeric(value)) {
-                    addPart(String.format("%s = %s, ", formatKey, value.toUpperCase()));
+                    addPart(String.format("%s = %s, ", formatKey, value));
 
                     continue;
                 }
 
-                addPart(String.format("%s = '%s', ", formatKey, value.toUpperCase().replaceAll("'", "\'")));
+                addPart(String.format("%s = '%s', ", formatKey, value.replaceAll("'", "\'")));
             }
 
             removeLast(2).addPart(" ");
