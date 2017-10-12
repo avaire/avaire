@@ -6,6 +6,7 @@ import com.avairebot.orion.contracts.commands.Command;
 import com.avairebot.orion.database.controllers.GuildController;
 import com.avairebot.orion.database.transformers.GuildTransformer;
 import com.avairebot.orion.factories.MessageFactory;
+import com.avairebot.orion.utilities.ComparatorUtil;
 import net.dv8tion.jda.core.entities.Message;
 
 import java.sql.SQLException;
@@ -63,7 +64,16 @@ public class LevelAlertsCommand extends Command {
             return sendErrorMessage(message, "This command requires the `Levels & Experience` feature to be enabled for the server, you can ask a server admin if they want to enable it with `.level`");
         }
 
+        ComparatorUtil.ComparatorType type = args.length == 0 ?
+            ComparatorUtil.ComparatorType.UNKNOWN :
+            ComparatorUtil.getFuzzyType(args[0]);
+
         boolean status = !guildTransformer.isLevelAlerts();
+        switch (type) {
+            case TRUE:
+            case FALSE:
+                status = type.getValue();
+        }
 
         String channelId = null;
         if (!message.getMentionedChannels().isEmpty()) {

@@ -6,6 +6,7 @@ import com.avairebot.orion.contracts.commands.Command;
 import com.avairebot.orion.database.controllers.GuildController;
 import com.avairebot.orion.database.transformers.GuildTransformer;
 import com.avairebot.orion.factories.MessageFactory;
+import com.avairebot.orion.utilities.ComparatorUtil;
 import net.dv8tion.jda.core.entities.Message;
 
 import java.sql.SQLException;
@@ -56,7 +57,19 @@ public class LevelCommand extends Command {
     public boolean onCommand(Message message, String[] args) {
         GuildTransformer guildTransformer = GuildController.fetchGuild(orion, message);
 
-        guildTransformer.setLevels(!guildTransformer.isLevels());
+        ComparatorUtil.ComparatorType type = args.length == 0 ?
+            ComparatorUtil.ComparatorType.UNKNOWN :
+            ComparatorUtil.getFuzzyType(args[0]);
+
+        switch (type) {
+            case TRUE:
+            case FALSE:
+                guildTransformer.setLevels(type.getValue());
+                break;
+
+            case UNKNOWN:
+                guildTransformer.setLevels(!guildTransformer.isLevels());
+        }
 
         try {
             orion.database.newQueryBuilder(Constants.GUILD_TABLE_NAME)
