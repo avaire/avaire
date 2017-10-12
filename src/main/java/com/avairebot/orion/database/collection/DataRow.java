@@ -5,9 +5,9 @@ import com.avairebot.orion.time.Carbon;
 import com.avairebot.orion.utilities.NumberUtil;
 import com.google.gson.Gson;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 public class DataRow {
 
@@ -19,11 +19,7 @@ public class DataRow {
      * @param row The row to generate the data row from.
      */
     public DataRow(DataRow row) {
-        this.items = new HashMap<>();
-
-        for (Map.Entry<String, Object> item : row.items.entrySet()) {
-            this.items.put(item.getKey(), item.getValue());
-        }
+        this(row.items);
     }
 
     /**
@@ -32,7 +28,11 @@ public class DataRow {
      * @param items The map to generate the data row from.
      */
     public DataRow(Map<String, Object> items) {
-        this.items = items;
+        this.items = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+
+        for (Map.Entry<String, Object> item : items.entrySet()) {
+            this.items.put(item.getKey(), item.getValue());
+        }
     }
 
     /**
