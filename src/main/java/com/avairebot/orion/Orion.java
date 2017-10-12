@@ -109,6 +109,7 @@ public class Orion {
         CommandHandler.register(new RemoveSelfAssignableRoleCommand(this));
         CommandHandler.register(new ServerIdCommand(this));
         CommandHandler.register(new UserIdCommand(this));
+        CommandHandler.register(new WelcomeCommand(this));
 
         // Fun
         CommandHandler.register(new ChuckNorrisCommand(this));
