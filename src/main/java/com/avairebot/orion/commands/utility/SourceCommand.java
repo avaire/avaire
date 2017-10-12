@@ -55,7 +55,7 @@ public class SourceCommand extends Command {
             return true;
         }
 
-        CommandContainer command = CommandHandler.getCommand(message);
+        CommandContainer command = CommandHandler.getCommand(message, args[0]);
         if (command == null) {
             MessageFactory.makeInfo(message, "Invalid command given, here is the full source code instead.\n\n%s", rootUrl).queue();
             return true;
