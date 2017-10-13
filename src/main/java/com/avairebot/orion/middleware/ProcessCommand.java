@@ -3,11 +3,14 @@ package com.avairebot.orion.middleware;
 import com.avairebot.orion.Orion;
 import com.avairebot.orion.commands.CommandMessage;
 import com.avairebot.orion.contracts.middleware.Middleware;
+import com.avairebot.orion.factories.MessageFactory;
+import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import net.dv8tion.jda.core.entities.Message;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -40,10 +43,20 @@ public class ProcessCommand extends Middleware {
             .replace("%message%", message.getRawContent())
         );
 
-        return stack.getCommand().onCommand(
-            new CommandMessage(message, stack.isMentionableCommand()),
-            Arrays.copyOfRange(arguments, stack.isMentionableCommand() ? 2 : 1, arguments.length)
-        );
+        try {
+            return stack.getCommand().onCommand(
+                new CommandMessage(message, stack.isMentionableCommand()),
+                Arrays.copyOfRange(arguments, stack.isMentionableCommand() ? 2 : 1, arguments.length)
+            );
+        } catch (Exception ex) {
+            if (ex instanceof FriendlyException) {
+                MessageFactory.makeError(message, "Error: " + ex.getMessage())
+                    .queue(newMessage -> newMessage.delete().queueAfter(30, TimeUnit.SECONDS));
+            }
+
+            ex.printStackTrace();
+            return false;
+        }
     }
 
     private String[] generateCommandArguments(Message message) {
