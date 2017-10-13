@@ -1,5 +1,6 @@
 package com.avairebot.orion.audio;
 
+import com.avairebot.orion.utilities.NumberUtil;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import net.dv8tion.jda.core.entities.User;
 
@@ -42,24 +43,14 @@ public class AudioTrackContainer {
     }
 
     public String getFormattedPlayedTime() {
-        return formatTime(getPlayedTime() == 0 ? 0 : getPlayedTime() / 4);
+        return NumberUtil.formatTime(getPlayedTime() == 0 ? 0 : getPlayedTime() / 4);
     }
 
     public String getFormattedDuration() {
-        return formatTime(getAudioTrack().getDuration() / 1000);
+        return NumberUtil.formatTime(getAudioTrack().getDuration());
     }
 
     public String getFormattedTotalTimeLeft() {
-        return formatTime((getAudioTrack().getDuration() / 1000) - (getPlayedTime() == 0 ? 0 : getPlayedTime() / 4));
-    }
-
-    private String formatTime(long durationInSeconds) {
-        long minutes = durationInSeconds / 60;
-        long seconds = durationInSeconds % 60;
-
-        if (minutes < 1) {
-            return (seconds < 10) ? "0" + seconds : "" + seconds;
-        }
-        return String.format("%s:%s", minutes, (seconds < 10) ? "0" + seconds : seconds);
+        return NumberUtil.formatTime((getAudioTrack().getDuration()) - (getPlayedTime() == 0 ? 0 : getPlayedTime() / 4));
     }
 }

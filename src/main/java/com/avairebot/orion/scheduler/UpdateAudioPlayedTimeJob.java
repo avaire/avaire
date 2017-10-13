@@ -24,6 +24,10 @@ public class UpdateAudioPlayedTimeJob extends Job {
                 continue;
             }
 
+            if (manager.getScheduler().getAudioTrackContainer().getAudioTrack().getInfo().isStream) {
+                continue;
+            }
+
             manager.getScheduler().getAudioTrackContainer().incrementPlayedTime();
         }
     }
