@@ -1,6 +1,11 @@
 package com.avairebot.orion.utilities;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class NumberUtil {
+
+    private static final Pattern TIMESTAMP_PATTERN = Pattern.compile("^(\\d?\\d)(?::([0-5]?\\d))?(?::([0-5]?\\d))?$");
 
     /**
      * Parses the string argument as a signed integer, if the string argument
@@ -44,15 +49,100 @@ public class NumberUtil {
     }
 
     /**
+     * Parses the given string to it's value in milliseconds
+     * if it matches the {@link #TIMESTAMP_PATTERN} pattern.
+     *
+     * @param string The string that should be parsed to its milliseconds value.
+     * @return The parsed number value in milliseconds matching the given string.
+     * @throws IllegalStateException If a string is given that does not match the {@link #TIMESTAMP_PATTERN} pattern this exception is thrown.
+     */
+    public static long parseTimeString(String string) {
+        long seconds = 0;
+        long minutes = 0;
+        long hours = 0;
+
+        Matcher matcher = TIMESTAMP_PATTERN.matcher(string);
+
+        matcher.find();
+
+        int capturedGroups = 0;
+        if (matcher.group(1) != null) capturedGroups++;
+        if (matcher.group(2) != null) capturedGroups++;
+        if (matcher.group(3) != null) capturedGroups++;
+
+        switch (capturedGroups) {
+            case 0:
+                throw new IllegalStateException("Unable to match " + string);
+            case 1:
+                seconds = NumberUtil.parseInt(matcher.group(1));
+                break;
+            case 2:
+                minutes = NumberUtil.parseInt(matcher.group(1));
+                seconds = NumberUtil.parseInt(matcher.group(2));
+                break;
+            case 3:
+                hours = NumberUtil.parseInt(matcher.group(1));
+                minutes = NumberUtil.parseInt(matcher.group(2));
+                seconds = NumberUtil.parseInt(matcher.group(3));
+                break;
+        }
+
+        minutes = minutes + hours * 60;
+        seconds = seconds + minutes * 60;
+
+        return seconds * 1000;
+    }
+
+    /**
      * Parses the given number, making sure the number is greater than
      * the minimum number given, and less than the max number given.
      *
      * @param number The number that should be parsed.
      * @param min    The max value the number can be.
      * @param max    The minimum value the number can be.
-     * @return
+     * @return Gets the number that is greater that the minimum and less than the maximum.
      */
     public static int getBetween(int number, int min, int max) {
         return Math.max(min, Math.min(max, number));
+    }
+
+
+    /**
+     * Formats time in milliseconds into it's "time" format, into hours:minutes:seconds, if
+     * the given {@code millis} is {@link Long#MAX_VALUE} "live" will be returned instead.
+     *
+     * @param millis The amount of time in milliseconds that should be formatted.
+     * @return The formatted timestring.
+     */
+    public static String formatTime(long millis) {
+        if (millis == Long.MAX_VALUE) {
+            return "LIVE";
+        }
+
+        long t = millis / 1000L;
+        int sec = (int) (t % 60L);
+        int min = (int) ((t % 3600L) / 60L);
+        int hrs = (int) (t / 3600L);
+
+        String timestamp;
+
+        if (hrs != 0) {
+            timestamp = forceTwoDigits(hrs) + ":" + forceTwoDigits(min) + ":" + forceTwoDigits(sec);
+        } else {
+            timestamp = forceTwoDigits(min) + ":" + forceTwoDigits(sec);
+        }
+
+        return timestamp;
+    }
+
+    /**
+     * Force the given integer to two digits by adding a 0
+     * to the front of the number if it is less than 10.
+     *
+     * @param integer The integer that should be formatted.
+     * @return The formatted integer in its string form.
+     */
+    public static String forceTwoDigits(int integer) {
+        return integer < 10 ? "0" + integer : Integer.toString(integer);
     }
 }
