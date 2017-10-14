@@ -11,6 +11,7 @@ import com.avairebot.orion.database.controllers.GuildController;
 import com.avairebot.orion.database.transformers.GuildTransformer;
 import com.avairebot.orion.factories.MessageFactory;
 import com.avairebot.orion.utilities.LevelUtil;
+import com.avairebot.orion.utilities.NumberUtil;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
 
@@ -65,6 +66,10 @@ public class LeaderboardCommand extends Command {
 
         List<String> messages = new ArrayList<>();
         SimplePaginator paginator = new SimplePaginator(collection.getItems(), 10, 1);
+        if (args.length > 0) {
+            paginator.setCurrentPage(NumberUtil.parseInt(args[0], 1));
+        }
+
         paginator.forEach((key, val) -> {
             DataRow row = (DataRow) val;
 
