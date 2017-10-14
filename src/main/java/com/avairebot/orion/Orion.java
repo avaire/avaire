@@ -166,6 +166,7 @@ public class Orion {
         CommandHandler.register(new SetStatusCommand(this));
 
         // Utility
+        CommandHandler.register(new GlobalLeaderboardCommand(this));
         CommandHandler.register(new PingCommand(this));
         CommandHandler.register(new LeaderboardCommand(this));
         CommandHandler.register(new RankCommand(this));
