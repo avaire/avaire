@@ -2,6 +2,7 @@ package com.avairebot.orion.handlers;
 
 public enum EventTypes {
     GuildMemberJoinEvent(GuildMemberJoin.class),
+    GuildMemberLeaveEvent(GuildMemberLeave.class),
     GuildRoleDeleteEvent(GuildRoleDelete.class),
     GuildRoleUpdateEvent(GuildRoleUpdate.class),
     MessageReceivedEvent(MessageCreate.class);
