@@ -100,6 +100,7 @@ public class Orion {
         CommandHandler.register(new ChangePrefixCommand(this));
         CommandHandler.register(new ChannelIdCommand(this));
         CommandHandler.register(new GoodbyeCommand(this));
+        CommandHandler.register(new GoodbyeMessageCommand(this));
         CommandHandler.register(new IAmCommand(this));
         CommandHandler.register(new IAmNotCommand(this));
         CommandHandler.register(new KickCommand(this));
@@ -111,6 +112,7 @@ public class Orion {
         CommandHandler.register(new ServerIdCommand(this));
         CommandHandler.register(new UserIdCommand(this));
         CommandHandler.register(new WelcomeCommand(this));
+        CommandHandler.register(new WelcomeMessageCommand(this));
 
         // Fun
         CommandHandler.register(new ChuckNorrisCommand(this));
