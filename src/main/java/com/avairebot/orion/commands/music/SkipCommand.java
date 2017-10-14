@@ -29,7 +29,7 @@ public class SkipCommand extends Command {
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList(":command` - Skips to the next song in the queue");
+        return Collections.singletonList("`:command` - Skips to the next song in the queue");
     }
 
     @Override
