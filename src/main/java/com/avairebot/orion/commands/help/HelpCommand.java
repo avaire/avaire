@@ -103,7 +103,7 @@ public class HelpCommand extends Command {
                 .map(container -> {
                     String trigger = container.getCommand().generateCommandTrigger(message);
 
-                    for (int i = trigger.length(); i < 15; i++) {
+                    for (int i = trigger.length(); i < 16; i++) {
                         trigger += " ";
                     }
 
@@ -119,6 +119,7 @@ public class HelpCommand extends Command {
                     }
                     return String.format("%s[%s]", trigger, String.join(", ", aliases));
                 })
+                .sorted()
                 .collect(Collectors.joining("\n"))
         )).queue(sentMessage -> MessageFactory.makeInfo(sentMessage,
             "**Type `:help <command>` to see the help for that specified command.**\nExample: `:help :command`"
