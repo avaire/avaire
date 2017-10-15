@@ -101,7 +101,6 @@ public class GlobalLeaderboardCommand extends Command {
                 return orion.database.query("SELECT " +
                     "`user_id`, `username`, `discriminator`, sum(`experience`) - (count(`user_id`) * 100) as `total` " +
                     "FROM `experiences` " +
-                    "WHERE `experience` > 10000 " +
                     "GROUP BY `user_id` " +
                     "ORDER BY `total` DESC " +
                     "LIMIT 100;"
