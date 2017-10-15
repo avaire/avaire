@@ -81,7 +81,8 @@ public class LeaderboardCommand extends Command {
 
             long experience = row.getLong("experience", 100);
 
-            messages.add(String.format("**%s** is level **%s** with **%s** xp.",
+            messages.add(String.format("`%s` **%s** is level **%s** with **%s** xp.",
+                index + 1,
                 username,
                 LevelUtil.getLevelFromExperience(experience),
                 experience - 100
