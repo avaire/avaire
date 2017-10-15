@@ -112,6 +112,7 @@ public class Orion {
         CommandHandler.register(new ServerIdCommand(this));
         CommandHandler.register(new SoftBanCommand(this));
         CommandHandler.register(new UserIdCommand(this));
+        CommandHandler.register(new VoiceKickCommand(this));
         CommandHandler.register(new WelcomeCommand(this));
         CommandHandler.register(new WelcomeMessageCommand(this));
 
