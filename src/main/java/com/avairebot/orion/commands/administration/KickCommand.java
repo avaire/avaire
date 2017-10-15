@@ -48,6 +48,14 @@ public class KickCommand extends Command {
     }
 
     @Override
+    public List<String> getMiddleware() {
+        return Arrays.asList(
+            "require:user,general.kick_members",
+            "throttle:user,1,5"
+        );
+    }
+
+    @Override
     public boolean onCommand(Message message, String[] args) {
         if (message.getMentionedUsers().isEmpty() || !userRegEX.matcher(args[0]).matches()) {
             return sendErrorMessage(message, "You must mention the user you want to kick.");
