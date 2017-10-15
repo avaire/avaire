@@ -149,7 +149,7 @@ public abstract class Command {
      * @param error   The error message that should be sent.
      * @return false since the error message should only be used on failure.
      */
-    protected final boolean sendErrorMessage(Message message, String error) {
+    public final boolean sendErrorMessage(Message message, String error) {
         Category category = Category.fromCommand(this);
 
         message.getChannel().sendMessage(MessageFactory.createEmbeddedBuilder()
