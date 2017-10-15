@@ -105,7 +105,7 @@ public class MemeCommand extends Command {
         }
 
         final List<String> memesMessages = new ArrayList<>();
-        paginator.forEach((key, val) -> {
+        paginator.forEach((index, key, val) -> {
             memesMessages.add(String.format("`%s` => `%s`",
                 val, memes.get(val).get("name")
             ));

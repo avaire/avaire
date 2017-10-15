@@ -68,7 +68,7 @@ public class GlobalLeaderboardCommand extends Command {
             paginator.setCurrentPage(NumberUtil.parseInt(args[0], 1));
         }
 
-        paginator.forEach((key, val) -> {
+        paginator.forEach((index, key, val) -> {
             DataRow row = (DataRow) val;
 
             Member member = message.getGuild().getMemberById(row.getLong("user_id"));

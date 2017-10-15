@@ -51,11 +51,11 @@ public abstract class Paginator implements Cloneable {
                 continue;
             }
 
-            if (current > end || getTotal() <= current) {
+            if (current >= end || getTotal() <= current) {
                 break;
             }
 
-            closure.run(item.getKey(), item.getValue());
+            closure.run(current, item.getKey(), item.getValue());
         }
     }
 

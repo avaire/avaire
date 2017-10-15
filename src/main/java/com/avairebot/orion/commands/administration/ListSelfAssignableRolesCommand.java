@@ -62,7 +62,7 @@ public class ListSelfAssignableRolesCommand extends Command {
         }
 
         List<String> messages = new ArrayList<>();
-        paginator.forEach((key, val) -> messages.add(String.format("**%s**", val)));
+        paginator.forEach((index, key, val) -> messages.add(String.format("**%s**", val)));
         messages.add("\n" + paginator.generateFooter(generateCommandTrigger(message)));
 
 
