@@ -12,7 +12,7 @@ Thank you for considering contributing to Orion! The contribution guide can be f
 
 ## License
 
-Orion is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
+Orion is open-sourced software licensed under the [GNU General Public License v3.0](http://www.gnu.org/licenses/gpl.html).
 
 ---
 
