@@ -95,6 +95,7 @@ public class Orion {
 
         // Administration
         CommandHandler.register(new AddSelfAssignableRoleCommand(this));
+        CommandHandler.register(new AliasCommand(this));
         CommandHandler.register(new AutoAssignRoleCommand(this));
         CommandHandler.register(new BanCommand(this));
         CommandHandler.register(new ChangePrefixCommand(this));

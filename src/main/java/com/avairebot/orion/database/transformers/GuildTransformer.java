@@ -12,6 +12,7 @@ import java.util.*;
 
 public class GuildTransformer extends Transformer {
 
+    private final Map<String, String> aliases = new HashMap<>();
     private final Map<String, String> prefixes = new HashMap<>();
     private final Map<String, String> selfAssignableRoles = new HashMap<>();
     private final List<ChannelTransformer> channels = new ArrayList<>();
@@ -29,6 +30,17 @@ public class GuildTransformer extends Transformer {
             levelAlerts = data.getBoolean("level_alerts");
             levelChannel = data.getString("level_channel");
             autorole = data.getString("autorole");
+
+            if (data.getString("aliases", null) != null) {
+                HashMap<String, String> dbAliases = new Gson().fromJson(
+                    data.getString("aliases"),
+                    new TypeToken<HashMap<String, String>>() {
+                    }.getType());
+
+                for (Map.Entry<String, String> item : dbAliases.entrySet()) {
+                    aliases.put(item.getKey().toLowerCase(), item.getValue());
+                }
+            }
 
             if (data.getString("prefixes", null) != null) {
                 HashMap<String, String> dbPrefixes = new Gson().fromJson(
@@ -134,6 +146,10 @@ public class GuildTransformer extends Transformer {
 
     public Map<String, String> getPrefixes() {
         return prefixes;
+    }
+
+    public Map<String, String> getAliases() {
+        return aliases;
     }
 
     public List<ChannelTransformer> getChannels() {
