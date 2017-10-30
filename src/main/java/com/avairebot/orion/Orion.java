@@ -107,6 +107,7 @@ public class Orion {
         CommandHandler.register(new KickCommand(this));
         CommandHandler.register(new LevelAlertsCommand(this));
         CommandHandler.register(new LevelCommand(this));
+        CommandHandler.register(new ListAliasesCommand(this));
         CommandHandler.register(new ListSelfAssignableRolesCommand(this));
         CommandHandler.register(new PurgeCommand(this));
         CommandHandler.register(new RemoveSelfAssignableRoleCommand(this));
