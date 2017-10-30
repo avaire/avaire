@@ -38,7 +38,7 @@ public class MessageCreate extends EventHandler {
                 LevelUtil.rewardPlayer(orion, event, properties.getGuild(), properties.getPlayer());
             }
 
-            CommandContainer container = CommandHandler.getCommand(event.getMessage());
+            CommandContainer container = CommandHandler.getCommand(orion, event.getMessage(), event.getMessage().getRawContent());
             if (container != null && canExecuteCommand(event, container)) {
                 Statistics.addCommands();
 

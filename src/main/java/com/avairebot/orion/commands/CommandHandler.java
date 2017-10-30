@@ -1,6 +1,9 @@
 package com.avairebot.orion.commands;
 
+import com.avairebot.orion.Orion;
 import com.avairebot.orion.contracts.commands.Command;
+import com.avairebot.orion.database.controllers.GuildController;
+import com.avairebot.orion.database.transformers.GuildTransformer;
 import com.avairebot.orion.exceptions.InvalidCommandPrefixException;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.utils.Checks;
@@ -45,6 +48,29 @@ public class CommandHandler {
     }
 
     /**
+     * Gets the command matching the given command, both the command prefix
+     * and the command trigger must match for the command to be returned,
+     * if the guild/server that the command was executed in has a
+     * custom prefix set, the custom prefix will be used to
+     * match the command instead.
+     * <p>
+     * If no commands was found matching the given command string, the guilds
+     * aliases will be checked instead if the current guild has any.
+     *
+     * @param orion   The Orion application class instance.
+     * @param message The JDA message object for the current message.
+     * @param command The command string that should be matched with the commands.
+     * @return Possibly-null, The command matching the given command with the highest priority, or the alias command matching the given command.
+     */
+    public static CommandContainer getCommand(Orion orion, Message message, String command) {
+        CommandContainer commandContainer = getCommand(message);
+        if (commandContainer != null) {
+            return commandContainer;
+        }
+        return getCommandByAlias(orion, message, command);
+    }
+
+    /**
      * Get the command matching the given command, both the command prefix
      * and the command trigger must match for the command to be returned,
      * if the guild/server that the command was executed in has a
@@ -65,6 +91,35 @@ public class CommandHandler {
             for (String trigger : entry.getKey()) {
                 if (command.equalsIgnoreCase(commandPrefix + trigger)) {
                     commands.add(entry.getValue());
+                }
+            }
+        }
+
+        return getHighPriorityCommandFromCommands(commands);
+    }
+
+    /**
+     * Gets the command matching the given command alias for the current message if
+     * the message was sent in a guild and the guild has at least one alias set.
+     *
+     * @param orion   The Orion application class instance.
+     * @param message The JDA message object for the current message.
+     * @param command The command string that should be matched with the commands.
+     * @return Possibly-null, The command matching the given alias with the highest priority.
+     */
+    public static CommandContainer getCommandByAlias(Orion orion, Message message, String command) {
+        GuildTransformer transformer = GuildController.fetchGuild(orion, message);
+        if (transformer == null || transformer.getAliases().isEmpty()) {
+            return null;
+        }
+
+        String commandString = command.split(" ")[0].toLowerCase();
+        List<CommandContainer> commands = new ArrayList<>();
+        for (Map.Entry<String, String> entry : transformer.getAliases().entrySet()) {
+            if (commandString.startsWith(entry.getKey())) {
+                CommandContainer commandContainer = getCommand(message, entry.getValue().split(" ")[0]);
+                if (commandContainer != null) {
+                    commands.add(commandContainer);
                 }
             }
         }
