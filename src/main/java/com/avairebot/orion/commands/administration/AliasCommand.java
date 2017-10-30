@@ -8,7 +8,7 @@ import com.avairebot.orion.contracts.commands.Command;
 import com.avairebot.orion.database.controllers.GuildController;
 import com.avairebot.orion.database.transformers.GuildTransformer;
 import com.avairebot.orion.factories.MessageFactory;
-import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import net.dv8tion.jda.core.entities.Message;
 
 import java.sql.SQLException;
@@ -120,8 +120,7 @@ public class AliasCommand extends Command {
     private void updateGuildAliases(Message message, GuildTransformer transformer) throws SQLException {
         orion.database.newQueryBuilder(Constants.GUILD_TABLE_NAME)
             .where("id", message.getGuild().getId())
-            .update(statement -> {
-                statement.set("aliases", new Gson().toJson(transformer.getAliases()));
-            });
+            .update(statement -> statement.set("aliases", new GsonBuilder().disableHtmlEscaping().create()
+                .toJson(transformer.getAliases())));
     }
 }
