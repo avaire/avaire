@@ -60,25 +60,21 @@ public class Require extends Middleware {
         }
 
         if (!missingUserPermissions.isEmpty()) {
-            MessageFactory.makeError(
-                message,
-                "You're missing the required permission node for this command:\n`%s`",
-                missingUserPermissions.stream()
+            MessageFactory.makeError(message, "You're missing the required permission node for this command:\n`:permission`")
+                .set("permission", missingUserPermissions.stream()
                     .map(Permissions::getPermission)
                     .map(Permission::getName)
                     .collect(Collectors.joining("`, `"))
-            ).queue();
+                ).queue();
         }
 
         if (!missingBotPermissions.isEmpty()) {
-            MessageFactory.makeError(
-                message,
-                "I'm missing the following permission to run this command successfully:\n`%s`",
-                missingBotPermissions.stream()
+            MessageFactory.makeError(message, "I'm missing the following permission to run this command successfully:\n`:permission`")
+                .set("permission", missingBotPermissions.stream()
                     .map(Permissions::getPermission)
                     .map(Permission::getName)
                     .collect(Collectors.joining("`, `"))
-            ).queue();
+                ).queue();
         }
 
         return missingBotPermissions.isEmpty() && missingUserPermissions.isEmpty() && stack.next();

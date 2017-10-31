@@ -90,9 +90,10 @@ public class ChangePrefixCommand extends Command {
         try {
             transformer.getPrefixes().put(category.getName().toLowerCase(), prefix);
             updateGuildPrefixes(message, transformer);
-            MessageFactory.makeSuccess(message, "All commands in the `%s` command category now uses the `%s` prefix.",
-                category.getName(), prefix
-            ).queue();
+            MessageFactory.makeSuccess(message, "All commands in the `:category` command category now uses the `:prefix` prefix.")
+                .set("category", category.getName())
+                .set("prefix", prefix)
+                .queue();
 
             return true;
         } catch (SQLException e) {
@@ -107,9 +108,10 @@ public class ChangePrefixCommand extends Command {
 
         try {
             updateGuildPrefixes(message, transformer);
-            MessageFactory.makeSuccess(message, "All commands in the `%s` command category has been reset to use the `%s` prefix.",
-                category.getName(), category.getPrefix()
-            ).queue();
+            MessageFactory.makeSuccess(message, "All commands in the `:category` command category has been reset to use the `:prefix` prefix.")
+                .set("category", category.getName())
+                .set("prefix", category.getPrefix())
+                .queue();
 
             return true;
         } catch (SQLException e) {
@@ -124,6 +126,5 @@ public class ChangePrefixCommand extends Command {
             .update(statement -> {
                 statement.set("prefixes", new Gson().toJson(transformer.getPrefixes()));
             });
-
     }
 }

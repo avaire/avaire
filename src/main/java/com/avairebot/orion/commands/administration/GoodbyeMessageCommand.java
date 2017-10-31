@@ -72,15 +72,17 @@ public class GoodbyeMessageCommand extends Command {
                 .andWhere("id", message.getGuild().getId())
                 .update(statement -> statement.set("channels", guildTransformer.channelsToJson()));
 
-            MessageFactory.makeSuccess(message, "The `Goodbye` module message has been set %s",
-                channelTransformer.getGoodbye().getMessage() != null ?
+            MessageFactory.makeSuccess(message, "The `Goodbye` module message has been set :message")
+                .set("message", channelTransformer.getGoodbye().getMessage() != null ?
                     "to:\n\n`" + channelTransformer.getGoodbye().getMessage() + "`" :
                     "back to the default."
-            ).queue();
+                ).queue();
         } catch (SQLException ex) {
             orion.logger.fatal(ex);
 
-            MessageFactory.makeError(message, "Failed to save the guild settings: %s", ex.getMessage()).queue();
+            MessageFactory.makeError(message, "Failed to save the guild settings: :error")
+                .set("error", ex.getMessage())
+                .queue();
             return false;
         }
         return true;

@@ -40,15 +40,14 @@ public class BanModule {
     private static boolean banUser(Message message, User user, String[] args, boolean soft) {
         String reason = generateMessage(args);
         message.getGuild().getController().ban(user, soft ? 0 : 7, reason).queue(aVoid -> {
-            MessageFactory.makeSuccess(message, "**%s** was permanently banned by <@%s> for \"%s\"",
-                user.getName() + "#" + user.getDiscriminator(),
-                message.getAuthor().getId(),
-                reason
-            ).queue();
-        }, throwable -> MessageFactory.makeWarning(message, "Failed to ban **%s** due to an error: %s",
-            user.getName() + "#" + user.getDiscriminator(),
-            throwable.getMessage()
-        ).queue());
+            MessageFactory.makeSuccess(message, "**:target** was permanently banned by :user for \":reason\"")
+                .set("target", user.getName() + "#" + user.getDiscriminator())
+                .set("reason", reason)
+                .queue();
+        }, throwable -> MessageFactory.makeWarning(message, "Failed to ban **:target** due to an error: :error")
+            .set("target", user.getName() + "#" + user.getDiscriminator())
+            .set("error", throwable.getMessage())
+            .queue());
 
         return true;
     }

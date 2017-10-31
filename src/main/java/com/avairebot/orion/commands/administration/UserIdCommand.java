@@ -48,11 +48,10 @@ public class UserIdCommand extends Command {
             user = message.getMentionedUsers().get(0);
         }
 
-        MessageFactory.makeSuccess(message, "<@%s> :id: of the user **%s** is `%s`",
-            message.getAuthor().getId(),
-            String.format("%s#%s", user.getName(), user.getDiscriminator()),
-            user.getId()
-        ).queue();
+        MessageFactory.makeSuccess(message, ":user :id: of the user **:target** is `:targetid`")
+            .set("target", String.format("%s#%s", user.getName(), user.getDiscriminator()))
+            .set("targetid", user.getId())
+            .queue();
         return true;
     }
 }

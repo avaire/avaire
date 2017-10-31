@@ -5,6 +5,7 @@ import com.avairebot.orion.audio.AudioHandler;
 import com.avairebot.orion.audio.AudioTrackContainer;
 import com.avairebot.orion.audio.GuildMusicManager;
 import com.avairebot.orion.audio.TrackScheduler;
+import com.avairebot.orion.chat.MessageType;
 import com.avairebot.orion.contracts.commands.Command;
 import com.avairebot.orion.factories.MessageFactory;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
@@ -61,7 +62,7 @@ public class SongCommand extends Command {
         }
 
         MessageEmbed embed = MessageFactory.createEmbeddedBuilder()
-            .setColor(MessageFactory.MessageType.SUCCESS.getColor())
+            .setColor(MessageType.SUCCESS.getColor())
             .setTitle(musicManager.getPlayer().isPaused() ? "Currently Paused" : "Currently Playing")
             .setDescription(buildTrackDescription(musicManager.getPlayer(), musicManager.getScheduler()))
             .addField("Songs in queue", buildSongsInQueue(musicManager.getScheduler()), false)

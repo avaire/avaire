@@ -92,16 +92,16 @@ public class LevelAlertsCommand extends Command {
                     .set("level_channel", guildTransformer.getLevelChannel())
                 );
 
-            MessageFactory.makeSuccess(message, "`Levels up alerts` has been `%s` for the server.%s",
-                status ? "Enabled" : "Disabled",
-                channelId == null ? "" : String.format("\nAll level up messages will be logged into the <#%s> channel.", channelId)
-            ).queue();
+            String note = channelId == null ? "" : String.format("\nAll level up messages will be logged into the <#%s> channel.", channelId);
+            MessageFactory.makeSuccess(message, "`Levels up alerts` has been `:status` for the server." + note)
+                .set("status", status ? "Enabled" : "Disabled")
+                .queue();
 
             return true;
         } catch (SQLException ex) {
             orion.logger.fatal(ex);
 
-            MessageFactory.makeError(message, "Failed to save the guild settings: %s", ex.getMessage()).queue();
+            MessageFactory.makeError(message, "Failed to save the guild settings: " + ex.getMessage()).queue();
             return false;
         }
     }

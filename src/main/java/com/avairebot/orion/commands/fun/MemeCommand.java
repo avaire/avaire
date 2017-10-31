@@ -2,6 +2,7 @@ package com.avairebot.orion.commands.fun;
 
 import com.avairebot.orion.Orion;
 import com.avairebot.orion.cache.CacheType;
+import com.avairebot.orion.chat.MessageType;
 import com.avairebot.orion.chat.SimplePaginator;
 import com.avairebot.orion.contracts.commands.Command;
 import com.avairebot.orion.factories.MessageFactory;
@@ -113,7 +114,7 @@ public class MemeCommand extends Command {
 
         EmbedBuilder embed = MessageFactory.createEmbeddedBuilder()
             .setTitle("Memes")
-            .setColor(MessageFactory.MessageType.SUCCESS.getColor())
+            .setColor(MessageType.SUCCESS.getColor())
             .setDescription(String.format("%s\n\n%s",
                 String.join("\n", memesMessages),
                 paginator.generateFooter(generateCommandTrigger(message) + " list")

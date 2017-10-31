@@ -1,6 +1,7 @@
 package com.avairebot.orion.commands.help;
 
 import com.avairebot.orion.Orion;
+import com.avairebot.orion.chat.MessageType;
 import com.avairebot.orion.commands.Category;
 import com.avairebot.orion.commands.CommandContainer;
 import com.avairebot.orion.commands.CommandHandler;
@@ -80,7 +81,7 @@ public class HelpCommand extends Command {
         ).replaceAll(":help", generateCommandTrigger(message));
 
         MessageEmbed embed = MessageFactory.createEmbeddedBuilder()
-            .setColor(MessageFactory.MessageType.INFO.getColor())
+            .setColor(MessageType.INFO.getColor())
             .setTitle(":scroll: Command Categories")
             .setDescription(categories + note)
             .build();
@@ -91,7 +92,9 @@ public class HelpCommand extends Command {
 
     private boolean showCategoryCommands(Message message, Category category, String categoryString) {
         if (category == null) {
-            MessageFactory.makeError(message, "Invalid command category given, there are no categories called `%s`", categoryString).queue();
+            MessageFactory.makeError(message, "Invalid command category given, there are no categories called `:category`")
+                .set("category", categoryString)
+                .queue();
             return false;
         }
 
@@ -139,7 +142,9 @@ public class HelpCommand extends Command {
 
     private boolean showCommand(Message message, CommandContainer command, String commandString) {
         if (command == null) {
-            MessageFactory.makeError(message, "Invalid command given, there are no command that has the trigger `%s`", commandString).queue();
+            MessageFactory.makeError(message, "Invalid command given, there are no command that has the trigger `:trigger`")
+                .set("trigger", commandString)
+                .queue();
             return false;
         }
 
@@ -147,7 +152,7 @@ public class HelpCommand extends Command {
 
         EmbedBuilder embed = MessageFactory.createEmbeddedBuilder()
             .setTitle(command.getCommand().getName())
-            .setColor(MessageFactory.MessageType.SUCCESS.getColor())
+            .setColor(MessageType.SUCCESS.getColor())
             .addField("Usage", command.getCommand().generateUsageInstructions(message), false)
             .setFooter("Command category: " + command.getCategory().getName(), null);
 

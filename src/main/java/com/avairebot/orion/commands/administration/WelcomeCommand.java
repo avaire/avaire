@@ -92,15 +92,14 @@ public class WelcomeCommand extends Command {
                 note = "\nYou can customize the message by using `.welcomemessage [message]`";
             }
 
-            MessageFactory.makeSuccess(message, "The `Welcome` module has been **%s** for the <#%s> channel.%s",
-                channelTransformer.getWelcome().isEnabled() ? "Enabled" : "Disabled",
-                message.getTextChannel().getId(),
-                note
-            ).queue();
+            MessageFactory.makeSuccess(message, "The `Welcome` module has been **:status** for the :channel channel.:note")
+                .set("status", channelTransformer.getWelcome().isEnabled() ? "Enabled" : "Disabled")
+                .set("note", note)
+                .queue();
         } catch (SQLException ex) {
             orion.logger.fatal(ex);
 
-            MessageFactory.makeError(message, "Failed to save the guild settings: %s", ex.getMessage()).queue();
+            MessageFactory.makeError(message, "Failed to save the guild settings: " + ex.getMessage()).queue();
             return false;
         }
 

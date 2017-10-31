@@ -83,14 +83,13 @@ public class LevelCommand extends Command {
                 );
             }
 
-            MessageFactory.makeSuccess(message, "`Levels & Experience` has been `%s` for the server.%s",
-                guildTransformer.isLevels() ? "Enabled" : "Disabled",
-                note
-            ).queue();
+            MessageFactory.makeSuccess(message, "`Levels & Experience` has been `:status` for the server." + note)
+                .set("status", guildTransformer.isLevels() ? "Enabled" : "Disabled")
+                .queue();
         } catch (SQLException ex) {
             orion.logger.fatal(ex);
 
-            MessageFactory.makeError(message, "Failed to save the guild settings: %s", ex.getMessage()).queue();
+            MessageFactory.makeError(message, "Failed to save the guild settings: " + ex.getMessage()).queue();
             return false;
         }
 

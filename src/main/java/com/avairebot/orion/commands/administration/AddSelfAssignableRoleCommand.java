@@ -63,9 +63,9 @@ public class AddSelfAssignableRoleCommand extends Command {
 
         Role role = RoleUtil.getRoleFromMentionsOrName(message, args[0]);
         if (role == null) {
-            MessageFactory.makeWarning(message, "<@%s> Invalid role, I couldn't find any role called **%s**",
-                message.getAuthor().getId(), args[0]
-            ).queue();
+            MessageFactory.makeWarning(message, ":user Invalid role, I couldn't find any role called **:role**")
+                .set("role", args[0])
+                .queue();
             return false;
         }
 
@@ -83,9 +83,8 @@ public class AddSelfAssignableRoleCommand extends Command {
                     statement.set("claimable_roles", new Gson().toJson(transformer.getSelfAssignableRoles()));
                 });
 
-            MessageFactory.makeSuccess(message, "Role **%s** role has been added to the self-assignable list.",
-                role.getName()
-            ).queue();
+            MessageFactory.makeSuccess(message, "Role **:role** role has been added to the self-assignable list.")
+                .set("role", role.getName());
 
             return true;
         } catch (SQLException e) {

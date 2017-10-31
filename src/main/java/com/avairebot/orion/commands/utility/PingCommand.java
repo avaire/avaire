@@ -41,7 +41,9 @@ public class PingCommand extends Command {
 
     @Override
     public boolean onCommand(Message message, String[] args) {
-        MessageFactory.makeInfo(message, "Pong! Time taken %s ms!", message.getJDA().getPing()).queue();
+        MessageFactory.makeInfo(message, "Pong! Time taken :heartbeat ms!")
+            .set("heartbeat", message.getJDA().getPing())
+            .queue();
         return true;
     }
 }

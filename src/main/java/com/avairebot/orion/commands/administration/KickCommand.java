@@ -72,15 +72,15 @@ public class KickCommand extends Command {
     private boolean kickUser(Message message, Member user, String[] args) {
         String reason = generateMessage(args);
         message.getGuild().getController().kick(user, reason).queue(aVoid -> {
-            MessageFactory.makeSuccess(message, "**%s** was kicked by <@%s> for \"%s\"",
-                user.getUser().getName() + "#" + user.getUser().getDiscriminator(),
-                message.getAuthor().getId(),
-                reason
-            ).queue();
-        }, throwable -> MessageFactory.makeWarning(message, "Failed to kick **%s** due to an error: %s",
-            user.getUser().getName() + "#" + user.getUser().getDiscriminator(),
-            throwable.getMessage()
-        ).queue());
+                MessageFactory.makeSuccess(message, "**:target** was kicked by :user for \":reason\"")
+                    .set("target", user.getUser().getName() + "#" + user.getUser().getDiscriminator())
+                    .set("reason", reason)
+                    .queue();
+            }, throwable -> MessageFactory.makeWarning(message, "Failed to kick **:target** due to an error: :error")
+                .set("target", user.getUser().getName() + "#" + user.getUser().getDiscriminator())
+                .set("error", throwable.getMessage())
+                .queue()
+        );
         return true;
     }
 

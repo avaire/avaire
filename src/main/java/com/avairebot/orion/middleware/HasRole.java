@@ -28,14 +28,11 @@ public class HasRole extends Middleware {
         List<Role> roles = message.getMember().getRoles();
         for (String roleName : args) {
             if (!hasRole(roles, roleName)) {
-                MessageFactory.makeError(
-                    message,
-                    "You don't have the required role to execute this command:\n`%s`",
-                    roleName
-                ).queue();
+                MessageFactory.makeError(message, "You don't have the required role to execute this command:\n`:role`")
+                    .set("role", roleName)
+                    .queue();
                 return false;
             }
-
         }
 
         return stack.next();

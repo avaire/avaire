@@ -90,9 +90,11 @@ public class AliasCommand extends Command {
 
         try {
             updateGuildAliases(message, transformer);
-            MessageFactory.makeSuccess(message, "The `%s` alias has been linked to `%s`\nThe server has `%s` more aliases slots available.",
-                args[0], commandString, "???"
-            ).queue();
+            MessageFactory.makeSuccess(message, "The `:alias` alias has been linked to `:command`\nThe server has `:slots` more aliases slots available.")
+                .set("alias", args[0])
+                .set("command", commandString)
+                .set("slots", "???")
+                .queue();
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -109,7 +111,9 @@ public class AliasCommand extends Command {
 
         try {
             updateGuildAliases(message, transformer);
-            MessageFactory.makeSuccess(message, "The `%s` alias has been deleted successfully.", args[0]).queue();
+            MessageFactory.makeSuccess(message, "The `:alias` alias has been deleted successfully.")
+                .set("alias", args[0])
+                .queue();
             return true;
         } catch (SQLException e) {
             e.printStackTrace();

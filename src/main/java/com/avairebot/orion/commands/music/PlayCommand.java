@@ -84,25 +84,26 @@ public class PlayCommand extends Command {
     private void sendPlaylistResponse(Message message, TrackResponse response) {
         AudioPlaylist playlist = (AudioPlaylist) response.getAudioItem();
 
-        MessageFactory.makeSuccess(message, "<@%s> has added %s songs from the [%s](%s) playlist to the queue. There are `%s` song(s) ahead of it in the queue.",
-            message.getAuthor().getId(),
-            playlist.getTracks().size(),
-            playlist.getName(),
-            response.getTrackUrl(),
-            AudioHandler.getQueueSize(response.getMusicManager())
-        ).queue();
+        MessageFactory.makeSuccess(message,
+            ":user has added :songs songs from the [:title](:url) playlist to the queue. There are `:queueSize` song(s) ahead of it in the queue."
+        )
+            .set("songs", playlist.getTracks().size())
+            .set("title", playlist.getName())
+            .set("url", response.getTrackUrl())
+            .set("queueSize", AudioHandler.getQueueSize(response.getMusicManager()))
+            .queue();
     }
 
     private void sendTrackResponse(Message message, TrackResponse response) {
         AudioTrack track = (AudioTrack) response.getAudioItem();
 
         MessageFactory.makeSuccess(message,
-            "<@%s> has added [%s](%s) to the queue. There are `%s` song(s) ahead of it in the queue.",
-            message.getAuthor().getId(),
-            track.getInfo().title,
-            track.getInfo().uri,
-            AudioHandler.getQueueSize(response.getMusicManager())
-        ).queue();
+            ":user has added [:title](:url) to the queue. There are `:queueSize` song(s) ahead of it in the queue."
+        )
+            .set("title", track.getInfo().title)
+            .set("url", track.getInfo().uri)
+            .set("queueSize", AudioHandler.getQueueSize(response.getMusicManager()))
+            .queue();
     }
 
     private String buildTrackRequestString(String[] args) {

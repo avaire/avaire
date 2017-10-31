@@ -1,6 +1,7 @@
 package com.avairebot.orion.contracts.commands;
 
 import com.avairebot.orion.Orion;
+import com.avairebot.orion.chat.MessageType;
 import com.avairebot.orion.commands.Category;
 import com.avairebot.orion.commands.CommandContainer;
 import com.avairebot.orion.commands.CommandHandler;
@@ -155,7 +156,7 @@ public abstract class Command {
         message.getChannel().sendMessage(MessageFactory.createEmbeddedBuilder()
             .setTitle(getName())
             .setDescription(error)
-            .setColor(MessageFactory.MessageType.ERROR.getColor())
+            .setColor(MessageType.ERROR.getColor())
             .addField("Usage", generateUsageInstructions(message), false)
             .addField("Example Usage", generateExampleUsage(message), false)
             .setFooter("Command category: " + category.getName(), null).build()).queue();

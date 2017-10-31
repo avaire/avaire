@@ -92,15 +92,13 @@ public class GoodbyeCommand extends Command {
                 note = "\nYou can customize the message by using `.goodbyemessage [message]`";
             }
 
-            MessageFactory.makeSuccess(message, "The `Goodbye` module has been **%s** for the <#%s> channel.%s",
-                channelTransformer.getGoodbye().isEnabled() ? "Enabled" : "Disabled",
-                message.getTextChannel().getId(),
-                note
-            ).queue();
+            MessageFactory.makeSuccess(message, "The `Goodbye` module has been **:status** for the :channel channel." + note)
+                .set("status", channelTransformer.getGoodbye().isEnabled() ? "Enabled" : "Disabled")
+                .queue();
         } catch (SQLException ex) {
             orion.logger.fatal(ex);
 
-            MessageFactory.makeError(message, "Failed to save the guild settings: %s", ex.getMessage()).queue();
+            MessageFactory.makeError(message, "Failed to save the guild settings: " + ex.getMessage()).queue();
             return false;
         }
 

@@ -51,13 +51,13 @@ public class SourceCommand extends Command {
     @Override
     public boolean onCommand(Message message, String[] args) {
         if (args.length == 0) {
-            MessageFactory.makeInfo(message, "Orion source code:\n\n%s", rootUrl).queue();
+            MessageFactory.makeInfo(message, "Orion source code:\n\n" + rootUrl).queue();
             return true;
         }
 
         CommandContainer command = CommandHandler.getCommand(message, args[0]);
         if (command == null) {
-            MessageFactory.makeInfo(message, "Invalid command given, here is the full source code instead.\n\n%s", rootUrl).queue();
+            MessageFactory.makeInfo(message, "Invalid command given, here is the full source code instead.\n\n" + rootUrl).queue();
             return true;
         }
 
@@ -65,9 +65,10 @@ public class SourceCommand extends Command {
         String category = split[split.length - 2];
         String name = split[split.length - 1];
 
-        MessageFactory.makeInfo(message, "AvaIre source code for the **%s** command:\n\n" + commandUrl,
-            command.getCommand().getName(), category, name
-        ).queue();
+        MessageFactory.makeInfo(message, "AvaIre source code for the **:command** command:\n\n:url")
+            .set("command", command.getCommand().getName())
+            .set("url", String.format(commandUrl, category, name))
+            .queue();
 
         return true;
     }

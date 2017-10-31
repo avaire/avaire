@@ -60,10 +60,9 @@ public class UrbanDictionaryCommand extends Command {
                 UrbanDictionaryService service = (UrbanDictionaryService) response.toService(UrbanDictionaryService.class);
 
                 if (!service.hasData()) {
-                    MessageFactory.makeWarning(message, "<@%s> I found nothing for `%s`",
-                        message.getAuthor().getId(),
-                        String.join(" ", args)
-                    ).queue();
+                    MessageFactory.makeWarning(message, ":user I found nothing for `:query`")
+                        .set("query", String.join(" ", args))
+                        .queue();
                     return;
                 }
 

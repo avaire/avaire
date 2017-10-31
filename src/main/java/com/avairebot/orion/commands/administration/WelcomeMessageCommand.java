@@ -71,15 +71,15 @@ public class WelcomeMessageCommand extends Command {
                 .andWhere("id", message.getGuild().getId())
                 .update(statement -> statement.set("channels", guildTransformer.channelsToJson()));
 
-            MessageFactory.makeSuccess(message, "The `Welcome` module message has been set %s",
-                channelTransformer.getWelcome().getMessage() != null ?
+            MessageFactory.makeSuccess(message, "The `Welcome` module message has been set :note")
+                .set("note", channelTransformer.getWelcome().getMessage() != null ?
                     "to:\n\n`" + channelTransformer.getWelcome().getMessage() + "`" :
                     "back to the default."
-            ).queue();
+                ).queue();
         } catch (SQLException ex) {
             orion.logger.fatal(ex);
 
-            MessageFactory.makeError(message, "Failed to save the guild settings: %s", ex.getMessage()).queue();
+            MessageFactory.makeError(message, "Failed to save the guild settings: " + ex.getMessage()).queue();
             return false;
         }
         return true;

@@ -65,9 +65,10 @@ public class VolumeCommand extends Command {
         int volume = musicManager.getPlayer().getVolume();
 
         if (args.length == 0) {
-            MessageFactory.makeSuccess(message, "\uD83C\uDFB5 Music is playing at **%s** volume\n%s",
-                volume, getVolumeString(volume, 21)
-            ).queue();
+            MessageFactory.makeSuccess(message, "\uD83C\uDFB5 Music is playing at **:volume** volume\n:bar")
+                .set("volume", volume)
+                .set("bar", getVolumeString(volume, 21))
+                .queue();
             return true;
         }
 
@@ -79,9 +80,10 @@ public class VolumeCommand extends Command {
             int newVolume = NumberUtil.getBetween(NumberUtil.parseInt(args[0]), 0, 100);
 
             musicManager.getPlayer().setVolume(newVolume);
-            MessageFactory.makeSuccess(message, "\uD83C\uDFB5 Volume set to **%s** volume\n%s",
-                newVolume, getVolumeString(newVolume, 18)
-            ).queue();
+            MessageFactory.makeSuccess(message, "\uD83C\uDFB5 Volume set to **:volume** volume\n:bar")
+                .set("volume", volume)
+                .set("bar", getVolumeString(newVolume, 18))
+                .queue();
 
             return true;
         } catch (NumberFormatException ex) {

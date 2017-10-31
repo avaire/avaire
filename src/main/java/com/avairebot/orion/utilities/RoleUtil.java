@@ -122,18 +122,15 @@ public class RoleUtil {
     public static boolean canInteractWithRole(Message message, Role role) {
         if (RoleUtil.isRoleHierarchyHigher(message.getMember().getRoles(), role)) {
             MessageFactory.makeWarning(message,
-                "<@%s> The **%s** role is positioned higher in the hierarchy than any role you have, you can't add roles with a higher ranking than you have.",
-                message.getAuthor().getId(), role.getName()
-            ).queue();
+                ":user The **:role** role is positioned higher in the hierarchy than any role you have, you can't add roles with a higher ranking than you have."
+            ).set("role", role.getName()).queue();
             return false;
         }
 
         if (RoleUtil.isRoleHierarchyHigher(message.getGuild().getSelfMember().getRoles(), role)) {
             MessageFactory.makeWarning(message,
-                "<@%s> The **%s** role is positioned higher in the hierarchy, I can't give/remove this role from users.",
-                message.getAuthor().getId(),
-                role.getName()
-            ).queue();
+                ":user The **:role** role is positioned higher in the hierarchy, I can't give/remove this role from users."
+            ).set("role", role.getName()).queue();
             return false;
         }
 

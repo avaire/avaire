@@ -78,11 +78,10 @@ public class PurgeCommand extends Command {
                     return;
                 }
 
-                deleteMessages(message, messages).queue(aVoid -> {
-                    MessageFactory.makeSuccess(message, ":white_check_mark: `%s` messages has been deleted!",
-                        messages.size()
-                    ).queue(successMessage -> successMessage.delete().queueAfter(8, TimeUnit.SECONDS));
-                });
+                deleteMessages(message, messages).queue(aVoid ->
+                    MessageFactory.makeSuccess(message, ":white_check_mark: `:number` messages has been deleted!")
+                        .set("number", messages.size())
+                        .queue(successMessage -> successMessage.delete().queueAfter(8, TimeUnit.SECONDS)));
             });
             return true;
         }
@@ -104,9 +103,10 @@ public class PurgeCommand extends Command {
                     users.add(String.format("<@%s>", userId));
                 }
 
-                MessageFactory.makeSuccess(message, ":white_check_mark: `%s` messages has been deleted from %s",
-                    messages.size(), String.join(", ", users)
-                ).queue(successMessage -> successMessage.delete().queueAfter(8, TimeUnit.SECONDS));
+                MessageFactory.makeSuccess(message, ":white_check_mark: `:number` messages has been deleted from :users")
+                    .set("number", messages.size())
+                    .set("users", String.join(", ", users))
+                    .queue(successMessage -> successMessage.delete().queueAfter(8, TimeUnit.SECONDS));
             });
         });
         return true;
@@ -143,8 +143,9 @@ public class PurgeCommand extends Command {
     }
 
     private void sendNoMessagesMessage(Message message) {
-        MessageFactory.makeSuccess(message, ":x: Nothing to delete, I am unable to delete messages older than 14 days.")
-            .queue(successMessage -> successMessage.delete().queueAfter(8, TimeUnit.SECONDS));
+        MessageFactory.makeSuccess(message,
+            ":x: Nothing to delete, I am unable to delete messages older than 14 days."
+        ).queue(successMessage -> successMessage.delete().queueAfter(8, TimeUnit.SECONDS));
     }
 
     private RestAction<Void> deleteMessages(Message message, List<Message> messages) {

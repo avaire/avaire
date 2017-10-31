@@ -3,6 +3,7 @@ package com.avairebot.orion.utilities;
 import com.avairebot.orion.Constants;
 import com.avairebot.orion.Orion;
 import com.avairebot.orion.cache.CacheType;
+import com.avairebot.orion.chat.MessageType;
 import com.avairebot.orion.database.controllers.GuildController;
 import com.avairebot.orion.database.controllers.PlayerController;
 import com.avairebot.orion.database.transformers.GuildTransformer;
@@ -139,7 +140,7 @@ public class LevelUtil {
 
             if (guild.isLevelAlerts() && getLevelFromExperience(player.getExperience()) > lvl) {
                 getLevelUpChannel(message, guild).sendMessage(MessageFactory.createEmbeddedBuilder()
-                    .setColor(MessageFactory.MessageType.SUCCESS.getColor())
+                    .setColor(MessageType.SUCCESS.getColor())
                     .setDescription(String.format("GG <@%s>, you just reached **Level %s**",
                         player.getUserId(),
                         getLevelFromExperience(player.getExperience())

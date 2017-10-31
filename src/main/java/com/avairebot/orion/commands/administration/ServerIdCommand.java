@@ -41,10 +41,7 @@ public class ServerIdCommand extends Command {
 
     @Override
     public boolean onCommand(Message message, String[] args) {
-        MessageFactory.makeSuccess(message, "<@%s> :id: of this server is `%s`",
-            message.getAuthor().getId(),
-            message.getGuild().getId()
-        ).queue();
+        MessageFactory.makeSuccess(message, ":user :id: of this server is `:guildid`").queue();
         return true;
     }
 }

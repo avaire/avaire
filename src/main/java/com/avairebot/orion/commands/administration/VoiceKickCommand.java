@@ -82,12 +82,11 @@ public class VoiceKickCommand extends Command {
                 .queue(empty -> channel.delete().queue(new Consumer<Void>() {
                         @Override
                         public void accept(Void empty) {
-                            MessageFactory.makeSuccess(message, "**%s** was kicked from **%s** by <@%s> for \"%s\"",
-                                user.getUser().getName() + "#" + user.getUser().getDiscriminator(),
-                                originalVoiceChannelName,
-                                message.getAuthor().getId(),
-                                reason
-                            ).queue();
+                            MessageFactory.makeSuccess(message, "**:target** was kicked from **:voiceChannel** by :user for \":reason\"")
+                                .set("target", user.getUser().getName() + "#" + user.getUser().getDiscriminator())
+                                .set("voiceChannel", originalVoiceChannelName)
+                                .set("reason", reason)
+                                .queue();
                         }
                     })
                 )

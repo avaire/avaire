@@ -1,6 +1,7 @@
 package com.avairebot.orion.commands.administration;
 
 import com.avairebot.orion.Orion;
+import com.avairebot.orion.chat.MessageType;
 import com.avairebot.orion.chat.SimplePaginator;
 import com.avairebot.orion.contracts.commands.Command;
 import com.avairebot.orion.database.controllers.GuildController;
@@ -71,7 +72,7 @@ public class ListAliasesCommand extends Command {
 
 
         message.getChannel().sendMessage(MessageFactory.createEmbeddedBuilder()
-            .setColor(MessageFactory.MessageType.SUCCESS.getColor())
+            .setColor(MessageType.SUCCESS.getColor())
             .setTitle(String.format("List of Aliases (%s)", paginator.getTotal()))
             .setDescription(String.join("\n", messages)).build()).queue();
 

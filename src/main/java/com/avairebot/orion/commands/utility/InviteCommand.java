@@ -41,11 +41,9 @@ public class InviteCommand extends Command {
 
     @Override
     public boolean onCommand(Message message, String[] args) {
-        MessageFactory.makeInfo(message,
-            "You can invite me to your server by [clicking here](%s) or use the link below:\n\n%s",
-            orion.config.botAuth().getOAuth(), orion.config.botAuth().getOAuth())
+        MessageFactory.makeInfo(message, "You can invite me to your server by [clicking here](:oauth) or use the link below:\n\n:oauth")
+            .set("oauth", orion.config.botAuth().getOAuth())
             .queue();
-
         return true;
     }
 }

@@ -72,7 +72,11 @@ public class SeekCommand extends Command {
             }
 
             musicManager.getPlayer().getPlayingTrack().setPosition(time);
-            MessageFactory.makeSuccess(message, "Seeking **%s** to `%s`", musicManager.getPlayer().getPlayingTrack().getInfo().title, NumberUtil.formatTime(time)).queue();
+
+            MessageFactory.makeSuccess(message, "Seeking **:title** to `:time`")
+                .set("title", musicManager.getPlayer().getPlayingTrack().getInfo().title)
+                .set("time", NumberUtil.formatTime(time))
+                .queue();
         } catch (IllegalStateException ex) {
             return sendErrorMessage(message, "The `number` argument must be a valid time format that is at least 0 or more seconds long.");
         }

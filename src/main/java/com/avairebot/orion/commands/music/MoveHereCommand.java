@@ -69,10 +69,9 @@ public class MoveHereCommand extends Command {
             return false;
         }
 
-        MessageFactory.makeSuccess(message, "I am now streaming music in **%s**",
-            channel.getName()
-        ).queue();
+        MessageFactory.makeSuccess(message, "I am now streaming music in **:channelName**")
+            .set("channelName", channel.getName())
+            .queue();
         return true;
-
     }
 }

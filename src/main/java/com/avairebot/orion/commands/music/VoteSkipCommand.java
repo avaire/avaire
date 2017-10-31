@@ -81,10 +81,9 @@ public class VoteSkipCommand extends Command {
         int neededVotes = getNeededVotes(usersInVoiceLength, getSkipsFrom(musicManager).size());
 
         MessageFactory.makeWarning(message, hasVotedBefore ?
-                "You can only vote skip once per song! `%s` more votes needed to skip the song." :
-                "Your vote has been registered! `%s` more votes needed to skip the song.",
-            neededVotes
-        ).queue();
+            "You can only vote skip once per song! `:votes` more votes needed to skip the song." :
+            "Your vote has been registered! `:votes` more votes needed to skip the song."
+        ).set("votes", neededVotes).queue();
 
         return true;
     }

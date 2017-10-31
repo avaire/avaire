@@ -65,10 +65,11 @@ public class RollCommand extends Command {
 
         double random = Math.floor(Math.random() * (max - min + 1)) + min;
 
-        MessageFactory.makeInfo(message, "<@%s> rolled **%s** out of %s - %s",
-            message.getAuthor().getId(),
-            (int) random, (int) min, (int) max
-        ).queue();
+        MessageFactory.makeInfo(message, ":user rolled **:number** out of :min - :max")
+            .set("number", random)
+            .set("min", min)
+            .set("max", max)
+            .queue();
 
         return true;
     }

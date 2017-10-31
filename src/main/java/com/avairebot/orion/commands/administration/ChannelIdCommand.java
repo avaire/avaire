@@ -48,10 +48,8 @@ public class ChannelIdCommand extends Command {
             channel = message.getMentionedChannels().get(0);
         }
 
-        MessageFactory.makeSuccess(message, "<@%s> :id: of the <#%s> channel is `%s`",
-            message.getAuthor().getId(),
-            channel.getId(), channel.getId()
-        ).queue();
+        MessageFactory.makeSuccess(message, ":user :id: of the :channel channel is `:targetChannel`")
+            .set("targetChannel", channel.getId()).queue();
         return true;
     }
 }

@@ -37,12 +37,10 @@ public class Throttle extends Middleware {
 
             int attempts = (Integer) item.getValue();
             if (attempts >= maxAttempts) {
-                MessageFactory.makeWarning(
-                    message,
-                    "Too many `%s` attempts. Please try again in **%s** seconds.",
-                    stack.getCommand().getName(),
-                    ((item.getTime() - System.currentTimeMillis()) / 1000) + 1
-                ).queue();
+                MessageFactory.makeWarning(message, "Too many `:command` attempts. Please try again in **:time** seconds.")
+                    .set("command", stack.getCommand().getName())
+                    .set("time", ((item.getTime() - System.currentTimeMillis()) / 1000) + 1)
+                    .queue();
                 return false;
             }
 
