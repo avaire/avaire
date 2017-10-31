@@ -78,7 +78,7 @@ public class StatsCommand extends Command {
                 new MessageEmbed.Field("Messages Received", "" + Statistics.getMessages(), true),
                 new MessageEmbed.Field("Shard", "Unknown", true),
                 new MessageEmbed.Field("Commands Run", "" + Statistics.getCommands(), true),
-                new MessageEmbed.Field("Memory Usage", "Unknown", true),
+                new MessageEmbed.Field("Memory Usage", memoryUsage(), true),
                 new MessageEmbed.Field("Uptime", "" + applicationUptime(), true),
                 new MessageEmbed.Field("Members", "" + orion.getJDA().getUsers().size(), true),
                 new MessageEmbed.Field("Channels", "" + (orion.getJDA().getTextChannels().size() + orion.getJDA().getVoiceChannels().size()), true),
@@ -113,5 +113,12 @@ public class StatsCommand extends Command {
             return String.format("%sm %ss", m, s);
         }
         return String.format("%ss", s);
+    }
+
+    private String memoryUsage() {
+        return String.format("%sMb / %sMb",
+            (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / (1024 * 1024),
+            Runtime.getRuntime().totalMemory() / (1024 * 1024)
+        );
     }
 }
