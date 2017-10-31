@@ -5,7 +5,7 @@ import com.avairebot.orion.contracts.handlers.EventHandler;
 import com.avairebot.orion.database.controllers.GuildController;
 import com.avairebot.orion.database.transformers.ChannelTransformer;
 import com.avairebot.orion.database.transformers.GuildTransformer;
-import com.avairebot.orion.utilities.PlaceholderUtil;
+import com.avairebot.orion.utilities.StringReplacementUtil;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.guild.member.GuildMemberLeaveEvent;
 
@@ -32,9 +32,9 @@ public class GuildMemberLeave extends EventHandler {
                 }
 
                 textChannel.sendMessage(
-                    PlaceholderUtil.parseChannel(textChannel,
-                        PlaceholderUtil.parseUser(event.getUser(),
-                            PlaceholderUtil.parseGuild(event.getGuild(),
+                    StringReplacementUtil.parseChannel(textChannel,
+                        StringReplacementUtil.parseUser(event.getUser(),
+                            StringReplacementUtil.parseGuild(event.getGuild(),
                                 channelTransformer.getGoodbye().getMessage() == null ?
                                     "%user% has left **%server%**! :(" :
                                     channelTransformer.getGoodbye().getMessage()

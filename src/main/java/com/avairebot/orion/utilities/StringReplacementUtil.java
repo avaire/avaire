@@ -5,10 +5,10 @@ import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.User;
 
-public class PlaceholderUtil {
+public class StringReplacementUtil {
 
-    public static String parse(Message message, String string, PlaceholderType... types) {
-        for (PlaceholderType type : types) {
+    public static String parse(Message message, String string, ReplacementType... types) {
+        for (ReplacementType type : types) {
             string = type.function.parse(message, string);
         }
         return string;
@@ -55,21 +55,21 @@ public class PlaceholderUtil {
         return string;
     }
 
-    public enum PlaceholderType {
+    public enum ReplacementType {
 
-        SERVER(PlaceholderUtil::toGuild),
-        CHANNEL(PlaceholderUtil::toChannel),
-        USER(PlaceholderUtil::toUser);
+        SERVER(StringReplacementUtil::toGuild),
+        CHANNEL(StringReplacementUtil::toChannel),
+        USER(StringReplacementUtil::toUser);
 
-        private final PlaceholderFunction function;
+        private final ReplacementFunction function;
 
-        PlaceholderType(PlaceholderFunction function) {
+        ReplacementType(ReplacementFunction function) {
             this.function = function;
         }
     }
 
     @FunctionalInterface
-    private interface PlaceholderFunction {
+    private interface ReplacementFunction {
         String parse(Message message, String string);
     }
 }

@@ -6,7 +6,7 @@ import com.avairebot.orion.database.controllers.GuildController;
 import com.avairebot.orion.database.transformers.ChannelTransformer;
 import com.avairebot.orion.database.transformers.GuildTransformer;
 import com.avairebot.orion.permissions.Permissions;
-import com.avairebot.orion.utilities.PlaceholderUtil;
+import com.avairebot.orion.utilities.StringReplacementUtil;
 import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.guild.member.GuildMemberJoinEvent;
@@ -34,9 +34,9 @@ public class GuildMemberJoin extends EventHandler {
                 }
 
                 textChannel.sendMessage(
-                    PlaceholderUtil.parseChannel(textChannel,
-                        PlaceholderUtil.parseUser(event.getUser(),
-                            PlaceholderUtil.parseGuild(event.getGuild(),
+                    StringReplacementUtil.parseChannel(textChannel,
+                        StringReplacementUtil.parseUser(event.getUser(),
+                            StringReplacementUtil.parseGuild(event.getGuild(),
                                 channelTransformer.getWelcome().getMessage() == null ?
                                     "Welcome %user% to **%server%!**" :
                                     channelTransformer.getWelcome().getMessage()
