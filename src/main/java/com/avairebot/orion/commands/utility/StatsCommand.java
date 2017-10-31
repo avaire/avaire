@@ -2,9 +2,11 @@ package com.avairebot.orion.commands.utility;
 
 import com.avairebot.orion.Orion;
 import com.avairebot.orion.Statistics;
+import com.avairebot.orion.cache.CacheType;
 import com.avairebot.orion.chat.MessageType;
 import com.avairebot.orion.contracts.commands.Command;
 import com.avairebot.orion.factories.MessageFactory;
+import com.google.gson.internal.LinkedTreeMap;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageEmbed;
@@ -50,6 +52,23 @@ public class StatsCommand extends Command {
     public boolean onCommand(Message message, String[] args) {
         Guild guild = message.getGuild();
 
+        StringBuilder description = new StringBuilder("Created by [Senither#8023](https://senither.com/) using the [JDA](https://github.com/DV8FromTheWorld/JDA) framework!");
+        if (orion.cache.getAdapter(CacheType.FILE).has("github.commits")) {
+            description = new StringBuilder("**Latest changes:**\n");
+            List<LinkedTreeMap<String, Object>> items = (List<LinkedTreeMap<String, Object>>) orion.cache.getAdapter(CacheType.FILE).get("github.commits");
+
+            for (int i = 0; i < 3; i++) {
+                LinkedTreeMap<String, Object> item = items.get(i);
+                LinkedTreeMap<String, Object> commit = (LinkedTreeMap<String, Object>) item.get("commit");
+
+                description.append(String.format("[`%s`](%s) %s\n",
+                    item.get("sha").toString().substring(0, 7),
+                    item.get("html_url"),
+                    commit.get("message")
+                ));
+            }
+        }
+
         message.getChannel().sendMessage(
             MessageFactory.makeEmbeddedMessage(MessageType.INFO,
                 new MessageEmbed.Field("Author", "Senither#8023", true),
@@ -64,7 +83,11 @@ public class StatsCommand extends Command {
                 new MessageEmbed.Field("Members", "" + guild.getMembers().size(), true),
                 new MessageEmbed.Field("Channels", "" + guild.getTextChannels().size() + guild.getVoiceChannels().size(), true),
                 new MessageEmbed.Field("Servers", "" + message.getJDA().getGuilds().size(), true)
-            ).build()
+            )
+                .setTitle("Official Bot Server Invite", "https://discordapp.com/invite/gt2FWER")
+                .setAuthor("Orion v" + orion.getVersion(), "https://discordapp.com/invite/gt2FWER", orion.getJDA().getSelfUser().getEffectiveAvatarUrl())
+                .setDescription(description.toString())
+                .build()
         ).queue();
 
         return true;
