@@ -90,6 +90,10 @@ public class Orion {
         return jda;
     }
 
+    public String getVersion() {
+        return properties.getProperty("version");
+    }
+
     private void registerCommands() {
         logger.info(" - Registering commands...");
 
