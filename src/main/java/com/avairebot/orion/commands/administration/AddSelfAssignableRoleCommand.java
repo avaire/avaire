@@ -84,7 +84,8 @@ public class AddSelfAssignableRoleCommand extends Command {
                 });
 
             MessageFactory.makeSuccess(message, "Role **:role** role has been added to the self-assignable list.")
-                .set("role", role.getName());
+                .set("role", role.getName())
+                .queue();
 
             return true;
         } catch (SQLException e) {

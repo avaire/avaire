@@ -70,7 +70,8 @@ public class IAmCommand extends Command {
         }
 
         MessageFactory.makeSuccess(message, ":user You now have the **:role** role!")
-            .set("role", role.getName());
+            .set("role", role.getName())
+            .queue();
         return true;
     }
 }
