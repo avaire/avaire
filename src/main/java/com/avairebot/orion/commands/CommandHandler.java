@@ -113,6 +113,7 @@ public class CommandHandler {
             return null;
         }
 
+        String[] aliasArguments = null;
         String commandString = command.split(" ")[0].toLowerCase();
         List<CommandContainer> commands = new ArrayList<>();
         for (Map.Entry<String, String> entry : transformer.getAliases().entrySet()) {
@@ -120,11 +121,21 @@ public class CommandHandler {
                 CommandContainer commandContainer = getCommand(message, entry.getValue().split(" ")[0]);
                 if (commandContainer != null) {
                     commands.add(commandContainer);
+                    aliasArguments = entry.getValue().split(" ");
                 }
             }
         }
 
-        return getHighPriorityCommandFromCommands(commands);
+        CommandContainer commandContainer = getHighPriorityCommandFromCommands(commands);
+
+        if (commandContainer == null) {
+            return null;
+        }
+
+        if (aliasArguments == null || aliasArguments.length == 1) {
+            return commandContainer;
+        }
+        return new AliasCommandContainer(commandContainer, Arrays.copyOfRange(aliasArguments, 1, aliasArguments.length));
     }
 
     /**

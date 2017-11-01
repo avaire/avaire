@@ -1,6 +1,7 @@
 package com.avairebot.orion.middleware;
 
 import com.avairebot.orion.Orion;
+import com.avairebot.orion.commands.AliasCommandContainer;
 import com.avairebot.orion.commands.CommandMessage;
 import com.avairebot.orion.contracts.middleware.Middleware;
 import com.avairebot.orion.factories.MessageFactory;
@@ -44,9 +45,18 @@ public class ProcessCommand extends Middleware {
         );
 
         try {
+            String[] commandArguments = Arrays.copyOfRange(arguments, stack.isMentionableCommand() ? 2 : 1, arguments.length);
+            if (stack.getCommandContainer() instanceof AliasCommandContainer) {
+                AliasCommandContainer container = (AliasCommandContainer) stack.getCommandContainer();
+
+                return stack.getCommand().onCommand(
+                    new CommandMessage(message, stack.isMentionableCommand(), container.getAliasArguments()),
+                    combineArguments(container.getAliasArguments(), commandArguments)
+                );
+            }
+
             return stack.getCommand().onCommand(
-                new CommandMessage(message, stack.isMentionableCommand()),
-                Arrays.copyOfRange(arguments, stack.isMentionableCommand() ? 2 : 1, arguments.length)
+                new CommandMessage(message, stack.isMentionableCommand()), commandArguments
             );
         } catch (Exception ex) {
             if (ex instanceof FriendlyException) {
@@ -100,5 +110,16 @@ public class ProcessCommand extends Middleware {
             message.getChannel().getName(),
             message.getChannel().getId()
         );
+    }
+
+    private String[] combineArguments(String[] aliasArguments, String[] userArguments) {
+        int length = aliasArguments.length + userArguments.length;
+
+        String[] result = new String[length];
+
+        System.arraycopy(aliasArguments, 0, result, 0, aliasArguments.length);
+        System.arraycopy(userArguments, 0, result, aliasArguments.length, userArguments.length);
+
+        return result;
     }
 }

@@ -14,11 +14,16 @@ public class CommandMessage extends MessageImpl {
 
     private final boolean mentionableCommand;
 
-    public CommandMessage(Message message, boolean mentionableCommand) {
+    public CommandMessage(Message message, boolean mentionableCommand, String[] aliasArguments) {
         super(message.getIdLong(), message.getChannel(), message.isWebhookMessage(), message.getType());
 
         this.mentionableCommand = mentionableCommand;
-        this.setContent(prepareRawContent(message.getRawContent()))
+        String rawContent = prepareRawContent(message.getRawContent(), aliasArguments != null);
+        if (aliasArguments != null) {
+            rawContent = ":alias " + String.join(" ", aliasArguments) + " " + rawContent;
+        }
+
+        this.setContent(rawContent)
             .setAuthor(message.getAuthor())
             .setTime(message.getCreationTime())
             .setEditedTime(message.getEditedTime())
@@ -33,6 +38,10 @@ public class CommandMessage extends MessageImpl {
             .setTTS(message.isTTS());
     }
 
+    public CommandMessage(Message message, boolean mentionableCommand) {
+        this(message, mentionableCommand, null);
+    }
+
     public CommandMessage(String message) {
         super(0L, null, false, MessageType.UNKNOWN);
 
@@ -40,12 +49,14 @@ public class CommandMessage extends MessageImpl {
         this.setContent(message);
     }
 
-    private String prepareRawContent(String content) {
-        if (!mentionableCommand) {
-            return content;
-        }
+    private String prepareRawContent(String content, boolean isAliasCommand) {
         String[] split = content.split(" ");
-        return String.join(" ", Arrays.copyOfRange(split, 1, split.length));
+
+        if (!isMentionableCommand()) {
+            if (!isAliasCommand) return content;
+            return String.join(" ", Arrays.copyOfRange(split, 1, split.length));
+        }
+        return String.join(" ", Arrays.copyOfRange(split, isAliasCommand ? 2 : 1, split.length));
     }
 
     private List<User> prepareMentionedUsers(List<User> mentionedUsers) {
