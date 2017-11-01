@@ -16,7 +16,7 @@ public class SayCommand extends Command {
 
     @Override
     public String getName() {
-        return "Say Comand";
+        return "Say Command";
     }
 
     @Override
