@@ -11,6 +11,7 @@ import com.avairebot.orion.database.transformers.GuildTransformer;
 import com.avairebot.orion.database.transformers.PlayerTransformer;
 import com.avairebot.orion.factories.MessageFactory;
 import com.avairebot.orion.middleware.MiddlewareStack;
+import com.avairebot.orion.utilities.ArrayUtil;
 import com.avairebot.orion.utilities.LevelUtil;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
@@ -59,7 +60,7 @@ public class MessageCreate extends EventHandler {
             }
 
             if (isMentionableCommand(event)) {
-                container = CommandHandler.getLazyCommand(event.getMessage().getContent().split(" ")[1]);
+                container = CommandHandler.getLazyCommand(ArrayUtil.toArguments(event.getMessage().getContent())[1]);
                 if (container != null && canExecuteCommand(event, container)) {
                     Statistics.addCommands();
 
