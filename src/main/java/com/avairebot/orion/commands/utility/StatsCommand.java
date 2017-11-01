@@ -86,12 +86,12 @@ public class StatsCommand extends Command {
                 new MessageEmbed.Field("DB Queries run", getDatabaseQueriesStats(), true),
                 new MessageEmbed.Field("Messages Received", getMessagesReceivedStats(), true),
                 new MessageEmbed.Field("Shard", "Unknown", true),
-                new MessageEmbed.Field("Commands Run", "" + Statistics.getCommands(), true),
+                new MessageEmbed.Field("Commands Run", number.format(Statistics.getCommands()), true),
                 new MessageEmbed.Field("Memory Usage", memoryUsage(), true),
                 new MessageEmbed.Field("Uptime", applicationUptime(), true),
-                new MessageEmbed.Field("Members", "" + orion.getJDA().getUsers().size(), true),
-                new MessageEmbed.Field("Channels", "" + (orion.getJDA().getTextChannels().size() + orion.getJDA().getVoiceChannels().size()), true),
-                new MessageEmbed.Field("Servers", "" + message.getJDA().getGuilds().size(), true)
+                new MessageEmbed.Field("Members", number.format(orion.getJDA().getUsers().size()), true),
+                new MessageEmbed.Field("Channels", number.format(orion.getJDA().getTextChannels().size() + orion.getJDA().getVoiceChannels().size()), true),
+                new MessageEmbed.Field("Servers", number.format(message.getJDA().getGuilds().size()), true)
             )
                 .setTitle("Official Bot Server Invite", "https://discordapp.com/invite/gt2FWER")
                 .setAuthor("Orion v" + orion.getVersion(), "https://discordapp.com/invite/gt2FWER", orion.getJDA().getSelfUser().getEffectiveAvatarUrl())
