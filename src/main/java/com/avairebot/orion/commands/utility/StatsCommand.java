@@ -7,20 +7,31 @@ import com.avairebot.orion.chat.MessageType;
 import com.avairebot.orion.contracts.commands.Command;
 import com.avairebot.orion.factories.MessageFactory;
 import com.google.gson.internal.LinkedTreeMap;
-import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 public class StatsCommand extends Command {
 
+    private final DecimalFormat number;
+    private final DecimalFormat decimalNumber;
+
     public StatsCommand(Orion orion) {
         super(orion);
+
+        DecimalFormatSymbols decimalFormatSymbols = new DecimalFormatSymbols();
+        decimalFormatSymbols.setDecimalSeparator('.');
+        decimalFormatSymbols.setGroupingSeparator(',');
+
+        number = new DecimalFormat("#,##0", decimalFormatSymbols);
+        decimalNumber = new DecimalFormat("#,##0.00", decimalFormatSymbols);
     }
 
     @Override
@@ -50,8 +61,6 @@ public class StatsCommand extends Command {
 
     @Override
     public boolean onCommand(Message message, String[] args) {
-        Guild guild = message.getGuild();
-
         StringBuilder description = new StringBuilder("Created by [Senither#8023](https://senither.com/) using the [JDA](https://github.com/DV8FromTheWorld/JDA) framework!");
         if (orion.cache.getAdapter(CacheType.FILE).has("github.commits")) {
             description = new StringBuilder("**Latest changes:**\n");
@@ -74,12 +83,12 @@ public class StatsCommand extends Command {
                 new MessageEmbed.Field("Author", "Senither#8023", true),
                 new MessageEmbed.Field("Bot ID", message.getJDA().getSelfUser().getId(), true),
                 new MessageEmbed.Field("Library", "[JDA](https://github.com/DV8FromTheWorld/JDA)", true),
-                new MessageEmbed.Field("DB Queries run", "" + Statistics.getQueries(), true),
-                new MessageEmbed.Field("Messages Received", "" + Statistics.getMessages(), true),
+                new MessageEmbed.Field("DB Queries run", getDatabaseQueriesStats(), true),
+                new MessageEmbed.Field("Messages Received", getMessagesReceivedStats(), true),
                 new MessageEmbed.Field("Shard", "Unknown", true),
                 new MessageEmbed.Field("Commands Run", "" + Statistics.getCommands(), true),
                 new MessageEmbed.Field("Memory Usage", memoryUsage(), true),
-                new MessageEmbed.Field("Uptime", "" + applicationUptime(), true),
+                new MessageEmbed.Field("Uptime", applicationUptime(), true),
                 new MessageEmbed.Field("Members", "" + orion.getJDA().getUsers().size(), true),
                 new MessageEmbed.Field("Channels", "" + (orion.getJDA().getTextChannels().size() + orion.getJDA().getVoiceChannels().size()), true),
                 new MessageEmbed.Field("Servers", "" + message.getJDA().getGuilds().size(), true)
@@ -113,6 +122,20 @@ public class StatsCommand extends Command {
             return String.format("%sm %ss", m, s);
         }
         return String.format("%ss", s);
+    }
+
+    private String getDatabaseQueriesStats() {
+        return String.format("%s (%s per min)",
+            number.format(Statistics.getQueries()),
+            decimalNumber.format(Statistics.getQueries() / ((double) ManagementFactory.getRuntimeMXBean().getUptime() / (double) (1000 * 60)))
+        );
+    }
+
+    private String getMessagesReceivedStats() {
+        return String.format("%s (%s per sec)",
+            number.format(Statistics.getMessages()),
+            decimalNumber.format(Statistics.getMessages() / ((double) ManagementFactory.getRuntimeMXBean().getUptime() / (double) (1000)))
+        );
     }
 
     private String memoryUsage() {
