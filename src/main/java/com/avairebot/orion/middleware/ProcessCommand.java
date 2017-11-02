@@ -3,6 +3,8 @@ package com.avairebot.orion.middleware;
 import com.avairebot.orion.Orion;
 import com.avairebot.orion.commands.AliasCommandContainer;
 import com.avairebot.orion.commands.CommandMessage;
+import com.avairebot.orion.commands.utility.SleepCommand;
+import com.avairebot.orion.contracts.commands.ThreadCommand;
 import com.avairebot.orion.contracts.middleware.Middleware;
 import com.avairebot.orion.factories.MessageFactory;
 import com.avairebot.orion.utilities.ArrayUtil;
@@ -42,15 +44,13 @@ public class ProcessCommand extends Middleware {
             if (stack.getCommandContainer() instanceof AliasCommandContainer) {
                 AliasCommandContainer container = (AliasCommandContainer) stack.getCommandContainer();
 
-                return stack.getCommand().onCommand(
+                return runCommand(stack,
                     new CommandMessage(message, stack.isMentionableCommand(), container.getAliasArguments()),
                     combineArguments(container.getAliasArguments(), commandArguments)
                 );
             }
 
-            return stack.getCommand().onCommand(
-                new CommandMessage(message, stack.isMentionableCommand()), commandArguments
-            );
+            return runCommand(stack, new CommandMessage(message, stack.isMentionableCommand()), commandArguments);
         } catch (Exception ex) {
             if (ex instanceof FriendlyException) {
                 MessageFactory.makeError(message, "Error: " + ex.getMessage())
@@ -60,6 +60,15 @@ public class ProcessCommand extends Middleware {
             ex.printStackTrace();
             return false;
         }
+    }
+
+    private boolean runCommand(MiddlewareStack stack, CommandMessage message, String[] args) {
+        if (stack.getCommand() instanceof ThreadCommand) {
+            ((ThreadCommand) stack.getCommand()).runThreadCommand(message, args);
+            return true;
+        }
+
+        return stack.getCommand().onCommand(message, args);
     }
 
     private String generateUsername(Message message) {
