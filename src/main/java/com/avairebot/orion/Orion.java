@@ -194,7 +194,6 @@ public class Orion {
         ScheduleHandler.registerJob(new GithubChangesJob(this));
         ScheduleHandler.registerJob(new FetchMemeTypesJob(this));
         ScheduleHandler.registerJob(new GarbageCollectorJob(this));
-        ScheduleHandler.registerJob(new UpdateAudioPlayedTimeJob(this));
         ScheduleHandler.registerJob(new ResetRespectStatisticsJob(this));
 
         logger.info(String.format(" - Registered %s jobs successfully!", ScheduleHandler.entrySet().size()));

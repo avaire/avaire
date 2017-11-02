@@ -43,7 +43,7 @@ public class AudioTrackContainer {
     }
 
     public String getFormattedPlayedTime() {
-        return NumberUtil.formatTime(getPlayedTime() == 0 ? 0 : getPlayedTime() / 4);
+        return NumberUtil.formatTime(getAudioTrack().getPosition());
     }
 
     public String getFormattedDuration() {
@@ -51,6 +51,6 @@ public class AudioTrackContainer {
     }
 
     public String getFormattedTotalTimeLeft() {
-        return NumberUtil.formatTime((getAudioTrack().getDuration()) - (getPlayedTime() == 0 ? 0 : getPlayedTime() / 4));
+        return NumberUtil.formatTime(getAudioTrack().getDuration() - getAudioTrack().getPosition());
     }
 }
