@@ -65,11 +65,12 @@ public class HelpCommand extends Command {
             return showCategories(message);
         }
 
-        if (!isCommand(message, args[0])) {
+        CommandContainer command = getCommand(message, args[0]);
+        if (command == null) {
             return showCategoryCommands(message, Category.fromLazyName(args[0]), args[0]);
         }
 
-        return showCommand(message, CommandHandler.getCommand(message, args[0]), args[0]);
+        return showCommand(message, command, args[0]);
     }
 
     private boolean showCategories(Message message) {
@@ -171,8 +172,11 @@ public class HelpCommand extends Command {
         return true;
     }
 
-    private boolean isCommand(Message message, String commandString) {
+    private CommandContainer getCommand(Message message, String commandString) {
         CommandContainer command = CommandHandler.getCommand(message, commandString);
-        return command != null && commandString.startsWith(command.getCommand().generateCommandPrefix(message));
+        if (command != null) {
+            return command;
+        }
+        return CommandHandler.getLazyCommand(commandString);
     }
 }
