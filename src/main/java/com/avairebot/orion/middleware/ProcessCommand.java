@@ -3,7 +3,6 @@ package com.avairebot.orion.middleware;
 import com.avairebot.orion.Orion;
 import com.avairebot.orion.commands.AliasCommandContainer;
 import com.avairebot.orion.commands.CommandMessage;
-import com.avairebot.orion.commands.utility.SleepCommand;
 import com.avairebot.orion.contracts.commands.ThreadCommand;
 import com.avairebot.orion.contracts.middleware.Middleware;
 import com.avairebot.orion.factories.MessageFactory;
