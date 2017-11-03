@@ -3,9 +3,16 @@ package com.avairebot.orion.contracts.async;
 import com.avairebot.orion.requests.Response;
 import net.dv8tion.jda.core.utils.SimpleLog;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.function.Consumer;
 
 public abstract class Future {
+
+    /**
+     * The thread executor service provider, all future requests will be added to the pool of threads.
+     */
+    private static final ExecutorService SERVICE = Executors.newFixedThreadPool(3);
 
     /**
      * The default success consumer that should be used if no success consumer is given.
@@ -49,13 +56,11 @@ public abstract class Future {
      * @param failure The consumer that should be invoked on failure.
      */
     public void send(final Consumer success, final Consumer<Throwable> failure) {
-        new Thread(() -> {
-            handle(
-                success == null ? DEFAULT_SUCCESS : success,
-                failure == null ? DEFAULT_FAILURE : failure
+        SERVICE.submit(() -> handle(
+            success == null ? DEFAULT_SUCCESS : success,
+            failure == null ? DEFAULT_FAILURE : failure
 
-            );
-        }).start();
+        ));
     }
 
     /**
