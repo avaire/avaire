@@ -100,7 +100,7 @@ public class MessageCreate extends EventHandler {
     }
 
     private void sendTagInformationMessage(MessageReceivedEvent event) {
-        String author = "**Senither#8023";
+        String author = "**Senither#8023**";
         if (event.getMessage().getChannelType().isGuild() && event.getGuild().getMemberById(88739639380172800L) != null) {
             author = "<@88739639380172800>";
         }
