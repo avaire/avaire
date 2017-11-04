@@ -66,5 +66,10 @@
             <artifactId>mysql-connector-java</artifactId>
             <version>5.1.6</version>
         </dependency>
+        <dependency>
+            <groupId>ai.api</groupId>
+            <artifactId>libai</artifactId>
+            <version>1.6.12</version>
+        </dependency>
     </dependencies>
 </project>

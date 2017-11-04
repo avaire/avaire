@@ -1,5 +1,8 @@
 package com.avairebot.orion;
 
+import com.avairebot.orion.ai.IntelligenceManager;
+import com.avairebot.orion.ai.intents.SmallTalk;
+import com.avairebot.orion.ai.intents.Unknown;
 import com.avairebot.orion.cache.CacheManager;
 import com.avairebot.orion.commands.CommandHandler;
 import com.avairebot.orion.commands.administration.*;
@@ -36,6 +39,7 @@ public class Orion {
     public final SimpleLog logger;
     public final CacheManager cache;
     public final DatabaseManager database;
+    public final IntelligenceManager intelligenceManager;
 
     private final Properties properties = new Properties();
 
@@ -75,6 +79,11 @@ public class Orion {
 
         this.registerCommands();
         this.registerJobs();
+
+        intelligenceManager = new IntelligenceManager(this);
+        if (intelligenceManager.isEnabled()) {
+            this.registerIntents();
+        }
 
         try {
             logger.info(" - Creating bot instance and connecting to Discord network");
@@ -199,6 +208,15 @@ public class Orion {
         ScheduleHandler.registerJob(new ResetRespectStatisticsJob(this));
 
         logger.info(String.format(" - Registered %s jobs successfully!", ScheduleHandler.entrySet().size()));
+    }
+
+    private void registerIntents() {
+        logger.info(" - Registering intents...");
+
+        intelligenceManager.registerIntent(new Unknown(this));
+        intelligenceManager.registerIntent(new SmallTalk(this));
+
+        logger.info(String.format(" - Registered %s intelligence intents successfully!", intelligenceManager.entrySet().size()));
     }
 
     private JDABuilder prepareJDA() {

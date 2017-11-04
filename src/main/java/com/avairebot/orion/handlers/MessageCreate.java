@@ -59,12 +59,18 @@ public class MessageCreate extends EventHandler {
                 (new MiddlewareStack(orion, event.getMessage(), container)).next();
             }
 
-            if (isMentionableCommand(event)) {
+            if (isMentionableAction(event)) {
                 container = CommandHandler.getLazyCommand(ArrayUtil.toArguments(event.getMessage().getContent())[1]);
                 if (container != null && canExecuteCommand(event, container)) {
                     Statistics.addCommands();
 
                     (new MiddlewareStack(orion, event.getMessage(), container, true)).next();
+                    return;
+                }
+
+                if (orion.intelligenceManager.isEnabled()) {
+                    orion.intelligenceManager.request(event.getMessage(), event.getMessage().getContent());
+                    return;
                 }
             }
 
@@ -82,7 +88,7 @@ public class MessageCreate extends EventHandler {
         return true;
     }
 
-    private boolean isMentionableCommand(MessageReceivedEvent event) {
+    private boolean isMentionableAction(MessageReceivedEvent event) {
         if (!event.getMessage().isMentioned(orion.getJDA().getSelfUser())) {
             return false;
         }

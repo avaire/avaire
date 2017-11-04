@@ -33,6 +33,10 @@ public class MainConfiguration implements Castable {
         return database;
     }
 
+    public APIKeys getAPIKeys() {
+        return apiKeys;
+    }
+
     public class BotAuth {
         private String token;
         private String oauth;
@@ -94,9 +98,14 @@ public class MainConfiguration implements Castable {
 
     public class APIKeys {
         private String google;
+        private String dialogflow;
 
         public String getGoogle() {
             return google;
+        }
+
+        public String getDialogFlow() {
+            return dialogflow;
         }
     }
 }
