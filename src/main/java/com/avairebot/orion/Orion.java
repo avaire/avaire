@@ -1,6 +1,7 @@
 package com.avairebot.orion;
 
 import com.avairebot.orion.ai.IntelligenceManager;
+import com.avairebot.orion.ai.intents.RequestOnlinePlayers;
 import com.avairebot.orion.ai.intents.SmallTalk;
 import com.avairebot.orion.ai.intents.Unknown;
 import com.avairebot.orion.cache.CacheManager;
@@ -235,6 +236,7 @@ public class Orion {
 
         intelligenceManager.registerIntent(new Unknown(this));
         intelligenceManager.registerIntent(new SmallTalk(this));
+        intelligenceManager.registerIntent(new RequestOnlinePlayers(this));
 
         logger.info(String.format(" - Registered %s intelligence intents successfully!", intelligenceManager.entrySet().size()));
     }
