@@ -28,18 +28,18 @@ public class PlayerController {
             user.getId()
         );
 
-        if (orion.cache.getAdapter(CacheType.MEMORY).has(cacheToken)) {
-            return (PlayerTransformer) orion.cache.getAdapter(CacheType.MEMORY).get(cacheToken);
+        if (orion.getCache().getAdapter(CacheType.MEMORY).has(cacheToken)) {
+            return (PlayerTransformer) orion.getCache().getAdapter(CacheType.MEMORY).get(cacheToken);
         }
 
         try {
-            PlayerTransformer transformer = new PlayerTransformer(orion.database.newQueryBuilder(Constants.PLAYER_EXPERIENCE_TABLE_NAME)
+            PlayerTransformer transformer = new PlayerTransformer(orion.getDatabase().newQueryBuilder(Constants.PLAYER_EXPERIENCE_TABLE_NAME)
                 .where("user_id", user.getId())
                 .andWhere("guild_id", message.getGuild().getId())
                 .get().first());
 
             if (!transformer.hasData()) {
-                orion.database.newQueryBuilder(Constants.PLAYER_EXPERIENCE_TABLE_NAME)
+                orion.getDatabase().newQueryBuilder(Constants.PLAYER_EXPERIENCE_TABLE_NAME)
                     .insert(statement -> {
                         statement.set("guild_id", message.getGuild().getId())
                             .set("user_id", user.getId())
@@ -48,17 +48,17 @@ public class PlayerController {
                             .set("avatar", user.getAvatarId())
                             .set("experience", 100);
 
-                        orion.cache.getAdapter(CacheType.MEMORY).put(cacheToken, new PlayerTransformer(new DataRow(statement.getItems())), 2);
+                        orion.getCache().getAdapter(CacheType.MEMORY).put(cacheToken, new PlayerTransformer(new DataRow(statement.getItems())), 2);
                     });
 
-                return (PlayerTransformer) orion.cache.getAdapter(CacheType.MEMORY).get(cacheToken);
+                return (PlayerTransformer) orion.getCache().getAdapter(CacheType.MEMORY).get(cacheToken);
             }
 
-            orion.cache.getAdapter(CacheType.MEMORY).put(cacheToken, transformer, 300);
+            orion.getCache().getAdapter(CacheType.MEMORY).put(cacheToken, transformer, 300);
 
             return transformer;
         } catch (SQLException ex) {
-            orion.logger.fatal(ex);
+            orion.getLogger().fatal(ex);
             return null;
         }
     }

@@ -68,7 +68,7 @@ public class RemoveSelfAssignableRoleCommand extends Command {
             GuildTransformer transformer = GuildController.fetchGuild(orion, message);
 
             transformer.getSelfAssignableRoles().remove(role.getId());
-            orion.database.newQueryBuilder(Constants.GUILD_TABLE_NAME)
+            orion.getDatabase().newQueryBuilder(Constants.GUILD_TABLE_NAME)
                 .where("id", message.getGuild().getId())
                 .update(statement -> {
                     statement.set("claimable_roles", new Gson().toJson(transformer.getSelfAssignableRoles()));

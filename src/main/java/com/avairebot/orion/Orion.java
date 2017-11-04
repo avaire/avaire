@@ -35,11 +35,11 @@ import java.util.Properties;
 
 public class Orion {
 
-    public final MainConfiguration config;
-    public final SimpleLog logger;
-    public final CacheManager cache;
-    public final DatabaseManager database;
-    public final IntelligenceManager intelligenceManager;
+    private final MainConfiguration config;
+    private final SimpleLog logger;
+    private final CacheManager cache;
+    private final DatabaseManager database;
+    private final IntelligenceManager intelligenceManager;
 
     private final Properties properties = new Properties();
 
@@ -93,6 +93,26 @@ public class Orion {
             this.logger.fatal(ex);
             System.exit(0);
         }
+    }
+
+    public MainConfiguration getConfig() {
+        return config;
+    }
+
+    public SimpleLog getLogger() {
+        return logger;
+    }
+
+    public CacheManager getCache() {
+        return cache;
+    }
+
+    public DatabaseManager getDatabase() {
+        return database;
+    }
+
+    public IntelligenceManager getIntelligenceManager() {
+        return intelligenceManager;
     }
 
     public JDA getJDA() {

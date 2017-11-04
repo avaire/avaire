@@ -35,7 +35,7 @@ public class IntelligenceManager {
     private AIDataService service;
 
     public IntelligenceManager(Orion orion) {
-        String dialogFlowClientToken = orion.config.getAPIKeys().getDialogFlow();
+        String dialogFlowClientToken = orion.getConfig().getAPIKeys().getDialogFlow();
         if (dialogFlowClientToken.length() != 32) {
             executor = null;
             this.orion = null;
@@ -79,7 +79,7 @@ public class IntelligenceManager {
             AIResponse response = service.request(new AIRequest(request));
 
             String action = response.getResult().getAction();
-            orion.logger.info(ACTION_OUTPUT
+            orion.getLogger().info(ACTION_OUTPUT
                 .replace("%action%", action)
                 .replace("%author%", generateUsername(message))
                 .replace("%server%", generateServer(message))

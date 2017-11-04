@@ -29,7 +29,7 @@ public class ProcessCommand extends Middleware {
     public boolean handle(Message message, MiddlewareStack stack, String... args) {
         String[] arguments = ArrayUtil.toArguments(message.getRawContent());
 
-        orion.logger.info(COMMAND_OUTPUT
+        orion.getLogger().info(COMMAND_OUTPUT
             .replace("%command%", stack.getCommand().getName())
             .replace("%category%", stack.getCommandContainer().getCategory().getName())
             .replace("%author%", generateUsername(message))

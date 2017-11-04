@@ -15,7 +15,7 @@ public class GithubChangesJob extends Job {
     public GithubChangesJob(Orion orion) {
         super(orion, 30, 75, TimeUnit.MINUTES);
 
-        if (!orion.cache.getAdapter(CacheType.FILE).has("github.commits")) {
+        if (!orion.getCache().getAdapter(CacheType.FILE).has("github.commits")) {
             run();
         }
     }
@@ -26,7 +26,7 @@ public class GithubChangesJob extends Job {
             .send((Consumer<Response>) response -> {
                 List service = (List) response.toService(List.class);
 
-                orion.cache.getAdapter(CacheType.FILE).forever("github.commits", service);
+                orion.getCache().getAdapter(CacheType.FILE).forever("github.commits", service);
             });
     }
 }

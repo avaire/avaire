@@ -62,9 +62,9 @@ public class StatsCommand extends Command {
     @Override
     public boolean onCommand(Message message, String[] args) {
         StringBuilder description = new StringBuilder("Created by [Senither#8023](https://senither.com/) using the [JDA](https://github.com/DV8FromTheWorld/JDA) framework!");
-        if (orion.cache.getAdapter(CacheType.FILE).has("github.commits")) {
+        if (orion.getCache().getAdapter(CacheType.FILE).has("github.commits")) {
             description = new StringBuilder("**Latest changes:**\n");
-            List<LinkedTreeMap<String, Object>> items = (List<LinkedTreeMap<String, Object>>) orion.cache.getAdapter(CacheType.FILE).get("github.commits");
+            List<LinkedTreeMap<String, Object>> items = (List<LinkedTreeMap<String, Object>>) orion.getCache().getAdapter(CacheType.FILE).get("github.commits");
 
             for (int i = 0; i < 3; i++) {
                 LinkedTreeMap<String, Object> item = items.get(i);

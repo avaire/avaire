@@ -14,12 +14,12 @@ public class ChangeGameJob extends Job {
 
     @Override
     public void run() {
-        if (orion.config.getPlaying().size() <= index) {
+        if (orion.getConfig().getPlaying().size() <= index) {
             index = 0;
         }
 
         orion.getJDA().getPresence().setGame(
-            Game.of(formatGame(orion.config.getPlaying().get(index++)))
+            Game.of(formatGame(orion.getConfig().getPlaying().get(index++)))
         );
     }
 

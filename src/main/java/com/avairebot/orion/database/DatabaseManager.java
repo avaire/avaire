@@ -42,7 +42,7 @@ public class DatabaseManager {
 
     public Database getConnection() throws SQLException, DatabaseException {
         if (connection == null) {
-            switch (orion.config.getDatabase().getType().toLowerCase()) {
+            switch (orion.getConfig().getDatabase().getType().toLowerCase()) {
                 case "mysql":
                     connection = new MySQL(this);
                     break;

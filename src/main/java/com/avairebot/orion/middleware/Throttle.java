@@ -16,7 +16,7 @@ public class Throttle extends Middleware {
     @Override
     public boolean handle(Message message, MiddlewareStack stack, String... args) {
         if (args.length < 3) {
-            orion.logger.warn(String.format(
+            orion.getLogger().warn(String.format(
                 "\"%s\" is parsing invalid amount of arguments to the throttle middleware, 3 arguments are required.", stack.getCommand()
             ));
             return stack.next();
@@ -30,7 +30,7 @@ public class Throttle extends Middleware {
 
             String fingerprint = type.generateCacheString(message, stack);
 
-            CacheItem item = orion.cache.getRaw(fingerprint);
+            CacheItem item = orion.getCache().getRaw(fingerprint);
             if (item == null) {
                 item = new CacheItem(fingerprint, 0, -1);
             }
@@ -45,11 +45,11 @@ public class Throttle extends Middleware {
             }
 
             if (stack.next()) {
-                orion.cache.put(fingerprint, ++attempts, decaySeconds);
+                orion.getCache().put(fingerprint, ++attempts, decaySeconds);
             }
 
         } catch (NumberFormatException e) {
-            orion.logger.warn(String.format(
+            orion.getLogger().warn(String.format(
                 "Invalid integers given to throttle command by \"%s\", args: (%s, %s)", stack.getCommand().getName(), args[1], args[2]
             ));
         }

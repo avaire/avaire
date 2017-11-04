@@ -76,7 +76,7 @@ public abstract class Database implements DatabaseConnection {
      */
     public final boolean close() throws SQLException {
         if (connection == null) {
-            dbm.getOrion().logger.warn("Database - Could not close connection, it is null.");
+            dbm.getOrion().getLogger().warn("Database - Could not close connection, it is null.");
             return false;
         }
 
@@ -85,7 +85,7 @@ public abstract class Database implements DatabaseConnection {
 
             return true;
         } catch (SQLException e) {
-            dbm.getOrion().logger.warn("Database - Could not close connection, SQLException: " + e.getMessage());
+            dbm.getOrion().getLogger().warn("Database - Could not close connection, SQLException: " + e.getMessage());
         }
         return false;
     }

@@ -128,7 +128,7 @@ public class RankCommand extends Command {
         return CompletableFuture.supplyAsync(() -> {
             try {
                 PlayerTransformer player = PlayerController.fetchPlayer(orion, message, author);
-                DataRow data = orion.database.newQueryBuilder(Constants.PLAYER_EXPERIENCE_TABLE_NAME)
+                DataRow data = orion.getDatabase().newQueryBuilder(Constants.PLAYER_EXPERIENCE_TABLE_NAME)
                     .selectRaw("sum(`experience`) - (count(`user_id`) * 100) as `total`")
                     .where("user_id", author.getId())
                     .get().first();
@@ -144,8 +144,8 @@ public class RankCommand extends Command {
     }
 
     private String getScore(Message message, String userId) throws SQLException {
-        if (orion.cache.getAdapter(CacheType.MEMORY).has(cacheToken + message.getGuild().getId())) {
-            Collection users = (Collection) orion.cache.getAdapter(CacheType.MEMORY).get(cacheToken + message.getGuild().getId());
+        if (orion.getCache().getAdapter(CacheType.MEMORY).has(cacheToken + message.getGuild().getId())) {
+            Collection users = (Collection) orion.getCache().getAdapter(CacheType.MEMORY).get(cacheToken + message.getGuild().getId());
             String score = "Unranked";
 
             for (int i = 0; i < users.size(); i++) {
@@ -158,8 +158,8 @@ public class RankCommand extends Command {
             return score;
         }
 
-        orion.cache.getAdapter(CacheType.MEMORY).put(cacheToken + message.getGuild().getId(),
-            orion.database.newQueryBuilder(Constants.PLAYER_EXPERIENCE_TABLE_NAME)
+        orion.getCache().getAdapter(CacheType.MEMORY).put(cacheToken + message.getGuild().getId(),
+            orion.getDatabase().newQueryBuilder(Constants.PLAYER_EXPERIENCE_TABLE_NAME)
                 .select("user_id as id")
                 .orderBy("experience", "desc")
                 .where("guild_id", message.getGuild().getId())

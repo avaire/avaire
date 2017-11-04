@@ -54,7 +54,7 @@ public class RipCommand extends Command {
         Statistics.addRespects();
 
         try {
-            orion.database.newQueryBuilder(Constants.STATISTICS_TABLE_NAME)
+            orion.getDatabase().newQueryBuilder(Constants.STATISTICS_TABLE_NAME)
                 .update(statement -> statement.setRaw("respects", "`respects` + 1"));
         } catch (SQLException ex) {
             return false;
@@ -73,7 +73,7 @@ public class RipCommand extends Command {
 
     private int getTotalRespects() {
         try {
-            return orion.database.newQueryBuilder(Constants.STATISTICS_TABLE_NAME).get().first()
+            return orion.getDatabase().newQueryBuilder(Constants.STATISTICS_TABLE_NAME).get().first()
                 .getInt("respects", Statistics.getRespects()) + 1;
         } catch (SQLException e) {
             e.printStackTrace();

@@ -77,13 +77,13 @@ public class Migrations {
             migration.getMigration().up(dbm.getSchema());
             updateRemoteMigrationBatchValue(migration, 1);
 
-            dbm.getOrion().logger.info(String.format("Migration: Created \"%s\"", migration.getName()));
+            dbm.getOrion().getLogger().info(String.format("Migration: Created \"%s\"", migration.getName()));
 
             ranMigrations = true;
         }
 
         if (!ranMigrations) {
-            dbm.getOrion().logger.info("Migration: There were nothing to migrate");
+            dbm.getOrion().getLogger().info("Migration: There were nothing to migrate");
         }
 
         return ranMigrations;
@@ -117,13 +117,13 @@ public class Migrations {
             migration.getMigration().down(dbm.getSchema());
             updateRemoteMigrationBatchValue(migration, 0);
 
-            dbm.getOrion().logger.info(String.format("Migration: Rolled back \"%s\"", migration.getName()));
+            dbm.getOrion().getLogger().info(String.format("Migration: Rolled back \"%s\"", migration.getName()));
 
             ranMigrations = true;
         }
 
         if (!ranMigrations) {
-            dbm.getOrion().logger.info("Migration: There were nothing to rollback");
+            dbm.getOrion().getLogger().info("Migration: There were nothing to rollback");
         }
 
         return ranMigrations;
@@ -163,13 +163,13 @@ public class Migrations {
             migration.getMigration().down(dbm.getSchema());
             updateRemoteMigrationBatchValue(migration, 0);
 
-            dbm.getOrion().logger.info(String.format("Migration: Rolled back \"%s\"", migration.getName()));
+            dbm.getOrion().getLogger().info(String.format("Migration: Rolled back \"%s\"", migration.getName()));
 
             ranMigrations = true;
         }
 
         if (!ranMigrations) {
-            dbm.getOrion().logger.info("Migration: There were nothing to rollback");
+            dbm.getOrion().getLogger().info("Migration: There were nothing to rollback");
         }
 
         return ranMigrations;
@@ -211,7 +211,7 @@ public class Migrations {
         });
 
         if (created) {
-            dbm.getOrion().logger.info("Migration table created successfully");
+            dbm.getOrion().getLogger().info("Migration table created successfully");
         }
     }
 

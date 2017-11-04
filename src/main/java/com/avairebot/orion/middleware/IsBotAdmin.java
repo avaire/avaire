@@ -13,7 +13,7 @@ public class IsBotAdmin extends Middleware {
 
     @Override
     public boolean handle(Message message, MiddlewareStack stack, String... args) {
-        if (!orion.config.getBotAccess().contains(message.getAuthor().getId())) {
+        if (!orion.getConfig().getBotAccess().contains(message.getAuthor().getId())) {
             MessageFactory.makeError(message, ":warning: You must be a bot administrator to use this command!").queue();
             return false;
         }

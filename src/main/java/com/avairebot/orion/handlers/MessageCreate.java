@@ -68,8 +68,8 @@ public class MessageCreate extends EventHandler {
                     return;
                 }
 
-                if (orion.intelligenceManager.isEnabled()) {
-                    orion.intelligenceManager.request(event.getMessage(), event.getMessage().getContent());
+                if (orion.getIntelligenceManager().isEnabled()) {
+                    orion.getIntelligenceManager().request(event.getMessage(), event.getMessage().getContent());
                     return;
                 }
             }

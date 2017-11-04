@@ -72,7 +72,7 @@ public class LevelCommand extends Command {
         }
 
         try {
-            orion.database.newQueryBuilder(Constants.GUILD_TABLE_NAME)
+            orion.getDatabase().newQueryBuilder(Constants.GUILD_TABLE_NAME)
                 .andWhere("id", message.getGuild().getId())
                 .update(statement -> statement.set("levels", guildTransformer.isLevels()));
 
@@ -87,7 +87,7 @@ public class LevelCommand extends Command {
                 .set("status", guildTransformer.isLevels() ? "Enabled" : "Disabled")
                 .queue();
         } catch (SQLException ex) {
-            orion.logger.fatal(ex);
+            orion.getLogger().fatal(ex);
 
             MessageFactory.makeError(message, "Failed to save the guild settings: " + ex.getMessage()).queue();
             return false;

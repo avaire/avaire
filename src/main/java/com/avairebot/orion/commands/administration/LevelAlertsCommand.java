@@ -85,7 +85,7 @@ public class LevelAlertsCommand extends Command {
         guildTransformer.setLevelChannel(channelId);
 
         try {
-            orion.database.newQueryBuilder(Constants.GUILD_TABLE_NAME)
+            orion.getDatabase().newQueryBuilder(Constants.GUILD_TABLE_NAME)
                 .where("id", guildTransformer.getId())
                 .update(statement -> statement
                     .set("level_alerts", guildTransformer.isLevelAlerts())
@@ -99,7 +99,7 @@ public class LevelAlertsCommand extends Command {
 
             return true;
         } catch (SQLException ex) {
-            orion.logger.fatal(ex);
+            orion.getLogger().fatal(ex);
 
             MessageFactory.makeError(message, "Failed to save the guild settings: " + ex.getMessage()).queue();
             return false;

@@ -121,7 +121,7 @@ public class ChangePrefixCommand extends Command {
     }
 
     private void updateGuildPrefixes(Message message, GuildTransformer transformer) throws SQLException {
-        orion.database.newQueryBuilder(Constants.GUILD_TABLE_NAME)
+        orion.getDatabase().newQueryBuilder(Constants.GUILD_TABLE_NAME)
             .where("id", message.getGuild().getId())
             .update(statement -> {
                 statement.set("prefixes", new Gson().toJson(transformer.getPrefixes()));

@@ -76,10 +76,10 @@ public class LevelUtil {
             player.getUserId()
         );
 
-        if (orion.cache.getAdapter(CacheType.MEMORY).has(cacheToken)) {
+        if (orion.getCache().getAdapter(CacheType.MEMORY).has(cacheToken)) {
             return;
         }
-        orion.cache.getAdapter(CacheType.MEMORY).put(cacheToken, 0, 60);
+        orion.getCache().getAdapter(CacheType.MEMORY).put(cacheToken, 0, 60);
 
         giveExperience(orion, event.getMessage(), guild, player);
     }
@@ -133,7 +133,7 @@ public class LevelUtil {
         player.incrementExperienceBy(amount);
 
         try {
-            orion.database.newQueryBuilder(Constants.PLAYER_EXPERIENCE_TABLE_NAME)
+            orion.getDatabase().newQueryBuilder(Constants.PLAYER_EXPERIENCE_TABLE_NAME)
                 .where("user_id", player.getUserId())
                 .andWhere("guild_id", player.getGuildId())
                 .update(statement -> statement.set("experience", player.getExperience()));

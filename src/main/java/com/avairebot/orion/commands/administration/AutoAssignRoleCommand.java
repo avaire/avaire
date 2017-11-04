@@ -103,7 +103,7 @@ public class AutoAssignRoleCommand extends Command {
                 .queue();
         } catch (SQLException e) {
             e.printStackTrace();
-            orion.logger.fatal(e);
+            orion.getLogger().fatal(e);
         }
         return true;
     }
@@ -111,14 +111,14 @@ public class AutoAssignRoleCommand extends Command {
     private boolean disableAutoRole(Message message, GuildTransformer transformer) {
         try {
             transformer.setAutorole(null);
-            orion.database.newQueryBuilder(Constants.GUILD_TABLE_NAME)
+            orion.getDatabase().newQueryBuilder(Constants.GUILD_TABLE_NAME)
                 .where("id", message.getGuild().getId())
                 .update(statement -> statement.set("autorole", null));
 
             MessageFactory.makeWarning(message, ":user **Auto assign role** on user join is now **disabled**.").queue();
         } catch (SQLException e) {
             e.printStackTrace();
-            orion.logger.fatal(e);
+            orion.getLogger().fatal(e);
         }
 
         return true;
@@ -135,7 +135,7 @@ public class AutoAssignRoleCommand extends Command {
                 updateAutorole(transformer, message, null);
             } catch (SQLException e) {
                 e.printStackTrace();
-                orion.logger.fatal(e);
+                orion.getLogger().fatal(e);
             }
             return MessageFactory.makeWarning(message, ":user **Auto assign role** on user join is currently **disabled**.");
         }
@@ -146,7 +146,7 @@ public class AutoAssignRoleCommand extends Command {
 
     private void updateAutorole(GuildTransformer transformer, Message message, String value) throws SQLException {
         transformer.setAutorole(value);
-        orion.database.newQueryBuilder(Constants.GUILD_TABLE_NAME)
+        orion.getDatabase().newQueryBuilder(Constants.GUILD_TABLE_NAME)
             .where("id", message.getGuild().getId())
             .update(statement -> statement.set("autorole", value));
     }

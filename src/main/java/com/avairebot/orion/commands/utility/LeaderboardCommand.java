@@ -99,16 +99,16 @@ public class LeaderboardCommand extends Command {
     }
 
     private Collection loadTop100From(Message message) {
-        return (Collection) orion.cache.getAdapter(CacheType.MEMORY).remember("database-xp-leaderboard." + message.getGuild().getId(), 60, () -> {
+        return (Collection) orion.getCache().getAdapter(CacheType.MEMORY).remember("database-xp-leaderboard." + message.getGuild().getId(), 60, () -> {
             try {
-                return orion.database.newQueryBuilder(Constants.PLAYER_EXPERIENCE_TABLE_NAME)
+                return orion.getDatabase().newQueryBuilder(Constants.PLAYER_EXPERIENCE_TABLE_NAME)
                     .where("guild_id", message.getGuild().getId())
                     .orderBy("experience", "desc")
                     .take(100)
                     .get();
             } catch (SQLException e) {
                 e.printStackTrace();
-                orion.logger.fatal(e);
+                orion.getLogger().fatal(e);
                 return null;
             }
         });

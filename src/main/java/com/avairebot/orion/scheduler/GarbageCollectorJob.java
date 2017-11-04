@@ -13,7 +13,7 @@ public class GarbageCollectorJob extends Job {
 
     @Override
     public void run() {
-        MemoryAdapter adapter = (MemoryAdapter) orion.cache.getAdapter(CacheType.MEMORY);
+        MemoryAdapter adapter = (MemoryAdapter) orion.getCache().getAdapter(CacheType.MEMORY);
 
         for (String key : adapter.getCacheKeys()) {
             if (!adapter.has(key)) {

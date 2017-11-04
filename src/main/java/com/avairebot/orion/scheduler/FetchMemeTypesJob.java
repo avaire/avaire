@@ -37,7 +37,7 @@ public class FetchMemeTypesJob extends Job {
 
                 }
 
-                orion.cache.getAdapter(CacheType.FILE).forever("meme.types", cache);
+                orion.getCache().getAdapter(CacheType.FILE).forever("meme.types", cache);
             });
 
     }

@@ -170,7 +170,7 @@ public class MemeCommand extends Command {
     }
 
     private void loadMemesIntoMemory() {
-        Map<String, Map<String, String>> cachedMemes = (Map<String, Map<String, String>>) orion.cache.getAdapter(CacheType.FILE).get("meme.types");
+        Map<String, Map<String, String>> cachedMemes = (Map<String, Map<String, String>>) orion.getCache().getAdapter(CacheType.FILE).get("meme.types");
         List<String> keys = new ArrayList<>(cachedMemes.keySet());
         Collections.sort(keys);
 

@@ -97,9 +97,9 @@ public class GlobalLeaderboardCommand extends Command {
     }
 
     private Collection loadTop100From() {
-        return (Collection) orion.cache.getAdapter(CacheType.MEMORY).remember("database-xp-leaderboard.global", 300, () -> {
+        return (Collection) orion.getCache().getAdapter(CacheType.MEMORY).remember("database-xp-leaderboard.global", 300, () -> {
             try {
-                return orion.database.query("SELECT " +
+                return orion.getDatabase().query("SELECT " +
                     "`user_id`, `username`, `discriminator`, sum(`experience`) - (count(`user_id`) * 100) as `total` " +
                     "FROM `experiences` " +
                     "GROUP BY `user_id` " +
@@ -108,7 +108,7 @@ public class GlobalLeaderboardCommand extends Command {
                 );
             } catch (SQLException e) {
                 e.printStackTrace();
-                orion.logger.fatal(e);
+                orion.getLogger().fatal(e);
                 return null;
             }
         });

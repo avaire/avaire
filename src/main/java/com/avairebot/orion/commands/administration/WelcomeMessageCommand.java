@@ -67,7 +67,7 @@ public class WelcomeMessageCommand extends Command {
         channelTransformer.getWelcome().setMessage(args.length == 0 ? null : String.join(" ", args));
 
         try {
-            orion.database.newQueryBuilder(Constants.GUILD_TABLE_NAME)
+            orion.getDatabase().newQueryBuilder(Constants.GUILD_TABLE_NAME)
                 .andWhere("id", message.getGuild().getId())
                 .update(statement -> statement.set("channels", guildTransformer.channelsToJson()));
 
@@ -77,7 +77,7 @@ public class WelcomeMessageCommand extends Command {
                     "back to the default."
                 ).queue();
         } catch (SQLException ex) {
-            orion.logger.fatal(ex);
+            orion.getLogger().fatal(ex);
 
             MessageFactory.makeError(message, "Failed to save the guild settings: " + ex.getMessage()).queue();
             return false;
