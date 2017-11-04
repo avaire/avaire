@@ -13,6 +13,7 @@ import com.avairebot.orion.factories.MessageFactory;
 import com.avairebot.orion.middleware.MiddlewareStack;
 import com.avairebot.orion.utilities.ArrayUtil;
 import com.avairebot.orion.utilities.LevelUtil;
+import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 import java.awt.*;
@@ -52,6 +53,10 @@ public class MessageCreate extends EventHandler {
                 LevelUtil.rewardPlayer(orion, event, properties.getGuild(), properties.getPlayer());
             }
 
+            if (!canWriteToChannel(event)) {
+                return;
+            }
+
             CommandContainer container = CommandHandler.getCommand(orion, event.getMessage(), event.getMessage().getRawContent());
             if (container != null && canExecuteCommand(event, container)) {
                 Statistics.addCommands();
@@ -78,6 +83,15 @@ public class MessageCreate extends EventHandler {
                 sendTagInformationMessage(event);
             }
         });
+    }
+
+    private boolean canWriteToChannel(MessageReceivedEvent event) {
+        if (!event.getChannelType().isGuild()) {
+            return true;
+        }
+        return event.getMessage().getGuild().getSelfMember().hasPermission(
+            event.getMessage().getTextChannel(), Permission.MESSAGE_WRITE
+        );
     }
 
     private boolean canExecuteCommand(MessageReceivedEvent event, CommandContainer container) {
