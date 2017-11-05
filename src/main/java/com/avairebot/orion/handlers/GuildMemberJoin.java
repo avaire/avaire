@@ -7,6 +7,7 @@ import com.avairebot.orion.database.transformers.ChannelTransformer;
 import com.avairebot.orion.database.transformers.GuildTransformer;
 import com.avairebot.orion.permissions.Permissions;
 import com.avairebot.orion.utilities.StringReplacementUtil;
+import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.guild.member.GuildMemberJoinEvent;
@@ -30,6 +31,10 @@ public class GuildMemberJoin extends EventHandler {
             if (channelTransformer.getWelcome().isEnabled()) {
                 TextChannel textChannel = event.getGuild().getTextChannelById(channelTransformer.getId());
                 if (textChannel == null) {
+                    continue;
+                }
+
+                if (!event.getGuild().getSelfMember().hasPermission(textChannel, Permission.MESSAGE_READ, Permission.MESSAGE_WRITE)) {
                     continue;
                 }
 

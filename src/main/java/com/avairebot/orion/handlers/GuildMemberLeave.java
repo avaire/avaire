@@ -6,6 +6,7 @@ import com.avairebot.orion.database.controllers.GuildController;
 import com.avairebot.orion.database.transformers.ChannelTransformer;
 import com.avairebot.orion.database.transformers.GuildTransformer;
 import com.avairebot.orion.utilities.StringReplacementUtil;
+import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.guild.member.GuildMemberLeaveEvent;
 
@@ -28,6 +29,10 @@ public class GuildMemberLeave extends EventHandler {
             if (channelTransformer.getGoodbye().isEnabled()) {
                 TextChannel textChannel = event.getGuild().getTextChannelById(channelTransformer.getId());
                 if (textChannel == null) {
+                    continue;
+                }
+
+                if (!event.getGuild().getSelfMember().hasPermission(textChannel, Permission.MESSAGE_READ, Permission.MESSAGE_WRITE)) {
                     continue;
                 }
 
