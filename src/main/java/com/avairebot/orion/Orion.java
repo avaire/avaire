@@ -134,6 +134,7 @@ public class Orion {
         CommandHandler.register(new BanCommand(this));
         CommandHandler.register(new ChangePrefixCommand(this));
         CommandHandler.register(new ChannelIdCommand(this));
+        CommandHandler.register(new ChannelInfoCommand(this));
         CommandHandler.register(new GoodbyeCommand(this));
         CommandHandler.register(new GoodbyeMessageCommand(this));
         CommandHandler.register(new IAmCommand(this));
