@@ -11,7 +11,6 @@ import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.Role;
 
 import java.awt.*;
-import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -54,8 +53,8 @@ public class UserInfoCommand extends Command {
             member = message.getGuild().getMember(message.getMentionedUsers().get(0));
         }
 
-        Carbon joinedDate = getGuildCreationTimeFrom(member.getJoinDate());
-        Carbon createdDate = getGuildCreationTimeFrom(member.getUser().getCreationTime());
+        Carbon joinedDate = Carbon.createFromOffsetDateTime(member.getJoinDate());
+        Carbon createdDate = Carbon.createFromOffsetDateTime(member.getUser().getCreationTime());
 
         EmbedBuilder builder = MessageFactory.makeEmbeddedMessage(getRoleColor(member.getRoles()),
             new MessageEmbed.Field("Username", member.getUser().getName(), true),
@@ -76,17 +75,6 @@ public class UserInfoCommand extends Command {
 
         message.getChannel().sendMessage(builder.build()).queue();
         return true;
-    }
-
-    private Carbon getGuildCreationTimeFrom(OffsetDateTime time) {
-        return Carbon.create(
-            time.getYear(),
-            time.getMonthValue(),
-            time.getDayOfMonth(),
-            time.getHour(),
-            time.getMinute(),
-            time.getSecond()
-        );
     }
 
     private String shortenDiffForHumans(Carbon carbon) {

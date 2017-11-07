@@ -10,7 +10,6 @@ import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.TextChannel;
 
-import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -52,15 +51,7 @@ public class ChannelInfoCommand extends Command {
             channel = message.getTextChannel();
         }
 
-        OffsetDateTime time = channel.getCreationTime();
-        Carbon carbon = Carbon.create(
-            time.getYear(),
-            time.getMonthValue(),
-            time.getDayOfMonth(),
-            time.getHour(),
-            time.getMinute(),
-            time.getSecond()
-        );
+        Carbon time = Carbon.createFromOffsetDateTime(channel.getCreationTime());
 
         EmbedBuilder builder = MessageFactory.makeEmbeddedMessage(MessageType.INFO.getColor(),
             new MessageEmbed.Field("ID", channel.getId(), true),
@@ -68,7 +59,7 @@ public class ChannelInfoCommand extends Command {
             new MessageEmbed.Field("Users", "" + channel.getMembers().size(), true),
             new MessageEmbed.Field("Category", getCategoryFor(channel), true),
             new MessageEmbed.Field("NSFW", channel.isNSFW() ? "ON" : "OFF", true),
-            new MessageEmbed.Field("Created At", carbon.format("EEE, dd MMM yyyy HH:mm") + "\n*About " + shortenDiffForHumans(carbon) + "*", true)
+            new MessageEmbed.Field("Created At", time.format("EEE, dd MMM yyyy HH:mm") + "\n*About " + shortenDiffForHumans(time) + "*", true)
         ).setTitle("#" + channel.getName()).setDescription("*No topic has been set for this channel*");
 
         if (channel.getTopic() != null) {

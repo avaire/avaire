@@ -4,6 +4,7 @@ import com.avairebot.orion.exceptions.InvalidFormatException;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.OffsetDateTime;
 import java.util.*;
 
 /**
@@ -19,6 +20,7 @@ import java.util.*;
  * @version 0.9.1
  */
 public final class Carbon {
+
     private static final Day GLOBAL_WEEK_START_AT = Day.MONDAY;
     private static final Day GLOBAL_WEEK_END_AT = Day.SUNDAY;
     private static final List<Day> WEEKEND_DAYS = Arrays.asList(Day.SATURDAY, Day.SUNDAY);
@@ -374,6 +376,23 @@ public final class Carbon {
     }
 
     /**
+     * Creates a new Carbon instance from the provided offset date time object.
+     *
+     * @param offsetDateTime The offset date time that the Carbon instance should be created from.
+     * @return a Carbon instance with the provided date and time.
+     */
+    public static Carbon createFromOffsetDateTime(OffsetDateTime offsetDateTime) {
+        return Carbon.create(
+            offsetDateTime.getYear(),
+            offsetDateTime.getMonthValue(),
+            offsetDateTime.getDayOfMonth(),
+            offsetDateTime.getHour(),
+            offsetDateTime.getMinute(),
+            offsetDateTime.getSecond()
+        );
+    }
+
+    /**
      * Creates a new Carbon instance from the provided date and time information,
      * the date and time information is provided in the form of a varargs object.
      * <p>
@@ -718,6 +737,16 @@ public final class Carbon {
 
     /**
      * Sets the month to the carbon instance.
+     *
+     * @param month the month to set
+     * @return the Carbon instance
+     */
+    public Carbon setMonth(Month month) {
+        return set(Calendar.MONTH, month.getId());
+    }
+
+    /**
+     * Sets the month to the carbon instance.
      * <p>
      * This is a calendar-specific value. The first month of the year in the
      * Gregorian and Julian calendars is <code>JANUARY</code> which is 0;
@@ -741,16 +770,6 @@ public final class Carbon {
      */
     public Carbon setMonth(int month) {
         return set(Calendar.MONTH, month - 1);
-    }
-
-    /**
-     * Sets the month to the carbon instance.
-     *
-     * @param month the month to set
-     * @return the Carbon instance
-     */
-    public Carbon setMonth(Month month) {
-        return set(Calendar.MONTH, month.getId());
     }
 
     /**
