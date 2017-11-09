@@ -26,7 +26,7 @@ public class Require extends Middleware {
 
         if (args.length < 2) {
             orion.getLogger().warn(String.format(
-                "\"%s\" is parsing invalid amount of arguments to the throttle middleware, 2 arguments are required.", stack.getCommand()
+                "\"%s\" is parsing invalid amount of arguments to the require middleware, 2 arguments are required.", stack.getCommand()
             ));
             return stack.next();
         }
