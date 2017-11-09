@@ -8,6 +8,7 @@ import java.util.HashMap;
 
 public class ChannelTransformer extends Transformer {
 
+    private final BooleanModule ai = new BooleanModule();
     private final MessageModule welcome = new MessageModule();
     private final MessageModule goodbye = new MessageModule();
 
@@ -15,6 +16,12 @@ public class ChannelTransformer extends Transformer {
         super(data);
 
         if (hasData()) {
+            if (data.get("ai", null) != null) {
+                DataRow aiData = new DataRow((LinkedTreeMap<String, Object>) data.get("ai"));
+
+                ai.setEnabled(aiData.getBoolean("enabled", true));
+            }
+
             if (data.get("welcome", null) != null) {
                 DataRow welcomeData = new DataRow((LinkedTreeMap<String, Object>) data.get("welcome"));
 
@@ -39,6 +46,10 @@ public class ChannelTransformer extends Transformer {
         return data.getString("id", "invalid-id");
     }
 
+    public BooleanModule getAI() {
+        return ai;
+    }
+
     public MessageModule getWelcome() {
         return welcome;
     }
@@ -50,6 +61,7 @@ public class ChannelTransformer extends Transformer {
     public HashMap<String, Object> toMap() {
         HashMap<String, Object> objects = new HashMap<>();
 
+        objects.put("ai", ai.toMap());
         objects.put("welcome", welcome.toMap());
         objects.put("goodbye", goodbye.toMap());
 
@@ -81,6 +93,26 @@ public class ChannelTransformer extends Transformer {
 
             objects.put("enabled", enabled);
             objects.put("message", message);
+
+            return objects;
+        }
+    }
+
+    public class BooleanModule {
+        private boolean enabled = false;
+
+        public boolean isEnabled() {
+            return enabled;
+        }
+
+        public void setEnabled(boolean enabled) {
+            this.enabled = enabled;
+        }
+
+        HashMap<String, Object> toMap() {
+            HashMap<String, Object> objects = new HashMap<>();
+
+            objects.put("enabled", enabled);
 
             return objects;
         }

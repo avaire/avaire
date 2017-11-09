@@ -7,6 +7,7 @@ import com.avairebot.orion.commands.CommandHandler;
 import com.avairebot.orion.contracts.handlers.EventHandler;
 import com.avairebot.orion.database.controllers.GuildController;
 import com.avairebot.orion.database.controllers.PlayerController;
+import com.avairebot.orion.database.transformers.ChannelTransformer;
 import com.avairebot.orion.database.transformers.GuildTransformer;
 import com.avairebot.orion.database.transformers.PlayerTransformer;
 import com.avairebot.orion.factories.MessageFactory;
@@ -74,6 +75,9 @@ public class MessageCreate extends EventHandler {
                 }
 
                 if (orion.getIntelligenceManager().isEnabled()) {
+                    if (!isAIEnabledForChannel(event, properties.getGuild())) {
+                        return;
+                    }
                     orion.getIntelligenceManager().request(event.getMessage(), event.getMessage().getContent());
                     return;
                 }
@@ -117,6 +121,15 @@ public class MessageCreate extends EventHandler {
     private boolean isSingleBotMention(String rawContent) {
         return rawContent.equals("<@" + orion.getJDA().getSelfUser().getId() + ">") ||
             rawContent.equals("<!@" + orion.getJDA().getSelfUser().getId() + ">");
+    }
+
+    private boolean isAIEnabledForChannel(MessageReceivedEvent event, GuildTransformer transformer) {
+        if (transformer == null) {
+            return true;
+        }
+
+        ChannelTransformer channel = transformer.getChannel(event.getChannel().getId());
+        return channel == null || channel.getAI().isEnabled();
     }
 
     private void sendTagInformationMessage(MessageReceivedEvent event) {
