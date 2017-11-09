@@ -211,6 +211,7 @@ public class Orion {
 
         // Utility
         CommandHandler.register(new DuckDuckGoCommand(this));
+        CommandHandler.register(new FeedbackCommand(this));
         CommandHandler.register(new GlobalLeaderboardCommand(this));
         CommandHandler.register(new PingCommand(this));
         CommandHandler.register(new LeaderboardCommand(this));
