@@ -81,7 +81,7 @@ public class VolumeCommand extends Command {
 
             musicManager.getPlayer().setVolume(newVolume);
             MessageFactory.makeSuccess(message, "\uD83C\uDFB5 Volume set to **:volume** volume\n:bar")
-                .set("volume", volume)
+                .set("volume", newVolume)
                 .set("bar", getVolumeString(newVolume, 18))
                 .queue();
 
