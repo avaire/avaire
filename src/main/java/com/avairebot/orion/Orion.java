@@ -172,6 +172,7 @@ public class Orion {
         CommandHandler.register(new SayCommand(this));
         CommandHandler.register(new UrbanDictionaryCommand(this));
         CommandHandler.register(new VoteSkipCommand(this));
+        CommandHandler.register(new XKCDCommand(this));
 
         // Help/Support
         CommandHandler.register(new HelpCommand(this));
