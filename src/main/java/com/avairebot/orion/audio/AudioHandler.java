@@ -77,7 +77,7 @@ public class AudioHandler {
             return VoiceConnectStatus.MISSING_PERMISSIONS;
         }
 
-        if (!permissions.contains(Permission.VOICE_MOVE_OTHERS) && channel.getUserLimit() <= channel.getMembers().size()) {
+        if (channel.getUserLimit() > 0 && !permissions.contains(Permission.VOICE_MOVE_OTHERS) && channel.getUserLimit() <= channel.getMembers().size()) {
             return VoiceConnectStatus.USER_LIMIT;
         }
 
