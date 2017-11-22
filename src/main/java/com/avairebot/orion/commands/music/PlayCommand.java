@@ -8,6 +8,7 @@ import com.avairebot.orion.contracts.commands.Command;
 import com.avairebot.orion.factories.MessageFactory;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Message;
 
 import java.net.MalformedURLException;
@@ -66,7 +67,9 @@ public class PlayCommand extends Command {
         }
 
         AudioHandler.loadAndPlay(message, buildTrackRequestString(args)).handle((Consumer<TrackResponse>) (TrackResponse response) -> {
-            message.delete().reason("Song request, removing song to cleanup chat").queue();
+            if (message.getGuild().getSelfMember().hasPermission(message.getTextChannel(), Permission.MESSAGE_MANAGE)) {
+                message.delete().reason("Song request, removing song to cleanup chat").queue();
+            }
 
             if (response.getMusicManager().getPlayer().isPaused()) {
                 response.getMusicManager().getPlayer().setPaused(false);

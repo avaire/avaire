@@ -26,7 +26,7 @@ public class TrackRequest extends Future {
     }
 
     @Override
-    public void handle(Consumer success, Consumer<Throwable> failure) {
+    public void handle(final Consumer success, final Consumer<Throwable> failure) {
         AudioHandler.AUDIO_PLAYER_MANAGER.loadItemOrdered(musicManager, trackUrl, new AudioLoadResultHandler() {
             @Override
             public void trackLoaded(AudioTrack track) {
