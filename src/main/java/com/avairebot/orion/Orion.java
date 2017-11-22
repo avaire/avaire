@@ -215,10 +215,11 @@ public class Orion {
         CommandHandler.register(new ExpandUrlCommand(this));
         CommandHandler.register(new FeedbackCommand(this));
         CommandHandler.register(new GlobalLeaderboardCommand(this));
-        CommandHandler.register(new PingCommand(this));
-        CommandHandler.register(new LeaderboardCommand(this));
-        CommandHandler.register(new RankCommand(this));
         CommandHandler.register(new InviteCommand(this));
+        CommandHandler.register(new IPInfoCommand(this));
+        CommandHandler.register(new LeaderboardCommand(this));
+        CommandHandler.register(new PingCommand(this));
+        CommandHandler.register(new RankCommand(this));
         CommandHandler.register(new SourceCommand(this));
         CommandHandler.register(new StatsCommand(this));
 
