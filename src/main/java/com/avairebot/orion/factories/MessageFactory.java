@@ -16,28 +16,28 @@ import java.util.Arrays;
 public class MessageFactory {
 
     public static PlaceholderMessage makeError(Message jdaMessage, String message) {
-        return new PlaceholderMessage(jdaMessage.getTextChannel(),
+        return new PlaceholderMessage(jdaMessage.getChannel(),
             createEmbeddedBuilder().setColor(MessageType.ERROR.getColor()),
             PlaceholderType.ALL.parse(jdaMessage, message)
         );
     }
 
     public static PlaceholderMessage makeWarning(Message jdaMessage, String message) {
-        return new PlaceholderMessage(jdaMessage.getTextChannel(),
+        return new PlaceholderMessage(jdaMessage.getChannel(),
             createEmbeddedBuilder().setColor(MessageType.WARNING.getColor()),
             PlaceholderType.ALL.parse(jdaMessage, message)
         );
     }
 
     public static PlaceholderMessage makeSuccess(Message jdaMessage, String message) {
-        return new PlaceholderMessage(jdaMessage.getTextChannel(),
+        return new PlaceholderMessage(jdaMessage.getChannel(),
             createEmbeddedBuilder().setColor(MessageType.SUCCESS.getColor()),
             PlaceholderType.ALL.parse(jdaMessage, message)
         );
     }
 
     public static PlaceholderMessage makeInfo(Message jdaMessage, String message) {
-        return new PlaceholderMessage(jdaMessage.getTextChannel(),
+        return new PlaceholderMessage(jdaMessage.getChannel(),
             createEmbeddedBuilder().setColor(MessageType.INFO.getColor()),
             PlaceholderType.ALL.parse(jdaMessage, message)
         );

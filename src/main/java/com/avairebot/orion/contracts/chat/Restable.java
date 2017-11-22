@@ -1,8 +1,8 @@
 package com.avairebot.orion.contracts.chat;
 
 import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.MessageEmbed;
-import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.requests.RestAction;
 
 import java.util.concurrent.ScheduledExecutorService;
@@ -12,9 +12,9 @@ import java.util.function.Consumer;
 
 public abstract class Restable {
 
-    protected final TextChannel channel;
+    protected final MessageChannel channel;
 
-    public Restable(TextChannel channel) {
+    public Restable(MessageChannel channel) {
         this.channel = channel;
     }
 

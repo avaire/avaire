@@ -2,6 +2,7 @@ package com.avairebot.orion.chat;
 
 import com.avairebot.orion.contracts.chat.Restable;
 import net.dv8tion.jda.core.EmbedBuilder;
+import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.TextChannel;
 
@@ -10,7 +11,7 @@ public class PlaceholderMessage extends Restable {
     private EmbedBuilder builder;
     private String message;
 
-    public PlaceholderMessage(TextChannel channel, EmbedBuilder builder, String message) {
+    public PlaceholderMessage(MessageChannel channel, EmbedBuilder builder, String message) {
         super(channel);
 
         this.builder = builder;
