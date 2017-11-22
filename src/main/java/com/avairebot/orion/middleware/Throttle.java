@@ -83,21 +83,28 @@ public class Throttle extends Middleware {
         }
 
         public String generateCacheString(Message message, MiddlewareStack stack) {
+            if (!this.equals(ThrottleType.USER) && message.getGuild() == null) {
+                return USER.generateCacheString(message, stack);
+            }
+
             switch (this) {
                 case USER:
                     return String.format(cache,
-                        message.getGuild().getId(),
+                        message.getGuild() == null ? "private" : message.getGuild().getId(),
                         message.getAuthor().getId(),
                         stack.getCommand().getName());
+
                 case CHANNEL:
                     return String.format(cache,
                         message.getGuild().getId(),
                         message.getChannel().getId(),
                         stack.getCommand().getName());
+
                 case GUILD:
                     return String.format(cache,
                         message.getGuild().getId(),
                         stack.getCommand().getName());
+
                 default:
                     return ThrottleType.USER.generateCacheString(message, stack);
             }
