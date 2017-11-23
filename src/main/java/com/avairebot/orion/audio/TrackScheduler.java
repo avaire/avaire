@@ -96,11 +96,12 @@ public class TrackScheduler extends AudioEventAdapter {
         return audioTrackContainer;
     }
 
-    protected void sendNowPlaying(AudioTrackContainer container) {
-        MessageFactory.makeSuccess(manager.getLastActiveMessage(), "Now playing: [:title](:link)\n`:duration` - Requested by :user")
+    private void sendNowPlaying(AudioTrackContainer container) {
+        MessageFactory.makeSuccess(manager.getLastActiveMessage(), "Now playing: [:title](:link)\n`:duration` - Requested by :requester")
             .set("title", container.getAudioTrack().getInfo().title)
             .set("link", container.getAudioTrack().getInfo().uri)
             .set("duration", container.getFormattedDuration())
+            .set("requester", container.getRequester().getAsMention())
             .queue();
     }
 }
