@@ -5,6 +5,7 @@ import com.avairebot.orion.audio.AudioHandler;
 import com.avairebot.orion.audio.GuildMusicManager;
 import com.avairebot.orion.contracts.commands.Command;
 import com.avairebot.orion.factories.MessageFactory;
+import net.dv8tion.jda.core.entities.GuildVoiceState;
 import net.dv8tion.jda.core.entities.Message;
 
 import java.util.Arrays;
@@ -54,6 +55,10 @@ public class VoteSkipCommand extends Command {
 
         if (musicManager.getPlayer().getPlayingTrack() == null) {
             return sendErrorMessage(message, "Nothing to skip, request music first with `!play`");
+        }
+
+        if (!canVoteSkip(message)) {
+            return sendErrorMessage(message, "You must be connected to the same voice channel I am in to vote skip!");
         }
 
         boolean hasVotedBefore = true;
@@ -110,5 +115,12 @@ public class VoteSkipCommand extends Command {
         }
 
         return (int) Math.ceil(usersInVoiceLength / 2);
+    }
+
+    private boolean canVoteSkip(Message message) {
+        GuildVoiceState voiceState = message.getMember().getVoiceState();
+        GuildVoiceState selfVoteState = message.getGuild().getSelfMember().getVoiceState();
+
+        return voiceState.getChannel() != null && voiceState.getChannel().getId().equals(selfVoteState.getChannel().getId());
     }
 }
