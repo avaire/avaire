@@ -19,7 +19,11 @@ import com.avairebot.orion.config.MainConfiguration;
 import com.avairebot.orion.contracts.handlers.EventHandler;
 import com.avairebot.orion.database.DatabaseManager;
 import com.avairebot.orion.database.migrate.migrations.*;
+import com.avairebot.orion.exceptions.InvalidPluginException;
+import com.avairebot.orion.exceptions.InvalidPluginsPathException;
 import com.avairebot.orion.handlers.EventTypes;
+import com.avairebot.orion.plugin.PluginLoader;
+import com.avairebot.orion.plugin.PluginManager;
 import com.avairebot.orion.scheduler.*;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
@@ -41,6 +45,7 @@ public class Orion {
     private final CacheManager cache;
     private final DatabaseManager database;
     private final IntelligenceManager intelligenceManager;
+    private final PluginManager pluginManager;
 
     private final Properties properties = new Properties();
 
@@ -84,6 +89,25 @@ public class Orion {
         intelligenceManager = new IntelligenceManager(this);
         if (intelligenceManager.isEnabled()) {
             this.registerIntents();
+        }
+
+        logger.info(" - Creating plugin manager and registering plugins...");
+        pluginManager = new PluginManager(this);
+
+        try {
+            pluginManager.loadPlugins();
+
+            if (pluginManager.getPlugins().isEmpty()) {
+                logger.info(" - No plugins was found");
+            } else {
+                logger.info(String.format(" - %s plugins was loaded, invoking all plugins", pluginManager.getPlugins().size()));
+                for (PluginLoader plugin : pluginManager.getPlugins()) {
+                    plugin.invokePlugin();
+                }
+            }
+        } catch (InvalidPluginsPathException | InvalidPluginException e) {
+            e.printStackTrace();
+            System.exit(0);
         }
 
         try {
