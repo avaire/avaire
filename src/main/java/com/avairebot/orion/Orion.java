@@ -113,7 +113,7 @@ public class Orion {
             } else {
                 LOGGER.info(String.format(" - %s plugins was loaded, invoking all plugins", pluginManager.getPlugins().size()));
                 for (PluginLoader plugin : pluginManager.getPlugins()) {
-                    plugin.invokePlugin();
+                    plugin.invokePlugin(this);
                 }
             }
         } catch (InvalidPluginsPathException | InvalidPluginException e) {

@@ -19,15 +19,11 @@ import java.util.stream.Collectors;
 
 public class HelpCommand extends Command {
 
-    private final String categories;
+    private String categories;
+    private int categoryCount = -1;
 
     public HelpCommand(Orion orion) {
         super(orion);
-
-        categories = CategoryHandler.getValues().stream()
-            .map(Category::getName)
-            .sorted()
-            .collect(Collectors.joining("\n• ", "• ", "\n\n"));
     }
 
     @Override
@@ -46,7 +42,6 @@ public class HelpCommand extends Command {
             "`:command` - Shows a list of command categories.",
             "`:command <category>` - Shows a list of commands in the given category.",
             "`:command <command>` - Shows detailed information on how to use the given command."
-
         );
     }
 
@@ -85,7 +80,7 @@ public class HelpCommand extends Command {
         MessageEmbed embed = MessageFactory.createEmbeddedBuilder()
             .setColor(MessageType.INFO.getColor())
             .setTitle(":scroll: Command Categories")
-            .setDescription(categories + note)
+            .setDescription(getCategories() + note)
             .build();
 
         message.getChannel().sendMessage(embed).queue();
@@ -179,5 +174,15 @@ public class HelpCommand extends Command {
             return command;
         }
         return CommandHandler.getLazyCommand(commandString);
+    }
+
+    private String getCategories() {
+        if (CategoryHandler.getValues().size() != categoryCount) {
+            categories = CategoryHandler.getValues().stream()
+                .map(Category::getName)
+                .sorted()
+                .collect(Collectors.joining("\n• ", "• ", "\n\n"));
+        }
+        return categories;
     }
 }

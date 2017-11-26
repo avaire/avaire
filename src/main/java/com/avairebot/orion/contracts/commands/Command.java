@@ -8,6 +8,7 @@ import com.avairebot.orion.database.transformers.GuildTransformer;
 import com.avairebot.orion.factories.MessageFactory;
 import com.avairebot.orion.middleware.Middleware;
 import com.avairebot.orion.permissions.Permissions;
+import com.avairebot.orion.plugin.JavaPlugin;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Message;
 
@@ -30,6 +31,25 @@ public abstract class Command {
      * Determines if the command can be used in direct messages or not.
      */
     protected final boolean allowDM;
+
+    /**
+     * Create the given command instance by calling {@link #Command(Orion)} with the orion instance and allowDM set to true.
+     *
+     * @param plugin The plugin instance that is registering the command.
+     */
+    public Command(JavaPlugin plugin) {
+        this(plugin.getOrion());
+    }
+
+    /**
+     * Create the given command instance by calling {@link #Command(Orion, boolean)} with the orion instance.
+     *
+     * @param plugin  The plugin instance that is registering the command.
+     * @param allowDM Determines if the command can be used in DMs.
+     */
+    public Command(JavaPlugin plugin, boolean allowDM) {
+        this(plugin.getOrion(), allowDM);
+    }
 
     /**
      * Creates the given command instance by calling {@link #Command(Orion, boolean)} with allowDM set to true.
@@ -120,9 +140,13 @@ public abstract class Command {
     }
 
     /**
-     * Gets the category the command should belong to, if
+     * Gets the category the command should belong to, if null is returned
+     * the files package name will be used instead, for example:
+     * <p>
+     * com.avairebot.orion.commands.utility.PingCommand, the 2nd package from the
+     * right which in this case is utility, will be used as the category.
      *
-     * @return
+     * @return Possibly null, or the command category.
      */
     public Category getCategory() {
         return null;

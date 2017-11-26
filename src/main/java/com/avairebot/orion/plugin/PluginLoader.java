@@ -68,7 +68,8 @@ public class PluginLoader {
         return items.get("main");
     }
 
-    public void invokePlugin() {
+    public void invokePlugin(Orion orion) {
+        classLoader.getPlugin().setOrion(orion);
         classLoader.getPlugin().onEnable();
     }
 }

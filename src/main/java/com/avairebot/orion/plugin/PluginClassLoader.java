@@ -1,6 +1,5 @@
 package com.avairebot.orion.plugin;
 
-import com.avairebot.orion.contracts.plugin.JavaPlugin;
 import com.avairebot.orion.exceptions.InvalidPluginException;
 
 import java.io.File;
