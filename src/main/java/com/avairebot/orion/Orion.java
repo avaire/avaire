@@ -41,8 +41,9 @@ import java.util.Properties;
 
 public class Orion {
 
+    private static final SimpleLog LOGGER = SimpleLog.getLog("Orion");
+
     private final MainConfiguration config;
-    private final SimpleLog logger;
     private final CacheManager cache;
     private final DatabaseManager database;
     private final IntelligenceManager intelligenceManager;
@@ -53,25 +54,25 @@ public class Orion {
     private JDA jda;
 
     public Orion() throws IOException, SQLException {
-        logger = SimpleLog.getLog("Orion");
+
         properties.load(getClass().getClassLoader().getResourceAsStream("orion.properties"));
 
-        logger.info("Bootstrapping Orion v" + properties.getProperty("version"));
+        LOGGER.info("Bootstrapping Orion v" + properties.getProperty("version"));
 
         this.cache = new CacheManager(this);
 
-        logger.info(" - Loading configuration");
+        LOGGER.info(" - Loading configuration");
         ConfigurationLoader configLoader = new ConfigurationLoader();
         this.config = (MainConfiguration) configLoader.load("config.json", MainConfiguration.class);
         if (this.config == null) {
-            this.logger.fatal("Something went wrong while trying to load the configuration, exiting program...");
+            this.LOGGER.fatal("Something went wrong while trying to load the configuration, exiting program...");
             System.exit(0);
         }
 
-        logger.info(" - Registering and connecting to database");
+        LOGGER.info(" - Registering and connecting to database");
         database = new DatabaseManager(this);
 
-        logger.info(" - Registering database table migrations");
+        LOGGER.info(" - Registering database table migrations");
         database.getMigrations().register(
             new CreateGuildTableMigration(),
             new CreateGuildTypeTableMigration(),
@@ -84,7 +85,7 @@ public class Orion {
         );
         database.getMigrations().up();
 
-        logger.info(" - Registering default command categories");
+        LOGGER.info(" - Registering default command categories");
         CategoryHandler.addCategory("Administration", ".");
         CategoryHandler.addCategory("Help", ".");
         CategoryHandler.addCategory("Fun", ">");
@@ -101,16 +102,16 @@ public class Orion {
             this.registerIntents();
         }
 
-        logger.info(" - Creating plugin manager and registering plugins...");
+        LOGGER.info(" - Creating plugin manager and registering plugins...");
         pluginManager = new PluginManager(this);
 
         try {
             pluginManager.loadPlugins();
 
             if (pluginManager.getPlugins().isEmpty()) {
-                logger.info(" - No plugins was found");
+                LOGGER.info(" - No plugins was found");
             } else {
-                logger.info(String.format(" - %s plugins was loaded, invoking all plugins", pluginManager.getPlugins().size()));
+                LOGGER.info(String.format(" - %s plugins was loaded, invoking all plugins", pluginManager.getPlugins().size()));
                 for (PluginLoader plugin : pluginManager.getPlugins()) {
                     plugin.invokePlugin();
                 }
@@ -121,21 +122,21 @@ public class Orion {
         }
 
         try {
-            logger.info(" - Creating bot instance and connecting to Discord network");
+            LOGGER.info(" - Creating bot instance and connecting to Discord network");
             jda = prepareJDA().buildAsync();
         } catch (LoginException | RateLimitedException ex) {
-            this.logger.fatal("Something went wrong while trying to connect to Discord, exiting program...");
-            this.logger.fatal(ex);
+            this.LOGGER.fatal("Something went wrong while trying to connect to Discord, exiting program...");
+            this.LOGGER.fatal(ex);
             System.exit(0);
         }
     }
 
-    public MainConfiguration getConfig() {
-        return config;
+    public static SimpleLog getLogger() {
+        return LOGGER;
     }
 
-    public SimpleLog getLogger() {
-        return logger;
+    public MainConfiguration getConfig() {
+        return config;
     }
 
     public CacheManager getCache() {
@@ -159,7 +160,7 @@ public class Orion {
     }
 
     private void registerCommands() {
-        logger.info(" - Registering commands...");
+        LOGGER.info(" - Registering commands...");
 
         // Administration
         CommandHandler.register(new AddSelfAssignableRoleCommand(this));
@@ -257,11 +258,11 @@ public class Orion {
         CommandHandler.register(new SourceCommand(this));
         CommandHandler.register(new StatsCommand(this));
 
-        logger.info(String.format(" - Registered %s commands successfully!", CommandHandler.getCommands().size()));
+        LOGGER.info(String.format(" - Registered %s commands successfully!", CommandHandler.getCommands().size()));
     }
 
     private void registerJobs() {
-        logger.info(" - Registering jobs...");
+        LOGGER.info(" - Registering jobs...");
 
         ScheduleHandler.registerJob(new ChangeGameJob(this));
         ScheduleHandler.registerJob(new GithubChangesJob(this));
@@ -269,17 +270,17 @@ public class Orion {
         ScheduleHandler.registerJob(new GarbageCollectorJob(this));
         ScheduleHandler.registerJob(new ResetRespectStatisticsJob(this));
 
-        logger.info(String.format(" - Registered %s jobs successfully!", ScheduleHandler.entrySet().size()));
+        LOGGER.info(String.format(" - Registered %s jobs successfully!", ScheduleHandler.entrySet().size()));
     }
 
     private void registerIntents() {
-        logger.info(" - Registering intents...");
+        LOGGER.info(" - Registering intents...");
 
         intelligenceManager.registerIntent(new Unknown(this));
         intelligenceManager.registerIntent(new SmallTalk(this));
         intelligenceManager.registerIntent(new RequestOnlinePlayers(this));
 
-        logger.info(String.format(" - Registered %s intelligence intents successfully!", intelligenceManager.entrySet().size()));
+        LOGGER.info(String.format(" - Registered %s intelligence intents successfully!", intelligenceManager.entrySet().size()));
     }
 
     private JDABuilder prepareJDA() {
@@ -296,11 +297,11 @@ public class Orion {
                     builder.addEventListener(instance);
                 }
             } catch (InstantiationException | NoSuchMethodException | InvocationTargetException ex) {
-                this.logger.fatal("Invalid listener adapter object parsed, failed to create a new instance!");
-                this.logger.fatal(ex);
+                this.LOGGER.fatal("Invalid listener adapter object parsed, failed to create a new instance!");
+                this.LOGGER.fatal(ex);
             } catch (IllegalAccessException ex) {
-                this.logger.fatal("An attempt was made to register a event listener called " + event + " but it failed somewhere!");
-                this.logger.fatal(ex);
+                this.LOGGER.fatal("An attempt was made to register a event listener called " + event + " but it failed somewhere!");
+                this.LOGGER.fatal(ex);
             }
         }
 

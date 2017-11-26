@@ -58,7 +58,7 @@ public class GuildController {
                                 .put(cacheToken, new GuildTransformer(new DataRow(statement.getItems())), 2);
                         });
                 } catch (Exception ex) {
-                    orion.getLogger().fatal(ex);
+                    Orion.getLogger().fatal(ex);
                 }
 
                 return (GuildTransformer) orion.getCache().getAdapter(CacheType.MEMORY).get(cacheToken);
@@ -68,7 +68,7 @@ public class GuildController {
 
             return transformer;
         } catch (SQLException ex) {
-            orion.getLogger().fatal(ex);
+            Orion.getLogger().fatal(ex);
             return null;
         }
     }

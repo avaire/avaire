@@ -79,7 +79,7 @@ public class IntelligenceManager {
             AIResponse response = service.request(new AIRequest(request));
 
             String action = response.getResult().getAction();
-            orion.getLogger().info(ACTION_OUTPUT
+            Orion.getLogger().info(ACTION_OUTPUT
                 .replace("%action%", action)
                 .replace("%author%", generateUsername(message))
                 .replace("%server%", generateServer(message))

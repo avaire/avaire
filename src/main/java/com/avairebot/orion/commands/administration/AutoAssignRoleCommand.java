@@ -103,7 +103,7 @@ public class AutoAssignRoleCommand extends Command {
                 .queue();
         } catch (SQLException e) {
             e.printStackTrace();
-            orion.getLogger().fatal(e);
+            Orion.getLogger().fatal(e);
         }
         return true;
     }
@@ -118,7 +118,7 @@ public class AutoAssignRoleCommand extends Command {
             MessageFactory.makeWarning(message, ":user **Auto assign role** on user join is now **disabled**.").queue();
         } catch (SQLException e) {
             e.printStackTrace();
-            orion.getLogger().fatal(e);
+            Orion.getLogger().fatal(e);
         }
 
         return true;
@@ -135,7 +135,7 @@ public class AutoAssignRoleCommand extends Command {
                 updateAutorole(transformer, message, null);
             } catch (SQLException e) {
                 e.printStackTrace();
-                orion.getLogger().fatal(e);
+                Orion.getLogger().fatal(e);
             }
             return MessageFactory.makeWarning(message, ":user **Auto assign role** on user join is currently **disabled**.");
         }

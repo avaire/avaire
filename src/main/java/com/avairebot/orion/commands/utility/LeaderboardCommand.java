@@ -108,7 +108,7 @@ public class LeaderboardCommand extends Command {
                     .get();
             } catch (SQLException e) {
                 e.printStackTrace();
-                orion.getLogger().fatal(e);
+                Orion.getLogger().fatal(e);
                 return null;
             }
         });

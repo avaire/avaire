@@ -58,7 +58,7 @@ public class PlayerController {
 
             return transformer;
         } catch (SQLException ex) {
-            orion.getLogger().fatal(ex);
+            Orion.getLogger().fatal(ex);
             return null;
         }
     }

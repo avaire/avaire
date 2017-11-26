@@ -76,11 +76,11 @@ public class MiddlewareStack {
 
             return middleware.handle(message, this, middlewareContainer.getArguments());
         } catch (InstantiationException | NoSuchMethodException | InvocationTargetException ex) {
-            orion.getLogger().fatal("Invalid middleware object parsed, failed to create a new instance!");
-            orion.getLogger().fatal(ex);
+            Orion.getLogger().fatal("Invalid middleware object parsed, failed to create a new instance!");
+            Orion.getLogger().fatal(ex);
         } catch (IllegalAccessException ex) {
-            orion.getLogger().fatal("An attempt was made to create a new middleware instance!");
-            orion.getLogger().fatal(ex);
+            Orion.getLogger().fatal("An attempt was made to create a new middleware instance!");
+            Orion.getLogger().fatal(ex);
         }
         return false;
     }

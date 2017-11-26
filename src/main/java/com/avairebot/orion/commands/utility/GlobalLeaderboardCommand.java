@@ -108,7 +108,7 @@ public class GlobalLeaderboardCommand extends Command {
                 );
             } catch (SQLException e) {
                 e.printStackTrace();
-                orion.getLogger().fatal(e);
+                Orion.getLogger().fatal(e);
                 return null;
             }
         });

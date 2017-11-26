@@ -25,7 +25,7 @@ public class Require extends Middleware {
         }
 
         if (args.length < 2) {
-            orion.getLogger().warn(String.format(
+            Orion.getLogger().warn(String.format(
                 "\"%s\" is parsing invalid amount of arguments to the require middleware, 2 arguments are required.", stack.getCommand()
             ));
             return stack.next();
@@ -39,7 +39,7 @@ public class Require extends Middleware {
         for (String permissionNode : Arrays.copyOfRange(args, 1, args.length)) {
             Permissions permission = Permissions.fromNode(permissionNode);
             if (permission == null) {
-                orion.getLogger().warn(String.format("Invalid permission node given for the \"%s\" command: %s", stack.getCommand().getName(), permissionNode));
+                Orion.getLogger().warn(String.format("Invalid permission node given for the \"%s\" command: %s", stack.getCommand().getName(), permissionNode));
                 return false;
             }
 

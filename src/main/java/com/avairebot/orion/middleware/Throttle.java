@@ -16,7 +16,7 @@ public class Throttle extends Middleware {
     @Override
     public boolean handle(Message message, MiddlewareStack stack, String... args) {
         if (args.length < 3) {
-            orion.getLogger().warn(String.format(
+            Orion.getLogger().warn(String.format(
                 "\"%s\" is parsing invalid amount of arguments to the throttle middleware, 3 arguments are required.", stack.getCommand()
             ));
             return stack.next();
@@ -49,7 +49,7 @@ public class Throttle extends Middleware {
             }
 
         } catch (NumberFormatException e) {
-            orion.getLogger().warn(String.format(
+            Orion.getLogger().warn(String.format(
                 "Invalid integers given to throttle command by \"%s\", args: (%s, %s)", stack.getCommand().getName(), args[1], args[2]
             ));
         }
