@@ -3,6 +3,7 @@ package com.avairebot.orion.commands.administration;
 import com.avairebot.orion.Constants;
 import com.avairebot.orion.Orion;
 import com.avairebot.orion.commands.Category;
+import com.avairebot.orion.commands.CategoryHandler;
 import com.avairebot.orion.commands.CommandPriority;
 import com.avairebot.orion.contracts.commands.Command;
 import com.avairebot.orion.database.controllers.GuildController;
@@ -72,7 +73,7 @@ public class ChangePrefixCommand extends Command {
             return sendErrorMessage(message, "Missing argument `category`, you must specify the command category you want to change/reset the prefix for.");
         }
 
-        Category category = Category.fromLazyName(args[0]);
+        Category category = CategoryHandler.fromLazyName(args[0]);
         if (category == null) {
             return sendErrorMessage(message, "Invalid `category` given, there are no command categories that are called, or starts with `%s`", args[0]);
         }

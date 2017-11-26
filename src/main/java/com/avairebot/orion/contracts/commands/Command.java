@@ -2,10 +2,7 @@ package com.avairebot.orion.contracts.commands;
 
 import com.avairebot.orion.Orion;
 import com.avairebot.orion.chat.MessageType;
-import com.avairebot.orion.commands.Category;
-import com.avairebot.orion.commands.CommandContainer;
-import com.avairebot.orion.commands.CommandHandler;
-import com.avairebot.orion.commands.CommandPriority;
+import com.avairebot.orion.commands.*;
 import com.avairebot.orion.database.controllers.GuildController;
 import com.avairebot.orion.database.transformers.GuildTransformer;
 import com.avairebot.orion.factories.MessageFactory;
@@ -123,6 +120,15 @@ public abstract class Command {
     }
 
     /**
+     * Gets the category the command should belong to, if
+     *
+     * @return
+     */
+    public Category getCategory() {
+        return null;
+    }
+
+    /**
      * Determines if the command can be used in direct messages.
      *
      * @return true if the command can be run in DMs, false otherwise.
@@ -151,7 +157,7 @@ public abstract class Command {
      * @return false since the error message should only be used on failure.
      */
     public final boolean sendErrorMessage(Message message, String error) {
-        Category category = Category.fromCommand(this);
+        Category category = CategoryHandler.fromCommand(this);
 
         message.getChannel().sendMessage(MessageFactory.createEmbeddedBuilder()
             .setTitle(getName())
@@ -295,7 +301,7 @@ public abstract class Command {
      */
     public final String generateCommandPrefix(Message message) {
         GuildTransformer transformer = GuildController.fetchGuild(orion, message);
-        Category category = Category.fromCommand(this);
+        Category category = CategoryHandler.fromCommand(this);
 
         return transformer == null ? category.getPrefix() : transformer.getPrefixes().getOrDefault(
             category.getName().toLowerCase(),

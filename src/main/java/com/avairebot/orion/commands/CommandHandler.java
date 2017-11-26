@@ -196,7 +196,7 @@ public class CommandHandler {
      * @param command The command that should be registered into the command handler.
      */
     public static void register(Command command) {
-        Category category = Category.fromCommand(command);
+        Category category = CategoryHandler.fromCommand(command);
         Checks.notNull(category, String.format("%s :: %s", command.getName(), "Invalid command category, command category"));
         Checks.notNull(command.getDescription(), String.format("%s :: %s", command.getName(), "Command description"));
 

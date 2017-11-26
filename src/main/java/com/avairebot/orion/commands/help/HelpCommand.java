@@ -3,6 +3,7 @@ package com.avairebot.orion.commands.help;
 import com.avairebot.orion.Orion;
 import com.avairebot.orion.chat.MessageType;
 import com.avairebot.orion.commands.Category;
+import com.avairebot.orion.commands.CategoryHandler;
 import com.avairebot.orion.commands.CommandContainer;
 import com.avairebot.orion.commands.CommandHandler;
 import com.avairebot.orion.contracts.commands.Command;
@@ -23,7 +24,7 @@ public class HelpCommand extends Command {
     public HelpCommand(Orion orion) {
         super(orion);
 
-        categories = Arrays.stream(Category.values())
+        categories = CategoryHandler.getValues().stream()
             .map(Category::getName)
             .sorted()
             .collect(Collectors.joining("\n• ", "• ", "\n\n"));
@@ -67,14 +68,14 @@ public class HelpCommand extends Command {
 
         CommandContainer command = getCommand(message, args[0]);
         if (command == null) {
-            return showCategoryCommands(message, Category.fromLazyName(args[0]), args[0]);
+            return showCategoryCommands(message, CategoryHandler.fromLazyName(args[0]), args[0]);
         }
 
         return showCommand(message, command, args[0]);
     }
 
     private boolean showCategories(Message message) {
-        Category category = Category.random();
+        Category category = CategoryHandler.random();
 
         String note = String.format(":information_source: Type `:help <category>` to get a list of commands in that category.\nExample: `:help %s` or `:help %s`",
             category.getName().toLowerCase(),

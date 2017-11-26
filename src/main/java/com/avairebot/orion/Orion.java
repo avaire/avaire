@@ -5,6 +5,7 @@ import com.avairebot.orion.ai.intents.RequestOnlinePlayers;
 import com.avairebot.orion.ai.intents.SmallTalk;
 import com.avairebot.orion.ai.intents.Unknown;
 import com.avairebot.orion.cache.CacheManager;
+import com.avairebot.orion.commands.CategoryHandler;
 import com.avairebot.orion.commands.CommandHandler;
 import com.avairebot.orion.commands.administration.*;
 import com.avairebot.orion.commands.fun.*;
@@ -82,6 +83,15 @@ public class Orion {
             new CreateShardsTableMigration()
         );
         database.getMigrations().up();
+
+        logger.info(" - Registering default command categories");
+        CategoryHandler.addCategory("Administration", ".");
+        CategoryHandler.addCategory("Help", ".");
+        CategoryHandler.addCategory("Fun", ">");
+        CategoryHandler.addCategory("Interaction", ">");
+        CategoryHandler.addCategory("Music", "!");
+        CategoryHandler.addCategory("Utility", "!");
+        CategoryHandler.addCategory("System", ";");
 
         this.registerCommands();
         this.registerJobs();
