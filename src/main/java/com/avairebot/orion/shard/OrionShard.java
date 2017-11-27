@@ -4,14 +4,10 @@ import com.avairebot.orion.Orion;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.exceptions.RateLimitedException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nonnull;
 
 public class OrionShard {
-
-    private static final Logger log = LoggerFactory.getLogger(OrionShard.class);
 
     private final Orion orion;
     private final int shardId;
@@ -22,7 +18,7 @@ public class OrionShard {
     public OrionShard(@Nonnull Orion orion, int shardId) {
         this.orion = orion;
         this.shardId = shardId;
-        log.info("Building shard " + shardId);
+        Orion.getLogger().info("Building shard " + shardId);
         jda = buildJDA(ShardBuilder.getDefaultShardBuilder(orion));
     }
 
@@ -50,10 +46,10 @@ public class OrionShard {
                         newJda = builder.buildAsync();
                         success = true;
                     } catch (RateLimitedException e) {
-                        log.error("Got rate limited while building bot JDA instance! Retrying...", e);
+                        Orion.getLogger().error("Got rate limited while building bot JDA instance! Retrying...", e);
                         Thread.sleep(5000);
                     } catch (Exception e) {
-                        log.error("Generic exception when building a JDA instance! Retrying...", e);
+                        Orion.getLogger().error("Generic exception when building a JDA instance! Retrying...", e);
                     }
                 }
             }
