@@ -24,8 +24,10 @@ import com.avairebot.orion.exceptions.InvalidPluginsPathException;
 import com.avairebot.orion.plugin.PluginLoader;
 import com.avairebot.orion.plugin.PluginManager;
 import com.avairebot.orion.scheduler.*;
+import com.avairebot.orion.shard.ConnectQueue;
 import com.avairebot.orion.shard.OrionShard;
 import com.avairebot.orion.shard.ShardEntityCounter;
+import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.SelfUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,6 +42,7 @@ public class Orion {
     private static final Logger LOGGER = LoggerFactory.getLogger(Orion.class);
 
     private static final List<OrionShard> SHARDS = new CopyOnWriteArrayList<>();
+    private static final ConnectQueue CONNECT_QUEUE = new ConnectQueue();
 
     private final MainConfiguration config;
     private final CacheManager cache;
@@ -122,9 +125,17 @@ public class Orion {
             return;
         }
 
-        for (int i = 0; i < 2; i++) {
-            SHARDS.add(new OrionShard(this, i));
+        for (int i = 0; i < getConfig().botAuth().getShardsTotal(); i++) {
+            try {
+                SHARDS.add(new OrionShard(this, i));
+            } catch (Exception ex) {
+                getLogger().error("Caught an exception while starting shard {}!", i, ex);
+                getLogger().error("Exiting program...");
+                System.exit(0);
+            }
         }
+
+        getLogger().info(getShards().size() + " shards have been constructed");
     }
 
     public static Logger getLogger() {
@@ -133,6 +144,10 @@ public class Orion {
 
     public List<OrionShard> getShards() {
         return SHARDS;
+    }
+
+    public ConnectQueue getConnectQueue() {
+        return CONNECT_QUEUE;
     }
 
     public ShardEntityCounter getShardEntityCounter() {
@@ -157,6 +172,15 @@ public class Orion {
 
     public IntelligenceManager getIntelligenceManager() {
         return intelligenceManager;
+    }
+
+    public boolean areWeReadyYet() {
+        for (OrionShard shard : getShards()) {
+            if (shard.getJDA().getStatus() != JDA.Status.CONNECTED) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private void registerCommands() {

@@ -6,7 +6,6 @@ import com.avairebot.orion.handlers.EventTypes;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.entities.Game;
-import net.dv8tion.jda.core.requests.SessionReconnectQueue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,7 +23,7 @@ public class ShardBuilder {
             JDABuilder builder = new JDABuilder(AccountType.BOT)
                 .setToken(orion.getConfig().botAuth().getToken())
                 .setGame(Game.of("Loading components..."))
-                .setReconnectQueue(new SessionReconnectQueue())
+                .setReconnectQueue(orion.getConnectQueue())
                 .setAutoReconnect(true);
 
             Class[] eventArguments = new Class[1];

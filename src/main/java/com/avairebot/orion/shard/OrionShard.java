@@ -43,6 +43,8 @@ public class OrionShard {
                     builder.useSharding(shardId, total < 1 ? 1 : total);
 
                     try {
+                        orion.getConnectQueue().requestCoin(shardId);
+                        
                         newJda = builder.buildAsync();
                         success = true;
                     } catch (RateLimitedException e) {
