@@ -1,5 +1,6 @@
-package com.avairebot.orion;
+package com.avairebot.orion.shard;
 
+import com.avairebot.orion.Orion;
 import com.avairebot.orion.contracts.handlers.EventHandler;
 import com.avairebot.orion.handlers.EventTypes;
 import net.dv8tion.jda.core.AccountType;

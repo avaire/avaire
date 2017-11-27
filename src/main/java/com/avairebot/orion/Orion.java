@@ -24,6 +24,7 @@ import com.avairebot.orion.exceptions.InvalidPluginsPathException;
 import com.avairebot.orion.plugin.PluginLoader;
 import com.avairebot.orion.plugin.PluginManager;
 import com.avairebot.orion.scheduler.*;
+import com.avairebot.orion.shard.OrionShard;
 import net.dv8tion.jda.core.entities.SelfUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

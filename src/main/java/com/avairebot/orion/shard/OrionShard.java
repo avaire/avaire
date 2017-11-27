@@ -1,5 +1,6 @@
-package com.avairebot.orion;
+package com.avairebot.orion.shard;
 
+import com.avairebot.orion.Orion;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.exceptions.RateLimitedException;
@@ -43,7 +44,6 @@ public class OrionShard {
             while (!success) {
                 // noinspection SynchronizationOnLocalVariableOrMethodParameter
                 synchronized (builder) {
-
                     builder.useSharding(shardId, total < 1 ? 1 : total);
 
                     try {

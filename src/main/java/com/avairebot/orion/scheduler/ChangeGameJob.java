@@ -1,7 +1,7 @@
 package com.avairebot.orion.scheduler;
 
 import com.avairebot.orion.Orion;
-import com.avairebot.orion.OrionShard;
+import com.avairebot.orion.shard.OrionShard;
 import com.avairebot.orion.contracts.scheduler.Job;
 import net.dv8tion.jda.core.entities.Game;
 
