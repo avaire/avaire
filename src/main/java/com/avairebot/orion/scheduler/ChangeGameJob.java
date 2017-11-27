@@ -1,6 +1,7 @@
 package com.avairebot.orion.scheduler;
 
 import com.avairebot.orion.Orion;
+import com.avairebot.orion.OrionShard;
 import com.avairebot.orion.contracts.scheduler.Job;
 import net.dv8tion.jda.core.entities.Game;
 
@@ -18,19 +19,20 @@ public class ChangeGameJob extends Job {
             index = 0;
         }
 
-        orion.getJDA().getPresence().setGame(
-            Game.of(formatGame(orion.getConfig().getPlaying().get(index++)))
-        );
+        index++;
+        for (OrionShard shard : orion.getShards()) {
+            shard.getJDA().getPresence().setGame(
+                Game.of(formatGame(orion.getConfig().getPlaying().get(index), shard))
+            );
+        }
     }
 
-    private String formatGame(String game) {
-        game = game.replaceAll("%users%", "" + orion.getJDA().getUsers().size());
-        game = game.replaceAll("%guilds%", "" + orion.getJDA().getGuilds().size());
+    private String formatGame(String game, OrionShard shard) {
+        game = game.replaceAll("%users%", "" + orion.getUserCount());
+        game = game.replaceAll("%guilds%", "" + orion.getGuildCount());
 
-        if (orion.getJDA().getShardInfo() != null) {
-            game = game.replaceAll("%shard-id%", "" + orion.getJDA().getShardInfo().getShardId());
-            game = game.replaceAll("%shard-total%", "" + orion.getJDA().getShardInfo().getShardTotal());
-        }
+        game = game.replaceAll("%shard-id%", "" + shard.getShardId());
+        game = game.replaceAll("%shard-total%", "" + 2); // orion.getConfig().getShard().getTotal()
 
         return game;
     }

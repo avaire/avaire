@@ -17,39 +17,33 @@ import com.avairebot.orion.commands.system.SetStatusCommand;
 import com.avairebot.orion.commands.utility.*;
 import com.avairebot.orion.config.ConfigurationLoader;
 import com.avairebot.orion.config.MainConfiguration;
-import com.avairebot.orion.contracts.handlers.EventHandler;
 import com.avairebot.orion.database.DatabaseManager;
 import com.avairebot.orion.database.migrate.migrations.*;
 import com.avairebot.orion.exceptions.InvalidPluginException;
 import com.avairebot.orion.exceptions.InvalidPluginsPathException;
-import com.avairebot.orion.handlers.EventTypes;
 import com.avairebot.orion.plugin.PluginLoader;
 import com.avairebot.orion.plugin.PluginManager;
 import com.avairebot.orion.scheduler.*;
-import net.dv8tion.jda.core.AccountType;
-import net.dv8tion.jda.core.JDA;
-import net.dv8tion.jda.core.JDABuilder;
-import net.dv8tion.jda.core.exceptions.RateLimitedException;
-import net.dv8tion.jda.core.requests.SessionReconnectQueue;
+import net.dv8tion.jda.core.entities.SelfUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.security.auth.login.LoginException;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Orion {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Orion.class);
+
+    private static final List<OrionShard> SHARDS = new CopyOnWriteArrayList<>();
 
     private final MainConfiguration config;
     private final CacheManager cache;
     private final DatabaseManager database;
     private final IntelligenceManager intelligenceManager;
     private final PluginManager pluginManager;
-
-    private JDA jda;
 
     public Orion() throws IOException, SQLException {
         LOGGER.info("Bootstrapping Orion v" + AppInfo.getAppInfo().VERSION + " Build " + AppInfo.getAppInfo().BUILD_NUMBER);
@@ -116,17 +110,22 @@ public class Orion {
             System.exit(0);
         }
 
-        try {
-            LOGGER.info(" - Creating bot instance and connecting to Discord network");
-            jda = prepareJDA().buildAsync();
-        } catch (LoginException | RateLimitedException ex) {
-            LOGGER.error("Something went wrong while trying to connect to Discord, exiting program...", ex);
-            System.exit(0);
+        LOGGER.info(" - Creating bot instance and connecting to Discord network");
+        for (int i = 0; i < 2; i++) {
+            SHARDS.add(new OrionShard(this, i));
         }
     }
 
     public static Logger getLogger() {
         return LOGGER;
+    }
+
+    public List<OrionShard> getShards() {
+        return SHARDS;
+    }
+
+    public SelfUser getSelfUser() {
+        return getShards().get(0).getJDA().getSelfUser();
     }
 
     public MainConfiguration getConfig() {
@@ -145,8 +144,40 @@ public class Orion {
         return intelligenceManager;
     }
 
-    public JDA getJDA() {
-        return jda;
+    public long getUserCount() {
+        long count = 0;
+        for (OrionShard shard : SHARDS) {
+            count += shard.getJDA().getUsers().size();
+        }
+        return count;
+    }
+
+    public long getTextChannelCount() {
+        long count = 0;
+        for (OrionShard shard : SHARDS) {
+            count += shard.getJDA().getTextChannels().size();
+        }
+        return count;
+    }
+
+    public long getVoiceChannelCount() {
+        long count = 0;
+        for (OrionShard shard : SHARDS) {
+            count += shard.getJDA().getVoiceChannels().size();
+        }
+        return count;
+    }
+
+    public long getChannelCount() {
+        return getTextChannelCount() + getVoiceChannelCount();
+    }
+
+    public long getGuildCount() {
+        long count = 0;
+        for (OrionShard shard : SHARDS) {
+            count += shard.getJDA().getGuilds().size();
+        }
+        return count;
     }
 
     private void registerCommands() {
@@ -271,28 +302,5 @@ public class Orion {
         intelligenceManager.registerIntent(new RequestOnlinePlayers(this));
 
         LOGGER.info(String.format(" - Registered %s intelligence intents successfully!", intelligenceManager.entrySet().size()));
-    }
-
-    private JDABuilder prepareJDA() {
-        JDABuilder builder = new JDABuilder(AccountType.BOT).setToken(this.config.botAuth().getToken());
-
-        Class[] eventArguments = new Class[1];
-        eventArguments[0] = Orion.class;
-
-        for (EventTypes event : EventTypes.values()) {
-            try {
-                Object instance = event.getInstance().getDeclaredConstructor(eventArguments).newInstance(this);
-
-                if (instance instanceof EventHandler) {
-                    builder.addEventListener(instance);
-                }
-            } catch (InstantiationException | NoSuchMethodException | InvocationTargetException ex) {
-                LOGGER.error("Invalid listener adapter object parsed, failed to create a new instance!", ex);
-            } catch (IllegalAccessException ex) {
-                LOGGER.error("An attempt was made to register a event listener called " + event + " but it failed somewhere!", ex);
-            }
-        }
-
-        return builder.setReconnectQueue(new SessionReconnectQueue()).setAutoReconnect(true);
     }
 }

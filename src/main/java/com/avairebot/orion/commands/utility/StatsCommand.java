@@ -90,12 +90,12 @@ public class StatsCommand extends Command {
                 new MessageEmbed.Field("Commands Run", number.format(Statistics.getCommands()), true),
                 new MessageEmbed.Field("Memory Usage", memoryUsage(), true),
                 new MessageEmbed.Field("Uptime", applicationUptime(), true),
-                new MessageEmbed.Field("Members", number.format(orion.getJDA().getUsers().size()), true),
-                new MessageEmbed.Field("Channels", number.format(orion.getJDA().getTextChannels().size() + orion.getJDA().getVoiceChannels().size()), true),
+                new MessageEmbed.Field("Members", number.format(orion.getUserCount()), true),
+                new MessageEmbed.Field("Channels", number.format(orion.getChannelCount()), true),
                 new MessageEmbed.Field("Servers", number.format(message.getJDA().getGuilds().size()), true)
             )
                 .setTitle("Official Bot Server Invite", "https://discordapp.com/invite/gt2FWER")
-                .setAuthor("Orion v" + AppInfo.getAppInfo().getVersionBuild(), "https://discordapp.com/invite/gt2FWER", orion.getJDA().getSelfUser().getEffectiveAvatarUrl())
+                .setAuthor("Orion v" + AppInfo.getAppInfo().getVersionBuild(), "https://discordapp.com/invite/gt2FWER", orion.getSelfUser().getEffectiveAvatarUrl())
                 .setDescription(description.toString())
                 .build()
         ).queue();

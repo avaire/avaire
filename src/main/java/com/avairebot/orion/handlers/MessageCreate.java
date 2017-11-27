@@ -108,20 +108,20 @@ public class MessageCreate extends EventHandler {
     }
 
     private boolean isMentionableAction(MessageReceivedEvent event) {
-        if (!event.getMessage().isMentioned(orion.getJDA().getSelfUser())) {
+        if (!event.getMessage().isMentioned(orion.getSelfUser())) {
             return false;
         }
 
         String[] args = event.getMessage().getRawContent().split(" ");
         return args.length >= 2 &&
             userRegEX.matcher(args[0]).matches() &&
-            event.getMessage().getMentionedUsers().get(0).getId().equals(orion.getJDA().getSelfUser().getId());
+            event.getMessage().getMentionedUsers().get(0).getId().equals(orion.getSelfUser().getId());
 
     }
 
     private boolean isSingleBotMention(String rawContent) {
-        return rawContent.equals("<@" + orion.getJDA().getSelfUser().getId() + ">") ||
-            rawContent.equals("<!@" + orion.getJDA().getSelfUser().getId() + ">");
+        return rawContent.equals("<@" + orion.getSelfUser().getId() + ">") ||
+            rawContent.equals("<!@" + orion.getSelfUser().getId() + ">");
     }
 
     private boolean isAIEnabledForChannel(MessageReceivedEvent event, GuildTransformer transformer) {
@@ -142,7 +142,7 @@ public class MessageCreate extends EventHandler {
         event.getMessage().getChannel().sendMessage(MessageFactory.createEmbeddedBuilder()
             .setColor(Color.decode("#E91E63"))
             .setDescription(String.format(mentionMessage,
-                orion.getJDA().getSelfUser().getName(),
+                orion.getSelfUser().getName(),
                 author,
                 CommandHandler.getLazyCommand("help").getCommand().generateCommandTrigger(event.getMessage()),
                 AppInfo.getAppInfo().getVersionBuild()
