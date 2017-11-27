@@ -86,7 +86,7 @@ public class StatsCommand extends Command {
                 new MessageEmbed.Field("Library", "[JDA](https://github.com/DV8FromTheWorld/JDA)", true),
                 new MessageEmbed.Field("DB Queries run", getDatabaseQueriesStats(), true),
                 new MessageEmbed.Field("Messages Received", getMessagesReceivedStats(), true),
-                new MessageEmbed.Field("Shard", "Unknown", true),
+                new MessageEmbed.Field("Shard", "" + (message.getJDA().getShardInfo().getShardId() + 1), true),
                 new MessageEmbed.Field("Commands Run", number.format(Statistics.getCommands()), true),
                 new MessageEmbed.Field("Memory Usage", memoryUsage(), true),
                 new MessageEmbed.Field("Uptime", applicationUptime(), true),

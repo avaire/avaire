@@ -111,6 +111,11 @@ public class Orion {
         }
 
         LOGGER.info(" - Creating bot instance and connecting to Discord network");
+        if (getConfig().botAuth().getShardsTotal() < 1) {
+            SHARDS.add(new OrionShard(this, 0));
+            return;
+        }
+
         for (int i = 0; i < 2; i++) {
             SHARDS.add(new OrionShard(this, i));
         }

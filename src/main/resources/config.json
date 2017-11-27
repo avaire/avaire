@@ -3,7 +3,8 @@
     "bot": {
         "token": "",
         "oauth": "https://discordapp.com/oauth2/authorize?&client_id=<client_id>&scope=bot&permissions=66186303",
-        "activationDelay": "0"
+        "activationDelay": "0",
+        "shardsTotal": "0"
     },
     "database": {
         "type": "mysql",

@@ -23,11 +23,8 @@ public class ShardBuilder {
             JDABuilder builder = new JDABuilder(AccountType.BOT)
                 .setToken(orion.getConfig().botAuth().getToken())
                 .setGame(Game.of("Loading components..."))
-                .setBulkDeleteSplittingEnabled(false)
-                .setEnableShutdownHook(false)
-                .setAudioEnabled(true)
-                .setAutoReconnect(true)
-                .setReconnectQueue(new SessionReconnectQueue());
+                .setReconnectQueue(new SessionReconnectQueue())
+                .setAutoReconnect(true);
 
             Class[] eventArguments = new Class[1];
             eventArguments[0] = Orion.class;

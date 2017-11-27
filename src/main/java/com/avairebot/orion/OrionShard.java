@@ -36,13 +36,15 @@ public class OrionShard {
 
     private JDA buildJDA(final JDABuilder builder) {
         JDA newJda = null;
+        int total = orion.getConfig().botAuth().getShardsTotal();
 
         try {
             boolean success = false;
             while (!success) {
                 // noinspection SynchronizationOnLocalVariableOrMethodParameter
                 synchronized (builder) {
-                    builder.useSharding(shardId, 2); // Make the shard total a config option
+
+                    builder.useSharding(shardId, total < 1 ? 1 : total);
 
                     try {
                         newJda = builder.buildAsync();
