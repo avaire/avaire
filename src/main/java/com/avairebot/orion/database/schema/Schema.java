@@ -1,5 +1,6 @@
 package com.avairebot.orion.database.schema;
 
+import com.avairebot.orion.Orion;
 import com.avairebot.orion.Statistics;
 import com.avairebot.orion.contracts.database.schema.DatabaseClosure;
 import com.avairebot.orion.database.DatabaseManager;
@@ -151,11 +152,9 @@ public class Schema {
 
             return grammar;
         } catch (InstantiationException ex) {
-            dbm.getOrion().getLogger().fatal("Invalid grammar object parsed, failed to create a new instance!");
-            dbm.getOrion().getLogger().fatal(ex);
+            Orion.getLogger().error("Invalid grammar object parsed, failed to create a new instance!", ex);
         } catch (IllegalAccessException ex) {
-            dbm.getOrion().getLogger().fatal("An attempt was made to create a grammar instance on an object that is not accessible!");
-            dbm.getOrion().getLogger().fatal(ex);
+            Orion.getLogger().error("An attempt was made to create a grammar instance on an object that is not accessible!", ex);
         }
 
         return null;

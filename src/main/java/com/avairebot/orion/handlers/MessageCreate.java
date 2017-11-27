@@ -1,5 +1,6 @@
 package com.avairebot.orion.handlers;
 
+import com.avairebot.orion.AppInfo;
 import com.avairebot.orion.Orion;
 import com.avairebot.orion.Statistics;
 import com.avairebot.orion.commands.CommandContainer;
@@ -144,7 +145,7 @@ public class MessageCreate extends EventHandler {
                 orion.getJDA().getSelfUser().getName(),
                 author,
                 CommandHandler.getLazyCommand("help").getCommand().generateCommandTrigger(event.getMessage()),
-                orion.getVersion()
+                AppInfo.getAppInfo().getVersionBuild()
             ))
             .setFooter("This message will be automatically deleted in one minute.", null)
             .build()

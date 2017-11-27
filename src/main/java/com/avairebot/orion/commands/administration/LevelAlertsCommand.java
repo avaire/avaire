@@ -99,7 +99,7 @@ public class LevelAlertsCommand extends Command {
 
             return true;
         } catch (SQLException ex) {
-            Orion.getLogger().fatal(ex);
+            Orion.getLogger().error("Failed to update the guilds level column", ex);
 
             MessageFactory.makeError(message, "Failed to save the guild settings: " + ex.getMessage()).queue();
             return false;

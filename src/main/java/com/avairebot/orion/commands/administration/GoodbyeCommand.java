@@ -96,7 +96,7 @@ public class GoodbyeCommand extends Command {
                 .set("status", channelTransformer.getGoodbye().isEnabled() ? "Enabled" : "Disabled")
                 .queue();
         } catch (SQLException ex) {
-            Orion.getLogger().fatal(ex);
+            Orion.getLogger().error("Failed to update the goodbye status", ex);
 
             MessageFactory.makeError(message, "Failed to save the guild settings: " + ex.getMessage()).queue();
             return false;

@@ -106,9 +106,8 @@ public class LeaderboardCommand extends Command {
                     .orderBy("experience", "desc")
                     .take(100)
                     .get();
-            } catch (SQLException e) {
-                e.printStackTrace();
-                Orion.getLogger().fatal(e);
+            } catch (SQLException ex) {
+                Orion.getLogger().error(ex.getMessage(), ex);
                 return null;
             }
         });

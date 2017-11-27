@@ -1,5 +1,6 @@
 package com.avairebot.orion.database.connections;
 
+import com.avairebot.orion.Orion;
 import com.avairebot.orion.contracts.database.StatementInterface;
 import com.avairebot.orion.contracts.database.connections.FilenameDatabase;
 import com.avairebot.orion.database.exceptions.DatabaseException;
@@ -44,8 +45,7 @@ public class SQLite extends FilenameDatabase {
             } catch (SQLException ex) {
                 String reason = "DBM - Could not establish an SQLite connection, SQLException: " + ex.getMessage();
 
-                dbm.getOrion().getLogger().fatal(reason);
-                dbm.getOrion().getLogger().fatal(ex);
+                Orion.getLogger().error(reason, ex);
                 throw new SQLException(reason);
             }
         }
@@ -109,8 +109,7 @@ public class SQLite extends FilenameDatabase {
             return true;
         } catch (SQLException ex) {
             if ((!ex.getMessage().toLowerCase().contains("locking")) && (!ex.getMessage().toLowerCase().contains("locked")) && (!ex.toString().contains("not return ResultSet"))) {
-                dbm.getOrion().getLogger().fatal(String.format("Failed to truncate \"%s\": %s", table, ex.getMessage()));
-                dbm.getOrion().getLogger().fatal(ex);
+                Orion.getLogger().error(String.format("Failed to truncate \"%s\": %s", table, ex.getMessage()), ex);
             }
         }
 

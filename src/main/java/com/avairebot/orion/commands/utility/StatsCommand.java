@@ -1,5 +1,6 @@
 package com.avairebot.orion.commands.utility;
 
+import com.avairebot.orion.AppInfo;
 import com.avairebot.orion.Orion;
 import com.avairebot.orion.Statistics;
 import com.avairebot.orion.cache.CacheType;
@@ -94,7 +95,7 @@ public class StatsCommand extends Command {
                 new MessageEmbed.Field("Servers", number.format(message.getJDA().getGuilds().size()), true)
             )
                 .setTitle("Official Bot Server Invite", "https://discordapp.com/invite/gt2FWER")
-                .setAuthor("Orion v" + orion.getVersion(), "https://discordapp.com/invite/gt2FWER", orion.getJDA().getSelfUser().getEffectiveAvatarUrl())
+                .setAuthor("Orion v" + AppInfo.getAppInfo().getVersionBuild(), "https://discordapp.com/invite/gt2FWER", orion.getJDA().getSelfUser().getEffectiveAvatarUrl())
                 .setDescription(description.toString())
                 .build()
         ).queue();

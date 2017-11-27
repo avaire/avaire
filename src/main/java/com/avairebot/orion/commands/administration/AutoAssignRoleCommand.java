@@ -101,9 +101,9 @@ public class AutoAssignRoleCommand extends Command {
             MessageFactory.makeSuccess(message, ":user **Auto assign role** on user join has been **enabled** and set to  **:role**")
                 .set("role", role.getName())
                 .queue();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            Orion.getLogger().fatal(e);
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            Orion.getLogger().error(ex.getMessage(), ex);
         }
         return true;
     }
@@ -116,9 +116,9 @@ public class AutoAssignRoleCommand extends Command {
                 .update(statement -> statement.set("autorole", null));
 
             MessageFactory.makeWarning(message, ":user **Auto assign role** on user join is now **disabled**.").queue();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            Orion.getLogger().fatal(e);
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            Orion.getLogger().error(ex.getMessage(), ex);
         }
 
         return true;
@@ -133,9 +133,9 @@ public class AutoAssignRoleCommand extends Command {
         if (role == null) {
             try {
                 updateAutorole(transformer, message, null);
-            } catch (SQLException e) {
-                e.printStackTrace();
-                Orion.getLogger().fatal(e);
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+                Orion.getLogger().error(ex.getMessage(), ex);
             }
             return MessageFactory.makeWarning(message, ":user **Auto assign role** on user join is currently **disabled**.");
         }

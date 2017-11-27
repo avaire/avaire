@@ -78,7 +78,7 @@ public class GoodbyeMessageCommand extends Command {
                     "back to the default."
                 ).queue();
         } catch (SQLException ex) {
-            Orion.getLogger().fatal(ex);
+            Orion.getLogger().error("Failed to update the goodbye message", ex);
 
             MessageFactory.makeError(message, "Failed to save the guild settings: :error")
                 .set("error", ex.getMessage())

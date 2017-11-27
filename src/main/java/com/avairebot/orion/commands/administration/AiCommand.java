@@ -79,7 +79,7 @@ public class AiCommand extends Command {
                 .set("status", channelTransformer.getAI().isEnabled() ? "Enabled" : "Disabled")
                 .queue();
         } catch (SQLException ex) {
-            Orion.getLogger().fatal(ex);
+            Orion.getLogger().error(ex.getMessage(), ex);
 
             MessageFactory.makeError(message, "Failed to save the guild settings: " + ex.getMessage()).queue();
             return false;

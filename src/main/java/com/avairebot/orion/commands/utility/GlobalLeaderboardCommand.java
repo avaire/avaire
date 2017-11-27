@@ -106,9 +106,9 @@ public class GlobalLeaderboardCommand extends Command {
                     "ORDER BY `total` DESC " +
                     "LIMIT 100;"
                 );
-            } catch (SQLException e) {
-                e.printStackTrace();
-                Orion.getLogger().fatal(e);
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+                Orion.getLogger().error(ex.getMessage(), ex);
                 return null;
             }
         });

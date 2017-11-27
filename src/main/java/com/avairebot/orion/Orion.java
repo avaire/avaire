@@ -31,17 +31,17 @@ import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.exceptions.RateLimitedException;
 import net.dv8tion.jda.core.requests.SessionReconnectQueue;
-import net.dv8tion.jda.core.utils.SimpleLog;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.security.auth.login.LoginException;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
-import java.util.Properties;
 
 public class Orion {
 
-    private static final SimpleLog LOGGER = SimpleLog.getLog("Orion");
+    private static final Logger LOGGER = LoggerFactory.getLogger(Orion.class);
 
     private final MainConfiguration config;
     private final CacheManager cache;
@@ -49,15 +49,10 @@ public class Orion {
     private final IntelligenceManager intelligenceManager;
     private final PluginManager pluginManager;
 
-    private final Properties properties = new Properties();
-
     private JDA jda;
 
     public Orion() throws IOException, SQLException {
-
-        properties.load(getClass().getClassLoader().getResourceAsStream("orion.properties"));
-
-        LOGGER.info("Bootstrapping Orion v" + properties.getProperty("version"));
+        LOGGER.info("Bootstrapping Orion v" + AppInfo.getAppInfo().VERSION + " Build " + AppInfo.getAppInfo().BUILD_NUMBER);
 
         this.cache = new CacheManager(this);
 
@@ -65,7 +60,7 @@ public class Orion {
         ConfigurationLoader configLoader = new ConfigurationLoader();
         this.config = (MainConfiguration) configLoader.load("config.json", MainConfiguration.class);
         if (this.config == null) {
-            LOGGER.fatal("Something went wrong while trying to load the configuration, exiting program...");
+            LOGGER.error("Something went wrong while trying to load the configuration, exiting program...");
             System.exit(0);
         }
 
@@ -125,13 +120,12 @@ public class Orion {
             LOGGER.info(" - Creating bot instance and connecting to Discord network");
             jda = prepareJDA().buildAsync();
         } catch (LoginException | RateLimitedException ex) {
-            LOGGER.fatal("Something went wrong while trying to connect to Discord, exiting program...");
-            LOGGER.fatal(ex);
+            LOGGER.error("Something went wrong while trying to connect to Discord, exiting program...", ex);
             System.exit(0);
         }
     }
 
-    public static SimpleLog getLogger() {
+    public static Logger getLogger() {
         return LOGGER;
     }
 
@@ -153,10 +147,6 @@ public class Orion {
 
     public JDA getJDA() {
         return jda;
-    }
-
-    public String getVersion() {
-        return properties.getProperty("version");
     }
 
     private void registerCommands() {
@@ -297,11 +287,9 @@ public class Orion {
                     builder.addEventListener(instance);
                 }
             } catch (InstantiationException | NoSuchMethodException | InvocationTargetException ex) {
-                LOGGER.fatal("Invalid listener adapter object parsed, failed to create a new instance!");
-                LOGGER.fatal(ex);
+                LOGGER.error("Invalid listener adapter object parsed, failed to create a new instance!", ex);
             } catch (IllegalAccessException ex) {
-                LOGGER.fatal("An attempt was made to register a event listener called " + event + " but it failed somewhere!");
-                LOGGER.fatal(ex);
+                LOGGER.error("An attempt was made to register a event listener called " + event + " but it failed somewhere!", ex);
             }
         }
 
