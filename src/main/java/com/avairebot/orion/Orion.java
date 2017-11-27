@@ -25,6 +25,7 @@ import com.avairebot.orion.plugin.PluginLoader;
 import com.avairebot.orion.plugin.PluginManager;
 import com.avairebot.orion.scheduler.*;
 import com.avairebot.orion.shard.OrionShard;
+import com.avairebot.orion.shard.ShardEntityCounter;
 import net.dv8tion.jda.core.entities.SelfUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,6 +46,8 @@ public class Orion {
     private final DatabaseManager database;
     private final IntelligenceManager intelligenceManager;
     private final PluginManager pluginManager;
+
+    private final ShardEntityCounter shardEntityCounter;
 
     public Orion() throws IOException, SQLException {
         LOGGER.info("Bootstrapping Orion v" + AppInfo.getAppInfo().VERSION + " Build " + AppInfo.getAppInfo().BUILD_NUMBER);
@@ -112,6 +115,8 @@ public class Orion {
         }
 
         LOGGER.info(" - Creating bot instance and connecting to Discord network");
+
+        shardEntityCounter = new ShardEntityCounter(this);
         if (getConfig().botAuth().getShardsTotal() < 1) {
             SHARDS.add(new OrionShard(this, 0));
             return;
@@ -128,6 +133,10 @@ public class Orion {
 
     public List<OrionShard> getShards() {
         return SHARDS;
+    }
+
+    public ShardEntityCounter getShardEntityCounter() {
+        return shardEntityCounter;
     }
 
     public SelfUser getSelfUser() {
@@ -148,42 +157,6 @@ public class Orion {
 
     public IntelligenceManager getIntelligenceManager() {
         return intelligenceManager;
-    }
-
-    public long getUserCount() {
-        long count = 0;
-        for (OrionShard shard : SHARDS) {
-            count += shard.getJDA().getUsers().size();
-        }
-        return count;
-    }
-
-    public long getTextChannelCount() {
-        long count = 0;
-        for (OrionShard shard : SHARDS) {
-            count += shard.getJDA().getTextChannels().size();
-        }
-        return count;
-    }
-
-    public long getVoiceChannelCount() {
-        long count = 0;
-        for (OrionShard shard : SHARDS) {
-            count += shard.getJDA().getVoiceChannels().size();
-        }
-        return count;
-    }
-
-    public long getChannelCount() {
-        return getTextChannelCount() + getVoiceChannelCount();
-    }
-
-    public long getGuildCount() {
-        long count = 0;
-        for (OrionShard shard : SHARDS) {
-            count += shard.getJDA().getGuilds().size();
-        }
-        return count;
     }
 
     private void registerCommands() {

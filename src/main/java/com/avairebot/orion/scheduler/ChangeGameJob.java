@@ -1,8 +1,8 @@
 package com.avairebot.orion.scheduler;
 
 import com.avairebot.orion.Orion;
-import com.avairebot.orion.shard.OrionShard;
 import com.avairebot.orion.contracts.scheduler.Job;
+import com.avairebot.orion.shard.OrionShard;
 import net.dv8tion.jda.core.entities.Game;
 
 public class ChangeGameJob extends Job {
@@ -28,8 +28,8 @@ public class ChangeGameJob extends Job {
     }
 
     private String formatGame(String game, OrionShard shard) {
-        game = game.replaceAll("%users%", "" + orion.getUserCount());
-        game = game.replaceAll("%guilds%", "" + orion.getGuildCount());
+        game = game.replaceAll("%users%", "" + orion.getShardEntityCounter().getUsers());
+        game = game.replaceAll("%guilds%", "" + orion.getShardEntityCounter().getGuilds());
 
         game = game.replaceAll("%shard-id%", "" + shard.getShardId());
         game = game.replaceAll("%shard-total%", "" + orion.getConfig().botAuth().getShardsTotal());

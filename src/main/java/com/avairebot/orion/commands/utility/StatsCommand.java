@@ -90,8 +90,8 @@ public class StatsCommand extends Command {
                 new MessageEmbed.Field("Commands Run", number.format(Statistics.getCommands()), true),
                 new MessageEmbed.Field("Memory Usage", memoryUsage(), true),
                 new MessageEmbed.Field("Uptime", applicationUptime(), true),
-                new MessageEmbed.Field("Members", number.format(orion.getUserCount()), true),
-                new MessageEmbed.Field("Channels", number.format(orion.getChannelCount()), true),
+                new MessageEmbed.Field("Members", number.format(orion.getShardEntityCounter().getUsers()), true),
+                new MessageEmbed.Field("Channels", number.format(orion.getShardEntityCounter().getChannels()), true),
                 new MessageEmbed.Field("Servers", number.format(message.getJDA().getGuilds().size()), true)
             )
                 .setTitle("Official Bot Server Invite", "https://discordapp.com/invite/gt2FWER")
