@@ -29,7 +29,7 @@
     <orderEntry type="library" scope="RUNTIME" name="Maven: commons-logging:commons-logging:1.2" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: commons-codec:commons-codec:1.9" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: commons-io:commons-io:2.5" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: com.fasterxml.jackson.core:jackson-core:2.8.5" level="project" />
+    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-core:2.8.5" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.8.5" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.8.0" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: net.iharder:base64:2.3.9" level="project" />
@@ -38,5 +38,9 @@
     <orderEntry type="library" name="Maven: ai.api:libai:1.6.12" level="project" />
     <orderEntry type="library" name="Maven: org.jsoup:jsoup:1.11.1" level="project" />
     <orderEntry type="library" name="Maven: com.vdurmont:emoji-java:4.0.0" level="project" />
+    <orderEntry type="library" name="Maven: ch.qos.logback:logback-classic:1.2.3" level="project" />
+    <orderEntry type="library" name="Maven: ch.qos.logback:logback-core:1.2.3" level="project" />
+    <orderEntry type="library" name="Maven: io.sentry:sentry-logback:1.6.3" level="project" />
+    <orderEntry type="library" name="Maven: io.sentry:sentry:1.6.3" level="project" />
   </component>
 </module>

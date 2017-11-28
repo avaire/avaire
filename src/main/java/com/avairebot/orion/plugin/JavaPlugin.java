@@ -1,12 +1,14 @@
 package com.avairebot.orion.plugin;
 
 import com.avairebot.orion.Orion;
+import com.avairebot.orion.shard.OrionShard;
 import com.avairebot.orion.cache.CacheManager;
 import com.avairebot.orion.commands.CategoryHandler;
 import com.avairebot.orion.commands.CommandHandler;
 import com.avairebot.orion.contracts.commands.Command;
 import com.avairebot.orion.database.DatabaseManager;
-import net.dv8tion.jda.core.JDA;
+
+import java.util.List;
 
 public abstract class JavaPlugin {
 
@@ -44,8 +46,8 @@ public abstract class JavaPlugin {
         this.orion = orion;
     }
 
-    public JDA getJDA() {
-        return orion.getJDA();
+    public List<OrionShard> getShards() {
+        return orion.getShards();
     }
 
     public CacheManager getCache() {

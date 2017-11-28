@@ -41,6 +41,7 @@ public class MainConfiguration implements Castable {
         private String token;
         private String oauth;
         private int activationDelay;
+        private int shardsTotal;
 
         public String getToken() {
             return token;
@@ -52,6 +53,10 @@ public class MainConfiguration implements Castable {
 
         public int getActivationDelay() {
             return activationDelay;
+        }
+
+        public int getShardsTotal() {
+            return shardsTotal;
         }
     }
 

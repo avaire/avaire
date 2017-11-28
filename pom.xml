@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.avairebot</groupId>
     <artifactId>Orion</artifactId>
-    <version>0.0.2_1</version>
+    <version>0.0.2_2</version>
     <packaging>jar</packaging>
     <build>
         <resources>
@@ -80,6 +80,16 @@
             <groupId>com.vdurmont</groupId>
             <artifactId>emoji-java</artifactId>
             <version>4.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.2.3</version>
+        </dependency>
+        <dependency>
+            <groupId>io.sentry</groupId>
+            <artifactId>sentry-logback</artifactId>
+            <version>1.6.3</version>
         </dependency>
     </dependencies>
 </project>
