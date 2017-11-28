@@ -1,6 +1,7 @@
 package com.avairebot.orion.shard;
 
 import com.avairebot.orion.Orion;
+import com.avairebot.orion.plugin.PluginLoader;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.exceptions.RateLimitedException;
@@ -19,7 +20,13 @@ public class OrionShard {
         this.orion = orion;
         this.shardId = shardId;
         Orion.getLogger().info("Building shard " + shardId);
-        jda = buildJDA(ShardBuilder.getDefaultShardBuilder(orion));
+
+        JDABuilder builder = ShardBuilder.getDefaultShardBuilder(orion);
+        for (PluginLoader plugin : orion.getPluginManager().getPlugins()) {
+            plugin.registerEventListeners(builder);
+        }
+
+        jda = buildJDA(builder);
     }
 
     @Nonnull

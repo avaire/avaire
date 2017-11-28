@@ -187,6 +187,10 @@ public class Orion {
         return database;
     }
 
+    public PluginManager getPluginManager() {
+        return pluginManager;
+    }
+
     public IntelligenceManager getIntelligenceManager() {
         return intelligenceManager;
     }

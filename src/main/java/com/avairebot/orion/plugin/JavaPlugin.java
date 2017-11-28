@@ -9,10 +9,15 @@ import com.avairebot.orion.contracts.database.migrations.Migration;
 import com.avairebot.orion.database.DatabaseManager;
 import com.avairebot.orion.database.migrate.Migrations;
 import com.avairebot.orion.shard.OrionShard;
+import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public abstract class JavaPlugin {
+
+    private final Set<ListenerAdapter> eventListeners = new HashSet<>();
 
     private Orion orion;
 
@@ -51,6 +56,14 @@ public abstract class JavaPlugin {
      */
     public void registerMigration(Migration migration) {
         orion.getDatabase().getMigrations().register(migration);
+    }
+
+    public void registerEventListener(ListenerAdapter listener) {
+        eventListeners.add(listener);
+    }
+
+    Set<ListenerAdapter> getEventListeners() {
+        return eventListeners;
     }
 
     public Orion getOrion() {

@@ -4,6 +4,8 @@ import com.avairebot.orion.Orion;
 import com.avairebot.orion.exceptions.InvalidPluginException;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import net.dv8tion.jda.core.JDABuilder;
+import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
 import java.io.*;
 import java.util.HashMap;
@@ -71,5 +73,13 @@ public class PluginLoader {
     public void invokePlugin(Orion orion) {
         classLoader.getPlugin().setOrion(orion);
         classLoader.getPlugin().onEnable();
+    }
+
+    public void registerEventListeners(JDABuilder jda) {
+        if (!classLoader.getPlugin().getEventListeners().isEmpty()) {
+            for (ListenerAdapter adapter : classLoader.getPlugin().getEventListeners()) {
+                jda.addEventListener(adapter);
+            }
+        }
     }
 }
