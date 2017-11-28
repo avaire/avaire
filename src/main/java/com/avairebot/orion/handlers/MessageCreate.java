@@ -51,6 +51,10 @@ public class MessageCreate extends EventHandler {
         }
 
         loadDatabasePropertiesIntoMemory(event).thenAccept(properties -> {
+            if (!orion.areWeReadyYet()) {
+                return;
+            }
+
             if (properties.getGuild() != null && properties.getPlayer() != null) {
                 LevelUtil.rewardPlayer(orion, event, properties.getGuild(), properties.getPlayer());
             }

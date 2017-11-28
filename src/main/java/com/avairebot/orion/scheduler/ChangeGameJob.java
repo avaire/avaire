@@ -15,6 +15,10 @@ public class ChangeGameJob extends Job {
 
     @Override
     public void run() {
+        if (!orion.areWeReadyYet()) {
+            return;
+        }
+
         if (orion.getConfig().getPlaying().size() <= index) {
             index = 0;
         }
