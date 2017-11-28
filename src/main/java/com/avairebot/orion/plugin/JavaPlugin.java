@@ -1,12 +1,12 @@
 package com.avairebot.orion.plugin;
 
 import com.avairebot.orion.Orion;
-import com.avairebot.orion.shard.OrionShard;
 import com.avairebot.orion.cache.CacheManager;
 import com.avairebot.orion.commands.CategoryHandler;
 import com.avairebot.orion.commands.CommandHandler;
 import com.avairebot.orion.contracts.commands.Command;
 import com.avairebot.orion.database.DatabaseManager;
+import com.avairebot.orion.shard.OrionShard;
 
 import java.util.List;
 

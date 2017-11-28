@@ -9,8 +9,8 @@ import java.util.Properties;
 
 public class AppInfo {
 
-    private static AppInfo INSTANCE;
     private static final Logger log = LoggerFactory.getLogger(AppInfo.class);
+    private static AppInfo INSTANCE;
 
     public final String VERSION;
     public final String GROUP_ID;

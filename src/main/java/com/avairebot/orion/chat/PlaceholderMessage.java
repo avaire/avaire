@@ -4,7 +4,6 @@ import com.avairebot.orion.contracts.chat.Restable;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.MessageEmbed;
-import net.dv8tion.jda.core.entities.TextChannel;
 
 public class PlaceholderMessage extends Restable {
 
