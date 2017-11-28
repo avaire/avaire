@@ -1,6 +1,7 @@
 package com.avairebot.orion.database.migrate;
 
 
+import com.avairebot.orion.Orion;
 import com.avairebot.orion.contracts.database.migrations.Migration;
 import com.avairebot.orion.database.DatabaseManager;
 import com.avairebot.orion.database.collection.Collection;
@@ -77,13 +78,13 @@ public class Migrations {
             migration.getMigration().up(dbm.getSchema());
             updateRemoteMigrationBatchValue(migration, 1);
 
-            dbm.getOrion().getLogger().info(String.format("Migration: Created \"%s\"", migration.getName()));
+            Orion.getLogger().info(String.format("Migration: Created \"%s\"", migration.getName()));
 
             ranMigrations = true;
         }
 
         if (!ranMigrations) {
-            dbm.getOrion().getLogger().info("Migration: There were nothing to migrate");
+            Orion.getLogger().info("Migration: There were nothing to migrate");
         }
 
         return ranMigrations;
@@ -117,13 +118,13 @@ public class Migrations {
             migration.getMigration().down(dbm.getSchema());
             updateRemoteMigrationBatchValue(migration, 0);
 
-            dbm.getOrion().getLogger().info(String.format("Migration: Rolled back \"%s\"", migration.getName()));
+            Orion.getLogger().info(String.format("Migration: Rolled back \"%s\"", migration.getName()));
 
             ranMigrations = true;
         }
 
         if (!ranMigrations) {
-            dbm.getOrion().getLogger().info("Migration: There were nothing to rollback");
+            Orion.getLogger().info("Migration: There were nothing to rollback");
         }
 
         return ranMigrations;
@@ -163,13 +164,13 @@ public class Migrations {
             migration.getMigration().down(dbm.getSchema());
             updateRemoteMigrationBatchValue(migration, 0);
 
-            dbm.getOrion().getLogger().info(String.format("Migration: Rolled back \"%s\"", migration.getName()));
+            Orion.getLogger().info(String.format("Migration: Rolled back \"%s\"", migration.getName()));
 
             ranMigrations = true;
         }
 
         if (!ranMigrations) {
-            dbm.getOrion().getLogger().info("Migration: There were nothing to rollback");
+            Orion.getLogger().info("Migration: There were nothing to rollback");
         }
 
         return ranMigrations;
@@ -211,7 +212,7 @@ public class Migrations {
         });
 
         if (created) {
-            dbm.getOrion().getLogger().info("Migration table created successfully");
+            Orion.getLogger().info("Migration table created successfully");
         }
     }
 

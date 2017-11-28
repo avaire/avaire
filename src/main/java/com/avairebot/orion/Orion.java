@@ -79,7 +79,6 @@ public class Orion {
             new CreateStatisticsTableMigration(),
             new CreateShardsTableMigration()
         );
-        database.getMigrations().up();
 
         LOGGER.info(" - Registering default command categories");
         CategoryHandler.addCategory("Administration", ".");
@@ -116,6 +115,9 @@ public class Orion {
             e.printStackTrace();
             System.exit(0);
         }
+
+        LOGGER.info(" - Running database migrations");
+        database.getMigrations().up();
 
         LOGGER.info(" - Creating bot instance and connecting to Discord network");
 

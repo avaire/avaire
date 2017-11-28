@@ -5,7 +5,9 @@ import com.avairebot.orion.cache.CacheManager;
 import com.avairebot.orion.commands.CategoryHandler;
 import com.avairebot.orion.commands.CommandHandler;
 import com.avairebot.orion.contracts.commands.Command;
+import com.avairebot.orion.contracts.database.migrations.Migration;
 import com.avairebot.orion.database.DatabaseManager;
+import com.avairebot.orion.database.migrate.Migrations;
 import com.avairebot.orion.shard.OrionShard;
 
 import java.util.List;
@@ -36,6 +38,19 @@ public abstract class JavaPlugin {
      */
     public boolean registerCategory(String name, String defaultPrefix) {
         return CategoryHandler.addCategory(name, defaultPrefix);
+    }
+
+    /**
+     * Registers database migration to the migration containers, the migrations
+     * will be used in {@link Migrations#up() up()}, {@link Migrations#down() down()} and {@link Migrations#rollback(int) rollback(int)}
+     * <p>
+     * All migrations must follow the {@link com.avairebot.orion.contracts.database.migrations.Migration Migration contract}.
+     *
+     * @param migration the migration that should be registered
+     * @see com.avairebot.orion.contracts.database.migrations.Migration
+     */
+    public void registerMigration(Migration migration) {
+        orion.getDatabase().getMigrations().register(migration);
     }
 
     public Orion getOrion() {
