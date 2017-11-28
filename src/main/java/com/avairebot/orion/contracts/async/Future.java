@@ -1,7 +1,7 @@
 package com.avairebot.orion.contracts.async;
 
 import com.avairebot.orion.requests.Response;
-import net.dv8tion.jda.core.utils.SimpleLog;
+import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -24,9 +24,9 @@ public abstract class Future {
      * The default failure consumer that should be used if no failure consumer is given.
      */
     private Consumer<Throwable> DEFAULT_FAILURE = (Exception) -> {
-        SimpleLog.getLog(Future.class).fatal(String.format(
+        LoggerFactory.getLogger(Future.class).error(String.format(
             "Future Consumer returned failure: [%s] %s", Exception.getClass().getSimpleName(), Exception.getMessage()
-        ));
+        ), Exception);
     };
 
     /**

@@ -33,7 +33,6 @@ import net.dv8tion.jda.core.JDAInfo;
 import net.dv8tion.jda.core.entities.SelfUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import sun.rmi.runtime.Log;
 
 import java.io.IOException;
 import java.sql.SQLException;

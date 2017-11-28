@@ -5,7 +5,7 @@ import com.avairebot.orion.cache.CacheItem;
 import com.avairebot.orion.contracts.cache.CacheAdapter;
 import com.avairebot.orion.contracts.cache.CacheClosure;
 import com.google.gson.Gson;
-import net.dv8tion.jda.core.utils.SimpleLog;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -27,7 +27,7 @@ public class FileAdapter extends CacheAdapter {
         gson = new Gson();
 
         if (!storagePath.exists() && !storagePath.mkdirs()) {
-            SimpleLog.getLog(FileAdapter.class).fatal("Failed to create cache storage folder, exiting application...");
+            LoggerFactory.getLogger(FileAdapter.class).error("Failed to create cache storage folder, exiting application...");
             System.exit(0);
         }
     }
