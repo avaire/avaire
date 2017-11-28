@@ -108,7 +108,18 @@ public class Orion {
             } else {
                 LOGGER.info(String.format(" - %s plugins was loaded, invoking all plugins", pluginManager.getPlugins().size()));
                 for (PluginLoader plugin : pluginManager.getPlugins()) {
+                    int commands = CommandHandler.getCommands().size();
+                    int categories = CategoryHandler.getValues().size();
+                    int migrations = getDatabase().getMigrations().getMigrations().size();
+
                     plugin.invokePlugin(this);
+
+                    LOGGER.info("\"{}\" has been enabled with {} Command(s), {} Command Categories, {} Database Migration(s)",
+                        plugin.getName(),
+                        CommandHandler.getCommands().size() - commands,
+                        CategoryHandler.getValues().size() - categories,
+                        getDatabase().getMigrations().getMigrations().size() - migrations
+                    );
                 }
             }
         } catch (InvalidPluginsPathException | InvalidPluginException e) {
