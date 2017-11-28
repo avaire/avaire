@@ -27,10 +27,13 @@ import com.avairebot.orion.scheduler.*;
 import com.avairebot.orion.shard.ConnectQueue;
 import com.avairebot.orion.shard.OrionShard;
 import com.avairebot.orion.shard.ShardEntityCounter;
+import com.sedmelluq.discord.lavaplayer.tools.PlayerLibrary;
 import net.dv8tion.jda.core.JDA;
+import net.dv8tion.jda.core.JDAInfo;
 import net.dv8tion.jda.core.entities.SelfUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import sun.rmi.runtime.Log;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -53,6 +56,8 @@ public class Orion {
     private final ShardEntityCounter shardEntityCounter;
 
     public Orion() throws IOException, SQLException {
+        System.out.println(getVersionInfo());
+
         LOGGER.info("Bootstrapping Orion v" + AppInfo.getAppInfo().VERSION + " Build " + AppInfo.getAppInfo().BUILD_NUMBER);
 
         this.cache = new CacheManager(this);
@@ -194,6 +199,23 @@ public class Orion {
             }
         }
         return true;
+    }
+
+    private String getVersionInfo() {
+        return "\n\n" +
+            "   ____           _                        \n" +
+            "  / __ \\         (_)                      \n" +
+            " | |  | |  _ __   _    ___    _ __         \n" +
+            " | |  | | | '__| | |  / _ \\  | '_ \\      \n" +
+            " | |__| | | |    | | | (_) | | | | |       \n" +
+            "  \\____/  |_|    |_|  \\___/  |_| |_|     \n"
+
+            + "\n\tVersion:       " + AppInfo.getAppInfo().VERSION
+            + "\n\tBuild:         " + AppInfo.getAppInfo().BUILD_NUMBER
+            + "\n\tJVM:           " + System.getProperty("java.version")
+            + "\n\tJDA:           " + JDAInfo.VERSION
+            + "\n\tLavaplayer     " + PlayerLibrary.VERSION
+            + "\n";
     }
 
     private void registerCommands() {
