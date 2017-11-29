@@ -3,6 +3,7 @@ package com.avairebot.orion.contracts.commands;
 import com.avairebot.orion.Orion;
 import com.avairebot.orion.chat.MessageType;
 import com.avairebot.orion.commands.*;
+import com.avairebot.orion.contracts.reflection.Reflectionable;
 import com.avairebot.orion.database.controllers.GuildController;
 import com.avairebot.orion.database.transformers.GuildTransformer;
 import com.avairebot.orion.factories.MessageFactory;
@@ -19,13 +20,8 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
-public abstract class Command {
+public abstract class Command extends Reflectionable {
 
-    /**
-     * The Orion class instance, this is used to access
-     * and interact with the rest of the application.
-     */
-    protected final Orion orion;
 
     /**
      * Determines if the command can be used in direct messages or not.
@@ -68,7 +64,8 @@ public abstract class Command {
      * @param allowDM Determines if the command can be used in DMs.
      */
     public Command(Orion orion, boolean allowDM) {
-        this.orion = orion;
+        super(orion);
+
         this.allowDM = allowDM;
     }
 

@@ -15,4 +15,9 @@ public class Constants {
     public static final String FEEDBACK_TABLE_NAME = "feedback";
     public static final String MUSIC_PLAYLIST_TABLE_NAME = "playlists";
     public static final String SHARDS_TABLE_NAME = "shards";
+
+    // Package Specific Information
+    public static final String PACKAGE_COMMAND_PATH = "com.avairebot.orion.commands";
+    public static final String PACKAGE_INTENTS_PATH = "com.avairebot.orion.ai.intents";
+    public static final String PACKAGE_JOB_PATH = "com.avairebot.orion.scheduler";
 }

@@ -1,29 +1,22 @@
 package com.avairebot.orion;
 
 import com.avairebot.orion.ai.IntelligenceManager;
-import com.avairebot.orion.ai.intents.RequestOnlinePlayers;
-import com.avairebot.orion.ai.intents.SmallTalk;
-import com.avairebot.orion.ai.intents.Unknown;
 import com.avairebot.orion.cache.CacheManager;
 import com.avairebot.orion.commands.CategoryHandler;
 import com.avairebot.orion.commands.CommandHandler;
-import com.avairebot.orion.commands.administration.*;
-import com.avairebot.orion.commands.fun.*;
-import com.avairebot.orion.commands.help.HelpCommand;
-import com.avairebot.orion.commands.interaction.*;
-import com.avairebot.orion.commands.music.*;
-import com.avairebot.orion.commands.system.EvalCommand;
-import com.avairebot.orion.commands.system.SetStatusCommand;
-import com.avairebot.orion.commands.utility.*;
 import com.avairebot.orion.config.ConfigurationLoader;
 import com.avairebot.orion.config.MainConfiguration;
+import com.avairebot.orion.contracts.ai.Intent;
+import com.avairebot.orion.contracts.commands.Command;
+import com.avairebot.orion.contracts.reflection.Reflectionable;
+import com.avairebot.orion.contracts.scheduler.Job;
 import com.avairebot.orion.database.DatabaseManager;
 import com.avairebot.orion.database.migrate.migrations.*;
 import com.avairebot.orion.exceptions.InvalidPluginException;
 import com.avairebot.orion.exceptions.InvalidPluginsPathException;
 import com.avairebot.orion.plugin.PluginLoader;
 import com.avairebot.orion.plugin.PluginManager;
-import com.avairebot.orion.scheduler.*;
+import com.avairebot.orion.scheduler.ScheduleHandler;
 import com.avairebot.orion.shard.ConnectQueue;
 import com.avairebot.orion.shard.OrionShard;
 import com.avairebot.orion.shard.ShardEntityCounter;
@@ -31,13 +24,17 @@ import com.sedmelluq.discord.lavaplayer.tools.PlayerLibrary;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDAInfo;
 import net.dv8tion.jda.core.entities.SelfUser;
+import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.function.Consumer;
 
 public class Orion {
 
@@ -93,12 +90,19 @@ public class Orion {
         CategoryHandler.addCategory("Utility", "!");
         CategoryHandler.addCategory("System", ";");
 
-        this.registerCommands();
-        this.registerJobs();
+        LOGGER.info(" - Registering commands...");
+        autoloadPackage(Constants.PACKAGE_COMMAND_PATH, command -> CommandHandler.register((Command) command));
+        LOGGER.info(String.format(" - Registered %s commands successfully!", CommandHandler.getCommands().size()));
+
+        LOGGER.info(" - Registering jobs...");
+        autoloadPackage(Constants.PACKAGE_JOB_PATH, job -> ScheduleHandler.registerJob((Job) job));
+        LOGGER.info(String.format(" - Registered %s jobs successfully!", ScheduleHandler.entrySet().size()));
 
         intelligenceManager = new IntelligenceManager(this);
         if (intelligenceManager.isEnabled()) {
-            this.registerIntents();
+            LOGGER.info(" - Registering intents...");
+            autoloadPackage(Constants.PACKAGE_INTENTS_PATH, intent -> intelligenceManager.registerIntent((Intent) intent));
+            LOGGER.info(String.format(" - Registered %s intelligence intents successfully!", intelligenceManager.entrySet().size()));
         }
 
         LOGGER.info(" - Creating plugin manager and registering plugins...");
@@ -221,127 +225,22 @@ public class Orion {
             + "\n";
     }
 
-    private void registerCommands() {
-        LOGGER.info(" - Registering commands...");
+    private void autoloadPackage(String path, Consumer<Reflectionable> callback) {
+        Set<Class<? extends Reflectionable>> types = new Reflections(path).getSubTypesOf(Reflectionable.class);
 
-        // Administration
-        CommandHandler.register(new AddSelfAssignableRoleCommand(this));
-        CommandHandler.register(new AiCommand(this));
-        CommandHandler.register(new AliasCommand(this));
-        CommandHandler.register(new AutoAssignRoleCommand(this));
-        CommandHandler.register(new BanCommand(this));
-        CommandHandler.register(new ChangePrefixCommand(this));
-        CommandHandler.register(new ChannelIdCommand(this));
-        CommandHandler.register(new ChannelInfoCommand(this));
-        CommandHandler.register(new GoodbyeCommand(this));
-        CommandHandler.register(new GoodbyeMessageCommand(this));
-        CommandHandler.register(new IAmCommand(this));
-        CommandHandler.register(new IAmNotCommand(this));
-        CommandHandler.register(new KickCommand(this));
-        CommandHandler.register(new LevelAlertsCommand(this));
-        CommandHandler.register(new LevelCommand(this));
-        CommandHandler.register(new ListAliasesCommand(this));
-        CommandHandler.register(new ListSelfAssignableRolesCommand(this));
-        CommandHandler.register(new PurgeCommand(this));
-        CommandHandler.register(new RemoveSelfAssignableRoleCommand(this));
-        CommandHandler.register(new ServerIdCommand(this));
-        CommandHandler.register(new ServerInfoCommand(this));
-        CommandHandler.register(new SoftBanCommand(this));
-        CommandHandler.register(new UserIdCommand(this));
-        CommandHandler.register(new UserInfoCommand(this));
-        CommandHandler.register(new VoiceKickCommand(this));
-        CommandHandler.register(new WelcomeCommand(this));
-        CommandHandler.register(new WelcomeMessageCommand(this));
+        Class[] arguments = new Class[1];
+        arguments[0] = Orion.class;
 
-        // Fun
-        CommandHandler.register(new ChuckNorrisCommand(this));
-        CommandHandler.register(new CoinflipCommand(this));
-        CommandHandler.register(new DiceCommand(this));
-        CommandHandler.register(new EightBallCommand(this));
-        CommandHandler.register(new GfycatCommand(this));
-        CommandHandler.register(new LennyCommand(this));
-        CommandHandler.register(new MemeCommand(this));
-        CommandHandler.register(new RandomCatCommand(this));
-        CommandHandler.register(new RandomDogCommand(this));
-        CommandHandler.register(new RepeatCommand(this));
-        CommandHandler.register(new RipCommand(this));
-        CommandHandler.register(new RollCommand(this));
-        CommandHandler.register(new SayCommand(this));
-        CommandHandler.register(new UrbanDictionaryCommand(this));
-        CommandHandler.register(new VoteSkipCommand(this));
-        CommandHandler.register(new XKCDCommand(this));
+        for (Class<? extends Reflectionable> reflectionClass : types) {
+            if (reflectionClass.getPackage().getName().contains("contracts")) {
+                continue;
+            }
 
-        // Help/Support
-        CommandHandler.register(new HelpCommand(this));
-
-        // Interactions
-        CommandHandler.register(new BiteCommand(this));
-        CommandHandler.register(new CuddleCommand(this));
-        CommandHandler.register(new DivorceCommand(this));
-        CommandHandler.register(new HelloCommand(this));
-        CommandHandler.register(new HighFiveCommand(this));
-        CommandHandler.register(new HugCommand(this));
-        CommandHandler.register(new KillCommand(this));
-        CommandHandler.register(new KissCommand(this));
-        CommandHandler.register(new PanCommand(this));
-        CommandHandler.register(new PatCommand(this));
-        CommandHandler.register(new PokeCommand(this));
-        CommandHandler.register(new PunchCommand(this));
-        CommandHandler.register(new SenpaiCommand(this));
-        CommandHandler.register(new SlapCommand(this));
-        CommandHandler.register(new TickleCommand(this));
-
-        // Music
-        CommandHandler.register(new ClearQueueCommand(this));
-        CommandHandler.register(new MoveHereCommand(this));
-        CommandHandler.register(new PauseCommand(this));
-        CommandHandler.register(new PlayCommand(this));
-        CommandHandler.register(new RepeatMusicQueueCommand(this));
-        CommandHandler.register(new ResumeCommand(this));
-        CommandHandler.register(new SeekCommand(this));
-        CommandHandler.register(new SkipCommand(this));
-        CommandHandler.register(new SongCommand(this));
-        CommandHandler.register(new VolumeCommand(this));
-
-        // System
-        CommandHandler.register(new EvalCommand(this));
-        CommandHandler.register(new SetStatusCommand(this));
-
-        // Utility
-        CommandHandler.register(new DuckDuckGoCommand(this));
-        CommandHandler.register(new ExpandUrlCommand(this));
-        CommandHandler.register(new FeedbackCommand(this));
-        CommandHandler.register(new GlobalLeaderboardCommand(this));
-        CommandHandler.register(new InviteCommand(this));
-        CommandHandler.register(new IPInfoCommand(this));
-        CommandHandler.register(new LeaderboardCommand(this));
-        CommandHandler.register(new PingCommand(this));
-        CommandHandler.register(new RankCommand(this));
-        CommandHandler.register(new SourceCommand(this));
-        CommandHandler.register(new StatsCommand(this));
-
-        LOGGER.info(String.format(" - Registered %s commands successfully!", CommandHandler.getCommands().size()));
-    }
-
-    private void registerJobs() {
-        LOGGER.info(" - Registering jobs...");
-
-        ScheduleHandler.registerJob(new ChangeGameJob(this));
-        ScheduleHandler.registerJob(new GithubChangesJob(this));
-        ScheduleHandler.registerJob(new FetchMemeTypesJob(this));
-        ScheduleHandler.registerJob(new GarbageCollectorJob(this));
-        ScheduleHandler.registerJob(new ResetRespectStatisticsJob(this));
-
-        LOGGER.info(String.format(" - Registered %s jobs successfully!", ScheduleHandler.entrySet().size()));
-    }
-
-    private void registerIntents() {
-        LOGGER.info(" - Registering intents...");
-
-        intelligenceManager.registerIntent(new Unknown(this));
-        intelligenceManager.registerIntent(new SmallTalk(this));
-        intelligenceManager.registerIntent(new RequestOnlinePlayers(this));
-
-        LOGGER.info(String.format(" - Registered %s intelligence intents successfully!", intelligenceManager.entrySet().size()));
+            try {
+                callback.accept(reflectionClass.getDeclaredConstructor(arguments).newInstance(this));
+            } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+                getLogger().error("Failed to create a new instance of package {}", reflectionClass.getName(), e);
+            }
+        }
     }
 }

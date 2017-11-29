@@ -2,14 +2,13 @@ package com.avairebot.orion.contracts.ai;
 
 import ai.api.model.AIResponse;
 import com.avairebot.orion.Orion;
+import com.avairebot.orion.contracts.reflection.Reflectionable;
 import net.dv8tion.jda.core.entities.Message;
 
-public abstract class Intent {
-
-    protected final Orion orion;
+public abstract class Intent extends Reflectionable {
 
     public Intent(Orion orion) {
-        this.orion = orion;
+        super(orion);
     }
 
     public abstract String getAction();

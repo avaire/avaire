@@ -1,17 +1,12 @@
 package com.avairebot.orion.contracts.scheduler;
 
 import com.avairebot.orion.Orion;
+import com.avairebot.orion.contracts.reflection.Reflectionable;
 
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
-public abstract class Job implements Runnable {
-
-    /**
-     * The Orion class instance, this is used to access
-     * and interact with the rest of the application.
-     */
-    protected final Orion orion;
+public abstract class Job extends Reflectionable implements Runnable {
 
     /**
      * The amount of time the job should be delayed before starting,
@@ -79,7 +74,8 @@ public abstract class Job implements Runnable {
      * @param unit   The unit of time the job should measure the delay and periods in.
      */
     public Job(Orion orion, long delay, long period, TimeUnit unit) {
-        this.orion = orion;
+        super(orion);
+
         this.delay = delay;
         this.period = period;
         this.unit = unit;

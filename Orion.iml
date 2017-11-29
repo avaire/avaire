@@ -42,5 +42,8 @@
     <orderEntry type="library" name="Maven: ch.qos.logback:logback-core:1.2.3" level="project" />
     <orderEntry type="library" name="Maven: io.sentry:sentry-logback:1.6.3" level="project" />
     <orderEntry type="library" name="Maven: io.sentry:sentry:1.6.3" level="project" />
+    <orderEntry type="library" name="Maven: org.reflections:reflections:0.9.11" level="project" />
+    <orderEntry type="library" name="Maven: com.google.guava:guava:20.0" level="project" />
+    <orderEntry type="library" name="Maven: org.javassist:javassist:3.21.0-GA" level="project" />
   </component>
 </module>
