@@ -31,12 +31,12 @@ public class ChuckNorrisCommand extends Command {
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`:command` - Gets a random fact for you");
+        return Collections.singletonList("`:command [name]` - Gets a random fact for you, if a name is given \"Chuck Norris\" will be replaced with the given name.");
     }
 
     @Override
     public String getExampleUsage() {
-        return null;
+        return "`:command @Senither`";
     }
 
     @Override
@@ -56,8 +56,22 @@ public class ChuckNorrisCommand extends Command {
             .send((Consumer<Response>) response -> {
                 ChuckNorrisService service = (ChuckNorrisService) response.toService(ChuckNorrisService.class);
 
-                MessageFactory.makeSuccess(message, service.getValue().getJoke()).queue();
+                MessageFactory.makeSuccess(message, prepareJoke(message, args, service.getValue().getJoke())).queue();
             });
         return true;
+    }
+
+    private String prepareJoke(Message message, String[] args, String joke) {
+        if (!message.getMentionedUsers().isEmpty()) {
+            return joke.replaceAll("Chuck Norris", message.getGuild().getMember(
+                message.getMentionedUsers().get(0)
+            ).getEffectiveName());
+        }
+
+        if (args.length > 0) {
+            return joke.replaceAll("Chuck Norris", String.join(" ", args));
+        }
+
+        return joke;
     }
 }
