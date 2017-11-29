@@ -12,7 +12,6 @@ import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.Role;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class VolumeCommand extends Command {
@@ -51,7 +50,7 @@ public class VolumeCommand extends Command {
 
     @Override
     public List<String> getMiddleware() {
-        return Collections.singletonList("throttle:user,1,4");
+        return Arrays.asList("has-role:DJ", "throttle:user,1,4");
     }
 
     @Override
