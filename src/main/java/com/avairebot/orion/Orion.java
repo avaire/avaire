@@ -56,7 +56,7 @@ public class Orion {
     public Orion() throws IOException, SQLException {
         System.out.println(getVersionInfo());
 
-        LOGGER.info("Bootstrapping Orion v" + AppInfo.getAppInfo().VERSION + " Build " + AppInfo.getAppInfo().BUILD_NUMBER);
+        LOGGER.info("Bootstrapping Orion v" + AppInfo.getAppInfo().VERSION);
 
         this.cache = new CacheManager(this);
 
@@ -239,7 +239,6 @@ public class Orion {
             "  \\____/  |_|    |_|  \\___/  |_| |_|     \n"
 
             + "\n\tVersion:       " + AppInfo.getAppInfo().VERSION
-            + "\n\tBuild:         " + AppInfo.getAppInfo().BUILD_NUMBER
             + "\n\tJVM:           " + System.getProperty("java.version")
             + "\n\tJDA:           " + JDAInfo.VERSION
             + "\n\tLavaplayer     " + PlayerLibrary.VERSION

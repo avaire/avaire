@@ -149,7 +149,7 @@ public class MessageCreate extends EventHandler {
                 orion.getSelfUser().getName(),
                 author,
                 CommandHandler.getLazyCommand("help").getCommand().generateCommandTrigger(event.getMessage()),
-                AppInfo.getAppInfo().getVersionBuild()
+                AppInfo.getAppInfo().VERSION
             ))
             .setFooter("This message will be automatically deleted in one minute.", null)
             .build()

@@ -15,7 +15,6 @@ public class AppInfo {
     public final String VERSION;
     public final String GROUP_ID;
     public final String ARTIFACT_ID;
-    public final String BUILD_NUMBER;
 
     private AppInfo() {
         InputStream resourceAsStream = this.getClass().getResourceAsStream("/orion.properties");
@@ -27,8 +26,7 @@ public class AppInfo {
             log.error("Failed to load app.properties", e);
         }
 
-        this.VERSION = prop.getProperty("version").split("_")[0];
-        this.BUILD_NUMBER = prop.getProperty("version").split("_")[1];
+        this.VERSION = prop.getProperty("version");
         this.GROUP_ID = prop.getProperty("groupId");
         this.ARTIFACT_ID = prop.getProperty("artifactId");
     }
@@ -38,9 +36,5 @@ public class AppInfo {
             INSTANCE = new AppInfo();
         }
         return INSTANCE;
-    }
-
-    public String getVersionBuild() {
-        return VERSION + "_" + BUILD_NUMBER;
     }
 }

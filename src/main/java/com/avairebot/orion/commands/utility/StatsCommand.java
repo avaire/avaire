@@ -95,7 +95,7 @@ public class StatsCommand extends Command {
                 new MessageEmbed.Field("Servers", number.format(message.getJDA().getGuilds().size()), true)
             )
                 .setTitle("Official Bot Server Invite", "https://discordapp.com/invite/gt2FWER")
-                .setAuthor("Orion v" + AppInfo.getAppInfo().getVersionBuild(), "https://discordapp.com/invite/gt2FWER", orion.getSelfUser().getEffectiveAvatarUrl())
+                .setAuthor("Orion v" + AppInfo.getAppInfo().VERSION, "https://discordapp.com/invite/gt2FWER", orion.getSelfUser().getEffectiveAvatarUrl())
                 .setDescription(description.toString())
                 .build()
         ).queue();
