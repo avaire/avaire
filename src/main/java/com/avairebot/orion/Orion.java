@@ -32,8 +32,10 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.ScheduledFuture;
 import java.util.function.Consumer;
 
 public class Orion {
@@ -206,6 +208,25 @@ public class Orion {
             }
         }
         return true;
+    }
+
+    public void shutdown() {
+        getLogger().info("Shutting down bot instance gracefully.");
+        for (OrionShard shard : getShards()) {
+            shard.getJDA().shutdown();
+        }
+
+        for (Map.Entry<String, ScheduledFuture<?>> job : ScheduleHandler.entrySet()) {
+            job.getValue().cancel(true);
+        }
+
+        try {
+            getDatabase().getConnection().close();
+        } catch (SQLException ex) {
+            getLogger().error("Failed to close database connection during shutdown: ", ex);
+        }
+
+        System.exit(0);
     }
 
     private String getVersionInfo() {
