@@ -78,7 +78,28 @@ public class CalculateCommand extends Command {
     }
 
     private Expression createExpression(String string) {
-        return new Expression(string)
+        int where = string.toLowerCase().indexOf("where");
+
+        if (where == -1) {
+            return new Expression(string)
+                .setVariable("tau", new BigDecimal(Math.PI * 2));
+        }
+
+        Expression expression = new Expression(string.substring(0, where).trim())
             .setVariable("tau", new BigDecimal(Math.PI * 2));
+
+        for (String var : string.substring(where + 5, string.length()).trim().split(" and ")) {
+            String[] varArgs = var.split("=");
+            if (varArgs.length != 2) {
+                varArgs = var.split("is");
+                if (varArgs.length != 2) {
+                    continue;
+                }
+            }
+
+            expression.setVariable(varArgs[0].trim(), new BigDecimal(varArgs[1].trim()));
+        }
+
+        return expression;
     }
 }
