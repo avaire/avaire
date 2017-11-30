@@ -96,5 +96,10 @@
             <artifactId>reflections</artifactId>
             <version>0.9.11</version>
         </dependency>
+        <dependency>
+            <groupId>com.udojava</groupId>
+            <artifactId>EvalEx</artifactId>
+            <version>1.18</version>
+        </dependency>
     </dependencies>
 </project>
