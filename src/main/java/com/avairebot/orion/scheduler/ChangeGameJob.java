@@ -5,6 +5,8 @@ import com.avairebot.orion.contracts.scheduler.Job;
 import com.avairebot.orion.shard.OrionShard;
 import net.dv8tion.jda.core.entities.Game;
 
+import java.util.Arrays;
+
 public class ChangeGameJob extends Job {
 
     private int index = 0;
@@ -19,16 +21,42 @@ public class ChangeGameJob extends Job {
             return;
         }
 
-        if (orion.getConfig().getPlaying().size() <= index) {
+        if (index >= orion.getConfig().getPlaying().size()) {
             index = 0;
         }
 
-        index++;
         for (OrionShard shard : orion.getShards()) {
             shard.getJDA().getPresence().setGame(
-                Game.of(formatGame(orion.getConfig().getPlaying().get(index), shard))
+                getGameFromType(orion.getConfig().getPlaying().get(index), shard)
             );
         }
+        index++;
+    }
+
+    private Game getGameFromType(String status, OrionShard shard) {
+        Game game = Game.playing(status);
+        if (status.contains(":")) {
+            String[] split = status.split(":");
+            status = String.join(":", Arrays.copyOfRange(split, 1, split.length));
+            switch (split[0].toLowerCase()) {
+                case "listen":
+                case "listening":
+                    return Game.listening(formatGame(status, shard));
+
+                case "watch":
+                case "watching":
+                    return Game.watching(formatGame(status, shard));
+
+                case "play":
+                case "playing":
+                    return Game.playing(formatGame(status, shard));
+
+                case "stream":
+                case "streaming":
+                    return Game.streaming(formatGame(status, shard), "https://www.twitch.tv/senither");
+            }
+        }
+        return game;
     }
 
     private String formatGame(String game, OrionShard shard) {

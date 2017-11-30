@@ -22,7 +22,7 @@ public class ShardBuilder {
         if (defaultShardBuilder == null) {
             JDABuilder builder = new JDABuilder(AccountType.BOT)
                 .setToken(orion.getConfig().botAuth().getToken())
-                .setGame(Game.of("Loading components..."))
+                .setGame(Game.watching("my code start up..."))
                 .setReconnectQueue(orion.getConnectQueue())
                 .setAutoReconnect(true);
 
