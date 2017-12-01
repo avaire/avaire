@@ -40,7 +40,7 @@ import java.util.function.Consumer;
 
 public class Orion {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(Orion.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger("Orion");
 
     private static final List<OrionShard> SHARDS = new CopyOnWriteArrayList<>();
     private static final ConnectQueue CONNECT_QUEUE = new ConnectQueue();
@@ -57,10 +57,11 @@ public class Orion {
         System.out.println(getVersionInfo());
 
         LOGGER.info("Bootstrapping Orion v" + AppInfo.getAppInfo().VERSION);
+        Reflections.log = null;
 
         this.cache = new CacheManager(this);
 
-        LOGGER.info(" - Loading configuration");
+        LOGGER.info("Loading configuration");
         ConfigurationLoader configLoader = new ConfigurationLoader();
         this.config = (MainConfiguration) configLoader.load("config.json", MainConfiguration.class);
         if (this.config == null) {
@@ -68,10 +69,10 @@ public class Orion {
             System.exit(0);
         }
 
-        LOGGER.info(" - Registering and connecting to database");
+        LOGGER.info("Registering and connecting to database");
         database = new DatabaseManager(this);
 
-        LOGGER.info(" - Registering database table migrations");
+        LOGGER.info("Registering database table migrations");
         database.getMigrations().register(
             new CreateGuildTableMigration(),
             new CreateGuildTypeTableMigration(),
@@ -83,7 +84,7 @@ public class Orion {
             new CreateShardsTableMigration()
         );
 
-        LOGGER.info(" - Registering default command categories");
+        LOGGER.info("Registering default command categories");
         CategoryHandler.addCategory("Administration", ".");
         CategoryHandler.addCategory("Help", ".");
         CategoryHandler.addCategory("Fun", ">");
@@ -92,31 +93,31 @@ public class Orion {
         CategoryHandler.addCategory("Utility", "!");
         CategoryHandler.addCategory("System", ";");
 
-        LOGGER.info(" - Registering commands...");
+        LOGGER.info("Registering commands...");
         autoloadPackage(Constants.PACKAGE_COMMAND_PATH, command -> CommandHandler.register((Command) command));
-        LOGGER.info(String.format(" - Registered %s commands successfully!", CommandHandler.getCommands().size()));
+        LOGGER.info(String.format("\tRegistered %s commands successfully!", CommandHandler.getCommands().size()));
 
-        LOGGER.info(" - Registering jobs...");
+        LOGGER.info("Registering jobs...");
         autoloadPackage(Constants.PACKAGE_JOB_PATH, job -> ScheduleHandler.registerJob((Job) job));
-        LOGGER.info(String.format(" - Registered %s jobs successfully!", ScheduleHandler.entrySet().size()));
+        LOGGER.info(String.format("\tRegistered %s jobs successfully!", ScheduleHandler.entrySet().size()));
 
         intelligenceManager = new IntelligenceManager(this);
         if (intelligenceManager.isEnabled()) {
-            LOGGER.info(" - Registering intents...");
+            LOGGER.info("Registering intents...");
             autoloadPackage(Constants.PACKAGE_INTENTS_PATH, intent -> intelligenceManager.registerIntent((Intent) intent));
-            LOGGER.info(String.format(" - Registered %s intelligence intents successfully!", intelligenceManager.entrySet().size()));
+            LOGGER.info(String.format("\tRegistered %s intelligence intents successfully!", intelligenceManager.entrySet().size()));
         }
 
-        LOGGER.info(" - Creating plugin manager and registering plugins...");
+        LOGGER.info("Creating plugin manager and registering plugins...");
         pluginManager = new PluginManager(this);
 
         try {
             pluginManager.loadPlugins();
 
             if (pluginManager.getPlugins().isEmpty()) {
-                LOGGER.info(" - No plugins was found");
+                LOGGER.info("\tNo plugins was found");
             } else {
-                LOGGER.info(String.format(" - %s plugins was loaded, invoking all plugins", pluginManager.getPlugins().size()));
+                LOGGER.info(String.format("\t%s plugins was loaded, invoking all plugins", pluginManager.getPlugins().size()));
                 for (PluginLoader plugin : pluginManager.getPlugins()) {
                     int commands = CommandHandler.getCommands().size();
                     int categories = CategoryHandler.getValues().size();
@@ -124,7 +125,7 @@ public class Orion {
 
                     plugin.invokePlugin(this);
 
-                    LOGGER.info("\"{}\" has been enabled with {} Command(s), {} Command Categories, {} Database Migration(s)",
+                    LOGGER.info("\t\t\"{}\" has been enabled with {} Command(s), {} Command Categories, {} Database Migration(s)",
                         plugin.getName(),
                         CommandHandler.getCommands().size() - commands,
                         CategoryHandler.getValues().size() - categories,
@@ -137,10 +138,10 @@ public class Orion {
             System.exit(0);
         }
 
-        LOGGER.info(" - Running database migrations");
+        LOGGER.info("Running database migrations");
         database.getMigrations().up();
 
-        LOGGER.info(" - Creating bot instance and connecting to Discord network");
+        LOGGER.info("Creating bot instance and connecting to Discord network");
 
         shardEntityCounter = new ShardEntityCounter(this);
         if (getConfig().botAuth().getShardsTotal() < 1) {

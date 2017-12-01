@@ -1,4 +1,4 @@
-<configuration debug="false">
+<configuration debug="false" scan="true">
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>INFO</level>
@@ -75,10 +75,14 @@
         </encoder>
     </appender>
 
-    <logger name="orion" level="DEBUG" additivity="true">
+    <logger name="com.avairebot.orion" level="DEBUG" additivity="true">
         <appender-ref ref="DEBUG"/>
         <appender-ref ref="ERROR"/>
-        <appender-ref ref="BOT_STDOUT_DEBUG"/>
+        <!--
+            Enable this appender to see Orions debug logs in your console / IDE
+            if you enable it in the root logger further below you will see the debug logs of all the other libraries too
+        -->
+        <!--<appender-ref ref="BOT_STDOUT_DEBUG"/>-->
     </logger>
 
     <!-- Gives us a nice JDA log with only JDA output -->

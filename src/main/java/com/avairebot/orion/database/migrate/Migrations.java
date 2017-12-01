@@ -1,7 +1,6 @@
 package com.avairebot.orion.database.migrate;
 
 
-import com.avairebot.orion.Orion;
 import com.avairebot.orion.contracts.database.migrations.Migration;
 import com.avairebot.orion.database.DatabaseManager;
 import com.avairebot.orion.database.collection.Collection;
@@ -9,11 +8,16 @@ import com.avairebot.orion.database.collection.DataRow;
 import com.avairebot.orion.database.query.QueryBuilder;
 import com.avairebot.orion.database.schema.Blueprint;
 import com.avairebot.orion.database.schema.DefaultSQLAction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.SQLException;
 import java.util.*;
 
 public class Migrations {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger("DB::Migration");
+
     private final DatabaseManager dbm;
     private final List<MigrationContainer> migrations;
 
@@ -78,13 +82,13 @@ public class Migrations {
             migration.getMigration().up(dbm.getSchema());
             updateRemoteMigrationBatchValue(migration, 1);
 
-            Orion.getLogger().info(String.format("Migration: Created \"%s\"", migration.getName()));
+            LOGGER.info("Created \"{}\"", migration.getName());
 
             ranMigrations = true;
         }
 
         if (!ranMigrations) {
-            Orion.getLogger().info("Migration: There were nothing to migrate");
+            LOGGER.info("There were nothing to migrate");
         }
 
         return ranMigrations;
@@ -118,13 +122,13 @@ public class Migrations {
             migration.getMigration().down(dbm.getSchema());
             updateRemoteMigrationBatchValue(migration, 0);
 
-            Orion.getLogger().info(String.format("Migration: Rolled back \"%s\"", migration.getName()));
+            LOGGER.info("Rolled back \"{}\"", migration.getName());
 
             ranMigrations = true;
         }
 
         if (!ranMigrations) {
-            Orion.getLogger().info("Migration: There were nothing to rollback");
+            LOGGER.info("There were nothing to rollback");
         }
 
         return ranMigrations;
@@ -164,13 +168,13 @@ public class Migrations {
             migration.getMigration().down(dbm.getSchema());
             updateRemoteMigrationBatchValue(migration, 0);
 
-            Orion.getLogger().info(String.format("Migration: Rolled back \"%s\"", migration.getName()));
+            LOGGER.info("Rolled back \"{}\"", migration.getName());
 
             ranMigrations = true;
         }
 
         if (!ranMigrations) {
-            Orion.getLogger().info("Migration: There were nothing to rollback");
+            LOGGER.info("There were nothing to rollback");
         }
 
         return ranMigrations;
@@ -212,7 +216,7 @@ public class Migrations {
         });
 
         if (created) {
-            Orion.getLogger().info("Migration table created successfully");
+            LOGGER.info("Migration table created successfully");
         }
     }
 
