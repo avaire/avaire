@@ -61,9 +61,7 @@ public class CalculateCommand extends Command {
             Expression expression = createExpression(string);
             BigDecimal result = expression.eval();
 
-            System.out.println(expression.getExpression());
             if (expression.isBoolean()) {
-
                 MessageFactory.makeInfo(message, result.intValueExact() == 1
                     ? "True" : "False"
                 ).queue();
