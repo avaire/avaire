@@ -31,6 +31,22 @@ public class CommandHandler {
     }
 
     /**
+     * Get the command container from the given command class instance.
+     *
+     * @param command The command class instance.
+     * @return Possibly-null, The registered command container instance.
+     */
+    public static CommandContainer getCommand(Class<? extends Command> command) {
+        for (CommandContainer container : COMMANDS.values()) {
+            if (container.getCommand().getClass().getTypeName().equals(command.getTypeName())) {
+                return container;
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * Get the command matching the message raw contents first argument, both
      * the command prefix and the command trigger must match for the command
      * to be returned, if the guild/server that the command was executed
