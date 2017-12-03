@@ -1,16 +1,15 @@
 package com.avairebot.orion.contracts.commands;
 
 import com.avairebot.orion.Orion;
-import com.avairebot.orion.commands.CommandMessage;
 import com.avairebot.orion.commands.CommandPriority;
-import com.avairebot.orion.factories.RequestFactory;
-import com.avairebot.orion.requests.Response;
+import com.avairebot.orion.factories.MessageFactory;
 import com.avairebot.orion.utilities.RandomUtil;
+import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Message;
 
+import java.awt.*;
 import java.util.Collections;
 import java.util.List;
-import java.util.function.Consumer;
 
 public abstract class InteractionCommand extends Command {
 
@@ -53,6 +52,10 @@ public abstract class InteractionCommand extends Command {
         return CommandPriority.HIGH;
     }
 
+    public Color getInteractionColor() {
+        return null;
+    }
+
     public abstract List<String> getInteractionImages();
 
     @Override
@@ -61,30 +64,32 @@ public abstract class InteractionCommand extends Command {
             return sendErrorMessage(message, "You must mention a use you want to use the interaction for.");
         }
 
-        int imageIndex = RandomUtil.getInteger(getInteractionImages().size());
+        EmbedBuilder builder = MessageFactory.createEmbeddedBuilder()
+            .setDescription(buildMessage(message))
+            .setImage(getInteractionImages().get(
+                RandomUtil.getInteger(getInteractionImages().size())
+            ));
 
-        message.getChannel().sendTyping().queue();
-        RequestFactory.makeGET(getInteractionImages().get(imageIndex))
-            .send((Consumer<Response>) response -> message.getChannel().sendFile(
-                response.getResponse().body().byteStream(),
-                interaction + "-" + imageIndex + ".gif",
-                buildCommandMessage(message)
-            ).queue());
+        if (getInteractionColor() != null) {
+            builder.setColor(getInteractionColor());
+        }
+
+        message.getChannel().sendMessage(builder.build()).queue();
         return true;
     }
 
-    private CommandMessage buildCommandMessage(Message message) {
+    private String buildMessage(Message message) {
         if (overwrite) {
-            return new CommandMessage(String.format(interaction,
+            return String.format(interaction,
                 message.getMember().getEffectiveName(),
                 message.getGuild().getMember(message.getMentionedUsers().get(0)).getEffectiveName()
-            ));
+            );
         }
 
-        return new CommandMessage(String.format("**%s** %s **%s**",
+        return String.format("**%s** %s **%s**",
             message.getMember().getEffectiveName(),
             interaction,
             message.getGuild().getMember(message.getMentionedUsers().get(0)).getEffectiveName()
-        ));
+        );
     }
 }

@@ -6,19 +6,18 @@ import com.avairebot.orion.chat.MessageType;
 import com.avairebot.orion.chat.SimplePaginator;
 import com.avairebot.orion.contracts.commands.Command;
 import com.avairebot.orion.factories.MessageFactory;
-import com.avairebot.orion.factories.RequestFactory;
-import com.avairebot.orion.requests.Response;
 import com.avairebot.orion.utilities.NumberUtil;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.User;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.*;
-import java.util.function.Consumer;
 
 public class MemeCommand extends Command {
 
-    private final String customUrl = "https://memegen.link/custom/%s/%s.jpg";
+    private final String customUrl = "https://memegen.link/custom/%s/%s.jpg?size=256&alt=%s&discordFormat=some-avatar.png";
     private final String templateUrl = "https://memegen.link/%s/%s/%s.jpg";
 
     private final Map<String, Map<String, String>> memes = new HashMap<>();
@@ -94,7 +93,6 @@ public class MemeCommand extends Command {
         return sendErrorMessage(message, "Invalid meme type given, `%s` is not a valid meme type!", args[0]);
     }
 
-
     private boolean sendMemeList(Message message, String[] args) {
         if (memes.isEmpty() || memeKeys.isEmpty()) {
             loadMemesIntoMemory();
@@ -133,13 +131,19 @@ public class MemeCommand extends Command {
             return sendErrorMessage(message, "You must include the `top text` and `bottom text` arguments to generate a meme.");
         }
 
-        message.getChannel().sendTyping().queue();
-        RequestFactory.makeGET(String.format(customUrl, formatMemeArgument(args[0]), formatMemeArgument(args[1])))
-            .addParameter("alt", user.getAvatarUrl())
-            .addParameter("size", 256)
-            .send((Consumer<Response>) response -> {
-                message.getChannel().sendFile(response.getResponse().body().byteStream(), message.getAuthor().getAvatarId() + ".jpg", null).queue();
-            });
+        try {
+            message.getChannel().sendMessage(
+                MessageFactory.createEmbeddedBuilder()
+                    .setImage(String.format(
+                        customUrl,
+                        formatMemeArgument(args[0]),
+                        formatMemeArgument(args[1]),
+                        URLEncoder.encode(user.getAvatarUrl(), "UTF-8")
+                    )).build()
+            ).queue();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
         return true;
     }
 
@@ -148,12 +152,16 @@ public class MemeCommand extends Command {
             return sendErrorMessage(message, "You must include the `top text` and `bottom text` arguments to generate a meme.");
         }
 
-        message.getChannel().sendTyping().queue();
-        RequestFactory.makeGET(String.format(templateUrl, meme, formatMemeArgument(args[0]), formatMemeArgument(args[1])))
-            .addParameter("size", 256)
-            .send((Consumer<Response>) response -> {
-                message.getChannel().sendFile(response.getResponse().body().byteStream(), meme + "-" + message.getAuthor().getAvatarId() + ".jpg", null).queue();
-            });
+        message.getChannel().sendMessage(
+            MessageFactory.createEmbeddedBuilder()
+                .setImage(String.format(
+                    templateUrl,
+                    meme,
+                    formatMemeArgument(args[0]),
+                    formatMemeArgument(args[1])
+                )).build()
+        ).queue();
+
         return true;
     }
 

@@ -2,11 +2,13 @@ package com.avairebot.orion.commands.fun;
 
 import com.avairebot.orion.Orion;
 import com.avairebot.orion.contracts.commands.Command;
+import com.avairebot.orion.factories.MessageFactory;
 import com.avairebot.orion.factories.RequestFactory;
 import com.avairebot.orion.requests.Response;
 import com.avairebot.orion.requests.service.GfycatService;
 import net.dv8tion.jda.core.entities.Message;
 
+import java.awt.*;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -60,7 +62,12 @@ public class GfycatCommand extends Command {
             .send((Consumer<Response>) response -> {
                 GfycatService gfyCat = (GfycatService) response.toService(GfycatService.class);
 
-                message.getChannel().sendMessage(gfyCat.getRandomGfycatsItem().get("gifUrl").toString()).queue();
+                message.getChannel().sendMessage(
+                    MessageFactory.createEmbeddedBuilder()
+                        .setColor(Color.decode("#"))
+                        .setImage(gfyCat.getRandomGfycatsItem().get("gifUrl").toString())
+                        .build()
+                ).queue();
             });
         return true;
     }

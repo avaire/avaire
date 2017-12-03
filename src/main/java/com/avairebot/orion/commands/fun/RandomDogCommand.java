@@ -2,6 +2,7 @@ package com.avairebot.orion.commands.fun;
 
 import com.avairebot.orion.Orion;
 import com.avairebot.orion.contracts.commands.Command;
+import com.avairebot.orion.factories.MessageFactory;
 import com.avairebot.orion.factories.RequestFactory;
 import com.avairebot.orion.requests.Response;
 import com.avairebot.orion.requests.service.RandomDogService;
@@ -55,7 +56,9 @@ public class RandomDogCommand extends Command {
                 RandomDogService service = (RandomDogService) response.toService(RandomDogService.class);
 
                 message.getChannel().sendMessage(
-                    String.format("%s %s", message.getAuthor().getAsMention(), service.getMessage())
+                    MessageFactory.createEmbeddedBuilder()
+                        .setImage(service.getMessage())
+                        .build()
                 ).queue();
             });
         return true;
