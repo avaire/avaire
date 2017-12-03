@@ -55,7 +55,7 @@ public class RandomCatCommand extends Command {
                 RandomCatService service = (RandomCatService) response.toService(RandomCatService.class);
 
                 message.getChannel().sendMessage(
-                    String.format("<@%s> %s", message.getAuthor().getId(), service.getFile())
+                    String.format("%s %s", message.getAuthor().getAsMention(), service.getFile())
                 ).queue();
             });
         return true;
