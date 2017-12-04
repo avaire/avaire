@@ -59,13 +59,9 @@ public class WelcomeCommand extends Command {
         ChannelTransformer channelTransformer = guildTransformer.getChannel(message.getTextChannel().getId());
 
         if (channelTransformer == null) {
-            if (!guildTransformer.createChannelTransformer(message.getTextChannel())) {
-                MessageFactory.makeError(message,
-                    "Something went wrong while trying to create the channel transformer object, please contact one of my developers to look into this issue."
-                ).queue();
-                return false;
-            }
-            channelTransformer = guildTransformer.getChannel(message.getTextChannel().getId());
+            return sendErrorMessage(message,
+                "Something went wrong while trying to get the channel transformer object, please contact one of my developers to look into this issue."
+            );
         }
 
         ComparatorUtil.ComparatorType type = args.length == 0 ?

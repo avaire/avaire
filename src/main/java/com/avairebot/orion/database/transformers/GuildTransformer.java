@@ -157,30 +157,43 @@ public class GuildTransformer extends Transformer {
     }
 
     public ChannelTransformer getChannel(String id) {
+        return getChannel(id, true);
+    }
+
+    public ChannelTransformer getChannel(String id, boolean createIfDontExists) {
         for (ChannelTransformer channel : channels) {
             if (channel.getId().equals(id)) {
                 return channel;
             }
         }
+
+        if (createIfDontExists && createChannelTransformer(getId(), id)) {
+            return getChannel(id, false);
+        }
+
         return null;
     }
 
-    public boolean createChannelTransformer(TextChannel channel) {
-        if (!Objects.equals(channel.getGuild().getId(), getId())) {
+    public boolean createChannelTransformer(String guildId, String channelId) {
+        if (!Objects.equals(guildId, getId())) {
             throw new RuntimeException(String.format("The given channel belongs to a different guild. Channel ID: %s Channel Guild ID: %s | Guild ID: %s",
-                channel.getId(), channel.getGuild().getId(), getId()
+                channelId, guildId, getId()
             ));
         }
 
-        if (getChannel(channel.getId()) != null) {
+        if (getChannel(channelId, false) != null) {
             return false;
         }
 
         HashMap<String, Object> data = new HashMap<>();
-        data.put("id", channel.getId());
+        data.put("id", channelId);
         channels.add(new ChannelTransformer(new DataRow(data)));
 
         return true;
+    }
+
+    public boolean createChannelTransformer(TextChannel channel) {
+        return createChannelTransformer(channel.getGuild().getId(), channel.getId());
     }
 
     public String channelsToJson() {
