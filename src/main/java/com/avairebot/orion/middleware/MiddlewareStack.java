@@ -31,6 +31,8 @@ public class MiddlewareStack {
         middlewares.add(new MiddlewareContainer(com.avairebot.orion.middleware.Middleware.PROCESS_COMMAND));
 
         this.buildMiddlewareStack();
+
+        middlewares.add(new MiddlewareContainer(com.avairebot.orion.middleware.Middleware.IS_CATEGORY_ENABLED));
     }
 
     public MiddlewareStack(Orion orion, Message message, CommandContainer command) {

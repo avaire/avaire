@@ -6,7 +6,8 @@ public enum Middleware {
     HAS_ROLE("has-role", HasRole.class),
     THROTTLE("throttle", Throttle.class),
     IS_BOT_ADMIN("isBotAdmin", IsBotAdmin.class),
-    PROCESS_COMMAND("process-command", ProcessCommand.class);
+    PROCESS_COMMAND("process-command", ProcessCommand.class),
+    IS_CATEGORY_ENABLED("is-category-enabled", isCategoryEnabled.class);
 
     private final String name;
     private final Class instance;
