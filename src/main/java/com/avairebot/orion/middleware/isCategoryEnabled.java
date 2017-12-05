@@ -41,6 +41,7 @@ public class isCategoryEnabled extends Middleware {
     }
 
     private boolean isCategoryCommands(MiddlewareStack stack) {
-        return stack.getCommand().getClass().getTypeName().equals("com.avairebot.orion.commands.administration.ToggleCategoryCommand");
+        return stack.getCommand().getClass().getTypeName().equals("com.avairebot.orion.commands.administration.ToggleCategoryCommand") ||
+            stack.getCommand().getClass().getTypeName().equals("com.avairebot.orion.commands.administration.CategoriesCommand");
     }
 }
