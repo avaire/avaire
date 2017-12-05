@@ -139,7 +139,7 @@ public class ChannelTransformer extends Transformer {
     }
 
     public class BooleanModule {
-        private boolean enabled = false;
+        private boolean enabled = true;
 
         public boolean isEnabled() {
             return enabled;
