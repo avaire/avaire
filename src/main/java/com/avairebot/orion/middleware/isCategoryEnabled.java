@@ -28,7 +28,7 @@ public class isCategoryEnabled extends Middleware {
             return stack.next();
         }
 
-        ChannelTransformer channel = transformer.getChannel(message.getChannel().getId(), false);
+        ChannelTransformer channel = transformer.getChannel(message.getChannel().getId());
         if (channel == null) {
             return stack.next();
         }

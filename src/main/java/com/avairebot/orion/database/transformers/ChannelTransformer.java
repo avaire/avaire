@@ -82,10 +82,8 @@ public class ChannelTransformer extends Transformer {
     }
 
     public boolean isCategoryEnabled(@Nonnull String category) {
-        if (guildTransformer.getCategories().containsKey("all")) {
-            return guildTransformer.getCategories().get("all")
-                .getOrDefault(category.toLowerCase(), "true")
-                .equalsIgnoreCase("true");
+        if (!isCategoryEnabledGlobally(category)) {
+            return false;
         }
 
         if (guildTransformer.getCategories().containsKey(getId())) {
