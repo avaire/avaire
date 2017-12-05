@@ -15,6 +15,7 @@ public class GuildTransformer extends Transformer {
     private final Map<String, String> aliases = new HashMap<>();
     private final Map<String, String> prefixes = new HashMap<>();
     private final Map<String, String> selfAssignableRoles = new HashMap<>();
+    private final Map<String, Map<String, String>> modules = new HashMap<>();
     private final List<ChannelTransformer> channels = new ArrayList<>();
 
     private boolean levels = false;
@@ -64,6 +65,17 @@ public class GuildTransformer extends Transformer {
                 }
             }
 
+            if (data.getString("modules", null) != null) {
+                HashMap<String, Map<String, String>> dbModules = new Gson().fromJson(
+                    data.getString("modules"),
+                    new TypeToken<HashMap<String, Map<String, String>>>() {
+                    }.getType());
+
+                for (Map.Entry<String, Map<String, String>> item : dbModules.entrySet()) {
+                    modules.put(item.getKey(), item.getValue());
+                }
+            }
+
             if (data.getString("channels", null) != null) {
                 HashMap<String, Object> dbChannels = new Gson().fromJson(
                     data.getString("channels"),
@@ -74,7 +86,7 @@ public class GuildTransformer extends Transformer {
                     LinkedTreeMap<String, Object> value = (LinkedTreeMap<String, Object>) item.getValue();
                     value.put("id", item.getKey());
 
-                    channels.add(new ChannelTransformer(new DataRow(value)));
+                    channels.add(new ChannelTransformer(new DataRow(value), this));
                 }
             }
         }
@@ -156,6 +168,10 @@ public class GuildTransformer extends Transformer {
         return channels;
     }
 
+    public Map<String, Map<String, String>> getCategories() {
+        return modules;
+    }
+
     public ChannelTransformer getChannel(String id) {
         return getChannel(id, true);
     }
@@ -187,7 +203,7 @@ public class GuildTransformer extends Transformer {
 
         HashMap<String, Object> data = new HashMap<>();
         data.put("id", channelId);
-        channels.add(new ChannelTransformer(new DataRow(data)));
+        channels.add(new ChannelTransformer(new DataRow(data), this));
 
         return true;
     }

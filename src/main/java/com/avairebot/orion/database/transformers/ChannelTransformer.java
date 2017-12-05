@@ -1,19 +1,28 @@
 package com.avairebot.orion.database.transformers;
 
+import com.avairebot.orion.commands.Category;
 import com.avairebot.orion.contracts.database.transformers.Transformer;
 import com.avairebot.orion.database.collection.DataRow;
 import com.google.gson.internal.LinkedTreeMap;
 
+import javax.annotation.Nonnull;
 import java.util.HashMap;
 
 public class ChannelTransformer extends Transformer {
 
+    private final GuildTransformer guildTransformer;
     private final BooleanModule ai = new BooleanModule();
     private final MessageModule welcome = new MessageModule();
     private final MessageModule goodbye = new MessageModule();
 
     public ChannelTransformer(DataRow data) {
+        this(data, null);
+    }
+
+    public ChannelTransformer(DataRow data, GuildTransformer guildTransformer) {
         super(data);
+
+        this.guildTransformer = guildTransformer;
 
         if (hasData()) {
             if (data.get("ai", null) != null) {
@@ -66,6 +75,39 @@ public class ChannelTransformer extends Transformer {
         objects.put("goodbye", goodbye.toMap());
 
         return objects;
+    }
+
+    public boolean isCategoryEnabled(@Nonnull Category category) {
+        return isCategoryEnabled(category.getName());
+    }
+
+    public boolean isCategoryEnabled(@Nonnull String category) {
+        if (guildTransformer.getCategories().containsKey("all")) {
+            return guildTransformer.getCategories().get("all")
+                .getOrDefault(category.toLowerCase(), "true")
+                .equalsIgnoreCase("true");
+        }
+
+        if (guildTransformer.getCategories().containsKey(getId())) {
+            return guildTransformer.getCategories().get(getId())
+                .getOrDefault(category.toLowerCase(), "true")
+                .equalsIgnoreCase("true");
+        }
+
+        return true;
+    }
+
+    public boolean isCategoryEnabledGlobally(@Nonnull Category category) {
+        return isCategoryEnabledGlobally(category.getName());
+    }
+
+    public boolean isCategoryEnabledGlobally(@Nonnull String category) {
+        if (guildTransformer.getCategories().containsKey("all")) {
+            return guildTransformer.getCategories().get("all")
+                .getOrDefault(category.toLowerCase(), "true")
+                .equalsIgnoreCase("true");
+        }
+        return true;
     }
 
     public class MessageModule {
