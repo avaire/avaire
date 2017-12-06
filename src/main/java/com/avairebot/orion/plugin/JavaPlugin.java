@@ -42,7 +42,7 @@ public abstract class JavaPlugin {
      * @return <code>True</code> on success, <code>False</code> if the category already exists.
      */
     public boolean registerCategory(String name, String defaultPrefix) {
-        return CategoryHandler.addCategory(name, defaultPrefix);
+        return CategoryHandler.addCategory(orion, name, defaultPrefix);
     }
 
     /**

@@ -4,8 +4,6 @@ import com.avairebot.orion.Orion;
 import com.avairebot.orion.chat.MessageType;
 import com.avairebot.orion.commands.*;
 import com.avairebot.orion.contracts.reflection.Reflectionable;
-import com.avairebot.orion.database.controllers.GuildController;
-import com.avairebot.orion.database.transformers.GuildTransformer;
 import com.avairebot.orion.factories.MessageFactory;
 import com.avairebot.orion.middleware.Middleware;
 import com.avairebot.orion.permissions.Permissions;
@@ -321,13 +319,7 @@ public abstract class Command extends Reflectionable {
      * @return The dynamic command prefix for the current server.
      */
     public final String generateCommandPrefix(Message message) {
-        GuildTransformer transformer = GuildController.fetchGuild(orion, message);
-        Category category = CategoryHandler.fromCommand(this);
-
-        return transformer == null ? category.getPrefix() : transformer.getPrefixes().getOrDefault(
-            category.getName().toLowerCase(),
-            category.getPrefix()
-        );
+        return CategoryHandler.fromCommand(this).getPrefix(message);
     }
 
     /**

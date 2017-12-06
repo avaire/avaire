@@ -85,13 +85,13 @@ public class Orion {
         );
 
         LOGGER.info("Registering default command categories");
-        CategoryHandler.addCategory("Administration", ".");
-        CategoryHandler.addCategory("Help", ".");
-        CategoryHandler.addCategory("Fun", ">");
-        CategoryHandler.addCategory("Interaction", ">");
-        CategoryHandler.addCategory("Music", "!");
-        CategoryHandler.addCategory("Utility", "!");
-        CategoryHandler.addCategory("System", ";");
+        CategoryHandler.addCategory(this, "Administration", ".");
+        CategoryHandler.addCategory(this, "Help", ".");
+        CategoryHandler.addCategory(this, "Fun", ">");
+        CategoryHandler.addCategory(this, "Interaction", ">");
+        CategoryHandler.addCategory(this, "Music", "!");
+        CategoryHandler.addCategory(this, "Utility", "!");
+        CategoryHandler.addCategory(this, "System", ";");
 
         LOGGER.info("Registering commands...");
         autoloadPackage(Constants.PACKAGE_COMMAND_PATH, command -> CommandHandler.register((Command) command));

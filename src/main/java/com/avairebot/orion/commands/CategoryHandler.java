@@ -1,5 +1,6 @@
 package com.avairebot.orion.commands;
 
+import com.avairebot.orion.Orion;
 import com.avairebot.orion.contracts.commands.Command;
 import com.avairebot.orion.utilities.RandomUtil;
 
@@ -10,14 +11,14 @@ public class CategoryHandler {
 
     private static final List<Category> VALUES = new ArrayList<>();
 
-    public static boolean addCategory(String name, String defaultPrefix) {
+    public static boolean addCategory(Orion orion, String name, String defaultPrefix) {
         for (Category category : VALUES) {
             if (category.getName().equalsIgnoreCase(name)) {
                 return false;
             }
         }
 
-        VALUES.add(new Category(name, defaultPrefix));
+        VALUES.add(new Category(orion, name, defaultPrefix));
         return true;
     }
 
