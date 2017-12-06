@@ -60,14 +60,21 @@ public class PlayCommand extends Command {
             return sendErrorMessage(message, "Missing music `query`, you must include a link to the song you want to listen to!");
         }
 
+        boolean shouldLeaveMessage = false;
+        if (args[args.length - 1].equals("---leave-message")) {
+            shouldLeaveMessage = true;
+            args = Arrays.copyOfRange(args, 0, args.length - 1);
+        }
+
         VoiceConnectStatus voiceConnectStatus = AudioHandler.connectToVoiceChannel(message);
         if (!voiceConnectStatus.isSuccess()) {
             MessageFactory.makeWarning(message, voiceConnectStatus.getErrorMessage()).queue();
             return false;
         }
 
+        boolean finalShouldLeaveMessage = shouldLeaveMessage;
         AudioHandler.loadAndPlay(message, buildTrackRequestString(args)).handle((Consumer<TrackResponse>) (TrackResponse response) -> {
-            if (message.getGuild().getSelfMember().hasPermission(message.getTextChannel(), Permission.MESSAGE_MANAGE)) {
+            if (!finalShouldLeaveMessage && message.getGuild().getSelfMember().hasPermission(message.getTextChannel(), Permission.MESSAGE_MANAGE)) {
                 message.delete().reason("Song request, removing song to cleanup chat").queue();
             }
 
