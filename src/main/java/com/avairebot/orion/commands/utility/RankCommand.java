@@ -80,7 +80,7 @@ public class RankCommand extends Command {
         }
 
         User user = message.getAuthor();
-        if (!message.getMentionedUsers().isEmpty()) {
+        if (!message.getMentionedUsers().isEmpty() && !args[0].equals("---skip-mentions")) {
             user = message.getMentionedUsers().get(0);
         }
         final User author = user;
