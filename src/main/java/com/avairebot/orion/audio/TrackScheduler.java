@@ -62,6 +62,11 @@ public class TrackScheduler extends AudioEventAdapter {
         // giving null to startTrack, which is a valid argument and will simply stop the player.
         AudioTrackContainer container = queue.poll();
 
+        if (container == null) {
+            player.startTrack(null, false);
+            return;
+        }
+
         audioTrackContainer = container;
         player.startTrack(container.getAudioTrack(), false);
         if (manager.getLastActiveMessage() != null) {
