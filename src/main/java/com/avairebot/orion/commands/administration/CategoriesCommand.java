@@ -1,7 +1,6 @@
 package com.avairebot.orion.commands.administration;
 
 import com.avairebot.orion.Orion;
-import com.avairebot.orion.chat.MessageType;
 import com.avairebot.orion.commands.Category;
 import com.avairebot.orion.commands.CategoryHandler;
 import com.avairebot.orion.commands.CommandPriority;
@@ -89,12 +88,9 @@ public class CategoriesCommand extends Command {
             items.add(ONLINE + category.getName());
         }
 
-        message.getChannel().sendMessage(MessageFactory.createEmbeddedBuilder()
-            .setColor(MessageType.INFO.getColor())
+        MessageFactory.makeInfo(message, status + "\n\n" + String.join("\n", items))
             .setTitle("Command Category Status for #" + channel.getName())
-            .setDescription(status + "\n\n" + String.join("\n", items))
-            .build()
-        ).queue();
+            .queue();
 
         return true;
     }

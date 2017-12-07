@@ -3,7 +3,6 @@ package com.avairebot.orion.commands.utility;
 import com.avairebot.orion.Orion;
 import com.avairebot.orion.contracts.commands.Command;
 import com.avairebot.orion.factories.MessageFactory;
-import com.avairebot.orion.utilities.NumberUtil;
 import net.dv8tion.jda.core.entities.Message;
 
 import java.util.Collections;

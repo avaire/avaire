@@ -1,13 +1,10 @@
 package com.avairebot.orion.commands.administration;
 
 import com.avairebot.orion.Orion;
-import com.avairebot.orion.chat.MessageType;
 import com.avairebot.orion.contracts.commands.Command;
 import com.avairebot.orion.factories.MessageFactory;
 import com.avairebot.orion.time.Carbon;
-import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.TextChannel;
 
 import java.util.Arrays;
@@ -53,20 +50,21 @@ public class ChannelInfoCommand extends Command {
 
         Carbon time = Carbon.createFromOffsetDateTime(channel.getCreationTime());
 
-        EmbedBuilder builder = MessageFactory.makeEmbeddedMessage(MessageType.INFO.getColor(),
-            new MessageEmbed.Field("ID", channel.getId(), true),
-            new MessageEmbed.Field("Position", "" + channel.getPosition(), true),
-            new MessageEmbed.Field("Users", "" + channel.getMembers().size(), true),
-            new MessageEmbed.Field("Category", getCategoryFor(channel), true),
-            new MessageEmbed.Field("NSFW", channel.isNSFW() ? "ON" : "OFF", true),
-            new MessageEmbed.Field("Created At", time.format("EEE, dd MMM yyyy HH:mm") + "\n*About " + shortenDiffForHumans(time) + "*", true)
-        ).setTitle("#" + channel.getName()).setDescription("*No topic has been set for this channel*");
-
+        String topic = "*No topic has been set for this channel*";
         if (channel.getTopic() != null) {
-            builder.setDescription(channel.getTopic());
+            topic = channel.getTopic();
         }
 
-        message.getChannel().sendMessage(builder.build()).queue();
+        MessageFactory.makeInfo(message, topic)
+            .setTitle("#" + channel.getName())
+            .addField("ID", channel.getId(), true)
+            .addField("Position", "" + channel.getPosition(), true)
+            .addField("Users", "" + channel.getMembers().size(), true)
+            .addField("Category", getCategoryFor(channel), true)
+            .addField("NSFW", channel.isNSFW() ? "ON" : "OFF", true)
+            .addField("Created At", time.format("EEE, dd MMM yyyy HH:mm") + "\n*About " + shortenDiffForHumans(time) + "*", true)
+            .queue();
+
         return true;
     }
 

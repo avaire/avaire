@@ -2,12 +2,10 @@ package com.avairebot.orion.commands.fun;
 
 import com.avairebot.orion.Orion;
 import com.avairebot.orion.cache.CacheType;
-import com.avairebot.orion.chat.MessageType;
 import com.avairebot.orion.chat.SimplePaginator;
 import com.avairebot.orion.contracts.commands.Command;
 import com.avairebot.orion.factories.MessageFactory;
 import com.avairebot.orion.utilities.NumberUtil;
-import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.User;
 
@@ -110,15 +108,10 @@ public class MemeCommand extends Command {
             ));
         });
 
-        EmbedBuilder embed = MessageFactory.createEmbeddedBuilder()
-            .setTitle("Memes")
-            .setColor(MessageType.SUCCESS.getColor())
-            .setDescription(String.format("%s\n\n%s",
-                String.join("\n", memesMessages),
-                paginator.generateFooter(generateCommandTrigger(message) + " list")
-            ));
-
-        message.getChannel().sendMessage(embed.build()).queue();
+        MessageFactory.makeSuccess(message, String.format("%s\n\n%s",
+            String.join("\n", memesMessages),
+            paginator.generateFooter(generateCommandTrigger(message) + " list")
+        )).setTitle("Memes").queue();
 
         // We're returning false here to prevent the Meme command from
         // being throttled for users just wanting to see what types

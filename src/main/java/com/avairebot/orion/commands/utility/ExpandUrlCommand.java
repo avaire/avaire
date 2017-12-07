@@ -1,7 +1,6 @@
 package com.avairebot.orion.commands.utility;
 
 import com.avairebot.orion.Orion;
-import com.avairebot.orion.chat.MessageType;
 import com.avairebot.orion.contracts.commands.Command;
 import com.avairebot.orion.factories.MessageFactory;
 import net.dv8tion.jda.core.entities.Message;
@@ -73,11 +72,7 @@ public class ExpandUrlCommand extends Command {
                 }
             }
 
-            message.getChannel().sendMessage(MessageFactory.makeEmbeddedMessage(
-                message,
-                MessageType.INFO.getColor(),
-                String.join("\n", links)
-            ).build()).queue();
+            MessageFactory.makeInfo(message, String.join("\n", links)).queue();
 
             return true;
         } catch (MalformedURLException ex) {

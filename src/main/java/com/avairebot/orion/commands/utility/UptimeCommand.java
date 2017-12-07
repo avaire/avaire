@@ -1,7 +1,6 @@
 package com.avairebot.orion.commands.utility;
 
 import com.avairebot.orion.Orion;
-import com.avairebot.orion.chat.MessageType;
 import com.avairebot.orion.contracts.commands.Command;
 import com.avairebot.orion.factories.MessageFactory;
 import com.avairebot.orion.time.Carbon;
@@ -50,12 +49,10 @@ public class UptimeCommand extends Command {
 
         Carbon time = Carbon.now().subSeconds(NumberUtil.parseInt("" + (rb.getUptime() / 1000)));
 
-        message.getChannel().sendMessage(MessageFactory.createEmbeddedBuilder()
-            .setColor(MessageType.INFO.getColor())
-            .setDescription("I have been online for " + time.diffForHumans(true) + ".")
-            .setFooter("Started " + time.format("EEEEEEEE, dd MMM yyyy") + " at " + time.format("HH:mm:ss z"), null)
-            .build()
-        ).queue();
+        MessageFactory.makeInfo(message, "I have been online for :time")
+            .set("time", time.diffForHumans(true))
+            .setFooter("Started " + time.format("EEEEEEEE, dd MMM yyyy") + " at " + time.format("HH:mm:ss z"))
+            .queue();
 
         return true;
     }

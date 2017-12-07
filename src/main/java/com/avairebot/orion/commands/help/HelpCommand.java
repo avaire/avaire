@@ -7,7 +7,6 @@ import com.avairebot.orion.contracts.commands.Command;
 import com.avairebot.orion.factories.MessageFactory;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.MessageEmbed;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -74,13 +73,10 @@ public class HelpCommand extends Command {
             category.getName().toLowerCase().substring(0, 3)
         ).replaceAll(":help", generateCommandTrigger(message));
 
-        MessageEmbed embed = MessageFactory.createEmbeddedBuilder()
-            .setColor(MessageType.INFO.getColor())
+        MessageFactory.makeInfo(message, getCategories() + note)
             .setTitle(":scroll: Command Categories")
-            .setDescription(getCategories() + note)
-            .build();
+            .queue();
 
-        message.getChannel().sendMessage(embed).queue();
         return true;
     }
 

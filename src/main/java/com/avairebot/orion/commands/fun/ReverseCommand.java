@@ -1,10 +1,9 @@
 package com.avairebot.orion.commands.fun;
 
 import com.avairebot.orion.Orion;
-import com.avairebot.orion.chat.MessageType;
+import com.avairebot.orion.chat.PlaceholderMessage;
 import com.avairebot.orion.contracts.commands.Command;
 import com.avairebot.orion.factories.MessageFactory;
-import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Message;
 
 import java.util.Collections;
@@ -50,15 +49,13 @@ public class ReverseCommand extends Command {
         String string = String.join(" ", args);
         String reverse = new StringBuilder(string).reverse().toString();
 
-        EmbedBuilder builder = MessageFactory.createEmbeddedBuilder()
-            .setColor(MessageType.INFO.getColor())
-            .setDescription(reverse);
+        PlaceholderMessage infoMessage = MessageFactory.makeInfo(message, reverse);
 
         if (string.equalsIgnoreCase(reverse)) {
-            builder.setFooter("You reversed a palindrome, what were you expecting?", null);
+            infoMessage.setFooter("You reversed a palindrome, what were you expecting?");
         }
 
-        message.getChannel().sendMessage(builder.build()).queue();
+        infoMessage.queue();
         return true;
     }
 }

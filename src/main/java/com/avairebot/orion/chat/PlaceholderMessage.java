@@ -33,6 +33,34 @@ public class PlaceholderMessage extends Restable {
         return set(placeholder, value.toString());
     }
 
+    public PlaceholderMessage setTitle(String title, String url) {
+        builder.setTitle(title, url);
+        return this;
+    }
+
+    public PlaceholderMessage setTitle(String title) {
+        return setTitle(title, null);
+    }
+
+    public PlaceholderMessage setFooter(String text, String iconUrl) {
+        builder.setFooter(text, iconUrl);
+        return this;
+    }
+
+    public PlaceholderMessage setFooter(String text) {
+        return setFooter(text, null);
+    }
+
+    public PlaceholderMessage addField(String name, String value, boolean inline) {
+        builder.addField(name, value, inline);
+        return this;
+    }
+
+    public PlaceholderMessage addField(MessageEmbed.Field field) {
+        builder.addField(field);
+        return this;
+    }
+
     public EmbedBuilder build() {
         return builder.setDescription(message);
     }

@@ -1,7 +1,6 @@
 package com.avairebot.orion.contracts.commands;
 
 import com.avairebot.orion.Orion;
-import com.avairebot.orion.chat.MessageType;
 import com.avairebot.orion.commands.*;
 import com.avairebot.orion.contracts.reflection.Reflectionable;
 import com.avairebot.orion.factories.MessageFactory;
@@ -178,13 +177,12 @@ public abstract class Command extends Reflectionable {
     public final boolean sendErrorMessage(Message message, String error) {
         Category category = CategoryHandler.fromCommand(this);
 
-        message.getChannel().sendMessage(MessageFactory.createEmbeddedBuilder()
+        MessageFactory.makeError(message, error)
             .setTitle(getName())
-            .setDescription(error)
-            .setColor(MessageType.ERROR.getColor())
+            .setFooter("Command category: " + category.getName())
             .addField("Usage", generateUsageInstructions(message), false)
             .addField("Example Usage", generateExampleUsage(message), false)
-            .setFooter("Command category: " + category.getName(), null).build()).queue();
+            .queue();
 
         return false;
     }

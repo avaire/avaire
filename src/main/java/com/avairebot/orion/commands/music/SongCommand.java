@@ -5,12 +5,10 @@ import com.avairebot.orion.audio.AudioHandler;
 import com.avairebot.orion.audio.AudioTrackContainer;
 import com.avairebot.orion.audio.GuildMusicManager;
 import com.avairebot.orion.audio.TrackScheduler;
-import com.avairebot.orion.chat.MessageType;
 import com.avairebot.orion.contracts.commands.Command;
 import com.avairebot.orion.factories.MessageFactory;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.MessageEmbed;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -61,14 +59,11 @@ public class SongCommand extends Command {
             return sendErrorMessage(message, "Nothing to display, request music first with `!play`");
         }
 
-        MessageEmbed embed = MessageFactory.createEmbeddedBuilder()
-            .setColor(MessageType.SUCCESS.getColor())
+        MessageFactory.makeSuccess(message, buildTrackDescription(musicManager.getPlayer(), musicManager.getScheduler()))
             .setTitle(musicManager.getPlayer().isPaused() ? "Currently Paused" : "Currently Playing")
-            .setDescription(buildTrackDescription(musicManager.getPlayer(), musicManager.getScheduler()))
             .addField("Songs in queue", buildSongsInQueue(musicManager.getScheduler()), false)
-            .build();
+            .queue();
 
-        message.getChannel().sendMessage(embed).queue();
         return true;
     }
 

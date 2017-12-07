@@ -91,9 +91,9 @@ public class LeaderboardCommand extends Command {
 
         messages.add("\n" + paginator.generateFooter(generateCommandTrigger(message)));
 
-        message.getTextChannel().sendMessage(MessageFactory.createEmbeddedBuilder()
+        MessageFactory.makeInfo(message, String.join("\n", messages))
             .setTitle(message.getGuild().getName() + " Leaderboard", "https://avairebot.com/leaderboard/" + message.getGuild().getId())
-            .setDescription(String.join("\n", messages)).build()).queue();
+            .queue();
 
         return true;
     }
