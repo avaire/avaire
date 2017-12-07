@@ -2,10 +2,7 @@ package com.avairebot.orion.commands.help;
 
 import com.avairebot.orion.Orion;
 import com.avairebot.orion.chat.MessageType;
-import com.avairebot.orion.commands.Category;
-import com.avairebot.orion.commands.CategoryHandler;
-import com.avairebot.orion.commands.CommandContainer;
-import com.avairebot.orion.commands.CommandHandler;
+import com.avairebot.orion.commands.*;
 import com.avairebot.orion.contracts.commands.Command;
 import com.avairebot.orion.factories.MessageFactory;
 import net.dv8tion.jda.core.EmbedBuilder;
@@ -99,7 +96,12 @@ public class HelpCommand extends Command {
             ":page_with_curl: **%s** ```css\n%s```\n",
             "List of Commands",
             CommandHandler.getCommands().stream()
-                .filter(commandContainer -> commandContainer.getCategory().equals(category))
+                .filter(commandContainer -> {
+                    if (commandContainer.getPriority().equals(CommandPriority.HIDDEN)) {
+                        return false;
+                    }
+                    return commandContainer.getCategory().equals(category);
+                })
                 .map(container -> {
                     String trigger = container.getCommand().generateCommandTrigger(message);
 
