@@ -63,7 +63,7 @@ public class GlobalLeaderboardCommand extends Command {
         }
 
         List<String> messages = new ArrayList<>();
-        SimplePaginator paginator = new SimplePaginator(collection.getItems(), 10, 1);
+        SimplePaginator paginator = new SimplePaginator(collection.getItems(), 10);
         if (args.length > 0) {
             paginator.setCurrentPage(NumberUtil.parseInt(args[0], 1));
         }

@@ -15,12 +15,20 @@ public class SimplePaginator extends Paginator {
         super(items, perPage, currentPage);
     }
 
+    public SimplePaginator(Map<?, ?> items, int perPage) {
+        super(items, perPage, 1);
+    }
+
     public SimplePaginator(List<?> items, int perPage, int currentPage) {
         super(items, perPage, currentPage);
     }
 
     public SimplePaginator(List<?> items, int perPage, String currentPage) {
         super(items, perPage, currentPage);
+    }
+
+    public SimplePaginator(List<?> items, int perPage) {
+        super(items, perPage, 1);
     }
 
     public String generateFooter(String command) {

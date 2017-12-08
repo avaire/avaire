@@ -56,7 +56,7 @@ public class ListSelfAssignableRolesCommand extends Command {
         ArrayList<String> items = new ArrayList<>(transformer.getSelfAssignableRoles().values());
         Collections.sort(items);
 
-        SimplePaginator paginator = new SimplePaginator(items, 10, 1);
+        SimplePaginator paginator = new SimplePaginator(items, 10);
         if (args.length > 0) {
             paginator.setCurrentPage(NumberUtil.parseInt(args[0], 1));
         }

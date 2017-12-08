@@ -60,7 +60,7 @@ public class ListAliasesCommand extends Command {
             return sendErrorMessage(message, "The server doesn't have any aliases right now, you can create one using the\n`.alias <alias> <command>` command");
         }
 
-        SimplePaginator paginator = new SimplePaginator(transformer.getAliases(), 10, 1);
+        SimplePaginator paginator = new SimplePaginator(transformer.getAliases(), 10);
         if (args.length > 0) {
             paginator.setCurrentPage(NumberUtil.parseInt(args[0], 1));
         }

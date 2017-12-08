@@ -96,7 +96,7 @@ public class MemeCommand extends Command {
             loadMemesIntoMemory();
         }
 
-        SimplePaginator paginator = new SimplePaginator(memeKeys, 10, 1);
+        SimplePaginator paginator = new SimplePaginator(memeKeys, 10);
         if (args.length > 0) {
             paginator.setCurrentPage(NumberUtil.parseInt(args[0], 1));
         }
