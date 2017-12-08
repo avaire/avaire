@@ -139,13 +139,12 @@ public class LevelUtil {
                 .update(statement -> statement.set("experience", player.getExperience()));
 
             if (guild.isLevelAlerts() && getLevelFromExperience(player.getExperience()) > lvl) {
-                getLevelUpChannel(message, guild).sendMessage(MessageFactory.createEmbeddedBuilder()
+                MessageFactory.makeEmbeddedMessage(getLevelUpChannel(message, guild))
                     .setColor(MessageType.SUCCESS.getColor())
                     .setDescription(String.format("GG <@%s>, you just reached **Level %s**",
                         player.getUserId(),
                         getLevelFromExperience(player.getExperience())
-                    )).build()
-                ).queue();
+                    )).queue();
             }
         } catch (SQLException e) {
             System.err.println(e.getMessage());

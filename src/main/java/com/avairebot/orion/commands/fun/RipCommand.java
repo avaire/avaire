@@ -5,7 +5,6 @@ import com.avairebot.orion.Orion;
 import com.avairebot.orion.Statistics;
 import com.avairebot.orion.contracts.commands.Command;
 import com.avairebot.orion.factories.MessageFactory;
-import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Message;
 
 import java.awt.*;
@@ -60,14 +59,11 @@ public class RipCommand extends Command {
             return false;
         }
 
-        EmbedBuilder embed = MessageFactory.createEmbeddedBuilder()
-            .setColor(Color.decode("#2A2C31"))
+        MessageFactory.makeEmbeddedMessage(message.getChannel(), Color.decode("#2A2C31"))
             .setDescription(String.format("**%s** has paid their respects.", message.getMember().getEffectiveName()))
-            .setFooter(String.format("%s Today, %s Overall",
-                Statistics.getRespects(), getTotalRespects()
-            ), null);
+            .setFooter(String.format("%s Today, %s Overall", Statistics.getRespects(), getTotalRespects()))
+            .queue();
 
-        message.getChannel().sendMessage(embed.build()).queue();
         return true;
     }
 

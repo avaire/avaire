@@ -13,7 +13,6 @@ import com.avairebot.orion.database.transformers.GuildTransformer;
 import com.avairebot.orion.database.transformers.PlayerTransformer;
 import com.avairebot.orion.factories.MessageFactory;
 import com.avairebot.orion.utilities.LevelUtil;
-import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.User;
 
@@ -106,9 +105,9 @@ public class RankCommand extends Command {
                 levelBar += ((i * 2.5) < percentage) ? "\u2592" : "\u2591";
             }
 
-            EmbedBuilder embed = MessageFactory.createEmbeddedBuilder().setColor(Color.decode("#E91E63"))
+            MessageFactory.makeEmbeddedMessage(message.getChannel(), Color.decode("#E91E63"))
                 .setAuthor(author.getName(), "https://avairebot.com/leaderboard/" + message.getGuild().getId(), author.getAvatarUrl())
-                .setFooter("https://avairebot.com/leaderboard/" + message.getGuild().getId(), null)
+                .setFooter("https://avairebot.com/leaderboard/" + message.getGuild().getId())
                 .addField("Rank", score, true)
                 .addField("Level", "" + level, true)
                 .addField("Experience", (experience - 100 < 0 ? "0" : String.format("%s (Total: %s)",
@@ -116,9 +115,8 @@ public class RankCommand extends Command {
                 )), true)
                 .addField("Experience needed to next Level", String.format("[%s] %s%s",
                     levelBar, new DecimalFormat("#.##").format(percentage), '%'
-                ), false);
-
-            message.getChannel().sendMessage(embed.build()).queue();
+                ), false)
+                .queue();
         });
 
         return true;

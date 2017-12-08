@@ -89,9 +89,8 @@ public class GlobalLeaderboardCommand extends Command {
 
         messages.add("\n" + paginator.generateFooter(generateCommandTrigger(message)));
 
-        message.getTextChannel().sendMessage(MessageFactory.createEmbeddedBuilder()
-            .setTitle("Global Experience Leaderboard")
-            .setDescription(String.join("\n", messages)).build()).queue();
+        MessageFactory.makeEmbeddedMessage(message.getChannel(), null, String.join("\n", messages))
+            .setTitle("Global Experience Leaderboard").queue();
 
         return true;
     }

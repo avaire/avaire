@@ -62,12 +62,9 @@ public class GfycatCommand extends Command {
             .send((Consumer<Response>) response -> {
                 GfycatService gfyCat = (GfycatService) response.toService(GfycatService.class);
 
-                message.getChannel().sendMessage(
-                    MessageFactory.createEmbeddedBuilder()
-                        .setColor(Color.decode("#"))
-                        .setImage(gfyCat.getRandomGfycatsItem().get("gifUrl").toString())
-                        .build()
-                ).queue();
+                MessageFactory.makeEmbeddedMessage(message.getChannel(), Color.decode("#"))
+                    .setImage(gfyCat.getRandomGfycatsItem().get("gifUrl").toString())
+                    .queue();
             });
         return true;
     }

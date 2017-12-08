@@ -4,11 +4,9 @@ import com.avairebot.orion.chat.MessageType;
 import com.avairebot.orion.chat.PlaceholderMessage;
 import com.avairebot.orion.chat.PlaceholderType;
 import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.MessageEmbed.Field;
-import net.dv8tion.jda.core.entities.User;
 
 import java.awt.*;
 import java.util.Arrays;
@@ -43,45 +41,39 @@ public class MessageFactory {
         );
     }
 
-    public static EmbedBuilder makeEmbeddedMessage(Message jdaMessage, Color color, String message) {
-        return createEmbeddedBuilder().setColor(color).setDescription(
+    public static PlaceholderMessage makeEmbeddedMessage(Message jdaMessage, Color color, String message) {
+        return new PlaceholderMessage(jdaMessage.getChannel(),
+            createEmbeddedBuilder().setColor(color),
             PlaceholderType.ALL.parse(jdaMessage, message)
         );
     }
 
-    public static EmbedBuilder makeEmbeddedMessage(Guild guild, Color color, String message) {
-        return createEmbeddedBuilder().setColor(color).setDescription(
-            PlaceholderType.GUILD.parse(guild, message)
-        );
-    }
-
-    public static EmbedBuilder makeEmbeddedMessage(MessageChannel channel, Color color, String message) {
-        return createEmbeddedBuilder().setColor(color).setDescription(
+    public static PlaceholderMessage makeEmbeddedMessage(MessageChannel channel, Color color, String message) {
+        return new PlaceholderMessage(channel,
+            createEmbeddedBuilder().setColor(color),
             PlaceholderType.CHANNEL.parse(channel, message)
         );
     }
 
-    public static EmbedBuilder makeEmbeddedMessage(User user, Color color, String message) {
-        return createEmbeddedBuilder().setColor(color).setDescription(
-            PlaceholderType.USER.parse(user, message)
+    public static PlaceholderMessage makeEmbeddedMessage(MessageChannel channel, MessageType type, Field... fields) {
+        return makeEmbeddedMessage(channel, type.getColor(), fields);
+    }
+
+    public static PlaceholderMessage makeEmbeddedMessage(MessageChannel channel, Color color, Field... fields) {
+        PlaceholderMessage message = new PlaceholderMessage(channel,
+            createEmbeddedBuilder().setColor(color),
+            null
         );
+
+        Arrays.stream(fields).forEachOrdered(message::addField);
+        return message;
     }
 
-    public static EmbedBuilder makeEmbeddedMessage(MessageType type, Field... fields) {
-        return makeEmbeddedMessage(type.getColor(), fields);
-    }
-
-    public static EmbedBuilder makeEmbeddedMessage(Color color, Field... fields) {
-        EmbedBuilder embed = createEmbeddedBuilder().setColor(color);
-        Arrays.stream(fields).forEachOrdered(embed::addField);
-        return embed;
+    public static PlaceholderMessage makeEmbeddedMessage(MessageChannel channel) {
+        return new PlaceholderMessage(channel, createEmbeddedBuilder(), null);
     }
 
     public static EmbedBuilder createEmbeddedBuilder() {
         return new EmbedBuilder();
-    }
-
-    public static PlaceholderMessage createMessagePlaceholder(String message) {
-        return new PlaceholderMessage(createEmbeddedBuilder(), message);
     }
 }

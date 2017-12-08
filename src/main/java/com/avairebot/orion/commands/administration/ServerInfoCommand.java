@@ -1,10 +1,10 @@
 package com.avairebot.orion.commands.administration;
 
 import com.avairebot.orion.Orion;
+import com.avairebot.orion.chat.PlaceholderMessage;
 import com.avairebot.orion.contracts.commands.Command;
 import com.avairebot.orion.factories.MessageFactory;
 import com.avairebot.orion.time.Carbon;
-import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageEmbed;
@@ -57,7 +57,7 @@ public class ServerInfoCommand extends Command {
         Guild guild = message.getGuild();
         Carbon time = Carbon.createFromOffsetDateTime(guild.getCreationTime());
 
-        EmbedBuilder builder = MessageFactory.makeEmbeddedMessage(getRoleColor(guild.getSelfMember().getRoles()),
+        PlaceholderMessage placeholderMessage = MessageFactory.makeEmbeddedMessage(message.getChannel(), getRoleColor(guild.getSelfMember().getRoles()),
             new MessageEmbed.Field("ID", guild.getId(), true),
             new MessageEmbed.Field("Owner", guild.getOwner().getUser().getName() + "#" + guild.getOwner().getUser().getDiscriminator(), true),
             new MessageEmbed.Field("Text Channels", "" + guild.getTextChannels().size(), true),
@@ -70,7 +70,7 @@ public class ServerInfoCommand extends Command {
 
         if (!guild.getEmotes().isEmpty()) {
             boolean hasMany = guild.getEmotes().size() > 17;
-            builder.addField(new MessageEmbed.Field(
+            placeholderMessage.addField(new MessageEmbed.Field(
                 String.format("Custom Emojis (%s)", guild.getEmotes().size()),
                 guild.getEmotes().stream()
                     .map(emote -> emote.getName() + (hasMany ? "" : " " + emote.getAsMention()))
@@ -79,7 +79,7 @@ public class ServerInfoCommand extends Command {
             ));
         }
 
-        message.getChannel().sendMessage(builder.build()).queue();
+        placeholderMessage.queue();
         return true;
     }
 

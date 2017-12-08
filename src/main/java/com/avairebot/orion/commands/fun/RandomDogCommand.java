@@ -55,11 +55,8 @@ public class RandomDogCommand extends Command {
             .send((Consumer<Response>) response -> {
                 RandomDogService service = (RandomDogService) response.toService(RandomDogService.class);
 
-                message.getChannel().sendMessage(
-                    MessageFactory.createEmbeddedBuilder()
-                        .setImage(service.getMessage())
-                        .build()
-                ).queue();
+                MessageFactory.makeEmbeddedMessage(message.getChannel())
+                    .setImage(service.getMessage()).queue();
             });
         return true;
     }

@@ -125,15 +125,13 @@ public class MemeCommand extends Command {
         }
 
         try {
-            message.getChannel().sendMessage(
-                MessageFactory.createEmbeddedBuilder()
-                    .setImage(String.format(
-                        customUrl,
-                        formatMemeArgument(args[0]),
-                        formatMemeArgument(args[1]),
-                        URLEncoder.encode(user.getAvatarUrl(), "UTF-8")
-                    )).build()
-            ).queue();
+            MessageFactory.makeEmbeddedMessage(message.getChannel())
+                .setImage(String.format(
+                    customUrl,
+                    formatMemeArgument(args[0]),
+                    formatMemeArgument(args[1]),
+                    URLEncoder.encode(user.getAvatarUrl(), "UTF-8")
+                )).queue();
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
@@ -145,15 +143,13 @@ public class MemeCommand extends Command {
             return sendErrorMessage(message, "You must include the `top text` and `bottom text` arguments to generate a meme.");
         }
 
-        message.getChannel().sendMessage(
-            MessageFactory.createEmbeddedBuilder()
-                .setImage(String.format(
-                    templateUrl,
-                    meme,
-                    formatMemeArgument(args[0]),
-                    formatMemeArgument(args[1])
-                )).build()
-        ).queue();
+        MessageFactory.makeEmbeddedMessage(message.getChannel())
+            .setImage(String.format(
+                templateUrl,
+                meme,
+                formatMemeArgument(args[0]),
+                formatMemeArgument(args[1])
+            )).queue();
 
         return true;
     }

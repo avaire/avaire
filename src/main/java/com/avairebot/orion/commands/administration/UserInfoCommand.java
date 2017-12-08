@@ -1,10 +1,10 @@
 package com.avairebot.orion.commands.administration;
 
 import com.avairebot.orion.Orion;
+import com.avairebot.orion.chat.PlaceholderMessage;
 import com.avairebot.orion.contracts.commands.Command;
 import com.avairebot.orion.factories.MessageFactory;
 import com.avairebot.orion.time.Carbon;
-import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageEmbed;
@@ -56,7 +56,7 @@ public class UserInfoCommand extends Command {
         Carbon joinedDate = Carbon.createFromOffsetDateTime(member.getJoinDate());
         Carbon createdDate = Carbon.createFromOffsetDateTime(member.getUser().getCreationTime());
 
-        EmbedBuilder builder = MessageFactory.makeEmbeddedMessage(getRoleColor(member.getRoles()),
+        PlaceholderMessage placeholderMessage = MessageFactory.makeEmbeddedMessage(message.getChannel(), getRoleColor(member.getRoles()),
             new MessageEmbed.Field("Username", member.getUser().getName(), true),
             new MessageEmbed.Field("User ID", member.getUser().getId(), true),
             new MessageEmbed.Field("Joined Server", createdDate.format("EEE, dd MMM yyyy HH:mm") + "\n*About " + shortenDiffForHumans(joinedDate) + "*", true),
@@ -70,10 +70,10 @@ public class UserInfoCommand extends Command {
                 .collect(Collectors.joining("\n"));
         }
 
-        builder.addField(new MessageEmbed.Field(String.format("Roles (%s)", member.getRoles().size()), memberRoles, true));
-        builder.addField(new MessageEmbed.Field("Servers", "" + member.getUser().getMutualGuilds().size() + " the bot knows about", true));
+        placeholderMessage.addField(new MessageEmbed.Field(String.format("Roles (%s)", member.getRoles().size()), memberRoles, true));
+        placeholderMessage.addField(new MessageEmbed.Field("Servers", "" + member.getUser().getMutualGuilds().size() + " the bot knows about", true));
 
-        message.getChannel().sendMessage(builder.build()).queue();
+        placeholderMessage.queue();
         return true;
     }
 

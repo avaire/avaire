@@ -85,10 +85,10 @@ public class DuckDuckGoCommand extends ThreadCommand {
                 }
             }
 
-            message.getChannel().sendMessage(
-                MessageFactory.makeEmbeddedMessage(message, Color.decode("#DE5833"), String.join("\n", result))
-                    .setTitle("Search result for: " + String.join(" ", args)).build()
-            ).queue();
+            MessageFactory.makeEmbeddedMessage(message.getChannel(), Color.decode("#DE5833"), String.join("\n", result))
+                .setTitle("Search result for: " + String.join(" ", args))
+                .queue();
+
             return true;
         } catch (IOException e) {
             e.printStackTrace();

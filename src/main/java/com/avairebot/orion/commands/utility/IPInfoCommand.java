@@ -68,11 +68,11 @@ public class IPInfoCommand extends Command {
         RequestFactory.makeGET("http://ipinfo.io/" + args[0] + "/json").send((Consumer<Response>) response -> {
             JSONObject json = new JSONObject(response.toString());
 
-            message.getChannel().sendMessage(MessageFactory.makeEmbeddedMessage(Color.decode("#005A8C"),
+            MessageFactory.makeEmbeddedMessage(message.getChannel(), Color.decode("#005A8C"),
                 new MessageEmbed.Field("Hostname", json.has("hostname") ? json.getString("hostname") : "Unknown", true),
                 new MessageEmbed.Field("Organisation", json.has("org") ? json.getString("org") : "Unknown", true),
                 new MessageEmbed.Field("Country", generateLocation(json), false)
-            ).setTitle(args[0]).setFooter(generateFooter(message), null).build()).queue();
+            ).setTitle(args[0]).setFooter(generateFooter(message), null).queue();
         });
 
         return true;

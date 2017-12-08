@@ -6,7 +6,6 @@ import com.avairebot.orion.factories.MessageFactory;
 import com.avairebot.orion.factories.RequestFactory;
 import com.avairebot.orion.requests.Response;
 import com.avairebot.orion.requests.service.UrbanDictionaryService;
-import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Message;
 
 import java.awt.*;
@@ -70,18 +69,14 @@ public class UrbanDictionaryCommand extends Command {
 
                 double percentage = (((double) definition.getThumbsUp() / definition.getThumbsDown()) * 100) - 100;
 
-                EmbedBuilder embed = MessageFactory.createEmbeddedBuilder()
-                    .setColor(Color.decode("#1D2439"))
+                MessageFactory.makeEmbeddedMessage(message.getChannel(), Color.decode("#1D2439"), definition.getDefinition())
                     .setTitle(definition.getWord(), definition.getPermalink())
-                    .setDescription(definition.getDefinition())
                     .addField("Example", definition.getExample(), false)
                     .setFooter(String.format("%s%s percentage of people like this. %s\uD83D\uDC4D %s\uD83D\uDC4E",
                         new DecimalFormat("#.##").format(percentage), "%",
                         definition.getThumbsUp(),
                         definition.getThumbsDown()
-                    ), null);
-
-                message.getChannel().sendMessage(embed.build()).queue();
+                    )).queue();
             });
         return true;
     }

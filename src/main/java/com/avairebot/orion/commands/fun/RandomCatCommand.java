@@ -55,11 +55,8 @@ public class RandomCatCommand extends Command {
             .send((Consumer<Response>) response -> {
                 RandomCatService service = (RandomCatService) response.toService(RandomCatService.class);
 
-                message.getChannel().sendMessage(
-                    MessageFactory.createEmbeddedBuilder()
-                        .setImage(service.getFile())
-                        .build()
-                ).queue();
+                MessageFactory.makeEmbeddedMessage(message.getChannel())
+                    .setImage(service.getFile()).queue();
             });
         return true;
     }

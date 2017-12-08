@@ -84,14 +84,13 @@ public class XKCDCommand extends ThreadCommand {
     }
 
     private void sendComic(Message message, JSONObject json, Carbon date, int comic) {
-        message.getChannel().sendMessage(
-            MessageFactory.makeEmbeddedMessage(Color.decode("#96A8C8"))
-                .setDescription(String.format("**%s**\n%s", json.getString("safe_title"), json.getString("alt")))
-                .setImage(json.getString("img"))
-                .setTimestamp(date.getTime().toInstant())
-                .setFooter("XKCD number #" + comic, null)
-                .build()
-        ).queue();
+        MessageFactory.makeEmbeddedMessage(message, Color.decode("#96A8C8"),
+            String.format("**%s**\n%s", json.getString("safe_title"), json.getString("alt"))
+        )
+            .setImage(json.getString("img"))
+            .setTimestamp(date.getTime().toInstant())
+            .setFooter("XKCD number #" + comic)
+            .queue();
     }
 
     private int getLatestComicNumber() {

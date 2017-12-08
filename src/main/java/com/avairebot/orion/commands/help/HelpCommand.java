@@ -161,7 +161,6 @@ public class HelpCommand extends Command {
                 .collect(Collectors.joining("`, `", "`", "`")), false);
         }
 
-
         message.getChannel().sendMessage(embed.setDescription(description).build()).queue();
         return true;
     }

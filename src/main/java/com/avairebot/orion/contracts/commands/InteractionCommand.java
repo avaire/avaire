@@ -1,10 +1,10 @@
 package com.avairebot.orion.contracts.commands;
 
 import com.avairebot.orion.Orion;
+import com.avairebot.orion.chat.PlaceholderMessage;
 import com.avairebot.orion.commands.CommandPriority;
 import com.avairebot.orion.factories.MessageFactory;
 import com.avairebot.orion.utilities.RandomUtil;
-import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Message;
 
 import java.awt.*;
@@ -64,17 +64,17 @@ public abstract class InteractionCommand extends Command {
             return sendErrorMessage(message, "You must mention a use you want to use the interaction for.");
         }
 
-        EmbedBuilder builder = MessageFactory.createEmbeddedBuilder()
-            .setDescription(buildMessage(message))
-            .setImage(getInteractionImages().get(
-                RandomUtil.getInteger(getInteractionImages().size())
-            ));
+        PlaceholderMessage placeholderMessage = MessageFactory.makeEmbeddedMessage(
+            message.getChannel(), null, buildMessage(message)
+        ).setImage(getInteractionImages().get(
+            RandomUtil.getInteger(getInteractionImages().size())
+        ));
 
         if (getInteractionColor() != null) {
-            builder.setColor(getInteractionColor());
+            placeholderMessage.setColor(getInteractionColor());
         }
 
-        message.getChannel().sendMessage(builder.build()).queue();
+        placeholderMessage.queue();
         return true;
     }
 

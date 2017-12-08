@@ -143,17 +143,14 @@ public class MessageCreate extends EventHandler {
             author = "<@88739639380172800>";
         }
 
-        event.getMessage().getChannel().sendMessage(MessageFactory.createEmbeddedBuilder()
-            .setColor(Color.decode("#E91E63"))
-            .setDescription(String.format(mentionMessage,
-                orion.getSelfUser().getName(),
-                author,
-                CommandHandler.getLazyCommand("help").getCommand().generateCommandTrigger(event.getMessage()),
-                AppInfo.getAppInfo().VERSION
-            ))
-            .setFooter("This message will be automatically deleted in one minute.", null)
-            .build()
-        ).queue(message -> message.delete().queueAfter(1, TimeUnit.MINUTES));
+        MessageFactory.makeEmbeddedMessage(event.getMessage().getChannel(), Color.decode("#E91E63"), String.format(mentionMessage,
+            orion.getSelfUser().getName(),
+            author,
+            CommandHandler.getLazyCommand("help").getCommand().generateCommandTrigger(event.getMessage()),
+            AppInfo.getAppInfo().VERSION
+        ))
+            .setFooter("This message will be automatically deleted in one minute.")
+            .queue(message -> message.delete().queueAfter(1, TimeUnit.MINUTES));
     }
 
     private CompletableFuture<DatabaseProperties> loadDatabasePropertiesIntoMemory(final MessageReceivedEvent event) {

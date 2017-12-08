@@ -71,10 +71,10 @@ public class EightBallCommand extends Command {
             return sendErrorMessage(message, "You must include a question for 8ball.");
         }
 
-        message.getChannel().sendMessage(MessageFactory.createEmbeddedBuilder()
-            .setColor(Color.decode("#2A2C31"))
-            .setDescription((CharSequence) RandomUtil.pickRandom(answers))
-            .build()
+        MessageFactory.makeEmbeddedMessage(
+            message.getChannel(),
+            Color.decode("#2A2C31"),
+            (String) RandomUtil.pickRandom(answers)
         ).queue();
 
         return true;
