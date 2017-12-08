@@ -40,7 +40,7 @@ public abstract class Paginator implements Cloneable {
 
     public void forEach(PaginatorClosure closure) {
         int counter = 0;
-        int start = 10 * (getCurrentPage() - 1);
+        int start = perPage * (getCurrentPage() - 1);
         int end = start + getPerPage();
 
         for (Map.Entry<Object, Object> item : items.entrySet()) {
@@ -76,7 +76,7 @@ public abstract class Paginator implements Cloneable {
     }
 
     public final int getPages() {
-        return (int) Math.ceil(getTotal() / perPage);
+        return (int) Math.ceil((double) getTotal() / perPage);
     }
 
     public final int getTotal() {
