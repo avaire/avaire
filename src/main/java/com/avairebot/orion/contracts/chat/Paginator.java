@@ -72,7 +72,7 @@ public abstract class Paginator implements Cloneable {
     }
 
     public final void setCurrentPage(int currentPage) {
-        this.currentPage = Math.max(1, Math.min(getTotal(), currentPage));
+        this.currentPage = Math.max(1, Math.min(getPages(), currentPage));
     }
 
     public final int getPages() {
