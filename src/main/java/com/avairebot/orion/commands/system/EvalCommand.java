@@ -93,7 +93,12 @@ public class EvalCommand extends SystemCommand {
             "Packages.net.dv8tion.jda.core.entities.impl," +
             "Packages.net.dv8tion.jda.core.managers," +
             "Packages.net.dv8tion.jda.core.managers.impl," +
-            "Packages.net.dv8tion.jda.core.utils);");
+            "Packages.net.dv8tion.jda.core.utils," +
+            "Packages.com.avairebot.orion.database.controllers," +
+            "Packages.com.avairebot.orion.factories," +
+            "Packages.com.avairebot.orion.cache," +
+            "Packages.com.avairebot.orion.audio," +
+            "Packages.com.avairebot.orion.time);");
 
         return engine;
     }
