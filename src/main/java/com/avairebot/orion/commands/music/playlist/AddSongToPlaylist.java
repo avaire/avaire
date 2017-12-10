@@ -52,10 +52,12 @@ public class AddSongToPlaylist extends PlaylistSubCommand {
             query = "ytsearch:" + query;
         }
 
-        return loadSong(message, query, guild, playlist);
+        String finalQuery = query;
+        message.getChannel().sendTyping().queue(v -> loadSong(message, finalQuery, guild, playlist));
+        return true;
     }
 
-    private boolean loadSong(Message message, String query, GuildTransformer guild, PlaylistTransformer playlist) {
+    private void loadSong(Message message, String query, GuildTransformer guild, PlaylistTransformer playlist) {
         AudioHandler.AUDIO_PLAYER_MANAGER.loadItemOrdered(AudioHandler.MUSIC_MANAGER, query, new AudioLoadResultHandler() {
             @Override
             public void trackLoaded(AudioTrack track) {
@@ -77,8 +79,6 @@ public class AddSongToPlaylist extends PlaylistSubCommand {
                 MessageFactory.makeError(message, "Failed to load: " + e.getMessage()).queue();
             }
         });
-
-        return true;
     }
 
     private void handleTrackLoadedEvent(Message message, GuildTransformer guild, PlaylistTransformer playlist, AudioTrack track) {
