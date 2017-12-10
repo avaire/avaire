@@ -49,8 +49,8 @@ public class GuildTypeTransformer extends Transformer {
         }
 
         public class GuildTypePlaylist {
-            private int lists;
-            private int songs;
+            private int lists = 5;
+            private int songs = 30;
 
             public int getPlaylists() {
                 return lists;
