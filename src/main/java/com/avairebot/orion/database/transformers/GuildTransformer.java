@@ -18,6 +18,8 @@ public class GuildTransformer extends Transformer {
     private final Map<String, Map<String, String>> modules = new HashMap<>();
     private final List<ChannelTransformer> channels = new ArrayList<>();
 
+    private final GuildTypeTransformer guildType;
+
     private boolean levels = false;
     private boolean levelAlerts = false;
     private String levelChannel = null;
@@ -25,6 +27,8 @@ public class GuildTransformer extends Transformer {
 
     public GuildTransformer(DataRow data) {
         super(data);
+
+        guildType = new GuildTypeTransformer(data);
 
         if (hasData()) {
             levels = data.getBoolean("levels");
@@ -94,6 +98,10 @@ public class GuildTransformer extends Transformer {
 
     public String getId() {
         return data.getString("id");
+    }
+
+    public GuildTypeTransformer getType() {
+        return guildType;
     }
 
     public long getLongId() {

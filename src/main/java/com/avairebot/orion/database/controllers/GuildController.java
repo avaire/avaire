@@ -37,7 +37,9 @@ public class GuildController {
 
         try {
             GuildTransformer transformer = new GuildTransformer(orion.getDatabase().newQueryBuilder(Constants.GUILD_TABLE_NAME)
-                .where("id", guild.getId())
+                .select("guild_types.name as type_name", "guild_types.limits as type_limits", "guilds.*")
+                .leftJoin("guild_types", "guilds.type", "guild_types.id")
+                .where("guilds.id", guild.getId())
                 .get().first());
 
             if (!transformer.hasData()) {
