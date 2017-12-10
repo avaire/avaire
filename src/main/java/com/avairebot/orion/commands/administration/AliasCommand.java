@@ -64,6 +64,9 @@ public class AliasCommand extends Command {
         }
 
         GuildTransformer transformer = GuildController.fetchGuild(orion, message.getGuild());
+        if (transformer == null) {
+            return sendErrorMessage(message, "An error occurred while loading the server settings, please try again, if the problem continues please report this to one of my developers on the [AvaIre support server](https://discord.gg/gt2FWER).");
+        }
 
         if (args.length == 1) {
             return removeCustomAlias(message, transformer, args);
@@ -71,6 +74,11 @@ public class AliasCommand extends Command {
 
         if (transformer.getAliases().containsKey(args[0].toLowerCase())) {
             return sendErrorMessage(message, "There is already a custom alias called `%s`", args[0]);
+        }
+
+        if (transformer.getAliases().size() >= transformer.getType().getLimits().getAliases()) {
+            MessageFactory.makeWarning(message, "The server doesn't have any more alias slots, you can delete existing aliases to free up slots.").queue();
+            return false;
         }
 
         String alias = args[0].toLowerCase();
@@ -93,7 +101,7 @@ public class AliasCommand extends Command {
             MessageFactory.makeSuccess(message, "The `:alias` alias has been linked to `:command`\nThe server has `:slots` more aliases slots available.")
                 .set("alias", args[0])
                 .set("command", commandString)
-                .set("slots", "???")
+                .set("slots", transformer.getType().getLimits().getAliases() - transformer.getAliases().size())
                 .queue();
             return true;
         } catch (SQLException e) {

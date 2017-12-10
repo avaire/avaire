@@ -10,6 +10,8 @@ import com.avairebot.orion.commands.help.HelpCommand;
 import com.avairebot.orion.contracts.commands.Command;
 import com.avairebot.orion.database.collection.Collection;
 import com.avairebot.orion.database.collection.DataRow;
+import com.avairebot.orion.database.controllers.GuildController;
+import com.avairebot.orion.database.transformers.GuildTransformer;
 import com.avairebot.orion.database.transformers.PlaylistTransformer;
 import com.avairebot.orion.factories.MessageFactory;
 import com.avairebot.orion.utilities.NumberUtil;
@@ -94,18 +96,23 @@ public class PlaylistCommand extends Command {
             return sendErrorMessage(message, "An error occurred while loading the servers playlists, please try again, if the problem continues please report this to one of my developers on the [AvaIre support server](https://discord.gg/gt2FWER).");
         }
 
+        GuildTransformer transformer = GuildController.fetchGuild(orion, message);
+        if (transformer == null) {
+            return sendErrorMessage(message, "An error occurred while loading the server settings, please try again, if the problem continues please report this to one of my developers on the [AvaIre support server](https://discord.gg/gt2FWER).");
+        }
+
         if (args.length == 0 && playlists.isEmpty()) {
             return sendNoPlaylistsForGuildMessage(message);
         }
 
         if (args.length == 0 || (args.length == 1 && NumberUtil.parseInt(args[0], -1, 10) > 0)) {
-            return sendPlaylists(message, args, playlists);
+            return sendPlaylists(message, args, transformer, playlists);
         }
 
         List<DataRow> playlistItems = playlists.whereLoose("name", args[0]);
         if (playlistItems.isEmpty()) {
             if (args.length > 1 && (args[1].equalsIgnoreCase("create") || args[1].equalsIgnoreCase("c"))) {
-                return createPlaylist(message, args, playlists);
+                return createPlaylist(message, args, transformer, playlists);
             }
 
             MessageFactory.makeWarning(message, "There are no playlist called `:playlist`, you can create the playlist by using the\n`:command` command")
@@ -130,7 +137,7 @@ public class PlaylistCommand extends Command {
 
             case "a":
             case "add":
-                return addSongToPlaylist(message, args, playlist);
+                return addSongToPlaylist(message, args, transformer, playlist);
 
             case "remove":
             case "removesong":
@@ -145,7 +152,7 @@ public class PlaylistCommand extends Command {
 
             case "c":
             case "create":
-                return createPlaylist(message, args, playlists);
+                return createPlaylist(message, args, transformer, playlists);
         }
 
         return sendErrorMessage(message, String.format(
@@ -193,8 +200,24 @@ public class PlaylistCommand extends Command {
         return true;
     }
 
-    private boolean addSongToPlaylist(Message message, String[] args, PlaylistTransformer playlist) {
+    private boolean addSongToPlaylist(Message message, String[] args, GuildTransformer transformer, PlaylistTransformer playlist) {
         String query = String.join(" ", Arrays.copyOfRange(args, 2, args.length));
+
+        if (query.trim().length() == 0) {
+            MessageFactory.makeWarning(message, "Invalid format, missing the `song` property!\n`:command`")
+                .set("command", generateCommandTrigger(message) + " " + playlist.getName() + " add <song title / link>")
+                .queue();
+
+            return false;
+        }
+
+        if (playlist.getSongs().size() >= transformer.getType().getLimits().getPlaylist().getSongs()) {
+            MessageFactory.makeWarning(message, "The `:playlist` playlist doesn't have any more song slots.")
+                .set("playlist", playlist.getName())
+                .queue();
+
+            return false;
+        }
 
         try {
             new URL(query);
@@ -228,7 +251,7 @@ public class PlaylistCommand extends Command {
                         .set("name", track.getInfo().title)
                         .set("url", track.getInfo().uri)
                         .set("playlist", playlist.getName())
-                        .set("slots", "TODO")
+                        .set("slots", transformer.getType().getLimits().getPlaylist().getSongs() - playlist.getSongs().size())
                         .queue();
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -373,12 +396,18 @@ public class PlaylistCommand extends Command {
         return false;
     }
 
-    private boolean createPlaylist(Message message, String[] args, Collection playlists) {
+    private boolean createPlaylist(Message message, String[] args, GuildTransformer transformer, Collection playlists) {
         String name = args[0];
         List<DataRow> playlistItems = playlists.whereLoose("name", name);
         if (!playlistItems.isEmpty()) {
             MessageFactory.makeWarning(message, "The `:playlist` playlist already exists!")
                 .set("playlist", name).queue();
+            return false;
+        }
+
+        int playlistLimit = transformer.getType().getLimits().getPlaylist().getPlaylists();
+        if (playlists.size() >= playlistLimit) {
+            MessageFactory.makeWarning(message, "The server doesn't have any more playlist slots, you can delete existing playlists to free up slots.").queue();
             return false;
         }
 
@@ -404,7 +433,7 @@ public class PlaylistCommand extends Command {
         return false;
     }
 
-    private boolean sendPlaylists(Message message, String[] args, Collection playlists) {
+    private boolean sendPlaylists(Message message, String[] args, GuildTransformer transformer, Collection playlists) {
         SimplePaginator paginator = new SimplePaginator(playlists.sort(
             Comparator.comparing(dataRow -> dataRow.getString("name"))
         ).getItems(), 5);
@@ -422,10 +451,14 @@ public class PlaylistCommand extends Command {
             ));
         });
 
+        String counter = String.format(" [ %s out of %s ]",
+            playlists.size(), transformer.getType().getLimits().getPlaylist().getPlaylists()
+        );
+
         MessageFactory.makeInfo(message, "\u2022 " +
             String.join("\n\u2022 ", messages) + "\n\n" +
             paginator.generateFooter(generateCommandTrigger(message))
-        ).setTitle(":musical_note: Music Playlist").queue();
+        ).setTitle(":musical_note: Music Playlist " + counter).queue();
 
         return true;
     }
