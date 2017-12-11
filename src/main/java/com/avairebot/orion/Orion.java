@@ -90,6 +90,7 @@ public class Orion {
         CategoryHandler.addCategory(this, "Fun", ">");
         CategoryHandler.addCategory(this, "Interaction", ">");
         CategoryHandler.addCategory(this, "Music", "!");
+        CategoryHandler.addCategory(this, "Search", ">");
         CategoryHandler.addCategory(this, "Utility", "!");
         CategoryHandler.addCategory(this, "System", ";");
 

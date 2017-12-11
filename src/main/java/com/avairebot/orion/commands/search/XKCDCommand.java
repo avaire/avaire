@@ -1,4 +1,4 @@
-package com.avairebot.orion.commands.fun;
+package com.avairebot.orion.commands.search;
 
 import com.avairebot.orion.Orion;
 import com.avairebot.orion.cache.CacheType;

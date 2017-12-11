@@ -1,4 +1,4 @@
-package com.avairebot.orion.commands.utility;
+package com.avairebot.orion.commands.search;
 
 import com.avairebot.orion.Orion;
 import com.avairebot.orion.contracts.commands.ThreadCommand;
@@ -43,7 +43,7 @@ public class DuckDuckGoCommand extends ThreadCommand {
 
     @Override
     public List<String> getTriggers() {
-        return Arrays.asList("duckduckgo", "ddg", "g");
+        return Arrays.asList("duckduckgo", "search", "ddg", "g");
     }
 
     @Override
