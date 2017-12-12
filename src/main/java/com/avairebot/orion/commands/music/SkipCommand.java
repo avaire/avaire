@@ -4,7 +4,6 @@ import com.avairebot.orion.Orion;
 import com.avairebot.orion.audio.AudioHandler;
 import com.avairebot.orion.audio.GuildMusicManager;
 import com.avairebot.orion.contracts.commands.Command;
-import com.avairebot.orion.factories.MessageFactory;
 import net.dv8tion.jda.core.entities.Message;
 
 import java.util.Arrays;
@@ -60,10 +59,8 @@ public class SkipCommand extends Command {
             return true;
         }
 
-        MessageFactory.makeSuccess(message, "Queue has ended, leaving voice.").queue();
-
         musicManager.getPlayer().stopTrack();
-        message.getGuild().getAudioManager().closeAudioConnection();
+        musicManager.getScheduler().handleEndOfQueue(message);
 
         return true;
     }

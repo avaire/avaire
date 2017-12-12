@@ -5,6 +5,7 @@ import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
+import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.User;
 
 import java.util.concurrent.BlockingQueue;
@@ -71,11 +72,7 @@ public class TrackScheduler extends AudioEventAdapter {
             if (manager.getLastActiveMessage() == null)
                 return;
 
-            service.submit(() -> {
-                MessageFactory.makeSuccess(manager.getLastActiveMessage(), "Queue has ended, leaving voice.").queue();
-
-                manager.getLastActiveMessage().getGuild().getAudioManager().closeAudioConnection();
-            });
+            service.submit(this::handleEndOfQueueWithLastActiveMessage);
             return;
         }
 
@@ -99,8 +96,7 @@ public class TrackScheduler extends AudioEventAdapter {
 
         if (endReason.equals(AudioTrackEndReason.FINISHED) && queue.isEmpty()) {
             if (manager.getLastActiveMessage() != null) {
-                MessageFactory.makeSuccess(manager.getLastActiveMessage(), "Queue has ended, leaving voice.").queue();
-                manager.getLastActiveMessage().getGuild().getAudioManager().closeAudioConnection();
+                service.submit(this::handleEndOfQueueWithLastActiveMessage);
             }
         }
     }
@@ -120,5 +116,19 @@ public class TrackScheduler extends AudioEventAdapter {
             .set("duration", container.getFormattedDuration())
             .set("requester", container.getRequester().getAsMention())
             .queue();
+    }
+
+    public void handleEndOfQueue(Message message) {
+        MessageFactory.makeSuccess(message, "Queue has ended, leaving voice.").queue();
+
+        message.getGuild().getAudioManager().closeAudioConnection();
+
+        AudioHandler.MUSIC_MANAGER.remove(
+            message.getGuild().getIdLong()
+        );
+    }
+
+    public void handleEndOfQueueWithLastActiveMessage() {
+        handleEndOfQueue(manager.getLastActiveMessage());
     }
 }

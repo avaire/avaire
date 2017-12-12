@@ -76,10 +76,8 @@ public class VoteSkipCommand extends Command {
                 return true;
             }
 
-            MessageFactory.makeSuccess(message, "Queue has ended, leaving voice.").queue();
-
             musicManager.getPlayer().stopTrack();
-            message.getGuild().getAudioManager().closeAudioConnection();
+            musicManager.getScheduler().handleEndOfQueue(message);
             return true;
         }
 
