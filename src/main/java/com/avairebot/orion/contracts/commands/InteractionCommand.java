@@ -1,13 +1,16 @@
 package com.avairebot.orion.contracts.commands;
 
 import com.avairebot.orion.Orion;
-import com.avairebot.orion.chat.PlaceholderMessage;
 import com.avairebot.orion.commands.CommandPriority;
-import com.avairebot.orion.factories.MessageFactory;
 import com.avairebot.orion.utilities.RandomUtil;
+import net.dv8tion.jda.core.EmbedBuilder;
+import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.entities.Message;
 
 import java.awt.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.Collections;
 import java.util.List;
 
@@ -64,17 +67,27 @@ public abstract class InteractionCommand extends Command {
             return sendErrorMessage(message, "You must mention a use you want to use the interaction for.");
         }
 
-        PlaceholderMessage placeholderMessage = MessageFactory.makeEmbeddedMessage(
-            message.getChannel(), null, buildMessage(message)
-        ).setImage(getInteractionImages().get(
-            RandomUtil.getInteger(getInteractionImages().size())
-        ));
+        message.getChannel().sendTyping().queue();
 
-        if (getInteractionColor() != null) {
-            placeholderMessage.setColor(getInteractionColor());
+        int imageIndex = RandomUtil.getInteger(getInteractionImages().size());
+
+        MessageBuilder messageBuilder = new MessageBuilder();
+        EmbedBuilder embedBuilder = new EmbedBuilder();
+
+        embedBuilder
+            .setImage("attachment://" + getClass().getSimpleName() + "-" + imageIndex + ".gif")
+            .setDescription(buildMessage(message))
+            .setColor(getInteractionColor());
+
+        messageBuilder.setEmbed(embedBuilder.build());
+
+        try {
+            InputStream stream = new URL(getInteractionImages().get(imageIndex)).openStream();
+
+            message.getChannel().sendFile(stream, getClass().getSimpleName() + "-" + imageIndex + ".gif", messageBuilder.build()).queue();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-
-        placeholderMessage.queue();
         return true;
     }
 
