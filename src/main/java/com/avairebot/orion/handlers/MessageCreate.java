@@ -69,6 +69,7 @@ public class MessageCreate extends EventHandler {
                 Statistics.addCommands();
 
                 (new MiddlewareStack(orion, event.getMessage(), container)).next();
+                return;
             }
 
             if (isMentionableAction(event)) {
