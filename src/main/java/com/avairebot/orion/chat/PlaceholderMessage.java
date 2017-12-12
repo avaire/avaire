@@ -85,7 +85,7 @@ public class PlaceholderMessage extends Restable {
     }
 
     public PlaceholderMessage setDescription(String description) {
-        builder.setDescription(description);
+        message = description;
         return this;
     }
 
