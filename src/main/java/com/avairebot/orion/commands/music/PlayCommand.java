@@ -31,7 +31,7 @@ public class PlayCommand extends Command {
 
     @Override
     public String getDescription() {
-        return "Plays the music that you request for you.";
+        return "Plays the provided song for you, if just the song title is given the bot will search YouTube for your song.";
     }
 
     @Override
@@ -118,6 +118,10 @@ public class PlayCommand extends Command {
 
     private String buildTrackRequestString(String[] args) {
         String string = String.join(" ", args);
+
+        if (string.startsWith("scsearch:")) {
+            return string;
+        }
 
         try {
             new URL(string);
