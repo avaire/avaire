@@ -59,8 +59,8 @@ public class UserInfoCommand extends Command {
         PlaceholderMessage placeholderMessage = MessageFactory.makeEmbeddedMessage(message.getChannel(), getRoleColor(member.getRoles()),
             new MessageEmbed.Field("Username", member.getUser().getName(), true),
             new MessageEmbed.Field("User ID", member.getUser().getId(), true),
-            new MessageEmbed.Field("Joined Server", createdDate.format("EEE, dd MMM yyyy HH:mm") + "\n*About " + shortenDiffForHumans(joinedDate) + "*", true),
-            new MessageEmbed.Field("Joined Discord", joinedDate.format("EEE, dd MMM yyyy HH:mm") + "\n*About " + shortenDiffForHumans(createdDate) + "*", true)
+            new MessageEmbed.Field("Joined Server", createdDate.format("EEE, dd MMM yyyy HH:mm") + "\n*About " + shortenDiffForHumans(createdDate) + "*", true),
+            new MessageEmbed.Field("Joined Discord", joinedDate.format("EEE, dd MMM yyyy HH:mm") + "\n*About " + shortenDiffForHumans(joinedDate) + "*", true)
         ).setThumbnail(member.getUser().getEffectiveAvatarUrl());
 
         String memberRoles = "*This user is not in any roles*";
