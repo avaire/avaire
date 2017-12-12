@@ -19,6 +19,7 @@ import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
@@ -90,6 +91,11 @@ public class MessageCreate extends EventHandler {
 
             if (isSingleBotMention(event.getMessage().getRawContent().trim())) {
                 sendTagInformationMessage(event);
+                return;
+            }
+
+            if (!event.getChannelType().isGuild()) {
+                sendInformationMessage(event);
             }
         });
     }
@@ -151,6 +157,34 @@ public class MessageCreate extends EventHandler {
         ))
             .setFooter("This message will be automatically deleted in one minute.")
             .queue(message -> message.delete().queueAfter(1, TimeUnit.MINUTES));
+    }
+
+    private void sendInformationMessage(MessageReceivedEvent event) {
+        try {
+            ArrayList<String> strings = new ArrayList<>();
+            strings.addAll(Arrays.asList(
+                "To invite me to your server, use this link:",
+                "*:oauth*",
+                "",
+                "You can use `.help` to see a list of all the categories of commands.",
+                "You can use `.help category` to see a list of commands for that category.",
+                "For specific command help, use `.help command` (for example `.help !ping`, `.help ping` also works)"
+            ));
+
+            if (orion.getIntelligenceManager().isEnabled()) {
+                strings.add("\nYou can tag me in a message with <@:botId> to send me a message that I should process using my AI.");
+            }
+
+            strings.add("\n**Full list of commands**\n*https://avairebot.com/docs/commands*");
+            strings.add("\nAvaIre Support Server:\n*https://avairebot.com/support*");
+
+            MessageFactory.makeEmbeddedMessage(event.getMessage(), Color.decode("#E91E63"), String.join("\n", strings))
+                .set("oauth", orion.getConfig().botAuth().getOAuth())
+                .set("botId", orion.getSelfUser().getId())
+                .queue();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     private CompletableFuture<DatabaseProperties> loadDatabasePropertiesIntoMemory(final MessageReceivedEvent event) {
