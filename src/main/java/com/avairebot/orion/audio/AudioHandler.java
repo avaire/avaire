@@ -110,4 +110,12 @@ public class AudioHandler {
             manager.getScheduler().getQueue().size() :
             manager.getScheduler().getQueue().size() + 1;
     }
+
+    public static int getTotalQueueSize() {
+        int total = 0;
+        for (GuildMusicManager manager : MUSIC_MANAGER.values()) {
+            total += getQueueSize(manager);
+        }
+        return total;
+    }
 }

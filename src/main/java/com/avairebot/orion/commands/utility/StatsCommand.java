@@ -3,6 +3,7 @@ package com.avairebot.orion.commands.utility;
 import com.avairebot.orion.AppInfo;
 import com.avairebot.orion.Orion;
 import com.avairebot.orion.Statistics;
+import com.avairebot.orion.audio.AudioHandler;
 import com.avairebot.orion.cache.CacheType;
 import com.avairebot.orion.chat.MessageType;
 import com.avairebot.orion.contracts.commands.Command;
@@ -95,6 +96,9 @@ public class StatsCommand extends Command {
         )
             .setTitle("Official Bot Server Invite", "https://discordapp.com/invite/gt2FWER")
             .setAuthor("Orion v" + AppInfo.getAppInfo().VERSION, "https://discordapp.com/invite/gt2FWER", orion.getSelfUser().getEffectiveAvatarUrl())
+            .setFooter(String.format("Currently playing in %s servers with %s songs in the queue.",
+                AudioHandler.MUSIC_MANAGER.size(), AudioHandler.getTotalQueueSize()
+            ))
             .setDescription(description.toString())
             .queue();
 
