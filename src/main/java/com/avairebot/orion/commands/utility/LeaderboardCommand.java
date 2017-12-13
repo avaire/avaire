@@ -15,7 +15,6 @@ import com.avairebot.orion.utilities.NumberUtil;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -100,16 +99,11 @@ public class LeaderboardCommand extends Command {
 
     private Collection loadTop100From(Message message) {
         return (Collection) orion.getCache().getAdapter(CacheType.MEMORY).remember("database-xp-leaderboard." + message.getGuild().getId(), 60, () -> {
-            try {
-                return orion.getDatabase().newQueryBuilder(Constants.PLAYER_EXPERIENCE_TABLE_NAME)
-                    .where("guild_id", message.getGuild().getId())
-                    .orderBy("experience", "desc")
-                    .take(100)
-                    .get();
-            } catch (SQLException ex) {
-                Orion.getLogger().error(ex.getMessage(), ex);
-                return null;
-            }
+            return orion.getDatabase().newQueryBuilder(Constants.PLAYER_EXPERIENCE_TABLE_NAME)
+                .where("guild_id", message.getGuild().getId())
+                .orderBy("experience", "desc")
+                .take(100)
+                .get();
         });
     }
 }

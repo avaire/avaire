@@ -13,7 +13,6 @@ import com.google.gson.JsonElement;
 import net.dv8tion.jda.core.entities.Message;
 import org.jsoup.Jsoup;
 
-import java.io.IOException;
 import java.util.*;
 
 public class RequestSong extends Intent {
@@ -70,18 +69,13 @@ public class RequestSong extends Intent {
 
     private String getRandomSong(final String category) {
         Object cacheItem = orion.getCache().getAdapter(CacheType.FILE).remember("music-type." + category.toLowerCase(), 31536000, () -> {
-            try {
-                String item = Jsoup.connect(
-                    String.format("https://libraries.amped.fm/libraries/%s/musicbot", category)
-                ).execute().body();
+            String item = Jsoup.connect(
+                String.format("https://libraries.amped.fm/libraries/%s/musicbot", category)
+            ).execute().body();
 
-                String[] items = item.split("\n");
+            String[] items = item.split("\n");
 
-                return Arrays.asList(Arrays.copyOfRange(items, 2, items.length));
-            } catch (IOException e) {
-                e.printStackTrace();
-                return null;
-            }
+            return Arrays.asList(Arrays.copyOfRange(items, 2, items.length));
         });
 
         if (!(cacheItem instanceof ArrayList)) {

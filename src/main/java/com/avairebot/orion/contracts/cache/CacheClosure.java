@@ -7,5 +7,5 @@ public interface CacheClosure {
      *
      * @return The object that should be cached.
      */
-    Object run();
+    Object run() throws Exception;
 }

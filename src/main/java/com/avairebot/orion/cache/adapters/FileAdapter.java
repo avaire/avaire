@@ -1,6 +1,7 @@
 package com.avairebot.orion.cache.adapters;
 
 import com.avairebot.orion.Constants;
+import com.avairebot.orion.Orion;
 import com.avairebot.orion.cache.CacheItem;
 import com.avairebot.orion.contracts.cache.CacheAdapter;
 import com.avairebot.orion.contracts.cache.CacheClosure;
@@ -43,8 +44,14 @@ public class FileAdapter extends CacheAdapter {
             return get(token);
         }
 
-        writeTo(generateCacheFile(token), closure.run(), seconds);
-        return get(token);
+        try {
+            writeTo(generateCacheFile(token), closure.run(), seconds);
+
+            return get(token);
+        } catch (Exception e) {
+            Orion.getLogger().error(e.getMessage(), e);
+            return null;
+        }
     }
 
     @Override

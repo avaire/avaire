@@ -1,5 +1,6 @@
 package com.avairebot.orion.cache.adapters;
 
+import com.avairebot.orion.Orion;
 import com.avairebot.orion.cache.CacheItem;
 import com.avairebot.orion.contracts.cache.CacheAdapter;
 import com.avairebot.orion.contracts.cache.CacheClosure;
@@ -25,10 +26,15 @@ public class MemoryAdapter extends CacheAdapter {
             return get(token);
         }
 
-        CacheItem item = new CacheItem(token, closure.run(), System.currentTimeMillis() + (seconds * 1000));
-        CACHES.put(token, item);
+        try {
+            CacheItem item = new CacheItem(token, closure.run(), System.currentTimeMillis() + (seconds * 1000));
+            CACHES.put(token, item);
 
-        return item.getValue();
+            return item.getValue();
+        } catch (Exception e) {
+            Orion.getLogger().error(e.getMessage(), e);
+            return null;
+        }
     }
 
     @Override

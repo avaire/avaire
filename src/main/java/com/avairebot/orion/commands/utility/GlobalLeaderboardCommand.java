@@ -12,7 +12,6 @@ import com.avairebot.orion.utilities.NumberUtil;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -97,19 +96,14 @@ public class GlobalLeaderboardCommand extends Command {
 
     private Collection loadTop100From() {
         return (Collection) orion.getCache().getAdapter(CacheType.MEMORY).remember("database-xp-leaderboard.global", 300, () -> {
-            try {
-                return orion.getDatabase().query("SELECT " +
-                    "`user_id`, `username`, `discriminator`, sum(`experience`) - (count(`user_id`) * 100) as `total` " +
-                    "FROM `experiences` " +
-                    "GROUP BY `user_id` " +
-                    "ORDER BY `total` DESC " +
-                    "LIMIT 100;"
-                );
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-                Orion.getLogger().error(ex.getMessage(), ex);
-                return null;
-            }
+            return orion.getDatabase().query("SELECT " +
+                "`user_id`, `username`, `discriminator`, sum(`experience`) - (count(`user_id`) * 100) as `total` " +
+                "FROM `experiences` " +
+                "GROUP BY `user_id` " +
+                "ORDER BY `total` DESC " +
+                "LIMIT 100;"
+            );
+
         });
     }
 }
