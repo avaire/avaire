@@ -13,8 +13,7 @@ import java.util.List;
 
 public class SourceCommand extends Command {
 
-    private final String rootUrl = "https://github.com/AvaIre/Orion";
-    private final String commandUrl = "https://github.com/AvaIre/Orion/tree/master/src/main/java/com/avairebot/orion/commands/%s/%s.java";
+    private final String rootUrl = "https://github.com/avaire/orion";
 
     public SourceCommand(Orion orion) {
         super(orion);
@@ -55,21 +54,35 @@ public class SourceCommand extends Command {
             return true;
         }
 
-        CommandContainer command = CommandHandler.getCommand(message, args[0]);
+        CommandContainer command = getCommand(message, args[0]);
         if (command == null) {
             MessageFactory.makeInfo(message, "Invalid command given, here is the full source code instead.\n\n" + rootUrl).queue();
             return true;
         }
 
-        String[] split = command.getCommand().getClass().toString().split("\\.");
-        String category = split[split.length - 2];
-        String name = split[split.length - 1];
+        String sourceUri = command.getSourceUri();
+        if (sourceUri == null) {
+            MessageFactory.makeInfo(message,
+                "The command is registered via an external plugin, the author of the plugin " +
+                    "haven't made the source of the command public, or they forgot to add a link to " +
+                    "it, here is the full source code for the bot instead.\n\n" + rootUrl
+            ).queue();
+            return true;
+        }
 
         MessageFactory.makeInfo(message, "AvaIre source code for the **:command** command:\n\n:url")
             .set("command", command.getCommand().getName())
-            .set("url", String.format(commandUrl, category, name))
+            .set("url", sourceUri)
             .queue();
 
         return true;
+    }
+
+    private CommandContainer getCommand(Message message, String commandString) {
+        CommandContainer command = CommandHandler.getCommand(message, commandString);
+        if (command != null) {
+            return command;
+        }
+        return CommandHandler.getLazyCommand(commandString);
     }
 }

@@ -5,7 +5,7 @@ public class AliasCommandContainer extends CommandContainer {
     private final String[] aliasArguments;
 
     public AliasCommandContainer(CommandContainer container, String[] aliasArguments) {
-        super(container.getCommand(), container.getCategory());
+        super(container.getCommand(), container.getCategory(), container.getSourceUri());
 
         this.aliasArguments = aliasArguments;
     }

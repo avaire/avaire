@@ -20,4 +20,6 @@ public class Constants {
     public static final String PACKAGE_COMMAND_PATH = "com.avairebot.orion.commands";
     public static final String PACKAGE_INTENTS_PATH = "com.avairebot.orion.ai.intents";
     public static final String PACKAGE_JOB_PATH = "com.avairebot.orion.scheduler";
+
+    public static final String SOURCE_URI = "https://github.com/avaire/orion/tree/master/src/main/java/com/avairebot/orion/commands/%s/%s.java";
 }

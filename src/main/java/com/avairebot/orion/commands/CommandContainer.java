@@ -4,14 +4,17 @@ import com.avairebot.orion.contracts.commands.Command;
 
 public class CommandContainer {
 
-    public final Command command;
-    public final Category category;
-    public final CommandPriority priority;
+    private final Command command;
+    private final Category category;
+    private final CommandPriority priority;
 
-    public CommandContainer(Command command, Category category) {
+    private final String sourceUri;
+
+    public CommandContainer(Command command, Category category, String sourceUri) {
         this.command = command;
         this.category = category;
         this.priority = command.getCommandPriority();
+        this.sourceUri = sourceUri;
     }
 
     public Command getCommand() {
@@ -28,5 +31,9 @@ public class CommandContainer {
 
     public CommandPriority getPriority() {
         return priority;
+    }
+
+    public String getSourceUri() {
+        return sourceUri;
     }
 }

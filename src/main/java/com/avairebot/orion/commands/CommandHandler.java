@@ -1,7 +1,9 @@
 package com.avairebot.orion.commands;
 
+import com.avairebot.orion.Constants;
 import com.avairebot.orion.Orion;
 import com.avairebot.orion.contracts.commands.Command;
+import com.avairebot.orion.contracts.commands.CommandSource;
 import com.avairebot.orion.database.controllers.GuildController;
 import com.avairebot.orion.database.transformers.GuildTransformer;
 import com.avairebot.orion.exceptions.InvalidCommandPrefixException;
@@ -226,7 +228,18 @@ public class CommandHandler {
             }
         }
 
-        COMMANDS.put(command.getTriggers(), new CommandContainer(command, category));
+        String commandUri = null;
+
+        CommandSource annotation = command.getClass().getAnnotation(CommandSource.class);
+        if (annotation != null && annotation.uri().trim().length() > 0) {
+            commandUri = annotation.uri();
+        } else if (command.getClass().getTypeName().startsWith(Constants.PACKAGE_COMMAND_PATH)) {
+            String[] split = command.getClass().toString().split("\\.");
+
+            commandUri = String.format(Constants.SOURCE_URI, split[split.length - 2], split[split.length - 1]);
+        }
+
+        COMMANDS.put(command.getTriggers(), new CommandContainer(command, category, commandUri));
     }
 
     /**
