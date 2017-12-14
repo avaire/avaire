@@ -3,8 +3,10 @@ package com.avairebot.orion.commands.music.playlist;
 import com.avairebot.orion.Constants;
 import com.avairebot.orion.Orion;
 import com.avairebot.orion.audio.AudioHandler;
+import com.avairebot.orion.cache.CacheType;
 import com.avairebot.orion.commands.music.PlaylistCommand;
 import com.avairebot.orion.contracts.commands.playlist.PlaylistSubCommand;
+import com.avairebot.orion.database.controllers.PlaylistController;
 import com.avairebot.orion.database.transformers.GuildTransformer;
 import com.avairebot.orion.database.transformers.PlaylistTransformer;
 import com.avairebot.orion.factories.MessageFactory;
@@ -100,6 +102,9 @@ public class AddSongToPlaylist extends PlaylistSubCommand {
                     statement.set("songs", GSON.toJson(playlist.getSongs()));
                     statement.set("size", playlist.getSongs().size());
                 });
+
+            orion.getCache().getAdapter(CacheType.MEMORY)
+                .forget(PlaylistController.getCacheString(message.getGuild()));
 
             MessageFactory.makeSuccess(message, ":user has added [:name](:url) to the `:playlist` playlist.\nThe `:playlist` playlist has `:slots` more song slots available.")
                 .set("name", track.getInfo().title)

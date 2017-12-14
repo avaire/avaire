@@ -1,6 +1,5 @@
 package com.avairebot.orion.commands.music;
 
-import com.avairebot.orion.Constants;
 import com.avairebot.orion.Orion;
 import com.avairebot.orion.commands.CommandHandler;
 import com.avairebot.orion.commands.help.HelpCommand;
@@ -9,13 +8,13 @@ import com.avairebot.orion.contracts.commands.Command;
 import com.avairebot.orion.database.collection.Collection;
 import com.avairebot.orion.database.collection.DataRow;
 import com.avairebot.orion.database.controllers.GuildController;
+import com.avairebot.orion.database.controllers.PlaylistController;
 import com.avairebot.orion.database.transformers.GuildTransformer;
 import com.avairebot.orion.database.transformers.PlaylistTransformer;
 import com.avairebot.orion.factories.MessageFactory;
 import com.avairebot.orion.utilities.NumberUtil;
 import net.dv8tion.jda.core.entities.Message;
 
-import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -95,7 +94,7 @@ public class PlaylistCommand extends Command {
 
     @Override
     public boolean onCommand(Message message, String[] args) {
-        Collection playlists = getGuildAndPlaylists(message);
+        Collection playlists = PlaylistController.fetchPlaylists(orion, message);
         if (playlists == null) {
             return sendErrorMessage(message, "An error occurred while loading the servers playlists, please try again, if the problem continues please report this to one of my developers on the [AvaIre support server](https://discord.gg/gt2FWER).");
         }
@@ -174,16 +173,5 @@ public class PlaylistCommand extends Command {
             .queue();
 
         return false;
-    }
-
-    private Collection getGuildAndPlaylists(Message message) {
-        try {
-            return orion.getDatabase().newQueryBuilder(Constants.MUSIC_PLAYLIST_TABLE_NAME)
-                .selectAll().where("guild_id", message.getGuild().getId())
-                .get();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 }

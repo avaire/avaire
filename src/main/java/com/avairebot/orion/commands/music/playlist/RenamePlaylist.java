@@ -2,10 +2,12 @@ package com.avairebot.orion.commands.music.playlist;
 
 import com.avairebot.orion.Constants;
 import com.avairebot.orion.Orion;
+import com.avairebot.orion.cache.CacheType;
 import com.avairebot.orion.commands.music.PlaylistCommand;
 import com.avairebot.orion.contracts.commands.playlist.PlaylistSubCommand;
 import com.avairebot.orion.database.collection.Collection;
 import com.avairebot.orion.database.collection.DataRow;
+import com.avairebot.orion.database.controllers.PlaylistController;
 import com.avairebot.orion.database.transformers.GuildTransformer;
 import com.avairebot.orion.database.transformers.PlaylistTransformer;
 import com.avairebot.orion.factories.MessageFactory;
@@ -51,6 +53,9 @@ public class RenamePlaylist extends PlaylistSubCommand {
                 .update(statement -> {
                     statement.set("name", playlist.getName());
                 });
+
+            orion.getCache().getAdapter(CacheType.MEMORY)
+                .forget(PlaylistController.getCacheString(message.getGuild()));
 
             MessageFactory.makeSuccess(message, "The `:oldplaylist` playlist has been renamed to `:playlist`!")
                 .set("oldplaylist", oldPlaylist)

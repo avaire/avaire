@@ -2,8 +2,10 @@ package com.avairebot.orion.commands.music.playlist;
 
 import com.avairebot.orion.Constants;
 import com.avairebot.orion.Orion;
+import com.avairebot.orion.cache.CacheType;
 import com.avairebot.orion.commands.music.PlaylistCommand;
 import com.avairebot.orion.contracts.commands.playlist.PlaylistSubCommand;
+import com.avairebot.orion.database.controllers.PlaylistController;
 import com.avairebot.orion.database.transformers.GuildTransformer;
 import com.avairebot.orion.database.transformers.PlaylistTransformer;
 import com.avairebot.orion.factories.MessageFactory;
@@ -42,6 +44,9 @@ public class RemoveSongFromPlaylist extends PlaylistSubCommand {
                     statement.set("songs", GSON.toJson(playlist.getSongs()));
                     statement.set("size", playlist.getSongs().size());
                 });
+
+            orion.getCache().getAdapter(CacheType.MEMORY)
+                .forget(PlaylistController.getCacheString(message.getGuild()));
 
             MessageFactory.makeSuccess(message, ":song has been successfully removed from the `:playlist` playlist")
                 .set("song", String.format("[%s](%s)", removed.getTitle(), removed.getLink()))

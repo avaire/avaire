@@ -2,10 +2,12 @@ package com.avairebot.orion.commands.music.playlist;
 
 import com.avairebot.orion.Constants;
 import com.avairebot.orion.Orion;
+import com.avairebot.orion.cache.CacheType;
 import com.avairebot.orion.commands.music.PlaylistCommand;
 import com.avairebot.orion.contracts.commands.playlist.PlaylistSubCommand;
 import com.avairebot.orion.database.collection.Collection;
 import com.avairebot.orion.database.collection.DataRow;
+import com.avairebot.orion.database.controllers.PlaylistController;
 import com.avairebot.orion.database.transformers.GuildTransformer;
 import com.avairebot.orion.factories.MessageFactory;
 import net.dv8tion.jda.core.entities.Message;
@@ -60,5 +62,8 @@ public class CreatePlaylist extends PlaylistSubCommand {
                 statement.set("size", 0);
                 statement.set("songs", GSON.toJson(new ArrayList<>()));
             });
+
+        orion.getCache().getAdapter(CacheType.MEMORY)
+            .forget(PlaylistController.getCacheString(message.getGuild()));
     }
 }
