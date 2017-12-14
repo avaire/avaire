@@ -8,7 +8,6 @@ import com.avairebot.orion.requests.Response;
 import com.avairebot.orion.requests.service.GfycatService;
 import net.dv8tion.jda.core.entities.Message;
 
-import java.awt.*;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -62,7 +61,7 @@ public class GfycatCommand extends Command {
             .send((Consumer<Response>) response -> {
                 GfycatService gfyCat = (GfycatService) response.toService(GfycatService.class);
 
-                MessageFactory.makeEmbeddedMessage(message.getChannel(), Color.decode("#"))
+                MessageFactory.makeEmbeddedMessage(message.getChannel())
                     .setImage(gfyCat.getRandomGfycatsItem().get("gifUrl").toString())
                     .queue();
             });
