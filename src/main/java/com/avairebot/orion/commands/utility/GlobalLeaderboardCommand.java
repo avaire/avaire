@@ -3,6 +3,7 @@ package com.avairebot.orion.commands.utility;
 import com.avairebot.orion.Orion;
 import com.avairebot.orion.cache.CacheType;
 import com.avairebot.orion.chat.SimplePaginator;
+import com.avairebot.orion.contracts.commands.CacheFingerprint;
 import com.avairebot.orion.contracts.commands.Command;
 import com.avairebot.orion.database.collection.Collection;
 import com.avairebot.orion.database.collection.DataRow;
@@ -17,6 +18,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+@CacheFingerprint(name = "leaderboard-command")
 public class GlobalLeaderboardCommand extends Command {
 
     public GlobalLeaderboardCommand(Orion orion) {

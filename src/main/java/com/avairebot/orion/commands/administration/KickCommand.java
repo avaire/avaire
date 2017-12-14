@@ -1,6 +1,7 @@
 package com.avairebot.orion.commands.administration;
 
 import com.avairebot.orion.Orion;
+import com.avairebot.orion.contracts.commands.CacheFingerprint;
 import com.avairebot.orion.contracts.commands.Command;
 import com.avairebot.orion.factories.MessageFactory;
 import com.avairebot.orion.utilities.RoleUtil;
@@ -14,6 +15,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.regex.Pattern;
 
+@CacheFingerprint(name = "kick-command")
 public class KickCommand extends Command {
 
     private static final Pattern userRegEX = Pattern.compile("<@(!|)+[0-9]{16,}+>", Pattern.CASE_INSENSITIVE);

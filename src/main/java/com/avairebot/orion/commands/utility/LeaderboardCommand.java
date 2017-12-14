@@ -4,6 +4,7 @@ import com.avairebot.orion.Constants;
 import com.avairebot.orion.Orion;
 import com.avairebot.orion.cache.CacheType;
 import com.avairebot.orion.chat.SimplePaginator;
+import com.avairebot.orion.contracts.commands.CacheFingerprint;
 import com.avairebot.orion.contracts.commands.Command;
 import com.avairebot.orion.database.collection.Collection;
 import com.avairebot.orion.database.collection.DataRow;
@@ -17,8 +18,10 @@ import net.dv8tion.jda.core.entities.Message;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
+@CacheFingerprint(name = "leaderboard-command")
 public class LeaderboardCommand extends Command {
 
     public LeaderboardCommand(Orion orion) {
@@ -48,6 +51,11 @@ public class LeaderboardCommand extends Command {
     @Override
     public List<String> getTriggers() {
         return Arrays.asList("leaderboard", "top");
+    }
+
+    @Override
+    public List<String> getMiddleware() {
+        return Collections.singletonList("throttle:channel,2,5");
     }
 
     @Override

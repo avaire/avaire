@@ -2,6 +2,7 @@ package com.avairebot.orion.commands.administration;
 
 import com.avairebot.orion.Constants;
 import com.avairebot.orion.Orion;
+import com.avairebot.orion.contracts.commands.CacheFingerprint;
 import com.avairebot.orion.contracts.commands.Command;
 import com.avairebot.orion.database.controllers.GuildController;
 import com.avairebot.orion.database.transformers.GuildTransformer;
@@ -12,9 +13,11 @@ import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.Role;
 
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+@CacheFingerprint(name = "self-assignable-role-command")
 public class RemoveSelfAssignableRoleCommand extends Command {
 
     public RemoveSelfAssignableRoleCommand(Orion orion) {
@@ -44,6 +47,14 @@ public class RemoveSelfAssignableRoleCommand extends Command {
     @Override
     public List<String> getTriggers() {
         return Collections.singletonList("rsar");
+    }
+
+    @Override
+    public List<String> getMiddleware() {
+        return Arrays.asList(
+            "require:user,general.administrator",
+            "throttle:guild,1,5"
+        );
     }
 
     @Override

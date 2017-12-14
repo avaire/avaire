@@ -2,6 +2,7 @@ package com.avairebot.orion.middleware;
 
 import com.avairebot.orion.Orion;
 import com.avairebot.orion.cache.CacheItem;
+import com.avairebot.orion.contracts.commands.CacheFingerprint;
 import com.avairebot.orion.contracts.middleware.Middleware;
 import com.avairebot.orion.factories.MessageFactory;
 import com.avairebot.orion.utilities.NumberUtil;
@@ -87,27 +88,39 @@ public class Throttle extends Middleware {
                 return USER.generateCacheString(message, stack);
             }
 
+            String cacheFingerprint = generateCacheFingerprint(stack);
+
             switch (this) {
                 case USER:
                     return String.format(cache,
                         message.getGuild() == null ? "private" : message.getGuild().getId(),
                         message.getAuthor().getId(),
-                        stack.getCommand().getName());
+                        cacheFingerprint);
 
                 case CHANNEL:
                     return String.format(cache,
                         message.getGuild().getId(),
                         message.getChannel().getId(),
-                        stack.getCommand().getName());
+                        cacheFingerprint);
 
                 case GUILD:
                     return String.format(cache,
                         message.getGuild().getId(),
-                        stack.getCommand().getName());
+                        cacheFingerprint);
 
                 default:
                     return ThrottleType.USER.generateCacheString(message, stack);
             }
+        }
+
+        private String generateCacheFingerprint(MiddlewareStack stack) {
+            CacheFingerprint annotation = stack.getCommand().getClass().getAnnotation(CacheFingerprint.class);
+
+            if (annotation == null || annotation.name().length() == 0) {
+                return stack.getCommand().getName();
+            }
+
+            return annotation.name();
         }
     }
 }

@@ -2,6 +2,7 @@ package com.avairebot.orion.commands.administration;
 
 import com.avairebot.orion.Constants;
 import com.avairebot.orion.Orion;
+import com.avairebot.orion.contracts.commands.CacheFingerprint;
 import com.avairebot.orion.contracts.commands.Command;
 import com.avairebot.orion.database.controllers.GuildController;
 import com.avairebot.orion.database.transformers.ChannelTransformer;
@@ -14,6 +15,7 @@ import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 
+@CacheFingerprint(name = "welcome-goodbye-command")
 public class GoodbyeCommand extends Command {
 
     public GoodbyeCommand(Orion orion) {

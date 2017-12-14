@@ -2,6 +2,7 @@ package com.avairebot.orion.commands.administration;
 
 import com.avairebot.orion.Constants;
 import com.avairebot.orion.Orion;
+import com.avairebot.orion.contracts.commands.CacheFingerprint;
 import com.avairebot.orion.contracts.commands.Command;
 import com.avairebot.orion.database.controllers.GuildController;
 import com.avairebot.orion.database.transformers.GuildTransformer;
@@ -16,6 +17,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+@CacheFingerprint(name = "self-assignable-role-command")
 public class AddSelfAssignableRoleCommand extends Command {
 
     public AddSelfAssignableRoleCommand(Orion orion) {
