@@ -1,7 +1,6 @@
 package com.avairebot.orion.commands.administration;
 
 import com.avairebot.orion.Orion;
-import com.avairebot.orion.contracts.commands.CacheFingerprint;
 import com.avairebot.orion.contracts.commands.Command;
 import com.avairebot.orion.modules.BanModule;
 import net.dv8tion.jda.core.entities.Message;

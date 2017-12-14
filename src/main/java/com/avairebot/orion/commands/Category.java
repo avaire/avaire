@@ -5,6 +5,8 @@ import com.avairebot.orion.database.controllers.GuildController;
 import com.avairebot.orion.database.transformers.GuildTransformer;
 import net.dv8tion.jda.core.entities.Message;
 
+import javax.annotation.Nonnull;
+
 public class Category {
 
     private final Orion orion;
@@ -25,7 +27,7 @@ public class Category {
         return prefix;
     }
 
-    public String getPrefix(Message message) {
+    public String getPrefix(@Nonnull Message message) {
         GuildTransformer transformer = GuildController.fetchGuild(orion, message);
 
         return transformer == null ? getPrefix() : transformer.getPrefixes().getOrDefault(

@@ -10,6 +10,8 @@ import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.VoiceChannel;
 import net.dv8tion.jda.core.managers.AudioManager;
 
+import javax.annotation.CheckReturnValue;
+import javax.annotation.Nonnull;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,7 +29,8 @@ public class AudioHandler {
         AudioSourceManagers.registerLocalSource(AUDIO_PLAYER_MANAGER);
     }
 
-    public static TrackRequest loadAndPlay(Message message, String trackUrl) {
+    @CheckReturnValue
+    public static TrackRequest loadAndPlay(Message message, @Nonnull String trackUrl) {
         return new TrackRequest(getGuildAudioPlayer(message.getGuild()), message, trackUrl);
     }
 
@@ -36,6 +39,7 @@ public class AudioHandler {
         musicManager.getScheduler().nextTrack();
     }
 
+    @CheckReturnValue
     public static VoiceConnectStatus play(Message message, GuildMusicManager musicManager, AudioTrack track) {
         VoiceConnectStatus voiceConnectStatus = connectToVoiceChannel(message);
         if (voiceConnectStatus.isSuccess()) {
@@ -44,10 +48,12 @@ public class AudioHandler {
         return voiceConnectStatus;
     }
 
+    @CheckReturnValue
     public static VoiceConnectStatus connectToVoiceChannel(Message message) {
         return connectToVoiceChannel(message, false);
     }
 
+    @CheckReturnValue
     public static VoiceConnectStatus connectToVoiceChannel(Message message, boolean moveChannelIfConnected) {
         AudioManager audioManager = message.getGuild().getAudioManager();
         if (!audioManager.isAttemptingToConnect()) {
@@ -71,6 +77,7 @@ public class AudioHandler {
         return VoiceConnectStatus.CONNECTED;
     }
 
+    @CheckReturnValue
     private static VoiceConnectStatus connectToVoiceChannel(Message message, VoiceChannel channel, AudioManager audioManager) {
         List<Permission> permissions = message.getGuild().getMember(message.getJDA().getSelfUser()).getPermissions(channel);
         if (!permissions.contains(Permission.VOICE_CONNECT)) {
@@ -89,6 +96,7 @@ public class AudioHandler {
         return VoiceConnectStatus.CONNECTED;
     }
 
+    @CheckReturnValue
     public static synchronized GuildMusicManager getGuildAudioPlayer(Guild guild) {
         long guildId = Long.parseLong(guild.getId());
         GuildMusicManager musicManager = MUSIC_MANAGER.get(guildId);
@@ -105,12 +113,14 @@ public class AudioHandler {
         return musicManager;
     }
 
+    @CheckReturnValue
     public static int getQueueSize(GuildMusicManager manager) {
         return manager.getPlayer().getPlayingTrack() == null ?
             manager.getScheduler().getQueue().size() :
             manager.getScheduler().getQueue().size() + 1;
     }
 
+    @CheckReturnValue
     public static int getTotalQueueSize() {
         int total = 0;
         for (GuildMusicManager manager : MUSIC_MANAGER.values()) {

@@ -8,6 +8,8 @@ import com.google.gson.internal.LinkedTreeMap;
 import com.google.gson.reflect.TypeToken;
 import net.dv8tion.jda.core.entities.TextChannel;
 
+import javax.annotation.CheckReturnValue;
+import javax.annotation.Nonnull;
 import java.util.*;
 
 public class GuildTransformer extends Transformer {
@@ -180,10 +182,12 @@ public class GuildTransformer extends Transformer {
         return modules;
     }
 
+    @CheckReturnValue
     public ChannelTransformer getChannel(String id) {
         return getChannel(id, true);
     }
 
+    @CheckReturnValue
     public ChannelTransformer getChannel(String id, boolean createIfDontExists) {
         for (ChannelTransformer channel : channels) {
             if (channel.getId().equals(id)) {
@@ -198,7 +202,7 @@ public class GuildTransformer extends Transformer {
         return null;
     }
 
-    public boolean createChannelTransformer(String guildId, String channelId) {
+    public boolean createChannelTransformer(@Nonnull String guildId, @Nonnull String channelId) {
         if (!Objects.equals(guildId, getId())) {
             throw new RuntimeException(String.format("The given channel belongs to a different guild. Channel ID: %s Channel Guild ID: %s | Guild ID: %s",
                 channelId, guildId, getId()

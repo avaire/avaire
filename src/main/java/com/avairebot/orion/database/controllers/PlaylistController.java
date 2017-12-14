@@ -9,12 +9,14 @@ import com.avairebot.orion.database.transformers.PlaylistTransformer;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
 
+import javax.annotation.CheckReturnValue;
 import java.util.List;
 
 public class PlaylistController {
 
     private static final String CACHE_STRING = "playlists.";
 
+    @CheckReturnValue
     public static Collection fetchPlaylists(Orion orion, Message message) {
         if (!message.getChannelType().isGuild()) {
             return null;
@@ -27,6 +29,7 @@ public class PlaylistController {
         });
     }
 
+    @CheckReturnValue
     public static PlaylistTransformer fetchPlaylistFromName(Orion orion, Message message, String name) {
         Collection playlists = fetchPlaylists(orion, message);
         if (playlists == null) {

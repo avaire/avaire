@@ -10,6 +10,7 @@ import com.avairebot.orion.exceptions.InvalidCommandPrefixException;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.utils.Checks;
 
+import javax.annotation.Nonnull;
 import java.util.*;
 
 public class CommandHandler {
@@ -80,7 +81,7 @@ public class CommandHandler {
      * @param command The command string that should be matched with the commands.
      * @return Possibly-null, The command matching the given command with the highest priority, or the alias command matching the given command.
      */
-    public static CommandContainer getCommand(Orion orion, Message message, String command) {
+    public static CommandContainer getCommand(Orion orion, Message message, @Nonnull String command) {
         CommandContainer commandContainer = getCommand(message);
         if (commandContainer != null) {
             return commandContainer;
@@ -102,7 +103,7 @@ public class CommandHandler {
      * @param command The command string that should be matched with the commands.
      * @return Possibly-null, The command matching the given command with the highest priority.
      */
-    public static CommandContainer getCommand(Message message, String command) {
+    public static CommandContainer getCommand(Message message, @Nonnull String command) {
         List<CommandContainer> commands = new ArrayList<>();
         for (Map.Entry<List<String>, CommandContainer> entry : COMMANDS.entrySet()) {
             String commandPrefix = entry.getValue().getCommand().generateCommandPrefix(message);
@@ -125,7 +126,7 @@ public class CommandHandler {
      * @param command The command string that should be matched with the commands.
      * @return Possibly-null, The command matching the given alias with the highest priority.
      */
-    public static CommandContainer getCommandByAlias(Orion orion, Message message, String command) {
+    public static CommandContainer getCommandByAlias(Orion orion, Message message, @Nonnull String command) {
         GuildTransformer transformer = GuildController.fetchGuild(orion, message);
         if (transformer == null || transformer.getAliases().isEmpty()) {
             return null;
@@ -166,7 +167,7 @@ public class CommandHandler {
      * @param commandTrigger The command trigger that should be lazy searched for.
      * @return Possibly-null, The command matching the given command trigger with the highest priority.
      */
-    public static CommandContainer getLazyCommand(String commandTrigger) {
+    public static CommandContainer getLazyCommand(@Nonnull String commandTrigger) {
         List<CommandContainer> commands = new ArrayList<>();
         for (Map.Entry<List<String>, CommandContainer> entry : COMMANDS.entrySet()) {
             if (entry.getValue().getPriority().equals(CommandPriority.IGNORED)) {
@@ -213,7 +214,7 @@ public class CommandHandler {
      *
      * @param command The command that should be registered into the command handler.
      */
-    public static void register(Command command) {
+    public static void register(@Nonnull Command command) {
         Category category = CategoryHandler.fromCommand(command);
         Checks.notNull(category, String.format("%s :: %s", command.getName(), "Invalid command category, command category"));
         Checks.notNull(command.getDescription(), String.format("%s :: %s", command.getName(), "Command description"));

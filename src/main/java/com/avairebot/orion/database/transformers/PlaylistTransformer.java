@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,7 +64,7 @@ public class PlaylistTransformer extends Transformer {
         return songs;
     }
 
-    public void addSong(String title, String duration, String link) {
+    public void addSong(@Nonnull String title, @Nonnull String duration, @Nonnull String link) {
         PlaylistSong song = new PlaylistSong();
 
         song.title = title;

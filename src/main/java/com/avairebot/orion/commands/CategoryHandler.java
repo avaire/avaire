@@ -4,6 +4,7 @@ import com.avairebot.orion.Orion;
 import com.avairebot.orion.contracts.commands.Command;
 import com.avairebot.orion.utilities.RandomUtil;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +12,7 @@ public class CategoryHandler {
 
     private static final List<Category> VALUES = new ArrayList<>();
 
-    public static boolean addCategory(Orion orion, String name, String defaultPrefix) {
+    public static boolean addCategory(Orion orion, @Nonnull String name, @Nonnull String defaultPrefix) {
         for (Category category : VALUES) {
             if (category.getName().equalsIgnoreCase(name)) {
                 return false;
@@ -22,7 +23,7 @@ public class CategoryHandler {
         return true;
     }
 
-    public static Category fromLazyName(String name) {
+    public static Category fromLazyName(@Nonnull String name) {
         name = name.toLowerCase();
 
         for (Category category : getValues()) {
@@ -33,7 +34,7 @@ public class CategoryHandler {
         return null;
     }
 
-    public static Category fromCommand(Command command) {
+    public static Category fromCommand(@Nonnull Command command) {
         Category category = command.getCategory();
         if (category != null) {
             return category;

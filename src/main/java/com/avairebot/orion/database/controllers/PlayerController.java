@@ -8,16 +8,19 @@ import com.avairebot.orion.database.transformers.PlayerTransformer;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.User;
 
+import javax.annotation.CheckReturnValue;
 import java.sql.SQLException;
 
 public class PlayerController {
 
     private static final String CACHE_STRING = "database.player.%s.%s";
 
+    @CheckReturnValue
     public static PlayerTransformer fetchPlayer(Orion orion, Message message) {
         return fetchPlayer(orion, message, message.getAuthor());
     }
 
+    @CheckReturnValue
     public static PlayerTransformer fetchPlayer(Orion orion, Message message, User user) {
         if (!message.getChannelType().isGuild()) {
             return null;

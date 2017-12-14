@@ -10,6 +10,7 @@ import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.TextChannel;
 
+import javax.annotation.CheckReturnValue;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,6 +21,7 @@ public class GuildController {
 
     private static final String CACHE_STRING = "database.guilds.%s";
 
+    @CheckReturnValue
     public static GuildTransformer fetchGuild(Orion orion, Message message) {
         if (!message.getChannelType().isGuild()) {
             return null;
@@ -28,6 +30,7 @@ public class GuildController {
         return fetchGuild(orion, message.getGuild());
     }
 
+    @CheckReturnValue
     public static GuildTransformer fetchGuild(Orion orion, Guild guild) {
         if (isCached(orion, guild.getId())) {
             return (GuildTransformer) orion.getCache().getAdapter(CacheType.MEMORY).get(
