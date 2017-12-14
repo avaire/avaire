@@ -108,7 +108,7 @@ public class PlaylistCommand extends Command {
             return sendNoPlaylistsForGuildMessage(message);
         }
 
-        if (args.length == 0 || (args.length == 1 && NumberUtil.parseInt(args[0], -1, 10) > 0)) {
+        if (args.length == 0 || (args.length == 1 && NumberUtil.isNumeric(args[0]))) {
             return sendPlaylists.onCommand(message, args, transformer, playlists);
         }
 
@@ -126,7 +126,7 @@ public class PlaylistCommand extends Command {
             return false;
         }
 
-        if (playlistItems.size() == 1 && (args.length == 1 || (args.length == 2 && NumberUtil.parseInt(args[1], -1, 10) > 0))) {
+        if (playlistItems.size() == 1 && (args.length == 1 || (args.length == 2 && NumberUtil.isNumeric(args[1])))) {
             return sendSongsInPlaylist.onCommand(message, args, transformer, new PlaylistTransformer(playlistItems.get(0)));
         }
 

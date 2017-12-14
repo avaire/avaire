@@ -6,6 +6,7 @@ import java.util.regex.Pattern;
 public class NumberUtil {
 
     private static final Pattern TIMESTAMP_PATTERN = Pattern.compile("^(\\d?\\d)(?::([0-5]?\\d))?(?::([0-5]?\\d))?$");
+    private static final Pattern NUMBER_PATTERN = Pattern.compile("[0-9]+");
 
     /**
      * Parses the string argument as a signed integer, if the string argument
@@ -144,5 +145,15 @@ public class NumberUtil {
      */
     public static String forceTwoDigits(int integer) {
         return integer < 10 ? "0" + integer : Integer.toString(integer);
+    }
+
+    /**
+     * Checks if the given string is a numeric string, only containing numbers.
+     *
+     * @param string The string that should be checked if it is numeric.
+     * @return True if the string is numeric, false otherwise.
+     */
+    public static boolean isNumeric(String string) {
+        return NUMBER_PATTERN.matcher(string).matches();
     }
 }

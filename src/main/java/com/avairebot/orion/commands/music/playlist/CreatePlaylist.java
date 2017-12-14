@@ -10,6 +10,7 @@ import com.avairebot.orion.database.collection.DataRow;
 import com.avairebot.orion.database.controllers.PlaylistController;
 import com.avairebot.orion.database.transformers.GuildTransformer;
 import com.avairebot.orion.factories.MessageFactory;
+import com.avairebot.orion.utilities.NumberUtil;
 import net.dv8tion.jda.core.entities.Message;
 
 import java.sql.SQLException;
@@ -24,11 +25,17 @@ public class CreatePlaylist extends PlaylistSubCommand {
 
     @Override
     public boolean onCommand(Message message, String[] args, GuildTransformer guild, Collection playlists) {
-        String name = args[0];
+        String name = args[0].trim().split(" ")[0];
         List<DataRow> playlistItems = playlists.whereLoose("name", name);
         if (!playlistItems.isEmpty()) {
             MessageFactory.makeWarning(message, "The `:playlist` playlist already exists!")
                 .set("playlist", name).queue();
+            return false;
+        }
+
+        if (NumberUtil.isNumeric(name)) {
+            MessageFactory.makeWarning(message, "The playlist can't only be numbers, you have to include some letters in the name!")
+                .queue();
             return false;
         }
 
