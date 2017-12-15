@@ -15,9 +15,6 @@ import java.util.stream.Collectors;
 
 public class HelpCommand extends Command {
 
-    private String categories;
-    private int categoryCount = -1;
-
     public HelpCommand(Orion orion) {
         super(orion);
     }
@@ -73,7 +70,7 @@ public class HelpCommand extends Command {
             category.getName().toLowerCase().substring(0, 3)
         ).replaceAll(":help", generateCommandTrigger(message));
 
-        MessageFactory.makeInfo(message, getCategories() + note)
+        MessageFactory.makeInfo(message, getCategories(message) + note)
             .setTitle(":scroll: Command Categories")
             .queue();
 
@@ -88,6 +85,15 @@ public class HelpCommand extends Command {
             return false;
         }
 
+        boolean isBotAdmin = orion.getConfig().getBotAccess().contains(message.getAuthor().getId());
+        if (!isBotAdmin && category.getName().equalsIgnoreCase("System")) {
+            MessageFactory.makeError(message, "You don't have permissions to run any of the  commands in the `System` " +
+                "category, system commands can affect all the servers the bot is currently running on, and thus are " +
+                "limited to bot administrators/developers.")
+                .queue();
+            return false;
+        }
+
         message.getChannel().sendMessage(String.format(
             ":page_with_curl: **%s** ```css\n%s```\n",
             "List of Commands",
@@ -96,6 +102,11 @@ public class HelpCommand extends Command {
                     if (commandContainer.getPriority().equals(CommandPriority.HIDDEN)) {
                         return false;
                     }
+
+                    if (!isBotAdmin && commandContainer.getPriority().equals(CommandPriority.SYSTEM)) {
+                        return false;
+                    }
+
                     return commandContainer.getCategory().equals(category);
                 })
                 .map(container -> {
@@ -173,13 +184,13 @@ public class HelpCommand extends Command {
         return CommandHandler.getLazyCommand(commandString);
     }
 
-    private String getCategories() {
-        if (CategoryHandler.getValues().size() != categoryCount) {
-            categories = CategoryHandler.getValues().stream()
-                .map(Category::getName)
-                .sorted()
-                .collect(Collectors.joining("\n• ", "• ", "\n\n"));
-        }
-        return categories;
+    private String getCategories(Message message) {
+        boolean isBotAdmin = orion.getConfig().getBotAccess().contains(message.getAuthor().getId());
+
+        return CategoryHandler.getValues().stream()
+            .map(Category::getName)
+            .sorted()
+            .filter(category -> isBotAdmin || !category.equalsIgnoreCase("System"))
+            .collect(Collectors.joining("\n• ", "• ", "\n\n"));
     }
 }

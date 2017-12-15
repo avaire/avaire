@@ -2,10 +2,11 @@ package com.avairebot.orion.commands;
 
 public enum CommandPriority {
 
-    HIDDEN(3),
+    HIDDEN(2),
+    SYSTEM(1),
     IGNORED(0),
-    LOW(1),
-    LOWEST(2),
+    LOWEST(1),
+    LOW(2),
     NORMAL(3),
     HIGH(4),
     HIGHEST(5);

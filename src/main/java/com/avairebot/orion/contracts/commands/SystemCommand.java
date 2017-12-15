@@ -1,6 +1,7 @@
 package com.avairebot.orion.contracts.commands;
 
 import com.avairebot.orion.Orion;
+import com.avairebot.orion.commands.CommandPriority;
 
 import java.util.Collections;
 import java.util.List;
@@ -30,5 +31,10 @@ public abstract class SystemCommand extends Command {
     @Override
     public List<String> getMiddleware() {
         return Collections.singletonList("isBotAdmin");
+    }
+
+    @Override
+    public CommandPriority getCommandPriority() {
+        return CommandPriority.SYSTEM;
     }
 }
