@@ -7,8 +7,14 @@ import net.dv8tion.jda.core.entities.MessageEmbed;
 
 import java.awt.*;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class PlaceholderMessage extends Restable {
+
+    private final Map<String, String> placeholders = new HashMap<>();
 
     private EmbedBuilder builder;
     private String message;
@@ -28,7 +34,7 @@ public class PlaceholderMessage extends Restable {
     }
 
     public PlaceholderMessage set(String placeholder, String value) {
-        message = message.replaceAll(":" + placeholder, value);
+        placeholders.put(placeholder, value);
         return this;
     }
 
@@ -105,16 +111,28 @@ public class PlaceholderMessage extends Restable {
     }
 
     public EmbedBuilder build() {
-        return builder.setDescription(message);
+        return builder.setDescription(formatMessage());
     }
 
     @Override
     public MessageEmbed buildEmbed() {
-        return builder.setDescription(message).build();
+        return builder.setDescription(formatMessage()).build();
     }
 
     @Override
     public String toString() {
+        return formatMessage();
+    }
+
+    private String formatMessage() {
+        if (placeholders.isEmpty()) {
+            return message;
+        }
+
+        List<String> keys = new ArrayList<>(placeholders.keySet());
+        keys.sort((o1, o2) -> o2.length() - o1.length());
+        keys.forEach(key -> message = message.replaceAll(":" + key, placeholders.get(key)));
+
         return message;
     }
 }
