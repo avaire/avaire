@@ -1,5 +1,6 @@
 package com.avairebot.orion.config;
 
+import com.avairebot.orion.Orion;
 import com.avairebot.orion.contracts.config.Castable;
 import com.avairebot.orion.contracts.config.Configuration;
 import com.google.gson.Gson;
@@ -22,6 +23,10 @@ public class ConfigurationLoader implements Configuration {
                 BufferedWriter bw = new BufferedWriter(fw);
                 bw.write(this.defaultConfig(fileName));
                 bw.close();
+
+                Orion.getLogger().info("The {} configuration file is missing!", fileName);
+                Orion.getLogger().info("Creating file and terminating program...");
+                System.exit(0);
             } catch (IOException e) {
                 e.printStackTrace();
             }
