@@ -75,7 +75,7 @@ public class StatsCommand extends Command {
                 description.append(String.format("[`%s`](%s) %s\n",
                     item.get("sha").toString().substring(0, 7),
                     item.get("html_url"),
-                    commit.get("message")
+                    commit.get("message").toString().split("\n")[0].trim()
                 ));
             }
         }
