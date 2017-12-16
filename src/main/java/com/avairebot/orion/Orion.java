@@ -20,6 +20,8 @@ import com.avairebot.orion.scheduler.ScheduleHandler;
 import com.avairebot.orion.shard.ConnectQueue;
 import com.avairebot.orion.shard.OrionShard;
 import com.avairebot.orion.shard.ShardEntityCounter;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.sedmelluq.discord.lavaplayer.tools.PlayerLibrary;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDAInfo;
@@ -39,6 +41,11 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.function.Consumer;
 
 public class Orion {
+
+    public static final Gson GSON = new GsonBuilder()
+        .disableHtmlEscaping()
+        .serializeNulls()
+        .create();
 
     private static final Logger LOGGER = LoggerFactory.getLogger("Orion");
 

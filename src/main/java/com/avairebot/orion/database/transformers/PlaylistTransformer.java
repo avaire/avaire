@@ -1,9 +1,8 @@
 package com.avairebot.orion.database.transformers;
 
+import com.avairebot.orion.Orion;
 import com.avairebot.orion.contracts.database.transformers.Transformer;
 import com.avairebot.orion.database.collection.DataRow;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import javax.annotation.Nonnull;
@@ -12,7 +11,6 @@ import java.util.List;
 
 public class PlaylistTransformer extends Transformer {
 
-    private static final Gson GSON = new GsonBuilder().disableHtmlEscaping().serializeNulls().create();
     private final List<PlaylistSong> songs = new ArrayList<>();
 
     private int id;
@@ -30,7 +28,7 @@ public class PlaylistTransformer extends Transformer {
             name = data.getString("name");
 
             if (data.has("songs") && data.getString("songs").length() > 0) {
-                List<PlaylistSong> songs = GSON.fromJson(data.getString("songs"), (new TypeToken<List<PlaylistSong>>() {
+                List<PlaylistSong> songs = Orion.GSON.fromJson(data.getString("songs"), (new TypeToken<List<PlaylistSong>>() {
                 }.getType()));
 
                 if (!songs.isEmpty()) {

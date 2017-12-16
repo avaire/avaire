@@ -4,8 +4,6 @@ import com.avairebot.orion.Constants;
 import com.avairebot.orion.Orion;
 import com.avairebot.orion.contracts.commands.Command;
 import com.avairebot.orion.factories.MessageFactory;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.vdurmont.emoji.EmojiParser;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
@@ -18,8 +16,6 @@ import java.util.HashMap;
 import java.util.List;
 
 public class FeedbackCommand extends Command {
-
-    private static final Gson GSON = new GsonBuilder().serializeNulls().create();
 
     public FeedbackCommand(Orion orion) {
         super(orion);
@@ -91,7 +87,7 @@ public class FeedbackCommand extends Command {
         map.put("discriminator", user.getDiscriminator());
         map.put("avatar", user.getAvatarId());
 
-        return GSON.toJson(map);
+        return Orion.GSON.toJson(map);
     }
 
     private String buildJsonChannel(TextChannel channel) {
@@ -104,7 +100,7 @@ public class FeedbackCommand extends Command {
         map.put("id", channel.getId());
         map.put("name", name);
 
-        return GSON.toJson(map);
+        return Orion.GSON.toJson(map);
     }
 
     private String buildJsonGuild(Guild guild) {
@@ -123,6 +119,6 @@ public class FeedbackCommand extends Command {
         map.put("owner_id", guild.getOwner().getUser().getId());
         map.put("icon", guild.getIconId());
 
-        return GSON.toJson(map);
+        return Orion.GSON.toJson(map);
     }
 }

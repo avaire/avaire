@@ -1,5 +1,6 @@
 package com.avairebot.orion.database.collection;
 
+import com.avairebot.orion.Orion;
 import com.avairebot.orion.exceptions.InvalidFormatException;
 import com.avairebot.orion.time.Carbon;
 import com.avairebot.orion.utilities.NumberUtil;
@@ -389,9 +390,7 @@ public class DataRow {
      * @return the JSON collection string
      */
     public String toJson() {
-        Gson gson = new Gson();
-
-        return gson.toJson(items);
+        return Orion.GSON.toJson(items);
     }
 
     private boolean isString(Object name) {

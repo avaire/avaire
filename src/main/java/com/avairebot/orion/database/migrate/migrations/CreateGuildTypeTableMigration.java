@@ -1,9 +1,9 @@
 package com.avairebot.orion.database.migrate.migrations;
 
 import com.avairebot.orion.Constants;
+import com.avairebot.orion.Orion;
 import com.avairebot.orion.contracts.database.migrations.Migration;
 import com.avairebot.orion.database.schema.Schema;
-import com.google.gson.Gson;
 
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -40,7 +40,7 @@ public class CreateGuildTypeTableMigration implements Migration {
         limits.put("aliases", aliases);
 
         items.put("name", name);
-        items.put("limits", new Gson().toJson(limits));
+        items.put("limits", Orion.GSON.toJson(limits));
 
         return items;
     }

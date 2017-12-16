@@ -2,7 +2,6 @@ package com.avairebot.orion.plugin;
 
 import com.avairebot.orion.Orion;
 import com.avairebot.orion.exceptions.InvalidPluginException;
-import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
@@ -55,7 +54,7 @@ public class PluginLoader {
             }
         }
 
-        items = new Gson().fromJson(sb.toString(),
+        items = Orion.GSON.fromJson(sb.toString(),
             new TypeToken<HashMap<String, String>>() {
             }.getType());
 

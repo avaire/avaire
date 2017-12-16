@@ -1,12 +1,10 @@
 package com.avairebot.orion.database.transformers;
 
+import com.avairebot.orion.Orion;
 import com.avairebot.orion.contracts.database.transformers.Transformer;
 import com.avairebot.orion.database.collection.DataRow;
-import com.google.gson.Gson;
 
 public class GuildTypeTransformer extends Transformer {
-
-    private static final Gson GSON = new Gson();
 
     private String name = "Default";
     private GuildTypeLimits limits = new GuildTypeLimits();
@@ -20,7 +18,7 @@ public class GuildTypeTransformer extends Transformer {
             }
 
             if (data.getString("type_limits", null) != null) {
-                GuildTypeLimits typeLimits = GSON.fromJson(data.getString("type_limits"), GuildTypeLimits.class);
+                GuildTypeLimits typeLimits = Orion.GSON.fromJson(data.getString("type_limits"), GuildTypeLimits.class);
                 if (typeLimits != null) {
                     limits = typeLimits;
                 }

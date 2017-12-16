@@ -1,7 +1,6 @@
 package com.avairebot.orion.requests;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.avairebot.orion.Orion;
 
 import java.io.IOException;
 
@@ -17,9 +16,7 @@ public class Response {
     }
 
     public Object toService(Class<?> clazz) {
-        Gson gson = new GsonBuilder().serializeNulls().create();
-
-        return gson.fromJson(toString(), clazz);
+        return Orion.GSON.fromJson(toString(), clazz);
     }
 
     @Override

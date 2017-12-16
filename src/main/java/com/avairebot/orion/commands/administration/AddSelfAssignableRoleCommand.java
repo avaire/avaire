@@ -8,7 +8,6 @@ import com.avairebot.orion.database.controllers.GuildController;
 import com.avairebot.orion.database.transformers.GuildTransformer;
 import com.avairebot.orion.factories.MessageFactory;
 import com.avairebot.orion.utilities.RoleUtil;
-import com.google.gson.Gson;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.Role;
 
@@ -82,7 +81,7 @@ public class AddSelfAssignableRoleCommand extends Command {
             orion.getDatabase().newQueryBuilder(Constants.GUILD_TABLE_NAME)
                 .where("id", message.getGuild().getId())
                 .update(statement -> {
-                    statement.set("claimable_roles", new Gson().toJson(transformer.getSelfAssignableRoles()));
+                    statement.set("claimable_roles", Orion.GSON.toJson(transformer.getSelfAssignableRoles()));
                 });
 
             MessageFactory.makeSuccess(message, "Role **:role** role has been added to the self-assignable list.")

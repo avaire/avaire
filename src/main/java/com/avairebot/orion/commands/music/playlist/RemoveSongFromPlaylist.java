@@ -41,7 +41,7 @@ public class RemoveSongFromPlaylist extends PlaylistSubCommand {
             orion.getDatabase().newQueryBuilder(Constants.MUSIC_PLAYLIST_TABLE_NAME)
                 .where("id", playlist.getId()).andWhere("guild_id", message.getGuild().getId())
                 .update(statement -> {
-                    statement.set("songs", GSON.toJson(playlist.getSongs()));
+                    statement.set("songs", Orion.GSON.toJson(playlist.getSongs()));
                     statement.set("size", playlist.getSongs().size());
                 });
 

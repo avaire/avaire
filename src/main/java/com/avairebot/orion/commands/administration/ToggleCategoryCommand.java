@@ -11,7 +11,6 @@ import com.avairebot.orion.database.transformers.ChannelTransformer;
 import com.avairebot.orion.database.transformers.GuildTransformer;
 import com.avairebot.orion.factories.MessageFactory;
 import com.avairebot.orion.utilities.ComparatorUtil;
-import com.google.gson.Gson;
 import net.dv8tion.jda.core.entities.Message;
 
 import java.sql.SQLException;
@@ -152,7 +151,7 @@ public class ToggleCategoryCommand extends Command {
         orion.getDatabase().newQueryBuilder(Constants.GUILD_TABLE_NAME)
             .where("id", message.getGuild().getId())
             .update(statement -> {
-                statement.set("modules", new Gson().toJson(transformer.getCategories()));
+                statement.set("modules", Orion.GSON.toJson(transformer.getCategories()));
             });
     }
 

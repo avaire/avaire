@@ -3,7 +3,6 @@ package com.avairebot.orion.config;
 import com.avairebot.orion.Orion;
 import com.avairebot.orion.contracts.config.Castable;
 import com.avairebot.orion.contracts.config.Configuration;
-import com.google.gson.Gson;
 
 import java.io.*;
 import java.lang.reflect.Type;
@@ -47,7 +46,7 @@ public class ConfigurationLoader implements Configuration {
                 line = br.readLine();
             }
 
-            return (Castable) new Gson().fromJson(sb.toString(), (Type) type);
+            return (Castable) Orion.GSON.fromJson(sb.toString(), (Type) type);
         } catch (Exception e) {
             e.printStackTrace();
         }

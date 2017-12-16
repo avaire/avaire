@@ -737,16 +737,6 @@ public final class Carbon {
 
     /**
      * Sets the month to the carbon instance.
-     *
-     * @param month the month to set
-     * @return the Carbon instance
-     */
-    public Carbon setMonth(Month month) {
-        return set(Calendar.MONTH, month.getId());
-    }
-
-    /**
-     * Sets the month to the carbon instance.
      * <p>
      * This is a calendar-specific value. The first month of the year in the
      * Gregorian and Julian calendars is <code>JANUARY</code> which is 0;
@@ -770,6 +760,16 @@ public final class Carbon {
      */
     public Carbon setMonth(int month) {
         return set(Calendar.MONTH, month - 1);
+    }
+
+    /**
+     * Sets the month to the carbon instance.
+     *
+     * @param month the month to set
+     * @return the Carbon instance
+     */
+    public Carbon setMonth(Month month) {
+        return set(Calendar.MONTH, month.getId());
     }
 
     /**

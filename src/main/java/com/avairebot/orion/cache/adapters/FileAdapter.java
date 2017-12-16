@@ -5,7 +5,6 @@ import com.avairebot.orion.Orion;
 import com.avairebot.orion.cache.CacheItem;
 import com.avairebot.orion.contracts.cache.CacheAdapter;
 import com.avairebot.orion.contracts.cache.CacheClosure;
-import com.google.gson.Gson;
 import org.slf4j.LoggerFactory;
 
 import java.io.BufferedWriter;
@@ -21,11 +20,9 @@ import java.util.Map;
 public class FileAdapter extends CacheAdapter {
 
     private final File storagePath;
-    private final Gson gson;
 
     public FileAdapter() {
         storagePath = new File(Constants.STORAGE_PATH, "cache");
-        gson = new Gson();
 
         if (!storagePath.exists() && !storagePath.mkdirs()) {
             LoggerFactory.getLogger(FileAdapter.class).error("Failed to create cache storage folder, exiting application...");
@@ -67,7 +64,7 @@ public class FileAdapter extends CacheAdapter {
         }
 
         try {
-            CacheItem item = gson.fromJson(new String(Files.readAllBytes(cacheFile.toPath())), CacheItem.class);
+            CacheItem item = Orion.GSON.fromJson(new String(Files.readAllBytes(cacheFile.toPath())), CacheItem.class);
             if (item == null) {
                 return false;
             }
@@ -89,7 +86,7 @@ public class FileAdapter extends CacheAdapter {
         }
 
         try {
-            return gson.fromJson(new String(Files.readAllBytes(cacheFile.toPath())), CacheItem.class);
+            return Orion.GSON.fromJson(new String(Files.readAllBytes(cacheFile.toPath())), CacheItem.class);
         } catch (IOException e) {
             e.printStackTrace();
             return null;
@@ -104,7 +101,7 @@ public class FileAdapter extends CacheAdapter {
         }
 
         try {
-            CacheItem item = gson.fromJson(new String(Files.readAllBytes(cacheFile.toPath())), CacheItem.class);
+            CacheItem item = Orion.GSON.fromJson(new String(Files.readAllBytes(cacheFile.toPath())), CacheItem.class);
             if (item == null) {
                 return false;
             }
@@ -124,7 +121,7 @@ public class FileAdapter extends CacheAdapter {
         }
 
         try {
-            CacheItem item = gson.fromJson(new String(Files.readAllBytes(cacheFile.toPath())), CacheItem.class);
+            CacheItem item = Orion.GSON.fromJson(new String(Files.readAllBytes(cacheFile.toPath())), CacheItem.class);
             if (item == null) {
                 return null;
             }
@@ -181,7 +178,7 @@ public class FileAdapter extends CacheAdapter {
             fw = new FileWriter(file, false);
             bw = new BufferedWriter(fw);
 
-            bw.write(gson.toJson(cacheItem) + "\n");
+            bw.write(Orion.GSON.toJson(cacheItem) + "\n");
         } catch (IOException e) {
             e.printStackTrace();
             return false;

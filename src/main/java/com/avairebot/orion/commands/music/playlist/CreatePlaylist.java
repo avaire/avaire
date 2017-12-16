@@ -67,7 +67,7 @@ public class CreatePlaylist extends PlaylistSubCommand {
                 statement.set("guild_id", message.getGuild().getId());
                 statement.set("name", name);
                 statement.set("size", 0);
-                statement.set("songs", GSON.toJson(new ArrayList<>()));
+                statement.set("songs", Orion.GSON.toJson(new ArrayList<>()));
             });
 
         orion.getCache().getAdapter(CacheType.MEMORY)

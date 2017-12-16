@@ -1,9 +1,9 @@
 package com.avairebot.orion.database.transformers;
 
+import com.avairebot.orion.Orion;
 import com.avairebot.orion.contracts.database.transformers.Transformer;
 import com.avairebot.orion.database.collection.DataRow;
 import com.avairebot.orion.time.Carbon;
-import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
 import com.google.gson.reflect.TypeToken;
 import net.dv8tion.jda.core.entities.TextChannel;
@@ -39,7 +39,7 @@ public class GuildTransformer extends Transformer {
             autorole = data.getString("autorole");
 
             if (data.getString("aliases", null) != null) {
-                HashMap<String, String> dbAliases = new Gson().fromJson(
+                HashMap<String, String> dbAliases = Orion.GSON.fromJson(
                     data.getString("aliases"),
                     new TypeToken<HashMap<String, String>>() {
                     }.getType());
@@ -50,7 +50,7 @@ public class GuildTransformer extends Transformer {
             }
 
             if (data.getString("prefixes", null) != null) {
-                HashMap<String, String> dbPrefixes = new Gson().fromJson(
+                HashMap<String, String> dbPrefixes = Orion.GSON.fromJson(
                     data.getString("prefixes"),
                     new TypeToken<HashMap<String, String>>() {
                     }.getType());
@@ -61,7 +61,7 @@ public class GuildTransformer extends Transformer {
             }
 
             if (data.getString("claimable_roles", null) != null) {
-                HashMap<String, String> dbSelfAssignableRoles = new Gson().fromJson(
+                HashMap<String, String> dbSelfAssignableRoles = Orion.GSON.fromJson(
                     data.getString("claimable_roles"),
                     new TypeToken<HashMap<String, String>>() {
                     }.getType());
@@ -72,7 +72,7 @@ public class GuildTransformer extends Transformer {
             }
 
             if (data.getString("modules", null) != null) {
-                HashMap<String, Map<String, String>> dbModules = new Gson().fromJson(
+                HashMap<String, Map<String, String>> dbModules = Orion.GSON.fromJson(
                     data.getString("modules"),
                     new TypeToken<HashMap<String, Map<String, String>>>() {
                     }.getType());
@@ -83,7 +83,7 @@ public class GuildTransformer extends Transformer {
             }
 
             if (data.getString("channels", null) != null) {
-                HashMap<String, Object> dbChannels = new Gson().fromJson(
+                HashMap<String, Object> dbChannels = Orion.GSON.fromJson(
                     data.getString("channels"),
                     new TypeToken<HashMap<String, Object>>() {
                     }.getType());
@@ -234,7 +234,7 @@ public class GuildTransformer extends Transformer {
             objects.put(transformer.getId(), transformer.toMap());
         }
 
-        return new Gson().toJson(objects);
+        return Orion.GSON.toJson(objects);
     }
 
     public Carbon getCreatedAt() {

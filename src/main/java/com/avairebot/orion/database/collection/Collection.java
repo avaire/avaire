@@ -1,5 +1,6 @@
 package com.avairebot.orion.database.collection;
 
+import com.avairebot.orion.Orion;
 import com.avairebot.orion.contracts.database.collection.CollectionEach;
 import com.avairebot.orion.utilities.RandomUtil;
 import com.google.gson.Gson;
@@ -729,9 +730,7 @@ public class Collection implements Cloneable, Iterable<DataRow> {
      * @return the JSON collection string
      */
     public String toJson() {
-        Gson gson = new Gson();
-
-        return gson.toJson(items);
+        return Orion.GSON.toJson(items);
     }
 
     @Override

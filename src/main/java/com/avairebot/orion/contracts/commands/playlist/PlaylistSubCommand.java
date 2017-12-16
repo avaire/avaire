@@ -5,13 +5,9 @@ import com.avairebot.orion.commands.music.PlaylistCommand;
 import com.avairebot.orion.database.collection.Collection;
 import com.avairebot.orion.database.transformers.GuildTransformer;
 import com.avairebot.orion.database.transformers.PlaylistTransformer;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import net.dv8tion.jda.core.entities.Message;
 
 public abstract class PlaylistSubCommand {
-
-    protected static final Gson GSON = new GsonBuilder().disableHtmlEscaping().serializeNulls().create();
 
     protected final Orion orion;
     protected final PlaylistCommand command;

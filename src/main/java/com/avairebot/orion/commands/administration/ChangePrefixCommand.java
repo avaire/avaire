@@ -9,7 +9,6 @@ import com.avairebot.orion.contracts.commands.Command;
 import com.avairebot.orion.database.controllers.GuildController;
 import com.avairebot.orion.database.transformers.GuildTransformer;
 import com.avairebot.orion.factories.MessageFactory;
-import com.google.gson.Gson;
 import net.dv8tion.jda.core.entities.Message;
 
 import java.sql.SQLException;
@@ -125,7 +124,7 @@ public class ChangePrefixCommand extends Command {
         orion.getDatabase().newQueryBuilder(Constants.GUILD_TABLE_NAME)
             .where("id", message.getGuild().getId())
             .update(statement -> {
-                statement.set("prefixes", new Gson().toJson(transformer.getPrefixes()));
+                statement.set("prefixes", Orion.GSON.toJson(transformer.getPrefixes()));
             });
     }
 }

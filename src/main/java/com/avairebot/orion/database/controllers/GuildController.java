@@ -5,7 +5,6 @@ import com.avairebot.orion.Orion;
 import com.avairebot.orion.cache.CacheType;
 import com.avairebot.orion.database.collection.DataRow;
 import com.avairebot.orion.database.transformers.GuildTransformer;
-import com.google.gson.Gson;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.TextChannel;
@@ -95,6 +94,6 @@ public class GuildController {
 
             channels.add(item);
         }
-        return new Gson().toJson(channels);
+        return Orion.GSON.toJson(channels);
     }
 }
