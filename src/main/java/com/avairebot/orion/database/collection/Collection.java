@@ -688,9 +688,9 @@ public class Collection implements Cloneable, Iterable<DataRow> {
         String rValue = value.toString();
         List<DataRow> rows = new ArrayList<>();
 
-        items.stream().filter((row) -> (row.getString(field).equals(rValue))).forEach((row) -> {
-            rows.add(row);
-        });
+        items.stream()
+            .filter((row) -> (row.getString(field).equals(rValue)))
+            .forEach(rows::add);
 
         return rows;
     }
@@ -712,9 +712,9 @@ public class Collection implements Cloneable, Iterable<DataRow> {
         String rValue = value.toString();
         List<DataRow> rows = new ArrayList<>();
 
-        items.stream().filter((row) -> (row.getString(field).equalsIgnoreCase(rValue))).forEach((row) -> {
-            rows.add(row);
-        });
+        items.stream()
+            .filter((row) -> (row.getString(field).equalsIgnoreCase(rValue)))
+            .forEach(rows::add);
 
         return rows;
     }
