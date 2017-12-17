@@ -3,6 +3,7 @@ package com.avairebot.orion.commands.utility;
 import com.avairebot.orion.Orion;
 import com.avairebot.orion.commands.CommandContainer;
 import com.avairebot.orion.commands.CommandHandler;
+import com.avairebot.orion.commands.CommandPriority;
 import com.avairebot.orion.contracts.commands.Command;
 import com.avairebot.orion.factories.MessageFactory;
 import com.avairebot.orion.shard.OrionShard;
@@ -42,6 +43,14 @@ public class ShardCommand extends Command {
     @Override
     public List<String> getTriggers() {
         return Arrays.asList("shards", "shard");
+    }
+
+    @Override
+    public CommandPriority getCommandPriority() {
+        if (orion.getShards().size() < 2) {
+            return CommandPriority.HIDDEN;
+        }
+        return super.getCommandPriority();
     }
 
     @Override
