@@ -2,6 +2,7 @@ package com.avairebot.orion.commands.system;
 
 import com.avairebot.orion.Orion;
 import com.avairebot.orion.contracts.commands.SystemCommand;
+import com.avairebot.orion.factories.MessageFactory;
 import net.dv8tion.jda.core.entities.Game;
 import net.dv8tion.jda.core.entities.Message;
 
@@ -48,19 +49,69 @@ public class SetStatusCommand extends SystemCommand {
             return false;
         }
 
-        if (!Game.isValidStreamingUrl(args[0])) {
-            message.getJDA().getPresence().setGame(Game.of(String.join(" ", args)));
-            return true;
-        }
+        Game game = parseGame(args);
+        message.getJDA().getPresence().setGame(game);
 
-        String url = args[0];
-        String status = String.join(" ", args).substring(url.length());
+        MessageFactory.makeSuccess(message, "Changed status to **:type :status**")
+            .set("type", getTypeAsString(game.getType()))
+            .set("status", game.getName())
+            .queue();
 
-        if (args.length == 1) {
-            status = "Streaming on Twitch.tv";
-        }
-
-        message.getJDA().getPresence().setGame(Game.of(status, url));
         return true;
+    }
+
+    private String getTypeAsString(Game.GameType type) {
+        switch (type) {
+            case STREAMING:
+                return "Streaming";
+
+            case WATCHING:
+                return "Watching";
+
+            case LISTENING:
+                return "Listening to";
+
+            default:
+                return "Playing";
+        }
+    }
+
+    private Game parseGame(String[] args) {
+        if (Game.isValidStreamingUrl(args[0])) {
+            String url = args[0];
+            String streamStatus = String.join(" ", args).substring(url.length());
+
+            if (args.length == 1) {
+                streamStatus = "Streaming on Twitch.tv";
+            }
+
+            return Game.streaming(streamStatus, url);
+        }
+
+        String status = String.join(" ", args);
+
+        if (status.contains(":")) {
+            String[] split = status.split(":");
+            status = String.join(":", Arrays.copyOfRange(split, 1, split.length));
+            switch (split[0].toLowerCase()) {
+                case "listen":
+                case "listening":
+                    return Game.listening(status);
+
+                case "watch":
+                case "watching":
+                    return Game.watching(status);
+
+                case "play":
+                case "playing":
+                    return Game.playing(status);
+
+                case "stream":
+                case "streaming":
+                    return Game.streaming(status, "https://www.twitch.tv/senither");
+            }
+        }
+
+        return Game.playing(status);
     }
 }
