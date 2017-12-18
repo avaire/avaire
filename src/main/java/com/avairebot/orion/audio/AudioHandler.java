@@ -121,6 +121,22 @@ public class AudioHandler {
     }
 
     @CheckReturnValue
+    public static int getTotalListenersSize() {
+        int total = 0;
+        for (GuildMusicManager manager : MUSIC_MANAGER.values()) {
+            if (manager.getLastActiveMessage() == null) {
+                continue;
+            }
+
+            AudioManager audioManager = manager.getLastActiveMessage().getGuild().getAudioManager();
+            if (audioManager.isConnected() || audioManager.isAttemptingToConnect()) {
+                total++;
+            }
+        }
+        return total;
+    }
+
+    @CheckReturnValue
     public static int getTotalQueueSize() {
         int total = 0;
         for (GuildMusicManager manager : MUSIC_MANAGER.values()) {

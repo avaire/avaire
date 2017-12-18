@@ -97,7 +97,7 @@ public class StatsCommand extends Command {
             .setTitle("Official Bot Server Invite", "https://discordapp.com/invite/gt2FWER")
             .setAuthor("Orion v" + AppInfo.getAppInfo().VERSION, "https://discordapp.com/invite/gt2FWER", orion.getSelfUser().getEffectiveAvatarUrl())
             .setFooter(String.format("Currently playing in %s servers with %s songs in the queue.",
-                AudioHandler.MUSIC_MANAGER.size(), AudioHandler.getTotalQueueSize()
+                AudioHandler.getTotalListenersSize(), AudioHandler.getTotalQueueSize()
             ))
             .setDescription(description.toString())
             .queue();

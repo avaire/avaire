@@ -6,6 +6,7 @@ import com.avairebot.orion.audio.GuildMusicManager;
 import com.avairebot.orion.cache.CacheType;
 import com.avairebot.orion.cache.adapters.MemoryAdapter;
 import com.avairebot.orion.contracts.scheduler.Job;
+import net.dv8tion.jda.core.managers.AudioManager;
 
 import java.util.Map;
 
@@ -31,22 +32,15 @@ public class GarbageCollectorJob extends Job {
                 continue;
             }
 
-            if (entry.getValue().getLastActiveMessage().getGuild().getAudioManager().isConnected()) {
+            if (isConnected(entry.getValue().getLastActiveMessage().getGuild().getAudioManager())) {
                 continue;
             }
-
-            if (!adapter.has(getCacheFingerprint(entry.getKey()))) {
-                adapter.put(getCacheFingerprint(entry.getKey()), 0, 120);
-                continue;
-            }
-
-            adapter.forget(getCacheFingerprint(entry.getKey()));
 
             AudioHandler.MUSIC_MANAGER.remove(entry.getKey());
         }
     }
 
-    private String getCacheFingerprint(Long guildId) {
-        return "garbage-collector.music-queue." + guildId;
+    private boolean isConnected(AudioManager audioManager) {
+        return audioManager.isConnected() || audioManager.isAttemptingToConnect();
     }
 }
