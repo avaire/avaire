@@ -20,7 +20,6 @@ public class PunchCommand extends InteractionCommand {
             "https://i.imgur.com/fVPGbo5.gif",
             "https://i.imgur.com/vHRVMe9.gif",
             "https://i.imgur.com/g3MH1Bs.gif",
-            "https://i.imgur.com/qJsbKIt.gif",
             "https://i.imgur.com/7SbOwl4.gif"
         );
     }
