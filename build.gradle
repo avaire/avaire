@@ -1,7 +1,7 @@
 apply plugin: 'java'
 apply plugin: 'idea'
 
-version = '0.3.3'
+version = '0.3.4'
 group = 'com.avairebot'
 description = 'Orion Discord Bot'
 
@@ -56,7 +56,6 @@ dependencies {
 import org.apache.tools.ant.filters.ReplaceTokens
 
 processResources {
-    //inject values into app.properties
     filesMatching("**/orion.properties") {
         filter ReplaceTokens, tokens: [
             "project.version"   : project.version,
