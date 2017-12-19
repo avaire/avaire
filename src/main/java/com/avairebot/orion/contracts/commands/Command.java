@@ -197,7 +197,7 @@ public abstract class Command extends Reflectionable {
      * @return false since the error message should only be used on failure.
      */
     protected final boolean sendErrorMessage(Message message, String error, String... args) {
-        return sendErrorMessage(message, String.format(error, args));
+        return sendErrorMessage(message, String.format(error, (Object[]) args));
     }
 
     /**
