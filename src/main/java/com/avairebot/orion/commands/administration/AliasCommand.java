@@ -131,6 +131,6 @@ public class AliasCommand extends Command {
     private void updateGuildAliases(Message message, GuildTransformer transformer) throws SQLException {
         orion.getDatabase().newQueryBuilder(Constants.GUILD_TABLE_NAME)
             .where("id", message.getGuild().getId())
-            .update(statement -> statement.set("aliases", Orion.GSON.toJson(transformer.getAliases())));
+            .update(statement -> statement.set("aliases", Orion.GSON.toJson(transformer.getAliases()), true));
     }
 }

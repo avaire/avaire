@@ -73,7 +73,7 @@ public class AiCommand extends Command {
         try {
             orion.getDatabase().newQueryBuilder(Constants.GUILD_TABLE_NAME)
                 .andWhere("id", message.getGuild().getId())
-                .update(statement -> statement.set("channels", guildTransformer.channelsToJson()));
+                .update(statement -> statement.set("channels", guildTransformer.channelsToJson(), true));
 
             MessageFactory.makeSuccess(message, "The `Artificial Intelligence` module has been **:status** for the :channel channel.")
                 .set("status", channelTransformer.getAI().isEnabled() ? "Enabled" : "Disabled")

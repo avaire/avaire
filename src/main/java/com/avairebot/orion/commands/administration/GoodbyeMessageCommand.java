@@ -72,7 +72,7 @@ public class GoodbyeMessageCommand extends Command {
         try {
             orion.getDatabase().newQueryBuilder(Constants.GUILD_TABLE_NAME)
                 .andWhere("id", message.getGuild().getId())
-                .update(statement -> statement.set("channels", guildTransformer.channelsToJson()));
+                .update(statement -> statement.set("channels", guildTransformer.channelsToJson(), true));
 
             MessageFactory.makeSuccess(message, "The `Goodbye` module message has been set :message")
                 .set("message", channelTransformer.getGoodbye().getMessage() != null ?

@@ -51,7 +51,7 @@ public class RenamePlaylist extends PlaylistSubCommand {
             orion.getDatabase().newQueryBuilder(Constants.MUSIC_PLAYLIST_TABLE_NAME)
                 .where("id", playlist.getId()).andWhere("guild_id", message.getGuild().getId())
                 .update(statement -> {
-                    statement.set("name", playlist.getName());
+                    statement.set("name", playlist.getName(), true);
                 });
 
             orion.getCache().getAdapter(CacheType.MEMORY)

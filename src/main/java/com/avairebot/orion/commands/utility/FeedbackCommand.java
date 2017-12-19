@@ -60,10 +60,10 @@ public class FeedbackCommand extends Command {
         try {
             orion.getDatabase().newQueryBuilder(Constants.FEEDBACK_TABLE_NAME)
                 .insert(statement -> {
-                    statement.set("message", String.join(" ", args));
-                    statement.set("user", buildJsonUser(message.getAuthor()));
-                    statement.set("channel", buildJsonChannel(message.getTextChannel()));
-                    statement.set("guild", buildJsonGuild(message.getGuild()));
+                    statement.set("message", String.join(" ", args), true);
+                    statement.set("user", buildJsonUser(message.getAuthor()), true);
+                    statement.set("channel", buildJsonChannel(message.getTextChannel()), true);
+                    statement.set("guild", buildJsonGuild(message.getGuild()), true);
                 });
 
             MessageFactory.makeSuccess(message, "Successfully sent feedback <:tickYes:319985232306765825>").queue();

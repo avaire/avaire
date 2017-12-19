@@ -81,7 +81,7 @@ public class AddSelfAssignableRoleCommand extends Command {
             orion.getDatabase().newQueryBuilder(Constants.GUILD_TABLE_NAME)
                 .where("id", message.getGuild().getId())
                 .update(statement -> {
-                    statement.set("claimable_roles", Orion.GSON.toJson(transformer.getSelfAssignableRoles()));
+                    statement.set("claimable_roles", Orion.GSON.toJson(transformer.getSelfAssignableRoles()), true);
                 });
 
             MessageFactory.makeSuccess(message, "Role **:role** role has been added to the self-assignable list.")

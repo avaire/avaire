@@ -65,7 +65,7 @@ public class CreatePlaylist extends PlaylistSubCommand {
         orion.getDatabase().newQueryBuilder(Constants.MUSIC_PLAYLIST_TABLE_NAME)
             .insert(statement -> {
                 statement.set("guild_id", message.getGuild().getId());
-                statement.set("name", name);
+                statement.set("name", name, true);
                 statement.set("size", 0);
                 statement.set("songs", Orion.GSON.toJson(new ArrayList<>()));
             });

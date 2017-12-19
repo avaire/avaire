@@ -1,5 +1,6 @@
 package com.avairebot.orion.database.query;
 
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,7 +15,19 @@ public class ChangeableStatement {
     }
 
     public ChangeableStatement set(String key, Object value) {
-        items.put(key, value);
+        return set(key, value, false);
+    }
+
+    public ChangeableStatement set(String key, Object value, boolean encode) {
+        if (!encode) {
+            items.put(key, value);
+            return this;
+        }
+
+        items.put(key, "base64:" + new String(
+            Base64.getEncoder().encode(value.toString().getBytes())
+        ));
+
         return this;
     }
 

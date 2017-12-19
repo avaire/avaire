@@ -6,6 +6,7 @@ import com.avairebot.orion.time.Carbon;
 import com.avairebot.orion.utilities.NumberUtil;
 import com.google.gson.Gson;
 
+import java.util.Base64;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -13,6 +14,7 @@ import java.util.TreeMap;
 public class DataRow {
 
     private final Map<String, Object> items;
+    private final Map<String, String> decodedItems;
 
     /**
      * Creates a new data row object from the provided data row.
@@ -30,6 +32,7 @@ public class DataRow {
      */
     public DataRow(Map<String, Object> items) {
         this.items = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+        this.decodedItems = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 
         for (Map.Entry<String, Object> item : items.entrySet()) {
             this.items.put(item.getKey(), item.getValue());
@@ -314,7 +317,8 @@ public class DataRow {
     }
 
     /**
-     * Gets a string object from the data rows item list.
+     * Gets a string object from the data rows item list, if the string is
+     * encoded with base64 it will automatically be decoded on request.
      *
      * @param name The index(name) to get.
      * @param def  The default vault to return if the index doesn't exists.
@@ -328,7 +332,25 @@ public class DataRow {
             return null;
         }
 
-        return String.valueOf(value);
+        String string = String.valueOf(value);
+        if (!string.startsWith("base64:")) {
+            return string;
+        }
+
+        if (decodedItems.containsKey(name)) {
+            return decodedItems.get(name);
+        }
+
+        try {
+            String decodedString = new String(Base64.getDecoder().decode(
+                string.substring(7)
+            ));
+            decodedItems.put(name, decodedString);
+
+            return decodedString;
+        } catch (IllegalArgumentException ex) {
+            return string;
+        }
     }
 
     /**

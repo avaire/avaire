@@ -46,7 +46,7 @@ public class PlayerController {
                     .insert(statement -> {
                         statement.set("guild_id", message.getGuild().getId())
                             .set("user_id", user.getId())
-                            .set("username", user.getName())
+                            .set("username", user.getName(), true)
                             .set("discriminator", user.getDiscriminator())
                             .set("avatar", user.getAvatarId())
                             .set("experience", 100);

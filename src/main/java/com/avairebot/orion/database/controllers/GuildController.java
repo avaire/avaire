@@ -51,8 +51,8 @@ public class GuildController {
                         .insert(statement -> {
                             statement.set("id", guild.getId())
                                 .set("owner", guild.getOwner().getUser().getId())
-                                .set("name", guild.getName())
-                                .set("channels_data", buildChannelData(guild.getTextChannels()));
+                                .set("name", guild.getName(), true)
+                                .set("channels_data", buildChannelData(guild.getTextChannels()), true);
 
                             if (guild.getIconId() != null) {
                                 statement.set("icon", guild.getIconId());
