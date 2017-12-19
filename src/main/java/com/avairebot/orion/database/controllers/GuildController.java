@@ -3,7 +3,9 @@ package com.avairebot.orion.database.controllers;
 import com.avairebot.orion.Constants;
 import com.avairebot.orion.Orion;
 import com.avairebot.orion.cache.CacheType;
+import com.avairebot.orion.contracts.database.transformers.Transformer;
 import com.avairebot.orion.database.collection.DataRow;
+import com.avairebot.orion.database.query.ChangeableStatement;
 import com.avairebot.orion.database.transformers.GuildTransformer;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
@@ -68,7 +70,27 @@ public class GuildController {
                 return (GuildTransformer) orion.getCache().getAdapter(CacheType.MEMORY).get(cacheToken);
             }
 
-            orion.getCache().getAdapter(CacheType.MEMORY).put(String.format(CACHE_STRING, guild.getId()), transformer, 300);
+            // If the guild haven't been encoded yet, we'll do it below.
+            String name = transformer.getRawData().get("name").toString();
+            if (name.startsWith("base64:")) {
+                orion.getCache()
+                    .getAdapter(CacheType.MEMORY)
+                    .put(String.format(CACHE_STRING, guild.getId()), transformer, 300);
+
+                return transformer;
+            }
+
+            orion.getDatabase().newQueryBuilder(Constants.GUILD_TABLE_NAME)
+                .where("id", guild.getId())
+                .update(statement -> {
+                    statement.set("name", guild.getName(), true);
+                    statement.set("channels_data", buildChannelData(guild.getTextChannels()), true);
+
+                    setUpdateStatementFor(transformer, statement, "channels");
+                    setUpdateStatementFor(transformer, statement, "claimable_roles");
+                    setUpdateStatementFor(transformer, statement, "prefixes");
+                    setUpdateStatementFor(transformer, statement, "aliases");
+                });
 
             return transformer;
         } catch (SQLException ex) {
@@ -95,5 +117,11 @@ public class GuildController {
             channels.add(item);
         }
         return Orion.GSON.toJson(channels);
+    }
+
+    private static void setUpdateStatementFor(Transformer transformer, ChangeableStatement statement, String name) {
+        if (transformer.getRawData().get(name, null) != null) {
+            statement.set(name, transformer.getRawData().getString(name), true);
+        }
     }
 }
