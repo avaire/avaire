@@ -47,7 +47,7 @@ public class Orion {
         .serializeNulls()
         .create();
 
-    private static final Logger LOGGER = LoggerFactory.getLogger("Orion");
+    private static final Logger LOGGER = LoggerFactory.getLogger(Orion.class);
 
     private static final List<OrionShard> SHARDS = new CopyOnWriteArrayList<>();
     private static final ConnectQueue CONNECT_QUEUE = new ConnectQueue();
@@ -65,6 +65,10 @@ public class Orion {
         this.settings = settings;
 
         System.out.println(getVersionInfo());
+
+        LOGGER.debug("====================================================");
+        LOGGER.debug("Starting the application with debug logging enabled!");
+        LOGGER.debug("====================================================\n");
 
         LOGGER.info("Bootstrapping Orion v" + AppInfo.getAppInfo().VERSION);
         Reflections.log = null;

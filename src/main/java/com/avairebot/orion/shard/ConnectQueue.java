@@ -48,19 +48,19 @@ public class ConnectQueue extends SessionReconnectQueue {
      */
     public void requestCoin(int shardId) throws InterruptedException {
         long start = System.currentTimeMillis();
-        LOGGER.info("Shard {} requesting coin", shardId);
+        LOGGER.debug("Shard {} requesting coin", shardId);
 
         //if there is a reconnect going on by JDA, wait for it to be done)
         Thread jdaReconnectThread = this.reconnectThread;
         while (jdaReconnectThread != null) {
-            LOGGER.info("Waiting on JDA reconnect to be done");
+            LOGGER.debug("Waiting on JDA reconnect to be done");
             jdaReconnectThread.join();
             jdaReconnectThread = this.reconnectThread; // handle the race condition mentioned in SessionReconnectQueue#ReconnectThread
             Thread.sleep(CONNECT_DELAY_MS); // back off a few more seconds because the reconnect thread exits early
         }
 
         coinProvider.takeCoin();
-        LOGGER.info("Shard {} received coin after {}ms", shardId, System.currentTimeMillis() - start);
+        LOGGER.debug("Shard {} received coin after {}ms", shardId, System.currentTimeMillis() - start);
     }
 
     private static class CoinProvider {
@@ -69,7 +69,7 @@ public class ConnectQueue extends SessionReconnectQueue {
 
         protected void takeCoin() throws InterruptedException {
             Coin c = coin.take();
-            LOGGER.info("Took coin with delay {}ms", c.getDelay(TimeUnit.MILLISECONDS));
+            LOGGER.debug("Took coin with delay {}ms", c.getDelay(TimeUnit.MILLISECONDS));
             coin.add(new Coin());
         }
 

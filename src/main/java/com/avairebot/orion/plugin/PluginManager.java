@@ -3,6 +3,8 @@ package com.avairebot.orion.plugin;
 import com.avairebot.orion.Orion;
 import com.avairebot.orion.exceptions.InvalidPluginException;
 import com.avairebot.orion.exceptions.InvalidPluginsPathException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -10,6 +12,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class PluginManager {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(PluginManager.class);
 
     private final Orion orion;
     private final File pluginsFolder;
@@ -32,6 +36,7 @@ public class PluginManager {
 
         for (File file : pluginsFolder.listFiles()) {
             try {
+                LOGGER.debug("Attempting to load plugin: " + file.toString());
                 PluginLoader pluginLoader = new PluginLoader(file, pluginsFolder);
 
                 plugins.add(pluginLoader);

@@ -16,7 +16,7 @@ import java.util.*;
 
 public class Migrations {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger("DB::Migration");
+    private static final Logger LOGGER = LoggerFactory.getLogger(Migrations.class);
 
     private final DatabaseManager dbm;
     private final List<MigrationContainer> migrations;

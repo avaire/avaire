@@ -8,6 +8,8 @@ import com.avairebot.orion.database.exceptions.DatabaseException;
 import com.avairebot.orion.database.migrate.Migrations;
 import com.avairebot.orion.database.query.QueryBuilder;
 import com.avairebot.orion.database.schema.Schema;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.*;
 import java.util.HashSet;
@@ -15,6 +17,8 @@ import java.util.Map;
 import java.util.Set;
 
 public class DatabaseManager {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseManager.class);
 
     private final Orion orion;
     private final Schema schema;
@@ -92,6 +96,7 @@ public class DatabaseManager {
      *                             the currently running {@code Statement}
      */
     public Collection query(String query) throws SQLException, SQLTimeoutException {
+        LOGGER.debug("query(String query) was called with the following SQL query.\nSQL: " + query);
         return new Collection(getConnection().query(query));
     }
 
@@ -134,6 +139,7 @@ public class DatabaseManager {
      *                             the currently running {@code Statement}
      */
     public int queryUpdate(String query) throws SQLException {
+        LOGGER.debug("queryUpdate(String query) was called with the following SQL query.\nSQL: " + query);
         Statement stmt = getConnection().prepare(query);
 
         if (stmt instanceof PreparedStatement) {
@@ -180,6 +186,7 @@ public class DatabaseManager {
      *                             the currently running {@code Statement}
      */
     public Set<Integer> queryInsert(String query) throws SQLException {
+        LOGGER.debug("queryInsert(String query) was called with the following SQL query.\nSQL: " + query);
         if (!query.startsWith("INSERT INTO")) {
             throw new DatabaseException("queryInsert was called with a query without an INSERT statement!");
         }
@@ -216,6 +223,7 @@ public class DatabaseManager {
      */
     public Set<Integer> queryInsert(QueryBuilder queryBuilder) throws SQLException {
         String query = queryBuilder.toSQL();
+        LOGGER.debug("queryInsert(QueryBuilder queryBuilder) was called with the following SQL query.\nSQL: " + query);
         if (!query.startsWith("INSERT INTO")) {
             throw new DatabaseException("queryInsert was called with a query without an INSERT statement!");
         }
