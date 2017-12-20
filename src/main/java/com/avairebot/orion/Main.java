@@ -1,6 +1,6 @@
 package com.avairebot.orion;
 
-import com.avairebot.orion.utilities.NumberUtil;
+import org.apache.commons.cli.*;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -8,27 +8,32 @@ import java.sql.SQLException;
 public class Main {
 
     public static void main(String[] args) throws IOException, SQLException {
-        Settings settings = new Settings();
+        Options options = new Options();
 
-        for (String arg : args) {
-            if (arg.startsWith("-v") || arg.startsWith("--version")) {
+        options.addOption(new Option("h", "help", false, "Displays this help menu."));
+        options.addOption(new Option("v", "version", false, "Displays the current version of the application."));
+        options.addOption(new Option("sc", "shard-count", true, "Sets the amount of shards the bot should start up."));
+
+        CommandLineParser parser = new DefaultParser();
+        HelpFormatter formatter = new HelpFormatter();
+
+        try {
+            CommandLine cmd = parser.parse(options, args);
+
+            if (cmd.hasOption("help")) {
+                formatter.printHelp("Help Menu", options);
+                System.exit(1);
+            } else if (cmd.hasOption("version")) {
                 System.out.println(Orion.getVersionInfo());
-                System.exit(0);
+                System.exit(1);
             }
 
-            String[] parts = arg.split("=");
-            if (parts.length != 2) {
-                continue;
-            }
+            new Orion(new Settings(cmd));
+        } catch (ParseException e) {
+            System.out.println(e.getMessage());
+            formatter.printHelp("", options);
 
-            switch (parts[0].toLowerCase()) {
-                case "-sc":
-                case "--shard-count":
-                    settings.shardCount = NumberUtil.parseInt(parts[1], 0);
-                    break;
-            }
+            System.exit(1);
         }
-
-        new Orion(settings);
     }
 }
