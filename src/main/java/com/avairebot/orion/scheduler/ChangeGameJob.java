@@ -64,7 +64,7 @@ public class ChangeGameJob extends Job {
         game = game.replaceAll("%guilds%", "" + orion.getShardEntityCounter().getGuilds());
 
         game = game.replaceAll("%shard-id%", "" + shard.getShardId());
-        game = game.replaceAll("%shard-total%", "" + orion.getConfig().botAuth().getShardsTotal());
+        game = game.replaceAll("%shard-total%", "" + orion.getSettings().getShardCount());
 
         return game;
     }

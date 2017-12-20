@@ -52,6 +52,7 @@ public class Orion {
     private static final List<OrionShard> SHARDS = new CopyOnWriteArrayList<>();
     private static final ConnectQueue CONNECT_QUEUE = new ConnectQueue();
 
+    private final Settings settings;
     private final MainConfiguration config;
     private final CacheManager cache;
     private final DatabaseManager database;
@@ -60,7 +61,9 @@ public class Orion {
 
     private final ShardEntityCounter shardEntityCounter;
 
-    public Orion() throws IOException, SQLException {
+    public Orion(Settings settings) throws IOException, SQLException {
+        this.settings = settings;
+
         System.out.println(getVersionInfo());
 
         LOGGER.info("Bootstrapping Orion v" + AppInfo.getAppInfo().VERSION);
@@ -152,12 +155,12 @@ public class Orion {
         LOGGER.info("Creating bot instance and connecting to Discord network");
 
         shardEntityCounter = new ShardEntityCounter(this);
-        if (getConfig().botAuth().getShardsTotal() < 1) {
+        if (getSettings().getShardCount() < 1) {
             SHARDS.add(new OrionShard(this, 0));
             return;
         }
 
-        for (int i = 0; i < getConfig().botAuth().getShardsTotal(); i++) {
+        for (int i = 0; i < getSettings().getShardCount(); i++) {
             try {
                 SHARDS.add(new OrionShard(this, i));
             } catch (Exception ex) {
@@ -174,6 +177,22 @@ public class Orion {
         return LOGGER;
     }
 
+    static String getVersionInfo() {
+        return "\n\n" +
+            "   ____           _                        \n" +
+            "  / __ \\         (_)                      \n" +
+            " | |  | |  _ __   _    ___    _ __         \n" +
+            " | |  | | | '__| | |  / _ \\  | '_ \\      \n" +
+            " | |__| | | |    | | | (_) | | | | |       \n" +
+            "  \\____/  |_|    |_|  \\___/  |_| |_|     \n"
+
+            + "\n\tVersion:       " + AppInfo.getAppInfo().VERSION
+            + "\n\tJVM:           " + System.getProperty("java.version")
+            + "\n\tJDA:           " + JDAInfo.VERSION
+            + "\n\tLavaplayer     " + PlayerLibrary.VERSION
+            + "\n";
+    }
+
     public List<OrionShard> getShards() {
         return SHARDS;
     }
@@ -188,6 +207,10 @@ public class Orion {
 
     public SelfUser getSelfUser() {
         return getShards().get(0).getJDA().getSelfUser();
+    }
+
+    public Settings getSettings() {
+        return settings;
     }
 
     public MainConfiguration getConfig() {
@@ -236,22 +259,6 @@ public class Orion {
         }
 
         System.exit(0);
-    }
-
-    private String getVersionInfo() {
-        return "\n\n" +
-            "   ____           _                        \n" +
-            "  / __ \\         (_)                      \n" +
-            " | |  | |  _ __   _    ___    _ __         \n" +
-            " | |  | | | '__| | |  / _ \\  | '_ \\      \n" +
-            " | |__| | | |    | | | (_) | | | | |       \n" +
-            "  \\____/  |_|    |_|  \\___/  |_| |_|     \n"
-
-            + "\n\tVersion:       " + AppInfo.getAppInfo().VERSION
-            + "\n\tJVM:           " + System.getProperty("java.version")
-            + "\n\tJDA:           " + JDAInfo.VERSION
-            + "\n\tLavaplayer     " + PlayerLibrary.VERSION
-            + "\n";
     }
 
     private void autoloadPackage(String path, Consumer<Reflectionable> callback) {

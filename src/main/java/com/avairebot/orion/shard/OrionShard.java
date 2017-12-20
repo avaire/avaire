@@ -40,7 +40,7 @@ public class OrionShard {
 
     private JDA buildJDA(final JDABuilder builder) {
         JDA newJda = null;
-        int total = orion.getConfig().botAuth().getShardsTotal();
+        int total = orion.getSettings().getShardCount();
 
         try {
             boolean success = false;

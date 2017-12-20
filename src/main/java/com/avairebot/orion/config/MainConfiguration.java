@@ -40,8 +40,6 @@ public class MainConfiguration implements Castable {
     public class BotAuth {
         private String token;
         private String oauth;
-        private int activationDelay;
-        private int shardsTotal;
 
         public String getToken() {
             return token;
@@ -49,14 +47,6 @@ public class MainConfiguration implements Castable {
 
         public String getOAuth() {
             return oauth;
-        }
-
-        public int getActivationDelay() {
-            return activationDelay;
-        }
-
-        public int getShardsTotal() {
-            return shardsTotal;
         }
     }
 
