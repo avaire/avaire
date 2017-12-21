@@ -6,8 +6,10 @@ import com.avairebot.orion.commands.CommandMessage;
 import com.avairebot.orion.contracts.commands.ThreadCommand;
 import com.avairebot.orion.contracts.middleware.Middleware;
 import com.avairebot.orion.factories.MessageFactory;
+import com.avairebot.orion.metrics.Metrics;
 import com.avairebot.orion.utilities.ArrayUtil;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
+import io.prometheus.client.Histogram;
 import net.dv8tion.jda.core.entities.Message;
 
 import java.util.Arrays;
@@ -38,6 +40,8 @@ public class ProcessCommand extends Middleware {
             .replace("%message%", message.getRawContent())
         );
 
+        Histogram.Timer timer = null;
+
         try {
             String[] commandArguments = Arrays.copyOfRange(arguments, stack.isMentionableCommand() ? 2 : 1, arguments.length);
             if (stack.getCommandContainer() instanceof AliasCommandContainer) {
@@ -49,8 +53,14 @@ public class ProcessCommand extends Middleware {
                 );
             }
 
+            Metrics.commandsExecuted.labels(stack.getCommand().getClass().getSimpleName()).inc();
+
+            timer = Metrics.executionTime.labels(stack.getCommand().getClass().getSimpleName()).startTimer();
+
             return runCommand(stack, new CommandMessage(message, stack.isMentionableCommand()), commandArguments);
         } catch (Exception ex) {
+            Metrics.commandExceptions.labels(ex.getClass().getSimpleName()).inc();
+
             if (ex instanceof FriendlyException) {
                 MessageFactory.makeError(message, "Error: " + ex.getMessage())
                     .queue(newMessage -> newMessage.delete().queueAfter(30, TimeUnit.SECONDS));
@@ -58,6 +68,10 @@ public class ProcessCommand extends Middleware {
 
             ex.printStackTrace();
             return false;
+        } finally {
+            if (timer != null) {
+                timer.observeDuration();
+            }
         }
     }
 

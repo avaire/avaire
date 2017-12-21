@@ -10,6 +10,7 @@ import com.avairebot.orion.database.controllers.PlaylistController;
 import com.avairebot.orion.database.transformers.GuildTransformer;
 import com.avairebot.orion.database.transformers.PlaylistTransformer;
 import com.avairebot.orion.factories.MessageFactory;
+import com.avairebot.orion.metrics.Metrics;
 import com.avairebot.orion.utilities.NumberUtil;
 import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
@@ -60,9 +61,13 @@ public class AddSongToPlaylist extends PlaylistSubCommand {
     }
 
     private void loadSong(Message message, String query, GuildTransformer guild, PlaylistTransformer playlist) {
+        Metrics.searchRequests.inc();
+
         AudioHandler.AUDIO_PLAYER_MANAGER.loadItemOrdered(AudioHandler.MUSIC_MANAGER, query, new AudioLoadResultHandler() {
             @Override
             public void trackLoaded(AudioTrack track) {
+                Metrics.tracksLoaded.inc();
+
                 handleTrackLoadedEvent(message, guild, playlist, track);
             }
 
@@ -73,11 +78,13 @@ public class AddSongToPlaylist extends PlaylistSubCommand {
 
             @Override
             public void noMatches() {
+                Metrics.trackLoadsFailed.inc();
                 MessageFactory.makeWarning(message, "No Matches").queue();
             }
 
             @Override
             public void loadFailed(FriendlyException e) {
+                Metrics.trackLoadsFailed.inc();
                 MessageFactory.makeError(message, "Failed to load: " + e.getMessage()).queue();
             }
         });

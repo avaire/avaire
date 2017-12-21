@@ -3,6 +3,7 @@ package com.avairebot.orion.audio;
 import com.avairebot.orion.contracts.async.Future;
 import com.avairebot.orion.exceptions.NoMatchFoundException;
 import com.avairebot.orion.exceptions.TrackLoadFailedException;
+import com.avairebot.orion.metrics.Metrics;
 import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
@@ -27,9 +28,13 @@ public class TrackRequest extends Future {
 
     @Override
     public void handle(final Consumer success, final Consumer<Throwable> failure) {
+        Metrics.searchRequests.inc();
+
         AudioHandler.AUDIO_PLAYER_MANAGER.loadItemOrdered(musicManager, trackUrl, new AudioLoadResultHandler() {
             @Override
             public void trackLoaded(AudioTrack track) {
+                Metrics.tracksLoaded.inc();
+
                 success.accept(new TrackResponse(musicManager, track, trackUrl));
 
                 AudioHandler.play(message, musicManager, track);
@@ -51,11 +56,13 @@ public class TrackRequest extends Future {
 
             @Override
             public void noMatches() {
+                Metrics.trackLoadsFailed.inc();
                 failure.accept(new NoMatchFoundException("I found nothing with the given query: `%s`", trackUrl));
             }
 
             @Override
             public void loadFailed(FriendlyException exception) {
+                Metrics.trackLoadsFailed.inc();
                 failure.accept(new TrackLoadFailedException("I couldn't add that to the queue: `%s`", exception.getMessage(), exception));
             }
         });

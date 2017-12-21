@@ -33,6 +33,7 @@ public class MiddlewareStack {
         this.buildMiddlewareStack();
 
         middlewares.add(new MiddlewareContainer(com.avairebot.orion.middleware.Middleware.IS_CATEGORY_ENABLED));
+        middlewares.add(new MiddlewareContainer(com.avairebot.orion.middleware.Middleware.INCREMENT_METRICS_FOR_COMMAND));
     }
 
     public MiddlewareStack(Orion orion, Message message, CommandContainer command) {

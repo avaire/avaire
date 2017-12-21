@@ -8,6 +8,7 @@ import com.avairebot.orion.contracts.commands.playlist.PlaylistSubCommand;
 import com.avairebot.orion.database.transformers.GuildTransformer;
 import com.avairebot.orion.database.transformers.PlaylistTransformer;
 import com.avairebot.orion.factories.MessageFactory;
+import com.avairebot.orion.metrics.Metrics;
 import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
@@ -37,9 +38,13 @@ public class LoadPlaylist extends PlaylistSubCommand {
     }
 
     private void loadSong(Message message, PlaylistTransformer.PlaylistSong song) {
+        Metrics.searchRequests.inc();
+
         AudioHandler.AUDIO_PLAYER_MANAGER.loadItemOrdered(AudioHandler.MUSIC_MANAGER, song.getLink(), new AudioLoadResultHandler() {
             @Override
             public void trackLoaded(AudioTrack track) {
+                Metrics.tracksLoaded.inc();
+
                 AudioHandler.getGuildAudioPlayer(message.getGuild())
                     .getScheduler().queue(track, message.getAuthor());
             }
@@ -51,12 +56,12 @@ public class LoadPlaylist extends PlaylistSubCommand {
 
             @Override
             public void noMatches() {
-                //
+                Metrics.trackLoadsFailed.inc();
             }
 
             @Override
             public void loadFailed(FriendlyException exception) {
-                //
+                Metrics.trackLoadsFailed.inc();
             }
         });
     }

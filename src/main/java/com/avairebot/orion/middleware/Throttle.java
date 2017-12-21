@@ -5,6 +5,7 @@ import com.avairebot.orion.cache.CacheItem;
 import com.avairebot.orion.contracts.commands.CacheFingerprint;
 import com.avairebot.orion.contracts.middleware.Middleware;
 import com.avairebot.orion.factories.MessageFactory;
+import com.avairebot.orion.metrics.Metrics;
 import com.avairebot.orion.utilities.NumberUtil;
 import net.dv8tion.jda.core.entities.Message;
 
@@ -38,6 +39,7 @@ public class Throttle extends Middleware {
 
             int attempts = (Integer) item.getValue();
             if (attempts >= maxAttempts) {
+                Metrics.commandsRatelimited.labels(stack.getCommand().getClass().getSimpleName()).inc();
                 MessageFactory.makeWarning(message, "Too many `:command` attempts. Please try again in **:time** seconds.")
                     .set("command", stack.getCommand().getName())
                     .set("time", ((item.getTime() - System.currentTimeMillis()) / 1000) + 1)

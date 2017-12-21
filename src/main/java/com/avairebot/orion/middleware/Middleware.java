@@ -7,7 +7,8 @@ public enum Middleware {
     THROTTLE("throttle", Throttle.class),
     IS_BOT_ADMIN("isBotAdmin", IsBotAdmin.class),
     PROCESS_COMMAND("process-command", ProcessCommand.class),
-    IS_CATEGORY_ENABLED("is-category-enabled", isCategoryEnabled.class);
+    IS_CATEGORY_ENABLED("is-category-enabled", isCategoryEnabled.class),
+    INCREMENT_METRICS_FOR_COMMAND("increment-metrics-for-command", IncrementMetricsForCommand.class);
 
     private final String name;
     private final Class instance;
