@@ -12,6 +12,8 @@ import com.avairebot.orion.contracts.reflection.Reflectionable;
 import com.avairebot.orion.contracts.scheduler.Job;
 import com.avairebot.orion.database.DatabaseManager;
 import com.avairebot.orion.database.migrate.migrations.*;
+import com.avairebot.orion.database.serializer.PlaylistSongSerializer;
+import com.avairebot.orion.database.transformers.PlaylistTransformer;
 import com.avairebot.orion.exceptions.InvalidPluginException;
 import com.avairebot.orion.exceptions.InvalidPluginsPathException;
 import com.avairebot.orion.metrics.Metrics;
@@ -44,6 +46,10 @@ import java.util.function.Consumer;
 public class Orion {
 
     public static final Gson GSON = new GsonBuilder()
+        .registerTypeAdapter(
+            PlaylistTransformer.PlaylistSong.class,
+            new PlaylistSongSerializer()
+        )
         .disableHtmlEscaping()
         .serializeNulls()
         .create();
