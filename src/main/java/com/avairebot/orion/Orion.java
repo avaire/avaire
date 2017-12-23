@@ -59,7 +59,6 @@ public class Orion {
     private static final List<OrionShard> SHARDS = new CopyOnWriteArrayList<>();
     private static final ConnectQueue CONNECT_QUEUE = new ConnectQueue();
 
-    private final Metrics metrics;
     private final Settings settings;
     private final MainConfiguration config;
     private final CacheManager cache;
@@ -165,7 +164,7 @@ public class Orion {
         database.getMigrations().up();
 
         LOGGER.info("Preparing and setting up metrics");
-        metrics = new Metrics(this);
+        Metrics.setup(this);
 
         LOGGER.info("Creating bot instance and connecting to Discord network");
 

@@ -86,10 +86,15 @@ public class Metrics {
 
     private static final int PORT = 1256;
 
-    private final Orion orion;
+    private static Orion orion;
+    private static boolean isSetup = false;
 
-    public Metrics(Orion orion) {
-        this.orion = orion;
+    public static void setup(Orion orion) {
+        if (isSetup) {
+            throw new IllegalStateException("The metrics has already been setup!");
+        }
+
+        Metrics.orion = orion;
 
         final LoggerContext factory = (LoggerContext) LoggerFactory.getILoggerFactory();
         final ch.qos.logback.classic.Logger root = factory.getLogger(Logger.ROOT_LOGGER_NAME);
@@ -108,11 +113,17 @@ public class Metrics {
         Spark.before(new HttpFilter());
         Spark.exception(Exception.class, new SparkExceptionHandler());
 
-        Spark.get("/metrics", new GetMetrics(this));
-        Spark.get("/stats", new GetStats(this));
+        Spark.get("/metrics", new GetMetrics(MetricsHolder.METRICS));
+        Spark.get("/stats", new GetStats(MetricsHolder.METRICS));
+        
+        Metrics.isSetup = true;
     }
 
     public Orion getOrion() {
         return orion;
+    }
+
+    private static class MetricsHolder {
+        private static final Metrics METRICS = new Metrics();
     }
 }
