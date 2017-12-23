@@ -1,0 +1,84 @@
+package com.avairebot.orion.utilities;
+
+import net.dv8tion.jda.core.entities.*;
+
+import java.util.List;
+
+public class MentionableUtil {
+
+    public static User getUser(Message message, String[] args) {
+        return getUser(message, args, 0);
+    }
+
+    public static User getUser(Message message, String[] args, int index) {
+        if (!message.getMentionedUsers().isEmpty()) {
+            return message.getMentionedUsers().get(0);
+        }
+
+        if (args.length <= index) {
+            return null;
+        }
+
+        String part = args[index].trim();
+
+        if (NumberUtil.isNumeric(part)) {
+            Member member = message.getGuild().getMemberById(part);
+            return member == null ? null : member.getUser();
+        }
+
+        String[] parts = part.split("#");
+        if (parts.length != 2) {
+            List<Member> effectiveName = message.getGuild().getMembersByEffectiveName(parts[0], true);
+
+            if (effectiveName.isEmpty()) {
+                return null;
+            }
+            return effectiveName.get(0).getUser();
+        }
+
+        List<Member> members = message.getGuild().getMembersByName(parts[0], true);
+        for (Member member : members) {
+            if (member.getUser().getDiscriminator().equals(parts[1])) {
+                return member.getUser();
+            }
+        }
+
+        return null;
+    }
+
+    public static Channel getChannel(Message message, String[] args) {
+        return getChannel(message, args, 0);
+    }
+
+    public static Channel getChannel(Message message, String[] args, int index) {
+        if (!message.getMentionedChannels().isEmpty()) {
+            return message.getMentionedChannels().get(0);
+        }
+
+        if (args.length <= index) {
+            return null;
+        }
+
+        String part = args[index].trim();
+
+        if (NumberUtil.isNumeric(part)) {
+            TextChannel textChannel = message.getGuild().getTextChannelById(part);
+            if (textChannel != null) {
+                return textChannel;
+            }
+            return message.getGuild().getVoiceChannelById(part);
+        }
+
+        List<TextChannel> textChannelsByName = message.getGuild().getTextChannelsByName(part, true);
+        if (!textChannelsByName.isEmpty()) {
+            return textChannelsByName.get(0);
+        }
+
+        List<VoiceChannel> voiceChannelsByName = message.getGuild().getVoiceChannelsByName(part, true);
+        if (!voiceChannelsByName.isEmpty()) {
+            return voiceChannelsByName.get(0);
+        }
+
+        return null;
+    }
+}

@@ -115,7 +115,7 @@ public class Metrics {
 
         Spark.get("/metrics", new GetMetrics(MetricsHolder.METRICS));
         Spark.get("/stats", new GetStats(MetricsHolder.METRICS));
-        
+
         Metrics.isSetup = true;
     }
 

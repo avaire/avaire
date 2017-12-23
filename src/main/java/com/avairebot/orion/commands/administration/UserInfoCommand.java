@@ -5,10 +5,8 @@ import com.avairebot.orion.chat.PlaceholderMessage;
 import com.avairebot.orion.contracts.commands.Command;
 import com.avairebot.orion.factories.MessageFactory;
 import com.avairebot.orion.time.Carbon;
-import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.MessageEmbed;
-import net.dv8tion.jda.core.entities.Role;
+import com.avairebot.orion.utilities.MentionableUtil;
+import net.dv8tion.jda.core.entities.*;
 
 import java.awt.*;
 import java.util.Arrays;
@@ -49,8 +47,12 @@ public class UserInfoCommand extends Command {
     @Override
     public boolean onCommand(Message message, String[] args) {
         Member member = message.getMember();
-        if (!message.getMentionedUsers().isEmpty()) {
-            member = message.getGuild().getMember(message.getMentionedUsers().get(0));
+        if (args.length > 0) {
+            User user = MentionableUtil.getUser(message, args);
+            if (user == null) {
+                return sendErrorMessage(message, "I found no users with the name or ID of `%s`", args[0]);
+            }
+            member = message.getGuild().getMember(user);
         }
 
         Carbon joinedDate = Carbon.createFromOffsetDateTime(member.getJoinDate());

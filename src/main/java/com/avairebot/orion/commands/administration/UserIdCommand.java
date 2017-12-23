@@ -3,6 +3,7 @@ package com.avairebot.orion.commands.administration;
 import com.avairebot.orion.Orion;
 import com.avairebot.orion.contracts.commands.Command;
 import com.avairebot.orion.factories.MessageFactory;
+import com.avairebot.orion.utilities.MentionableUtil;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.User;
 
@@ -33,7 +34,7 @@ public class UserIdCommand extends Command {
 
     @Override
     public String getExampleUsage() {
-        return null;
+        return "`:command @Senither`\n`:command alexis`\n`:command 88739639380172800`";
     }
 
     @Override
@@ -44,12 +45,16 @@ public class UserIdCommand extends Command {
     @Override
     public boolean onCommand(Message message, String[] args) {
         User user = message.getAuthor();
-        if (!message.getMentionedUsers().isEmpty()) {
-            user = message.getMentionedUsers().get(0);
+        if (args.length > 0) {
+            user = MentionableUtil.getUser(message, args);
         }
 
-        MessageFactory.makeSuccess(message, ":user :id: of the user **:target** is `:targetid`")
-            .set("target", String.format("%s#%s", user.getName(), user.getDiscriminator()))
+        if (user == null) {
+            return sendErrorMessage(message, "I found no users with the name or ID of `%s`", args[0]);
+        }
+
+        MessageFactory.makeSuccess(message, ":id: of the user **:target** is `:targetid`")
+            .set("target", user.getAsMention())
             .set("targetid", user.getId())
             .queue();
         return true;
