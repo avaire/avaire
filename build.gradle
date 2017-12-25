@@ -31,6 +31,19 @@ task fatJar(type: Jar) {
     with jar
 }
 
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+javadoc {
+    failOnError = false
+    options.memberLevel = JavadocMemberLevel.PUBLIC
+    options.author()
+    options.encoding = 'UTF-8'
+    options.addStringOption('-html5')
+}
+
 repositories {
     mavenCentral()                     // main maven repo
     jcenter()                          // JDA and some other stuff
