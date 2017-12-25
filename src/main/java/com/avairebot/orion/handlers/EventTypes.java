@@ -1,7 +1,7 @@
 package com.avairebot.orion.handlers;
 
 public enum EventTypes {
-    
+
     GenericEvent(GenericEvent.class),
     GuildMemberJoinEvent(GuildMemberJoin.class),
     GuildMemberLeaveEvent(GuildMemberLeave.class),

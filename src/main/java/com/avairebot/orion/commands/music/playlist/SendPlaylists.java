@@ -35,7 +35,7 @@ public class SendPlaylists extends PlaylistSubCommand {
         paginator.forEach((index, key, val) -> {
             DataRow row = (DataRow) val;
 
-            messages.add(String.format("%s\n   ‍   Playlist has **%s** song(s)",
+            messages.add(String.format("%s\n       Playlist has **%s** song(s)",
                 row.getString("name"), row.getInt("size")
             ));
         });
