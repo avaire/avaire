@@ -14,6 +14,7 @@ public class ChannelTransformer extends Transformer {
     private final BooleanModule ai = new BooleanModule();
     private final MessageModule welcome = new MessageModule();
     private final MessageModule goodbye = new MessageModule();
+    private final SlowmodeModule slowmode = new SlowmodeModule();
 
     public ChannelTransformer(DataRow data) {
         this(data, null);
@@ -44,6 +45,16 @@ public class ChannelTransformer extends Transformer {
                 goodbye.setEnabled(goodbyeData.getBoolean("enabled", false));
                 goodbye.setMessage(goodbyeData.getString("message", null));
             }
+
+            if (data.get("slowmode", null) != null) {
+                DataRow slowmodeData = new DataRow((LinkedTreeMap<String, Object>) data.get("slowmode"));
+
+                if (slowmodeData.getBoolean("enabled", false)) {
+                    slowmode.setEnabled(true);
+                    slowmode.setDecay(slowmodeData.getInt("messageLimit", 5));
+                    slowmode.setLimit(slowmodeData.getInt("messagesPerLimit", 1));
+                }
+            }
         }
     }
 
@@ -67,12 +78,17 @@ public class ChannelTransformer extends Transformer {
         return goodbye;
     }
 
+    public SlowmodeModule getSlowmode() {
+        return slowmode;
+    }
+
     public HashMap<String, Object> toMap() {
         HashMap<String, Object> objects = new HashMap<>();
 
         objects.put("ai", ai.toMap());
         objects.put("welcome", welcome.toMap());
         objects.put("goodbye", goodbye.toMap());
+        objects.put("slowmode", slowmode.toMap());
 
         return objects;
     }
@@ -153,6 +169,46 @@ public class ChannelTransformer extends Transformer {
             HashMap<String, Object> objects = new HashMap<>();
 
             objects.put("enabled", enabled);
+
+            return objects;
+        }
+    }
+
+    public class SlowmodeModule {
+        private int limit = 1;
+        private int decay = 5;
+        private boolean enabled = false;
+
+        public boolean isEnabled() {
+            return enabled;
+        }
+
+        public void setEnabled(boolean enabled) {
+            this.enabled = enabled;
+        }
+
+        public int getLimit() {
+            return limit;
+        }
+
+        public void setLimit(int limit) {
+            this.limit = limit;
+        }
+
+        public int getDecay() {
+            return decay;
+        }
+
+        public void setDecay(int decay) {
+            this.decay = decay;
+        }
+
+        HashMap<String, Object> toMap() {
+            HashMap<String, Object> objects = new HashMap<>();
+
+            objects.put("enabled", enabled);
+            objects.put("messagesPerLimit", limit);
+            objects.put("messageLimit", decay);
 
             return objects;
         }

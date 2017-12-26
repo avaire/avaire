@@ -13,6 +13,7 @@ import com.avairebot.orion.database.transformers.GuildTransformer;
 import com.avairebot.orion.database.transformers.PlayerTransformer;
 import com.avairebot.orion.factories.MessageFactory;
 import com.avairebot.orion.middleware.MiddlewareStack;
+import com.avairebot.orion.modules.SlowmodeModule;
 import com.avairebot.orion.utilities.ArrayUtil;
 import com.avairebot.orion.utilities.LevelUtil;
 import net.dv8tion.jda.core.Permission;
@@ -53,6 +54,11 @@ public class MessageCreate extends EventHandler {
 
         loadDatabasePropertiesIntoMemory(event).thenAccept(properties -> {
             if (!orion.areWeReadyYet()) {
+                return;
+            }
+
+            if (isUserBeingThrottledBySlowmodeInChannel(event, properties)) {
+                event.getMessage().delete().queue();
                 return;
             }
 
@@ -142,6 +148,29 @@ public class MessageCreate extends EventHandler {
 
         ChannelTransformer channel = transformer.getChannel(event.getChannel().getId());
         return channel == null || channel.getAI().isEnabled();
+    }
+
+    private boolean isUserBeingThrottledBySlowmodeInChannel(MessageReceivedEvent event, DatabaseProperties properties) {
+        if (!event.getMessage().getChannelType().isGuild()) {
+            return false;
+        }
+
+        if (event.getMember().hasPermission(Permission.MESSAGE_MANAGE)) {
+            return false;
+        }
+
+        ChannelTransformer channel = properties.getGuild().getChannel(event.getChannel().getId());
+        if (channel == null || !channel.getSlowmode().isEnabled()) {
+            return false;
+        }
+
+        String fingerprint = String.format("slowmode.%s.%s.%s",
+            event.getGuild().getId(),
+            event.getChannel().getId(),
+            event.getAuthor().getId()
+        );
+
+        return SlowmodeModule.isThrottled(orion, fingerprint, channel.getSlowmode().getLimit(), channel.getSlowmode().getDecay());
     }
 
     private void sendTagInformationMessage(MessageReceivedEvent event) {
