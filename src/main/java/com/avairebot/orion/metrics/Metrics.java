@@ -35,6 +35,12 @@ public class Metrics {
         .labelNames("class") // use the simple name of the command class
         .register();
 
+    public static final Counter slowmodeRatelimited = Counter.build()
+        .name("orion_slowmode_ratelimited_total")
+        .help("Total ratelimited messages")
+        .labelNames("channel")
+        .register();
+
     // music stuff
 
     public static final Counter searchRequests = Counter.build() //search requests issued by users

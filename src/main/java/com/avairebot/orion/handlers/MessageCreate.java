@@ -12,6 +12,7 @@ import com.avairebot.orion.database.transformers.ChannelTransformer;
 import com.avairebot.orion.database.transformers.GuildTransformer;
 import com.avairebot.orion.database.transformers.PlayerTransformer;
 import com.avairebot.orion.factories.MessageFactory;
+import com.avairebot.orion.metrics.Metrics;
 import com.avairebot.orion.middleware.MiddlewareStack;
 import com.avairebot.orion.modules.SlowmodeModule;
 import com.avairebot.orion.utilities.ArrayUtil;
@@ -59,6 +60,7 @@ public class MessageCreate extends EventHandler {
 
             if (isUserBeingThrottledBySlowmodeInChannel(event, properties)) {
                 event.getMessage().delete().queue();
+                Metrics.slowmodeRatelimited.labels(event.getChannel().getId()).inc();
                 return;
             }
 
