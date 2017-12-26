@@ -1,6 +1,8 @@
 package com.avairebot.orion.commands.search;
 
 import com.avairebot.orion.Orion;
+import com.avairebot.orion.chat.MessageType;
+import com.avairebot.orion.chat.PlaceholderMessage;
 import com.avairebot.orion.contracts.commands.ThreadCommand;
 import com.avairebot.orion.factories.MessageFactory;
 import net.dv8tion.jda.core.entities.Message;
@@ -74,7 +76,9 @@ public class DuckDuckGoCommand extends ThreadCommand {
             headers.put("User-Agent", "AvaIre-Discord-Bot (" + orion.getSelfUser().getId() + ")");
 
             message.getChannel().sendTyping().queue();
-            Document document = Jsoup.connect(generateUri(message, args))
+
+            boolean nsfwEnabled = isNSFWEnabled(message);
+            Document document = Jsoup.connect(generateUri(args, nsfwEnabled))
                 .headers(headers)
                 .timeout(10000)
                 .get();
@@ -102,9 +106,19 @@ public class DuckDuckGoCommand extends ThreadCommand {
                 }
             }
 
-            MessageFactory.makeEmbeddedMessage(message.getChannel(), Color.decode("#DE5833"), String.join("\n", result))
+            PlaceholderMessage resultMessage = MessageFactory.makeEmbeddedMessage(message.getChannel(), Color.decode("#DE5833"))
+                .setDescription(String.join("\n", result))
                 .setTitle("Search result for: " + String.join(" ", args))
-                .queue();
+                .setFooter("NSFW Search is " + (nsfwEnabled ? "Enabled" : "Disabled"));
+
+            if (result.isEmpty() || (result.size() == 1 && result.get(0).startsWith("-1&uddg"))) {
+                resultMessage
+                    .setColor(MessageType.WARNING.getColor())
+                    .setDescription("I found nothing for `:query`")
+                    .set("query", String.join(" ", args));
+            }
+
+            resultMessage.queue();
 
             return true;
         } catch (IOException e) {
@@ -126,12 +140,12 @@ public class DuckDuckGoCommand extends ThreadCommand {
         return URLDecoder.decode(parts[parts.length - 1], "UTF-8");
     }
 
-    private String generateUri(Message message, String[] args) throws UnsupportedEncodingException {
+    private String generateUri(String[] args, boolean isNSFWEnabled) throws UnsupportedEncodingException {
         String url = "https://duckduckgo.com/html/?q=" + URLEncoder.encode(
             removeBangs(String.join(" ", args)), "UTF-8"
         );
 
-        if (!message.getChannelType().isGuild() || message.getTextChannel().isNSFW()) {
+        if (isNSFWEnabled) {
             url += "&t=hf&ia=web&kp=-2";
         }
         return url;
@@ -142,5 +156,9 @@ public class DuckDuckGoCommand extends ThreadCommand {
             return text;
         }
         return removeBangs(text.substring(1, text.length()));
+    }
+
+    private boolean isNSFWEnabled(Message message) {
+        return !message.getChannelType().isGuild() || message.getTextChannel().isNSFW();
     }
 }
