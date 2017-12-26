@@ -74,7 +74,7 @@ public class DuckDuckGoCommand extends ThreadCommand {
             headers.put("User-Agent", "AvaIre-Discord-Bot (" + orion.getSelfUser().getId() + ")");
 
             message.getChannel().sendTyping().queue();
-            Document document = Jsoup.connect(generateUri(args))
+            Document document = Jsoup.connect(generateUri(message, args))
                 .headers(headers)
                 .timeout(10000)
                 .get();
@@ -109,6 +109,7 @@ public class DuckDuckGoCommand extends ThreadCommand {
             return true;
         } catch (IOException e) {
             e.printStackTrace();
+            Orion.getLogger().error("Failed to complete search query: ", e);
         }
         return false;
     }
@@ -125,10 +126,15 @@ public class DuckDuckGoCommand extends ThreadCommand {
         return URLDecoder.decode(parts[parts.length - 1], "UTF-8");
     }
 
-    private String generateUri(String[] args) throws UnsupportedEncodingException {
-        return "https://duckduckgo.com/html/?q=" + URLEncoder.encode(
+    private String generateUri(Message message, String[] args) throws UnsupportedEncodingException {
+        String url = "https://duckduckgo.com/html/?q=" + URLEncoder.encode(
             removeBangs(String.join(" ", args)), "UTF-8"
         );
+
+        if (!message.getChannelType().isGuild() || message.getTextChannel().isNSFW()) {
+            url += "&t=hf&ia=web&kp=-2";
+        }
+        return url;
     }
 
     private String removeBangs(String text) {
