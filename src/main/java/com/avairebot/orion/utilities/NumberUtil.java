@@ -104,7 +104,7 @@ public class NumberUtil {
      * @return Gets the number that is greater that the minimum and less than the maximum.
      */
     public static int getBetween(int number, int min, int max) {
-        return Math.max(min, Math.min(max, number));
+        return Math.min(max, Math.max(min, number));
     }
 
 
