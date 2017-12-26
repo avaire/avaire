@@ -38,6 +38,10 @@ public class GarbageCollectorJob extends Job {
 
             AudioHandler.MUSIC_MANAGER.remove(entry.getKey());
         }
+
+        // 3 minutes
+        AudioHandler.AUDIO_SESSION.entrySet()
+            .removeIf(next -> (next.getValue().getCreatedAt() + 180000) < System.currentTimeMillis());
     }
 
     private boolean isConnected(AudioManager audioManager) {
