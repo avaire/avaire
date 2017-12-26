@@ -2,10 +2,13 @@ package com.avairebot.orion.commands.music;
 
 import com.avairebot.orion.Orion;
 import com.avairebot.orion.audio.AudioHandler;
+import com.avairebot.orion.audio.AudioSession;
 import com.avairebot.orion.audio.TrackResponse;
 import com.avairebot.orion.audio.VoiceConnectStatus;
 import com.avairebot.orion.contracts.commands.Command;
 import com.avairebot.orion.factories.MessageFactory;
+import com.avairebot.orion.metrics.Metrics;
+import com.avairebot.orion.utilities.NumberUtil;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import net.dv8tion.jda.core.Permission;
@@ -13,6 +16,7 @@ import net.dv8tion.jda.core.entities.Message;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -72,21 +76,38 @@ public class PlayCommand extends Command {
             return false;
         }
 
+        if (AudioHandler.hasAudioSession(message) && NumberUtil.isNumeric(args[0])) {
+            int songIndex = NumberUtil.parseInt(args[0], 1) - 1;
+            AudioSession session = AudioHandler.getAudioSession(message);
+
+            int index = NumberUtil.getBetween(songIndex, 0, session.getSongs().getTracks().size() - 1);
+            AudioTrack track = session.getSongs().getTracks().get(index);
+
+            Metrics.tracksLoaded.inc();
+
+            musicSuccess(message, false).accept(
+                new TrackResponse(AudioHandler.getGuildAudioPlayer(message.getGuild()),
+                    track,
+                    track.getInfo().uri
+                )
+            );
+            AudioHandler.play(message, AudioHandler.getGuildAudioPlayer(message.getGuild()), track);
+
+            if (session.getMessage() != null) {
+                session.getMessage().delete().queue();
+            }
+
+            AudioHandler.removeAudioSession(message);
+            return false;
+        }
+
         boolean finalShouldLeaveMessage = shouldLeaveMessage;
-        AudioHandler.loadAndPlay(message, buildTrackRequestString(args)).handle((Consumer<TrackResponse>) (TrackResponse response) -> {
-            if (!finalShouldLeaveMessage && message.getGuild().getSelfMember().hasPermission(message.getTextChannel(), Permission.MESSAGE_MANAGE)) {
-                message.delete().reason("Song request, removing song to cleanup chat").queue();
-            }
 
-            if (response.getMusicManager().getPlayer().isPaused()) {
-                response.getMusicManager().getPlayer().setPaused(false);
-            }
-
-            if (response.getMusicManager().getPlayer().getPlayingTrack() != null) {
-                if (response.isPlaylist()) sendPlaylistResponse(message, response);
-                else sendTrackResponse(message, response);
-            }
-        }, throwable -> MessageFactory.makeError(message, throwable.getMessage()).queue());
+        AudioHandler.loadAndPlay(message, buildTrackRequestString(args)).handle(
+            musicSuccess(message, finalShouldLeaveMessage),
+            musicFailure(message),
+            musicSession(message, args)
+        );
 
         return true;
     }
@@ -130,5 +151,49 @@ public class PlayCommand extends Command {
         } catch (MalformedURLException ex) {
             return "ytsearch:" + string;
         }
+    }
+
+    private Consumer<TrackResponse> musicSuccess(final Message message, final boolean finalShouldLeaveMessage) {
+        return (TrackResponse response) -> {
+            if (!finalShouldLeaveMessage && message.getGuild().getSelfMember().hasPermission(message.getTextChannel(), Permission.MESSAGE_MANAGE)) {
+                message.delete().reason("Song request, removing song to cleanup chat").queue();
+            }
+
+            if (response.getMusicManager().getPlayer().isPaused()) {
+                response.getMusicManager().getPlayer().setPaused(false);
+            }
+
+            if (response.getMusicManager().getPlayer().getPlayingTrack() != null) {
+                if (response.isPlaylist()) sendPlaylistResponse(message, response);
+                else sendTrackResponse(message, response);
+            }
+        };
+    }
+
+    private Consumer<Throwable> musicFailure(final Message message) {
+        return throwable -> MessageFactory.makeError(message, throwable.getMessage()).queue();
+    }
+
+    private Consumer<AudioSession> musicSession(final Message message, final String[] args) {
+        return (AudioSession audioSession) -> {
+            List<String> songs = new ArrayList<>();
+            List<AudioTrack> tracks = audioSession.getSongs().getTracks();
+            for (int i = 0; i < 9; i++) {
+                if (tracks.size() < i) {
+                    break;
+                }
+
+                AudioTrack track = tracks.get(i);
+
+                songs.add(String.format("`%s` [%s](%s)",
+                    (i + 1), track.getInfo().title, track.getInfo().uri
+                ));
+            }
+
+            MessageFactory.makeSuccess(message, String.join("\n", songs))
+                .setTitle("Results for " + String.join(" ", args))
+                .setFooter("Chose a song with !play <number>")
+                .queue(audioSession::setMessage);
+        };
     }
 }

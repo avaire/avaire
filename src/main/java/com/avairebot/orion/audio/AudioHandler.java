@@ -3,6 +3,7 @@ package com.avairebot.orion.audio;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
+import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Guild;
@@ -20,9 +21,11 @@ public class AudioHandler {
 
     public static final AudioPlayerManager AUDIO_PLAYER_MANAGER;
     public static final Map<Long, GuildMusicManager> MUSIC_MANAGER;
+    public static final Map<String, AudioSession> AUDIO_SESSION;
 
     static {
         MUSIC_MANAGER = new HashMap<>();
+        AUDIO_SESSION = new HashMap<>();
         AUDIO_PLAYER_MANAGER = new DefaultAudioPlayerManager();
 
         AudioSourceManagers.registerRemoteSources(AUDIO_PLAYER_MANAGER);
@@ -143,5 +146,31 @@ public class AudioHandler {
             total += getQueueSize(manager);
         }
         return total;
+    }
+
+    @CheckReturnValue
+    public static AudioSession createAudioSession(Message message, AudioPlaylist playlist) {
+        AudioSession session = new AudioSession(playlist);
+
+        AUDIO_SESSION.put(
+            message.getGuild().getId() + ":" + message.getAuthor().getId(),
+            session
+        );
+
+        return session;
+    }
+
+    @CheckReturnValue
+    public static boolean hasAudioSession(Message message) {
+        return AUDIO_SESSION.containsKey(message.getGuild().getId() + ":" + message.getAuthor().getId());
+    }
+
+    @CheckReturnValue
+    public static AudioSession getAudioSession(Message message) {
+        return AUDIO_SESSION.getOrDefault(message.getGuild().getId() + ":" + message.getAuthor().getId(), null);
+    }
+
+    public static void removeAudioSession(Message message) {
+        AUDIO_SESSION.remove(message.getGuild().getId() + ":" + message.getAuthor().getId());
     }
 }

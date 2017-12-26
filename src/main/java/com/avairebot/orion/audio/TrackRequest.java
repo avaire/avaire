@@ -18,7 +18,7 @@ public class TrackRequest extends Future {
     private final Message message;
     private final String trackUrl;
 
-    public TrackRequest(GuildMusicManager musicManager, Message message, String trackUrl) {
+    TrackRequest(GuildMusicManager musicManager, Message message, String trackUrl) {
         this.musicManager = musicManager;
         this.message = message;
         this.trackUrl = trackUrl;
@@ -28,6 +28,10 @@ public class TrackRequest extends Future {
 
     @Override
     public void handle(final Consumer success, final Consumer<Throwable> failure) {
+        handle(success, failure, null);
+    }
+
+    public void handle(final Consumer success, final Consumer<Throwable> failure, final Consumer<AudioSession> sessionConsumer) {
         Metrics.searchRequests.inc();
 
         AudioHandler.AUDIO_PLAYER_MANAGER.loadItemOrdered(musicManager, trackUrl, new AudioLoadResultHandler() {
@@ -42,8 +46,13 @@ public class TrackRequest extends Future {
 
             @Override
             public void playlistLoaded(AudioPlaylist playlist) {
-                if (trackUrl.startsWith("ytsearch:")) {
-                    trackLoaded(playlist.getTracks().get(0));
+                if (trackUrl.startsWith("ytsearch:") || trackUrl.startsWith("scsearch:")) {
+                    if (sessionConsumer == null) {
+                        trackLoaded(playlist.getTracks().get(0));
+                        return;
+                    }
+
+                    sessionConsumer.accept(AudioHandler.createAudioSession(message, playlist));
                     return;
                 }
 
