@@ -125,15 +125,10 @@ public class NumberUtil {
         int min = (int) ((t % 3600L) / 60L);
         int hrs = (int) (t / 3600L);
 
-        String timestamp;
-
         if (hrs != 0) {
-            timestamp = forceTwoDigits(hrs) + ":" + forceTwoDigits(min) + ":" + forceTwoDigits(sec);
-        } else {
-            timestamp = forceTwoDigits(min) + ":" + forceTwoDigits(sec);
+            return forceTwoDigits(hrs) + ":" + forceTwoDigits(min) + ":" + forceTwoDigits(sec);
         }
-
-        return timestamp;
+        return forceTwoDigits(min) + ":" + forceTwoDigits(sec);
     }
 
     /**
