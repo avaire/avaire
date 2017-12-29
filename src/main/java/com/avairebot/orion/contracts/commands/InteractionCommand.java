@@ -2,10 +2,12 @@ package com.avairebot.orion.contracts.commands;
 
 import com.avairebot.orion.Orion;
 import com.avairebot.orion.commands.CommandPriority;
+import com.avairebot.orion.utilities.MentionableUtil;
 import com.avairebot.orion.utilities.RandomUtil;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.core.entities.User;
 
 import java.awt.*;
 import java.io.IOException;
@@ -63,7 +65,8 @@ public abstract class InteractionCommand extends Command {
 
     @Override
     public boolean onCommand(Message message, String[] args) {
-        if (message.getMentionedUsers().isEmpty()) {
+        User user = MentionableUtil.getUser(message, args, 1);
+        if (user == null) {
             return sendErrorMessage(message, "You must mention a use you want to use the interaction for.");
         }
 
@@ -76,7 +79,7 @@ public abstract class InteractionCommand extends Command {
 
         embedBuilder
             .setImage("attachment://" + getClass().getSimpleName() + "-" + imageIndex + ".gif")
-            .setDescription(buildMessage(message))
+            .setDescription(buildMessage(message, user))
             .setColor(getInteractionColor());
 
         messageBuilder.setEmbed(embedBuilder.build());
@@ -91,11 +94,11 @@ public abstract class InteractionCommand extends Command {
         return true;
     }
 
-    private String buildMessage(Message message) {
+    private String buildMessage(Message message, User user) {
         if (overwrite) {
             return String.format(interaction,
                 message.getMember().getEffectiveName(),
-                message.getGuild().getMember(message.getMentionedUsers().get(0)).getEffectiveName()
+                message.getGuild().getMember(user).getEffectiveName()
             );
         }
 
