@@ -7,11 +7,13 @@ import com.avairebot.orion.contracts.commands.CommandSource;
 import com.avairebot.orion.database.controllers.GuildController;
 import com.avairebot.orion.database.transformers.GuildTransformer;
 import com.avairebot.orion.exceptions.InvalidCommandPrefixException;
+import com.avairebot.orion.middleware.Middleware;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.utils.Checks;
 
 import javax.annotation.Nonnull;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class CommandHandler {
 
@@ -226,6 +228,15 @@ public class CommandHandler {
                         throw new InvalidCommandPrefixException(category.getPrefix() + trigger, command.getName(), entry.getValue().getCommand().getName());
                     }
                 }
+            }
+        }
+
+        for (String middleware : command.getMiddleware()) {
+            String[] parts = middleware.split(":");
+            AtomicReference<Middleware> reference = new AtomicReference<>(Middleware.fromName(parts[0]));
+
+            if (reference.get() == null) {
+                throw new IllegalArgumentException("Middleware reference may not be null, " + parts[0] + " is not a valid middleware!");
             }
         }
 
