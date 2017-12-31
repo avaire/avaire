@@ -131,7 +131,10 @@ public class PlaceholderMessage extends Restable {
 
         List<String> keys = new ArrayList<>(placeholders.keySet());
         keys.sort((o1, o2) -> o2.length() - o1.length());
-        keys.forEach(key -> message = message.replaceAll(":" + key, placeholders.get(key)));
+        keys.forEach(key -> {
+            message = message.replaceAll(":" + key, placeholders.get(key)
+                .replaceAll("\\$", "\\\\\\$"));
+        });
 
         return message;
     }
