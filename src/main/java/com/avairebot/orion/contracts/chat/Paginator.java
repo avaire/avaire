@@ -3,6 +3,7 @@ package com.avairebot.orion.contracts.chat;
 import com.avairebot.orion.utilities.NumberUtil;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -29,6 +30,19 @@ public abstract class Paginator implements Cloneable {
             map.put(i, items.get(i));
         }
         this.items = map;
+        this.perPage = perPage;
+
+        this.setCurrentPage(currentPage);
+    }
+
+    public Paginator(Iterator<?> iterator, int perPage, int currentPage) {
+        int index = 0;
+        Map<Object, Object> items = new HashMap<>();
+        while (iterator.hasNext()) {
+            items.put(index++, iterator.next());
+        }
+
+        this.items = items;
         this.perPage = perPage;
 
         this.setCurrentPage(currentPage);

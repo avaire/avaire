@@ -2,6 +2,7 @@ package com.avairebot.orion.chat;
 
 import com.avairebot.orion.contracts.chat.Paginator;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -29,6 +30,14 @@ public class SimplePaginator extends Paginator {
 
     public SimplePaginator(List<?> items, int perPage) {
         super(items, perPage, 1);
+    }
+
+    public SimplePaginator(Iterator<?> iterator, int perPage, int currentPage) {
+        super(iterator, perPage, currentPage);
+    }
+
+    public SimplePaginator(Iterator<?> iterator, int perPage) {
+        this(iterator, perPage, 1);
     }
 
     public String generateFooter(String command) {
