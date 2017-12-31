@@ -5,15 +5,15 @@ import com.avairebot.orion.audio.AudioHandler;
 import com.avairebot.orion.audio.AudioTrackContainer;
 import com.avairebot.orion.audio.GuildMusicManager;
 import com.avairebot.orion.audio.TrackScheduler;
+import com.avairebot.orion.chat.PlaceholderMessage;
+import com.avairebot.orion.chat.SimplePaginator;
 import com.avairebot.orion.contracts.commands.Command;
 import com.avairebot.orion.factories.MessageFactory;
+import com.avairebot.orion.utilities.NumberUtil;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import net.dv8tion.jda.core.entities.Message;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public class SongCommand extends Command {
 
@@ -48,7 +48,7 @@ public class SongCommand extends Command {
 
     @Override
     public List<String> getMiddleware() {
-        return Collections.singletonList("throttle:channel,1,5");
+        return Collections.singletonList("throttle:channel,2,4");
     }
 
     @Override
@@ -59,10 +59,51 @@ public class SongCommand extends Command {
             return sendErrorMessage(message, "Nothing to display, request music first with `!play`");
         }
 
-        MessageFactory.makeSuccess(message, buildTrackDescription(musicManager.getPlayer(), musicManager.getScheduler()))
+        if (args.length > 0 && NumberUtil.isNumeric(args[0])) {
+            if (musicManager.getScheduler().getQueue().isEmpty()) {
+                return sendSongWithSixSongs(message, musicManager);
+            }
+
+            SimplePaginator paginator = new SimplePaginator(
+                musicManager.getScheduler().getQueue().iterator(), 10, NumberUtil.parseInt(args[0])
+            );
+
+            List<String> messages = new ArrayList<>();
+            paginator.forEach((index, key, val) -> {
+                AudioTrackContainer track = (AudioTrackContainer) val;
+
+                messages.add(String.format("**%s** [%s](%s)",
+                    NumberUtil.parseInt(key.toString()) + 1,
+                    track.getAudioTrack().getInfo().title,
+                    track.getAudioTrack().getInfo().uri
+                ));
+            });
+
+            MessageFactory.makeSuccess(message, String.format("%s\n\n%s",
+                String.join("\n", messages),
+                paginator.generateFooter(generateCommandTrigger(message))
+            )).setTitle("Songs in Queue").queue();
+
+            return true;
+        }
+
+        return sendSongWithSixSongs(message, musicManager);
+    }
+
+    private boolean sendSongWithSixSongs(Message message, GuildMusicManager musicManager) {
+        PlaceholderMessage queueMessage = MessageFactory.makeSuccess(
+            message, buildTrackDescription(musicManager.getPlayer(), musicManager.getScheduler())
+        )
             .setTitle(musicManager.getPlayer().isPaused() ? "Currently Paused" : "Currently Playing")
-            .addField("Songs in queue", buildSongsInQueue(musicManager.getScheduler()), false)
-            .queue();
+            .addField("Songs in queue", buildSongsInQueue(musicManager.getScheduler()), false);
+
+        if (!musicManager.getScheduler().getQueue().isEmpty()) {
+            queueMessage.setFooter(String.format("You can see more songs by using %s <page>",
+                generateCommandTrigger(message)
+            ));
+        }
+
+        queueMessage.queue();
 
         return true;
     }
