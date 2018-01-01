@@ -35,8 +35,8 @@ public class EvalCommand extends SystemCommand {
     }
 
     @Override
-    public String getExampleUsage() {
-        return "`:command 5*(5+9)`";
+    public List<String> getExampleUsage() {
+        return Collections.singletonList("`:command 5*(5+9)`");
     }
 
     @Override

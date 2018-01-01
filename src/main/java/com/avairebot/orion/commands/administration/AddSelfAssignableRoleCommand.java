@@ -39,8 +39,8 @@ public class AddSelfAssignableRoleCommand extends Command {
     }
 
     @Override
-    public String getExampleUsage() {
-        return "`:command DJ`";
+    public List<String> getExampleUsage() {
+        return Collections.singletonList("`:command DJ`");
     }
 
     @Override

@@ -56,8 +56,8 @@ public class EightBallCommand extends Command {
     }
 
     @Override
-    public String getExampleUsage() {
-        return "`:command will i have a good day today?`";
+    public List<String> getExampleUsage() {
+        return Collections.singletonList("`:command will i have a good day today?`");
     }
 
     @Override

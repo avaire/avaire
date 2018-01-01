@@ -41,8 +41,8 @@ public class IPInfoCommand extends Command {
     }
 
     @Override
-    public String getExampleUsage() {
-        return "`:command 8.8.4.4`";
+    public List<String> getExampleUsage() {
+        return Collections.singletonList("`:command 8.8.4.4`");
     }
 
     @Override

@@ -44,9 +44,11 @@ public class PurgeCommand extends Command {
     }
 
     @Override
-    public String getExampleUsage() {
-        return "`:command 56`\n" +
-            "`:command 30 @Senither`";
+    public List<String> getExampleUsage() {
+        return Arrays.asList(
+            "`:command 56`",
+            "`:command 30 @Senither`"
+        );
     }
 
     @Override

@@ -30,8 +30,8 @@ public class BanCommand extends Command {
     }
 
     @Override
-    public String getExampleUsage() {
-        return "`:command @Senither Spam and acting like a twat`";
+    public List<String> getExampleUsage() {
+        return Collections.singletonList("`:command @Senither Spam and acting like a twat`");
     }
 
     @Override

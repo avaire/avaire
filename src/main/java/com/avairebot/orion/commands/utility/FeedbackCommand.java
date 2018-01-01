@@ -37,8 +37,8 @@ public class FeedbackCommand extends Command {
     }
 
     @Override
-    public String getExampleUsage() {
-        return "`:command The thing about the stuff is doing stuff that doesn't make sense for the thing.`";
+    public List<String> getExampleUsage() {
+        return Collections.singletonList("`:command The thing about the stuff is doing stuff that doesn't make sense for the thing.`");
     }
 
     @Override

@@ -43,8 +43,8 @@ public abstract class InteractionCommand extends Command {
     }
 
     @Override
-    public String getExampleUsage() {
-        return "`:command @Orion`";
+    public List<String> getExampleUsage() {
+        return Collections.singletonList("`:command @Orion`");
     }
 
     @Override

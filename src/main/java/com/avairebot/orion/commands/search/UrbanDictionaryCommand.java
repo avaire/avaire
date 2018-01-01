@@ -37,8 +37,8 @@ public class UrbanDictionaryCommand extends Command {
     }
 
     @Override
-    public String getExampleUsage() {
-        return "`:command potato`";
+    public List<String> getExampleUsage() {
+        return Collections.singletonList("`:command potato`");
     }
 
     @Override

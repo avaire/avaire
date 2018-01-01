@@ -12,6 +12,7 @@ import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.Role;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class VolumeCommand extends Command {
@@ -39,8 +40,8 @@ public class VolumeCommand extends Command {
     }
 
     @Override
-    public String getExampleUsage() {
-        return "`:command 80`";
+    public List<String> getExampleUsage() {
+        return Collections.singletonList("`:command 80`");
     }
 
     @Override

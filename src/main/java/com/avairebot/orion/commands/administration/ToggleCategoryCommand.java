@@ -43,8 +43,8 @@ public class ToggleCategoryCommand extends Command {
     }
 
     @Override
-    public String getExampleUsage() {
-        return "`:command fun global off` - Disables all the fun on the server D:";
+    public List<String> getExampleUsage() {
+        return Collections.singletonList("`:command fun global off` - Disables all the fun on the server D:");
     }
 
     @Override

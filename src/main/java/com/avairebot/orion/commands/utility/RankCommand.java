@@ -52,8 +52,8 @@ public class RankCommand extends Command {
     }
 
     @Override
-    public String getExampleUsage() {
-        return "`:command`";
+    public List<String> getExampleUsage() {
+        return Collections.singletonList("`:command`");
     }
 
     @Override

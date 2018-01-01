@@ -36,8 +36,8 @@ public class CalculateCommand extends Command {
     }
 
     @Override
-    public String getExampleUsage() {
-        return "`:command (-50 + sqrt(50 ^ 2 - ((4 * 5) * (100 - 955)))) / (2 * 5) == 9`";
+    public List<String> getExampleUsage() {
+        return Collections.singletonList("`:command (-50 + sqrt(50 ^ 2 - ((4 * 5) * (100 - 955)))) / (2 * 5) == 9`");
     }
 
     @Override

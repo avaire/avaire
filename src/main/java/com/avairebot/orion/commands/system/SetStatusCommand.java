@@ -7,6 +7,7 @@ import net.dv8tion.jda.core.entities.Game;
 import net.dv8tion.jda.core.entities.Message;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class SetStatusCommand extends SystemCommand {
@@ -34,8 +35,8 @@ public class SetStatusCommand extends SystemCommand {
     }
 
     @Override
-    public String getExampleUsage() {
-        return "`:command with some stuff`";
+    public List<String> getExampleUsage() {
+        return Collections.singletonList("`:command with some stuff`");
     }
 
     @Override

@@ -50,8 +50,8 @@ public class DuckDuckGoCommand extends ThreadCommand {
     }
 
     @Override
-    public String getExampleUsage() {
-        return "`:command AvaIre Bot`";
+    public List<String> getExampleUsage() {
+        return Collections.singletonList("`:command AvaIre Bot`");
     }
 
     @Override

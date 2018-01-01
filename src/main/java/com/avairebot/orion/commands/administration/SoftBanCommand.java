@@ -31,8 +31,8 @@ public class SoftBanCommand extends Command {
     }
 
     @Override
-    public String getExampleUsage() {
-        return "`:command @Senither Being a potato`";
+    public List<String> getExampleUsage() {
+        return Collections.singletonList("`:command @Senither Being a potato`");
     }
 
     @Override

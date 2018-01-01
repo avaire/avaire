@@ -67,8 +67,8 @@ public class PlaylistCommand extends Command {
     }
 
     @Override
-    public String getExampleUsage() {
-        return String.join("\n",
+    public List<String> getExampleUsage() {
+        return Arrays.asList(
             "`:command test create` - Creates a playlist called `test`.",
             "`:command test add Some song` - Adds `Some song` to the `test` playlist.",
             "`:command test remove 2` - Removes the 2nd song from the `test`playlist.",

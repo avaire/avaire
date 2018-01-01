@@ -38,8 +38,8 @@ public class VoiceKickCommand extends Command {
     }
 
     @Override
-    public String getExampleUsage() {
-        return "`:command @Senither Yelling at people`";
+    public List<String> getExampleUsage() {
+        return Collections.singletonList("`:command @Senither Yelling at people`");
     }
 
     @Override

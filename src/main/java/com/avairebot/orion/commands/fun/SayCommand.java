@@ -30,8 +30,8 @@ public class SayCommand extends Command {
     }
 
     @Override
-    public String getExampleUsage() {
-        return "`:command I am a BOT`";
+    public List<String> getExampleUsage() {
+        return Arrays.asList("`:command I am a BOT`");
     }
 
     @Override

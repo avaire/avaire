@@ -30,8 +30,8 @@ public class RepeatCommand extends Command {
     }
 
     @Override
-    public String getExampleUsage() {
-        return "`:command I am a BOT`";
+    public List<String> getExampleUsage() {
+        return Collections.singletonList("`:command I am a BOT`");
     }
 
     @Override

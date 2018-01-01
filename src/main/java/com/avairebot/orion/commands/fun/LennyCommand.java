@@ -30,11 +30,6 @@ public class LennyCommand extends Command {
     }
 
     @Override
-    public String getExampleUsage() {
-        return "`:command`";
-    }
-
-    @Override
     public List<String> getTriggers() {
         return Collections.singletonList("lenny");
     }

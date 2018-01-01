@@ -34,8 +34,8 @@ public class SeekCommand extends Command {
     }
 
     @Override
-    public String getExampleUsage() {
-        return "`:command 2:24` - Jumps to 2 minutes 24 seconds of the song.";
+    public List<String> getExampleUsage() {
+        return Collections.singletonList("`:command 2:24` - Jumps to 2 minutes 24 seconds of the song.");
     }
 
     @Override

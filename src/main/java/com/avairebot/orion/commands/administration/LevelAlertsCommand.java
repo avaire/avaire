@@ -39,8 +39,11 @@ public class LevelAlertsCommand extends Command {
     }
 
     @Override
-    public String getExampleUsage() {
-        return "`:command`\n`:command #general`";
+    public List<String> getExampleUsage() {
+        return Arrays.asList(
+            "`:command`",
+            "`:command #general`"
+        );
     }
 
     @Override

@@ -35,8 +35,8 @@ public class ChuckNorrisCommand extends Command {
     }
 
     @Override
-    public String getExampleUsage() {
-        return "`:command @Senither`";
+    public List<String> getExampleUsage() {
+        return Collections.singletonList("`:command @Senither`");
     }
 
     @Override

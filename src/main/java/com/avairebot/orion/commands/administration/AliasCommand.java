@@ -12,6 +12,7 @@ import net.dv8tion.jda.core.entities.Message;
 
 import java.sql.SQLException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class AliasCommand extends Command {
@@ -39,8 +40,8 @@ public class AliasCommand extends Command {
     }
 
     @Override
-    public String getExampleUsage() {
-        return "`:command !ava \">repeat **Website:** https://avairebot.com/ \"`";
+    public List<String> getExampleUsage() {
+        return Collections.singletonList("`:command !ava \">repeat **Website:** https://avairebot.com/ \"`");
     }
 
     @Override

@@ -13,6 +13,7 @@ import net.dv8tion.jda.core.entities.Role;
 
 import java.sql.SQLException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class AutoAssignRoleCommand extends Command {
@@ -41,8 +42,8 @@ public class AutoAssignRoleCommand extends Command {
     }
 
     @Override
-    public String getExampleUsage() {
-        return "`:command @Member`";
+    public List<String> getExampleUsage() {
+        return Collections.singletonList("`:command @Member`");
     }
 
     @Override

@@ -33,8 +33,12 @@ public class UserIdCommand extends Command {
     }
 
     @Override
-    public String getExampleUsage() {
-        return "`:command @Senither`\n`:command alexis`\n`:command 88739639380172800`";
+    public List<String> getExampleUsage() {
+        return Arrays.asList(
+            "`:command @Senither`",
+            "`:command alexis`",
+            "`:command 88739639380172800`"
+        );
     }
 
     @Override

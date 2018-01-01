@@ -40,8 +40,8 @@ public class KickCommand extends Command {
     }
 
     @Override
-    public String getExampleUsage() {
-        return "`:command @Senither Spamming things`";
+    public List<String> getExampleUsage() {
+        return Collections.singletonList("`:command @Senither Spamming things`");
     }
 
     @Override

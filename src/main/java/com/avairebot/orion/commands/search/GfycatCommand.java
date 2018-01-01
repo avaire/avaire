@@ -35,8 +35,8 @@ public class GfycatCommand extends Command {
     }
 
     @Override
-    public String getExampleUsage() {
-        return "`:command cats`";
+    public List<String> getExampleUsage() {
+        return Collections.singletonList("`:command cats`");
     }
 
     @Override

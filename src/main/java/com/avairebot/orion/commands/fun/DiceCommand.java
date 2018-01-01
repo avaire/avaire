@@ -35,8 +35,8 @@ public class DiceCommand extends Command {
     }
 
     @Override
-    public String getExampleUsage() {
-        return "`:command 4D8 2D4`";
+    public List<String> getExampleUsage() {
+        return Collections.singletonList("`:command 4D8 2D4`");
     }
 
     @Override

@@ -33,8 +33,8 @@ public class FlipTextCommand extends Command {
     }
 
     @Override
-    public String getExampleUsage() {
-        return "`:command This is some random message`";
+    public List<String> getExampleUsage() {
+        return Collections.singletonList("`:command This is some random message`");
     }
 
     @Override

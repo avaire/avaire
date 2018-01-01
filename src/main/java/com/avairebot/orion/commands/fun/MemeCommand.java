@@ -45,12 +45,11 @@ public class MemeCommand extends Command {
     }
 
     @Override
-    public String getExampleUsage() {
-        return String.join("\n", Arrays.asList(
+    public List<String> getExampleUsage() {
+        return Arrays.asList(
             "`:command buzz \"Memes\" \"Memes everywhere\"`",
             "`:command @Senither \"Creates a Meme command for Orion\" \"Almost no one uses it\"`"
-
-        ));
+        );
     }
 
     @Override

@@ -101,7 +101,7 @@ public abstract class Command extends Reflectionable {
      *
      * @return Possibly-null, an example of how to use the command.
      */
-    public String getExampleUsage() {
+    public List<String> getExampleUsage() {
         return null;
     }
 
@@ -296,8 +296,12 @@ public abstract class Command extends Reflectionable {
      * @return The example usage for the current command.
      */
     public final String generateExampleUsage(Message message) {
+        if (getExampleUsage() == null) {
+            return formatCommandGeneratorString(message, "`:command`");
+        }
+
         return formatCommandGeneratorString(message,
-            getExampleUsage() == null ? "`:command`" : getExampleUsage()
+            getExampleUsage().isEmpty() ? "`:command`" : String.join("\n", getExampleUsage())
         );
     }
 

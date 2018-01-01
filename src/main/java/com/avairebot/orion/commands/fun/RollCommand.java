@@ -35,8 +35,8 @@ public class RollCommand extends Command {
     }
 
     @Override
-    public String getExampleUsage() {
-        return "`:command 3 6`";
+    public List<String> getExampleUsage() {
+        return Collections.singletonList("`:command 3 6`");
     }
 
     @Override

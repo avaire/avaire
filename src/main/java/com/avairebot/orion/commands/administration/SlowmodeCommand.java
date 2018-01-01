@@ -43,8 +43,11 @@ public class SlowmodeCommand extends Command {
     }
 
     @Override
-    public String getExampleUsage() {
-        return "`:command off` - Disables slowmode\n`:command 1 5` - Enables slowmode, allowing one message every five seconds.";
+    public List<String> getExampleUsage() {
+        return Arrays.asList(
+            "`:command off` - Disables slowmode",
+            "`:command 1 5` - Enables slowmode, allowing one message every five seconds."
+        );
     }
 
     @Override
