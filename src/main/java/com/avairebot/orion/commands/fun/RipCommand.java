@@ -34,11 +34,6 @@ public class RipCommand extends Command {
     }
 
     @Override
-    public String getExampleUsage() {
-        return null;
-    }
-
-    @Override
     public List<String> getTriggers() {
         return Collections.singletonList("rip");
     }

@@ -48,7 +48,6 @@ public class LevelAlertsCommand extends Command {
         return Arrays.asList("levelalerts", "lvlalert");
     }
 
-
     @Override
     public List<String> getMiddleware() {
         return Arrays.asList(

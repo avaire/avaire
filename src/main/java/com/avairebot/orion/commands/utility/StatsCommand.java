@@ -52,11 +52,6 @@ public class StatsCommand extends Command {
     }
 
     @Override
-    public String getExampleUsage() {
-        return null;
-    }
-
-    @Override
     public List<String> getTriggers() {
         return Arrays.asList("stats", "about");
     }

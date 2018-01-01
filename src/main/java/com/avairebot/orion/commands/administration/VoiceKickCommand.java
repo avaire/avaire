@@ -42,7 +42,6 @@ public class VoiceKickCommand extends Command {
         return "`:command @Senither Yelling at people`";
     }
 
-
     @Override
     public List<String> getTriggers() {
         return Arrays.asList("voicekick", "vkick");

@@ -30,16 +30,6 @@ public class VoteSkipCommand extends Command {
     }
 
     @Override
-    public List<String> getUsageInstructions() {
-        return null;
-    }
-
-    @Override
-    public String getExampleUsage() {
-        return null;
-    }
-
-    @Override
     public List<String> getTriggers() {
         return Arrays.asList("voteskip", "vskip");
     }

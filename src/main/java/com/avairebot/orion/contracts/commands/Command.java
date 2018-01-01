@@ -89,7 +89,9 @@ public abstract class Command extends Reflectionable {
      *
      * @return Possibly-null, the command usage instructions.
      */
-    public abstract List<String> getUsageInstructions();
+    public List<String> getUsageInstructions() {
+        return null;
+    }
 
     /**
      * Get the example usage for the given command, this is used to help users with
@@ -99,7 +101,9 @@ public abstract class Command extends Reflectionable {
      *
      * @return Possibly-null, an example of how to use the command.
      */
-    public abstract String getExampleUsage();
+    public String getExampleUsage() {
+        return null;
+    }
 
     /**
      * Gets am immutable list of command triggers that can be used to invoke the current

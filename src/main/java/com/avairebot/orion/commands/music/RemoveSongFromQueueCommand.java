@@ -39,11 +39,6 @@ public class RemoveSongFromQueueCommand extends Command {
     }
 
     @Override
-    public String getExampleUsage() {
-        return null;
-    }
-
-    @Override
     public List<String> getTriggers() {
         return Arrays.asList("removesong", "songremove");
     }

@@ -33,11 +33,6 @@ public class PauseCommand extends Command {
     }
 
     @Override
-    public String getExampleUsage() {
-        return null;
-    }
-
-    @Override
     public List<String> getTriggers() {
         return Collections.singletonList("pause");
     }
