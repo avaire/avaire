@@ -39,7 +39,13 @@ public class BanModule {
 
     private static boolean banUser(Message message, User user, String[] args, boolean soft) {
         String reason = generateMessage(args);
-        message.getGuild().getController().ban(user, soft ? 0 : 7, reason).queue(aVoid -> {
+
+        message.getGuild().getController().ban(user, soft ? 0 : 7, String.format("%s - %s#%s (%s)",
+            reason,
+            message.getAuthor().getName(),
+            message.getAuthor().getDiscriminator(),
+            message.getAuthor().getId()
+        )).queue(aVoid -> {
             MessageFactory.makeSuccess(message, "**:target** was permanently banned by :user for \":reason\"")
                 .set("target", user.getName() + "#" + user.getDiscriminator())
                 .set("reason", reason)

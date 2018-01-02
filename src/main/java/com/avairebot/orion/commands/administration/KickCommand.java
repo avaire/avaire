@@ -73,7 +73,13 @@ public class KickCommand extends Command {
 
     private boolean kickUser(Message message, Member user, String[] args) {
         String reason = generateMessage(args);
-        message.getGuild().getController().kick(user, reason).queue(aVoid -> {
+
+        message.getGuild().getController().kick(user, String.format("%s - %s#%s (%s)",
+            reason,
+            message.getAuthor().getName(),
+            message.getAuthor().getDiscriminator(),
+            message.getAuthor().getId()
+        )).queue(aVoid -> {
                 MessageFactory.makeSuccess(message, "**:target** was kicked by :user for \":reason\"")
                     .set("target", user.getUser().getName() + "#" + user.getUser().getDiscriminator())
                     .set("reason", reason)
