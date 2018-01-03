@@ -10,11 +10,8 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.regex.Pattern;
 
 public class CalculateCommand extends Command {
-
-    private static final Pattern NUMBER_REGEX = Pattern.compile("^\\d+$");
 
     public CalculateCommand(Orion orion) {
         super(orion);
@@ -52,23 +49,19 @@ public class CalculateCommand extends Command {
         }
 
         String string = String.join(" ", args).trim();
-        if (NUMBER_REGEX.matcher(string).find()) {
-            MessageFactory.makeInfo(message, string).queue();
-            return true;
-        }
 
         try {
             Expression expression = createExpression(string);
             BigDecimal result = expression.eval();
 
             if (expression.isBoolean()) {
-                MessageFactory.makeInfo(message, result.intValueExact() == 1
-                    ? "True" : "False"
+                MessageFactory.makeInfo(message,
+                    generateEasterEgg(expression, result, result.toPlainString(), result.intValueExact() == 1 ? "True" : "False")
                 ).queue();
                 return true;
             }
 
-            MessageFactory.makeInfo(message, result.toPlainString()).queue();
+            MessageFactory.makeInfo(message, generateEasterEgg(expression, result, result.toPlainString(), string)).queue();
         } catch (Exception ex) {
             return sendErrorMessage(message, ex.getMessage().replaceAll("'", "`"));
         }
@@ -99,5 +92,23 @@ public class CalculateCommand extends Command {
         }
 
         return expression;
+    }
+
+    private String generateEasterEgg(Expression expression, BigDecimal result, String query, String stringifiedResult) {
+        if (result.intValueExact() == 69) {
+            return stringifiedResult + "\t( ͡° ͜ʖ ͡°)";
+        }
+
+        query = query.replaceAll(" ", "");
+
+        if (query.startsWith("2+2-1") && ((expression.isBoolean() && result.intValueExact() == 1) || result.intValueExact() == 3)) {
+            return stringifiedResult + "\t-\tQuick maths!";
+        }
+
+        if (query.equals("10") && stringifiedResult.equals("10")) {
+            return "There are only 10 types of people in the world, those who understand binary and those who don't.";
+        }
+
+        return stringifiedResult;
     }
 }
