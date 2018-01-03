@@ -10,6 +10,7 @@ import com.avairebot.orion.contracts.ai.Intent;
 import com.avairebot.orion.contracts.commands.Command;
 import com.avairebot.orion.contracts.reflection.Reflectionable;
 import com.avairebot.orion.contracts.scheduler.Job;
+import com.avairebot.orion.contracts.shard.Shardable;
 import com.avairebot.orion.database.DatabaseManager;
 import com.avairebot.orion.database.migrate.migrations.*;
 import com.avairebot.orion.database.serializer.PlaylistSongSerializer;
@@ -26,7 +27,6 @@ import com.avairebot.orion.shard.ShardEntityCounter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.sedmelluq.discord.lavaplayer.tools.PlayerLibrary;
-import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDAInfo;
 import net.dv8tion.jda.core.entities.SelfUser;
 import org.reflections.Reflections;
@@ -36,14 +36,12 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ScheduledFuture;
 import java.util.function.Consumer;
 
-public class Orion {
+public class Orion extends Shardable {
 
     public static final Gson GSON = new GsonBuilder()
         .registerTypeAdapter(
@@ -56,7 +54,6 @@ public class Orion {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Orion.class);
 
-    private static final List<OrionShard> SHARDS = new CopyOnWriteArrayList<>();
     private static final ConnectQueue CONNECT_QUEUE = new ConnectQueue();
 
     private final Settings settings;
@@ -207,10 +204,6 @@ public class Orion {
             + "\n";
     }
 
-    public List<OrionShard> getShards() {
-        return SHARDS;
-    }
-
     public ConnectQueue getConnectQueue() {
         return CONNECT_QUEUE;
     }
@@ -245,15 +238,6 @@ public class Orion {
 
     public IntelligenceManager getIntelligenceManager() {
         return intelligenceManager;
-    }
-
-    public boolean areWeReadyYet() {
-        for (OrionShard shard : getShards()) {
-            if (shard.getJDA().getStatus() != JDA.Status.CONNECTED) {
-                return false;
-            }
-        }
-        return true;
     }
 
     public void shutdown() {
