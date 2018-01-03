@@ -70,7 +70,7 @@ public class PluginLoader {
     }
 
     public void invokePlugin(Orion orion) {
-        classLoader.getPlugin().setOrion(orion);
+        classLoader.getPlugin().init(orion);
         classLoader.getPlugin().onEnable();
     }
 

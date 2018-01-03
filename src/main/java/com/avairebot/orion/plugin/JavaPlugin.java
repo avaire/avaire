@@ -10,6 +10,8 @@ import com.avairebot.orion.database.DatabaseManager;
 import com.avairebot.orion.database.migrate.Migrations;
 import com.avairebot.orion.shard.OrionShard;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashSet;
 import java.util.List;
@@ -19,6 +21,7 @@ public abstract class JavaPlugin {
 
     private final Set<ListenerAdapter> eventListeners = new HashSet<>();
 
+    private Logger logger = LoggerFactory.getLogger(JavaPlugin.class);
     private Orion orion;
 
     /**
@@ -70,8 +73,9 @@ public abstract class JavaPlugin {
         return orion;
     }
 
-    void setOrion(Orion orion) {
+    final void init(Orion orion) {
         this.orion = orion;
+        this.logger = LoggerFactory.getLogger(this.getClass().getCanonicalName());
     }
 
     public List<OrionShard> getShards() {
@@ -84,6 +88,10 @@ public abstract class JavaPlugin {
 
     public DatabaseManager getDatabase() {
         return orion.getDatabase();
+    }
+
+    public Logger getLogger() {
+        return logger;
     }
 
     public abstract void onEnable();
