@@ -25,6 +25,26 @@ public abstract class JavaPlugin {
     private Orion orion;
 
     /**
+     * Initializes the plugin by setting the global orion
+     * application instance and preparing some data.
+     *
+     * @param orion The global orion application instance.
+     */
+    final void init(Orion orion) {
+        this.orion = orion;
+        this.logger = LoggerFactory.getLogger(this.getClass().getCanonicalName());
+    }
+
+    /**
+     * Gets a set of the event listeners that has been registered by the plugin.
+     *
+     * @return A set of registered event listeners.
+     */
+    final Set<ListenerAdapter> getEventListeners() {
+        return eventListeners;
+    }
+
+    /**
      * Register the given command into the command handler, creating the
      * command container and saving it into the commands collection.
      *
@@ -54,48 +74,78 @@ public abstract class JavaPlugin {
      * <p>
      * All migrations must follow the {@link com.avairebot.orion.contracts.database.migrations.Migration Migration contract}.
      *
-     * @param migration the migration that should be registered
+     * @param migration The migration that should be registered
      * @see com.avairebot.orion.contracts.database.migrations.Migration
      */
     public void registerMigration(Migration migration) {
         orion.getDatabase().getMigrations().register(migration);
     }
 
+    /**
+     * Registers a JDA event listener, the class must extend from the {@link ListenerAdapter Abstract Listener Adapter}.
+     *
+     * @param listener The event listener that should be registered.
+     */
     public void registerEventListener(ListenerAdapter listener) {
         eventListeners.add(listener);
     }
 
-    Set<ListenerAdapter> getEventListeners() {
-        return eventListeners;
-    }
-
+    /**
+     * Returns the global Orion application instance.
+     *
+     * @return The global Orion application instance.
+     */
     public Orion getOrion() {
         return orion;
     }
 
-    final void init(Orion orion) {
-        this.orion = orion;
-        this.logger = LoggerFactory.getLogger(this.getClass().getCanonicalName());
-    }
-
+    /**
+     * Gets a list of all the shard instances of the bot, the
+     * list will always have at least one entry.
+     *
+     * @return A list of bot shard entries.
+     */
     public List<OrionShard> getShards() {
         return orion.getShards();
     }
 
+    /**
+     * Gets the application cache manager, giving you
+     * access to store things in files or in memory.
+     *
+     * @return The application cache manager.
+     */
     public CacheManager getCache() {
         return orion.getCache();
     }
 
+    /**
+     * Gets the application database manager, giving you access to query the database, create migrations, and change the schema.
+     *
+     * @return The application database manager.
+     */
     public DatabaseManager getDatabase() {
         return orion.getDatabase();
     }
 
+    /**
+     * Returns the plugin logger associated with the application logger. The returned
+     * logger automatically tags all log messages with the plugin's name.
+     *
+     * @return Logger associated with this plugin.
+     */
     public Logger getLogger() {
         return logger;
     }
 
+    /**
+     * Called when this plugin is enabled
+     */
     public abstract void onEnable();
 
+    /**
+     * Called when this plugin is disabled
+     */
     public void onDisable() {
         // This method does nothing...
     }
