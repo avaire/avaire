@@ -1,0 +1,92 @@
+package com.avairebot.commands.administration;
+
+import com.avairebot.AvaIre;
+import com.avairebot.commands.Category;
+import com.avairebot.commands.CategoryHandler;
+import com.avairebot.commands.CommandPriority;
+import com.avairebot.contracts.commands.Command;
+import com.avairebot.database.controllers.GuildController;
+import com.avairebot.database.transformers.ChannelTransformer;
+import com.avairebot.database.transformers.GuildTransformer;
+import com.avairebot.factories.MessageFactory;
+import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.core.entities.TextChannel;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+public class CategoriesCommand extends Command {
+
+    private static final String ONLINE = "<:online:324986081378435072>";
+    private static final String DISABLED = "<:away:324986135346675712>";
+    private static final String DISABLE_GLOBALLY = "<:dnd:324986174806425610>";
+
+    public CategoriesCommand(AvaIre avaire) {
+        super(avaire, false);
+    }
+
+    @Override
+    public String getName() {
+        return "Categories Command";
+    }
+
+    @Override
+    public String getDescription() {
+        return "Shows status of all command categories in the current or mentioned channel, both for globally and per-channel.";
+    }
+
+    @Override
+    public List<String> getUsageInstructions() {
+        return Collections.singletonList("`:command [channel]` - Displays the status of the command categories in the mentioned channel, or the current channel if no channel was mentioned.");
+    }
+
+    @Override
+    public List<String> getTriggers() {
+        return Arrays.asList("categories", "cats");
+    }
+
+    @Override
+    public CommandPriority getCommandPriority() {
+        return CommandPriority.LOW;
+    }
+
+    @Override
+    public boolean onCommand(Message message, String[] args) {
+        TextChannel channel = message.getTextChannel();
+        if (!message.getMentionedChannels().isEmpty()) {
+            channel = message.getMentionedChannels().get(0);
+        }
+
+        String status = String.join("   ",
+            ONLINE + " Enabled",
+            DISABLED + " Disabled in Channel",
+            DISABLE_GLOBALLY + " Disabled Globally"
+        );
+
+        GuildTransformer guildTransformer = GuildController.fetchGuild(avaire, message.getGuild());
+        ChannelTransformer transformer = guildTransformer.getChannel(channel.getId());
+
+        List<String> items = new ArrayList<>();
+        for (Category category : CategoryHandler.getValues()) {
+            if (!transformer.isCategoryEnabledGlobally(category)) {
+                items.add(DISABLE_GLOBALLY + category.getName());
+                continue;
+            }
+
+            if (!transformer.isCategoryEnabled(category)) {
+                items.add(DISABLED + category.getName());
+                continue;
+            }
+
+            items.add(ONLINE + category.getName());
+        }
+
+        MessageFactory.makeInfo(message, status + "\n\n" + String.join("\n", items))
+            .setTitle("Command Category Status for #" + channel.getName())
+            .queue();
+
+        return true;
+    }
+}

@@ -1,14 +1,30 @@
 <p align="center">
-    <img src="https://avairebot.com/assets/img/orion-banner.png">
+    <img src="https://avairebot.com/assets/img/banner-simple.png">
 </p>
 
-## About Orion
+## About AvaIre
 
-Orion is the next generation of [AvaIre](https://github.com/avaire/avaire), a multipurpose Discord bot made for fun, more information comming soon...
+AvaIre is a multipurpose Discord bot made for fun, written in Java 8, using the [JDA](https://github.com/DV8FromTheWorld/JDA) library.
+
+## Main features
+
+- Music streaming from YouTube, SoundCloud, Twitch etc.
+- Custom music playlists that you can play anytime
+- Moderation commands (Ban, kick, slowmode)
+- Search for comics and reaction gifs
+- Extended server functionality (Welcome messages, server and user info)
+- High level of customization
+    - Changing messages on a per-server basis
+    - Change the languages Ava uses
+    - Create custom aliases for existing commands
+    - Change the prefix ava uses on a per-module basis
+- And more, check the [full command reference](https://avairebot.com/docs/master/commands) for all the commands!
+
+Visit our [website](https://avairebot.com/) for more information.
 
 ## Contributing
 
-Thank you for considering contributing to Orion! The contribution guide can be found in the [AvaIre documentation](https://avairebot.com/docs/contributions).
+Thank you for considering contributing to AvaIre! The contribution guide can be found in the [AvaIre documentation](https://avairebot.com/docs/contributions).
 
 ## License
 
@@ -35,7 +51,7 @@ Orion relies on the following projects:
 
 <p align="center">
   <a href="https://discord.gg/gt2FWER"><img src="https://discordapp.com/api/guilds/284083636368834561/widget.png?style=banner2" alt="Discord server"></a>
-  <br>Keep up with Orion on AvaIre's support server: https://discord.gg/gt2FWER
+  <br>AvaIre support server: https://discord.gg/gt2FWER
 </p>
 
 ---

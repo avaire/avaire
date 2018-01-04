@@ -1,15 +1,15 @@
 apply plugin: 'java'
 apply plugin: 'idea'
 
-version = '0.3.32'
+version = '0.3.33'
 group = 'com.avairebot'
-description = 'Orion Discord Bot'
+description = 'AvaIre Discord Bot'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 ext {
-    moduleName = 'Orion'
+    moduleName = 'AvaIre'
 }
 
 tasks.withType(JavaCompile) {
@@ -20,9 +20,9 @@ tasks.withType(JavaCompile) {
 
 task fatJar(type: Jar) {
     manifest {
-        attributes 'Implementation-Title': 'Orion: Discord Boat',
+        attributes 'Implementation-Title': 'AvaIre: Discord Boat',
             'Implementation-Version': version,
-            'Main-Class': 'com.avairebot.orion.Main'
+            'Main-Class': 'com.avairebot.Main'
     }
 
     baseName = project.name
@@ -75,7 +75,7 @@ dependencies {
 import org.apache.tools.ant.filters.ReplaceTokens
 
 processResources {
-    filesMatching("**/orion.properties") {
+    filesMatching("**/app.properties") {
         filter ReplaceTokens, tokens: [
             "project.version"   : project.version,
             "project.groupId"   : project.group,

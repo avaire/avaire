@@ -3,9 +3,9 @@
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>INFO</level>
         </filter>
-        <file>storage/logs/orion.log</file>
+        <file>storage/logs/avaire.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>storage/logs/orion.%d{yyyyMMdd}.log</fileNamePattern>
+            <fileNamePattern>storage/logs/avaire.%d{yyyyMMdd}.log</fileNamePattern>
             <maxHistory>30</maxHistory>
         </rollingPolicy>
         <encoder>
@@ -75,7 +75,7 @@
         </encoder>
     </appender>
 
-    <logger name="com.avairebot.orion" level="DEBUG" additivity="true">
+    <logger name="com.avairebot.avaire" level="DEBUG" additivity="true">
         <appender-ref ref="DEBUG"/>
         <appender-ref ref="ERROR"/>
         <!--
