@@ -13,6 +13,7 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 public class Request extends Future {
+
     private final String url;
     private final RequestType type;
 
@@ -45,7 +46,6 @@ public class Request extends Future {
         return this;
     }
 
-    @Override
     protected void handle(Consumer success, Consumer<Throwable> failure) {
         try {
             builder.url(buildUrl());
