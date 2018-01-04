@@ -57,7 +57,19 @@ public class PlayerController {
                 return (PlayerTransformer) orion.getCache().getAdapter(CacheType.MEMORY).get(cacheToken);
             }
 
-            orion.getCache().getAdapter(CacheType.MEMORY).put(cacheToken, transformer, 300);
+            // If the users name haven't been encoded yet, we'll do it below.
+            String username = transformer.getRawData().get("username").toString();
+            if (username.startsWith("base64:")) {
+                orion.getCache()
+                    .getAdapter(CacheType.MEMORY)
+                    .put(cacheToken, transformer, 300);
+
+                return transformer;
+            }
+
+            orion.getDatabase().newQueryBuilder(Constants.PLAYER_EXPERIENCE_TABLE_NAME)
+                .where("user_id", message.getAuthor().getId())
+                .update(statement -> statement.set("username", message.getAuthor().getName(), true));
 
             return transformer;
         } catch (SQLException ex) {
