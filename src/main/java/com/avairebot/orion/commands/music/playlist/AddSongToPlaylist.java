@@ -107,7 +107,7 @@ public class AddSongToPlaylist extends PlaylistSubCommand {
                 .where("id", playlist.getId()).andWhere("guild_id", message.getGuild().getId())
                 .update(statement -> {
                     statement.set("songs", Orion.GSON.toJson(playlist.getSongs()));
-                    statement.set("size", playlist.getSongs().size());
+                    statement.set("amount", playlist.getSongs().size());
                 });
 
             orion.getCache().getAdapter(CacheType.MEMORY)
