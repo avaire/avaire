@@ -11,6 +11,7 @@ import com.avairebot.utilities.ArrayUtil;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import io.prometheus.client.Histogram;
 import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.core.exceptions.InsufficientPermissionException;
 
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
@@ -61,7 +62,12 @@ public class ProcessCommand extends Middleware {
         } catch (Exception ex) {
             Metrics.commandExceptions.labels(ex.getClass().getSimpleName()).inc();
 
-            if (ex instanceof FriendlyException) {
+            if (ex instanceof InsufficientPermissionException) {
+                MessageFactory.makeError(message, "Error: " + ex.getMessage())
+                    .queue(newMessage -> newMessage.delete().queueAfter(30, TimeUnit.SECONDS));
+
+                return false;
+            } else if (ex instanceof FriendlyException) {
                 MessageFactory.makeError(message, "Error: " + ex.getMessage())
                     .queue(newMessage -> newMessage.delete().queueAfter(30, TimeUnit.SECONDS));
             }
