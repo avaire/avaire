@@ -3,6 +3,7 @@ package com.avairebot.handlers;
 public enum EventTypes {
 
     GenericEvent(GenericEvent.class),
+    GuildJoinLeaveEvent(GuildJoinLeave.class),
     GuildMemberJoinEvent(GuildMemberJoin.class),
     GuildMemberLeaveEvent(GuildMemberLeave.class),
     GuildRoleDeleteEvent(GuildRoleDelete.class),
