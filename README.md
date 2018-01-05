@@ -28,10 +28,10 @@ Thank you for considering contributing to AvaIre! The contribution guide can be 
 
 ## License
 
-Orion is open-sourced software licensed under the [GNU General Public License v3.0](http://www.gnu.org/licenses/gpl.html).
+AvaIre is open-sourced software licensed under the [GNU General Public License v3.0](http://www.gnu.org/licenses/gpl.html).
 
 ## Third Party Licenses
-Orion relies on the following projects:
+AvaIre relies on the following projects:
 
 | Name | License  |
 |:---|:---|
