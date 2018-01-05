@@ -211,7 +211,7 @@ public class MessageCreate extends EventHandler {
             strings.add("\nAvaIre Support Server:\n*https://avairebot.com/support*");
 
             MessageFactory.makeEmbeddedMessage(event.getMessage(), Color.decode("#E91E63"), String.join("\n", strings))
-                .set("oauth", avaire.getConfig().botAuth().getOAuth())
+                .set("oauth", avaire.getConfig().getString("discord.oauth"))
                 .set("botId", avaire.getSelfUser().getId())
                 .queue();
         } catch (Exception ex) {

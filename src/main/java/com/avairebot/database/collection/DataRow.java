@@ -401,6 +401,15 @@ public class DataRow {
         return items.keySet();
     }
 
+    /**
+     * Gets the raw map object for the data row.
+     *
+     * @return The raw data of the data row.
+     */
+    public Map<String, Object> getRaw() {
+        return items;
+    }
+
     @Override
     public String toString() {
         return toJson();

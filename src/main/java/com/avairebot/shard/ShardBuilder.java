@@ -21,7 +21,7 @@ public class ShardBuilder {
     protected synchronized static JDABuilder getDefaultShardBuilder(AvaIre avaire) {
         if (defaultShardBuilder == null) {
             JDABuilder builder = new JDABuilder(AccountType.BOT)
-                .setToken(avaire.getConfig().botAuth().getToken())
+                .setToken(avaire.getConfig().getString("discord.token"))
                 .setGame(Game.watching("my code start up..."))
                 .setReconnectQueue(avaire.getConnectQueue())
                 .setAutoReconnect(true);

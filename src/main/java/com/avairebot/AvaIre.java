@@ -4,8 +4,7 @@ import com.avairebot.ai.IntelligenceManager;
 import com.avairebot.cache.CacheManager;
 import com.avairebot.commands.CategoryHandler;
 import com.avairebot.commands.CommandHandler;
-import com.avairebot.config.ConfigurationLoader;
-import com.avairebot.config.MainConfiguration;
+import com.avairebot.config.Configuration;
 import com.avairebot.contracts.ai.Intent;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.contracts.reflection.Reflectionable;
@@ -57,7 +56,7 @@ public class AvaIre extends Shardable {
     private static final ConnectQueue CONNECT_QUEUE = new ConnectQueue();
 
     private final Settings settings;
-    private final MainConfiguration config;
+    private final Configuration config;
     private final CacheManager cache;
     private final DatabaseManager database;
     private final IntelligenceManager intelligenceManager;
@@ -80,10 +79,13 @@ public class AvaIre extends Shardable {
         this.cache = new CacheManager(this);
 
         LOGGER.info("Loading configuration");
-        ConfigurationLoader configLoader = new ConfigurationLoader();
-        this.config = (MainConfiguration) configLoader.load("config.json", MainConfiguration.class);
-        if (this.config == null) {
-            LOGGER.error("Something went wrong while trying to load the configuration, exiting program...");
+        config = new Configuration(this, null, "config.yml");
+        if (!config.exists()) {
+            getLogger().info("The {} configuration file is missing!", "config.yml");
+            getLogger().info("Creating file and terminating program...");
+
+            config.saveDefaultConfig();
+
             System.exit(0);
         }
 
@@ -220,7 +222,7 @@ public class AvaIre extends Shardable {
         return settings;
     }
 
-    public MainConfiguration getConfig() {
+    public Configuration getConfig() {
         return config;
     }
 

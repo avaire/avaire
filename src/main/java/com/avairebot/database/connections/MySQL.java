@@ -16,11 +16,11 @@ public class MySQL extends HostnameDatabase {
      */
     public MySQL(DatabaseManager dbm) {
         super(
-            dbm.getAvaire().getConfig().getDatabase().getHostname(),
+            dbm.getAvaire().getConfig().getString("database.hostname"),
             3306,
-            dbm.getAvaire().getConfig().getDatabase().getDatabase(),
-            dbm.getAvaire().getConfig().getDatabase().getUsername(),
-            dbm.getAvaire().getConfig().getDatabase().getPassword()
+            dbm.getAvaire().getConfig().getString("database.database"),
+            dbm.getAvaire().getConfig().getString("database.username"),
+            dbm.getAvaire().getConfig().getString("database.password")
         );
 
         setDatabaseManager(dbm);

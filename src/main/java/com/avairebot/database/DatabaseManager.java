@@ -46,7 +46,7 @@ public class DatabaseManager {
 
     public Database getConnection() throws SQLException, DatabaseException {
         if (connection == null) {
-            switch (avaire.getConfig().getDatabase().getType().toLowerCase()) {
+            switch (avaire.getConfig().getString("database.type", "invalid").toLowerCase()) {
                 case "mysql":
                     connection = new MySQL(this);
                     break;

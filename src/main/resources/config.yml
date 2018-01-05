@@ -1,0 +1,196 @@
+
+#--------------------------------------------------------------------------
+# Welcome to the AvaIre Configuration
+#--------------------------------------------------------------------------
+#
+# Below you'll find all the configurable options for Ava, if you're using
+# a plugin that you want to configure, you should look for a config file
+# in the "plugins/plugin name" folder.
+#
+# The configuration is written in a format known as YAML, you can learn
+# more about the language at https://learnxinyminutes.com/docs/yaml
+#
+# Need to validate if config has no errors and will pass Avas configuration
+# management system? Try out https://codebeautify.org/yaml-validator
+#
+# Got any questions? Contact the development team on the official support
+# server for Ava at https://avairebot.com/support
+#
+
+#--------------------------------------------------------------------------
+# Application Environment
+#--------------------------------------------------------------------------
+#
+# The application environment determines what is logged to the console, and
+# what applications are loaded, this is to give a better user experience
+# since having the console flooded with information can be very
+# overwhelming if you don't know what you're looking at.
+#
+# AvaIre supports two different environments, "production" and "development"
+#
+# Production is used for minimal console output and for all parts of the
+# application to be enabled. Development is used for debugging messages
+# and preventing some parts of the application from running, to stop
+# in-development changes from ruining the production environment.
+#
+
+environment: 'production'
+
+#--------------------------------------------------------------------------
+# Discord Application Information
+#--------------------------------------------------------------------------
+#
+# Discord application information in things like your application token,
+# application id, application secret, etc. To run a Discord bot you'll
+# need an application token, if you don't already have an application
+# with discord you can easily create one in two minutes.
+#
+# Start by going to the link below, create a new application, give it some
+# name, then click on "Create a Bot User", and you're good to go!
+# https://discordapp.com/developers/applications/me
+#
+# AvaIre needs your Discord application token to login and interact with
+# users, and optionally the application ID for generating invite links
+# people can use to invite the bot to their servers with.
+#
+
+discord:
+
+  # This is your Discord application token, if you don't have a Discord
+  # application, check the link above and follow the short guide to
+  # create one, once you have it, replace the text between the
+  # quotes with your token.
+  #
+
+  token: 'YourBotTokenShouldGoHere'
+
+  # This is the OAuth2 URL used for invite links, you should replace
+  # the "<client_id>" with your Discord application client ID to
+  # make the link valid so people can actually use it to invite
+  # your bot to their server.
+  #
+
+  oauth: 'https://discordapp.com/oauth2/authorize?&client_id=<client_id>&scope=bot&permissions=66186303'
+
+#--------------------------------------------------------------------------
+# Database Information
+#--------------------------------------------------------------------------
+#
+# AvaIre uses a database for storing things like custom prefixes, playlists,
+# user XP and levels, statistics, autoroles, aliases and everything else.
+#
+# AvaIre currently only support the MySQL database type, with support for
+# more types in the works, to get start simply just populate the fields
+# below with your database login information.
+#
+# Note: Make sure the database user has permission to create, delete and edit
+# tables in the database you want to use, Ava uses a migration system that
+# will create all the needed tables, and roll out changes between versions
+# automatically, this require creating new tables, and editing and
+# deleting existing tables.
+#
+
+database:
+
+  # This is the database type that Ava should use, "MySQL" is currently the
+  # only supported format while support for more is in the works.
+  #
+  type: 'mysql'
+
+  # This is the name of the database that Ava should use for all tables.
+  #
+  database: 'avaire'
+
+  # This is the hostname of the database, if you're hosting the database on
+  # the same machine the bot is also hosted on you should be fine keeping
+  # it as "localhost", if you're using an external server for database
+  # hosting you could use the IP address here.
+  #
+  hostname: 'localhost'
+
+  # This is the username for the user that should be used by Ava to access
+  # the database, the user should have permission to create, read,
+  # update and delete tables in order for Ava to work correctly.
+  #
+  username: 'username'
+
+  # The password for the database user, used to access the database.
+  #
+  password: 'password'
+
+#--------------------------------------------------------------------------
+# Bot Status
+#--------------------------------------------------------------------------
+#
+# Once every minute, Ava will change her "playing" status to something on
+# the list below, you can define what type of status it is by prefixing
+# the status with one of the options below.
+#
+#   "watching:something" This produces "Watching something"
+#   "listening:some cool music" This produces "Listening to some cool music"
+#   "streaming:video games" This produces "Streaming video games"
+#
+# If no prefix is given the playing status type will be used instead.
+#
+
+playing:
+  - '.help'
+
+#--------------------------------------------------------------------------
+# Bot Access (Bot Administrators)
+#--------------------------------------------------------------------------
+#
+# The list below should contain a list of user IDs of people you want to be
+# able to access all system commands for Ava, things like restarting,
+# system information, code evaluation, etc.
+#
+# You can find your user ID by using the .userid command in Ava.
+#
+
+botAccess:
+  - '88739639380172800'
+
+#--------------------------------------------------------------------------
+# Webhook Server Log
+#--------------------------------------------------------------------------
+#
+# The webhook option is only used for logging information about servers
+# when the bot joins or leaves a server, this can give a nice overview
+# of what servers the bot is joining or when it leaves a server,
+# which server it was.
+#
+
+webhook:
+
+  # The ID of the webhook for the channel that should receive the messages.
+  #
+  id: ''
+
+  # The long token at the end of the webhook, used to verify the request.
+  #
+  token: ''
+
+#--------------------------------------------------------------------------
+# API Keys (These are all optional)
+#--------------------------------------------------------------------------
+#
+# API keys are access tokens for different services used by Ava to provided
+# additional functionality, all the API key fields are optional, however
+# some services may be disabled if they're left out.
+#
+
+apiKeys:
+
+  # Google API key, this is used for music requests to YouTube and the
+  # Shorten API for shortening links, note the play command will still
+  # work with youtube links without an API key.
+  #
+  google: ''
+
+  # DialogFlow is the service used by Ava for her artificial intelligence,
+  # the AI will be disabled without the API key, you can register for
+  # an API key on their website as well as creating your own custom
+  # AI agent, if you want to use the same AI agent Ava uses you
+  # can find it on github at: https://github.com/avaire/agent
+  #
+  dialogflow: ''

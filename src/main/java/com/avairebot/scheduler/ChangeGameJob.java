@@ -21,13 +21,13 @@ public class ChangeGameJob extends Job {
             return;
         }
 
-        if (index >= avaire.getConfig().getPlaying().size()) {
+        if (index >= avaire.getConfig().getStringList("playing").size()) {
             index = 0;
         }
 
         for (AvaireShard shard : avaire.getShards()) {
             shard.getJDA().getPresence().setGame(
-                getGameFromType(avaire.getConfig().getPlaying().get(index), shard)
+                getGameFromType(avaire.getConfig().getStringList("playing").get(index), shard)
             );
         }
         index++;

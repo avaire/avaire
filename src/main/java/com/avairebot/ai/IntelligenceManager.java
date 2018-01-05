@@ -35,7 +35,7 @@ public class IntelligenceManager {
     private AIDataService service;
 
     public IntelligenceManager(AvaIre avaire) {
-        String dialogFlowClientToken = avaire.getConfig().getAPIKeys().getDialogFlow();
+        String dialogFlowClientToken = avaire.getConfig().getString("apiKeys.dialogflow", "invalid");
         if (dialogFlowClientToken.length() != 32) {
             executor = null;
             this.avaire = null;

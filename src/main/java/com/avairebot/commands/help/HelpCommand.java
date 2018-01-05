@@ -80,7 +80,7 @@ public class HelpCommand extends Command {
             return false;
         }
 
-        boolean isBotAdmin = avaire.getConfig().getBotAccess().contains(message.getAuthor().getId());
+        boolean isBotAdmin = avaire.getConfig().getStringList("botAccess").contains(message.getAuthor().getId());
         if (!isBotAdmin && category.getName().equalsIgnoreCase("System")) {
             MessageFactory.makeError(message, "You don't have permissions to run any of the  commands in the `System` " +
                 "category, system commands can affect all the servers the bot is currently running on, and thus are " +
@@ -180,7 +180,7 @@ public class HelpCommand extends Command {
     }
 
     private String getCategories(Message message) {
-        boolean isBotAdmin = avaire.getConfig().getBotAccess().contains(message.getAuthor().getId());
+        boolean isBotAdmin = avaire.getConfig().getStringList("botAccess").contains(message.getAuthor().getId());
 
         return CategoryHandler.getValues().stream()
             .map(Category::getName)

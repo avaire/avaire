@@ -1,6 +1,7 @@
 storage/
 docs/
 /config.json
+/config.yml
 *.class
 
 # Mobile Tools for Java (J2ME)
