@@ -50,7 +50,7 @@ public class PlayCommand extends Command {
 
     @Override
     public List<String> getMiddleware() {
-        return Collections.singletonList("throttle:guild,2,5");
+        return Collections.singletonList("throttle:guild,2,4");
     }
 
     @Override
