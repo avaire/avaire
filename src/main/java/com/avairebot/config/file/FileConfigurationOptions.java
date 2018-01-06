@@ -1,8 +1,8 @@
 package com.avairebot.config.file;
 
-import com.avairebot.contracts.config.ConfigurationBase;
 import com.avairebot.config.MemoryConfiguration;
 import com.avairebot.config.MemoryConfigurationOptions;
+import com.avairebot.contracts.config.ConfigurationBase;
 import com.avairebot.contracts.config.file.FileConfiguration;
 
 /**

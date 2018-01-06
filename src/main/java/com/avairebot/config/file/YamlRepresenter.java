@@ -1,8 +1,8 @@
 package com.avairebot.config.file;
 
+import com.avairebot.config.serialization.ConfigurationSerialization;
 import com.avairebot.contracts.config.ConfigurationSection;
 import com.avairebot.contracts.config.serialization.ConfigurationSerializable;
-import com.avairebot.config.serialization.ConfigurationSerialization;
 import org.yaml.snakeyaml.nodes.Node;
 import org.yaml.snakeyaml.representer.Representer;
 
