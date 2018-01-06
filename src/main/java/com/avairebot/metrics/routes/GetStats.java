@@ -19,25 +19,26 @@ public class GetStats extends SparkRoute {
         response.type("application/json");
 
         JSONObject root = new JSONObject();
-        JSONArray a = new JSONArray();
+        JSONArray shards = new JSONArray();
 
         for (AvaireShard shard : metrics.getAvaire().getShards()) {
-            JSONObject fbStats = new JSONObject();
-            fbStats.put("id", shard.getShardId())
+            JSONObject stats = new JSONObject();
+            stats.put("id", shard.getShardId())
                 .put("guilds", shard.getJDA().getGuilds().size())
                 .put("users", shard.getJDA().getUsers().size())
-                .put("status", shard.getJDA().getStatus());
+                .put("status", shard.getJDA().getStatus())
+                .put("channels", (shard.getJDA().getTextChannels().size() + shard.getJDA().getVoiceChannels().size()));
 
-            a.put(fbStats);
+            shards.put(stats);
         }
 
-        JSONObject g = new JSONObject();
-        g.put("guilds", metrics.getAvaire().getShardEntityCounter().getGuilds());
-        g.put("channels", metrics.getAvaire().getShardEntityCounter().getChannels());
-        g.put("users", metrics.getAvaire().getShardEntityCounter().getUsers());
+        JSONObject global = new JSONObject();
+        global.put("guilds", metrics.getAvaire().getShardEntityCounter().getGuilds());
+        global.put("channels", metrics.getAvaire().getShardEntityCounter().getChannels());
+        global.put("users", metrics.getAvaire().getShardEntityCounter().getUsers());
 
-        root.put("shards", a);
-        root.put("global", g);
+        root.put("shards", shards);
+        root.put("global", global);
 
         return root;
     }
