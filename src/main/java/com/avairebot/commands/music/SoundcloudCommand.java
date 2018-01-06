@@ -1,11 +1,15 @@
 package com.avairebot.commands.music;
 
 import com.avairebot.AvaIre;
+import com.avairebot.audio.AudioHandler;
 import com.avairebot.commands.CommandContainer;
 import com.avairebot.commands.CommandHandler;
 import com.avairebot.contracts.commands.Command;
+import com.avairebot.utilities.NumberUtil;
 import net.dv8tion.jda.core.entities.Message;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -43,13 +47,29 @@ public class SoundcloudCommand extends Command {
 
     @Override
     public boolean onCommand(Message message, String[] args) {
+        if (args.length == 0) {
+            return sendErrorMessage(message, "Missing music `query`, you must include a link to the song you want to listen to, or at least give me a song title!");
+        }
+
         CommandContainer container = CommandHandler.getCommand(PlayCommand.class);
         if (container == null) {
             return sendErrorMessage(message, "The `Play Command` doesn't exist anymore, this command doesn't work without it.");
         }
 
-        return container.getCommand().onCommand(message, new String[]{
-            "scsearch:", String.join(" ", args)
-        });
+        PlayCommand playCommand = (PlayCommand) container.getCommand();
+
+        if (AudioHandler.hasAudioSession(message) && NumberUtil.isNumeric(args[0])) {
+            return playCommand.loadSongFromSession(message, args);
+        }
+
+        try {
+            new URL(String.join(" ", args));
+
+            return container.getCommand().onCommand(message, args);
+        } catch (MalformedURLException ex) {
+            return container.getCommand().onCommand(message, new String[]{
+                "scsearch:", String.join(" ", args)
+            });
+        }
     }
 }

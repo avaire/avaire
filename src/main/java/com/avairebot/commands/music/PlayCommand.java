@@ -5,6 +5,8 @@ import com.avairebot.audio.AudioHandler;
 import com.avairebot.audio.AudioSession;
 import com.avairebot.audio.TrackResponse;
 import com.avairebot.audio.VoiceConnectStatus;
+import com.avairebot.commands.CommandContainer;
+import com.avairebot.commands.CommandHandler;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.factories.MessageFactory;
 import com.avairebot.metrics.Metrics;
@@ -56,7 +58,7 @@ public class PlayCommand extends Command {
     @Override
     public boolean onCommand(Message message, String[] args) {
         if (args.length == 0) {
-            return sendErrorMessage(message, "Missing music `query`, you must include a link to the song you want to listen to!");
+            return sendErrorMessage(message, "Missing music `query`, you must include a link to the song you want to listen to, or at least give me a song title!");
         }
 
         boolean shouldLeaveMessage = false;
@@ -72,28 +74,7 @@ public class PlayCommand extends Command {
         }
 
         if (AudioHandler.hasAudioSession(message) && NumberUtil.isNumeric(args[0])) {
-            int songIndex = NumberUtil.parseInt(args[0], 1) - 1;
-            AudioSession session = AudioHandler.getAudioSession(message);
-
-            int index = NumberUtil.getBetween(songIndex, 0, session.getSongs().getTracks().size() - 1);
-            AudioTrack track = session.getSongs().getTracks().get(index);
-
-            Metrics.tracksLoaded.inc();
-
-            musicSuccess(message, false).accept(
-                new TrackResponse(AudioHandler.getGuildAudioPlayer(message.getGuild()),
-                    track,
-                    track.getInfo().uri
-                )
-            );
-            AudioHandler.play(message, AudioHandler.getGuildAudioPlayer(message.getGuild()), track);
-
-            if (session.getMessage() != null) {
-                session.getMessage().delete().queue();
-            }
-
-            AudioHandler.removeAudioSession(message);
-            return false;
+            return loadSongFromSession(message, args);
         }
 
         boolean finalShouldLeaveMessage = shouldLeaveMessage;
@@ -105,6 +86,31 @@ public class PlayCommand extends Command {
         );
 
         return true;
+    }
+
+    public boolean loadSongFromSession(Message message, String[] args) {
+        int songIndex = NumberUtil.parseInt(args[0], 1) - 1;
+        AudioSession session = AudioHandler.getAudioSession(message);
+
+        int index = NumberUtil.getBetween(songIndex, 0, session.getSongs().getTracks().size() - 1);
+        AudioTrack track = session.getSongs().getTracks().get(index);
+
+        Metrics.tracksLoaded.inc();
+
+        musicSuccess(message, false).accept(
+            new TrackResponse(AudioHandler.getGuildAudioPlayer(message.getGuild()),
+                track,
+                track.getInfo().uri
+            )
+        );
+        AudioHandler.play(message, AudioHandler.getGuildAudioPlayer(message.getGuild()), track);
+
+        if (session.getMessage() != null) {
+            session.getMessage().delete().queue();
+        }
+
+        AudioHandler.removeAudioSession(message);
+        return false;
     }
 
     private void sendPlaylistResponse(Message message, TrackResponse response) {
@@ -185,9 +191,17 @@ public class PlayCommand extends Command {
                 ));
             }
 
+            String command = generateCommandTrigger(message);
+            if (args[0].startsWith("scsearch:")) {
+                CommandContainer container = CommandHandler.getCommand(SoundcloudCommand.class);
+                if (container != null) {
+                    command = container.getCommand().generateCommandTrigger(message);
+                }
+            }
+
             MessageFactory.makeSuccess(message, String.join("\n", songs))
                 .setTitle("Results for " + String.join(" ", args))
-                .setFooter("Chose a song with !play <number>")
+                .setFooter(String.format("Chose a song with %s <number>", command))
                 .queue(audioSession::setMessage);
         };
     }
