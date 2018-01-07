@@ -6,6 +6,7 @@ import com.avairebot.metrics.handlers.SparkExceptionHandler;
 import com.avairebot.metrics.routes.GetMetrics;
 import com.avairebot.metrics.routes.GetStats;
 import io.prometheus.client.Counter;
+import io.prometheus.client.Gauge;
 import io.prometheus.client.Histogram;
 import io.prometheus.client.hotspot.DefaultExports;
 import io.prometheus.client.logback.InstrumentedAppender;
@@ -29,19 +30,18 @@ public class Metrics {
     // ##                             AvaIre Stats
     // ################################################################################
 
-    public static final Counter commandsRatelimited = Counter.build()
-        .name("avaire_commands_ratelimited_total")
-        .help("Total ratelimited commands")
-        .labelNames("class") // use the simple name of the command class
+    public static final Gauge guilds = Gauge.build()
+        .name("avaire_guilds_total")
+        .help("Total number of guilds the bot is in")
         .register();
 
-    public static final Counter slowmodeRatelimited = Counter.build()
-        .name("avaire_slowmode_ratelimited_total")
-        .help("Total ratelimited messages")
-        .labelNames("channel")
+    public static final Gauge geoTracker = Gauge.build()
+        .name("avaire_geo_tracker_total")
+        .help("Total number of guilds split up by geographic location")
+        .labelNames("region")
         .register();
 
-    // music stuff
+    // Music
 
     public static final Counter searchRequests = Counter.build() //search requests issued by users
         .name("avaire_music_search_requests_total")
@@ -58,7 +58,19 @@ public class Metrics {
         .help("Total failed track loads by the audio loader")
         .register();
 
-    // commands
+    // Commands
+
+    public static final Counter commandsRatelimited = Counter.build()
+        .name("avaire_commands_ratelimited_total")
+        .help("Total ratelimited commands")
+        .labelNames("class") // use the simple name of the command class
+        .register();
+
+    public static final Counter slowmodeRatelimited = Counter.build()
+        .name("avaire_slowmode_ratelimited_total")
+        .help("Total ratelimited messages")
+        .labelNames("channel")
+        .register();
 
     public static final Counter commandsReceived = Counter.build()
         .name("avaire_commands_received_total")
