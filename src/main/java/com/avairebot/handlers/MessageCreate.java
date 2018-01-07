@@ -81,7 +81,7 @@ public class MessageCreate extends EventHandler {
             }
 
             if (isMentionableAction(event)) {
-                container = CommandHandler.getLazyCommand(ArrayUtil.toArguments(event.getMessage().getContent())[1]);
+                container = CommandHandler.getLazyCommand(ArrayUtil.toArguments(event.getMessage().getRawContent())[1]);
                 if (container != null && canExecuteCommand(event, container)) {
                     Statistics.addCommands();
 
