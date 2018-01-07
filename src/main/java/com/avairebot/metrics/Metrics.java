@@ -58,6 +58,11 @@ public class Metrics {
         .help("Total failed track loads by the audio loader")
         .register();
 
+    public static final Gauge musicPlaying = Gauge.build()
+        .name("avaire_guild_music_playing_total")
+        .help("Total number of guilds listening to music")
+        .register();
+
     // Commands
 
     public static final Counter commandsRatelimited = Counter.build()
