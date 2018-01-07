@@ -58,7 +58,7 @@ public class DiceCommand extends Command {
 
         for (int i = 0; i < args.length && i < 5; i++) {
             String arg = args[i];
-            String[] split = arg.split("d");
+            String[] split = arg.toLowerCase().split("d");
             int dice, sides;
 
             try {
