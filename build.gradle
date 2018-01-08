@@ -1,7 +1,7 @@
 apply plugin: 'java'
 apply plugin: 'idea'
 
-version = '0.3.49'
+version = '0.3.50'
 group = 'com.avairebot'
 description = 'AvaIre Discord Bot'
 

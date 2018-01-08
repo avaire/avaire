@@ -56,12 +56,12 @@ public class CalculateCommand extends Command {
 
             if (expression.isBoolean()) {
                 MessageFactory.makeInfo(message,
-                    generateEasterEgg(expression, result, result.toPlainString(), result.intValueExact() == 1 ? "True" : "False")
+                    generateEasterEgg(expression, result, string, result.intValueExact() == 1 ? "True" : "False")
                 ).queue();
                 return true;
             }
 
-            MessageFactory.makeInfo(message, generateEasterEgg(expression, result, result.toPlainString(), string)).queue();
+            MessageFactory.makeInfo(message, generateEasterEgg(expression, result, string, result.toPlainString())).queue();
         } catch (Exception ex) {
             return sendErrorMessage(message, ex.getMessage().replaceAll("'", "`"));
         }
