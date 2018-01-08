@@ -37,7 +37,7 @@ public class PlayCommand extends Command {
 
     @Override
     public String getDescription() {
-        return "Plays the provided song for you, if just the song title is given the bot will search YouTube for your song.";
+        return "Plays the provided song for you, if just the song title is given the bot will search YouTube for your song and give you some suggestions, you can also use YouTube, SoundCloud, TwitchTV, Bandcamp, and Vimeo link, or raw sound file, mp3, flac, wav, webm, mp4, ogg, aac, m3u and pls formats.";
     }
 
     @Override
@@ -53,6 +53,14 @@ public class PlayCommand extends Command {
     @Override
     public List<String> getMiddleware() {
         return Collections.singletonList("throttle:guild,2,4");
+    }
+
+    @Override
+    public List<String> getExampleUsage() {
+        return Arrays.asList(
+            "`:command A cool song` - Finds songs with the name \"A cool song\".",
+            "`:command https://www.youtube.com/watch?v=dQw4w9WgXcQ` - Plays the song off a link"
+        );
     }
 
     @Override
