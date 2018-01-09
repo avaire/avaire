@@ -134,7 +134,6 @@ public class Configuration implements ConfigurationSection {
         } catch (IOException ex) {
             LOGGER.warn("Could not save " + outFile.getName() + " to " + outFile, ex);
         }
-        System.exit(0);
     }
 
     private InputStream getResource(String filename) {

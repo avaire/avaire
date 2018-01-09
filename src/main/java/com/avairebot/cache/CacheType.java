@@ -3,6 +3,7 @@ package com.avairebot.cache;
 import com.avairebot.cache.adapters.FileAdapter;
 import com.avairebot.cache.adapters.MemoryAdapter;
 import com.avairebot.contracts.cache.CacheAdapter;
+import com.avairebot.shared.ExitCodes;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
@@ -25,7 +26,7 @@ public enum CacheType {
                 }
             } catch (InstantiationException | NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
                 System.out.printf("Invalid cache type given: %s", e.getMessage());
-                System.exit(0);
+                System.exit(ExitCodes.EXIT_CODE_ERROR);
             }
         }
     }

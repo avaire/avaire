@@ -5,6 +5,7 @@ import com.avairebot.Constants;
 import com.avairebot.cache.CacheItem;
 import com.avairebot.contracts.cache.CacheAdapter;
 import com.avairebot.contracts.cache.CacheClosure;
+import com.avairebot.shared.ExitCodes;
 import org.slf4j.LoggerFactory;
 
 import java.io.BufferedWriter;
@@ -26,7 +27,7 @@ public class FileAdapter extends CacheAdapter {
 
         if (!storagePath.exists() && !storagePath.mkdirs()) {
             LoggerFactory.getLogger(FileAdapter.class).error("Failed to create cache storage folder, exiting application...");
-            System.exit(0);
+            System.exit(ExitCodes.EXIT_CODE_NORMAL);
         }
     }
 

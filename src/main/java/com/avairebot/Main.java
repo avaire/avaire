@@ -1,5 +1,6 @@
 package com.avairebot;
 
+import com.avairebot.shared.ExitCodes;
 import org.apache.commons.cli.*;
 
 import java.io.IOException;
@@ -22,10 +23,10 @@ public class Main {
 
             if (cmd.hasOption("help")) {
                 formatter.printHelp("Help Menu", options);
-                System.exit(1);
+                System.exit(ExitCodes.EXIT_CODE_NORMAL);
             } else if (cmd.hasOption("version")) {
                 System.out.println(AvaIre.getVersionInfo());
-                System.exit(1);
+                System.exit(ExitCodes.EXIT_CODE_NORMAL);
             }
 
             new AvaIre(new Settings(cmd));
@@ -33,7 +34,7 @@ public class Main {
             System.out.println(e.getMessage());
             formatter.printHelp("", options);
 
-            System.exit(1);
+            System.exit(ExitCodes.EXIT_CODE_NORMAL);
         }
     }
 }

@@ -23,6 +23,7 @@ import com.avairebot.scheduler.ScheduleHandler;
 import com.avairebot.shard.AvaireShard;
 import com.avairebot.shard.ConnectQueue;
 import com.avairebot.shard.ShardEntityCounter;
+import com.avairebot.shared.ExitCodes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.sedmelluq.discord.lavaplayer.tools.PlayerLibrary;
@@ -86,7 +87,7 @@ public class AvaIre extends Shardable {
 
             config.saveDefaultConfig();
 
-            System.exit(0);
+            System.exit(ExitCodes.EXIT_CODE_NORMAL);
         }
 
         LOGGER.info("Registering and connecting to database");
@@ -156,7 +157,7 @@ public class AvaIre extends Shardable {
             }
         } catch (InvalidPluginsPathException | InvalidPluginException e) {
             e.printStackTrace();
-            System.exit(0);
+            System.exit(ExitCodes.EXIT_CODE_ERROR);
         }
 
         LOGGER.info("Running database migrations");
@@ -179,7 +180,7 @@ public class AvaIre extends Shardable {
             } catch (Exception ex) {
                 getLogger().error("Caught an exception while starting shard {}!", i, ex);
                 getLogger().error("Exiting program...");
-                System.exit(0);
+                System.exit(ExitCodes.EXIT_CODE_ERROR);
             }
         }
 
@@ -242,8 +243,12 @@ public class AvaIre extends Shardable {
         return intelligenceManager;
     }
 
-    public void shutdown() {
-        getLogger().info("Shutting down bot instance gracefully.");
+    private void shutdown() {
+        shutdown(ExitCodes.EXIT_CODE_RESTART);
+    }
+
+    public void shutdown(int exitCode) {
+        getLogger().info("Shutting down bot instance gracefully with exit code " + exitCode);
         for (AvaireShard shard : getShards()) {
             shard.getJDA().shutdown();
         }
@@ -258,7 +263,7 @@ public class AvaIre extends Shardable {
             getLogger().error("Failed to close database connection during shutdown: ", ex);
         }
 
-        System.exit(0);
+        System.exit(exitCode);
     }
 
     private void autoloadPackage(String path, Consumer<Reflectionable> callback) {
