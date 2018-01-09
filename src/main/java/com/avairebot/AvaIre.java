@@ -243,7 +243,7 @@ public class AvaIre extends Shardable {
         return intelligenceManager;
     }
 
-    private void shutdown() {
+    public void shutdown() {
         shutdown(ExitCodes.EXIT_CODE_RESTART);
     }
 
