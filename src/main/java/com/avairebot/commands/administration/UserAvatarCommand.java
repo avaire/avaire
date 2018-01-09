@@ -62,6 +62,6 @@ public class UserAvatarCommand extends Command {
 
         String extension = parts[parts.length - 1];
 
-        return avatarUrl + "?size=1024&." + extension;
+        return avatarUrl + "?size=256&." + extension;
     }
 }
