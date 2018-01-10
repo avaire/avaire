@@ -1,7 +1,7 @@
 apply plugin: 'java'
 apply plugin: 'idea'
 
-version = '0.3.53'
+version = '0.3.54'
 group = 'com.avairebot'
 description = 'AvaIre Discord Bot'
 
@@ -20,7 +20,7 @@ tasks.withType(JavaCompile) {
 
 task fatJar(type: Jar) {
     manifest {
-        attributes 'Implementation-Title': 'AvaIre: Discord Boat',
+        attributes 'Implementation-Title': 'AvaIre: Discord Bot',
             'Implementation-Version': version,
             'Main-Class': 'com.avairebot.Main'
     }
