@@ -4,6 +4,7 @@ import com.avairebot.AvaIre;
 import com.avairebot.cache.CacheItem;
 import com.avairebot.contracts.commands.CacheFingerprint;
 import com.avairebot.contracts.middleware.Middleware;
+import com.avairebot.contracts.middleware.ThrottleMessage;
 import com.avairebot.factories.MessageFactory;
 import com.avairebot.metrics.Metrics;
 import com.avairebot.utilities.NumberUtil;
@@ -39,12 +40,7 @@ public class Throttle extends Middleware {
 
             int attempts = (Integer) item.getValue();
             if (attempts >= maxAttempts) {
-                Metrics.commandsRatelimited.labels(stack.getCommand().getClass().getSimpleName()).inc();
-                MessageFactory.makeWarning(message, "Too many `:command` attempts. Please try again in **:time** seconds.")
-                    .set("command", stack.getCommand().getName())
-                    .set("time", ((item.getTime() - System.currentTimeMillis()) / 1000) + 1)
-                    .queue();
-                return false;
+                return cancelCommandThrottleRequest(message, stack, item);
             }
 
             if (stack.next()) {
@@ -56,6 +52,29 @@ public class Throttle extends Middleware {
                 "Invalid integers given to throttle command by \"%s\", args: (%s, %s)", stack.getCommand().getName(), args[1], args[2]
             ));
         }
+        return false;
+    }
+
+    private boolean cancelCommandThrottleRequest(Message message, MiddlewareStack stack, CacheItem item) {
+        Metrics.commandsRatelimited.labels(stack.getCommand().getClass().getSimpleName()).inc();
+
+        String throttleMessage = "Too many `:command` attempts. Please try again in **:time** seconds.";
+
+        ThrottleMessage annotation = stack.getCommand().getClass().getAnnotation(ThrottleMessage.class);
+        if (annotation != null && annotation.message().trim().length() > 0) {
+            if (annotation.overwrite()) {
+                throttleMessage = annotation.message();
+            } else {
+                throttleMessage += annotation.message();
+            }
+        }
+
+        MessageFactory.makeWarning(message, throttleMessage)
+            .set("command", stack.getCommand().getName())
+            .set("time", ((item.getTime() - System.currentTimeMillis()) / 1000) + 1)
+            .set("prefix", stack.getCommand().generateCommandPrefix(message))
+            .queue();
+
         return false;
     }
 
