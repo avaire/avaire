@@ -82,7 +82,7 @@ public class StatsCommand extends Command {
             new MessageEmbed.Field("DB Queries run", getDatabaseQueriesStats(), true),
             new MessageEmbed.Field("Messages Received", getMessagesReceivedStats(), true),
             new MessageEmbed.Field("Shard", "" + message.getJDA().getShardInfo().getShardId(), true),
-            new MessageEmbed.Field("Commands Run", number.format(Statistics.getCommands()), true),
+            new MessageEmbed.Field("Commands Ran", number.format(Statistics.getCommands()), true),
             new MessageEmbed.Field("Memory Usage", memoryUsage(), true),
             new MessageEmbed.Field("Uptime", applicationUptime(), true),
             new MessageEmbed.Field("Members", number.format(avaire.getShardEntityCounter().getUsers()), true),
