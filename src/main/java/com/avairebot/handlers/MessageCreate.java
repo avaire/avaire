@@ -90,10 +90,11 @@ public class MessageCreate extends EventHandler {
                 }
 
                 if (avaire.getIntelligenceManager().isEnabled()) {
-                    if (!isAIEnabledForChannel(event, properties.getGuild())) {
-                        return;
+                    if (isAIEnabledForChannel(event, properties.getGuild())) {
+                        avaire.getIntelligenceManager().request(
+                            event.getMessage(), event.getMessage().getContent()
+                        );
                     }
-                    avaire.getIntelligenceManager().request(event.getMessage(), event.getMessage().getContent());
                     return;
                 }
             }

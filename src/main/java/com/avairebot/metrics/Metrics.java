@@ -80,25 +80,44 @@ public class Metrics {
     public static final Counter commandsReceived = Counter.build()
         .name("avaire_commands_received_total")
         .help("Total received commands. Some of these might get ratelimited.")
-        .labelNames("class") // use the simple name of the command class: PlayCommand, DanceCommand, ShardsCommand etc
+        .labelNames("class")
         .register();
 
     public static final Counter commandsExecuted = Counter.build()
         .name("avaire_commands_executed_total")
         .help("Total executed commands by class")
-        .labelNames("class") // use the simple name of the command class: PlayCommand, DanceCommand, ShardsCommand etc
+        .labelNames("class")
         .register();
 
     public static final Histogram executionTime = Histogram.build() // commands execution time, excluding ratelimited ones
         .name("avaire_command_execution_duration_seconds")
         .help("Command execution time, excluding handling ratelimited commands.")
-        .labelNames("class") // use the simple name of the command class: PlayCommand, DanceCommand, ShardsCommand etc
+        .labelNames("class")
         .register();
 
     public static final Counter commandExceptions = Counter.build()
         .name("avaire_commands_exceptions_total")
         .help("Total uncaught exceptions thrown by command invocation")
         .labelNames("class") // class of the exception
+        .register();
+
+    // AI Requests
+
+    public static final Counter aiRequestsReceived = Counter.build()
+        .name("avaire_ai_received_total")
+        .help("Total received ai requests.")
+        .register();
+
+    public static final Counter aiRequestsExecuted = Counter.build()
+        .name("avaire_ai_executed_total")
+        .help("Total executed ai intents by class")
+        .labelNames("class")
+        .register();
+
+    public static final Histogram aiExecutionTime = Histogram.build()
+        .name("avaire_ai_execution_duration_seconds")
+        .help("AI intent execution time.")
+        .labelNames("class")
         .register();
 
     // ################################################################################

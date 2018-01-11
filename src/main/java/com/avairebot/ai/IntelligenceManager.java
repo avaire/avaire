@@ -8,6 +8,8 @@ import ai.api.model.AIResponse;
 import com.avairebot.AvaIre;
 import com.avairebot.contracts.ai.Intent;
 import com.avairebot.factories.MessageFactory;
+import com.avairebot.metrics.Metrics;
+import io.prometheus.client.Histogram;
 import net.dv8tion.jda.core.entities.Message;
 
 import java.util.Arrays;
@@ -58,6 +60,8 @@ public class IntelligenceManager {
             return false;
         }
 
+        Metrics.aiRequestsExecuted.labels(intent.getClass().getSimpleName()).inc(0D);
+
         INTENTS.put(new IntentAction(intent.getAction()), intent);
         return true;
     }
@@ -66,6 +70,8 @@ public class IntelligenceManager {
         if (!isEnabled()) {
             return;
         }
+
+        Metrics.aiRequestsReceived.inc();
 
         String[] split = request.split(" ");
 
@@ -95,17 +101,27 @@ public class IntelligenceManager {
 
             for (Map.Entry<IntentAction, Intent> entry : INTENTS.entrySet()) {
                 if (entry.getKey().isWildcard() && action.startsWith(entry.getKey().getAction())) {
-                    entry.getValue().onIntent(message, response);
+                    invokeIntent(message, response, entry.getValue());
                     return;
                 }
 
                 if (entry.getKey().getAction().equals(action)) {
-                    entry.getValue().onIntent(message, response);
+                    invokeIntent(message, response, entry.getValue());
+                    return;
                 }
             }
         } catch (AIServiceException e) {
             e.printStackTrace();
         }
+    }
+
+    private void invokeIntent(Message message, AIResponse response, Intent intent) {
+        Metrics.aiRequestsExecuted.labels(intent.getClass().getSimpleName()).inc();
+        Histogram.Timer timer = Metrics.aiExecutionTime.labels(intent.getClass().getSimpleName()).startTimer();
+
+        intent.onIntent(message, response);
+
+        timer.observeDuration();
     }
 
     private String generateUsername(Message message) {
