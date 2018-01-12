@@ -12,6 +12,8 @@ import java.util.Map;
 
 public class GarbageCollectorJob extends Job {
 
+    private static int counter = 1;
+
     public GarbageCollectorJob(AvaIre avaire) {
         super(avaire);
     }
@@ -42,6 +44,10 @@ public class GarbageCollectorJob extends Job {
         // 3 minutes
         AudioHandler.AUDIO_SESSION.entrySet()
             .removeIf(next -> (next.getValue().getCreatedAt() + 180000) < System.currentTimeMillis());
+
+        if (counter++ % 60 == 0) {
+            System.gc();
+        }
     }
 
     private boolean isConnected(AudioManager audioManager) {
