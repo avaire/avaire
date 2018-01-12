@@ -1,7 +1,7 @@
 apply plugin: 'java'
 apply plugin: 'idea'
 
-version = '0.3.65'
+version = '0.3.66'
 group = 'com.avairebot'
 description = 'AvaIre Discord Bot'
 
@@ -70,7 +70,7 @@ dependencies {
     compile group: 'io.prometheus', name: 'simpleclient_hotspot', version: '0.1.0'
     compile group: 'com.vdurmont', name: 'emoji-java', version: '4.0.0'
     compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
-    compile group: 'io.sentry', name: 'sentry-logback', version: '1.6.3'
+    compile group: 'io.sentry', name: 'sentry-logback', version: '1.6.4'
     compile group: 'org.reflections', name: 'reflections', version: '0.9.11'
     compile group: 'com.udojava', name: 'EvalEx', version: '1.18'
 }

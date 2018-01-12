@@ -7,6 +7,7 @@ import com.avairebot.contracts.commands.CommandSource;
 import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.exceptions.InvalidCommandPrefixException;
+import com.avairebot.metrics.Metrics;
 import com.avairebot.middleware.Middleware;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.utils.Checks;
@@ -250,6 +251,8 @@ public class CommandHandler {
 
             commandUri = String.format(Constants.SOURCE_URI, split[split.length - 2], split[split.length - 1]);
         }
+
+        Metrics.commandsExecuted.labels(command.getClass().getSimpleName()).inc(0D);
 
         COMMANDS.put(command.getTriggers(), new CommandContainer(command, category, commandUri));
     }

@@ -10,9 +10,14 @@ import io.prometheus.client.Gauge;
 import io.prometheus.client.Histogram;
 import io.prometheus.client.hotspot.DefaultExports;
 import io.prometheus.client.logback.InstrumentedAppender;
+import net.dv8tion.jda.core.events.Event;
+import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spark.Spark;
+
+import java.lang.reflect.Modifier;
+import java.util.Set;
 
 public class Metrics {
 
@@ -147,6 +152,8 @@ public class Metrics {
 
         // JVM (hotspot) metrics
         DefaultExports.initialize();
+        Metrics.initializeEventMetrics();
+
 
         LOGGER.info("Igniting Spark API on port: " + PORT);
 
@@ -159,6 +166,18 @@ public class Metrics {
         Spark.get("/stats", new GetStats(MetricsHolder.METRICS));
 
         Metrics.isSetup = true;
+    }
+
+    private static void initializeEventMetrics() {
+        Set<Class<? extends Event>> types = new Reflections("net.dv8tion.jda.core.events")
+            .getSubTypesOf(Event.class);
+
+        for (Class<? extends Event> type : types) {
+            if (type.isInterface() || Modifier.isAbstract(type.getModifiers())) {
+                continue;
+            }
+            Metrics.jdaEvents.labels(type.getSimpleName()).inc(0D);
+        }
     }
 
     public AvaIre getAvaire() {
