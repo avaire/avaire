@@ -171,6 +171,21 @@ webhook:
   token: ''
 
 #--------------------------------------------------------------------------
+# Sentry.io Error Logging
+#--------------------------------------------------------------------------
+#
+# Sentry.io is an open source error tracking service, it can provide a lot
+# of helpful information to developers on what is going wrong, and where
+# in real-time, Sentry.io uses a DSN url for establishing a link
+# between the bot and their service, you can enter your DSN
+# url below if yo want to enable Sentry.io error logging.
+#
+# To learn more, checkout: https://sentry.io/welcome/
+#
+
+sentryDsn: ''
+
+#--------------------------------------------------------------------------
 # API Keys (These are all optional)
 #--------------------------------------------------------------------------
 #

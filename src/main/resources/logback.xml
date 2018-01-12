@@ -41,6 +41,13 @@
         </encoder>
     </appender>
 
+    <!-- Configure the Sentry appender, overriding the logging threshold to the WARN level -->
+    <appender name="SENTRY" class="io.sentry.logback.SentryAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>WARN</level>
+        </filter>
+    </appender>
+
     <appender name="JDA" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>storage/logs/jda.log</file>
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
@@ -93,5 +100,6 @@
     <root level="INFO">
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="FILE"/>
+        <appender-ref ref="SENTRY"/>
     </root>
 </configuration>

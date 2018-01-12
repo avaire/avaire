@@ -27,6 +27,7 @@ import com.avairebot.shared.ExitCodes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.sedmelluq.discord.lavaplayer.tools.PlayerLibrary;
+import io.sentry.Sentry;
 import net.dv8tion.jda.core.JDAInfo;
 import net.dv8tion.jda.core.entities.SelfUser;
 import org.reflections.Reflections;
@@ -165,6 +166,12 @@ public class AvaIre extends Shardable {
 
         LOGGER.info("Preparing and setting up metrics");
         Metrics.setup(this);
+
+        String sentryDsn = config.getString("sentryDsn", "").trim();
+        if (sentryDsn.length() > 0) {
+            LOGGER.info("SentryDSN found, initializing Sentry.io");
+            Sentry.init(sentryDsn);
+        }
 
         LOGGER.info("Creating bot instance and connecting to Discord network");
 
