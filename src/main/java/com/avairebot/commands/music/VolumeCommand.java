@@ -76,19 +76,22 @@ public class VolumeCommand extends Command {
             return sendErrorMessage(message, "The `DJ` role is required to change the volume!");
         }
 
-        try {
-            int newVolume = NumberUtil.getBetween(NumberUtil.parseInt(args[0]), 0, 100);
-
-            musicManager.getPlayer().setVolume(newVolume);
-            MessageFactory.makeSuccess(message, "\uD83C\uDFB5 Volume set to **:volume** volume\n:bar")
-                .set("volume", newVolume)
-                .set("bar", getVolumeString(newVolume, 18))
-                .queue();
-
-            return true;
-        } catch (NumberFormatException ex) {
-            return sendErrorMessage(message, "Invalid `volume` value given, the volume must be a number!");
+        if (!NumberUtil.isNumeric(args[0])) {
+            return sendErrorMessage(message, "Invalid volume given, the volume must be a valid number between 1 and 100.");
         }
+
+        int newVolume = NumberUtil.parseInt(args[0], -1);
+        if ((newVolume < 0 || newVolume > 100)) {
+            return sendErrorMessage(message, "Invalid volume given, the volume must between 1 and 100.");
+        }
+
+        musicManager.getPlayer().setVolume(newVolume);
+        MessageFactory.makeSuccess(message, "\uD83C\uDFB5 Volume set to **:volume** volume\n:bar")
+            .set("volume", newVolume)
+            .set("bar", getVolumeString(newVolume, 18))
+            .queue();
+
+        return true;
     }
 
     private String getVolumeString(int volume, int multiplier) {
