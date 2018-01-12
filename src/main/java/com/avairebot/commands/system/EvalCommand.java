@@ -55,7 +55,7 @@ public class EvalCommand extends SystemCommand {
         String evalMessage = String.join(" ", Arrays.copyOfRange(rawArguments, 1, rawArguments.length));
 
         try {
-            Object out = createScriptEngine(message).eval("(function() { with (imports) { return " + evalMessage + "}})();");
+            Object out = createScriptEngine(message).eval("(function() { with (imports) {\n\t" + evalMessage + "\n}})();");
             String output = out == null ? "Executed without error, void was returned so there is nothing to show." : out.toString();
 
             if (output.length() > 1890) {
@@ -94,11 +94,14 @@ public class EvalCommand extends SystemCommand {
             "Packages.net.dv8tion.jda.core.managers," +
             "Packages.net.dv8tion.jda.core.managers.impl," +
             "Packages.net.dv8tion.jda.core.utils," +
-            "Packages.com.avairebot.avaire.database.controllers," +
-            "Packages.com.avairebot.avaire.factories," +
-            "Packages.com.avairebot.avaire.cache," +
-            "Packages.com.avairebot.avaire.audio," +
-            "Packages.com.avairebot.avaire.time);");
+            "Packages.com.avairebot.database.controllers," +
+            "Packages.com.avairebot.permissions," +
+            "Packages.com.avairebot.utilities," +
+            "Packages.com.avairebot.factories," +
+            "Packages.com.avairebot.logger," +
+            "Packages.com.avairebot.cache," +
+            "Packages.com.avairebot.audio," +
+            "Packages.com.avairebot.time);");
 
         return engine;
     }
