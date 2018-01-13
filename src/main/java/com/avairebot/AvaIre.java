@@ -14,6 +14,7 @@ import com.avairebot.database.DatabaseManager;
 import com.avairebot.database.migrate.migrations.*;
 import com.avairebot.database.serializer.PlaylistSongSerializer;
 import com.avairebot.database.transformers.PlaylistTransformer;
+import com.avairebot.exceptions.InvalidApplicationEnvironmentException;
 import com.avairebot.exceptions.InvalidPluginException;
 import com.avairebot.exceptions.InvalidPluginsPathException;
 import com.avairebot.metrics.Metrics;
@@ -54,8 +55,9 @@ public class AvaIre extends Shardable {
         .create();
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AvaIre.class);
-
     private static final ConnectQueue CONNECT_QUEUE = new ConnectQueue();
+
+    private static Environment APPLICATION_ENVIRONMENT;
 
     private final Settings settings;
     private final Configuration config;
@@ -66,7 +68,7 @@ public class AvaIre extends Shardable {
 
     private final ShardEntityCounter shardEntityCounter;
 
-    public AvaIre(Settings settings) throws IOException, SQLException {
+    public AvaIre(Settings settings) throws IOException, SQLException, InvalidApplicationEnvironmentException {
         this.settings = settings;
 
         System.out.println(getVersionInfo());
@@ -90,6 +92,12 @@ public class AvaIre extends Shardable {
 
             System.exit(ExitCodes.EXIT_CODE_NORMAL);
         }
+
+        APPLICATION_ENVIRONMENT = Environment.fromName(config.getString("environment", "production"));
+        if (APPLICATION_ENVIRONMENT == null) {
+            throw new InvalidApplicationEnvironmentException(config.getString("environment", "production"));
+        }
+        LOGGER.info("Starting application in \"{}\" mode", APPLICATION_ENVIRONMENT.getName());
 
         LOGGER.info("Registering and connecting to database");
         database = new DatabaseManager(this);
@@ -196,6 +204,10 @@ public class AvaIre extends Shardable {
 
     public static Logger getLogger() {
         return LOGGER;
+    }
+
+    public static Environment getEnvironment() {
+        return APPLICATION_ENVIRONMENT;
     }
 
     static String getVersionInfo() {

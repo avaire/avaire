@@ -1,5 +1,6 @@
 package com.avairebot;
 
+import com.avairebot.exceptions.InvalidApplicationEnvironmentException;
 import com.avairebot.shared.ExitCodes;
 import org.apache.commons.cli.*;
 
@@ -8,7 +9,7 @@ import java.sql.SQLException;
 
 public class Main {
 
-    public static void main(String[] args) throws IOException, SQLException {
+    public static void main(String[] args) throws IOException, SQLException, InvalidApplicationEnvironmentException {
         Options options = new Options();
 
         options.addOption(new Option("h", "help", false, "Displays this help menu."));
