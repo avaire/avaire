@@ -179,6 +179,10 @@ public class AvaIre extends Shardable {
         if (sentryDsn.length() > 0) {
             LOGGER.info("SentryDSN found, initializing Sentry.io");
             Sentry.init(sentryDsn);
+
+            if (getEnvironment().equals(Environment.PRODUCTION)) {
+                Sentry.getStoredClient().setRelease(GitInfo.getGitInfo().commitId);
+            }
         }
 
         LOGGER.info("Creating bot instance and connecting to Discord network");
