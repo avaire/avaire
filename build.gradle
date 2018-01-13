@@ -1,15 +1,25 @@
+plugins {
+    id 'application'
+    id 'com.github.johnrengelman.shadow' version '2.0.1'
+}
+
 apply plugin: 'java'
 apply plugin: 'idea'
 
-version = '0.3.66'
+version = '0.3.67'
 group = 'com.avairebot'
 description = 'AvaIre Discord Bot'
+mainClassName = 'com.avairebot.Main'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 ext {
     moduleName = 'AvaIre'
+}
+
+shadowJar {
+    archiveName = "AvaIre.jar"
 }
 
 tasks.withType(JavaCompile) {
