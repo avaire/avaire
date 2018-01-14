@@ -186,6 +186,45 @@ webhook:
 sentryDsn: ''
 
 #--------------------------------------------------------------------------
+# Prometheus Metrics & Spark API
+#--------------------------------------------------------------------------
+#
+# Ava uses Prometheus metrics for tracking a long list of different things
+# within the application during runtime, the metrics are then displayed
+# using Grafana to users on a web-dashboard using graphs, below you'll
+# find options to enable/disable the metrics system entirely, and
+# change the port that the metrics are exposed to.
+#
+# Along with the metrics, a stats API is also enabled, displaying stats
+# per-shard, and globally with guild, channel, and user data, as well
+# as the shard ID and the shard status.
+#
+# The metrics stats are exposed on ip:port/metrics, and the stats API
+# are exposed on ip:port/stats
+#
+# For an real-world example of what the metrics looks like when they're
+# setup using Grafana, checkout: https://status.avairebot.com
+#
+# For setup guides, see:
+#
+#   https://prometheus.io/
+#   https://grafana.com/
+#
+
+metrics:
+
+  # This option determines if the web API should be enabled at all, if set to
+  # true, the port below will be used to expose the API and metrics stats.
+  #
+  enabled: true
+
+  # The port the API and metrics should be exposed to, the port must not be used
+  # by another application on the system, otherwise the API won't be able to
+  # start up correctly.
+  #
+  port: 1256
+
+#--------------------------------------------------------------------------
 # API Keys (These are all optional)
 #--------------------------------------------------------------------------
 #

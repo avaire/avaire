@@ -131,7 +131,7 @@ public class Metrics {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(Metrics.class);
 
-    private static final int PORT = 1256;
+    private static int PORT = 1256;
 
     private static AvaIre avaire;
     private static boolean isSetup = false;
@@ -154,6 +154,13 @@ public class Metrics {
         DefaultExports.initialize();
         Metrics.initializeEventMetrics();
 
+        if (!avaire.getConfig().getBoolean("metrics.enabled", true)) {
+            LOGGER.info("Metrics web API is disabled, skipping igniting Spark API");
+            Metrics.isSetup = true;
+            return;
+        }
+
+        PORT = avaire.getConfig().getInt("metrics.port", 1256);
 
         LOGGER.info("Igniting Spark API on port: " + PORT);
 
