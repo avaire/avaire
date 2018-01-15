@@ -38,6 +38,9 @@ AvaIre relies on the following projects:
 | [JDA (Java Discord API)](https://github.com/DV8FromTheWorld/JDA) | [Apache License 2.0](https://github.com/DV8FromTheWorld/JDA/blob/master/LICENSE) |
 | [LavaPlayer - Audio player library for Discord](https://github.com/sedmelluq/lavaplayer) | [Apache License 2.0](https://github.com/sedmelluq/lavaplayer/blob/master/LICENSE) |
 | [google-gson](https://github.com/google/gson) | [Apache License 2.0](https://github.com/google/gson/blob/master/LICENSE) |
+| [Apache Commons](https://commons.apache.org/) | [Apache License 2.0](http://www.apache.org/licenses/) |
+| [SnakeYAML](https://bitbucket.org/asomov/snakeyaml) | [Apache License 2.0](https://bitbucket.org/asomov/snakeyaml/src/09b3c585c1a5b1452a13c41ec63da6466bce9137/LICENSE.txt?at=default&fileviewer=file-view-default) |
+| [Prometheus](https://github.com/prometheus) | [Apache License 2.0](https://github.com/prometheus/client_java/blob/master/LICENSE) |
 | [DialogFlow SDK (Previusly api.ai)](https://github.com/dialogflow/dialogflow-java-client) | [Apache License 2.0](https://github.com/dialogflow/dialogflow-java-client/blob/master/LICENSE) |
 | [MySQL Connector/J](https://github.com/mysql/mysql-connector-j) | [GNU General Public License v2.0](https://github.com/mysql/mysql-connector-j/blob/release/5.1/COPYING) |
 | [logback-classic](https://github.com/qos-ch/logback/tree/master/logback-classic) | [Eclipse Public License v1.0](https://github.com/qos-ch/logback/blob/master/LICENSE.txt) and<br>[GNU Lesser General Public License version 2.1](https://github.com/qos-ch/logback/blob/master/LICENSE.txt) |
