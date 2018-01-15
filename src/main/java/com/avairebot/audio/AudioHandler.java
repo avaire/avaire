@@ -1,5 +1,6 @@
 package com.avairebot.audio;
 
+import com.avairebot.factories.MessageFactory;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
@@ -16,6 +17,7 @@ import javax.annotation.Nonnull;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class AudioHandler {
 
@@ -39,6 +41,15 @@ public class AudioHandler {
 
     public static void skipTrack(Message message) {
         GuildMusicManager musicManager = getGuildAudioPlayer(message.getGuild());
+        if (musicManager.getScheduler().getAudioTrackContainer() != null) {
+            AudioTrackContainer container = musicManager.getScheduler().getAudioTrackContainer();
+
+            MessageFactory.makeInfo(message, "[:title](:url) requested by :author was skipped.")
+                .set("title", container.getAudioTrack().getInfo().title)
+                .set("url", container.getAudioTrack().getInfo().uri)
+                .set("author", container.getRequester().getAsMention())
+                .queue(success -> success.delete().queueAfter(30, TimeUnit.SECONDS));
+        }
         musicManager.getScheduler().nextTrack();
     }
 
