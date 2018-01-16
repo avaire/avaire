@@ -39,7 +39,10 @@ public class PauseCommand extends Command {
 
     @Override
     public List<String> getMiddleware() {
-        return Arrays.asList("has-role:DJ", "throttle:guild,1,4");
+        return Arrays.asList(
+            "has-dj-level:normal",
+            "throttle:guild,1,4"
+        );
     }
 
     @Override

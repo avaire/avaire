@@ -40,7 +40,10 @@ public class SkipCommand extends Command {
 
     @Override
     public List<String> getMiddleware() {
-        return Arrays.asList("has-role:DJ", "throttle:guild,2,4");
+        return Arrays.asList(
+            "has-dj-level:normal",
+            "throttle:guild,2,4"
+        );
     }
 
     @Override

@@ -2,14 +2,12 @@ package com.avairebot.commands.music;
 
 import com.avairebot.AvaIre;
 import com.avairebot.audio.AudioHandler;
+import com.avairebot.audio.DJGuildLevel;
 import com.avairebot.audio.GuildMusicManager;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.factories.MessageFactory;
-import com.avairebot.permissions.Permissions;
 import com.avairebot.utilities.NumberUtil;
-import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.Role;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -51,7 +49,7 @@ public class VolumeCommand extends Command {
 
     @Override
     public List<String> getMiddleware() {
-        return Arrays.asList("has-role:DJ", "throttle:user,1,4");
+        return Collections.singletonList("throttle:user,1,4");
     }
 
     @Override
@@ -72,7 +70,7 @@ public class VolumeCommand extends Command {
             return true;
         }
 
-        if (!hasDJRole(message.getMember())) {
+        if (!AudioHandler.canRunDJAction(avaire, message, DJGuildLevel.NORMAL)) {
             return sendErrorMessage(message, "The `DJ` role is required to change the volume!");
         }
 
@@ -100,18 +98,5 @@ public class VolumeCommand extends Command {
             volumeString.append((i - 1) * (100 / multiplier) < volume ? "\u2592" : "\u2591");
         }
         return volumeString.toString();
-    }
-
-    private boolean hasDJRole(Member member) {
-        if (member.hasPermission(Permissions.ADMINISTRATOR.getPermission())) {
-            return true;
-        }
-
-        for (Role role : member.getRoles()) {
-            if (role.getName().equalsIgnoreCase("DJ")) {
-                return true;
-            }
-        }
-        return false;
     }
 }

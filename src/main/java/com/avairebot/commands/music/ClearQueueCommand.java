@@ -39,7 +39,7 @@ public class ClearQueueCommand extends Command {
 
     @Override
     public List<String> getMiddleware() {
-        return Arrays.asList("has-role:DJ", "throttle:user,1,5");
+        return Arrays.asList("has-dj-level:normal", "throttle:user,1,5");
     }
 
     @Override

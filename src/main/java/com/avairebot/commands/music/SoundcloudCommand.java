@@ -42,7 +42,10 @@ public class SoundcloudCommand extends Command {
 
     @Override
     public List<String> getMiddleware() {
-        return Collections.singletonList("throttle:guild,2,5");
+        return Arrays.asList(
+            "has-dj-level:none",
+            "throttle:guild,2,5"
+        );
     }
 
     @Override

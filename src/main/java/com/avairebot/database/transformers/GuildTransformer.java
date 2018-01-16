@@ -1,6 +1,7 @@
 package com.avairebot.database.transformers;
 
 import com.avairebot.AvaIre;
+import com.avairebot.audio.DJGuildLevel;
 import com.avairebot.contracts.database.transformers.Transformer;
 import com.avairebot.database.collection.DataRow;
 import com.avairebot.time.Carbon;
@@ -180,6 +181,10 @@ public class GuildTransformer extends Transformer {
 
     public Map<String, Map<String, String>> getCategories() {
         return modules;
+    }
+
+    public DJGuildLevel getDJLevel() {
+        return DJGuildLevel.fromId(data.getInt("dj_level", DJGuildLevel.getNormal().getId()));
     }
 
     @CheckReturnValue

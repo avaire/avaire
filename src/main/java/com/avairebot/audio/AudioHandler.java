@@ -1,6 +1,10 @@
 package com.avairebot.audio;
 
+import com.avairebot.AvaIre;
+import com.avairebot.database.controllers.GuildController;
+import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.factories.MessageFactory;
+import com.avairebot.permissions.Permissions;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
@@ -9,6 +13,7 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.VoiceChannel;
 import net.dv8tion.jda.core.managers.AudioManager;
 
@@ -183,5 +188,43 @@ public class AudioHandler {
 
     public static void removeAudioSession(Message message) {
         AUDIO_SESSION.remove(message.getGuild().getId() + ":" + message.getAuthor().getId());
+    }
+
+    @CheckReturnValue
+    public static boolean canRunDJAction(AvaIre avaire, Message message, DJGuildLevel level) {
+        GuildTransformer transformer = GuildController.fetchGuild(avaire, message);
+
+        if (transformer == null) {
+            return level.getLevel() <= DJGuildLevel.getNormal().getLevel();
+        }
+
+        DJGuildLevel guildLevel = transformer.getDJLevel();
+        if (guildLevel == null) {
+            guildLevel = DJGuildLevel.getNormal();
+        }
+
+        switch (guildLevel) {
+            case ALL:
+                return true;
+
+            case NONE:
+                return hasDJRole(message);
+
+            default:
+                return hasDJRole(message) || level.getLevel() < guildLevel.getLevel();
+        }
+    }
+
+    private static boolean hasDJRole(Message message) {
+        if (message.getMember().hasPermission(Permissions.ADMINISTRATOR.getPermission())) {
+            return true;
+        }
+
+        for (Role role : message.getMember().getRoles()) {
+            if (role.getName().equalsIgnoreCase("DJ")) {
+                return true;
+            }
+        }
+        return false;
     }
 }

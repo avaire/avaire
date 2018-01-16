@@ -52,7 +52,10 @@ public class PlayCommand extends Command {
 
     @Override
     public List<String> getMiddleware() {
-        return Collections.singletonList("throttle:guild,2,4");
+        return Arrays.asList(
+            "has-dj-level:none",
+            "throttle:guild,2,4"
+        );
     }
 
     @Override

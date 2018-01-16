@@ -46,7 +46,7 @@ public class RemoveSongFromQueueCommand extends Command {
     @Override
     public List<String> getMiddleware() {
         return Arrays.asList(
-            "has-role:DJ",
+            "has-dj-level:normal",
             "throttle:user,2,4"
         );
     }
