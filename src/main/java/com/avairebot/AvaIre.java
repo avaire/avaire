@@ -111,7 +111,8 @@ public class AvaIre extends Shardable {
             new CreateFeedbackTableMigration(),
             new CreateMusicPlaylistsTableMigration(),
             new CreateStatisticsTableMigration(),
-            new CreateShardsTableMigration()
+            new CreateShardsTableMigration(),
+            new AddDJLevelToGuildsTableMigration()
         );
 
         LOGGER.info("Registering default command categories");
