@@ -1,22 +1,35 @@
 package com.avairebot.audio;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
 public enum DJGuildLevel {
 
     /**
      * This is the normal music state, preventing people from using commands like playlist,
      * volume control, force skip, but still allowing people to use play command.
      */
-    NORMAL("normal", 0, 10),
+    NORMAL("Normal", 0, 10),
 
     /**
      * This represents a guild DJ level state where all music commands require the DJ role.
      */
-    ALL("all", 1, 25),
+    ALL("All", 1, 25),
 
     /**
      * This represents a guild DJ level state where anyone can run any music command.
      */
-    NONE("none", 2, 0);
+    NONE("None", 2, 0);
+
+    private static final List<String> NAMES = new ArrayList<>();
+
+    static {
+        for (DJGuildLevel level : values()) {
+            NAMES.add(level.getName());
+        }
+    }
 
     private final String name;
     private final int id;
@@ -48,6 +61,10 @@ public enum DJGuildLevel {
 
     public static DJGuildLevel getNormal() {
         return NORMAL;
+    }
+
+    public static Collection<String> getNames() {
+        return Collections.unmodifiableCollection(NAMES);
     }
 
     public String getName() {

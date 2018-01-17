@@ -27,6 +27,7 @@ public class GuildTransformer extends Transformer {
     private boolean levelAlerts = false;
     private String levelChannel = null;
     private String autorole = null;
+    private DJGuildLevel djGuildLevel = null;
 
     public GuildTransformer(DataRow data) {
         super(data);
@@ -38,6 +39,7 @@ public class GuildTransformer extends Transformer {
             levelAlerts = data.getBoolean("level_alerts");
             levelChannel = data.getString("level_channel");
             autorole = data.getString("autorole");
+            djGuildLevel = DJGuildLevel.fromId(data.getInt("dj_level", DJGuildLevel.getNormal().getId()));
 
             if (data.getString("aliases", null) != null) {
                 HashMap<String, String> dbAliases = AvaIre.GSON.fromJson(
@@ -184,7 +186,14 @@ public class GuildTransformer extends Transformer {
     }
 
     public DJGuildLevel getDJLevel() {
-        return DJGuildLevel.fromId(data.getInt("dj_level", DJGuildLevel.getNormal().getId()));
+        if (djGuildLevel == null) {
+            djGuildLevel = DJGuildLevel.getNormal();
+        }
+        return djGuildLevel;
+    }
+
+    public void setDJLevel(DJGuildLevel djGuildLevel) {
+        this.djGuildLevel = djGuildLevel;
     }
 
     @CheckReturnValue
