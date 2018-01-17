@@ -32,6 +32,9 @@ public class SendWebhookMessagesJob extends Job {
             .setAvatarUrl(avaire.getSelfUser().getAvatarUrl())
             .setUsername(avaire.getSelfUser().getName())
             .addEmbeds(EventLogger.pullGuildMessages())
-            .build());
+            .build()
+        );
+
+        client.close();
     }
 }
