@@ -14,12 +14,12 @@ public enum DJGuildLevel {
     NORMAL("Normal", 0, 10),
 
     /**
-     * This represents a guild DJ level state where all music commands require the DJ role.
+     * This represents a guild DJ level state where anyone can run any music command.
      */
     ALL("All", 1, 25),
 
     /**
-     * This represents a guild DJ level state where anyone can run any music command.
+     * This represents a guild DJ level state where all music commands require the DJ role.
      */
     NONE("None", 2, 0);
 

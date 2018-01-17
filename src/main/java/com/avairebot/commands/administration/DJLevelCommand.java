@@ -120,10 +120,10 @@ public class DJLevelCommand extends Command {
 
     private String getLevelInformation(DJGuildLevel level) {
         switch (level) {
-            case NONE:
+            case ALL:
                 return "Anyone can run any music commands, even without the `DJ` role.";
 
-            case ALL:
+            case NONE:
                 return "No one can run any music commands without the `DJ` role.";
 
             default:
