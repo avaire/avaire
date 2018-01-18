@@ -17,6 +17,11 @@ hs_err_pid*
 
 # Editor settings
 .idea/
+/*.iws
+/*.ipr
+/*.iml
+/*.iml
+
 
 # Compile location
 .gradle/*
