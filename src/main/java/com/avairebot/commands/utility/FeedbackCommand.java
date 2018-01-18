@@ -1,18 +1,17 @@
 package com.avairebot.commands.utility;
 
 import com.avairebot.AvaIre;
-import com.avairebot.Constants;
+import com.avairebot.chat.PlaceholderMessage;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.factories.MessageFactory;
-import com.vdurmont.emoji.EmojiParser;
+import com.avairebot.shared.DiscordConstants;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.TextChannel;
-import net.dv8tion.jda.core.entities.User;
 
-import java.sql.SQLException;
+import java.time.Instant;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 
 public class FeedbackCommand extends Command {
@@ -57,68 +56,42 @@ public class FeedbackCommand extends Command {
             return sendErrorMessage(message, "Missing argument `message`, you must include a message.");
         }
 
-        try {
-            avaire.getDatabase().newQueryBuilder(Constants.FEEDBACK_TABLE_NAME)
-                .insert(statement -> {
-                    statement.set("message", String.join(" ", args), true);
-                    statement.set("user", buildJsonUser(message.getAuthor()), true);
-                    statement.set("channel", buildJsonChannel(message.getTextChannel()), true);
-                    statement.set("guild", buildJsonGuild(message.getGuild()), true);
-                });
-
-            MessageFactory.makeSuccess(message, "Successfully sent feedback <:tickYes:319985232306765825>").queue();
-        } catch (SQLException e) {
-            e.printStackTrace();
-
-            MessageFactory.makeError(message, "An error occurred while attempting to send your feedback:\n**Error:** " + e.getMessage()).queue();
+        TextChannel feedbackChannel = avaire.getTextChannelById(DiscordConstants.FEEDBACK_CHANNEL_ID);
+        if (feedbackChannel == null) {
+            return sendErrorMessage(message, "Invalid feedback channel defined, the text channel could not be found!");
         }
+
+        PlaceholderMessage placeholderMessage = MessageFactory.makeEmbeddedMessage(feedbackChannel)
+            .addField("Feedback", String.join(" ", args), false)
+            .addField("Channel", buildChannel(message.getChannel()), false)
+            .setFooter("Author ID: " + message.getAuthor().getId())
+            .setTimestamp(Instant.now());
+
+        placeholderMessage.setAuthor(
+            message.getAuthor().getName() + "#" + message.getAuthor().getDiscriminator(),
+            null,
+            message.getAuthor().getEffectiveAvatarUrl()
+        );
+
+        if (message.getChannelType().isGuild() && message.getGuild() != null) {
+            placeholderMessage.addField("Server", buildServer(message.getGuild()), false);
+        }
+
+        placeholderMessage.queue(newMessage -> {
+            MessageFactory.makeSuccess(message, "Successfully sent feedback <:tickYes:319985232306765825>").queue();
+        }, err -> {
+            AvaIre.getLogger().error("Failed to send feedback message: " + err.getMessage(), err);
+            MessageFactory.makeError(message, "Failed to send feedback message: " + err.getMessage()).queue();
+        });
+
         return true;
     }
 
-    private String buildJsonUser(User user) {
-        String username = EmojiParser.removeAllEmojis(user.getName());
-        if (username.length() == 0) {
-            username = "Invalid Username";
-        }
-
-        HashMap<String, String> map = new HashMap<>();
-        map.put("id", user.getId());
-        map.put("username", username);
-        map.put("discriminator", user.getDiscriminator());
-        map.put("avatar", user.getAvatarId());
-
-        return AvaIre.GSON.toJson(map);
+    private String buildChannel(MessageChannel message) {
+        return message.getName() + " (ID: " + message.getId() + ")";
     }
 
-    private String buildJsonChannel(TextChannel channel) {
-        String name = EmojiParser.removeAllEmojis(channel.getName());
-        if (name.length() == 0) {
-            name = "Invalid Channel Name";
-        }
-
-        HashMap<String, String> map = new HashMap<>();
-        map.put("id", channel.getId());
-        map.put("name", name);
-
-        return AvaIre.GSON.toJson(map);
-    }
-
-    private String buildJsonGuild(Guild guild) {
-        if (guild == null) {
-            return null;
-        }
-
-        String name = EmojiParser.removeAllEmojis(guild.getName());
-        if (name.length() == 0) {
-            name = "Invalid Guild Name";
-        }
-
-        HashMap<String, String> map = new HashMap<>();
-        map.put("id", guild.getId());
-        map.put("name", name);
-        map.put("owner_id", guild.getOwner().getUser().getId());
-        map.put("icon", guild.getIconId());
-
-        return AvaIre.GSON.toJson(map);
+    private String buildServer(Guild server) {
+        return server.getName() + " (ID: " + server.getId() + ")";
     }
 }
