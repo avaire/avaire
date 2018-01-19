@@ -18,6 +18,7 @@ public class MusicActivityJob extends Job {
 
     public final static Map<Long, Integer> MISSING_LISTENERS = new HashMap<>();
     public final static Map<Long, Integer> EMPTY_QUEUE = new HashMap<>();
+    public final static Map<Long, Integer> PLAYER_PAUSED = new HashMap<>();
 
     public MusicActivityJob(AvaIre avaire) {
         super(avaire, 30, 30, TimeUnit.SECONDS);
@@ -51,6 +52,11 @@ public class MusicActivityJob extends Job {
 
                 if (EMPTY_QUEUE.containsKey(guildId)) {
                     EMPTY_QUEUE.remove(guildId);
+                }
+
+                if (guildMusicManager.getPlayer().isPaused()) {
+                    handlePausedMusic(manager, guildMusicManager, guildId);
+                    continue;
                 }
 
                 VoiceChannel voiceChannel = manager.getConnectedChannel();
@@ -99,6 +105,17 @@ public class MusicActivityJob extends Job {
         clearItems(manager, guildMusicManager, guildId);
     }
 
+    private void handlePausedMusic(AudioManager manager, GuildMusicManager guildMusicManager, long guildId) {
+        int times = PLAYER_PAUSED.getOrDefault(guildId, 0) + 1;
+
+        if (times <= 20) {
+            PLAYER_PAUSED.put(guildId, times);
+            return;
+        }
+
+        clearItems(manager, guildMusicManager, guildId);
+    }
+
     private void clearItems(AudioManager manager, GuildMusicManager guildMusicManager, long guildId) {
         if (guildMusicManager != null) {
             guildMusicManager.getScheduler().getQueue().clear();
@@ -111,6 +128,7 @@ public class MusicActivityJob extends Job {
 
         AudioHandler.MUSIC_MANAGER.remove(guildId);
         MISSING_LISTENERS.remove(guildId);
+        PLAYER_PAUSED.remove(guildId);
         EMPTY_QUEUE.remove(guildId);
 
         manager.closeAudioConnection();
