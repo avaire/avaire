@@ -107,8 +107,13 @@ public class SongCommand extends Command {
     }
 
     private String buildTrackDescription(AudioPlayer player, TrackScheduler scheduler) {
-        return String.format(
-            "[%s](%s)\nPlaying at `%s` volume with `%s` left of the song - Requested by <@%s>",
+        String message = "[%s](%s)\nPlaying at `%s` volume with `%s` left of the song - Requested by <@%s>";
+
+        if (player.getPlayingTrack().getInfo().isStream) {
+            message = "[%s](%s)\nPlaying at `%s` volume, the stream is `%s` - Requested by <@%s>";
+        }
+
+        return String.format(message,
             player.getPlayingTrack().getInfo().title,
             player.getPlayingTrack().getInfo().uri,
             player.getVolume() + "%",

@@ -51,6 +51,10 @@ public class AudioTrackContainer {
     }
 
     public String getFormattedTotalTimeLeft() {
+        if (getAudioTrack().getInfo().isStream) {
+            return "LIVE";
+        }
+
         return NumberUtil.formatTime(getAudioTrack().getDuration() - getAudioTrack().getPosition());
     }
 }
