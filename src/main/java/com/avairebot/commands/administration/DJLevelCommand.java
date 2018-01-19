@@ -72,9 +72,13 @@ public class DJLevelCommand extends Command {
         }
 
         if (args.length == 0) {
-            MessageFactory.makeInfo(message,
-                getLevelInformation(transformer.getDJLevel())
-            ).queue();
+            MessageFactory.makeInfo(message, getLevelInformation(transformer.getDJLevel()))
+                .setTitle("Current DJ Level: " + transformer.getDJLevel().getName())
+                .setFooter(String.format(
+                    "Use \"%s types\" to see a full list of the available DJ level types.",
+                    generateCommandTrigger(message)
+                ))
+                .queue();
 
             return true;
         }
@@ -88,6 +92,10 @@ public class DJLevelCommand extends Command {
 
             placeholderMessage
                 .setTitle("DJ Level Types")
+                .setFooter(String.format(
+                    "Use \"%s <type>\" to change the DJ Level to the given type for the server.",
+                    generateCommandTrigger(message)
+                ))
                 .queue();
 
             return true;
