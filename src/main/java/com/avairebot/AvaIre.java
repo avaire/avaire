@@ -181,8 +181,16 @@ public class AvaIre extends Shardable {
             LOGGER.info("SentryDSN found, initializing Sentry.io");
             Sentry.init(sentryDsn);
 
-            if (getEnvironment().equals(Environment.PRODUCTION)) {
-                Sentry.getStoredClient().setRelease(GitInfo.getGitInfo().commitId);
+            Sentry.getStoredClient().setEnvironment(getEnvironment().getName());
+
+            switch (getEnvironment()) {
+                case PRODUCTION:
+                    Sentry.getStoredClient().setRelease(GitInfo.getGitInfo().commitId);
+                    break;
+
+                default:
+                    Sentry.getStoredClient().setRelease(AppInfo.getAppInfo().VERSION);
+                    break;
             }
         }
 
