@@ -16,7 +16,7 @@ public class GitInfo extends PropertyConfiguration {
     public final long commitTime;
 
     private GitInfo() {
-        loadProperty(getClass().getClassLoader(), "/git.properties");
+        loadProperty(getClass().getClassLoader(), "git.properties");
 
         this.branch = String.valueOf(properties.getOrDefault("git.branch", ""));
         this.commitId = String.valueOf(properties.getOrDefault("git.commit.id", ""));
