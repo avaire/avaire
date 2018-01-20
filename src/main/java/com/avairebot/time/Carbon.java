@@ -737,6 +737,16 @@ public final class Carbon {
 
     /**
      * Sets the month to the carbon instance.
+     *
+     * @param month the month to set
+     * @return the Carbon instance
+     */
+    public Carbon setMonth(Month month) {
+        return set(Calendar.MONTH, month.getId());
+    }
+
+    /**
+     * Sets the month to the carbon instance.
      * <p>
      * This is a calendar-specific value. The first month of the year in the
      * Gregorian and Julian calendars is <code>JANUARY</code> which is 0;
@@ -760,16 +770,6 @@ public final class Carbon {
      */
     public Carbon setMonth(int month) {
         return set(Calendar.MONTH, month - 1);
-    }
-
-    /**
-     * Sets the month to the carbon instance.
-     *
-     * @param month the month to set
-     * @return the Carbon instance
-     */
-    public Carbon setMonth(Month month) {
-        return set(Calendar.MONTH, month.getId());
     }
 
     /**
@@ -1459,7 +1459,7 @@ public final class Carbon {
      * or (2) <code>FALSE</code> if it's set to the present or future.
      */
     public boolean isPast() {
-        return Calendar.getInstance().getTimeInMillis() < time.getTimeInMillis();
+        return Calendar.getInstance().getTimeInMillis() > time.getTimeInMillis();
     }
 
     /**
@@ -1706,9 +1706,9 @@ public final class Carbon {
 
         if (!removeModifiers) {
             if (isPast()) {
-                builder.append(" from now");
-            } else {
                 builder.append(" ago");
+            } else {
+                builder.append(" from now");
             }
         }
 
@@ -1744,7 +1744,7 @@ public final class Carbon {
         StringBuilder builder = parseDiffForHumans(unix);
 
         if (!removeModifiers) {
-            if (other.time.getTimeInMillis() < time.getTimeInMillis()) {
+            if (other.time.getTimeInMillis() > time.getTimeInMillis()) {
                 builder.append(" after");
             } else {
                 builder.append(" before");
