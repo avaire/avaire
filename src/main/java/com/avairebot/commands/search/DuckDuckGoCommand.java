@@ -56,7 +56,7 @@ public class DuckDuckGoCommand extends ThreadCommand {
 
     @Override
     public List<String> getTriggers() {
-        return Arrays.asList("duckduckgo", "search", "ddg", "g");
+        return Arrays.asList("duckduckgo", "ddg", "g");
     }
 
     @Override
