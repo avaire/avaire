@@ -26,6 +26,10 @@ public class MusicActivityJob extends Job {
 
     @Override
     public void run() {
+        if (!avaire.getConfig().getBoolean("music-activity.enabled", true)) {
+            return;
+        }
+
         Iterator<AudioManager> iterator = avaire.getShards().get(0).getJDA().getAudioManagers().iterator();
 
         try {
@@ -82,7 +86,7 @@ public class MusicActivityJob extends Job {
 
                 int times = MISSING_LISTENERS.getOrDefault(guildId, 0) + 1;
 
-                if (times <= 6) {
+                if (times <= getValue("missing-listeners", 5)) {
                     MISSING_LISTENERS.put(guildId, times);
                     continue;
                 }
@@ -97,7 +101,7 @@ public class MusicActivityJob extends Job {
     private void handleEmptyMusic(AudioManager manager, GuildMusicManager guildMusicManager, long guildId) {
         int times = EMPTY_QUEUE.getOrDefault(guildId, 0) + 1;
 
-        if (times <= 4) {
+        if (times <= getValue("empty-queue-timeout", 2)) {
             EMPTY_QUEUE.put(guildId, times);
             return;
         }
@@ -108,7 +112,7 @@ public class MusicActivityJob extends Job {
     private void handlePausedMusic(AudioManager manager, GuildMusicManager guildMusicManager, long guildId) {
         int times = PLAYER_PAUSED.getOrDefault(guildId, 0) + 1;
 
-        if (times <= 20) {
+        if (times <= getValue("paused-music-timeout", 10)) {
             PLAYER_PAUSED.put(guildId, times);
             return;
         }
@@ -132,5 +136,11 @@ public class MusicActivityJob extends Job {
         EMPTY_QUEUE.remove(guildId);
 
         manager.closeAudioConnection();
+    }
+
+    private int getValue(String path, int def) {
+        return Math.max(1, avaire.getConfig()
+            .getInt("music-activity" + path, def) * 2
+        );
     }
 }

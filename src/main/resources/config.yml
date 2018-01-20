@@ -137,6 +137,56 @@ playing:
   - '.help'
 
 #--------------------------------------------------------------------------
+# Music Activity Settings
+#--------------------------------------------------------------------------
+#
+# Music Activity is a tracking system built into Ava that disconnects the
+# bot from voice channels if no one is listening to music anyway, this
+# can help free up memory and bandwidth that wasn't being used to
+# serve users anyway.
+#
+# The music activity tracks a few things:
+#
+#   1. When no one is listening to the music, like when the bot is muted,
+#   everyone is deafened, or no one is in the voice channel with the bot.
+#
+#   2. If the queue is empty, when you request a song by name the queue
+#   will be empty until the user selects the song they want to be
+#   played, this applies here, if the last song in the queue is
+#   playing it will disconnect once the song is done anyway.
+#
+#   3. If the music is paused, this should be self-explanatory, if you
+#   pause the music the bot it will disconnect after awhile unless
+#   it is unpaused(resumed).
+#
+
+music-activity:
+
+  # This determines if the music activity tracker should be enabled or not,
+  # if set to false all the values below will never be used and the bot
+  # will stay connect to voice channels regardless of time, until the
+  # queue is either empty of it is forced to leave by a user.
+  #
+  enabled: true
+
+  # This is the time in minutes that the bot should wait before disconnecting
+  # if no one is listening to the bot.
+  #
+  # Note: Other bots does not count as valid listeners.
+  #
+  missing-listeners: 5
+
+  # This is the time in minutes that the bot should wait before disconnecting
+  # if the queue is empty and nothing is added before the timer runs out.
+  #
+  empty-queue-timeout: 2
+
+  # This is the time in minutes that the bot should wait before disconnecting
+  # if the music is paused.
+  #
+  paused-music-timeout: 10
+
+#--------------------------------------------------------------------------
 # Bot Access (Bot Administrators)
 #--------------------------------------------------------------------------
 #
