@@ -25,6 +25,7 @@ import com.avairebot.shard.AvaireShard;
 import com.avairebot.shard.ConnectQueue;
 import com.avairebot.shard.ShardEntityCounter;
 import com.avairebot.shared.ExitCodes;
+import com.avairebot.time.Carbon;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.sedmelluq.discord.lavaplayer.tools.PlayerLibrary;
@@ -58,15 +59,16 @@ public class AvaIre extends Shardable {
     private static final ConnectQueue CONNECT_QUEUE = new ConnectQueue();
 
     private static Environment APPLICATION_ENVIRONMENT;
-
     private final Settings settings;
     private final Configuration config;
     private final CacheManager cache;
     private final DatabaseManager database;
     private final IntelligenceManager intelligenceManager;
     private final PluginManager pluginManager;
-
     private final ShardEntityCounter shardEntityCounter;
+
+    private Carbon shutdownTime = null;
+    private int shutdownCode = ExitCodes.EXIT_CODE_RESTART;
 
     public AvaIre(Settings settings) throws IOException, SQLException, InvalidApplicationEnvironmentException {
         this.settings = settings;
@@ -296,6 +298,19 @@ public class AvaIre extends Shardable {
         }
 
         System.exit(exitCode);
+    }
+
+    public void scheduleShutdown(Carbon time, int exitCode) {
+        shutdownTime = time;
+        shutdownCode = exitCode;
+    }
+
+    public Carbon getShutdownTime() {
+        return shutdownTime;
+    }
+
+    public int getShutdownCode() {
+        return shutdownCode;
     }
 
     private void autoloadPackage(String path, Consumer<Reflectionable> callback) {
