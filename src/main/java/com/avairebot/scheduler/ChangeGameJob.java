@@ -1,6 +1,7 @@
 package com.avairebot.scheduler;
 
 import com.avairebot.AvaIre;
+import com.avairebot.commands.system.SetStatusCommand;
 import com.avairebot.contracts.scheduler.Job;
 import com.avairebot.shard.AvaireShard;
 import net.dv8tion.jda.core.entities.Game;
@@ -18,6 +19,10 @@ public class ChangeGameJob extends Job {
     @Override
     public void run() {
         if (!avaire.areWeReadyYet()) {
+            return;
+        }
+
+        if (SetStatusCommand.HAS_CUSTOM_STATUS) {
             return;
         }
 

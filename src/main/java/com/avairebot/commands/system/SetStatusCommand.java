@@ -12,6 +12,8 @@ import java.util.List;
 
 public class SetStatusCommand extends SystemCommand {
 
+    public static boolean HAS_CUSTOM_STATUS = false;
+
     public SetStatusCommand(AvaIre avaire) {
         super(avaire);
     }
@@ -47,7 +49,11 @@ public class SetStatusCommand extends SystemCommand {
     @Override
     public boolean onCommand(Message message, String[] args) {
         if (args.length == 0) {
-            return false;
+            MessageFactory.makeInfo(message,
+                "The bot status cycle has been re-enabled, the change game job can now change the bot status again."
+            ).queue(newMessage -> HAS_CUSTOM_STATUS = false);
+
+            return true;
         }
 
         Game game = parseGame(args);
@@ -56,7 +62,7 @@ public class SetStatusCommand extends SystemCommand {
         MessageFactory.makeSuccess(message, "Changed status to **:type :status**")
             .set("type", getTypeAsString(game.getType()))
             .set("status", game.getName())
-            .queue();
+            .queue(newMessage -> HAS_CUSTOM_STATUS = true);
 
         return true;
     }
