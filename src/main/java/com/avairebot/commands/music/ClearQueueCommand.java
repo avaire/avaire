@@ -5,6 +5,7 @@ import com.avairebot.audio.AudioHandler;
 import com.avairebot.audio.GuildMusicManager;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.factories.MessageFactory;
+import com.avairebot.utilities.NumberUtil;
 import net.dv8tion.jda.core.entities.Message;
 
 import java.util.Arrays;
@@ -56,8 +57,11 @@ public class ClearQueueCommand extends Command {
         }
 
         MessageFactory.makeSuccess(message, "I have removed **:queueSize** songs from the queue, the queue is now empty!")
-            .set("queueSize", musicManager.getScheduler().getQueue().size())
+            .set("queueSize", NumberUtil.formatNicely(
+                musicManager.getScheduler().getQueue().size()
+            ))
             .queue();
+
         musicManager.getScheduler().getQueue().clear();
 
         return true;

@@ -6,6 +6,7 @@ import com.avairebot.audio.AudioTrackContainer;
 import com.avairebot.audio.GuildMusicManager;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.factories.MessageFactory;
+import com.avairebot.utilities.NumberUtil;
 import net.dv8tion.jda.core.entities.Message;
 
 import java.util.ArrayList;
@@ -59,7 +60,7 @@ public class ShuffleCommand extends Command {
         musicManager.getScheduler().getQueue().addAll(queue);
 
         MessageFactory.makeSuccess(message, "**:amount** songs has been shuffled in the music queue.")
-            .set("amount", queue.size())
+            .set("amount", NumberUtil.formatNicely(queue.size()))
             .queue();
 
         return true;

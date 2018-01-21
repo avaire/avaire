@@ -138,7 +138,10 @@ public class SongCommand extends Command {
         }
 
         if (scheduler.getQueue().size() > 6) {
-            songs += String.format("_And **%s** more song%s!_", scheduler.getQueue().size() - 6, scheduler.getQueue().size() == 7 ? "" : 's');
+            songs += String.format("_And **%s** more song%s!_",
+                NumberUtil.formatNicely(scheduler.getQueue().size() - 6),
+                scheduler.getQueue().size() == 7 ? "" : 's'
+            );
         }
 
         return songs;

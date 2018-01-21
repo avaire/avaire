@@ -1,5 +1,6 @@
 package com.avairebot.utilities;
 
+import java.text.DecimalFormat;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -7,6 +8,7 @@ public class NumberUtil {
 
     private static final Pattern TIMESTAMP_PATTERN = Pattern.compile("^(\\d?\\d)(?::([0-5]?\\d))?(?::([0-5]?\\d))?$");
     private static final Pattern NUMBER_PATTERN = Pattern.compile("[0-9]+");
+    private static final DecimalFormat NICE_FORMAT = new DecimalFormat("#,##0");
 
     /**
      * Parses the string argument as a signed integer, if the string argument
@@ -140,6 +142,55 @@ public class NumberUtil {
      */
     public static String forceTwoDigits(int integer) {
         return integer < 10 ? "0" + integer : Integer.toString(integer);
+    }
+
+    /**
+     * Formats the number into a more human-readable format by adding commas to indicate thousands.
+     * <p>
+     * Example: <code>9242352</code> will get turned into <code>9,242,352</code>
+     *
+     * @param value The long value that should be formatted.
+     * @return The formatted value.
+     */
+    public static String formatNicely(long value) {
+        return NICE_FORMAT.format(value);
+    }
+
+
+    /**
+     * Formats the number into a more human-readable format by adding commas to indicate thousands.
+     * <p>
+     * Example: <code>9242352</code> will get turned into <code>9,242,352</code>
+     *
+     * @param value The float value that should be formatted.
+     * @return The formatted value.
+     */
+    public static String formatNicely(float value) {
+        return NICE_FORMAT.format(value);
+    }
+
+    /**
+     * Formats the number into a more human-readable format by adding commas to indicate thousands.
+     * <p>
+     * Example: <code>9242352</code> will get turned into <code>9,242,352</code>
+     *
+     * @param value The double value that should be formatted.
+     * @return The formatted value.
+     */
+    public static String formatNicely(double value) {
+        return NICE_FORMAT.format(value);
+    }
+
+    /**
+     * Formats the number into a more human-readable format by adding commas to indicate thousands.
+     * <p>
+     * Example: <code>9242352</code> will get turned into <code>9,242,352</code>
+     *
+     * @param value The integer value that should be formatted.
+     * @return The formatted value.
+     */
+    public static String formatNicely(int value) {
+        return NICE_FORMAT.format(value);
     }
 
     /**

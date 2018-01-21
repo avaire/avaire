@@ -130,10 +130,12 @@ public class PlayCommand extends Command {
         MessageFactory.makeSuccess(message,
             ":user has added :songs songs from the [:title](:url) playlist to the queue. There are `:queueSize` song(s) ahead of it in the queue."
         )
-            .set("songs", playlist.getTracks().size())
+            .set("songs", NumberUtil.formatNicely(playlist.getTracks().size()))
             .set("title", playlist.getName())
             .set("url", response.getTrackUrl())
-            .set("queueSize", AudioHandler.getQueueSize(response.getMusicManager()))
+            .set("queueSize", NumberUtil.formatNicely(
+                AudioHandler.getQueueSize(response.getMusicManager())
+            ))
             .queue();
     }
 
@@ -145,7 +147,9 @@ public class PlayCommand extends Command {
         )
             .set("title", track.getInfo().title)
             .set("url", track.getInfo().uri)
-            .set("queueSize", AudioHandler.getQueueSize(response.getMusicManager()))
+            .set("queueSize", NumberUtil.formatNicely(
+                AudioHandler.getQueueSize(response.getMusicManager())
+            ))
             .queue();
     }
 

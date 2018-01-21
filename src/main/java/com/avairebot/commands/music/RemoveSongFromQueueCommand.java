@@ -70,7 +70,7 @@ public class RemoveSongFromQueueCommand extends Command {
 
         if (removeIndex > musicManager.getScheduler().getQueue().size()) {
             return sendErrorMessage(message, "There are only `%s` songs in the queue, try lowering your number a bit.",
-                "" + musicManager.getScheduler().getQueue().size()
+                NumberUtil.formatNicely(musicManager.getScheduler().getQueue().size())
             );
         }
 
