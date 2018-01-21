@@ -1,6 +1,8 @@
 package com.avairebot;
 
 import com.avairebot.ai.IntelligenceManager;
+import com.avairebot.audio.AudioHandler;
+import com.avairebot.audio.GuildMusicManager;
 import com.avairebot.cache.CacheManager;
 import com.avairebot.commands.CategoryHandler;
 import com.avairebot.commands.CommandHandler;
@@ -17,6 +19,7 @@ import com.avairebot.database.transformers.PlaylistTransformer;
 import com.avairebot.exceptions.InvalidApplicationEnvironmentException;
 import com.avairebot.exceptions.InvalidPluginException;
 import com.avairebot.exceptions.InvalidPluginsPathException;
+import com.avairebot.factories.MessageFactory;
 import com.avairebot.metrics.Metrics;
 import com.avairebot.plugin.PluginLoader;
 import com.avairebot.plugin.PluginManager;
@@ -283,6 +286,24 @@ public class AvaIre extends Shardable {
 
     public void shutdown(int exitCode) {
         getLogger().info("Shutting down bot instance gracefully with exit code " + exitCode);
+
+        long waitFor = 1000;
+        for (GuildMusicManager manager : AudioHandler.MUSIC_MANAGER.values()) {
+            if (manager.getLastActiveMessage() != null) {
+                MessageFactory.makeInfo(manager.getLastActiveMessage(),
+                    "Bot is restarting, sorry for the inconvenience, we'll be right back!"
+                ).queue();
+
+                waitFor += 500;
+            }
+        }
+
+        try {
+            Thread.sleep(waitFor);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         for (AvaireShard shard : getShards()) {
             shard.getJDA().shutdown();
         }
