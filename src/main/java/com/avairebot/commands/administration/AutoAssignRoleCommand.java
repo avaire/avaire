@@ -75,8 +75,8 @@ public class AutoAssignRoleCommand extends Command {
 
         List<Role> roles = message.getGuild().getRolesByName(String.join(" ", args), true);
         if (roles.isEmpty()) {
-            MessageFactory.makeWarning(message, ":user Invalid role, I couldn't find any role called **role**")
-                .set("role", args[0])
+            MessageFactory.makeWarning(message, ":user Invalid role, I couldn't find any role called **:role**")
+                .set("role", String.join(" ", args))
                 .queue();
             return false;
         }
