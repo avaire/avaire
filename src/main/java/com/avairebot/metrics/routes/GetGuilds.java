@@ -15,8 +15,6 @@ public class GetGuilds extends SparkRoute {
 
     @Override
     public Object handle(Request request, Response response) throws Exception {
-        response.type("application/json");
-
         String[] ids = request.params("ids").split(",");
 
         JSONObject root = new JSONObject();

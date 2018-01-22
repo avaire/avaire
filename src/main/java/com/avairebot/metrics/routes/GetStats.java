@@ -16,8 +16,6 @@ public class GetStats extends SparkRoute {
 
     @Override
     public Object handle(Request request, Response response) throws Exception {
-        response.type("application/json");
-
         JSONObject root = new JSONObject();
         JSONArray shards = new JSONArray();
 
