@@ -58,10 +58,8 @@ public class TrackRequest extends Future {
 
                 success.accept(new TrackResponse(musicManager, playlist, trackUrl));
 
-                for (AudioTrack track : playlist.getTracks()) {
-                    Metrics.tracksLoaded.inc();
-                    AudioHandler.play(message, musicManager, track);
-                }
+                Metrics.tracksLoaded.inc(playlist.getTracks().size());
+                AudioHandler.play(message, musicManager, playlist);
             }
 
             @Override

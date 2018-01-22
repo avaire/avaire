@@ -68,6 +68,15 @@ public class AudioHandler {
     }
 
     @CheckReturnValue
+    public static VoiceConnectStatus play(Message message, GuildMusicManager musicManager, AudioPlaylist playlist) {
+        VoiceConnectStatus voiceConnectStatus = connectToVoiceChannel(message);
+        if (voiceConnectStatus.isSuccess()) {
+            musicManager.getScheduler().queue(playlist, message.getAuthor());
+        }
+        return voiceConnectStatus;
+    }
+
+    @CheckReturnValue
     public static VoiceConnectStatus connectToVoiceChannel(Message message) {
         return connectToVoiceChannel(message, false);
     }

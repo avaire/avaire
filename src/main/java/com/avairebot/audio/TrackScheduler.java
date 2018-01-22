@@ -1,8 +1,10 @@
 package com.avairebot.audio;
 
 import com.avairebot.factories.MessageFactory;
+import com.avairebot.utilities.NumberUtil;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter;
+import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
 import net.dv8tion.jda.core.entities.Message;
@@ -56,6 +58,51 @@ public class TrackScheduler extends AudioEventAdapter {
         if (manager.getLastActiveMessage() != null) {
             audioTrackContainer = container;
             sendNowPlaying(container);
+        }
+    }
+
+    /**
+     * Add the first track in the playlist to the queue or play right away if nothing is in the queue, then adds the rest of the tracks to the queue.
+     *
+     * @param playlist  The playlist of tracks to play or add to the queue.
+     * @param requester The user who requested the audio track.
+     */
+    public void queue(AudioPlaylist playlist, User requester) {
+        AudioTrack track = playlist.getTracks().get(0);
+        // Calling startTrack with the noInterrupt set to true will start the track only if nothing is currently playing. If
+        // something is playing, it returns false and does nothing. In that case the player was already playing so this
+        // track goes to the queue instead.
+        AudioTrackContainer container = new AudioTrackContainer(track, requester);
+
+        if (!player.startTrack(track, true)) {
+            queue.offer(container);
+
+            for (int i = 1; i < playlist.getTracks().size(); i++) {
+                queue.offer(new AudioTrackContainer(playlist.getTracks().get(i), requester));
+            }
+            return;
+        }
+
+        if (manager.getLastActiveMessage() != null) {
+            audioTrackContainer = container;
+
+            String message = "Now playing: [:title](:link)\n`:duration` - Requested by :requester";
+            if (playlist.getName() != null) {
+                message = "The **:playlistName** playlist has been added to the queue with `:playlistSize` tracks!\n" + message;
+            }
+
+            MessageFactory.makeSuccess(manager.getLastActiveMessage(), message)
+                .set("title", container.getAudioTrack().getInfo().title)
+                .set("link", container.getAudioTrack().getInfo().uri)
+                .set("playlistSize", NumberUtil.formatNicely(playlist.getTracks().size()))
+                .set("playlistName", playlist.getName())
+                .set("duration", container.getFormattedDuration())
+                .set("requester", container.getRequester().getAsMention())
+                .queue();
+        }
+
+        for (int i = 1; i < playlist.getTracks().size(); i++) {
+            queue.offer(new AudioTrackContainer(playlist.getTracks().get(i), requester));
         }
     }
 
