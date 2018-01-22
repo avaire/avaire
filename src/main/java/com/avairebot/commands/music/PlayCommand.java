@@ -195,7 +195,7 @@ public class PlayCommand extends Command {
             List<String> songs = new ArrayList<>();
             List<AudioTrack> tracks = audioSession.getSongs().getTracks();
             for (int i = 0; i < 9; i++) {
-                if (tracks.size() < i) {
+                if (tracks.size() <= i) {
                     break;
                 }
 
