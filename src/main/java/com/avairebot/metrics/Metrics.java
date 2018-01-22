@@ -46,6 +46,12 @@ public class Metrics {
         .labelNames("region")
         .register();
 
+    public static final Gauge websocketHeartbeat = Gauge.build()
+        .name("avaire_shard_websocket_heartbeat")
+        .help("Websocket heartbeat in milliseconds for each shard")
+        .labelNames("shard")
+        .register();
+
     // Music
 
     public static final Counter searchRequests = Counter.build() //search requests issued by users

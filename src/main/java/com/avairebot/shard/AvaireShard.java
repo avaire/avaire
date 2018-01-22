@@ -1,6 +1,7 @@
 package com.avairebot.shard;
 
 import com.avairebot.AvaIre;
+import com.avairebot.metrics.Metrics;
 import com.avairebot.plugin.PluginLoader;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
@@ -25,6 +26,8 @@ public class AvaireShard {
         for (PluginLoader plugin : avaire.getPluginManager().getPlugins()) {
             plugin.registerEventListeners(builder);
         }
+
+        Metrics.websocketHeartbeat.labels("Shard " + shardId).set(0D);
 
         jda = buildJDA(builder);
     }
