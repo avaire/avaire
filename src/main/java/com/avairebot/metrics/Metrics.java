@@ -3,6 +3,7 @@ package com.avairebot.metrics;
 import ch.qos.logback.classic.LoggerContext;
 import com.avairebot.AvaIre;
 import com.avairebot.metrics.handlers.SparkExceptionHandler;
+import com.avairebot.metrics.routes.GetGuilds;
 import com.avairebot.metrics.routes.GetMetrics;
 import com.avairebot.metrics.routes.GetStats;
 import io.prometheus.client.Counter;
@@ -175,6 +176,7 @@ public class Metrics {
         Spark.before(new HttpFilter());
         Spark.exception(Exception.class, new SparkExceptionHandler());
 
+        Spark.get("/guilds/:ids", new GetGuilds(MetricsHolder.METRICS));
         Spark.get("/metrics", new GetMetrics(MetricsHolder.METRICS));
         Spark.get("/stats", new GetStats(MetricsHolder.METRICS));
 
