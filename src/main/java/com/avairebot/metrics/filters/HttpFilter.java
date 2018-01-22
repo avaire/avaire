@@ -1,5 +1,6 @@
-package com.avairebot.metrics;
+package com.avairebot.metrics.filters;
 
+import com.avairebot.metrics.Metrics;
 import spark.Filter;
 import spark.Request;
 import spark.Response;

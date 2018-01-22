@@ -2,6 +2,8 @@ package com.avairebot.metrics;
 
 import ch.qos.logback.classic.LoggerContext;
 import com.avairebot.AvaIre;
+import com.avairebot.metrics.filters.AreWeReadyYetFilter;
+import com.avairebot.metrics.filters.HttpFilter;
 import com.avairebot.metrics.handlers.SparkExceptionHandler;
 import com.avairebot.metrics.routes.GetGuilds;
 import com.avairebot.metrics.routes.GetGuildsExists;
@@ -175,6 +177,7 @@ public class Metrics {
         Spark.port(PORT);
 
         Spark.before(new HttpFilter());
+        Spark.before(new AreWeReadyYetFilter(avaire));
         Spark.exception(Exception.class, new SparkExceptionHandler());
 
         Spark.get("/guilds/:ids/exists", new GetGuildsExists(MetricsHolder.METRICS));
