@@ -5,6 +5,7 @@ import com.avairebot.audio.AudioHandler;
 import com.avairebot.audio.GuildMusicManager;
 import com.avairebot.contracts.scheduler.Job;
 import com.avairebot.factories.MessageFactory;
+import com.avairebot.shard.AvaireShard;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.VoiceChannel;
 import net.dv8tion.jda.core.managers.AudioManager;
@@ -21,7 +22,7 @@ public class MusicActivityJob extends Job {
     public final static Map<Long, Integer> PLAYER_PAUSED = new HashMap<>();
 
     public MusicActivityJob(AvaIre avaire) {
-        super(avaire, 30, 30, TimeUnit.SECONDS);
+        super(avaire, 5, 5, TimeUnit.SECONDS);
     }
 
     @Override
@@ -30,71 +31,73 @@ public class MusicActivityJob extends Job {
             return;
         }
 
-        Iterator<AudioManager> iterator = avaire.getShards().get(0).getJDA().getAudioManagers().iterator();
+        for (AvaireShard shard : avaire.getShards()) {
+            Iterator<AudioManager> iterator = shard.getJDA().getAudioManagers().iterator();
 
-        try {
-            while (iterator.hasNext()) {
-                AudioManager manager = iterator.next();
+            try {
+                while (iterator.hasNext()) {
+                    AudioManager manager = iterator.next();
 
-                if (!manager.isConnected()) {
-                    continue;
-                }
-
-                long guildId = manager.getGuild().getIdLong();
-
-                if (!AudioHandler.MUSIC_MANAGER.containsKey(guildId)) {
-                    handleEmptyMusic(manager, null, guildId);
-                    continue;
-                }
-
-                GuildMusicManager guildMusicManager = AudioHandler.MUSIC_MANAGER.get(guildId);
-
-                if (guildMusicManager.getScheduler().getQueue().isEmpty() && guildMusicManager.getPlayer().getPlayingTrack() == null) {
-                    handleEmptyMusic(manager, guildMusicManager, guildId);
-                    continue;
-                }
-
-                if (EMPTY_QUEUE.containsKey(guildId)) {
-                    EMPTY_QUEUE.remove(guildId);
-                }
-
-                if (guildMusicManager.getPlayer().isPaused()) {
-                    handlePausedMusic(manager, guildMusicManager, guildId);
-                    continue;
-                }
-
-                VoiceChannel voiceChannel = manager.getConnectedChannel();
-
-                boolean hasListeners = false;
-                for (Member member : voiceChannel.getMembers()) {
-                    if (member.getUser().isBot()) {
+                    if (!manager.isConnected()) {
                         continue;
                     }
 
-                    if (member.getVoiceState().isDeafened()) {
+                    long guildId = manager.getGuild().getIdLong();
+
+                    if (!AudioHandler.MUSIC_MANAGER.containsKey(guildId)) {
+                        handleEmptyMusic(manager, null, guildId);
                         continue;
                     }
 
-                    hasListeners = true;
-                    break;
+                    GuildMusicManager guildMusicManager = AudioHandler.MUSIC_MANAGER.get(guildId);
+
+                    if (guildMusicManager.getScheduler().getQueue().isEmpty() && guildMusicManager.getPlayer().getPlayingTrack() == null) {
+                        handleEmptyMusic(manager, guildMusicManager, guildId);
+                        continue;
+                    }
+
+                    if (EMPTY_QUEUE.containsKey(guildId)) {
+                        EMPTY_QUEUE.remove(guildId);
+                    }
+
+                    if (guildMusicManager.getPlayer().isPaused()) {
+                        handlePausedMusic(manager, guildMusicManager, guildId);
+                        continue;
+                    }
+
+                    VoiceChannel voiceChannel = manager.getConnectedChannel();
+
+                    boolean hasListeners = false;
+                    for (Member member : voiceChannel.getMembers()) {
+                        if (member.getUser().isBot()) {
+                            continue;
+                        }
+
+                        if (member.getVoiceState().isDeafened()) {
+                            continue;
+                        }
+
+                        hasListeners = true;
+                        break;
+                    }
+
+                    if (hasListeners && !manager.getGuild().getSelfMember().getVoiceState().isMuted()) {
+                        MISSING_LISTENERS.remove(guildId);
+                        continue;
+                    }
+
+                    int times = MISSING_LISTENERS.getOrDefault(guildId, 0) + 1;
+
+                    if (times <= getValue("missing-listeners", 5)) {
+                        MISSING_LISTENERS.put(guildId, times);
+                        continue;
+                    }
+
+                    clearItems(manager, guildMusicManager, guildId);
                 }
-
-                if (hasListeners && !manager.getGuild().getSelfMember().getVoiceState().isMuted()) {
-                    MISSING_LISTENERS.remove(guildId);
-                    continue;
-                }
-
-                int times = MISSING_LISTENERS.getOrDefault(guildId, 0) + 1;
-
-                if (times <= getValue("missing-listeners", 5)) {
-                    MISSING_LISTENERS.put(guildId, times);
-                    continue;
-                }
-
-                clearItems(manager, guildMusicManager, guildId);
+            } catch (Exception e) {
+                AvaIre.getLogger().error("An exception occurred during music activity job: " + e.getMessage(), e);
             }
-        } catch (Exception e) {
-            AvaIre.getLogger().error("An exception occurred during music activity job: " + e.getMessage(), e);
         }
     }
 
