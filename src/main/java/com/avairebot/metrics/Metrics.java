@@ -5,10 +5,7 @@ import com.avairebot.AvaIre;
 import com.avairebot.metrics.filters.AreWeReadyYetFilter;
 import com.avairebot.metrics.filters.HttpFilter;
 import com.avairebot.metrics.handlers.SparkExceptionHandler;
-import com.avairebot.metrics.routes.GetGuilds;
-import com.avairebot.metrics.routes.GetGuildsExists;
-import com.avairebot.metrics.routes.GetMetrics;
-import com.avairebot.metrics.routes.GetStats;
+import com.avairebot.metrics.routes.*;
 import io.prometheus.client.Counter;
 import io.prometheus.client.Gauge;
 import io.prometheus.client.Histogram;
@@ -176,9 +173,11 @@ public class Metrics {
 
         Spark.port(PORT);
 
+        Spark.notFound(new GetNotFoundRoute(MetricsHolder.METRICS));
+        Spark.exception(Exception.class, new SparkExceptionHandler());
+
         Spark.before(new HttpFilter());
         Spark.before(new AreWeReadyYetFilter(avaire));
-        Spark.exception(Exception.class, new SparkExceptionHandler());
 
         Spark.get("/guilds/:ids/exists", new GetGuildsExists(MetricsHolder.METRICS));
         Spark.get("/guilds/:ids", new GetGuilds(MetricsHolder.METRICS));
