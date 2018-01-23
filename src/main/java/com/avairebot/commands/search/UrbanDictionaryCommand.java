@@ -70,7 +70,7 @@ public class UrbanDictionaryCommand extends Command {
                 double percentage = (((double) definition.getThumbsUp() / definition.getThumbsDown()) * 100) - 100;
 
                 MessageFactory.makeEmbeddedMessage(message.getChannel(), Color.decode("#1D2439"), definition.getDefinition())
-                    .setTitle(definition.getWord(), definition.getPermalink())
+                    .setTitle(definition.getWord().trim().length() == 0 ? "Untitled" : definition.getWord(), definition.getPermalink())
                     .addField("Example", definition.getExample(), false)
                     .setFooter(String.format("%s%s percentage of people like this. %s\uD83D\uDC4D %s\uD83D\uDC4E",
                         new DecimalFormat("#.##").format(percentage), "%",
