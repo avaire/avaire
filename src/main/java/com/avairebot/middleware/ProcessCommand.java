@@ -10,6 +10,7 @@ import com.avairebot.metrics.Metrics;
 import com.avairebot.utilities.ArrayUtil;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import io.prometheus.client.Histogram;
+import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.exceptions.InsufficientPermissionException;
 
@@ -30,6 +31,17 @@ public class ProcessCommand extends Middleware {
 
     @Override
     public boolean handle(Message message, MiddlewareStack stack, String... args) {
+        if (!canSendEmbedMessages(message)) {
+            if (!message.getGuild().getSelfMember().hasPermission(message.getTextChannel(), Permission.MESSAGE_WRITE)) {
+                return false;
+            }
+
+            message.getTextChannel().sendMessage("I don't have the `Embed Links` permission, the permission is required for all of my commands to work.\nThis message will be automatically deleted in 30 seconds.")
+                .queue(newMessage -> newMessage.delete().queueAfter(30, TimeUnit.SECONDS));
+
+            return false;
+        }
+
         String[] arguments = ArrayUtil.toArguments(message.getRawContent());
 
         AvaIre.getLogger().info(COMMAND_OUTPUT
@@ -129,5 +141,12 @@ public class ProcessCommand extends Middleware {
         System.arraycopy(userArguments, 0, result, aliasArguments.length, userArguments.length);
 
         return result;
+    }
+
+    private boolean canSendEmbedMessages(Message message) {
+        if (!message.getChannelType().isGuild()) {
+            return true;
+        }
+        return message.getGuild().getSelfMember().hasPermission(message.getTextChannel(), Permission.MESSAGE_EMBED_LINKS);
     }
 }
