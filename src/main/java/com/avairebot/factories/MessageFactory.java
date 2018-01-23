@@ -16,43 +16,43 @@ public class MessageFactory {
     public static PlaceholderMessage makeError(Message jdaMessage, String message) {
         return new PlaceholderMessage(jdaMessage.getChannel(),
             createEmbeddedBuilder().setColor(MessageType.ERROR.getColor()),
-            PlaceholderType.ALL.parse(jdaMessage, message)
-        );
+            message
+        ).setGlobalPlaceholderType(PlaceholderType.ALL, jdaMessage);
     }
 
     public static PlaceholderMessage makeWarning(Message jdaMessage, String message) {
         return new PlaceholderMessage(jdaMessage.getChannel(),
             createEmbeddedBuilder().setColor(MessageType.WARNING.getColor()),
-            PlaceholderType.ALL.parse(jdaMessage, message)
-        );
+            message
+        ).setGlobalPlaceholderType(PlaceholderType.ALL, jdaMessage);
     }
 
     public static PlaceholderMessage makeSuccess(Message jdaMessage, String message) {
         return new PlaceholderMessage(jdaMessage.getChannel(),
             createEmbeddedBuilder().setColor(MessageType.SUCCESS.getColor()),
-            PlaceholderType.ALL.parse(jdaMessage, message)
-        );
+            message
+        ).setGlobalPlaceholderType(PlaceholderType.ALL, jdaMessage);
     }
 
     public static PlaceholderMessage makeInfo(Message jdaMessage, String message) {
         return new PlaceholderMessage(jdaMessage.getChannel(),
             createEmbeddedBuilder().setColor(MessageType.INFO.getColor()),
-            PlaceholderType.ALL.parse(jdaMessage, message)
-        );
+            message
+        ).setGlobalPlaceholderType(PlaceholderType.ALL, jdaMessage);
     }
 
     public static PlaceholderMessage makeEmbeddedMessage(Message jdaMessage, Color color, String message) {
         return new PlaceholderMessage(jdaMessage.getChannel(),
             createEmbeddedBuilder().setColor(color),
-            PlaceholderType.ALL.parse(jdaMessage, message)
-        );
+            message
+        ).setGlobalPlaceholderType(PlaceholderType.ALL, jdaMessage);
     }
 
     public static PlaceholderMessage makeEmbeddedMessage(MessageChannel channel, Color color, String message) {
         return new PlaceholderMessage(channel,
             createEmbeddedBuilder().setColor(color),
-            PlaceholderType.CHANNEL.parse(channel, message)
-        );
+            message
+        ).setGlobalPlaceholderType(PlaceholderType.CHANNEL, channel);
     }
 
     public static PlaceholderMessage makeEmbeddedMessage(MessageChannel channel, MessageType type, Field... fields) {
@@ -63,7 +63,7 @@ public class MessageFactory {
         PlaceholderMessage message = new PlaceholderMessage(channel,
             createEmbeddedBuilder().setColor(color),
             null
-        );
+        ).setGlobalPlaceholderType(PlaceholderType.CHANNEL, channel);
 
         Arrays.stream(fields).forEachOrdered(message::addField);
         return message;

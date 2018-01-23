@@ -19,6 +19,9 @@ public class PlaceholderMessage extends Restable {
     private EmbedBuilder builder;
     private String message;
 
+    private PlaceholderType globalPlaceholder;
+    private Object globalObject;
+
     public PlaceholderMessage(MessageChannel channel, EmbedBuilder builder, String message) {
         super(channel);
 
@@ -110,6 +113,12 @@ public class PlaceholderMessage extends Restable {
         return this;
     }
 
+    public PlaceholderMessage setGlobalPlaceholderType(PlaceholderType type, Object object) {
+        globalPlaceholder = type;
+        globalObject = object;
+        return this;
+    }
+
     public EmbedBuilder build() {
         return builder.setDescription(formatMessage());
     }
@@ -126,7 +135,7 @@ public class PlaceholderMessage extends Restable {
 
     private String formatMessage() {
         if (placeholders.isEmpty()) {
-            return message;
+            return formatGlobalMessage(message);
         }
 
         List<String> keys = new ArrayList<>(placeholders.keySet());
@@ -136,6 +145,13 @@ public class PlaceholderMessage extends Restable {
                 .replaceAll("\\$", "\\\\\\$"));
         });
 
-        return message;
+        return formatGlobalMessage(message);
+    }
+
+    private String formatGlobalMessage(String message) {
+        if (globalPlaceholder == null) {
+            return message;
+        }
+        return globalPlaceholder.parse(globalObject, message);
     }
 }
