@@ -67,7 +67,7 @@ public class GfycatCommand extends Command {
                     MessageFactory.makeError(message, "I couldn't find any gif matching your query: `:query`")
                         .set("query", String.join(" ", args))
                         .queue();
-                    
+
                     return;
                 }
 
