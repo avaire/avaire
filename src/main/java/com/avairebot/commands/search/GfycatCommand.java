@@ -11,6 +11,7 @@ import net.dv8tion.jda.core.entities.Message;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 
 public class GfycatCommand extends Command {
@@ -61,8 +62,17 @@ public class GfycatCommand extends Command {
             .send((Consumer<Response>) response -> {
                 GfycatService gfyCat = (GfycatService) response.toService(GfycatService.class);
 
+                Map<String, Object> gfycatsItem = gfyCat.getRandomGfycatsItem();
+                if (gfycatsItem == null) {
+                    MessageFactory.makeError(message, "I couldn't find any gif matching your query: `:query`")
+                        .set("query", String.join(" ", args))
+                        .queue();
+                    
+                    return;
+                }
+
                 MessageFactory.makeEmbeddedMessage(message.getChannel())
-                    .setImage(gfyCat.getRandomGfycatsItem().get("gifUrl").toString())
+                    .setImage(gfycatsItem.get("gifUrl").toString())
                     .queue();
             });
         return true;

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 public class GfycatService {
+
     private List<Map<String, Object>> gfycats;
     private int found;
     private String cursor;
@@ -15,6 +16,10 @@ public class GfycatService {
     }
 
     public Map<String, Object> getRandomGfycatsItem() {
+        if (getGfycats() == null || getGfycats().isEmpty()) {
+            return null;
+        }
+
         ArrayList<Map<String, Object>> items = new ArrayList<>(getGfycats());
         Collections.shuffle(items);
 
