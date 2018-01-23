@@ -23,11 +23,31 @@ public class GuildRoleDelete extends EventHandler {
     @Override
     public void onRoleDelete(RoleDeleteEvent event) {
         GuildTransformer transformer = GuildController.fetchGuild(avaire, event.getGuild());
-        if (transformer == null || transformer.getSelfAssignableRoles().isEmpty()) {
+        if (transformer == null) {
             return;
         }
 
-        if (!transformer.getSelfAssignableRoles().containsKey(event.getRole().getId())) {
+        handleAutoroles(event, transformer);
+        handleSelfAssignableRoles(event, transformer);
+    }
+
+    private void handleAutoroles(RoleDeleteEvent event, GuildTransformer transformer) {
+        if (transformer.getAutorole() == null || !event.getRole().getId().equals(transformer.getAutorole())) {
+            return;
+        }
+
+        try {
+            transformer.setAutorole(null);
+            avaire.getDatabase().newQueryBuilder(Constants.GUILD_TABLE_NAME)
+                .where("id", event.getGuild().getId())
+                .update(statement -> statement.set("autorole", null));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void handleSelfAssignableRoles(RoleDeleteEvent event, GuildTransformer transformer) {
+        if (transformer.getSelfAssignableRoles().isEmpty() || !transformer.getSelfAssignableRoles().containsKey(event.getRole().getId())) {
             return;
         }
 
