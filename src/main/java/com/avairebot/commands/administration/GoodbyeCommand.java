@@ -73,7 +73,7 @@ public class GoodbyeCommand extends Command {
         try {
             avaire.getDatabase().newQueryBuilder(Constants.GUILD_TABLE_NAME)
                 .andWhere("id", message.getGuild().getId())
-                .update(statement -> statement.set("channels", guildTransformer.channelsToJson()));
+                .update(statement -> statement.set("channels", guildTransformer.channelsToJson(), true));
 
             String note = "";
             if (channelTransformer.getGoodbye().isEnabled()) {
