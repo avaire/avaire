@@ -61,7 +61,7 @@ public class GuildController {
                             }
 
                             avaire.getCache().getAdapter(CacheType.MEMORY)
-                                .put(cacheToken, new GuildTransformer(new DataRow(statement.getItems())), 2);
+                                .put(cacheToken, new GuildTransformer(new DataRow(statement.getItems())), 300);
                         });
                 } catch (Exception ex) {
                     AvaIre.getLogger().error(ex.getMessage(), ex);

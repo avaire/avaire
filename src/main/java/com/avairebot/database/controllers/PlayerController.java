@@ -51,7 +51,7 @@ public class PlayerController {
                             .set("avatar", user.getAvatarId())
                             .set("experience", 100);
 
-                        avaire.getCache().getAdapter(CacheType.MEMORY).put(cacheToken, new PlayerTransformer(new DataRow(statement.getItems())), 2);
+                        avaire.getCache().getAdapter(CacheType.MEMORY).put(cacheToken, new PlayerTransformer(new DataRow(statement.getItems())), 300);
                     });
 
                 return (PlayerTransformer) avaire.getCache().getAdapter(CacheType.MEMORY).get(cacheToken);
