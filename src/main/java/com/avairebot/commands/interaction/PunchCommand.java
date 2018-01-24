@@ -15,7 +15,6 @@ public class PunchCommand extends InteractionCommand {
     @Override
     public List<String> getInteractionImages() {
         return Arrays.asList(
-            "https://i.imgur.com/uDyVCly.gif",
             "https://i.imgur.com/0baM7Wd.gif",
             "https://i.imgur.com/fVPGbo5.gif",
             "https://i.imgur.com/vHRVMe9.gif",
