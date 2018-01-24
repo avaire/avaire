@@ -65,6 +65,13 @@ public class IAmCommand extends Command {
             return false;
         }
 
+        if (RoleUtil.isRoleHierarchyHigher(message.getGuild().getSelfMember().getRoles(), role)) {
+            MessageFactory.makeWarning(message, ":user The role is higher in the role hierarchy, I can't give/remove the **:role**  role from anyone.")
+                .set("role", args[0])
+                .queue();
+            return false;
+        }
+
         if (!RoleUtil.hasRole(message.getMember(), role)) {
             message.getGuild().getController().addSingleRoleToMember(message.getMember(), role).queue();
         }
