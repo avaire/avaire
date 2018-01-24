@@ -36,7 +36,7 @@ public class SendPlaylists extends PlaylistSubCommand {
             DataRow row = (DataRow) val;
 
             messages.add(String.format("%s\n       Playlist has **%s** song(s)",
-                row.getString("name"), row.getInt("size")
+                row.getString("name"), row.getInt("amount")
             ));
         });
 

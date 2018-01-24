@@ -23,7 +23,7 @@ public class PlaylistTransformer extends Transformer {
 
         if (hasData()) {
             id = data.getInt("id");
-            size = data.getInt("size");
+            size = data.getInt("amount");
             guildId = data.getLong("guild_id");
             name = data.getString("name");
 

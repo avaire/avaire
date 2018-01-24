@@ -107,7 +107,7 @@ public class AddSongToPlaylist extends PlaylistSubCommand {
                 .where("id", playlist.getId()).andWhere("guild_id", message.getGuild().getId())
                 .update(statement -> {
                     statement.set("songs", AvaIre.GSON.toJson(playlist.getSongs()), true);
-                    statement.set("amount", playlist.getSongs().size());
+                    statement.set("amount", playlist.getSize());
                 });
 
             avaire.getCache().getAdapter(CacheType.MEMORY)
