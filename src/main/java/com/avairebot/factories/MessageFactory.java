@@ -52,7 +52,7 @@ public class MessageFactory {
         return new PlaceholderMessage(channel,
             createEmbeddedBuilder().setColor(color),
             message
-        ).setGlobalPlaceholderType(PlaceholderType.CHANNEL, channel);
+        ).setGlobalPlaceholderType(PlaceholderType.ALL, channel);
     }
 
     public static PlaceholderMessage makeEmbeddedMessage(MessageChannel channel, MessageType type, Field... fields) {
@@ -63,7 +63,7 @@ public class MessageFactory {
         PlaceholderMessage message = new PlaceholderMessage(channel,
             createEmbeddedBuilder().setColor(color),
             null
-        ).setGlobalPlaceholderType(PlaceholderType.CHANNEL, channel);
+        ).setGlobalPlaceholderType(PlaceholderType.ALL, channel);
 
         Arrays.stream(fields).forEachOrdered(message::addField);
         return message;
