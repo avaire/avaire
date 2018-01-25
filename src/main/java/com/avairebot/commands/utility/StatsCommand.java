@@ -57,7 +57,7 @@ public class StatsCommand extends Command {
 
     @Override
     public boolean onCommand(Message message, String[] args) {
-        StringBuilder description = new StringBuilder("Created by [Senither#8023](https://senither.com/) using the [JDA](https://github.com/DV8FromTheWorld/JDA) framework!");
+        StringBuilder description = new StringBuilder("Created by [Senither#0001](https://senither.com/) using the [JDA](https://github.com/DV8FromTheWorld/JDA) framework!");
         if (avaire.getCache().getAdapter(CacheType.FILE).has("github.commits")) {
             description = new StringBuilder("**Latest changes:**\n");
             List<LinkedTreeMap<String, Object>> items = (List<LinkedTreeMap<String, Object>>) avaire.getCache().getAdapter(CacheType.FILE).get("github.commits");
@@ -75,7 +75,7 @@ public class StatsCommand extends Command {
         }
 
         MessageFactory.makeEmbeddedMessage(message.getChannel(), MessageType.INFO,
-            new MessageEmbed.Field("Author", "Senither#8023", true),
+            new MessageEmbed.Field("Author", "Senither#0001", true),
             new MessageEmbed.Field("Bot ID", message.getJDA().getSelfUser().getId(), true),
             new MessageEmbed.Field("Library", "[JDA](https://github.com/DV8FromTheWorld/JDA)", true),
             new MessageEmbed.Field("DB Queries run", getDatabaseQueriesStats(), true),
