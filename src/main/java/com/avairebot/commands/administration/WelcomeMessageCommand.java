@@ -96,16 +96,11 @@ public class WelcomeMessageCommand extends Command {
     }
 
     private boolean sendExampleMessage(Message message, User user, ChannelTransformer transformer) {
-        message.getChannel().sendMessage(
-            StringReplacementUtil.parseChannel(message.getTextChannel(),
-                StringReplacementUtil.parseUser(user,
-                    StringReplacementUtil.parseGuild(message.getGuild(),
-                        transformer.getWelcome().getMessage() == null ?
-                            "Welcome %user% to **%server%!**" :
-                            transformer.getWelcome().getMessage()
-                    )
-                )
-            )
+        message.getChannel().sendMessage(StringReplacementUtil.parseGuildJoinLeaveMessage(
+            message.getGuild(), message.getTextChannel(), user,
+            transformer.getWelcome().getMessage() == null ?
+                "Welcome %user% to **%server%!**" :
+                transformer.getWelcome().getMessage())
         ).queue();
 
         return true;

@@ -1,11 +1,16 @@
 package com.avairebot.utilities;
 
-import net.dv8tion.jda.core.entities.Channel;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.core.entities.*;
 
 public class StringReplacementUtil {
+
+    public static String parseGuildJoinLeaveMessage(Guild guild, TextChannel channel, User user, String message) {
+        return StringReplacementUtil.parseChannel(channel,
+            StringReplacementUtil.parseUser(user,
+                StringReplacementUtil.parseGuild(guild, message)
+            )
+        ).replaceAll("%br%", "\n");
+    }
 
     public static String parse(Message message, String string, ReplacementType... types) {
         for (ReplacementType type : types) {

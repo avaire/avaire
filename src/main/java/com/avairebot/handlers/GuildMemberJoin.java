@@ -39,16 +39,11 @@ public class GuildMemberJoin extends EventHandler {
                     continue;
                 }
 
-                textChannel.sendMessage(
-                    StringReplacementUtil.parseChannel(textChannel,
-                        StringReplacementUtil.parseUser(event.getUser(),
-                            StringReplacementUtil.parseGuild(event.getGuild(),
-                                channelTransformer.getWelcome().getMessage() == null ?
-                                    "Welcome %user% to **%server%!**" :
-                                    channelTransformer.getWelcome().getMessage()
-                            )
-                        )
-                    )
+                textChannel.sendMessage(StringReplacementUtil.parseGuildJoinLeaveMessage(
+                    event.getGuild(), textChannel, event.getUser(),
+                    channelTransformer.getWelcome().getMessage() == null ?
+                        "Welcome %user% to **%server%!**" :
+                        channelTransformer.getWelcome().getMessage())
                 ).queue();
             }
         }

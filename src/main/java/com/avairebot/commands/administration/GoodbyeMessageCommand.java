@@ -98,16 +98,11 @@ public class GoodbyeMessageCommand extends Command {
     }
 
     private boolean sendExampleMessage(Message message, User user, ChannelTransformer transformer) {
-        message.getChannel().sendMessage(
-            StringReplacementUtil.parseChannel(message.getTextChannel(),
-                StringReplacementUtil.parseUser(user,
-                    StringReplacementUtil.parseGuild(message.getGuild(),
-                        transformer.getGoodbye().getMessage() == null ?
-                            "%user% has left **%server%**! :(" :
-                            transformer.getGoodbye().getMessage()
-                    )
-                )
-            )
+        message.getChannel().sendMessage(StringReplacementUtil.parseGuildJoinLeaveMessage(
+            message.getGuild(), message.getTextChannel(), user,
+            transformer.getGoodbye().getMessage() == null ?
+                "%user% has left **%server%**! :(" :
+                transformer.getGoodbye().getMessage())
         ).queue();
 
         return true;

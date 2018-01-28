@@ -36,16 +36,11 @@ public class GuildMemberLeave extends EventHandler {
                     continue;
                 }
 
-                textChannel.sendMessage(
-                    StringReplacementUtil.parseChannel(textChannel,
-                        StringReplacementUtil.parseUser(event.getUser(),
-                            StringReplacementUtil.parseGuild(event.getGuild(),
-                                channelTransformer.getGoodbye().getMessage() == null ?
-                                    "%user% has left **%server%**! :(" :
-                                    channelTransformer.getGoodbye().getMessage()
-                            )
-                        )
-                    )
+                textChannel.sendMessage(StringReplacementUtil.parseGuildJoinLeaveMessage(
+                    event.getGuild(), textChannel, event.getUser(),
+                    channelTransformer.getGoodbye().getMessage() == null ?
+                        "%user% has left **%server%**! :(" :
+                        channelTransformer.getGoodbye().getMessage())
                 ).queue();
             }
         }
