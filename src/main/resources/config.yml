@@ -40,7 +40,7 @@ environment: 'production'
 # Discord Application Information
 #--------------------------------------------------------------------------
 #
-# Discord application information in things like your application token,
+# Discord application information is things like your application token,
 # application id, application secret, etc. To run a Discord bot you'll
 # need an application token, if you don't already have an application
 # with discord you can easily create one in two minutes.
