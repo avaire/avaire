@@ -36,7 +36,8 @@ public class PlayerController {
         }
 
         try {
-            PlayerTransformer transformer = new PlayerTransformer(avaire.getDatabase().newQueryBuilder(Constants.PLAYER_EXPERIENCE_TABLE_NAME)
+            PlayerTransformer transformer = new PlayerTransformer(avaire.getDatabase()
+                .newQueryBuilder(Constants.PLAYER_EXPERIENCE_TABLE_NAME)
                 .where("user_id", user.getId())
                 .andWhere("guild_id", message.getGuild().getId())
                 .get().first());
@@ -51,10 +52,27 @@ public class PlayerController {
                             .set("avatar", user.getAvatarId())
                             .set("experience", 100);
 
-                        avaire.getCache().getAdapter(CacheType.MEMORY).put(cacheToken, new PlayerTransformer(new DataRow(statement.getItems())), 300);
+                        avaire.getCache()
+                            .getAdapter(CacheType.MEMORY)
+                            .put(cacheToken, new PlayerTransformer(
+                                new DataRow(statement.getItems())
+                            ), 300);
                     });
 
                 return (PlayerTransformer) avaire.getCache().getAdapter(CacheType.MEMORY).get(cacheToken);
+            }
+
+            if (isChanged(user, transformer)) {
+                transformer.setUsername(user.getName());
+                transformer.setDiscriminator(user.getDiscriminator());
+                transformer.setAvatar(user.getAvatarId());
+
+                updateUserData(avaire, user);
+                avaire.getCache()
+                    .getAdapter(CacheType.MEMORY)
+                    .put(cacheToken, transformer, 300);
+
+                return transformer;
             }
 
             // If the users name haven't been encoded yet, we'll do it below.
@@ -76,5 +94,25 @@ public class PlayerController {
             AvaIre.getLogger().error(ex.getMessage(), ex);
             return null;
         }
+    }
+
+    public static void updateUserData(AvaIre avaire, User user) {
+        try {
+            avaire.getDatabase().newQueryBuilder(Constants.PLAYER_EXPERIENCE_TABLE_NAME)
+                .where("user_id", user.getId())
+                .update(statement -> {
+                    statement.set("username", user.getName(), true);
+                    statement.set("discriminator", user.getDiscriminator());
+                    statement.set("avatar", user.getAvatarId());
+                });
+        } catch (SQLException e) {
+            AvaIre.getLogger().error("Failed to update user with an ID of " + user.getId(), e);
+        }
+    }
+
+    private static boolean isChanged(User user, PlayerTransformer transformer) {
+        return !user.equals(transformer)
+            || !user.getDiscriminator().equals(transformer.getDiscriminator())
+            || !user.getAvatarId().equals(transformer.getAvatar());
     }
 }

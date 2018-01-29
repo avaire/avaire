@@ -6,12 +6,19 @@ import com.avairebot.time.Carbon;
 
 public class PlayerTransformer extends Transformer {
 
+    private String username;
+    private String discriminator;
+    private String avatarId;
     private long experience = 0;
 
     public PlayerTransformer(DataRow data) {
         super(data);
 
         if (hasData()) {
+            username = data.getString("username");
+            discriminator = data.getString("discriminator");
+            avatarId = data.getString("avatar");
+
             experience = data.getLong("experience", 0);
         }
     }
@@ -25,15 +32,27 @@ public class PlayerTransformer extends Transformer {
     }
 
     public String getUsername() {
-        return data.getString("username");
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getDiscriminator() {
-        return data.getString("discriminator");
+        return discriminator;
+    }
+
+    public void setDiscriminator(String discriminator) {
+        this.discriminator = discriminator;
     }
 
     public String getAvatar() {
-        return data.getString("avatar");
+        return avatarId;
+    }
+
+    public void setAvatar(String avatarId) {
+        this.avatarId = avatarId;
     }
 
     public long getExperience() {
