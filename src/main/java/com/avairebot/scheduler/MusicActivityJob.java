@@ -128,7 +128,7 @@ public class MusicActivityJob extends Job {
             guildMusicManager.getScheduler().getQueue().clear();
             guildMusicManager.getPlayer().destroy();
 
-            if (guildMusicManager.getLastActiveMessage() != null) {
+            if (guildMusicManager.getLastActiveMessage() != null && guildMusicManager.getLastActiveMessage().getTextChannel().canTalk()) {
                 MessageFactory.makeInfo(guildMusicManager.getLastActiveMessage(), "The music has ended due to inactivity.").queue();
             }
         }
