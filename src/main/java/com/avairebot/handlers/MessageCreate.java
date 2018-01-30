@@ -49,7 +49,7 @@ public class MessageCreate extends EventHandler {
     public void onMessageReceived(MessageReceivedEvent event) {
         Statistics.addMessage();
 
-        if (event.getAuthor().isBot()) {
+        if (event.getAuthor().isBot() || !event.getTextChannel().canTalk()) {
             return;
         }
 
@@ -66,10 +66,6 @@ public class MessageCreate extends EventHandler {
 
             if (properties.getGuild() != null && properties.getPlayer() != null) {
                 LevelUtil.rewardPlayer(avaire, event, properties.getGuild(), properties.getPlayer());
-            }
-
-            if (!canWriteToChannel(event)) {
-                return;
             }
 
             CommandContainer container = CommandHandler.getCommand(avaire, event.getMessage(), event.getMessage().getRawContent());
@@ -108,15 +104,6 @@ public class MessageCreate extends EventHandler {
                 sendInformationMessage(event);
             }
         });
-    }
-
-    private boolean canWriteToChannel(MessageReceivedEvent event) {
-        if (!event.getChannelType().isGuild()) {
-            return true;
-        }
-        return event.getMessage().getGuild().getSelfMember().hasPermission(
-            event.getMessage().getTextChannel(), Permission.MESSAGE_WRITE
-        );
     }
 
     private boolean canExecuteCommand(MessageReceivedEvent event, CommandContainer container) {
