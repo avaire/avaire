@@ -13,11 +13,16 @@ import io.prometheus.client.Histogram;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.exceptions.InsufficientPermissionException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 public class ProcessCommand extends Middleware {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProcessCommand.class);
 
     private final static String COMMAND_OUTPUT = "Executing Command \"%command%\" in \"%category%\" category:"
         + "\n\t\tUser:\t %author%"
@@ -84,7 +89,10 @@ public class ProcessCommand extends Middleware {
                     .queue(newMessage -> newMessage.delete().queueAfter(30, TimeUnit.SECONDS));
             }
 
-            ex.printStackTrace();
+            MDC.putCloseable("guild", message.getGuild() != null ? message.getGuild().getId() : "PRIVATE");
+            MDC.putCloseable("channel", message.getChannel().getId());
+            MDC.putCloseable("author", message.getAuthor().getId());
+            LOGGER.error("An error occurred while running the " + stack.getCommand().getName(), ex);
             return false;
         } finally {
             if (timer != null) {

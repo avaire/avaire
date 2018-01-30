@@ -171,7 +171,7 @@ public class AvaIre extends Shardable {
                 }
             }
         } catch (InvalidPluginsPathException | InvalidPluginException e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage(), e);
             System.exit(ExitCodes.EXIT_CODE_ERROR);
         }
 
