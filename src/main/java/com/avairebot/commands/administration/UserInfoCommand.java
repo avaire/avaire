@@ -63,7 +63,7 @@ public class UserInfoCommand extends Command {
         }
 
         placeholderMessage.addField(new MessageEmbed.Field(String.format("Roles (%s)", member.getRoles().size()), memberRoles, true));
-        placeholderMessage.addField(new MessageEmbed.Field("Servers", "" + member.getUser().getMutualGuilds().size() + " the bot knows about", true));
+        placeholderMessage.addField(new MessageEmbed.Field("Servers", "" + avaire.getMutualGuilds(member.getUser()).size() + " the bot knows about", true));
 
         placeholderMessage.queue();
         return true;
