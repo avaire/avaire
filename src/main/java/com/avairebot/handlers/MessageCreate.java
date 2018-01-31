@@ -49,7 +49,11 @@ public class MessageCreate extends EventHandler {
     public void onMessageReceived(MessageReceivedEvent event) {
         Statistics.addMessage();
 
-        if (event.getAuthor().isBot() || !event.getTextChannel().canTalk()) {
+        if (event.getAuthor().isBot()) {
+            return;
+        }
+
+        if (event.getChannelType().isGuild() && !event.getTextChannel().canTalk()) {
             return;
         }
 
