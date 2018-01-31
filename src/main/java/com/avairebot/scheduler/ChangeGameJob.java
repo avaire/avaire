@@ -4,6 +4,7 @@ import com.avairebot.AvaIre;
 import com.avairebot.commands.system.SetStatusCommand;
 import com.avairebot.contracts.scheduler.Job;
 import com.avairebot.shard.AvaireShard;
+import com.avairebot.utilities.NumberUtil;
 import net.dv8tion.jda.core.entities.Game;
 
 import java.util.Arrays;
@@ -65,8 +66,8 @@ public class ChangeGameJob extends Job {
     }
 
     private String formatGame(String game, AvaireShard shard) {
-        game = game.replaceAll("%users%", "" + avaire.getShardEntityCounter().getUsers());
-        game = game.replaceAll("%guilds%", "" + avaire.getShardEntityCounter().getGuilds());
+        game = game.replaceAll("%users%", NumberUtil.formatNicely(avaire.getShardEntityCounter().getUsers()));
+        game = game.replaceAll("%guilds%", NumberUtil.formatNicely(avaire.getShardEntityCounter().getGuilds()));
 
         game = game.replaceAll("%shard-id%", "" + shard.getShardId());
         game = game.replaceAll("%shard-total%", "" + avaire.getSettings().getShardCount());

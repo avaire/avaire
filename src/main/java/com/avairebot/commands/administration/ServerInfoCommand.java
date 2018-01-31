@@ -5,6 +5,7 @@ import com.avairebot.chat.PlaceholderMessage;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.factories.MessageFactory;
 import com.avairebot.time.Carbon;
+import com.avairebot.utilities.NumberUtil;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageEmbed;
@@ -50,10 +51,10 @@ public class ServerInfoCommand extends Command {
         PlaceholderMessage placeholderMessage = MessageFactory.makeEmbeddedMessage(message.getChannel(), getRoleColor(guild.getSelfMember().getRoles()),
             new MessageEmbed.Field("ID", guild.getId(), true),
             new MessageEmbed.Field("Owner", guild.getOwner().getUser().getName() + "#" + guild.getOwner().getUser().getDiscriminator(), true),
-            new MessageEmbed.Field("Text Channels", "" + guild.getTextChannels().size(), true),
-            new MessageEmbed.Field("Voice Channels", "" + guild.getVoiceChannels().size(), true),
-            new MessageEmbed.Field("Members", "" + guild.getMembers().size(), true),
-            new MessageEmbed.Field("Roles", "" + guild.getRoles().size(), true),
+            new MessageEmbed.Field("Text Channels", NumberUtil.formatNicely(guild.getTextChannels().size()), true),
+            new MessageEmbed.Field("Voice Channels", NumberUtil.formatNicely(guild.getVoiceChannels().size()), true),
+            new MessageEmbed.Field("Members", NumberUtil.formatNicely(guild.getMembers().size()), true),
+            new MessageEmbed.Field("Roles", NumberUtil.formatNicely(guild.getRoles().size()), true),
             new MessageEmbed.Field("Region", guild.getRegion().getName(), true),
             new MessageEmbed.Field("Created At", time.format("EEE, dd MMM yyyy HH:mm") + "\n*About " + shortenDiffForHumans(time) + "*", true)
         ).setTitle(guild.getName()).setThumbnail(guild.getIconUrl());

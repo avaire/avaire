@@ -6,6 +6,7 @@ import com.avairebot.contracts.commands.Command;
 import com.avairebot.factories.MessageFactory;
 import com.avairebot.time.Carbon;
 import com.avairebot.utilities.MentionableUtil;
+import com.avairebot.utilities.NumberUtil;
 import net.dv8tion.jda.core.entities.*;
 
 import java.awt.*;
@@ -63,7 +64,7 @@ public class UserInfoCommand extends Command {
         }
 
         placeholderMessage.addField(new MessageEmbed.Field(String.format("Roles (%s)", member.getRoles().size()), memberRoles, true));
-        placeholderMessage.addField(new MessageEmbed.Field("Servers", "" + avaire.getMutualGuilds(member.getUser()).size() + " the bot knows about", true));
+        placeholderMessage.addField(new MessageEmbed.Field("Servers", NumberUtil.formatNicely(avaire.getMutualGuilds(member.getUser()).size()) + " the bot knows about", true));
 
         placeholderMessage.queue();
         return true;
