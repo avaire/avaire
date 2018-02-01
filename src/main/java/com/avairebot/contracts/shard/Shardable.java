@@ -18,6 +18,22 @@ public abstract class Shardable {
     }
 
     /**
+     * This returns the {@link com.avairebot.shard.AvaireShard Shard} which has the same id as the one provided.
+     * <br>If there is not shard enabled with an id that matches the provided one, this returns {@code null}.
+     *
+     * @param shardId The id of the requested {@link AvaireShard Shard}.
+     * @return Possible-null {@link AvaireShard Shard} with matching id.
+     */
+    public AvaireShard getShardById(int shardId) {
+        for (AvaireShard shard : SHARDS) {
+            if (shard.getShardId() == shardId) {
+                return shard;
+            }
+        }
+        return null;
+    }
+
+    /**
      * This returns the {@link net.dv8tion.jda.core.entities.User User} which has the same id as the one provided.
      * <br>If there is no visible user with an id that matches the provided one, this returns {@code null}.
      *
