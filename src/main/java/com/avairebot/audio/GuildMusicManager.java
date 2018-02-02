@@ -2,18 +2,21 @@ package com.avairebot.audio;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
+import lavalink.client.player.IPlayer;
+import lavalink.client.player.LavaplayerPlayerWrapper;
+import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
 
 public class GuildMusicManager {
 
-    private final AudioPlayer player;
+    private final IPlayer player;
     private final TrackScheduler scheduler;
 
     private boolean repeatQueue = false;
     private Message lastActiveMessage = null;
 
-    public GuildMusicManager(AudioPlayerManager manager) {
-        player = manager.createPlayer();
+    public GuildMusicManager(AudioPlayerManager manager, Guild guild) {
+        player = LavalinkManager.LavalinkManagerHolder.LAVALINK.createPlayer(guild.getId());
         scheduler = new TrackScheduler(this, player);
         player.addListener(scheduler);
     }
@@ -27,10 +30,10 @@ public class GuildMusicManager {
     }
 
     public AudioPlayerSendHandler getSendHandler() {
-        return new AudioPlayerSendHandler(player);
+        return new AudioPlayerSendHandler((LavaplayerPlayerWrapper) player);
     }
 
-    public AudioPlayer getPlayer() {
+    public IPlayer getPlayer() {
         return player;
     }
 

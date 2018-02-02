@@ -3,10 +3,11 @@ package com.avairebot.audio;
 import com.avairebot.factories.MessageFactory;
 import com.avairebot.utilities.NumberUtil;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
-import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
+import lavalink.client.player.IPlayer;
+import lavalink.client.player.event.AudioEventAdapterWrapped;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.User;
 
@@ -18,12 +19,12 @@ import java.util.concurrent.LinkedBlockingQueue;
 /**
  * This class schedules tracks for the audio player. It contains the queue of tracks.
  */
-public class TrackScheduler extends AudioEventAdapter {
+public class TrackScheduler extends AudioEventAdapterWrapped {
 
     public final ExecutorService service = Executors.newCachedThreadPool();
 
     private final GuildMusicManager manager;
-    private final AudioPlayer player;
+    private final IPlayer player;
     private final BlockingQueue<AudioTrackContainer> queue;
 
     private AudioTrackContainer audioTrackContainer;
@@ -32,7 +33,7 @@ public class TrackScheduler extends AudioEventAdapter {
      * @param manager The guild music manager.
      * @param player  The audio player this scheduler uses.
      */
-    public TrackScheduler(GuildMusicManager manager, AudioPlayer player) {
+    public TrackScheduler(GuildMusicManager manager, IPlayer player) {
         this.manager = manager;
         this.player = player;
         this.queue = new LinkedBlockingQueue<>();
@@ -50,7 +51,8 @@ public class TrackScheduler extends AudioEventAdapter {
         // track goes to the queue instead.
         AudioTrackContainer container = new AudioTrackContainer(track, requester);
 
-        if (!player.startTrack(track, true)) {
+        if (player.getPlayingTrack() == null) {
+            player.playTrack(track);
             queue.offer(container);
             return;
         }
@@ -74,7 +76,8 @@ public class TrackScheduler extends AudioEventAdapter {
         // track goes to the queue instead.
         AudioTrackContainer container = new AudioTrackContainer(track, requester);
 
-        if (!player.startTrack(track, true)) {
+        if (player.getPlayingTrack() == null) {
+            player.playTrack(track);
             queue.offer(container);
 
             for (int i = 1; i < playlist.getTracks().size(); i++) {
@@ -115,7 +118,7 @@ public class TrackScheduler extends AudioEventAdapter {
         AudioTrackContainer container = queue.poll();
 
         if (container == null) {
-            player.startTrack(null, false);
+            player.playTrack(null);
             if (manager.getLastActiveMessage() == null)
                 return;
 
@@ -124,7 +127,7 @@ public class TrackScheduler extends AudioEventAdapter {
         }
 
         audioTrackContainer = container;
-        player.startTrack(container.getAudioTrack(), false);
+        player.playTrack(container.getAudioTrack());
         if (manager.getLastActiveMessage() != null) {
             sendNowPlaying(container);
         }
@@ -168,7 +171,7 @@ public class TrackScheduler extends AudioEventAdapter {
     public void handleEndOfQueue(Message message) {
         MessageFactory.makeSuccess(message, "Queue has ended, leaving voice.").queue();
 
-        message.getGuild().getAudioManager().closeAudioConnection();
+        LavalinkManager.LavalinkManagerHolder.LAVALINK.closeConnection(message.getGuild());
 
         AudioHandler.MUSIC_MANAGER.remove(
             message.getGuild().getIdLong()

@@ -3,6 +3,7 @@ package com.avairebot;
 import com.avairebot.ai.IntelligenceManager;
 import com.avairebot.audio.AudioHandler;
 import com.avairebot.audio.GuildMusicManager;
+import com.avairebot.audio.LavalinkManager;
 import com.avairebot.cache.CacheManager;
 import com.avairebot.commands.CategoryHandler;
 import com.avairebot.commands.CommandHandler;
@@ -198,6 +199,9 @@ public class AvaIre extends Shardable {
                     break;
             }
         }
+
+        LOGGER.info("Preparing Lavalink");
+        LavalinkManager.LavalinkManagerHolder.LAVALINK.start(this);
 
         LOGGER.info("Creating bot instance and connecting to Discord network");
 

@@ -137,6 +137,49 @@ playing:
   - '.help'
 
 #--------------------------------------------------------------------------
+# Music Lavalink Nodes (Advanced Music Settings)
+#--------------------------------------------------------------------------
+#
+# Lavalink is used internally in Ava to delegate sending and encoding jobs,
+# using Lavalink makes it easy to provided good quality music to everyone
+# around the world at the same time by spreading the needed resources
+# for streaming music out to external encoding nodes.
+#
+# Lavalink is NOT a requirement to use the music features in Ava, it's
+# simply an alternative way to deliver the end result to the user,
+# for more information about Lavalink checkout:
+#
+# https://github.com/Frederikam/Lavalink
+#
+
+lavalink:
+
+  # This determines if Ava should use Lavalink for encoding and sending the
+  # audio instead of doing it internally, if Lavalink is enabled and no
+  # valid nodes has been provided, none of the music will work.
+  #
+  enabled: false
+
+  # This is your Lavalink encoding nodes, each node must have a valid name
+  # that the node is identified by, a valid web-socket host and port,
+  # and a valid password for the given Lavalink node.
+  #
+  # If a encoding node is closed, all music that is streamed through the node
+  # will stop and the load-balancer built into Lavalink will begin to
+  # spread the load out to the remaining working nodes.
+  #
+  nodes:
+    - name : "local"
+      host : "ws://localhost:5555"
+      pass : "youshallnotpass"
+    - name : "remote1"
+      host : "ws://192.168.1.20:5556"
+      pass : "youshallnotpass"
+    - name : "remote2"
+      host : "ws://lavalink.example.com:5557"
+      pass : "youshallnotpass"
+
+#--------------------------------------------------------------------------
 # Music Activity Settings
 #--------------------------------------------------------------------------
 #

@@ -3,6 +3,7 @@ package com.avairebot.scheduler;
 import com.avairebot.AvaIre;
 import com.avairebot.audio.AudioHandler;
 import com.avairebot.audio.GuildMusicManager;
+import com.avairebot.audio.LavalinkManager;
 import com.avairebot.contracts.scheduler.Job;
 import com.avairebot.factories.MessageFactory;
 import com.avairebot.shard.AvaireShard;
@@ -126,7 +127,7 @@ public class MusicActivityJob extends Job {
     private void clearItems(AudioManager manager, GuildMusicManager guildMusicManager, long guildId) {
         if (guildMusicManager != null) {
             guildMusicManager.getScheduler().getQueue().clear();
-            guildMusicManager.getPlayer().destroy();
+            LavalinkManager.LavalinkManagerHolder.LAVALINK.getLavalink().getLink(guildMusicManager.getLastActiveMessage().getGuild()).destroy();
 
             if (guildMusicManager.getLastActiveMessage() != null && guildMusicManager.getLastActiveMessage().getTextChannel().canTalk()) {
                 MessageFactory.makeInfo(guildMusicManager.getLastActiveMessage(), "The music has ended due to inactivity.").queue();

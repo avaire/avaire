@@ -18,6 +18,7 @@ import com.sedmelluq.discord.lavaplayer.source.vimeo.VimeoAudioSourceManager;
 import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioSourceManager;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+import lavalink.client.io.Link;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
@@ -36,39 +37,48 @@ import java.util.concurrent.TimeUnit;
 
 public class AudioHandler {
 
-    public static final AudioPlayerManager AUDIO_PLAYER_MANAGER;
     public static final Map<Long, GuildMusicManager> MUSIC_MANAGER;
     public static final Map<String, AudioSession> AUDIO_SESSION;
+
+    private static AudioPlayerManager playerManager;
 
     static {
         MUSIC_MANAGER = new HashMap<>();
         AUDIO_SESSION = new HashMap<>();
+    }
 
-        AUDIO_PLAYER_MANAGER = new DefaultAudioPlayerManager();
+    @CheckReturnValue
+    public static AudioPlayerManager getPlayerManager() {
+        if (playerManager == null) {
+            playerManager = new DefaultAudioPlayerManager();
 
-        YoutubeAudioSourceManager youtubeAudioSourceManager = new YoutubeAudioSourceManager();
-        youtubeAudioSourceManager.configureRequests(config -> RequestConfig.copy(config)
-            .setCookieSpec(CookieSpecs.IGNORE_COOKIES)
-            .build());
+            YoutubeAudioSourceManager youtubeAudioSourceManager = new YoutubeAudioSourceManager();
+            youtubeAudioSourceManager.configureRequests(config -> RequestConfig.copy(config)
+                .setCookieSpec(CookieSpecs.IGNORE_COOKIES)
+                .build());
 
-        AUDIO_PLAYER_MANAGER.registerSourceManager(youtubeAudioSourceManager);
-        AUDIO_PLAYER_MANAGER.registerSourceManager(new SoundCloudAudioSourceManager());
-        AUDIO_PLAYER_MANAGER.registerSourceManager(new BandcampAudioSourceManager());
-        AUDIO_PLAYER_MANAGER.registerSourceManager(new TwitchStreamAudioSourceManager());
-        AUDIO_PLAYER_MANAGER.registerSourceManager(new VimeoAudioSourceManager());
-        AUDIO_PLAYER_MANAGER.registerSourceManager(new BeamAudioSourceManager());
-        AUDIO_PLAYER_MANAGER.registerSourceManager(new LocalAudioSourceManager());
+            playerManager.registerSourceManager(youtubeAudioSourceManager);
+            playerManager.registerSourceManager(new SoundCloudAudioSourceManager());
+            playerManager.registerSourceManager(new BandcampAudioSourceManager());
+            playerManager.registerSourceManager(new TwitchStreamAudioSourceManager());
+            playerManager.registerSourceManager(new VimeoAudioSourceManager());
+            playerManager.registerSourceManager(new BeamAudioSourceManager());
+            playerManager.registerSourceManager(new LocalAudioSourceManager());
 
-        AUDIO_PLAYER_MANAGER.getConfiguration().setResamplingQuality(
-            AudioConfiguration.ResamplingQuality.MEDIUM
-        );
+            playerManager.getConfiguration().setResamplingQuality(
+                AudioConfiguration.ResamplingQuality.MEDIUM
+            );
 
-        AUDIO_PLAYER_MANAGER.enableGcMonitoring();
-        AUDIO_PLAYER_MANAGER.setFrameBufferDuration(1000);
-        AUDIO_PLAYER_MANAGER.setItemLoaderThreadPoolSize(500);
+            if (LavalinkManager.LavalinkManagerHolder.LAVALINK.isEnabled())
+                playerManager.enableGcMonitoring();
+            playerManager.setFrameBufferDuration(1000);
+            playerManager.setItemLoaderThreadPoolSize(500);
 
-        AudioSourceManagers.registerRemoteSources(AUDIO_PLAYER_MANAGER);
-        AudioSourceManagers.registerLocalSource(AUDIO_PLAYER_MANAGER);
+            AudioSourceManagers.registerRemoteSources(playerManager);
+            AudioSourceManagers.registerLocalSource(playerManager);
+        }
+
+        return playerManager;
     }
 
     @CheckReturnValue
@@ -115,13 +125,24 @@ public class AudioHandler {
 
     @CheckReturnValue
     public static VoiceConnectStatus connectToVoiceChannel(Message message, boolean moveChannelIfConnected) {
-        AudioManager audioManager = message.getGuild().getAudioManager();
-        if (!audioManager.isAttemptingToConnect()) {
-            VoiceChannel channel = message.getMember().getVoiceState().getChannel();
-            if (channel == null) {
-                return VoiceConnectStatus.NOT_CONNECTED;
+        VoiceChannel channel = message.getMember().getVoiceState().getChannel();
+        if (channel == null) {
+            return VoiceConnectStatus.NOT_CONNECTED;
+        }
+
+        if (LavalinkManager.LavalinkManagerHolder.LAVALINK.isEnabled()) {
+            VoiceConnectStatus voiceConnectStatus = canConnectToChannel(message, channel);
+            if (voiceConnectStatus != null) {
+                return voiceConnectStatus;
             }
 
+            LavalinkManager.LavalinkManagerHolder.LAVALINK.openConnection(channel);
+
+            return VoiceConnectStatus.CONNECTED;
+        }
+
+        AudioManager audioManager = message.getGuild().getAudioManager();
+        if (!audioManager.isAttemptingToConnect()) {
             if (audioManager.isConnected()) {
                 if (channel.getIdLong() == audioManager.getConnectedChannel().getIdLong()) {
                     return VoiceConnectStatus.CONNECTED;
@@ -139,13 +160,9 @@ public class AudioHandler {
 
     @CheckReturnValue
     private static VoiceConnectStatus connectToVoiceChannel(Message message, VoiceChannel channel, AudioManager audioManager) {
-        List<Permission> permissions = message.getGuild().getMember(message.getJDA().getSelfUser()).getPermissions(channel);
-        if (!permissions.contains(Permission.VOICE_CONNECT)) {
-            return VoiceConnectStatus.MISSING_PERMISSIONS;
-        }
-
-        if (channel.getUserLimit() > 0 && !permissions.contains(Permission.VOICE_MOVE_OTHERS) && channel.getUserLimit() <= channel.getMembers().size()) {
-            return VoiceConnectStatus.USER_LIMIT;
+        VoiceConnectStatus voiceConnectStatus = canConnectToChannel(message, channel);
+        if (voiceConnectStatus != null) {
+            return voiceConnectStatus;
         }
 
         try {
@@ -156,19 +173,35 @@ public class AudioHandler {
         return VoiceConnectStatus.CONNECTED;
     }
 
+    private static VoiceConnectStatus canConnectToChannel(Message message, VoiceChannel channel) {
+        List<Permission> permissions = message.getGuild().getMember(message.getJDA().getSelfUser()).getPermissions(channel);
+        if (!permissions.contains(Permission.VOICE_CONNECT)) {
+            return VoiceConnectStatus.MISSING_PERMISSIONS;
+        }
+
+        if (channel.getUserLimit() > 0 && !permissions.contains(Permission.VOICE_MOVE_OTHERS) && channel.getUserLimit() <= channel.getMembers().size()) {
+            return VoiceConnectStatus.USER_LIMIT;
+        }
+        return null;
+    }
+
     @CheckReturnValue
     public static synchronized GuildMusicManager getGuildAudioPlayer(Guild guild) {
         long guildId = Long.parseLong(guild.getId());
         GuildMusicManager musicManager = MUSIC_MANAGER.get(guildId);
 
         if (musicManager == null) {
-            musicManager = new GuildMusicManager(AUDIO_PLAYER_MANAGER);
+            musicManager = new GuildMusicManager(getPlayerManager(), guild);
             musicManager.getPlayer().setVolume(50);
 
             MUSIC_MANAGER.put(guildId, musicManager);
         }
 
-        guild.getAudioManager().setSendingHandler(musicManager.getSendHandler());
+        if (!LavalinkManager.LavalinkManagerHolder.LAVALINK.isEnabled()) {
+            guild.getAudioManager().setSendingHandler(musicManager.getSendHandler());
+
+            return musicManager;
+        }
 
         return musicManager;
     }
@@ -183,13 +216,8 @@ public class AudioHandler {
     @CheckReturnValue
     public static int getTotalListenersSize() {
         int total = 0;
-        for (GuildMusicManager manager : MUSIC_MANAGER.values()) {
-            if (manager.getLastActiveMessage() == null) {
-                continue;
-            }
-
-            AudioManager audioManager = manager.getLastActiveMessage().getGuild().getAudioManager();
-            if (audioManager.isConnected() || audioManager.isAttemptingToConnect()) {
+        for (Link link : LavalinkManager.LavalinkManagerHolder.LAVALINK.getLavalink().getLinks()) {
+            if (link.getState().equals(Link.State.CONNECTED) || link.getState().equals(Link.State.CONNECTING)) {
                 total++;
             }
         }

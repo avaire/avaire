@@ -40,7 +40,7 @@ public class LoadPlaylist extends PlaylistSubCommand {
     private void loadSong(Message message, PlaylistTransformer.PlaylistSong song) {
         Metrics.searchRequests.inc();
 
-        AudioHandler.AUDIO_PLAYER_MANAGER.loadItemOrdered(AudioHandler.MUSIC_MANAGER, song.getLink(), new AudioLoadResultHandler() {
+        AudioHandler.getPlayerManager().loadItemOrdered(AudioHandler.MUSIC_MANAGER, song.getLink(), new AudioLoadResultHandler() {
             @Override
             public void trackLoaded(AudioTrack track) {
                 Metrics.tracksLoaded.inc();

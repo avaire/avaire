@@ -3,10 +3,12 @@ package com.avairebot.commands.music;
 import com.avairebot.AvaIre;
 import com.avairebot.audio.AudioHandler;
 import com.avairebot.audio.GuildMusicManager;
+import com.avairebot.audio.LavalinkManager;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.factories.MessageFactory;
 import net.dv8tion.jda.core.entities.GuildVoiceState;
 import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.core.entities.VoiceChannel;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -87,7 +89,12 @@ public class VoteSkipCommand extends Command {
     }
 
     private int getAmountOfUsersConnectedToVoice(Message message) {
-        return message.getGuild().getAudioManager().getConnectedChannel().getMembers().stream()
+        VoiceChannel connectedChannel = LavalinkManager.LavalinkManagerHolder.LAVALINK.getConnectedChannel(message.getGuild());
+        if (connectedChannel == null) {
+            return 0;
+        }
+
+        return connectedChannel.getMembers().stream()
             .filter(m -> !m.getUser().isBot()).collect(Collectors.toList()).size();
     }
 

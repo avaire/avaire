@@ -1,6 +1,7 @@
 package com.avairebot.shard;
 
 import com.avairebot.AvaIre;
+import com.avairebot.audio.LavalinkManager;
 import com.avairebot.metrics.Metrics;
 import com.avairebot.plugin.PluginLoader;
 import net.dv8tion.jda.core.JDA;
@@ -25,6 +26,10 @@ public class AvaireShard {
         JDABuilder builder = ShardBuilder.getDefaultShardBuilder(avaire);
         for (PluginLoader plugin : avaire.getPluginManager().getPlugins()) {
             plugin.registerEventListeners(builder);
+        }
+
+        if (LavalinkManager.LavalinkManagerHolder.LAVALINK.isEnabled()) {
+            builder.addEventListener(LavalinkManager.LavalinkManagerHolder.LAVALINK.getLavalink());
         }
 
         Metrics.websocketHeartbeat.labels("Shard " + shardId).set(0D);

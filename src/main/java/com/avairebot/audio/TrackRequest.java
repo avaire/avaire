@@ -34,7 +34,7 @@ public class TrackRequest extends Future {
     public void handle(final Consumer success, final Consumer<Throwable> failure, final Consumer<AudioSession> sessionConsumer) {
         Metrics.searchRequests.inc();
 
-        AudioHandler.AUDIO_PLAYER_MANAGER.loadItemOrdered(musicManager, trackUrl, new AudioLoadResultHandler() {
+        AudioHandler.getPlayerManager().loadItemOrdered(musicManager, trackUrl, new AudioLoadResultHandler() {
             @Override
             public void trackLoaded(AudioTrack track) {
                 Metrics.tracksLoaded.inc();

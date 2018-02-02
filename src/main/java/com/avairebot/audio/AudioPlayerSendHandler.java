@@ -1,7 +1,7 @@
 package com.avairebot.audio;
 
-import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.track.playback.AudioFrame;
+import lavalink.client.player.LavaplayerPlayerWrapper;
 import net.dv8tion.jda.core.audio.AudioSendHandler;
 
 /**
@@ -11,13 +11,13 @@ import net.dv8tion.jda.core.audio.AudioSendHandler;
  */
 public class AudioPlayerSendHandler implements AudioSendHandler {
 
-    private final AudioPlayer audioPlayer;
+    private final LavaplayerPlayerWrapper audioPlayer;
     private AudioFrame lastFrame;
 
     /**
      * @param audioPlayer Audio player to wrap.
      */
-    public AudioPlayerSendHandler(AudioPlayer audioPlayer) {
+    public AudioPlayerSendHandler(LavaplayerPlayerWrapper audioPlayer) {
         this.audioPlayer = audioPlayer;
     }
 
