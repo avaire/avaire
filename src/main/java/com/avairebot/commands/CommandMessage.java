@@ -1,52 +1,43 @@
 package com.avairebot.commands;
 
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.MessageType;
-import net.dv8tion.jda.core.entities.User;
-import net.dv8tion.jda.core.entities.impl.MessageImpl;
+import com.avairebot.chat.MessageType;
+import com.avairebot.chat.PlaceholderMessage;
+import com.avairebot.factories.MessageFactory;
+import net.dv8tion.jda.core.JDA;
+import net.dv8tion.jda.core.entities.*;
+import net.dv8tion.jda.core.requests.restaction.AuditableRestAction;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
-public class CommandMessage extends MessageImpl {
+public class CommandMessage {
+
+    public final Guild guild;
+    public final Member member;
+    public final TextChannel channel;
+    public final Message message;
 
     private final boolean mentionableCommand;
 
+    public CommandMessage(Message message) {
+        this(message, false, null);
+    }
+
     public CommandMessage(Message message, boolean mentionableCommand, String[] aliasArguments) {
-        super(message.getIdLong(), message.getChannel(), message.isWebhookMessage(), message.getType());
+        this.message = message;
+
+        this.guild = message.getGuild();
+        this.member = message.getMember();
+        this.channel = message.getTextChannel();
 
         this.mentionableCommand = mentionableCommand;
-        String rawContent = prepareRawContent(message.getRawContent(), aliasArguments != null);
+
+        String rawContent = prepareRawContent(message.getContentRaw(), aliasArguments != null);
         if (aliasArguments != null) {
             rawContent = ":alias " + String.join(" ", aliasArguments) + " " + rawContent;
         }
-
-        this.setContent(rawContent)
-            .setAuthor(message.getAuthor())
-            .setTime(message.getCreationTime())
-            .setEditedTime(message.getEditedTime())
-            .setAttachments(message.getAttachments())
-            .setEmbeds(message.getEmbeds())
-            .setMentionedChannels(message.getMentionedChannels())
-            .setMentionedRoles(message.getMentionedRoles())
-            .setMentionedUsers(prepareMentionedUsers(message.getMentionedUsers()))
-            .setMentionsEveryone(message.mentionsEveryone())
-            .setReactions(message.getReactions())
-            .setPinned(message.isPinned())
-            .setTTS(message.isTTS());
-    }
-
-    public CommandMessage(Message message, boolean mentionableCommand) {
-        this(message, mentionableCommand, null);
-    }
-
-    public CommandMessage(String message) {
-        super(0L, null, false, MessageType.UNKNOWN);
-
-        this.mentionableCommand = false;
-        this.setContent(message);
     }
 
     private String prepareRawContent(String content, boolean isAliasCommand) {
@@ -59,18 +50,120 @@ public class CommandMessage extends MessageImpl {
         return String.join(" ", Arrays.copyOfRange(split, isAliasCommand ? 2 : 1, split.length));
     }
 
-    private List<User> prepareMentionedUsers(List<User> mentionedUsers) {
-        if (!mentionableCommand) {
-            return mentionedUsers;
+    public AuditableRestAction<Void> delete() {
+        return message.delete();
+    }
+
+    public JDA getJDA() {
+        return message.getJDA();
+    }
+
+    public String getContentDisplay() {
+        return parseContent(message.getContentDisplay());
+    }
+
+    public String getContentStripped() {
+        return parseContent(message.getContentStripped());
+    }
+
+    public String getContentRaw() {
+        String[] parts = message.getContentRaw().split(" ");
+
+        return String.join(" ", Arrays.copyOfRange(parts, isMentionableCommand() ? 2 : 1, parts.length));
+    }
+
+    private String parseContent(String content) {
+        String[] parts = content.split(" ");
+
+        if (!isMentionableCommand()) {
+            return String.join(" ", Arrays.copyOfRange(parts, 1, parts.length));
         }
-        List<User> users = new ArrayList<>();
-        for (int i = 1; i < mentionedUsers.size(); i++) {
-            users.add(mentionedUsers.get(i));
+
+        int nameSize = (isGuildMessage() ?
+            message.getGuild().getSelfMember().getEffectiveName() :
+            message.getJDA().getSelfUser().getName()
+        ).split(" ").length + 1;
+
+        return String.join(" ", Arrays.copyOfRange(parts, nameSize, parts.length));
+    }
+
+    public Guild getGuild() {
+        return guild;
+    }
+
+    public Member getMember() {
+        return member;
+    }
+
+    public User getAuthor() {
+        return member.getUser();
+    }
+
+    public TextChannel getChannel() {
+        return channel;
+    }
+
+    public MessageChannel getMessageChannel() {
+        return message.getChannel();
+    }
+
+    public Message getMessage() {
+        return message;
+    }
+
+    public List<User> getMentionedUsers() {
+        if (!isMentionableCommand()) {
+            return message.getMentionedUsers();
         }
-        return Collections.unmodifiableList(users);
+
+        List<User> mentions = new ArrayList<>(message.getMentionedUsers());
+        if (!mentions.isEmpty()) {
+            mentions.remove(0);
+        }
+        return mentions;
+    }
+
+    public List<TextChannel> getMentionedChannels() {
+        return message.getMentionedChannels();
     }
 
     public boolean isMentionableCommand() {
         return mentionableCommand;
+    }
+
+    public boolean isGuildMessage() {
+        return message.getChannelType().isGuild();
+    }
+
+    public PlaceholderMessage makeError(String message) {
+        return MessageFactory.makeError(this.message, message);
+    }
+
+    public PlaceholderMessage makeWarning(String message) {
+        return MessageFactory.makeWarning(this.message, message);
+    }
+
+    public PlaceholderMessage makeSuccess(String message) {
+        return MessageFactory.makeSuccess(this.message, message);
+    }
+
+    public PlaceholderMessage makeInfo(String message) {
+        return MessageFactory.makeInfo(this.message, message);
+    }
+
+    public PlaceholderMessage makeEmbeddedMessage(Color color, String message) {
+        return MessageFactory.makeEmbeddedMessage(this.message, color, message);
+    }
+
+    public PlaceholderMessage makeEmbeddedMessage(MessageType type, MessageEmbed.Field... fields) {
+        return makeEmbeddedMessage(type.getColor(), fields);
+    }
+
+    public PlaceholderMessage makeEmbeddedMessage(Color color, MessageEmbed.Field... fields) {
+        return MessageFactory.makeEmbeddedMessage(this.message.getChannel(), color, fields);
+    }
+
+    public PlaceholderMessage makeEmbeddedMessage() {
+        return MessageFactory.makeEmbeddedMessage(this.message.getChannel());
     }
 }

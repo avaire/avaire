@@ -4,10 +4,9 @@ import com.avairebot.AvaIre;
 import com.avairebot.audio.AudioHandler;
 import com.avairebot.audio.GuildMusicManager;
 import com.avairebot.audio.LavalinkManager;
+import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
-import com.avairebot.factories.MessageFactory;
 import net.dv8tion.jda.core.entities.GuildVoiceState;
-import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.VoiceChannel;
 
 import java.util.Arrays;
@@ -42,40 +41,40 @@ public class VoteSkipCommand extends Command {
     }
 
     @Override
-    public boolean onCommand(Message message, String[] args) {
-        GuildMusicManager musicManager = AudioHandler.getGuildAudioPlayer(message.getGuild());
+    public boolean onCommand(CommandMessage context, String[] args) {
+        GuildMusicManager musicManager = AudioHandler.getGuildAudioPlayer(context.getGuild());
 
         if (musicManager.getPlayer().getPlayingTrack() == null) {
-            return sendErrorMessage(message, "Nothing to skip, request music first with `!play`");
+            return sendErrorMessage(context, "Nothing to skip, request music first with `!play`");
         }
 
-        if (!canVoteSkip(message)) {
-            return sendErrorMessage(message, "You must be connected to the same voice channel I am in to vote skip!");
+        if (!canVoteSkip(context)) {
+            return sendErrorMessage(context, "You must be connected to the same voice channel I am in to vote skip!");
         }
 
         boolean hasVotedBefore = true;
-        if (!getSkipsFrom(musicManager).contains(message.getAuthor().getIdLong())) {
-            getSkipsFrom(musicManager).add(message.getAuthor().getIdLong());
+        if (!getSkipsFrom(musicManager).contains(context.getAuthor().getIdLong())) {
+            getSkipsFrom(musicManager).add(context.getAuthor().getIdLong());
             hasVotedBefore = false;
         }
 
-        int usersInVoiceLength = getAmountOfUsersConnectedToVoice(message);
+        int usersInVoiceLength = getAmountOfUsersConnectedToVoice(context);
         double votePercentage = getVotePercentage(usersInVoiceLength, getSkipsFrom(musicManager).size());
 
         if (votePercentage >= 50) {
             if (!musicManager.getScheduler().getQueue().isEmpty()) {
-                AudioHandler.skipTrack(message);
+                AudioHandler.skipTrack(context.getMessage());
                 return true;
             }
 
             musicManager.getPlayer().stopTrack();
-            musicManager.getScheduler().handleEndOfQueue(message);
+            musicManager.getScheduler().handleEndOfQueue(context.getMessage());
             return true;
         }
 
         int neededVotes = getNeededVotes(usersInVoiceLength, getSkipsFrom(musicManager).size());
 
-        MessageFactory.makeWarning(message, hasVotedBefore ?
+        context.makeWarning(hasVotedBefore ?
             "You can only vote skip once per song! `:votes` more votes needed to skip the song." :
             "Your vote has been registered! `:votes` more votes needed to skip the song."
         ).set("votes", neededVotes).queue();
@@ -83,13 +82,12 @@ public class VoteSkipCommand extends Command {
         return true;
     }
 
-
     private List<Long> getSkipsFrom(GuildMusicManager manager) {
         return manager.getScheduler().getAudioTrackContainer().getSkips();
     }
 
-    private int getAmountOfUsersConnectedToVoice(Message message) {
-        VoiceChannel connectedChannel = LavalinkManager.LavalinkManagerHolder.LAVALINK.getConnectedChannel(message.getGuild());
+    private int getAmountOfUsersConnectedToVoice(CommandMessage context) {
+        VoiceChannel connectedChannel = LavalinkManager.LavalinkManagerHolder.LAVALINK.getConnectedChannel(context.getGuild());
         if (connectedChannel == null) {
             return 0;
         }
@@ -112,7 +110,7 @@ public class VoteSkipCommand extends Command {
         return (int) Math.ceil(usersInVoiceLength / 2);
     }
 
-    private boolean canVoteSkip(Message message) {
+    private boolean canVoteSkip(CommandMessage message) {
         GuildVoiceState voiceState = message.getMember().getVoiceState();
         GuildVoiceState selfVoteState = message.getGuild().getSelfMember().getVoiceState();
 

@@ -1,10 +1,9 @@
 package com.avairebot.commands.fun;
 
 import com.avairebot.AvaIre;
+import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
-import com.avairebot.factories.MessageFactory;
 import com.avairebot.utilities.RandomUtil;
-import net.dv8tion.jda.core.entities.Message;
 
 import java.awt.*;
 import java.util.Arrays;
@@ -66,15 +65,13 @@ public class EightBallCommand extends Command {
     }
 
     @Override
-    public boolean onCommand(Message message, String[] args) {
+    public boolean onCommand(CommandMessage context, String[] args) {
         if (args.length == 0) {
-            return sendErrorMessage(message, "You must include a question for 8ball.");
+            return sendErrorMessage(context, "You must include a question for 8ball.");
         }
 
-        MessageFactory.makeEmbeddedMessage(
-            message.getChannel(),
-            Color.decode("#2A2C31"),
-            (String) RandomUtil.pickRandom(answers)
+        context.makeEmbeddedMessage(
+            Color.decode("#2A2C31"), (String) RandomUtil.pickRandom(answers)
         ).queue();
 
         return true;

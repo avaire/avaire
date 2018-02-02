@@ -1,12 +1,11 @@
 package com.avairebot.commands.administration;
 
 import com.avairebot.AvaIre;
+import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.transformers.GuildTransformer;
-import com.avairebot.factories.MessageFactory;
 import com.avairebot.utilities.RoleUtil;
-import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.Role;
 
 import java.util.Collections;
@@ -44,41 +43,42 @@ public class IAmCommand extends Command {
     }
 
     @Override
-    public boolean onCommand(Message message, String[] args) {
+    public boolean onCommand(CommandMessage context, String[] args) {
         if (args.length == 0) {
-            return sendErrorMessage(message, "Missing argument, the `role` argument is required.");
+            return sendErrorMessage(context, "Missing argument, the `role` argument is required.");
         }
 
-        Role role = RoleUtil.getRoleFromMentionsOrName(message, args[0]);
+        Role role = RoleUtil.getRoleFromMentionsOrName(context.getMessage(), args[0]);
         if (role == null) {
-            MessageFactory.makeWarning(message, ":user Invalid role, I couldn't find any role called **:role**")
+            context.makeWarning(":user Invalid role, I couldn't find any role called **:role**")
                 .set("role", args[0])
                 .queue();
             return false;
         }
 
-        GuildTransformer transformer = GuildController.fetchGuild(avaire, message);
+        GuildTransformer transformer = GuildController.fetchGuild(avaire, context.getMessage());
         if (!transformer.getSelfAssignableRoles().containsValue(role.getName().toLowerCase())) {
-            MessageFactory.makeWarning(message, ":user Invalid role, **:role** is not a self-assignable role.")
+            context.makeWarning(":user Invalid role, **:role** is not a self-assignable role.")
                 .set("role", args[0])
                 .queue();
             return false;
         }
 
-        if (RoleUtil.isRoleHierarchyHigher(message.getGuild().getSelfMember().getRoles(), role)) {
-            MessageFactory.makeWarning(message, ":user The role is higher in the role hierarchy, I can't give/remove the **:role**  role from anyone.")
+        if (RoleUtil.isRoleHierarchyHigher(context.getGuild().getSelfMember().getRoles(), role)) {
+            context.makeWarning(":user The role is higher in the role hierarchy, I can't give/remove the **:role**  role from anyone.")
                 .set("role", args[0])
                 .queue();
             return false;
         }
 
-        if (!RoleUtil.hasRole(message.getMember(), role)) {
-            message.getGuild().getController().addSingleRoleToMember(message.getMember(), role).queue();
+        if (!RoleUtil.hasRole(context.getMember(), role)) {
+            context.getGuild().getController().addSingleRoleToMember(context.getMember(), role).queue();
         }
 
-        MessageFactory.makeSuccess(message, ":user You now have the **:role** role!")
+        context.makeSuccess(":user You now have the **:role** role!")
             .set("role", role.getName())
             .queue();
+        
         return true;
     }
 }

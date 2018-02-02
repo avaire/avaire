@@ -3,6 +3,7 @@ package com.avairebot.commands.utility;
 import com.avairebot.AvaIre;
 import com.avairebot.Constants;
 import com.avairebot.cache.CacheType;
+import com.avairebot.commands.CommandMessage;
 import com.avairebot.commands.CommandPriority;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.database.collection.Collection;
@@ -72,26 +73,26 @@ public class RankCommand extends Command {
     }
 
     @Override
-    public boolean onCommand(Message message, String[] args) {
-        GuildTransformer guildTransformer = GuildController.fetchGuild(avaire, message);
+    public boolean onCommand(CommandMessage context, String[] args) {
+        GuildTransformer guildTransformer = GuildController.fetchGuild(avaire, context.getMessage());
         if (guildTransformer == null || !guildTransformer.isLevels()) {
-            return sendErrorMessage(message, "This command requires the `Levels & Experience` feature to be enabled for the server, you can ask a server admin if they want to enable it with `.level`");
+            return sendErrorMessage(context, "This command requires the `Levels & Experience` feature to be enabled for the server, you can ask a server admin if they want to enable it with `.level`");
         }
 
-        User user = message.getAuthor();
-        if (!message.getMentionedUsers().isEmpty() && !args[0].equals("---skip-mentions")) {
-            user = message.getMentionedUsers().get(0);
+        User user = context.getAuthor();
+        if (!context.getMentionedUsers().isEmpty() && !args[0].equals("---skip-mentions")) {
+            user = context.getMentionedUsers().get(0);
         }
         final User author = user;
 
         if (author.isBot()) {
-            MessageFactory.makeWarning(message, "Bots cannot receive xp and therefore can\'t be ranked, try and tag a user instead.").queue();
+            context.makeWarning("Bots cannot receive xp and therefore can\'t be ranked, try and tag a user instead.").queue();
             return false;
         }
 
-        loadProperties(message, author).thenAccept(properties -> {
+        loadProperties(context, author).thenAccept(properties -> {
             String score = properties.getScore().equals("Unranked") ?
-                "Unranked" : properties.getScore() + " / " + message.getGuild().getMembers().size();
+                "Unranked" : properties.getScore() + " / " + context.getGuild().getMembers().size();
 
             long experience = properties.getPlayer().getExperience();
             long level = LevelUtil.getLevelFromExperience(experience);
@@ -105,9 +106,9 @@ public class RankCommand extends Command {
                 levelBar += ((i * 2.5) < percentage) ? "\u2592" : "\u2591";
             }
 
-            MessageFactory.makeEmbeddedMessage(message.getChannel(), Color.decode("#E91E63"))
-                .setAuthor(author.getName(), "https://avairebot.com/leaderboard/" + message.getGuild().getId(), author.getAvatarUrl())
-                .setFooter("https://avairebot.com/leaderboard/" + message.getGuild().getId())
+            MessageFactory.makeEmbeddedMessage(context.getChannel(), Color.decode("#E91E63"))
+                .setAuthor(author.getName(), "https://avairebot.com/leaderboard/" + context.getGuild().getId(), author.getAvatarUrl())
+                .setFooter("https://avairebot.com/leaderboard/" + context.getGuild().getId())
                 .addField("Rank", score, true)
                 .addField("Level", "" + level, true)
                 .addField("Experience", (experience - 100 < 0 ? "0" : String.format("%s (Total: %s)",
@@ -122,10 +123,10 @@ public class RankCommand extends Command {
         return true;
     }
 
-    private CompletableFuture<DatabaseProperties> loadProperties(Message message, User author) {
+    private CompletableFuture<DatabaseProperties> loadProperties(CommandMessage message, User author) {
         return CompletableFuture.supplyAsync(() -> {
             try {
-                PlayerTransformer player = PlayerController.fetchPlayer(avaire, message, author);
+                PlayerTransformer player = PlayerController.fetchPlayer(avaire, message.getMessage(), author);
                 DataRow data = avaire.getDatabase().newQueryBuilder(Constants.PLAYER_EXPERIENCE_TABLE_NAME)
                     .selectRaw("sum(`experience`) - (count(`user_id`) * 100) as `total`")
                     .where("user_id", author.getId())
@@ -133,7 +134,7 @@ public class RankCommand extends Command {
 
                 long total = data == null ? player.getExperience() : data.getLong("total");
 
-                return new DatabaseProperties(player, total, getScore(message, author.getId()));
+                return new DatabaseProperties(player, total, getScore(message.getMessage(), author.getId()));
             } catch (SQLException e) {
                 e.printStackTrace();
                 return null;

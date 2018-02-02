@@ -2,11 +2,11 @@ package com.avairebot.commands.utility;
 
 import com.avairebot.AvaIre;
 import com.avairebot.chat.PlaceholderMessage;
+import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.factories.MessageFactory;
 import com.avairebot.shared.DiscordConstants;
 import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.TextChannel;
 
@@ -51,37 +51,37 @@ public class FeedbackCommand extends Command {
     }
 
     @Override
-    public boolean onCommand(Message message, String[] args) {
+    public boolean onCommand(CommandMessage context, String[] args) {
         if (args.length == 0) {
-            return sendErrorMessage(message, "Missing argument `message`, you must include a message.");
+            return sendErrorMessage(context, "Missing argument `message`, you must include a message.");
         }
 
         TextChannel feedbackChannel = avaire.getTextChannelById(DiscordConstants.FEEDBACK_CHANNEL_ID);
         if (feedbackChannel == null) {
-            return sendErrorMessage(message, "Invalid feedback channel defined, the text channel could not be found!");
+            return sendErrorMessage(context, "Invalid feedback channel defined, the text channel could not be found!");
         }
 
         PlaceholderMessage placeholderMessage = MessageFactory.makeEmbeddedMessage(feedbackChannel)
             .addField("Feedback", String.join(" ", args), false)
-            .addField("Channel", buildChannel(message.getChannel()), false)
-            .setFooter("Author ID: " + message.getAuthor().getId())
+            .addField("Channel", buildChannel(context.getChannel()), false)
+            .setFooter("Author ID: " + context.getAuthor().getId())
             .setTimestamp(Instant.now());
 
         placeholderMessage.setAuthor(
-            message.getAuthor().getName() + "#" + message.getAuthor().getDiscriminator(),
+            context.getAuthor().getName() + "#" + context.getAuthor().getDiscriminator(),
             null,
-            message.getAuthor().getEffectiveAvatarUrl()
+            context.getAuthor().getEffectiveAvatarUrl()
         );
 
-        if (message.getChannelType().isGuild() && message.getGuild() != null) {
-            placeholderMessage.addField("Server", buildServer(message.getGuild()), false);
+        if (context.isGuildMessage() && context.getGuild() != null) {
+            placeholderMessage.addField("Server", buildServer(context.getGuild()), false);
         }
 
         placeholderMessage.queue(newMessage -> {
-            MessageFactory.makeSuccess(message, "Successfully sent feedback <:tickYes:319985232306765825>").queue();
+            context.makeSuccess("Successfully sent feedback <:tickYes:319985232306765825>").queue();
         }, err -> {
             AvaIre.getLogger().error("Failed to send feedback message: " + err.getMessage(), err);
-            MessageFactory.makeError(message, "Failed to send feedback message: " + err.getMessage()).queue();
+            context.makeError("Failed to send feedback message: " + err.getMessage()).queue();
         });
 
         return true;

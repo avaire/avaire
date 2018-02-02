@@ -1,6 +1,7 @@
 package com.avairebot.contracts.commands;
 
 import com.avairebot.AvaIre;
+import com.avairebot.commands.CommandMessage;
 import net.dv8tion.jda.core.entities.Message;
 
 import java.util.concurrent.ExecutorService;
@@ -18,7 +19,7 @@ public abstract class ThreadCommand extends Command {
         super(avaire);
     }
 
-    public final void runThreadCommand(Message message, String[] args) {
+    public final void runThreadCommand(CommandMessage message, String[] args) {
         SERVICE.submit(() -> onCommand(message, args));
     }
 }

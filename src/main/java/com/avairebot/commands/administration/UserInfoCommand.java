@@ -2,12 +2,15 @@ package com.avairebot.commands.administration;
 
 import com.avairebot.AvaIre;
 import com.avairebot.chat.PlaceholderMessage;
+import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
-import com.avairebot.factories.MessageFactory;
 import com.avairebot.time.Carbon;
 import com.avairebot.utilities.MentionableUtil;
 import com.avairebot.utilities.NumberUtil;
-import net.dv8tion.jda.core.entities.*;
+import net.dv8tion.jda.core.entities.Member;
+import net.dv8tion.jda.core.entities.MessageEmbed;
+import net.dv8tion.jda.core.entities.Role;
+import net.dv8tion.jda.core.entities.User;
 
 import java.awt.*;
 import java.util.Arrays;
@@ -36,20 +39,20 @@ public class UserInfoCommand extends Command {
     }
 
     @Override
-    public boolean onCommand(Message message, String[] args) {
-        Member member = message.getMember();
+    public boolean onCommand(CommandMessage context, String[] args) {
+        Member member = context.getMember();
         if (args.length > 0) {
-            User user = MentionableUtil.getUser(message, args);
+            User user = MentionableUtil.getUser(context.getMessage(), args);
             if (user == null) {
-                return sendErrorMessage(message, "I found no users with the name or ID of `%s`", args[0]);
+                return sendErrorMessage(context, "I found no users with the name or ID of `%s`", args[0]);
             }
-            member = message.getGuild().getMember(user);
+            member = context.getGuild().getMember(user);
         }
 
         Carbon joinedDate = Carbon.createFromOffsetDateTime(member.getJoinDate());
         Carbon createdDate = Carbon.createFromOffsetDateTime(member.getUser().getCreationTime());
 
-        PlaceholderMessage placeholderMessage = MessageFactory.makeEmbeddedMessage(message.getChannel(), getRoleColor(member.getRoles()),
+        PlaceholderMessage placeholderMessage = context.makeEmbeddedMessage(getRoleColor(member.getRoles()),
             new MessageEmbed.Field("Username", member.getUser().getName(), true),
             new MessageEmbed.Field("User ID", member.getUser().getId(), true),
             new MessageEmbed.Field("Joined Server", joinedDate.format("EEE, dd MMM yyyy HH:mm") + "\n*About " + shortenDiffForHumans(joinedDate) + "*", true),

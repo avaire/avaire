@@ -1,10 +1,9 @@
 package com.avairebot.commands.administration;
 
 import com.avairebot.AvaIre;
+import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
-import com.avairebot.factories.MessageFactory;
 import com.avairebot.utilities.MentionableUtil;
-import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.User;
 
 import java.util.Arrays;
@@ -47,20 +46,21 @@ public class UserIdCommand extends Command {
     }
 
     @Override
-    public boolean onCommand(Message message, String[] args) {
-        User user = message.getAuthor();
+    public boolean onCommand(CommandMessage context, String[] args) {
+        User user = context.getAuthor();
         if (args.length > 0) {
-            user = MentionableUtil.getUser(message, args);
+            user = MentionableUtil.getUser(context.getMessage(), args);
         }
 
         if (user == null) {
-            return sendErrorMessage(message, "I found no users with the name or ID of `%s`", args[0]);
+            return sendErrorMessage(context, "I found no users with the name or ID of `%s`", args[0]);
         }
 
-        MessageFactory.makeSuccess(message, ":id: of the user **:target** is `:targetid`")
+        context.makeSuccess(":id: of the user **:target** is `:targetid`")
             .set("target", user.getAsMention())
             .set("targetid", user.getId())
             .queue();
+        
         return true;
     }
 }

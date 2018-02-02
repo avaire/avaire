@@ -1,10 +1,9 @@
 package com.avairebot.commands.fun;
 
 import com.avairebot.AvaIre;
+import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
-import net.dv8tion.jda.core.entities.Message;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -31,7 +30,7 @@ public class SayCommand extends Command {
 
     @Override
     public List<String> getExampleUsage() {
-        return Arrays.asList("`:command I am a BOT`");
+        return Collections.singletonList("`:command I am a BOT`");
     }
 
     @Override
@@ -45,14 +44,16 @@ public class SayCommand extends Command {
     }
 
     @Override
-    public boolean onCommand(Message message, String[] args) {
+    public boolean onCommand(CommandMessage context, String[] args) {
         if (args.length == 0) {
-            return sendErrorMessage(message, "Missing `message` argument, the `message` argument is required!");
+            return sendErrorMessage(context, "Missing `message` argument, the `message` argument is required!");
         }
 
-        String[] split = message.getContent().split(" ");
-        message.getChannel().sendMessage(String.join(" ", Arrays.copyOfRange(split, 1, split.length))).queue();
-        message.delete().reason("AvaIre Say command usage").queue();
+        context.getMessageChannel().sendMessage(context.getContentStripped()).queue();
+
+        if (context.isGuildMessage()) {
+            context.delete().reason("AvaIre say command usage").queue();
+        }
 
         return true;
     }

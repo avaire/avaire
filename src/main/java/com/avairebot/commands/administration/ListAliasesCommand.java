@@ -2,12 +2,11 @@ package com.avairebot.commands.administration;
 
 import com.avairebot.AvaIre;
 import com.avairebot.chat.SimplePaginator;
+import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.transformers.GuildTransformer;
-import com.avairebot.factories.MessageFactory;
 import com.avairebot.utilities.NumberUtil;
-import net.dv8tion.jda.core.entities.Message;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -43,11 +42,11 @@ public class ListAliasesCommand extends Command {
     }
 
     @Override
-    public boolean onCommand(Message message, String[] args) {
-        GuildTransformer transformer = GuildController.fetchGuild(avaire, message.getGuild());
+    public boolean onCommand(CommandMessage context, String[] args) {
+        GuildTransformer transformer = GuildController.fetchGuild(avaire, context.getGuild());
 
         if (transformer.getAliases().isEmpty()) {
-            return sendErrorMessage(message, "The server doesn't have any aliases right now, you can create one using the\n`.alias <alias> <command>` command");
+            return sendErrorMessage(context, "The server doesn't have any aliases right now, you can create one using the\n`.alias <alias> <command>` command");
         }
 
         SimplePaginator paginator = new SimplePaginator(transformer.getAliases(), 10);
@@ -57,9 +56,9 @@ public class ListAliasesCommand extends Command {
 
         List<String> messages = new ArrayList<>();
         paginator.forEach((index, key, val) -> messages.add(String.format("`%s` => `%s`", key, val)));
-        messages.add("\n" + paginator.generateFooter(generateCommandTrigger(message)));
+        messages.add("\n" + paginator.generateFooter(generateCommandTrigger(context.getMessage())));
 
-        MessageFactory.makeSuccess(message, String.join("\n", messages))
+        context.makeSuccess(String.join("\n", messages))
             .setTitle(String.format("List of Aliases (%s)", paginator.getTotal()))
             .queue();
 

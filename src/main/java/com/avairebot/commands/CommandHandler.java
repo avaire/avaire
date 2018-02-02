@@ -66,7 +66,7 @@ public class CommandHandler {
      * @return Possibly-null, The command matching the given command with the highest priority.
      */
     public static CommandContainer getCommand(Message message) {
-        return getCommand(message, message.getRawContent().split(" ")[0].toLowerCase());
+        return getCommand(message, message.getContentRaw().split(" ")[0].toLowerCase());
     }
 
     /**

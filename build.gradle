@@ -7,7 +7,7 @@ plugins {
 apply plugin: 'java'
 apply plugin: 'idea'
 
-version = '0.4.57'
+version = '0.4.58'
 group = 'com.avairebot'
 description = 'AvaIre Discord Bot'
 mainClassName = 'com.avairebot.Main'
@@ -64,7 +64,7 @@ repositories {
 
 dependencies {
     compile group: 'com.avairebot', name: 'Shared', version: 'd0cfe4549d'
-    compile group: 'net.dv8tion', name: 'JDA', version: '3.3.1_307'
+    compile group: 'net.dv8tion', name: 'JDA', version: '3.3.5_332'
     compile group: 'com.sedmelluq', name: 'lavaplayer', version: '1.2.45'
     compile group: 'com.sedmelluq', name: 'jda-nas', version: '1.0.6'
     compile group: 'com.github.Frederikam.Lavalink', name: 'Lavalink-Client', version: 'c6208969dc'

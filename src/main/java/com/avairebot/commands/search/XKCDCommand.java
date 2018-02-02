@@ -2,13 +2,12 @@ package com.avairebot.commands.search;
 
 import com.avairebot.AvaIre;
 import com.avairebot.cache.CacheType;
+import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.ThreadCommand;
-import com.avairebot.factories.MessageFactory;
 import com.avairebot.factories.RequestFactory;
 import com.avairebot.requests.Response;
 import com.avairebot.time.Carbon;
 import com.avairebot.utilities.NumberUtil;
-import net.dv8tion.jda.core.entities.Message;
 import org.json.JSONObject;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -55,16 +54,16 @@ public class XKCDCommand extends ThreadCommand {
     }
 
     @Override
-    public boolean onCommand(Message message, String[] args) {
+    public boolean onCommand(CommandMessage context, String[] args) {
         if (args.length == 0) {
-            return requestComic(message, "https://xkcd.com/info.0.json", getLatestComicNumber());
+            return requestComic(context, "https://xkcd.com/info.0.json", getLatestComicNumber());
         }
 
         int comic = NumberUtil.getBetween(NumberUtil.parseInt(args[0]), 1, getLatestComicNumber());
-        return requestComic(message, "https://xkcd.com/" + comic + "/info.0.json", comic);
+        return requestComic(context, "https://xkcd.com/" + comic + "/info.0.json", comic);
     }
 
-    private boolean requestComic(Message message, String url, int comic) {
+    private boolean requestComic(CommandMessage context, String url, int comic) {
         RequestFactory.makeGET(url).send((Consumer<Response>) response -> {
             JSONObject json = new JSONObject(response.toString());
 
@@ -73,14 +72,14 @@ public class XKCDCommand extends ThreadCommand {
                 .setMonth(json.getInt("month"))
                 .setDay(json.getInt("day"));
 
-            sendComic(message, json, date, comic);
+            sendComic(context, json, date, comic);
         });
         return true;
     }
 
-    private void sendComic(Message message, JSONObject json, Carbon date, int comic) {
-        MessageFactory.makeEmbeddedMessage(message, Color.decode("#96A8C8"),
-            String.format("**%s**\n%s", json.getString("safe_title"), json.getString("alt"))
+    private void sendComic(CommandMessage context, JSONObject json, Carbon date, int comic) {
+        context.makeEmbeddedMessage(
+            Color.decode("#96A8C8"), String.format("**%s**\n%s", json.getString("safe_title"), json.getString("alt"))
         )
             .setImage(json.getString("img"))
             .setTimestamp(date.getTime().toInstant())

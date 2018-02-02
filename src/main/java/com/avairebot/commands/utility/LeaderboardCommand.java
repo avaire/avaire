@@ -4,17 +4,16 @@ import com.avairebot.AvaIre;
 import com.avairebot.Constants;
 import com.avairebot.cache.CacheType;
 import com.avairebot.chat.SimplePaginator;
+import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.CacheFingerprint;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.database.collection.Collection;
 import com.avairebot.database.collection.DataRow;
 import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.transformers.GuildTransformer;
-import com.avairebot.factories.MessageFactory;
 import com.avairebot.utilities.LevelUtil;
 import com.avairebot.utilities.NumberUtil;
 import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.Message;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -49,15 +48,15 @@ public class LeaderboardCommand extends Command {
     }
 
     @Override
-    public boolean onCommand(Message message, String[] args) {
-        GuildTransformer transformer = GuildController.fetchGuild(avaire, message);
+    public boolean onCommand(CommandMessage context, String[] args) {
+        GuildTransformer transformer = GuildController.fetchGuild(avaire, context.getMessage());
         if (transformer == null || !transformer.isLevels()) {
-            return sendErrorMessage(message, "This command requires the `Levels & Experience` feature to be enabled for the server, you can ask a server admin if they want to enable it with `.level`");
+            return sendErrorMessage(context, "This command requires the `Levels & Experience` feature to be enabled for the server, you can ask a server admin if they want to enable it with `.level`");
         }
 
-        Collection collection = loadTop100From(message);
+        Collection collection = loadTop100From(context);
         if (collection == null) {
-            MessageFactory.makeWarning(message, "There are no leaderboard data right now, try again later.").queue();
+            context.makeWarning("There are no leaderboard data right now, try again later.").queue();
             return false;
         }
 
@@ -70,7 +69,7 @@ public class LeaderboardCommand extends Command {
         paginator.forEach((index, key, val) -> {
             DataRow row = (DataRow) val;
 
-            Member member = message.getGuild().getMemberById(row.getLong("user_id"));
+            Member member = context.getGuild().getMemberById(row.getLong("user_id"));
             String username = row.getString("username") + "#" + row.getString("discriminator");
             if (member != null) {
                 username = member.getUser().getName() + "#" + member.getUser().getDiscriminator();
@@ -86,19 +85,19 @@ public class LeaderboardCommand extends Command {
             ));
         });
 
-        messages.add("\n" + paginator.generateFooter(generateCommandTrigger(message)));
+        messages.add("\n" + paginator.generateFooter(generateCommandTrigger(context.getMessage())));
 
-        MessageFactory.makeInfo(message, String.join("\n", messages))
-            .setTitle(message.getGuild().getName() + " Leaderboard", "https://avairebot.com/leaderboard/" + message.getGuild().getId())
+        context.makeInfo(String.join("\n", messages))
+            .setTitle(context.getGuild().getName() + " Leaderboard", "https://avairebot.com/leaderboard/" + context.getGuild().getId())
             .queue();
 
         return true;
     }
 
-    private Collection loadTop100From(Message message) {
-        return (Collection) avaire.getCache().getAdapter(CacheType.MEMORY).remember("database-xp-leaderboard." + message.getGuild().getId(), 60, () -> {
+    private Collection loadTop100From(CommandMessage context) {
+        return (Collection) avaire.getCache().getAdapter(CacheType.MEMORY).remember("database-xp-leaderboard." + context.getGuild().getId(), 60, () -> {
             return avaire.getDatabase().newQueryBuilder(Constants.PLAYER_EXPERIENCE_TABLE_NAME)
-                .where("guild_id", message.getGuild().getId())
+                .where("guild_id", context.getGuild().getId())
                 .orderBy("experience", "desc")
                 .take(100)
                 .get();

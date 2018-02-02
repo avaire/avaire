@@ -1,6 +1,7 @@
 package com.avairebot.commands.utility;
 
 import com.avairebot.AvaIre;
+import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.factories.MessageFactory;
 import com.avairebot.factories.RequestFactory;
@@ -56,23 +57,23 @@ public class IPInfoCommand extends Command {
     }
 
     @Override
-    public boolean onCommand(Message message, String[] args) {
+    public boolean onCommand(CommandMessage context, String[] args) {
         if (args.length == 0) {
-            return sendErrorMessage(message, "Missing argument `ip`, you must include a valid IP address.");
+            return sendErrorMessage(context, "Missing argument `ip`, you must include a valid IP address.");
         }
 
         if (!urlRegEX.matcher(args[0]).find()) {
-            return sendErrorMessage(message, "Invalid IP address given, you must parse a valid IP address.");
+            return sendErrorMessage(context, "Invalid IP address given, you must parse a valid IP address.");
         }
 
         RequestFactory.makeGET("http://ipinfo.io/" + args[0] + "/json").send((Consumer<Response>) response -> {
             JSONObject json = new JSONObject(response.toString());
 
-            MessageFactory.makeEmbeddedMessage(message.getChannel(), Color.decode("#005A8C"),
+            MessageFactory.makeEmbeddedMessage(context.getChannel(), Color.decode("#005A8C"),
                 new MessageEmbed.Field("Hostname", json.has("hostname") ? json.getString("hostname") : "Unknown", true),
                 new MessageEmbed.Field("Organisation", json.has("org") ? json.getString("org") : "Unknown", true),
                 new MessageEmbed.Field("Country", generateLocation(json), false)
-            ).setTitle(args[0]).setFooter(generateFooter(message), null).queue();
+            ).setTitle(args[0]).setFooter(generateFooter(context.getMessage()), null).queue();
         });
 
         return true;

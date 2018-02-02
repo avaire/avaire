@@ -1,9 +1,8 @@
 package com.avairebot.commands.utility;
 
 import com.avairebot.AvaIre;
+import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
-import com.avairebot.factories.MessageFactory;
-import net.dv8tion.jda.core.entities.Message;
 
 import java.util.Collections;
 import java.util.List;
@@ -35,13 +34,13 @@ public class PingCommand extends Command {
     }
 
     @Override
-    public boolean onCommand(Message message, String[] args) {
+    public boolean onCommand(CommandMessage context, String[] args) {
         long start = System.currentTimeMillis();
-        message.getChannel().sendTyping().queue(v -> {
+        context.getMessage().getChannel().sendTyping().queue(v -> {
             long ping = System.currentTimeMillis() - start;
 
-            MessageFactory.makeInfo(message, "Pong! Time taken :ping ms (:rating) Websocket heartbeat :heartbeat ms")
-                .set("heartbeat", message.getJDA().getPing())
+            context.makeInfo("Pong! Time taken :ping ms (:rating) Websocket heartbeat :heartbeat ms")
+                .set("heartbeat", context.getJDA().getPing())
                 .set("rating", ratePing(ping))
                 .set("ping", ping)
                 .queue();

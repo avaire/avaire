@@ -4,9 +4,8 @@ import com.avairebot.AvaIre;
 import com.avairebot.audio.AudioHandler;
 import com.avairebot.audio.GuildMusicManager;
 import com.avairebot.audio.VoiceConnectStatus;
+import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
-import com.avairebot.factories.MessageFactory;
-import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.VoiceChannel;
 
 import java.util.Arrays;
@@ -48,26 +47,26 @@ public class MoveHereCommand extends Command {
     }
 
     @Override
-    public boolean onCommand(Message message, String[] args) {
-        GuildMusicManager musicManager = AudioHandler.getGuildAudioPlayer(message.getGuild());
+    public boolean onCommand(CommandMessage context, String[] args) {
+        GuildMusicManager musicManager = AudioHandler.getGuildAudioPlayer(context.getGuild());
 
         if (musicManager.getPlayer().getPlayingTrack() == null) {
-            return sendErrorMessage(message, "Not connected to voice, request music first with `!play`");
+            return sendErrorMessage(context, "Not connected to voice, request music first with `!play`");
         }
 
-        VoiceChannel channel = message.getMember().getVoiceState().getChannel();
+        VoiceChannel channel = context.getMember().getVoiceState().getChannel();
         if (channel == null) {
-            return sendErrorMessage(message, "You must be connected to a voice channel to use this command!");
+            return sendErrorMessage(context, "You must be connected to a voice channel to use this command!");
         }
 
-        VoiceConnectStatus voiceConnectStatus = AudioHandler.connectToVoiceChannel(message, true);
+        VoiceConnectStatus voiceConnectStatus = AudioHandler.connectToVoiceChannel(context.getMessage(), true);
 
         if (!voiceConnectStatus.isSuccess()) {
-            MessageFactory.makeWarning(message, voiceConnectStatus.getErrorMessage()).queue();
+            context.makeWarning(voiceConnectStatus.getErrorMessage()).queue();
             return false;
         }
 
-        MessageFactory.makeSuccess(message, "I am now streaming music in **:channelName**")
+        context.makeSuccess("I am now streaming music in **:channelName**")
             .set("channelName", channel.getName())
             .queue();
         return true;

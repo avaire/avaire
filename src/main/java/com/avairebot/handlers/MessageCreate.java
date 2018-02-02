@@ -72,7 +72,7 @@ public class MessageCreate extends EventHandler {
                 LevelUtil.rewardPlayer(avaire, event, properties.getGuild(), properties.getPlayer());
             }
 
-            CommandContainer container = CommandHandler.getCommand(avaire, event.getMessage(), event.getMessage().getRawContent());
+            CommandContainer container = CommandHandler.getCommand(avaire, event.getMessage(), event.getMessage().getContentRaw());
             if (container != null && canExecuteCommand(event, container)) {
                 Statistics.addCommands();
 
@@ -81,7 +81,7 @@ public class MessageCreate extends EventHandler {
             }
 
             if (isMentionableAction(event)) {
-                container = CommandHandler.getLazyCommand(ArrayUtil.toArguments(event.getMessage().getRawContent())[1]);
+                container = CommandHandler.getLazyCommand(ArrayUtil.toArguments(event.getMessage().getContentRaw())[1]);
                 if (container != null && canExecuteCommand(event, container)) {
                     Statistics.addCommands();
 
@@ -92,14 +92,14 @@ public class MessageCreate extends EventHandler {
                 if (avaire.getIntelligenceManager().isEnabled()) {
                     if (isAIEnabledForChannel(event, properties.getGuild())) {
                         avaire.getIntelligenceManager().request(
-                            event.getMessage(), event.getMessage().getContent()
+                            event.getMessage(), event.getMessage().getContentStripped()
                         );
                     }
                     return;
                 }
             }
 
-            if (isSingleBotMention(event.getMessage().getRawContent().trim())) {
+            if (isSingleBotMention(event.getMessage().getContentRaw().trim())) {
                 sendTagInformationMessage(event);
                 return;
             }
@@ -123,7 +123,7 @@ public class MessageCreate extends EventHandler {
             return false;
         }
 
-        String[] args = event.getMessage().getRawContent().split(" ");
+        String[] args = event.getMessage().getContentRaw().split(" ");
         return args.length >= 2 &&
             userRegEX.matcher(args[0]).matches() &&
             event.getMessage().getMentionedUsers().get(0).getId().equals(avaire.getSelfUser().getId());

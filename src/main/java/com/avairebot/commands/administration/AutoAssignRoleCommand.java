@@ -3,12 +3,11 @@ package com.avairebot.commands.administration;
 import com.avairebot.AvaIre;
 import com.avairebot.Constants;
 import com.avairebot.chat.PlaceholderMessage;
+import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.transformers.GuildTransformer;
-import com.avairebot.factories.MessageFactory;
 import com.avairebot.utilities.RoleUtil;
-import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.Role;
 
 import java.sql.SQLException;
@@ -61,45 +60,45 @@ public class AutoAssignRoleCommand extends Command {
     }
 
     @Override
-    public boolean onCommand(Message message, String[] args) {
-        GuildTransformer transformer = GuildController.fetchGuild(avaire, message);
+    public boolean onCommand(CommandMessage context, String[] args) {
+        GuildTransformer transformer = GuildController.fetchGuild(avaire, context.getMessage());
 
         if (args.length == 0) {
-            sendCurrentAutoRole(message, transformer).queue();
+            sendCurrentAutoRole(context, transformer).queue();
             return true;
         }
 
         if (args[0].equalsIgnoreCase("disable")) {
-            return disableAutoRole(message, transformer);
+            return disableAutoRole(context, transformer);
         }
 
-        List<Role> roles = message.getGuild().getRolesByName(String.join(" ", args), true);
+        List<Role> roles = context.getGuild().getRolesByName(String.join(" ", args), true);
         if (roles.isEmpty()) {
-            MessageFactory.makeWarning(message, ":user Invalid role, I couldn't find any role called **:role**")
+            context.makeWarning(":user Invalid role, I couldn't find any role called **:role**")
                 .set("role", String.join(" ", args))
                 .queue();
             return false;
         }
 
         Role role = roles.get(0);
-        if (RoleUtil.isRoleHierarchyHigher(message.getMember().getRoles(), role)) {
-            MessageFactory.makeWarning(message,
+        if (RoleUtil.isRoleHierarchyHigher(context.getMember().getRoles(), role)) {
+            context.makeWarning(
                 ":user The **:role** role is positioned higher in the hierarchy than any role you have, you can't add roles with a higher ranking than you have."
             ).set("role", role.getName()).queue();
             return false;
         }
 
-        if (RoleUtil.isRoleHierarchyHigher(message.getGuild().getSelfMember().getRoles(), role)) {
-            MessageFactory.makeWarning(message,
+        if (RoleUtil.isRoleHierarchyHigher(context.getGuild().getSelfMember().getRoles(), role)) {
+            context.makeWarning(
                 ":user The **:role** role is positioned higher in the hierarchy, I can't give/remove this role from users."
             ).set("role", role.getName()).queue();
             return false;
         }
 
         try {
-            updateAutorole(transformer, message, role.getId());
+            updateAutorole(transformer, context, role.getId());
 
-            MessageFactory.makeSuccess(message, ":user **Auto assign role** on user join has been **enabled** and set to  **:role**")
+            context.makeSuccess(":user **Auto assign role** on user join has been **enabled** and set to  **:role**")
                 .set("role", role.getName())
                 .queue();
         } catch (SQLException ex) {
@@ -109,14 +108,14 @@ public class AutoAssignRoleCommand extends Command {
         return true;
     }
 
-    private boolean disableAutoRole(Message message, GuildTransformer transformer) {
+    private boolean disableAutoRole(CommandMessage context, GuildTransformer transformer) {
         try {
             transformer.setAutorole(null);
             avaire.getDatabase().newQueryBuilder(Constants.GUILD_TABLE_NAME)
-                .where("id", message.getGuild().getId())
+                .where("id", context.getGuild().getId())
                 .update(statement -> statement.set("autorole", null));
 
-            MessageFactory.makeWarning(message, ":user **Auto assign role** on user join is now **disabled**.").queue();
+            context.makeWarning(":user **Auto assign role** on user join is now **disabled**.").queue();
         } catch (SQLException ex) {
             ex.printStackTrace();
             AvaIre.getLogger().error(ex.getMessage(), ex);
@@ -125,30 +124,30 @@ public class AutoAssignRoleCommand extends Command {
         return true;
     }
 
-    private PlaceholderMessage sendCurrentAutoRole(Message message, GuildTransformer transformer) {
+    private PlaceholderMessage sendCurrentAutoRole(CommandMessage context, GuildTransformer transformer) {
         if (transformer.getAutorole() == null) {
-            return MessageFactory.makeWarning(message, ":user **Auto assign role** on user join is currently **disabled**.");
+            return context.makeWarning(":user **Auto assign role** on user join is currently **disabled**.");
         }
 
-        Role role = message.getGuild().getRoleById(transformer.getAutorole());
+        Role role = context.getGuild().getRoleById(transformer.getAutorole());
         if (role == null) {
             try {
-                updateAutorole(transformer, message, null);
+                updateAutorole(transformer, context, null);
             } catch (SQLException ex) {
                 ex.printStackTrace();
                 AvaIre.getLogger().error(ex.getMessage(), ex);
             }
-            return MessageFactory.makeWarning(message, ":user **Auto assign role** on user join is currently **disabled**.");
+            return context.makeWarning(":user **Auto assign role** on user join is currently **disabled**.");
         }
 
-        return MessageFactory.makeSuccess(message, ":user The **auto assign role** is currently set to **:role**")
+        return context.makeSuccess(":user The **auto assign role** is currently set to **:role**")
             .set("role", role.getName());
     }
 
-    private void updateAutorole(GuildTransformer transformer, Message message, String value) throws SQLException {
+    private void updateAutorole(GuildTransformer transformer, CommandMessage context, String value) throws SQLException {
         transformer.setAutorole(value);
         avaire.getDatabase().newQueryBuilder(Constants.GUILD_TABLE_NAME)
-            .where("id", message.getGuild().getId())
+            .where("id", context.getGuild().getId())
             .update(statement -> statement.set("autorole", value));
     }
 }

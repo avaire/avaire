@@ -4,11 +4,10 @@ import com.avairebot.AvaIre;
 import com.avairebot.audio.AudioHandler;
 import com.avairebot.audio.AudioTrackContainer;
 import com.avairebot.audio.GuildMusicManager;
+import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
-import com.avairebot.factories.MessageFactory;
 import com.avairebot.utilities.NumberUtil;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo;
-import net.dv8tion.jda.core.entities.Message;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -52,24 +51,24 @@ public class RemoveSongFromQueueCommand extends Command {
     }
 
     @Override
-    public boolean onCommand(Message message, String[] args) {
+    public boolean onCommand(CommandMessage context, String[] args) {
         if (args.length == 0) {
-            return sendErrorMessage(message, "Missing argument `song id`, you must include the ID of the song you want to remove from the queue.");
+            return sendErrorMessage(context, "Missing argument `song id`, you must include the ID of the song you want to remove from the queue.");
         }
 
         int removeIndex = NumberUtil.parseInt(args[0], -1);
         if (removeIndex < 1) {
-            return sendErrorMessage(message, "The `song id` must be a valid positive number.");
+            return sendErrorMessage(context, "The `song id` must be a valid positive number.");
         }
 
-        GuildMusicManager musicManager = AudioHandler.getGuildAudioPlayer(message.getGuild());
+        GuildMusicManager musicManager = AudioHandler.getGuildAudioPlayer(context.getGuild());
 
         if (musicManager.getScheduler().getQueue().isEmpty()) {
-            return sendErrorMessage(message, "Nothing to remove, request music first with `!play`");
+            return sendErrorMessage(context, "Nothing to remove, request music first with `!play`");
         }
 
         if (removeIndex > musicManager.getScheduler().getQueue().size()) {
-            return sendErrorMessage(message, "There are only `%s` songs in the queue, try lowering your number a bit.",
+            return sendErrorMessage(context, "There are only `%s` songs in the queue, try lowering your number a bit.",
                 NumberUtil.formatNicely(musicManager.getScheduler().getQueue().size())
             );
         }
@@ -85,7 +84,7 @@ public class RemoveSongFromQueueCommand extends Command {
             }
 
             AudioTrackInfo track = next.getAudioTrack().getInfo();
-            MessageFactory.makeInfo(message, ":song has been successfully removed from the music queue.")
+            context.makeInfo(":song has been successfully removed from the music queue.")
                 .set("song", String.format("[%s](%s)",
                     track.title, track.uri
                 ))
@@ -95,7 +94,7 @@ public class RemoveSongFromQueueCommand extends Command {
             return true;
         }
 
-        MessageFactory.makeError(message, "Something went wrong, failed to remove song at index `:index`")
+        context.makeError("Something went wrong, failed to remove song at index `:index`")
             .set("index", removeIndex)
             .queue();
 

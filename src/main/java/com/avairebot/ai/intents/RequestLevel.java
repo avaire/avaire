@@ -4,6 +4,7 @@ import ai.api.model.AIResponse;
 import com.avairebot.AvaIre;
 import com.avairebot.commands.CommandContainer;
 import com.avairebot.commands.CommandHandler;
+import com.avairebot.commands.CommandMessage;
 import com.avairebot.commands.utility.RankCommand;
 import com.avairebot.contracts.ai.Intent;
 import com.avairebot.database.controllers.GuildController;
@@ -37,6 +38,6 @@ public class RequestLevel extends Intent {
             return;
         }
 
-        container.getCommand().onCommand(message, new String[]{"---skip-mentions"});
+        container.getCommand().onCommand(new CommandMessage(message), new String[]{"---skip-mentions"});
     }
 }

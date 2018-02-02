@@ -3,9 +3,9 @@ package com.avairebot.commands.music;
 import com.avairebot.AvaIre;
 import com.avairebot.audio.AudioHandler;
 import com.avairebot.audio.GuildMusicManager;
+import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.contracts.middleware.ThrottleMessage;
-import net.dv8tion.jda.core.entities.Message;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -47,20 +47,20 @@ public class SkipCommand extends Command {
     }
 
     @Override
-    public boolean onCommand(Message message, String[] args) {
-        GuildMusicManager musicManager = AudioHandler.getGuildAudioPlayer(message.getGuild());
+    public boolean onCommand(CommandMessage context, String[] args) {
+        GuildMusicManager musicManager = AudioHandler.getGuildAudioPlayer(context.getGuild());
 
         if (musicManager.getPlayer().getPlayingTrack() == null) {
-            return sendErrorMessage(message, "Nothing to skip, request music first with `!play`");
+            return sendErrorMessage(context, "Nothing to skip, request music first with `!play`");
         }
 
         if (!musicManager.getScheduler().getQueue().isEmpty()) {
-            AudioHandler.skipTrack(message);
+            AudioHandler.skipTrack(context.getMessage());
             return true;
         }
 
         musicManager.getPlayer().stopTrack();
-        musicManager.getScheduler().handleEndOfQueue(message);
+        musicManager.getScheduler().handleEndOfQueue(context.getMessage());
 
         return true;
     }

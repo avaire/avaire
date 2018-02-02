@@ -3,13 +3,12 @@ package com.avairebot.commands.administration;
 import com.avairebot.AvaIre;
 import com.avairebot.commands.Category;
 import com.avairebot.commands.CategoryHandler;
+import com.avairebot.commands.CommandMessage;
 import com.avairebot.commands.CommandPriority;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.transformers.ChannelTransformer;
 import com.avairebot.database.transformers.GuildTransformer;
-import com.avairebot.factories.MessageFactory;
-import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.TextChannel;
 
 import java.util.ArrayList;
@@ -53,10 +52,10 @@ public class CategoriesCommand extends Command {
     }
 
     @Override
-    public boolean onCommand(Message message, String[] args) {
-        TextChannel channel = message.getTextChannel();
-        if (!message.getMentionedChannels().isEmpty()) {
-            channel = message.getMentionedChannels().get(0);
+    public boolean onCommand(CommandMessage context, String[] args) {
+        TextChannel channel = context.getChannel();
+        if (!context.getMentionedChannels().isEmpty()) {
+            channel = context.getMentionedChannels().get(0);
         }
 
         String status = String.join("   ",
@@ -65,7 +64,7 @@ public class CategoriesCommand extends Command {
             DISABLE_GLOBALLY + " Disabled Globally"
         );
 
-        GuildTransformer guildTransformer = GuildController.fetchGuild(avaire, message.getGuild());
+        GuildTransformer guildTransformer = GuildController.fetchGuild(avaire, context.getGuild());
         ChannelTransformer transformer = guildTransformer.getChannel(channel.getId());
 
         List<String> items = new ArrayList<>();
@@ -83,7 +82,7 @@ public class CategoriesCommand extends Command {
             items.add(ONLINE + category.getName());
         }
 
-        MessageFactory.makeInfo(message, status + "\n\n" + String.join("\n", items))
+        context.makeInfo(status + "\n\n" + String.join("\n", items))
             .setTitle("Command Category Status for #" + channel.getName())
             .queue();
 

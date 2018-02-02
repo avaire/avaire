@@ -3,9 +3,8 @@ package com.avairebot.commands.music;
 import com.avairebot.AvaIre;
 import com.avairebot.audio.AudioHandler;
 import com.avairebot.audio.GuildMusicManager;
+import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
-import com.avairebot.factories.MessageFactory;
-import net.dv8tion.jda.core.entities.Message;
 
 import java.util.Arrays;
 import java.util.List;
@@ -40,16 +39,16 @@ public class RepeatMusicQueueCommand extends Command {
     }
 
     @Override
-    public boolean onCommand(Message message, String[] args) {
-        GuildMusicManager musicManager = AudioHandler.getGuildAudioPlayer(message.getGuild());
+    public boolean onCommand(CommandMessage context, String[] args) {
+        GuildMusicManager musicManager = AudioHandler.getGuildAudioPlayer(context.getGuild());
 
         if (musicManager.getPlayer().getPlayingTrack() == null) {
-            return sendErrorMessage(message, "There is nothing to repeat, request music first with `!play`");
+            return sendErrorMessage(context, "There is nothing to repeat, request music first with `!play`");
         }
 
         musicManager.setRepeatQueue(!musicManager.isRepeatQueue());
 
-        MessageFactory.makeSuccess(message, "Music queue looping has been turned `:status`.")
+        context.makeSuccess("Music queue looping has been turned `:status`.")
             .set("status", musicManager.isRepeatQueue() ? "ON" : "OFF")
             .queue();
 

@@ -3,17 +3,16 @@ package com.avairebot.commands.music.playlist;
 import com.avairebot.AvaIre;
 import com.avairebot.audio.AudioHandler;
 import com.avairebot.audio.VoiceConnectStatus;
+import com.avairebot.commands.CommandMessage;
 import com.avairebot.commands.music.PlaylistCommand;
 import com.avairebot.contracts.commands.playlist.PlaylistSubCommand;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.database.transformers.PlaylistTransformer;
-import com.avairebot.factories.MessageFactory;
 import com.avairebot.metrics.Metrics;
 import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
-import net.dv8tion.jda.core.entities.Message;
 
 public class LoadPlaylist extends PlaylistSubCommand {
 
@@ -22,22 +21,22 @@ public class LoadPlaylist extends PlaylistSubCommand {
     }
 
     @Override
-    public boolean onCommand(Message message, String[] args, GuildTransformer guild, PlaylistTransformer playlist) {
-        VoiceConnectStatus voiceConnectStatus = AudioHandler.connectToVoiceChannel(message);
+    public boolean onCommand(CommandMessage context, String[] args, GuildTransformer guild, PlaylistTransformer playlist) {
+        VoiceConnectStatus voiceConnectStatus = AudioHandler.connectToVoiceChannel(context.getMessage());
         if (!voiceConnectStatus.isSuccess()) {
-            MessageFactory.makeWarning(message, voiceConnectStatus.getErrorMessage()).queue();
+            context.makeWarning(voiceConnectStatus.getErrorMessage()).queue();
             return false;
         }
 
-        AudioHandler.getGuildAudioPlayer(message.getGuild()).setLastActiveMessage(message);
+        AudioHandler.getGuildAudioPlayer(context.getGuild()).setLastActiveMessage(context.getMessage());
         for (PlaylistTransformer.PlaylistSong song : playlist.getSongs()) {
-            loadSong(message, song);
+            loadSong(context, song);
         }
 
         return true;
     }
 
-    private void loadSong(Message message, PlaylistTransformer.PlaylistSong song) {
+    private void loadSong(CommandMessage context, PlaylistTransformer.PlaylistSong song) {
         Metrics.searchRequests.inc();
 
         AudioHandler.getPlayerManager().loadItemOrdered(AudioHandler.MUSIC_MANAGER, song.getLink(), new AudioLoadResultHandler() {
@@ -45,8 +44,8 @@ public class LoadPlaylist extends PlaylistSubCommand {
             public void trackLoaded(AudioTrack track) {
                 Metrics.tracksLoaded.inc();
 
-                AudioHandler.getGuildAudioPlayer(message.getGuild())
-                    .getScheduler().queue(track, message.getAuthor());
+                AudioHandler.getGuildAudioPlayer(context.getGuild())
+                    .getScheduler().queue(track, context.getAuthor());
             }
 
             @Override

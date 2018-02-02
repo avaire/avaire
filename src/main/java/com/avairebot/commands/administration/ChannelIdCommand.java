@@ -1,9 +1,8 @@
 package com.avairebot.commands.administration;
 
 import com.avairebot.AvaIre;
+import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
-import com.avairebot.factories.MessageFactory;
-import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.TextChannel;
 
 import java.util.Arrays;
@@ -37,13 +36,13 @@ public class ChannelIdCommand extends Command {
     }
 
     @Override
-    public boolean onCommand(Message message, String[] args) {
-        TextChannel channel = message.getTextChannel();
-        if (!message.getMentionedChannels().isEmpty()) {
-            channel = message.getMentionedChannels().get(0);
+    public boolean onCommand(CommandMessage context, String[] args) {
+        TextChannel channel = context.getChannel();
+        if (!context.getMentionedChannels().isEmpty()) {
+            channel = context.getMentionedChannels().get(0);
         }
 
-        MessageFactory.makeSuccess(message, ":user :id: of the :channel channel is `:targetChannel`")
+        context.makeSuccess(":user :id: of the :channel channel is `:targetChannel`")
             .set("targetChannel", channel.getId()).queue();
         return true;
     }

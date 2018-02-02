@@ -3,8 +3,8 @@ package com.avairebot.commands.utility;
 import com.avairebot.AvaIre;
 import com.avairebot.commands.CommandContainer;
 import com.avairebot.commands.CommandHandler;
+import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
-import com.avairebot.factories.MessageFactory;
 import net.dv8tion.jda.core.entities.Message;
 
 import java.util.Arrays;
@@ -43,21 +43,21 @@ public class SourceCommand extends Command {
     }
 
     @Override
-    public boolean onCommand(Message message, String[] args) {
+    public boolean onCommand(CommandMessage context, String[] args) {
         if (args.length == 0) {
-            MessageFactory.makeInfo(message, "AvaIre source code:\n\n" + rootUrl).queue();
+            context.makeInfo("AvaIre source code:\n\n" + rootUrl).queue();
             return true;
         }
 
-        CommandContainer command = getCommand(message, args[0]);
+        CommandContainer command = getCommand(context.getMessage(), args[0]);
         if (command == null) {
-            MessageFactory.makeInfo(message, "Invalid command given, here is the full source code instead.\n\n" + rootUrl).queue();
+            context.makeInfo("Invalid command given, here is the full source code instead.\n\n" + rootUrl).queue();
             return true;
         }
 
         String sourceUri = command.getSourceUri();
         if (sourceUri == null) {
-            MessageFactory.makeInfo(message,
+            context.makeInfo(
                 "The command is registered via an external plugin, the author of the plugin " +
                     "haven't made the source of the command public, or they forgot to add a link to " +
                     "it, here is the full source code for the bot instead.\n\n" + rootUrl
@@ -65,7 +65,7 @@ public class SourceCommand extends Command {
             return true;
         }
 
-        MessageFactory.makeInfo(message, "AvaIre source code for the **:command** command:\n\n:url")
+        context.makeInfo("AvaIre source code for the **:command** command:\n\n:url")
             .set("command", command.getCommand().getName())
             .set("url", sourceUri)
             .queue();

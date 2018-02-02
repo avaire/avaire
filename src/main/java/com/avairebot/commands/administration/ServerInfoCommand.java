@@ -2,12 +2,11 @@ package com.avairebot.commands.administration;
 
 import com.avairebot.AvaIre;
 import com.avairebot.chat.PlaceholderMessage;
+import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
-import com.avairebot.factories.MessageFactory;
 import com.avairebot.time.Carbon;
 import com.avairebot.utilities.NumberUtil;
 import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.Role;
 
@@ -44,11 +43,11 @@ public class ServerInfoCommand extends Command {
     }
 
     @Override
-    public boolean onCommand(Message message, String[] args) {
-        Guild guild = message.getGuild();
+    public boolean onCommand(CommandMessage context, String[] args) {
+        Guild guild = context.getGuild();
         Carbon time = Carbon.createFromOffsetDateTime(guild.getCreationTime());
 
-        PlaceholderMessage placeholderMessage = MessageFactory.makeEmbeddedMessage(message.getChannel(), getRoleColor(guild.getSelfMember().getRoles()),
+        PlaceholderMessage placeholderMessage = context.makeEmbeddedMessage(getRoleColor(guild.getSelfMember().getRoles()),
             new MessageEmbed.Field("ID", guild.getId(), true),
             new MessageEmbed.Field("Owner", guild.getOwner().getUser().getName() + "#" + guild.getOwner().getUser().getDiscriminator(), true),
             new MessageEmbed.Field("Text Channels", NumberUtil.formatNicely(guild.getTextChannels().size()), true),

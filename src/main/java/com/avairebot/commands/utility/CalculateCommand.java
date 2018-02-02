@@ -1,10 +1,9 @@
 package com.avairebot.commands.utility;
 
 import com.avairebot.AvaIre;
+import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
-import com.avairebot.factories.MessageFactory;
 import com.udojava.evalex.Expression;
-import net.dv8tion.jda.core.entities.Message;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
@@ -43,9 +42,9 @@ public class CalculateCommand extends Command {
     }
 
     @Override
-    public boolean onCommand(Message message, String[] args) {
+    public boolean onCommand(CommandMessage context, String[] args) {
         if (args.length == 0) {
-            return sendErrorMessage(message, "Missing argument, the `equation` argument is required!");
+            return sendErrorMessage(context, "Missing argument, the `equation` argument is required!");
         }
 
         String string = String.join(" ", args).trim();
@@ -55,15 +54,15 @@ public class CalculateCommand extends Command {
             BigDecimal result = expression.eval();
 
             if (expression.isBoolean()) {
-                MessageFactory.makeInfo(message,
+                context.makeInfo(
                     generateEasterEgg(expression, result, string, result.intValueExact() == 1 ? "True" : "False")
                 ).queue();
                 return true;
             }
 
-            MessageFactory.makeInfo(message, generateEasterEgg(expression, result, string, result.toPlainString())).queue();
+            context.makeInfo(generateEasterEgg(expression, result, string, result.toPlainString())).queue();
         } catch (Exception ex) {
-            return sendErrorMessage(message, ex.getMessage().replaceAll("'", "`"));
+            return sendErrorMessage(context, ex.getMessage().replaceAll("'", "`"));
         }
         return true;
     }

@@ -1,12 +1,12 @@
 package com.avairebot.contracts.commands;
 
 import com.avairebot.AvaIre;
+import com.avairebot.commands.CommandMessage;
 import com.avairebot.commands.CommandPriority;
 import com.avairebot.utilities.MentionableUtil;
 import com.avairebot.utilities.RandomUtil;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.MessageBuilder;
-import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.User;
 
 import java.awt.*;
@@ -64,13 +64,13 @@ public abstract class InteractionCommand extends Command {
     public abstract List<String> getInteractionImages();
 
     @Override
-    public boolean onCommand(Message message, String[] args) {
-        User user = MentionableUtil.getUser(message, args);
+    public boolean onCommand(CommandMessage context, String[] args) {
+        User user = MentionableUtil.getUser(context.getMessage(), args);
         if (user == null) {
-            return sendErrorMessage(message, "You must mention a use you want to use the interaction for.");
+            return sendErrorMessage(context, "You must mention a use you want to use the interaction for.");
         }
 
-        message.getChannel().sendTyping().queue();
+        context.getChannel().sendTyping().queue();
 
         int imageIndex = RandomUtil.getInteger(getInteractionImages().size());
 
@@ -79,7 +79,7 @@ public abstract class InteractionCommand extends Command {
 
         embedBuilder
             .setImage("attachment://" + getClass().getSimpleName() + "-" + imageIndex + ".gif")
-            .setDescription(buildMessage(message, user))
+            .setDescription(buildMessage(context, user))
             .setColor(getInteractionColor());
 
         messageBuilder.setEmbed(embedBuilder.build());
@@ -87,25 +87,25 @@ public abstract class InteractionCommand extends Command {
         try {
             InputStream stream = new URL(getInteractionImages().get(imageIndex)).openStream();
 
-            message.getChannel().sendFile(stream, getClass().getSimpleName() + "-" + imageIndex + ".gif", messageBuilder.build()).queue();
+            context.getChannel().sendFile(stream, getClass().getSimpleName() + "-" + imageIndex + ".gif", messageBuilder.build()).queue();
         } catch (IOException e) {
             e.printStackTrace();
         }
         return true;
     }
 
-    private String buildMessage(Message message, User user) {
+    private String buildMessage(CommandMessage context, User user) {
         if (overwrite) {
             return String.format(interaction,
-                message.getMember().getEffectiveName(),
-                message.getGuild().getMember(user).getEffectiveName()
+                context.getMember().getEffectiveName(),
+                context.getGuild().getMember(user).getEffectiveName()
             );
         }
 
         return String.format("**%s** %s **%s**",
-            message.getMember().getEffectiveName(),
+            context.getMember().getEffectiveName(),
             interaction,
-            message.getGuild().getMember(user).getEffectiveName()
+            context.getGuild().getMember(user).getEffectiveName()
         );
     }
 }

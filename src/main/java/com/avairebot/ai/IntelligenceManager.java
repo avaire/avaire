@@ -90,7 +90,7 @@ public class IntelligenceManager {
                 .replace("%author%", generateUsername(message))
                 .replace("%server%", generateServer(message))
                 .replace("%channel%", generateChannel(message))
-                .replace("%message%", message.getRawContent())
+                .replace("%message%", message.getContentRaw())
                 .replace("%response%", response.getResult().getFulfillment().getSpeech())
             );
 

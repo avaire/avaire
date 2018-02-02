@@ -4,6 +4,7 @@ import com.avairebot.AvaIre;
 import com.avairebot.Constants;
 import com.avairebot.audio.AudioHandler;
 import com.avairebot.cache.CacheType;
+import com.avairebot.commands.CommandMessage;
 import com.avairebot.commands.music.PlaylistCommand;
 import com.avairebot.contracts.commands.playlist.PlaylistSubCommand;
 import com.avairebot.database.controllers.PlaylistController;
@@ -30,19 +31,19 @@ public class AddSongToPlaylist extends PlaylistSubCommand {
     }
 
     @Override
-    public boolean onCommand(Message message, String[] args, GuildTransformer guild, PlaylistTransformer playlist) {
+    public boolean onCommand(CommandMessage context, String[] args, GuildTransformer guild, PlaylistTransformer playlist) {
         String query = String.join(" ", Arrays.copyOfRange(args, 2, args.length));
 
         if (query.trim().length() == 0) {
-            MessageFactory.makeWarning(message, "Invalid format, missing the `song` property!\n`:command`")
-                .set("command", command.generateCommandTrigger(message) + " " + playlist.getName() + " add <song title / link>")
+            context.makeWarning("Invalid format, missing the `song` property!\n`:command`")
+                .set("command", command.generateCommandTrigger(context.getMessage()) + " " + playlist.getName() + " add <song title / link>")
                 .queue();
 
             return false;
         }
 
         if (playlist.getSongs().size() >= guild.getType().getLimits().getPlaylist().getSongs()) {
-            MessageFactory.makeWarning(message, "The `:playlist` playlist doesn't have any more song slots.")
+            context.makeWarning("The `:playlist` playlist doesn't have any more song slots.")
                 .set("playlist", playlist.getName())
                 .queue();
 
@@ -56,11 +57,11 @@ public class AddSongToPlaylist extends PlaylistSubCommand {
         }
 
         String finalQuery = query;
-        message.getChannel().sendTyping().queue(v -> loadSong(message, finalQuery, guild, playlist));
+        context.getChannel().sendTyping().queue(v -> loadSong(context, finalQuery, guild, playlist));
         return true;
     }
 
-    private void loadSong(Message message, String query, GuildTransformer guild, PlaylistTransformer playlist) {
+    private void loadSong(CommandMessage context, String query, GuildTransformer guild, PlaylistTransformer playlist) {
         Metrics.searchRequests.inc();
 
         AudioHandler.getPlayerManager().loadItemOrdered(AudioHandler.MUSIC_MANAGER, query, new AudioLoadResultHandler() {
@@ -68,7 +69,7 @@ public class AddSongToPlaylist extends PlaylistSubCommand {
             public void trackLoaded(AudioTrack track) {
                 Metrics.tracksLoaded.inc();
 
-                handleTrackLoadedEvent(message, guild, playlist, track);
+                handleTrackLoadedEvent(context.getMessage(), guild, playlist, track);
             }
 
             @Override
@@ -79,13 +80,13 @@ public class AddSongToPlaylist extends PlaylistSubCommand {
             @Override
             public void noMatches() {
                 Metrics.trackLoadsFailed.inc();
-                MessageFactory.makeWarning(message, "No Matches").queue();
+                context.makeWarning("No Matches").queue();
             }
 
             @Override
             public void loadFailed(FriendlyException e) {
                 Metrics.trackLoadsFailed.inc();
-                MessageFactory.makeError(message, "Failed to load: " + e.getMessage()).queue();
+                context.makeWarning("Failed to load: " + e.getMessage()).queue();
             }
         });
     }

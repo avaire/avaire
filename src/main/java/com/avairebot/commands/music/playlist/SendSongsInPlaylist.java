@@ -2,13 +2,12 @@ package com.avairebot.commands.music.playlist;
 
 import com.avairebot.AvaIre;
 import com.avairebot.chat.SimplePaginator;
+import com.avairebot.commands.CommandMessage;
 import com.avairebot.commands.music.PlaylistCommand;
 import com.avairebot.contracts.commands.playlist.PlaylistSubCommand;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.database.transformers.PlaylistTransformer;
-import com.avairebot.factories.MessageFactory;
 import com.avairebot.utilities.NumberUtil;
-import net.dv8tion.jda.core.entities.Message;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,10 +19,10 @@ public class SendSongsInPlaylist extends PlaylistSubCommand {
     }
 
     @Override
-    public boolean onCommand(Message message, String[] args, GuildTransformer guild, PlaylistTransformer playlist) {
+    public boolean onCommand(CommandMessage context, String[] args, GuildTransformer guild, PlaylistTransformer playlist) {
         if (playlist.getSongs().isEmpty()) {
-            MessageFactory.makeWarning(message, "There are no songs in this playlist, you can add songs to it by using the\n`:command` command.")
-                .set("command", command.generateCommandTrigger(message) + " add <song url>")
+            context.makeWarning("There are no songs in this playlist, you can add songs to it by using the\n`:command` command.")
+                .set("command", command.generateCommandTrigger(context.getMessage()) + " add <song url>")
                 .queue();
 
             return false;
@@ -46,8 +45,8 @@ public class SendSongsInPlaylist extends PlaylistSubCommand {
             ));
         });
 
-        MessageFactory.makeInfo(message,
-            String.join("\n", messages) + "\n\n" + paginator.generateFooter(command.generateCommandTrigger(message))
+        context.makeInfo(
+            String.join("\n", messages) + "\n\n" + paginator.generateFooter(command.generateCommandTrigger(context.getMessage()))
         ).setTitle(":musical_note: " + playlist.getName()).queue();
 
         return true;

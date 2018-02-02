@@ -1,8 +1,8 @@
 package com.avairebot.commands.administration;
 
 import com.avairebot.AvaIre;
+import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
-import com.avairebot.factories.MessageFactory;
 import com.avairebot.utilities.NumberUtil;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageHistory;
@@ -66,22 +66,22 @@ public class PurgeCommand extends Command {
     }
 
     @Override
-    public boolean onCommand(Message message, String[] args) {
+    public boolean onCommand(CommandMessage context, String[] args) {
         int toDelete = 100;
         if (args.length > 0) {
             toDelete = NumberUtil.getBetween(NumberUtil.parseInt(args[0]), 1, 100);
         }
 
-        message.getChannel().sendTyping().queue();
-        if (message.getMentionedUsers().isEmpty()) {
-            loadMessages(message.getChannel().getHistory(), toDelete, new ArrayList<>(), null, 1, messages -> {
+        context.getChannel().sendTyping().queue();
+        if (context.getMentionedUsers().isEmpty()) {
+            loadMessages(context.getChannel().getHistory(), toDelete, new ArrayList<>(), null, 1, messages -> {
                 if (messages.isEmpty()) {
-                    sendNoMessagesMessage(message);
+                    sendNoMessagesMessage(context);
                     return;
                 }
 
-                deleteMessages(message, messages).queue(aVoid ->
-                    MessageFactory.makeSuccess(message, ":white_check_mark: `:number` messages has been deleted!")
+                deleteMessages(context, messages).queue(aVoid ->
+                    context.makeSuccess(":white_check_mark: `:number` messages has been deleted!")
                         .set("number", messages.size())
                         .queue(successMessage -> successMessage.delete().queueAfter(8, TimeUnit.SECONDS)));
             });
@@ -89,23 +89,23 @@ public class PurgeCommand extends Command {
         }
 
         List<Long> userIds = new ArrayList<>();
-        for (User user : message.getMentionedUsers()) {
+        for (User user : context.getMentionedUsers()) {
             userIds.add(user.getIdLong());
         }
 
-        loadMessages(message.getChannel().getHistory(), toDelete, new ArrayList<>(), userIds, 1, messages -> {
+        loadMessages(context.getChannel().getHistory(), toDelete, new ArrayList<>(), userIds, 1, messages -> {
             if (messages.isEmpty()) {
-                sendNoMessagesMessage(message);
+                sendNoMessagesMessage(context);
                 return;
             }
 
-            deleteMessages(message, messages).queue(aVoid -> {
+            deleteMessages(context, messages).queue(aVoid -> {
                 List<String> users = new ArrayList<>();
                 for (Long userId : userIds) {
                     users.add(String.format("<@%s>", userId));
                 }
 
-                MessageFactory.makeSuccess(message, ":white_check_mark: `:number` messages has been deleted from :users")
+                context.makeSuccess(":white_check_mark: `:number` messages has been deleted from :users")
                     .set("number", messages.size())
                     .set("users", String.join(", ", users))
                     .queue(successMessage -> successMessage.delete().queueAfter(8, TimeUnit.SECONDS));
@@ -144,16 +144,16 @@ public class PurgeCommand extends Command {
         });
     }
 
-    private void sendNoMessagesMessage(Message message) {
-        MessageFactory.makeSuccess(message,
+    private void sendNoMessagesMessage(CommandMessage context) {
+        context.makeSuccess(
             ":x: Nothing to delete, I am unable to delete messages older than 14 days."
         ).queue(successMessage -> successMessage.delete().queueAfter(8, TimeUnit.SECONDS));
     }
 
-    private RestAction<Void> deleteMessages(Message message, List<Message> messages) {
+    private RestAction<Void> deleteMessages(CommandMessage context, List<Message> messages) {
         if (messages.size() == 1) {
             return messages.get(0).delete();
         }
-        return message.getTextChannel().deleteMessages(messages);
+        return context.getChannel().deleteMessages(messages);
     }
 }

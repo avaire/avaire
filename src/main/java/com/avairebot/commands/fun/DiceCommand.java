@@ -1,10 +1,9 @@
 package com.avairebot.commands.fun;
 
 import com.avairebot.AvaIre;
+import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
-import com.avairebot.factories.MessageFactory;
 import com.avairebot.utilities.RandomUtil;
-import net.dv8tion.jda.core.entities.Message;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -45,15 +44,15 @@ public class DiceCommand extends Command {
     }
 
     @Override
-    public boolean onCommand(Message message, String[] args) {
+    public boolean onCommand(CommandMessage context, String[] args) {
         if (args.length == 0) {
-            return sendErrorMessage(message, "You must include the dice you want to roll.");
+            return sendErrorMessage(context, "You must include the dice you want to roll.");
         }
 
         List<DiceRoll> items = new ArrayList<>();
         int invalidArgument = getInvalidArgument(args);
         if (invalidArgument > -1) {
-            return sendErrorMessage(message, String.format("`%s` is not a valid dice formant.", args[invalidArgument]));
+            return sendErrorMessage(context, String.format("`%s` is not a valid dice formant.", args[invalidArgument]));
         }
 
         for (int i = 0; i < args.length && i < 5; i++) {
@@ -64,19 +63,19 @@ public class DiceCommand extends Command {
             try {
                 dice = Integer.parseInt(split[0]);
                 if (dice < 1 || dice > 34) {
-                    return sendErrorMessage(message, String.format("`%s` is not a valid dice format, the dice must be greater than 0 and less than 35", arg));
+                    return sendErrorMessage(context, String.format("`%s` is not a valid dice format, the dice must be greater than 0 and less than 35", arg));
                 }
             } catch (NumberFormatException ex) {
-                return sendErrorMessage(message, String.format("`%s` is not a valid dice format, the dice amount must be a valid positive number between 1 and 34", arg));
+                return sendErrorMessage(context, String.format("`%s` is not a valid dice format, the dice amount must be a valid positive number between 1 and 34", arg));
             }
 
             try {
                 sides = Integer.parseInt(split[1]);
                 if (sides < 1 || sides > 127) {
-                    return sendErrorMessage(message, "`%s` is not a valid dice format, the sides must be greater than 0 and less than 128", arg);
+                    return sendErrorMessage(context, "`%s` is not a valid dice format, the sides must be greater than 0 and less than 128", arg);
                 }
             } catch (NumberFormatException ex) {
-                return sendErrorMessage(message, "`%s` is not a valid dice format, the sides amount must be a valid positive number between 1 and 128", arg);
+                return sendErrorMessage(context, "`%s` is not a valid dice format, the sides amount must be a valid positive number between 1 and 128", arg);
             }
 
             DiceRoll diceRoll = new DiceRoll(arg);
@@ -96,8 +95,8 @@ public class DiceCommand extends Command {
             )).append("\n");
         }
 
-        MessageFactory.makeSuccess(message, String.format("<@%s>%s%s",
-            message.getAuthor().getId(),
+        context.makeSuccess(String.format("<@%s>%s%s",
+            context.getAuthor().getId(),
             getFormatSeparator(args),
             result.toString().trim())
         ).queue();

@@ -7,11 +7,10 @@ import com.avairebot.audio.GuildMusicManager;
 import com.avairebot.audio.TrackScheduler;
 import com.avairebot.chat.PlaceholderMessage;
 import com.avairebot.chat.SimplePaginator;
+import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
-import com.avairebot.factories.MessageFactory;
 import com.avairebot.utilities.NumberUtil;
-import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
-import net.dv8tion.jda.core.entities.Message;
+import lavalink.client.player.IPlayer;
 
 import java.util.*;
 
@@ -50,16 +49,16 @@ public class SongCommand extends Command {
     }
 
     @Override
-    public boolean onCommand(Message message, String[] args) {
-        GuildMusicManager musicManager = AudioHandler.getGuildAudioPlayer(message.getGuild());
+    public boolean onCommand(CommandMessage context, String[] args) {
+        GuildMusicManager musicManager = AudioHandler.getGuildAudioPlayer(context.getGuild());
 
         if (musicManager.getPlayer().getPlayingTrack() == null) {
-            return sendErrorMessage(message, "Nothing to display, request music first with `!play`");
+            return sendErrorMessage(context, "Nothing to display, request music first with `!play`");
         }
 
         if (args.length > 0 && NumberUtil.isNumeric(args[0])) {
             if (musicManager.getScheduler().getQueue().isEmpty()) {
-                return sendSongWithSixSongs(message, musicManager);
+                return sendSongWithSixSongs(context, musicManager);
             }
 
             SimplePaginator paginator = new SimplePaginator(
@@ -77,27 +76,27 @@ public class SongCommand extends Command {
                 ));
             });
 
-            MessageFactory.makeSuccess(message, String.format("%s\n\n%s",
+            context.makeSuccess(String.format("%s\n\n%s",
                 String.join("\n", messages),
-                paginator.generateFooter(generateCommandTrigger(message))
+                paginator.generateFooter(generateCommandTrigger(context.getMessage()))
             )).setTitle("Songs in Queue").queue();
 
             return true;
         }
 
-        return sendSongWithSixSongs(message, musicManager);
+        return sendSongWithSixSongs(context, musicManager);
     }
 
-    private boolean sendSongWithSixSongs(Message message, GuildMusicManager musicManager) {
-        PlaceholderMessage queueMessage = MessageFactory.makeSuccess(
-            message, buildTrackDescription(musicManager.getPlayer(), musicManager.getScheduler())
+    private boolean sendSongWithSixSongs(CommandMessage context, GuildMusicManager musicManager) {
+        PlaceholderMessage queueMessage = context.makeSuccess(
+            buildTrackDescription(musicManager.getPlayer(), musicManager.getScheduler())
         )
             .setTitle(musicManager.getPlayer().isPaused() ? "Currently Paused" : "Currently Playing")
             .addField("Songs in queue", buildSongsInQueue(musicManager.getScheduler()), false);
 
         if (!musicManager.getScheduler().getQueue().isEmpty()) {
             queueMessage.setFooter(String.format("You can see more songs by using %s <page>",
-                generateCommandTrigger(message)
+                generateCommandTrigger(context.getMessage())
             ));
         }
 
@@ -106,7 +105,7 @@ public class SongCommand extends Command {
         return true;
     }
 
-    private String buildTrackDescription(AudioPlayer player, TrackScheduler scheduler) {
+    private String buildTrackDescription(IPlayer player, TrackScheduler scheduler) {
         String message = "[%s](%s)\nPlaying at `%s` volume with `%s` left of the song - Requested by <@%s>";
 
         if (player.getPlayingTrack().getInfo().isStream) {

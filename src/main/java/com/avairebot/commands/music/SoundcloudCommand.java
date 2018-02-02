@@ -4,9 +4,9 @@ import com.avairebot.AvaIre;
 import com.avairebot.audio.AudioHandler;
 import com.avairebot.commands.CommandContainer;
 import com.avairebot.commands.CommandHandler;
+import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.utilities.NumberUtil;
-import net.dv8tion.jda.core.entities.Message;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -57,28 +57,28 @@ public class SoundcloudCommand extends Command {
     }
 
     @Override
-    public boolean onCommand(Message message, String[] args) {
+    public boolean onCommand(CommandMessage context, String[] args) {
         if (args.length == 0) {
-            return sendErrorMessage(message, "Missing music `query`, you must include a link to the song you want to listen to, or at least give me a song title!");
+            return sendErrorMessage(context, "Missing music `query`, you must include a link to the song you want to listen to, or at least give me a song title!");
         }
 
         CommandContainer container = CommandHandler.getCommand(PlayCommand.class);
         if (container == null) {
-            return sendErrorMessage(message, "The `Play Command` doesn't exist anymore, this command doesn't work without it.");
+            return sendErrorMessage(context, "The `Play Command` doesn't exist anymore, this command doesn't work without it.");
         }
 
         PlayCommand playCommand = (PlayCommand) container.getCommand();
 
-        if (AudioHandler.hasAudioSession(message) && NumberUtil.isNumeric(args[0])) {
-            return playCommand.loadSongFromSession(message, args);
+        if (AudioHandler.hasAudioSession(context.getMessage()) && NumberUtil.isNumeric(args[0])) {
+            return playCommand.loadSongFromSession(context.getMessage(), args);
         }
 
         try {
             new URL(String.join(" ", args));
 
-            return container.getCommand().onCommand(message, args);
+            return container.getCommand().onCommand(context, args);
         } catch (MalformedURLException ex) {
-            return container.getCommand().onCommand(message, new String[]{
+            return container.getCommand().onCommand(context, new String[]{
                 "scsearch:", String.join(" ", args)
             });
         }

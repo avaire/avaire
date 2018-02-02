@@ -1,11 +1,10 @@
 package com.avairebot.commands.system;
 
 import com.avairebot.AvaIre;
+import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.SystemCommand;
-import com.avairebot.factories.MessageFactory;
 import com.avairebot.shard.AvaireShard;
 import net.dv8tion.jda.core.entities.Game;
-import net.dv8tion.jda.core.entities.Message;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -48,9 +47,9 @@ public class SetStatusCommand extends SystemCommand {
     }
 
     @Override
-    public boolean onCommand(Message message, String[] args) {
+    public boolean onCommand(CommandMessage context, String[] args) {
         if (args.length == 0) {
-            MessageFactory.makeInfo(message,
+            context.makeInfo(
                 "The bot status cycle has been re-enabled, the change game job can now change the bot status again."
             ).queue(newMessage -> HAS_CUSTOM_STATUS = false);
 
@@ -62,7 +61,7 @@ public class SetStatusCommand extends SystemCommand {
             shard.getJDA().getPresence().setGame(game);
         }
 
-        MessageFactory.makeSuccess(message, "Changed status to **:type :status**")
+        context.makeSuccess("Changed status to **:type :status**")
             .set("type", getTypeAsString(game.getType()))
             .set("status", game.getName())
             .queue(newMessage -> HAS_CUSTOM_STATUS = true);

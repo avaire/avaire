@@ -6,11 +6,10 @@ import com.avairebot.Statistics;
 import com.avairebot.audio.AudioHandler;
 import com.avairebot.cache.CacheType;
 import com.avairebot.chat.MessageType;
+import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
-import com.avairebot.factories.MessageFactory;
 import com.avairebot.utilities.NumberUtil;
 import com.google.gson.internal.LinkedTreeMap;
-import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 
 import java.lang.management.ManagementFactory;
@@ -56,7 +55,7 @@ public class StatsCommand extends Command {
     }
 
     @Override
-    public boolean onCommand(Message message, String[] args) {
+    public boolean onCommand(CommandMessage context, String[] args) {
         StringBuilder description = new StringBuilder("Created by [Senither#0001](https://senither.com/) using the [JDA](https://github.com/DV8FromTheWorld/JDA) framework!");
         if (avaire.getCache().getAdapter(CacheType.FILE).has("github.commits")) {
             description = new StringBuilder("**Latest changes:**\n");
@@ -74,13 +73,13 @@ public class StatsCommand extends Command {
             }
         }
 
-        MessageFactory.makeEmbeddedMessage(message.getChannel(), MessageType.INFO,
+        context.makeEmbeddedMessage(MessageType.INFO,
             new MessageEmbed.Field("Author", "Senither#0001", true),
-            new MessageEmbed.Field("Bot ID", message.getJDA().getSelfUser().getId(), true),
+            new MessageEmbed.Field("Bot ID", context.getJDA().getSelfUser().getId(), true),
             new MessageEmbed.Field("Library", "[JDA](https://github.com/DV8FromTheWorld/JDA)", true),
             new MessageEmbed.Field("DB Queries run", getDatabaseQueriesStats(), true),
             new MessageEmbed.Field("Messages Received", getMessagesReceivedStats(), true),
-            new MessageEmbed.Field("Shard", "" + message.getJDA().getShardInfo().getShardId(), true),
+            new MessageEmbed.Field("Shard", "" + context.getJDA().getShardInfo().getShardId(), true),
             new MessageEmbed.Field("Commands Ran", NumberUtil.formatNicely(Statistics.getCommands()), true),
             new MessageEmbed.Field("Memory Usage", memoryUsage(), true),
             new MessageEmbed.Field("Uptime", applicationUptime(), true),

@@ -86,7 +86,7 @@
         <appender-ref ref="DEBUG"/>
         <appender-ref ref="ERROR"/>
         <!--
-            Enable this appender to see Orions debug logs in your console / IDE
+            Enable this appender to see AvaIres debug logs in your console / IDE
             if you enable it in the root logger further below you will see the debug logs of all the other libraries too
         -->
         <!--<appender-ref ref="BOT_STDOUT_DEBUG"/>-->

@@ -1,15 +1,15 @@
 package com.avairebot.commands.utility;
 
 import com.avairebot.AvaIre;
+import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
-import com.avairebot.factories.MessageFactory;
-import net.dv8tion.jda.core.entities.Message;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 public class InviteCommand extends Command {
+
     public InviteCommand(AvaIre avaire) {
         super(avaire);
     }
@@ -35,8 +35,8 @@ public class InviteCommand extends Command {
     }
 
     @Override
-    public boolean onCommand(Message message, String[] args) {
-        MessageFactory.makeInfo(message, "You can invite me to your server by [clicking here](:oauth) or use the link below:\n\n:oauth")
+    public boolean onCommand(CommandMessage context, String[] args) {
+        context.makeInfo("You can invite me to your server by [clicking here](:oauth) or use the link below:\n\n:oauth")
             .set("oauth", avaire.getConfig().getString("discord.oauth"))
             .queue();
         return true;

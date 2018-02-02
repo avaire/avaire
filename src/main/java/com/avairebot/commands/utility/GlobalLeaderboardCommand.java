@@ -3,15 +3,14 @@ package com.avairebot.commands.utility;
 import com.avairebot.AvaIre;
 import com.avairebot.cache.CacheType;
 import com.avairebot.chat.SimplePaginator;
+import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.CacheFingerprint;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.database.collection.Collection;
 import com.avairebot.database.collection.DataRow;
-import com.avairebot.factories.MessageFactory;
 import com.avairebot.utilities.LevelUtil;
 import com.avairebot.utilities.NumberUtil;
 import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.Message;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -46,10 +45,10 @@ public class GlobalLeaderboardCommand extends Command {
     }
 
     @Override
-    public boolean onCommand(Message message, String[] args) {
+    public boolean onCommand(CommandMessage context, String[] args) {
         Collection collection = loadTop100From();
         if (collection == null) {
-            MessageFactory.makeWarning(message, "There are no leaderboard data right now, try again later.").queue();
+            context.makeWarning("There are no leaderboard data right now, try again later.").queue();
             return false;
         }
 
@@ -62,7 +61,7 @@ public class GlobalLeaderboardCommand extends Command {
         paginator.forEach((index, key, val) -> {
             DataRow row = (DataRow) val;
 
-            Member member = message.getGuild().getMemberById(row.getLong("user_id"));
+            Member member = context.getGuild().getMemberById(row.getLong("user_id"));
             String username = row.getString("username") + "#" + row.getString("discriminator");
             if (member != null) {
                 username = member.getUser().getName() + "#" + member.getUser().getDiscriminator();
@@ -78,9 +77,9 @@ public class GlobalLeaderboardCommand extends Command {
             ));
         });
 
-        messages.add("\n" + paginator.generateFooter(generateCommandTrigger(message)));
+        messages.add("\n" + paginator.generateFooter(generateCommandTrigger(context.getMessage())));
 
-        MessageFactory.makeEmbeddedMessage(message.getChannel(), null, String.join("\n", messages))
+        context.makeEmbeddedMessage(null, String.join("\n", messages))
             .setTitle("Global Experience Leaderboard").queue();
 
         return true;

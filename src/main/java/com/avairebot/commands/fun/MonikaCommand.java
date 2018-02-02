@@ -1,13 +1,13 @@
 package com.avairebot.commands.fun;
 
 import com.avairebot.AvaIre;
+import com.avairebot.commands.CommandMessage;
 import com.avairebot.commands.CommandPriority;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.factories.RequestFactory;
 import com.avairebot.requests.Response;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.MessageBuilder;
-import net.dv8tion.jda.core.entities.Message;
 
 import java.util.Arrays;
 import java.util.List;
@@ -40,9 +40,9 @@ public class MonikaCommand extends Command {
     }
 
     @Override
-    public boolean onCommand(Message message, String[] args) {
+    public boolean onCommand(CommandMessage context, String[] args) {
         RequestFactory.makeGET("https://i.imgur.com/ZupgGkI.jpg")
-            .send((Consumer<Response>) response -> message.getChannel().sendFile(
+            .send((Consumer<Response>) response -> context.getChannel().sendFile(
                 response.getResponse().body().byteStream(),
                 "just-monika.jpg",
                 new MessageBuilder().setEmbed(

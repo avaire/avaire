@@ -1,12 +1,11 @@
 package com.avairebot.commands.fun;
 
 import com.avairebot.AvaIre;
+import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
-import com.avairebot.factories.MessageFactory;
 import com.avairebot.factories.RequestFactory;
 import com.avairebot.requests.Response;
 import com.avairebot.requests.service.RandomCatService;
-import net.dv8tion.jda.core.entities.Message;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -40,13 +39,12 @@ public class RandomCatCommand extends Command {
     }
 
     @Override
-    public boolean onCommand(Message message, String[] args) {
+    public boolean onCommand(CommandMessage context, String[] args) {
         RequestFactory.makeGET("http://random.cat/meow")
             .send((Consumer<Response>) response -> {
                 RandomCatService service = (RandomCatService) response.toService(RandomCatService.class);
 
-                MessageFactory.makeEmbeddedMessage(message.getChannel())
-                    .setImage(service.getFile()).queue();
+                context.makeEmbeddedMessage().setImage(service.getFile()).queue();
             });
         return true;
     }

@@ -1,12 +1,11 @@
 package com.avairebot.commands.administration;
 
 import com.avairebot.AvaIre;
+import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.CacheFingerprint;
 import com.avairebot.contracts.commands.Command;
-import com.avairebot.factories.MessageFactory;
 import com.avairebot.utilities.RoleUtil;
 import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.User;
 
@@ -58,33 +57,33 @@ public class KickCommand extends Command {
     }
 
     @Override
-    public boolean onCommand(Message message, String[] args) {
-        if (message.getMentionedUsers().isEmpty() || !userRegEX.matcher(args[0]).matches()) {
-            return sendErrorMessage(message, "You must mention the user you want to kick.");
+    public boolean onCommand(CommandMessage context, String[] args) {
+        if (context.getMentionedUsers().isEmpty() || !userRegEX.matcher(args[0]).matches()) {
+            return sendErrorMessage(context, "You must mention the user you want to kick.");
         }
 
-        User user = message.getMentionedUsers().get(0);
-        if (userHasHigherRole(user, message.getMember())) {
-            return sendErrorMessage(message, "You can't kick people with a higher, or the same role as yourself.");
+        User user = context.getMentionedUsers().get(0);
+        if (userHasHigherRole(user, context.getMember())) {
+            return sendErrorMessage(context, "You can't kick people with a higher, or the same role as yourself.");
         }
 
-        return kickUser(message, message.getGuild().getMember(user), args);
+        return kickUser(context, context.getGuild().getMember(user), args);
     }
 
-    private boolean kickUser(Message message, Member user, String[] args) {
+    private boolean kickUser(CommandMessage context, Member user, String[] args) {
         String reason = generateMessage(args);
 
-        message.getGuild().getController().kick(user, String.format("%s - %s#%s (%s)",
+        context.getGuild().getController().kick(user, String.format("%s - %s#%s (%s)",
             reason,
-            message.getAuthor().getName(),
-            message.getAuthor().getDiscriminator(),
-            message.getAuthor().getId()
+            context.getAuthor().getName(),
+            context.getAuthor().getDiscriminator(),
+            context.getAuthor().getId()
         )).queue(aVoid -> {
-                MessageFactory.makeSuccess(message, "**:target** was kicked by :user for \":reason\"")
+                context.makeSuccess("**:target** was kicked by :user for \":reason\"")
                     .set("target", user.getUser().getName() + "#" + user.getUser().getDiscriminator())
                     .set("reason", reason)
                     .queue();
-            }, throwable -> MessageFactory.makeWarning(message, "Failed to kick **:target** due to an error: :error")
+            }, throwable -> context.makeWarning("Failed to kick **:target** due to an error: :error")
                 .set("target", user.getUser().getName() + "#" + user.getUser().getDiscriminator())
                 .set("error", throwable.getMessage())
                 .queue()

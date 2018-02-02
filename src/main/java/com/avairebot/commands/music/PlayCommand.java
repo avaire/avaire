@@ -7,6 +7,7 @@ import com.avairebot.audio.TrackResponse;
 import com.avairebot.audio.VoiceConnectStatus;
 import com.avairebot.commands.CommandContainer;
 import com.avairebot.commands.CommandHandler;
+import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.factories.MessageFactory;
 import com.avairebot.metrics.Metrics;
@@ -67,9 +68,9 @@ public class PlayCommand extends Command {
     }
 
     @Override
-    public boolean onCommand(Message message, String[] args) {
+    public boolean onCommand(CommandMessage context, String[] args) {
         if (args.length == 0) {
-            return sendErrorMessage(message, "Missing music `query`, you must include a link to the song you want to listen to, or at least give me a song title!");
+            return sendErrorMessage(context, "Missing music `query`, you must include a link to the song you want to listen to, or at least give me a song title!");
         }
 
         boolean shouldLeaveMessage = false;
@@ -78,22 +79,22 @@ public class PlayCommand extends Command {
             args = Arrays.copyOfRange(args, 0, args.length - 1);
         }
 
-        VoiceConnectStatus voiceConnectStatus = AudioHandler.connectToVoiceChannel(message);
+        VoiceConnectStatus voiceConnectStatus = AudioHandler.connectToVoiceChannel(context.getMessage());
         if (!voiceConnectStatus.isSuccess()) {
-            MessageFactory.makeWarning(message, voiceConnectStatus.getErrorMessage()).queue();
+            context.makeWarning(voiceConnectStatus.getErrorMessage()).queue();
             return false;
         }
 
-        if (AudioHandler.hasAudioSession(message) && NumberUtil.isNumeric(args[0])) {
-            return loadSongFromSession(message, args);
+        if (AudioHandler.hasAudioSession(context.getMessage()) && NumberUtil.isNumeric(args[0])) {
+            return loadSongFromSession(context.getMessage(), args);
         }
 
         boolean finalShouldLeaveMessage = shouldLeaveMessage;
 
-        AudioHandler.loadAndPlay(message, buildTrackRequestString(args)).handle(
-            musicSuccess(message, finalShouldLeaveMessage),
-            musicFailure(message),
-            musicSession(message, args)
+        AudioHandler.loadAndPlay(context.getMessage(), buildTrackRequestString(args)).handle(
+            musicSuccess(context.getMessage(), finalShouldLeaveMessage),
+            musicFailure(context.getMessage()),
+            musicSession(context.getMessage(), args)
         );
 
         return true;

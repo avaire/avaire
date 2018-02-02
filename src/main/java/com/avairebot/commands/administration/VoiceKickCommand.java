@@ -1,11 +1,14 @@
 package com.avairebot.commands.administration;
 
 import com.avairebot.AvaIre;
+import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.CacheFingerprint;
 import com.avairebot.contracts.commands.Command;
-import com.avairebot.factories.MessageFactory;
 import com.avairebot.utilities.RoleUtil;
-import net.dv8tion.jda.core.entities.*;
+import net.dv8tion.jda.core.entities.Member;
+import net.dv8tion.jda.core.entities.Role;
+import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.core.entities.VoiceChannel;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -57,33 +60,33 @@ public class VoiceKickCommand extends Command {
     }
 
     @Override
-    public boolean onCommand(Message message, String[] args) {
-        if (message.getMentionedUsers().isEmpty() || !userRegEX.matcher(args[0]).matches()) {
-            return sendErrorMessage(message, "You must mention the user you want to kick.");
+    public boolean onCommand(CommandMessage context, String[] args) {
+        if (context.getMentionedUsers().isEmpty() || !userRegEX.matcher(args[0]).matches()) {
+            return sendErrorMessage(context, "You must mention the user you want to kick.");
         }
 
-        User user = message.getMentionedUsers().get(0);
-        if (userHasHigherRole(user, message.getMember())) {
-            return sendErrorMessage(message, "You can't kick people with a higher, or the same role as yourself.");
+        User user = context.getMentionedUsers().get(0);
+        if (userHasHigherRole(user, context.getMember())) {
+            return sendErrorMessage(context, "You can't kick people with a higher, or the same role as yourself.");
         }
 
-        final Member member = message.getGuild().getMember(user);
+        final Member member = context.getGuild().getMember(user);
         if (!member.getVoiceState().inVoiceChannel()) {
-            return sendErrorMessage(message, "You can't voice kick people who are not connected to a voice channel.");
+            return sendErrorMessage(context, "You can't voice kick people who are not connected to a voice channel.");
         }
 
-        return kickUser(message, member, args);
+        return kickUser(context, member, args);
     }
 
-    private boolean kickUser(Message message, Member user, String[] args) {
+    private boolean kickUser(CommandMessage context, Member user, String[] args) {
         String reason = generateMessage(args);
         String originalVoiceChannelName = user.getVoiceState().getChannel().getName();
-        message.getGuild().getController().createVoiceChannel("kick-" + user.getUser().getId()).queue(channel ->
-            message.getGuild().getController().moveVoiceMember(user, (VoiceChannel) channel)
+        context.getGuild().getController().createVoiceChannel("kick-" + user.getUser().getId()).queue(channel ->
+            context.getGuild().getController().moveVoiceMember(user, (VoiceChannel) channel)
                 .queue(empty -> channel.delete().queue(new Consumer<Void>() {
                         @Override
                         public void accept(Void empty) {
-                            MessageFactory.makeSuccess(message, "**:target** was kicked from **:voiceChannel** by :user for \":reason\"")
+                            context.makeSuccess("**:target** was kicked from **:voiceChannel** by :user for \":reason\"")
                                 .set("target", user.getUser().getName() + "#" + user.getUser().getDiscriminator())
                                 .set("voiceChannel", originalVoiceChannelName)
                                 .set("reason", reason)

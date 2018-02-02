@@ -1,9 +1,8 @@
 package com.avairebot.commands.system;
 
 import com.avairebot.AvaIre;
+import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.SystemCommand;
-import com.avairebot.factories.MessageFactory;
-import net.dv8tion.jda.core.entities.Message;
 
 import java.util.Collections;
 import java.util.List;
@@ -30,12 +29,12 @@ public class ReloadCommand extends SystemCommand {
     }
 
     @Override
-    public boolean onCommand(Message message, String[] args) {
+    public boolean onCommand(CommandMessage context, String[] args) {
         avaire.getConfig().reloadConfig();
 
         // TODO: When plugins have configuration support, add a loop here to reload the configs.
 
-        MessageFactory.makeSuccess(message, "Configuration has been successfully reloaded!").queue();
+        context.makeSuccess("Configuration has been successfully reloaded!").queue();
 
         return true;
     }

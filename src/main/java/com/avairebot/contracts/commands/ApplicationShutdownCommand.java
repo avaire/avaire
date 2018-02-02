@@ -2,11 +2,9 @@ package com.avairebot.contracts.commands;
 
 import com.avairebot.AvaIre;
 import com.avairebot.commands.CommandMessage;
-import com.avairebot.factories.MessageFactory;
 import com.avairebot.shared.ExitCodes;
 import com.avairebot.time.Carbon;
 import com.avairebot.time.Formats;
-import net.dv8tion.jda.core.entities.Message;
 
 import java.text.ParseException;
 
@@ -37,26 +35,22 @@ public abstract class ApplicationShutdownCommand extends SystemCommand {
      * and the middleware stack when a user sends a message matching the
      * commands prefix and one of its command triggers.
      *
-     * @param message The JDA message object from the message received event.
+     * @param context The JDA message object from the message received event.
      * @param args    The arguments given to the command, if no arguments was given the array will just be empty.
      * @return true on success, false on failure.
      */
     @Override
-    public boolean onCommand(Message message, String[] args) {
-        if (message instanceof CommandMessage) {
-            CommandMessage commandMessage = (CommandMessage) message;
-
-            if (commandMessage.isMentionableCommand()) {
-                return sendErrorMessage(message, "This command can not be used via mentions!");
-            }
+    public boolean onCommand(CommandMessage context, String[] args) {
+        if (context.isMentionableCommand()) {
+            return sendErrorMessage(context, "This command can not be used via mentions!");
         }
 
         if (args.length == 0) {
-            return sendErrorMessage(message, "You must include the time you want the bot to shutdown.");
+            return sendErrorMessage(context, "You must include the time you want the bot to shutdown.");
         }
 
         if (args[0].equalsIgnoreCase("now")) {
-            MessageFactory.makeInfo(message, shutdownNow())
+            context.makeInfo(shutdownNow())
                 .queue(
                     shutdownMessage -> avaire.shutdown(exitCode()),
                     throwable -> avaire.shutdown(exitCode())
@@ -66,7 +60,7 @@ public abstract class ApplicationShutdownCommand extends SystemCommand {
         }
 
         if (args[0].equalsIgnoreCase("cancel")) {
-            MessageFactory.makeInfo(message, scheduleCancel())
+            context.makeInfo(scheduleCancel())
                 .queue(
                     shutdownMessage -> avaire.scheduleShutdown(null, exitCode()),
                     throwable -> avaire.scheduleShutdown(null, exitCode())
@@ -77,16 +71,16 @@ public abstract class ApplicationShutdownCommand extends SystemCommand {
 
         Carbon time = formatInput(String.join(" ", args));
         if (time == null) {
-            return sendErrorMessage(message, "Invalid time format given, `%s` is not a valid supported time format.",
+            return sendErrorMessage(context, "Invalid time format given, `%s` is not a valid supported time format.",
                 String.join(" ", args)
             );
         }
 
         if (time.isPast()) {
-            return sendErrorMessage(message, "The time given is in the past, that doesn't really work... Use a time set in the future, or use `now`.");
+            return sendErrorMessage(context, "The time given is in the past, that doesn't really work... Use a time set in the future, or use `now`.");
         }
 
-        MessageFactory.makeSuccess(message, scheduleShutdown())
+        context.makeSuccess(scheduleShutdown())
             .set("fromNow", time.diffForHumans(true))
             .set("date", time.format("EEEEEEEE, dd MMMMMMM yyyy - HH:mm:ss z"))
             .queue(

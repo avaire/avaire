@@ -2,12 +2,11 @@ package com.avairebot.commands.administration;
 
 import com.avairebot.AvaIre;
 import com.avairebot.chat.SimplePaginator;
+import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.transformers.GuildTransformer;
-import com.avairebot.factories.MessageFactory;
 import com.avairebot.utilities.NumberUtil;
-import net.dv8tion.jda.core.entities.Message;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -35,11 +34,11 @@ public class ListSelfAssignableRolesCommand extends Command {
     }
 
     @Override
-    public boolean onCommand(Message message, String[] args) {
-        GuildTransformer transformer = GuildController.fetchGuild(avaire, message);
+    public boolean onCommand(CommandMessage context, String[] args) {
+        GuildTransformer transformer = GuildController.fetchGuild(avaire, context.getMessage());
 
         if (transformer.getSelfAssignableRoles().isEmpty()) {
-            MessageFactory.makeWarning(message, "There are currently no self-assignable roles for this server.").queue();
+            context.makeWarning("There are currently no self-assignable roles for this server.").queue();
             return true;
         }
 
@@ -53,9 +52,9 @@ public class ListSelfAssignableRolesCommand extends Command {
 
         List<String> messages = new ArrayList<>();
         paginator.forEach((index, key, val) -> messages.add(String.format("**%s**", val)));
-        messages.add("\n" + paginator.generateFooter(generateCommandTrigger(message)));
+        messages.add("\n" + paginator.generateFooter(generateCommandTrigger(context.getMessage())));
 
-        MessageFactory.makeSuccess(message, String.join("\n", messages))
+        context.makeSuccess(String.join("\n", messages))
             .setTitle(String.format("There are %s self-assignable roles", paginator.getTotal()))
             .queue();
 

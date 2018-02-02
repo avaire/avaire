@@ -3,10 +3,9 @@ package com.avairebot.commands.music;
 import com.avairebot.AvaIre;
 import com.avairebot.audio.AudioHandler;
 import com.avairebot.audio.GuildMusicManager;
+import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
-import com.avairebot.factories.MessageFactory;
 import com.avairebot.utilities.NumberUtil;
-import net.dv8tion.jda.core.entities.Message;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -44,19 +43,19 @@ public class ClearQueueCommand extends Command {
     }
 
     @Override
-    public boolean onCommand(Message message, String[] args) {
-        GuildMusicManager musicManager = AudioHandler.getGuildAudioPlayer(message.getGuild());
+    public boolean onCommand(CommandMessage context, String[] args) {
+        GuildMusicManager musicManager = AudioHandler.getGuildAudioPlayer(context.getGuild());
 
         if (musicManager.getPlayer().getPlayingTrack() == null) {
-            return sendErrorMessage(message, "Nothing to clear, request music first with `!play`");
+            return sendErrorMessage(context, "Nothing to clear, request music first with `!play`");
         }
 
         if (musicManager.getScheduler().getQueue().isEmpty()) {
-            MessageFactory.makeWarning(message, "Nothing to clear, there are no songs pending in the queue right now.").queue();
+            context.makeWarning("Nothing to clear, there are no songs pending in the queue right now.").queue();
             return false;
         }
 
-        MessageFactory.makeSuccess(message, "I have removed **:queueSize** songs from the queue, the queue is now empty!")
+        context.makeSuccess("I have removed **:queueSize** songs from the queue, the queue is now empty!")
             .set("queueSize", NumberUtil.formatNicely(
                 musicManager.getScheduler().getQueue().size()
             ))

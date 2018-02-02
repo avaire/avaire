@@ -1,15 +1,13 @@
 package com.avairebot.commands.system;
 
 import com.avairebot.AvaIre;
+import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.SystemCommand;
-import com.avairebot.factories.MessageFactory;
 import net.dv8tion.jda.core.entities.ChannelType;
-import net.dv8tion.jda.core.entities.Message;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -45,43 +43,41 @@ public class EvalCommand extends SystemCommand {
     }
 
     @Override
-    public boolean onCommand(Message message, String[] args) {
+    public boolean onCommand(CommandMessage context, String[] args) {
         if (args.length == 0) {
-            MessageFactory.makeWarning(message, "No arguments given, there are nothing to evaluate.").queue();
+            context.makeWarning("No arguments given, there are nothing to evaluate.").queue();
             return false;
         }
 
-        String[] rawArguments = message.getRawContent().split(" ");
-        String evalMessage = String.join(" ", Arrays.copyOfRange(rawArguments, 1, rawArguments.length));
-
         try {
-            Object out = createScriptEngine(message).eval("(function() { with (imports) {\n\t" + evalMessage + "\n}})();");
+            Object out = createScriptEngine(context).eval("(function() { with (imports) {\n\t" + context.getContentRaw() + "\n}})();");
             String output = out == null ? "Executed without error, void was returned so there is nothing to show." : out.toString();
 
             if (output.length() > 1890) {
                 output = output.substring(0, 1890) + "...";
             }
 
-            message.getChannel().sendMessage("```xl\n" + output + "```").queue();
+            context.getMessageChannel().sendMessage("```xl\n" + output + "```").queue();
         } catch (ScriptException e) {
-            message.getChannel().sendMessage("**Error:**\n```xl\n" + e.toString() + "```").queue();
+            context.getMessageChannel().sendMessage("**Error:**\n```xl\n" + e.toString() + "```").queue();
         }
 
         return true;
     }
 
-    private ScriptEngine createScriptEngine(Message message) throws ScriptException {
+    private ScriptEngine createScriptEngine(CommandMessage context) throws ScriptException {
         ScriptEngineManager manager = new ScriptEngineManager();
         ScriptEngine engine = manager.getEngineByName("nashorn");
 
-        engine.put("message", message);
-        engine.put("channel", message.getChannel());
-        engine.put("jda", message.getJDA());
+        engine.put("context", context);
+        engine.put("message", context.getMessage());
+        engine.put("channel", context.getChannel());
+        engine.put("jda", context.getJDA());
         engine.put("avaire", avaire);
 
-        if (message.isFromType(ChannelType.TEXT)) {
-            engine.put("guild", message.getGuild());
-            engine.put("member", message.getMember());
+        if (context.getMessage().isFromType(ChannelType.TEXT)) {
+            engine.put("guild", context.getGuild());
+            engine.put("member", context.getMember());
         }
 
         engine.eval("var imports = new JavaImporter(" +

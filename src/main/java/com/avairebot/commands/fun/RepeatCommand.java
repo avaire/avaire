@@ -1,8 +1,9 @@
 package com.avairebot.commands.fun;
 
 import com.avairebot.AvaIre;
+import com.avairebot.commands.CommandMessage;
+import com.avairebot.commands.CommandPriority;
 import com.avairebot.contracts.commands.Command;
-import net.dv8tion.jda.core.entities.Message;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -40,13 +41,17 @@ public class RepeatCommand extends Command {
     }
 
     @Override
-    public boolean onCommand(Message message, String[] args) {
+    public CommandPriority getCommandPriority() {
+        return CommandPriority.HIGHEST;
+    }
+
+    @Override
+    public boolean onCommand(CommandMessage context, String[] args) {
         if (args.length == 0) {
-            return sendErrorMessage(message, "Missing `message` argument, the `message` argument is required!");
+            return sendErrorMessage(context, "Missing `message` argument, the `message` argument is required!");
         }
 
-        String[] split = message.getContent().split(" ");
-        message.getChannel().sendMessage(String.join(" ", Arrays.copyOfRange(split, 1, split.length))).queue();
+        context.getMessageChannel().sendMessage(context.getContentStripped()).queue();
 
         return true;
     }

@@ -1,9 +1,8 @@
 package com.avairebot.commands.utility;
 
 import com.avairebot.AvaIre;
+import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
-import com.avairebot.factories.MessageFactory;
-import net.dv8tion.jda.core.entities.Message;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -42,16 +41,16 @@ public class ExpandUrlCommand extends Command {
     }
 
     @Override
-    public boolean onCommand(Message message, String[] args) {
+    public boolean onCommand(CommandMessage context, String[] args) {
         if (args.length == 0) {
-            return sendErrorMessage(message, "Missing argument `url`, you must provided a valid URL.");
+            return sendErrorMessage(context, "Missing argument `url`, you must provided a valid URL.");
         }
 
         try {
             List<String> redirects = fetchRedirect(args[0], new ArrayList<>());
 
             if (redirects.size() <= 1) {
-                MessageFactory.makeInfo(message, ":url doesn't redirect anywhere.")
+                context.makeInfo(":url doesn't redirect anywhere.")
                     .set("url", args[0]).queue();
                 return true;
             }
@@ -67,13 +66,13 @@ public class ExpandUrlCommand extends Command {
                 }
             }
 
-            MessageFactory.makeInfo(message, String.join("\n", links)).queue();
+            context.makeInfo(String.join("\n", links)).queue();
 
             return true;
         } catch (MalformedURLException ex) {
-            return sendErrorMessage(message, "Invalid `url` provided, you must provide a valid URL.");
+            return sendErrorMessage(context, "Invalid `url` provided, you must provide a valid URL.");
         } catch (UnknownHostException ex) {
-            MessageFactory.makeError(message, "Unknown host for the provided `url`, does it actually go anywhere?").queue();
+            context.makeError("Unknown host for the provided `url`, does it actually go anywhere?").queue();
         } catch (IOException e) {
             e.printStackTrace();
         }

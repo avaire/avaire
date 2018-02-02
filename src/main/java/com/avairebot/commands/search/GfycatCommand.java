@@ -1,12 +1,11 @@
 package com.avairebot.commands.search;
 
 import com.avairebot.AvaIre;
+import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
-import com.avairebot.factories.MessageFactory;
 import com.avairebot.factories.RequestFactory;
 import com.avairebot.requests.Response;
 import com.avairebot.requests.service.GfycatService;
-import net.dv8tion.jda.core.entities.Message;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -51,9 +50,9 @@ public class GfycatCommand extends Command {
     }
 
     @Override
-    public boolean onCommand(Message message, String[] args) {
+    public boolean onCommand(CommandMessage context, String[] args) {
         if (args.length == 0) {
-            return sendErrorMessage(message, "Missing arguments `queue`");
+            return sendErrorMessage(context, "Missing arguments `queue`");
         }
 
         RequestFactory.makeGET("https://api.gfycat.com/v1test/gfycats/search")
@@ -64,14 +63,14 @@ public class GfycatCommand extends Command {
 
                 Map<String, Object> gfycatsItem = gfyCat.getRandomGfycatsItem();
                 if (gfycatsItem == null) {
-                    MessageFactory.makeError(message, "I couldn't find any gif matching your query: `:query`")
+                    context.makeError("I couldn't find any gif matching your query: `:query`")
                         .set("query", String.join(" ", args))
                         .queue();
 
                     return;
                 }
 
-                MessageFactory.makeEmbeddedMessage(message.getChannel())
+                context.makeEmbeddedMessage()
                     .setImage(gfycatsItem.get("gifUrl").toString())
                     .queue();
             });

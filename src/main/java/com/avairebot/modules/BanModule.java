@@ -1,10 +1,9 @@
 package com.avairebot.modules;
 
+import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
-import com.avairebot.factories.MessageFactory;
 import com.avairebot.utilities.RoleUtil;
 import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.User;
 
@@ -19,38 +18,38 @@ public class BanModule {
      * Bans the mentioned user from the current server is a valid user was given.
      *
      * @param command The command that was used in banning the user.
-     * @param message The message context object for the current message.
+     * @param context The message context object for the current message.
      * @param args    The arguments given by the user who ran the command.
      * @param soft    Determines if the user should be softbanned or not.
      * @return True if the user was banned successfully, false otherwise.
      */
-    public static boolean ban(Command command, Message message, String[] args, boolean soft) {
-        if (message.getMentionedUsers().isEmpty() || !userRegEX.matcher(args[0]).matches()) {
-            return command.sendErrorMessage(message, "You must mention the user you want to ban.");
+    public static boolean ban(Command command, CommandMessage context, String[] args, boolean soft) {
+        if (context.getMentionedUsers().isEmpty() || !userRegEX.matcher(args[0]).matches()) {
+            return command.sendErrorMessage(context, "You must mention the user you want to ban.");
         }
 
-        User user = message.getMentionedUsers().get(0);
-        if (userHasHigherRole(user, message.getMember())) {
-            return command.sendErrorMessage(message, "You can't ban people with a higher, or the same role as yourself.");
+        User user = context.getMentionedUsers().get(0);
+        if (userHasHigherRole(user, context.getMember())) {
+            return command.sendErrorMessage(context, "You can't ban people with a higher, or the same role as yourself.");
         }
 
-        return banUser(message, user, args, soft);
+        return banUser(context, user, args, soft);
     }
 
-    private static boolean banUser(Message message, User user, String[] args, boolean soft) {
+    private static boolean banUser(CommandMessage context, User user, String[] args, boolean soft) {
         String reason = generateMessage(args);
 
-        message.getGuild().getController().ban(user, soft ? 0 : 7, String.format("%s - %s#%s (%s)",
+        context.getGuild().getController().ban(user, soft ? 0 : 7, String.format("%s - %s#%s (%s)",
             reason,
-            message.getAuthor().getName(),
-            message.getAuthor().getDiscriminator(),
-            message.getAuthor().getId()
+            context.getAuthor().getName(),
+            context.getAuthor().getDiscriminator(),
+            context.getAuthor().getId()
         )).queue(aVoid -> {
-            MessageFactory.makeSuccess(message, "**:target** was permanently banned by :user for \":reason\"")
+            context.makeSuccess("**:target** was permanently banned by :user for \":reason\"")
                 .set("target", user.getName() + "#" + user.getDiscriminator())
                 .set("reason", reason)
                 .queue();
-        }, throwable -> MessageFactory.makeWarning(message, "Failed to ban **:target** due to an error: :error")
+        }, throwable -> context.makeWarning("Failed to ban **:target** due to an error: :error")
             .set("target", user.getName() + "#" + user.getDiscriminator())
             .set("error", throwable.getMessage())
             .queue());

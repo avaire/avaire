@@ -2,15 +2,14 @@ package com.avairebot.commands.administration;
 
 import com.avairebot.AvaIre;
 import com.avairebot.Constants;
+import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.CacheFingerprint;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.transformers.ChannelTransformer;
 import com.avairebot.database.transformers.GuildTransformer;
-import com.avairebot.factories.MessageFactory;
 import com.avairebot.utilities.MentionableUtil;
 import com.avairebot.utilities.StringReplacementUtil;
-import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.User;
 
 import java.sql.SQLException;
@@ -57,19 +56,19 @@ public class GoodbyeMessageCommand extends Command {
     }
 
     @Override
-    public boolean onCommand(Message message, String[] args) {
-        GuildTransformer guildTransformer = GuildController.fetchGuild(avaire, message);
-        ChannelTransformer channelTransformer = guildTransformer.getChannel(message.getTextChannel().getId());
+    public boolean onCommand(CommandMessage context, String[] args) {
+        GuildTransformer guildTransformer = GuildController.fetchGuild(avaire, context.getMessage());
+        ChannelTransformer channelTransformer = guildTransformer.getChannel(context.getChannel().getId());
 
         if (channelTransformer == null || !channelTransformer.getGoodbye().isEnabled()) {
-            return sendErrorMessage(message, "The `goodbye` module must be enabled to use this command, you can enable the `goodbye` module by using the `.goodbye` command.");
+            return sendErrorMessage(context, "The `goodbye` module must be enabled to use this command, you can enable the `goodbye` module by using the `.goodbye` command.");
         }
 
         if (args.length == 1) {
-            User user = MentionableUtil.getUser(message, args, 0);
+            User user = MentionableUtil.getUser(context.getMessage(), args, 0);
 
             if (user != null) {
-                return sendExampleMessage(message, user, channelTransformer);
+                return sendExampleMessage(context, user, channelTransformer);
             }
         }
 
@@ -77,29 +76,29 @@ public class GoodbyeMessageCommand extends Command {
 
         try {
             avaire.getDatabase().newQueryBuilder(Constants.GUILD_TABLE_NAME)
-                .andWhere("id", message.getGuild().getId())
+                .andWhere("id", context.getGuild().getId())
                 .update(statement -> statement.set("channels", guildTransformer.channelsToJson(), true));
 
             if (channelTransformer.getGoodbye().getMessage() == null) {
-                MessageFactory.makeSuccess(message, "The `Goodbye` module message has been set back to the default.").queue();
+                context.makeSuccess("The `Goodbye` module message has been set back to the default.").queue();
 
                 return true;
             }
 
-            return sendEnableMessage(message, channelTransformer);
+            return sendEnableMessage(context, channelTransformer);
         } catch (SQLException ex) {
             AvaIre.getLogger().error("Failed to update the goodbye message", ex);
 
-            MessageFactory.makeError(message, "Failed to save the guild settings: :error")
+            context.makeError("Failed to save the guild settings: :error")
                 .set("error", ex.getMessage())
                 .queue();
             return false;
         }
     }
 
-    private boolean sendExampleMessage(Message message, User user, ChannelTransformer transformer) {
-        message.getChannel().sendMessage(StringReplacementUtil.parseGuildJoinLeaveMessage(
-            message.getGuild(), message.getTextChannel(), user,
+    private boolean sendExampleMessage(CommandMessage context, User user, ChannelTransformer transformer) {
+        context.getMessageChannel().sendMessage(StringReplacementUtil.parseGuildJoinLeaveMessage(
+            context.getGuild(), context.getChannel(), user,
             transformer.getGoodbye().getMessage() == null ?
                 "%user% has left **%server%**! :(" :
                 transformer.getGoodbye().getMessage())
@@ -108,8 +107,8 @@ public class GoodbyeMessageCommand extends Command {
         return true;
     }
 
-    private boolean sendEnableMessage(Message message, ChannelTransformer channelTransformer) {
-        MessageFactory.makeSuccess(message, String.join("\n",
+    private boolean sendEnableMessage(CommandMessage context, ChannelTransformer channelTransformer) {
+        context.makeSuccess(String.join("\n",
             "The `Welcome` module message has been set to:",
             "",
             "```:message```",
@@ -118,7 +117,7 @@ public class GoodbyeMessageCommand extends Command {
             "`:command <user>`"
         ))
             .set("message", channelTransformer.getWelcome().getMessage())
-            .set("command", generateCommandTrigger(message))
+            .set("command", generateCommandTrigger(context.getMessage()))
             .queue();
 
         return true;

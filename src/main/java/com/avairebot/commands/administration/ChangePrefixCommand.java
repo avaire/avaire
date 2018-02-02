@@ -4,12 +4,11 @@ import com.avairebot.AvaIre;
 import com.avairebot.Constants;
 import com.avairebot.commands.Category;
 import com.avairebot.commands.CategoryHandler;
+import com.avairebot.commands.CommandMessage;
 import com.avairebot.commands.CommandPriority;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.transformers.GuildTransformer;
-import com.avairebot.factories.MessageFactory;
-import net.dv8tion.jda.core.entities.Message;
 
 import java.sql.SQLException;
 import java.util.Arrays;
@@ -67,30 +66,31 @@ public class ChangePrefixCommand extends Command {
     }
 
     @Override
-    public boolean onCommand(Message message, String[] args) {
+    public boolean onCommand(CommandMessage context, String[] args) {
         if (args.length == 0) {
-            return sendErrorMessage(message, "Missing argument `category`, you must specify the command category you want to change/reset the prefix for.");
+            return sendErrorMessage(context, "Missing argument `category`, you must specify the command category you want to change/reset the prefix for.");
         }
 
         Category category = CategoryHandler.fromLazyName(args[0]);
         if (category == null) {
-            return sendErrorMessage(message, "Invalid `category` given, there are no command categories that are called, or starts with `%s`", args[0]);
+            return sendErrorMessage(context, "Invalid `category` given, there are no command categories that are called, or starts with `%s`", args[0]);
         }
 
-        GuildTransformer transformer = GuildController.fetchGuild(avaire, message);
+        GuildTransformer transformer = GuildController.fetchGuild(avaire, context.getMessage());
         if (args.length == 1) {
-            return removeCustomPrefix(message, transformer, category);
+            return removeCustomPrefix(context, transformer, category);
         }
 
         String prefix = args[1];
         if (prefix.contains(" ") || prefix.length() < 1 || prefix.length() > 16) {
-            return sendErrorMessage(message, "Invalid command prefix given, `%s` is not a valid command prefix, all prefixes must **NOT** contain spaces and be between 1 and 16 characters long.");
+            return sendErrorMessage(context, "Invalid command prefix given, `%s` is not a valid command prefix, all prefixes must **NOT** contain spaces and be between 1 and 16 characters long.");
         }
 
         try {
             transformer.getPrefixes().put(category.getName().toLowerCase(), prefix);
-            updateGuildPrefixes(message, transformer);
-            MessageFactory.makeSuccess(message, "All commands in the `:category` command category now uses the `:prefix` prefix.")
+            updateGuildPrefixes(context, transformer);
+
+            context.makeSuccess("All commands in the `:category` command category now uses the `:prefix` prefix.")
                 .set("category", category.getName())
                 .set("prefix", prefix)
                 .queue();
@@ -103,12 +103,13 @@ public class ChangePrefixCommand extends Command {
         return false;
     }
 
-    private boolean removeCustomPrefix(Message message, GuildTransformer transformer, Category category) {
+    private boolean removeCustomPrefix(CommandMessage context, GuildTransformer transformer, Category category) {
         transformer.getPrefixes().remove(category.getName().toLowerCase());
 
         try {
-            updateGuildPrefixes(message, transformer);
-            MessageFactory.makeSuccess(message, "All commands in the `:category` command category has been reset to use the `:prefix` prefix.")
+            updateGuildPrefixes(context, transformer);
+
+            context.makeSuccess("All commands in the `:category` command category has been reset to use the `:prefix` prefix.")
                 .set("category", category.getName())
                 .set("prefix", category.getPrefix())
                 .queue();
@@ -120,9 +121,9 @@ public class ChangePrefixCommand extends Command {
         return false;
     }
 
-    private void updateGuildPrefixes(Message message, GuildTransformer transformer) throws SQLException {
+    private void updateGuildPrefixes(CommandMessage context, GuildTransformer transformer) throws SQLException {
         avaire.getDatabase().newQueryBuilder(Constants.GUILD_TABLE_NAME)
-            .where("id", message.getGuild().getId())
+            .where("id", context.getGuild().getId())
             .update(statement -> {
                 statement.set("prefixes", AvaIre.GSON.toJson(transformer.getPrefixes()), true);
             });

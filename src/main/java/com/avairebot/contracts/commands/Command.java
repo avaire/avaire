@@ -3,7 +3,6 @@ package com.avairebot.contracts.commands;
 import com.avairebot.AvaIre;
 import com.avairebot.commands.*;
 import com.avairebot.contracts.reflection.Reflectionable;
-import com.avairebot.factories.MessageFactory;
 import com.avairebot.middleware.Middleware;
 import com.avairebot.permissions.Permissions;
 import com.avairebot.plugin.JavaPlugin;
@@ -164,28 +163,28 @@ public abstract class Command extends Reflectionable {
      * and the middleware stack when a user sends a message matching the
      * commands prefix and one of its command triggers.
      *
-     * @param message The JDA message object from the message received event.
+     * @param context The JDA message object from the message received event.
      * @param args    The arguments given to the command, if no arguments was given the array will just be empty.
      * @return true on success, false on failure.
      */
-    public abstract boolean onCommand(Message message, String[] args);
+    public abstract boolean onCommand(CommandMessage context, String[] args);
 
     /**
      * Builds and sends the given error message to the
      * given channel for the JDA message object.
      *
-     * @param message The JDA message object.
+     * @param context The JDA message object.
      * @param error   The error message that should be sent.
      * @return false since the error message should only be used on failure.
      */
-    public final boolean sendErrorMessage(Message message, String error) {
+    public final boolean sendErrorMessage(CommandMessage context, String error) {
         Category category = CategoryHandler.fromCommand(this);
 
-        MessageFactory.makeError(message, error)
+        context.makeError(error)
             .setTitle(getName())
             .setFooter("Command category: " + category.getName())
-            .addField("Usage", generateUsageInstructions(message), false)
-            .addField("Example Usage", generateExampleUsage(message), false)
+            .addField("Usage", generateUsageInstructions(context.getMessage()), false)
+            .addField("Example Usage", generateExampleUsage(context.getMessage()), false)
             .queue();
 
         return false;
@@ -195,13 +194,13 @@ public abstract class Command extends Reflectionable {
      * Builds and sends the given error message to the
      * given channel for the JDA message object.
      *
-     * @param message The JDA message object.
+     * @param context The JDA message object.
      * @param error   The error message that should be sent.
      * @param args    The array of arguments that should be replace in the error string.
      * @return false since the error message should only be used on failure.
      */
-    protected final boolean sendErrorMessage(Message message, String error, String... args) {
-        return sendErrorMessage(message, String.format(error, (Object[]) args));
+    protected final boolean sendErrorMessage(CommandMessage context, String error, String... args) {
+        return sendErrorMessage(context, String.format(error, (Object[]) args));
     }
 
     /**

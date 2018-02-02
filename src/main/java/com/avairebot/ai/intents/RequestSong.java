@@ -5,6 +5,7 @@ import com.avairebot.AvaIre;
 import com.avairebot.cache.CacheType;
 import com.avairebot.commands.CommandContainer;
 import com.avairebot.commands.CommandHandler;
+import com.avairebot.commands.CommandMessage;
 import com.avairebot.commands.music.PlayCommand;
 import com.avairebot.contracts.ai.Intent;
 import com.avairebot.factories.MessageFactory;
@@ -57,14 +58,14 @@ public class RequestSong extends Intent {
 
         String type = parameters.get("music").getAsString().toLowerCase();
         if (!CATEGORIES.containsKey(type)) {
-            container.getCommand().onCommand(message, new String[]{type, "---leave-message"});
+            container.getCommand().onCommand(new CommandMessage(message), new String[]{type, "---leave-message"});
             return;
         }
 
         String category = (String) RandomUtil.pickRandom(CATEGORIES.get(type));
         String randomSong = getRandomSong(category);
 
-        container.getCommand().onCommand(message, new String[]{randomSong == null ? type : randomSong, "---leave-message"});
+        container.getCommand().onCommand(new CommandMessage(message), new String[]{randomSong == null ? type : randomSong, "---leave-message"});
     }
 
     private String getRandomSong(final String category) {

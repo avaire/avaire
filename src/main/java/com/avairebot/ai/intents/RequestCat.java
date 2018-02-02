@@ -4,6 +4,7 @@ import ai.api.model.AIResponse;
 import com.avairebot.AvaIre;
 import com.avairebot.commands.CommandContainer;
 import com.avairebot.commands.CommandHandler;
+import com.avairebot.commands.CommandMessage;
 import com.avairebot.commands.fun.RandomCatCommand;
 import com.avairebot.contracts.ai.Intent;
 import net.dv8tion.jda.core.entities.Message;
@@ -27,6 +28,6 @@ public class RequestCat extends Intent {
             return;
         }
 
-        command.getCommand().onCommand(message, new String[0]);
+        command.getCommand().onCommand(new CommandMessage(message), new String[0]);
     }
 }

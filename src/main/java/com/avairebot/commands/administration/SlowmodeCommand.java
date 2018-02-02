@@ -2,6 +2,7 @@ package com.avairebot.commands.administration;
 
 import com.avairebot.AvaIre;
 import com.avairebot.Constants;
+import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.transformers.ChannelTransformer;
@@ -64,30 +65,30 @@ public class SlowmodeCommand extends Command {
     }
 
     @Override
-    public boolean onCommand(Message message, String[] args) {
+    public boolean onCommand(CommandMessage context, String[] args) {
         if (args.length == 0) {
-            return sendErrorMessage(message, "Missing argument, you must either pass in the `limit` and `decay` values to enable slowmode for this channel, or `off` to disable it for this channel.");
+            return sendErrorMessage(context, "Missing argument, you must either pass in the `limit` and `decay` values to enable slowmode for this channel, or `off` to disable it for this channel.");
         }
 
-        GuildTransformer guildTransformer = GuildController.fetchGuild(avaire, message);
+        GuildTransformer guildTransformer = GuildController.fetchGuild(avaire, context.getMessage());
         if (guildTransformer == null) {
-            return endWithFailureToFindTransformer(message);
+            return endWithFailureToFindTransformer(context);
         }
 
-        ChannelTransformer channelTransformer = guildTransformer.getChannel(message.getChannel().getId());
+        ChannelTransformer channelTransformer = guildTransformer.getChannel(context.getChannel().getId());
         if (channelTransformer == null) {
-            return endWithFailureToFindTransformer(message);
+            return endWithFailureToFindTransformer(context);
         }
 
         if (args.length == 1 && ComparatorUtil.isFuzzyFalse(args[0])) {
-            return disableSlowmode(message, guildTransformer, channelTransformer);
+            return disableSlowmode(context, guildTransformer, channelTransformer);
         }
 
         if (args.length == 2 && NumberUtil.isNumeric(args[0]) && NumberUtil.isNumeric(args[1])) {
-            return enableSlowmode(message, args, guildTransformer, channelTransformer);
+            return enableSlowmode(context.getMessage(), args, guildTransformer, channelTransformer);
         }
 
-        return sendErrorMessage(message, "Invalid argument given, the `limit` and `decay` must be valid numbers.");
+        return sendErrorMessage(context, "Invalid argument given, the `limit` and `decay` must be valid numbers.");
     }
 
     private boolean enableSlowmode(Message message, String[] args, GuildTransformer guildTransformer, ChannelTransformer channelTransformer) {
@@ -106,15 +107,15 @@ public class SlowmodeCommand extends Command {
         });
     }
 
-    private boolean disableSlowmode(Message message, GuildTransformer guildTransformer, ChannelTransformer transformer) {
+    private boolean disableSlowmode(CommandMessage context, GuildTransformer guildTransformer, ChannelTransformer transformer) {
         transformer.getSlowmode().setEnabled(false);
 
-        return updateDatabase(message, guildTransformer, v -> {
-            MessageFactory.makeSuccess(message, "The `Slowmode` module has been **disabled** for the :channel channel.").queue();
+        return updateDatabase(context.getMessage(), guildTransformer, v -> {
+            context.makeSuccess("The `Slowmode` module has been **disabled** for the :channel channel.").queue();
         });
     }
 
-    private boolean endWithFailureToFindTransformer(Message message) {
+    private boolean endWithFailureToFindTransformer(CommandMessage message) {
         return sendErrorMessage(message, "Something went wrong while trying to get the channel transformer object, please contact one of my developers to look into this issue.");
     }
 

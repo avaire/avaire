@@ -6,7 +6,6 @@ import com.avairebot.metrics.Metrics;
 import com.avairebot.plugin.PluginLoader;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
-import net.dv8tion.jda.core.exceptions.RateLimitedException;
 
 import javax.annotation.Nonnull;
 
@@ -62,9 +61,6 @@ public class AvaireShard {
 
                         newJda = builder.buildAsync();
                         success = true;
-                    } catch (RateLimitedException e) {
-                        AvaIre.getLogger().error("Got rate limited while building bot JDA instance! Retrying...", e);
-                        Thread.sleep(5000);
                     } catch (Exception e) {
                         AvaIre.getLogger().error("Generic exception when building a JDA instance! Retrying...", e);
                     }

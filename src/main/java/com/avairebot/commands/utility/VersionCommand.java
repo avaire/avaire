@@ -4,10 +4,9 @@ import com.avairebot.AppInfo;
 import com.avairebot.AvaIre;
 import com.avairebot.cache.CacheType;
 import com.avairebot.chat.PlaceholderMessage;
+import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
-import com.avairebot.factories.MessageFactory;
 import com.avairebot.utilities.NumberUtil;
-import net.dv8tion.jda.core.entities.Message;
 import org.jsoup.Jsoup;
 
 import java.util.Collections;
@@ -42,10 +41,10 @@ public class VersionCommand extends Command {
     }
 
     @Override
-    public boolean onCommand(Message message, String[] args) {
+    public boolean onCommand(CommandMessage context, String[] args) {
         SemanticVersion latestVersion = getLatestVersion();
         if (latestVersion == null) {
-            return sendErrorMessage(message, "Failed to fetch the latest version of AvaIre, try again later.");
+            return sendErrorMessage(context, "Failed to fetch the latest version of AvaIre, try again later.");
         }
 
         String template = String.join("\n",
@@ -59,20 +58,20 @@ public class VersionCommand extends Command {
         PlaceholderMessage versionMessage = null;
         SemanticVersion currentVersion = new SemanticVersion(AppInfo.getAppInfo().VERSION);
         if (latestVersion.major > currentVersion.major) {
-            versionMessage = MessageFactory.makeError(message, template)
+            versionMessage = context.makeError(template)
                 .set("message", "Major version updates are total reworks of the bot and how it works or a large compilation of " +
                     "minor changes to the source code, it is highly recommended that you update on major version " +
                     "changes since older versions will not be supported for bug fixes or updates.")
                 .set("difference", latestVersion.major - currentVersion.major)
                 .set("type", "Major");
         } else if (latestVersion.minor > currentVersion.minor) {
-            versionMessage = MessageFactory.makeWarning(message, template)
+            versionMessage = context.makeWarning(template)
                 .set("message", "Minor version updates are new additions, features and reworks of the existing codebase, it is " +
                     "recommended that you update on minor version changes to keep up with the new features.")
                 .set("difference", latestVersion.minor - currentVersion.minor)
                 .set("type", "Minor");
         } else if (latestVersion.patch > currentVersion.patch) {
-            versionMessage = MessageFactory.makeInfo(message, template)
+            versionMessage = context.makeInfo(template)
                 .set("message", "Patch version updates are bug fixes, refactoring of existing code and very minor changes that " +
                     "wont affect other things in the code base, it is recommended that you update on patch version " +
                     "changes to keep up with the bug fixes and patches.")
@@ -81,7 +80,7 @@ public class VersionCommand extends Command {
         }
 
         if (versionMessage == null) {
-            versionMessage = MessageFactory.makeSuccess(message, "You\'re using the latest version of AvaIre!");
+            versionMessage = context.makeSuccess("You\'re using the latest version of AvaIre!");
         }
 
         versionMessage

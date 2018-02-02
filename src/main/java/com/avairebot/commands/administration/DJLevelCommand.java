@@ -4,11 +4,11 @@ import com.avairebot.AvaIre;
 import com.avairebot.Constants;
 import com.avairebot.audio.DJGuildLevel;
 import com.avairebot.chat.PlaceholderMessage;
+import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.factories.MessageFactory;
-import net.dv8tion.jda.core.entities.Message;
 
 import java.sql.SQLException;
 import java.util.Arrays;
@@ -62,21 +62,21 @@ public class DJLevelCommand extends Command {
     }
 
     @Override
-    public boolean onCommand(Message message, String[] args) {
-        GuildTransformer transformer = GuildController.fetchGuild(avaire, message);
+    public boolean onCommand(CommandMessage context, String[] args) {
+        GuildTransformer transformer = GuildController.fetchGuild(avaire, context.getMessage());
 
         if (transformer == null) {
-            return sendErrorMessage(message,
+            return sendErrorMessage(context,
                 "Something went wrong while trying to get the guild transformer object, please contact one of my developers to look into this issue."
             );
         }
 
         if (args.length == 0) {
-            MessageFactory.makeInfo(message, getLevelInformation(transformer.getDJLevel()))
+            context.makeInfo(getLevelInformation(transformer.getDJLevel()))
                 .setTitle("Current DJ Level: " + transformer.getDJLevel().getName())
                 .setFooter(String.format(
                     "Use \"%s types\" to see a full list of the available DJ level types.",
-                    generateCommandTrigger(message)
+                    generateCommandTrigger(context.getMessage())
                 ))
                 .queue();
 
@@ -84,7 +84,7 @@ public class DJLevelCommand extends Command {
         }
 
         if (args[0].equalsIgnoreCase("type") || args[0].equalsIgnoreCase("types")) {
-            PlaceholderMessage placeholderMessage = MessageFactory.makeEmbeddedMessage(message.getChannel());
+            PlaceholderMessage placeholderMessage = MessageFactory.makeEmbeddedMessage(context.getChannel());
 
             for (DJGuildLevel level : DJGuildLevel.values()) {
                 placeholderMessage.addField(level.getName(), getLevelInformation(level), false);
@@ -94,7 +94,7 @@ public class DJLevelCommand extends Command {
                 .setTitle("DJ Level Types")
                 .setFooter(String.format(
                     "Use \"%s <type>\" to change the DJ Level to the given type for the server.",
-                    generateCommandTrigger(message)
+                    generateCommandTrigger(context.getMessage())
                 ))
                 .queue();
 
@@ -103,18 +103,18 @@ public class DJLevelCommand extends Command {
 
         DJGuildLevel level = DJGuildLevel.fromName(args[0]);
         if (level == null) {
-            return sendErrorMessage(message, "`%s` is not a valid `DJ Level` type, please use one of the following:\n`%s`",
+            return sendErrorMessage(context, "`%s` is not a valid `DJ Level` type, please use one of the following:\n`%s`",
                 args[0], String.join("`, `", DJGuildLevel.getNames())
             );
         }
 
         try {
             avaire.getDatabase().newQueryBuilder(Constants.GUILD_TABLE_NAME)
-                .where("id", message.getGuild().getId())
+                .where("id", context.getGuild().getId())
                 .update(statement -> statement.set("dj_level", level.getId()));
             transformer.setDJLevel(level);
 
-            MessageFactory.makeSuccess(message, "The `DJ Level` status has changed to **:type**.\n:info")
+            context.makeSuccess("The `DJ Level` status has changed to **:type**.\n:info")
                 .set("type", level.getName())
                 .set("info", getLevelInformation(level))
                 .queue();

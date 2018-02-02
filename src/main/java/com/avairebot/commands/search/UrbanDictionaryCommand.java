@@ -1,12 +1,11 @@
 package com.avairebot.commands.search;
 
 import com.avairebot.AvaIre;
+import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
-import com.avairebot.factories.MessageFactory;
 import com.avairebot.factories.RequestFactory;
 import com.avairebot.requests.Response;
 import com.avairebot.requests.service.UrbanDictionaryService;
-import net.dv8tion.jda.core.entities.Message;
 
 import java.awt.*;
 import java.text.DecimalFormat;
@@ -52,14 +51,14 @@ public class UrbanDictionaryCommand extends Command {
     }
 
     @Override
-    public boolean onCommand(Message message, String[] args) {
+    public boolean onCommand(CommandMessage context, String[] args) {
         RequestFactory.makeGET("https://api.urbandictionary.com/v0/define")
             .addParameter("term", String.join(" ", args))
             .send((Consumer<Response>) response -> {
                 UrbanDictionaryService service = (UrbanDictionaryService) response.toService(UrbanDictionaryService.class);
 
                 if (!service.hasData()) {
-                    MessageFactory.makeWarning(message, ":user I found nothing for `:query`")
+                    context.makeWarning(":user I found nothing for `:query`")
                         .set("query", String.join(" ", args))
                         .queue();
                     return;
@@ -69,7 +68,7 @@ public class UrbanDictionaryCommand extends Command {
 
                 double percentage = (((double) definition.getThumbsUp() / definition.getThumbsDown()) * 100) - 100;
 
-                MessageFactory.makeEmbeddedMessage(message.getChannel(), Color.decode("#1D2439"), definition.getDefinition())
+                context.makeEmbeddedMessage(Color.decode("#1D2439"), definition.getDefinition())
                     .setTitle(definition.getWord().trim().length() == 0 ? "Untitled" : definition.getWord(), definition.getPermalink())
                     .addField("Example", definition.getExample(), false)
                     .setFooter(String.format("%s%s percentage of people like this. %s\uD83D\uDC4D %s\uD83D\uDC4E",

@@ -1,12 +1,11 @@
 package com.avairebot.commands.fun;
 
 import com.avairebot.AvaIre;
+import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
-import com.avairebot.factories.MessageFactory;
 import com.avairebot.factories.RequestFactory;
 import com.avairebot.requests.Response;
 import com.avairebot.requests.service.RandomDogService;
-import net.dv8tion.jda.core.entities.Message;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -40,13 +39,12 @@ public class RandomDogCommand extends Command {
     }
 
     @Override
-    public boolean onCommand(Message message, String[] args) {
+    public boolean onCommand(CommandMessage context, String[] args) {
         RequestFactory.makeGET("https://dog.ceo/api/breeds/image/random")
             .send((Consumer<Response>) response -> {
                 RandomDogService service = (RandomDogService) response.toService(RandomDogService.class);
 
-                MessageFactory.makeEmbeddedMessage(message.getChannel())
-                    .setImage(service.getMessage()).queue();
+                context.makeEmbeddedMessage().setImage(service.getMessage()).queue();
             });
         return true;
     }

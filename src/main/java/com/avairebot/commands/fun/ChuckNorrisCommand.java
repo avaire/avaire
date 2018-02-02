@@ -1,12 +1,11 @@
 package com.avairebot.commands.fun;
 
 import com.avairebot.AvaIre;
+import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
-import com.avairebot.factories.MessageFactory;
 import com.avairebot.factories.RequestFactory;
 import com.avairebot.requests.Response;
 import com.avairebot.requests.service.ChuckNorrisService;
-import net.dv8tion.jda.core.entities.Message;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -50,18 +49,18 @@ public class ChuckNorrisCommand extends Command {
     }
 
     @Override
-    public boolean onCommand(Message message, String[] args) {
+    public boolean onCommand(CommandMessage context, String[] args) {
         RequestFactory.makeGET("http://api.icndb.com/jokes/random")
             .addParameter("escape", "javascript")
             .send((Consumer<Response>) response -> {
                 ChuckNorrisService service = (ChuckNorrisService) response.toService(ChuckNorrisService.class);
 
-                MessageFactory.makeSuccess(message, prepareJoke(message, args, service.getValue().getJoke())).queue();
+                context.makeSuccess(prepareJoke(context, args, service.getValue().getJoke())).queue();
             });
         return true;
     }
 
-    private String prepareJoke(Message message, String[] args, String joke) {
+    private String prepareJoke(CommandMessage message, String[] args, String joke) {
         if (!message.getMentionedUsers().isEmpty()) {
             return joke.replaceAll("Chuck Norris", message.getGuild().getMember(
                 message.getMentionedUsers().get(0)

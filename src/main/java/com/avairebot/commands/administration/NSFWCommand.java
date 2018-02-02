@@ -1,12 +1,11 @@
 package com.avairebot.commands.administration;
 
 import com.avairebot.AvaIre;
+import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
-import com.avairebot.factories.MessageFactory;
 import com.avairebot.utilities.ComparatorUtil;
 import com.avairebot.utilities.MentionableUtil;
 import net.dv8tion.jda.core.entities.Channel;
-import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.TextChannel;
 
 import java.util.Arrays;
@@ -63,58 +62,58 @@ public class NSFWCommand extends Command {
     }
 
     @Override
-    public boolean onCommand(Message message, String[] args) {
+    public boolean onCommand(CommandMessage context, String[] args) {
         if (args.length == 0) {
-            return sendChannelStatus(message, message.getTextChannel());
+            return sendChannelStatus(context, context.getChannel());
         }
 
         if (args.length == 1) {
             switch (ComparatorUtil.getFuzzyType(args[0])) {
                 case TRUE:
-                    return updateChannelStatus(message, message.getTextChannel(), true);
+                    return updateChannelStatus(context, context.getChannel(), true);
 
                 case FALSE:
-                    return updateChannelStatus(message, message.getTextChannel(), false);
+                    return updateChannelStatus(context, context.getChannel(), false);
 
                 case UNKNOWN:
-                    Channel channel = MentionableUtil.getChannel(message, args);
+                    Channel channel = MentionableUtil.getChannel(context.getMessage(), args);
 
                     if (channel != null && (channel instanceof TextChannel)) {
-                        return sendChannelStatus(message, (TextChannel) channel);
+                        return sendChannelStatus(context, (TextChannel) channel);
                     }
-                    return sendErrorMessage(message, "Invalid channel or status type given!");
+                    return sendErrorMessage(context, "Invalid channel or status type given!");
             }
         }
 
-        Channel channel = MentionableUtil.getChannel(message, args);
+        Channel channel = MentionableUtil.getChannel(context.getMessage(), args);
         if (channel == null || !(channel instanceof TextChannel)) {
-            return sendErrorMessage(message, "`%s` is not a valid text channel!", args[0]);
+            return sendErrorMessage(context, "`%s` is not a valid text channel!", args[0]);
         }
 
         ComparatorUtil.ComparatorType fuzzyType = ComparatorUtil.getFuzzyType(args[1]);
         if (fuzzyType.equals(ComparatorUtil.ComparatorType.UNKNOWN)) {
-            return sendErrorMessage(message, "`%s` is not a valid status type, you must either pass `on` or `off`.", args[1]);
+            return sendErrorMessage(context, "`%s` is not a valid status type, you must either pass `on` or `off`.", args[1]);
         }
 
-        return updateChannelStatus(message, (TextChannel) channel, fuzzyType.getValue());
+        return updateChannelStatus(context, (TextChannel) channel, fuzzyType.getValue());
     }
 
-    private boolean updateChannelStatus(Message message, TextChannel textChannel, boolean status) {
+    private boolean updateChannelStatus(CommandMessage context, TextChannel textChannel, boolean status) {
         textChannel.getManager().setNSFW(status).queue(aVoid -> {
-            MessageFactory.makeSuccess(message, "The NSFW status for :textChannel has been changed to **:status**")
+            context.makeSuccess("The NSFW status for :textChannel has been changed to **:status**")
                 .set("textChannel", textChannel.getAsMention())
                 .set("status", status ? "Enabled" : "Disabled")
                 .queue();
         }, throwable -> {
-            MessageFactory.makeError(message, "Something went wrong while trying to update the channel status: " + throwable.getLocalizedMessage())
+            context.makeError("Something went wrong while trying to update the channel status: " + throwable.getLocalizedMessage())
                 .queue();
         });
 
         return true;
     }
 
-    private boolean sendChannelStatus(Message message, TextChannel textChannel) {
-        MessageFactory.makeInfo(message, "The :textChannel channel currently has NSFW **:status**!")
+    private boolean sendChannelStatus(CommandMessage context, TextChannel textChannel) {
+        context.makeInfo("The :textChannel channel currently has NSFW **:status**!")
             .set("textChannel", textChannel.getAsMention())
             .set("status", textChannel.isNSFW() ? "Enabled" : "Disabled")
             .queue();

@@ -2,12 +2,11 @@ package com.avairebot.commands.administration;
 
 import com.avairebot.AvaIre;
 import com.avairebot.Constants;
+import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.transformers.ChannelTransformer;
 import com.avairebot.database.transformers.GuildTransformer;
-import com.avairebot.factories.MessageFactory;
-import net.dv8tion.jda.core.entities.Message;
 
 import java.sql.SQLException;
 import java.util.Arrays;
@@ -44,34 +43,34 @@ public class AiCommand extends Command {
     }
 
     @Override
-    public boolean onCommand(Message message, String[] args) {
-        GuildTransformer guildTransformer = GuildController.fetchGuild(avaire, message.getGuild());
-        ChannelTransformer channelTransformer = guildTransformer.getChannel(message.getTextChannel().getId());
+    public boolean onCommand(CommandMessage context, String[] args) {
+        GuildTransformer guildTransformer = GuildController.fetchGuild(avaire, context.getGuild());
+        ChannelTransformer channelTransformer = guildTransformer.getChannel(context.getChannel().getId());
 
         if (channelTransformer == null) {
-            if (!guildTransformer.createChannelTransformer(message.getTextChannel())) {
-                MessageFactory.makeError(message,
+            if (!guildTransformer.createChannelTransformer(context.getChannel())) {
+                context.makeError(
                     "Something went wrong while trying to create the channel transformer object, please contact one of my developers to look into this issue."
                 ).queue();
                 return false;
             }
-            channelTransformer = guildTransformer.getChannel(message.getTextChannel().getId());
+            channelTransformer = guildTransformer.getChannel(context.getChannel().getId());
         }
 
         channelTransformer.getAI().setEnabled(!channelTransformer.getAI().isEnabled());
 
         try {
             avaire.getDatabase().newQueryBuilder(Constants.GUILD_TABLE_NAME)
-                .andWhere("id", message.getGuild().getId())
+                .andWhere("id", context.getGuild().getId())
                 .update(statement -> statement.set("channels", guildTransformer.channelsToJson(), true));
 
-            MessageFactory.makeSuccess(message, "The `Artificial Intelligence` module has been **:status** for the :channel channel.")
+            context.makeSuccess("The `Artificial Intelligence` module has been **:status** for the :channel channel.")
                 .set("status", channelTransformer.getAI().isEnabled() ? "Enabled" : "Disabled")
                 .queue();
         } catch (SQLException ex) {
             AvaIre.getLogger().error(ex.getMessage(), ex);
 
-            MessageFactory.makeError(message, "Failed to save the guild settings: " + ex.getMessage()).queue();
+            context.makeError("Failed to save the guild settings: " + ex.getMessage()).queue();
             return false;
         }
 

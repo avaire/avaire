@@ -3,12 +3,12 @@ package com.avairebot.commands.administration;
 import com.avairebot.AvaIre;
 import com.avairebot.chat.MessageType;
 import com.avairebot.chat.PlaceholderMessage;
+import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.factories.MessageFactory;
 import com.avairebot.time.Carbon;
 import com.avairebot.utilities.MentionableUtil;
 import net.dv8tion.jda.core.entities.Channel;
-import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.VoiceChannel;
 
@@ -37,19 +37,19 @@ public class ChannelInfoCommand extends Command {
     }
 
     @Override
-    public boolean onCommand(Message message, String[] args) {
-        Channel channel = message.getTextChannel();
+    public boolean onCommand(CommandMessage context, String[] args) {
+        Channel channel = context.getChannel();
         if (args.length > 0) {
-            channel = MentionableUtil.getChannel(message, args);
+            channel = MentionableUtil.getChannel(context.getMessage(), args);
 
             if (channel == null) {
-                return sendErrorMessage(message, "I found no channels with the name or ID of `%s`", args[0]);
+                return sendErrorMessage(context, "I found no channels with the name or ID of `%s`", args[0]);
             }
         }
 
         Carbon time = Carbon.createFromOffsetDateTime(channel.getCreationTime());
 
-        PlaceholderMessage placeholder = MessageFactory.makeEmbeddedMessage(message.getChannel())
+        PlaceholderMessage placeholder = MessageFactory.makeEmbeddedMessage(context.getChannel())
             .setColor(MessageType.INFO.getColor())
             .setTitle("#" + channel.getName())
             .addField("ID", channel.getId(), true)

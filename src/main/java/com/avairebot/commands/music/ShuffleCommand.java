@@ -4,10 +4,9 @@ import com.avairebot.AvaIre;
 import com.avairebot.audio.AudioHandler;
 import com.avairebot.audio.AudioTrackContainer;
 import com.avairebot.audio.GuildMusicManager;
+import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
-import com.avairebot.factories.MessageFactory;
 import com.avairebot.utilities.NumberUtil;
-import net.dv8tion.jda.core.entities.Message;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -44,12 +43,12 @@ public class ShuffleCommand extends Command {
     }
 
     @Override
-    public boolean onCommand(Message message, String[] args) {
-        GuildMusicManager musicManager = AudioHandler.getGuildAudioPlayer(message.getGuild());
+    public boolean onCommand(CommandMessage context, String[] args) {
+        GuildMusicManager musicManager = AudioHandler.getGuildAudioPlayer(context.getGuild());
 
         if (musicManager.getScheduler().getQueue().isEmpty()) {
-            return sendErrorMessage(message, "The music queue is already empty, you can request something with \n`%splay <song title | url>`",
-                generateCommandPrefix(message)
+            return sendErrorMessage(context, "The music queue is already empty, you can request something with \n`%splay <song title | url>`",
+                generateCommandPrefix(context.getMessage())
             );
         }
 
@@ -59,7 +58,7 @@ public class ShuffleCommand extends Command {
         Collections.shuffle(queue);
         musicManager.getScheduler().getQueue().addAll(queue);
 
-        MessageFactory.makeSuccess(message, "**:amount** songs has been shuffled in the music queue.")
+        context.makeSuccess("**:amount** songs has been shuffled in the music queue.")
             .set("amount", NumberUtil.formatNicely(queue.size()))
             .queue();
 

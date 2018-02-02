@@ -2,12 +2,11 @@ package com.avairebot.commands.administration;
 
 import com.avairebot.AvaIre;
 import com.avairebot.Constants;
+import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.transformers.GuildTransformer;
-import com.avairebot.factories.MessageFactory;
 import com.avairebot.utilities.ComparatorUtil;
-import net.dv8tion.jda.core.entities.Message;
 
 import java.sql.SQLException;
 import java.util.Arrays;
@@ -60,10 +59,10 @@ public class LevelAlertsCommand extends Command {
     }
 
     @Override
-    public boolean onCommand(Message message, String[] args) {
-        GuildTransformer guildTransformer = GuildController.fetchGuild(avaire, message);
+    public boolean onCommand(CommandMessage context, String[] args) {
+        GuildTransformer guildTransformer = GuildController.fetchGuild(avaire, context.getMessage());
         if (guildTransformer == null || !guildTransformer.isLevels()) {
-            return sendErrorMessage(message, "This command requires the `Levels & Experience` feature to be enabled for the server, you can ask a server admin if they want to enable it with `.level`");
+            return sendErrorMessage(context, "This command requires the `Levels & Experience` feature to be enabled for the server, you can ask a server admin if they want to enable it with `.level`");
         }
 
         ComparatorUtil.ComparatorType type = args.length == 0 ?
@@ -78,8 +77,8 @@ public class LevelAlertsCommand extends Command {
         }
 
         String channelId = null;
-        if (!message.getMentionedChannels().isEmpty()) {
-            channelId = message.getMentionedChannels().get(0).getId();
+        if (!context.getMentionedChannels().isEmpty()) {
+            channelId = context.getMentionedChannels().get(0).getId();
             status = true;
         }
 
@@ -95,7 +94,7 @@ public class LevelAlertsCommand extends Command {
                 );
 
             String note = channelId == null ? "" : String.format("\nAll level up messages will be logged into the <#%s> channel.", channelId);
-            MessageFactory.makeSuccess(message, "`Levels up alerts` has been `:status` for the server." + note)
+            context.makeSuccess("`Levels up alerts` has been `:status` for the server." + note)
                 .set("status", status ? "Enabled" : "Disabled")
                 .queue();
 
@@ -103,7 +102,7 @@ public class LevelAlertsCommand extends Command {
         } catch (SQLException ex) {
             AvaIre.getLogger().error("Failed to update the guilds level column", ex);
 
-            MessageFactory.makeError(message, "Failed to save the guild settings: " + ex.getMessage()).queue();
+            context.makeError("Failed to save the guild settings: " + ex.getMessage()).queue();
             return false;
         }
     }

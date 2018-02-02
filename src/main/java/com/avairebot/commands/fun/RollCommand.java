@@ -1,9 +1,8 @@
 package com.avairebot.commands.fun;
 
 import com.avairebot.AvaIre;
+import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
-import com.avairebot.factories.MessageFactory;
-import net.dv8tion.jda.core.entities.Message;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -45,16 +44,16 @@ public class RollCommand extends Command {
     }
 
     @Override
-    public boolean onCommand(Message message, String[] args) {
+    public boolean onCommand(CommandMessage context, String[] args) {
         double min = 1;
         double max = 100;
 
         try {
             if (args.length == 1) {
-                max = parseArgument(message, args[0], "Invalid `max` value given, `max` must be a number!");
+                max = parseArgument(context, args[0], "Invalid `max` value given, `max` must be a number!");
             } else if (args.length > 1) {
-                min = parseArgument(message, args[0], "Invalid `min` value given, `min` must be a number!");
-                max = parseArgument(message, args[1], "Invalid `max` value given, `max` must be a number!");
+                min = parseArgument(context, args[0], "Invalid `min` value given, `min` must be a number!");
+                max = parseArgument(context, args[1], "Invalid `max` value given, `max` must be a number!");
             }
         } catch (NumberFormatException ex) {
             return false;
@@ -65,7 +64,7 @@ public class RollCommand extends Command {
 
         double random = Math.floor(Math.random() * (max - min + 1)) + min;
 
-        MessageFactory.makeInfo(message, ":user rolled **:number** out of :min - :max")
+        context.makeInfo(":user rolled **:number** out of :min - :max")
             .set("number", (int) random)
             .set("min", (int) min)
             .set("max", (int) max)
@@ -74,11 +73,11 @@ public class RollCommand extends Command {
         return true;
     }
 
-    private double parseArgument(Message message, String argument, String error) throws NumberFormatException {
+    private double parseArgument(CommandMessage context, String argument, String error) throws NumberFormatException {
         try {
             return Double.parseDouble(argument);
         } catch (NumberFormatException ex) {
-            sendErrorMessage(message, error);
+            sendErrorMessage(context, error);
             throw ex;
         }
     }

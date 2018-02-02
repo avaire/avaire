@@ -3,9 +3,9 @@ package com.avairebot.commands.search;
 import com.avairebot.AvaIre;
 import com.avairebot.chat.MessageType;
 import com.avairebot.chat.PlaceholderMessage;
+import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.ThreadCommand;
 import com.avairebot.factories.MessageFactory;
-import net.dv8tion.jda.core.entities.Message;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -65,9 +65,9 @@ public class DuckDuckGoCommand extends ThreadCommand {
     }
 
     @Override
-    public boolean onCommand(Message message, String[] args) {
+    public boolean onCommand(CommandMessage context, String[] args) {
         if (args.length == 0) {
-            return sendErrorMessage(message, "Missing argument `query`, you must include your search query.");
+            return sendErrorMessage(context, "Missing argument `query`, you must include your search query.");
         }
 
         try {
@@ -75,9 +75,9 @@ public class DuckDuckGoCommand extends ThreadCommand {
             headers.putAll(HTTP_HEADERS);
             headers.put("User-Agent", "AvaIre-Discord-Bot (" + avaire.getSelfUser().getId() + ")");
 
-            message.getChannel().sendTyping().queue();
+            context.getChannel().sendTyping().queue();
 
-            boolean nsfwEnabled = isNSFWEnabled(message);
+            boolean nsfwEnabled = isNSFWEnabled(context);
             Document document = Jsoup.connect(generateUri(args, nsfwEnabled))
                 .headers(headers)
                 .timeout(10000)
@@ -106,7 +106,7 @@ public class DuckDuckGoCommand extends ThreadCommand {
                 }
             }
 
-            PlaceholderMessage resultMessage = MessageFactory.makeEmbeddedMessage(message.getChannel(), Color.decode("#DE5833"))
+            PlaceholderMessage resultMessage = MessageFactory.makeEmbeddedMessage(context.getChannel(), Color.decode("#DE5833"))
                 .setDescription(String.join("\n", result))
                 .setTitle("Search result for: " + String.join(" ", args))
                 .setFooter("NSFW Search is " + (nsfwEnabled ? "Enabled" : "Disabled"));
@@ -158,7 +158,7 @@ public class DuckDuckGoCommand extends ThreadCommand {
         return removeBangs(text.substring(1, text.length()));
     }
 
-    private boolean isNSFWEnabled(Message message) {
-        return !message.getChannelType().isGuild() || message.getTextChannel().isNSFW();
+    private boolean isNSFWEnabled(CommandMessage message) {
+        return !message.isGuildMessage() || message.getChannel().isNSFW();
     }
 }

@@ -2,13 +2,12 @@ package com.avairebot.commands.administration;
 
 import com.avairebot.AvaIre;
 import com.avairebot.Constants;
+import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.CacheFingerprint;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.transformers.GuildTransformer;
-import com.avairebot.factories.MessageFactory;
 import com.avairebot.utilities.RoleUtil;
-import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.Role;
 
 import java.sql.SQLException;
@@ -57,34 +56,34 @@ public class AddSelfAssignableRoleCommand extends Command {
     }
 
     @Override
-    public boolean onCommand(Message message, String[] args) {
+    public boolean onCommand(CommandMessage context, String[] args) {
         if (args.length == 0) {
-            return sendErrorMessage(message, "Missing argument, the `role` argument is required.");
+            return sendErrorMessage(context, "Missing argument, the `role` argument is required.");
         }
 
-        Role role = RoleUtil.getRoleFromMentionsOrName(message, args[0]);
+        Role role = RoleUtil.getRoleFromMentionsOrName(context.getMessage(), args[0]);
         if (role == null) {
-            MessageFactory.makeWarning(message, ":user Invalid role, I couldn't find any role called **:role**")
+            context.makeWarning(":user Invalid role, I couldn't find any role called **:role**")
                 .set("role", args[0])
                 .queue();
             return false;
         }
 
-        if (!RoleUtil.canInteractWithRole(message, role)) {
+        if (!RoleUtil.canInteractWithRole(context.getMessage(), role)) {
             return false;
         }
 
         try {
-            GuildTransformer transformer = GuildController.fetchGuild(avaire, message);
+            GuildTransformer transformer = GuildController.fetchGuild(avaire, context.getMessage());
 
             transformer.getSelfAssignableRoles().put(role.getId(), role.getName().toLowerCase());
             avaire.getDatabase().newQueryBuilder(Constants.GUILD_TABLE_NAME)
-                .where("id", message.getGuild().getId())
+                .where("id", context.getGuild().getId())
                 .update(statement -> {
                     statement.set("claimable_roles", AvaIre.GSON.toJson(transformer.getSelfAssignableRoles()), true);
                 });
 
-            MessageFactory.makeSuccess(message, "Role **:role** role has been added to the self-assignable list.")
+            context.makeSuccess("Role **:role** role has been added to the self-assignable list.")
                 .set("role", role.getName())
                 .queue();
 

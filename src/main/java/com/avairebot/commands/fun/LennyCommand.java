@@ -1,9 +1,9 @@
 package com.avairebot.commands.fun;
 
 import com.avairebot.AvaIre;
+import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.utilities.RandomUtil;
-import net.dv8tion.jda.core.entities.Message;
 
 import java.util.Collections;
 import java.util.List;
@@ -35,13 +35,13 @@ public class LennyCommand extends Command {
     }
 
     @Override
-    public boolean onCommand(Message message, String[] args) {
+    public boolean onCommand(CommandMessage context, String[] args) {
         if (RandomUtil.getInteger(25) > 0) {
-            message.getChannel().sendMessage("( ͡° ͜ʖ ͡°)").queue();
+            context.getMessageChannel().sendMessage("( ͡° ͜ʖ ͡°)").queue();
             return true;
         }
 
-        message.getChannel().sendMessage("( ͡° ͜ʖ ( ͡° ͜ʖ ( ͡° ͜ʖ ( ͡° ͜ʖ ͡°) ͜ʖ ͡°)ʖ ͡°)ʖ ͡°)").queue();
+        context.getMessageChannel().sendMessage("( ͡° ͜ʖ ( ͡° ͜ʖ ( ͡° ͜ʖ ( ͡° ͜ʖ ͡°) ͜ʖ ͡°)ʖ ͡°)ʖ ͡°)").queue();
         return true;
     }
 }

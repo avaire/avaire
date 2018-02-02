@@ -2,14 +2,13 @@ package com.avairebot.commands.administration;
 
 import com.avairebot.AvaIre;
 import com.avairebot.Constants;
+import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.CacheFingerprint;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.transformers.ChannelTransformer;
 import com.avairebot.database.transformers.GuildTransformer;
-import com.avairebot.factories.MessageFactory;
 import com.avairebot.utilities.ComparatorUtil;
-import net.dv8tion.jda.core.entities.Message;
 
 import java.sql.SQLException;
 import java.util.Arrays;
@@ -46,12 +45,12 @@ public class WelcomeCommand extends Command {
     }
 
     @Override
-    public boolean onCommand(Message message, String[] args) {
-        GuildTransformer guildTransformer = GuildController.fetchGuild(avaire, message);
-        ChannelTransformer channelTransformer = guildTransformer.getChannel(message.getTextChannel().getId());
+    public boolean onCommand(CommandMessage context, String[] args) {
+        GuildTransformer guildTransformer = GuildController.fetchGuild(avaire, context.getMessage());
+        ChannelTransformer channelTransformer = guildTransformer.getChannel(context.getChannel().getId());
 
         if (channelTransformer == null) {
-            return sendErrorMessage(message,
+            return sendErrorMessage(context,
                 "Something went wrong while trying to get the channel transformer object, please contact one of my developers to look into this issue."
             );
         }
@@ -72,7 +71,7 @@ public class WelcomeCommand extends Command {
 
         try {
             avaire.getDatabase().newQueryBuilder(Constants.GUILD_TABLE_NAME)
-                .andWhere("id", message.getGuild().getId())
+                .andWhere("id", context.getGuild().getId())
                 .update(statement -> statement.set("channels", guildTransformer.channelsToJson(), true));
 
             String note = "";
@@ -80,14 +79,14 @@ public class WelcomeCommand extends Command {
                 note = "\nYou can customize the message by using `.welcomemessage [message]`";
             }
 
-            MessageFactory.makeSuccess(message, "The `Welcome` module has been **:status** for the :channel channel.:note")
+            context.makeSuccess("The `Welcome` module has been **:status** for the :channel channel.:note")
                 .set("status", channelTransformer.getWelcome().isEnabled() ? "Enabled" : "Disabled")
                 .set("note", note)
                 .queue();
         } catch (SQLException ex) {
             AvaIre.getLogger().error(ex.getMessage(), ex);
 
-            MessageFactory.makeError(message, "Failed to save the guild settings: " + ex.getMessage()).queue();
+            context.makeError("Failed to save the guild settings: " + ex.getMessage()).queue();
             return false;
         }
 

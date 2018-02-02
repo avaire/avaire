@@ -3,9 +3,8 @@ package com.avairebot.commands.music;
 import com.avairebot.AvaIre;
 import com.avairebot.audio.AudioHandler;
 import com.avairebot.audio.GuildMusicManager;
+import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
-import com.avairebot.factories.MessageFactory;
-import net.dv8tion.jda.core.entities.Message;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -46,20 +45,20 @@ public class ResumeCommand extends Command {
     }
 
     @Override
-    public boolean onCommand(Message message, String[] args) {
-        GuildMusicManager musicManager = AudioHandler.getGuildAudioPlayer(message.getGuild());
+    public boolean onCommand(CommandMessage context, String[] args) {
+        GuildMusicManager musicManager = AudioHandler.getGuildAudioPlayer(context.getGuild());
 
         if (musicManager.getPlayer().getPlayingTrack() == null) {
-            return sendErrorMessage(message, "Nothing to resume, request music first with `!play`");
+            return sendErrorMessage(context, "Nothing to resume, request music first with `!play`");
         }
 
         if (!musicManager.getPlayer().isPaused()) {
-            MessageFactory.makeWarning(message, "The music is already playing, use `!pause` to pause the music first.").queue();
+            context.makeWarning("The music is already playing, use `!pause` to pause the music first.").queue();
             return true;
         }
 
         musicManager.getPlayer().setPaused(false);
-        MessageFactory.makeSuccess(message, "The music has been `resumed`").queue();
+        context.makeSuccess("The music has been `resumed`").queue();
 
         return true;
     }

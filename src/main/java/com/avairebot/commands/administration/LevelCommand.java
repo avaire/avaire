@@ -2,12 +2,11 @@ package com.avairebot.commands.administration;
 
 import com.avairebot.AvaIre;
 import com.avairebot.Constants;
+import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.transformers.GuildTransformer;
-import com.avairebot.factories.MessageFactory;
 import com.avairebot.utilities.ComparatorUtil;
-import net.dv8tion.jda.core.entities.Message;
 
 import java.sql.SQLException;
 import java.util.Arrays;
@@ -49,8 +48,8 @@ public class LevelCommand extends Command {
     }
 
     @Override
-    public boolean onCommand(Message message, String[] args) {
-        GuildTransformer guildTransformer = GuildController.fetchGuild(avaire, message);
+    public boolean onCommand(CommandMessage context, String[] args) {
+        GuildTransformer guildTransformer = GuildController.fetchGuild(avaire, context.getMessage());
 
         ComparatorUtil.ComparatorType type = args.length == 0 ?
             ComparatorUtil.ComparatorType.UNKNOWN :
@@ -68,7 +67,7 @@ public class LevelCommand extends Command {
 
         try {
             avaire.getDatabase().newQueryBuilder(Constants.GUILD_TABLE_NAME)
-                .andWhere("id", message.getGuild().getId())
+                .andWhere("id", context.getGuild().getId())
                 .update(statement -> statement.set("levels", guildTransformer.isLevels()));
 
             String note = "";
@@ -78,13 +77,13 @@ public class LevelCommand extends Command {
                 );
             }
 
-            MessageFactory.makeSuccess(message, "`Levels & Experience` has been `:status` for the server." + note)
+            context.makeSuccess("`Levels & Experience` has been `:status` for the server." + note)
                 .set("status", guildTransformer.isLevels() ? "Enabled" : "Disabled")
                 .queue();
         } catch (SQLException ex) {
             AvaIre.getLogger().error(ex.getMessage(), ex);
 
-            MessageFactory.makeError(message, "Failed to save the guild settings: " + ex.getMessage()).queue();
+            context.makeError("Failed to save the guild settings: " + ex.getMessage()).queue();
             return false;
         }
 

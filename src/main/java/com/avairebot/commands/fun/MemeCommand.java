@@ -3,10 +3,9 @@ package com.avairebot.commands.fun;
 import com.avairebot.AvaIre;
 import com.avairebot.cache.CacheType;
 import com.avairebot.chat.SimplePaginator;
+import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
-import com.avairebot.factories.MessageFactory;
 import com.avairebot.utilities.NumberUtil;
-import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.User;
 
 import java.io.UnsupportedEncodingException;
@@ -63,9 +62,9 @@ public class MemeCommand extends Command {
     }
 
     @Override
-    public boolean onCommand(Message message, String[] args) {
+    public boolean onCommand(CommandMessage context, String[] args) {
         if (args.length == 0) {
-            return sendErrorMessage(message,
+            return sendErrorMessage(context,
                 "Missing `action` argument, you must include the meme type or user you want to "
                     + "generate a meme for, or `list` to display all the memes types available."
             );
@@ -76,21 +75,21 @@ public class MemeCommand extends Command {
         }
 
         if (args[0].equalsIgnoreCase("list")) {
-            return sendMemeList(message, Arrays.copyOfRange(args, 1, args.length));
+            return sendMemeList(context, Arrays.copyOfRange(args, 1, args.length));
         }
 
-        if (!message.getMentionedUsers().isEmpty()) {
-            return sendUserMeme(message, message.getMentionedUsers().get(0), Arrays.copyOfRange(args, 1, args.length));
+        if (!context.getMentionedUsers().isEmpty()) {
+            return sendUserMeme(context, context.getMentionedUsers().get(0), Arrays.copyOfRange(args, 1, args.length));
         }
 
         if (memeKeys.contains(args[0].toLowerCase())) {
-            return sendGeneratedMeme(message, args[0].toLowerCase(), Arrays.copyOfRange(args, 1, args.length));
+            return sendGeneratedMeme(context, args[0].toLowerCase(), Arrays.copyOfRange(args, 1, args.length));
         }
 
-        return sendErrorMessage(message, "Invalid meme type given, `%s` is not a valid meme type!", args[0]);
+        return sendErrorMessage(context, "Invalid meme type given, `%s` is not a valid meme type!", args[0]);
     }
 
-    private boolean sendMemeList(Message message, String[] args) {
+    private boolean sendMemeList(CommandMessage context, String[] args) {
         if (memes.isEmpty() || memeKeys.isEmpty()) {
             loadMemesIntoMemory();
         }
@@ -107,9 +106,9 @@ public class MemeCommand extends Command {
             ));
         });
 
-        MessageFactory.makeSuccess(message, String.format("%s\n\n%s",
+        context.makeSuccess(String.format("%s\n\n%s",
             String.join("\n", memesMessages),
-            paginator.generateFooter(generateCommandTrigger(message) + " list")
+            paginator.generateFooter(generateCommandTrigger(context.getMessage()) + " list")
         )).setTitle("Memes").queue();
 
         // We're returning false here to prevent the Meme command from
@@ -118,13 +117,13 @@ public class MemeCommand extends Command {
         return false;
     }
 
-    private boolean sendUserMeme(Message message, User user, String[] args) {
+    private boolean sendUserMeme(CommandMessage context, User user, String[] args) {
         if (args.length < 2) {
-            return sendErrorMessage(message, "You must include the `top text` and `bottom text` arguments to generate a meme.");
+            return sendErrorMessage(context, "You must include the `top text` and `bottom text` arguments to generate a meme.");
         }
 
         try {
-            MessageFactory.makeEmbeddedMessage(message.getChannel())
+            context.makeEmbeddedMessage()
                 .setImage(String.format(
                     customUrl,
                     formatMemeArgument(args[0]),
@@ -137,12 +136,12 @@ public class MemeCommand extends Command {
         return true;
     }
 
-    private boolean sendGeneratedMeme(Message message, String meme, String[] args) {
+    private boolean sendGeneratedMeme(CommandMessage context, String meme, String[] args) {
         if (args.length < 2) {
-            return sendErrorMessage(message, "You must include the `top text` and `bottom text` arguments to generate a meme.");
+            return sendErrorMessage(context, "You must include the `top text` and `bottom text` arguments to generate a meme.");
         }
 
-        MessageFactory.makeEmbeddedMessage(message.getChannel())
+        context.makeEmbeddedMessage()
             .setImage(String.format(
                 templateUrl,
                 meme,

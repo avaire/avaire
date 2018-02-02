@@ -2,9 +2,8 @@ package com.avairebot.commands.fun;
 
 import com.avairebot.AvaIre;
 import com.avairebot.chat.PlaceholderMessage;
+import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
-import com.avairebot.factories.MessageFactory;
-import net.dv8tion.jda.core.entities.Message;
 
 import java.util.Collections;
 import java.util.List;
@@ -41,15 +40,15 @@ public class ReverseCommand extends Command {
     }
 
     @Override
-    public boolean onCommand(Message message, String[] args) {
+    public boolean onCommand(CommandMessage context, String[] args) {
         if (args.length == 0) {
-            return sendErrorMessage(message, "Missing argument `message`, you must include a message.");
+            return sendErrorMessage(context, "Missing argument `message`, you must include a message.");
         }
 
         String string = String.join(" ", args);
         String reverse = new StringBuilder(string).reverse().toString();
 
-        PlaceholderMessage infoMessage = MessageFactory.makeInfo(message, reverse);
+        PlaceholderMessage infoMessage = context.makeInfo(reverse);
 
         if (string.equalsIgnoreCase(reverse)) {
             infoMessage.setFooter("You reversed a palindrome, what were you expecting?");

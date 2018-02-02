@@ -3,9 +3,8 @@ package com.avairebot.commands.fun;
 import com.avairebot.AvaIre;
 import com.avairebot.Constants;
 import com.avairebot.Statistics;
+import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
-import com.avairebot.factories.MessageFactory;
-import net.dv8tion.jda.core.entities.Message;
 
 import java.awt.*;
 import java.sql.SQLException;
@@ -44,7 +43,7 @@ public class RipCommand extends Command {
     }
 
     @Override
-    public boolean onCommand(Message message, String[] args) {
+    public boolean onCommand(CommandMessage context, String[] args) {
         Statistics.addRespects();
 
         try {
@@ -54,8 +53,9 @@ public class RipCommand extends Command {
             return false;
         }
 
-        MessageFactory.makeEmbeddedMessage(message.getChannel(), Color.decode("#2A2C31"))
-            .setDescription(String.format("**%s** has paid their respects.", message.getMember().getEffectiveName()))
+        context.makeEmbeddedMessage()
+            .setColor(Color.decode("#2A2C31"))
+            .setDescription(String.format("**%s** has paid their respects.", context.getMember().getEffectiveName()))
             .setFooter(String.format("%s Today, %s Overall", Statistics.getRespects(), getTotalRespects()))
             .queue();
 

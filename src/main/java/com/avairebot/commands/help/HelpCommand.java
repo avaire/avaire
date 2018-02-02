@@ -44,52 +44,52 @@ public class HelpCommand extends Command {
     }
 
     @Override
-    public boolean onCommand(Message message, String[] args) {
+    public boolean onCommand(CommandMessage context, String[] args) {
         if (args.length == 0) {
-            return showCategories(message);
+            return showCategories(context);
         }
 
-        CommandContainer command = getCommand(message, args[0]);
+        CommandContainer command = getCommand(context, args[0]);
         if (command == null) {
-            return showCategoryCommands(message, CategoryHandler.fromLazyName(args[0]), args[0]);
+            return showCategoryCommands(context, CategoryHandler.fromLazyName(args[0]), args[0]);
         }
 
-        return showCommand(message, command, args[0]);
+        return showCommand(context, command, args[0]);
     }
 
-    private boolean showCategories(Message message) {
+    private boolean showCategories(CommandMessage context) {
         Category category = CategoryHandler.random();
 
         String note = String.format(":information_source: Type `:help <category>` to get a list of commands in that category.\nExample: `:help %s` or `:help %s`",
             category.getName().toLowerCase(),
             category.getName().toLowerCase().substring(0, 3)
-        ).replaceAll(":help", generateCommandTrigger(message));
+        ).replaceAll(":help", generateCommandTrigger(context.getMessage()));
 
-        MessageFactory.makeInfo(message, getCategories(message) + note)
+        context.makeInfo(getCategories(context.getMessage()) + note)
             .setTitle(":scroll: Command Categories")
             .queue();
 
         return true;
     }
 
-    private boolean showCategoryCommands(Message message, Category category, String categoryString) {
+    private boolean showCategoryCommands(CommandMessage context, Category category, String categoryString) {
         if (category == null) {
-            MessageFactory.makeError(message, "Invalid command category given, there are no categories called `:category`")
+            context.makeError("Invalid command category given, there are no categories called `:category`")
                 .set("category", categoryString)
                 .queue();
             return false;
         }
 
-        boolean isBotAdmin = avaire.getConfig().getStringList("botAccess").contains(message.getAuthor().getId());
+        boolean isBotAdmin = avaire.getConfig().getStringList("botAccess").contains(context.getAuthor().getId());
         if (!isBotAdmin && category.getName().equalsIgnoreCase("System")) {
-            MessageFactory.makeError(message, "You don't have permissions to run any of the  commands in the `System` " +
+            context.makeError("You don't have permissions to run any of the  commands in the `System` " +
                 "category, system commands can affect all the servers the bot is currently running on, and thus are " +
                 "limited to bot administrators/developers.")
                 .queue();
             return false;
         }
 
-        message.getChannel().sendMessage(String.format(
+        context.getMessageChannel().sendMessage(String.format(
             ":page_with_curl: **%s** ```css\n%s```\n",
             "List of Commands",
             CommandHandler.getCommands().stream()
@@ -105,7 +105,7 @@ public class HelpCommand extends Command {
                     return commandContainer.getCategory().equals(category);
                 })
                 .map(container -> {
-                    String trigger = container.getCommand().generateCommandTrigger(message);
+                    String trigger = container.getCommand().generateCommandTrigger(context.getMessage());
 
                     for (int i = trigger.length(); i < 16; i++) {
                         trigger += " ";
@@ -116,7 +116,7 @@ public class HelpCommand extends Command {
                         return trigger + "[]";
                     }
 
-                    String prefix = container.getCommand().generateCommandPrefix(message);
+                    String prefix = container.getCommand().generateCommandPrefix(context.getMessage());
                     String[] aliases = new String[triggers.size() - 1];
                     for (int i = 1; i < triggers.size(); i++) {
                         aliases[i - 1] = prefix + triggers.get(i);
@@ -127,38 +127,38 @@ public class HelpCommand extends Command {
                 .collect(Collectors.joining("\n"))
         )).queue(sentMessage -> MessageFactory.makeInfo(sentMessage,
             "**Type `:help <command>` to see the help for that specified command.**\nExample: `:help :command`"
-                .replaceAll(":help", generateCommandTrigger(message))
+                .replaceAll(":help", generateCommandTrigger(context.getMessage()))
                 .replace(":command", CommandHandler.getCommands().stream()
                     .filter(commandContainer -> commandContainer.getCategory().equals(category))
                     .collect(Collectors.collectingAndThen(Collectors.toList(), collected -> {
                         Collections.shuffle(collected);
                         return collected.stream();
                     }))
-                    .findFirst().get().getCommand().generateCommandTrigger(message)
+                    .findFirst().get().getCommand().generateCommandTrigger(context.getMessage())
                 )
         ).queue());
 
         return true;
     }
 
-    private boolean showCommand(Message message, CommandContainer command, String commandString) {
+    private boolean showCommand(CommandMessage context, CommandContainer command, String commandString) {
         if (command == null) {
-            MessageFactory.makeError(message, "Invalid command given, there are no command that has the trigger `:trigger`")
+            context.makeError("Invalid command given, there are no command that has the trigger `:trigger`")
                 .set("trigger", commandString)
                 .queue();
             return false;
         }
 
-        final String commandPrefix = command.getCommand().generateCommandPrefix(message);
+        final String commandPrefix = command.getCommand().generateCommandPrefix(context.getMessage());
 
         EmbedBuilder embed = MessageFactory.createEmbeddedBuilder()
             .setTitle(command.getCommand().getName())
             .setColor(MessageType.SUCCESS.getColor())
-            .addField("Usage", command.getCommand().generateUsageInstructions(message), false)
+            .addField("Usage", command.getCommand().generateUsageInstructions(context.getMessage()), false)
             .setFooter("Command category: " + command.getCategory().getName(), null);
 
         StringBuilder description = embed.getDescriptionBuilder()
-            .append(command.getCommand().generateDescription(message));
+            .append(command.getCommand().generateDescription(context.getMessage()));
 
         if (command.getCommand().getTriggers().size() > 1) {
             embed.addField("Aliases", command.getCommand().getTriggers().stream()
@@ -167,12 +167,12 @@ public class HelpCommand extends Command {
                 .collect(Collectors.joining("`, `", "`", "`")), false);
         }
 
-        message.getChannel().sendMessage(embed.setDescription(description).build()).queue();
+        context.getMessageChannel().sendMessage(embed.setDescription(description).build()).queue();
         return true;
     }
 
-    private CommandContainer getCommand(Message message, String commandString) {
-        CommandContainer command = CommandHandler.getCommand(message, commandString);
+    private CommandContainer getCommand(CommandMessage context, String commandString) {
+        CommandContainer command = CommandHandler.getCommand(context.getMessage(), commandString);
         if (command != null) {
             return command;
         }

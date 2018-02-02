@@ -3,11 +3,10 @@ package com.avairebot.commands.utility;
 import com.avairebot.AvaIre;
 import com.avairebot.commands.CommandContainer;
 import com.avairebot.commands.CommandHandler;
+import com.avairebot.commands.CommandMessage;
 import com.avairebot.commands.CommandPriority;
 import com.avairebot.contracts.commands.Command;
-import com.avairebot.factories.MessageFactory;
 import com.avairebot.shard.AvaireShard;
-import net.dv8tion.jda.core.entities.Message;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -44,13 +43,13 @@ public class ShardCommand extends Command {
     }
 
     @Override
-    public boolean onCommand(Message message, String[] args) {
+    public boolean onCommand(CommandMessage context, String[] args) {
         if (avaire.getShards().size() < 2) {
             CommandContainer container = CommandHandler.getCommand(StatsCommand.class);
             if (container == null) {
-                return sendErrorMessage(message, "Sharding is not enabled right now :(");
+                return sendErrorMessage(context, "Sharding is not enabled right now :(");
             }
-            return container.getCommand().onCommand(message, args);
+            return container.getCommand().onCommand(context, args);
         }
 
         List<String> messages = new ArrayList<>();
@@ -62,7 +61,7 @@ public class ShardCommand extends Command {
                 shard.getJDA().getGuilds().size(),
                 shard.getJDA().getTextChannels().size() + shard.getJDA().getVoiceChannels().size(),
                 shard.getJDA().getUsers().size(),
-                shard.getShardId() == message.getJDA().getShardInfo().getShardId() ? " <--" : ""
+                shard.getShardId() == context.getJDA().getShardInfo().getShardId() ? " <--" : ""
             ));
         }
         messages.add("```");
@@ -75,7 +74,7 @@ public class ShardCommand extends Command {
         ));
         messages.add("```");
 
-        MessageFactory.makeInfo(message, String.join("\n", messages)).queue();
+        context.makeInfo(String.join("\n", messages)).queue();
         return true;
     }
 }

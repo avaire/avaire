@@ -1,6 +1,7 @@
 package com.avairebot.commands.administration;
 
 import com.avairebot.AvaIre;
+import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.modules.BanModule;
 import net.dv8tion.jda.core.entities.Message;
@@ -45,7 +46,7 @@ public class BanCommand extends Command {
     }
 
     @Override
-    public boolean onCommand(Message message, String[] args) {
-        return BanModule.ban(this, message, args, false);
+    public boolean onCommand(CommandMessage context, String[] args) {
+        return BanModule.ban(this, context, args, false);
     }
 }

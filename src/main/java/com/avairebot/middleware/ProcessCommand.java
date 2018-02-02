@@ -47,7 +47,7 @@ public class ProcessCommand extends Middleware {
             return false;
         }
 
-        String[] arguments = ArrayUtil.toArguments(message.getRawContent());
+        String[] arguments = ArrayUtil.toArguments(message.getContentRaw());
 
         AvaIre.getLogger().info(COMMAND_OUTPUT
             .replace("%command%", stack.getCommand().getName())
@@ -55,7 +55,7 @@ public class ProcessCommand extends Middleware {
             .replace("%author%", generateUsername(message))
             .replace("%server%", generateServer(message))
             .replace("%channel%", generateChannel(message))
-            .replace("%message%", message.getRawContent())
+            .replace("%message%", message.getContentRaw())
         );
 
         Histogram.Timer timer = null;
@@ -75,7 +75,7 @@ public class ProcessCommand extends Middleware {
 
             timer = Metrics.executionTime.labels(stack.getCommand().getClass().getSimpleName()).startTimer();
 
-            return runCommand(stack, new CommandMessage(message, stack.isMentionableCommand()), commandArguments);
+            return runCommand(stack, new CommandMessage(message, stack.isMentionableCommand(), null), commandArguments);
         } catch (Exception ex) {
             Metrics.commandExceptions.labels(ex.getClass().getSimpleName()).inc();
 
