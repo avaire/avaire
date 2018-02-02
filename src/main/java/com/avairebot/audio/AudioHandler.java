@@ -5,9 +5,17 @@ import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.factories.MessageFactory;
 import com.avairebot.permissions.Permissions;
+import com.sedmelluq.discord.lavaplayer.player.AudioConfiguration;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
+import com.sedmelluq.discord.lavaplayer.source.bandcamp.BandcampAudioSourceManager;
+import com.sedmelluq.discord.lavaplayer.source.beam.BeamAudioSourceManager;
+import com.sedmelluq.discord.lavaplayer.source.local.LocalAudioSourceManager;
+import com.sedmelluq.discord.lavaplayer.source.soundcloud.SoundCloudAudioSourceManager;
+import com.sedmelluq.discord.lavaplayer.source.twitch.TwitchStreamAudioSourceManager;
+import com.sedmelluq.discord.lavaplayer.source.vimeo.VimeoAudioSourceManager;
+import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioSourceManager;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import net.dv8tion.jda.core.Permission;
@@ -16,6 +24,8 @@ import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.VoiceChannel;
 import net.dv8tion.jda.core.managers.AudioManager;
+import org.apache.http.client.config.CookieSpecs;
+import org.apache.http.client.config.RequestConfig;
 
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nonnull;
@@ -33,7 +43,29 @@ public class AudioHandler {
     static {
         MUSIC_MANAGER = new HashMap<>();
         AUDIO_SESSION = new HashMap<>();
+
         AUDIO_PLAYER_MANAGER = new DefaultAudioPlayerManager();
+
+        YoutubeAudioSourceManager youtubeAudioSourceManager = new YoutubeAudioSourceManager();
+        youtubeAudioSourceManager.configureRequests(config -> RequestConfig.copy(config)
+            .setCookieSpec(CookieSpecs.IGNORE_COOKIES)
+            .build());
+
+        AUDIO_PLAYER_MANAGER.registerSourceManager(youtubeAudioSourceManager);
+        AUDIO_PLAYER_MANAGER.registerSourceManager(new SoundCloudAudioSourceManager());
+        AUDIO_PLAYER_MANAGER.registerSourceManager(new BandcampAudioSourceManager());
+        AUDIO_PLAYER_MANAGER.registerSourceManager(new TwitchStreamAudioSourceManager());
+        AUDIO_PLAYER_MANAGER.registerSourceManager(new VimeoAudioSourceManager());
+        AUDIO_PLAYER_MANAGER.registerSourceManager(new BeamAudioSourceManager());
+        AUDIO_PLAYER_MANAGER.registerSourceManager(new LocalAudioSourceManager());
+
+        AUDIO_PLAYER_MANAGER.getConfiguration().setResamplingQuality(
+            AudioConfiguration.ResamplingQuality.MEDIUM
+        );
+
+        AUDIO_PLAYER_MANAGER.enableGcMonitoring();
+        AUDIO_PLAYER_MANAGER.setFrameBufferDuration(1000);
+        AUDIO_PLAYER_MANAGER.setItemLoaderThreadPoolSize(500);
 
         AudioSourceManagers.registerRemoteSources(AUDIO_PLAYER_MANAGER);
         AudioSourceManagers.registerLocalSource(AUDIO_PLAYER_MANAGER);
