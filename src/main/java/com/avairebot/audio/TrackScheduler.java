@@ -168,7 +168,7 @@ public class TrackScheduler extends AudioEventAdapter {
     public void handleEndOfQueue(Message message) {
         MessageFactory.makeSuccess(message, "Queue has ended, leaving voice.").queue();
 
-        message.getGuild().getAudioManager().closeAudioConnection();
+        LavalinkManager.LavalinkManagerHolder.LAVALINK.closeConnection(message.getGuild());
 
         AudioHandler.MUSIC_MANAGER.remove(
             message.getGuild().getIdLong()

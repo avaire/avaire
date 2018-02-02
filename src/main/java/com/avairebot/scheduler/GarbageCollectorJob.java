@@ -3,9 +3,11 @@ package com.avairebot.scheduler;
 import com.avairebot.AvaIre;
 import com.avairebot.audio.AudioHandler;
 import com.avairebot.audio.GuildMusicManager;
+import com.avairebot.audio.LavalinkManager;
 import com.avairebot.cache.CacheType;
 import com.avairebot.cache.adapters.MemoryAdapter;
 import com.avairebot.contracts.scheduler.Job;
+import lavalink.client.io.Link;
 import net.dv8tion.jda.core.managers.AudioManager;
 
 import java.util.Map;
@@ -34,8 +36,16 @@ public class GarbageCollectorJob extends Job {
                 continue;
             }
 
-            if (isConnected(entry.getValue().getLastActiveMessage().getGuild().getAudioManager())) {
-                continue;
+            if (LavalinkManager.LavalinkManagerHolder.LAVALINK.isEnabled()) {
+                if (isConnected(LavalinkManager.LavalinkManagerHolder.LAVALINK.getLavalink().getLink(
+                    entry.getValue().getLastActiveMessage().getGuild()
+                ).getState())) {
+                    continue;
+                }
+            } else {
+                if (isConnected(entry.getValue().getLastActiveMessage().getGuild().getAudioManager())) {
+                    continue;
+                }
             }
 
             AudioHandler.MUSIC_MANAGER.remove(entry.getKey());
@@ -52,5 +62,9 @@ public class GarbageCollectorJob extends Job {
 
     private boolean isConnected(AudioManager audioManager) {
         return audioManager.isConnected() || audioManager.isAttemptingToConnect();
+    }
+
+    private boolean isConnected(Link.State state) {
+        return state.equals(Link.State.CONNECTED) || state.equals(Link.State.CONNECTING);
     }
 }
