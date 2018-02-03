@@ -117,7 +117,6 @@ public class TrackScheduler extends AudioEventAdapterWrapped {
         AudioTrackContainer container = queue.poll();
 
         if (container == null) {
-            player.playTrack(null);
             if (manager.getLastActiveMessage() == null)
                 return;
 
