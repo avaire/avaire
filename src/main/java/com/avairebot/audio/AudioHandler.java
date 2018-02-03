@@ -214,11 +214,28 @@ public class AudioHandler {
     @CheckReturnValue
     public static int getTotalListenersSize() {
         int total = 0;
-        for (Link link : LavalinkManager.LavalinkManagerHolder.LAVALINK.getLavalink().getLinks()) {
-            if (link.getState().equals(Link.State.CONNECTED) || link.getState().equals(Link.State.CONNECTING)) {
+        
+        if (LavalinkManager.LavalinkManagerHolder.LAVALINK.isEnabled()) {
+            for (Link link : LavalinkManager.LavalinkManagerHolder.LAVALINK.getLavalink().getLinks()) {
+                if (link.getState().equals(Link.State.CONNECTED) || link.getState().equals(Link.State.CONNECTING)) {
+                    total++;
+                }
+            }
+
+            return total;
+        }
+
+        for (GuildMusicManager manager : MUSIC_MANAGER.values()) {
+            if (manager.getLastActiveMessage() == null) {
+                continue;
+            }
+
+            AudioManager audioManager = manager.getLastActiveMessage().getGuild().getAudioManager();
+            if (audioManager.isConnected() || audioManager.isAttemptingToConnect()) {
                 total++;
             }
         }
+
         return total;
     }
 
