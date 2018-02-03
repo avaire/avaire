@@ -127,7 +127,10 @@ public class MusicActivityJob extends Job {
     private void clearItems(AudioManager manager, GuildMusicManager guildMusicManager, long guildId) {
         if (guildMusicManager != null) {
             guildMusicManager.getScheduler().getQueue().clear();
-            LavalinkManager.LavalinkManagerHolder.LAVALINK.getLavalink().getLink(guildMusicManager.getLastActiveMessage().getGuild()).destroy();
+            if (LavalinkManager.LavalinkManagerHolder.LAVALINK.isEnabled()) {
+                LavalinkManager.LavalinkManagerHolder.LAVALINK.getLavalink()
+                    .getLink(guildMusicManager.getLastActiveMessage().getGuild()).destroy();
+            }
 
             if (guildMusicManager.getLastActiveMessage() != null && guildMusicManager.getLastActiveMessage().getTextChannel().canTalk()) {
                 MessageFactory.makeInfo(guildMusicManager.getLastActiveMessage(), "The music has ended due to inactivity.").queue();

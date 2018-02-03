@@ -51,13 +51,13 @@ public class TrackScheduler extends AudioEventAdapterWrapped {
         // track goes to the queue instead.
         AudioTrackContainer container = new AudioTrackContainer(track, requester);
 
-        if (player.getPlayingTrack() == null) {
-            player.playTrack(track);
+        if (player.getPlayingTrack() != null) {
             queue.offer(container);
             return;
         }
 
         if (manager.getLastActiveMessage() != null) {
+            player.playTrack(track);
             audioTrackContainer = container;
             sendNowPlaying(container);
         }
@@ -76,17 +76,15 @@ public class TrackScheduler extends AudioEventAdapterWrapped {
         // track goes to the queue instead.
         AudioTrackContainer container = new AudioTrackContainer(track, requester);
 
-        if (player.getPlayingTrack() == null) {
-            player.playTrack(track);
-            queue.offer(container);
-
-            for (int i = 1; i < playlist.getTracks().size(); i++) {
+        if (player.getPlayingTrack() != null) {
+            for (int i = 0; i < playlist.getTracks().size(); i++) {
                 queue.offer(new AudioTrackContainer(playlist.getTracks().get(i), requester));
             }
             return;
         }
 
         if (manager.getLastActiveMessage() != null) {
+            player.playTrack(track);
             audioTrackContainer = container;
 
             String message = "Now playing: [:title](:link)\n`:duration` - Requested by :requester";
@@ -103,6 +101,7 @@ public class TrackScheduler extends AudioEventAdapterWrapped {
                 .set("requester", container.getRequester().getAsMention())
                 .queue();
         }
+
 
         for (int i = 1; i < playlist.getTracks().size(); i++) {
             queue.offer(new AudioTrackContainer(playlist.getTracks().get(i), requester));

@@ -199,8 +199,6 @@ public class AudioHandler {
 
         if (!LavalinkManager.LavalinkManagerHolder.LAVALINK.isEnabled()) {
             guild.getAudioManager().setSendingHandler(musicManager.getSendHandler());
-
-            return musicManager;
         }
 
         return musicManager;
