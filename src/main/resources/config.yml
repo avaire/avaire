@@ -50,18 +50,25 @@ environment: 'production'
 # https://discordapp.com/developers/applications/me
 #
 # AvaIre needs your Discord application token to login and interact with
-# users, and optionally the application ID for generating invite links
-# people can use to invite the bot to their servers with.
+# users, and optionally the application ID for handling music using
+# Lavalink instead of doing it internally, you can also use the
+# application ID to create a invite link for your bot.
 #
 
 discord:
+
+  # This is your Discord application client id,if you don't have a Discord
+  # application, check the link above and follow the short guide to
+  # create one, once you have it, replace the text between the
+  # quotes with your client id.
+  #
+  clientId: YouBotClientIdShouldGoHere
 
   # This is your Discord application token, if you don't have a Discord
   # application, check the link above and follow the short guide to
   # create one, once you have it, replace the text between the
   # quotes with your token.
   #
-
   token: 'YourBotTokenShouldGoHere'
 
   # This is the OAuth2 URL used for invite links, you should replace
@@ -69,7 +76,6 @@ discord:
   # make the link valid so people can actually use it to invite
   # your bot to their server.
   #
-
   oauth: 'https://discordapp.com/oauth2/authorize?&client_id=<client_id>&scope=bot&permissions=66186303'
 
 #--------------------------------------------------------------------------

@@ -214,7 +214,7 @@ public class AudioHandler {
     @CheckReturnValue
     public static int getTotalListenersSize() {
         int total = 0;
-        
+
         if (LavalinkManager.LavalinkManagerHolder.LAVALINK.isEnabled()) {
             for (Link link : LavalinkManager.LavalinkManagerHolder.LAVALINK.getLavalink().getLinks()) {
                 if (link.getState().equals(Link.State.CONNECTED) || link.getState().equals(Link.State.CONNECTING)) {
