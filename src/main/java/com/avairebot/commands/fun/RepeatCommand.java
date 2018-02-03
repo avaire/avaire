@@ -2,7 +2,6 @@ package com.avairebot.commands.fun;
 
 import com.avairebot.AvaIre;
 import com.avairebot.commands.CommandMessage;
-import com.avairebot.commands.CommandPriority;
 import com.avairebot.contracts.commands.Command;
 
 import java.util.Arrays;
@@ -38,11 +37,6 @@ public class RepeatCommand extends Command {
     @Override
     public List<String> getTriggers() {
         return Arrays.asList("repeat", "echo");
-    }
-
-    @Override
-    public CommandPriority getCommandPriority() {
-        return CommandPriority.HIGHEST;
     }
 
     @Override
