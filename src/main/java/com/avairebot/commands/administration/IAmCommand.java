@@ -78,7 +78,7 @@ public class IAmCommand extends Command {
         context.makeSuccess(":user You now have the **:role** role!")
             .set("role", role.getName())
             .queue();
-        
+
         return true;
     }
 }

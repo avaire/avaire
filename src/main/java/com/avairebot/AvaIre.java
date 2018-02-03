@@ -220,7 +220,7 @@ public class AvaIre extends Shardable {
                 System.exit(ExitCodes.EXIT_CODE_ERROR);
             }
         }
-        
+
         getLogger().info(getShards().size() + " shards have been constructed");
     }
 

@@ -60,7 +60,7 @@ public class UserIdCommand extends Command {
             .set("target", user.getAsMention())
             .set("targetid", user.getId())
             .queue();
-        
+
         return true;
     }
 }

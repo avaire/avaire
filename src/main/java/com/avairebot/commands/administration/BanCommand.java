@@ -4,7 +4,6 @@ import com.avairebot.AvaIre;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.modules.BanModule;
-import net.dv8tion.jda.core.entities.Message;
 
 import java.util.Collections;
 import java.util.List;

@@ -2,7 +2,6 @@ package com.avairebot.contracts.commands;
 
 import com.avairebot.AvaIre;
 import com.avairebot.commands.CommandMessage;
-import net.dv8tion.jda.core.entities.Message;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
