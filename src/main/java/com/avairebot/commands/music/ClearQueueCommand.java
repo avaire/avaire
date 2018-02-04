@@ -47,7 +47,10 @@ public class ClearQueueCommand extends Command {
         GuildMusicManager musicManager = AudioHandler.getGuildAudioPlayer(context.getGuild());
 
         if (musicManager.getPlayer().getPlayingTrack() == null) {
-            return sendErrorMessage(context, "Nothing to clear, request music first with `!play`");
+            return sendErrorMessage(context,
+                "Nothing to clear, request music first with `%splay`",
+                generateCommandPrefix(context.getMessage())
+            );
         }
 
         if (musicManager.getScheduler().getQueue().isEmpty()) {

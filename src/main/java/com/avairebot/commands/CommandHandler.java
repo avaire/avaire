@@ -42,13 +42,12 @@ public class CommandHandler {
      * @param command The command class instance.
      * @return Possibly-null, The registered command container instance.
      */
-    public static CommandContainer getCommand(Class<? extends Command> command) {
+    public static CommandContainer getCommand(@Nonnull Class<? extends Command> command) {
         for (CommandContainer container : COMMANDS.values()) {
             if (container.getCommand().getClass().getTypeName().equals(command.getTypeName())) {
                 return container;
             }
         }
-
         return null;
     }
 

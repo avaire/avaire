@@ -61,7 +61,9 @@ public class WelcomeMessageCommand extends Command {
         ChannelTransformer channelTransformer = guildTransformer.getChannel(context.getChannel().getId());
 
         if (channelTransformer == null || !channelTransformer.getWelcome().isEnabled()) {
-            return sendErrorMessage(context, "The `welcome` module must be enabled to use this command, you can enable the `welcome` module by using the `.welcome` command.");
+            return sendErrorMessage(context,
+                "The `welcome` module must be enabled to use this command, you can enable the `welcome` module by using the `%swelcome` command.",
+                generateCommandPrefix(context.getMessage()));
         }
 
         if (args.length == 1) {

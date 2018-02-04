@@ -76,7 +76,10 @@ public class WelcomeCommand extends Command {
 
             String note = "";
             if (channelTransformer.getWelcome().isEnabled()) {
-                note = "\nYou can customize the message by using `.welcomemessage [message]`";
+                note = String.format(
+                    "\nYou can customize the message by using `%swelcomemessage [message]`",
+                    generateCommandPrefix(context.getMessage())
+                );
             }
 
             context.makeSuccess("The `Welcome` module has been **:status** for the :channel channel.:note")

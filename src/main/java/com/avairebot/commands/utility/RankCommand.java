@@ -3,8 +3,10 @@ package com.avairebot.commands.utility;
 import com.avairebot.AvaIre;
 import com.avairebot.Constants;
 import com.avairebot.cache.CacheType;
+import com.avairebot.commands.CommandHandler;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.commands.CommandPriority;
+import com.avairebot.commands.administration.LevelCommand;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.database.collection.Collection;
 import com.avairebot.database.collection.DataRow;
@@ -76,7 +78,10 @@ public class RankCommand extends Command {
     public boolean onCommand(CommandMessage context, String[] args) {
         GuildTransformer guildTransformer = GuildController.fetchGuild(avaire, context.getMessage());
         if (guildTransformer == null || !guildTransformer.isLevels()) {
-            return sendErrorMessage(context, "This command requires the `Levels & Experience` feature to be enabled for the server, you can ask a server admin if they want to enable it with `.level`");
+            return sendErrorMessage(context,
+                "This command requires the `Levels & Experience` feature to be enabled for the server, you can ask a server admin if they want to enable it with `%slevel`",
+                CommandHandler.getCommand(LevelCommand.class).getCategory().getPrefix(context.getMessage())
+            );
         }
 
         User user = context.getAuthor();

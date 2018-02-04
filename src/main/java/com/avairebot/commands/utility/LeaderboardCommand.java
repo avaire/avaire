@@ -4,7 +4,9 @@ import com.avairebot.AvaIre;
 import com.avairebot.Constants;
 import com.avairebot.cache.CacheType;
 import com.avairebot.chat.SimplePaginator;
+import com.avairebot.commands.CommandHandler;
 import com.avairebot.commands.CommandMessage;
+import com.avairebot.commands.administration.LevelCommand;
 import com.avairebot.contracts.commands.CacheFingerprint;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.database.collection.Collection;
@@ -51,7 +53,10 @@ public class LeaderboardCommand extends Command {
     public boolean onCommand(CommandMessage context, String[] args) {
         GuildTransformer transformer = GuildController.fetchGuild(avaire, context.getMessage());
         if (transformer == null || !transformer.isLevels()) {
-            return sendErrorMessage(context, "This command requires the `Levels & Experience` feature to be enabled for the server, you can ask a server admin if they want to enable it with `.level`");
+            return sendErrorMessage(context,
+                "This command requires the `Levels & Experience` feature to be enabled for the server, you can ask a server admin if they want to enable it with `%slevel`",
+                CommandHandler.getCommand(LevelCommand.class).getCategory().getPrefix(context.getMessage())
+            );
         }
 
         Collection collection = loadTop100From(context);

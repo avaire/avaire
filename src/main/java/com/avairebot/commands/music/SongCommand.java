@@ -53,7 +53,10 @@ public class SongCommand extends Command {
         GuildMusicManager musicManager = AudioHandler.getGuildAudioPlayer(context.getGuild());
 
         if (musicManager.getPlayer().getPlayingTrack() == null) {
-            return sendErrorMessage(context, "Nothing to display, request music first with `!play`");
+            return sendErrorMessage(context,
+                "Nothing to display, request music first with `%splay`",
+                generateCommandPrefix(context.getMessage())
+            );
         }
 
         if (args.length > 0 && NumberUtil.isNumeric(args[0])) {

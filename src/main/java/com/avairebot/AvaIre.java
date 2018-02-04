@@ -28,6 +28,7 @@ import com.avairebot.scheduler.ScheduleHandler;
 import com.avairebot.shard.AvaireShard;
 import com.avairebot.shard.ConnectQueue;
 import com.avairebot.shard.ShardEntityCounter;
+import com.avairebot.shared.DiscordConstants;
 import com.avairebot.shared.ExitCodes;
 import com.avairebot.time.Carbon;
 import com.google.gson.Gson;
@@ -122,13 +123,14 @@ public class AvaIre extends Shardable {
         );
 
         LOGGER.info("Registering default command categories");
-        CategoryHandler.addCategory(this, "Administration", ".");
-        CategoryHandler.addCategory(this, "Help", ".");
-        CategoryHandler.addCategory(this, "Fun", ">");
-        CategoryHandler.addCategory(this, "Interaction", ">");
-        CategoryHandler.addCategory(this, "Music", "!");
-        CategoryHandler.addCategory(this, "Search", ">");
-        CategoryHandler.addCategory(this, "Utility", "!");
+        String defaultPrefix = getConfig().getString("default-prefix", DiscordConstants.DEFAULT_COMMAND_PREFIX);
+        CategoryHandler.addCategory(this, "Administration", defaultPrefix);
+        CategoryHandler.addCategory(this, "Help", defaultPrefix);
+        CategoryHandler.addCategory(this, "Fun", defaultPrefix);
+        CategoryHandler.addCategory(this, "Interaction", defaultPrefix);
+        CategoryHandler.addCategory(this, "Music", defaultPrefix);
+        CategoryHandler.addCategory(this, "Search", defaultPrefix);
+        CategoryHandler.addCategory(this, "Utility", defaultPrefix);
         CategoryHandler.addCategory(this, "System", ";");
 
         LOGGER.info("Registering commands...");

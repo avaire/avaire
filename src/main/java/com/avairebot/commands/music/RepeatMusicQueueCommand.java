@@ -27,7 +27,7 @@ public class RepeatMusicQueueCommand extends Command {
 
     @Override
     public List<String> getTriggers() {
-        return Arrays.asList("repeatsongs", "repeat", "loop");
+        return Arrays.asList("repeatsongs", "repeatqueue", "loop");
     }
 
     @Override
@@ -43,7 +43,9 @@ public class RepeatMusicQueueCommand extends Command {
         GuildMusicManager musicManager = AudioHandler.getGuildAudioPlayer(context.getGuild());
 
         if (musicManager.getPlayer().getPlayingTrack() == null) {
-            return sendErrorMessage(context, "There is nothing to repeat, request music first with `!play`");
+            return sendErrorMessage(context, "There is nothing to repeat, request music first with `%splay`",
+                generateCommandPrefix(context.getMessage())
+            );
         }
 
         musicManager.setRepeatQueue(!musicManager.isRepeatQueue());

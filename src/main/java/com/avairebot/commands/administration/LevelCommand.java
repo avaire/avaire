@@ -21,12 +21,12 @@ public class LevelCommand extends Command {
 
     @Override
     public String getName() {
-        return "Level Command";
+        return "Toggle Level Command";
     }
 
     @Override
     public String getDescription() {
-        return "Toggles the Leveling system on or off for the current server";
+        return "Toggles the Leveling system on or off for the current server.";
     }
 
     @Override
@@ -36,7 +36,7 @@ public class LevelCommand extends Command {
 
     @Override
     public List<String> getTriggers() {
-        return Arrays.asList("level", "lvl");
+        return Arrays.asList("togglelevel", "tlvl");
     }
 
     @Override
@@ -72,8 +72,9 @@ public class LevelCommand extends Command {
 
             String note = "";
             if (guildTransformer.isLevels()) {
-                note = String.format("\nLevel alerts are current `%s`, you can toggle them on or off with `.levelalerts`",
-                    guildTransformer.isLevelAlerts() ? "Enabled" : "Disabled"
+                note = String.format("\nLevel alerts are current `%s`, you can toggle them on or off with `%slevelalerts`",
+                    guildTransformer.isLevelAlerts() ? "Enabled" : "Disabled",
+                    generateCommandPrefix(context.getMessage())
                 );
             }
 

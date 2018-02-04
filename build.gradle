@@ -63,7 +63,7 @@ repositories {
 }
 
 dependencies {
-    compile group: 'com.avairebot', name: 'Shared', version: 'd0cfe4549d'
+    compile group: 'com.avairebot', name: 'Shared', version: 'e0ec78fd82'
     compile group: 'net.dv8tion', name: 'JDA', version: '3.3.5_332'
     compile group: 'com.sedmelluq', name: 'lavaplayer', version: '1.2.45'
     compile group: 'com.sedmelluq', name: 'jda-nas', version: '1.0.6'

@@ -100,7 +100,7 @@ public class PlayCommand extends Command {
         return true;
     }
 
-    public boolean loadSongFromSession(Message message, String[] args) {
+    boolean loadSongFromSession(Message message, String[] args) {
         int songIndex = NumberUtil.parseInt(args[0], 1) - 1;
         AudioSession session = AudioHandler.getAudioSession(message);
 

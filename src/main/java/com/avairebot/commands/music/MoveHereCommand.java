@@ -51,7 +51,10 @@ public class MoveHereCommand extends Command {
         GuildMusicManager musicManager = AudioHandler.getGuildAudioPlayer(context.getGuild());
 
         if (musicManager.getPlayer().getPlayingTrack() == null) {
-            return sendErrorMessage(context, "Not connected to voice, request music first with `!play`");
+            return sendErrorMessage(context,
+                "Not connected to voice, request music first with `%splay`",
+                generateCommandPrefix(context.getMessage())
+            );
         }
 
         VoiceChannel channel = context.getMember().getVoiceState().getChannel();

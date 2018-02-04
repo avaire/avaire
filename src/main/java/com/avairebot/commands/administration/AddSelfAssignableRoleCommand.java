@@ -29,7 +29,7 @@ public class AddSelfAssignableRoleCommand extends Command {
 
     @Override
     public String getDescription() {
-        return "Adds a role to the self-assignable roles list, any role on the list can be claimed by users when they use `.iam <role>`.";
+        return "Adds a role to the self-assignable roles list, any role on the list can be claimed by users when they use `:prefixiam <role>`.";
     }
 
     @Override

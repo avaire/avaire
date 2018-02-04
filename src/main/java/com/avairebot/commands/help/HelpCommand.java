@@ -157,9 +157,6 @@ public class HelpCommand extends Command {
             .addField("Usage", command.getCommand().generateUsageInstructions(context.getMessage()), false)
             .setFooter("Command category: " + command.getCategory().getName(), null);
 
-        StringBuilder description = embed.getDescriptionBuilder()
-            .append(command.getCommand().generateDescription(context.getMessage()));
-
         if (command.getCommand().getTriggers().size() > 1) {
             embed.addField("Aliases", command.getCommand().getTriggers().stream()
                 .skip(1)
@@ -167,7 +164,9 @@ public class HelpCommand extends Command {
                 .collect(Collectors.joining("`, `", "`", "`")), false);
         }
 
-        context.getMessageChannel().sendMessage(embed.setDescription(description).build()).queue();
+        context.getMessageChannel().sendMessage(embed.setDescription(
+            command.getCommand().generateDescription(context.getMessage())
+        ).build()).queue();
         return true;
     }
 

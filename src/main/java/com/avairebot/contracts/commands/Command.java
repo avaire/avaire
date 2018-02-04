@@ -213,11 +213,11 @@ public abstract class Command extends Reflectionable {
      */
     public final String generateDescription(Message message) {
         if (getMiddleware().isEmpty()) {
-            return getDescription().trim();
+            return getDescription().trim().replaceAll(":prefix", generateCommandPrefix(message));
         }
 
         List<String> description = new ArrayList<>();
-        description.add(getDescription());
+        description.add(getDescription().replaceAll(":prefix", generateCommandPrefix(message)));
         description.add("");
 
         MIDDLEWARE_LOOP:

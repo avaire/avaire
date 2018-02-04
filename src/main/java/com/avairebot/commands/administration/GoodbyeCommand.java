@@ -76,7 +76,9 @@ public class GoodbyeCommand extends Command {
 
             String note = "";
             if (channelTransformer.getGoodbye().isEnabled()) {
-                note = "\nYou can customize the message by using `.goodbyemessage [message]`";
+                note = String.format("\nYou can customize the message by using `%sgoodbyemessage [message]`",
+                    generateCommandPrefix(context.getMessage())
+                );
             }
 
             context.makeSuccess("The `Goodbye` module has been **:status** for the :channel channel." + note)

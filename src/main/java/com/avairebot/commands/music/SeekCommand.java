@@ -55,7 +55,10 @@ public class SeekCommand extends Command {
         GuildMusicManager musicManager = AudioHandler.getGuildAudioPlayer(context.getGuild());
 
         if (musicManager.getPlayer().getPlayingTrack() == null) {
-            return sendErrorMessage(context, "Nothing is playing right now, request something with `!play` first.");
+            return sendErrorMessage(context,
+                "Nothing is playing right now, request something with `%splay` first.",
+                generateCommandPrefix(context.getMessage())
+            );
         }
 
         if (musicManager.getPlayer().getPlayingTrack().getInfo().isStream) {
@@ -70,7 +73,12 @@ public class SeekCommand extends Command {
             long time = NumberUtil.parseTimeString(args[0]);
 
             if (time > musicManager.getPlayer().getPlayingTrack().getDuration()) {
-                return sendErrorMessage(context, "`%s` is more than the length of the current song playing, if you want to skip to the next song use `!skip` instead.", args[0]);
+                return sendErrorMessage(context,
+                    "`%s` is more than the length of the current song playing, if you want to skip to the next song use `%sskip` instead.",
+                    args[0],
+                    generateCommandPrefix(context.getMessage())
+
+                );
             }
 
             musicManager.getPlayer().getPlayingTrack().setPosition(time);

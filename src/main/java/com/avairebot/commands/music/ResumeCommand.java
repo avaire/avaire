@@ -49,11 +49,17 @@ public class ResumeCommand extends Command {
         GuildMusicManager musicManager = AudioHandler.getGuildAudioPlayer(context.getGuild());
 
         if (musicManager.getPlayer().getPlayingTrack() == null) {
-            return sendErrorMessage(context, "Nothing to resume, request music first with `!play`");
+            return sendErrorMessage(context,
+                "Nothing to resume, request music first with `%splay`",
+                generateCommandPrefix(context.getMessage())
+            );
         }
 
         if (!musicManager.getPlayer().isPaused()) {
-            context.makeWarning("The music is already playing, use `!pause` to pause the music first.").queue();
+            context.makeWarning("The music is already playing, use `:prefixpause` to pause the music first.")
+                .set("prefix", generateCommandPrefix(context.getMessage()))
+                .queue();
+
             return true;
         }
 

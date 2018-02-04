@@ -61,7 +61,10 @@ public class GoodbyeMessageCommand extends Command {
         ChannelTransformer channelTransformer = guildTransformer.getChannel(context.getChannel().getId());
 
         if (channelTransformer == null || !channelTransformer.getGoodbye().isEnabled()) {
-            return sendErrorMessage(context, "The `goodbye` module must be enabled to use this command, you can enable the `goodbye` module by using the `.goodbye` command.");
+            return sendErrorMessage(context,
+                "The `goodbye` module must be enabled to use this command, you can enable the `goodbye` module by using the `%sgoodbye` command.",
+                generateCommandPrefix(context.getMessage())
+            );
         }
 
         if (args.length == 1) {

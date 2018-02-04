@@ -49,7 +49,10 @@ public class PauseCommand extends Command {
         GuildMusicManager musicManager = AudioHandler.getGuildAudioPlayer(context.getGuild());
 
         if (musicManager.getPlayer().getPlayingTrack() == null) {
-            return sendErrorMessage(context, "Nothing to pause, request music first with `!play`");
+            return sendErrorMessage(context,
+                "Nothing to pause, request music first with `%splay`",
+                generateCommandPrefix(context.getMessage())
+            );
         }
 
         if (musicManager.getPlayer().isPaused()) {

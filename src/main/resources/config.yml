@@ -125,6 +125,23 @@ database:
   password: 'password'
 
 #--------------------------------------------------------------------------
+# Default Command Prefix
+#--------------------------------------------------------------------------
+#
+# All internal commands registered with Ava will be linked to a command
+# category, each category has a default prefix which are used for all
+# commands linked to that category, below you can set the default
+# prefix used by all the official AvaIre command categories.
+#
+# Note: Plugins that adds commands and categories to the Ava registry doesn't
+# necessarily have to follow the default prefix set below, check in with the
+# developer for the plugin about the command prefix if one is used, or just
+# change the prefix for the category using the "Change Prefix" command.
+#
+
+default-prefix: '!'
+
+#--------------------------------------------------------------------------
 # Bot Status
 #--------------------------------------------------------------------------
 #
@@ -140,7 +157,7 @@ database:
 #
 
 playing:
-  - '.help'
+  - '!help'
 
 #--------------------------------------------------------------------------
 # Music Lavalink Nodes (Advanced Music Settings)

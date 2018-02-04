@@ -62,7 +62,10 @@ public class LevelAlertsCommand extends Command {
     public boolean onCommand(CommandMessage context, String[] args) {
         GuildTransformer guildTransformer = GuildController.fetchGuild(avaire, context.getMessage());
         if (guildTransformer == null || !guildTransformer.isLevels()) {
-            return sendErrorMessage(context, "This command requires the `Levels & Experience` feature to be enabled for the server, you can ask a server admin if they want to enable it with `.level`");
+            return sendErrorMessage(context,
+                "This command requires the `Levels & Experience` feature to be enabled for the server, you can ask a server admin if they want to enable it with `.%stogglelevel`",
+                generateCommandPrefix(context.getMessage())
+            );
         }
 
         ComparatorUtil.ComparatorType type = args.length == 0 ?
