@@ -2,6 +2,7 @@ package com.avairebot.commands;
 
 import com.avairebot.AvaIre;
 import com.avairebot.contracts.commands.Command;
+import com.avairebot.shared.DiscordConstants;
 import com.avairebot.utilities.RandomUtil;
 
 import javax.annotation.Nonnull;
@@ -12,7 +13,13 @@ public class CategoryHandler {
 
     private static final List<Category> VALUES = new ArrayList<>();
 
-    public static boolean addCategory(AvaIre avaire, @Nonnull String name, @Nonnull String defaultPrefix) {
+    static {
+        VALUES.add(new Category(
+            null, "all", DiscordConstants.DEFAULT_COMMAND_PREFIX
+        ).setGlobal(true));
+    }
+
+    public static boolean addCategory(@Nonnull AvaIre avaire, @Nonnull String name, @Nonnull String defaultPrefix) {
         for (Category category : VALUES) {
             if (category.getName().equalsIgnoreCase(name)) {
                 return false;

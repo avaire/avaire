@@ -87,10 +87,13 @@ public class ChangePrefixCommand extends Command {
         }
 
         try {
-            transformer.getPrefixes().put(category.getName().toLowerCase(), prefix);
+            setCustomPrefix(transformer, category, prefix);
             updateGuildPrefixes(context, transformer);
 
-            context.makeSuccess("All commands in the `:category` command category now uses the `:prefix` prefix.")
+            context.makeSuccess(!category.isGlobal() ?
+                "All commands in the `:category` command category now uses the `:prefix` prefix." :
+                "All commands in every command category now uses the `:prefix` prefix."
+            )
                 .set("category", category.getName())
                 .set("prefix", prefix)
                 .queue();
@@ -103,13 +106,29 @@ public class ChangePrefixCommand extends Command {
         return false;
     }
 
+    private void setCustomPrefix(GuildTransformer transformer, Category category, String prefix) {
+        if (!category.isGlobal()) {
+            transformer.getPrefixes().put(category.getName().toLowerCase(), prefix);
+            return;
+        }
+
+        for (Category cat : CategoryHandler.getValues()) {
+            if (cat.isGlobal()) continue;
+
+            transformer.getPrefixes().put(cat.getName().toLowerCase(), prefix);
+        }
+    }
+
     private boolean removeCustomPrefix(CommandMessage context, GuildTransformer transformer, Category category) {
-        transformer.getPrefixes().remove(category.getName().toLowerCase());
+        removeCustomPrefix(transformer, category);
 
         try {
             updateGuildPrefixes(context, transformer);
 
-            context.makeSuccess("All commands in the `:category` command category has been reset to use the `:prefix` prefix.")
+            context.makeSuccess(!category.isGlobal() ?
+                "All commands in the `:category` command category has been reset to use the `:prefix` prefix." :
+                "All commands in every command category has been reset to use the `:prefix` prefix."
+            )
                 .set("category", category.getName())
                 .set("prefix", category.getPrefix())
                 .queue();
@@ -119,6 +138,19 @@ public class ChangePrefixCommand extends Command {
             e.printStackTrace();
         }
         return false;
+    }
+
+    private void removeCustomPrefix(GuildTransformer transformer, Category category) {
+        if (!category.isGlobal()) {
+            transformer.getPrefixes().remove(category.getName().toLowerCase());
+            return;
+        }
+
+        for (Category cat : CategoryHandler.getValues()) {
+            if (cat.isGlobal()) continue;
+
+            transformer.getPrefixes().remove(cat.getName().toLowerCase());
+        }
     }
 
     private void updateGuildPrefixes(CommandMessage context, GuildTransformer transformer) throws SQLException {

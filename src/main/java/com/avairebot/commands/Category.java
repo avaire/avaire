@@ -13,6 +13,8 @@ public class Category {
     private final String name;
     private final String prefix;
 
+    private boolean isGlobal = false;
+
     public Category(AvaIre avaire, String name, String prefix) {
         this.avaire = avaire;
         this.name = name;
@@ -28,10 +30,23 @@ public class Category {
     }
 
     public String getPrefix(@Nonnull Message message) {
+        if (isGlobal) {
+            return getPrefix();
+        }
+
         GuildTransformer transformer = GuildController.fetchGuild(avaire, message);
 
         return transformer == null ? getPrefix() : transformer.getPrefixes().getOrDefault(
             getName().toLowerCase(), getPrefix()
         );
+    }
+
+    public boolean isGlobal() {
+        return isGlobal;
+    }
+
+    Category setGlobal(boolean value) {
+        isGlobal = value;
+        return this;
     }
 }
