@@ -2,7 +2,6 @@ package com.avairebot.ai.intents;
 
 import ai.api.model.AIResponse;
 import com.avairebot.AvaIre;
-import com.avairebot.commands.CommandContainer;
 import com.avairebot.commands.CommandHandler;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.commands.fun.RandomCatCommand;
@@ -21,13 +20,9 @@ public class RequestCat extends Intent {
     }
 
     @Override
+    @SuppressWarnings("ConstantConditions")
     public void onIntent(Message message, AIResponse response) {
-        CommandContainer command = CommandHandler.getCommand(RandomCatCommand.class);
-
-        if (command == null) {
-            return;
-        }
-
-        command.getCommand().onCommand(new CommandMessage(message), new String[0]);
+        CommandHandler.getCommand(RandomCatCommand.class)
+            .getCommand().onCommand(new CommandMessage(message), new String[0]);
     }
 }

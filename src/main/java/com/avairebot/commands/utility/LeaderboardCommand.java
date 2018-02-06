@@ -50,6 +50,7 @@ public class LeaderboardCommand extends Command {
     }
 
     @Override
+    @SuppressWarnings("ConstantConditions")
     public boolean onCommand(CommandMessage context, String[] args) {
         GuildTransformer transformer = GuildController.fetchGuild(avaire, context.getMessage());
         if (transformer == null || !transformer.isLevels()) {

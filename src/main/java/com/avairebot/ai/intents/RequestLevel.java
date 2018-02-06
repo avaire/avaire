@@ -2,7 +2,6 @@ package com.avairebot.ai.intents;
 
 import ai.api.model.AIResponse;
 import com.avairebot.AvaIre;
-import com.avairebot.commands.CommandContainer;
 import com.avairebot.commands.CommandHandler;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.commands.utility.RankCommand;
@@ -24,12 +23,8 @@ public class RequestLevel extends Intent {
     }
 
     @Override
+    @SuppressWarnings("ConstantConditions")
     public void onIntent(Message message, AIResponse response) {
-        CommandContainer container = CommandHandler.getCommand(RankCommand.class);
-        if (container == null) {
-            return;
-        }
-
         GuildTransformer guildTransformer = GuildController.fetchGuild(avaire, message);
         if (guildTransformer == null || !guildTransformer.isLevels()) {
             MessageFactory.makeWarning(message,
@@ -38,6 +33,7 @@ public class RequestLevel extends Intent {
             return;
         }
 
-        container.getCommand().onCommand(new CommandMessage(message), new String[]{"---skip-mentions"});
+        CommandHandler.getCommand(RankCommand.class)
+            .getCommand().onCommand(new CommandMessage(message), new String[]{"---skip-mentions"});
     }
 }

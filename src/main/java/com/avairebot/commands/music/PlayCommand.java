@@ -191,6 +191,7 @@ public class PlayCommand extends Command {
         return throwable -> MessageFactory.makeError(message, throwable.getMessage()).queue();
     }
 
+    @SuppressWarnings("ConstantConditions")
     private Consumer<AudioSession> musicSession(final Message message, final String[] args) {
         return (AudioSession audioSession) -> {
             List<String> songs = new ArrayList<>();
@@ -209,10 +210,8 @@ public class PlayCommand extends Command {
 
             String command = generateCommandTrigger(message);
             if (args[0].startsWith("scsearch:")) {
-                CommandContainer container = CommandHandler.getCommand(SoundcloudCommand.class);
-                if (container != null) {
-                    command = container.getCommand().generateCommandTrigger(message);
-                }
+                CommandHandler.getCommand(SoundcloudCommand.class)
+                    .getCommand().generateCommandTrigger(message);
             }
 
             MessageFactory.makeSuccess(message, String.join("\n", songs))

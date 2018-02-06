@@ -75,6 +75,7 @@ public class RankCommand extends Command {
     }
 
     @Override
+    @SuppressWarnings("SingleStatementInBlock")
     public boolean onCommand(CommandMessage context, String[] args) {
         GuildTransformer guildTransformer = GuildController.fetchGuild(avaire, context.getMessage());
         if (guildTransformer == null || !guildTransformer.isLevels()) {

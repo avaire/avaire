@@ -92,6 +92,7 @@ public class PlaylistCommand extends Command {
     }
 
     @Override
+    @SuppressWarnings({"SingleStatementInBlock", "ConstantConditions"})
     public boolean onCommand(CommandMessage context, String[] args) {
         Collection playlists = PlaylistController.fetchPlaylists(avaire, context.getMessage());
         if (playlists == null) {

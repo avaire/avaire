@@ -41,12 +41,13 @@ public class RequireDJLevel extends Middleware {
         return sendErrorMessage(message);
     }
 
+    @SuppressWarnings("ConstantConditions")
     private boolean sendErrorMessage(Message message) {
         GuildTransformer guildTransformer = GuildController.fetchGuild(avaire, message);
         if (guildTransformer != null && guildTransformer.getSelfAssignableRoles().containsValue("dj")) {
             CommandContainer command = CommandHandler.getCommand(IAmCommand.class);
             MessageFactory.makeError(message, "The `DJ` Discord role is required to run this command.\nYou can use the `:iam DJ` command to get the role!")
-                .set("iam", command != null ? command.getCommand().generateCommandTrigger(message) : ".iam")
+                .set("iam", command.getCommand().generateCommandTrigger(message))
                 .queue();
             return false;
         }

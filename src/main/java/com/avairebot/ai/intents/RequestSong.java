@@ -43,6 +43,7 @@ public class RequestSong extends Intent {
     }
 
     @Override
+    @SuppressWarnings("ConstantConditions")
     public void onIntent(Message message, AIResponse response) {
         HashMap<String, JsonElement> parameters = response.getResult().getParameters();
 
@@ -52,10 +53,6 @@ public class RequestSong extends Intent {
         }
 
         CommandContainer container = CommandHandler.getCommand(PlayCommand.class);
-        if (container == null) {
-            return;
-        }
-
         String type = parameters.get("music").getAsString().toLowerCase();
         if (!CATEGORIES.containsKey(type)) {
             container.getCommand().onCommand(new CommandMessage(message), new String[]{type, "---leave-message"});
