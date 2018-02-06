@@ -11,6 +11,7 @@ import net.dv8tion.jda.core.entities.VoiceChannel;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class MoveHereCommand extends Command {
 
@@ -69,9 +70,10 @@ public class MoveHereCommand extends Command {
             return false;
         }
 
-        context.makeSuccess("I am now streaming music in **:channelName**")
+        context.makeSuccess("I am now playing music in **:channelName**")
             .set("channelName", channel.getName())
-            .queue();
+            .queue(message -> message.delete().queueAfter(1, TimeUnit.MINUTES));
+
         return true;
     }
 }

@@ -10,6 +10,7 @@ import com.avairebot.utilities.NumberUtil;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class SeekCommand extends Command {
 
@@ -77,7 +78,6 @@ public class SeekCommand extends Command {
                     "`%s` is more than the length of the current song playing, if you want to skip to the next song use `%sskip` instead.",
                     args[0],
                     generateCommandPrefix(context.getMessage())
-
                 );
             }
 
@@ -86,7 +86,7 @@ public class SeekCommand extends Command {
             context.makeSuccess("Seeking **:title** to `:time`")
                 .set("title", musicManager.getPlayer().getPlayingTrack().getInfo().title)
                 .set("time", NumberUtil.formatTime(time))
-                .queue();
+                .queue(message -> message.delete().queueAfter(3, TimeUnit.MINUTES));
         } catch (IllegalStateException ex) {
             return sendErrorMessage(context, "The `number` argument must be a valid time format that is at least 0 or more seconds long.");
         }

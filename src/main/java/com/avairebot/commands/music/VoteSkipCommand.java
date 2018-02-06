@@ -12,6 +12,7 @@ import net.dv8tion.jda.core.entities.VoiceChannel;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 public class VoteSkipCommand extends Command {
@@ -77,7 +78,9 @@ public class VoteSkipCommand extends Command {
         context.makeWarning(hasVotedBefore ?
             "You can only vote skip once per song! `:votes` more votes needed to skip the song." :
             "Your vote has been registered! `:votes` more votes needed to skip the song."
-        ).set("votes", neededVotes).queue();
+        ).set("votes", neededVotes).queue(message -> {
+            message.delete().queueAfter(1, TimeUnit.MINUTES);
+        });
 
         return true;
     }

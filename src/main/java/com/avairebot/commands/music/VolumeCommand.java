@@ -11,6 +11,7 @@ import com.avairebot.utilities.NumberUtil;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class VolumeCommand extends Command {
 
@@ -86,7 +87,7 @@ public class VolumeCommand extends Command {
         context.makeSuccess("\uD83C\uDFB5 Volume set to **:volume** volume\n:bar")
             .set("volume", newVolume)
             .set("bar", getVolumeString(newVolume, 18))
-            .queue();
+            .queue(message -> message.delete().queueAfter(2, TimeUnit.MINUTES));
 
         return true;
     }

@@ -9,6 +9,7 @@ import com.avairebot.contracts.commands.Command;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class ResumeCommand extends Command {
 
@@ -58,13 +59,14 @@ public class ResumeCommand extends Command {
         if (!musicManager.getPlayer().isPaused()) {
             context.makeWarning("The music is already playing, use `:prefixpause` to pause the music first.")
                 .set("prefix", generateCommandPrefix(context.getMessage()))
-                .queue();
+                .queue(message -> message.delete().queueAfter(1, TimeUnit.MINUTES));
 
             return true;
         }
 
         musicManager.getPlayer().setPaused(false);
-        context.makeSuccess("The music has been `resumed`").queue();
+        context.makeSuccess("The music has been `resumed`")
+            .queue(message -> message.delete().queueAfter(1, TimeUnit.MINUTES));
 
         return true;
     }

@@ -13,6 +13,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class RemoveSongFromQueueCommand extends Command {
 
@@ -91,7 +92,7 @@ public class RemoveSongFromQueueCommand extends Command {
                 .set("song", String.format("[%s](%s)",
                     track.title, track.uri
                 ))
-                .queue();
+                .queue(message -> message.delete().queueAfter(1, TimeUnit.MINUTES));
 
             iterator.remove();
             return true;
@@ -99,7 +100,7 @@ public class RemoveSongFromQueueCommand extends Command {
 
         context.makeError("Something went wrong, failed to remove song at index `:index`")
             .set("index", removeIndex)
-            .queue();
+            .queue(message -> message.delete().queueAfter(1, TimeUnit.MINUTES));
 
         return false;
     }

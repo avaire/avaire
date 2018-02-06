@@ -8,6 +8,7 @@ import com.avairebot.contracts.commands.Command;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class RepeatMusicQueueCommand extends Command {
 
@@ -52,7 +53,7 @@ public class RepeatMusicQueueCommand extends Command {
 
         context.makeSuccess("Music queue looping has been turned `:status`.")
             .set("status", musicManager.isRepeatQueue() ? "ON" : "OFF")
-            .queue();
+            .queue(message -> message.delete().queueAfter(5, TimeUnit.MINUTES));
 
         return true;
     }

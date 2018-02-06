@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
@@ -175,19 +176,11 @@ public abstract class Command extends Reflectionable {
      *
      * @param context The JDA message object.
      * @param error   The error message that should be sent.
+     * @param args    The array of arguments that should be replace in the error string.
      * @return false since the error message should only be used on failure.
      */
-    public final boolean sendErrorMessage(CommandMessage context, String error) {
-        Category category = CategoryHandler.fromCommand(this);
-
-        context.makeError(error)
-            .setTitle(getName())
-            .setFooter("Command category: " + category.getName())
-            .addField("Usage", generateUsageInstructions(context.getMessage()), false)
-            .addField("Example Usage", generateExampleUsage(context.getMessage()), false)
-            .queue();
-
-        return false;
+    protected final boolean sendErrorMessage(CommandMessage context, String error, String... args) {
+        return sendErrorMessage(context, String.format(error, (Object[]) args));
     }
 
     /**
@@ -196,11 +189,40 @@ public abstract class Command extends Reflectionable {
      *
      * @param context The JDA message object.
      * @param error   The error message that should be sent.
-     * @param args    The array of arguments that should be replace in the error string.
      * @return false since the error message should only be used on failure.
      */
-    protected final boolean sendErrorMessage(CommandMessage context, String error, String... args) {
-        return sendErrorMessage(context, String.format(error, (Object[]) args));
+    public final boolean sendErrorMessage(CommandMessage context, String error) {
+        return sendErrorMessage(context, error, 150, TimeUnit.SECONDS); // Deletes after 2½ minute.
+    }
+
+    /**
+     * Builds and sends the given error message to the given channel for the JDA
+     * message object, then deletes the message again after the allotted time.
+     *
+     * @param context  The JDA message object.
+     * @param error    The error message that should be sent.
+     * @param deleteIn The amount of time the message should stay up before being deleted.
+     * @param unit     The unit of time before the message should be deleted.
+     * @return false since the error message should only be used on failure.
+     */
+    public final boolean sendErrorMessage(CommandMessage context, String error, long deleteIn, TimeUnit unit) {
+        Category category = CategoryHandler.fromCommand(this);
+
+        context.makeError(error)
+            .setTitle(getName())
+            .setFooter("Command category: " + category.getName())
+            .addField("Usage", generateUsageInstructions(context.getMessage()), false)
+            .addField("Example Usage", generateExampleUsage(context.getMessage()), false)
+            .queue(message -> {
+                if (deleteIn <= 0) {
+                    return;
+                }
+                message.delete().queueAfter(deleteIn, unit, null, throwable -> {
+                    // Ignore the exception thrown by attempting to delete this message.
+                });
+            });
+
+        return false;
     }
 
     /**

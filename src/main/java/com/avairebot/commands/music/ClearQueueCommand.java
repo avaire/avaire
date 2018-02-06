@@ -10,6 +10,7 @@ import com.avairebot.utilities.NumberUtil;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class ClearQueueCommand extends Command {
 
@@ -54,7 +55,9 @@ public class ClearQueueCommand extends Command {
         }
 
         if (musicManager.getScheduler().getQueue().isEmpty()) {
-            context.makeWarning("Nothing to clear, there are no songs pending in the queue right now.").queue();
+            context.makeWarning("Nothing to clear, there are no songs pending in the queue right now.")
+                .queue(message -> message.delete().queueAfter(1, TimeUnit.MINUTES));
+
             return false;
         }
 
@@ -62,7 +65,7 @@ public class ClearQueueCommand extends Command {
             .set("queueSize", NumberUtil.formatNicely(
                 musicManager.getScheduler().getQueue().size()
             ))
-            .queue();
+            .queue(message -> message.delete().queueAfter(1, TimeUnit.MINUTES));
 
         musicManager.getScheduler().getQueue().clear();
 

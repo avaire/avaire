@@ -5,7 +5,6 @@ import com.avairebot.audio.AudioHandler;
 import com.avairebot.audio.AudioSession;
 import com.avairebot.audio.TrackResponse;
 import com.avairebot.audio.VoiceConnectStatus;
-import com.avairebot.commands.CommandContainer;
 import com.avairebot.commands.CommandHandler;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
@@ -70,7 +69,9 @@ public class PlayCommand extends Command {
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
         if (args.length == 0) {
-            return sendErrorMessage(context, "Missing music `query`, you must include a link to the song you want to listen to, or at least give me a song title!");
+            return sendErrorMessage(context,
+                "Missing music `query`, you must include a link to the song you want to listen to, or at least give me a song title!"
+            );
         }
 
         boolean shouldLeaveMessage = false;

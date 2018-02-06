@@ -16,6 +16,7 @@ import com.avairebot.utilities.NumberUtil;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class PlaylistCommand extends Command {
 
@@ -96,12 +97,16 @@ public class PlaylistCommand extends Command {
     public boolean onCommand(CommandMessage context, String[] args) {
         Collection playlists = PlaylistController.fetchPlaylists(avaire, context.getMessage());
         if (playlists == null) {
-            return sendErrorMessage(context, "An error occurred while loading the servers playlists, please try again, if the problem continues please report this to one of my developers on the [AvaIre support server](https://discord.gg/gt2FWER).");
+            return sendErrorMessage(context,
+                "An error occurred while loading the servers playlists, please try again, if the problem continues please report this to one of my developers on the [AvaIre support server](https://discord.gg/gt2FWER)."
+            );
         }
 
         GuildTransformer transformer = GuildController.fetchGuild(avaire, context.getMessage());
         if (transformer == null) {
-            return sendErrorMessage(context, "An error occurred while loading the server settings, please try again, if the problem continues please report this to one of my developers on the [AvaIre support server](https://discord.gg/gt2FWER).");
+            return sendErrorMessage(context,
+                "An error occurred while loading the server settings, please try again, if the problem continues please report this to one of my developers on the [AvaIre support server](https://discord.gg/gt2FWER)."
+            );
         }
 
         if (args.length == 0 && playlists.isEmpty()) {
@@ -121,7 +126,7 @@ public class PlaylistCommand extends Command {
             context.makeWarning("There are no playlist called `:playlist`, you can create the playlist by using the\n`:command` command")
                 .set("command", generateCommandTrigger(context.getMessage()) + " <name> create")
                 .set("playlist", args[0])
-                .queue();
+                .queue(message -> message.delete().queueAfter(1, TimeUnit.MINUTES));
 
             return false;
         }
@@ -170,7 +175,7 @@ public class PlaylistCommand extends Command {
         context.makeInfo("This server does not have any music playlists yet, you can create one with\n`:command` to get started")
             .set("command", generateCommandTrigger(context.getMessage()) + " <name> create")
             .setTitle(":musical_note: Music Playlists")
-            .queue();
+            .queue(message -> message.delete().queueAfter(1, TimeUnit.MINUTES));
 
         return false;
     }

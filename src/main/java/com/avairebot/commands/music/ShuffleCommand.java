@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class ShuffleCommand extends Command {
 
@@ -60,7 +61,7 @@ public class ShuffleCommand extends Command {
 
         context.makeSuccess("**:amount** songs has been shuffled in the music queue.")
             .set("amount", NumberUtil.formatNicely(queue.size()))
-            .queue();
+            .queue(message -> message.delete().queueAfter(5, TimeUnit.MINUTES));
 
         return true;
     }

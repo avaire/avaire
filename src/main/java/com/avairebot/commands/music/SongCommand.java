@@ -13,6 +13,7 @@ import com.avairebot.utilities.NumberUtil;
 import lavalink.client.player.IPlayer;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 public class SongCommand extends Command {
 
@@ -82,7 +83,8 @@ public class SongCommand extends Command {
             context.makeSuccess(String.format("%s\n\n%s",
                 String.join("\n", messages),
                 paginator.generateFooter(generateCommandTrigger(context.getMessage()))
-            )).setTitle("Songs in Queue").queue();
+            )).setTitle("Songs in Queue")
+                .queue(message -> message.delete().queueAfter(3, TimeUnit.MINUTES));
 
             return true;
         }
@@ -103,7 +105,7 @@ public class SongCommand extends Command {
             ));
         }
 
-        queueMessage.queue();
+        queueMessage.queue(message -> message.delete().queueAfter(3, TimeUnit.MINUTES));
 
         return true;
     }
