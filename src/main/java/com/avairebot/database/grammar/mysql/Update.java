@@ -63,12 +63,6 @@ public class Update extends UpdateGrammar {
                     continue;
                 }
 
-                if (isNumeric(value)) {
-                    addPart(String.format("%s = %s, ", formatKey, value));
-
-                    continue;
-                }
-
                 addPart(String.format("%s = '%s', ", formatKey, value.replaceAll("'", "\'")));
             }
 
