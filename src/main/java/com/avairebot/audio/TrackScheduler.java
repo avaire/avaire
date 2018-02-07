@@ -11,10 +11,7 @@ import lavalink.client.player.event.AudioEventAdapterWrapped;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.User;
 
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.*;
 
 /**
  * This class schedules tracks for the audio player. It contains the queue of tracks.
@@ -167,7 +164,9 @@ public class TrackScheduler extends AudioEventAdapterWrapped {
     }
 
     public void handleEndOfQueue(Message message) {
-        MessageFactory.makeSuccess(message, "Queue has ended, leaving voice.").queue();
+        MessageFactory.makeSuccess(message, "Queue has ended, leaving voice.").queue(queueMessage -> {
+            queueMessage.delete().queueAfter(45, TimeUnit.SECONDS);
+        });
 
         LavalinkManager.LavalinkManagerHolder.LAVALINK.closeConnection(message.getGuild());
 
