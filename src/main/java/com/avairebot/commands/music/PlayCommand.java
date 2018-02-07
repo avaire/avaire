@@ -173,8 +173,8 @@ public class PlayCommand extends Command {
 
     private Consumer<TrackResponse> musicSuccess(final Message message, final boolean finalShouldLeaveMessage) {
         return (TrackResponse response) -> {
-            if (!finalShouldLeaveMessage && message.getGuild().getSelfMember().hasPermission(message.getTextChannel(), Permission.MESSAGE_MANAGE)) {
-                message.delete().reason("Song request, removing song to cleanup chat").queue();
+            if (!finalShouldLeaveMessage && canDeleteMessage(message)) {
+                message.delete().reason("Song request, removing song to cleanup chat").queue(null, null);
             }
 
             if (response.getMusicManager().getPlayer().isPaused()) {
@@ -186,6 +186,11 @@ public class PlayCommand extends Command {
                 else sendTrackResponse(message, response);
             }
         };
+    }
+
+    private boolean canDeleteMessage(Message message) {
+        return message.getGuild().getSelfMember().hasPermission(Permission.MESSAGE_MANAGE)
+            && message.getGuild().getSelfMember().hasPermission(message.getTextChannel(), Permission.MESSAGE_MANAGE);
     }
 
     private Consumer<Throwable> musicFailure(final Message message) {
