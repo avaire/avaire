@@ -26,6 +26,8 @@ public class RequestCommandPrefix extends Intent {
     public void onIntent(Message message, AIResponse response) {
         List<String> prefixes = new ArrayList<>();
         for (Category category : CategoryHandler.getValues()) {
+            if (category.isGlobal()) continue;
+
             prefixes.add(
                 String.format("`%s` %s", category.getPrefix(message), category.getName())
             );

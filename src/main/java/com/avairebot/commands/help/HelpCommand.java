@@ -182,6 +182,7 @@ public class HelpCommand extends Command {
         boolean isBotAdmin = avaire.getConfig().getStringList("botAccess").contains(message.getAuthor().getId());
 
         return CategoryHandler.getValues().stream()
+            .filter(category -> !category.isGlobal())
             .map(Category::getName)
             .sorted()
             .filter(category -> isBotAdmin || !category.equalsIgnoreCase("System"))

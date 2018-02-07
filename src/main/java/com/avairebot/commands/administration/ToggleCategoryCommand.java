@@ -75,7 +75,7 @@ public class ToggleCategoryCommand extends Command {
         }
 
         Category category = CategoryHandler.fromLazyName(args[0]);
-        if (category == null) {
+        if (category == null || category.isGlobal()) {
             return sendErrorMessage(context, "Invalid category given, `%s` is not a valid category", args[0]);
         }
 

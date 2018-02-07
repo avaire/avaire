@@ -69,6 +69,8 @@ public class CategoriesCommand extends Command {
 
         List<String> items = new ArrayList<>();
         for (Category category : CategoryHandler.getValues()) {
+            if (category.isGlobal()) continue;
+
             if (!transformer.isCategoryEnabledGlobally(category)) {
                 items.add(DISABLE_GLOBALLY + category.getName());
                 continue;
