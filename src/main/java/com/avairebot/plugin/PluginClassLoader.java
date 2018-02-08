@@ -17,7 +17,7 @@ public class PluginClassLoader extends URLClassLoader {
     private final File dataFolder;
     private final File file;
 
-    private final Map<String, Class<?>> classes = new ConcurrentHashMap();
+    private final ConcurrentHashMap classes = new ConcurrentHashMap();
 
     PluginClassLoader(PluginLoader loader, ClassLoader parent, File dataFolder, File file) throws InvalidPluginException, MalformedURLException {
         super(new URL[]{file.toURI().toURL()}, parent);

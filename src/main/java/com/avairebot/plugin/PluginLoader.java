@@ -1,21 +1,23 @@
 package com.avairebot.plugin;
 
 import com.avairebot.AvaIre;
+import com.avairebot.config.YamlConfiguration;
 import com.avairebot.exceptions.InvalidPluginException;
-import com.google.gson.reflect.TypeToken;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
-import java.io.*;
-import java.util.HashMap;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 public class PluginLoader {
 
     private final File file;
-    private final HashMap<String, String> items;
     private final PluginClassLoader classLoader;
+    private final YamlConfiguration configuration;
 
     PluginLoader(File file, File dataFolder) throws InvalidPluginException, IOException {
         this.file = file;
@@ -26,47 +28,25 @@ public class PluginLoader {
 
         JarFile jarFile = new JarFile(file);
 
-        JarEntry jarEntry = jarFile.getJarEntry("plugin.json");
+        JarEntry jarEntry = jarFile.getJarEntry("plugin.yml");
         if (jarEntry == null) {
-            throw new InvalidPluginException(file.getPath() + " does not contain plugin.json", new FileNotFoundException());
+            throw new InvalidPluginException(file.getPath() + " does not contain plugin.yml", new FileNotFoundException());
         }
 
-        BufferedReader br = null;
-        StringBuilder sb = new StringBuilder();
-
-        String line;
-        try {
-
-            br = new BufferedReader(new InputStreamReader(jarFile.getInputStream(jarEntry)));
-            while ((line = br.readLine()) != null) {
-                sb.append(line);
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (br != null) {
-                try {
-                    br.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
-        items = AvaIre.GSON.fromJson(sb.toString(),
-            new TypeToken<HashMap<String, String>>() {
-            }.getType());
+        configuration = YamlConfiguration.loadConfiguration(
+            new InputStreamReader(jarFile.getInputStream(jarEntry))
+        );
+        checkIfPluginYamlIsValid();
 
         classLoader = new PluginClassLoader(this, AvaIre.class.getClassLoader(), dataFolder, file);
     }
 
     public String getName() {
-        return items.get("name");
+        return configuration.getString("name");
     }
 
     public String getMain() {
-        return items.get("main");
+        return configuration.getString("main");
     }
 
     public void invokePlugin(AvaIre avaire) {
@@ -79,6 +59,16 @@ public class PluginLoader {
             for (ListenerAdapter adapter : classLoader.getPlugin().getEventListeners()) {
                 jda.addEventListener(adapter);
             }
+        }
+    }
+
+    private void checkIfPluginYamlIsValid() throws InvalidPluginException {
+        if (!configuration.contains("name")) {
+            throw new InvalidPluginException("Invalid plugin.yml file, the plugin must have a name value at root!");
+        }
+
+        if (!configuration.contains("main")) {
+            throw new InvalidPluginException("Invalid plugin.yml file, the plugin must have a main value at root!");
         }
     }
 }
