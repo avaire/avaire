@@ -4,6 +4,7 @@ import com.avairebot.AvaIre;
 import com.avairebot.cache.CacheManager;
 import com.avairebot.commands.CategoryHandler;
 import com.avairebot.commands.CommandHandler;
+import com.avairebot.config.Configuration;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.contracts.database.migrations.Migration;
 import com.avairebot.database.DatabaseManager;
@@ -13,6 +14,8 @@ import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -22,7 +25,11 @@ public abstract class JavaPlugin {
     private final Set<ListenerAdapter> eventListeners = new HashSet<>();
 
     private Logger logger = LoggerFactory.getLogger(JavaPlugin.class);
+
     private AvaIre avaire;
+    private PluginLoader loader;
+
+    private Configuration config = null;
 
     /**
      * Initializes the plugin by setting the global avaire
@@ -30,8 +37,9 @@ public abstract class JavaPlugin {
      *
      * @param avaire The global avaire application instance.
      */
-    final void init(AvaIre avaire) {
+    final void init(AvaIre avaire, PluginLoader loader) {
         this.avaire = avaire;
+        this.loader = loader;
         this.logger = LoggerFactory.getLogger(this.getClass().getCanonicalName());
     }
 
@@ -128,6 +136,24 @@ public abstract class JavaPlugin {
         return avaire.getDatabase();
     }
 
+    public Configuration getConfig() {
+        if (config == null) {
+            try {
+                config = new Configuration(
+                    this,
+                    new File(
+                        loader.getDataFolder(),
+                        loader.getName()
+                    ),
+                    "config.yml"
+                );
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return config;
+    }
+
     /**
      * Returns the plugin logger associated with the application logger. The returned
      * logger automatically tags all log messages with the plugin's name.
@@ -136,6 +162,10 @@ public abstract class JavaPlugin {
      */
     public Logger getLogger() {
         return logger;
+    }
+
+    public PluginLoader getLoader() {
+        return loader;
     }
 
     /**

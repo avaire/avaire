@@ -19,25 +19,24 @@ public class Configuration implements ConfigurationSection {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(Configuration.class);
 
+    private final JavaPlugin plugin;
     private final ClassLoader classLoader;
     private final String fileName;
     private File folder;
     private File configFile;
     private FileConfiguration fileConfiguration;
 
-    public Configuration(JavaPlugin plugin, File folder, String fileName) {
+    public Configuration(JavaPlugin plugin, File folder, String fileName) throws IOException {
         this.fileName = fileName;
         this.folder = folder;
         this.configFile = new File(folder, fileName);
 
-        if (!configFile.exists()) {
-            getConfig().options().copyDefaults(true);
-            saveConfig();
-        }
+        this.fileConfiguration = YamlConfiguration.loadConfiguration(
+            new InputStreamReader(plugin.getLoader().getResource(fileName))
+        );
 
-        this.fileConfiguration = YamlConfiguration.loadConfiguration(configFile);
-
-        classLoader = plugin.getClass().getClassLoader();
+        this.plugin = plugin;
+        this.classLoader = null;
     }
 
     public Configuration(AvaIre plugin, File folder, String fileName) {
@@ -48,6 +47,7 @@ public class Configuration implements ConfigurationSection {
         this.fileConfiguration = YamlConfiguration.loadConfiguration(configFile);
 
         classLoader = plugin.getClass().getClassLoader();
+        this.plugin = null;
     }
 
     public FileConfiguration getConfig() {
@@ -142,7 +142,9 @@ public class Configuration implements ConfigurationSection {
         }
 
         try {
-            URL url = classLoader.getResource(filename);
+            URL url = classLoader == null ?
+                plugin.getLoader().getResourceAsURL(fileName) :
+                classLoader.getResource(filename);
 
             if (url == null) {
                 return null;

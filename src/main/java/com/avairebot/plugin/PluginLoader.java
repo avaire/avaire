@@ -6,36 +6,30 @@ import com.avairebot.exceptions.InvalidPluginException;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.net.URL;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 public class PluginLoader {
 
     private final File file;
+    private final JarFile jarFile;
+    private final File dataFolder;
     private final PluginClassLoader classLoader;
     private final YamlConfiguration configuration;
 
     PluginLoader(File file, File dataFolder) throws InvalidPluginException, IOException {
         this.file = file;
+        this.dataFolder = dataFolder;
 
         if (!file.exists()) {
             throw new InvalidPluginException(file.getPath() + " does not exists");
         }
 
-        JarFile jarFile = new JarFile(file);
+        jarFile = new JarFile(file);
 
-        JarEntry jarEntry = jarFile.getJarEntry("plugin.yml");
-        if (jarEntry == null) {
-            throw new InvalidPluginException(file.getPath() + " does not contain plugin.yml", new FileNotFoundException());
-        }
-
-        configuration = YamlConfiguration.loadConfiguration(
-            new InputStreamReader(jarFile.getInputStream(jarEntry))
-        );
+        configuration = YamlConfiguration.loadConfiguration(new InputStreamReader(getResource("plugin.yml")));
         checkIfPluginYamlIsValid();
 
         classLoader = new PluginClassLoader(this, AvaIre.class.getClassLoader(), dataFolder, file);
@@ -49,8 +43,12 @@ public class PluginLoader {
         return configuration.getString("main");
     }
 
+    public File getDataFolder() {
+        return dataFolder;
+    }
+
     public void invokePlugin(AvaIre avaire) {
-        classLoader.getPlugin().init(avaire);
+        classLoader.getPlugin().init(avaire, this);
         classLoader.getPlugin().onEnable();
     }
 
@@ -62,6 +60,22 @@ public class PluginLoader {
         }
     }
 
+    public InputStream getResource(String resourceName) throws IOException {
+        JarEntry jarEntry = jarFile.getJarEntry(resourceName);
+        if (jarEntry == null) {
+            throw new FileNotFoundException("No resource found called " + resourceName);
+        }
+        return jarFile.getInputStream(jarEntry);
+    }
+
+    public URL getResourceAsURL(String resourceName) throws IOException {
+        JarEntry jarEntry = jarFile.getJarEntry(resourceName);
+        if (jarEntry == null) {
+            throw new FileNotFoundException("No resource found called " + resourceName);
+        }
+        return new URL("jar:" + file.toURI().toString() + "!/" + resourceName);
+    }
+
     private void checkIfPluginYamlIsValid() throws InvalidPluginException {
         if (!configuration.contains("name")) {
             throw new InvalidPluginException("Invalid plugin.yml file, the plugin must have a name value at root!");
@@ -71,4 +85,5 @@ public class PluginLoader {
             throw new InvalidPluginException("Invalid plugin.yml file, the plugin must have a main value at root!");
         }
     }
+
 }

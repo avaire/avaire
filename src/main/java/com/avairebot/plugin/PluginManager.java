@@ -35,6 +35,8 @@ public class PluginManager {
         }
 
         for (File file : pluginsFolder.listFiles()) {
+            if (file.isDirectory() || file.isHidden()) continue;
+
             try {
                 LOGGER.debug("Attempting to load plugin: " + file.toString());
                 PluginLoader pluginLoader = new PluginLoader(file, pluginsFolder);
