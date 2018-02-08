@@ -49,7 +49,7 @@ public class SayCommand extends Command {
             return sendErrorMessage(context, "Missing `message` argument, the `message` argument is required!");
         }
 
-        context.getMessageChannel().sendMessage(context.getContentStripped()).queue();
+        context.getMessageChannel().sendMessage(context.getContentRaw()).queue();
 
         if (context.isGuildMessage()) {
             context.delete().reason("AvaIre say command usage").queue();

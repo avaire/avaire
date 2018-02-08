@@ -45,7 +45,7 @@ public class RepeatCommand extends Command {
             return sendErrorMessage(context, "Missing `message` argument, the `message` argument is required!");
         }
 
-        context.getMessageChannel().sendMessage(context.getContentStripped()).queue();
+        context.getMessageChannel().sendMessage(context.getContentRaw()).queue();
 
         return true;
     }
