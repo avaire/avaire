@@ -1,18 +1,19 @@
 package com.avairebot.utilities;
 
+import com.avairebot.commands.CommandMessage;
 import net.dv8tion.jda.core.entities.*;
 
 import java.util.List;
 
 public class MentionableUtil {
 
-    public static User getUser(Message message, String[] args) {
-        return getUser(message, args, 0);
+    public static User getUser(CommandMessage context, String[] args) {
+        return getUser(context, args, 0);
     }
 
-    public static User getUser(Message message, String[] args, int index) {
-        if (!message.getMentionedUsers().isEmpty()) {
-            return message.getMentionedUsers().get(0);
+    public static User getUser(CommandMessage context, String[] args, int index) {
+        if (!context.getMentionedUsers().isEmpty()) {
+            return context.getMentionedUsers().get(0);
         }
 
         if (args.length <= index) {
@@ -22,13 +23,13 @@ public class MentionableUtil {
         String part = args[index].trim();
 
         if (NumberUtil.isNumeric(part)) {
-            Member member = message.getGuild().getMemberById(part);
+            Member member = context.getGuild().getMemberById(part);
             return member == null ? null : member.getUser();
         }
 
         String[] parts = part.split("#");
         if (parts.length != 2) {
-            List<Member> effectiveName = message.getGuild().getMembersByEffectiveName(parts[0], true);
+            List<Member> effectiveName = context.getGuild().getMembersByEffectiveName(parts[0], true);
 
             if (effectiveName.isEmpty()) {
                 return null;
@@ -36,7 +37,7 @@ public class MentionableUtil {
             return effectiveName.get(0).getUser();
         }
 
-        List<Member> members = message.getGuild().getMembersByName(parts[0], true);
+        List<Member> members = context.getGuild().getMembersByName(parts[0], true);
         for (Member member : members) {
             if (member.getUser().getDiscriminator().equals(parts[1])) {
                 return member.getUser();

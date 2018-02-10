@@ -42,7 +42,7 @@ public class UserInfoCommand extends Command {
     public boolean onCommand(CommandMessage context, String[] args) {
         Member member = context.getMember();
         if (args.length > 0) {
-            User user = MentionableUtil.getUser(context.getMessage(), args);
+            User user = MentionableUtil.getUser(context, args);
             if (user == null) {
                 return sendErrorMessage(context, "I found no users with the name or ID of `%s`", args[0]);
             }

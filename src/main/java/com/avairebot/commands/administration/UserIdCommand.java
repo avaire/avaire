@@ -49,7 +49,7 @@ public class UserIdCommand extends Command {
     public boolean onCommand(CommandMessage context, String[] args) {
         User user = context.getAuthor();
         if (args.length > 0) {
-            user = MentionableUtil.getUser(context.getMessage(), args);
+            user = MentionableUtil.getUser(context, args);
         }
 
         if (user == null) {

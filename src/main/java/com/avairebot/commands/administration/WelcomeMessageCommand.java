@@ -67,7 +67,7 @@ public class WelcomeMessageCommand extends Command {
         }
 
         if (args.length == 1) {
-            User user = MentionableUtil.getUser(context.getMessage(), args, 0);
+            User user = MentionableUtil.getUser(context, args, 0);
 
             if (user != null) {
                 return sendExampleMessage(context, user, channelTransformer);
