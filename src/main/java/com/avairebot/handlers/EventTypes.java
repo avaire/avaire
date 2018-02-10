@@ -9,6 +9,7 @@ public enum EventTypes {
     GuildMemberLeaveEvent(GuildMemberLeave.class),
     GuildRoleDeleteEvent(GuildRoleDelete.class),
     GuildRoleUpdateEvent(GuildRoleUpdate.class),
+    GuildUpdateNameEvent(GuildUpdateName.class),
     MessageReceivedEvent(MessageCreate.class);
 
     private final Class instance;
