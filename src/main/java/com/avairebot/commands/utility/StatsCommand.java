@@ -41,7 +41,7 @@ public class StatsCommand extends Command {
 
     @Override
     public String getDescription() {
-        return "Tells you information about the bot itself.";
+        return "Displays information about Ava and some related stats.";
     }
 
     @Override

@@ -25,7 +25,7 @@ public class VersionCommand extends Command {
 
     @Override
     public String getDescription() {
-        return "Displays the current version of the bot and how many versions behind it is (if any).";
+        return "Displays the current version of Ava that is running. If the version is outdated the new version will be shown as well as what type of changes have been made.";
     }
 
     @Override

@@ -36,7 +36,7 @@ public class LeaderboardCommand extends Command {
 
     @Override
     public String getDescription() {
-        return "Shows the top 100 users, their rank, level, and xp for the current server.";
+        return "Displays the server's level leaderboard with the user's name, rank, level and XP. The response is paginated to show 10 users per page.";
     }
 
     @Override

@@ -30,7 +30,7 @@ public class UserInfoCommand extends Command {
 
     @Override
     public String getDescription() {
-        return "Shows information about the user tat ran the command, or the mentioned user.";
+        return "Shows information about the user that ran the command, or the mentioned user. This includes the users username, ID, roles, the date they joined the server, the date they created their account, and how many servers they're in (That Ava knows about).";
     }
 
     @Override

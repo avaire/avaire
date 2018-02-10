@@ -41,7 +41,7 @@ public class DuckDuckGoCommand extends ThreadCommand {
 
     @Override
     public String getDescription() {
-        return "Search [DuckDuckGo.com](https://duckduckgo.com/) for whatever you'd like.";
+        return "Searches [DuckDuckGo.com](https://duckduckgo.com/) with the given query and returns the first six results, if the command is used in a channel with NSFW disabled, all NSFW search results will be removed from the results.";
     }
 
     @Override

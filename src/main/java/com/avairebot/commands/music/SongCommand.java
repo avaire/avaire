@@ -12,7 +12,10 @@ import com.avairebot.contracts.commands.Command;
 import com.avairebot.utilities.NumberUtil;
 import lavalink.client.player.IPlayer;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class SongCommand extends Command {
@@ -28,12 +31,15 @@ public class SongCommand extends Command {
 
     @Override
     public String getDescription() {
-        return "Displays information about the song currently playing";
+        return "Returns the song that is playing right now and some attached information. This includes who requested it, how much of the song is left and the volume the song is playing at plus the rest of the songs currently in queue.";
     }
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`:command` - Shows info about the song");
+        return Arrays.asList(
+            "`:command` - Shows info about the song currently playing and the queue.",
+            "`:command [page]` - Shows the songs in the given page in the queue."
+        );
     }
 
     @Override
