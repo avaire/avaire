@@ -51,14 +51,14 @@ public class HelpCommand extends Command {
 
         CommandContainer command = getCommand(context, args[0]);
         if (command == null) {
-            return showCategoryCommands(context, CategoryHandler.fromLazyName(args[0]), args[0]);
+            return showCategoryCommands(context, CategoryHandler.fromLazyName(args[0], false), args[0]);
         }
 
         return showCommand(context, command, args[0]);
     }
 
     private boolean showCategories(CommandMessage context) {
-        Category category = CategoryHandler.random();
+        Category category = CategoryHandler.random(false);
 
         String note = String.format(":information_source: Type `:help <category>` to get a list of commands in that category.\nExample: `:help %s` or `:help %s`",
             category.getName().toLowerCase(),

@@ -31,9 +31,17 @@ public class CategoryHandler {
     }
 
     public static Category fromLazyName(@Nonnull String name) {
+        return fromLazyName(name, false);
+    }
+
+    public static Category fromLazyName(@Nonnull String name, boolean includeGlobals) {
         name = name.toLowerCase();
 
         for (Category category : getValues()) {
+            if (!includeGlobals && category.isGlobal()) {
+                continue;
+            }
+
             if (category.getName().toLowerCase().startsWith(name)) {
                 return category;
             }
@@ -60,6 +68,12 @@ public class CategoryHandler {
 
     public static Category random() {
         return VALUES.get(RandomUtil.getInteger(VALUES.size()));
+    }
+
+    public static Category random(boolean includeGlobals) {
+        return VALUES.stream()
+            .filter(category -> !category.isGlobal())
+            .findAny().orElseGet(CategoryHandler::random);
     }
 
     public static List<Category> getValues() {
