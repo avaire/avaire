@@ -75,7 +75,7 @@ public class ProcessCommand extends Middleware {
 
             timer = Metrics.executionTime.labels(stack.getCommand().getClass().getSimpleName()).startTimer();
 
-            return runCommand(stack, new CommandMessage(message, stack.isMentionableCommand(), null), commandArguments);
+            return runCommand(stack, new CommandMessage(message, stack.isMentionableCommand(), new String[0]), commandArguments);
         } catch (Exception ex) {
             Metrics.commandExceptions.labels(ex.getClass().getSimpleName()).inc();
 

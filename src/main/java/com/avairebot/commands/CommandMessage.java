@@ -20,9 +20,10 @@ public class CommandMessage {
     public final Message message;
 
     private final boolean mentionableCommand;
+    private final String aliasArguments;
 
     public CommandMessage(Message message) {
-        this(message, false, null);
+        this(message, false, new String[0]);
     }
 
     public CommandMessage(Message message, boolean mentionableCommand, String[] aliasArguments) {
@@ -33,21 +34,8 @@ public class CommandMessage {
         this.channel = message.getTextChannel();
 
         this.mentionableCommand = mentionableCommand;
-
-        String rawContent = prepareRawContent(message.getContentRaw(), aliasArguments != null);
-        if (aliasArguments != null) {
-            rawContent = ":alias " + String.join(" ", aliasArguments) + " " + rawContent;
-        }
-    }
-
-    private String prepareRawContent(String content, boolean isAliasCommand) {
-        String[] split = content.split(" ");
-
-        if (!isMentionableCommand()) {
-            if (!isAliasCommand) return content;
-            return String.join(" ", Arrays.copyOfRange(split, 1, split.length));
-        }
-        return String.join(" ", Arrays.copyOfRange(split, isAliasCommand ? 2 : 1, split.length));
+        this.aliasArguments = aliasArguments.length == 0 ?
+            null : String.join(" ", aliasArguments);
     }
 
     public AuditableRestAction<Void> delete() {
@@ -69,7 +57,9 @@ public class CommandMessage {
     public String getContentRaw() {
         String[] parts = message.getContentRaw().split(" ");
 
-        return String.join(" ", Arrays.copyOfRange(parts, isMentionableCommand() ? 2 : 1, parts.length));
+        return (aliasArguments == null ? "" : aliasArguments) + String.join(" ",
+            Arrays.copyOfRange(parts, isMentionableCommand() ? 2 : 1, parts.length)
+        );
     }
 
     private String parseContent(String content) {
