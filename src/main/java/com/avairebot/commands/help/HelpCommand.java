@@ -6,6 +6,7 @@ import com.avairebot.commands.*;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.factories.MessageFactory;
 import net.dv8tion.jda.core.EmbedBuilder;
+import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.entities.Message;
 
 import java.util.Arrays;
@@ -89,54 +90,38 @@ public class HelpCommand extends Command {
             return false;
         }
 
-        context.getMessageChannel().sendMessage(String.format(
-            ":page_with_curl: **%s** ```css\n%s```\n",
-            "List of Commands",
-            CommandHandler.getCommands().stream()
-                .filter(commandContainer -> {
-                    if (commandContainer.getPriority().equals(CommandPriority.HIDDEN)) {
-                        return false;
-                    }
-
-                    if (!isBotAdmin && commandContainer.getPriority().equals(CommandPriority.SYSTEM)) {
-                        return false;
-                    }
-
-                    return commandContainer.getCategory().equals(category);
-                })
-                .map(container -> {
-                    String trigger = container.getCommand().generateCommandTrigger(context.getMessage());
-
-                    for (int i = trigger.length(); i < 16; i++) {
-                        trigger += " ";
-                    }
-
-                    List<String> triggers = container.getCommand().getTriggers();
-                    if (triggers.size() == 1) {
-                        return trigger + "[]";
-                    }
-
-                    String prefix = container.getCommand().generateCommandPrefix(context.getMessage());
-                    String[] aliases = new String[triggers.size() - 1];
-                    for (int i = 1; i < triggers.size(); i++) {
-                        aliases[i - 1] = prefix + triggers.get(i);
-                    }
-                    return String.format("%s[%s]", trigger, String.join(", ", aliases));
-                })
-                .sorted()
-                .collect(Collectors.joining("\n"))
-        )).queue(sentMessage -> MessageFactory.makeInfo(sentMessage,
-            "**Type `:help <command>` to see the help for that specified command.**\nExample: `:help :command`"
-                .replaceAll(":help", generateCommandTrigger(context.getMessage()))
-                .replace(":command", CommandHandler.getCommands().stream()
-                    .filter(commandContainer -> commandContainer.getCategory().equals(category))
-                    .collect(Collectors.collectingAndThen(Collectors.toList(), collected -> {
-                        Collections.shuffle(collected);
-                        return collected.stream();
-                    }))
-                    .findFirst().get().getCommand().generateCommandTrigger(context.getMessage())
+        context.getMessageChannel().sendMessage(
+            new MessageBuilder()
+                // Builds and sets the content of the message, this is all the
+                // commands for the given category the command was used for.
+                .setContent(String.format(
+                    ":page_with_curl: **%s** ```css\n%s```\n",
+                    "List of Commands",
+                    CommandHandler.getCommands().stream()
+                        .filter(container -> filterCommandContainer(container, category, isBotAdmin))
+                        .map(container -> mapCommandContainer(context, container))
+                        .sorted()
+                        .collect(Collectors.joining("\n"))
+                    )
                 )
-        ).queue());
+                // Builds and sets the embedded tip/note, giving people an example
+                // of how get information for the specific command.
+                .setEmbed(MessageFactory.createEmbeddedBuilder()
+                    .setColor(MessageType.INFO.getColor())
+                    .setDescription(
+                        "**Type `:help <command>` to see the help for that specified command.**\nExample: `:help :command`"
+                            .replaceAll(":help", generateCommandTrigger(context.getMessage()))
+                            .replace(":command", CommandHandler.getCommands().stream()
+                                .filter(commandContainer -> commandContainer.getCategory().equals(category))
+                                .collect(Collectors.collectingAndThen(Collectors.toList(), collected -> {
+                                    Collections.shuffle(collected);
+                                    return collected.stream();
+                                }))
+                                .findFirst().get().getCommand().getTriggers().get(0)
+                            ))
+                    .build()
+                ).build()
+        ).queue();
 
         return true;
     }
@@ -187,5 +172,37 @@ public class HelpCommand extends Command {
             .sorted()
             .filter(category -> isBotAdmin || !category.equalsIgnoreCase("System"))
             .collect(Collectors.joining("\n• ", "• ", "\n\n"));
+    }
+
+    private boolean filterCommandContainer(CommandContainer container, Category category, boolean isBotAdmin) {
+        if (container.getPriority().equals(CommandPriority.HIDDEN)) {
+            return false;
+        }
+
+        if (!isBotAdmin && container.getPriority().equals(CommandPriority.SYSTEM)) {
+            return false;
+        }
+
+        return container.getCategory().equals(category);
+    }
+
+    private String mapCommandContainer(CommandMessage context, CommandContainer container) {
+        StringBuilder trigger = new StringBuilder(container.getCommand().generateCommandTrigger(context.getMessage()));
+
+        for (int i = trigger.length(); i < 16; i++) {
+            trigger.append(" ");
+        }
+
+        List<String> triggers = container.getCommand().getTriggers();
+        if (triggers.size() == 1) {
+            return trigger + "[]";
+        }
+
+        String prefix = container.getCommand().generateCommandPrefix(context.getMessage());
+        String[] aliases = new String[triggers.size() - 1];
+        for (int i = 1; i < triggers.size(); i++) {
+            aliases[i - 1] = prefix + triggers.get(i);
+        }
+        return String.format("%s[%s]", trigger.toString(), String.join(", ", aliases));
     }
 }
