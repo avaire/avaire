@@ -16,6 +16,7 @@ import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.database.transformers.PlayerTransformer;
 import com.avairebot.factories.MessageFactory;
 import com.avairebot.utilities.LevelUtil;
+import com.avairebot.utilities.NumberUtil;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.User;
 
@@ -116,9 +117,9 @@ public class RankCommand extends Command {
                 .setAuthor(author.getName(), "https://avairebot.com/leaderboard/" + context.getGuild().getId(), author.getAvatarUrl())
                 .setFooter("https://avairebot.com/leaderboard/" + context.getGuild().getId())
                 .addField("Rank", score, true)
-                .addField("Level", "" + level, true)
+                .addField("Level", NumberUtil.formatNicely(level), true)
                 .addField("Experience", (experience - 100 < 0 ? "0" : String.format("%s (Total: %s)",
-                    experience - 100, properties.getTotal()
+                    NumberUtil.formatNicely(experience - 100), NumberUtil.formatNicely(properties.getTotal())
                 )), true)
                 .addField("Experience needed to next Level", String.format("[%s] %s%s",
                     levelBar, new DecimalFormat("#.##").format(percentage), '%'
