@@ -2,7 +2,7 @@ package com.avairebot.metrics.routes;
 
 import com.avairebot.contracts.metrics.SparkRoute;
 import com.avairebot.metrics.Metrics;
-import com.avairebot.shard.AvaireShard;
+import net.dv8tion.jda.core.JDA;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import spark.Request;
@@ -19,13 +19,13 @@ public class GetStats extends SparkRoute {
         JSONObject root = new JSONObject();
         JSONArray shards = new JSONArray();
 
-        for (AvaireShard shard : metrics.getAvaire().getShards()) {
+        for (JDA shard : metrics.getAvaire().getShardManager().getShards()) {
             JSONObject stats = new JSONObject();
-            stats.put("id", shard.getShardId())
-                .put("guilds", shard.getJDA().getGuilds().size())
-                .put("users", shard.getJDA().getUsers().size())
-                .put("status", shard.getJDA().getStatus())
-                .put("channels", (shard.getJDA().getTextChannels().size() + shard.getJDA().getVoiceChannels().size()));
+            stats.put("id", shard.getShardInfo().getShardId())
+                .put("guilds", shard.getGuilds().size())
+                .put("users", shard.getUsers().size())
+                .put("status", shard.getStatus())
+                .put("channels", (shard.getTextChannels().size() + shard.getVoiceChannels().size()));
 
             shards.put(stats);
         }

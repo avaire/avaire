@@ -6,7 +6,7 @@ import com.avairebot.audio.GuildMusicManager;
 import com.avairebot.audio.LavalinkManager;
 import com.avairebot.contracts.scheduler.Job;
 import com.avairebot.factories.MessageFactory;
-import com.avairebot.shard.AvaireShard;
+import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.VoiceChannel;
 import net.dv8tion.jda.core.managers.AudioManager;
@@ -32,8 +32,8 @@ public class MusicActivityJob extends Job {
             return;
         }
 
-        for (AvaireShard shard : avaire.getShards()) {
-            Iterator<AudioManager> iterator = shard.getJDA().getAudioManagers().iterator();
+        for (JDA shard : avaire.getShardManager().getShards()) {
+            Iterator<AudioManager> iterator = shard.getAudioManagers().iterator();
 
             try {
                 while (iterator.hasNext()) {

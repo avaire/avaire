@@ -10,9 +10,9 @@ import com.avairebot.commands.CommandHandler;
 import com.avairebot.config.Configuration;
 import com.avairebot.contracts.ai.Intent;
 import com.avairebot.contracts.commands.Command;
+import com.avairebot.contracts.handlers.EventHandler;
 import com.avairebot.contracts.reflection.Reflectionable;
 import com.avairebot.contracts.scheduler.Job;
-import com.avairebot.contracts.shard.Shardable;
 import com.avairebot.database.DatabaseManager;
 import com.avairebot.database.migrate.migrations.*;
 import com.avairebot.database.serializer.PlaylistSongSerializer;
@@ -21,12 +21,11 @@ import com.avairebot.exceptions.InvalidApplicationEnvironmentException;
 import com.avairebot.exceptions.InvalidPluginException;
 import com.avairebot.exceptions.InvalidPluginsPathException;
 import com.avairebot.factories.MessageFactory;
+import com.avairebot.handlers.EventTypes;
 import com.avairebot.metrics.Metrics;
 import com.avairebot.plugin.PluginLoader;
 import com.avairebot.plugin.PluginManager;
 import com.avairebot.scheduler.ScheduleHandler;
-import com.avairebot.shard.AvaireShard;
-import com.avairebot.shard.ConnectQueue;
 import com.avairebot.shard.ShardEntityCounter;
 import com.avairebot.shared.DiscordConstants;
 import com.avairebot.shared.ExitCodes;
@@ -35,12 +34,19 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.sedmelluq.discord.lavaplayer.tools.PlayerLibrary;
 import io.sentry.Sentry;
+import net.dv8tion.jda.bot.sharding.DefaultShardManagerBuilder;
+import net.dv8tion.jda.bot.sharding.ShardManager;
+import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDAInfo;
+import net.dv8tion.jda.core.entities.Game;
 import net.dv8tion.jda.core.entities.SelfUser;
+import net.dv8tion.jda.core.hooks.ListenerAdapter;
+import net.dv8tion.jda.core.utils.SessionControllerAdapter;
 import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.security.auth.login.LoginException;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
@@ -49,7 +55,7 @@ import java.util.Set;
 import java.util.concurrent.ScheduledFuture;
 import java.util.function.Consumer;
 
-public class AvaIre extends Shardable {
+public class AvaIre {
 
     public static final Gson GSON = new GsonBuilder()
         .registerTypeAdapter(
@@ -61,8 +67,6 @@ public class AvaIre extends Shardable {
         .create();
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AvaIre.class);
-    private static final ConnectQueue CONNECT_QUEUE = new ConnectQueue();
-
     private static Environment APPLICATION_ENVIRONMENT;
     private final Settings settings;
     private final Configuration config;
@@ -74,6 +78,8 @@ public class AvaIre extends Shardable {
 
     private Carbon shutdownTime = null;
     private int shutdownCode = ExitCodes.EXIT_CODE_RESTART;
+
+    private ShardManager shardManager = null;
 
     public AvaIre(Settings settings) throws IOException, SQLException, InvalidApplicationEnvironmentException {
         this.settings = settings;
@@ -208,22 +214,12 @@ public class AvaIre extends Shardable {
         LOGGER.info("Creating bot instance and connecting to Discord network");
 
         shardEntityCounter = new ShardEntityCounter(this);
-        if (getSettings().getShardCount() < 1) {
-            SHARDS.add(new AvaireShard(this, 0));
-            return;
-        }
 
-        for (int i = 0; i < getSettings().getShardCount(); i++) {
-            try {
-                SHARDS.add(new AvaireShard(this, i));
-            } catch (Exception ex) {
-                getLogger().error("Caught an exception while starting shard {}!", i, ex);
-                getLogger().error("Exiting program...");
-                System.exit(ExitCodes.EXIT_CODE_ERROR);
-            }
+        try {
+            shardManager = buildShardManager();
+        } catch (LoginException e) {
+            e.printStackTrace();
         }
-
-        getLogger().info(getShards().size() + " shards have been constructed");
     }
 
     public static Logger getLogger() {
@@ -250,8 +246,22 @@ public class AvaIre extends Shardable {
             + "\n";
     }
 
-    public ConnectQueue getConnectQueue() {
-        return CONNECT_QUEUE;
+    /**
+     * Checks if we're ready yet by checking if all the shards are connected and ready to serve events.
+     *
+     * @return <code>True</code> if all shards has connected and are ready, <code>False</code> otherwise.
+     */
+    public boolean areWeReadyYet() {
+        for (JDA shard : getShardManager().getShards()) {
+            if (shard.getStatus() != JDA.Status.CONNECTED) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public ShardManager getShardManager() {
+        return shardManager;
     }
 
     public ShardEntityCounter getShardEntityCounter() {
@@ -259,7 +269,7 @@ public class AvaIre extends Shardable {
     }
 
     public SelfUser getSelfUser() {
-        return getShards().get(0).getJDA().getSelfUser();
+        return getShardManager().getShards().get(0).getSelfUser();
     }
 
     public Settings getSettings() {
@@ -310,8 +320,8 @@ public class AvaIre extends Shardable {
             e.printStackTrace();
         }
 
-        for (AvaireShard shard : getShards()) {
-            shard.getJDA().shutdown();
+        for (JDA shard : getShardManager().getShards()) {
+            shard.shutdown();
         }
 
         for (Map.Entry<String, ScheduledFuture<?>> job : ScheduleHandler.entrySet()) {
@@ -338,6 +348,48 @@ public class AvaIre extends Shardable {
 
     public int getShutdownCode() {
         return shutdownCode;
+    }
+
+    private ShardManager buildShardManager() throws LoginException {
+        DefaultShardManagerBuilder builder = new DefaultShardManagerBuilder()
+            .setSessionController(new SessionControllerAdapter())
+            .setToken(getConfig().getString("discord.token"))
+            .setGame(Game.watching("my code start up..."))
+            .setBulkDeleteSplittingEnabled(false)
+            .setEnableShutdownHook(false)
+            .setAutoReconnect(true)
+            .setAudioEnabled(true)
+            .setContextEnabled(true)
+            .setShardsTotal(settings.getShardCount());
+
+        Class[] eventArguments = new Class[1];
+        eventArguments[0] = AvaIre.class;
+
+        for (EventTypes event : EventTypes.values()) {
+            try {
+                Object instance = event.getInstance().getDeclaredConstructor(eventArguments).newInstance(this);
+
+                if (instance instanceof EventHandler) {
+                    builder.addEventListeners(instance);
+                }
+            } catch (InstantiationException | NoSuchMethodException | InvocationTargetException ex) {
+                getLogger().error("Invalid listener adapter object parsed, failed to create a new instance!", ex);
+            } catch (IllegalAccessException ex) {
+                getLogger().error("An attempt was made to register a event listener called " + event + " but it failed somewhere!", ex);
+            }
+        }
+
+        if (LavalinkManager.LavalinkManagerHolder.LAVALINK.isEnabled()) {
+            builder.addEventListeners(LavalinkManager.LavalinkManagerHolder.LAVALINK);
+        }
+
+        for (PluginLoader plugin : getPluginManager().getPlugins()) {
+            for (ListenerAdapter listener : plugin.getEventListeners()) {
+                builder.addEventListeners(listener);
+            }
+        }
+
+        return builder.build();
     }
 
     private void autoloadPackage(String path, Consumer<Reflectionable> callback) {

@@ -12,6 +12,6 @@ public class Settings {
     }
 
     public int getShardCount() {
-        return shardCount;
+        return shardCount < 1 ? -1 : shardCount;
     }
 }

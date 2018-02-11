@@ -36,7 +36,7 @@ public class LavalinkManager {
         lavalink = new Lavalink(
             Long.toString(avaire.getConfig().getLong("discord.clientId", DiscordConstants.AVAIRE_BOT_ID)),
             avaire.getSettings().getShardCount() < 1 ? 1 : avaire.getSettings().getShardCount(),
-            shardId -> avaire.getShardById(shardId).getJDA()
+            shardId -> avaire.getShardManager().getShardById(shardId)
         );
 
         for (Map<?, ?> node : nodes) {

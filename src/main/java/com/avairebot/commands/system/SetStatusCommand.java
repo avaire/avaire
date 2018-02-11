@@ -3,7 +3,6 @@ package com.avairebot.commands.system;
 import com.avairebot.AvaIre;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.SystemCommand;
-import com.avairebot.shard.AvaireShard;
 import net.dv8tion.jda.core.entities.Game;
 
 import java.util.Arrays;
@@ -57,9 +56,7 @@ public class SetStatusCommand extends SystemCommand {
         }
 
         Game game = parseGame(args);
-        for (AvaireShard shard : avaire.getShards()) {
-            shard.getJDA().getPresence().setGame(game);
-        }
+        avaire.getShardManager().setGame(game);
 
         context.makeSuccess("Changed status to **:type :status**")
             .set("type", getTypeAsString(game.getType()))

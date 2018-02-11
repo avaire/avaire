@@ -6,7 +6,7 @@ import com.avairebot.commands.CommandHandler;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.commands.CommandPriority;
 import com.avairebot.contracts.commands.Command;
-import com.avairebot.shard.AvaireShard;
+import net.dv8tion.jda.core.JDA;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,8 +25,13 @@ public class ShardCommand extends Command {
 
     @Override
     public String getDescription() {
+        // If the shard manager is null, we're still starting up the bot.
+        if (avaire.getShardManager() == null) {
+            return "If you're seeing this message, contact one of the bot developers.";
+        }
+
         return "Displays the status of all the shards for the bot, including their server count, channel count, user count and latency."
-            + ((avaire.getShards().size() < 2) ? "\n**Shards are currently disabled: This command will just run the stats command.**" : "");
+            + ((avaire.getShardManager().getShards().size() < 2) ? "\n**Shards are currently disabled: This command will just run the stats command.**" : "");
     }
 
     @Override
@@ -36,7 +41,7 @@ public class ShardCommand extends Command {
 
     @Override
     public CommandPriority getCommandPriority() {
-        if (avaire.getShards().size() < 2) {
+        if (avaire.getShardManager().getShards().size() < 2) {
             return CommandPriority.HIDDEN;
         }
         return super.getCommandPriority();
@@ -44,7 +49,7 @@ public class ShardCommand extends Command {
 
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
-        if (avaire.getShards().size() < 2) {
+        if (avaire.getShardManager().getShards().size() < 2) {
             CommandContainer container = CommandHandler.getCommand(StatsCommand.class);
             if (container == null) {
                 return sendErrorMessage(context, "Sharding is not enabled right now :(");
@@ -55,16 +60,16 @@ public class ShardCommand extends Command {
         List<String> messages = new ArrayList<>();
         messages.add("**All Shards**```prolog");
 
-        long totalPing = 0L;
-        for (AvaireShard shard : avaire.getShards()) {
-            totalPing += shard.getJDA().getPing();
+
+        for (int i = 0; i < avaire.getShardManager().getShardsTotal(); i++) {
+            JDA shard = avaire.getShardManager().getShardById(i);
             messages.add(String.format("%s : G %s, C %s, U %s, L %s%s",
-                shard.getShardId(),
-                shard.getJDA().getGuilds().size(),
-                shard.getJDA().getTextChannels().size() + shard.getJDA().getVoiceChannels().size(),
-                shard.getJDA().getUsers().size(),
-                shard.getJDA().getPing(),
-                shard.getShardId() == context.getJDA().getShardInfo().getShardId() ? " <--" : ""
+                shard.getShardInfo().getShardId(),
+                shard.getGuilds().size(),
+                shard.getTextChannels().size() + shard.getVoiceChannels().size(),
+                shard.getUsers().size(),
+                shard.getPing(),
+                shard.getShardInfo().getShardId() == context.getJDA().getShardInfo().getShardId() ? " <--" : ""
             ));
         }
         messages.add("```");
@@ -74,7 +79,7 @@ public class ShardCommand extends Command {
             avaire.getShardEntityCounter().getGuilds(),
             avaire.getShardEntityCounter().getChannels(),
             avaire.getShardEntityCounter().getUsers(),
-            totalPing / avaire.getShards().size()
+            avaire.getShardManager().getAveragePing()
         ));
         messages.add("```");
 

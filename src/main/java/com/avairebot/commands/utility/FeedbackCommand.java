@@ -56,7 +56,7 @@ public class FeedbackCommand extends Command {
             return sendErrorMessage(context, "Missing argument `message`, you must include a message.");
         }
 
-        TextChannel feedbackChannel = avaire.getTextChannelById(DiscordConstants.FEEDBACK_CHANNEL_ID);
+        TextChannel feedbackChannel = avaire.getShardManager().getTextChannelById(DiscordConstants.FEEDBACK_CHANNEL_ID);
         if (feedbackChannel == null) {
             return sendErrorMessage(context, "Invalid feedback channel defined, the text channel could not be found!");
         }

@@ -3,7 +3,7 @@ package com.avairebot.scheduler;
 import com.avairebot.AvaIre;
 import com.avairebot.contracts.scheduler.Job;
 import com.avairebot.metrics.Metrics;
-import com.avairebot.shard.AvaireShard;
+import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.Region;
 import net.dv8tion.jda.core.entities.Guild;
 
@@ -27,20 +27,20 @@ public class SyncGuildMetricsCounterJob extends Job {
             Metrics.geoTracker.labels(region.getName()).set(0);
         }
 
-        for (AvaireShard shard : avaire.getShards()) {
-            for (Guild guild : shard.getJDA().getGuilds()) {
+        for (JDA shard : avaire.getShardManager().getShards()) {
+            for (Guild guild : shard.getGuilds()) {
                 Metrics.geoTracker.labels(guild.getRegion().getName()).inc();
             }
         }
     }
 
     private boolean hasLoadedGuilds() {
-        if (avaire.getShards().size() != avaire.getSettings().getShardCount()) {
+        if (avaire.getShardManager().getShards().size() != avaire.getSettings().getShardCount()) {
             return false;
         }
 
-        for (AvaireShard shard : avaire.getShards()) {
-            if (shard.getJDA().getGuildCache().isEmpty()) {
+        for (JDA shard : avaire.getShardManager().getShards()) {
+            if (shard.getGuildCache().isEmpty()) {
                 return false;
             }
         }

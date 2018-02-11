@@ -9,7 +9,7 @@ import com.avairebot.contracts.commands.Command;
 import com.avairebot.contracts.database.migrations.Migration;
 import com.avairebot.database.DatabaseManager;
 import com.avairebot.database.migrate.Migrations;
-import com.avairebot.shard.AvaireShard;
+import net.dv8tion.jda.bot.sharding.ShardManager;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +17,6 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public abstract class JavaPlugin {
@@ -108,13 +107,13 @@ public abstract class JavaPlugin {
     }
 
     /**
-     * Gets a list of all the shard instances of the bot, the
-     * list will always have at least one entry.
+     * Gets the shard manager used by the bot, giving you access to methods
+     * that can interact with the application on a global scale.
      *
      * @return A list of bot shard entries.
      */
-    public List<AvaireShard> getShards() {
-        return avaire.getShards();
+    public ShardManager getShardManager() {
+        return avaire.getShardManager();
     }
 
     /**

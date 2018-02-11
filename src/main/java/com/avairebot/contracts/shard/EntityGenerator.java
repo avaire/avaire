@@ -1,8 +1,8 @@
 package com.avairebot.contracts.shard;
 
-import com.avairebot.shard.AvaireShard;
+import net.dv8tion.jda.core.JDA;
 
 public interface EntityGenerator {
 
-    long generateEntity(AvaireShard shard);
+    long generateEntity(JDA shard);
 }

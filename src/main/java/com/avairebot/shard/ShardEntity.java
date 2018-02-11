@@ -2,6 +2,7 @@ package com.avairebot.shard;
 
 import com.avairebot.AvaIre;
 import com.avairebot.contracts.shard.EntityGenerator;
+import net.dv8tion.jda.core.JDA;
 
 public class ShardEntity {
 
@@ -17,7 +18,7 @@ public class ShardEntity {
     public long getValue(AvaIre avaire) {
         if (isOutdated()) {
             long count = 0;
-            for (AvaireShard shard : avaire.getShards()) {
+            for (JDA shard : avaire.getShardManager().getShards()) {
                 count += generator.generateEntity(shard);
             }
             value = count;

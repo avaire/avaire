@@ -20,7 +20,7 @@ public class GetGuildsExists extends SparkRoute {
         JSONObject root = new JSONObject();
         for (String id : ids) {
             try {
-                Guild guildById = metrics.getAvaire().getGuildById(Long.parseLong(id));
+                Guild guildById = metrics.getAvaire().getShardManager().getGuildById(Long.parseLong(id));
                 if (guildById == null) {
                     root.put(id, false);
                     continue;

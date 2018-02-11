@@ -3,11 +3,11 @@ package com.avairebot.plugin;
 import com.avairebot.AvaIre;
 import com.avairebot.config.YamlConfiguration;
 import com.avairebot.exceptions.InvalidPluginException;
-import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
 import java.io.*;
 import java.net.URL;
+import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
@@ -52,12 +52,13 @@ public class PluginLoader {
         classLoader.getPlugin().onEnable();
     }
 
-    public void registerEventListeners(JDABuilder jda) {
-        if (!classLoader.getPlugin().getEventListeners().isEmpty()) {
-            for (ListenerAdapter adapter : classLoader.getPlugin().getEventListeners()) {
-                jda.addEventListener(adapter);
-            }
-        }
+    /**
+     * Gets a set of the event listeners that has been registered by the plugin.
+     *
+     * @return A set of registered event listeners.
+     */
+    public Set<ListenerAdapter> getEventListeners() {
+        return classLoader.getPlugin().getEventListeners();
     }
 
     public InputStream getResource(String resourceName) throws IOException {

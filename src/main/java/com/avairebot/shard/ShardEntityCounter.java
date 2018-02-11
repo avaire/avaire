@@ -6,10 +6,10 @@ public class ShardEntityCounter {
 
     private final AvaIre avaire;
 
-    private final ShardEntity guilds = new ShardEntity(shard -> shard.getJDA().getGuilds().size());
-    private final ShardEntity textChannels = new ShardEntity(shard -> shard.getJDA().getTextChannels().size());
-    private final ShardEntity voiceChannels = new ShardEntity(shard -> shard.getJDA().getVoiceChannels().size());
-    private final ShardEntity users = new ShardEntity(shard -> shard.getJDA().getUsers().size());
+    private final ShardEntity guilds = new ShardEntity(shard -> shard.getGuilds().size());
+    private final ShardEntity textChannels = new ShardEntity(shard -> shard.getTextChannels().size());
+    private final ShardEntity voiceChannels = new ShardEntity(shard -> shard.getVoiceChannels().size());
+    private final ShardEntity users = new ShardEntity(shard -> shard.getUsers().size());
 
     public ShardEntityCounter(AvaIre avaire) {
         this.avaire = avaire;

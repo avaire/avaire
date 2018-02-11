@@ -3,7 +3,7 @@ package com.avairebot.scheduler;
 import com.avairebot.AvaIre;
 import com.avairebot.contracts.scheduler.Job;
 import com.avairebot.metrics.Metrics;
-import com.avairebot.shard.AvaireShard;
+import net.dv8tion.jda.core.JDA;
 
 import java.util.concurrent.TimeUnit;
 
@@ -19,9 +19,9 @@ public class UpdateWebsocketHeartbeatMetricsJob extends Job {
             return;
         }
 
-        for (AvaireShard shard : avaire.getShards()) {
-            Metrics.websocketHeartbeat.labels("Shard " + shard.getShardId())
-                .set(shard.getJDA().getPing());
+        for (JDA shard : avaire.getShardManager().getShards()) {
+            Metrics.websocketHeartbeat.labels("Shard " + shard.getShardInfo().getShardId())
+                .set(shard.getPing());
         }
     }
 }
