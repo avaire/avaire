@@ -55,22 +55,26 @@ public class ShardCommand extends Command {
         List<String> messages = new ArrayList<>();
         messages.add("**All Shards**```prolog");
 
+        long totalPing = 0L;
         for (AvaireShard shard : avaire.getShards()) {
-            messages.add(String.format("%s : G %s, C %s, U %s%s",
+            totalPing += shard.getJDA().getPing();
+            messages.add(String.format("%s : G %s, C %s, U %s, L %s%s",
                 shard.getShardId(),
                 shard.getJDA().getGuilds().size(),
                 shard.getJDA().getTextChannels().size() + shard.getJDA().getVoiceChannels().size(),
                 shard.getJDA().getUsers().size(),
+                shard.getJDA().getPing(),
                 shard.getShardId() == context.getJDA().getShardInfo().getShardId() ? " <--" : ""
             ));
         }
         messages.add("```");
 
         messages.add("**Total Shards**```ml");
-        messages.add(String.format("G %s, C %s, U %s",
+        messages.add(String.format("G %s, C %s, U %s, L %s",
             avaire.getShardEntityCounter().getGuilds(),
             avaire.getShardEntityCounter().getChannels(),
-            avaire.getShardEntityCounter().getUsers()
+            avaire.getShardEntityCounter().getUsers(),
+            totalPing / avaire.getShards().size()
         ));
         messages.add("```");
 
