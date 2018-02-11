@@ -1,4 +1,4 @@
-package com.avairebot.commands.administration;
+package com.avairebot.commands.utility;
 
 import com.avairebot.AvaIre;
 import com.avairebot.chat.MessageType;
