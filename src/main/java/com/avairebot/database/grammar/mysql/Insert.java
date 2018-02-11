@@ -71,6 +71,12 @@ public class Insert extends InsertGrammar {
                     continue;
                 }
 
+                if (isNumeric(value)) {
+                    addPart(String.format("%s, ", value));
+
+                    continue;
+                }
+
                 addPart("?, ");
             }
 
