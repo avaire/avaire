@@ -30,7 +30,7 @@ public class ModlogCommand extends Command {
 
     @Override
     public String getDescription() {
-        return "Lorem ipsum -- Filler";
+        return "Displays the modlogging status for the server if no arguments is given, you can also mention a text channel to enable modlogging and set it to the mentioned channel.";
     }
 
     @Override
@@ -44,7 +44,11 @@ public class ModlogCommand extends Command {
 
     @Override
     public List<String> getExampleUsage() {
-        return Collections.singletonList("`:command #modlog-channel`");
+        return Arrays.asList(
+            "`:command` - ",
+            "`:command #modlog` - Enables modlogging and sets it to the modlog channel.",
+            "`:command disable` - Disables modlogging for the server."
+        );
     }
 
     @Override
