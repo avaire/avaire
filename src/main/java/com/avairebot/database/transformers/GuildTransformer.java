@@ -27,6 +27,8 @@ public class GuildTransformer extends Transformer {
     private boolean levelAlerts = false;
     private String levelChannel = null;
     private String autorole = null;
+    private String modlog = null;
+    private int modlogCase = 0;
     private DJGuildLevel djGuildLevel = null;
 
     public GuildTransformer(DataRow data) {
@@ -39,6 +41,8 @@ public class GuildTransformer extends Transformer {
             levelAlerts = data.getBoolean("level_alerts");
             levelChannel = data.getString("level_channel");
             autorole = data.getString("autorole");
+            modlog = data.getString("modlog");
+            modlogCase = data.getInt("modlog_case");
             djGuildLevel = DJGuildLevel.fromId(data.getInt("dj_level", DJGuildLevel.getNormal().getId()));
 
             if (data.getString("aliases", null) != null) {
@@ -163,6 +167,22 @@ public class GuildTransformer extends Transformer {
 
     public void setAutorole(String autorole) {
         this.autorole = autorole;
+    }
+
+    public String getModlog() {
+        return modlog;
+    }
+
+    public void setModlog(String modlogChannelId) {
+        this.modlog = modlogChannelId;
+    }
+
+    public int getModlogCase() {
+        return modlogCase;
+    }
+
+    public void setModlogCase(int modlogCase) {
+        this.modlogCase = modlogCase;
     }
 
     public Map<String, String> getSelfAssignableRoles() {
