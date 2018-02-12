@@ -125,7 +125,8 @@ public class AvaIre {
             new CreateMusicPlaylistsTableMigration(),
             new CreateStatisticsTableMigration(),
             new CreateShardsTableMigration(),
-            new AddDJLevelToGuildsTableMigration()
+            new AddDJLevelToGuildsTableMigration(),
+            new RenamePlaylistSizeColumnToAmountMigration()
         );
 
         LOGGER.info("Registering default command categories");
