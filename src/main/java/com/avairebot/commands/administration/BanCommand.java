@@ -46,6 +46,6 @@ public class BanCommand extends Command {
 
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
-        return BanModule.ban(this, context, args, false);
+        return BanModule.ban(avaire, this, context, args, false);
     }
 }

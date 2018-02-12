@@ -47,6 +47,6 @@ public class SoftBanCommand extends Command {
 
     @Override
     public boolean onCommand(CommandMessage message, String[] args) {
-        return BanModule.ban(this, message, args, true);
+        return BanModule.ban(avaire, this, message, args, true);
     }
 }

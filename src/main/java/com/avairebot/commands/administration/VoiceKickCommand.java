@@ -4,6 +4,7 @@ import com.avairebot.AvaIre;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.CacheFingerprint;
 import com.avairebot.contracts.commands.Command;
+import com.avairebot.modules.ModlogModule;
 import com.avairebot.utilities.RoleUtil;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Role;
@@ -81,11 +82,19 @@ public class VoiceKickCommand extends Command {
     private boolean kickUser(CommandMessage context, Member user, String[] args) {
         String reason = generateMessage(args);
         String originalVoiceChannelName = user.getVoiceState().getChannel().getName();
+        String originalVoiceChannelId = user.getVoiceState().getChannel().getId();
         context.getGuild().getController().createVoiceChannel("kick-" + user.getUser().getId()).queue(channel ->
             context.getGuild().getController().moveVoiceMember(user, (VoiceChannel) channel)
                 .queue(empty -> channel.delete().queue(new Consumer<Void>() {
                         @Override
                         public void accept(Void empty) {
+                            ModlogModule.log(avaire, context, new ModlogModule.ModlogAction(
+                                    ModlogModule.ModlogType.VOICE_KICK,
+                                    context.getAuthor(), user.getUser(),
+                                    originalVoiceChannelName + " (ID: " + originalVoiceChannelId + ")\n" + reason
+                                )
+                            );
+
                             context.makeSuccess("**:target** was kicked from **:voiceChannel** by :user for \":reason\"")
                                 .set("target", user.getUser().getName() + "#" + user.getUser().getDiscriminator())
                                 .set("voiceChannel", originalVoiceChannelName)

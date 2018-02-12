@@ -1,5 +1,6 @@
 package com.avairebot.modules;
 
+import com.avairebot.AvaIre;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.utilities.RoleUtil;
@@ -23,7 +24,7 @@ public class BanModule {
      * @param soft    Determines if the user should be softbanned or not.
      * @return True if the user was banned successfully, false otherwise.
      */
-    public static boolean ban(Command command, CommandMessage context, String[] args, boolean soft) {
+    public static boolean ban(AvaIre avaire, Command command, CommandMessage context, String[] args, boolean soft) {
         if (context.getMentionedUsers().isEmpty() || !userRegEX.matcher(args[0]).matches()) {
             return command.sendErrorMessage(context, "You must mention the user you want to ban.");
         }
@@ -33,10 +34,10 @@ public class BanModule {
             return command.sendErrorMessage(context, "You can't ban people with a higher, or the same role as yourself.");
         }
 
-        return banUser(context, user, args, soft);
+        return banUser(avaire, context, user, args, soft);
     }
 
-    private static boolean banUser(CommandMessage context, User user, String[] args, boolean soft) {
+    private static boolean banUser(AvaIre avaire, CommandMessage context, User user, String[] args, boolean soft) {
         String reason = generateMessage(args);
 
         context.getGuild().getController().ban(user, soft ? 0 : 7, String.format("%s - %s#%s (%s)",
@@ -45,6 +46,12 @@ public class BanModule {
             context.getAuthor().getDiscriminator(),
             context.getAuthor().getId()
         )).queue(aVoid -> {
+            ModlogModule.log(avaire, context, new ModlogModule.ModlogAction(
+                    soft ? ModlogModule.ModlogType.SOFT_BAN : ModlogModule.ModlogType.BAN,
+                    context.getAuthor(), user, reason
+                )
+            );
+
             context.makeSuccess("**:target** was permanently banned by :user for \":reason\"")
                 .set("target", user.getName() + "#" + user.getDiscriminator())
                 .set("reason", reason)

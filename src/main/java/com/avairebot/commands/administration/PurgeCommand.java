@@ -3,6 +3,7 @@ package com.avairebot.commands.administration;
 import com.avairebot.AvaIre;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
+import com.avairebot.modules.ModlogModule;
 import com.avairebot.utilities.NumberUtil;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageHistory;
@@ -80,10 +81,18 @@ public class PurgeCommand extends Command {
                     return;
                 }
 
-                deleteMessages(context, messages).queue(aVoid ->
+                deleteMessages(context, messages).queue(aVoid -> {
+                    ModlogModule.log(avaire, context, new ModlogModule.ModlogAction(
+                            ModlogModule.ModlogType.PURGE,
+                            context.getAuthor(), null,
+                            messages.size() + " messages has been deleted in the " + context.getChannel().getAsMention() + " channel."
+                        )
+                    );
+
                     context.makeSuccess(":white_check_mark: `:number` messages has been deleted!")
                         .set("number", messages.size())
-                        .queue(successMessage -> successMessage.delete().queueAfter(8, TimeUnit.SECONDS)));
+                        .queue(successMessage -> successMessage.delete().queueAfter(8, TimeUnit.SECONDS));
+                });
             });
             return true;
         }
@@ -104,6 +113,13 @@ public class PurgeCommand extends Command {
                 for (Long userId : userIds) {
                     users.add(String.format("<@%s>", userId));
                 }
+
+                ModlogModule.log(avaire, context, new ModlogModule.ModlogAction(
+                        ModlogModule.ModlogType.PURGE,
+                        context.getAuthor(), null,
+                        messages.size() + " messages sent by " + String.join(", ", users) + " has been deleted in the " + context.getChannel().getAsMention() + " channel."
+                    )
+                );
 
                 context.makeSuccess(":white_check_mark: `:number` messages has been deleted from :users")
                     .set("number", messages.size())
