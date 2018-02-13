@@ -88,7 +88,7 @@ public class GlobalLeaderboardCommand extends Command {
     private Collection loadTop100From() {
         return (Collection) avaire.getCache().getAdapter(CacheType.MEMORY).remember("database-xp-leaderboard.global", 300, () -> {
             return avaire.getDatabase().query("SELECT " +
-                "`user_id`, `username`, `discriminator`, sum(`experience`) - (count(`user_id`) * 100) as `total` " +
+                "`user_id`, `username`, `discriminator`, (sum(`experience`) - (count(`user_id`) * 100)) + 100 as `total` " +
                 "FROM `experiences` " +
                 "GROUP BY `user_id` " +
                 "ORDER BY `total` DESC " +
