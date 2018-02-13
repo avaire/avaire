@@ -3,10 +3,8 @@ package com.avairebot.handlers;
 import com.avairebot.AvaIre;
 import com.avairebot.contracts.handlers.EventHandler;
 import com.avairebot.database.controllers.PlayerController;
-import com.avairebot.handlers.adapter.GuildStateEventAdapter;
-import com.avairebot.handlers.adapter.MemberEventAdapter;
-import com.avairebot.handlers.adapter.MessageEventAdapter;
-import com.avairebot.handlers.adapter.RoleEventAdapter;
+import com.avairebot.handlers.adapter.*;
+import net.dv8tion.jda.core.events.channel.text.TextChannelDeleteEvent;
 import net.dv8tion.jda.core.events.guild.GuildJoinEvent;
 import net.dv8tion.jda.core.events.guild.GuildLeaveEvent;
 import net.dv8tion.jda.core.events.guild.member.GuildMemberJoinEvent;
@@ -23,6 +21,7 @@ public class MainEventHandler extends EventHandler {
 
     private final RoleEventAdapter roleEvent;
     private final MemberEventAdapter memberEvent;
+    private final ChannelEventAdapter channelEvent;
     private final GuildStateEventAdapter guildStateEvent;
     private final MessageEventAdapter messageEvent;
 
@@ -36,6 +35,7 @@ public class MainEventHandler extends EventHandler {
 
         this.roleEvent = new RoleEventAdapter(avaire);
         this.memberEvent = new MemberEventAdapter(avaire);
+        this.channelEvent = new ChannelEventAdapter(avaire);
         this.messageEvent = new MessageEventAdapter(avaire);
         this.guildStateEvent = new GuildStateEventAdapter(avaire);
     }
@@ -58,6 +58,11 @@ public class MainEventHandler extends EventHandler {
     @Override
     public void onGuildLeave(GuildLeaveEvent event) {
         guildStateEvent.onGuildLeave(event);
+    }
+
+    @Override
+    public void onTextChannelDelete(TextChannelDeleteEvent event) {
+        channelEvent.onTextChannelDelete(event);
     }
 
     @Override
