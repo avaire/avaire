@@ -5,14 +5,14 @@ import com.avairebot.contracts.handlers.EventHandler;
 import com.avairebot.metrics.Metrics;
 import net.dv8tion.jda.core.events.Event;
 
-public class GenericEvent extends EventHandler {
+public class GenericEventHandler extends EventHandler {
 
     /**
      * Instantiates the event handler and sets the avaire class instance.
      *
      * @param avaire The AvaIre application class instance.
      */
-    public GenericEvent(AvaIre avaire) {
+    public GenericEventHandler(AvaIre avaire) {
         super(avaire);
     }
 

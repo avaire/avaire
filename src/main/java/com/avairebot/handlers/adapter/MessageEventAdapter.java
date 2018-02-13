@@ -1,11 +1,11 @@
-package com.avairebot.handlers;
+package com.avairebot.handlers.adapter;
 
 import com.avairebot.AppInfo;
 import com.avairebot.AvaIre;
 import com.avairebot.Statistics;
 import com.avairebot.commands.CommandContainer;
 import com.avairebot.commands.CommandHandler;
-import com.avairebot.contracts.handlers.EventHandler;
+import com.avairebot.contracts.handlers.EventAdapter;
 import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.controllers.PlayerController;
 import com.avairebot.database.transformers.ChannelTransformer;
@@ -27,7 +27,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
-public class MessageCreate extends EventHandler {
+public class MessageEventAdapter extends EventAdapter {
 
     private static final Pattern userRegEX = Pattern.compile("<@(!|)+[0-9]{16,}+>", Pattern.CASE_INSENSITIVE);
 
@@ -41,11 +41,15 @@ public class MessageCreate extends EventHandler {
         "https://github.com/avaire/avaire"
     ));
 
-    public MessageCreate(AvaIre avaire) {
+    /**
+     * Instantiates the event adapter and sets the avaire class instance.
+     *
+     * @param avaire The AvaIre application class instance.
+     */
+    public MessageEventAdapter(AvaIre avaire) {
         super(avaire);
     }
 
-    @Override
     public void onMessageReceived(MessageReceivedEvent event) {
         Statistics.addMessage();
 

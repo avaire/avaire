@@ -1,26 +1,48 @@
-package com.avairebot.handlers;
+package com.avairebot.handlers.adapter;
 
 import com.avairebot.AvaIre;
 import com.avairebot.Constants;
-import com.avairebot.contracts.handlers.EventHandler;
+import com.avairebot.contracts.handlers.EventAdapter;
 import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.transformers.GuildTransformer;
 import net.dv8tion.jda.core.events.role.RoleDeleteEvent;
+import net.dv8tion.jda.core.events.role.update.RoleUpdateNameEvent;
 
 import java.sql.SQLException;
 
-public class GuildRoleDelete extends EventHandler {
+public class RoleEventAdapter extends EventAdapter {
 
     /**
-     * Instantiates the event handler and sets the avaire class instance.
+     * Instantiates the event adapter and sets the avaire class instance.
      *
      * @param avaire The AvaIre application class instance.
      */
-    public GuildRoleDelete(AvaIre avaire) {
+    public RoleEventAdapter(AvaIre avaire) {
         super(avaire);
     }
 
-    @Override
+    public void onRoleUpdateName(RoleUpdateNameEvent event) {
+        GuildTransformer transformer = GuildController.fetchGuild(avaire, event.getGuild());
+        if (transformer == null || transformer.getSelfAssignableRoles().isEmpty()) {
+            return;
+        }
+
+        if (!transformer.getSelfAssignableRoles().containsKey(event.getRole().getId())) {
+            return;
+        }
+
+        try {
+            transformer.getSelfAssignableRoles().put(event.getRole().getId(), event.getRole().getName().toLowerCase());
+            avaire.getDatabase().newQueryBuilder(Constants.GUILD_TABLE_NAME)
+                .where("id", event.getGuild().getId())
+                .update(statement -> {
+                    statement.set("claimable_roles", AvaIre.GSON.toJson(transformer.getSelfAssignableRoles()), true);
+                });
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void onRoleDelete(RoleDeleteEvent event) {
         GuildTransformer transformer = GuildController.fetchGuild(avaire, event.getGuild());
         if (transformer == null) {

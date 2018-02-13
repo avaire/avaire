@@ -10,7 +10,6 @@ import com.avairebot.commands.CommandHandler;
 import com.avairebot.config.Configuration;
 import com.avairebot.contracts.ai.Intent;
 import com.avairebot.contracts.commands.Command;
-import com.avairebot.contracts.handlers.EventHandler;
 import com.avairebot.contracts.reflection.Reflectionable;
 import com.avairebot.contracts.scheduler.Job;
 import com.avairebot.database.DatabaseManager;
@@ -21,7 +20,8 @@ import com.avairebot.exceptions.InvalidApplicationEnvironmentException;
 import com.avairebot.exceptions.InvalidPluginException;
 import com.avairebot.exceptions.InvalidPluginsPathException;
 import com.avairebot.factories.MessageFactory;
-import com.avairebot.handlers.EventTypes;
+import com.avairebot.handlers.GenericEventHandler;
+import com.avairebot.handlers.MainEventHandler;
 import com.avairebot.metrics.Metrics;
 import com.avairebot.plugin.PluginLoader;
 import com.avairebot.plugin.PluginManager;
@@ -364,22 +364,9 @@ public class AvaIre {
             .setContextEnabled(true)
             .setShardsTotal(settings.getShardCount());
 
-        Class[] eventArguments = new Class[1];
-        eventArguments[0] = AvaIre.class;
-
-        for (EventTypes event : EventTypes.values()) {
-            try {
-                Object instance = event.getInstance().getDeclaredConstructor(eventArguments).newInstance(this);
-
-                if (instance instanceof EventHandler) {
-                    builder.addEventListeners(instance);
-                }
-            } catch (InstantiationException | NoSuchMethodException | InvocationTargetException ex) {
-                getLogger().error("Invalid listener adapter object parsed, failed to create a new instance!", ex);
-            } catch (IllegalAccessException ex) {
-                getLogger().error("An attempt was made to register a event listener called " + event + " but it failed somewhere!", ex);
-            }
-        }
+        builder
+            .addEventListeners(new MainEventHandler(this))
+            .addEventListeners(new GenericEventHandler(this));
 
         if (LavalinkManager.LavalinkManagerHolder.LAVALINK.isEnabled()) {
             builder.addEventListeners(LavalinkManager.LavalinkManagerHolder.LAVALINK);
