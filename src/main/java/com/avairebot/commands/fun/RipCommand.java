@@ -14,7 +14,7 @@ import java.util.List;
 public class RipCommand extends Command {
 
     public RipCommand(AvaIre avaire) {
-        super(avaire);
+        super(avaire, false);
     }
 
     @Override
