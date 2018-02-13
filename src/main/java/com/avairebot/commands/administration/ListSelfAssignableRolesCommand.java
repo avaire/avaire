@@ -7,6 +7,7 @@ import com.avairebot.contracts.commands.Command;
 import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.utilities.NumberUtil;
+import net.dv8tion.jda.core.entities.Role;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -42,9 +43,15 @@ public class ListSelfAssignableRolesCommand extends Command {
             return true;
         }
 
-        ArrayList<String> items = new ArrayList<>(transformer.getSelfAssignableRoles().values());
-        Collections.sort(items);
+        ArrayList<String> items = new ArrayList<>();
+        for (String roleId : transformer.getSelfAssignableRoles().keySet()) {
+            Role roleById = context.getGuild().getRoleById(roleId);
+            if (roleById != null) {
+                items.add(roleById.getName());
+            }
+        }
 
+        Collections.sort(items);
         SimplePaginator paginator = new SimplePaginator(items, 10);
         if (args.length > 0) {
             paginator.setCurrentPage(NumberUtil.parseInt(args[0], 1));
