@@ -32,7 +32,7 @@ public class Configuration implements ConfigurationSection {
         this.configFile = new File(folder, fileName);
 
         this.fileConfiguration = YamlConfiguration.loadConfiguration(
-            new InputStreamReader(plugin.getLoader().getResource(fileName))
+            new InputStreamReader(plugin.getPluginLoader().getResource(fileName))
         );
 
         this.plugin = plugin;
@@ -143,7 +143,7 @@ public class Configuration implements ConfigurationSection {
 
         try {
             URL url = classLoader == null ?
-                plugin.getLoader().getResourceAsURL(fileName) :
+                plugin.getPluginLoader().getResourceAsURL(fileName) :
                 classLoader.getResource(filename);
 
             if (url == null) {

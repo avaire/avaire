@@ -57,7 +57,7 @@ public abstract class JavaPlugin {
      *
      * @param command The command that should be registered into the command handler.
      */
-    public void registerCommand(Command command) {
+    public final void registerCommand(Command command) {
         CommandHandler.register(command);
     }
 
@@ -71,7 +71,7 @@ public abstract class JavaPlugin {
      * @param defaultPrefix The default prefix for the category.
      * @return <code>True</code> on success, <code>False</code> if the category already exists.
      */
-    public boolean registerCategory(String name, String defaultPrefix) {
+    public final boolean registerCategory(String name, String defaultPrefix) {
         return CategoryHandler.addCategory(avaire, name, defaultPrefix);
     }
 
@@ -84,7 +84,7 @@ public abstract class JavaPlugin {
      * @param migration The migration that should be registered
      * @see com.avairebot.contracts.database.migrations.Migration
      */
-    public void registerMigration(Migration migration) {
+    public final void registerMigration(Migration migration) {
         avaire.getDatabase().getMigrations().register(migration);
     }
 
@@ -93,7 +93,7 @@ public abstract class JavaPlugin {
      *
      * @param listener The event listener that should be registered.
      */
-    public void registerEventListener(ListenerAdapter listener) {
+    public final void registerEventListener(ListenerAdapter listener) {
         eventListeners.add(listener);
     }
 
@@ -102,7 +102,7 @@ public abstract class JavaPlugin {
      *
      * @return The global AvaIre application instance.
      */
-    public AvaIre getAvaire() {
+    public final AvaIre getAvaire() {
         return avaire;
     }
 
@@ -112,7 +112,7 @@ public abstract class JavaPlugin {
      *
      * @return A list of bot shard entries.
      */
-    public ShardManager getShardManager() {
+    public final ShardManager getShardManager() {
         return avaire.getShardManager();
     }
 
@@ -122,7 +122,7 @@ public abstract class JavaPlugin {
      *
      * @return The application cache manager.
      */
-    public CacheManager getCache() {
+    public final CacheManager getCache() {
         return avaire.getCache();
     }
 
@@ -131,11 +131,18 @@ public abstract class JavaPlugin {
      *
      * @return The application database manager.
      */
-    public DatabaseManager getDatabase() {
+    public final DatabaseManager getDatabase() {
         return avaire.getDatabase();
     }
 
-    public Configuration getConfig() {
+    /**
+     * Loads the default {@link Configuration config} into memory and prepares
+     * it for the plugin, if the config has already been loaded the
+     * {@link Configuration config} will just be returned.
+     *
+     * @return The {@link Configuration config} that.
+     */
+    public final Configuration getConfig() {
         if (config == null) {
             try {
                 config = new Configuration(
@@ -154,16 +161,43 @@ public abstract class JavaPlugin {
     }
 
     /**
+     * Saves the {@link Configuration config} file from {@link #getConfig()}
+     * to disk under the name "config.yml", if the config file already
+     * exists this method will fail silently.
+     */
+    public final void saveDefaultConfig() {
+        if (getConfig() != null) {
+            getConfig().saveDefaultConfig();
+        }
+    }
+
+    /**
+     * Discards any data in {@link #getConfig()} and reloads from disk.
+     */
+    public final void reloadConfig() {
+        if (getConfig() != null) {
+            getConfig().reloadConfig();
+        }
+    }
+
+    /**
      * Returns the plugin logger associated with the application logger. The returned
      * logger automatically tags all log messages with the plugin's name.
      *
      * @return Logger associated with this plugin.
      */
-    public Logger getLogger() {
+    public final Logger getLogger() {
         return logger;
     }
 
-    public PluginLoader getLoader() {
+    /**
+     * Gets the {@link PluginLoader plugin loader} used for loading this plugin, the
+     * {@link PluginLoader plugin loader} can be used to access data from
+     * the "plugin.yml" file for this plugin.
+     *
+     * @return The {@link PluginLoader plugin loader} used to load this plugin.
+     */
+    public final PluginLoader getPluginLoader() {
         return loader;
     }
 
