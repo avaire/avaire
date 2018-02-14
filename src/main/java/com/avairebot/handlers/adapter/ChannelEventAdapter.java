@@ -26,11 +26,11 @@ public class ChannelEventAdapter extends EventAdapter {
             return;
         }
 
-        if (transformer.getModlog().equalsIgnoreCase(event.getChannel().getId())) {
+        if (transformer.getModlog() != null && transformer.getModlog().equalsIgnoreCase(event.getChannel().getId())) {
             setDatabaseColumnToNull(event.getGuild().getId(), "modlog");
         }
 
-        if (transformer.getLevelChannel().equals(event.getChannel().getId())) {
+        if (transformer.getLevelChannel() != null && transformer.getLevelChannel().equals(event.getChannel().getId())) {
             setDatabaseColumnToNull(event.getGuild().getId(), "level_channel");
         }
     }
