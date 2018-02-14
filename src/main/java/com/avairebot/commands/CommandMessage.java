@@ -86,7 +86,7 @@ public class CommandMessage {
     }
 
     public User getAuthor() {
-        return member.getUser();
+        return message.getAuthor();
     }
 
     public TextChannel getChannel() {
