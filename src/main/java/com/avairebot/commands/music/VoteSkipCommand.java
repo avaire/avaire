@@ -69,7 +69,7 @@ public class VoteSkipCommand extends Command {
             }
 
             musicManager.getPlayer().stopTrack();
-            musicManager.getScheduler().handleEndOfQueue(context.getMessage());
+            musicManager.getScheduler().handleEndOfQueue(context.getMessage(), true);
             return true;
         }
 

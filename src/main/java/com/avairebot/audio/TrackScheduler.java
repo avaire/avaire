@@ -106,9 +106,17 @@ public class TrackScheduler extends AudioEventAdapterWrapped {
     }
 
     /**
-     * Start the next track, stopping the current one if it is playing.
+     * Start the next track, stopping the current one if it is playing, if it's
+     * the end of the queue the "End of the queue" message will be sent.
      */
     public void nextTrack() {
+        nextTrack(true);
+    }
+
+    /**
+     * Start the next track, stopping the current one if it is playing.
+     */
+    public void nextTrack(boolean sendEndOfQueue) {
         // Start the next track, regardless of if something is already playing or not. In case queue was empty, we are
         // giving null to startTrack, which is a valid argument and will simply stop the player.
         AudioTrackContainer container = queue.poll();
@@ -117,7 +125,7 @@ public class TrackScheduler extends AudioEventAdapterWrapped {
             if (manager.getLastActiveMessage() == null)
                 return;
 
-            service.submit(this::handleEndOfQueueWithLastActiveMessage);
+            service.submit(() -> handleEndOfQueueWithLastActiveMessage(sendEndOfQueue));
             return;
         }
 
@@ -141,7 +149,7 @@ public class TrackScheduler extends AudioEventAdapterWrapped {
 
         if (endReason.equals(AudioTrackEndReason.FINISHED) && queue.isEmpty()) {
             if (manager.getLastActiveMessage() != null) {
-                service.submit(this::handleEndOfQueueWithLastActiveMessage);
+                service.submit(() -> handleEndOfQueueWithLastActiveMessage(true));
             }
         }
     }
@@ -163,10 +171,12 @@ public class TrackScheduler extends AudioEventAdapterWrapped {
             .queue();
     }
 
-    public void handleEndOfQueue(Message message) {
-        MessageFactory.makeSuccess(message, "Queue has ended, leaving voice.").queue(queueMessage -> {
-            queueMessage.delete().queueAfter(45, TimeUnit.SECONDS);
-        });
+    public void handleEndOfQueue(Message message, boolean sendEndOfQueue) {
+        if (sendEndOfQueue) {
+            MessageFactory.makeSuccess(message, "Queue has ended, leaving voice.").queue(queueMessage -> {
+                queueMessage.delete().queueAfter(45, TimeUnit.SECONDS);
+            });
+        }
 
         LavalinkManager.LavalinkManagerHolder.LAVALINK.closeConnection(message.getGuild());
 
@@ -175,7 +185,7 @@ public class TrackScheduler extends AudioEventAdapterWrapped {
         );
     }
 
-    public void handleEndOfQueueWithLastActiveMessage() {
-        handleEndOfQueue(manager.getLastActiveMessage());
+    public void handleEndOfQueueWithLastActiveMessage(boolean sendEndOfQueue) {
+        handleEndOfQueue(manager.getLastActiveMessage(), sendEndOfQueue);
     }
 }

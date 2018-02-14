@@ -6,6 +6,7 @@ import com.avairebot.audio.GuildMusicManager;
 import com.avairebot.audio.LavalinkManager;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
+import com.avairebot.scheduler.MusicActivityJob;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -50,12 +51,22 @@ public class StopCommand extends Command {
             );
         }
 
+        String guildId = context.getGuild().getId();
         int size = musicManager.getScheduler().getQueue().size();
 
         musicManager.getPlayer().setPaused(true);
         musicManager.getScheduler().getQueue().clear();
 
-        LavalinkManager.LavalinkManagerHolder.LAVALINK.closeConnection(context.getGuild());
+        MusicActivityJob.MISSING_LISTENERS.remove(guildId);
+        MusicActivityJob.PLAYER_PAUSED.remove(guildId);
+        MusicActivityJob.EMPTY_QUEUE.remove(guildId);
+
+        if (LavalinkManager.LavalinkManagerHolder.LAVALINK.isEnabled()) {
+            LavalinkManager.LavalinkManagerHolder.LAVALINK.getLavalink()
+                .getLink(musicManager.getLastActiveMessage().getGuild()).destroy();
+        }
+
+        musicManager.getScheduler().nextTrack(false);
 
         context.makeInfo("The player has stopped, and **:number** songs has been removed from the queue.")
             .set("number", size)

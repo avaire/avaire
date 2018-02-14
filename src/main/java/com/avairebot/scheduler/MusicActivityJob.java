@@ -142,7 +142,7 @@ public class MusicActivityJob extends Job {
         PLAYER_PAUSED.remove(guildId);
         EMPTY_QUEUE.remove(guildId);
 
-        manager.closeAudioConnection();
+        LavalinkManager.LavalinkManagerHolder.LAVALINK.closeConnection(manager.getGuild());
     }
 
     private int getValue(String path, int def) {
