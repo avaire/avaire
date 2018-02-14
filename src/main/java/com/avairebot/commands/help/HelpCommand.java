@@ -4,15 +4,18 @@ import com.avairebot.AvaIre;
 import com.avairebot.chat.MessageType;
 import com.avairebot.commands.*;
 import com.avairebot.contracts.commands.Command;
+import com.avairebot.database.controllers.GuildController;
+import com.avairebot.database.transformers.ChannelTransformer;
+import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.factories.MessageFactory;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.MessageBuilder;
-import net.dv8tion.jda.core.entities.Message;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class HelpCommand extends Command {
 
@@ -66,7 +69,7 @@ public class HelpCommand extends Command {
             category.getName().toLowerCase().substring(0, 3)
         ).replaceAll(":help", generateCommandTrigger(context.getMessage()));
 
-        context.makeInfo(getCategories(context.getMessage()) + note)
+        context.makeInfo(getCategories(context) + note)
             .setTitle(":scroll: Command Categories")
             .queue();
 
@@ -163,15 +166,53 @@ public class HelpCommand extends Command {
         return CommandHandler.getLazyCommand(commandString);
     }
 
-    private String getCategories(Message message) {
-        boolean isBotAdmin = avaire.getConfig().getStringList("botAccess").contains(message.getAuthor().getId());
+    private String getCategories(CommandMessage context) {
+        boolean isBotAdmin = avaire.getConfig().getStringList("botAccess").contains(context.getAuthor().getId());
 
-        return CategoryHandler.getValues().stream()
+        List<Category> categories = CategoryHandler.getValues().stream()
             .filter(category -> !category.isGlobal())
+            .collect(Collectors.toList());
+
+        if (context.getGuild() == null) {
+            return formatCategoriesStream(categories.stream(), isBotAdmin);
+        }
+
+        GuildTransformer transformer = GuildController.fetchGuild(avaire, context.getGuild());
+        if (transformer == null) {
+            return formatCategoriesStream(categories.stream(), isBotAdmin);
+        }
+
+        ChannelTransformer channel = transformer.getChannel(context.getChannel().getId());
+        if (channel == null) {
+            return formatCategoriesStream(categories.stream(), isBotAdmin);
+        }
+
+        long before = categories.size();
+        List<Category> filteredCategories = categories.stream()
+            .filter(channel::isCategoryEnabled)
+            .collect(Collectors.toList());
+
+        long disabled = before - filteredCategories.size();
+
+        return formatCategoriesStream(
+            filteredCategories.stream().filter(channel::isCategoryEnabled),
+            isBotAdmin,
+            disabled != 0 ? String.format(
+                "\n\n_There is **%s** hidden %s for this channel._\n",
+                disabled, disabled == 1 ? "category" : "categories"
+            ) : "\n\n");
+    }
+
+    private String formatCategoriesStream(Stream<Category> stream, boolean isBotAdmin) {
+        return formatCategoriesStream(stream, isBotAdmin, "\n\n");
+    }
+
+    private String formatCategoriesStream(Stream<Category> stream, boolean isBotAdmin, String suffix) {
+        return stream
             .map(Category::getName)
             .sorted()
             .filter(category -> isBotAdmin || !category.equalsIgnoreCase("System"))
-            .collect(Collectors.joining("\n• ", "• ", "\n\n"));
+            .collect(Collectors.joining("\n• ", "• ", suffix));
     }
 
     private boolean filterCommandContainer(CommandContainer container, Category category, boolean isBotAdmin) {
