@@ -1,0 +1,66 @@
+package com.avairebot.commands.music;
+
+import com.avairebot.AvaIre;
+import com.avairebot.audio.AudioHandler;
+import com.avairebot.audio.GuildMusicManager;
+import com.avairebot.audio.LavalinkManager;
+import com.avairebot.commands.CommandMessage;
+import com.avairebot.contracts.commands.Command;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+public class StopCommand extends Command {
+
+    public StopCommand(AvaIre avaire) {
+        super(avaire, false);
+    }
+
+    @Override
+    public String getName() {
+        return "Stop Command";
+    }
+
+    @Override
+    public String getDescription() {
+        return "Stops the song currently playing, clears the music queue and disconnects from the voice channel the music was playing in.";
+    }
+
+    @Override
+    public List<String> getTriggers() {
+        return Collections.singletonList("stop");
+    }
+
+    @Override
+    public List<String> getMiddleware() {
+        return Arrays.asList(
+            "has-dj-level:normal",
+            "throttle:guild,1,5"
+        );
+    }
+
+    @Override
+    public boolean onCommand(CommandMessage context, String[] args) {
+        GuildMusicManager musicManager = AudioHandler.getGuildAudioPlayer(context.getGuild());
+
+        if (musicManager.getPlayer().getPlayingTrack() == null) {
+            return sendErrorMessage(context,
+                "Nothing is playing right now, you can't stop the music when nothing is playing."
+            );
+        }
+
+        int size = musicManager.getScheduler().getQueue().size();
+
+        musicManager.getPlayer().setPaused(true);
+        musicManager.getScheduler().getQueue().clear();
+
+        LavalinkManager.LavalinkManagerHolder.LAVALINK.closeConnection(context.getGuild());
+
+        context.makeInfo("The player has stopped, and **:number** songs has been removed from the queue.")
+            .set("number", size)
+            .queue();
+
+        return true;
+    }
+}
