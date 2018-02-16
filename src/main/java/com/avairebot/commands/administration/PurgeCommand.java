@@ -19,8 +19,6 @@ import java.util.function.Consumer;
 
 public class PurgeCommand extends Command {
 
-    private static final int MAX_HISTORY_LOOPS = 25;
-
     public PurgeCommand(AvaIre avaire) {
         super(avaire, false);
     }
@@ -73,28 +71,36 @@ public class PurgeCommand extends Command {
             toDelete = NumberUtil.getBetween(NumberUtil.parseInt(args[0]), 1, 100);
         }
 
-        context.getChannel().sendTyping().queue();
+        int finalToDelete = toDelete;
+        context.getMessage().delete().queue(ignored -> handleCommand(context, finalToDelete));
+
+        return true;
+    }
+
+    private void handleCommand(CommandMessage context, final int toDelete) {
         if (context.getMentionedUsers().isEmpty()) {
-            loadMessages(context.getChannel().getHistory(), toDelete, new ArrayList<>(), null, 1, messages -> {
-                if (messages.isEmpty()) {
-                    sendNoMessagesMessage(context);
-                    return;
-                }
+            context.getChannel().getHistoryBefore(context.getMessage(), 2).queue(history -> {
+                loadMessages(context.getChannel().getHistory(), toDelete, null, messages -> {
+                    if (messages.isEmpty()) {
+                        sendNoMessagesMessage(context);
+                        return;
+                    }
 
-                deleteMessages(context, messages).queue(aVoid -> {
-                    ModlogModule.log(avaire, context, new ModlogModule.ModlogAction(
-                            ModlogModule.ModlogType.PURGE,
-                            context.getAuthor(), null,
-                            messages.size() + " messages has been deleted in the " + context.getChannel().getAsMention() + " channel."
-                        )
-                    );
+                    deleteMessages(context, messages).queue(aVoid -> {
+                        ModlogModule.log(avaire, context, new ModlogModule.ModlogAction(
+                                ModlogModule.ModlogType.PURGE,
+                                context.getAuthor(), null,
+                                messages.size() + " messages has been deleted in the " + context.getChannel().getAsMention() + " channel."
+                            )
+                        );
 
-                    context.makeSuccess(":white_check_mark: `:number` messages has been deleted!")
-                        .set("number", messages.size())
-                        .queue(successMessage -> successMessage.delete().queueAfter(8, TimeUnit.SECONDS));
+                        context.makeSuccess(":white_check_mark: `:number` messages has been deleted!")
+                            .set("number", messages.size())
+                            .queue(successMessage -> successMessage.delete().queueAfter(8, TimeUnit.SECONDS));
+                    });
                 });
             });
-            return true;
+            return;
         }
 
         List<Long> userIds = new ArrayList<>();
@@ -102,7 +108,7 @@ public class PurgeCommand extends Command {
             userIds.add(user.getIdLong());
         }
 
-        loadMessages(context.getChannel().getHistory(), toDelete, new ArrayList<>(), userIds, 1, messages -> {
+        loadMessages(context.getChannel().getHistory(), toDelete, userIds, messages -> {
             if (messages.isEmpty()) {
                 sendNoMessagesMessage(context);
                 return;
@@ -127,13 +133,13 @@ public class PurgeCommand extends Command {
                     .queue(successMessage -> successMessage.delete().queueAfter(8, TimeUnit.SECONDS));
             });
         });
-        return true;
     }
 
-    private void loadMessages(MessageHistory history, int toDelete, List<Message> messages, List<Long> userIds, int loops, Consumer<List<Message>> consumer) {
+    private void loadMessages(MessageHistory history, int toDelete, List<Long> userIds, Consumer<List<Message>> consumer) {
         long maxMessageAge = (System.currentTimeMillis() - TimeUnit.DAYS.toMillis(14) - MiscUtil.DISCORD_EPOCH) << MiscUtil.TIMESTAMP_OFFSET;
+        List<Message> messages = new ArrayList<>();
 
-        history.retrievePast(100).queue(historyMessages -> {
+        history.retrievePast(toDelete).queue(historyMessages -> {
             if (historyMessages.isEmpty()) {
                 consumer.accept(messages);
                 return;
@@ -148,7 +154,7 @@ public class PurgeCommand extends Command {
                     continue;
                 }
 
-                if (messages.size() >= toDelete || loops > MAX_HISTORY_LOOPS) {
+                if (messages.size() >= toDelete) {
                     consumer.accept(messages);
                     return;
                 }
@@ -156,7 +162,7 @@ public class PurgeCommand extends Command {
                 messages.add(historyMessage);
             }
 
-            loadMessages(history, toDelete, messages, userIds, loops + 1, consumer);
+            consumer.accept(messages);
         });
     }
 
