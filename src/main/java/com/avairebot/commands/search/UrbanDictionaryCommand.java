@@ -66,7 +66,9 @@ public class UrbanDictionaryCommand extends Command {
 
                 UrbanDictionaryService.UrbanDictionary definition = service.getList().get(0);
 
-                double percentage = (((double) definition.getThumbsUp() / definition.getThumbsDown()) * 100) - 100;
+                double thumbsUp = definition.getThumbsUp();
+                double thumbsDown = definition.getThumbsDown();
+                double percentage = (thumbsUp / (thumbsUp + thumbsDown)) * 100;
 
                 context.makeEmbeddedMessage(Color.decode("#1D2439"), definition.getDefinition())
                     .setTitle(definition.getWord().trim().length() == 0 ? "Untitled" : definition.getWord(), definition.getPermalink())
