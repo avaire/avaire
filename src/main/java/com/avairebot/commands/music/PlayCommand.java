@@ -216,7 +216,7 @@ public class PlayCommand extends Command {
 
             String command = generateCommandTrigger(message);
             if (args[0].startsWith("scsearch:")) {
-                CommandHandler.getCommand(SoundcloudCommand.class)
+                command = CommandHandler.getCommand(SoundcloudCommand.class)
                     .getCommand().generateCommandTrigger(message);
             }
 
