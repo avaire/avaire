@@ -3,6 +3,7 @@ package com.avairebot.commands.system;
 import com.avairebot.AvaIre;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.SystemCommand;
+import com.avairebot.plugin.PluginLoader;
 
 import java.util.Collections;
 import java.util.List;
@@ -32,7 +33,9 @@ public class ReloadCommand extends SystemCommand {
     public boolean onCommand(CommandMessage context, String[] args) {
         avaire.getConfig().reloadConfig();
 
-        // TODO: When plugins have configuration support, add a loop here to reload the configs.
+        for (PluginLoader loader : avaire.getPluginManager().getPlugins()) {
+            loader.getClassLoader().getPlugin().reloadConfig();
+        }
 
         context.makeSuccess("Configuration has been successfully reloaded!").queue();
 

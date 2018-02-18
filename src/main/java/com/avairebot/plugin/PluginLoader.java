@@ -125,6 +125,10 @@ public class PluginLoader {
         return new URL("jar:" + file.toURI().toString() + "!/" + resourceName);
     }
 
+    public PluginClassLoader getClassLoader() {
+        return classLoader;
+    }
+
     private void checkIfPluginYamlIsValid() throws InvalidPluginException {
         if (!configuration.contains("name")) {
             throw new InvalidPluginException("Invalid plugin.yml file, the plugin must have a name value at root!");
