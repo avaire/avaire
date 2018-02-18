@@ -5,6 +5,7 @@ import com.avairebot.Constants;
 import com.avairebot.contracts.handlers.EventAdapter;
 import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.transformers.GuildTransformer;
+import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.events.channel.text.TextChannelDeleteEvent;
 
 import java.sql.SQLException;
@@ -32,6 +33,18 @@ public class ChannelEventAdapter extends EventAdapter {
 
         if (transformer.getLevelChannel() != null && transformer.getLevelChannel().equals(event.getChannel().getId())) {
             setDatabaseColumnToNull(event.getGuild().getId(), "level_channel");
+        }
+    }
+
+    public void updateChannelData(Guild guild) {
+        try {
+            avaire.getDatabase().newQueryBuilder(Constants.GUILD_TABLE_NAME)
+                .where("id", guild.getId())
+                .update(statement -> {
+                    statement.set("channels_data", GuildController.buildChannelData(guild.getTextChannels()), true);
+                });
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 

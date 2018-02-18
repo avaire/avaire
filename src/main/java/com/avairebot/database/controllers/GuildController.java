@@ -105,7 +105,7 @@ public class GuildController {
         );
     }
 
-    private static String buildChannelData(List<TextChannel> textChannels) {
+    public static String buildChannelData(List<TextChannel> textChannels) {
         List<Map<String, Object>> channels = new ArrayList<>();
         for (TextChannel channel : textChannels) {
             Map<String, Object> item = new HashMap<>();

@@ -4,7 +4,10 @@ import com.avairebot.AvaIre;
 import com.avairebot.contracts.handlers.EventHandler;
 import com.avairebot.database.controllers.PlayerController;
 import com.avairebot.handlers.adapter.*;
+import net.dv8tion.jda.core.events.channel.text.TextChannelCreateEvent;
 import net.dv8tion.jda.core.events.channel.text.TextChannelDeleteEvent;
+import net.dv8tion.jda.core.events.channel.text.update.TextChannelUpdateNameEvent;
+import net.dv8tion.jda.core.events.channel.text.update.TextChannelUpdatePositionEvent;
 import net.dv8tion.jda.core.events.guild.GuildJoinEvent;
 import net.dv8tion.jda.core.events.guild.GuildLeaveEvent;
 import net.dv8tion.jda.core.events.guild.member.GuildMemberJoinEvent;
@@ -62,7 +65,23 @@ public class MainEventHandler extends EventHandler {
 
     @Override
     public void onTextChannelDelete(TextChannelDeleteEvent event) {
+        channelEvent.updateChannelData(event.getGuild());
         channelEvent.onTextChannelDelete(event);
+    }
+
+    @Override
+    public void onTextChannelCreate(TextChannelCreateEvent event) {
+        channelEvent.updateChannelData(event.getGuild());
+    }
+
+    @Override
+    public void onTextChannelUpdateName(TextChannelUpdateNameEvent event) {
+        channelEvent.updateChannelData(event.getGuild());
+    }
+
+    @Override
+    public void onTextChannelUpdatePosition(TextChannelUpdatePositionEvent event) {
+        channelEvent.updateChannelData(event.getGuild());
     }
 
     @Override
