@@ -10,6 +10,7 @@ import com.avairebot.database.query.QueryBuilder;
 import com.avairebot.database.schema.Schema;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 
 import java.sql.*;
 import java.util.HashSet;
@@ -97,6 +98,7 @@ public class DatabaseManager {
      */
     public Collection query(String query) throws SQLException, SQLTimeoutException {
         LOGGER.debug("query(String query) was called with the following SQL query.\nSQL: " + query);
+        MDC.put("query", query);
         return new Collection(getConnection().query(query));
     }
 
@@ -140,6 +142,8 @@ public class DatabaseManager {
      */
     public int queryUpdate(String query) throws SQLException {
         LOGGER.debug("queryUpdate(String query) was called with the following SQL query.\nSQL: " + query);
+        MDC.put("query", query);
+
         Statement stmt = getConnection().prepare(query);
 
         if (stmt instanceof PreparedStatement) {
@@ -187,6 +191,8 @@ public class DatabaseManager {
      */
     public Set<Integer> queryInsert(String query) throws SQLException {
         LOGGER.debug("queryInsert(String query) was called with the following SQL query.\nSQL: " + query);
+        MDC.put("query", query);
+
         if (!query.startsWith("INSERT INTO")) {
             throw new DatabaseException("queryInsert was called with a query without an INSERT statement!");
         }
@@ -224,6 +230,8 @@ public class DatabaseManager {
     public Set<Integer> queryInsert(QueryBuilder queryBuilder) throws SQLException {
         String query = queryBuilder.toSQL();
         LOGGER.debug("queryInsert(QueryBuilder queryBuilder) was called with the following SQL query.\nSQL: " + query);
+        MDC.put("query", query);
+
         if (!query.startsWith("INSERT INTO")) {
             throw new DatabaseException("queryInsert was called with a query without an INSERT statement!");
         }
