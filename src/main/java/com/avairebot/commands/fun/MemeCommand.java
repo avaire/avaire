@@ -128,7 +128,7 @@ public class MemeCommand extends Command {
                     customUrl,
                     formatMemeArgument(args[0]),
                     formatMemeArgument(args[1]),
-                    URLEncoder.encode(user.getAvatarUrl(), "UTF-8")
+                    URLEncoder.encode(user.getEffectiveAvatarUrl(), "UTF-8")
                 )).queue();
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();

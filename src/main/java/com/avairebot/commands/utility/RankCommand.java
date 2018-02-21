@@ -114,7 +114,7 @@ public class RankCommand extends Command {
             }
 
             MessageFactory.makeEmbeddedMessage(context.getChannel(), Color.decode("#E91E63"))
-                .setAuthor(author.getName(), "https://avairebot.com/leaderboard/" + context.getGuild().getId(), author.getAvatarUrl())
+                .setAuthor(author.getName(), "https://avairebot.com/leaderboard/" + context.getGuild().getId(), author.getEffectiveAvatarUrl())
                 .setFooter("https://avairebot.com/leaderboard/" + context.getGuild().getId())
                 .addField("Rank", score, true)
                 .addField("Level", NumberUtil.formatNicely(level), true)
