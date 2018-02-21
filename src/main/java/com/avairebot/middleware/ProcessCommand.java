@@ -13,11 +13,13 @@ import io.prometheus.client.Histogram;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.exceptions.InsufficientPermissionException;
+import net.dv8tion.jda.core.utils.PermissionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class ProcessCommand extends Middleware {
@@ -155,6 +157,35 @@ public class ProcessCommand extends Middleware {
         if (!message.getChannelType().isGuild()) {
             return true;
         }
-        return message.getGuild().getSelfMember().hasPermission(message.getTextChannel(), Permission.MESSAGE_EMBED_LINKS);
+
+        return checkForRawEmbedAndSendPermissions(
+            Permission.getPermissions(
+                PermissionUtil.getExplicitPermission(
+                    message.getTextChannel(), message.getGuild().getSelfMember()
+                )
+            )
+        ) || checkForRawEmbedAndSendPermissions(
+            Permission.getPermissions(
+                PermissionUtil.getEffectivePermission(
+                    message.getTextChannel(), message.getGuild().getPublicRole()
+                )
+            )
+        );
+    }
+
+    private boolean checkForRawEmbedAndSendPermissions(List<Permission> permissions) {
+        int hasRequiredPermissionsCounter = 0;
+
+        for (Permission permission : permissions) {
+            if (permission.getRawValue() == 0x00000800) {
+                hasRequiredPermissionsCounter++; // Send Messages
+            }
+
+            if (permission.getRawValue() == 0x00004000) {
+                hasRequiredPermissionsCounter++; // Embed Links
+            }
+        }
+
+        return hasRequiredPermissionsCounter == 2;
     }
 }
