@@ -72,7 +72,8 @@ public abstract class InteractionCommand extends Command {
 
         context.getChannel().sendTyping().queue();
 
-        int imageIndex = RandomUtil.getInteger(getInteractionImages().size());
+        List<String> interactionImages = getInteractionImages();
+        int imageIndex = RandomUtil.getInteger(interactionImages.size());
 
         MessageBuilder messageBuilder = new MessageBuilder();
         EmbedBuilder embedBuilder = new EmbedBuilder();
@@ -85,7 +86,7 @@ public abstract class InteractionCommand extends Command {
         messageBuilder.setEmbed(embedBuilder.build());
 
         try {
-            InputStream stream = new URL(getInteractionImages().get(imageIndex)).openStream();
+            InputStream stream = new URL(interactionImages.get(imageIndex)).openStream();
 
             context.getChannel().sendFile(stream, getClass().getSimpleName() + "-" + imageIndex + ".gif", messageBuilder.build()).queue();
         } catch (IOException e) {
