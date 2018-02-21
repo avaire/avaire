@@ -39,29 +39,28 @@ public class PingCommand extends Command {
         context.getMessage().getChannel().sendTyping().queue(v -> {
             long ping = System.currentTimeMillis() - start;
 
-            context.makeInfo("Pong! Time taken :ping ms (:rating) Websocket heartbeat :heartbeat ms")
+            context.makeInfo(context.i18n("message"))
                 .set("heartbeat", context.getJDA().getPing())
-                .set("rating", ratePing(ping))
+                .set("rating", ratePing(context, ping))
                 .set("ping", ping)
                 .queue();
-
         });
         return true;
     }
 
-    private String ratePing(long ping) {
-        if (ping <= 10) return "faster than Sonic! :smiley_cat:";
-        if (ping <= 100) return "great! :smiley:";
-        if (ping <= 200) return "nice! :slight_smile:";
-        if (ping <= 300) return "decent. :neutral_face:";
-        if (ping <= 400) return "average... :confused:";
-        if (ping <= 500) return "slightly slow. :slight_frown:";
-        if (ping <= 600) return "kinda slow.. :frowning2:";
-        if (ping <= 700) return "slow.. :worried:";
-        if (ping <= 800) return "too slow. :disappointed:";
-        if (ping <= 900) return "bad. :sob: (helpme)";
-        if (ping <= 1600) return "#BlameDiscord. :angry:";
-        if (ping <= 10000) return "this makes no sense :thinking: #BlameAlexis";
-        return "slow af. :dizzy_face: ";
+    private String ratePing(CommandMessage context, long ping) {
+        if (ping <= 10) return context.i18n("rating.10");
+        if (ping <= 100) return context.i18n("rating.100");
+        if (ping <= 200) return context.i18n("rating.200");
+        if (ping <= 300) return context.i18n("rating.300");
+        if (ping <= 400) return context.i18n("rating.400");
+        if (ping <= 500) return context.i18n("rating.500");
+        if (ping <= 600) return context.i18n("rating.600");
+        if (ping <= 700) return context.i18n("rating.700");
+        if (ping <= 800) return context.i18n("rating.800");
+        if (ping <= 900) return context.i18n("rating.900");
+        if (ping <= 1600) return context.i18n("rating.1600");
+        if (ping <= 10000) return context.i18n("rating.10000");
+        return context.i18n("rating.other");
     }
 }

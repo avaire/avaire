@@ -68,7 +68,9 @@ public class ProcessCommand extends Middleware {
                 AliasCommandContainer container = (AliasCommandContainer) stack.getCommandContainer();
 
                 return runCommand(stack,
-                    new CommandMessage(message, stack.isMentionableCommand(), container.getAliasArguments()),
+                    new CommandMessage(
+                        stack.getCommandContainer(), message, stack.isMentionableCommand(), container.getAliasArguments()
+                    ),
                     combineArguments(container.getAliasArguments(), commandArguments)
                 );
             }
@@ -77,7 +79,7 @@ public class ProcessCommand extends Middleware {
 
             timer = Metrics.executionTime.labels(stack.getCommand().getClass().getSimpleName()).startTimer();
 
-            return runCommand(stack, new CommandMessage(message, stack.isMentionableCommand(), new String[0]), commandArguments);
+            return runCommand(stack, new CommandMessage(stack.getCommandContainer(), message, stack.isMentionableCommand(), new String[0]), commandArguments);
         } catch (Exception ex) {
             Metrics.commandExceptions.labels(ex.getClass().getSimpleName()).inc();
 

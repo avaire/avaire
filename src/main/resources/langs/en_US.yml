@@ -1,0 +1,19 @@
+
+utility:
+    PingCommand:
+        message: 'Pong! Time taken :ping ms (:rating) Websocket heartbeat :heartbeat ms'
+        rating:
+            10: 'faster than Sonic! :smiley_cat:'
+            100: 'great! :smiley:'
+            200: 'nice! :slight_smile:'
+            300: 'decent. :neutral_face:'
+            400: 'average... :confused:'
+            500: 'slightly slow. :slight_frown:'
+            600: 'kinda slow.. :frowning2:'
+            700: 'slow.. :worried:'
+            800: 'too slow. :disappointed:'
+            900: 'bad. :sob: (helpme)'
+            1600: '#BlameDiscord. :angry:'
+            10000: 'this makes no sense :thinking: #BlameAlexis'
+            other: 'slow af. :dizzy_face:'
+

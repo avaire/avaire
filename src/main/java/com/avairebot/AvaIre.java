@@ -22,6 +22,7 @@ import com.avairebot.exceptions.InvalidPluginsPathException;
 import com.avairebot.factories.MessageFactory;
 import com.avairebot.handlers.GenericEventHandler;
 import com.avairebot.handlers.MainEventHandler;
+import com.avairebot.language.I18n;
 import com.avairebot.metrics.Metrics;
 import com.avairebot.plugin.PluginLoader;
 import com.avairebot.plugin.PluginManager;
@@ -212,6 +213,9 @@ public class AvaIre {
 
         LOGGER.info("Preparing Lavalink");
         LavalinkManager.LavalinkManagerHolder.LAVALINK.start(this);
+
+        LOGGER.info("Preparing I18n");
+        I18n.start(this);
 
         LOGGER.info("Creating bot instance and connecting to Discord network");
 

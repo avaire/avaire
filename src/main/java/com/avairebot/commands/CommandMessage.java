@@ -2,17 +2,25 @@ package com.avairebot.commands;
 
 import com.avairebot.chat.MessageType;
 import com.avairebot.chat.PlaceholderMessage;
+import com.avairebot.config.YamlConfiguration;
 import com.avairebot.factories.MessageFactory;
+import com.avairebot.language.I18n;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.*;
 import net.dv8tion.jda.core.requests.restaction.AuditableRestAction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import javax.annotation.CheckReturnValue;
+import javax.annotation.Nonnull;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class CommandMessage {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(CommandMessage.class);
 
     public final Guild guild;
     public final Member member;
@@ -22,11 +30,20 @@ public class CommandMessage {
     private final boolean mentionableCommand;
     private final String aliasArguments;
 
+    private YamlConfiguration i18n;
+    private String i18nCommandPrefix;
+
     public CommandMessage(Message message) {
-        this(message, false, new String[0]);
+        this(null, message, false, new String[0]);
     }
 
-    public CommandMessage(Message message, boolean mentionableCommand, String[] aliasArguments) {
+    public CommandMessage(CommandContainer container, Message message, boolean mentionableCommand, String[] aliasArguments) {
+        if (container != null) {
+            i18nCommandPrefix =
+                container.getCategory().getName().toLowerCase() + "."
+                    + container.getCommand().getClass().getSimpleName();
+        }
+
         this.message = message;
 
         this.guild = message.getGuild();
@@ -155,5 +172,27 @@ public class CommandMessage {
 
     public PlaceholderMessage makeEmbeddedMessage() {
         return MessageFactory.makeEmbeddedMessage(this.message.getChannel());
+    }
+
+    @Nonnull
+    public YamlConfiguration getI18n() {
+        if (this.i18n == null) {
+            this.i18n = I18n.get(getGuild());
+        }
+        return this.i18n;
+    }
+
+    @CheckReturnValue
+    public String i18n(@Nonnull String key) {
+        if (i18nCommandPrefix != null) {
+            key = i18nCommandPrefix + "." + key;
+        }
+
+        if (getI18n().contains(key)) {
+            return getI18n().getString(key);
+        } else {
+            LOGGER.warn("Missing language entry for key {} in language {}", key, I18n.getLocale(getGuild()).getCode());
+            return I18n.DEFAULT.getConfig().getString(key);
+        }
     }
 }

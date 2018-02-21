@@ -133,7 +133,7 @@ public class GuildTransformer extends Transformer {
         return data.getString("icon");
     }
 
-    public String getLocal() {
+    public String getLocale() {
         return data.getString("local");
     }
 
