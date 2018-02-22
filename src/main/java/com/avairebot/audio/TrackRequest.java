@@ -56,6 +56,11 @@ public class TrackRequest extends Future {
                     return;
                 }
 
+                if (playlist.getTracks().isEmpty()) {
+                    noMatches();
+                    return;
+                }
+
                 success.accept(new TrackResponse(musicManager, playlist, trackUrl));
 
                 Metrics.tracksLoaded.inc(playlist.getTracks().size());

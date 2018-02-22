@@ -1,6 +1,8 @@
 package com.avairebot.audio;
 
 import com.avairebot.AvaIre;
+import com.avairebot.audio.source.HttpSourceManager;
+import com.avairebot.audio.source.PlaylistImportSourceManager;
 import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.factories.MessageFactory;
@@ -50,20 +52,7 @@ public class AudioHandler {
     @CheckReturnValue
     public static AudioPlayerManager getPlayerManager() {
         if (playerManager == null) {
-            playerManager = new DefaultAudioPlayerManager();
-
-            YoutubeAudioSourceManager youtubeAudioSourceManager = new YoutubeAudioSourceManager();
-            youtubeAudioSourceManager.configureRequests(config -> RequestConfig.copy(config)
-                .setCookieSpec(CookieSpecs.IGNORE_COOKIES)
-                .build());
-
-            playerManager.registerSourceManager(youtubeAudioSourceManager);
-            playerManager.registerSourceManager(new SoundCloudAudioSourceManager());
-            playerManager.registerSourceManager(new BandcampAudioSourceManager());
-            playerManager.registerSourceManager(new TwitchStreamAudioSourceManager());
-            playerManager.registerSourceManager(new VimeoAudioSourceManager());
-            playerManager.registerSourceManager(new BeamAudioSourceManager());
-            playerManager.registerSourceManager(new LocalAudioSourceManager());
+            playerManager = registerSourceManagers(new DefaultAudioPlayerManager());
 
             playerManager.getConfiguration().setResamplingQuality(
                 AudioConfiguration.ResamplingQuality.MEDIUM
@@ -79,6 +68,26 @@ public class AudioHandler {
         }
 
         return playerManager;
+    }
+
+    public static AudioPlayerManager registerSourceManagers(AudioPlayerManager manager) {
+        manager.registerSourceManager(new PlaylistImportSourceManager());
+
+        YoutubeAudioSourceManager youtubeAudioSourceManager = new YoutubeAudioSourceManager();
+        youtubeAudioSourceManager.configureRequests(config -> RequestConfig.copy(config)
+            .setCookieSpec(CookieSpecs.IGNORE_COOKIES)
+            .build());
+
+        manager.registerSourceManager(youtubeAudioSourceManager);
+        manager.registerSourceManager(new SoundCloudAudioSourceManager());
+        manager.registerSourceManager(new BandcampAudioSourceManager());
+        manager.registerSourceManager(new TwitchStreamAudioSourceManager());
+        manager.registerSourceManager(new VimeoAudioSourceManager());
+        manager.registerSourceManager(new BeamAudioSourceManager());
+        manager.registerSourceManager(new LocalAudioSourceManager());
+        manager.registerSourceManager(new HttpSourceManager());
+
+        return manager;
     }
 
     @CheckReturnValue
