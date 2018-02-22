@@ -355,6 +355,8 @@ apiKeys:
   # Shorten API for shortening links, note the play command will still
   # work with youtube links without an API key.
   #
+  # Get a key at: https://developers.google.com/youtube/registering_an_application
+  #
   google: ''
 
   # DialogFlow is the service used by Ava for her artificial intelligence,
@@ -362,5 +364,7 @@ apiKeys:
   # an API key on their website as well as creating your own custom
   # AI agent, if you want to use the same AI agent Ava uses you
   # can find it on github at: https://github.com/avaire/agent
+  #
+  # Get a key at: https://dialogflow.com/docs/reference/agent
   #
   dialogflow: ''
