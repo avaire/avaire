@@ -30,6 +30,14 @@ public class I18n {
         LOGGER.info("Loaded " + LANGS.size() + " languages: " + LANGS);
     }
 
+    @Nullable
+    public static String getString(@Nullable Guild guild, String string) {
+        if (string == null) {
+            return null;
+        }
+        return get(guild).getString(string, DEFAULT.getConfig().getString(string, null));
+    }
+
     @Nonnull
     public static YamlConfiguration get(@Nullable Guild guild) {
         if (guild == null) {

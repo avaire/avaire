@@ -1,4 +1,7 @@
 
+errors:
+    missingArgument: 'Missing argument, the `%s` argument is required!'
+
 utility:
     PingCommand:
         message: 'Pong! Time taken :ping ms (:rating) Websocket heartbeat :heartbeat ms'

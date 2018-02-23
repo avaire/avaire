@@ -3,6 +3,7 @@ package com.avairebot.contracts.commands;
 import com.avairebot.AvaIre;
 import com.avairebot.commands.*;
 import com.avairebot.contracts.reflection.Reflectionable;
+import com.avairebot.language.I18n;
 import com.avairebot.middleware.Middleware;
 import com.avairebot.permissions.Permissions;
 import com.avairebot.plugin.JavaPlugin;
@@ -180,7 +181,12 @@ public abstract class Command extends Reflectionable {
      * @return false since the error message should only be used on failure.
      */
     protected final boolean sendErrorMessage(CommandMessage context, String error, String... args) {
-        return sendErrorMessage(context, String.format(error, (Object[]) args));
+        String i18nError = I18n.getString(context.getGuild(), "errors." + error);
+        if (i18nError != null) {
+            error = i18nError;
+        }
+
+        return sendErrorMessage(context, String.format(error, (Object[]) args), 150, TimeUnit.SECONDS);
     }
 
     /**
@@ -192,7 +198,9 @@ public abstract class Command extends Reflectionable {
      * @return false since the error message should only be used on failure.
      */
     public final boolean sendErrorMessage(CommandMessage context, String error) {
-        return sendErrorMessage(context, error, 150, TimeUnit.SECONDS); // Deletes after 2½ minute.
+        String i18nError = I18n.getString(context.getGuild(), "errors." + error);
+
+        return sendErrorMessage(context, i18nError == null ? error : i18nError, 150, TimeUnit.SECONDS);
     }
 
     /**
