@@ -55,14 +55,20 @@ public class RequestSong extends Intent {
         CommandContainer container = CommandHandler.getCommand(PlayCommand.class);
         String type = parameters.get("music").getAsString().toLowerCase();
         if (!CATEGORIES.containsKey(type)) {
-            container.getCommand().onCommand(new CommandMessage(message), new String[]{type, "---leave-message"});
+            container.getCommand().onCommand(
+                new CommandMessage(container, message), new String[]{type, "---leave-message"}
+            );
             return;
         }
 
         String category = (String) RandomUtil.pickRandom(CATEGORIES.get(type));
         String randomSong = getRandomSong(category);
 
-        container.getCommand().onCommand(new CommandMessage(message), new String[]{randomSong == null ? type : randomSong, "---leave-message"});
+        container.getCommand().onCommand(
+            new CommandMessage(container, message),
+            new String[]{randomSong == null
+                ? type : randomSong, "---leave-message"}
+        );
     }
 
     private String getRandomSong(final String category) {

@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,11 +38,13 @@ public class CommandMessage {
         this(null, message, false, new String[0]);
     }
 
+    public CommandMessage(CommandContainer container, Message message) {
+        this(container, message, false, new String[0]);
+    }
+
     public CommandMessage(CommandContainer container, Message message, boolean mentionableCommand, String[] aliasArguments) {
         if (container != null) {
-            i18nCommandPrefix =
-                container.getCategory().getName().toLowerCase() + "."
-                    + container.getCommand().getClass().getSimpleName();
+            setI18nCommandPrefix(container);
         }
 
         this.message = message;
@@ -194,5 +197,16 @@ public class CommandMessage {
             LOGGER.warn("Missing language entry for key {} in language {}", key, I18n.getLocale(getGuild()).getCode());
             return I18n.DEFAULT.getConfig().getString(key);
         }
+    }
+
+    public void setI18nPrefix(@Nullable String i18nPrefix) {
+        this.i18nCommandPrefix = i18nPrefix;
+    }
+
+    public void setI18nCommandPrefix(@Nonnull CommandContainer container) {
+        setI18nPrefix(
+            container.getCategory().getName().toLowerCase() + "."
+                + container.getCommand().getClass().getSimpleName()
+        );
     }
 }
