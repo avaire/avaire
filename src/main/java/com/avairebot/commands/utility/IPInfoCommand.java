@@ -70,9 +70,9 @@ public class IPInfoCommand extends Command {
             JSONObject json = new JSONObject(response.toString());
 
             MessageFactory.makeEmbeddedMessage(context.getChannel(), Color.decode("#005A8C"),
-                new MessageEmbed.Field("Hostname", json.has("hostname") ? json.getString("hostname") : "Unknown", true),
-                new MessageEmbed.Field("Organisation", json.has("org") ? json.getString("org") : "Unknown", true),
-                new MessageEmbed.Field("Country", generateLocation(json), false)
+                new MessageEmbed.Field(context.i18n("hostname"), json.has("hostname") ? json.getString("hostname") : "Unknown", true),
+                new MessageEmbed.Field(context.i18n("organisation"), json.has("org") ? json.getString("org") : "Unknown", true),
+                new MessageEmbed.Field(context.i18n("country"), generateLocation(json), false)
             ).setTitle(args[0]).setFooter(generateFooter(context.getMessage()), null).queue();
         });
 

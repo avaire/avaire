@@ -48,7 +48,7 @@ public class GlobalLeaderboardCommand extends Command {
     public boolean onCommand(CommandMessage context, String[] args) {
         Collection collection = loadTop100From();
         if (collection == null) {
-            context.makeWarning("There are no leaderboard data right now, try again later.").queue();
+            context.makeWarning(context.i18n("noData")).queue();
             return false;
         }
 
@@ -69,18 +69,18 @@ public class GlobalLeaderboardCommand extends Command {
 
             long experience = row.getLong("total", 100);
 
-            messages.add(String.format("`%s` **%s** is level **%s** with **%s** xp.",
-                index + 1,
-                username,
-                LevelUtil.getLevelFromExperience(experience),
-                experience - 100
-            ));
+            messages.add(context.i18n("line")
+                .replace(":num", "" + (index + 1))
+                .replace(":username", username)
+                .replace(":level", "" + LevelUtil.getLevelFromExperience(experience))
+                .replace(":experience", "" + (experience - 100))
+            );
         });
 
         messages.add("\n" + paginator.generateFooter(generateCommandTrigger(context.getMessage())));
 
         context.makeEmbeddedMessage(null, String.join("\n", messages))
-            .setTitle("Global Experience Leaderboard").queue();
+            .setTitle(context.i18n("title")).queue();
 
         return true;
     }

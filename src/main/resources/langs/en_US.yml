@@ -1,8 +1,62 @@
 
 errors:
     missingArgument: 'Missing argument, the `%s` argument is required!'
+    invalidProperty: 'Invalid `%s` provided, you must provide a valid %s.'
+    noChannelsWithNameOrId: 'I found no channels with the name or ID of `%s`'
+    noUsersWithNameOrId: 'I found no users with the name or ID of `%s`'
+    requireLevelFeatureToBeEnabled: 'This command requires the `Levels & Experience` feature to be enabled for the server, you can ask a server admin if they want to enable it with `%s`'
 
 utility:
+    CalculateCommand:
+        boolean:
+            true: 'True'
+            false: 'False'
+        eastereggs:
+            quickMaths: '	-	Quick maths!'
+            binary: "There are only 10 types of people in the world, those who understand binary and those who don't."
+
+    ChannelIdCommand:
+        message: ':user :id: of the :channel channel is `:targetChannel`'
+
+    ChannelInfoCommand:
+        fields:
+            id: 'ID'
+            position: 'Position'
+            users: 'Users'
+            category: 'Category'
+            bitRate: 'Bit Rate'
+            nsfw: 'NSFW'
+            createdAt: 'Created At'
+        noTopic: '*No topic has been set for this channel*'
+        timeFormat: 'EEE, dd MMM yyyy HH:mm'
+
+    ExpandUrlCommand:
+        noRedirect: ":url doesn't redirect anywhere."
+        redirects: '%s redirects to %s'
+        jumps: '**The link jumps through the following sites:**'
+
+    FeedbackCommand:
+        success: 'Successfully sent feedback <:tickYes:319985232306765825>'
+        failedToSend: 'Failed to send feedback message: :error'
+
+    GlobalLeaderboardCommand:
+        noData: 'There are no leaderboard data right now, try again later.'
+        line: '`:num` **:username** is level **:level** with **:experience** xp.'
+        title: 'Global Experience Leaderboard'
+
+    InviteCommand:
+        message: 'You can invite me to your server by [clicking here](:oauth) or use the link below:'
+
+    IPInfoCommand:
+        hostname: 'Hostname'
+        organisation: 'Organisation'
+        country: 'Country'
+
+    LeaderboardCommand:
+        noData: 'There are no leaderboard data right now, try again later.'
+        line: '`:num` **:username** is level **:level** with **:experience** xp.'
+        title: '%s Leaderboard'
+
     PingCommand:
         message: 'Pong! Time taken :ping ms (:rating) Websocket heartbeat :heartbeat ms'
         rating:
@@ -20,3 +74,92 @@ utility:
             10000: 'this makes no sense :thinking: #BlameAlexis'
             other: 'slow af. :dizzy_face:'
 
+    RankCommand:
+        botsCannotReceiveXp: "Bots cannot receive xp and therefore can't be ranked, try and tag a user instead."
+        unranked: 'Unranked'
+        fields:
+            rank: 'Rank'
+            level: 'Level'
+            experience: 'Experience'
+
+    ServerIdCommand:
+        message: ':user :id: of this server is `:guildid`'
+
+    ServerInfoCommand:
+        fields:
+            id: 'ID'
+            owner: 'Owner'
+            textChannels: 'Text Channels'
+            voiceChannels: 'Voice Channels'
+            members: 'Members'
+            roles: 'Roles'
+            region: 'Region'
+            createdAt: 'Created At'
+            emojis: 'Custom Emojis (%s)'
+        timeFormat: 'EEE, dd MMM yyyy HH:mm'
+
+    ShardCommand:
+        allShards: 'All Shards'
+        totalShards: 'Total Shards'
+
+    SourceCommand:
+        noArgs: 'AvaIre source code:'
+        command: 'AvaIre source code for the **:command** command:'
+        invalidCommand: 'Invalid command given, here is the full source code instead.'
+        externalCommand: "The command is registered via an external plugin, the author of the plugin haven't made the source of the command public, or they forgot to add a link to it, here is the full source code for the bot instead."
+
+    StatsCommand:
+        title: 'Official Bot Server Invite'
+        footer: 'Currently playing in %s servers with %s songs in the queue.'
+        latestChanges: 'Latest changes:'
+        formats:
+            database: '%s (%s per min)'
+            messages: '%s (%s per sec)'
+            memory: '%sMb / %sMb'
+        fields:
+            author: 'Author'
+            botId: 'Bot ID'
+            library: 'Library'
+            database: 'DB Queries ran'
+            messages: 'Messages Received'
+            shard: 'Shard'
+            commands: 'Commands Ran'
+            memory: 'Memory Usage'
+            uptime: 'Uptime'
+            members: 'Members'
+            channels: 'Channels'
+            servers: 'Servers'
+
+    UptimeCommand:
+        message: 'I have been online for :time'
+        footer: 'Started %s at %s'
+        dateFormat: 'EEEEEEEE, dd MMM yyyy'
+        timeFormat: 'HH:mm:ss z'
+
+    UserIdCommand:
+        message: ':id: of the user **:target** is `:targetid`'
+
+    UserInfoCommand:
+        fields:
+            username: 'Username'
+            userId: 'User ID'
+            joinedServer: 'Joined Server'
+            joinedDiscord: 'Joined Discord'
+            roles: 'Roles (%s)'
+            servers: 'Servers'
+        inServers: '%s the bot knows about'
+        noRoles: '*This user is not in any roles*'
+        timeFormat: 'EEE, dd MMM yyyy HH:mm'
+
+    VersionCommand:
+        current: 'I am currently `:difference` :type versions behind!'
+        getLatest: 'You can get the latest version of me on github at [avaire/avaire](https://github.com/avaire/avaire)'
+        usingLatest: "You're using the latest version of AvaIre!"
+        latestVersion: 'The latest version of AvaIre is v%s'
+        versions:
+            majorName: 'Major'
+            major: 'Major version updates are total reworks of the bot and how it works or a large compilation of minor changes to the source code, it is highly recommended that you update on major version changes since older versions will not be supported for bug fixes or updates.'
+            minorName: 'Minor'
+            minor: 'Minor version updates are new additions, features and reworks of the existing codebase, it is recommended that you update on minor version changes to keep up with the new features.'
+            patchName: 'Patch'
+            patch: 'Patch version updates are bug fixes, refactoring of existing code and very minor changes that wont affect other things in the code base, it is recommended that you update on patch version changes to keep up with the bug fixes and patches.'

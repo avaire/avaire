@@ -42,8 +42,9 @@ public class ChannelIdCommand extends Command {
             channel = context.getMentionedChannels().get(0);
         }
 
-        context.makeSuccess(":user :id: of the :channel channel is `:targetChannel`")
+        context.makeSuccess(context.i18n("message"))
             .set("targetChannel", channel.getId()).queue();
+
         return true;
     }
 }

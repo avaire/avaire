@@ -48,20 +48,20 @@ public class ServerInfoCommand extends Command {
         Carbon time = Carbon.createFromOffsetDateTime(guild.getCreationTime());
 
         PlaceholderMessage placeholderMessage = context.makeEmbeddedMessage(getRoleColor(guild.getSelfMember().getRoles()),
-            new MessageEmbed.Field("ID", guild.getId(), true),
-            new MessageEmbed.Field("Owner", guild.getOwner().getUser().getName() + "#" + guild.getOwner().getUser().getDiscriminator(), true),
-            new MessageEmbed.Field("Text Channels", NumberUtil.formatNicely(guild.getTextChannels().size()), true),
-            new MessageEmbed.Field("Voice Channels", NumberUtil.formatNicely(guild.getVoiceChannels().size()), true),
-            new MessageEmbed.Field("Members", NumberUtil.formatNicely(guild.getMembers().size()), true),
-            new MessageEmbed.Field("Roles", NumberUtil.formatNicely(guild.getRoles().size()), true),
-            new MessageEmbed.Field("Region", guild.getRegion().getName(), true),
-            new MessageEmbed.Field("Created At", time.format("EEE, dd MMM yyyy HH:mm") + "\n*About " + shortenDiffForHumans(time) + "*", true)
+            new MessageEmbed.Field(context.i18n("fields.id"), guild.getId(), true),
+            new MessageEmbed.Field(context.i18n("fields.owner"), guild.getOwner().getUser().getName() + "#" + guild.getOwner().getUser().getDiscriminator(), true),
+            new MessageEmbed.Field(context.i18n("fields.textChannels"), NumberUtil.formatNicely(guild.getTextChannels().size()), true),
+            new MessageEmbed.Field(context.i18n("fields.voiceChannels"), NumberUtil.formatNicely(guild.getVoiceChannels().size()), true),
+            new MessageEmbed.Field(context.i18n("fields.members"), NumberUtil.formatNicely(guild.getMembers().size()), true),
+            new MessageEmbed.Field(context.i18n("fields.roles"), NumberUtil.formatNicely(guild.getRoles().size()), true),
+            new MessageEmbed.Field(context.i18n("fields.region"), guild.getRegion().getName(), true),
+            new MessageEmbed.Field(context.i18n("fields.createdAt"), time.format(context.i18n("timeFormat")) + "\n*About " + shortenDiffForHumans(time) + "*", true)
         ).setTitle(guild.getName()).setThumbnail(guild.getIconUrl());
 
         if (!guild.getEmotes().isEmpty()) {
             boolean hasMany = guild.getEmotes().size() > 17;
             placeholderMessage.addField(new MessageEmbed.Field(
-                String.format("Custom Emojis (%s)", guild.getEmotes().size()),
+                String.format(context.i18n("fields.emojis"), guild.getEmotes().size()),
                 guild.getEmotes().stream()
                     .map(emote -> emote.getName() + (hasMany ? "" : " " + emote.getAsMention()))
                     .collect(Collectors.joining(", ")),

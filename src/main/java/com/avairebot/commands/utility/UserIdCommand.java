@@ -53,10 +53,10 @@ public class UserIdCommand extends Command {
         }
 
         if (user == null) {
-            return sendErrorMessage(context, "I found no users with the name or ID of `%s`", args[0]);
+            return sendErrorMessage(context, "noUsersWithNameOrId", args[0]);
         }
 
-        context.makeSuccess(":id: of the user **:target** is `:targetid`")
+        context.makeSuccess(context.i18n("message"))
             .set("target", user.getAsMention())
             .set("targetid", user.getId())
             .queue();

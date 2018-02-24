@@ -48,44 +48,42 @@ public class VersionCommand extends Command {
         }
 
         String template = String.join("\n",
-            "I am currently `:difference` :type versions behind!",
+            context.i18n("current"),
             "",
             ":message",
             "",
-            "You can get the latest version of me on github at [avaire/avaire](https://github.com/avaire/avaire)"
+            context.i18n("getLatest")
         );
 
         PlaceholderMessage versionMessage = null;
         SemanticVersion currentVersion = new SemanticVersion(AppInfo.getAppInfo().VERSION);
         if (latestVersion.major > currentVersion.major) {
             versionMessage = context.makeError(template)
-                .set("message", "Major version updates are total reworks of the bot and how it works or a large compilation of " +
-                    "minor changes to the source code, it is highly recommended that you update on major version " +
-                    "changes since older versions will not be supported for bug fixes or updates.")
+                .set("message", context.i18n("versions.major"))
                 .set("difference", latestVersion.major - currentVersion.major)
-                .set("type", "Major");
+                .set("type", context.i18n("versions.majorName"));
         } else if (latestVersion.minor > currentVersion.minor) {
             versionMessage = context.makeWarning(template)
-                .set("message", "Minor version updates are new additions, features and reworks of the existing codebase, it is " +
-                    "recommended that you update on minor version changes to keep up with the new features.")
+                .set("message", context.i18n("versions.minor"))
                 .set("difference", latestVersion.minor - currentVersion.minor)
-                .set("type", "Minor");
+                .set("type", context.i18n("versions.minorName"));
         } else if (latestVersion.patch > currentVersion.patch) {
             versionMessage = context.makeInfo(template)
-                .set("message", "Patch version updates are bug fixes, refactoring of existing code and very minor changes that " +
-                    "wont affect other things in the code base, it is recommended that you update on patch version " +
-                    "changes to keep up with the bug fixes and patches.")
+                .set("message", context.i18n("versions.patch"))
                 .set("difference", latestVersion.patch - currentVersion.patch)
-                .set("type", "Patch");
+                .set("type", context.i18n("versions.patchName"));
         }
 
         if (versionMessage == null) {
-            versionMessage = context.makeSuccess("You\'re using the latest version of AvaIre!");
+            versionMessage = context.makeSuccess(context.i18n("usingLatest"));
         }
 
         versionMessage
             .setTitle("v" + AppInfo.getAppInfo().VERSION)
-            .setFooter("The latest version of AvaIre is v" + latestVersion)
+            .setFooter(String.format(
+                context.i18n("latestVersion"),
+                latestVersion
+            ))
             .queue();
 
         return true;

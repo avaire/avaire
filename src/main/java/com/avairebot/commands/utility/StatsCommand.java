@@ -58,7 +58,7 @@ public class StatsCommand extends Command {
     public boolean onCommand(CommandMessage context, String[] args) {
         StringBuilder description = new StringBuilder("Created by [Senither#0001](https://senither.com/) using the [JDA](https://github.com/DV8FromTheWorld/JDA) framework!");
         if (avaire.getCache().getAdapter(CacheType.FILE).has("github.commits")) {
-            description = new StringBuilder("**Latest changes:**\n");
+            description = new StringBuilder("**" + context.i18n("latestChanges") + "**\n");
             List<LinkedTreeMap<String, Object>> items = (List<LinkedTreeMap<String, Object>>) avaire.getCache().getAdapter(CacheType.FILE).get("github.commits");
 
             for (int i = 0; i < 3; i++) {
@@ -74,22 +74,23 @@ public class StatsCommand extends Command {
         }
 
         context.makeEmbeddedMessage(MessageType.INFO,
-            new MessageEmbed.Field("Author", "Senither#0001", true),
-            new MessageEmbed.Field("Bot ID", context.getJDA().getSelfUser().getId(), true),
-            new MessageEmbed.Field("Library", "[JDA](https://github.com/DV8FromTheWorld/JDA)", true),
-            new MessageEmbed.Field("DB Queries run", getDatabaseQueriesStats(), true),
-            new MessageEmbed.Field("Messages Received", getMessagesReceivedStats(), true),
-            new MessageEmbed.Field("Shard", "" + context.getJDA().getShardInfo().getShardId(), true),
-            new MessageEmbed.Field("Commands Ran", NumberUtil.formatNicely(Statistics.getCommands()), true),
-            new MessageEmbed.Field("Memory Usage", memoryUsage(), true),
-            new MessageEmbed.Field("Uptime", applicationUptime(), true),
-            new MessageEmbed.Field("Members", NumberUtil.formatNicely(avaire.getShardEntityCounter().getUsers()), true),
-            new MessageEmbed.Field("Channels", NumberUtil.formatNicely(avaire.getShardEntityCounter().getChannels()), true),
-            new MessageEmbed.Field("Servers", NumberUtil.formatNicely(avaire.getShardEntityCounter().getGuilds()), true)
+            new MessageEmbed.Field(context.i18n("fields.author"), "Senither#0001", true),
+            new MessageEmbed.Field(context.i18n("fields.botId"), context.getJDA().getSelfUser().getId(), true),
+            new MessageEmbed.Field(context.i18n("fields.library"), "[JDA](https://github.com/DV8FromTheWorld/JDA)", true),
+            new MessageEmbed.Field(context.i18n("fields.database"), getDatabaseQueriesStats(context), true),
+            new MessageEmbed.Field(context.i18n("fields.messages"), getMessagesReceivedStats(context), true),
+            new MessageEmbed.Field(context.i18n("fields.shard"), "" + context.getJDA().getShardInfo().getShardId(), true),
+            new MessageEmbed.Field(context.i18n("fields.commands"), NumberUtil.formatNicely(Statistics.getCommands()), true),
+            new MessageEmbed.Field(context.i18n("fields.memory"), memoryUsage(context), true),
+            new MessageEmbed.Field(context.i18n("fields.uptime"), applicationUptime(), true),
+            new MessageEmbed.Field(context.i18n("fields.members"), NumberUtil.formatNicely(avaire.getShardEntityCounter().getUsers()), true),
+            new MessageEmbed.Field(context.i18n("fields.channels"), NumberUtil.formatNicely(avaire.getShardEntityCounter().getChannels()), true),
+            new MessageEmbed.Field(context.i18n("fields.servers"), NumberUtil.formatNicely(avaire.getShardEntityCounter().getGuilds()), true)
         )
-            .setTitle("Official Bot Server Invite", "https://discordapp.com/invite/gt2FWER")
+            .setTitle(context.i18n("title"), "https://discordapp.com/invite/gt2FWER")
             .setAuthor("AvaIre v" + AppInfo.getAppInfo().VERSION, "https://discordapp.com/invite/gt2FWER", avaire.getSelfUser().getEffectiveAvatarUrl())
-            .setFooter(String.format("Currently playing in %s servers with %s songs in the queue.",
+            .setFooter(String.format(
+                context.i18n("footer"),
                 NumberUtil.formatNicely(AudioHandler.getTotalListenersSize()),
                 NumberUtil.formatNicely(AudioHandler.getTotalQueueSize())
             ))
@@ -121,22 +122,25 @@ public class StatsCommand extends Command {
         return String.format("%ss", s);
     }
 
-    private String getDatabaseQueriesStats() {
-        return String.format("%s (%s per min)",
+    private String getDatabaseQueriesStats(CommandMessage context) {
+        return String.format(
+            context.i18n("formats.database"),
             NumberUtil.formatNicely(Statistics.getQueries()),
             decimalNumber.format(Statistics.getQueries() / ((double) ManagementFactory.getRuntimeMXBean().getUptime() / (double) (1000 * 60)))
         );
     }
 
-    private String getMessagesReceivedStats() {
-        return String.format("%s (%s per sec)",
+    private String getMessagesReceivedStats(CommandMessage context) {
+        return String.format(
+            context.i18n("formats.messages"),
             NumberUtil.formatNicely(Statistics.getMessages()),
             decimalNumber.format(Statistics.getMessages() / ((double) ManagementFactory.getRuntimeMXBean().getUptime() / (double) (1000)))
         );
     }
 
-    private String memoryUsage() {
-        return String.format("%sMb / %sMb",
+    private String memoryUsage(CommandMessage context) {
+        return String.format(
+            context.i18n("formats.memory"),
             (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / (1024 * 1024),
             Runtime.getRuntime().totalMemory() / (1024 * 1024)
         );

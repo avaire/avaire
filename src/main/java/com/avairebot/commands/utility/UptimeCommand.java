@@ -19,7 +19,7 @@ public class UptimeCommand extends Command {
 
     @Override
     public String getName() {
-        return "Uptime Comand";
+        return "Uptime Command";
     }
 
     @Override
@@ -38,9 +38,13 @@ public class UptimeCommand extends Command {
 
         Carbon time = Carbon.now().subSeconds(NumberUtil.parseInt("" + (rb.getUptime() / 1000)));
 
-        context.makeInfo("I have been online for :time")
+        context.makeInfo(context.i18n("message"))
             .set("time", time.diffForHumans(true))
-            .setFooter("Started " + time.format("EEEEEEEE, dd MMM yyyy") + " at " + time.format("HH:mm:ss z"))
+            .setFooter(String.format(
+                context.i18n("footer"),
+                time.format("EEEEEEEE, dd MMM yyyy"),
+                time.format("HH:mm:ss z")
+            ))
             .queue();
 
         return true;

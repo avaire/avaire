@@ -44,7 +44,7 @@ public class CalculateCommand extends Command {
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
         if (args.length == 0) {
-            return sendErrorMessage(context, "Missing argument, the `equation` argument is required!");
+            return sendErrorMessage(context, "missingArgument", "equation");
         }
 
         String string = String.join(" ", args).trim();
@@ -55,12 +55,13 @@ public class CalculateCommand extends Command {
 
             if (expression.isBoolean()) {
                 context.makeInfo(
-                    generateEasterEgg(expression, result, string, result.intValueExact() == 1 ? "True" : "False")
+                    generateEasterEgg(context, expression, result, string, result.intValueExact() == 1
+                        ? context.i18n("boolean.true") : context.i18n("boolean.false"))
                 ).queue();
                 return true;
             }
 
-            context.makeInfo(generateEasterEgg(expression, result, string, result.toPlainString())).queue();
+            context.makeInfo(generateEasterEgg(context, expression, result, string, result.toPlainString())).queue();
         } catch (Exception ex) {
             return sendErrorMessage(context, ex.getMessage().replaceAll("'", "`"));
         }
@@ -93,7 +94,7 @@ public class CalculateCommand extends Command {
         return expression;
     }
 
-    private String generateEasterEgg(Expression expression, BigDecimal result, String query, String stringifiedResult) {
+    private String generateEasterEgg(CommandMessage context, Expression expression, BigDecimal result, String query, String stringifiedResult) {
         if (result.intValueExact() == 69) {
             return stringifiedResult + "\t( ͡° ͜ʖ ͡°)";
         }
@@ -101,11 +102,11 @@ public class CalculateCommand extends Command {
         query = query.replaceAll(" ", "");
 
         if (query.startsWith("2+2-1") && ((expression.isBoolean() && result.intValueExact() == 1) || result.intValueExact() == 3)) {
-            return stringifiedResult + "\t-\tQuick maths!";
+            return stringifiedResult + context.i18n("eastereggs.quickMaths");
         }
 
         if (query.equals("10") && stringifiedResult.equals("10")) {
-            return "There are only 10 types of people in the world, those who understand binary and those who don't.";
+            return context.i18n("eastereggs.binary");
         }
 
         return stringifiedResult;

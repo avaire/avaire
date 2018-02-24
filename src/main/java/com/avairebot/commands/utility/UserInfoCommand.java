@@ -44,7 +44,7 @@ public class UserInfoCommand extends Command {
         if (args.length > 0) {
             User user = MentionableUtil.getUser(context, args);
             if (user == null) {
-                return sendErrorMessage(context, "I found no users with the name or ID of `%s`", args[0]);
+                return sendErrorMessage(context, "noUsersWithNameOrId", args[0]);
             }
             member = context.getGuild().getMember(user);
         }
@@ -53,21 +53,49 @@ public class UserInfoCommand extends Command {
         Carbon createdDate = Carbon.createFromOffsetDateTime(member.getUser().getCreationTime());
 
         PlaceholderMessage placeholderMessage = context.makeEmbeddedMessage(getRoleColor(member.getRoles()),
-            new MessageEmbed.Field("Username", member.getUser().getName(), true),
-            new MessageEmbed.Field("User ID", member.getUser().getId(), true),
-            new MessageEmbed.Field("Joined Server", joinedDate.format("EEE, dd MMM yyyy HH:mm") + "\n*About " + shortenDiffForHumans(joinedDate) + "*", true),
-            new MessageEmbed.Field("Joined Discord", createdDate.format("EEE, dd MMM yyyy HH:mm") + "\n*About " + shortenDiffForHumans(createdDate) + "*", true)
+            new MessageEmbed.Field(
+                context.i18n("fields.username"),
+                member.getUser().getName(),
+                true
+            ),
+            new MessageEmbed.Field(
+                context.i18n("fields.userId"),
+                member.getUser().getId(),
+                true
+            ),
+            new MessageEmbed.Field(
+                context.i18n("fields.joinedServer"),
+                joinedDate.format(context.i18n("timeFormat")) + "\n*About " + shortenDiffForHumans(joinedDate) + "*",
+                true
+            ),
+            new MessageEmbed.Field(
+                context.i18n("fields.joinedDiscord"),
+                createdDate.format(context.i18n("timeFormat")) + "\n*About " + shortenDiffForHumans(createdDate) + "*",
+                true
+            )
         ).setThumbnail(member.getUser().getEffectiveAvatarUrl());
 
-        String memberRoles = "*This user is not in any roles*";
+        String memberRoles = context.i18n("noRoles");
         if (!member.getRoles().isEmpty()) {
             memberRoles = member.getRoles().stream()
                 .map(role -> role.getName())
                 .collect(Collectors.joining("\n"));
         }
 
-        placeholderMessage.addField(new MessageEmbed.Field(String.format("Roles (%s)", member.getRoles().size()), memberRoles, true));
-        placeholderMessage.addField(new MessageEmbed.Field("Servers", NumberUtil.formatNicely(avaire.getShardManager().getMutualGuilds(member.getUser()).size()) + " the bot knows about", true));
+        placeholderMessage.addField(new MessageEmbed.Field(
+            String.format(
+                context.i18n("fields.roles"),
+                member.getRoles().size()
+            ), memberRoles, true)
+        );
+        placeholderMessage.addField(new MessageEmbed.Field(
+            context.i18n("fields.servers"),
+            String.format(
+                context.i18n("inServers"),
+                NumberUtil.formatNicely(
+                    avaire.getShardManager().getMutualGuilds(member.getUser()).size()
+                )
+            ), true));
 
         placeholderMessage.queue();
         return true;

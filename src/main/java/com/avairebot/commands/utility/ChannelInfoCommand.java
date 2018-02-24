@@ -43,7 +43,7 @@ public class ChannelInfoCommand extends Command {
             channel = MentionableUtil.getChannel(context.getMessage(), args);
 
             if (channel == null) {
-                return sendErrorMessage(context, "I found no channels with the name or ID of `%s`", args[0]);
+                return sendErrorMessage(context, "noChannelsWithNameOrId", args[0]);
             }
         }
 
@@ -52,22 +52,22 @@ public class ChannelInfoCommand extends Command {
         PlaceholderMessage placeholder = MessageFactory.makeEmbeddedMessage(context.getChannel())
             .setColor(MessageType.INFO.getColor())
             .setTitle("#" + channel.getName())
-            .addField("ID", channel.getId(), true)
-            .addField("Position", "" + channel.getPosition(), true)
-            .addField("Users", "" + channel.getMembers().size(), true)
-            .addField("Category", getCategoryFor(channel), true);
+            .addField(context.i18n("fields.id"), channel.getId(), true)
+            .addField(context.i18n("fields.position"), "" + channel.getPosition(), true)
+            .addField(context.i18n("fields.users"), "" + channel.getMembers().size(), true)
+            .addField(context.i18n("fields.category"), getCategoryFor(channel), true);
 
         if (channel instanceof TextChannel) {
             TextChannel textChannel = (TextChannel) channel;
 
-            String topic = "*No topic has been set for this channel*";
+            String topic = context.i18n("noTopic");
             if (textChannel.getTopic() != null && textChannel.getTopic().trim().length() > 0) {
                 topic = textChannel.getTopic();
             }
 
             placeholder
                 .setDescription(topic)
-                .addField("NSFW", textChannel.isNSFW() ? "ON" : "OFF", true);
+                .addField(context.i18n("fields.nsfw"), textChannel.isNSFW() ? "ON" : "OFF", true);
         }
 
         if (channel instanceof VoiceChannel) {
@@ -75,12 +75,16 @@ public class ChannelInfoCommand extends Command {
             int bitRate = voiceChannel.getBitrate() / 1000;
 
             placeholder
-                .setDescription("*This voice channel has *")
-                .addField("Bit Rate", bitRate + " kbps", true);
+                .addField(context.i18n("fields.bitRate"), bitRate + " kbps", true);
         }
 
         placeholder
-            .addField("Created At", time.format("EEE, dd MMM yyyy HH:mm") + "\n*About " + shortenDiffForHumans(time) + "*", true)
+            .addField(
+                context.i18n("fields.createdAt"),
+                time.format(context.i18n("timeFormat"))
+                    + "\n*About " + shortenDiffForHumans(time) + "*",
+                true
+            )
             .queue();
 
         return true;

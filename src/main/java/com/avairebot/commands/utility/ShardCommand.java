@@ -58,8 +58,7 @@ public class ShardCommand extends Command {
         }
 
         List<String> messages = new ArrayList<>();
-        messages.add("**All Shards**```prolog");
-
+        messages.add("**" + context.i18n("allShards") + "**```prolog");
 
         for (int i = 0; i < avaire.getShardManager().getShardsTotal(); i++) {
             JDA shard = avaire.getShardManager().getShardById(i);
@@ -74,7 +73,7 @@ public class ShardCommand extends Command {
         }
         messages.add("```");
 
-        messages.add("**Total Shards**```ml");
+        messages.add("**" + context.i18n("totalShards") + "**```ml");
         messages.add(String.format("G %s, C %s, U %s, L %s",
             avaire.getShardEntityCounter().getGuilds(),
             avaire.getShardEntityCounter().getChannels(),
