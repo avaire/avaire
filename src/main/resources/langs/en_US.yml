@@ -6,6 +6,27 @@ errors:
     noUsersWithNameOrId: 'I found no users with the name or ID of `%s`'
     requireLevelFeatureToBeEnabled: 'This command requires the `Levels & Experience` feature to be enabled for the server, you can ask a server admin if they want to enable it with `%s`'
 
+search:
+    DuckDuckGoCommand:
+        searchResults: 'Search result for: %s'
+        noResults: 'I found nothing for `:query`'
+        seeAlso: '**See also**'
+        nsfwStatus:
+            enabled: 'NSFW Search is enabled'
+            disabled: 'NSFW Search is disabled'
+
+    GfycatCommand:
+        noResults: "I couldn't find any gif matching your query: `:query`"
+
+    UrbanDictionaryCommand:
+        noResults: ':user I found nothing for `:query`'
+        untitled: 'Untitled'
+        example: 'Example'
+        results: ':percentage percentage of people like this. :up👍 :down👎'
+
+    XKCDCommand:
+        number: 'XKCD number #%s'
+
 utility:
     CalculateCommand:
         boolean:

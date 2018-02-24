@@ -67,7 +67,7 @@ public class DuckDuckGoCommand extends ThreadCommand {
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
         if (args.length == 0) {
-            return sendErrorMessage(context, "Missing argument `query`, you must include your search query.");
+            return sendErrorMessage(context, "missingArgument", "query");
         }
 
         try {
@@ -93,7 +93,7 @@ public class DuckDuckGoCommand extends ThreadCommand {
                 }
 
                 if (results == 0) {
-                    result.add(prepareLinkElement(link) + "\n**See also**");
+                    result.add(prepareLinkElement(link) + "\n" + context.i18n("seeAlso"));
                     results++;
                     continue;
                 }
@@ -108,13 +108,20 @@ public class DuckDuckGoCommand extends ThreadCommand {
 
             PlaceholderMessage resultMessage = MessageFactory.makeEmbeddedMessage(context.getChannel(), Color.decode("#DE5833"))
                 .setDescription(String.join("\n", result))
-                .setTitle("Search result for: " + String.join(" ", args))
-                .setFooter("NSFW Search is " + (nsfwEnabled ? "Enabled" : "Disabled"));
+                .setTitle(String.format(
+                    context.i18n("searchResults"),
+                    String.join(" ", args)
+                ))
+                .setFooter(
+                    nsfwEnabled ?
+                        context.i18n("nsfwStatus.enabled") :
+                        context.i18n("nsfwStatus.disabled")
+                );
 
             if (result.isEmpty() || (result.size() == 1 && result.get(0).startsWith("-1&uddg"))) {
                 resultMessage
                     .setColor(MessageType.WARNING.getColor())
-                    .setDescription("I found nothing for `:query`")
+                    .setDescription(context.i18n("noResults"))
                     .set("query", String.join(" ", args));
             }
 

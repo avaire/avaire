@@ -83,7 +83,10 @@ public class XKCDCommand extends ThreadCommand {
         )
             .setImage(json.getString("img"))
             .setTimestamp(date.getTime().toInstant())
-            .setFooter("XKCD number #" + comic)
+            .setFooter(String.format(
+                context.i18n("number"),
+                comic
+            ))
             .queue();
     }
 
