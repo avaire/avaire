@@ -38,7 +38,10 @@ public class MessageEventAdapter extends EventAdapter {
         "I am currently running **AvaIre v%s**",
         "",
         "You can find all of my source code on github:",
-        "https://github.com/avaire/avaire"
+        "https://github.com/avaire/avaire",
+        "",
+        "If you like me please vote for AvaIre to help me grow:",
+        "https://discordbots.org/bot/avaire/vote"
     ));
 
     /**
