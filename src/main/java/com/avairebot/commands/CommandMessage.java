@@ -192,10 +192,10 @@ public class CommandMessage {
         }
 
         if (getI18n().contains(key)) {
-            return getI18n().getString(key);
+            return getI18n().getString(key).replace("\\n", "\n");
         } else {
             LOGGER.warn("Missing language entry for key {} in language {}", key, I18n.getLocale(getGuild()).getCode());
-            return I18n.DEFAULT.getConfig().getString(key);
+            return I18n.DEFAULT.getConfig().getString(key).replace("\\n", "\n");
         }
     }
 
@@ -203,14 +203,14 @@ public class CommandMessage {
         this.i18nCommandPrefix = i18nPrefix;
     }
 
+    public String getI18nCommandPrefix() {
+        return i18nCommandPrefix;
+    }
+
     public void setI18nCommandPrefix(@Nonnull CommandContainer container) {
         setI18nPrefix(
             container.getCategory().getName().toLowerCase() + "."
                 + container.getCommand().getClass().getSimpleName()
         );
-    }
-
-    public String getI18nCommandPrefix() {
-        return i18nCommandPrefix;
     }
 }
