@@ -26,8 +26,9 @@ public class RenamePlaylist extends PlaylistSubCommand {
         String name = String.join(" ", Arrays.copyOfRange(args, 2, args.length));
 
         if (name.trim().length() == 0) {
-            context.makeWarning("Invalid format, missing the `new name` property!\n`:command`")
+            context.makeWarning(context.i18n("invalidFormat"))
                 .set("command", command.generateCommandTrigger(context.getMessage()) + " " + playlist.getName() + " renameto <new name>")
+                .set("type", "new name")
                 .queue();
 
             return false;
@@ -35,7 +36,7 @@ public class RenamePlaylist extends PlaylistSubCommand {
 
         List<DataRow> playlistItems = playlists.whereLoose("name", name);
         if (!playlistItems.isEmpty()) {
-            context.makeInfo("Can\'t rename the `:oldplaylist` to `:playlist`, there are already a playlist called `:playlist`")
+            context.makeInfo(context.i18n("renamingPlaylistAlreadyExists"))
                 .set("oldplaylist", playlist.getName())
                 .set("playlist", name)
                 .queue();
@@ -56,7 +57,7 @@ public class RenamePlaylist extends PlaylistSubCommand {
             avaire.getCache().getAdapter(CacheType.MEMORY)
                 .forget(PlaylistController.getCacheString(context.getGuild()));
 
-            context.makeSuccess("The `:oldplaylist` playlist has been renamed to `:playlist`!")
+            context.makeSuccess(context.i18n("playlistRenamed"))
                 .set("oldplaylist", oldPlaylist)
                 .set("playlist", playlist.getName())
                 .queue();
@@ -64,7 +65,10 @@ public class RenamePlaylist extends PlaylistSubCommand {
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
-            context.makeError("Something went wrong while trying to save the playlist: " + e.getMessage()).queue();
+            context.makeError(String.format(
+                context.i18n("failedToSavePlaylist"),
+                e.getMessage()
+            )).queue();
         }
 
         return false;

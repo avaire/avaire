@@ -27,29 +27,30 @@ public class CreatePlaylist extends PlaylistSubCommand {
         String name = args[0].trim().split(" ")[0];
         List<DataRow> playlistItems = playlists.whereLoose("name", name);
         if (!playlistItems.isEmpty()) {
-            context.makeWarning("The `:playlist` playlist already exists!")
+            context.makeWarning(context.i18n("alreadyExists"))
                 .set("playlist", name).queue();
             return false;
         }
 
         if (NumberUtil.isNumeric(name)) {
-            context.makeWarning("The playlist can't only be numbers, you have to include some letters in the name!")
+            context.makeWarning(context.i18n("onlyNumbersInName"))
                 .queue();
             return false;
         }
 
         int playlistLimit = guild.getType().getLimits().getPlaylist().getPlaylists();
         if (playlists.size() >= playlistLimit) {
-            context.makeWarning("The server doesn't have any more playlist slots, you can delete existing playlists to free up slots.").queue();
+            context.makeWarning(context.i18n("noMorePlaylistSlots")).queue();
             return false;
         }
 
         try {
             storeInDatabase(context, name);
 
-            context.makeSuccess(
-                "The `:playlist` playlist has been been created successfully!\nYou can start adding songs to it with `:command :playlist add <song>`"
-            ).set("playlist", name).set("command", command.generateCommandTrigger(context.getMessage())).queue();
+            context.makeSuccess(context.i18n("playlistCreated"))
+                .set("playlist", name)
+                .set("command", command.generateCommandTrigger(context.getMessage()))
+                .queue();
 
             return true;
         } catch (SQLException e) {

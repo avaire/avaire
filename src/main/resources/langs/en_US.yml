@@ -8,6 +8,7 @@ errors:
     mustBeConnectedToSameChannel: 'You must be connected to the same voice channel I am in to %s!'
     missingMusicQueue: 'Missing music `query`, you must include a link to the song you want to listen to, or at least give me a song title!'
     requireLevelFeatureToBeEnabled: 'This command requires the `Levels & Experience` feature to be enabled for the server, you can ask a server admin if they want to enable it with `%s`'
+    errorOccurredWhileLoading: 'An error occurred while loading the %s, please try again, if the problem continues please report this to one of my developers on the [AvaIre support server](https://discord.gg/gt2FWER).'
 
 music:
     ClearQueueCommand:
@@ -30,6 +31,34 @@ music:
         session:
             title: 'Results for %s'
             footer: 'Chose a song with %s <number>'
+
+    PlaylistCommand:
+        noPlaylists: 'This server does not have any music playlists yet, you can create one with\n`:command` to get started'
+        noPlaylistWithName: 'There are no playlist called `:playlist`, you can create the playlist by using the\n`:command` command'
+        invalidProperty: 'Invalid `property` given, there are no playlist properties called `%s`.\nYou can learn more by running `%shelp %s`'
+        invalidFormat: 'Invalid format, missing the `:type` property!\n`:command`'
+        invalidIdGiven: 'Invalid id given, the number given is too :type\n`:command`'
+        invalidIdNumberGiven: 'Invalid id given, the id must be a number\n`:command`'
+        noMoreSongSlots: "The `:playlist` playlist doesn't have any more song slots."
+        noMorePlaylistSlots: "The server doesn't have any more playlist slots, you can delete existing playlists to free up slots."
+        failedToLoad: 'Failed to load: %s'
+        failedToSavePlaylist: 'Something went wrong while trying to save the playlist: %s'
+        noMatches: 'No Matches'
+        attemptingToAddLivestreamToPlaylist: "You can't add livestreams to a playlist!"
+        userHasAddedSong: ':user has added [:name](:url) to the `:playlist` playlist.\nThe `:playlist` playlist has `:slots` more song slots available.'
+        alreadyExists: 'The `:playlist` playlist already exists!'
+        onlyNumbersInName: "The playlist can't only be numbers, you have to include some letters in the name!"
+        renamingPlaylistAlreadyExists: "Can't rename the `:oldplaylist` to `:playlist`, there are already a playlist called `:playlist`"
+        playlistCreated: 'The `:playlist` playlist has been been created successfully!\nYou can start adding songs to it with `:command :playlist add <song>`'
+        playlistDeleted: 'The `:name` playlist has been deleted successfully!'
+        playlistRenamed: 'The `:oldplaylist` playlist has been renamed to `:playlist`!'
+        playlistIsEmpty: 'There are no songs in this playlist, you can add songs to it by using the\n`:command` command.'
+        playlistIsAlreadyEmpty: 'The `:playlist` playlist is already empty, there is nothing to remove.'
+        songHasBeenRemovedFromPlaylist: ':song has been successfully removed from the `:playlist` playlist'
+        playlistTitle: ':musical_note: Music Playlist %s'
+        playlistSize: '[ %s out of %s ]'
+        playlistLine: '%s\n       Playlist has **%s** song(s)'
+        playlistSongLine: '`%s` [%s](%s) [%s]'
 
     RemoveSongFromQueueCommand:
         error: 'Missing argument `song id`, you must include the ID of the song you want to remove from the queue.'
