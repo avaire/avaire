@@ -46,11 +46,14 @@ public class VoteSkipCommand extends Command {
         GuildMusicManager musicManager = AudioHandler.getGuildAudioPlayer(context.getGuild());
 
         if (musicManager.getPlayer().getPlayingTrack() == null) {
-            return sendErrorMessage(context, "Nothing to skip, request music first with `!play`");
+            return sendErrorMessage(context,
+                context.i18n("error"),
+                generateCommandPrefix(context.getMessage())
+            );
         }
 
         if (!canVoteSkip(context)) {
-            return sendErrorMessage(context, "You must be connected to the same voice channel I am in to vote skip!");
+            return sendErrorMessage(context, "mustBeConnectedToSameChannel", "vote skip");
         }
 
         boolean hasVotedBefore = true;
@@ -76,8 +79,8 @@ public class VoteSkipCommand extends Command {
         int neededVotes = getNeededVotes(usersInVoiceLength, getSkipsFrom(musicManager).size());
 
         context.makeWarning(hasVotedBefore ?
-            "You can only vote skip once per song! `:votes` more votes needed to skip the song." :
-            "Your vote has been registered! `:votes` more votes needed to skip the song."
+            context.i18n("alreadyVoted") :
+            context.i18n("registered")
         ).set("votes", neededVotes).queue(message -> {
             message.delete().queueAfter(1, TimeUnit.MINUTES);
         });

@@ -44,15 +44,17 @@ public class RepeatMusicQueueCommand extends Command {
         GuildMusicManager musicManager = AudioHandler.getGuildAudioPlayer(context.getGuild());
 
         if (musicManager.getPlayer().getPlayingTrack() == null) {
-            return sendErrorMessage(context, "There is nothing to repeat, request music first with `%splay`",
+            return sendErrorMessage(context, context.i18n("error"),
                 generateCommandPrefix(context.getMessage())
             );
         }
 
         musicManager.setRepeatQueue(!musicManager.isRepeatQueue());
 
-        context.makeSuccess("Music queue looping has been turned `:status`.")
-            .set("status", musicManager.isRepeatQueue() ? "ON" : "OFF")
+
+        context.makeSuccess(context.i18n("success"))
+            .set("status", musicManager.isRepeatQueue()
+                ? context.i18n("enabled") : context.i18n("disabled"))
             .queue(message -> message.delete().queueAfter(5, TimeUnit.MINUTES));
 
         return true;

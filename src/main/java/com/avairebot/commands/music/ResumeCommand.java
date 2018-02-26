@@ -51,13 +51,13 @@ public class ResumeCommand extends Command {
 
         if (musicManager.getPlayer().getPlayingTrack() == null) {
             return sendErrorMessage(context,
-                "Nothing to resume, request music first with `%splay`",
+                context.i18n("error"),
                 generateCommandPrefix(context.getMessage())
             );
         }
 
         if (!musicManager.getPlayer().isPaused()) {
-            context.makeWarning("The music is already playing, use `:prefixpause` to pause the music first.")
+            context.makeWarning(context.i18n("alreadyPlaying"))
                 .set("prefix", generateCommandPrefix(context.getMessage()))
                 .queue(message -> message.delete().queueAfter(1, TimeUnit.MINUTES));
 
@@ -65,7 +65,7 @@ public class ResumeCommand extends Command {
         }
 
         musicManager.getPlayer().setPaused(false);
-        context.makeSuccess("The music has been `resumed`")
+        context.makeSuccess(context.i18n("resume"))
             .queue(message -> message.delete().queueAfter(1, TimeUnit.MINUTES));
 
         return true;

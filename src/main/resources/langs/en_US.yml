@@ -4,7 +4,94 @@ errors:
     invalidProperty: 'Invalid `%s` provided, you must provide a valid %s.'
     noChannelsWithNameOrId: 'I found no channels with the name or ID of `%s`'
     noUsersWithNameOrId: 'I found no users with the name or ID of `%s`'
+    mustBeConnectedToVoice: 'You must be connected to a voice channel to use this command!'
+    mustBeConnectedToSameChannel: 'You must be connected to the same voice channel I am in to %s!'
+    missingMusicQueue: 'Missing music `query`, you must include a link to the song you want to listen to, or at least give me a song title!'
     requireLevelFeatureToBeEnabled: 'This command requires the `Levels & Experience` feature to be enabled for the server, you can ask a server admin if they want to enable it with `%s`'
+
+music:
+    ClearQueueCommand:
+        error: 'Nothing to clear, request music first with `%splay`'
+        emptyQueue: 'Nothing to clear, there are no songs pending in the queue right now.'
+        success: 'I have removed **:queueSize** songs from the queue, the queue is now empty!'
+
+    MoveHereCommand:
+        error: 'Not connected to voice, request music first with `%splay`'
+        nowPlayingIn: 'I am now playing music in **:channelName**'
+
+    PauseCommand:
+        error: 'Nothing to pause, request music first with `%splay`'
+        alreadyPaused: 'The music is already paused, use `!resume` to resume the music.'
+        paused: 'The music has been `paused`'
+
+    PlayCommand:
+        addedSong: ':user has added [:title](:url) to the queue. There are `:queueSize` song(s) ahead of it in the queue.'
+        addedSongsFromPlaylist: ':user has added :songs songs from the [:title](:url) playlist to the queue. There are `:queueSize` song(s) ahead of it in the queue.'
+        session:
+            title: 'Results for %s'
+            footer: 'Chose a song with %s <number>'
+
+    RemoveSongFromQueueCommand:
+        error: 'Missing argument `song id`, you must include the ID of the song you want to remove from the queue.'
+        failedToRemoveSong: 'Something went wrong, failed to remove song at index `:index`'
+        tooHighNumberGiven: 'There are only `%s` songs in the queue, try lowering your number a bit.'
+        mustBePositiveNumber: 'The `song id` must be a valid positive number.'
+        nothingToRemove: 'Nothing to remove, request music first with `%splay`'
+        success: ':song has been successfully removed from the music queue.'
+
+    RepeatMusicQueueCommand:
+        error: 'There is nothing to repeat, request music first with `%splay`'
+        success: 'Music queue looping has been turned `:status`.'
+        enabled: 'ON'
+        disabled: 'OFF'
+
+    ResumeCommand:
+        error: 'Nothing to resume, request music first with `%splay`'
+        alreadyPlaying: 'The music is already playing, use `:prefixpause` to pause the music first.'
+        resume: 'The music has been `resumed`'
+
+    SeekCommand:
+        error: 'Nothing is playing right now, request something with `%splay` first.'
+        invalidTimeGiven: 'The `number` argument must be a valid time format that is at least 0 or more seconds long.'
+        seekingLive: 'You can not jump to a different time code for livestreams.'
+        seekingTooFar: '`%s` is more than the length of the current song playing, if you want to skip to the next song use `%sskip` instead.'
+        seekTo: 'Seeking **:title** to `:time`'
+
+    ShuffleCommand:
+        error: 'The music queue is already empty, you can request something with\n`%splay <song title | url>`'
+        success: '**:amount** songs has been shuffled in the music queue.'
+
+    SkipCommand:
+        error: 'Nothing to skip, request music first with `%splay`'
+
+    SongCommand:
+        error: 'Nothing to display, request music first with `%splay`'
+        paused: 'Currently Paused'
+        playing: 'Currently Playing'
+        songsInQueue: 'Songs in Queue'
+        moreSongs: 'You can see more songs by using %s <page>'
+        noSongs: 'There are no other songs in the queue right now'
+        andXMoreSongs: '_And **%s** more song%s!_'
+        formats:
+            line: '**%s** [%s](%s)'
+            song: '[%s](%s)\nPlaying at `%s` volume with `%s` left of the song - Requested by <@%s>'
+            stream: '[%s](%s)\nPlaying at `%s` volume, the stream is `%s` - Requested by <@%s>'
+
+    StopCommand:
+        error: "Nothing is playing right now, you can't stop the music when nothing is playing."
+        success: 'The player has stopped, and **:number** songs has been removed from the queue.'
+
+    VolumeCommand:
+        error: 'Nothing is playing, request music first with `%splay`'
+        requireDJRole: 'The `DJ` role is required to change the volume!'
+        invalidVolume: 'Invalid volume given, the volume must be a valid number between 1 and 100.'
+        nowPlaying: ':musical_note: Music is playing at **:volume** volume'
+        setTo: ':musical_note: Volume set to **:volume** volume'
+
+    VoteSkipCommand:
+        error: 'Nothing to skip, request music first with `%splay`'
+        registered: 'Your vote has been registered! `:votes` more votes needed to skip the song.'
+        alreadyVoted: 'You can only vote skip once per song! `:votes` more votes needed to skip the song.'
 
 search:
     DuckDuckGoCommand:

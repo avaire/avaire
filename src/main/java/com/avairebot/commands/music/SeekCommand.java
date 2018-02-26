@@ -57,17 +57,17 @@ public class SeekCommand extends Command {
 
         if (musicManager.getPlayer().getPlayingTrack() == null) {
             return sendErrorMessage(context,
-                "Nothing is playing right now, request something with `%splay` first.",
+                context.i18n("error"),
                 generateCommandPrefix(context.getMessage())
             );
         }
 
         if (musicManager.getPlayer().getPlayingTrack().getInfo().isStream) {
-            return sendErrorMessage(context, "You can not jump to a different time code for livestreams.");
+            return sendErrorMessage(context, context.i18n("seekingLive"));
         }
 
         if (args.length == 0) {
-            return sendErrorMessage(context, "Missing argument, the `number` argument is required.");
+            return sendErrorMessage(context, "missingArgument", "number");
         }
 
         try {
@@ -75,7 +75,7 @@ public class SeekCommand extends Command {
 
             if (time > musicManager.getPlayer().getPlayingTrack().getDuration()) {
                 return sendErrorMessage(context,
-                    "`%s` is more than the length of the current song playing, if you want to skip to the next song use `%sskip` instead.",
+                    context.i18n("seekingTooFar"),
                     args[0],
                     generateCommandPrefix(context.getMessage())
                 );
@@ -83,12 +83,12 @@ public class SeekCommand extends Command {
 
             musicManager.getPlayer().getPlayingTrack().setPosition(time);
 
-            context.makeSuccess("Seeking **:title** to `:time`")
+            context.makeSuccess(context.i18n("seekTo"))
                 .set("title", musicManager.getPlayer().getPlayingTrack().getInfo().title)
                 .set("time", NumberUtil.formatTime(time))
                 .queue(message -> message.delete().queueAfter(3, TimeUnit.MINUTES));
         } catch (IllegalStateException ex) {
-            return sendErrorMessage(context, "The `number` argument must be a valid time format that is at least 0 or more seconds long.");
+            return sendErrorMessage(context, context.i18n("invalidTimeGiven"));
         }
         return true;
     }

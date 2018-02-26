@@ -209,4 +209,8 @@ public class CommandMessage {
                 + container.getCommand().getClass().getSimpleName()
         );
     }
+
+    public String getI18nCommandPrefix() {
+        return i18nCommandPrefix;
+    }
 }

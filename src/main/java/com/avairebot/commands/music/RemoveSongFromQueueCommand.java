@@ -54,25 +54,25 @@ public class RemoveSongFromQueueCommand extends Command {
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
         if (args.length == 0) {
-            return sendErrorMessage(context, "Missing argument `song id`, you must include the ID of the song you want to remove from the queue.");
+            return sendErrorMessage(context, context.i18n("error"));
         }
 
         int removeIndex = NumberUtil.parseInt(args[0], -1);
         if (removeIndex < 1) {
-            return sendErrorMessage(context, "The `song id` must be a valid positive number.");
+            return sendErrorMessage(context, context.i18n("mustBePositiveNumber"));
         }
 
         GuildMusicManager musicManager = AudioHandler.getGuildAudioPlayer(context.getGuild());
 
         if (musicManager.getScheduler().getQueue().isEmpty()) {
             return sendErrorMessage(context,
-                "Nothing to remove, request music first with `%splay`",
+                context.i18n("nothingToRemove"),
                 generateCommandPrefix(context.getMessage())
             );
         }
 
         if (removeIndex > musicManager.getScheduler().getQueue().size()) {
-            return sendErrorMessage(context, "There are only `%s` songs in the queue, try lowering your number a bit.",
+            return sendErrorMessage(context, context.i18n("tooHighNumberGiven"),
                 NumberUtil.formatNicely(musicManager.getScheduler().getQueue().size())
             );
         }
@@ -88,7 +88,7 @@ public class RemoveSongFromQueueCommand extends Command {
             }
 
             AudioTrackInfo track = next.getAudioTrack().getInfo();
-            context.makeInfo(":song has been successfully removed from the music queue.")
+            context.makeInfo(context.i18n("success"))
                 .set("song", String.format("[%s](%s)",
                     track.title, track.uri
                 ))
@@ -98,7 +98,7 @@ public class RemoveSongFromQueueCommand extends Command {
             return true;
         }
 
-        context.makeError("Something went wrong, failed to remove song at index `:index`")
+        context.makeError(context.i18n("failedToRemoveSong"))
             .set("index", removeIndex)
             .queue(message -> message.delete().queueAfter(1, TimeUnit.MINUTES));
 

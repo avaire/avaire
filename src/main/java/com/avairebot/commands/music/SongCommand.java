@@ -61,7 +61,7 @@ public class SongCommand extends Command {
 
         if (musicManager.getPlayer().getPlayingTrack() == null) {
             return sendErrorMessage(context,
-                "Nothing to display, request music first with `%splay`",
+                context.i18n("error"),
                 generateCommandPrefix(context.getMessage())
             );
         }
@@ -79,7 +79,7 @@ public class SongCommand extends Command {
             paginator.forEach((index, key, val) -> {
                 AudioTrackContainer track = (AudioTrackContainer) val;
 
-                messages.add(String.format("**%s** [%s](%s)",
+                messages.add(String.format(context.i18n("formats.line"),
                     NumberUtil.parseInt(key.toString()) + 1,
                     track.getAudioTrack().getInfo().title,
                     track.getAudioTrack().getInfo().uri
@@ -89,7 +89,7 @@ public class SongCommand extends Command {
             context.makeSuccess(String.format("%s\n\n%s",
                 String.join("\n", messages),
                 paginator.generateFooter(generateCommandTrigger(context.getMessage()))
-            )).setTitle("Songs in Queue")
+            )).setTitle(context.i18n("songsInQueue"))
                 .queue(message -> message.delete().queueAfter(3, TimeUnit.MINUTES));
 
             return true;
@@ -100,13 +100,13 @@ public class SongCommand extends Command {
 
     private boolean sendSongWithSixSongs(CommandMessage context, GuildMusicManager musicManager) {
         PlaceholderMessage queueMessage = context.makeSuccess(
-            buildTrackDescription(musicManager.getPlayer(), musicManager.getScheduler())
+            buildTrackDescription(context, musicManager.getPlayer(), musicManager.getScheduler())
         )
-            .setTitle(musicManager.getPlayer().isPaused() ? "Currently Paused" : "Currently Playing")
-            .addField("Songs in queue", buildSongsInQueue(musicManager.getScheduler()), false);
+            .setTitle(musicManager.getPlayer().isPaused() ? context.i18n("paused") : context.i18n("playing"))
+            .addField(context.i18n("songsInQueue"), buildSongsInQueue(context, musicManager.getScheduler()), false);
 
         if (!musicManager.getScheduler().getQueue().isEmpty()) {
-            queueMessage.setFooter(String.format("You can see more songs by using %s <page>",
+            queueMessage.setFooter(String.format(context.i18n("moreSongs"),
                 generateCommandTrigger(context.getMessage())
             ));
         }
@@ -116,11 +116,11 @@ public class SongCommand extends Command {
         return true;
     }
 
-    private String buildTrackDescription(IPlayer player, TrackScheduler scheduler) {
-        String message = "[%s](%s)\nPlaying at `%s` volume with `%s` left of the song - Requested by <@%s>";
+    private String buildTrackDescription(CommandMessage context, IPlayer player, TrackScheduler scheduler) {
+        String message = context.i18n("formats.song");
 
         if (player.getPlayingTrack().getInfo().isStream) {
-            message = "[%s](%s)\nPlaying at `%s` volume, the stream is `%s` - Requested by <@%s>";
+            message = context.i18n("stream");
         }
 
         return String.format(message,
@@ -132,9 +132,9 @@ public class SongCommand extends Command {
         );
     }
 
-    private String buildSongsInQueue(TrackScheduler scheduler) {
+    private String buildSongsInQueue(CommandMessage context, TrackScheduler scheduler) {
         if (scheduler.getQueue().isEmpty()) {
-            return "There are no other songs in the queue right now";
+            return context.i18n("noSongs");
         }
 
         int number = 1;
@@ -144,11 +144,16 @@ public class SongCommand extends Command {
         while (iterator.hasNext() && number <= 6) {
             AudioTrackContainer next = iterator.next();
 
-            songs += String.format("**%s** [%s](%s)\n", number++, next.getAudioTrack().getInfo().title, next.getAudioTrack().getInfo().uri);
+            songs += String.format(
+                context.i18n("formats.line") + "\n",
+                number++,
+                next.getAudioTrack().getInfo().title,
+                next.getAudioTrack().getInfo().uri
+            );
         }
 
         if (scheduler.getQueue().size() > 6) {
-            songs += String.format("_And **%s** more song%s!_",
+            songs += String.format(context.i18n("andXMoreSongs"),
                 NumberUtil.formatNicely(scheduler.getQueue().size() - 6),
                 scheduler.getQueue().size() == 7 ? "" : 's'
             );

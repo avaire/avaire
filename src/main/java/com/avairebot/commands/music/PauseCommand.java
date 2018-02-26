@@ -51,19 +51,19 @@ public class PauseCommand extends Command {
 
         if (musicManager.getPlayer().getPlayingTrack() == null) {
             return sendErrorMessage(context,
-                "Nothing to pause, request music first with `%splay`",
+                context.i18n("error"),
                 generateCommandPrefix(context.getMessage())
             );
         }
 
         if (musicManager.getPlayer().isPaused()) {
-            context.makeWarning("The music is already paused, use `!resume` to resume the music.")
+            context.makeWarning(context.i18n("alreadyPaused"))
                 .queue(message -> message.delete().queueAfter(1, TimeUnit.MINUTES));
             return true;
         }
 
         musicManager.getPlayer().setPaused(true);
-        context.makeSuccess("The music has been `paused`")
+        context.makeSuccess(context.i18n("paused"))
             .queue(message -> message.delete().queueAfter(1, TimeUnit.MINUTES));
 
         return true;

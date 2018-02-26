@@ -53,14 +53,14 @@ public class MoveHereCommand extends Command {
 
         if (musicManager.getPlayer().getPlayingTrack() == null) {
             return sendErrorMessage(context,
-                "Not connected to voice, request music first with `%splay`",
+                context.i18n("error"),
                 generateCommandPrefix(context.getMessage())
             );
         }
 
         VoiceChannel channel = context.getMember().getVoiceState().getChannel();
         if (channel == null) {
-            return sendErrorMessage(context, "You must be connected to a voice channel to use this command!");
+            return sendErrorMessage(context, "mustBeConnectedToVoice");
         }
 
         VoiceConnectStatus voiceConnectStatus = AudioHandler.connectToVoiceChannel(context.getMessage(), true);
@@ -70,7 +70,7 @@ public class MoveHereCommand extends Command {
             return false;
         }
 
-        context.makeSuccess("I am now playing music in **:channelName**")
+        context.makeSuccess(context.i18n("nowPlayingIn"))
             .set("channelName", channel.getName())
             .queue(message -> message.delete().queueAfter(1, TimeUnit.MINUTES));
 
