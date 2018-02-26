@@ -143,6 +143,7 @@ public class HelpCommand extends Command {
             .setTitle(command.getCommand().getName())
             .setColor(MessageType.SUCCESS.getColor())
             .addField("Usage", command.getCommand().generateUsageInstructions(context.getMessage()), false)
+            .addField("Example", command.getCommand().generateExampleUsage(context.getMessage()), false)
             .setFooter("Command category: " + command.getCategory().getName(), null);
 
         if (command.getCommand().getTriggers().size() > 1) {
