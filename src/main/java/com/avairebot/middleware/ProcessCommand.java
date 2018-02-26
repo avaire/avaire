@@ -38,7 +38,7 @@ public class ProcessCommand extends Middleware {
 
     @Override
     public boolean handle(Message message, MiddlewareStack stack, String... args) {
-        if (!canSendEmbedMessages(message)) {
+        if (!stack.getCommandContainer().getCategory().getName().equals("System") && !canSendEmbedMessages(message)) {
             if (!message.getGuild().getSelfMember().hasPermission(message.getTextChannel(), Permission.MESSAGE_WRITE)) {
                 return false;
             }
@@ -158,6 +158,12 @@ public class ProcessCommand extends Middleware {
             return true;
         }
 
+        if (!message.getGuild().getSelfMember().hasPermission(
+            message.getTextChannel(), Permission.MESSAGE_EMBED_LINKS
+        )) {
+            return false;
+        }
+
         return checkForRawEmbedAndSendPermissions(
             Permission.getPermissions(
                 PermissionUtil.getExplicitPermission(
@@ -166,26 +172,25 @@ public class ProcessCommand extends Middleware {
             )
         ) || checkForRawEmbedAndSendPermissions(
             Permission.getPermissions(
-                PermissionUtil.getEffectivePermission(
+                PermissionUtil.getExplicitPermission(
                     message.getTextChannel(), message.getGuild().getPublicRole()
                 )
             )
-        );
+        ) || (!message.getGuild().getSelfMember().getRoles().isEmpty() && checkForRawEmbedAndSendPermissions(
+            Permission.getPermissions(
+                PermissionUtil.getExplicitPermission(
+                    message.getTextChannel(), message.getGuild().getSelfMember().getRoles().get(0)
+                )
+            )
+        ));
     }
 
     private boolean checkForRawEmbedAndSendPermissions(List<Permission> permissions) {
-        int hasRequiredPermissionsCounter = 0;
-
         for (Permission permission : permissions) {
-            if (permission.getRawValue() == 0x00000800) {
-                hasRequiredPermissionsCounter++; // Send Messages
-            }
-
             if (permission.getRawValue() == 0x00004000) {
-                hasRequiredPermissionsCounter++; // Embed Links
+                return true;
             }
         }
-
-        return hasRequiredPermissionsCounter == 2;
+        return false;
     }
 }
