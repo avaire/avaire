@@ -190,7 +190,11 @@ public class CommandMessage {
         if (i18nCommandPrefix != null) {
             key = i18nCommandPrefix + "." + key;
         }
+        return i18nRaw(key);
+    }
 
+    @CheckReturnValue
+    public String i18nRaw(@Nonnull String key) {
         if (getI18n().contains(key)) {
             return getI18n().getString(key).replace("\\n", "\n");
         } else {

@@ -3,7 +3,6 @@ package com.avairebot.contracts.commands;
 import com.avairebot.AvaIre;
 import com.avairebot.commands.*;
 import com.avairebot.contracts.reflection.Reflectionable;
-import com.avairebot.language.I18n;
 import com.avairebot.middleware.Middleware;
 import com.avairebot.permissions.Permissions;
 import com.avairebot.plugin.JavaPlugin;
@@ -181,12 +180,12 @@ public abstract class Command extends Reflectionable {
      * @return false since the error message should only be used on failure.
      */
     protected final boolean sendErrorMessage(CommandMessage context, String error, String... args) {
-        String i18nError = I18n.getString(context.getGuild(), "errors." + error);
+        String i18nError = context.i18nRaw("errors." + error);
         if (i18nError != null) {
             error = i18nError;
         }
 
-        return sendErrorMessage(context, String.format(error, (Object[]) args), 150, TimeUnit.SECONDS);
+        return sendErrorMessageAndDeleteMessage(context, String.format(error, (Object[]) args), 150, TimeUnit.SECONDS);
     }
 
     /**
@@ -198,9 +197,9 @@ public abstract class Command extends Reflectionable {
      * @return false since the error message should only be used on failure.
      */
     public final boolean sendErrorMessage(CommandMessage context, String error) {
-        String i18nError = I18n.getString(context.getGuild(), "errors." + error);
+        String i18nError = context.i18nRaw("errors." + error);
 
-        return sendErrorMessage(context, i18nError == null ? error : i18nError, 150, TimeUnit.SECONDS);
+        return sendErrorMessageAndDeleteMessage(context, i18nError == null ? error : i18nError, 150, TimeUnit.SECONDS);
     }
 
     /**
@@ -213,7 +212,20 @@ public abstract class Command extends Reflectionable {
      * @param unit     The unit of time before the message should be deleted.
      * @return false since the error message should only be used on failure.
      */
-    public final boolean sendErrorMessage(CommandMessage context, String error, long deleteIn, TimeUnit unit) {
+    public boolean sendErrorMessage(CommandMessage context, String error, long deleteIn, TimeUnit unit) {
+        String i18nError = context.i18nRaw("errors." + error);
+        if (i18nError != null) {
+            error = i18nError;
+        }
+
+        if (unit == null) {
+            unit = TimeUnit.SECONDS;
+        }
+
+        return sendErrorMessageAndDeleteMessage(context, error, deleteIn, unit);
+    }
+
+    private boolean sendErrorMessageAndDeleteMessage(CommandMessage context, String error, long deleteIn, TimeUnit unit) {
         Category category = CategoryHandler.fromCommand(this);
 
         context.makeError(error)
