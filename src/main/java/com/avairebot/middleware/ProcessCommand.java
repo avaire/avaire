@@ -19,7 +19,6 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class ProcessCommand extends Middleware {
@@ -165,28 +164,22 @@ public class ProcessCommand extends Middleware {
         }
 
         return checkForRawEmbedAndSendPermissions(
-            Permission.getPermissions(
-                PermissionUtil.getExplicitPermission(
-                    message.getTextChannel(), message.getGuild().getSelfMember()
-                )
+            PermissionUtil.getExplicitPermission(
+                message.getTextChannel(), message.getGuild().getSelfMember()
             )
         ) || checkForRawEmbedAndSendPermissions(
-            Permission.getPermissions(
-                PermissionUtil.getExplicitPermission(
-                    message.getTextChannel(), message.getGuild().getPublicRole()
-                )
+            PermissionUtil.getExplicitPermission(
+                message.getTextChannel(), message.getGuild().getPublicRole()
             )
         ) || (!message.getGuild().getSelfMember().getRoles().isEmpty() && checkForRawEmbedAndSendPermissions(
-            Permission.getPermissions(
-                PermissionUtil.getExplicitPermission(
-                    message.getTextChannel(), message.getGuild().getSelfMember().getRoles().get(0)
-                )
+            PermissionUtil.getExplicitPermission(
+                message.getTextChannel(), message.getGuild().getSelfMember().getRoles().get(0)
             )
         ));
     }
 
-    private boolean checkForRawEmbedAndSendPermissions(List<Permission> permissions) {
-        for (Permission permission : permissions) {
+    private boolean checkForRawEmbedAndSendPermissions(long permissions) {
+        for (Permission permission : Permission.getPermissions(permissions)) {
             if (permission.getRawValue() == 0x00004000) {
                 return true;
             }
