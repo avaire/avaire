@@ -153,7 +153,7 @@ public class HelpCommand extends Command {
         }
 
         context.getMessageChannel().sendMessage(embed.setDescription(
-            command.getCommand().generateDescription(context.getMessage())
+            command.getCommand().generateDescription(context)
         ).build()).queue();
         return true;
     }

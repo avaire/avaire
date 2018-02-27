@@ -3,6 +3,7 @@ package com.avairebot.contracts.commands;
 import com.avairebot.AvaIre;
 import com.avairebot.commands.*;
 import com.avairebot.contracts.reflection.Reflectionable;
+import com.avairebot.exceptions.MissingCommandDescriptionException;
 import com.avairebot.middleware.Middleware;
 import com.avairebot.permissions.Permissions;
 import com.avairebot.plugin.JavaPlugin;
@@ -77,10 +78,20 @@ public abstract class Command extends Reflectionable {
     /**
      * Gets the command description, this is used in help messages to help
      * users get a better understanding of what the command does.
+     * <p>
+     * If this method is not overwritten the {@link #getDescription()}
+     * method will be called instead.
      *
+     * @param context The command context used to get the description.
      * @return Never-null, the command description.
      */
-    public abstract String getDescription();
+    public String getDescription(CommandMessage context) {
+        return getDescription();
+    }
+
+    public String getDescription() {
+        throw new MissingCommandDescriptionException(this);
+    }
 
     /**
      * Gets the command usage instructions for the given command, if the usage instructions
@@ -108,7 +119,7 @@ public abstract class Command extends Reflectionable {
     /**
      * Gets am immutable list of command triggers that can be used to invoke the current
      * command, the first index in the list will be used when the `:command` placeholder
-     * is used in {@link #getDescription()} or {@link #getUsageInstructions()} methods.
+     * is used in {@link #getDescription(CommandMessage)} or {@link #getUsageInstructions()} methods.
      *
      * @return An immutable list of command triggers that should invoked the command.
      */
@@ -250,16 +261,16 @@ public abstract class Command extends Reflectionable {
      * will also be dynamically generated and added to the command description
      * two lines below the actually description.
      *
-     * @param message The JDA message object.
+     * @param context The JDA message object.
      * @return The generated command description.
      */
-    public final String generateDescription(Message message) {
+    public final String generateDescription(CommandMessage context) {
         if (getMiddleware().isEmpty()) {
-            return getDescription().trim().replaceAll(":prefix", generateCommandPrefix(message));
+            return getDescription(context).trim().replaceAll(":prefix", generateCommandPrefix(context.getMessage()));
         }
 
         List<String> description = new ArrayList<>();
-        description.add(getDescription().replaceAll(":prefix", generateCommandPrefix(message)));
+        description.add(getDescription(context).replaceAll(":prefix", generateCommandPrefix(context.getMessage())));
         description.add("");
 
         MIDDLEWARE_LOOP:
@@ -378,7 +389,6 @@ public abstract class Command extends Reflectionable {
      */
     public final boolean isSame(Command command) {
         return Objects.equals(command.getName(), getName())
-            && Objects.equals(command.getDescription(), command.getDescription())
             && Objects.equals(command.getUsageInstructions(), getUsageInstructions())
             && Objects.equals(command.getExampleUsage(), getExampleUsage())
             && Objects.equals(command.getTriggers(), getTriggers());
