@@ -33,8 +33,7 @@ public class LavalinkManager {
             return;
         }
 
-        lavalink = new Lavalink(
-            Long.toString(avaire.getConfig().getLong("discord.clientId", DiscordConstants.AVAIRE_BOT_ID)),
+        lavalink = new Lavalink(avaire.getConfig().getString("discord.clientId", "" + DiscordConstants.AVAIRE_BOT_ID),
             avaire.getSettings().getShardCount() < 1 ? 1 : avaire.getSettings().getShardCount(),
             shardId -> avaire.getShardManager().getShardById(shardId)
         );
