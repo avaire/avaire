@@ -85,7 +85,7 @@ public abstract class Command extends Reflectionable {
      * @param context The command context used to get the description.
      * @return Never-null, the command description.
      */
-    public String getDescription(CommandMessage context) {
+    public String getDescription(CommandContext context) {
         return getDescription();
     }
 

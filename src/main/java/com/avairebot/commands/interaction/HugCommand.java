@@ -9,7 +9,7 @@ import java.util.List;
 public class HugCommand extends InteractionCommand {
 
     public HugCommand(AvaIre avaire) {
-        super(avaire, "hugs");
+        super(avaire);
     }
 
     @Override

@@ -9,7 +9,7 @@ import java.util.List;
 public class HelloCommand extends InteractionCommand {
 
     public HelloCommand(AvaIre avaire) {
-        super(avaire, "says hello to");
+        super(avaire);
     }
 
     @Override

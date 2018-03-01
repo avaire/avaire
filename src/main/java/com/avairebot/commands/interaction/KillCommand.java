@@ -9,7 +9,7 @@ import java.util.List;
 public class KillCommand extends InteractionCommand {
 
     public KillCommand(AvaIre avaire) {
-        super(avaire, "wants to kill");
+        super(avaire);
     }
 
     @Override

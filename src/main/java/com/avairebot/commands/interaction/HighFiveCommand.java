@@ -9,7 +9,7 @@ import java.util.List;
 public class HighFiveCommand extends InteractionCommand {
 
     public HighFiveCommand(AvaIre avaire) {
-        super(avaire, "high fives");
+        super(avaire);
     }
 
     @Override

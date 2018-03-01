@@ -9,7 +9,7 @@ import java.util.List;
 public class SlapCommand extends InteractionCommand {
 
     public SlapCommand(AvaIre avaire) {
-        super(avaire, "Slaps");
+        super(avaire);
     }
 
     @Override

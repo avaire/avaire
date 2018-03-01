@@ -9,7 +9,7 @@ import java.util.List;
 public class PatCommand extends InteractionCommand {
 
     public PatCommand(AvaIre avaire) {
-        super(avaire, "pats");
+        super(avaire);
     }
 
     @Override

@@ -10,6 +10,28 @@ errors:
     requireLevelFeatureToBeEnabled: 'This command requires the `Levels & Experience` feature to be enabled for the server, you can ask a server admin if they want to enable it with `%s`'
     errorOccurredWhileLoading: 'An error occurred while loading the %s, please try again, if the problem continues please report this to one of my developers on the [AvaIre support server](https://discord.gg/gt2FWER).'
 
+interaction:
+    BiteCommand: 'bites'
+    CuddleCommand: 'cuddles'
+    DivorceCommand: 'divorces'
+    EatCommand: 'eats some food with'
+    HelloCommand: 'says hello to'
+    HighFiveCommand: 'high fives'
+    HugCommand: 'hugs'
+    KillCommand: 'wants to kill'
+    KissCommand: 'kisses'
+    MeowCommand: 'meows at'
+    PanCommand: '**%s** just hit **%s** with a pan!'
+    PatCommand: 'pats'
+    PokeCommand: 'pokes'
+    PoutCommand: 'pouts at'
+    PunchCommand: 'punches'
+    SenpaiCommand: 'wants to be noticed by'
+    ShrugCommand: 'shrugs at'
+    SlapCommand: 'slaps'
+    TickleCommand: 'tickles'
+    TriggeredCommand: 'is triggered by'
+
 music:
     ClearQueueCommand:
         error: 'Nothing to clear, request music first with `%splay`'

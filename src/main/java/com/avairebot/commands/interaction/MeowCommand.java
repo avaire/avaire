@@ -10,7 +10,7 @@ import java.util.List;
 public class MeowCommand extends InteractionCommand {
 
     public MeowCommand(AvaIre avaire) {
-        super(avaire, "meows at");
+        super(avaire);
     }
 
     @Override

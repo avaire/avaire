@@ -11,7 +11,7 @@ import java.util.List;
 public class ShrugCommand extends InteractionCommand {
 
     public ShrugCommand(AvaIre avaire) {
-        super(avaire, "shrugs at");
+        super(avaire);
     }
 
     @Override

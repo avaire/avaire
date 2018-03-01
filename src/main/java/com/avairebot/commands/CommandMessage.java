@@ -3,6 +3,7 @@ package com.avairebot.commands;
 import com.avairebot.chat.MessageType;
 import com.avairebot.chat.PlaceholderMessage;
 import com.avairebot.config.YamlConfiguration;
+import com.avairebot.contracts.commands.CommandContext;
 import com.avairebot.factories.MessageFactory;
 import com.avairebot.language.I18n;
 import net.dv8tion.jda.core.JDA;
@@ -19,7 +20,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class CommandMessage {
+public class CommandMessage implements CommandContext {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CommandMessage.class);
 
@@ -97,30 +98,37 @@ public class CommandMessage {
         return String.join(" ", Arrays.copyOfRange(parts, nameSize, parts.length));
     }
 
+    @Override
     public Guild getGuild() {
         return guild;
     }
 
+    @Override
     public Member getMember() {
         return member;
     }
 
+    @Override
     public User getAuthor() {
         return message.getAuthor();
     }
 
+    @Override
     public TextChannel getChannel() {
         return channel;
     }
 
+    @Override
     public MessageChannel getMessageChannel() {
         return message.getChannel();
     }
 
+    @Override
     public Message getMessage() {
         return message;
     }
 
+    @Override
     public List<User> getMentionedUsers() {
         if (!isMentionableCommand()) {
             return message.getMentionedUsers();
@@ -133,14 +141,17 @@ public class CommandMessage {
         return mentions;
     }
 
+    @Override
     public List<TextChannel> getMentionedChannels() {
         return message.getMentionedChannels();
     }
 
+    @Override
     public boolean isMentionableCommand() {
         return mentionableCommand;
     }
 
+    @Override
     public boolean isGuildMessage() {
         return message.getChannelType().isGuild();
     }
@@ -177,6 +188,7 @@ public class CommandMessage {
         return MessageFactory.makeEmbeddedMessage(this.message.getChannel());
     }
 
+    @Override
     @Nonnull
     public YamlConfiguration getI18n() {
         if (this.i18n == null) {
@@ -185,6 +197,12 @@ public class CommandMessage {
         return this.i18n;
     }
 
+    public CommandMessage setI18n(YamlConfiguration i18n) {
+        this.i18n = i18n;
+        return this;
+    }
+
+    @Override
     @CheckReturnValue
     public String i18n(@Nonnull String key) {
         if (i18nCommandPrefix != null) {
@@ -193,6 +211,7 @@ public class CommandMessage {
         return i18nRaw(key);
     }
 
+    @Override
     @CheckReturnValue
     public String i18nRaw(@Nonnull String key) {
         if (getI18n().contains(key)) {
@@ -203,14 +222,17 @@ public class CommandMessage {
         }
     }
 
+    @Override
     public void setI18nPrefix(@Nullable String i18nPrefix) {
         this.i18nCommandPrefix = i18nPrefix;
     }
 
+    @Override
     public String getI18nCommandPrefix() {
         return i18nCommandPrefix;
     }
 
+    @Override
     public void setI18nCommandPrefix(@Nonnull CommandContainer container) {
         setI18nPrefix(
             container.getCategory().getName().toLowerCase() + "."

@@ -9,7 +9,7 @@ import java.util.List;
 public class PokeCommand extends InteractionCommand {
 
     public PokeCommand(AvaIre avaire) {
-        super(avaire, "pokes");
+        super(avaire);
     }
 
     @Override
