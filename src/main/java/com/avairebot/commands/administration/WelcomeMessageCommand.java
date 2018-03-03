@@ -30,7 +30,7 @@ public class WelcomeMessageCommand extends Command {
 
     @Override
     public String getDescription() {
-        return "Sets the message that should be sent when a user joins the server, this command can only be used if the welcome module is enabled for the current channel.";
+        return "Sets the message that should be sent when a user joins the server, this command can only be used if the welcome module is enabled for the current channel.\nThe welcome message has support for [placeholders](https://avairebot.com/docs/placeholders), allowing for customizing the message a bit more for each user.\nhttps://avairebot.com/docs/placeholders";
     }
 
     @Override
