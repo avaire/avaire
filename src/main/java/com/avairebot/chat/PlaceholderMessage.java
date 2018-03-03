@@ -46,7 +46,7 @@ public class PlaceholderMessage extends Restable {
     }
 
     public PlaceholderMessage setTitle(String title, String url) {
-        builder.setTitle(title, url);
+        builder.setTitle(trimString(title, MessageEmbed.TITLE_MAX_LENGTH), url);
         return this;
     }
 
@@ -55,7 +55,7 @@ public class PlaceholderMessage extends Restable {
     }
 
     public PlaceholderMessage setFooter(String text, String iconUrl) {
-        builder.setFooter(text, iconUrl);
+        builder.setFooter(trimString(text, MessageEmbed.TITLE_MAX_LENGTH), iconUrl);
         return this;
     }
 
@@ -104,7 +104,12 @@ public class PlaceholderMessage extends Restable {
     }
 
     public PlaceholderMessage addField(String name, String value, boolean inline) {
-        builder.addField(name, value, inline);
+        builder.addField(
+            trimString(name, MessageEmbed.TITLE_MAX_LENGTH),
+            trimString(value, MessageEmbed.VALUE_MAX_LENGTH),
+            inline
+        );
+
         return this;
     }
 
@@ -146,7 +151,10 @@ public class PlaceholderMessage extends Restable {
                 .replaceAll("\\$", "\\\\\\$"));
         });
 
-        return formatGlobalMessage(message);
+        return trimString(
+            formatGlobalMessage(message),
+            MessageEmbed.TEXT_MAX_LENGTH
+        );
     }
 
     private String formatGlobalMessage(String message) {
@@ -154,5 +162,17 @@ public class PlaceholderMessage extends Restable {
             return message;
         }
         return globalPlaceholder.parse(globalObject, message);
+    }
+
+    private String trimString(String string, int length) {
+        if (string == null) {
+            return null;
+        }
+
+        if (string.length() < length) {
+            return string;
+        }
+
+        return string.substring(0, length);
     }
 }
