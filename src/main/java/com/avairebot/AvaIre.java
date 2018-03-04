@@ -369,7 +369,7 @@ public class AvaIre {
             .addEventListeners(new GenericEventHandler(this));
 
         if (LavalinkManager.LavalinkManagerHolder.LAVALINK.isEnabled()) {
-            builder.addEventListeners(LavalinkManager.LavalinkManagerHolder.LAVALINK);
+            builder.addEventListeners(LavalinkManager.LavalinkManagerHolder.LAVALINK.getLavalink());
         }
 
         for (PluginLoader plugin : getPluginManager().getPlugins()) {
