@@ -7,6 +7,7 @@ import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
 import lavalink.client.player.IPlayer;
+import lavalink.client.player.LavalinkPlayer;
 import lavalink.client.player.event.AudioEventAdapterWrapped;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.User;
@@ -172,13 +173,22 @@ public class TrackScheduler extends AudioEventAdapterWrapped {
     }
 
     public void handleEndOfQueue(Message message, boolean sendEndOfQueue) {
-        if (sendEndOfQueue) {
+        if (sendEndOfQueue && AudioHandler.MUSIC_MANAGER.containsKey(message.getGuild().getIdLong())) {
             MessageFactory.makeSuccess(message, "Queue has ended, leaving voice.").queue(queueMessage -> {
                 queueMessage.delete().queueAfter(45, TimeUnit.SECONDS);
             });
         }
 
         LavalinkManager.LavalinkManagerHolder.LAVALINK.closeConnection(message.getGuild());
+
+        if (LavalinkManager.LavalinkManagerHolder.LAVALINK.isEnabled()) {
+            GuildMusicManager manager = AudioHandler.MUSIC_MANAGER.get(message.getGuild().getIdLong());
+            manager.getPlayer().removeListener(this);
+
+            if (manager.getPlayer() instanceof LavalinkPlayer) {
+                ((LavalinkPlayer) manager.getPlayer()).getLink().destroy();
+            }
+        }
 
         AudioHandler.MUSIC_MANAGER.remove(
             message.getGuild().getIdLong()
