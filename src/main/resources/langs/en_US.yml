@@ -10,6 +10,22 @@ errors:
     requireLevelFeatureToBeEnabled: 'This command requires the `Levels & Experience` feature to be enabled for the server, you can ask a server admin if they want to enable it with `%s`'
     errorOccurredWhileLoading: 'An error occurred while loading the %s, please try again, if the problem continues please report this to one of my developers on the [AvaIre support server](https://discord.gg/gt2FWER).'
 
+help:
+    HelpCommand:
+        listOfCommands: ':page_with_curl: **List of Command** ```css\n%s```\n'
+        commandNote: '**Type `:help <command>` to see the help for that specified command.**\nExample: `:help :command`'
+        categoriesNote: ':information_source: Type `:help <category>` to get a list of commands in that category.\nExample: `:help %s` or `:help %s`'
+        categoriesTitle: ':scroll: Command Categories'
+        invalidCategory: 'Invalid command category given, there are no categories called `:category`'
+        invalidCommand: 'Invalid command given, there are no command that has the trigger `:trigger`'
+        tryingToViewSystemCommands: "You don't have permissions to run any of the  commands in the `System` category, system commands can affect all the servers the bot is currently running on, and thus are limited to bot administrators/developers."
+        singularHiddenCategories: '_There is **%s** hidden category for this channel._'
+        multipleHiddenCategories: '_There is **%s** hidden categories for this channel._'
+        fields:
+            usage: 'Usage'
+            aliases: 'Aliases'
+            footer: 'Command category: '
+
 interaction:
     BiteCommand: 'bites'
     CuddleCommand: 'cuddles'
