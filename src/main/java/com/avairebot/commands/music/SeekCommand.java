@@ -81,7 +81,7 @@ public class SeekCommand extends Command {
                 );
             }
 
-            musicManager.getPlayer().getPlayingTrack().setPosition(time);
+            musicManager.getPlayer().seekTo(time);
 
             context.makeSuccess("Seeking **:title** to `:time`")
                 .set("title", musicManager.getPlayer().getPlayingTrack().getInfo().title)
