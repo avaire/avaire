@@ -105,6 +105,16 @@ public class GuildController {
         );
     }
 
+    public static boolean forgetCache(AvaIre avaire, String guildId) {
+        if (!isCached(avaire, guildId)) {
+            return false;
+        }
+
+        return avaire.getCache().getAdapter(CacheType.MEMORY).forget(
+            String.format(CACHE_STRING, guildId)
+        ) != null;
+    }
+
     public static String buildChannelData(List<TextChannel> textChannels) {
         List<Map<String, Object>> channels = new ArrayList<>();
         for (TextChannel channel : textChannels) {

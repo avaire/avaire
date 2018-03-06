@@ -9,7 +9,7 @@ public class GuildTypeTransformer extends Transformer {
     private String name = "Default";
     private GuildTypeLimits limits = new GuildTypeLimits();
 
-    GuildTypeTransformer(DataRow data) {
+    public GuildTypeTransformer(DataRow data) {
         super(data);
 
         if (hasData()) {
