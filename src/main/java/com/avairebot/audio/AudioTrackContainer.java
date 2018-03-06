@@ -2,6 +2,7 @@ package com.avairebot.audio;
 
 import com.avairebot.utilities.NumberUtil;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+import lavalink.client.player.IPlayer;
 import net.dv8tion.jda.core.entities.User;
 
 import java.util.ArrayList;
@@ -50,11 +51,11 @@ public class AudioTrackContainer {
         return NumberUtil.formatTime(getAudioTrack().getDuration());
     }
 
-    public String getFormattedTotalTimeLeft() {
+    public String getFormattedTotalTimeLeft(IPlayer player) {
         if (getAudioTrack().getInfo().isStream) {
             return "LIVE";
         }
 
-        return NumberUtil.formatTime(getAudioTrack().getDuration() - getAudioTrack().getPosition());
+        return NumberUtil.formatTime(getAudioTrack().getDuration() - player.getTrackPosition());
     }
 }

@@ -127,7 +127,7 @@ public class SongCommand extends Command {
             player.getPlayingTrack().getInfo().title,
             player.getPlayingTrack().getInfo().uri,
             player.getVolume() + "%",
-            scheduler.getAudioTrackContainer().getFormattedTotalTimeLeft(),
+            scheduler.getAudioTrackContainer().getFormattedTotalTimeLeft(player),
             scheduler.getAudioTrackContainer().getRequester().getId()
         );
     }
