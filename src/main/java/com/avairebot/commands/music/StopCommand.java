@@ -54,7 +54,7 @@ public class StopCommand extends Command {
         String guildId = context.getGuild().getId();
         int size = musicManager.getScheduler().getQueue().size();
 
-        musicManager.getPlayer().setPaused(true);
+        musicManager.getPlayer().stopTrack();
         musicManager.getScheduler().getQueue().clear();
 
         MusicActivityJob.MISSING_LISTENERS.remove(guildId);
