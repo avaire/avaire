@@ -54,15 +54,17 @@ public class LeaderboardCommand extends Command {
     public boolean onCommand(CommandMessage context, String[] args) {
         GuildTransformer transformer = GuildController.fetchGuild(avaire, context.getMessage());
         if (transformer == null || !transformer.isLevels()) {
-            return sendErrorMessage(context,
-                "This command requires the `Levels & Experience` feature to be enabled for the server, you can ask a server admin if they want to enable it with `%slevel`",
-                CommandHandler.getCommand(LevelCommand.class).getCategory().getPrefix(context.getMessage())
+            return sendErrorMessage(
+                context,
+                "requireLevelFeatureToBeEnabled",
+                CommandHandler.getCommand(LevelCommand.class)
+                    .getCommand().generateCommandTrigger(context.getMessage())
             );
         }
 
         Collection collection = loadTop100From(context);
         if (collection == null) {
-            context.makeWarning("There are no leaderboard data right now, try again later.").queue();
+            context.makeWarning(context.i18n("noData")).queue();
             return false;
         }
 
@@ -83,18 +85,21 @@ public class LeaderboardCommand extends Command {
 
             long experience = row.getLong("experience", 100);
 
-            messages.add(String.format("`%s` **%s** is level **%s** with **%s** xp.",
-                index + 1,
-                username,
-                LevelUtil.getLevelFromExperience(experience),
-                experience - 100
-            ));
+            messages.add(context.i18n("line")
+                .replace(":num", "" + (index + 1))
+                .replace(":username", username)
+                .replace(":level", "" + LevelUtil.getLevelFromExperience(experience))
+                .replace(":experience", "" + (experience - 100))
+            );
         });
 
         messages.add("\n" + paginator.generateFooter(generateCommandTrigger(context.getMessage())));
 
         context.makeInfo(String.join("\n", messages))
-            .setTitle(context.getGuild().getName() + " Leaderboard", "https://avairebot.com/leaderboard/" + context.getGuild().getId())
+            .setTitle(String.format(
+                context.i18n("title"),
+                context.getGuild().getName()
+            ), "https://avairebot.com/leaderboard/" + context.getGuild().getId())
             .queue();
 
         return true;

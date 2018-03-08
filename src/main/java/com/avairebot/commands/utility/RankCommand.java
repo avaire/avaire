@@ -17,7 +17,6 @@ import com.avairebot.database.transformers.PlayerTransformer;
 import com.avairebot.factories.MessageFactory;
 import com.avairebot.utilities.LevelUtil;
 import com.avairebot.utilities.NumberUtil;
-import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.User;
 
 import java.awt.*;
@@ -80,9 +79,11 @@ public class RankCommand extends Command {
     public boolean onCommand(CommandMessage context, String[] args) {
         GuildTransformer guildTransformer = GuildController.fetchGuild(avaire, context.getMessage());
         if (guildTransformer == null || !guildTransformer.isLevels()) {
-            return sendErrorMessage(context,
-                "This command requires the `Levels & Experience` feature to be enabled for the server, you can ask a server admin if they want to enable it with `%slevel`",
-                CommandHandler.getCommand(LevelCommand.class).getCategory().getPrefix(context.getMessage())
+            return sendErrorMessage(
+                context,
+                "requireLevelFeatureToBeEnabled",
+                CommandHandler.getCommand(LevelCommand.class)
+                    .getCommand().generateCommandTrigger(context.getMessage())
             );
         }
 
@@ -93,7 +94,7 @@ public class RankCommand extends Command {
         final User author = user;
 
         if (author.isBot()) {
-            context.makeWarning("Bots cannot receive xp and therefore can\'t be ranked, try and tag a user instead.").queue();
+            context.makeWarning(context.i18n("botsCannotReceiveXp")).queue();
             return false;
         }
 
@@ -116,9 +117,9 @@ public class RankCommand extends Command {
             MessageFactory.makeEmbeddedMessage(context.getChannel(), Color.decode("#E91E63"))
                 .setAuthor(author.getName(), "https://avairebot.com/leaderboard/" + context.getGuild().getId(), author.getEffectiveAvatarUrl())
                 .setFooter("https://avairebot.com/leaderboard/" + context.getGuild().getId())
-                .addField("Rank", score, true)
-                .addField("Level", NumberUtil.formatNicely(level), true)
-                .addField("Experience", (experience - 100 < 0 ? "0" : String.format("%s (Total: %s)",
+                .addField(context.i18n("fields.rank"), score, true)
+                .addField(context.i18n("fields.level"), NumberUtil.formatNicely(level), true)
+                .addField(context.i18n("fields.experience"), (experience - 100 < 0 ? "0" : String.format("%s (Total: %s)",
                     NumberUtil.formatNicely(experience - 100), NumberUtil.formatNicely(properties.getTotal())
                 )), true)
                 .addField("Experience needed to next Level", String.format("[%s] %s%s",
@@ -130,10 +131,10 @@ public class RankCommand extends Command {
         return true;
     }
 
-    private CompletableFuture<DatabaseProperties> loadProperties(CommandMessage message, User author) {
+    private CompletableFuture<DatabaseProperties> loadProperties(CommandMessage context, User author) {
         return CompletableFuture.supplyAsync(() -> {
             try {
-                PlayerTransformer player = PlayerController.fetchPlayer(avaire, message.getMessage(), author);
+                PlayerTransformer player = PlayerController.fetchPlayer(avaire, context.getMessage(), author);
                 DataRow data = avaire.getDatabase().newQueryBuilder(Constants.PLAYER_EXPERIENCE_TABLE_NAME)
                     .selectRaw("sum(`experience`) - (count(`user_id`) * 100) as `total`")
                     .where("user_id", author.getId())
@@ -141,7 +142,7 @@ public class RankCommand extends Command {
 
                 long total = data == null ? player.getExperience() : data.getLong("total");
 
-                return new DatabaseProperties(player, total, getScore(message.getMessage(), author.getId()));
+                return new DatabaseProperties(player, total, getScore(context, author.getId()));
             } catch (SQLException e) {
                 e.printStackTrace();
                 return null;
@@ -149,10 +150,10 @@ public class RankCommand extends Command {
         });
     }
 
-    private String getScore(Message message, String userId) throws SQLException {
-        if (avaire.getCache().getAdapter(CacheType.MEMORY).has(cacheToken + message.getGuild().getId())) {
-            Collection users = (Collection) avaire.getCache().getAdapter(CacheType.MEMORY).get(cacheToken + message.getGuild().getId());
-            String score = "Unranked";
+    private String getScore(CommandMessage context, String userId) throws SQLException {
+        if (avaire.getCache().getAdapter(CacheType.MEMORY).has(cacheToken + context.getGuild().getId())) {
+            Collection users = (Collection) avaire.getCache().getAdapter(CacheType.MEMORY).get(cacheToken + context.getGuild().getId());
+            String score = context.i18n("unranked");
 
             for (int i = 0; i < users.size(); i++) {
                 if (Objects.equals(users.get(i).getString("id"), userId)) {
@@ -164,16 +165,16 @@ public class RankCommand extends Command {
             return score;
         }
 
-        avaire.getCache().getAdapter(CacheType.MEMORY).put(cacheToken + message.getGuild().getId(),
+        avaire.getCache().getAdapter(CacheType.MEMORY).put(cacheToken + context.getGuild().getId(),
             avaire.getDatabase().newQueryBuilder(Constants.PLAYER_EXPERIENCE_TABLE_NAME)
                 .select("user_id as id")
                 .orderBy("experience", "desc")
-                .where("guild_id", message.getGuild().getId())
+                .where("guild_id", context.getGuild().getId())
                 .get(),
             120
         );
 
-        return getScore(message, userId);
+        return getScore(context, userId);
     }
 
     private class DatabaseProperties {

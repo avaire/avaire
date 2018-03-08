@@ -57,13 +57,16 @@ public class VolumeCommand extends Command {
         GuildMusicManager musicManager = AudioHandler.getGuildAudioPlayer(context.getGuild());
 
         if (musicManager.getPlayer().getPlayingTrack() == null) {
-            return sendErrorMessage(context, "Nothing is playing, request music first with `!play`");
+            return sendErrorMessage(context,
+                context.i18n("error"),
+                generateCommandPrefix(context.getMessage())
+            );
         }
 
         int volume = musicManager.getPlayer().getVolume();
 
         if (args.length == 0) {
-            context.makeSuccess("\uD83C\uDFB5 Music is playing at **:volume** volume\n:bar")
+            context.makeSuccess(context.i18n("nowPlaying") + "\n:bar")
                 .set("volume", volume)
                 .set("bar", getVolumeString(volume, 21))
                 .queue();
@@ -71,20 +74,20 @@ public class VolumeCommand extends Command {
         }
 
         if (!AudioHandler.canRunDJAction(avaire, context.getMessage(), DJGuildLevel.NORMAL)) {
-            return sendErrorMessage(context, "The `DJ` role is required to change the volume!");
+            return sendErrorMessage(context, context.i18n("requireDJRole"));
         }
 
         if (!NumberUtil.isNumeric(args[0])) {
-            return sendErrorMessage(context, "Invalid volume given, the volume must be a valid number between 1 and 100.");
+            return sendErrorMessage(context, context.i18n("invalidVolume"));
         }
 
         int newVolume = NumberUtil.parseInt(args[0], -1);
         if ((newVolume < 0 || newVolume > 100)) {
-            return sendErrorMessage(context, "Invalid volume given, the volume must between 1 and 100.");
+            return sendErrorMessage(context, context.i18n("invalidVolume"));
         }
 
         musicManager.getPlayer().setVolume(newVolume);
-        context.makeSuccess("\uD83C\uDFB5 Volume set to **:volume** volume\n:bar")
+        context.makeSuccess(context.i18n("setTo") + "\n:bar")
             .set("volume", newVolume)
             .set("bar", getVolumeString(newVolume, 18))
             .queue(message -> message.delete().queueAfter(2, TimeUnit.MINUTES));

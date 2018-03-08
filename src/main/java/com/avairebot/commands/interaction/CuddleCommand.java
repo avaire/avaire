@@ -9,7 +9,7 @@ import java.util.List;
 public class CuddleCommand extends InteractionCommand {
 
     public CuddleCommand(AvaIre avaire) {
-        super(avaire, "cuddles");
+        super(avaire);
     }
 
     @Override

@@ -9,7 +9,7 @@ import java.util.List;
 public class PunchCommand extends InteractionCommand {
 
     public PunchCommand(AvaIre avaire) {
-        super(avaire, "punches");
+        super(avaire);
     }
 
     @Override

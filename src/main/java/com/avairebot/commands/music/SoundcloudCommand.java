@@ -60,16 +60,14 @@ public class SoundcloudCommand extends Command {
     @SuppressWarnings("ConstantConditions")
     public boolean onCommand(CommandMessage context, String[] args) {
         if (args.length == 0) {
-            return sendErrorMessage(context,
-                "Missing music `query`, you must include a link to the song you want to listen to, or at least give me a song title!"
-            );
+            return sendErrorMessage(context, "missingMusicQueue");
         }
 
         CommandContainer container = CommandHandler.getCommand(PlayCommand.class);
         PlayCommand playCommand = (PlayCommand) container.getCommand();
 
-        if (AudioHandler.hasAudioSession(context.getMessage()) && NumberUtil.isNumeric(args[0])) {
-            return playCommand.loadSongFromSession(context.getMessage(), args);
+        if (AudioHandler.hasAudioSession(context) && NumberUtil.isNumeric(args[0])) {
+            return playCommand.loadSongFromSession(context, args);
         }
 
         try {

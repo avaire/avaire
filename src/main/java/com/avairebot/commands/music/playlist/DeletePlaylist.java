@@ -29,7 +29,7 @@ public class DeletePlaylist extends PlaylistSubCommand {
             avaire.getCache().getAdapter(CacheType.MEMORY)
                 .forget(PlaylistController.getCacheString(context.getGuild()));
 
-            context.makeSuccess("The `:name` playlist has been deleted successfully!")
+            context.makeSuccess(context.i18n("playlistDeleted"))
                 .set("name", playlist.getName())
                 .queue();
 

@@ -22,13 +22,13 @@ public class LoadPlaylist extends PlaylistSubCommand {
 
     @Override
     public boolean onCommand(CommandMessage context, String[] args, GuildTransformer guild, PlaylistTransformer playlist) {
-        VoiceConnectStatus voiceConnectStatus = AudioHandler.connectToVoiceChannel(context.getMessage());
+        VoiceConnectStatus voiceConnectStatus = AudioHandler.connectToVoiceChannel(context);
         if (!voiceConnectStatus.isSuccess()) {
             context.makeWarning(voiceConnectStatus.getErrorMessage()).queue();
             return false;
         }
 
-        AudioHandler.getGuildAudioPlayer(context.getGuild()).setLastActiveMessage(context.getMessage());
+        AudioHandler.getGuildAudioPlayer(context.getGuild()).setLastActiveMessage(context);
         for (PlaylistTransformer.PlaylistSong song : playlist.getSongs()) {
             loadSong(context, song);
         }

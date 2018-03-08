@@ -43,24 +43,24 @@ public class ExpandUrlCommand extends Command {
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
         if (args.length == 0) {
-            return sendErrorMessage(context, "Missing argument `url`, you must provided a valid URL.");
+            return sendErrorMessage(context, "missingArgument", "url");
         }
 
         try {
             List<String> redirects = fetchRedirect(args[0], new ArrayList<>());
 
             if (redirects.size() <= 1) {
-                context.makeInfo(":url doesn't redirect anywhere.")
+                context.makeInfo(context.i18n("noRedirect"))
                     .set("url", args[0]).queue();
                 return true;
             }
 
 
             List<String> links = new ArrayList<>();
-            links.add(String.format("%s redirects to %s", args[0], redirects.get(redirects.size() - 1)));
+            links.add(String.format(context.i18n("redirects"), args[0], redirects.get(redirects.size() - 1)));
 
             if (redirects.size() > 2) {
-                links.add("\n**The link jumps through the following sites:**");
+                links.add("\n" + context.i18n("jumps"));
                 for (int i = 1; i < redirects.size(); i++) {
                     links.add(redirects.get(i - 1) + " :arrow_right: " + redirects.get(i));
                 }
@@ -70,7 +70,7 @@ public class ExpandUrlCommand extends Command {
 
             return true;
         } catch (MalformedURLException ex) {
-            return sendErrorMessage(context, "Invalid `url` provided, you must provide a valid URL.");
+            return sendErrorMessage(context, "invalidProperty", "URL");
         } catch (UnknownHostException ex) {
             context.makeError("Unknown host for the provided `url`, does it actually go anywhere?").queue();
         } catch (IOException e) {

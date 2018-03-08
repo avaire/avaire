@@ -32,9 +32,16 @@ public abstract class InteractionCommand extends Command {
         this(avaire, interaction, false);
     }
 
+    public InteractionCommand(AvaIre avaire) {
+        this(avaire, null, false);
+    }
+
     @Override
-    public String getDescription() {
-        return String.format("Sends the **%s** interaction to the mentioned user.", interaction);
+    public String getDescription(CommandContext context) {
+        return String.format(
+            "Sends the **%s** interaction to the mentioned user.",
+            getInteraction(context, true)
+        );
     }
 
     @Override
@@ -97,7 +104,8 @@ public abstract class InteractionCommand extends Command {
 
     private String buildMessage(CommandMessage context, User user) {
         if (overwrite) {
-            return String.format(interaction,
+            return String.format(
+                getInteraction(context, false),
                 context.getMember().getEffectiveName(),
                 context.getGuild().getMember(user).getEffectiveName()
             );
@@ -105,8 +113,15 @@ public abstract class InteractionCommand extends Command {
 
         return String.format("**%s** %s **%s**",
             context.getMember().getEffectiveName(),
-            interaction,
+            getInteraction(context, false),
             context.getGuild().getMember(user).getEffectiveName()
         );
+    }
+
+    private String getInteraction(CommandContext context, boolean isDescription) {
+        if (isDescription && overwrite) {
+            return getTriggers().get(0);
+        }
+        return interaction == null ? context.i18nRaw(context.getI18nCommandPrefix()) : interaction;
     }
 }

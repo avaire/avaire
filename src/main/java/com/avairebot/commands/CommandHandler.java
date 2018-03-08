@@ -219,7 +219,7 @@ public class CommandHandler {
     public static void register(@Nonnull Command command) {
         Category category = CategoryHandler.fromCommand(command);
         Checks.notNull(category, String.format("%s :: %s", command.getName(), "Invalid command category, command category"));
-        Checks.notNull(command.getDescription(), String.format("%s :: %s", command.getName(), "Command description"));
+        Checks.notNull(command.getDescription(new FakeCommandMessage()), String.format("%s :: %s", command.getName(), "Command description"));
 
         for (String trigger : command.getTriggers()) {
             for (Map.Entry<List<String>, CommandContainer> entry : COMMANDS.entrySet()) {

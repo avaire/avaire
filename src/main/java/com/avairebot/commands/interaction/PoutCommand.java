@@ -9,7 +9,7 @@ import java.util.List;
 public class PoutCommand extends InteractionCommand {
 
     public PoutCommand(AvaIre avaire) {
-        super(avaire, "pouts at");
+        super(avaire);
     }
 
     @Override

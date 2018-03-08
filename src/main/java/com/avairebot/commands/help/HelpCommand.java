@@ -64,13 +64,13 @@ public class HelpCommand extends Command {
     private boolean showCategories(CommandMessage context) {
         Category category = CategoryHandler.random(false);
 
-        String note = String.format(":information_source: Type `:help <category>` to get a list of commands in that category.\nExample: `:help %s` or `:help %s`",
+        String note = String.format(context.i18n("categoriesNote"),
             category.getName().toLowerCase(),
             category.getName().toLowerCase().substring(0, 3)
         ).replaceAll(":help", generateCommandTrigger(context.getMessage()));
 
         context.makeInfo(getCategories(context) + note)
-            .setTitle(":scroll: Command Categories")
+            .setTitle(context.i18n("categoriesTitle"))
             .queue();
 
         return true;
@@ -78,7 +78,7 @@ public class HelpCommand extends Command {
 
     private boolean showCategoryCommands(CommandMessage context, Category category, String categoryString) {
         if (category == null) {
-            context.makeError("Invalid command category given, there are no categories called `:category`")
+            context.makeError(context.i18n("invalidCategory"))
                 .set("category", categoryString)
                 .queue();
             return false;
@@ -86,9 +86,7 @@ public class HelpCommand extends Command {
 
         boolean isBotAdmin = avaire.getConfig().getStringList("botAccess").contains(context.getAuthor().getId());
         if (!isBotAdmin && category.getName().equalsIgnoreCase("System")) {
-            context.makeError("You don't have permissions to run any of the commands in the `System` " +
-                "category, system commands can affect all the servers the bot is currently running on, and thus are " +
-                "limited to bot administrators/developers.")
+            context.makeError(context.i18n("tryingToViewSystemCommands"))
                 .queue();
             return false;
         }
@@ -98,8 +96,7 @@ public class HelpCommand extends Command {
                 // Builds and sets the content of the message, this is all the
                 // commands for the given category the command was used for.
                 .setContent(String.format(
-                    ":page_with_curl: **%s** ```css\n%s```\n",
-                    "List of Commands",
+                    context.i18n("listOfCommands"),
                     CommandHandler.getCommands().stream()
                         .filter(container -> filterCommandContainer(container, category, isBotAdmin))
                         .map(container -> mapCommandContainer(context, container))
@@ -112,7 +109,7 @@ public class HelpCommand extends Command {
                 .setEmbed(MessageFactory.createEmbeddedBuilder()
                     .setColor(MessageType.INFO.getColor())
                     .setDescription(
-                        "**Type `:help <command>` to see the help for that specified command.**\nExample: `:help :command`"
+                        context.i18n("commandNote")
                             .replaceAll(":help", generateCommandTrigger(context.getMessage()))
                             .replace(":command", CommandHandler.getCommands().stream()
                                 .filter(commandContainer -> commandContainer.getCategory().equals(category))
@@ -131,7 +128,7 @@ public class HelpCommand extends Command {
 
     private boolean showCommand(CommandMessage context, CommandContainer command, String commandString) {
         if (command == null) {
-            context.makeError("Invalid command given, there are no command that has the trigger `:trigger`")
+            context.makeError(context.i18n("invalidCommand"))
                 .set("trigger", commandString)
                 .queue();
             return false;
@@ -142,19 +139,25 @@ public class HelpCommand extends Command {
         EmbedBuilder embed = MessageFactory.createEmbeddedBuilder()
             .setTitle(command.getCommand().getName())
             .setColor(MessageType.SUCCESS.getColor())
-            .addField("Usage", command.getCommand().generateUsageInstructions(context.getMessage()), false)
-            .addField("Example", command.getCommand().generateExampleUsage(context.getMessage()), false)
-            .setFooter("Command category: " + command.getCategory().getName(), null);
+            .addField(context.i18n("fields.usage"), command.getCommand().generateUsageInstructions(context.getMessage()), false)
+            .setFooter(context.i18n("fields.footer") + command.getCategory().getName(), null);
 
         if (command.getCommand().getTriggers().size() > 1) {
-            embed.addField("Aliases", command.getCommand().getTriggers().stream()
-                .skip(1)
-                .map(trigger -> commandPrefix + trigger)
-                .collect(Collectors.joining("`, `", "`", "`")), false);
+            embed.addField(
+                context.i18n("fields.aliases"),
+                command.getCommand().getTriggers().stream()
+                    .skip(1)
+                    .map(trigger -> commandPrefix + trigger)
+                    .collect(Collectors.joining("`, `", "`", "`")),
+                false
+            );
         }
 
         context.getMessageChannel().sendMessage(embed.setDescription(
-            command.getCommand().generateDescription(context.getMessage())
+            command.getCommand().generateDescription(
+                new CommandMessage(command, context.getMessage())
+                    .setI18n(context.getI18n())
+            )
         ).build()).queue();
         return true;
     }
@@ -199,8 +202,11 @@ public class HelpCommand extends Command {
             filteredCategories.stream().filter(channel::isCategoryEnabled),
             isBotAdmin,
             disabled != 0 ? String.format(
-                "\n\n_There is **%s** hidden %s for this channel._\n",
-                disabled, disabled == 1 ? "category" : "categories"
+                "\n\n" + (disabled == 1 ?
+                    context.i18n("singularHiddenCategories") :
+                    context.i18n("multipleHiddenCategories")
+                ) + "\n",
+                disabled
             ) : "\n\n");
     }
 

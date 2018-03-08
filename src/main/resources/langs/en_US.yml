@@ -1,0 +1,349 @@
+
+errors:
+    missingArgument: 'Missing argument, the `%s` argument is required!'
+    invalidProperty: 'Invalid `%s` provided, you must provide a valid %s.'
+    noChannelsWithNameOrId: 'I found no channels with the name or ID of `%s`'
+    noUsersWithNameOrId: 'I found no users with the name or ID of `%s`'
+    mustBeConnectedToVoice: 'You must be connected to a voice channel to use this command!'
+    mustBeConnectedToSameChannel: 'You must be connected to the same voice channel I am in to %s!'
+    missingMusicQueue: 'Missing music `query`, you must include a link to the song you want to listen to, or at least give me a song title!'
+    requireLevelFeatureToBeEnabled: 'This command requires the `Levels & Experience` feature to be enabled for the server, you can ask a server admin if they want to enable it with `%s`'
+    errorOccurredWhileLoading: 'An error occurred while loading the %s, please try again, if the problem continues please report this to one of my developers on the [AvaIre support server](https://discord.gg/gt2FWER).'
+
+help:
+    HelpCommand:
+        listOfCommands: ':page_with_curl: **List of Command** ```css\n%s```\n'
+        commandNote: '**Type `:help <command>` to see the help for that specified command.**\nExample: `:help :command`'
+        categoriesNote: ':information_source: Type `:help <category>` to get a list of commands in that category.\nExample: `:help %s` or `:help %s`'
+        categoriesTitle: ':scroll: Command Categories'
+        invalidCategory: 'Invalid command category given, there are no categories called `:category`'
+        invalidCommand: 'Invalid command given, there are no command that has the trigger `:trigger`'
+        tryingToViewSystemCommands: "You don't have permissions to run any of the commands in the `System` category, system commands can affect all the servers the bot is currently running on, and thus are limited to bot administrators/developers."
+        singularHiddenCategories: '_There is **%s** hidden category for this channel._'
+        multipleHiddenCategories: '_There is **%s** hidden categories for this channel._'
+        fields:
+            usage: 'Usage'
+            aliases: 'Aliases'
+            footer: 'Command category: '
+
+interaction:
+    BiteCommand: 'bites'
+    CuddleCommand: 'cuddles'
+    DivorceCommand: 'divorces'
+    EatCommand: 'eats some food with'
+    HelloCommand: 'says hello to'
+    HighFiveCommand: 'high fives'
+    HugCommand: 'hugs'
+    KillCommand: 'wants to kill'
+    KissCommand: 'kisses'
+    MeowCommand: 'meows at'
+    PanCommand: '**%s** just hit **%s** with a pan!'
+    PatCommand: 'pats'
+    PokeCommand: 'pokes'
+    PoutCommand: 'pouts at'
+    PunchCommand: 'punches'
+    SenpaiCommand: 'wants to be noticed by'
+    ShrugCommand: 'shrugs at'
+    SlapCommand: 'slaps'
+    TickleCommand: 'tickles'
+    TriggeredCommand: 'is triggered by'
+
+music:
+    internal:
+        songWasSkipped: '[:title](:url) requested by :author was skipped.'
+        nowPlayingSong: 'Now playing: [:title](:link)\n`:duration` - Requested by :requester'
+        nowPlayingPlaylist: 'The **:playlistName** playlist has been added to the queue with `:playlistSize` tracks!'
+        nowPlaying: 'Now playing: [:title](:link)\n`:duration` - Requested by :requester'
+        queueHasEnded: 'Queue has ended, leaving voice.'
+        noMatchFound: 'I found nothing with the given query: `%s`'
+        trackLoadFailed: "I couldn't add that to the queue: `%s`"
+
+    ClearQueueCommand:
+        error: 'Nothing to clear, request music first with `%splay`'
+        emptyQueue: 'Nothing to clear, there are no songs pending in the queue right now.'
+        success: 'I have removed **:queueSize** songs from the queue, the queue is now empty!'
+
+    MoveHereCommand:
+        error: 'Not connected to voice, request music first with `%splay`'
+        nowPlayingIn: 'I am now playing music in **:channelName**'
+
+    PauseCommand:
+        error: 'Nothing to pause, request music first with `%splay`'
+        alreadyPaused: 'The music is already paused, use `!resume` to resume the music.'
+        paused: 'The music has been `paused`'
+
+    PlayCommand:
+        addedSong: ':user has added [:title](:url) to the queue. There are `:queueSize` song(s) ahead of it in the queue.'
+        addedSongsFromPlaylist: ':user has added :songs songs from the [:title](:url) playlist to the queue. There are `:queueSize` song(s) ahead of it in the queue.'
+        session:
+            title: 'Results for %s'
+            footer: 'Chose a song with %s <number>'
+
+    PlaylistCommand:
+        noPlaylists: 'This server does not have any music playlists yet, you can create one with\n`:command` to get started'
+        noPlaylistWithName: 'There are no playlist called `:playlist`, you can create the playlist by using the\n`:command` command'
+        invalidProperty: 'Invalid `property` given, there are no playlist properties called `%s`.\nYou can learn more by running `%shelp %s`'
+        invalidFormat: 'Invalid format, missing the `:type` property!\n`:command`'
+        invalidIdGiven: 'Invalid id given, the number given is too :type\n`:command`'
+        invalidIdNumberGiven: 'Invalid id given, the id must be a number\n`:command`'
+        noMoreSongSlots: "The `:playlist` playlist doesn't have any more song slots."
+        noMorePlaylistSlots: "The server doesn't have any more playlist slots, you can delete existing playlists to free up slots."
+        failedToLoad: 'Failed to load: %s'
+        failedToSavePlaylist: 'Something went wrong while trying to save the playlist: %s'
+        noMatches: 'No Matches'
+        attemptingToAddLivestreamToPlaylist: "You can't add livestreams to a playlist!"
+        userHasAddedSong: ':user has added [:name](:url) to the `:playlist` playlist.\nThe `:playlist` playlist has `:slots` more song slots available.'
+        alreadyExists: 'The `:playlist` playlist already exists!'
+        onlyNumbersInName: "The playlist can't only be numbers, you have to include some letters in the name!"
+        renamingPlaylistAlreadyExists: "Can't rename the `:oldplaylist` to `:playlist`, there are already a playlist called `:playlist`"
+        playlistCreated: 'The `:playlist` playlist has been been created successfully!\nYou can start adding songs to it with `:command :playlist add <song>`'
+        playlistDeleted: 'The `:name` playlist has been deleted successfully!'
+        playlistRenamed: 'The `:oldplaylist` playlist has been renamed to `:playlist`!'
+        playlistIsEmpty: 'There are no songs in this playlist, you can add songs to it by using the\n`:command` command.'
+        playlistIsAlreadyEmpty: 'The `:playlist` playlist is already empty, there is nothing to remove.'
+        songHasBeenRemovedFromPlaylist: ':song has been successfully removed from the `:playlist` playlist'
+        playlistTitle: ':musical_note: Music Playlist %s'
+        playlistSize: '[ %s out of %s ]'
+        playlistLine: '%s\n       Playlist has **%s** song(s)'
+        playlistSongLine: '`%s` [%s](%s) [%s]'
+
+    RemoveSongFromQueueCommand:
+        error: 'Missing argument `song id`, you must include the ID of the song you want to remove from the queue.'
+        failedToRemoveSong: 'Something went wrong, failed to remove song at index `:index`'
+        tooHighNumberGiven: 'There are only `%s` songs in the queue, try lowering your number a bit.'
+        mustBePositiveNumber: 'The `song id` must be a valid positive number.'
+        nothingToRemove: 'Nothing to remove, request music first with `%splay`'
+        success: ':song has been successfully removed from the music queue.'
+
+    RepeatMusicQueueCommand:
+        error: 'There is nothing to repeat, request music first with `%splay`'
+        success: 'Music queue looping has been turned `:status`.'
+        enabled: 'ON'
+        disabled: 'OFF'
+
+    ResumeCommand:
+        error: 'Nothing to resume, request music first with `%splay`'
+        alreadyPlaying: 'The music is already playing, use `:prefixpause` to pause the music first.'
+        resume: 'The music has been `resumed`'
+
+    SeekCommand:
+        error: 'Nothing is playing right now, request something with `%splay` first.'
+        invalidTimeGiven: 'The `number` argument must be a valid time format that is at least 0 or more seconds long.'
+        seekingLive: 'You can not jump to a different time code for livestreams.'
+        seekingTooFar: '`%s` is more than the length of the current song playing, if you want to skip to the next song use `%sskip` instead.'
+        seekTo: 'Seeking **:title** to `:time`'
+
+    ShuffleCommand:
+        error: 'The music queue is already empty, you can request something with\n`%splay <song title | url>`'
+        success: '**:amount** songs has been shuffled in the music queue.'
+
+    SkipCommand:
+        error: 'Nothing to skip, request music first with `%splay`'
+
+    SongCommand:
+        error: 'Nothing to display, request music first with `%splay`'
+        paused: 'Currently Paused'
+        playing: 'Currently Playing'
+        songsInQueue: 'Songs in Queue'
+        moreSongs: 'You can see more songs by using %s <page>'
+        noSongs: 'There are no other songs in the queue right now'
+        andXMoreSongs: '_And **%s** more song%s!_'
+        formats:
+            line: '**%s** [%s](%s)'
+            song: '[%s](%s)\nPlaying at `%s` volume with `%s` left of the song - Requested by <@%s>'
+            stream: '[%s](%s)\nPlaying at `%s` volume, the stream is `%s` - Requested by <@%s>'
+
+    StopCommand:
+        error: "Nothing is playing right now, you can't stop the music when nothing is playing."
+        success: 'The player has stopped, and **:number** songs has been removed from the queue.'
+
+    VolumeCommand:
+        error: 'Nothing is playing, request music first with `%splay`'
+        requireDJRole: 'The `DJ` role is required to change the volume!'
+        invalidVolume: 'Invalid volume given, the volume must be a valid number between 1 and 100.'
+        nowPlaying: ':musical_note: Music is playing at **:volume** volume'
+        setTo: ':musical_note: Volume set to **:volume** volume'
+
+    VoteSkipCommand:
+        error: 'Nothing to skip, request music first with `%splay`'
+        registered: 'Your vote has been registered! `:votes` more votes needed to skip the song.'
+        alreadyVoted: 'You can only vote skip once per song! `:votes` more votes needed to skip the song.'
+
+search:
+    DuckDuckGoCommand:
+        searchResults: 'Search result for: %s'
+        noResults: 'I found nothing for `:query`'
+        seeAlso: '**See also**'
+        nsfwStatus:
+            enabled: 'NSFW Search is enabled'
+            disabled: 'NSFW Search is disabled'
+
+    GfycatCommand:
+        noResults: "I couldn't find any gif matching your query: `:query`"
+
+    UrbanDictionaryCommand:
+        noResults: ':user I found nothing for `:query`'
+        untitled: 'Untitled'
+        example: 'Example'
+        results: ':percentage percentage of people like this. :up👍 :down👎'
+
+    XKCDCommand:
+        number: 'XKCD number #%s'
+
+utility:
+    CalculateCommand:
+        boolean:
+            true: 'True'
+            false: 'False'
+        eastereggs:
+            quickMaths: '	-	Quick maths!'
+            binary: "There are only 10 types of people in the world, those who understand binary and those who don't."
+
+    ChannelIdCommand:
+        message: ':user :id: of the :channel channel is `:targetChannel`'
+
+    ChannelInfoCommand:
+        fields:
+            id: 'ID'
+            position: 'Position'
+            users: 'Users'
+            category: 'Category'
+            bitRate: 'Bit Rate'
+            nsfw: 'NSFW'
+            createdAt: 'Created At'
+        noTopic: '*No topic has been set for this channel*'
+        timeFormat: 'EEE, dd MMM yyyy HH:mm'
+
+    ExpandUrlCommand:
+        noRedirect: ":url doesn't redirect anywhere."
+        redirects: '%s redirects to %s'
+        jumps: '**The link jumps through the following sites:**'
+
+    FeedbackCommand:
+        success: 'Successfully sent feedback <:tickYes:319985232306765825>'
+        failedToSend: 'Failed to send feedback message: :error'
+
+    GlobalLeaderboardCommand:
+        noData: 'There are no leaderboard data right now, try again later.'
+        line: '`:num` **:username** is level **:level** with **:experience** xp.'
+        title: 'Global Experience Leaderboard'
+
+    InviteCommand:
+        message: 'You can invite me to your server by [clicking here](:oauth) or use the link below:'
+
+    IPInfoCommand:
+        hostname: 'Hostname'
+        organisation: 'Organisation'
+        country: 'Country'
+
+    LeaderboardCommand:
+        noData: 'There are no leaderboard data right now, try again later.'
+        line: '`:num` **:username** is level **:level** with **:experience** xp.'
+        title: '%s Leaderboard'
+
+    PingCommand:
+        message: 'Pong! Time taken :ping ms (:rating) Websocket heartbeat :heartbeat ms'
+        rating:
+            10: 'faster than Sonic! :smiley_cat:'
+            100: 'great! :smiley:'
+            200: 'nice! :slight_smile:'
+            300: 'decent. :neutral_face:'
+            400: 'average... :confused:'
+            500: 'slightly slow. :slight_frown:'
+            600: 'kinda slow.. :frowning2:'
+            700: 'slow.. :worried:'
+            800: 'too slow. :disappointed:'
+            900: 'bad. :sob: (helpme)'
+            1600: '#BlameDiscord. :angry:'
+            10000: 'this makes no sense :thinking: #BlameAlexis'
+            other: 'slow af. :dizzy_face:'
+
+    RankCommand:
+        botsCannotReceiveXp: "Bots cannot receive xp and therefore can't be ranked, try and tag a user instead."
+        unranked: 'Unranked'
+        fields:
+            rank: 'Rank'
+            level: 'Level'
+            experience: 'Experience'
+
+    ServerIdCommand:
+        message: ':user :id: of this server is `:guildid`'
+
+    ServerInfoCommand:
+        fields:
+            id: 'ID'
+            owner: 'Owner'
+            textChannels: 'Text Channels'
+            voiceChannels: 'Voice Channels'
+            members: 'Members'
+            roles: 'Roles'
+            region: 'Region'
+            createdAt: 'Created At'
+            emojis: 'Custom Emojis (%s)'
+        timeFormat: 'EEE, dd MMM yyyy HH:mm'
+
+    ShardCommand:
+        allShards: 'All Shards'
+        totalShards: 'Total Shards'
+
+    SourceCommand:
+        noArgs: 'AvaIre source code:'
+        command: 'AvaIre source code for the **:command** command:'
+        invalidCommand: 'Invalid command given, here is the full source code instead.'
+        externalCommand: "The command is registered via an external plugin, the author of the plugin haven't made the source of the command public, or they forgot to add a link to it, here is the full source code for the bot instead."
+
+    StatsCommand:
+        title: 'Official Bot Server Invite'
+        footer: 'Currently playing in %s servers with %s songs in the queue.'
+        latestChanges: 'Latest changes:'
+        formats:
+            database: '%s (%s per min)'
+            messages: '%s (%s per sec)'
+            memory: '%sMb / %sMb'
+        fields:
+            author: 'Author'
+            botId: 'Bot ID'
+            library: 'Library'
+            database: 'DB Queries ran'
+            messages: 'Messages Received'
+            shard: 'Shard'
+            commands: 'Commands Ran'
+            memory: 'Memory Usage'
+            uptime: 'Uptime'
+            members: 'Members'
+            channels: 'Channels'
+            servers: 'Servers'
+
+    UptimeCommand:
+        message: 'I have been online for :time'
+        footer: 'Started %s at %s'
+        dateFormat: 'EEEEEEEE, dd MMM yyyy'
+        timeFormat: 'HH:mm:ss z'
+
+    UserIdCommand:
+        message: ':id: of the user **:target** is `:targetid`'
+
+    UserInfoCommand:
+        fields:
+            username: 'Username'
+            userId: 'User ID'
+            joinedServer: 'Joined Server'
+            joinedDiscord: 'Joined Discord'
+            roles: 'Roles (%s)'
+            servers: 'Servers'
+        inServers: '%s the bot knows about'
+        noRoles: '*This user is not in any roles*'
+        timeFormat: 'EEE, dd MMM yyyy HH:mm'
+
+    VersionCommand:
+        current: 'I am currently `:difference` :type versions behind!'
+        getLatest: 'You can get the latest version of me on github at [avaire/avaire](https://github.com/avaire/avaire)'
+        usingLatest: "You're using the latest version of AvaIre!"
+        latestVersion: 'The latest version of AvaIre is v%s'
+        versions:
+            majorName: 'Major'
+            major: 'Major version updates are total reworks of the bot and how it works or a large compilation of minor changes to the source code, it is highly recommended that you update on major version changes since older versions will not be supported for bug fixes or updates.'
+            minorName: 'Minor'
+            minor: 'Minor version updates are new additions, features and reworks of the existing codebase, it is recommended that you update on minor version changes to keep up with the new features.'
+            patchName: 'Patch'
+            patch: 'Patch version updates are bug fixes, refactoring of existing code and very minor changes that wont affect other things in the code base, it is recommended that you update on patch version changes to keep up with the bug fixes and patches.'

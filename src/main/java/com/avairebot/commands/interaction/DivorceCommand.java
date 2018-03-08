@@ -10,7 +10,7 @@ import java.util.List;
 public class DivorceCommand extends InteractionCommand {
 
     public DivorceCommand(AvaIre avaire) {
-        super(avaire, "divorces");
+        super(avaire);
     }
 
     @Override

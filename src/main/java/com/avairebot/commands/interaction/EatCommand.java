@@ -9,7 +9,7 @@ import java.util.List;
 public class EatCommand extends InteractionCommand {
 
     public EatCommand(AvaIre avaire) {
-        super(avaire, "eats some food with");
+        super(avaire);
     }
 
     @Override

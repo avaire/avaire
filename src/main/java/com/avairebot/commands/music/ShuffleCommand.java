@@ -48,7 +48,7 @@ public class ShuffleCommand extends Command {
         GuildMusicManager musicManager = AudioHandler.getGuildAudioPlayer(context.getGuild());
 
         if (musicManager.getScheduler().getQueue().isEmpty()) {
-            return sendErrorMessage(context, "The music queue is already empty, you can request something with \n`%splay <song title | url>`",
+            return sendErrorMessage(context, context.i18n("error"),
                 generateCommandPrefix(context.getMessage())
             );
         }
@@ -59,7 +59,7 @@ public class ShuffleCommand extends Command {
         Collections.shuffle(queue);
         musicManager.getScheduler().getQueue().addAll(queue);
 
-        context.makeSuccess("**:amount** songs has been shuffled in the music queue.")
+        context.makeSuccess(context.i18n("success"))
             .set("amount", NumberUtil.formatNicely(queue.size()))
             .queue(message -> message.delete().queueAfter(5, TimeUnit.MINUTES));
 

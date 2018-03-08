@@ -9,7 +9,7 @@ import java.util.List;
 public class TickleCommand extends InteractionCommand {
 
     public TickleCommand(AvaIre avaire) {
-        super(avaire, "tickles");
+        super(avaire);
     }
 
     @Override

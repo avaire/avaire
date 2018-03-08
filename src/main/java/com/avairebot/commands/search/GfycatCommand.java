@@ -52,7 +52,7 @@ public class GfycatCommand extends Command {
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
         if (args.length == 0) {
-            return sendErrorMessage(context, "Missing arguments `queue`");
+            return sendErrorMessage(context, "missingArgument", "queue");
         }
 
         RequestFactory.makeGET("https://api.gfycat.com/v1test/gfycats/search")
@@ -63,7 +63,7 @@ public class GfycatCommand extends Command {
 
                 Map<String, Object> gfycatsItem = gfyCat.getRandomGfycatsItem();
                 if (gfycatsItem == null) {
-                    context.makeError("I couldn't find any gif matching your query: `:query`")
+                    context.makeError(context.i18n("noResults"))
                         .set("query", String.join(" ", args))
                         .queue();
 

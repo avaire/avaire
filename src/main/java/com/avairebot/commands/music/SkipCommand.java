@@ -51,16 +51,19 @@ public class SkipCommand extends Command {
         GuildMusicManager musicManager = AudioHandler.getGuildAudioPlayer(context.getGuild());
 
         if (musicManager.getPlayer().getPlayingTrack() == null) {
-            return sendErrorMessage(context, "Nothing to skip, request music first with `!play`");
+            return sendErrorMessage(context,
+                context.i18n("error"),
+                generateCommandPrefix(context.getMessage())
+            );
         }
 
         if (!musicManager.getScheduler().getQueue().isEmpty()) {
-            AudioHandler.skipTrack(context.getMessage());
+            AudioHandler.skipTrack(context);
             return true;
         }
 
         musicManager.getPlayer().stopTrack();
-        musicManager.getScheduler().handleEndOfQueue(context.getMessage(), true);
+        musicManager.getScheduler().handleEndOfQueue(context, true);
 
         return true;
     }

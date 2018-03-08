@@ -8,13 +8,11 @@ import com.avairebot.audio.VoiceConnectStatus;
 import com.avairebot.commands.CommandHandler;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
-import com.avairebot.factories.MessageFactory;
 import com.avairebot.metrics.Metrics;
 import com.avairebot.utilities.NumberUtil;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import net.dv8tion.jda.core.Permission;
-import net.dv8tion.jda.core.entities.Message;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -69,9 +67,7 @@ public class PlayCommand extends Command {
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
         if (args.length == 0) {
-            return sendErrorMessage(context,
-                "Missing music `query`, you must include a link to the song you want to listen to, or at least give me a song title!"
-            );
+            return sendErrorMessage(context, "missingMusicQueue");
         }
 
         boolean shouldLeaveMessage = false;
@@ -80,58 +76,56 @@ public class PlayCommand extends Command {
             args = Arrays.copyOfRange(args, 0, args.length - 1);
         }
 
-        VoiceConnectStatus voiceConnectStatus = AudioHandler.connectToVoiceChannel(context.getMessage());
+        VoiceConnectStatus voiceConnectStatus = AudioHandler.connectToVoiceChannel(context);
         if (!voiceConnectStatus.isSuccess()) {
             context.makeWarning(voiceConnectStatus.getErrorMessage()).queue();
             return false;
         }
 
-        if (AudioHandler.hasAudioSession(context.getMessage()) && NumberUtil.isNumeric(args[0])) {
-            return loadSongFromSession(context.getMessage(), args);
+        if (AudioHandler.hasAudioSession(context) && NumberUtil.isNumeric(args[0])) {
+            return loadSongFromSession(context, args);
         }
 
         boolean finalShouldLeaveMessage = shouldLeaveMessage;
 
-        AudioHandler.loadAndPlay(context.getMessage(), buildTrackRequestString(args)).handle(
-            musicSuccess(context.getMessage(), finalShouldLeaveMessage),
-            musicFailure(context.getMessage()),
-            musicSession(context.getMessage(), args)
+        AudioHandler.loadAndPlay(context, buildTrackRequestString(args)).handle(
+            musicSuccess(context, finalShouldLeaveMessage),
+            musicFailure(context),
+            musicSession(context, args)
         );
 
         return true;
     }
 
-    boolean loadSongFromSession(Message message, String[] args) {
+    boolean loadSongFromSession(CommandMessage context, String[] args) {
         int songIndex = NumberUtil.parseInt(args[0], 1) - 1;
-        AudioSession session = AudioHandler.getAudioSession(message);
+        AudioSession session = AudioHandler.getAudioSession(context);
 
         int index = NumberUtil.getBetween(songIndex, 0, session.getSongs().getTracks().size() - 1);
         AudioTrack track = session.getSongs().getTracks().get(index);
 
         Metrics.tracksLoaded.inc();
 
-        musicSuccess(message, false).accept(
-            new TrackResponse(AudioHandler.getGuildAudioPlayer(message.getGuild()),
+        musicSuccess(context, false).accept(
+            new TrackResponse(AudioHandler.getGuildAudioPlayer(context.getGuild()),
                 track,
                 track.getInfo().uri
             )
         );
-        AudioHandler.play(message, AudioHandler.getGuildAudioPlayer(message.getGuild()), track);
+        AudioHandler.play(context, AudioHandler.getGuildAudioPlayer(context.getGuild()), track);
 
         if (session.getMessage() != null) {
             session.getMessage().delete().queue();
         }
 
-        AudioHandler.removeAudioSession(message);
+        AudioHandler.removeAudioSession(context);
         return false;
     }
 
-    private void sendPlaylistResponse(Message message, TrackResponse response) {
+    private void sendPlaylistResponse(CommandMessage context, TrackResponse response) {
         AudioPlaylist playlist = (AudioPlaylist) response.getAudioItem();
 
-        MessageFactory.makeSuccess(message,
-            ":user has added :songs songs from the [:title](:url) playlist to the queue. There are `:queueSize` song(s) ahead of it in the queue."
-        )
+        context.makeSuccess(context.i18n("addedSongsFromPlaylist"))
             .set("songs", NumberUtil.formatNicely(playlist.getTracks().size()))
             .set("title", playlist.getName())
             .set("url", response.getTrackUrl())
@@ -141,12 +135,10 @@ public class PlayCommand extends Command {
             .queue();
     }
 
-    private void sendTrackResponse(Message message, TrackResponse response) {
+    private void sendTrackResponse(CommandMessage context, TrackResponse response) {
         AudioTrack track = (AudioTrack) response.getAudioItem();
 
-        MessageFactory.makeSuccess(message,
-            ":user has added [:title](:url) to the queue. There are `:queueSize` song(s) ahead of it in the queue."
-        )
+        context.makeSuccess(context.i18n("addedSong"))
             .set("title", track.getInfo().title)
             .set("url", track.getInfo().uri)
             .set("queueSize", NumberUtil.formatNicely(
@@ -171,10 +163,10 @@ public class PlayCommand extends Command {
         }
     }
 
-    private Consumer<TrackResponse> musicSuccess(final Message message, final boolean finalShouldLeaveMessage) {
+    private Consumer<TrackResponse> musicSuccess(final CommandMessage context, final boolean finalShouldLeaveMessage) {
         return (TrackResponse response) -> {
-            if (!finalShouldLeaveMessage && canDeleteMessage(message)) {
-                message.delete().reason("Song request, removing song to cleanup chat").queue(null, null);
+            if (!finalShouldLeaveMessage && canDeleteMessage(context)) {
+                context.delete().reason("Song request, removing song to cleanup chat").queue(null, null);
             }
 
             if (response.getMusicManager().getPlayer().isPaused()) {
@@ -182,23 +174,23 @@ public class PlayCommand extends Command {
             }
 
             if (response.getMusicManager().getPlayer().getPlayingTrack() != null) {
-                if (response.isPlaylist()) sendPlaylistResponse(message, response);
-                else sendTrackResponse(message, response);
+                if (response.isPlaylist()) sendPlaylistResponse(context, response);
+                else sendTrackResponse(context, response);
             }
         };
     }
 
-    private boolean canDeleteMessage(Message message) {
-        return message.getGuild().getSelfMember().hasPermission(Permission.MESSAGE_MANAGE)
-            && message.getGuild().getSelfMember().hasPermission(message.getTextChannel(), Permission.MESSAGE_MANAGE);
+    private boolean canDeleteMessage(CommandMessage context) {
+        return context.getGuild().getSelfMember().hasPermission(Permission.MESSAGE_MANAGE)
+            && context.getGuild().getSelfMember().hasPermission(context.getChannel(), Permission.MESSAGE_MANAGE);
     }
 
-    private Consumer<Throwable> musicFailure(final Message message) {
-        return throwable -> MessageFactory.makeError(message, throwable.getMessage()).queue();
+    private Consumer<Throwable> musicFailure(final CommandMessage context) {
+        return throwable -> context.makeError(throwable.getMessage()).queue();
     }
 
     @SuppressWarnings("ConstantConditions")
-    private Consumer<AudioSession> musicSession(final Message message, final String[] args) {
+    private Consumer<AudioSession> musicSession(final CommandMessage context, final String[] args) {
         return (AudioSession audioSession) -> {
             List<String> songs = new ArrayList<>();
             List<AudioTrack> tracks = audioSession.getSongs().getTracks();
@@ -214,15 +206,21 @@ public class PlayCommand extends Command {
                 ));
             }
 
-            String command = generateCommandTrigger(message);
+            String command = generateCommandTrigger(context.getMessage());
             if (args[0].startsWith("scsearch:")) {
                 command = CommandHandler.getCommand(SoundcloudCommand.class)
-                    .getCommand().generateCommandTrigger(message);
+                    .getCommand().generateCommandTrigger(context.getMessage());
             }
 
-            MessageFactory.makeSuccess(message, String.join("\n", songs))
-                .setTitle("Results for " + String.join(" ", args))
-                .setFooter(String.format("Chose a song with %s <number>", command))
+            context.makeSuccess(String.join("\n", songs))
+                .setTitle(String.format(
+                    context.i18n("session.title"),
+                    String.join(" ", args)
+                ))
+                .setFooter(String.format(
+                    context.i18n("session.footer"),
+                    command
+                ))
                 .queue(audioSession::setMessage);
         };
     }

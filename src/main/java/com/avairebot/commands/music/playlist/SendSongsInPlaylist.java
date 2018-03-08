@@ -21,7 +21,7 @@ public class SendSongsInPlaylist extends PlaylistSubCommand {
     @Override
     public boolean onCommand(CommandMessage context, String[] args, GuildTransformer guild, PlaylistTransformer playlist) {
         if (playlist.getSongs().isEmpty()) {
-            context.makeWarning("There are no songs in this playlist, you can add songs to it by using the\n`:command` command.")
+            context.makeWarning(context.i18n("playlistIsEmpty"))
                 .set("command", command.generateCommandTrigger(context.getMessage()) + " add <song url>")
                 .queue();
 
@@ -37,7 +37,8 @@ public class SendSongsInPlaylist extends PlaylistSubCommand {
         paginator.forEach((index, key, val) -> {
             PlaylistTransformer.PlaylistSong song = (PlaylistTransformer.PlaylistSong) val;
 
-            messages.add(String.format("`%s` [%s](%s) [%s]",
+            messages.add(String.format(
+                context.i18n("playlistSongLine"),
                 index + 1,
                 song.getTitle(),
                 song.getLink(),

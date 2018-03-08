@@ -10,7 +10,7 @@ import java.util.List;
 public class TriggeredCommand extends InteractionCommand {
 
     public TriggeredCommand(AvaIre avaire) {
-        super(avaire, "is triggered by");
+        super(avaire);
     }
 
     @Override

@@ -19,9 +19,9 @@ import com.avairebot.database.transformers.PlaylistTransformer;
 import com.avairebot.exceptions.InvalidApplicationEnvironmentException;
 import com.avairebot.exceptions.InvalidPluginException;
 import com.avairebot.exceptions.InvalidPluginsPathException;
-import com.avairebot.factories.MessageFactory;
 import com.avairebot.handlers.GenericEventHandler;
 import com.avairebot.handlers.MainEventHandler;
+import com.avairebot.language.I18n;
 import com.avairebot.metrics.Metrics;
 import com.avairebot.plugin.PluginLoader;
 import com.avairebot.plugin.PluginManager;
@@ -213,6 +213,9 @@ public class AvaIre {
         LOGGER.info("Preparing Lavalink");
         LavalinkManager.LavalinkManagerHolder.LAVALINK.start(this);
 
+        LOGGER.info("Preparing I18n");
+        I18n.start(this);
+
         LOGGER.info("Creating bot instance and connecting to Discord network");
 
         shardEntityCounter = new ShardEntityCounter(this);
@@ -308,7 +311,7 @@ public class AvaIre {
         long waitFor = 1000;
         for (GuildMusicManager manager : AudioHandler.MUSIC_MANAGER.values()) {
             if (manager.getLastActiveMessage() != null) {
-                MessageFactory.makeInfo(manager.getLastActiveMessage(),
+                manager.getLastActiveMessage().makeInfo(
                     "Bot is restarting, sorry for the inconvenience, we'll be right back!"
                 ).queue();
 

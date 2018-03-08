@@ -10,7 +10,7 @@ import java.util.List;
 public class SenpaiCommand extends InteractionCommand {
 
     public SenpaiCommand(AvaIre avaire) {
-        super(avaire, "notice me");
+        super(avaire);
     }
 
     @Override

@@ -1,6 +1,6 @@
 package com.avairebot.audio;
 
-import com.avairebot.factories.MessageFactory;
+import com.avairebot.commands.CommandMessage;
 import com.avairebot.utilities.NumberUtil;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
@@ -9,7 +9,6 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
 import lavalink.client.player.IPlayer;
 import lavalink.client.player.LavalinkPlayer;
 import lavalink.client.player.event.AudioEventAdapterWrapped;
-import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.User;
 
 import java.util.concurrent.*;
@@ -85,12 +84,13 @@ public class TrackScheduler extends AudioEventAdapterWrapped {
             player.playTrack(track);
             audioTrackContainer = container;
 
-            String message = "Now playing: [:title](:link)\n`:duration` - Requested by :requester";
+            String message = manager.getLastActiveMessage().i18nRaw("music.internal.nowPlayingSong");
             if (playlist.getName() != null) {
-                message = "The **:playlistName** playlist has been added to the queue with `:playlistSize` tracks!\n" + message;
+                message = manager.getLastActiveMessage().i18nRaw("music.internal.nowPlayingPlaylist")
+                    + "\n" + message;
             }
 
-            MessageFactory.makeSuccess(manager.getLastActiveMessage(), message)
+            manager.getLastActiveMessage().makeSuccess(message)
                 .set("title", container.getAudioTrack().getInfo().title)
                 .set("link", container.getAudioTrack().getInfo().uri)
                 .set("playlistSize", NumberUtil.formatNicely(playlist.getTracks().size()))
@@ -164,7 +164,9 @@ public class TrackScheduler extends AudioEventAdapterWrapped {
     }
 
     private void sendNowPlaying(AudioTrackContainer container) {
-        MessageFactory.makeSuccess(manager.getLastActiveMessage(), "Now playing: [:title](:link)\n`:duration` - Requested by :requester")
+        manager.getLastActiveMessage().makeSuccess(
+            manager.getLastActiveMessage().i18nRaw("music.internal.nowPlaying")
+        )
             .set("title", container.getAudioTrack().getInfo().title)
             .set("link", container.getAudioTrack().getInfo().uri)
             .set("duration", container.getFormattedDuration())
@@ -172,17 +174,18 @@ public class TrackScheduler extends AudioEventAdapterWrapped {
             .queue();
     }
 
-    public void handleEndOfQueue(Message message, boolean sendEndOfQueue) {
-        if (sendEndOfQueue && AudioHandler.MUSIC_MANAGER.containsKey(message.getGuild().getIdLong())) {
-            MessageFactory.makeSuccess(message, "Queue has ended, leaving voice.").queue(queueMessage -> {
-                queueMessage.delete().queueAfter(45, TimeUnit.SECONDS);
-            });
+    public void handleEndOfQueue(CommandMessage context, boolean sendEndOfQueue) {
+        if (sendEndOfQueue && AudioHandler.MUSIC_MANAGER.containsKey(context.getGuild().getIdLong())) {
+            context.makeSuccess(context.i18nRaw("music.internal.queueHasEnded"))
+                .queue(queueMessage -> {
+                    queueMessage.delete().queueAfter(45, TimeUnit.SECONDS);
+                });
         }
 
-        LavalinkManager.LavalinkManagerHolder.LAVALINK.closeConnection(message.getGuild());
+        LavalinkManager.LavalinkManagerHolder.LAVALINK.closeConnection(context.getGuild());
 
         if (LavalinkManager.LavalinkManagerHolder.LAVALINK.isEnabled()) {
-            GuildMusicManager manager = AudioHandler.MUSIC_MANAGER.get(message.getGuild().getIdLong());
+            GuildMusicManager manager = AudioHandler.MUSIC_MANAGER.get(context.getGuild().getIdLong());
             manager.getPlayer().removeListener(this);
 
             if (manager.getPlayer() instanceof LavalinkPlayer) {
@@ -191,7 +194,7 @@ public class TrackScheduler extends AudioEventAdapterWrapped {
         }
 
         AudioHandler.MUSIC_MANAGER.remove(
-            message.getGuild().getIdLong()
+            context.getGuild().getIdLong()
         );
     }
 

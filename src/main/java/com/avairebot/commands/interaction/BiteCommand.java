@@ -9,7 +9,7 @@ import java.util.List;
 public class BiteCommand extends InteractionCommand {
 
     public BiteCommand(AvaIre avaire) {
-        super(avaire, "bites");
+        super(avaire);
     }
 
     @Override

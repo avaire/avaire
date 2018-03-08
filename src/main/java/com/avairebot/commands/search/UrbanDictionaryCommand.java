@@ -58,7 +58,7 @@ public class UrbanDictionaryCommand extends Command {
                 UrbanDictionaryService service = (UrbanDictionaryService) response.toService(UrbanDictionaryService.class);
 
                 if (!service.hasData()) {
-                    context.makeWarning(":user I found nothing for `:query`")
+                    context.makeWarning(context.i18n("noResults"))
                         .set("query", String.join(" ", args))
                         .queue();
                     return;
@@ -71,13 +71,18 @@ public class UrbanDictionaryCommand extends Command {
                 double percentage = (thumbsUp / (thumbsUp + thumbsDown)) * 100;
 
                 context.makeEmbeddedMessage(Color.decode("#1D2439"), definition.getDefinition())
-                    .setTitle(definition.getWord().trim().length() == 0 ? "Untitled" : definition.getWord(), definition.getPermalink())
-                    .addField("Example", definition.getExample(), false)
-                    .setFooter(String.format("%s%s percentage of people like this. %s\uD83D\uDC4D %s\uD83D\uDC4E",
-                        new DecimalFormat("#.##").format(percentage), "%",
-                        definition.getThumbsUp(),
-                        definition.getThumbsDown()
-                    )).queue();
+                    .setTitle(
+                        definition.getWord().trim().length() == 0
+                            ? context.i18n("untitled") : definition.getWord(),
+                        definition.getPermalink()
+                    )
+                    .addField(context.i18n("example"), definition.getExample(), false)
+                    .setFooter(
+                        context.i18n("results")
+                            .replace(":percentage", new DecimalFormat("#.##").format(percentage) + "%")
+                            .replace(":up", "" + definition.getThumbsUp())
+                            .replace(":down", "" + definition.getThumbsDown())
+                    ).queue();
             });
         return true;
     }

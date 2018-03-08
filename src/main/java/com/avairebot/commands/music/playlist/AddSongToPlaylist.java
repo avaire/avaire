@@ -10,14 +10,12 @@ import com.avairebot.contracts.commands.playlist.PlaylistSubCommand;
 import com.avairebot.database.controllers.PlaylistController;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.database.transformers.PlaylistTransformer;
-import com.avairebot.factories.MessageFactory;
 import com.avairebot.metrics.Metrics;
 import com.avairebot.utilities.NumberUtil;
 import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
-import net.dv8tion.jda.core.entities.Message;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -35,15 +33,16 @@ public class AddSongToPlaylist extends PlaylistSubCommand {
         String query = String.join(" ", Arrays.copyOfRange(args, 2, args.length));
 
         if (query.trim().length() == 0) {
-            context.makeWarning("Invalid format, missing the `song` property!\n`:command`")
+            context.makeWarning(context.i18n("invalidFormat"))
                 .set("command", command.generateCommandTrigger(context.getMessage()) + " " + playlist.getName() + " add <song title / link>")
+                .set("type", "song")
                 .queue();
 
             return false;
         }
 
         if (playlist.getSongs().size() >= guild.getType().getLimits().getPlaylist().getSongs()) {
-            context.makeWarning("The `:playlist` playlist doesn't have any more song slots.")
+            context.makeWarning(context.i18n("noMoreSongSlots"))
                 .set("playlist", playlist.getName())
                 .queue();
 
@@ -69,7 +68,7 @@ public class AddSongToPlaylist extends PlaylistSubCommand {
             public void trackLoaded(AudioTrack track) {
                 Metrics.tracksLoaded.inc();
 
-                handleTrackLoadedEvent(context.getMessage(), guild, playlist, track);
+                handleTrackLoadedEvent(context, guild, playlist, track);
             }
 
             @Override
@@ -80,20 +79,23 @@ public class AddSongToPlaylist extends PlaylistSubCommand {
             @Override
             public void noMatches() {
                 Metrics.trackLoadsFailed.inc();
-                context.makeWarning("No Matches").queue();
+                context.makeWarning(context.i18n("noMatches")).queue();
             }
 
             @Override
             public void loadFailed(FriendlyException e) {
                 Metrics.trackLoadsFailed.inc();
-                context.makeWarning("Failed to load: " + e.getMessage()).queue();
+                context.makeWarning(String.format(
+                    context.i18n("failedToLoad"),
+                    e.getMessage()
+                )).queue();
             }
         });
     }
 
-    private void handleTrackLoadedEvent(Message message, GuildTransformer guild, PlaylistTransformer playlist, AudioTrack track) {
+    private void handleTrackLoadedEvent(CommandMessage context, GuildTransformer guild, PlaylistTransformer playlist, AudioTrack track) {
         if (track.getInfo().isStream) {
-            MessageFactory.makeWarning(message, "You can't add livestreams to a playlist!").queue();
+            context.makeWarning(context.i18n("attemptingToAddLivestreamToPlaylist")).queue();
             return;
         }
 
@@ -105,16 +107,16 @@ public class AddSongToPlaylist extends PlaylistSubCommand {
 
         try {
             avaire.getDatabase().newQueryBuilder(Constants.MUSIC_PLAYLIST_TABLE_NAME)
-                .where("id", playlist.getId()).andWhere("guild_id", message.getGuild().getId())
+                .where("id", playlist.getId()).andWhere("guild_id", context.getGuild().getId())
                 .update(statement -> {
                     statement.set("songs", AvaIre.GSON.toJson(playlist.getSongs()), true);
-                    statement.set("amount", playlist.getSize());
+                    statement.set("amount", playlist.getSongs().size());
                 });
 
             avaire.getCache().getAdapter(CacheType.MEMORY)
-                .forget(PlaylistController.getCacheString(message.getGuild()));
+                .forget(PlaylistController.getCacheString(context.getGuild()));
 
-            MessageFactory.makeSuccess(message, ":user has added [:name](:url) to the `:playlist` playlist.\nThe `:playlist` playlist has `:slots` more song slots available.")
+            context.makeSuccess(context.i18n("userHasAddedSong"))
                 .set("name", track.getInfo().title)
                 .set("url", track.getInfo().uri)
                 .set("playlist", playlist.getName())
@@ -123,7 +125,10 @@ public class AddSongToPlaylist extends PlaylistSubCommand {
         } catch (SQLException e) {
             e.printStackTrace();
 
-            MessageFactory.makeError(message, "Something went wrong while trying to save the playlist: " + e.getMessage()).queue();
+            context.makeError(String.format(
+                context.i18n("failedToSavePlaylist"),
+                e.getMessage()
+            )).queue();
         }
     }
 }

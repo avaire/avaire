@@ -27,7 +27,7 @@ public class RemoveSongFromPlaylist extends PlaylistSubCommand {
         try {
             int id = Integer.parseInt(args[2], 10) - 1;
             if (id < 0 || id >= playlist.getSongs().size()) {
-                context.makeWarning("Invalid id given, the number given is too :type\n`:command`")
+                context.makeWarning(context.i18n("invalidIdGiven"))
                     .set("command", command.generateCommandTrigger(context.getMessage()) + " " + playlist.getName() + " removesong <song id>")
                     .set("type", id < 0 ? "low" : "high")
                     .queue();
@@ -47,14 +47,14 @@ public class RemoveSongFromPlaylist extends PlaylistSubCommand {
             avaire.getCache().getAdapter(CacheType.MEMORY)
                 .forget(PlaylistController.getCacheString(context.getGuild()));
 
-            context.makeSuccess(":song has been successfully removed from the `:playlist` playlist")
+            context.makeSuccess(context.i18n("songHasBeenRemovedFromPlaylist"))
                 .set("song", String.format("[%s](%s)", removed.getTitle(), removed.getLink()))
                 .set("playlist", playlist.getName())
                 .queue();
 
             return true;
         } catch (NumberFormatException e) {
-            context.makeWarning("Invalid id given, the id must be a number\n`:command`")
+            context.makeWarning(context.i18n("invalidIdNumberGiven"))
                 .set("command", command.generateCommandTrigger(context.getMessage()) + " " + playlist.getName() + " removesong <song id>")
                 .queue();
         } catch (SQLException e) {
@@ -66,15 +66,16 @@ public class RemoveSongFromPlaylist extends PlaylistSubCommand {
 
     private boolean isValidRequest(CommandMessage context, String[] args, PlaylistTransformer playlist) {
         if (args.length < 3) {
-            context.makeWarning("Invalid format, missing the `song id` property!\n`:command`")
+            context.makeWarning(context.i18n("invalidFormat"))
                 .set("command", command.generateCommandTrigger(context.getMessage()) + " " + playlist.getName() + " removesong <song id>")
+                .set("type", "song id")
                 .queue();
 
             return false;
         }
 
         if (playlist.getSongs().isEmpty()) {
-            context.makeWarning("The `:playlist` playlist is already empty, there is nothing to remove.")
+            context.makeWarning(context.i18n("playlistIsAlreadyEmpty"))
                 .set("playlist", playlist.getName())
                 .queue();
 

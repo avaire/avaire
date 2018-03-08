@@ -45,29 +45,24 @@ public class SourceCommand extends Command {
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
         if (args.length == 0) {
-            context.makeInfo("AvaIre source code:\n\n" + rootUrl).queue();
+            context.makeInfo(context.i18n("noArgs") + "\n\n" + rootUrl).queue();
             return true;
         }
 
         CommandContainer command = getCommand(context.getMessage(), args[0]);
         if (command == null) {
-            context.makeInfo("Invalid command given, here is the full source code instead.\n\n" + rootUrl).queue();
+            context.makeInfo(context.i18n("invalidCommand") + "\n\n" + rootUrl).queue();
             return true;
         }
 
         String sourceUri = command.getSourceUri();
         if (sourceUri == null) {
-            context.makeInfo(
-                "The command is registered via an external plugin, the author of the plugin " +
-                    "haven't made the source of the command public, or they forgot to add a link to " +
-                    "it, here is the full source code for the bot instead.\n\n" + rootUrl
-            ).queue();
+            context.makeInfo(context.i18n("externalCommand") + "\n\n" + rootUrl).queue();
             return true;
         }
 
-        context.makeInfo("AvaIre source code for the **:command** command:\n\n:url")
+        context.makeInfo(context.i18n("command") + "\n\n" + sourceUri)
             .set("command", command.getCommand().getName())
-            .set("url", sourceUri)
             .queue();
 
         return true;

@@ -30,7 +30,7 @@ public class ServerIdCommand extends Command {
 
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
-        context.makeSuccess(":user :id: of this server is `:guildid`").queue();
+        context.makeSuccess(context.i18n("message")).queue();
         return true;
     }
 }

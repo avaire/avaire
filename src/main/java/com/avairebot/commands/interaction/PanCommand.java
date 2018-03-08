@@ -10,7 +10,7 @@ import java.util.List;
 public class PanCommand extends InteractionCommand {
 
     public PanCommand(AvaIre avaire) {
-        super(avaire, "**%s** just hit **%s** with a pan!", true);
+        super(avaire, null, true);
     }
 
     @Override

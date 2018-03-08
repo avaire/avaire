@@ -46,9 +46,7 @@ public class StopCommand extends Command {
         GuildMusicManager musicManager = AudioHandler.getGuildAudioPlayer(context.getGuild());
 
         if (musicManager.getPlayer().getPlayingTrack() == null) {
-            return sendErrorMessage(context,
-                "Nothing is playing right now, you can't stop the music when nothing is playing."
-            );
+            return sendErrorMessage(context, context.i18n("error"));
         }
 
         String guildId = context.getGuild().getId();
@@ -68,7 +66,7 @@ public class StopCommand extends Command {
 
         musicManager.getScheduler().nextTrack(false);
 
-        context.makeInfo("The player has stopped, and **:number** songs has been removed from the queue.")
+        context.makeInfo(context.i18n("success"))
             .set("number", size)
             .queue();
 

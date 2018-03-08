@@ -97,16 +97,12 @@ public class PlaylistCommand extends Command {
     public boolean onCommand(CommandMessage context, String[] args) {
         Collection playlists = PlaylistController.fetchPlaylists(avaire, context.getMessage());
         if (playlists == null) {
-            return sendErrorMessage(context,
-                "An error occurred while loading the servers playlists, please try again, if the problem continues please report this to one of my developers on the [AvaIre support server](https://discord.gg/gt2FWER)."
-            );
+            return sendErrorMessage(context, "errorOccurredWhileLoading", "servers playlist");
         }
 
         GuildTransformer transformer = GuildController.fetchGuild(avaire, context.getMessage());
         if (transformer == null) {
-            return sendErrorMessage(context,
-                "An error occurred while loading the server settings, please try again, if the problem continues please report this to one of my developers on the [AvaIre support server](https://discord.gg/gt2FWER)."
-            );
+            return sendErrorMessage(context, "errorOccurredWhileLoading", "server settings");
         }
 
         if (args.length == 0 && playlists.isEmpty()) {
@@ -123,7 +119,7 @@ public class PlaylistCommand extends Command {
                 return createPlaylist.onCommand(context, args, transformer, playlists);
             }
 
-            context.makeWarning("There are no playlist called `:playlist`, you can create the playlist by using the\n`:command` command")
+            context.makeWarning(context.i18n("noPlaylistWithName"))
                 .set("command", generateCommandTrigger(context.getMessage()) + " <name> create")
                 .set("playlist", args[0])
                 .queue(message -> message.delete().queueAfter(1, TimeUnit.MINUTES));
@@ -164,7 +160,7 @@ public class PlaylistCommand extends Command {
         }
 
         return sendErrorMessage(context, String.format(
-            "Invalid `property` given, there are no playlist properties called `%s`.\nYou can learn more by running `%shelp %s`",
+            context.i18n("invalidProperty"),
             args[1],
             CommandHandler.getCommand(HelpCommand.class).getCategory().getPrefix(context.getMessage()),
             getTriggers().get(0)
@@ -172,7 +168,7 @@ public class PlaylistCommand extends Command {
     }
 
     private boolean sendNoPlaylistsForGuildMessage(CommandMessage context) {
-        context.makeInfo("This server does not have any music playlists yet, you can create one with\n`:command` to get started")
+        context.makeInfo(context.i18n("noPlaylists"))
             .set("command", generateCommandTrigger(context.getMessage()) + " <name> create")
             .setTitle(":musical_note: Music Playlists")
             .queue(message -> message.delete().queueAfter(1, TimeUnit.MINUTES));

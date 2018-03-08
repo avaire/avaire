@@ -36,7 +36,7 @@ public class InviteCommand extends Command {
 
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
-        context.makeInfo("You can invite me to your server by [clicking here](:oauth) or use the link below:\n\n:oauth")
+        context.makeInfo(context.i18n("message") + "\n\n:oauth")
             .set("oauth", avaire.getConfig().getString("discord.oauth"))
             .queue();
         return true;

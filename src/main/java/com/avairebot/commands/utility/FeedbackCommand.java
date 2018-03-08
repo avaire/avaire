@@ -53,7 +53,7 @@ public class FeedbackCommand extends Command {
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
         if (args.length == 0) {
-            return sendErrorMessage(context, "Missing argument `message`, you must include a message.");
+            return sendErrorMessage(context, "missingArgument", "message");
         }
 
         TextChannel feedbackChannel = avaire.getShardManager().getTextChannelById(DiscordConstants.FEEDBACK_CHANNEL_ID);
@@ -78,10 +78,11 @@ public class FeedbackCommand extends Command {
         }
 
         placeholderMessage.queue(newMessage -> {
-            context.makeSuccess("Successfully sent feedback <:tickYes:319985232306765825>").queue();
+            context.makeSuccess(context.i18n("success")).queue();
         }, err -> {
             AvaIre.getLogger().error("Failed to send feedback message: " + err.getMessage(), err);
-            context.makeError("Failed to send feedback message: " + err.getMessage()).queue();
+            context.makeError(context.i18n("failedToSend"))
+                .set("error", err.getMessage()).queue();
         });
 
         return true;

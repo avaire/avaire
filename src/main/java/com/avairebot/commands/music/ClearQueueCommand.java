@@ -40,7 +40,10 @@ public class ClearQueueCommand extends Command {
 
     @Override
     public List<String> getMiddleware() {
-        return Arrays.asList("has-dj-level:normal", "throttle:user,1,5");
+        return Arrays.asList(
+            "has-dj-level:normal",
+            "throttle:user,1,5"
+        );
     }
 
     @Override
@@ -49,19 +52,19 @@ public class ClearQueueCommand extends Command {
 
         if (musicManager.getPlayer().getPlayingTrack() == null) {
             return sendErrorMessage(context,
-                "Nothing to clear, request music first with `%splay`",
+                context.i18n("error"),
                 generateCommandPrefix(context.getMessage())
             );
         }
 
         if (musicManager.getScheduler().getQueue().isEmpty()) {
-            context.makeWarning("Nothing to clear, there are no songs pending in the queue right now.")
+            context.makeWarning(context.i18n("emptyQueue"))
                 .queue(message -> message.delete().queueAfter(1, TimeUnit.MINUTES));
 
             return false;
         }
 
-        context.makeSuccess("I have removed **:queueSize** songs from the queue, the queue is now empty!")
+        context.makeSuccess(context.i18n("success"))
             .set("queueSize", NumberUtil.formatNicely(
                 musicManager.getScheduler().getQueue().size()
             ))
