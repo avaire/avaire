@@ -5,7 +5,6 @@ import com.avairebot.audio.AudioHandler;
 import com.avairebot.audio.GuildMusicManager;
 import com.avairebot.audio.LavalinkManager;
 import com.avairebot.contracts.scheduler.Job;
-import com.avairebot.factories.MessageFactory;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.VoiceChannel;
@@ -132,8 +131,8 @@ public class MusicActivityJob extends Job {
                     .getLink(guildMusicManager.getLastActiveMessage().getGuild()).destroy();
             }
 
-            if (guildMusicManager.getLastActiveMessage() != null && guildMusicManager.getLastActiveMessage().getTextChannel().canTalk()) {
-                MessageFactory.makeInfo(guildMusicManager.getLastActiveMessage(), "The music has ended due to inactivity.").queue();
+            if (guildMusicManager.getLastActiveMessage() != null && guildMusicManager.getLastActiveMessage().getChannel().canTalk()) {
+                guildMusicManager.getLastActiveMessage().makeInfo("The music has ended due to inactivity.").queue();
             }
         }
 

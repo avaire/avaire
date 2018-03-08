@@ -1,5 +1,6 @@
 package com.avairebot.audio;
 
+import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.async.Future;
 import com.avairebot.exceptions.NoMatchFoundException;
 import com.avairebot.exceptions.TrackLoadFailedException;
@@ -8,22 +9,21 @@ import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
-import net.dv8tion.jda.core.entities.Message;
 
 import java.util.function.Consumer;
 
 public class TrackRequest extends Future {
 
     private final GuildMusicManager musicManager;
-    private final Message message;
+    private final CommandMessage context;
     private final String trackUrl;
 
-    TrackRequest(GuildMusicManager musicManager, Message message, String trackUrl) {
+    TrackRequest(GuildMusicManager musicManager, CommandMessage context, String trackUrl) {
         this.musicManager = musicManager;
-        this.message = message;
+        this.context = context;
         this.trackUrl = trackUrl;
 
-        musicManager.setLastActiveMessage(message);
+        musicManager.setLastActiveMessage(context);
     }
 
     @Override
@@ -41,7 +41,7 @@ public class TrackRequest extends Future {
 
                 success.accept(new TrackResponse(musicManager, track, trackUrl));
 
-                AudioHandler.play(message, musicManager, track);
+                AudioHandler.play(context, musicManager, track);
             }
 
             @Override
@@ -52,26 +52,35 @@ public class TrackRequest extends Future {
                         return;
                     }
 
-                    sessionConsumer.accept(AudioHandler.createAudioSession(message, playlist));
+                    sessionConsumer.accept(AudioHandler.createAudioSession(context, playlist));
                     return;
                 }
 
                 success.accept(new TrackResponse(musicManager, playlist, trackUrl));
 
                 Metrics.tracksLoaded.inc(playlist.getTracks().size());
-                AudioHandler.play(message, musicManager, playlist);
+                AudioHandler.play(context, musicManager, playlist);
             }
 
             @Override
             public void noMatches() {
                 Metrics.trackLoadsFailed.inc();
-                failure.accept(new NoMatchFoundException("I found nothing with the given query: `%s`", trackUrl));
+
+                failure.accept(new NoMatchFoundException(
+                    context.i18nRaw("music.internal.noMatchFound"),
+                    trackUrl
+                ));
             }
 
             @Override
             public void loadFailed(FriendlyException exception) {
                 Metrics.trackLoadsFailed.inc();
-                failure.accept(new TrackLoadFailedException("I couldn't add that to the queue: `%s`", exception.getMessage(), exception));
+
+                failure.accept(new TrackLoadFailedException(
+                    context.i18nRaw("music.internal.trackLoadFailed"),
+                    exception.getMessage(),
+                    exception
+                ));
             }
         });
     }

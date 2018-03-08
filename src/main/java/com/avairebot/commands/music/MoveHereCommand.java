@@ -63,7 +63,7 @@ public class MoveHereCommand extends Command {
             return sendErrorMessage(context, "mustBeConnectedToVoice");
         }
 
-        VoiceConnectStatus voiceConnectStatus = AudioHandler.connectToVoiceChannel(context.getMessage(), true);
+        VoiceConnectStatus voiceConnectStatus = AudioHandler.connectToVoiceChannel(context, true);
 
         if (!voiceConnectStatus.isSuccess()) {
             context.makeWarning(voiceConnectStatus.getErrorMessage()).queue();

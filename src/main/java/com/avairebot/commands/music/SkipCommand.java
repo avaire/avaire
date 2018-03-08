@@ -58,12 +58,12 @@ public class SkipCommand extends Command {
         }
 
         if (!musicManager.getScheduler().getQueue().isEmpty()) {
-            AudioHandler.skipTrack(context.getMessage());
+            AudioHandler.skipTrack(context);
             return true;
         }
 
         musicManager.getPlayer().stopTrack();
-        musicManager.getScheduler().handleEndOfQueue(context.getMessage(), true);
+        musicManager.getScheduler().handleEndOfQueue(context, true);
 
         return true;
     }

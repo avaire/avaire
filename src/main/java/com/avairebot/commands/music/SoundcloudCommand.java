@@ -66,7 +66,7 @@ public class SoundcloudCommand extends Command {
         CommandContainer container = CommandHandler.getCommand(PlayCommand.class);
         PlayCommand playCommand = (PlayCommand) container.getCommand();
 
-        if (AudioHandler.hasAudioSession(context.getMessage()) && NumberUtil.isNumeric(args[0])) {
+        if (AudioHandler.hasAudioSession(context) && NumberUtil.isNumeric(args[0])) {
             return playCommand.loadSongFromSession(context, args);
         }
 

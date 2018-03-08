@@ -19,7 +19,6 @@ import com.avairebot.database.transformers.PlaylistTransformer;
 import com.avairebot.exceptions.InvalidApplicationEnvironmentException;
 import com.avairebot.exceptions.InvalidPluginException;
 import com.avairebot.exceptions.InvalidPluginsPathException;
-import com.avairebot.factories.MessageFactory;
 import com.avairebot.handlers.GenericEventHandler;
 import com.avairebot.handlers.MainEventHandler;
 import com.avairebot.language.I18n;
@@ -312,7 +311,7 @@ public class AvaIre {
         long waitFor = 1000;
         for (GuildMusicManager manager : AudioHandler.MUSIC_MANAGER.values()) {
             if (manager.getLastActiveMessage() != null) {
-                MessageFactory.makeInfo(manager.getLastActiveMessage(),
+                manager.getLastActiveMessage().makeInfo(
                     "Bot is restarting, sorry for the inconvenience, we'll be right back!"
                 ).queue();
 
@@ -373,7 +372,7 @@ public class AvaIre {
             .addEventListeners(new GenericEventHandler(this));
 
         if (LavalinkManager.LavalinkManagerHolder.LAVALINK.isEnabled()) {
-            builder.addEventListeners(LavalinkManager.LavalinkManagerHolder.LAVALINK);
+            builder.addEventListeners(LavalinkManager.LavalinkManagerHolder.LAVALINK.getLavalink());
         }
 
         for (PluginLoader plugin : getPluginManager().getPlugins()) {

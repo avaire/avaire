@@ -76,19 +76,19 @@ public class PlayCommand extends Command {
             args = Arrays.copyOfRange(args, 0, args.length - 1);
         }
 
-        VoiceConnectStatus voiceConnectStatus = AudioHandler.connectToVoiceChannel(context.getMessage());
+        VoiceConnectStatus voiceConnectStatus = AudioHandler.connectToVoiceChannel(context);
         if (!voiceConnectStatus.isSuccess()) {
             context.makeWarning(voiceConnectStatus.getErrorMessage()).queue();
             return false;
         }
 
-        if (AudioHandler.hasAudioSession(context.getMessage()) && NumberUtil.isNumeric(args[0])) {
+        if (AudioHandler.hasAudioSession(context) && NumberUtil.isNumeric(args[0])) {
             return loadSongFromSession(context, args);
         }
 
         boolean finalShouldLeaveMessage = shouldLeaveMessage;
 
-        AudioHandler.loadAndPlay(context.getMessage(), buildTrackRequestString(args)).handle(
+        AudioHandler.loadAndPlay(context, buildTrackRequestString(args)).handle(
             musicSuccess(context, finalShouldLeaveMessage),
             musicFailure(context),
             musicSession(context, args)
@@ -99,7 +99,7 @@ public class PlayCommand extends Command {
 
     boolean loadSongFromSession(CommandMessage context, String[] args) {
         int songIndex = NumberUtil.parseInt(args[0], 1) - 1;
-        AudioSession session = AudioHandler.getAudioSession(context.getMessage());
+        AudioSession session = AudioHandler.getAudioSession(context);
 
         int index = NumberUtil.getBetween(songIndex, 0, session.getSongs().getTracks().size() - 1);
         AudioTrack track = session.getSongs().getTracks().get(index);
@@ -112,13 +112,13 @@ public class PlayCommand extends Command {
                 track.getInfo().uri
             )
         );
-        AudioHandler.play(context.getMessage(), AudioHandler.getGuildAudioPlayer(context.getGuild()), track);
+        AudioHandler.play(context, AudioHandler.getGuildAudioPlayer(context.getGuild()), track);
 
         if (session.getMessage() != null) {
             session.getMessage().delete().queue();
         }
 
-        AudioHandler.removeAudioSession(context.getMessage());
+        AudioHandler.removeAudioSession(context);
         return false;
     }
 

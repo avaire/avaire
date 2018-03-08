@@ -18,7 +18,7 @@ help:
         categoriesTitle: ':scroll: Command Categories'
         invalidCategory: 'Invalid command category given, there are no categories called `:category`'
         invalidCommand: 'Invalid command given, there are no command that has the trigger `:trigger`'
-        tryingToViewSystemCommands: "You don't have permissions to run any of the  commands in the `System` category, system commands can affect all the servers the bot is currently running on, and thus are limited to bot administrators/developers."
+        tryingToViewSystemCommands: "You don't have permissions to run any of the commands in the `System` category, system commands can affect all the servers the bot is currently running on, and thus are limited to bot administrators/developers."
         singularHiddenCategories: '_There is **%s** hidden category for this channel._'
         multipleHiddenCategories: '_There is **%s** hidden categories for this channel._'
         fields:
@@ -49,6 +49,15 @@ interaction:
     TriggeredCommand: 'is triggered by'
 
 music:
+    internal:
+        songWasSkipped: '[:title](:url) requested by :author was skipped.'
+        nowPlayingSong: 'Now playing: [:title](:link)\n`:duration` - Requested by :requester'
+        nowPlayingPlaylist: 'The **:playlistName** playlist has been added to the queue with `:playlistSize` tracks!'
+        nowPlaying: 'Now playing: [:title](:link)\n`:duration` - Requested by :requester'
+        queueHasEnded: 'Queue has ended, leaving voice.'
+        noMatchFound: 'I found nothing with the given query: `%s`'
+        trackLoadFailed: "I couldn't add that to the queue: `%s`"
+
     ClearQueueCommand:
         error: 'Nothing to clear, request music first with `%splay`'
         emptyQueue: 'Nothing to clear, there are no songs pending in the queue right now.'

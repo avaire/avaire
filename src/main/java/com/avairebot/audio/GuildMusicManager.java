@@ -1,10 +1,10 @@
 package com.avairebot.audio;
 
+import com.avairebot.commands.CommandMessage;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import lavalink.client.player.IPlayer;
 import lavalink.client.player.LavaplayerPlayerWrapper;
 import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Message;
 
 public class GuildMusicManager {
 
@@ -12,7 +12,7 @@ public class GuildMusicManager {
     private final TrackScheduler scheduler;
 
     private boolean repeatQueue = false;
-    private Message lastActiveMessage = null;
+    private CommandMessage lastActiveMessage = null;
 
     public GuildMusicManager(AudioPlayerManager manager, Guild guild) {
         player = LavalinkManager.LavalinkManagerHolder.LAVALINK.createPlayer(guild.getId());
@@ -20,11 +20,11 @@ public class GuildMusicManager {
         player.addListener(scheduler);
     }
 
-    public Message getLastActiveMessage() {
+    public CommandMessage getLastActiveMessage() {
         return lastActiveMessage;
     }
 
-    public void setLastActiveMessage(Message lastActiveMessage) {
+    public void setLastActiveMessage(CommandMessage lastActiveMessage) {
         this.lastActiveMessage = lastActiveMessage;
     }
 
