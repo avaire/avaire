@@ -86,7 +86,7 @@ public class HelpCommand extends Command {
 
         boolean isBotAdmin = avaire.getConfig().getStringList("botAccess").contains(context.getAuthor().getId());
         if (!isBotAdmin && category.getName().equalsIgnoreCase("System")) {
-            context.makeError("You don't have permissions to run any of the  commands in the `System` " +
+            context.makeError("You don't have permissions to run any of the commands in the `System` " +
                 "category, system commands can affect all the servers the bot is currently running on, and thus are " +
                 "limited to bot administrators/developers.")
                 .queue();
