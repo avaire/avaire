@@ -214,6 +214,12 @@ public abstract class Command extends Reflectionable {
      * @return false since the error message should only be used on failure.
      */
     public final boolean sendErrorMessage(CommandMessage context, String error) {
+        if (error.contains(" ")) {
+            return sendErrorMessageAndDeleteMessage(
+                context, error, 150, TimeUnit.SECONDS
+            );
+        }
+
         String i18nError = context.i18nRaw("errors." + error);
 
         return sendErrorMessageAndDeleteMessage(context, i18nError == null ? error : i18nError, 150, TimeUnit.SECONDS);
@@ -230,9 +236,11 @@ public abstract class Command extends Reflectionable {
      * @return false since the error message should only be used on failure.
      */
     public boolean sendErrorMessage(CommandMessage context, String error, long deleteIn, TimeUnit unit) {
-        String i18nError = context.i18nRaw("errors." + error);
-        if (i18nError != null) {
-            error = i18nError;
+        if (!error.contains(" ")) {
+            String i18nError = context.i18nRaw("errors." + error);
+            if (i18nError != null) {
+                error = i18nError;
+            }
         }
 
         if (unit == null) {
