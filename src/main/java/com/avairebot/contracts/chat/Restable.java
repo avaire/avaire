@@ -1,12 +1,16 @@
 package com.avairebot.contracts.chat;
 
+import com.avairebot.utilities.CheckPermissionUtil;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.requests.RestAction;
+import net.dv8tion.jda.core.requests.restaction.MessageAction;
 
+import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
@@ -27,7 +31,7 @@ public abstract class Restable {
      * <p><b>This method is asynchronous</b>
      */
     public void queue() {
-        sendMessage().queue();
+        sendMessage().ifPresent(RestAction::queue);
     }
 
     /**
@@ -40,7 +44,7 @@ public abstract class Restable {
      *                for the API. (can be null)
      */
     public void queue(Consumer<Message> success) {
-        sendMessage().queue(success);
+        sendMessage().ifPresent(action -> action.queue(success));
     }
 
     /**
@@ -54,7 +58,7 @@ public abstract class Restable {
      *                encounters an exception at its execution point.
      */
     public void queue(Consumer<Message> success, Consumer<Throwable> failure) {
-        sendMessage().queue(success, failure);
+        sendMessage().ifPresent(action -> action.queue(success, failure));
     }
 
     /**
@@ -76,8 +80,12 @@ public abstract class Restable {
      * representing the delayed operation
      * @throws java.lang.IllegalArgumentException If the provided TimeUnit is {@code null}
      */
-    public ScheduledFuture<?> queueAfter(long delay, TimeUnit unit) {
-        return sendMessage().queueAfter(delay, unit);
+    public Future<?> queueAfter(long delay, TimeUnit unit) {
+        Optional<MessageAction> messageAction = sendMessage();
+        if (messageAction.isPresent()) {
+            return messageAction.get().queueAfter(delay, unit);
+        }
+        return CompletableFuture.completedFuture(null);
     }
 
     /**
@@ -101,8 +109,12 @@ public abstract class Restable {
      * representing the delayed operation
      * @throws java.lang.IllegalArgumentException If the provided TimeUnit is {@code null}
      */
-    public ScheduledFuture<?> queueAfter(long delay, TimeUnit unit, Consumer<Message> success) {
-        return sendMessage().queueAfter(delay, unit, success);
+    public Future<?> queueAfter(long delay, TimeUnit unit, Consumer<Message> success) {
+        Optional<MessageAction> messageAction = sendMessage();
+        if (messageAction.isPresent()) {
+            return messageAction.get().queueAfter(delay, unit, success);
+        }
+        return CompletableFuture.completedFuture(null);
     }
 
     /**
@@ -126,8 +138,12 @@ public abstract class Restable {
      * representing the delayed operation
      * @throws java.lang.IllegalArgumentException If the provided TimeUnit is {@code null}
      */
-    public ScheduledFuture<?> queueAfter(long delay, TimeUnit unit, Consumer<Message> success, Consumer<Throwable> failure) {
-        return sendMessage().queueAfter(delay, unit, success, failure);
+    public Future<?> queueAfter(long delay, TimeUnit unit, Consumer<Message> success, Consumer<Throwable> failure) {
+        Optional<MessageAction> messageAction = sendMessage();
+        if (messageAction.isPresent()) {
+            return messageAction.get().queueAfter(delay, unit);
+        }
+        return CompletableFuture.completedFuture(null);
     }
 
     /**
@@ -149,8 +165,12 @@ public abstract class Restable {
      * representing the delayed operation
      * @throws java.lang.IllegalArgumentException If the provided TimeUnit or ScheduledExecutorService is {@code null}
      */
-    public ScheduledFuture<?> queueAfter(long delay, TimeUnit unit, ScheduledExecutorService executor) {
-        return sendMessage().queueAfter(delay, unit, executor);
+    public Future<?> queueAfter(long delay, TimeUnit unit, ScheduledExecutorService executor) {
+        Optional<MessageAction> messageAction = sendMessage();
+        if (messageAction.isPresent()) {
+            return messageAction.get().queueAfter(delay, unit, executor);
+        }
+        return CompletableFuture.completedFuture(null);
     }
 
     /**
@@ -174,8 +194,12 @@ public abstract class Restable {
      * representing the delayed operation
      * @throws java.lang.IllegalArgumentException If the provided TimeUnit or ScheduledExecutorService is {@code null}
      */
-    public ScheduledFuture<?> queueAfter(long delay, TimeUnit unit, Consumer<Message> success, ScheduledExecutorService executor) {
-        return sendMessage().queueAfter(delay, unit, success, executor);
+    public Future<?> queueAfter(long delay, TimeUnit unit, Consumer<Message> success, ScheduledExecutorService executor) {
+        Optional<MessageAction> messageAction = sendMessage();
+        if (messageAction.isPresent()) {
+            return messageAction.get().queueAfter(delay, unit, success, executor);
+        }
+        return CompletableFuture.completedFuture(null);
     }
 
     /**
@@ -187,26 +211,45 @@ public abstract class Restable {
      * <p>The specified {@link java.util.concurrent.ScheduledExecutorService ScheduledExecutorService} is used for this operation.
      *
      * @param delay    The delay after which this computation should be executed, negative to execute immediately
-     * @param unit     The {@link java.util.concurrent.TimeUnit TimeUnit} to convert the specified {@code delay}
-     * @param success  The success {@link java.util.function.Consumer Consumer} that should be called
-     *                 once the {@link #queue(java.util.function.Consumer, java.util.function.Consumer)} operation completes successfully.
-     * @param failure  The failure {@link java.util.function.Consumer Consumer} that should be called
-     *                 in case of an error of the {@link #queue(java.util.function.Consumer, java.util.function.Consumer)} operation.
-     * @param executor The Non-null {@link java.util.concurrent.ScheduledExecutorService ScheduledExecutorService} that should be used
+     * @param unit     The {@link TimeUnit TimeUnit} to convert the specified {@code delay}
+     * @param success  The success {@link Consumer Consumer} that should be called
+     *                 once the {@link #queue(Consumer, Consumer)} operation completes successfully.
+     * @param failure  The failure {@link Consumer Consumer} that should be called
+     *                 in case of an error of the {@link #queue(Consumer, Consumer)} operation.
+     * @param executor The Non-null {@link ScheduledExecutorService ScheduledExecutorService} that should be used
      *                 to schedule this operation
      * @return {@link java.util.concurrent.ScheduledFuture ScheduledFuture}
      * representing the delayed operation
      * @throws java.lang.IllegalArgumentException If the provided TimeUnit or ScheduledExecutorService is {@code null}
      */
-    public ScheduledFuture<?> queueAfter(long delay, TimeUnit unit, Consumer<Message> success, Consumer<Throwable> failure, ScheduledExecutorService executor) {
-        return sendMessage().queueAfter(delay, unit, success, failure, executor);
+    public Future<?> queueAfter(long delay, TimeUnit unit, Consumer<Message> success, Consumer<Throwable> failure, ScheduledExecutorService executor) {
+        Optional<MessageAction> messageAction = sendMessage();
+        if (messageAction.isPresent()) {
+            return messageAction.get().queueAfter(delay, unit, success, failure, executor);
+        }
+        return CompletableFuture.completedFuture(null);
     }
 
-    private RestAction<Message> sendMessage() {
+    private Optional<MessageAction> sendMessage() {
         if (channel == null) {
             throw new RuntimeException("Invalid channel given, the channel can not be null!");
         }
-        return channel.sendMessage(buildEmbed());
+
+        CheckPermissionUtil.PermissionCheckType type = CheckPermissionUtil.canSendMessages(channel);
+        if (type.canSendEmbed()) {
+            return Optional.of(channel.sendMessage(buildEmbed()));
+        }
+
+        if (type.canSendMessage()) {
+            String message = toString();
+            if (message == null || message.isEmpty()) {
+                return Optional.empty();
+            }
+
+            return Optional.of(channel.sendMessage(toString()));
+        }
+
+        return Optional.empty();
     }
 
     public abstract MessageEmbed buildEmbed();

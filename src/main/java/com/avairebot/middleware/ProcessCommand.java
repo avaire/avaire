@@ -8,12 +8,11 @@ import com.avairebot.contracts.middleware.Middleware;
 import com.avairebot.factories.MessageFactory;
 import com.avairebot.metrics.Metrics;
 import com.avairebot.utilities.ArrayUtil;
+import com.avairebot.utilities.CheckPermissionUtil;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import io.prometheus.client.Histogram;
-import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.exceptions.InsufficientPermissionException;
-import net.dv8tion.jda.core.utils.PermissionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
@@ -37,8 +36,9 @@ public class ProcessCommand extends Middleware {
 
     @Override
     public boolean handle(Message message, MiddlewareStack stack, String... args) {
-        if (!stack.getCommandContainer().getCategory().getName().equals("System") && !canSendEmbedMessages(message)) {
-            if (!message.getGuild().getSelfMember().hasPermission(message.getTextChannel(), Permission.MESSAGE_WRITE)) {
+        CheckPermissionUtil.PermissionCheckType permissionType = CheckPermissionUtil.canSendMessages(message.getChannel());
+        if (!stack.getCommandContainer().getCategory().getName().equals("System") && !permissionType.canSendEmbed()) {
+            if (!permissionType.canSendMessage()) {
                 return false;
             }
 
@@ -152,40 +152,5 @@ public class ProcessCommand extends Middleware {
         System.arraycopy(userArguments, 0, result, aliasArguments.length, userArguments.length);
 
         return result;
-    }
-
-    private boolean canSendEmbedMessages(Message message) {
-        if (!message.getChannelType().isGuild()) {
-            return true;
-        }
-
-        if (!message.getGuild().getSelfMember().hasPermission(
-            message.getTextChannel(), Permission.MESSAGE_EMBED_LINKS
-        )) {
-            return false;
-        }
-
-        return checkForRawEmbedAndSendPermissions(
-            PermissionUtil.getExplicitPermission(
-                message.getTextChannel(), message.getGuild().getSelfMember()
-            )
-        ) || checkForRawEmbedAndSendPermissions(
-            PermissionUtil.getExplicitPermission(
-                message.getTextChannel(), message.getGuild().getPublicRole()
-            )
-        ) || (!message.getGuild().getSelfMember().getRoles().isEmpty() && checkForRawEmbedAndSendPermissions(
-            PermissionUtil.getExplicitPermission(
-                message.getTextChannel(), message.getGuild().getSelfMember().getRoles().get(0)
-            )
-        ));
-    }
-
-    private boolean checkForRawEmbedAndSendPermissions(long permissions) {
-        for (Permission permission : Permission.getPermissions(permissions)) {
-            if (permission.getRawValue() == 0x00004000) {
-                return true;
-            }
-        }
-        return false;
     }
 }
