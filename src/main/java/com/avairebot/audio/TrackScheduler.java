@@ -11,6 +11,7 @@ import lavalink.client.player.LavalinkPlayer;
 import lavalink.client.player.event.AudioEventAdapterWrapped;
 import net.dv8tion.jda.core.entities.User;
 
+import java.util.List;
 import java.util.concurrent.*;
 
 /**
@@ -57,6 +58,29 @@ public class TrackScheduler extends AudioEventAdapterWrapped {
             player.playTrack(track);
             audioTrackContainer = container;
             sendNowPlaying(container);
+        }
+    }
+
+    /**
+     * Adds the list of tracks to the queue, if the player is not playing a song the first track in the list will be played.
+     *
+     * @param tracks    The list of tracks to add to the queue.
+     * @param requester The user who requested the audio tracks.
+     */
+    public void queue(List<AudioTrack> tracks, User requester) {
+        if (tracks.isEmpty()) {
+            return;
+        }
+
+        if (player.getPlayingTrack() == null) {
+            AudioTrackContainer container = new AudioTrackContainer(tracks.remove(0), requester);
+
+            player.playTrack(container.getAudioTrack());
+            audioTrackContainer = container;
+        }
+
+        for (AudioTrack track : tracks) {
+            queue.offer(new AudioTrackContainer(track, requester));
         }
     }
 

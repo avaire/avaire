@@ -14,6 +14,10 @@ import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Consumer;
+
 public class LoadPlaylist extends PlaylistSubCommand {
 
     public LoadPlaylist(AvaIre avaire, PlaylistCommand command) {
@@ -28,15 +32,51 @@ public class LoadPlaylist extends PlaylistSubCommand {
             return false;
         }
 
+        List<AudioTrack> tracks = new ArrayList<>();
         AudioHandler.getGuildAudioPlayer(context.getGuild()).setLastActiveMessage(context);
+
+        int index = 0;
         for (PlaylistTransformer.PlaylistSong song : playlist.getSongs()) {
-            loadSong(context, song);
+            if (index++ == playlist.getSongs().size() - 1) {
+                loadSong(song, tracks, audioTracks -> {
+                    loadedPlaylist(context, playlist, tracks);
+                });
+
+                return true;
+            }
+            loadSong(song, tracks, null);
         }
+
+        context.makeWarning(context.i18n("failedToLoadPlaylist"))
+            .set("playlist", playlist.getName())
+            .queue();
 
         return true;
     }
 
-    private void loadSong(CommandMessage context, PlaylistTransformer.PlaylistSong song) {
+    private void loadedPlaylist(CommandMessage context, PlaylistTransformer playlist, List<AudioTrack> tracks) {
+        if (tracks.isEmpty()) {
+            context.makeWarning(context.i18n("failedToLoadPlaylist"))
+                .set("playlist", playlist.getName())
+                .queue();
+
+            return;
+        }
+
+        // We assign the size here because the track might be
+        // modified if nothing is playing by queue method.
+        int size = tracks.size();
+
+        AudioHandler.getGuildAudioPlayer(context.getGuild())
+            .getScheduler().queue(tracks, context.getAuthor());
+
+        context.makeSuccess(context.i18n("loadedPlaylist"))
+            .set("name", playlist.getName())
+            .set("amount", size)
+            .queue();
+    }
+
+    private void loadSong(PlaylistTransformer.PlaylistSong song, final List<AudioTrack> tracks, Consumer<List<AudioTrack>> success) {
         Metrics.searchRequests.inc();
 
         AudioHandler.getPlayerManager().loadItemOrdered(AudioHandler.MUSIC_MANAGER, song.getLink(), new AudioLoadResultHandler() {
@@ -44,8 +84,11 @@ public class LoadPlaylist extends PlaylistSubCommand {
             public void trackLoaded(AudioTrack track) {
                 Metrics.tracksLoaded.inc();
 
-                AudioHandler.getGuildAudioPlayer(context.getGuild())
-                    .getScheduler().queue(track, context.getAuthor());
+                tracks.add(track);
+
+                if (success != null) {
+                    success.accept(tracks);
+                }
             }
 
             @Override

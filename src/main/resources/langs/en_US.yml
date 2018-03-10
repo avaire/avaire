@@ -89,7 +89,9 @@ music:
         noMoreSongSlots: "The `:playlist` playlist doesn't have any more song slots."
         noMorePlaylistSlots: "The server doesn't have any more playlist slots, you can delete existing playlists to free up slots."
         failedToLoad: 'Failed to load: %s'
+        failedToLoadPlaylist: 'Failed to load the :playlist, maybe try again later or report this to one of my developers.'
         failedToSavePlaylist: 'Something went wrong while trying to save the playlist: %s'
+        loadedPlaylist: 'The **:name** playlist has been loaded and added to the queue with **:amount** songs.'
         noMatches: 'No Matches'
         attemptingToAddLivestreamToPlaylist: "You can't add livestreams to a playlist!"
         userHasAddedSong: ':user has added [:name](:url) to the `:playlist` playlist.\nThe `:playlist` playlist has `:slots` more song slots available.'
