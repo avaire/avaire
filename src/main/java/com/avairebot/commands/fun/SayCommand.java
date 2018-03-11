@@ -46,7 +46,7 @@ public class SayCommand extends Command {
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
         if (args.length == 0) {
-            return sendErrorMessage(context, "Missing `message` argument, the `message` argument is required!");
+            return sendErrorMessage(context, "missingArgument", "message");
         }
 
         context.getMessageChannel().sendMessage(context.getContentRaw()).queue();

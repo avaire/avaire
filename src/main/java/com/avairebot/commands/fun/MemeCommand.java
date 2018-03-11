@@ -64,10 +64,7 @@ public class MemeCommand extends Command {
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
         if (args.length == 0) {
-            return sendErrorMessage(context,
-                "Missing `action` argument, you must include the meme type or user you want to "
-                    + "generate a meme for, or `list` to display all the memes types available."
-            );
+            return sendErrorMessage(context, context.i18n("missingArgument"));
         }
 
         if (memes.isEmpty() || memeKeys.isEmpty()) {
@@ -86,7 +83,7 @@ public class MemeCommand extends Command {
             return sendGeneratedMeme(context, args[0].toLowerCase(), Arrays.copyOfRange(args, 1, args.length));
         }
 
-        return sendErrorMessage(context, "Invalid meme type given, `%s` is not a valid meme type!", args[0]);
+        return sendErrorMessage(context, context.i18n("invalidType"), args[0]);
     }
 
     private boolean sendMemeList(CommandMessage context, String[] args) {
@@ -101,7 +98,7 @@ public class MemeCommand extends Command {
 
         final List<String> memesMessages = new ArrayList<>();
         paginator.forEach((index, key, val) -> {
-            memesMessages.add(String.format("`%s` => `%s`",
+            memesMessages.add(String.format(context.i18n("listItem"),
                 val, memes.get(val).get("name")
             ));
         });
@@ -119,7 +116,7 @@ public class MemeCommand extends Command {
 
     private boolean sendUserMeme(CommandMessage context, User user, String[] args) {
         if (args.length < 2) {
-            return sendErrorMessage(context, "You must include the `top text` and `bottom text` arguments to generate a meme.");
+            return sendErrorMessage(context, context.i18n("mustIncludeTopAndBottomText"));
         }
 
         try {
@@ -138,7 +135,7 @@ public class MemeCommand extends Command {
 
     private boolean sendGeneratedMeme(CommandMessage context, String meme, String[] args) {
         if (args.length < 2) {
-            return sendErrorMessage(context, "You must include the `top text` and `bottom text` arguments to generate a meme.");
+            return sendErrorMessage(context, context.i18n("mustIncludeTopAndBottomText"));
         }
 
         context.makeEmbeddedMessage()

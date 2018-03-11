@@ -44,7 +44,7 @@ public class FlipTextCommand extends Command {
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
         if (args.length == 0) {
-            return sendErrorMessage(context, "Missing argument `message`, you must include a message.");
+            return sendErrorMessage(context, "missingArgument", "message");
         }
 
         String string = String.join(" ", args);

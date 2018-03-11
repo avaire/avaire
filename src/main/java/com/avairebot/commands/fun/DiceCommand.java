@@ -46,13 +46,13 @@ public class DiceCommand extends Command {
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
         if (args.length == 0) {
-            return sendErrorMessage(context, "You must include the dice you want to roll.");
+            return sendErrorMessage(context, context.i18n("missingDice"));
         }
 
         List<DiceRoll> items = new ArrayList<>();
         int invalidArgument = getInvalidArgument(args);
         if (invalidArgument > -1) {
-            return sendErrorMessage(context, String.format("`%s` is not a valid dice formant.", args[invalidArgument]));
+            return sendErrorMessage(context, String.format(context.i18n("invalidDiceFormat"), args[invalidArgument]));
         }
 
         for (int i = 0; i < args.length && i < 5; i++) {
@@ -62,20 +62,20 @@ public class DiceCommand extends Command {
 
             try {
                 dice = Integer.parseInt(split[0]);
-                if (dice < 1 || dice > 34) {
-                    return sendErrorMessage(context, String.format("`%s` is not a valid dice format, the dice must be greater than 0 and less than 35", arg));
+                if (dice < 1 || dice > 36) {
+                    return sendErrorMessage(context, String.format(context.i18n("diceFormatMustBeGreaterThan"), arg));
                 }
             } catch (NumberFormatException ex) {
-                return sendErrorMessage(context, String.format("`%s` is not a valid dice format, the dice amount must be a valid positive number between 1 and 34", arg));
+                return sendErrorMessage(context, String.format(context.i18n("diceFormatMustBePositive"), arg));
             }
 
             try {
                 sides = Integer.parseInt(split[1]);
                 if (sides < 1 || sides > 127) {
-                    return sendErrorMessage(context, "`%s` is not a valid dice format, the sides must be greater than 0 and less than 128", arg);
+                    return sendErrorMessage(context, context.i18n("sidesFormatMustBeGreaterThan"), arg);
                 }
             } catch (NumberFormatException ex) {
-                return sendErrorMessage(context, "`%s` is not a valid dice format, the sides amount must be a valid positive number between 1 and 128", arg);
+                return sendErrorMessage(context, context.i18n("sidesFormatMustBePositive"), arg);
             }
 
             DiceRoll diceRoll = new DiceRoll(arg);
@@ -88,7 +88,7 @@ public class DiceCommand extends Command {
 
         StringBuilder result = new StringBuilder();
         for (DiceRoll roll : items) {
-            result.append(String.format("**%s** resulted in **%s**  (%s)",
+            result.append(String.format(context.i18n("resultedIn"),
                 roll.getDice(),
                 roll.getSum(),
                 String.join(" + ", roll.getNumbers())
@@ -97,19 +97,19 @@ public class DiceCommand extends Command {
 
         context.makeSuccess(String.format("<@%s>%s%s",
             context.getAuthor().getId(),
-            getFormatSeparator(args),
+            getFormatSeparator(context, args),
             result.toString().trim())
         ).queue();
         return true;
     }
 
-    private String getFormatSeparator(String[] args) {
+    private String getFormatSeparator(CommandMessage context, String[] args) {
         if (args.length == 1) {
             return " ";
         }
 
         if (args.length > 4) {
-            return "\n_More than **5** dice rolls given, only the first five will be displayed_\n";
+            return context.i18n("moreThanFiveRollsWasGiven");
         }
         return "\n";
     }
