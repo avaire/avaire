@@ -10,11 +10,15 @@ import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.database.transformers.PlayerTransformer;
 import com.avairebot.factories.MessageFactory;
 import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class LevelUtil {
 
@@ -139,12 +143,20 @@ public class LevelUtil {
                 .update(statement -> statement.set("experience", player.getExperience()));
 
             if (guild.isLevelAlerts() && getLevelFromExperience(player.getExperience()) > lvl) {
+                long newLevel = getLevelFromExperience(player.getExperience());
+
                 MessageFactory.makeEmbeddedMessage(getLevelUpChannel(message, guild))
                     .setColor(MessageType.SUCCESS.getColor())
                     .setDescription(String.format("GG <@%s>, you just reached **Level %s**",
-                        player.getUserId(),
-                        getLevelFromExperience(player.getExperience())
+                        player.getUserId(), newLevel
                     )).queue();
+
+                if (guild.getLevelRoles().isEmpty()) return;
+
+                List<Role> roles = getRoleRewards(message, guild, newLevel);
+                if (roles.isEmpty()) return;
+
+                message.getGuild().getController().addRolesToMember(message.getMember(), roles).queue();
             }
         } catch (SQLException e) {
             System.err.println(e.getMessage());
@@ -169,5 +181,18 @@ public class LevelUtil {
 
         TextChannel channel = message.getGuild().getTextChannelById(levelChannel);
         return channel == null ? message.getTextChannel() : channel;
+    }
+
+    private static List<Role> getRoleRewards(Message message, GuildTransformer guild, long level) {
+        List<Role> roles = new ArrayList<>();
+        for (Map.Entry<Integer, String> entry : guild.getLevelRoles().entrySet()) {
+            if (entry.getKey() <= level) {
+                Role role = message.getGuild().getRoleById(entry.getValue());
+                if (role != null) {
+                    roles.add(role);
+                }
+            }
+        }
+        return roles;
     }
 }
