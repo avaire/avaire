@@ -5,6 +5,7 @@ import com.avairebot.audio.DJGuildLevel;
 import com.avairebot.contracts.database.transformers.Transformer;
 import com.avairebot.database.collection.DataRow;
 import com.avairebot.time.Carbon;
+import com.avairebot.utilities.NumberUtil;
 import com.google.gson.internal.LinkedTreeMap;
 import com.google.gson.reflect.TypeToken;
 import net.dv8tion.jda.core.entities.TextChannel;
@@ -18,6 +19,7 @@ public class GuildTransformer extends Transformer {
     private final Map<String, String> aliases = new HashMap<>();
     private final Map<String, String> prefixes = new HashMap<>();
     private final Map<String, String> selfAssignableRoles = new HashMap<>();
+    private final Map<Integer, String> levelRoles = new HashMap<>();
     private final Map<String, Map<String, String>> modules = new HashMap<>();
     private final List<ChannelTransformer> channels = new ArrayList<>();
 
@@ -75,6 +77,17 @@ public class GuildTransformer extends Transformer {
 
                 for (Map.Entry<String, String> item : dbSelfAssignableRoles.entrySet()) {
                     selfAssignableRoles.put(item.getKey(), item.getValue().toLowerCase());
+                }
+            }
+
+            if (data.getString("level_roles", null) != null) {
+                HashMap<String, String> dbLevelRoles = AvaIre.GSON.fromJson(
+                    data.getString("level_roles"),
+                    new TypeToken<HashMap<String, String>>() {
+                    }.getType());
+
+                for (Map.Entry<String, String> item : dbLevelRoles.entrySet()) {
+                    levelRoles.put(NumberUtil.parseInt(item.getKey(), -1), item.getValue().toLowerCase());
                 }
             }
 
@@ -159,6 +172,10 @@ public class GuildTransformer extends Transformer {
 
     public void setLevelChannel(String levelChannel) {
         this.levelChannel = levelChannel;
+    }
+
+    public Map<Integer, String> getLevelRoles() {
+        return levelRoles;
     }
 
     public String getAutorole() {
