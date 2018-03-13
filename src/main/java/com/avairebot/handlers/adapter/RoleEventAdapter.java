@@ -9,6 +9,7 @@ import net.dv8tion.jda.core.events.role.RoleDeleteEvent;
 import net.dv8tion.jda.core.events.role.update.RoleUpdateNameEvent;
 
 import java.sql.SQLException;
+import java.util.Map;
 
 public class RoleEventAdapter extends EventAdapter {
 
@@ -50,6 +51,7 @@ public class RoleEventAdapter extends EventAdapter {
         }
 
         handleAutoroles(event, transformer);
+        handleLevelRoles(event, transformer);
         handleSelfAssignableRoles(event, transformer);
     }
 
@@ -79,6 +81,30 @@ public class RoleEventAdapter extends EventAdapter {
                 .where("id", event.getGuild().getId())
                 .update(statement -> {
                     statement.set("claimable_roles", AvaIre.GSON.toJson(transformer.getSelfAssignableRoles()), true);
+                });
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void handleLevelRoles(RoleDeleteEvent event, GuildTransformer transformer) {
+        if (transformer.getLevelRoles().isEmpty() || !transformer.getLevelRoles().containsValue(event.getRole().getId())) {
+            return;
+        }
+
+        int key = -1;
+        for (Map.Entry<Integer, String> entry : transformer.getLevelRoles().entrySet()) {
+            if (entry.getValue().equals(event.getRole().getId())) {
+                key = entry.getKey();
+            }
+        }
+
+        try {
+            transformer.getLevelRoles().remove(key);
+            avaire.getDatabase().newQueryBuilder(Constants.GUILD_TABLE_NAME)
+                .where("id", event.getGuild().getId())
+                .update(statement -> {
+                    statement.set("level_roles", AvaIre.GSON.toJson(transformer.getLevelRoles()), true);
                 });
         } catch (SQLException e) {
             e.printStackTrace();
