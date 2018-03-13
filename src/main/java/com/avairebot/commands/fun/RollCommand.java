@@ -50,10 +50,10 @@ public class RollCommand extends Command {
 
         try {
             if (args.length == 1) {
-                max = parseArgument(context, args[0], "Invalid `max` value given, `max` must be a number!");
+                max = parseArgument(context, args[0], "max");
             } else if (args.length > 1) {
-                min = parseArgument(context, args[0], "Invalid `min` value given, `min` must be a number!");
-                max = parseArgument(context, args[1], "Invalid `max` value given, `max` must be a number!");
+                min = parseArgument(context, args[0], "min");
+                max = parseArgument(context, args[1], "max");
             }
         } catch (NumberFormatException ex) {
             return false;
@@ -64,7 +64,7 @@ public class RollCommand extends Command {
 
         double random = Math.floor(Math.random() * (max - min + 1)) + min;
 
-        context.makeInfo(":user rolled **:number** out of :min - :max")
+        context.makeInfo(context.i18n("rolledNumber"))
             .set("number", (int) random)
             .set("min", (int) min)
             .set("max", (int) max)
@@ -77,7 +77,7 @@ public class RollCommand extends Command {
         try {
             return Double.parseDouble(argument);
         } catch (NumberFormatException ex) {
-            sendErrorMessage(context, error);
+            sendErrorMessage(context, context.i18n("invalidValueGiven"), error);
             throw ex;
         }
     }

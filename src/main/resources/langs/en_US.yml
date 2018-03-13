@@ -10,6 +10,58 @@ errors:
     requireLevelFeatureToBeEnabled: 'This command requires the `Levels & Experience` feature to be enabled for the server, you can ask a server admin if they want to enable it with `%s`'
     errorOccurredWhileLoading: 'An error occurred while loading the %s, please try again, if the problem continues please report this to one of my developers on the [AvaIre support server](https://discord.gg/gt2FWER).'
 
+fun:
+    DiceCommand:
+        missingDice: 'You must include the dice you want to roll.'
+        invalidDiceFormat: '`%s` is not a valid dice formant.'
+        diceFormatMustBeGreaterThan: '`%s` is not a valid dice format, the dice must be greater than 0 and less than 35'
+        diceFormatMustBePositive: '`%s` is not a valid dice format, the dice amount must be a valid positive number between 1 and 35'
+        sidesFormatMustBeGreaterThan: '`%s` is not a valid dice format, the sides must be greater than 0 and less than 128'
+        sidesFormatMustBePositive: '`%s` is not a valid dice format, the sides amount must be a valid positive number between 1 and 128'
+        moreThanFiveRollsWasGiven: '\n_More than **5** dice rolls given, only the first five will be displayed_\n'
+        resultedIn: '**%s** resulted in **%s**  (%s)'
+
+    EightBallCommand:
+        mustIncludeQuestion: 'You must include a question for 8ball.'
+        answers:
+            - 'It is certain'
+            - 'It is decidedly so'
+            - 'Without a doubt'
+            - 'Yes definitely'
+            - 'You may rely on it'
+            - 'As I see it, yes'
+            - 'Most likely'
+            - 'Outlook good'
+            - 'Yes'
+            - 'Signs point to yes'
+            - 'Reply hazy try again'
+            - 'Ask again later'
+            - 'Better not tell you now'
+            - 'Cannot predict now'
+            - 'Concentrate and ask again'
+            - "Don't count on it"
+            - 'My reply is no'
+            - 'My sources say no'
+            - 'Outlook not so good'
+            - 'Very doubtful'
+
+    MemeCommand:
+        missingArgument: 'Missing `action` argument, you must include the meme type or user you want to generate a meme for, or `list` to display all the memes types available.'
+        invalidType: 'Invalid meme type given, `%s` is not a valid meme type!'
+        mustIncludeTopAndBottomText: 'You must include the `top text` and `bottom text` arguments to generate a meme.'
+        listItem: '`%s` => `%s`'
+
+    ReverseCommand:
+        palindrome: 'You reversed a palindrome, what were you expecting?'
+
+    RipCommand:
+        hasPaidTheirRespects: '**%s** has paid their respects.'
+        todayAndOverall: '%s Today, %s Overall'
+
+    RollCommand:
+        invalidValueGiven: 'Invalid `%s` value given, `%s` must be a number!'
+        rolledNumber: ':user rolled **:number** out of :min - :max'
+
 help:
     HelpCommand:
         listOfCommands: ':page_with_curl: **List of Command** ```css\n%s```\n'

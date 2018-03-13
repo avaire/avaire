@@ -3,6 +3,7 @@ package com.avairebot.commands.fun;
 import com.avairebot.AvaIre;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
+import com.avairebot.language.I18n;
 import com.avairebot.utilities.RandomUtil;
 
 import java.awt.*;
@@ -67,9 +68,26 @@ public class EightBallCommand extends Command {
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
         if (args.length == 0) {
-            return sendErrorMessage(context, "You must include a question for 8ball.");
+            return sendErrorMessage(context, context.i18n("mustIncludeQuestion"));
         }
 
+        String answers = context.getI18nCommandPrefix() + ".answers";
+
+        // Loads the answers from the selected i18n file
+        if (context.getI18n().contains(answers) && context.getI18n().isList(answers)) {
+            return sendAnswerFromList(context, context.getI18n().getStringList(answers));
+        }
+
+        // Tries to load the answers from the default i18n file instead
+        if (I18n.DEFAULT.getConfig().contains(answers) && I18n.DEFAULT.getConfig().isList(answers)) {
+            return sendAnswerFromList(context, I18n.DEFAULT.getConfig().getStringList(answers));
+        }
+
+        // Sends the default list
+        return sendAnswerFromList(context, this.answers);
+    }
+
+    private boolean sendAnswerFromList(CommandMessage context, List<String> answers) {
         context.makeEmbeddedMessage(
             Color.decode("#2A2C31"), (String) RandomUtil.pickRandom(answers)
         ).queue();
