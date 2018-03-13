@@ -75,6 +75,7 @@ help:
         multipleHiddenCategories: '_There is **%s** hidden categories for this channel._'
         fields:
             usage: 'Usage'
+            example: 'Example'
             aliases: 'Aliases'
             footer: 'Command category: '
 
