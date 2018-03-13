@@ -127,7 +127,8 @@ public class AvaIre {
             new CreateShardsTableMigration(),
             new AddDJLevelToGuildsTableMigration(),
             new RenamePlaylistSizeColumnToAmountMigration(),
-            new AddModlogToGuildsTableMigration()
+            new AddModlogToGuildsTableMigration(),
+            new AddLevelRolesToGuildsTableMigration()
         );
 
         LOGGER.info("Registering default command categories");
