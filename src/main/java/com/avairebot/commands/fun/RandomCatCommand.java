@@ -4,12 +4,14 @@ import com.avairebot.AvaIre;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.factories.RequestFactory;
+import com.avairebot.requests.Request;
 import com.avairebot.requests.Response;
 import com.avairebot.requests.service.RandomCatService;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
 public class RandomCatCommand extends Command {
@@ -40,12 +42,39 @@ public class RandomCatCommand extends Command {
 
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
-        RequestFactory.makeGET("http://random.cat/meow")
-            .send((Consumer<Response>) response -> {
-                RandomCatService service = (RandomCatService) response.toService(RandomCatService.class);
+        Request request = RequestFactory.makeGET("https://meow.senither.com/v1/random");
 
-                context.makeEmbeddedMessage().setImage(service.getFile()).queue();
-            });
+        String token = avaire.getConfig().getString("apiKeys.meowApi", null);
+        if (token != null && token.length() > 0) {
+            request.addParameter("token", token);
+        }
+
+        request.send((Consumer<Response>) response -> {
+            int statusCode = response.getResponse().code();
+
+            if (statusCode == 429) {
+                context.makeWarning("Too many attempts was made to the cat API, try again in a minute, or ask a bot administrator to get an API key at [meow.senither.com](https://meow.senither.com/) to allow for more requests.")
+                    .queue(message -> message.delete().queueAfter(45, TimeUnit.SECONDS));
+
+                return;
+            }
+
+            if (statusCode == 404) {
+                context.makeWarning("I couldn't find any cat picture D: Try again, maybe they will show up now?")
+                    .queue(message -> message.delete().queueAfter(45, TimeUnit.SECONDS));
+
+                return;
+            }
+
+            if (statusCode == 200) {
+                RandomCatService service = (RandomCatService) response.toService(RandomCatService.class);
+                context.makeEmbeddedMessage().setImage(service.getData().getUrl()).queue();
+
+                return;
+            }
+
+            context.makeError("Something just went horribly wrong, please tell a bot administrator so they can look into this.").queue();
+        });
         return true;
     }
 }
