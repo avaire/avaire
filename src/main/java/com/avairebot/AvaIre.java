@@ -309,19 +309,16 @@ public class AvaIre {
     public void shutdown(int exitCode) {
         getLogger().info("Shutting down bot instance gracefully with exit code " + exitCode);
 
-        long waitFor = 1000;
         for (GuildMusicManager manager : AudioHandler.MUSIC_MANAGER.values()) {
             if (manager.getLastActiveMessage() != null) {
                 manager.getLastActiveMessage().makeInfo(
                     "Bot is restarting, sorry for the inconvenience, we'll be right back!"
                 ).queue();
-
-                waitFor += 500;
             }
         }
 
         try {
-            Thread.sleep(waitFor);
+            Thread.sleep(2500);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
