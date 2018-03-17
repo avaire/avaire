@@ -77,7 +77,7 @@ public class RollCommand extends Command {
         try {
             return Double.parseDouble(argument);
         } catch (NumberFormatException ex) {
-            sendErrorMessage(context, context.i18n("invalidValueGiven"), error);
+            sendErrorMessage(context, context.i18n("invalidValueGiven"), error, error);
             throw ex;
         }
     }
