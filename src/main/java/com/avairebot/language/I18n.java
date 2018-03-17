@@ -26,6 +26,7 @@ public class I18n {
         I18n.avaire = avaire;
 
         LANGS.put("en_US", DEFAULT);
+        LANGS.put("en_PT", new LanguageLocale(new Locale("en", "US"), "en_PT", "Pirate Speak"));
 
         LOGGER.info("Loaded " + LANGS.size() + " languages: " + LANGS);
     }
