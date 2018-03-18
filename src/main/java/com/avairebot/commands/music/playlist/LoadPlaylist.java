@@ -63,17 +63,8 @@ public class LoadPlaylist extends PlaylistSubCommand {
             return;
         }
 
-        // We assign the size here because the track might be
-        // modified if nothing is playing by queue method.
-        int size = tracks.size();
-
         AudioHandler.getGuildAudioPlayer(context.getGuild())
-            .getScheduler().queue(tracks, context.getAuthor());
-
-        context.makeSuccess(context.i18n("loadedPlaylist"))
-            .set("name", playlist.getName())
-            .set("amount", size)
-            .queue();
+            .getScheduler().queue(playlist, tracks, context.getAuthor());
     }
 
     private void loadSong(PlaylistTransformer.PlaylistSong song, final List<AudioTrack> tracks, Consumer<List<AudioTrack>> success) {

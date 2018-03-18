@@ -1,6 +1,7 @@
 package com.avairebot.audio;
 
 import com.avairebot.commands.CommandMessage;
+import com.avairebot.database.transformers.PlaylistTransformer;
 import com.avairebot.utilities.NumberUtil;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
@@ -67,14 +68,20 @@ public class TrackScheduler extends AudioEventAdapterWrapped {
      * @param tracks    The list of tracks to add to the queue.
      * @param requester The user who requested the audio tracks.
      */
-    public void queue(List<AudioTrack> tracks, User requester) {
+    public void queue(PlaylistTransformer playlist, List<AudioTrack> tracks, User requester) {
         if (tracks.isEmpty()) {
             return;
         }
 
-        if (player.getPlayingTrack() == null) {
-            AudioTrackContainer container = new AudioTrackContainer(tracks.remove(0), requester);
+        int size = tracks.size();
+        AudioTrackContainer container = new AudioTrackContainer(tracks.get(0), requester);
 
+        String message = manager.getLastActiveMessage().i18nRaw("music.PlaylistCommand.loadedPlaylist");
+
+        if (player.getPlayingTrack() == null) {
+            message = message + "\n" + manager.getLastActiveMessage().i18nRaw("music.internal.nowPlayingSong");
+
+            tracks.remove(0);
             player.playTrack(container.getAudioTrack());
             audioTrackContainer = container;
         }
@@ -82,6 +89,16 @@ public class TrackScheduler extends AudioEventAdapterWrapped {
         for (AudioTrack track : tracks) {
             queue.offer(new AudioTrackContainer(track, requester));
         }
+
+        manager.getLastActiveMessage().makeSuccess(message)
+            .set("title", container.getAudioTrack().getInfo().title)
+            .set("link", container.getAudioTrack().getInfo().uri)
+            .set("size", NumberUtil.formatNicely(size))
+            .set("name", playlist.getName())
+            .set("amount", size)
+            .set("duration", container.getFormattedDuration())
+            .set("requester", container.getRequester().getAsMention())
+            .queue();
     }
 
     /**
