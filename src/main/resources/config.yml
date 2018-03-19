@@ -372,7 +372,7 @@ apiKeys:
   # Meow API is a simple services that provides lots of cat pictures, the service
   # was custom built for Ava since the old cat picture services was having some
   # issues. The API can be used without a key, although it will only allow
-  # 10 requests per minute, if your needs a higher then that, you can
+  # 10 requests per minute, if your needs are higher then that, you can
   # request for an API key.
   #
   # Get a key at: https://meow.senither.com/
