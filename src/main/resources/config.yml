@@ -340,6 +340,12 @@ metrics:
   #
   port: 1256
 
+  # This is the auth token that should be given to validate incoming vote requests,
+  # any requests to the vote route that is either missing the auth header, or
+  # has a key that does not match the key below will be ignored.
+  #
+  authToken: 'avaire-auth-token'
+
 #--------------------------------------------------------------------------
 # API Keys (These are all optional)
 #--------------------------------------------------------------------------

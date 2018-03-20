@@ -183,6 +183,7 @@ public class Metrics {
         Spark.get("/guilds/:ids", new GetGuilds(MetricsHolder.METRICS));
         Spark.get("/metrics", new GetMetrics(MetricsHolder.METRICS));
         Spark.get("/stats", new GetStats(MetricsHolder.METRICS));
+        Spark.post("/vote", new PostVote(MetricsHolder.METRICS));
 
         Metrics.isSetup = true;
     }
