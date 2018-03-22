@@ -8,9 +8,9 @@
 # in the "plugins/plugin name" folder.
 #
 # The configuration is written in a format known as YAML, you can learn
-# more about the language at https://learnxinyminutes.com/docs/yaml
+# more about the format at https://learnxinyminutes.com/docs/yaml
 #
-# Need to validate if config has no errors and will pass Avas configuration
+# Need to validate if the config has no errors and will pass Avas config
 # management system? Try out https://codebeautify.org/yaml-validator
 #
 # Got any questions? Contact the development team on the official support
@@ -57,7 +57,7 @@ environment: 'production'
 
 discord:
 
-  # This is your Discord application client id,if you don't have a Discord
+  # This is your Discord application client id, if you don't have a Discord
   # application, check the link above and follow the short guide to
   # create one, once you have it, replace the text between the
   # quotes with your client id.
