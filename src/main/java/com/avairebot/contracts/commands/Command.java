@@ -332,6 +332,10 @@ public abstract class Command extends Reflectionable {
                             .collect(Collectors.joining("`, `"))
                     ));
                     break;
+
+                case HAS_VOTED_TODAY:
+                    description.add("**You must [vote for Ava](https://discordbots.org/bot/avaire) to use this command**");
+                    break;
             }
         }
 

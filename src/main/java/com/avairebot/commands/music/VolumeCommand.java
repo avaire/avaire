@@ -49,7 +49,7 @@ public class VolumeCommand extends Command {
 
     @Override
     public List<String> getMiddleware() {
-        return Collections.singletonList("throttle:user,1,4");
+        return Arrays.asList("throttle:user,1,4", "has-voted");
     }
 
     @Override

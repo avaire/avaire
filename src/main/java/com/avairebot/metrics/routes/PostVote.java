@@ -34,6 +34,12 @@ public class PostVote extends SparkRoute {
             return buildResponse(response, 404, "Invalid user ID given, the user is not on any server the bot is on.");
         }
 
+        metrics.getAvaire().getVoteManager().registerVoteFor(userById);
+
+        AvaIre.getLogger().info(String.format("Vote has been registered by %s (%s)",
+            userById.getName() + "#" + userById.getDiscriminator(), userById.getId()
+        ));
+
         userById.openPrivateChannel().queue(message -> {
             message.sendMessage(
                 MessageFactory.createEmbeddedBuilder()

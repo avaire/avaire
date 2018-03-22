@@ -30,6 +30,7 @@ import com.avairebot.shard.ShardEntityCounter;
 import com.avairebot.shared.DiscordConstants;
 import com.avairebot.shared.ExitCodes;
 import com.avairebot.time.Carbon;
+import com.avairebot.vote.VoteManager;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.sedmelluq.discord.lavaplayer.tools.PlayerLibrary;
@@ -74,6 +75,7 @@ public class AvaIre {
     private final DatabaseManager database;
     private final IntelligenceManager intelligenceManager;
     private final PluginManager pluginManager;
+    private final VoteManager voteManager;
     private final ShardEntityCounter shardEntityCounter;
 
     private Carbon shutdownTime = null;
@@ -128,7 +130,8 @@ public class AvaIre {
             new AddDJLevelToGuildsTableMigration(),
             new RenamePlaylistSizeColumnToAmountMigration(),
             new AddModlogToGuildsTableMigration(),
-            new AddLevelRolesToGuildsTableMigration()
+            new AddLevelRolesToGuildsTableMigration(),
+            new CreateVotesTableMigration()
         );
 
         LOGGER.info("Registering default command categories");
@@ -209,6 +212,14 @@ public class AvaIre {
                     Sentry.getStoredClient().setRelease(AppInfo.getAppInfo().VERSION);
                     break;
             }
+        }
+
+        LOGGER.info("Preparing vote manager");
+        voteManager = new VoteManager(this);
+
+        if (voteManager.isEnabled()) {
+            LOGGER.info("Syncing votes with the DBL API");
+            voteManager.syncVotesWithAPI();
         }
 
         LOGGER.info("Preparing Lavalink");
@@ -296,6 +307,10 @@ public class AvaIre {
 
     public PluginManager getPluginManager() {
         return pluginManager;
+    }
+
+    public VoteManager getVoteManager() {
+        return voteManager;
     }
 
     public IntelligenceManager getIntelligenceManager() {

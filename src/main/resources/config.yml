@@ -347,6 +347,36 @@ metrics:
   authToken: 'avaire-auth-token'
 
 #--------------------------------------------------------------------------
+# Vote Locking
+#--------------------------------------------------------------------------
+#
+# Vote locking will limit some features so only users who have voted for the
+# bot will be able to use them, voting resets every 24 hours.
+#
+# When using the vote-lock feature, make sure the vote webhook has been setup
+# correctly with the auth token, you can find the auth token setting in the
+# metrics above. without a valid token setup the votes will not be synced
+# in real-time, which can cause a lot of lag between the user voting,
+# and them being allowed to use vote locked features.
+#
+
+vote-lock:
+
+  # This option determines if the vote-locking feature should be enabled at all,
+  # if set to true, any command or feature using the "vote" middleware will be
+  # restricted to users who have voted for the bot within the last 24 hours.
+  #
+  enabled: false
+
+  # This is the bot application API token for DBL(Discord Bot List), the API token
+  # is used to sync votes between the API and the bot during startup, so anyone
+  # who voted while the bot was offline will still get their rewards.
+  #
+  # You can get your DBL API key at: https://discordbots.org/api/docs#mybots
+  #
+  vote-sync-token: 'ReplaceThisWithYourAPITokenForDBL'
+
+#--------------------------------------------------------------------------
 # API Keys (These are all optional)
 #--------------------------------------------------------------------------
 #

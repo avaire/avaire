@@ -12,6 +12,7 @@ public class Constants {
     public static final String STATISTICS_TABLE_NAME = "statistics";
     public static final String BLACKLIST_TABLE_NAME = "blacklists";
     public static final String PLAYER_EXPERIENCE_TABLE_NAME = "experiences";
+    public static final String VOTES_TABLE_NAME = "votes";
     public static final String FEEDBACK_TABLE_NAME = "feedback";
     public static final String MUSIC_PLAYLIST_TABLE_NAME = "playlists";
     public static final String SHARDS_TABLE_NAME = "shards";
