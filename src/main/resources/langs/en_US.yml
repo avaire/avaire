@@ -104,9 +104,9 @@ interaction:
 music:
     internal:
         songWasSkipped: '[:title](:url) requested by :author was skipped.'
-        nowPlayingSong: 'Now playing: [:title](:link)\n`:duration` - Requested by :requester'
+        nowPlayingSong: 'Now playing: [:title](:link)\n`:duration` at `:volume%` volume - Requested by :requester'
         nowPlayingPlaylist: 'The **:playlistName** playlist has been added to the queue with `:playlistSize` tracks!'
-        nowPlaying: 'Now playing: [:title](:link)\n`:duration` - Requested by :requester'
+        nowPlaying: 'Now playing: [:title](:link)\n`:duration` at `:volume%` volume - Requested by :requester'
         queueHasEnded: 'Queue has ended, leaving voice.'
         noMatchFound: 'I found nothing with the given query: `%s`'
         trackLoadFailed: "I couldn't add that to the queue: `%s`"

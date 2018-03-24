@@ -98,6 +98,7 @@ public class TrackScheduler extends AudioEventAdapterWrapped {
             .set("amount", size)
             .set("duration", container.getFormattedDuration())
             .set("requester", container.getRequester().getAsMention())
+            .set("volume", manager.getPlayer().getVolume())
             .queue();
     }
 
@@ -138,6 +139,7 @@ public class TrackScheduler extends AudioEventAdapterWrapped {
                 .set("playlistName", playlist.getName())
                 .set("duration", container.getFormattedDuration())
                 .set("requester", container.getRequester().getAsMention())
+                .set("volume", manager.getPlayer().getVolume())
                 .queue();
         }
 
@@ -212,6 +214,7 @@ public class TrackScheduler extends AudioEventAdapterWrapped {
             .set("link", container.getAudioTrack().getInfo().uri)
             .set("duration", container.getFormattedDuration())
             .set("requester", container.getRequester().getAsMention())
+            .set("volume", manager.getPlayer().getVolume())
             .queue();
     }
 
