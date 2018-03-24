@@ -3,7 +3,6 @@ package com.avairebot.middleware;
 import com.avairebot.AvaIre;
 import com.avairebot.commands.AliasCommandContainer;
 import com.avairebot.commands.CommandMessage;
-import com.avairebot.contracts.commands.ThreadCommand;
 import com.avairebot.contracts.middleware.Middleware;
 import com.avairebot.factories.MessageFactory;
 import com.avairebot.metrics.Metrics;
@@ -105,11 +104,6 @@ public class ProcessCommand extends Middleware {
     }
 
     private boolean runCommand(MiddlewareStack stack, CommandMessage message, String[] args) {
-        if (stack.getCommand() instanceof ThreadCommand) {
-            ((ThreadCommand) stack.getCommand()).runThreadCommand(message, args);
-            return true;
-        }
-
         return stack.getCommand().onCommand(message, args);
     }
 

@@ -8,7 +8,7 @@ import com.avairebot.commands.CommandHandler;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.commands.administration.LevelCommand;
 import com.avairebot.contracts.commands.CacheFingerprint;
-import com.avairebot.contracts.commands.Command;
+import com.avairebot.contracts.commands.ThreadCommand;
 import com.avairebot.database.collection.Collection;
 import com.avairebot.database.collection.DataRow;
 import com.avairebot.database.controllers.GuildController;
@@ -23,7 +23,7 @@ import java.util.Collections;
 import java.util.List;
 
 @CacheFingerprint(name = "leaderboard-command")
-public class LeaderboardCommand extends Command {
+public class LeaderboardCommand extends ThreadCommand {
 
     public LeaderboardCommand(AvaIre avaire) {
         super(avaire, false);

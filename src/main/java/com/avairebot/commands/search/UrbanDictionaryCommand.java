@@ -2,7 +2,7 @@ package com.avairebot.commands.search;
 
 import com.avairebot.AvaIre;
 import com.avairebot.commands.CommandMessage;
-import com.avairebot.contracts.commands.Command;
+import com.avairebot.contracts.commands.ThreadCommand;
 import com.avairebot.factories.RequestFactory;
 import com.avairebot.requests.Response;
 import com.avairebot.requests.service.UrbanDictionaryService;
@@ -14,7 +14,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class UrbanDictionaryCommand extends Command {
+public class UrbanDictionaryCommand extends ThreadCommand {
 
     public UrbanDictionaryCommand(AvaIre avaire) {
         super(avaire);

@@ -5,6 +5,7 @@ import com.avairebot.AvaIre;
 import com.avairebot.Statistics;
 import com.avairebot.commands.CommandContainer;
 import com.avairebot.commands.CommandHandler;
+import com.avairebot.contracts.commands.ThreadCommand;
 import com.avairebot.contracts.handlers.EventAdapter;
 import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.controllers.PlayerController;
@@ -83,7 +84,7 @@ public class MessageEventAdapter extends EventAdapter {
             if (container != null && canExecuteCommand(event, container)) {
                 Statistics.addCommands();
 
-                (new MiddlewareStack(avaire, event.getMessage(), container)).next();
+                invokeMiddlewareStack(new MiddlewareStack(avaire, event.getMessage(), container));
                 return;
             }
 
@@ -92,7 +93,7 @@ public class MessageEventAdapter extends EventAdapter {
                 if (container != null && canExecuteCommand(event, container)) {
                     Statistics.addCommands();
 
-                    (new MiddlewareStack(avaire, event.getMessage(), container, true)).next();
+                    invokeMiddlewareStack(new MiddlewareStack(avaire, event.getMessage(), container, true));
                     return;
                 }
 
@@ -115,6 +116,14 @@ public class MessageEventAdapter extends EventAdapter {
                 sendInformationMessage(event);
             }
         });
+    }
+
+    private void invokeMiddlewareStack(MiddlewareStack stack) {
+        if (stack.getCommand() instanceof ThreadCommand) {
+            ((ThreadCommand) stack.getCommand()).submitTask(stack::next);
+            return;
+        }
+        stack.next();
     }
 
     private boolean canExecuteCommand(MessageReceivedEvent event, CommandContainer container) {

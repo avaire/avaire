@@ -4,7 +4,7 @@ import com.avairebot.AvaIre;
 import com.avairebot.cache.CacheType;
 import com.avairebot.chat.SimplePaginator;
 import com.avairebot.commands.CommandMessage;
-import com.avairebot.contracts.commands.Command;
+import com.avairebot.contracts.commands.ThreadCommand;
 import com.avairebot.utilities.NumberUtil;
 import net.dv8tion.jda.core.entities.User;
 
@@ -12,7 +12,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.*;
 
-public class MemeCommand extends Command {
+public class MemeCommand extends ThreadCommand {
 
     private final String customUrl = "https://memegen.link/custom/%s/%s.jpg?size=256&alt=%s&discordFormat=some-avatar.png";
     private final String templateUrl = "https://memegen.link/%s/%s/%s.jpg";

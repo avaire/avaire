@@ -5,7 +5,7 @@ import com.avairebot.audio.AudioHandler;
 import com.avairebot.commands.CommandContainer;
 import com.avairebot.commands.CommandHandler;
 import com.avairebot.commands.CommandMessage;
-import com.avairebot.contracts.commands.Command;
+import com.avairebot.contracts.commands.ThreadCommand;
 import com.avairebot.utilities.NumberUtil;
 
 import java.net.MalformedURLException;
@@ -14,7 +14,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class SoundcloudCommand extends Command {
+public class SoundcloudCommand extends ThreadCommand {
 
     public SoundcloudCommand(AvaIre avaire) {
         super(avaire, false);

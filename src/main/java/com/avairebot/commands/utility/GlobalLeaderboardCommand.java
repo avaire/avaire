@@ -5,7 +5,7 @@ import com.avairebot.cache.CacheType;
 import com.avairebot.chat.SimplePaginator;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.CacheFingerprint;
-import com.avairebot.contracts.commands.Command;
+import com.avairebot.contracts.commands.ThreadCommand;
 import com.avairebot.database.collection.Collection;
 import com.avairebot.database.collection.DataRow;
 import com.avairebot.utilities.LevelUtil;
@@ -18,7 +18,7 @@ import java.util.Collections;
 import java.util.List;
 
 @CacheFingerprint(name = "leaderboard-command")
-public class GlobalLeaderboardCommand extends Command {
+public class GlobalLeaderboardCommand extends ThreadCommand {
 
     public GlobalLeaderboardCommand(AvaIre avaire) {
         super(avaire, false);

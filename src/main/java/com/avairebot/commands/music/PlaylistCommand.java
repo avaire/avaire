@@ -5,7 +5,7 @@ import com.avairebot.commands.CommandHandler;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.commands.help.HelpCommand;
 import com.avairebot.commands.music.playlist.*;
-import com.avairebot.contracts.commands.Command;
+import com.avairebot.contracts.commands.ThreadCommand;
 import com.avairebot.database.collection.Collection;
 import com.avairebot.database.collection.DataRow;
 import com.avairebot.database.controllers.GuildController;
@@ -18,7 +18,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class PlaylistCommand extends Command {
+public class PlaylistCommand extends ThreadCommand {
 
     private final RemoveSongFromPlaylist removeSongFromLoadPlaylist;
     private final SendSongsInPlaylist sendSongsInPlaylist;

@@ -2,7 +2,7 @@ package com.avairebot.commands.utility;
 
 import com.avairebot.AvaIre;
 import com.avairebot.commands.CommandMessage;
-import com.avairebot.contracts.commands.Command;
+import com.avairebot.contracts.commands.ThreadCommand;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -14,7 +14,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class ExpandUrlCommand extends Command {
+public class ExpandUrlCommand extends ThreadCommand {
 
     public ExpandUrlCommand(AvaIre avaire) {
         super(avaire);
