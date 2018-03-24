@@ -131,7 +131,8 @@ public class AvaIre {
             new RenamePlaylistSizeColumnToAmountMigration(),
             new AddModlogToGuildsTableMigration(),
             new AddLevelRolesToGuildsTableMigration(),
-            new CreateVotesTableMigration()
+            new CreateVotesTableMigration(),
+            new AddDefaultVolumeToGuildsTableMigration()
         );
 
         LOGGER.info("Registering default command categories");
@@ -223,6 +224,7 @@ public class AvaIre {
         }
 
         LOGGER.info("Preparing Lavalink");
+        AudioHandler.setGlobalAvaIreInstance(this);
         LavalinkManager.LavalinkManagerHolder.LAVALINK.start(this);
 
         LOGGER.info("Preparing I18n");

@@ -31,6 +31,7 @@ public class GuildTransformer extends Transformer {
     private String autorole = null;
     private String modlog = null;
     private int modlogCase = 0;
+    private int defaultVolume = 50;
     private DJGuildLevel djGuildLevel = null;
 
     public GuildTransformer(DataRow data) {
@@ -46,6 +47,10 @@ public class GuildTransformer extends Transformer {
             modlog = data.getString("modlog");
             modlogCase = data.getInt("modlog_case");
             djGuildLevel = DJGuildLevel.fromId(data.getInt("dj_level", DJGuildLevel.getNormal().getId()));
+            defaultVolume = data.getInt("default_volume", 50);
+
+            // Sets the default volume to a value between 10 and 100.
+            defaultVolume = NumberUtil.getBetween(defaultVolume, 10, 100);
 
             if (data.getString("aliases", null) != null) {
                 HashMap<String, String> dbAliases = AvaIre.GSON.fromJson(
@@ -231,6 +236,14 @@ public class GuildTransformer extends Transformer {
 
     public void setDJLevel(DJGuildLevel djGuildLevel) {
         this.djGuildLevel = djGuildLevel;
+    }
+
+    public int getDefaultVolume() {
+        return defaultVolume;
+    }
+
+    public void setDefaultVolume(int defaultVolume) {
+        this.defaultVolume = defaultVolume;
     }
 
     @CheckReturnValue

@@ -188,6 +188,12 @@ music:
         seekingTooFar: "`%s` be more than th' length o' th' current chanty playin', if ye wants t' skip t' th' next chanty use `%sskip` instead."
         seekTo: "Seekin' **:title** t' `:time`"
 
+    SetDefaultVolumeCommand:
+        currentVolume: 'The default volume for the server is currently set to `:volume%`'
+        changedVolume: 'The default volume has been set to `:volume%`'
+        failedToSave: 'Something went wrong while trying to save the default volume: %s'
+        mustBeNumber: 'The `volume` must be a number between 10 and 100'
+
     ShuffleCommand:
         error: "Th' chanties queue be already empty, ye can request somethin' wit'\n`%splay <song title | url>`"
         success: "**:amount** shanties has been shuffled in th' shanties queue."

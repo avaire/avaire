@@ -43,10 +43,15 @@ public class AudioHandler {
     public static final Map<String, AudioSession> AUDIO_SESSION;
 
     private static AudioPlayerManager playerManager;
+    private static AvaIre avaire = null;
 
     static {
         MUSIC_MANAGER = new HashMap<>();
         AUDIO_SESSION = new HashMap<>();
+    }
+
+    public static void setGlobalAvaIreInstance(AvaIre avaire) {
+        AudioHandler.avaire = avaire;
     }
 
     @CheckReturnValue
@@ -201,7 +206,7 @@ public class AudioHandler {
 
         if (musicManager == null) {
             musicManager = new GuildMusicManager(getPlayerManager(), guild);
-            musicManager.getPlayer().setVolume(50);
+            prepareDefaultVolume(musicManager, guild);
 
             MUSIC_MANAGER.put(guildId, musicManager);
         }
@@ -319,5 +324,17 @@ public class AudioHandler {
             }
         }
         return false;
+    }
+
+    private static void prepareDefaultVolume(GuildMusicManager manager, Guild guild) {
+        if (avaire == null) {
+            manager.getPlayer().setVolume(50);
+            return;
+        }
+
+        GuildTransformer transformer = GuildController.fetchGuild(avaire, guild);
+        manager.getPlayer().setVolume(
+            transformer != null ? transformer.getDefaultVolume() : 50
+        );
     }
 }
