@@ -228,13 +228,15 @@ public class TrackScheduler extends AudioEventAdapterWrapped {
 
         LavalinkManager.LavalinkManagerHolder.LAVALINK.closeConnection(context.getGuild());
 
-        if (LavalinkManager.LavalinkManagerHolder.LAVALINK.isEnabled()) {
-            GuildMusicManager manager = AudioHandler.MUSIC_MANAGER.get(context.getGuild().getIdLong());
-            manager.getPlayer().removeListener(this);
+        GuildMusicManager manager = AudioHandler.MUSIC_MANAGER.get(context.getGuild().getIdLong());
+        manager.getPlayer().removeListener(this);
 
+        if (LavalinkManager.LavalinkManagerHolder.LAVALINK.isEnabled()) {
             if (manager.getPlayer() instanceof LavalinkPlayer) {
                 ((LavalinkPlayer) manager.getPlayer()).getLink().destroy();
             }
+        } else {
+            context.getGuild().getAudioManager().setSendingHandler(null);
         }
 
         AudioHandler.MUSIC_MANAGER.remove(
