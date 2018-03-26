@@ -120,7 +120,7 @@ public class SongCommand extends Command {
         String message = context.i18n("formats.song");
 
         if (player.getPlayingTrack().getInfo().isStream) {
-            message = context.i18n("stream");
+            message = context.i18n("formats.stream");
         }
 
         return String.format(message,
