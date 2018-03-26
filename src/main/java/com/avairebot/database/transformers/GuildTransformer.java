@@ -4,7 +4,6 @@ import com.avairebot.AvaIre;
 import com.avairebot.audio.DJGuildLevel;
 import com.avairebot.contracts.database.transformers.Transformer;
 import com.avairebot.database.collection.DataRow;
-import com.avairebot.time.Carbon;
 import com.avairebot.utilities.NumberUtil;
 import com.google.gson.internal.LinkedTreeMap;
 import com.google.gson.reflect.TypeToken;
@@ -25,6 +24,11 @@ public class GuildTransformer extends Transformer {
 
     private final GuildTypeTransformer guildType;
 
+    private String id;
+    private String name;
+    private String nameRaw;
+    private String locale;
+
     private boolean levels = false;
     private boolean levelAlerts = false;
     private String levelChannel = null;
@@ -40,6 +44,11 @@ public class GuildTransformer extends Transformer {
         guildType = new GuildTypeTransformer(data);
 
         if (hasData()) {
+            id = data.getString("id");
+            name = data.getString("name");
+            nameRaw = data.get("name").toString();
+            locale = data.getString("local");
+
             levels = data.getBoolean("levels");
             levelAlerts = data.getBoolean("level_alerts");
             levelChannel = data.getString("level_channel");
@@ -121,38 +130,28 @@ public class GuildTransformer extends Transformer {
                 }
             }
         }
+
+        reset();
     }
 
     public String getId() {
-        return data.getString("id");
+        return id;
     }
 
     public GuildTypeTransformer getType() {
         return guildType;
     }
 
-    public long getLongId() {
-        return data.getLong("id");
-    }
-
-    public String getOwnerId() {
-        return data.getString("owner");
-    }
-
-    public long getOwnerLongId() {
-        return data.getLong("owner");
-    }
-
     public String getName() {
-        return data.getString("name");
+        return name;
     }
 
-    public String getIcon() {
-        return data.getString("icon");
+    public String getNameRaw() {
+        return nameRaw;
     }
 
     public String getLocale() {
-        return data.getString("local");
+        return locale;
     }
 
     public boolean isLevels() {
@@ -299,17 +298,5 @@ public class GuildTransformer extends Transformer {
         }
 
         return AvaIre.GSON.toJson(objects);
-    }
-
-    public Carbon getCreatedAt() {
-        return data.getTimestamp("created_at");
-    }
-
-    public Carbon getUpdatedAt() {
-        return data.getTimestamp("updated_at");
-    }
-
-    public Carbon getLeftGuildAt() {
-        return data.getTimestamp("leftguild_at");
     }
 }

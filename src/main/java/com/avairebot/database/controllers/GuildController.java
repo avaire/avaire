@@ -3,9 +3,7 @@ package com.avairebot.database.controllers;
 import com.avairebot.AvaIre;
 import com.avairebot.Constants;
 import com.avairebot.cache.CacheType;
-import com.avairebot.contracts.database.transformers.Transformer;
 import com.avairebot.database.collection.DataRow;
-import com.avairebot.database.query.ChangeableStatement;
 import com.avairebot.database.transformers.GuildTransformer;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
@@ -22,6 +20,12 @@ import java.util.Map;
 public class GuildController {
 
     private static final String CACHE_STRING = "database.guilds.%s";
+    private static final String[] REQUIRED_GUILD_ITEMS = new String[]{
+        "guild_types.name as type_name", "guild_types.limits as type_limits",
+        "guilds.id", "guilds.name", "guilds.icon", "guilds.local", "guilds.channels", "guilds.modules", "guilds.level_roles", "guilds.claimable_roles",
+        "guilds.prefixes", "guilds.aliases", "guilds.default_volume", "guilds.dj_level", "guilds.modlog_case", "guilds.modlog", "guilds.autorole",
+        "guilds.level_channel", "guilds.level_alerts", "guilds.levels"
+    };
 
     @CheckReturnValue
     public static GuildTransformer fetchGuild(AvaIre avaire, Message message) {
@@ -42,7 +46,7 @@ public class GuildController {
 
         try {
             GuildTransformer transformer = new GuildTransformer(avaire.getDatabase().newQueryBuilder(Constants.GUILD_TABLE_NAME)
-                .select("guild_types.name as type_name", "guild_types.limits as type_limits", "guilds.*")
+                .select(REQUIRED_GUILD_ITEMS)
                 .leftJoin("guild_types", "guilds.type", "guild_types.id")
                 .where("guilds.id", guild.getId())
                 .get().first());
@@ -72,28 +76,9 @@ public class GuildController {
                 return (GuildTransformer) avaire.getCache().getAdapter(CacheType.MEMORY).get(cacheToken);
             }
 
-            // If the guild haven't been encoded yet, we'll do it below.
-            String name = transformer.getRawData().get("name").toString();
-            if (name.startsWith("base64:")) {
-                avaire.getCache()
-                    .getAdapter(CacheType.MEMORY)
-                    .put(String.format(CACHE_STRING, guild.getId()), transformer, 300);
-
-                return transformer;
-            }
-
-            avaire.getDatabase().newQueryBuilder(Constants.GUILD_TABLE_NAME)
-                .where("id", guild.getId())
-                .update(statement -> {
-                    statement.set("name", guild.getName(), true);
-                    statement.set("roles_data", buildRoleData(guild.getRoles()), true);
-                    statement.set("channels_data", buildChannelData(guild.getTextChannels()), true);
-
-                    setUpdateStatementFor(transformer, statement, "channels");
-                    setUpdateStatementFor(transformer, statement, "claimable_roles");
-                    setUpdateStatementFor(transformer, statement, "prefixes");
-                    setUpdateStatementFor(transformer, statement, "aliases");
-                });
+            avaire.getCache()
+                .getAdapter(CacheType.MEMORY)
+                .put(String.format(CACHE_STRING, guild.getId()), transformer, 300);
 
             return transformer;
         } catch (SQLException ex) {
@@ -153,11 +138,5 @@ public class GuildController {
             rolesMap.add(item);
         }
         return AvaIre.GSON.toJson(rolesMap);
-    }
-
-    private static void setUpdateStatementFor(Transformer transformer, ChangeableStatement statement, String name) {
-        if (transformer.getRawData().get(name, null) != null) {
-            statement.set(name, transformer.getRawData().getString(name), true);
-        }
     }
 }

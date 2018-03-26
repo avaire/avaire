@@ -7,8 +7,8 @@ import java.util.Map;
 
 public abstract class Transformer implements ConfigurationSerializable {
 
-    protected final DataRow data;
-    protected final boolean hasData;
+    protected DataRow data;
+    protected boolean hasData;
 
     public Transformer(DataRow data) {
         this.data = data;
@@ -31,5 +31,9 @@ public abstract class Transformer implements ConfigurationSerializable {
     @Override
     public Map<String, Object> serialize() {
         return data.getRaw();
+    }
+
+    protected void reset() {
+        this.data = null;
     }
 }

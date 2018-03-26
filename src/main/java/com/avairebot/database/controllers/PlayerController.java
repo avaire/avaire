@@ -76,7 +76,7 @@ public class PlayerController {
             }
 
             // If the users name haven't been encoded yet, we'll do it below.
-            String username = transformer.getRawData().get("username").toString();
+            String username = transformer.getUsernameRaw();
             if (username.startsWith("base64:")) {
                 avaire.getCache()
                     .getAdapter(CacheType.MEMORY)
