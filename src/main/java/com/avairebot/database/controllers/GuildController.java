@@ -9,6 +9,7 @@ import com.avairebot.database.query.ChangeableStatement;
 import com.avairebot.database.transformers.GuildTransformer;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.TextChannel;
 
 import javax.annotation.CheckReturnValue;
@@ -54,6 +55,7 @@ public class GuildController {
                             statement.set("id", guild.getId())
                                 .set("owner", guild.getOwner().getUser().getId())
                                 .set("name", guild.getName(), true)
+                                .set("roles_data", buildRoleData(guild.getRoles()), true)
                                 .set("channels_data", buildChannelData(guild.getTextChannels()), true);
 
                             if (guild.getIconId() != null) {
@@ -84,6 +86,7 @@ public class GuildController {
                 .where("id", guild.getId())
                 .update(statement -> {
                     statement.set("name", guild.getName(), true);
+                    statement.set("roles_data", buildRoleData(guild.getRoles()), true);
                     statement.set("channels_data", buildChannelData(guild.getTextChannels()), true);
 
                     setUpdateStatementFor(transformer, statement, "channels");
@@ -127,6 +130,29 @@ public class GuildController {
             channels.add(item);
         }
         return AvaIre.GSON.toJson(channels);
+    }
+
+    public static String buildRoleData(List<Role> roles) {
+        List<Map<String, Object>> rolesMap = new ArrayList<>();
+        for (Role role : roles) {
+            if (role.isPublicRole()) {
+                continue;
+            }
+
+            Map<String, Object> item = new HashMap<>();
+
+            item.put("id", role.getId());
+            item.put("name", role.getName());
+            item.put("position", role.getPosition());
+            item.put("permissions", role.getPermissionsRaw());
+
+            item.put("color", role.getColor() == null ? null
+                : Integer.toHexString(role.getColor().getRGB()).substring(2)
+            );
+
+            rolesMap.add(item);
+        }
+        return AvaIre.GSON.toJson(rolesMap);
     }
 
     private static void setUpdateStatementFor(Transformer transformer, ChangeableStatement statement, String name) {

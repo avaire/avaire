@@ -15,8 +15,11 @@ import net.dv8tion.jda.core.events.guild.member.GuildMemberLeaveEvent;
 import net.dv8tion.jda.core.events.guild.update.GuildUpdateNameEvent;
 import net.dv8tion.jda.core.events.guild.update.GuildUpdateRegionEvent;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.events.role.RoleCreateEvent;
 import net.dv8tion.jda.core.events.role.RoleDeleteEvent;
 import net.dv8tion.jda.core.events.role.update.RoleUpdateNameEvent;
+import net.dv8tion.jda.core.events.role.update.RoleUpdatePermissionsEvent;
+import net.dv8tion.jda.core.events.role.update.RoleUpdatePositionEvent;
 import net.dv8tion.jda.core.events.user.UserAvatarUpdateEvent;
 import net.dv8tion.jda.core.events.user.UserNameUpdateEvent;
 
@@ -101,12 +104,29 @@ public class MainEventHandler extends EventHandler {
 
     @Override
     public void onRoleUpdateName(RoleUpdateNameEvent event) {
+        roleEvent.updateRoleData(event.getGuild());
         roleEvent.onRoleUpdateName(event);
     }
 
     @Override
     public void onRoleDelete(RoleDeleteEvent event) {
+        roleEvent.updateRoleData(event.getGuild());
         roleEvent.onRoleDelete(event);
+    }
+
+    @Override
+    public void onRoleCreate(RoleCreateEvent event) {
+        roleEvent.updateRoleData(event.getGuild());
+    }
+
+    @Override
+    public void onRoleUpdatePosition(RoleUpdatePositionEvent event) {
+        roleEvent.updateRoleData(event.getGuild());
+    }
+
+    @Override
+    public void onRoleUpdatePermissions(RoleUpdatePermissionsEvent event) {
+        roleEvent.updateRoleData(event.getGuild());
     }
 
     @Override

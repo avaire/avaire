@@ -5,6 +5,7 @@ import com.avairebot.Constants;
 import com.avairebot.contracts.handlers.EventAdapter;
 import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.transformers.GuildTransformer;
+import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.events.role.RoleDeleteEvent;
 import net.dv8tion.jda.core.events.role.update.RoleUpdateNameEvent;
 
@@ -105,6 +106,18 @@ public class RoleEventAdapter extends EventAdapter {
                 .where("id", event.getGuild().getId())
                 .update(statement -> {
                     statement.set("level_roles", AvaIre.GSON.toJson(transformer.getLevelRoles()), true);
+                });
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateRoleData(Guild guild) {
+        try {
+            avaire.getDatabase().newQueryBuilder(Constants.GUILD_TABLE_NAME)
+                .where("id", guild.getId())
+                .update(statement -> {
+                    statement.set("roles_data", GuildController.buildRoleData(guild.getRoles()), true);
                 });
         } catch (SQLException e) {
             e.printStackTrace();
