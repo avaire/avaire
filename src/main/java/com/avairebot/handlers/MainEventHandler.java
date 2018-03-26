@@ -20,8 +20,8 @@ import net.dv8tion.jda.core.events.role.RoleDeleteEvent;
 import net.dv8tion.jda.core.events.role.update.RoleUpdateNameEvent;
 import net.dv8tion.jda.core.events.role.update.RoleUpdatePermissionsEvent;
 import net.dv8tion.jda.core.events.role.update.RoleUpdatePositionEvent;
-import net.dv8tion.jda.core.events.user.UserAvatarUpdateEvent;
-import net.dv8tion.jda.core.events.user.UserNameUpdateEvent;
+import net.dv8tion.jda.core.events.user.update.UserUpdateAvatarEvent;
+import net.dv8tion.jda.core.events.user.update.UserUpdateNameEvent;
 
 public class MainEventHandler extends EventHandler {
 
@@ -130,12 +130,12 @@ public class MainEventHandler extends EventHandler {
     }
 
     @Override
-    public void onUserAvatarUpdate(UserAvatarUpdateEvent event) {
+    public void onUserUpdateAvatar(UserUpdateAvatarEvent event) {
         PlayerController.updateUserData(avaire, event.getUser());
     }
 
     @Override
-    public void onUserNameUpdate(UserNameUpdateEvent event) {
+    public void onUserUpdateName(UserUpdateNameEvent event) {
         PlayerController.updateUserData(avaire, event.getUser());
     }
 }
