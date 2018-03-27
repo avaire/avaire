@@ -38,8 +38,20 @@ public class GetGuilds extends SparkRoute {
                 owner.put("username", guildById.getOwner().getUser().getName());
                 owner.put("discriminator", guildById.getOwner().getUser().getDiscriminator());
                 owner.put("avatar", guildById.getOwner().getUser().getEffectiveAvatarUrl());
-
                 guild.put("owner", owner);
+
+                JSONObject counter = new JSONObject();
+
+                long userCount = guildById.getMembers()
+                    .stream().filter(member -> member.getUser().isBot()).count();
+
+                counter.put("textChannels", guildById.getTextChannels().size());
+                counter.put("voiceChannels", guildById.getVoiceChannels().size());
+                counter.put("members", guildById.getMembers().size());
+                counter.put("users", guildById.getMembers().size() - userCount);
+                counter.put("bots", userCount);
+                guild.put("counter", counter);
+
                 root.put(id, guild);
             } catch (NumberFormatException e) {
                 root.put(id, JSONObject.NULL);
