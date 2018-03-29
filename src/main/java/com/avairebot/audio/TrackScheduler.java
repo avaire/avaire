@@ -7,6 +7,7 @@ import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
+import lavalink.client.io.Link;
 import lavalink.client.player.IPlayer;
 import lavalink.client.player.LavalinkPlayer;
 import lavalink.client.player.event.AudioEventAdapterWrapped;
@@ -233,7 +234,11 @@ public class TrackScheduler extends AudioEventAdapterWrapped {
 
         if (LavalinkManager.LavalinkManagerHolder.LAVALINK.isEnabled()) {
             if (manager.getPlayer() instanceof LavalinkPlayer) {
-                ((LavalinkPlayer) manager.getPlayer()).getLink().destroy();
+                LavalinkPlayer player = (LavalinkPlayer) manager.getPlayer();
+
+                if (player.getLink() != null && isNodeStateDestroyed(player.getLink().getState())) {
+                    player.getLink().destroy();
+                }
             }
         } else {
             context.getGuild().getAudioManager().setSendingHandler(null);
@@ -246,5 +251,9 @@ public class TrackScheduler extends AudioEventAdapterWrapped {
 
     public void handleEndOfQueueWithLastActiveMessage(boolean sendEndOfQueue) {
         handleEndOfQueue(manager.getLastActiveMessage(), sendEndOfQueue);
+    }
+
+    private boolean isNodeStateDestroyed(Link.State state) {
+        return !state.equals(Link.State.DESTROYED) && !state.equals(Link.State.DESTROYING);
     }
 }
