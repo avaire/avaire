@@ -5,11 +5,13 @@ import com.avairebot.audio.AudioHandler;
 import com.avairebot.audio.GuildMusicManager;
 import com.avairebot.audio.LavalinkManager;
 import com.avairebot.contracts.scheduler.Job;
+import lavalink.client.io.Link;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.VoiceChannel;
 import net.dv8tion.jda.core.managers.AudioManager;
 
+import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -22,12 +24,17 @@ public class MusicActivityJob extends Job {
     public final static Map<Long, Integer> PLAYER_PAUSED = new HashMap<>();
 
     public MusicActivityJob(AvaIre avaire) {
-        super(avaire, 30, 30, TimeUnit.SECONDS);
+        super(avaire, 5, 5, TimeUnit.SECONDS);
     }
 
     @Override
     public void run() {
         if (!avaire.getConfig().getBoolean("music-activity.enabled", true)) {
+            return;
+        }
+
+        if (LavalinkManager.LavalinkManagerHolder.LAVALINK.isEnabled()) {
+            handleLavalinkNodes();
             return;
         }
 
@@ -45,14 +52,14 @@ public class MusicActivityJob extends Job {
                     long guildId = manager.getGuild().getIdLong();
 
                     if (!AudioHandler.MUSIC_MANAGER.containsKey(guildId)) {
-                        handleEmptyMusic(manager, null, guildId);
+                        handleEmptyMusic(manager, null, null, guildId);
                         continue;
                     }
 
                     GuildMusicManager guildMusicManager = AudioHandler.MUSIC_MANAGER.get(guildId);
 
                     if (guildMusicManager.getScheduler().getQueue().isEmpty() && guildMusicManager.getPlayer().getPlayingTrack() == null) {
-                        handleEmptyMusic(manager, guildMusicManager, guildId);
+                        handleEmptyMusic(manager, null, guildMusicManager, guildId);
                         continue;
                     }
 
@@ -61,7 +68,7 @@ public class MusicActivityJob extends Job {
                     }
 
                     if (guildMusicManager.getPlayer().isPaused()) {
-                        handlePausedMusic(manager, guildMusicManager, guildId);
+                        handlePausedMusic(manager, null, guildMusicManager, guildId);
                         continue;
                     }
 
@@ -93,7 +100,7 @@ public class MusicActivityJob extends Job {
                         continue;
                     }
 
-                    clearItems(manager, guildMusicManager, guildId);
+                    clearItems(manager, null, guildMusicManager, guildId);
                 }
             } catch (Exception e) {
                 AvaIre.getLogger().error("An exception occurred during music activity job: " + e.getMessage(), e);
@@ -101,7 +108,67 @@ public class MusicActivityJob extends Job {
         }
     }
 
-    private void handleEmptyMusic(AudioManager manager, GuildMusicManager guildMusicManager, long guildId) {
+    private void handleLavalinkNodes() {
+        for (Link link : LavalinkManager.LavalinkManagerHolder.LAVALINK.getLavalink().getLinks()) {
+            System.out.println("Link: " + link.getGuildId());
+            long guildId = link.getGuildIdLong();
+
+            if (!AudioHandler.MUSIC_MANAGER.containsKey(guildId)) {
+                handleEmptyMusic(null, link, null, guildId);
+                continue;
+            }
+
+            GuildMusicManager guildMusicManager = AudioHandler.MUSIC_MANAGER.get(guildId);
+
+            if (guildMusicManager.getScheduler().getQueue().isEmpty() && guildMusicManager.getPlayer().getPlayingTrack() == null) {
+                handleEmptyMusic(null, link, guildMusicManager, guildId);
+                continue;
+            }
+
+            if (EMPTY_QUEUE.containsKey(guildId)) {
+                EMPTY_QUEUE.remove(guildId);
+            }
+
+            if (guildMusicManager.getPlayer().isPaused()) {
+                handlePausedMusic(null, link, guildMusicManager, guildId);
+                continue;
+            }
+
+            VoiceChannel voiceChannel = link.getChannel();
+
+            if (voiceChannel != null) {
+                boolean hasListeners = false;
+                for (Member member : voiceChannel.getMembers()) {
+                    if (member.getUser().isBot()) {
+                        continue;
+                    }
+
+                    if (member.getVoiceState().isDeafened()) {
+                        continue;
+                    }
+
+                    hasListeners = true;
+                    break;
+                }
+
+                if (hasListeners && !guildMusicManager.getLastActiveMessage().getGuild().getSelfMember().getVoiceState().isMuted()) {
+                    MISSING_LISTENERS.remove(guildId);
+                    continue;
+                }
+
+                int times = MISSING_LISTENERS.getOrDefault(guildId, 0) + 1;
+
+                if (times <= getValue("missing-listeners", 5)) {
+                    MISSING_LISTENERS.put(guildId, times);
+                    continue;
+                }
+            }
+
+            clearItems(null, link, guildMusicManager, guildId);
+        }
+    }
+
+    private void handleEmptyMusic(@Nullable AudioManager manager, @Nullable Link link, @Nullable GuildMusicManager guildMusicManager, long guildId) {
         int times = EMPTY_QUEUE.getOrDefault(guildId, 0) + 1;
 
         if (times <= getValue("empty-queue-timeout", 2)) {
@@ -109,10 +176,10 @@ public class MusicActivityJob extends Job {
             return;
         }
 
-        clearItems(manager, guildMusicManager, guildId);
+        clearItems(manager, link, guildMusicManager, guildId);
     }
 
-    private void handlePausedMusic(AudioManager manager, GuildMusicManager guildMusicManager, long guildId) {
+    private void handlePausedMusic(@Nullable AudioManager manager, @Nullable Link link, @Nullable GuildMusicManager guildMusicManager, long guildId) {
         int times = PLAYER_PAUSED.getOrDefault(guildId, 0) + 1;
 
         if (times <= getValue("paused-music-timeout", 10)) {
@@ -120,10 +187,10 @@ public class MusicActivityJob extends Job {
             return;
         }
 
-        clearItems(manager, guildMusicManager, guildId);
+        clearItems(manager, link, guildMusicManager, guildId);
     }
 
-    private void clearItems(AudioManager manager, GuildMusicManager guildMusicManager, long guildId) {
+    private void clearItems(@Nullable AudioManager manager, @Nullable Link link, @Nullable GuildMusicManager guildMusicManager, long guildId) {
         if (guildMusicManager != null) {
             guildMusicManager.getScheduler().getQueue().clear();
             if (LavalinkManager.LavalinkManagerHolder.LAVALINK.isEnabled()) {
@@ -136,17 +203,32 @@ public class MusicActivityJob extends Job {
             }
         }
 
-        AudioHandler.MUSIC_MANAGER.remove(guildId);
         MISSING_LISTENERS.remove(guildId);
         PLAYER_PAUSED.remove(guildId);
         EMPTY_QUEUE.remove(guildId);
 
-        LavalinkManager.LavalinkManagerHolder.LAVALINK.closeConnection(manager.getGuild());
+        if (guildMusicManager == null) {
+            if (manager != null) {
+                LavalinkManager.LavalinkManagerHolder.LAVALINK.closeConnection(manager.getGuild());
+            } else if (link != null) {
+                link.disconnect();
+            }
+
+            if (LavalinkManager.LavalinkManagerHolder.LAVALINK.isEnabled()) {
+                if (manager != null) {
+                    manager.getGuild().getAudioManager().setSendingHandler(null);
+                }
+            }
+
+            AudioHandler.MUSIC_MANAGER.remove(guildId);
+        } else {
+            guildMusicManager.getScheduler().handleEndOfQueueWithLastActiveMessage(false);
+        }
     }
 
     private int getValue(String path, int def) {
         return Math.max(1, avaire.getConfig()
-            .getInt("music-activity" + path, def) * 2
+            .getInt("music-activity." + path, def) * 2
         );
     }
 }
