@@ -110,7 +110,6 @@ public class MusicActivityJob extends Job {
 
     private void handleLavalinkNodes() {
         for (Link link : LavalinkManager.LavalinkManagerHolder.LAVALINK.getLavalink().getLinks()) {
-            System.out.println("Link: " + link.getGuildId());
             long guildId = link.getGuildIdLong();
 
             if (!AudioHandler.MUSIC_MANAGER.containsKey(guildId)) {
