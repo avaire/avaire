@@ -130,7 +130,7 @@ music:
         addedSongsFromPlaylist: ":user has added :songs shanties from th' [:title](:url) playlist t' th' queue. Thar are `:queueSize` chantey(s) ahead o' it in th' queue."
         session:
             title: 'Results fer %s'
-            footer: "Chose a shantey wit' %s <number>"
+            footer: "Choose a shantey wit' %s <number>"
 
     PlaylistCommand:
         noPlaylists: "This server does nah 'ave any chanties playlists yet, ye can create one wit'\n`:command` t' get started"

@@ -130,7 +130,7 @@ music:
         addedSongsFromPlaylist: ':user has added :songs songs from the [:title](:url) playlist to the queue. There are `:queueSize` song(s) ahead of it in the queue.'
         session:
             title: 'Results for %s'
-            footer: 'Chose a song with %s <number>'
+            footer: 'Choose a song with %s <number>'
 
     PlaylistCommand:
         noPlaylists: 'This server does not have any music playlists yet, you can create one with\n`:command` to get started'
