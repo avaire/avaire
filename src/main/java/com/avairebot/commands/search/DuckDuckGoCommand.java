@@ -67,7 +67,7 @@ public class DuckDuckGoCommand extends ThreadCommand {
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
         if (args.length == 0) {
-            return sendErrorMessage(context, "missingArgument", "query");
+            return sendErrorMessage(context, "errors.missingArgument", "query");
         }
 
         try {

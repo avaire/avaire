@@ -44,7 +44,7 @@ public class UserInfoCommand extends Command {
         if (args.length > 0) {
             User user = MentionableUtil.getUser(context, args);
             if (user == null) {
-                return sendErrorMessage(context, "noUsersWithNameOrId", args[0]);
+                return sendErrorMessage(context, "errors.noUsersWithNameOrId", args[0]);
             }
             member = context.getGuild().getMember(user);
         }

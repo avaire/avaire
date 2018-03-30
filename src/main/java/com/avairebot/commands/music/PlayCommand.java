@@ -67,7 +67,7 @@ public class PlayCommand extends ThreadCommand {
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
         if (args.length == 0) {
-            return sendErrorMessage(context, "missingMusicQueue");
+            return sendErrorMessage(context, "errors.missingMusicQueue");
         }
 
         boolean shouldLeaveMessage = false;

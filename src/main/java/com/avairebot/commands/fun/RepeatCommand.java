@@ -42,7 +42,7 @@ public class RepeatCommand extends Command {
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
         if (args.length == 0) {
-            return sendErrorMessage(context, "missingArgument", "message");
+            return sendErrorMessage(context, "errors.missingArgument", "message");
         }
 
         context.getMessageChannel().sendMessage(context.getContentRaw()).queue();

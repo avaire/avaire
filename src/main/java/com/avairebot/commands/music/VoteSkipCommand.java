@@ -53,7 +53,7 @@ public class VoteSkipCommand extends Command {
         }
 
         if (!canVoteSkip(context)) {
-            return sendErrorMessage(context, "mustBeConnectedToSameChannel", "vote skip");
+            return sendErrorMessage(context, "errors.mustBeConnectedToSameChannel", "vote skip");
         }
 
         boolean hasVotedBefore = true;

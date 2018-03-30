@@ -42,7 +42,7 @@ public class ReverseCommand extends Command {
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
         if (args.length == 0) {
-            return sendErrorMessage(context, "missingArgument", "message");
+            return sendErrorMessage(context, "errors.missingArgument", "message");
         }
 
         String string = String.join(" ", args);

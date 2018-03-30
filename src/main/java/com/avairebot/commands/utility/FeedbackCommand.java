@@ -53,7 +53,7 @@ public class FeedbackCommand extends Command {
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
         if (args.length == 0) {
-            return sendErrorMessage(context, "missingArgument", "message");
+            return sendErrorMessage(context, "errors.missingArgument", "message");
         }
 
         TextChannel feedbackChannel = avaire.getShardManager().getTextChannelById(DiscordConstants.FEEDBACK_CHANNEL_ID);

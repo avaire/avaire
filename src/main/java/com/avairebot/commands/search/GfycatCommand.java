@@ -52,7 +52,7 @@ public class GfycatCommand extends ThreadCommand {
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
         if (args.length == 0) {
-            return sendErrorMessage(context, "missingArgument", "queue");
+            return sendErrorMessage(context, "errors.missingArgument", "queue");
         }
 
         RequestFactory.makeGET("https://api.gfycat.com/v1test/gfycats/search")

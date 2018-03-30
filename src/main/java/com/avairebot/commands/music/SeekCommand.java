@@ -67,7 +67,7 @@ public class SeekCommand extends Command {
         }
 
         if (args.length == 0) {
-            return sendErrorMessage(context, "missingArgument", "number");
+            return sendErrorMessage(context, "errors.missingArgument", "number");
         }
 
         try {

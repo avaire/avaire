@@ -60,7 +60,7 @@ public class SoundcloudCommand extends ThreadCommand {
     @SuppressWarnings("ConstantConditions")
     public boolean onCommand(CommandMessage context, String[] args) {
         if (args.length == 0) {
-            return sendErrorMessage(context, "missingMusicQueue");
+            return sendErrorMessage(context, "errors.missingMusicQueue");
         }
 
         CommandContainer container = CommandHandler.getCommand(PlayCommand.class);

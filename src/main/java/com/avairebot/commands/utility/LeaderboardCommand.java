@@ -56,7 +56,7 @@ public class LeaderboardCommand extends ThreadCommand {
         if (transformer == null || !transformer.isLevels()) {
             return sendErrorMessage(
                 context,
-                "requireLevelFeatureToBeEnabled",
+                "errors.requireLevelFeatureToBeEnabled",
                 CommandHandler.getCommand(LevelCommand.class)
                     .getCommand().generateCommandTrigger(context.getMessage())
             );

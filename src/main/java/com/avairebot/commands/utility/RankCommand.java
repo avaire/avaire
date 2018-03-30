@@ -81,7 +81,7 @@ public class RankCommand extends Command {
         if (guildTransformer == null || !guildTransformer.isLevels()) {
             return sendErrorMessage(
                 context,
-                "requireLevelFeatureToBeEnabled",
+                "errors.requireLevelFeatureToBeEnabled",
                 CommandHandler.getCommand(LevelCommand.class)
                     .getCommand().generateCommandTrigger(context.getMessage())
             );

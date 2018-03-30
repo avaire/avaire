@@ -119,7 +119,7 @@ public abstract class Command extends Reflectionable {
     /**
      * Gets am immutable list of command triggers that can be used to invoke the current
      * command, the first index in the list will be used when the `:command` placeholder
-     * is used in {@link #getDescription(CommandMessage)} or {@link #getUsageInstructions()} methods.
+     * is used in {@link #getDescription(CommandContext)} or {@link #getUsageInstructions()} methods.
      *
      * @return An immutable list of command triggers that should invoked the command.
      */
@@ -197,7 +197,7 @@ public abstract class Command extends Reflectionable {
             );
         }
 
-        String i18nError = context.i18nRaw("errors." + error);
+        String i18nError = context.i18nRaw(error);
         if (i18nError != null) {
             error = i18nError;
         }

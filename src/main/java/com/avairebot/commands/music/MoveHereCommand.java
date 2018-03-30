@@ -60,7 +60,7 @@ public class MoveHereCommand extends Command {
 
         VoiceChannel channel = context.getMember().getVoiceState().getChannel();
         if (channel == null) {
-            return sendErrorMessage(context, "mustBeConnectedToVoice");
+            return sendErrorMessage(context, "errors.mustBeConnectedToVoice");
         }
 
         VoiceConnectStatus voiceConnectStatus = AudioHandler.connectToVoiceChannel(context, true);

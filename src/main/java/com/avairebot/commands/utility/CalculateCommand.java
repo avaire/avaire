@@ -44,7 +44,7 @@ public class CalculateCommand extends Command {
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
         if (args.length == 0) {
-            return sendErrorMessage(context, "missingArgument", "equation");
+            return sendErrorMessage(context, "errors.missingArgument", "equation");
         }
 
         String string = String.join(" ", args).trim();

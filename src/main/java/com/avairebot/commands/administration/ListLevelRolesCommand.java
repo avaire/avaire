@@ -56,7 +56,7 @@ public class ListLevelRolesCommand extends Command {
         if (transformer == null || !transformer.isLevels()) {
             return sendErrorMessage(
                 context,
-                "requireLevelFeatureToBeEnabled",
+                "errors.requireLevelFeatureToBeEnabled",
                 CommandHandler.getCommand(LevelCommand.class)
                     .getCommand().generateCommandTrigger(context.getMessage())
             );

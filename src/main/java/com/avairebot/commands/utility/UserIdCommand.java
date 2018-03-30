@@ -53,7 +53,7 @@ public class UserIdCommand extends Command {
         }
 
         if (user == null) {
-            return sendErrorMessage(context, "noUsersWithNameOrId", args[0]);
+            return sendErrorMessage(context, "errors.noUsersWithNameOrId", args[0]);
         }
 
         context.makeSuccess(context.i18n("message"))

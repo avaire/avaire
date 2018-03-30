@@ -43,7 +43,7 @@ public class ExpandUrlCommand extends ThreadCommand {
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
         if (args.length == 0) {
-            return sendErrorMessage(context, "missingArgument", "url");
+            return sendErrorMessage(context, "errors.missingArgument", "url");
         }
 
         try {
@@ -70,7 +70,7 @@ public class ExpandUrlCommand extends ThreadCommand {
 
             return true;
         } catch (MalformedURLException ex) {
-            return sendErrorMessage(context, "invalidProperty", "URL");
+            return sendErrorMessage(context, "errors.invalidProperty", "URL");
         } catch (UnknownHostException ex) {
             context.makeError("Unknown host for the provided `url`, does it actually go anywhere?").queue();
         } catch (IOException e) {

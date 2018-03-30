@@ -97,12 +97,12 @@ public class PlaylistCommand extends ThreadCommand {
     public boolean onCommand(CommandMessage context, String[] args) {
         Collection playlists = PlaylistController.fetchPlaylists(avaire, context.getMessage());
         if (playlists == null) {
-            return sendErrorMessage(context, "errorOccurredWhileLoading", "servers playlist");
+            return sendErrorMessage(context, "errors.errorOccurredWhileLoading", "servers playlist");
         }
 
         GuildTransformer transformer = GuildController.fetchGuild(avaire, context.getMessage());
         if (transformer == null) {
-            return sendErrorMessage(context, "errorOccurredWhileLoading", "server settings");
+            return sendErrorMessage(context, "errors.errorOccurredWhileLoading", "server settings");
         }
 
         if (args.length == 0 && playlists.isEmpty()) {
