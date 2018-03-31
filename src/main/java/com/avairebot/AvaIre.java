@@ -42,6 +42,7 @@ import net.dv8tion.jda.core.JDAInfo;
 import net.dv8tion.jda.core.entities.Game;
 import net.dv8tion.jda.core.entities.SelfUser;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
+import net.dv8tion.jda.core.requests.RestAction;
 import net.dv8tion.jda.core.utils.SessionControllerAdapter;
 import org.reflections.Reflections;
 import org.slf4j.Logger;
@@ -113,6 +114,11 @@ public class AvaIre {
             throw new InvalidApplicationEnvironmentException(config.getString("environment", "production"));
         }
         LOGGER.info("Starting application in \"{}\" mode", APPLICATION_ENVIRONMENT.getName());
+        if (APPLICATION_ENVIRONMENT.equals(Environment.DEVELOPMENT)) {
+            RestAction.setPassContext(true);
+            RestAction.DEFAULT_FAILURE = Throwable::printStackTrace;
+            LOGGER.info("Enabling rest action context parsing and printing stack traces for optimal debugging");
+        }
 
         LOGGER.info("Registering and connecting to database");
         database = new DatabaseManager(this);
