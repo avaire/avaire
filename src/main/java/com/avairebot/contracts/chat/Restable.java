@@ -1,10 +1,10 @@
 package com.avairebot.contracts.chat;
 
 import com.avairebot.utilities.CheckPermissionUtil;
+import com.avairebot.utilities.RestActionUtil;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.MessageEmbed;
-import net.dv8tion.jda.core.requests.RestAction;
 import net.dv8tion.jda.core.requests.restaction.MessageAction;
 
 import java.util.Optional;
@@ -31,7 +31,7 @@ public abstract class Restable {
      * <p><b>This method is asynchronous</b>
      */
     public void queue() {
-        sendMessage().ifPresent(RestAction::queue);
+        sendMessage().ifPresent(action -> action.queue(null, RestActionUtil.HANDLE_MESSAGE_CREATE));
     }
 
     /**
@@ -44,7 +44,7 @@ public abstract class Restable {
      *                for the API. (can be null)
      */
     public void queue(Consumer<Message> success) {
-        sendMessage().ifPresent(action -> action.queue(success));
+        sendMessage().ifPresent(action -> action.queue(success, RestActionUtil.HANDLE_MESSAGE_CREATE));
     }
 
     /**
@@ -58,7 +58,7 @@ public abstract class Restable {
      *                encounters an exception at its execution point.
      */
     public void queue(Consumer<Message> success, Consumer<Throwable> failure) {
-        sendMessage().ifPresent(action -> action.queue(success, failure));
+        sendMessage().ifPresent(action -> action.queue(success, failure == null ? RestActionUtil.HANDLE_MESSAGE_CREATE : failure));
     }
 
     /**
@@ -112,7 +112,7 @@ public abstract class Restable {
     public Future<?> queueAfter(long delay, TimeUnit unit, Consumer<Message> success) {
         Optional<MessageAction> messageAction = sendMessage();
         if (messageAction.isPresent()) {
-            return messageAction.get().queueAfter(delay, unit, success);
+            return messageAction.get().queueAfter(delay, unit, success, RestActionUtil.HANDLE_MESSAGE_CREATE);
         }
         return CompletableFuture.completedFuture(null);
     }
@@ -141,7 +141,7 @@ public abstract class Restable {
     public Future<?> queueAfter(long delay, TimeUnit unit, Consumer<Message> success, Consumer<Throwable> failure) {
         Optional<MessageAction> messageAction = sendMessage();
         if (messageAction.isPresent()) {
-            return messageAction.get().queueAfter(delay, unit);
+            return messageAction.get().queueAfter(delay, unit, success, failure == null ? RestActionUtil.HANDLE_MESSAGE_CREATE : failure);
         }
         return CompletableFuture.completedFuture(null);
     }
@@ -168,7 +168,7 @@ public abstract class Restable {
     public Future<?> queueAfter(long delay, TimeUnit unit, ScheduledExecutorService executor) {
         Optional<MessageAction> messageAction = sendMessage();
         if (messageAction.isPresent()) {
-            return messageAction.get().queueAfter(delay, unit, executor);
+            return messageAction.get().queueAfter(delay, unit, null, RestActionUtil.HANDLE_MESSAGE_CREATE, executor);
         }
         return CompletableFuture.completedFuture(null);
     }
@@ -197,7 +197,7 @@ public abstract class Restable {
     public Future<?> queueAfter(long delay, TimeUnit unit, Consumer<Message> success, ScheduledExecutorService executor) {
         Optional<MessageAction> messageAction = sendMessage();
         if (messageAction.isPresent()) {
-            return messageAction.get().queueAfter(delay, unit, success, executor);
+            return messageAction.get().queueAfter(delay, unit, success, RestActionUtil.HANDLE_MESSAGE_CREATE, executor);
         }
         return CompletableFuture.completedFuture(null);
     }
@@ -225,6 +225,9 @@ public abstract class Restable {
     public Future<?> queueAfter(long delay, TimeUnit unit, Consumer<Message> success, Consumer<Throwable> failure, ScheduledExecutorService executor) {
         Optional<MessageAction> messageAction = sendMessage();
         if (messageAction.isPresent()) {
+            if (failure == null) {
+                failure = RestActionUtil.HANDLE_MESSAGE_CREATE;
+            }
             return messageAction.get().queueAfter(delay, unit, success, failure, executor);
         }
         return CompletableFuture.completedFuture(null);
