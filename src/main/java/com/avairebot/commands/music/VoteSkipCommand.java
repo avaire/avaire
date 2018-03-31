@@ -6,6 +6,7 @@ import com.avairebot.audio.GuildMusicManager;
 import com.avairebot.audio.LavalinkManager;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
+import com.avairebot.utilities.RestActionUtil;
 import net.dv8tion.jda.core.entities.GuildVoiceState;
 import net.dv8tion.jda.core.entities.VoiceChannel;
 
@@ -82,7 +83,7 @@ public class VoteSkipCommand extends Command {
             context.i18n("alreadyVoted") :
             context.i18n("registered")
         ).set("votes", neededVotes).queue(message -> {
-            message.delete().queueAfter(1, TimeUnit.MINUTES);
+            message.delete().queueAfter(1, TimeUnit.MINUTES, null, RestActionUtil.IGNORE);
         });
 
         return true;

@@ -5,6 +5,7 @@ import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.modules.ModlogModule;
 import com.avairebot.utilities.NumberUtil;
+import com.avairebot.utilities.RestActionUtil;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageHistory;
 import net.dv8tion.jda.core.entities.User;
@@ -72,7 +73,7 @@ public class PurgeCommand extends Command {
         }
 
         int finalToDelete = toDelete;
-        context.getMessage().delete().queue(ignored -> handleCommand(context, finalToDelete));
+        context.getMessage().delete().queue(ignored -> handleCommand(context, finalToDelete), RestActionUtil.IGNORE);
 
         return true;
     }
@@ -96,7 +97,7 @@ public class PurgeCommand extends Command {
 
                         context.makeSuccess(":white_check_mark: `:number` messages has been deleted!")
                             .set("number", messages.size())
-                            .queue(successMessage -> successMessage.delete().queueAfter(8, TimeUnit.SECONDS));
+                            .queue(successMessage -> successMessage.delete().queueAfter(8, TimeUnit.SECONDS, null, RestActionUtil.IGNORE));
                     });
                 });
             });
@@ -130,7 +131,7 @@ public class PurgeCommand extends Command {
                 context.makeSuccess(":white_check_mark: `:number` messages has been deleted from :users")
                     .set("number", messages.size())
                     .set("users", String.join(", ", users))
-                    .queue(successMessage -> successMessage.delete().queueAfter(8, TimeUnit.SECONDS));
+                    .queue(successMessage -> successMessage.delete().queueAfter(8, TimeUnit.SECONDS, null, RestActionUtil.IGNORE));
             });
         });
     }
@@ -169,7 +170,7 @@ public class PurgeCommand extends Command {
     private void sendNoMessagesMessage(CommandMessage context) {
         context.makeSuccess(
             ":x: Nothing to delete, I am unable to delete messages older than 14 days."
-        ).queue(successMessage -> successMessage.delete().queueAfter(8, TimeUnit.SECONDS));
+        ).queue(successMessage -> successMessage.delete().queueAfter(8, TimeUnit.SECONDS, null, RestActionUtil.IGNORE));
     }
 
     private RestAction<Void> deleteMessages(CommandMessage context, List<Message> messages) {

@@ -7,6 +7,7 @@ import com.avairebot.audio.GuildMusicManager;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.utilities.NumberUtil;
+import com.avairebot.utilities.RestActionUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -61,7 +62,7 @@ public class ShuffleCommand extends Command {
 
         context.makeSuccess(context.i18n("success"))
             .set("amount", NumberUtil.formatNicely(queue.size()))
-            .queue(message -> message.delete().queueAfter(5, TimeUnit.MINUTES));
+            .queue(message -> message.delete().queueAfter(5, TimeUnit.MINUTES, null, RestActionUtil.IGNORE));
 
         return true;
     }

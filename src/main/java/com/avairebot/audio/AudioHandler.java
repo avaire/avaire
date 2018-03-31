@@ -7,6 +7,7 @@ import com.avairebot.commands.CommandMessage;
 import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.permissions.Permissions;
+import com.avairebot.utilities.RestActionUtil;
 import com.sedmelluq.discord.lavaplayer.player.AudioConfiguration;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
@@ -109,7 +110,7 @@ public class AudioHandler {
                 .set("title", container.getAudioTrack().getInfo().title)
                 .set("url", container.getAudioTrack().getInfo().uri)
                 .set("author", container.getRequester().getAsMention())
-                .queue(success -> success.delete().queueAfter(30, TimeUnit.SECONDS));
+                .queue(success -> success.delete().queueAfter(30, TimeUnit.SECONDS, null, RestActionUtil.IGNORE));
         }
         musicManager.getScheduler().nextTrack();
     }

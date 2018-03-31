@@ -3,6 +3,7 @@ package com.avairebot.audio;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.database.transformers.PlaylistTransformer;
 import com.avairebot.utilities.NumberUtil;
+import com.avairebot.utilities.RestActionUtil;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
@@ -223,7 +224,7 @@ public class TrackScheduler extends AudioEventAdapterWrapped {
         if (sendEndOfQueue && AudioHandler.MUSIC_MANAGER.containsKey(context.getGuild().getIdLong())) {
             context.makeSuccess(context.i18nRaw("music.internal.queueHasEnded"))
                 .queue(queueMessage -> {
-                    queueMessage.delete().queueAfter(45, TimeUnit.SECONDS);
+                    queueMessage.delete().queueAfter(45, TimeUnit.SECONDS, null, RestActionUtil.IGNORE);
                 });
         }
 

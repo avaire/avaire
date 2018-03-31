@@ -5,6 +5,7 @@ import com.avairebot.audio.AudioHandler;
 import com.avairebot.audio.GuildMusicManager;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
+import com.avairebot.utilities.RestActionUtil;
 
 import java.util.Arrays;
 import java.util.List;
@@ -55,7 +56,7 @@ public class RepeatMusicQueueCommand extends Command {
         context.makeSuccess(context.i18n("success"))
             .set("status", musicManager.isRepeatQueue()
                 ? context.i18n("enabled") : context.i18n("disabled"))
-            .queue(message -> message.delete().queueAfter(5, TimeUnit.MINUTES));
+            .queue(message -> message.delete().queueAfter(5, TimeUnit.MINUTES, null, RestActionUtil.IGNORE));
 
         return true;
     }

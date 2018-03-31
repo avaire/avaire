@@ -10,6 +10,7 @@ import com.avairebot.chat.SimplePaginator;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.utilities.NumberUtil;
+import com.avairebot.utilities.RestActionUtil;
 import lavalink.client.player.IPlayer;
 
 import java.util.ArrayList;
@@ -90,7 +91,7 @@ public class SongCommand extends Command {
                 String.join("\n", messages),
                 paginator.generateFooter(generateCommandTrigger(context.getMessage()))
             )).setTitle(context.i18n("songsInQueue"))
-                .queue(message -> message.delete().queueAfter(3, TimeUnit.MINUTES));
+                .queue(message -> message.delete().queueAfter(3, TimeUnit.MINUTES, null, RestActionUtil.IGNORE));
 
             return true;
         }
@@ -111,7 +112,7 @@ public class SongCommand extends Command {
             ));
         }
 
-        queueMessage.queue(message -> message.delete().queueAfter(3, TimeUnit.MINUTES));
+        queueMessage.queue(message -> message.delete().queueAfter(3, TimeUnit.MINUTES, null, RestActionUtil.IGNORE));
 
         return true;
     }

@@ -7,6 +7,7 @@ import com.avairebot.factories.RequestFactory;
 import com.avairebot.requests.Request;
 import com.avairebot.requests.Response;
 import com.avairebot.requests.service.RandomCatService;
+import com.avairebot.utilities.RestActionUtil;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -54,14 +55,14 @@ public class RandomCatCommand extends Command {
 
             if (statusCode == 429) {
                 context.makeWarning("Too many attempts was made to the cat API, try again in a minute, or ask a bot administrator to get an API key at [meow.senither.com](https://meow.senither.com/) to allow for more requests.")
-                    .queue(message -> message.delete().queueAfter(45, TimeUnit.SECONDS));
+                    .queue(message -> message.delete().queueAfter(45, TimeUnit.SECONDS, null, RestActionUtil.IGNORE));
 
                 return;
             }
 
             if (statusCode == 404) {
                 context.makeWarning("I couldn't find any cat picture D: Try again, maybe they will show up now?")
-                    .queue(message -> message.delete().queueAfter(45, TimeUnit.SECONDS));
+                    .queue(message -> message.delete().queueAfter(45, TimeUnit.SECONDS, null, RestActionUtil.IGNORE));
 
                 return;
             }

@@ -5,6 +5,7 @@ import com.avairebot.audio.AudioHandler;
 import com.avairebot.audio.GuildMusicManager;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
+import com.avairebot.utilities.RestActionUtil;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -58,13 +59,13 @@ public class PauseCommand extends Command {
 
         if (musicManager.getPlayer().isPaused()) {
             context.makeWarning(context.i18n("alreadyPaused"))
-                .queue(message -> message.delete().queueAfter(1, TimeUnit.MINUTES));
+                .queue(message -> message.delete().queueAfter(1, TimeUnit.MINUTES, null, RestActionUtil.IGNORE));
             return true;
         }
 
         musicManager.getPlayer().setPaused(true);
         context.makeSuccess(context.i18n("paused"))
-            .queue(message -> message.delete().queueAfter(1, TimeUnit.MINUTES));
+            .queue(message -> message.delete().queueAfter(1, TimeUnit.MINUTES, null, RestActionUtil.IGNORE));
 
         return true;
     }

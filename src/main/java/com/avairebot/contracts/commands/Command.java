@@ -7,6 +7,7 @@ import com.avairebot.exceptions.MissingCommandDescriptionException;
 import com.avairebot.middleware.Middleware;
 import com.avairebot.permissions.Permissions;
 import com.avairebot.plugin.JavaPlugin;
+import com.avairebot.utilities.RestActionUtil;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Message;
 
@@ -262,9 +263,7 @@ public abstract class Command extends Reflectionable {
                 if (deleteIn <= 0) {
                     return;
                 }
-                message.delete().queueAfter(deleteIn, unit, null, throwable -> {
-                    // Ignore the exception thrown by attempting to delete this message.
-                });
+                message.delete().queueAfter(deleteIn, unit, null, RestActionUtil.IGNORE);
             });
 
         return false;

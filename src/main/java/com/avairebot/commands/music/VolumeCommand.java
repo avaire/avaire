@@ -7,6 +7,7 @@ import com.avairebot.audio.GuildMusicManager;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.utilities.NumberUtil;
+import com.avairebot.utilities.RestActionUtil;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -90,7 +91,7 @@ public class VolumeCommand extends Command {
         context.makeSuccess(context.i18n("setTo") + "\n:bar")
             .set("volume", newVolume)
             .set("bar", getVolumeString(newVolume, 18))
-            .queue(message -> message.delete().queueAfter(2, TimeUnit.MINUTES));
+            .queue(message -> message.delete().queueAfter(2, TimeUnit.MINUTES, null, RestActionUtil.IGNORE));
 
         return true;
     }

@@ -10,6 +10,7 @@ import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.ThreadCommand;
 import com.avairebot.metrics.Metrics;
 import com.avairebot.utilities.NumberUtil;
+import com.avairebot.utilities.RestActionUtil;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import net.dv8tion.jda.core.Permission;
@@ -115,7 +116,7 @@ public class PlayCommand extends ThreadCommand {
         AudioHandler.play(context, AudioHandler.getGuildAudioPlayer(context.getGuild()), track);
 
         if (session.getMessage() != null) {
-            session.getMessage().delete().queue();
+            session.getMessage().delete().queue(null, RestActionUtil.IGNORE);
         }
 
         AudioHandler.removeAudioSession(context);

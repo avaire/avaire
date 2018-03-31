@@ -6,6 +6,7 @@ import com.avairebot.audio.GuildMusicManager;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.utilities.NumberUtil;
+import com.avairebot.utilities.RestActionUtil;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -59,7 +60,7 @@ public class ClearQueueCommand extends Command {
 
         if (musicManager.getScheduler().getQueue().isEmpty()) {
             context.makeWarning(context.i18n("emptyQueue"))
-                .queue(message -> message.delete().queueAfter(1, TimeUnit.MINUTES));
+                .queue(message -> message.delete().queueAfter(1, TimeUnit.MINUTES, null, RestActionUtil.IGNORE));
 
             return false;
         }
@@ -68,7 +69,7 @@ public class ClearQueueCommand extends Command {
             .set("queueSize", NumberUtil.formatNicely(
                 musicManager.getScheduler().getQueue().size()
             ))
-            .queue(message -> message.delete().queueAfter(1, TimeUnit.MINUTES));
+            .queue(message -> message.delete().queueAfter(1, TimeUnit.MINUTES, null, RestActionUtil.IGNORE));
 
         musicManager.getScheduler().getQueue().clear();
 

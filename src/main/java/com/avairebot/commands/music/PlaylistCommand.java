@@ -13,6 +13,7 @@ import com.avairebot.database.controllers.PlaylistController;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.database.transformers.PlaylistTransformer;
 import com.avairebot.utilities.NumberUtil;
+import com.avairebot.utilities.RestActionUtil;
 
 import java.util.Arrays;
 import java.util.List;
@@ -122,7 +123,7 @@ public class PlaylistCommand extends ThreadCommand {
             context.makeWarning(context.i18n("noPlaylistWithName"))
                 .set("command", generateCommandTrigger(context.getMessage()) + " <name> create")
                 .set("playlist", args[0])
-                .queue(message -> message.delete().queueAfter(1, TimeUnit.MINUTES));
+                .queue(message -> message.delete().queueAfter(1, TimeUnit.MINUTES, null, RestActionUtil.IGNORE));
 
             return false;
         }
@@ -171,7 +172,7 @@ public class PlaylistCommand extends ThreadCommand {
         context.makeInfo(context.i18n("noPlaylists"))
             .set("command", generateCommandTrigger(context.getMessage()) + " <name> create")
             .setTitle(":musical_note: Music Playlists")
-            .queue(message -> message.delete().queueAfter(1, TimeUnit.MINUTES));
+            .queue(message -> message.delete().queueAfter(1, TimeUnit.MINUTES, null, RestActionUtil.IGNORE));
 
         return false;
     }

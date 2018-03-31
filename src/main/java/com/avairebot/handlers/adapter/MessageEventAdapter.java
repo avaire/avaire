@@ -18,6 +18,7 @@ import com.avairebot.middleware.MiddlewareStack;
 import com.avairebot.modules.SlowmodeModule;
 import com.avairebot.utilities.ArrayUtil;
 import com.avairebot.utilities.LevelUtil;
+import com.avairebot.utilities.RestActionUtil;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
@@ -71,7 +72,7 @@ public class MessageEventAdapter extends EventAdapter {
             }
 
             if (isUserBeingThrottledBySlowmodeInChannel(event, properties)) {
-                event.getMessage().delete().queue();
+                event.getMessage().delete().queue(null, RestActionUtil.IGNORE);
                 Metrics.slowmodeRatelimited.labels(event.getChannel().getId()).inc();
                 return;
             }
@@ -196,7 +197,7 @@ public class MessageEventAdapter extends EventAdapter {
             AppInfo.getAppInfo().VERSION
         ))
             .setFooter("This message will be automatically deleted in one minute.")
-            .queue(message -> message.delete().queueAfter(1, TimeUnit.MINUTES));
+            .queue(message -> message.delete().queueAfter(1, TimeUnit.MINUTES, null, RestActionUtil.IGNORE));
     }
 
     private void sendInformationMessage(MessageReceivedEvent event) {

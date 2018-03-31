@@ -6,6 +6,7 @@ import com.avairebot.audio.GuildMusicManager;
 import com.avairebot.audio.VoiceConnectStatus;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
+import com.avairebot.utilities.RestActionUtil;
 import net.dv8tion.jda.core.entities.VoiceChannel;
 
 import java.util.Arrays;
@@ -72,7 +73,7 @@ public class MoveHereCommand extends Command {
 
         context.makeSuccess(context.i18n("nowPlayingIn"))
             .set("channelName", channel.getName())
-            .queue(message -> message.delete().queueAfter(1, TimeUnit.MINUTES));
+            .queue(message -> message.delete().queueAfter(1, TimeUnit.MINUTES, null, RestActionUtil.IGNORE));
 
         return true;
     }

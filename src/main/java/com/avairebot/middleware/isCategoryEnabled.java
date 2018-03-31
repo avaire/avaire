@@ -8,6 +8,7 @@ import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.transformers.ChannelTransformer;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.factories.MessageFactory;
+import com.avairebot.utilities.RestActionUtil;
 import net.dv8tion.jda.core.entities.Message;
 
 import java.util.concurrent.TimeUnit;
@@ -42,7 +43,7 @@ public class isCategoryEnabled extends Middleware {
             if (isHelpCommand(stack) && stack.isMentionableCommand()) {
                 MessageFactory.makeError(message, "The help command is disable in this channel, you can enable it by using the `:category` command.")
                     .set("category", CommandHandler.getCommand(ToggleCategoryCommand.class).getCommand().generateCommandTrigger(message))
-                    .queue(success -> success.delete().queueAfter(15, TimeUnit.SECONDS));
+                    .queue(success -> success.delete().queueAfter(15, TimeUnit.SECONDS, null, RestActionUtil.IGNORE));
             }
 
             return false;

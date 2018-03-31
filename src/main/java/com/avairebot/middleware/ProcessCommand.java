@@ -8,6 +8,7 @@ import com.avairebot.factories.MessageFactory;
 import com.avairebot.metrics.Metrics;
 import com.avairebot.utilities.ArrayUtil;
 import com.avairebot.utilities.CheckPermissionUtil;
+import com.avairebot.utilities.RestActionUtil;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import io.prometheus.client.Histogram;
 import net.dv8tion.jda.core.entities.Message;
@@ -42,7 +43,7 @@ public class ProcessCommand extends Middleware {
             }
 
             message.getTextChannel().sendMessage("I don't have the `Embed Links` permission, the permission is required for all of my commands to work.\nhttps://avairebot.com/missing-embed-permissions.png\nThis error can sometimes occur when the `everyone` role has it disabled an no other roles enables it.\nThis message will be automatically deleted in 30 seconds.")
-                .queue(newMessage -> newMessage.delete().queueAfter(30, TimeUnit.SECONDS));
+                .queue(newMessage -> newMessage.delete().queueAfter(30, TimeUnit.SECONDS, null, RestActionUtil.IGNORE));
 
             return false;
         }
@@ -83,12 +84,12 @@ public class ProcessCommand extends Middleware {
 
             if (ex instanceof InsufficientPermissionException) {
                 MessageFactory.makeError(message, "Error: " + ex.getMessage())
-                    .queue(newMessage -> newMessage.delete().queueAfter(30, TimeUnit.SECONDS));
+                    .queue(newMessage -> newMessage.delete().queueAfter(30, TimeUnit.SECONDS, null, RestActionUtil.IGNORE));
 
                 return false;
             } else if (ex instanceof FriendlyException) {
                 MessageFactory.makeError(message, "Error: " + ex.getMessage())
-                    .queue(newMessage -> newMessage.delete().queueAfter(30, TimeUnit.SECONDS));
+                    .queue(newMessage -> newMessage.delete().queueAfter(30, TimeUnit.SECONDS, null, RestActionUtil.IGNORE));
             }
 
             MDC.putCloseable("guild", message.getGuild() != null ? message.getGuild().getId() : "PRIVATE");

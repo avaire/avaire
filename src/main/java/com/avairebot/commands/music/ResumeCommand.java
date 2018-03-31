@@ -5,6 +5,7 @@ import com.avairebot.audio.AudioHandler;
 import com.avairebot.audio.GuildMusicManager;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
+import com.avairebot.utilities.RestActionUtil;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -59,14 +60,14 @@ public class ResumeCommand extends Command {
         if (!musicManager.getPlayer().isPaused()) {
             context.makeWarning(context.i18n("alreadyPlaying"))
                 .set("prefix", generateCommandPrefix(context.getMessage()))
-                .queue(message -> message.delete().queueAfter(1, TimeUnit.MINUTES));
+                .queue(message -> message.delete().queueAfter(1, TimeUnit.MINUTES, null, RestActionUtil.IGNORE));
 
             return true;
         }
 
         musicManager.getPlayer().setPaused(false);
         context.makeSuccess(context.i18n("resume"))
-            .queue(message -> message.delete().queueAfter(1, TimeUnit.MINUTES));
+            .queue(message -> message.delete().queueAfter(1, TimeUnit.MINUTES, null, RestActionUtil.IGNORE));
 
         return true;
     }

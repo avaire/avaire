@@ -5,6 +5,7 @@ import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.CacheFingerprint;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.modules.ModlogModule;
+import com.avairebot.utilities.RestActionUtil;
 import com.avairebot.utilities.RoleUtil;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Role;
@@ -83,6 +84,7 @@ public class VoiceKickCommand extends Command {
         String reason = generateMessage(args);
         String originalVoiceChannelName = user.getVoiceState().getChannel().getName();
         String originalVoiceChannelId = user.getVoiceState().getChannel().getId();
+
         context.getGuild().getController().createVoiceChannel("kick-" + user.getUser().getId()).queue(channel ->
             context.getGuild().getController().moveVoiceMember(user, (VoiceChannel) channel)
                 .queue(empty -> channel.delete().queue(new Consumer<Void>() {
@@ -101,7 +103,7 @@ public class VoiceKickCommand extends Command {
                                 .set("reason", reason)
                                 .queue();
                         }
-                    })
+                    }, RestActionUtil.IGNORE)
                 )
         );
         return true;

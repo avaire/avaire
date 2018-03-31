@@ -7,6 +7,7 @@ import com.avairebot.audio.GuildMusicManager;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.utilities.NumberUtil;
+import com.avairebot.utilities.RestActionUtil;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo;
 
 import java.util.Arrays;
@@ -92,7 +93,7 @@ public class RemoveSongFromQueueCommand extends Command {
                 .set("song", String.format("[%s](%s)",
                     track.title, track.uri
                 ))
-                .queue(message -> message.delete().queueAfter(1, TimeUnit.MINUTES));
+                .queue(message -> message.delete().queueAfter(1, TimeUnit.MINUTES, null, RestActionUtil.IGNORE));
 
             iterator.remove();
             return true;
@@ -100,7 +101,7 @@ public class RemoveSongFromQueueCommand extends Command {
 
         context.makeError(context.i18n("failedToRemoveSong"))
             .set("index", removeIndex)
-            .queue(message -> message.delete().queueAfter(1, TimeUnit.MINUTES));
+            .queue(message -> message.delete().queueAfter(1, TimeUnit.MINUTES, null, RestActionUtil.IGNORE));
 
         return false;
     }
