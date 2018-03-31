@@ -54,6 +54,7 @@ public class ShardCommand extends Command {
             if (container == null) {
                 return sendErrorMessage(context, "Sharding is not enabled right now :(");
             }
+            context.setI18nCommandPrefix(container);
             return container.getCommand().onCommand(context, args);
         }
 
