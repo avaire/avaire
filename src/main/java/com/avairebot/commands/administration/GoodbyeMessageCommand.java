@@ -57,7 +57,11 @@ public class GoodbyeMessageCommand extends Command {
 
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
-        GuildTransformer guildTransformer = GuildController.fetchGuild(avaire, context.getMessage());
+        GuildTransformer guildTransformer = GuildController.fetchGuild(avaire, context.getGuild());
+        if (guildTransformer == null) {
+            return sendErrorMessage(context, "errors.errorOccurredWhileLoading", "server data");
+        }
+
         ChannelTransformer channelTransformer = guildTransformer.getChannel(context.getChannel().getId());
 
         if (channelTransformer == null || !channelTransformer.getGoodbye().isEnabled()) {
@@ -119,7 +123,7 @@ public class GoodbyeMessageCommand extends Command {
             "You can test the message by using the command again and mentioning a user.",
             "`:command <user>`"
         ))
-            .set("message", channelTransformer.getWelcome().getMessage())
+            .set("message", channelTransformer.getGoodbye().getMessage())
             .set("command", generateCommandTrigger(context.getMessage()))
             .queue();
 
