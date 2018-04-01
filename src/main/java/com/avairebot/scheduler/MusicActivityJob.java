@@ -35,9 +35,12 @@ public class MusicActivityJob extends Job {
 
         if (LavalinkManager.LavalinkManagerHolder.LAVALINK.isEnabled()) {
             handleLavalinkNodes();
-            return;
+        } else {
+            handleInternalLavaplayer();
         }
+    }
 
+    private void handleInternalLavaplayer() {
         for (JDA shard : avaire.getShardManager().getShards()) {
             Iterator<AudioManager> iterator = shard.getAudioManagers().iterator();
 
@@ -112,58 +115,62 @@ public class MusicActivityJob extends Job {
         for (Link link : LavalinkManager.LavalinkManagerHolder.LAVALINK.getLavalink().getLinks()) {
             long guildId = link.getGuildIdLong();
 
-            if (!AudioHandler.MUSIC_MANAGER.containsKey(guildId)) {
-                handleEmptyMusic(null, link, null, guildId);
-                continue;
-            }
-
-            GuildMusicManager guildMusicManager = AudioHandler.MUSIC_MANAGER.get(guildId);
-
-            if (guildMusicManager.getScheduler().getQueue().isEmpty() && guildMusicManager.getPlayer().getPlayingTrack() == null) {
-                handleEmptyMusic(null, link, guildMusicManager, guildId);
-                continue;
-            }
-
-            if (EMPTY_QUEUE.containsKey(guildId)) {
-                EMPTY_QUEUE.remove(guildId);
-            }
-
-            if (guildMusicManager.getPlayer().isPaused()) {
-                handlePausedMusic(null, link, guildMusicManager, guildId);
-                continue;
-            }
-
-            VoiceChannel voiceChannel = link.getChannel();
-
-            if (voiceChannel != null) {
-                boolean hasListeners = false;
-                for (Member member : voiceChannel.getMembers()) {
-                    if (member.getUser().isBot()) {
-                        continue;
-                    }
-
-                    if (member.getVoiceState().isDeafened()) {
-                        continue;
-                    }
-
-                    hasListeners = true;
-                    break;
-                }
-
-                if (hasListeners && !guildMusicManager.getLastActiveMessage().getGuild().getSelfMember().getVoiceState().isMuted()) {
-                    MISSING_LISTENERS.remove(guildId);
+            try {
+                if (!AudioHandler.MUSIC_MANAGER.containsKey(guildId)) {
+                    handleEmptyMusic(null, link, null, guildId);
                     continue;
                 }
 
-                int times = MISSING_LISTENERS.getOrDefault(guildId, 0) + 1;
+                GuildMusicManager guildMusicManager = AudioHandler.MUSIC_MANAGER.get(guildId);
 
-                if (times <= getValue("missing-listeners", 5)) {
-                    MISSING_LISTENERS.put(guildId, times);
+                if (guildMusicManager.getScheduler().getQueue().isEmpty() && guildMusicManager.getPlayer().getPlayingTrack() == null) {
+                    handleEmptyMusic(null, link, guildMusicManager, guildId);
                     continue;
                 }
-            }
 
-            clearItems(null, link, guildMusicManager, guildId);
+                if (EMPTY_QUEUE.containsKey(guildId)) {
+                    EMPTY_QUEUE.remove(guildId);
+                }
+
+                if (guildMusicManager.getPlayer().isPaused()) {
+                    handlePausedMusic(null, link, guildMusicManager, guildId);
+                    continue;
+                }
+
+                VoiceChannel voiceChannel = link.getChannel();
+
+                if (voiceChannel != null) {
+                    boolean hasListeners = false;
+                    for (Member member : voiceChannel.getMembers()) {
+                        if (member.getUser().isBot()) {
+                            continue;
+                        }
+
+                        if (member.getVoiceState().isDeafened()) {
+                            continue;
+                        }
+
+                        hasListeners = true;
+                        break;
+                    }
+
+                    if (hasListeners && !guildMusicManager.getLastActiveMessage().getGuild().getSelfMember().getVoiceState().isMuted()) {
+                        MISSING_LISTENERS.remove(guildId);
+                        continue;
+                    }
+
+                    int times = MISSING_LISTENERS.getOrDefault(guildId, 0) + 1;
+
+                    if (times <= getValue("missing-listeners", 5)) {
+                        MISSING_LISTENERS.put(guildId, times);
+                        continue;
+                    }
+                }
+
+                clearItems(null, link, guildMusicManager, guildId);
+            } catch (Exception e) {
+                AvaIre.getLogger().error("An exception occurred during music activity job for ID: {} - Message: " + e.getMessage(), guildId, e);
+            }
         }
     }
 
@@ -193,8 +200,11 @@ public class MusicActivityJob extends Job {
         if (guildMusicManager != null) {
             guildMusicManager.getScheduler().getQueue().clear();
             if (LavalinkManager.LavalinkManagerHolder.LAVALINK.isEnabled()) {
-                LavalinkManager.LavalinkManagerHolder.LAVALINK.getLavalink()
-                    .getLink(guildMusicManager.getLastActiveMessage().getGuild()).destroy();
+                if (guildMusicManager.getLastActiveMessage() != null) {
+                    LavalinkManager.LavalinkManagerHolder.LAVALINK.getLavalink()
+                        .getLink(guildMusicManager.getLastActiveMessage().getGuild())
+                        .destroy();
+                }
             }
 
             if (guildMusicManager.getLastActiveMessage() != null && guildMusicManager.getLastActiveMessage().getChannel().canTalk()) {
