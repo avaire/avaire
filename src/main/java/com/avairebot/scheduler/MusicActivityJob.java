@@ -24,7 +24,7 @@ public class MusicActivityJob extends Job {
     public final static Map<Long, Integer> PLAYER_PAUSED = new HashMap<>();
 
     public MusicActivityJob(AvaIre avaire) {
-        super(avaire, 5, 5, TimeUnit.SECONDS);
+        super(avaire, 30, 30, TimeUnit.SECONDS);
     }
 
     @Override
