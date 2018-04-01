@@ -35,6 +35,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.sedmelluq.discord.lavaplayer.tools.PlayerLibrary;
 import io.sentry.Sentry;
+import lavalink.client.io.Link;
+import lavalink.client.player.LavalinkPlayer;
 import net.dv8tion.jda.bot.sharding.DefaultShardManagerBuilder;
 import net.dv8tion.jda.bot.sharding.ShardManager;
 import net.dv8tion.jda.core.JDA;
@@ -338,6 +340,22 @@ public class AvaIre {
                 manager.getLastActiveMessage().makeInfo(
                     "Bot is restarting, sorry for the inconvenience, we'll be right back!"
                 ).queue();
+            }
+
+            manager.getScheduler().getQueue().clear();
+
+            if (manager.getLastActiveMessage() != null) {
+                LavalinkManager.LavalinkManagerHolder.LAVALINK.closeConnection(manager.getLastActiveMessage().getGuild());
+            }
+
+            if (manager.getPlayer() instanceof LavalinkPlayer) {
+                LavalinkPlayer player = (LavalinkPlayer) manager.getPlayer();
+
+                Link.State state = player.getLink().getState();
+
+                if (player.getLink() != null && !state.equals(Link.State.DESTROYED) && !state.equals(Link.State.DESTROYING)) {
+                    player.getLink().destroy();
+                }
             }
         }
 
