@@ -59,7 +59,7 @@ public class GoodbyeMessageCommand extends Command {
     public boolean onCommand(CommandMessage context, String[] args) {
         GuildTransformer guildTransformer = GuildController.fetchGuild(avaire, context.getGuild());
         if (guildTransformer == null) {
-            return sendErrorMessage(context, "errors.errorOccurredWhileLoading", "server data");
+            return sendErrorMessage(context, "errorOccurredWhileLoading", "server data");
         }
 
         ChannelTransformer channelTransformer = guildTransformer.getChannel(context.getChannel().getId());
