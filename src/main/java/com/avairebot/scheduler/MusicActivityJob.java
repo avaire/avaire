@@ -122,6 +122,9 @@ public class MusicActivityJob extends Job {
                 }
 
                 GuildMusicManager guildMusicManager = AudioHandler.MUSIC_MANAGER.get(guildId);
+                if (guildMusicManager.getLastActiveMessage() == null) {
+                    continue;
+                }
 
                 if (guildMusicManager.getScheduler().getQueue().isEmpty() && guildMusicManager.getPlayer().getPlayingTrack() == null) {
                     handleEmptyMusic(null, link, guildMusicManager, guildId);

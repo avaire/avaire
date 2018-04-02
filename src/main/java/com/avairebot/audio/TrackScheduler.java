@@ -14,6 +14,7 @@ import lavalink.client.player.LavalinkPlayer;
 import lavalink.client.player.event.AudioEventAdapterWrapped;
 import net.dv8tion.jda.core.entities.User;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.concurrent.*;
 
@@ -220,7 +221,7 @@ public class TrackScheduler extends AudioEventAdapterWrapped {
             .queue();
     }
 
-    public void handleEndOfQueue(CommandMessage context, boolean sendEndOfQueue) {
+    public void handleEndOfQueue(@Nonnull CommandMessage context, boolean sendEndOfQueue) {
         if (sendEndOfQueue && AudioHandler.MUSIC_MANAGER.containsKey(context.getGuild().getIdLong())) {
             context.makeSuccess(context.i18nRaw("music.internal.queueHasEnded"))
                 .queue(queueMessage -> {
