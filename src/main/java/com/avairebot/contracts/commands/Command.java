@@ -221,7 +221,7 @@ public abstract class Command extends Reflectionable {
             );
         }
 
-        String i18nError = context.i18nRaw("errors." + error);
+        String i18nError = context.i18nRaw(error);
 
         return sendErrorMessageAndDeleteMessage(context, i18nError == null ? error : i18nError, 150, TimeUnit.SECONDS);
     }
@@ -238,7 +238,7 @@ public abstract class Command extends Reflectionable {
      */
     public boolean sendErrorMessage(CommandMessage context, String error, long deleteIn, TimeUnit unit) {
         if (error.contains(".") || !error.contains(" ")) {
-            String i18nError = context.i18nRaw("errors." + error);
+            String i18nError = context.i18nRaw(error);
             if (i18nError != null) {
                 error = i18nError;
             }
