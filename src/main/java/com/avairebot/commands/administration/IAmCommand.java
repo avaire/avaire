@@ -3,9 +3,12 @@ package com.avairebot.commands.administration;
 import com.avairebot.AvaIre;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
+import com.avairebot.contracts.commands.CommandContext;
 import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.transformers.GuildTransformer;
+import com.avairebot.factories.MessageFactory;
 import com.avairebot.utilities.RoleUtil;
+import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.Role;
 
 import java.util.Collections;
@@ -52,22 +55,22 @@ public class IAmCommand extends Command {
         if (role == null) {
             context.makeWarning(":user Invalid role, I couldn't find any role called **:role**")
                 .set("role", args[0])
-                .queue();
+                .queue(message -> handleMessage(context, message));
             return false;
         }
 
         GuildTransformer transformer = GuildController.fetchGuild(avaire, context.getMessage());
-        if (!transformer.getSelfAssignableRoles().containsValue(role.getName().toLowerCase())) {
+        if (transformer == null || !transformer.getSelfAssignableRoles().containsValue(role.getName().toLowerCase())) {
             context.makeWarning(":user Invalid role, **:role** is not a self-assignable role.")
                 .set("role", args[0])
-                .queue();
+                .queue(message -> handleMessage(context, message));
             return false;
         }
 
         if (RoleUtil.isRoleHierarchyHigher(context.getGuild().getSelfMember().getRoles(), role)) {
             context.makeWarning(":user The role is higher in the role hierarchy, I can't give/remove the **:role**  role from anyone.")
                 .set("role", args[0])
-                .queue();
+                .queue(message -> handleMessage(context, message));
             return false;
         }
 
@@ -77,8 +80,12 @@ public class IAmCommand extends Command {
 
         context.makeSuccess(":user You now have the **:role** role!")
             .set("role", role.getName())
-            .queue();
-
+            .queue(message -> handleMessage(context, message));
         return true;
+    }
+
+    private void handleMessage(CommandContext context, Message message) {
+        MessageFactory.deleteMessage(context.getMessage());
+        MessageFactory.deleteMessage(message, 45);
     }
 }

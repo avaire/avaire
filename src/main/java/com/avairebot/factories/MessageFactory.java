@@ -3,13 +3,17 @@ package com.avairebot.factories;
 import com.avairebot.chat.MessageType;
 import com.avairebot.chat.PlaceholderMessage;
 import com.avairebot.chat.PlaceholderType;
+import com.avairebot.utilities.RestActionUtil;
 import net.dv8tion.jda.core.EmbedBuilder;
+import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.MessageEmbed.Field;
 
+import javax.annotation.Nonnull;
 import java.awt.*;
 import java.util.Arrays;
+import java.util.concurrent.TimeUnit;
 
 public class MessageFactory {
 
@@ -75,5 +79,29 @@ public class MessageFactory {
 
     public static EmbedBuilder createEmbeddedBuilder() {
         return new EmbedBuilder();
+    }
+
+    public static void deleteMessage(@Nonnull Message message) {
+        deleteMessage(message, 0, TimeUnit.SECONDS);
+    }
+
+    public static void deleteMessage(@Nonnull Message message, int delay) {
+        deleteMessage(message, delay, TimeUnit.SECONDS);
+    }
+
+    public static void deleteMessage(@Nonnull Message message, int delay, TimeUnit timeUnit) {
+        if (message.getJDA().getSelfUser().getId().equals(message.getAuthor().getId())) {
+            handleDeleteMessage(message, delay, timeUnit);
+        } else if (message.getGuild() != null && message.getGuild().getSelfMember().hasPermission(message.getTextChannel(), Permission.MESSAGE_MANAGE)) {
+            handleDeleteMessage(message, delay, timeUnit);
+        }
+    }
+
+    private static void handleDeleteMessage(@Nonnull Message message, int delay, TimeUnit timeUnit) {
+        if (delay < 1 || timeUnit == null) {
+            message.delete().queue(null, RestActionUtil.IGNORE);
+        } else {
+            message.delete().queueAfter(delay, timeUnit, null, RestActionUtil.IGNORE);
+        }
     }
 }
