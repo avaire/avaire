@@ -227,11 +227,6 @@ public class AvaIre {
         LOGGER.info("Preparing vote manager");
         voteManager = new VoteManager(this);
 
-        if (voteManager.isEnabled()) {
-            LOGGER.info("Syncing votes with the DBL API");
-            voteManager.syncVotesWithAPI();
-        }
-
         LOGGER.info("Preparing Lavalink");
         AudioHandler.setGlobalAvaIreInstance(this);
         LavalinkManager.LavalinkManagerHolder.LAVALINK.start(this);

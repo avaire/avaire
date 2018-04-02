@@ -4,11 +4,11 @@ import com.avairebot.AvaIre;
 import com.avairebot.Constants;
 import com.avairebot.database.collection.Collection;
 import com.avairebot.database.collection.DataRow;
-import com.avairebot.database.query.QueryBuilder;
 import com.avairebot.factories.MessageFactory;
 import com.avairebot.factories.RequestFactory;
 import com.avairebot.requests.Response;
 import com.avairebot.time.Carbon;
+import com.avairebot.utilities.NumberUtil;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.User;
@@ -18,8 +18,10 @@ import org.slf4j.LoggerFactory;
 import javax.annotation.Nonnull;
 import java.awt.*;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 
 public class VoteManager {
@@ -66,7 +68,7 @@ public class VoteManager {
                 .where("user_id", userId).take(1).get();
 
             if (collection.isEmpty()) {
-                hasBeenChecked.add(userId);
+                syncVoteForUserWithAPI(userId);
                 return false;
             }
 
@@ -74,6 +76,7 @@ public class VoteManager {
             Carbon expiresIn = first.getTimestamp("expires_in");
 
             if (expiresIn == null) {
+                hasBeenChecked.add(userId);
                 return false;
             }
 
@@ -85,6 +88,64 @@ public class VoteManager {
         }
 
         return false;
+    }
+
+    private void syncVoteForUserWithAPI(final @Nonnull String userId) {
+        String apiToken = avaire.getConfig().getString("vote-lock.vote-sync-token");
+        if (apiToken == null || apiToken.trim().length() == 0) {
+            return;
+        }
+
+        if (apiToken.equalsIgnoreCase("ReplaceThisWithYourAPITokenForDBL")) {
+            return;
+        }
+
+        LOGGER.info("No vote record was found for {}, checking the API...", userId);
+
+        RequestFactory.makeGET("https://discordbots.org/api/bots/275270122082533378/check")
+            .addParameter("userId", userId)
+            .addHeader("Authorization", avaire.getConfig().getString("vote-lock.vote-sync-token"))
+            .send((Consumer<Response>) response -> accept(response, userId));
+    }
+
+    private void accept(Response response, String userId) {
+        if (response.getResponse().code() != 200) {
+            hasBeenChecked.add(userId);
+            return;
+        }
+
+        Object obj = response.toService(Map.class);
+        if (!(obj instanceof Map)) {
+            hasBeenChecked.add(userId);
+            return;
+        }
+
+        Map<String, Object> data = (Map<String, Object>) obj;
+        if (data.isEmpty()) {
+            hasBeenChecked.add(userId);
+            return;
+        }
+
+        if (NumberUtil.parseInt(data.getOrDefault("voted", "0.0").toString().split("\\.")[0]) != 1) {
+            hasBeenChecked.add(userId);
+            return;
+        }
+
+        Carbon expiresIn = new Carbon(response.getResponse().header("Date"))
+            .addDay().startOfDay();
+
+        voteLog.put(userId, expiresIn);
+        LOGGER.info("Vote record for {} was found, registering vote that expires on {}", userId, expiresIn.toDateTimeString());
+
+        try {
+            avaire.getDatabase().newQueryBuilder(Constants.VOTES_TABLE_NAME)
+                .insert(statement -> {
+                    statement.set("user_id", userId);
+                    statement.set("expires_in", expiresIn.toDayDateTimeString());
+                });
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public void registerVoteFor(Member member) {
@@ -137,92 +198,6 @@ public class VoteManager {
 
     public boolean isEnabled() {
         return avaire.getConfig().getBoolean("vote-lock.enabled", false);
-    }
-
-    public void syncVotesWithAPI() {
-        String apiToken = avaire.getConfig().getString("vote-lock.vote-sync-token");
-        if (apiToken == null || apiToken.trim().length() == 0) {
-            return;
-        }
-
-        hasBeenChecked.clear();
-
-        if (apiToken.equalsIgnoreCase("ReplaceThisWithYourAPITokenForDBL")) {
-            return;
-        }
-
-        RequestFactory.makeGET("https://discordbots.org/api/bots/275270122082533378/votes")
-            .addParameter("days", 1)
-            .addParameter("onlyids", true)
-            .addHeader("Authorization", avaire.getConfig().getString("vote-lock.vote-sync-token"))
-            .send((Consumer<Response>) this::accept);
-    }
-
-    private void accept(Response response) {
-        if (response.getResponse().code() != 200) {
-            return;
-        }
-
-        String expiresIn = new Carbon(response.getResponse().header("Date"))
-            .addDay().startOfDay().toDayDateTimeString();
-
-        Object obj = response.toService(List.class);
-
-        if (!(obj instanceof List)) {
-            return;
-        }
-
-        List<String> userVotes = (List<String>) obj;
-        if (userVotes.isEmpty()) {
-            return;
-        }
-
-        QueryBuilder builder = avaire.getDatabase().newQueryBuilder(Constants.VOTES_TABLE_NAME);
-
-        for (String userId : userVotes) {
-            builder.orWhere("user_id", userId);
-        }
-
-        try {
-            Collection collection = builder.get();
-
-            List<String> updateUsers = new ArrayList<>();
-            Iterator<String> iterator = userVotes.iterator();
-            while (iterator.hasNext()) {
-                String userId = iterator.next();
-
-                if (collection.contains(userId)) {
-                    iterator.remove();
-                    updateUsers.add(userId);
-                }
-            }
-
-            if (!userVotes.isEmpty()) {
-                for (String userId : userVotes) {
-                    avaire.getDatabase().newQueryBuilder(Constants.VOTES_TABLE_NAME)
-                        .insert(statement -> {
-                            statement.set("user_id", userId);
-                            statement.set("expires_in", expiresIn);
-                        });
-                }
-            }
-
-            if (!updateUsers.isEmpty()) {
-                QueryBuilder updateBuilder = avaire.getDatabase().newQueryBuilder(Constants.VOTES_TABLE_NAME);
-
-                for (String userId : updateUsers) {
-                    updateBuilder.orWhere("user_id", userId);
-                }
-
-                updateBuilder.update(statement -> statement.set("expires_in", expiresIn));
-            }
-
-            LOGGER.info("{} new voters and {} old voters has been synced to the database",
-                userVotes.size(), updateUsers.size()
-            );
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 
     public void sendMustVoteMessage(MessageChannel channel) {
