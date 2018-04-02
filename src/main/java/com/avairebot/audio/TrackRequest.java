@@ -46,6 +46,11 @@ public class TrackRequest extends Future {
 
             @Override
             public void playlistLoaded(AudioPlaylist playlist) {
+                if (playlist.getTracks().isEmpty()) {
+                    noMatches();
+                    return;
+                }
+
                 if (trackUrl.startsWith("ytsearch:") || trackUrl.startsWith("scsearch:")) {
                     if (sessionConsumer == null) {
                         trackLoaded(playlist.getTracks().get(0));
