@@ -7,6 +7,7 @@ import com.avairebot.database.schema.Blueprint;
 import java.sql.SQLException;
 
 public class CreateParser extends GrammarParser {
+
     @Override
     public String parse(DatabaseManager manager, Blueprint blueprint) throws SQLException {
         switch (ConnectionType.getType(manager.getConnection())) {

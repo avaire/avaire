@@ -2,6 +2,7 @@ package com.avairebot.database.migrate.migrations;
 
 import com.avairebot.Constants;
 import com.avairebot.contracts.database.migrations.Migration;
+import com.avairebot.database.connections.MySQL;
 import com.avairebot.database.schema.Schema;
 
 import java.sql.SQLException;
@@ -15,11 +16,19 @@ public class CreateMusicPlaylistsTableMigration implements Migration {
 
     @Override
     public boolean up(Schema schema) throws SQLException {
+        boolean isMySQL = schema.getDbm().getConnection().getConnection() instanceof MySQL;
+
         return schema.createIfNotExists(Constants.MUSIC_PLAYLIST_TABLE_NAME, table -> {
             table.Increments("id");
             table.String("guild_id");
             table.String("name");
-            table.Integer("size");
+
+            if (isMySQL) {
+                table.Integer("size");
+            } else {
+                table.Integer("amount");
+            }
+
             table.Text("songs");
             table.Timestamps();
         });

@@ -2,6 +2,7 @@ package com.avairebot.database.migrate.migrations;
 
 import com.avairebot.Constants;
 import com.avairebot.contracts.database.migrations.Migration;
+import com.avairebot.database.connections.MySQL;
 import com.avairebot.database.schema.Schema;
 
 import java.sql.SQLException;
@@ -19,10 +20,17 @@ public class AddDefaultVolumeToGuildsTableMigration implements Migration {
             return true;
         }
 
-        schema.getDbm().queryUpdate(String.format(
-            "ALTER TABLE `%s` ADD `default_volume` INT NOT NULL DEFAULT '50' AFTER `dj_level`;",
-            Constants.GUILD_TABLE_NAME
-        ));
+        if (schema.getDbm().getConnection() instanceof MySQL) {
+            schema.getDbm().queryUpdate(String.format(
+                "ALTER TABLE `%s` ADD `default_volume` INT NOT NULL DEFAULT '50' AFTER `dj_level`;",
+                Constants.GUILD_TABLE_NAME
+            ));
+        } else {
+            schema.getDbm().queryUpdate(String.format(
+                "ALTER TABLE `%s` ADD `default_volume` INT NOT NULL DEFAULT '50';",
+                Constants.GUILD_TABLE_NAME
+            ));
+        }
 
         return true;
     }

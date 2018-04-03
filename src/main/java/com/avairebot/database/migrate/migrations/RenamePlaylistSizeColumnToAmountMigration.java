@@ -2,6 +2,7 @@ package com.avairebot.database.migrate.migrations;
 
 import com.avairebot.Constants;
 import com.avairebot.contracts.database.migrations.Migration;
+import com.avairebot.database.connections.SQLite;
 import com.avairebot.database.schema.Schema;
 
 import java.sql.SQLException;
@@ -19,6 +20,10 @@ public class RenamePlaylistSizeColumnToAmountMigration implements Migration {
             return true;
         }
 
+        if (schema.getDbm().getConnection() instanceof SQLite) {
+            return true;
+        }
+
         schema.getDbm().queryUpdate(String.format(
             "ALTER TABLE `%s` CHANGE `size` `amount` INT(11) NOT NULL;",
             Constants.MUSIC_PLAYLIST_TABLE_NAME
@@ -30,6 +35,10 @@ public class RenamePlaylistSizeColumnToAmountMigration implements Migration {
     @Override
     public boolean down(Schema schema) throws SQLException {
         if (schema.hasColumn(Constants.MUSIC_PLAYLIST_TABLE_NAME, "size")) {
+            return true;
+        }
+
+        if (schema.getDbm().getConnection() instanceof SQLite) {
             return true;
         }
 

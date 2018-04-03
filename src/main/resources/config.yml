@@ -85,23 +85,55 @@ discord:
 # AvaIre uses a database for storing things like custom prefixes, playlists,
 # user XP and levels, statistics, autoroles, aliases and everything else.
 #
-# AvaIre currently only support the MySQL database type, with support for
-# more types in the works, to get start simply just populate the fields
-# below with your database login information.
+# AvaIre currently supports MySQL and SQLite database types, with support for
+# more types coming in the future, to get started simply just populate the
+# fields below with your database login information.
 #
-# Note: Make sure the database user has permission to create, delete and edit
-# tables in the database you want to use, Ava uses a migration system that
-# will create all the needed tables, and roll out changes between versions
-# automatically, this require creating new tables, and editing and
-# deleting existing tables.
+# Note: When using a MySQL database make sure the database user has permission
+# to create, delete and edit tables in the database you want to use, Ava uses
+# a migration system that will create all the needed tables, and roll out
+# changes between versions automatically, this require creating new
+# tables, and editing and deleting existing tables.
 #
 
 database:
 
-  # This is the database type that Ava should use, "MySQL" is currently the
-  # only supported format while support for more is in the works.
+  # This is the database type that Ava should use, "MySQL" is used by default however
+  # it can be changed to "SQLite" if you'd like to use a flatfile database instead.
   #
   type: 'mysql'
+
+  #------------------------------------------------------------------------
+  # SQLite Settings
+  #------------------------------------------------------------------------
+  #
+  # Ths is the SQLite settings used in Ava, by default MySQL is used so if
+  # you want to use the SQLite setup, change the "type" value above to
+  # SQLite and you should be good to go!
+  #
+  # SQLite does not require any external software to be installed to use it.
+  #
+
+  # This is the name of the flatfile used for the SQLite database, although
+  # SQLite has support for in-memory databases, Ava does not yet support
+  # them, if you just want to try using SQLite you should be fine
+  # leaving the value as "database.sqlite"
+  #
+  filename: 'database.sqlite'
+
+  #------------------------------------------------------------------------
+  # MySQL Settings (Recommended)
+  #------------------------------------------------------------------------
+  #
+  # This is the MySQL settings used in Ava, MySQL is used by default and is
+  # recommend for use in general as it's more stable and has more features
+  # than SQLite. You must install a MySQL server to use the MySQL database
+  # settings, if you're on hosting the bot on a VPS, using the default
+  # "mysql-server" package should be fine, if you're on Windows/Mac,
+  # using something like XAMPP is a great alternative.
+  #
+  # XAMPP Website: https://www.apachefriends.org/index.html
+  #
 
   # This is the name of the database that Ava should use for all tables.
   #

@@ -140,7 +140,7 @@ public class RankCommand extends Command {
                     .where("user_id", author.getId())
                     .get().first();
 
-                long total = data == null ? player.getExperience() : data.getLong("total");
+                long total = data == null ? (player == null ? 0 : player.getExperience()) : data.getLong("total");
 
                 return new DatabaseProperties(player, total, getScore(context, author.getId()));
             } catch (SQLException e) {

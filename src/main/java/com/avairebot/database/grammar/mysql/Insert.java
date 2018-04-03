@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 public class Insert extends InsertGrammar {
+    
     @Override
     public String format(QueryBuilder builder) {
         addPart(String.format(" %s", formatField(builder.getTable())));
@@ -44,7 +45,6 @@ public class Insert extends InsertGrammar {
             addPart(" (");
 
             for (String key : keyset) {
-
                 if (!row.containsKey(key)) {
                     addPart("NULL, ");
 

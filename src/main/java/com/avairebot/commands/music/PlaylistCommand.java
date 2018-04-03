@@ -8,6 +8,7 @@ import com.avairebot.commands.music.playlist.*;
 import com.avairebot.contracts.commands.ThreadCommand;
 import com.avairebot.database.collection.Collection;
 import com.avairebot.database.collection.DataRow;
+import com.avairebot.database.connections.SQLite;
 import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.controllers.PlaylistController;
 import com.avairebot.database.transformers.GuildTransformer;
@@ -15,6 +16,7 @@ import com.avairebot.database.transformers.PlaylistTransformer;
 import com.avairebot.utilities.NumberUtil;
 import com.avairebot.utilities.RestActionUtil;
 
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -96,6 +98,13 @@ public class PlaylistCommand extends ThreadCommand {
     @Override
     @SuppressWarnings({"SingleStatementInBlock", "ConstantConditions"})
     public boolean onCommand(CommandMessage context, String[] args) {
+        try {
+            if (avaire.getDatabase().getConnection() instanceof SQLite) {
+                return sendErrorMessage(context, "The current selected database type is set to `SQLite`, the playlist command does not support the SQLite syntax(yet), if you want to use the playlist commands, please change to a `MySQL` setup instead.");
+            }
+        } catch (SQLException ignored) {
+        }
+
         Collection playlists = PlaylistController.fetchPlaylists(avaire, context.getMessage());
         if (playlists == null) {
             return sendErrorMessage(context, "errorOccurredWhileLoading", "servers playlist");

@@ -132,7 +132,7 @@ public abstract class Database implements DatabaseConnection {
                 if (connection.isValid(seconds)) {
                     return true;
                 }
-            } catch (SQLException e) {
+            } catch (SQLException ignored) {
             }
         }
 

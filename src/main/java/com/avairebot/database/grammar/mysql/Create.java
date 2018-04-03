@@ -6,6 +6,7 @@ import com.avairebot.database.schema.Field;
 import com.avairebot.database.schema.FieldType;
 
 public class Create extends CreateGrammar {
+
     @Override
     public String format(Blueprint blueprint) {
         buildTable(blueprint);

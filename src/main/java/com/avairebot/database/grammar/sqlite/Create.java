@@ -6,6 +6,7 @@ import com.avairebot.database.schema.Field;
 import com.avairebot.database.schema.FieldType;
 
 public class Create extends CreateGrammar {
+
     @Override
     public String format(Blueprint blueprint) {
         buildTable(blueprint);
@@ -52,15 +53,21 @@ public class Create extends CreateGrammar {
                 line += " UNSIGNED";
             }
 
-            line += field.isNullable() ? " NULL" : " NOT NULL";
+            String nullable = field.isNullable() ? " NULL" : " NOT NULL";
+            String defaultString = " ";
 
             if (field.getDefaultValue() != null) {
-                String defaultString = " DEFAULT ";
+                defaultString = " DEFAULT ";
 
                 if (field.getDefaultValue().toUpperCase().equals("NULL")) {
                     defaultString += "NULL";
                 } else if (field.isDefaultSQLAction()) {
-                    defaultString += field.getDefaultValue();
+                    if (!field.getDefaultValue().toLowerCase().contains("on")) {
+                        defaultString += field.getDefaultValue();
+                    } else {
+                        defaultString = " DEFAULT NULL ";
+                        nullable = " NULL ";
+                    }
                 } else {
                     defaultString += String.format("'%s'", field.getDefaultValue().replace("'", "\'"));
                 }
@@ -68,7 +75,12 @@ public class Create extends CreateGrammar {
                 line += defaultString;
             }
 
-            fields += line + ", ";
+            if (field.isAutoIncrement()) {
+                nullable = "";
+                defaultString += "PRIMARY KEY";
+            }
+
+            fields += line + nullable + defaultString + ", ";
         }
 
         if (primary.length() > 0) {

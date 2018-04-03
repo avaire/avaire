@@ -6,6 +6,7 @@ import com.avairebot.database.query.*;
 import java.util.List;
 
 public class Select extends SelectGrammar {
+    
     @Override
     public String format(QueryBuilder builder) {
         buildColumns(builder);

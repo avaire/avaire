@@ -2,6 +2,7 @@ package com.avairebot.database.migrate.migrations;
 
 import com.avairebot.Constants;
 import com.avairebot.contracts.database.migrations.Migration;
+import com.avairebot.database.connections.MySQL;
 import com.avairebot.database.schema.Schema;
 
 import java.sql.SQLException;
@@ -19,10 +20,22 @@ public class AddModlogToGuildsTableMigration implements Migration {
             return true;
         }
 
-        schema.getDbm().queryUpdate(String.format(
-            "ALTER TABLE `%s` ADD `modlog` VARCHAR(32) NULL DEFAULT NULL AFTER `autorole`, ADD `modlog_case` INT NOT NULL DEFAULT '0' AFTER `modlog`;",
-            Constants.GUILD_TABLE_NAME
-        ));
+        if (schema.getDbm().getConnection() instanceof MySQL) {
+            schema.getDbm().queryUpdate(String.format(
+                "ALTER TABLE `%s` ADD `modlog` VARCHAR(32) NULL DEFAULT NULL AFTER `autorole`, ADD `modlog_case` INT NOT NULL DEFAULT '0' AFTER `modlog`;",
+                Constants.GUILD_TABLE_NAME
+            ));
+        } else {
+            schema.getDbm().queryUpdate(String.format(
+                "ALTER TABLE `%s` ADD `modlog` VARCHAR(32) NULL DEFAULT NULL;",
+                Constants.GUILD_TABLE_NAME
+            ));
+
+            schema.getDbm().queryUpdate(String.format(
+                "ALTER TABLE `%s` ADD `modlog_case` INT NOT NULL DEFAULT '0';",
+                Constants.GUILD_TABLE_NAME
+            ));
+        }
 
         return true;
     }

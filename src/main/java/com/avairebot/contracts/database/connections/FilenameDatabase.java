@@ -36,17 +36,6 @@ public abstract class FilenameDatabase extends Database {
     }
 
     /**
-     * Creates a new filename database instance.
-     *
-     * @param directory The folder the database is stored in.
-     * @param filename  The database file name.
-     * @param extension The database file extension.
-     */
-    public FilenameDatabase(String directory, String filename, String extension) {
-        setFile(directory, filename, extension);
-    }
-
-    /**
      * Returns the folder name the database is stored in.
      *
      * @return the database directory
@@ -121,7 +110,7 @@ public abstract class FilenameDatabase extends Database {
      * @param extension The database file extension.
      * @throws DatabaseException
      */
-    private void setFile(String directory, String filename, String extension) throws DatabaseException {
+    protected void setFile(String directory, String filename, String extension) throws DatabaseException {
         setExtension(extension);
         setDirectory(directory);
         setFilename(filename);

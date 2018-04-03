@@ -4,6 +4,7 @@ import com.avairebot.contracts.database.grammar.DeleteGrammar;
 import com.avairebot.database.query.QueryBuilder;
 
 public class Delete extends DeleteGrammar {
+
     @Override
     public String format(QueryBuilder builder) {
         String table = builder.getTable();

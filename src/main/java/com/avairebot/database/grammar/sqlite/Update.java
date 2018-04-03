@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 public class Update extends UpdateGrammar {
+
     @Override
     public String format(QueryBuilder builder) {
         addPart(String.format(" %s SET", formatField(builder.getTable())));
@@ -43,8 +44,21 @@ public class Update extends UpdateGrammar {
                     continue;
                 }
 
-                String value = row.get(key).toString();
                 String formatKey = formatField(key);
+
+                if (row.get(key) == null) {
+                    addPart(" %s = NULL, ", formatKey);
+
+                    continue;
+                }
+
+                String value = row.get(key).toString();
+
+                if (value.startsWith("RAW:")) {
+                    addPart(" %s = %s, ", formatKey, value.substring(4));
+
+                    continue;
+                }
 
                 if (value.equalsIgnoreCase("true") || value.equalsIgnoreCase("false")) {
                     addPart(String.format(" %s = %s, ", formatKey, value.equalsIgnoreCase("true") ? 1 : 0));
@@ -52,13 +66,7 @@ public class Update extends UpdateGrammar {
                     continue;
                 }
 
-                if (isNumeric(value)) {
-                    addPart(String.format("%s = %s, ", formatKey, value.toUpperCase()));
-
-                    continue;
-                }
-
-                addPart(String.format("%s = %s, ", formatKey, value.toUpperCase()));
+                addPart(String.format("%s = '%s', ", formatKey, value.replaceAll("'", "\'")));
             }
 
             removeLast(2).addPart(" ");

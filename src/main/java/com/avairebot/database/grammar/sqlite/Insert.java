@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 public class Insert extends InsertGrammar {
+
     @Override
     public String format(QueryBuilder builder) {
         addPart(String.format(" %s", formatField(builder.getTable())));
@@ -50,7 +51,19 @@ public class Insert extends InsertGrammar {
                     continue;
                 }
 
+                if (row.get(key) == null) {
+                    addPart("NULL, ");
+
+                    continue;
+                }
+
                 String value = row.get(key).toString();
+
+                if (value.startsWith("RAW:")) {
+                    addPart("%s, ", value.substring(4));
+
+                    continue;
+                }
 
                 if (value.equalsIgnoreCase("true") || value.equalsIgnoreCase("false")) {
                     addPart(String.format("%s, ", value.equalsIgnoreCase("true") ? 1 : 0));
@@ -59,12 +72,12 @@ public class Insert extends InsertGrammar {
                 }
 
                 if (isNumeric(value)) {
-                    addPart(String.format("%s, ", value));
+                    addPart(String.format("'%s', ", value));
 
                     continue;
                 }
 
-                addPart(String.format("'%s', ", value));
+                addPart("?, ");
             }
 
             removeLast(2).addPart("),");

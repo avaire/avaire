@@ -3,25 +3,33 @@ package com.avairebot.database.connections;
 import com.avairebot.AvaIre;
 import com.avairebot.contracts.database.StatementInterface;
 import com.avairebot.contracts.database.connections.FilenameDatabase;
+import com.avairebot.database.DatabaseManager;
 import com.avairebot.database.exceptions.DatabaseException;
 
 import java.sql.*;
+import java.util.Arrays;
 
 public class SQLite extends FilenameDatabase {
 
-    public SQLite(String directory, String database) {
-        super(directory, database.split("\\.")[0], database.split("\\.")[1]);
-    }
-
     /**
-     * Creates a new SQLite database connection.
+     * Creates a SQLite database connection instance with the parsed information.
      *
-     * @param directory The folder the database is located in.
-     * @param filename  The name of the database file.
-     * @param extension The extension of the database file.
+     * @param dbm The database manager class instance.
      */
-    public SQLite(String directory, String filename, String extension) {
-        super(directory, filename, extension);
+    public SQLite(DatabaseManager dbm) {
+        String filename = dbm.getAvaire().getConfig().getString("database.filename", "database.sqlite");
+
+        if (filename.equals(":memory:")) {
+            this.setFilename(null);
+            return;
+        }
+
+        String[] parts = filename.split("\\.");
+        String extension = parts[parts.length - 1];
+
+        filename = String.join(".", Arrays.copyOf(parts, parts.length - 1));
+
+        this.setFile(".", filename, extension);
     }
 
     @Override
@@ -120,8 +128,8 @@ public class SQLite extends FilenameDatabase {
     protected Statement createPreparedStatement(String query) throws SQLException {
         Statement statement = getConnection().createStatement();
 
-        statement.setQueryTimeout(-1);
-        statement.setMaxRows(-1);
+        statement.setQueryTimeout(5);
+        statement.setMaxRows(25000);
 
         return statement;
     }

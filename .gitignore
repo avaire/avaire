@@ -1,6 +1,7 @@
 plugins/
 storage/
 docs/
+database\.sqlite
 /config.json
 /config.yml
 *.class
@@ -23,7 +24,6 @@ hs_err_pid*
 /*.ipr
 /*.iml
 /*.iml
-
 
 # Compile location
 .gradle/*

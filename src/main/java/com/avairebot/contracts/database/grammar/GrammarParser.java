@@ -49,7 +49,7 @@ public abstract class GrammarParser {
             }
 
             if (connection instanceof com.avairebot.database.connections.SQLite) {
-                return MySQL;
+                return SQLite;
             }
 
             return null;

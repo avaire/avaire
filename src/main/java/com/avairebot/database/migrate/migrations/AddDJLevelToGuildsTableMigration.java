@@ -1,7 +1,9 @@
 package com.avairebot.database.migrate.migrations;
 
 import com.avairebot.Constants;
+import com.avairebot.contracts.database.grammar.GrammarParser;
 import com.avairebot.contracts.database.migrations.Migration;
+import com.avairebot.database.connections.MySQL;
 import com.avairebot.database.schema.Schema;
 
 import java.sql.SQLException;
@@ -19,10 +21,17 @@ public class AddDJLevelToGuildsTableMigration implements Migration {
             return true;
         }
 
-        schema.getDbm().queryUpdate(String.format(
-            "ALTER TABLE `%s` ADD `dj_level` INT NOT NULL DEFAULT '0' AFTER `modules`;",
-            Constants.GUILD_TABLE_NAME
-        ));
+        if (schema.getDbm().getConnection() instanceof MySQL) {
+            schema.getDbm().queryUpdate(String.format(
+                "ALTER TABLE `%s` ADD `dj_level` INT NOT NULL DEFAULT '0' AFTER `modules`;",
+                Constants.GUILD_TABLE_NAME
+            ));
+        } else {
+            schema.getDbm().queryUpdate(String.format(
+                "ALTER TABLE `%s` ADD `dj_level` INT NOT NULL DEFAULT '0';",
+                Constants.GUILD_TABLE_NAME
+            ));
+        }
 
         return true;
     }

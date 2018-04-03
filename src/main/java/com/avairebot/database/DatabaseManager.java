@@ -4,6 +4,7 @@ import com.avairebot.AvaIre;
 import com.avairebot.contracts.database.Database;
 import com.avairebot.database.collection.Collection;
 import com.avairebot.database.connections.MySQL;
+import com.avairebot.database.connections.SQLite;
 import com.avairebot.database.exceptions.DatabaseException;
 import com.avairebot.database.migrate.Migrations;
 import com.avairebot.database.query.QueryBuilder;
@@ -50,6 +51,10 @@ public class DatabaseManager {
             switch (avaire.getConfig().getString("database.type", "invalid").toLowerCase()) {
                 case "mysql":
                     connection = new MySQL(this);
+                    break;
+
+                case "sqlite":
+                    connection = new SQLite(this);
                     break;
 
                 default:

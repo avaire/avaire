@@ -7,6 +7,7 @@ import com.avairebot.database.query.QueryBuilder;
 import java.sql.SQLException;
 
 public class SelectParser extends GrammarParser {
+
     @Override
     public String parse(DatabaseManager manager, QueryBuilder query) throws SQLException {
         switch (ConnectionType.getType(manager.getConnection())) {
