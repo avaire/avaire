@@ -21,6 +21,9 @@ public class SyncGuildMetricsCounterJob extends Job {
             return;
         }
 
+        Metrics.memoryTotal.set(Runtime.getRuntime().totalMemory());
+        Metrics.memoryUsed.set(Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory());
+
         Metrics.guilds.set(avaire.getShardEntityCounter().getGuilds());
 
         for (Region region : Region.values()) {

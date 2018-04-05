@@ -32,6 +32,17 @@ public class Metrics {
         .labelNames("class") // GuildJoinedEvent, MessageReceivedEvent, ReconnectEvent etc
         .register();
 
+
+    public static final Gauge memoryTotal = Gauge.build()
+        .name("avaire_memory_total")
+        .help("Total number bytes of memory dedicated to the app")
+        .register();
+
+    public static final Gauge memoryUsed = Gauge.build()
+        .name("avaire_memory_used")
+        .help("Total number bytes used in memory for the app")
+        .register();
+
     // ################################################################################
     // ##                             AvaIre Stats
     // ################################################################################
