@@ -4,6 +4,7 @@ import com.avairebot.AvaIre;
 import com.avairebot.contracts.metrics.SparkRoute;
 import com.avairebot.factories.MessageFactory;
 import com.avairebot.metrics.Metrics;
+import com.avairebot.utilities.RestActionUtil;
 import net.dv8tion.jda.core.entities.User;
 import org.json.JSONObject;
 import spark.Request;
@@ -49,8 +50,8 @@ public class PostVote extends SparkRoute {
                         "Thanks for voting for [AvaIre](https://discordbots.org/bot/avaire)! It's really appreciated ❤"
                             + "\nRewards for voting is coming soon! <a:lurk:425394751357845506>")
                     .build()
-            ).queue();
-        });
+            ).queue(null, RestActionUtil.IGNORE);
+        }, RestActionUtil.IGNORE);
 
         return buildResponse(response, 200, "Vote registered, thanks for voting!");
     }
