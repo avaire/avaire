@@ -70,7 +70,7 @@ public class ExpandUrlCommand extends ThreadCommand {
 
             return true;
         } catch (MalformedURLException ex) {
-            return sendErrorMessage(context, "errors.invalidProperty", "URL");
+            return sendErrorMessage(context, "errors.invalidProperty", "URL", "URL");
         } catch (UnknownHostException ex) {
             context.makeError("Unknown host for the provided `url`, does it actually go anywhere?").queue();
         } catch (IOException e) {
