@@ -71,7 +71,7 @@ public class ChangePrefixCommand extends Command {
             return sendErrorMessage(context, "Missing argument `category`, you must specify the command category you want to change/reset the prefix for.");
         }
 
-        Category category = CategoryHandler.fromLazyName(args[0]);
+        Category category = CategoryHandler.fromLazyName(args[0], true);
         if (category == null) {
             return sendErrorMessage(context, "Invalid `category` given, there are no command categories that are called, or starts with `%s`", args[0]);
         }
