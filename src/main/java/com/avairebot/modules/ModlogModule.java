@@ -3,7 +3,10 @@ package com.avairebot.modules;
 import com.avairebot.AvaIre;
 import com.avairebot.Constants;
 import com.avairebot.chat.MessageType;
+import com.avairebot.commands.CommandContainer;
+import com.avairebot.commands.CommandHandler;
 import com.avairebot.commands.CommandMessage;
+import com.avairebot.commands.administration.ModlogReasonCommand;
 import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.factories.MessageFactory;
@@ -125,13 +128,18 @@ public class ModlogModule {
         }
     }
 
+    @SuppressWarnings("ConstantConditions")
     private static String formatReason(@Nullable GuildTransformer transformer, String reason) {
         if (reason == null || reason.trim().equalsIgnoreCase("No reason was given.")) {
             if (transformer != null) {
-                // TODO: Replace the "!" prefix trigger with the correct prefix trigger per-guild for the reason command.
+                CommandContainer command = CommandHandler.getCommand(ModlogReasonCommand.class);
+                String prefix = transformer.getPrefixes().getOrDefault(
+                    command.getCategory().getName(), command.getDefaultPrefix()
+                );
+
                 return String.format(
-                    "Moderator do `!reason %s <reason>`",
-                    transformer.getModlogCase()
+                    "Moderator do `%sreason %s <reason>`",
+                    prefix, transformer.getModlogCase()
                 );
             }
             return null;
