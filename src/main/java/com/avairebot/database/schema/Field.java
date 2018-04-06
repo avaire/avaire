@@ -1,7 +1,7 @@
 package com.avairebot.database.schema;
 
 public class Field {
-    
+
     private final FieldType type;
     private final int length;
     private final int tail;

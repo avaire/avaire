@@ -141,7 +141,9 @@ public class AvaIre {
             new AddLevelRolesToGuildsTableMigration(),
             new CreateVotesTableMigration(),
             new AddDefaultVolumeToGuildsTableMigration(),
-            new AddRolesDataToGuildsTableMigration()
+            new AddRolesDataToGuildsTableMigration(),
+            new CreateLogTypeTableMigration(),
+            new CreateLogTableMigration()
         );
 
         LOGGER.info("Registering default command categories");

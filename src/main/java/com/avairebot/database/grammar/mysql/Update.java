@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 public class Update extends UpdateGrammar {
-    
+
     @Override
     public String format(QueryBuilder builder) {
         addPart(String.format(" %s SET ", formatField(builder.getTable())));

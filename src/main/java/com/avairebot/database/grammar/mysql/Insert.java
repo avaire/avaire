@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 public class Insert extends InsertGrammar {
-    
+
     @Override
     public String format(QueryBuilder builder) {
         addPart(String.format(" %s", formatField(builder.getTable())));

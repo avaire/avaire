@@ -16,6 +16,8 @@ public class Constants {
     public static final String FEEDBACK_TABLE_NAME = "feedback";
     public static final String MUSIC_PLAYLIST_TABLE_NAME = "playlists";
     public static final String SHARDS_TABLE_NAME = "shards";
+    public static final String LOG_TABLE_NAME = "logs";
+    public static final String LOG_TYPES_TABLE_NAME = "log_types";
 
     // Package Specific Information
     public static final String PACKAGE_COMMAND_PATH = "com.avairebot.commands";

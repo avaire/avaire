@@ -1,7 +1,6 @@
 package com.avairebot.database.migrate.migrations;
 
 import com.avairebot.Constants;
-import com.avairebot.contracts.database.grammar.GrammarParser;
 import com.avairebot.contracts.database.migrations.Migration;
 import com.avairebot.database.connections.MySQL;
 import com.avairebot.database.schema.Schema;
