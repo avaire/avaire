@@ -25,29 +25,30 @@ import java.time.Instant;
 
 public class ModlogModule {
 
-    public static void log(AvaIre avaire, CommandMessage context, ModlogAction action) {
-        log(avaire, context.getGuild(), action);
+    public static String log(AvaIre avaire, CommandMessage context, ModlogAction action) {
+        return log(avaire, context.getGuild(), action);
     }
 
-    public static void log(AvaIre avaire, Message message, ModlogAction action) {
-        log(avaire, message.getGuild(), action);
+    public static String log(AvaIre avaire, Message message, ModlogAction action) {
+        return log(avaire, message.getGuild(), action);
     }
 
-    public static void log(AvaIre avaire, Guild guild, ModlogAction action) {
+    public static String log(AvaIre avaire, Guild guild, ModlogAction action) {
         GuildTransformer transformer = GuildController.fetchGuild(avaire, guild);
         if (transformer != null) {
-            log(avaire, guild, transformer, action);
+            return log(avaire, guild, transformer, action);
         }
+        return null;
     }
 
-    private static void log(AvaIre avaire, Guild guild, GuildTransformer transformer, ModlogAction action) {
+    public static String log(AvaIre avaire, Guild guild, GuildTransformer transformer, ModlogAction action) {
         if (transformer.getModlog() == null) {
-            return;
+            return null;
         }
 
         TextChannel channel = guild.getTextChannelById(transformer.getModlog());
         if (channel == null) {
-            return;
+            return null;
         }
 
         transformer.setModlogCase(transformer.getModlogCase() + 1);
@@ -58,6 +59,7 @@ public class ModlogModule {
             .setTimestamp(Instant.now());
 
         switch (action.getType()) {
+            case WARN:
             case KICK:
             case BAN:
             case SOFT_BAN:
@@ -98,6 +100,8 @@ public class ModlogModule {
                 //
             }
         }, RestActionUtil.IGNORE);
+
+        return "" + transformer.getModlogCase();
     }
 
     private static void logActionToTheDatabase(AvaIre avaire, Guild guild, ModlogAction action, Message message, int modlogCase) {
