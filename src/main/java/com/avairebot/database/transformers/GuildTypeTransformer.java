@@ -6,7 +6,9 @@ import com.avairebot.database.collection.DataRow;
 
 public class GuildTypeTransformer extends Transformer {
 
-    private String name = "Default";
+    private static final String DEFAULT_NAME = "Default";
+
+    private String name = GuildTypeTransformer.DEFAULT_NAME;
     private GuildTypeLimits limits = new GuildTypeLimits();
 
     public GuildTypeTransformer(DataRow data) {
@@ -26,6 +28,10 @@ public class GuildTypeTransformer extends Transformer {
         }
     }
 
+    public boolean isDefault() {
+        return getName().equals(DEFAULT_NAME);
+    }
+
     public String getName() {
         return name;
     }
@@ -35,6 +41,7 @@ public class GuildTypeTransformer extends Transformer {
     }
 
     public class GuildTypeLimits {
+
         private GuildTypePlaylist playlist = new GuildTypePlaylist();
         private int aliases = 20;
 
