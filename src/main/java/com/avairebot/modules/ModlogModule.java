@@ -170,6 +170,15 @@ public class ModlogModule {
             this.color = color;
         }
 
+        public static ModlogType fromId(int id) {
+            for (ModlogType type : values()) {
+                if (type.getId() == id) {
+                    return type;
+                }
+            }
+            return null;
+        }
+
         public int getId() {
             return id;
         }
