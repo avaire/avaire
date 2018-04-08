@@ -328,8 +328,8 @@ public class DataRow {
     public String getString(String name, String def) {
         Object value = get(name, def);
 
-        if ((value == null || value == "null") && def == null) {
-            return null;
+        if ((value == null || value == "null")) {
+            return def;
         }
 
         String string = String.valueOf(value);
