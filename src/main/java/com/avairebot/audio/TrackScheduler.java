@@ -72,7 +72,7 @@ public class TrackScheduler extends AudioEventAdapterWrapped {
      * @param requester The user who requested the audio tracks.
      */
     public void queue(PlaylistTransformer playlist, List<AudioTrack> tracks, User requester) {
-        if (tracks.isEmpty()) {
+        if (tracks.isEmpty() || manager.getLastActiveMessage() == null) {
             return;
         }
 
