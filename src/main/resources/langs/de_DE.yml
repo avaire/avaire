@@ -1,0 +1,410 @@
+
+errors:
+    missingArgument: 'Fehlendes Argument. Das `%s` Argument wird vorausgesetzt.'
+    invalidProperty: 'Ungültige `%s` angegeben. Eine gültige %s wird vorausgesetzt.'
+    noChannelsWithNameOrId: 'Ich habe keine Channels unter der Namen oder ID `%s` auffinden künnen.'
+    noUsersWithNameOrId: 'Ich habe keine User unter dem Namen oder ID `%s` auffinden künnen.'
+    mustBeConnectedToVoice: 'Du musst mit einem Voicechannel verbunden sein um diesen Befehl ausführen zu künnen!'
+    mustBeConnectedToSameChannel: 'Du must im selben Voicechannel verbunden sein um folgenden Befehl ausführen zu künnen: %s!'
+    missingMusicQueue: 'Fehlende Music `query`. Du musst einen Link zu einem Song angeben, den du dir anhüren müchtest. Du kannst mir auch gern den Musiktitel geben.'
+    requireLevelFeatureToBeEnabled: 'Dieser Befehl benütigt das `Levels & Experience` Feature. Du kannst den Server-Administrator anfragen, ob dieser damit einverstanden ist diesen mit folgendem Befehl zu aktivieren: `%s`'
+    errorOccurredWhileLoading: 'Ein Fehler ist aufgetreten, wührend des Ladens von %s. Bitte versuche es erneut. Sollte dieser Fehler erneut auftreten, so kontaktiere eines unserer Entwickler auf dem [AvaIre Support Server] [https://discord.gg/gt2FWER].'
+
+fun:
+    DiceCommand:
+        missingDice: 'Du musst einen Würfel angeben, den du würfeln müchtest.'
+        invalidDiceFormat: '`%s` ist kein gültiges Würfelformat.'
+        diceFormatMustBeGreaterThan: '`%s` ist kein gültiges Würfelformat. Der Würfel muss hüher als 0 und geringer als 35 sein.'
+        diceFormatMustBePositive: '`%s` ist kein gültiges Würfelformat. Die Würfelanzahl muss eine positive Zahl zwischen 1 und 35 beinhalten.'
+        sidesFormatMustBeGreaterThan: '`%s` ist kein gültiges Würfelformat. Die Seiten müssen hüher als 0 und geringer als 128 sein.'
+        sidesFormatMustBePositive: '`%s` ist kein gültiges Würfelformat. Die Seiten vom Würfel müssen eine positive Zahl zwischen 1 und 128 beinhalten.'
+        moreThanFiveRollsWasGiven: '\n_Mehr als **5** Würfelwürfe angegeben. Nur die ersten 5 Ergebnisse werden angezeigt._\n'
+        resultedIn: '**%s** ergab folgendes Ergebnis: **%s**  [%s]'
+
+    EightBallCommand:
+        mustIncludeQuestion: 'Du musst eine Frage für 8ball hinzufügen.'
+        answers:
+            - 'Es ist sicher.'
+            - 'Dem ist so entschieden.'
+            - 'Ohne Zweifel.'
+            - 'Ja, definitiv.'
+            - 'Darauf kannst du dich verlassen.'
+            - 'So, wie ich es sehe, ja.'
+            - 'Hüchstwahrscheinlich.'
+            - 'Der Ausblick ist gut.'
+            - 'Ja.'
+            - 'Die Zeichen deuten auf ja.'
+            - 'Die Antwort ist unklar. Frag mich noch einmal.'
+            - 'Frag mich spüter noch einmal.'
+            - 'Es ist besser, wenn ich es dir jetzt nicht sage.'
+            - 'Kann ich derzeit nicht voraussagen.'
+            - 'Konzentriere dich und frage mich noch einmal.'
+            - "Verlasse dich darauf nicht."
+            - 'Meine Antwort heiüt nein.'
+            - 'Meine Quellen sagen nein.'
+            - 'Der Ausblick sieht nicht gut aus.'
+            - 'Sehr zweifelhaft.'
+
+    MemeCommand:
+        missingArgument: 'Fehlendes `action` Argument. Du musst die Art vom Meme oder einen User angeben, für den du ein Meme generieren müchtest. Oder nutze `list` um alle verfügbaren Meme-Typen anzeigen zu lassen.'
+        invalidType: 'Ungültigen Meme-Typ angegeben, `%s` ist kein gültiger Meme-Typ!'
+        mustIncludeTopAndBottomText: 'Du musst den `top text` und `bottom text` Argument angeben, um ein Meme generieren zu künnen.'
+        listItem: '`%s` => `%s`'
+
+    ReverseCommand:
+        palindrome: 'Du hast ein Palindrom umgekehrt, was hast du erwartet?'
+
+    RipCommand:
+        hasPaidTheirRespects: '**%s** hat ihren/seinen Respekt abgegeben.'
+        todayAndOverall: '%s heute, %s insgesamt'
+
+    RollCommand:
+        invalidValueGiven: 'Ungültigen `%s` Wert angegeben. `%s` muss eine Nummer sein!'
+        rolledNumber: ':user hat eine **:number** zwischen einer Zahl von :min - :max gewürfelt.'
+
+help:
+    HelpCommand:
+        listOfCommands: ':page_with_curl: **Liste von Befehlen** ```css\n%s```\n'
+        commandNote: '**Schreibe `:help <command>` um Hilfe für den spezifischen Befehl anzeigen zu lassen.**\nBeispiel: `:help :command`'
+        categoriesNote: ':information_source: Schreibe `:help <category>` um eine Liste von Befehlen für diese Kategorie anzeigen zu lassen.\nBeispiel: `:help %s` oder `:help %s`'
+        categoriesTitle: ':scroll: Befehls-Kategorien'
+        invalidCategory: 'Ungültige Befehls-Kategorie angegeben. Es existieren keine Kategorien unter dem Namen `:category`.'
+        invalidCommand: 'Ungültigen Befehl eingegeben. Es existiert kein Befehl unter folgendem Trigger: `:trigger`'
+        tryingToViewSystemCommands: "Du hast keine Berechtigung dazu, jegliche Befehle aus der `System` Kategorie auszuführen. System-Befehle betreffen alle Server auf die der Bot derzeit eingesetzt wird. Diese Art von Befehlen sind nur für Administatoren oder Entwickler zugünglich."
+        singularHiddenCategories: '_Es existiert **%s** versteckte Kategorie für diesen Channel._'
+        multipleHiddenCategories: '_Es existieren **%s** versteckte Kategorien für diesen Channel._'
+        fields:
+            usage: 'Verwendung'
+            example: 'Beispiel'
+            aliases: 'Alias'
+            footer: 'Befehls-Kategorie: '
+
+interaction:
+    BiteCommand: 'beiüt'
+    CuddleCommand: 'knuddelt'
+    DivorceCommand: 'scheidet'
+    EatCommand: 'isst etwas mit'
+    HelloCommand: 'sagt Hallo zu'
+    HighFiveCommand: 'gibt ein High Five zu'
+    HugCommand: 'umarmt'
+    KillCommand: 'müchte jemanden umbringen und zwar'
+    KissCommand: 'küsst'
+    MeowCommand: 'miaut zu'
+    PanCommand: '**%s** hat gerade **%s** mit einer Bratpfanne erschlagen!'
+    PatCommand: 'streichelt'
+    PokeCommand: 'stupst'
+    PoutCommand: 'schmollt bei'
+    PunchCommand: 'haut'
+    SenpaiCommand: 'müchte wahrgenommen werden von'
+    ShrugCommand: 'zuckt mit den Schultern zu'
+    SlapCommand: 'ohrfeigt'
+    TickleCommand: 'kitzelt'
+    TriggeredCommand: 'wird getriggert von'
+
+music:
+    internal:
+        songWasSkipped: '[:title](:url), angefragt von :author wurde übersprungen.'
+        nowPlayingSong: 'Spielt jetzt: [:title](:link)\n`:duration` mit einer Lautstürke von `:volume%` - Angefragt von :requester'
+        nowPlayingPlaylist: 'Die **:playlistName** Playlist wurde zur Warteschlange hinzugefügt. Diese beinhaltet `:playlistSize` Songs!'
+        nowPlaying: 'Spielt jetzt: [:title](:link)\n`:duration` mit einer Lautstürke von `:volume%` - Angefragt von :requester'
+        queueHasEnded: 'Die Warteschlange ist leer. Voicechannel wird verlassen.'
+        noMatchFound: "Ich habe nicht's mit der folgenden Eingabe gefunden: `%s`"
+        trackLoadFailed: "Ich war nicht in der Lage folgendes in die Warteschlange zu setzen: `%s`"
+
+    ClearQueueCommand:
+        error: "Nicht's zum Leeren vorhanden. Anfragen von Musik ist vorausgesetzt. Tue dies bitte zuerst mit folgendem Befehl: `%splay`"
+        emptyQueue: "Nicht's zum Leeren vorhanden. Es befinden sich keine ausstehenden Songs in der Warteschlange."
+        success: 'Ich habe **:queueSize** Songs aus der Warteschlange entfernt. Die Warteschlange ist nun leer.'
+
+    MoveHereCommand:
+        error: 'Nicht mit dem Voicechannel verbunden. Anfragen von Musik ist vorausgesetzt. Tue dies bitte zuerst mit folgendem Befehl: `%splay`'
+        nowPlayingIn: 'Ich spiele nun Musik im folgendem Channel: **:channelName**'
+
+    PauseCommand:
+        error: "Nicht's zum Pausieren vorhanden. Anfragen von Musik ist vorausgesetzt. Tue dies bitte zuerst mit folgendem Befehl: `%splay`"
+        alreadyPaused: 'Die Musik ist bereits pausiert. Nutze `!resume` um mit der Musik fortzufahren.'
+        paused: 'The music has been `paused`'
+
+    PlayCommand:
+        addedSong: ':user hat [:title](:url) zur Warteschlange hinzugefügt. Derzeit sind `:queueSize` Song[s] in der Warteschlange.'
+        addedSongsFromPlaylist: ':user hat :songs Song[s] von der [:title](:url) Playlist zur Warteschlange hinzugefügt. Derzeit sind `:queueSize` Song[s] in der Warteschlange.'
+        session:
+            title: 'Ergebnisse für %s'
+            footer: 'Wühle einen Song mit folgendem Befehl aus: %s <Nummer>'
+
+    PlaylistCommand:
+        noPlaylists: "Dieser Server hat derzeit keine Music-Playlisten. Du kannst einen mit folgendem Befehl erstellen: \n`:command`"
+        noPlaylistWithName: 'Es existiert keine Playlist unter dem Namen `:playlist`. Du kannst einen mit folgendem Befehl erstellen: \n`:command`'
+        invalidProperty: 'Ungültige `property` angeben. Es existieren keine Playlist-Eigenschaften namens `%s`.\nDu kannst mit folgendem Befehl mehr erfahren: `%shelp %s`'
+        invalidFormat: 'Ungültiges Format. Es fehlt die `:type` Eigenschaft!\n`:command`'
+        invalidIdGiven: 'Ungültige ID angegeben. Die angegebene Nummer ist zu :type\n`:command`'
+        invalidIdNumberGiven: 'Ungültige ID angegeben. Die ID muss eine Nummer sein\n`:command`'
+        noMoreSongSlots: "Die `:playlist` Playlist hat keine weiteren Songslots."
+        noMorePlaylistSlots: "Der Server hat keine weiteren Playlist-Slots. Du kannst bereits existierende Playlisten lüschen um wieder Slots zu erhalten."
+        failedToLoad: 'Fehler beim Laden: %s'
+        failedToLoadPlaylist: 'Fehler beim Laden der :playlist Playlist. Bitte versuche dies spüter erneut, oder kontaktiere eines unserer Entwickler.'
+        failedToSavePlaylist: 'Es ist ein Fehler aufgetreten beim Versuch folgende Playlist zu speichern: %s'
+        loadedPlaylist: 'Die **:name** Playlist wurde geladen und erfolgreich zur Warteschlange hinzugefügt. Diese beinhaltet nun **:amount** Songs.'
+        noMatches: 'Keine Ergebnisse'
+        attemptingToAddLivestreamToPlaylist: "Du kannst keine Livestreams in die Playlist hinzufügen!"
+        userHasAddedSong: ':user hat [:name](:url) zu der `:playlist` Playlist hinzugefügt.\nDie `:playlist` Playlist hat `:slots` weitere Song-Slots verfügbar.'
+        alreadyExists: 'Die `:playlist` Playlist existiert bereits!'
+        onlyNumbersInName: "Die Playlist kann nicht nur Nummern beinhalten. Du musst einige Buchstaben zum Namen hinzufügen!"
+        renamingPlaylistAlreadyExists: "Ich kann die `:oldplaylist` nicht zu folgendem Namen umbenennen: `:playlist`. Es existiert bereits eine andere Playlist unter dem Namen `:playlist`."
+        playlistCreated: 'Die `:playlist` Playlist wurde erfolgreich erstellt.\nUm Songs zur Playlist hinzuzufügen, nutze hierzu folgenden Befehl: `:command :playlist add <Song>`'
+        playlistDeleted: 'Die `:name` Playlist wurde erfolgreich gelüscht!'
+        playlistRenamed: 'Die `:oldplaylist` Playlist wurde erfolgreich umbenannt zu: `:playlist`'
+        playlistIsEmpty: 'Es befinden sich keine weiteren Songs in der Playlist. Um Songs zur Playlist hinzuzufügen, nutze hierzu folgenden Befehl:\n`:command`'
+        playlistIsAlreadyEmpty: "Die `:playlist` Playlist ist bereits leer. Es befindet sich nicht's zum Entfernen."
+        songHasBeenRemovedFromPlaylist: ':song wurde erfolgreich von der `:playlist` Playlist entfernt.'
+        playlistTitle: ':musical_note: Musik-Playlist %s'
+        playlistSize: '[ %s aus %s ]'
+        playlistLine: '%s\n       Playlist hat **%s** Song[s]'
+        playlistSongLine: '`%s` [%s](%s) [%s]'
+
+    RemoveSongFromQueueCommand:
+        error: 'Fehlendes Argument, `Song ID`. Du musst die ID von dem Song angeben, dass du von der Warteschlange entfernen müchtest.'
+        failedToRemoveSong: 'Es ist ein Fehler aufgetreten beim Versuch einen Song auf dem Index `:index` zu entfernen.'
+        tooHighNumberGiven: 'Es befinden sich nur `%s` Song[s] in der Warteschlange. Versuche die Nummer etwas herunter zu senken.'
+        mustBePositiveNumber: 'Die `Song üID` muss eine gültige, positive Nummer sein.'
+        nothingToRemove: "Nicht's zum Entfernen. Anfragen von Musik ist vorausgesetzt. Tue dies bitte zuerst mit folgendem Befehl: `%splay`"
+        success: ':song wurde erfolgreich von der Warteschlange entfernt.'
+
+    RepeatMusicQueueCommand:
+        error: "Nicht's zum Wiederholen vorhanden. Anfragen von Musik ist vorausgesetzt. Tue dies bitte zuerst mit folgendem Befehl: `%splay`"
+        success: 'Das Wiederholen von der Musik-Warteschlange ist nun `:status`.'
+        enabled: 'EINGESCHALTET'
+        disabled: 'AUSGESCHALTET'
+
+    ResumeCommand:
+        error: "Nicht's zum Fortsetzen vorhanden. Anfragen von Musik ist vorausgesetzt. Tue dies bitte zuerst mit folgendem Befehl: `%splay`"
+        alreadyPlaying: 'Es wird bereits Musik abgespielt. Nutze `:prefixpause` um die Musik zu pausieren.'
+        resume: 'Die Musik wird nun `fortgesetzt`.'
+
+    SeekCommand:
+        error: "Derzeit wird nicht's abgespielt, Anfragen von Musik ist vorausgesetzt. Tue dies bitte zuerst mit folgendem Befehl: `%splay`"
+        invalidTimeGiven: 'Das `Nummer`-Argument muss einen richigen Zeitformat beinhalten. Dieser muss wenigstens 0 Sekunden lang sein.'
+        seekingLive: 'Du kannst nicht für Livestreams zu einer anderen Zeit springen.'
+        seekingTooFar: '`%s` is more than the length of the current song playing, if you want to skip to the next song use `%sskip` instead.'
+        seekTo: 'Ich springe im Song **:title** zu `:time`.'
+
+    SetDefaultVolumeCommand:
+        currentVolume: 'Die Standard-Lautstürke für diesen Server ist derzeit auf `:volume%` gesetzt.'
+        changedVolume: 'Die Standard-Lautstürke wurde auf `:volume%` gesetzt.'
+        failedToSave: 'Es ist ein Fehler aufgetreten beim Versuch folgende Standard-Lautstürke zu speichern: %s'
+        mustBeNumber: 'Die `Lautstürke` muss eine Nummer zwischen 10 und 100 sein.'
+
+    ShuffleCommand:
+        error: 'Die Warteschlange ist bereits leer. Anfragen von Musik ist vorausgesetzt. Tue dies bitte zuerst mit folgendem Befehl:\n`%splay <Songtitel | URL>`'
+        success: '**:amount** Song[s] wurden in der Warteschlange vermischt.'
+
+    SkipCommand:
+        error: "Nicht's zum überspringen. Anfragen von Musik ist vorausgesetzt. Tue dies bitte zuerst mit folgendem Befehl: `%splay`"
+
+    SongCommand:
+        error: "Nicht's zum Anzeigen. Anfragen von Musik ist vorausgesetzt. Tue dies bitte zuerst mit folgendem Befehl: `%splay`"
+        paused: 'Derzeit pausiert'
+        playing: 'Derzeit am Spielen'
+        songsInQueue: 'Songs in der Warteschlange'
+        moreSongs: 'Du kannst mehr Songs mit folgendem Befehl anzeigen lassen: %s <Seite>'
+        noSongs: 'Es befinden sich keine weiteren Songs in der Warteschlange.'
+        andXMoreSongs: '_Und **%s** weitere Song%s!_'
+        formats:
+            line: '**%s** [%s](%s)'
+            song: '[%s](%s)\nSpielt mit der Lautstürke von `%s` mit `%s` verbleibender Zeit vom Song - Angefragt von <@%s>'
+            stream: '[%s](%s)\nSpielt mit der Lautstürke von `%s`. Der Stream ist `%s` - Angefragt von <@%s>'
+
+    StopCommand:
+        error: "Derzeit wird nicht's abgespielt. Du kannst keine Musik stoppen, wenn keine Musik lüuft."
+        success: 'Die Musik-Wiedergabe wurde gestoppt und **:number** Song[s] wurden von der Warteschlange entfernt.'
+
+    VolumeCommand:
+        error: "Derzeit wird nicht's abgespielt. Anfragen von Musik ist vorausgesetzt. Tue dies bitte zuerst mit folgendem Befehl: `%splay`"
+        requireDJRole: 'Die `DJ`-Rolle wird benütigt um die Lautstürke zu ündern.'
+        invalidVolume: 'Ungültige Lautstürke angegeben. Die Lautstürke muss eine Zahl zwischen 1 und 100 beinhalten.'
+        nowPlaying: ':musical_note: Musik wird mit einer Lautstürke von **:volume** abgespielt.'
+        setTo: ':musical_note: Lautstürke zu **:volume** gesetzt.'
+
+    VoteSkipCommand:
+        error: "Nicht's zum überspringen, Anfragen von Musik ist vorausgesetzt. Tue dies bitte zuerst mit folgendem Befehl: `%splay`"
+        registered: 'Deine Abstimmung wurde registriert! `:votes` weitere Abstimmungen werden benütigt, um den Song überspringen zu künnen.'
+        alreadyVoted: 'Du kannst nur ein Mal per Song zum überspringen abstimmen! `:votes` weitere Abstimmungen werden benütigt, um den Song überspringen zu künnen.'
+
+search:
+    DuckDuckGoCommand:
+        searchResults: 'Suchergebnisse für: %s'
+        noResults: "Ich habe nicht's für diese Anfrage gefunden: `:query`"
+        seeAlso: '**Siehe auch**'
+        nsfwStatus:
+            enabled: 'NSFW-Suche ist aktiviert.'
+            disabled: 'NSFW-Suche ist deaktiviert.'
+
+    GfycatCommand:
+        noResults: "Ich konnte keine Gif's unter folgender Anfrage auffinden: `:query`"
+
+    UrbanDictionaryCommand:
+        noResults: ":user Ich habe nicht's gefunden für `:query`"
+        untitled: 'Kein Titel'
+        example: 'Beispiel'
+        results: ':percentage vom Prozentsatz der Leute, die diesen Beitrag bewertet haben mügen das. :up👍 :down👎'
+
+    XKCDCommand:
+        number: 'XKCD Nummer #%s'
+
+utility:
+    CalculateCommand:
+        boolean:
+            true: 'Wahr'
+            false: 'Falsch'
+        eastereggs:
+            quickMaths: '	-	Quick maths!'
+            binary: "Es gibt nur 10 Arten von Menschen auf der Welt, diejenigen, die Binür verstehen und diejenigen, die dies nicht tun."
+
+    ChannelIdCommand:
+        message: ':user Die :id: von dem :channel Channel lautet `:targetChannel`.'
+
+    ChannelInfoCommand:
+        fields:
+            id: 'ID'
+            position: 'Position'
+            users: 'User'
+            category: 'Kategorie'
+            bitRate: 'Bitrate'
+            nsfw: 'NSFW'
+            createdAt: 'Erstellt am'
+        noTopic: '*Es wurde keine Beschreibung für diesen Channel gesetzt*'
+        timeFormat: 'EEEEEEEE, dd. MMMMM yyyy HH:mm'
+
+    ExpandUrlCommand:
+        noRedirect: ":url wird nirgendwo weitergeleitet."
+        redirects: '%s leitet an folgende Seite weiter: %s'
+        jumps: '**Der Link leitet durch folgende Seiten hin und her:**'
+
+    FeedbackCommand:
+        success: 'Feedback erfolgreich abgeschickt! <:tickYes:319985232306765825>'
+        failedToSend: 'Es ist ein Fehler aufgetreten beim Versuch das Feedback abzuschicken: :error'
+
+    GlobalLeaderboardCommand:
+        noData: 'Derzeit existieren keine Daten von der Bestenliste. Versuche es spüter erneut.'
+        line: '`:num` **:username** befindet sich auf Level **:level** mit **:experience** XP.'
+        title: 'Globale Erfahrungs-Bestenliste'
+
+    InviteCommand:
+        message: 'Du kannst mich zu deinem Server einladen, indem du hier [hier klickst](:oauth) oder den Link darunter nutzst:'
+
+    IPInfoCommand:
+        hostname: 'Hostname'
+        organisation: 'Organisation'
+        country: 'Lang'
+
+    LeaderboardCommand:
+        noData: 'Derzeit existieren keine Daten von der Bestenliste. Versuche es spüter erneut.'
+        line: '`:num` **:username** befindet sich auf Level **:level** mit **:experience** XP.'
+        title: '%s Bestenliste'
+
+    PingCommand:
+        message: 'Pong! Die benütigte Zeit betrügt :ping Millisekunden [:rating] Websocket Heartbeat betrügt :heartbeat Millisekunden.'
+        rating:
+            10: 'Schneller als Sonic! :smiley_cat:'
+            100: 'Groüartig! :smiley:'
+            200: 'Nice! :slight_smile:'
+            300: 'Anstündig. :neutral_face:'
+            400: 'Durchschnittlich... :confused:'
+            500: 'Relativ langsam. :slight_frown:'
+            600: 'Ziemlich langsam... :frowning2:'
+            700: 'Langsam... :worried:'
+            800: 'Zu langsam. :disappointed:'
+            900: 'Schlecht. :sob: (helpme)'
+            1600: '#BlameDiscord. :angry:'
+            10000: 'Das macht keinen Sinn. :thinking: #BlameAlexis'
+            other: 'Einfach nur zu langsam. :dizzy_face:'
+
+    RankCommand:
+        botsCannotReceiveXp: "Bot's künnen keine XP erhalten und sind auch nicht in der Lage einen Rang zu erhalten. Versuche stattdessen einen User zu taggen."
+        unranked: 'Kein Rang'
+        fields:
+            rank: 'Rang'
+            level: 'Level'
+            experience: 'Erfahrungspunkte'
+
+    ServerIdCommand:
+        message: ':user Die :id: vom Server lautet `:guildid`.'
+
+    ServerInfoCommand:
+        fields:
+            id: 'ID'
+            owner: 'Besitzer'
+            textChannels: 'Textchannels'
+            voiceChannels: 'Voicechannels'
+            members: 'Member'
+            roles: 'Rollen'
+            region: 'Regionen'
+            createdAt: 'Erstellt am'
+            emojis: 'Benutzerdefinierte Emojis [%s]'
+        timeFormat: 'EEEEEEEE, dd. MMM yyyy HH:mm'
+
+    ShardCommand:
+        allShards: 'Alle Shards'
+        totalShards: 'Insgesamte Shards'
+
+    SourceCommand:
+        noArgs: 'AvaIre Quellcode:'
+        command: 'AvaIre Quellcode für den **:command** Befehl:'
+        invalidCommand: 'Ungültigen Befehl eingegeben. Hier ist der vollstündige Quellcode für den Bot.'
+        externalCommand: "Der Befehl wird über ein externes Plugin registriert, der Autor des Plugins hat die Quelle des Befehls nicht üffentlich gemacht, oder sie haben vergessen, einen Link hinzuzufügen, hier ist der vollstündige Quellcode für den Bot."
+
+    StatsCommand:
+        title: 'Offizielle Bot-Servereinladung'
+        footer: 'Spielt derzeit in %s Server mit %s Song[s] in der Warteschlange.'
+        latestChanges: 'Letzte ünderungen:'
+        formats:
+            database: '%s [%s per Min.]'
+            messages: '%s [%s per Sek.]'
+            memory: '%s Mb/%s Mb'
+        fields:
+            author: 'Autor'
+            botId: 'Bot-ID'
+            library: 'Library'
+            database: 'DB Queries ausgeführt'
+            messages: 'Nachrichten erhalten'
+            shard: 'Shard'
+            commands: 'Behehle ausgeführt'
+            memory: 'Speichernutzung'
+            uptime: 'Uptime'
+            members: 'Member'
+            channels: 'Channel'
+            servers: 'Server'
+
+    UptimeCommand:
+        message: 'Ich bin online seit :time'
+        footer: 'Ich startete %s um %s'
+        dateFormat: 'EEEEEEEE, dd. MMM yyyy'
+        timeFormat: 'HH:mm:ss z'
+
+    UserIdCommand:
+        message: 'Die :id: vom User **:target** lautet `:targetid`.'
+
+    UserInfoCommand:
+        fields:
+            username: 'Username'
+            userId: 'User-ID'
+            joinedServer: 'Server beigetreten'
+            joinedDiscord: 'Discord beigetreten'
+            roles: 'Rollen [%s]'
+            servers: 'Server'
+        inServers: '%s gemeinsamer Server'
+        noRoles: '*Dieser User ist in keinen Rollen.*'
+        timeFormat: 'EEE, dd MMM yyyy HH:mm'
+
+    VersionCommand:
+        current: 'Ich bin derzeit `:difference` :type Versionen dahinter!'
+        getLatest: 'Du kannst die letzte Version vom Bot auf GitHub abfragen. Besuche hierzu [avaire/avaire](https://github.com/avaire/avaire)'
+        usingLatest: "Du nutzt die letzte Version von AvaIre!"
+        latestVersion: 'Die letzte AvaIre-Version ist: v%s'
+        versions:
+            majorName: 'Wichtig'
+            major: 'Wichtige Versionsupdates sind vollstündige Nachbesserungen des Bot und wie es funktioniert oder eine groüe Zusammenstellung kleinerer ünderungen am Quellcode. Es wird dringend empfohlen, dass Sie bei grüüeren Versionsünderungen updaten, da ültere Versionen nicht für Fehlerbehebungen oder Updates unterstützt werden.'
+            minorName: 'Kleine ünderungen'
+            minor: 'Versionsupdates mit kleinen ünderungen sind neue Ergünzungen, Funktionen und Nachbesserungen der vorhandenen Codebasis. Es wird empfohlen, dass Sie kleinere Versionsünderungen aktualisieren, um mit den neuen Funktionen Schritt zu halten.'
+            patchName: 'Patch'
+            patch: 'Patch-Versionen sind Bugfixes, Refactoring des vorhandenen Codes und sehr kleine ünderungen, die andere Dinge in der Code-Basis nicht beeinflussen. Es wird empfohlen, dass Sie die ünderungen der Patch-Version aktualisieren, um mit den Bugfixes und Patches Schritt zu halten.'
