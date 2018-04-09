@@ -27,6 +27,7 @@ public class I18n {
 
         LANGS.put("en_US", DEFAULT);
         LANGS.put("en_PT", new LanguageLocale(new Locale("en", "US"), "en_PT", "Pirate Speak"));
+        LANGS.put("de_DE", new LanguageLocale(new Locale("de", "DE"), "de_DE", "Deutsch"));
 
         LOGGER.info("Loaded " + LANGS.size() + " languages: " + LANGS);
     }
