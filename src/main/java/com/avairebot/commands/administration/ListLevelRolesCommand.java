@@ -84,6 +84,7 @@ public class ListLevelRolesCommand extends Command {
 
         List<String> messages = new ArrayList<>();
         paginator.forEach((index, key, val) -> {
+            //noinspection SuspiciousMethodCalls
             messages.add(
                 String.format("`%s` => `%s`", val,
                     context.getGuild().getRoleById(

@@ -42,6 +42,7 @@ public class StopCommand extends Command {
     }
 
     @Override
+    @SuppressWarnings("SuspiciousMethodCalls")
     public boolean onCommand(CommandMessage context, String[] args) {
         GuildMusicManager musicManager = AudioHandler.getGuildAudioPlayer(context.getGuild());
 
