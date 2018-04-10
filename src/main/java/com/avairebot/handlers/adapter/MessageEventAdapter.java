@@ -66,6 +66,10 @@ public class MessageEventAdapter extends EventAdapter {
             return;
         }
 
+        if (avaire.getBlacklist().isBlacklisted(event.getMessage())) {
+            return;
+        }
+
         loadDatabasePropertiesIntoMemory(event).thenAccept(properties -> {
             if (!avaire.areWeReadyYet()) {
                 return;

@@ -4,6 +4,7 @@ import com.avairebot.ai.IntelligenceManager;
 import com.avairebot.audio.AudioHandler;
 import com.avairebot.audio.GuildMusicManager;
 import com.avairebot.audio.LavalinkManager;
+import com.avairebot.blacklist.Blacklist;
 import com.avairebot.cache.CacheManager;
 import com.avairebot.commands.CategoryHandler;
 import com.avairebot.commands.CommandHandler;
@@ -75,6 +76,7 @@ public class AvaIre {
     private final Settings settings;
     private final Configuration config;
     private final CacheManager cache;
+    private final Blacklist blacklist;
     private final DatabaseManager database;
     private final IntelligenceManager intelligenceManager;
     private final PluginManager pluginManager;
@@ -143,7 +145,8 @@ public class AvaIre {
             new AddDefaultVolumeToGuildsTableMigration(),
             new AddRolesDataToGuildsTableMigration(),
             new CreateLogTypeTableMigration(),
-            new CreateLogTableMigration()
+            new CreateLogTableMigration(),
+            new ReformatBlacklistTableMigration()
         );
 
         LOGGER.info("Registering default command categories");
@@ -204,6 +207,10 @@ public class AvaIre {
 
         LOGGER.info("Running database migrations");
         database.getMigrations().up();
+
+        LOGGER.info("Preparing blacklist and syncing the list with the database");
+        blacklist = new Blacklist(this);
+        blacklist.syncBlacklistWithDatabase();
 
         LOGGER.info("Preparing and setting up metrics");
         Metrics.setup(this);
@@ -307,6 +314,10 @@ public class AvaIre {
 
     public CacheManager getCache() {
         return cache;
+    }
+
+    public Blacklist getBlacklist() {
+        return blacklist;
     }
 
     public DatabaseManager getDatabase() {
