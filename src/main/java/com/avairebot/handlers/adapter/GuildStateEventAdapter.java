@@ -3,14 +3,20 @@ package com.avairebot.handlers.adapter;
 import com.avairebot.AvaIre;
 import com.avairebot.Constants;
 import com.avairebot.contracts.handlers.EventAdapter;
-import com.avairebot.logger.EventLogger;
 import com.avairebot.metrics.Metrics;
+import com.avairebot.shared.DiscordConstants;
+import com.avairebot.utilities.RestActionUtil;
+import net.dv8tion.jda.core.EmbedBuilder;
+import net.dv8tion.jda.core.entities.TextChannel;
+import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.guild.GuildJoinEvent;
 import net.dv8tion.jda.core.events.guild.GuildLeaveEvent;
 import net.dv8tion.jda.core.events.guild.update.GuildUpdateNameEvent;
 import net.dv8tion.jda.core.events.guild.update.GuildUpdateRegionEvent;
 
+import java.awt.*;
 import java.sql.SQLException;
+import java.time.Instant;
 
 public class GuildStateEventAdapter extends EventAdapter {
 
@@ -39,26 +45,60 @@ public class GuildStateEventAdapter extends EventAdapter {
     }
 
     public void onGuildJoin(GuildJoinEvent event) {
+        AvaIre.getLogger().info("Joined guild with an ID of " + event.getGuild().getId() + " called: " + event.getGuild().getName());
+
         if (!avaire.areWeReadyYet()) {
             return;
         }
 
         Metrics.guilds.inc();
         Metrics.geoTracker.labels(event.getGuild().getRegion().getName()).inc();
-        EventLogger.logGuildJoin(avaire, event);
+//        EventLogger.logGuildJoin(avaire, event);
 
-        AvaIre.getLogger().info("Joined guild with an ID of " + event.getGuild().getId() + " called: " + event.getGuild().getName());
+        TextChannel channel = avaire.getShardManager().getTextChannelById(DiscordConstants.ACTIVITY_LOG_CHANNEL_ID);
+        if (channel == null) {
+            return;
+        }
+
+        User owner = event.getGuild().getOwner().getUser();
+
+        channel.sendMessage(
+            new EmbedBuilder()
+                .setColor(Color.decode("#66BB6A"))
+                .setTimestamp(Instant.now())
+                .addField("Added", String.format("%s (ID: %s)",
+                    event.getGuild().getName(), event.getGuild().getId()
+                ), false)
+                .addField("Owner", String.format("%s#%s (ID: %s)",
+                    owner.getName(), owner.getDiscriminator(), owner.getId()
+                ), false)
+                .build()
+        ).queue(null, RestActionUtil.IGNORE);
     }
 
     public void onGuildLeave(GuildLeaveEvent event) {
+        AvaIre.getLogger().info("Left guild with an ID of " + event.getGuild().getId() + " called: " + event.getGuild().getName());
+
         if (!avaire.areWeReadyYet()) {
             return;
         }
 
         Metrics.guilds.dec();
         Metrics.geoTracker.labels(event.getGuild().getRegion().getName()).dec();
-        EventLogger.logGuildLeave(avaire, event);
 
-        AvaIre.getLogger().info("Left guild with an ID of " + event.getGuild().getId() + " called: " + event.getGuild().getName());
+        TextChannel channel = avaire.getShardManager().getTextChannelById(DiscordConstants.ACTIVITY_LOG_CHANNEL_ID);
+        if (channel == null) {
+            return;
+        }
+
+        channel.sendMessage(
+            new EmbedBuilder()
+                .setColor(Color.decode("#EF5350"))
+                .setTimestamp(Instant.now())
+                .addField("Removed", String.format("%s (ID: %s)",
+                    event.getGuild().getName(), event.getGuild().getId()
+                ), false)
+                .build()
+        ).queue(null, RestActionUtil.IGNORE);
     }
 }
