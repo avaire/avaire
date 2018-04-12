@@ -37,7 +37,7 @@ public class GuildController {
     }
 
     @CheckReturnValue
-    public synchronized static GuildTransformer fetchGuild(AvaIre avaire, Guild guild) {
+    public static GuildTransformer fetchGuild(AvaIre avaire, Guild guild) {
         if (isCached(avaire, guild.getId())) {
             return (GuildTransformer) avaire.getCache().getAdapter(CacheType.MEMORY).get(
                 String.format(CACHE_STRING, guild.getId())

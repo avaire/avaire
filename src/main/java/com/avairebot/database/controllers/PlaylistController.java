@@ -30,7 +30,7 @@ public class PlaylistController {
     }
 
     @CheckReturnValue
-    public synchronized static PlaylistTransformer fetchPlaylistFromName(AvaIre avaire, Message message, String name) {
+    public static PlaylistTransformer fetchPlaylistFromName(AvaIre avaire, Message message, String name) {
         Collection playlists = fetchPlaylists(avaire, message);
         if (playlists == null) {
             return null;

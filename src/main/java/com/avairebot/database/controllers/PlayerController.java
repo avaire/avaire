@@ -21,7 +21,7 @@ public class PlayerController {
     }
 
     @CheckReturnValue
-    public synchronized static PlayerTransformer fetchPlayer(AvaIre avaire, Message message, User user) {
+    public static PlayerTransformer fetchPlayer(AvaIre avaire, Message message, User user) {
         if (!message.getChannelType().isGuild()) {
             return null;
         }
