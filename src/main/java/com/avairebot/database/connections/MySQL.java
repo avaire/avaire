@@ -6,6 +6,7 @@ import com.avairebot.contracts.database.connections.HostnameDatabase;
 import com.avairebot.database.DatabaseManager;
 
 import java.sql.*;
+import java.util.concurrent.Executors;
 
 public class MySQL extends HostnameDatabase {
 
@@ -46,6 +47,11 @@ public class MySQL extends HostnameDatabase {
 
             if (initialize()) {
                 connection = DriverManager.getConnection(url, getUsername(), getPassword());
+
+                // Sets a timeout of 20 seconds(This is an extremely long time, however the default
+                // is around 10 minutes so this should give some improvements with the threads
+                // not being blocked for ages due to hanging database queries.
+                connection.setNetworkTimeout(Executors.newCachedThreadPool(), 1000 * 20);
 
                 return true;
             }
