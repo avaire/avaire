@@ -7,6 +7,7 @@ import com.avairebot.audio.LavalinkManager;
 import com.avairebot.cache.CacheType;
 import com.avairebot.cache.adapters.MemoryAdapter;
 import com.avairebot.contracts.scheduler.Job;
+import com.avairebot.handlers.adapter.MessageEventAdapter;
 import lavalink.client.io.Link;
 import net.dv8tion.jda.core.managers.AudioManager;
 
@@ -22,6 +23,8 @@ public class GarbageCollectorJob extends Job {
 
     @Override
     public void run() {
+        MessageEventAdapter.hasReceivedInfoMessageInTheLastMinute.clear();
+
         MemoryAdapter adapter = (MemoryAdapter) avaire.getCache().getAdapter(CacheType.MEMORY);
 
         adapter.getCacheKeys().removeIf(key -> !adapter.has(key));

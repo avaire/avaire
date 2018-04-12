@@ -21,16 +21,22 @@ import com.avairebot.utilities.LevelUtil;
 import com.avairebot.utilities.RestActionUtil;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
 public class MessageEventAdapter extends EventAdapter {
 
+    public static final Set<Long> hasReceivedInfoMessageInTheLastMinute = new HashSet<>();
+    private static final Logger LOGGER = LoggerFactory.getLogger(MessageEventAdapter.class);
     private static final Pattern userRegEX = Pattern.compile("<@(!|)+[0-9]{16,}+>", Pattern.CASE_INSENSITIVE);
 
     private static final String mentionMessage = String.join("\n", Arrays.asList(
@@ -205,15 +211,25 @@ public class MessageEventAdapter extends EventAdapter {
     }
 
     private void sendInformationMessage(MessageReceivedEvent event) {
+        LOGGER.info("Private message received from user(ID: {}) that does not match any commands!",
+            event.getAuthor().getId()
+        );
+
+        if (hasReceivedInfoMessageInTheLastMinute.contains(event.getAuthor().getIdLong())) {
+            return;
+        }
+
+        hasReceivedInfoMessageInTheLastMinute.add(event.getAuthor().getIdLong());
+
         try {
             ArrayList<String> strings = new ArrayList<>();
             strings.addAll(Arrays.asList(
                 "To invite me to your server, use this link:",
                 "*:oauth*",
                 "",
-                "You can use `.help` to see a list of all the categories of commands.",
-                "You can use `.help category` to see a list of commands for that category.",
-                "For specific command help, use `.help command` (for example `.help !ping`, `.help ping` also works)"
+                "You can use `!help` to see a list of all the categories of commands.",
+                "You can use `!help category` to see a list of commands for that category.",
+                "For specific command help, use `!help command` (for example `!help !ping`, `!help ping` also works)"
             ));
 
             if (avaire.getIntelligenceManager().isEnabled()) {
