@@ -60,7 +60,7 @@ public class FileAdapter extends CacheAdapter {
     @Override
     public Object get(String token) {
         File cacheFile = generateCacheFile(token);
-        if (!cacheFile.exists()) {
+        if (cacheFile == null || !cacheFile.exists()) {
             return null;
         }
 
@@ -82,7 +82,7 @@ public class FileAdapter extends CacheAdapter {
     @Override
     public CacheItem getRaw(String token) {
         File cacheFile = generateCacheFile(token);
-        if (!cacheFile.exists()) {
+        if (cacheFile == null || !cacheFile.exists()) {
             return null;
         }
 
@@ -97,7 +97,7 @@ public class FileAdapter extends CacheAdapter {
     @Override
     public boolean has(String token) {
         File cacheFile = generateCacheFile(token);
-        if (!cacheFile.exists()) {
+        if (cacheFile == null || !cacheFile.exists()) {
             return false;
         }
 
@@ -117,7 +117,7 @@ public class FileAdapter extends CacheAdapter {
     @Override
     public CacheItem forget(String token) {
         File cacheFile = generateCacheFile(token);
-        if (!cacheFile.exists()) {
+        if (cacheFile == null || !cacheFile.exists()) {
             return null;
         }
 
@@ -201,6 +201,10 @@ public class FileAdapter extends CacheAdapter {
 
     private File generateCacheFile(String string) {
         String cacheToken = encrypt(string);
+        if (cacheToken == null) {
+            return null;
+        }
+
         File cachePath = new File(storagePath,
             cacheToken.substring(0, 2) + File.separator
                 + cacheToken.substring(2, 4) + File.separator

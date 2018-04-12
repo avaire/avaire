@@ -65,6 +65,10 @@ public class CategoriesCommand extends Command {
         );
 
         GuildTransformer guildTransformer = GuildController.fetchGuild(avaire, context.getGuild());
+        if (guildTransformer == null) {
+            return sendErrorMessage(context, "errors.errorOccurredWhileLoading", "server settings");
+        }
+
         ChannelTransformer transformer = guildTransformer.getChannel(channel.getId());
 
         List<String> items = new ArrayList<>();

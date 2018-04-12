@@ -94,6 +94,10 @@ public class ToggleCategoryCommand extends Command {
             "all" : context.getMessage().getMentionedChannels().get(0).getId();
 
         GuildTransformer transformer = GuildController.fetchGuild(avaire, context.getGuild());
+        if (transformer == null) {
+            return sendErrorMessage(context, "errors.errorOccurredWhileLoading", "server settings");
+        }
+
         ChannelTransformer channel = transformer.getChannel(channelId);
 
         boolean status = !channel.isCategoryEnabled(category);

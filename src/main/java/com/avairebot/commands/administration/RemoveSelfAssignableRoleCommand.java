@@ -75,6 +75,9 @@ public class RemoveSelfAssignableRoleCommand extends Command {
 
         try {
             GuildTransformer transformer = GuildController.fetchGuild(avaire, context.getMessage());
+            if (transformer == null) {
+                return sendErrorMessage(context, "errors.errorOccurredWhileLoading", "server settings");
+            }
 
             transformer.getSelfAssignableRoles().remove(role.getId());
             avaire.getDatabase().newQueryBuilder(Constants.GUILD_TABLE_NAME)

@@ -44,6 +44,9 @@ public class ListAliasesCommand extends Command {
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
         GuildTransformer transformer = GuildController.fetchGuild(avaire, context.getGuild());
+        if (transformer == null) {
+            return sendErrorMessage(context, "errors.errorOccurredWhileLoading", "server settings");
+        }
 
         if (transformer.getAliases().isEmpty()) {
             return sendErrorMessage(context, "The server doesn't have any aliases right now, you can create one using the\n`%salias <alias> <command>` command",

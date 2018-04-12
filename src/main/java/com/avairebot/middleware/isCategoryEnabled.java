@@ -19,6 +19,7 @@ public class isCategoryEnabled extends Middleware {
         super(avaire);
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Override
     public boolean handle(Message message, MiddlewareStack stack, String... args) {
         if (!message.getChannelType().isGuild()) {

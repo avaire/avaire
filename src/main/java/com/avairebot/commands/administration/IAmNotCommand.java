@@ -61,6 +61,10 @@ public class IAmNotCommand extends Command {
         }
 
         GuildTransformer transformer = GuildController.fetchGuild(avaire, context.getMessage());
+        if (transformer == null) {
+            return sendErrorMessage(context, "errors.errorOccurredWhileLoading", "server settings");
+        }
+
         if (!transformer.getSelfAssignableRoles().containsValue(role.getName().toLowerCase())) {
             context.makeWarning(":user Invalid role, **:role** is not a self-assignable role.")
                 .set("role", args[0])

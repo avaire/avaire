@@ -202,6 +202,7 @@ public class CommandHandler {
             return commands.get(0);
         }
 
+        //noinspection ConstantConditions
         return commands.stream().sorted((first, second) -> {
             if (first.getPriority().equals(second.getPriority())) {
                 return 0;
@@ -216,6 +217,7 @@ public class CommandHandler {
      *
      * @param command The command that should be registered into the command handler.
      */
+    @SuppressWarnings("ConstantConditions")
     public static void register(@Nonnull Command command) {
         Category category = CategoryHandler.fromCommand(command);
         Checks.notNull(category, String.format("%s :: %s", command.getName(), "Invalid command category, command category"));

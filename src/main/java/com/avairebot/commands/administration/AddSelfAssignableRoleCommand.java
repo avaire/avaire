@@ -75,6 +75,9 @@ public class AddSelfAssignableRoleCommand extends Command {
 
         try {
             GuildTransformer transformer = GuildController.fetchGuild(avaire, context.getMessage());
+            if (transformer == null) {
+                return sendErrorMessage(context, "errors.errorOccurredWhileLoading", "server settings");
+            }
 
             transformer.getSelfAssignableRoles().put(role.getId(), role.getName().toLowerCase());
             avaire.getDatabase().newQueryBuilder(Constants.GUILD_TABLE_NAME)

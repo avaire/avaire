@@ -34,6 +34,7 @@ public class PluginManager {
             throw new InvalidPluginsPathException("Invalid plugins path exception, the plugins path is not a directory.");
         }
 
+        //noinspection ConstantConditions
         for (File file : pluginsFolder.listFiles()) {
             if (file.isDirectory() || file.isHidden()) continue;
 

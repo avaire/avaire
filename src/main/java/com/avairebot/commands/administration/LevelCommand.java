@@ -50,6 +50,9 @@ public class LevelCommand extends Command {
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
         GuildTransformer guildTransformer = GuildController.fetchGuild(avaire, context.getMessage());
+        if (guildTransformer == null) {
+            return sendErrorMessage(context, "errors.errorOccurredWhileLoading", "server settings");
+        }
 
         ComparatorUtil.ComparatorType type = args.length == 0 ?
             ComparatorUtil.ComparatorType.UNKNOWN :

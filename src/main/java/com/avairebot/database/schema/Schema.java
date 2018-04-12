@@ -145,7 +145,7 @@ public class Schema {
      * @param shouldIgnoreExistingTable Determines if the grammar instance should ignore existing tables
      * @return The {@link QueryType#CREATE} grammar instance.
      */
-    private CreateParser createGrammar(boolean shouldIgnoreExistingTable) {
+    private CreateParser createGrammar(boolean shouldIgnoreExistingTable) throws SQLException {
         try {
             CreateParser grammar = (CreateParser) QueryType.CREATE.getGrammar().newInstance();
             grammar.setOption("ignoreExistingTable", shouldIgnoreExistingTable);
@@ -157,7 +157,7 @@ public class Schema {
             AvaIre.getLogger().error("An attempt was made to create a grammar instance on an object that is not accessible!", ex);
         }
 
-        return null;
+        throw new SQLException("Failed to create grammar instance for query building");
     }
 
     /**

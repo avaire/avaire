@@ -58,6 +58,10 @@ public class WelcomeMessageCommand extends Command {
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
         GuildTransformer guildTransformer = GuildController.fetchGuild(avaire, context.getMessage());
+        if (guildTransformer == null) {
+            return sendErrorMessage(context, "errors.errorOccurredWhileLoading", "server settings");
+        }
+
         ChannelTransformer channelTransformer = guildTransformer.getChannel(context.getChannel().getId());
 
         if (channelTransformer == null || !channelTransformer.getWelcome().isEnabled()) {

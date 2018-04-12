@@ -37,6 +37,9 @@ public class ListSelfAssignableRolesCommand extends Command {
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
         GuildTransformer transformer = GuildController.fetchGuild(avaire, context.getMessage());
+        if (transformer == null) {
+            return sendErrorMessage(context, "errors.errorOccurredWhileLoading", "server settings");
+        }
 
         if (transformer.getSelfAssignableRoles().isEmpty()) {
             context.makeWarning("There are currently no self-assignable roles for this server.").queue();

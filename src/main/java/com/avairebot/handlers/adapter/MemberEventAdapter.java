@@ -13,8 +13,12 @@ import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.guild.member.GuildMemberJoinEvent;
 import net.dv8tion.jda.core.events.guild.member.GuildMemberLeaveEvent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class MemberEventAdapter extends EventAdapter {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(MemberEventAdapter.class);
 
     /**
      * Instantiates the event adapter and sets the avaire class instance.
@@ -27,6 +31,12 @@ public class MemberEventAdapter extends EventAdapter {
 
     public void onGuildMemberJoin(GuildMemberJoinEvent event) {
         GuildTransformer transformer = GuildController.fetchGuild(avaire, event.getGuild());
+        if (transformer == null) {
+            LOGGER.warn("Failed to get a valid guild transformer during member join! User:{}, Guild:{}",
+                event.getMember().getUser().getId(), event.getGuild().getId()
+            );
+            return;
+        }
 
         for (ChannelTransformer channelTransformer : transformer.getChannels()) {
             if (channelTransformer.getWelcome().isEnabled()) {
@@ -64,6 +74,12 @@ public class MemberEventAdapter extends EventAdapter {
 
     public void onGuildMemberLeave(GuildMemberLeaveEvent event) {
         GuildTransformer transformer = GuildController.fetchGuild(avaire, event.getGuild());
+        if (transformer == null) {
+            LOGGER.warn("Failed to get a valid guild transformer during member leave! User:{}, Guild:{}",
+                event.getMember().getUser().getId(), event.getGuild().getId()
+            );
+            return;
+        }
 
         for (ChannelTransformer channelTransformer : transformer.getChannels()) {
             if (channelTransformer.getGoodbye().isEnabled()) {

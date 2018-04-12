@@ -243,6 +243,10 @@ public class DatabaseManager {
         LOGGER.debug("queryInsert(QueryBuilder queryBuilder) was called with the following SQL query.\nSQL: " + query);
         MDC.put("query", query);
 
+        if (query == null) {
+            throw new SQLException("null query was generated, null can not be used as a valid query");
+        }
+
         if (!query.startsWith("INSERT INTO")) {
             throw new DatabaseException("queryInsert was called with a query without an INSERT statement!");
         }

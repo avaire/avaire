@@ -1,6 +1,7 @@
 package com.avairebot.contracts.commands;
 
 import com.avairebot.AvaIre;
+import com.avairebot.chat.PlaceholderMessage;
 import com.avairebot.commands.*;
 import com.avairebot.contracts.reflection.Reflectionable;
 import com.avairebot.exceptions.MissingCommandDescriptionException;
@@ -252,19 +253,22 @@ public abstract class Command extends Reflectionable {
     }
 
     private boolean sendErrorMessageAndDeleteMessage(CommandMessage context, String error, long deleteIn, TimeUnit unit) {
-        Category category = CategoryHandler.fromCommand(this);
-
-        context.makeError(error)
+        PlaceholderMessage placeholderMessage = context.makeError(error)
             .setTitle(getName())
-            .setFooter("Command category: " + category.getName())
             .addField("Usage", generateUsageInstructions(context.getMessage()), false)
-            .addField("Example Usage", generateExampleUsage(context.getMessage()), false)
-            .queue(message -> {
-                if (deleteIn <= 0) {
-                    return;
-                }
-                message.delete().queueAfter(deleteIn, unit, null, RestActionUtil.IGNORE);
-            });
+            .addField("Example Usage", generateExampleUsage(context.getMessage()), false);
+
+        Category category = CategoryHandler.fromCommand(this);
+        if (category != null) {
+            placeholderMessage.setFooter("Command category: " + category.getName());
+        }
+
+        placeholderMessage.queue(message -> {
+            if (deleteIn <= 0) {
+                return;
+            }
+            message.delete().queueAfter(deleteIn, unit, null, RestActionUtil.IGNORE);
+        });
 
         return false;
     }
@@ -318,13 +322,16 @@ public abstract class Command extends Reflectionable {
                     String[] nodes = split[1].split(",");
                     nodes = Arrays.copyOfRange(nodes, 1, nodes.length);
                     if (nodes.length == 1) {
-                        description.add(String.format("**The `%s` permission is required to use this command!**",
-                            Permissions.fromNode(nodes[0]).getPermission().getName()
-                        ));
+                        Permissions node = Permissions.fromNode(nodes[0]);
+                        if (node != null) {
+                            description.add(String.format("**The `%s` permission is required to use this command!**",
+                                node.getPermission().getName()
+                            ));
+                        }
                         break;
                     }
                     description.add(String.format("**The `%s` permissions is required to use this command!**",
-                        Arrays.asList(nodes).stream()
+                        Arrays.stream(nodes)
                             .map(Permissions::fromNode)
                             .map(Permissions::getPermission)
                             .map(Permission::getName)
@@ -393,6 +400,7 @@ public abstract class Command extends Reflectionable {
      * @param message The JDA message object.
      * @return The dynamic command prefix for the current server.
      */
+    @SuppressWarnings("ConstantConditions")
     public final String generateCommandPrefix(Message message) {
         return CategoryHandler.fromCommand(this).getPrefix(message);
     }
@@ -419,6 +427,7 @@ public abstract class Command extends Reflectionable {
      * @param string  The string that should be formatted.
      * @return The formatted string.
      */
+    @SuppressWarnings("ConstantConditions")
     private String formatCommandGeneratorString(Message message, String string) {
         CommandContainer container = CommandHandler.getCommand(this);
         String command = generateCommandPrefix(message) + container.getCommand().getTriggers().get(0);

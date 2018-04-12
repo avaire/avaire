@@ -91,6 +91,7 @@ public class HelpCommand extends Command {
             return false;
         }
 
+        //noinspection ConstantConditions
         context.getMessageChannel().sendMessage(
             new MessageBuilder()
                 // Builds and sets the content of the message, this is all the
