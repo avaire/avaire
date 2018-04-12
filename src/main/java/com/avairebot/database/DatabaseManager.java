@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 
+import javax.annotation.WillClose;
 import java.sql.*;
 import java.util.HashSet;
 import java.util.Map;
@@ -91,20 +92,20 @@ public class DatabaseManager {
      *              static SQL <code>SELECT</code> statement
      * @return a <code>Collection</code> object that contains the data produced
      * by the given query; never <code>null</code>
-     * @throws SQLException        if a database access error occurs,
-     *                             this method is called on a closed <code>Statement</code>, the given
-     *                             SQL statement produces anything other than a single
-     *                             <code>ResultSet</code> object, the method is called on a
-     *                             <code>PreparedStatement</code> or <code>CallableStatement</code>
-     * @throws SQLTimeoutException when the driver has determined that the
-     *                             timeout value that was specified by the {@code setQueryTimeout}
-     *                             method has been exceeded and has at least attempted to cancel
-     *                             the currently running {@code Statement}
+     * @throws SQLException if a database access error occurs,
+     *                      this method is called on a closed <code>Statement</code>, the given
+     *                      SQL statement produces anything other than a single
+     *                      <code>ResultSet</code> object, the method is called on a
+     *                      <code>PreparedStatement</code> or <code>CallableStatement</code>
      */
-    public Collection query(String query) throws SQLException, SQLTimeoutException {
+    @WillClose
+    public Collection query(String query) throws SQLException {
         LOGGER.debug("query(String query) was called with the following SQL query.\nSQL: " + query);
         MDC.put("query", query);
-        return new Collection(getConnection().query(query));
+
+        try (ResultSet resultSet = getConnection().query(query)) {
+            return new Collection(resultSet);
+        }
     }
 
     /**
@@ -125,6 +126,7 @@ public class DatabaseManager {
      *                             method has been exceeded and has at least attempted to cancel
      *                             the currently running {@code Statement}
      */
+    @WillClose
     public Collection query(QueryBuilder query) throws SQLException {
         return query(query.toSQL());
     }
@@ -145,17 +147,18 @@ public class DatabaseManager {
      *                             method has been exceeded and has at least attempted to cancel
      *                             the currently running {@code Statement}
      */
+    @WillClose
     public int queryUpdate(String query) throws SQLException {
         LOGGER.debug("queryUpdate(String query) was called with the following SQL query.\nSQL: " + query);
         MDC.put("query", query);
 
-        Statement stmt = getConnection().prepare(query);
+        try (Statement stmt = getConnection().prepare(query)) {
+            if (stmt instanceof PreparedStatement) {
+                return ((PreparedStatement) stmt).executeUpdate();
+            }
 
-        if (stmt instanceof PreparedStatement) {
-            return ((PreparedStatement) stmt).executeUpdate();
+            return stmt.executeUpdate(query);
         }
-
-        return stmt.executeUpdate(query);
     }
 
     /**
@@ -175,6 +178,7 @@ public class DatabaseManager {
      *                             method has been exceeded and has at least attempted to cancel
      *                             the currently running {@code Statement}
      */
+    @WillClose
     public int queryUpdate(QueryBuilder query) throws SQLException {
         return queryUpdate(query.toSQL());
     }
@@ -194,6 +198,7 @@ public class DatabaseManager {
      *                             method has been exceeded and has at least attempted to cancel
      *                             the currently running {@code Statement}
      */
+    @WillClose
     public Set<Integer> queryInsert(String query) throws SQLException {
         LOGGER.debug("queryInsert(String query) was called with the following SQL query.\nSQL: " + query);
         MDC.put("query", query);
@@ -202,18 +207,18 @@ public class DatabaseManager {
             throw new DatabaseException("queryInsert was called with a query without an INSERT statement!");
         }
 
-        PreparedStatement stmt = getConnection().getConnection().prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+        try (PreparedStatement stmt = getConnection().getConnection().prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+            stmt.executeUpdate();
 
-        stmt.executeUpdate();
+            Set<Integer> ids = new HashSet<>();
 
-        Set<Integer> ids = new HashSet<>();
+            ResultSet keys = stmt.getGeneratedKeys();
+            while (keys.next()) {
+                ids.add(keys.getInt(1));
+            }
 
-        ResultSet keys = stmt.getGeneratedKeys();
-        while (keys.next()) {
-            ids.add(keys.getInt(1));
+            return ids;
         }
-
-        return ids;
     }
 
     /**
@@ -232,6 +237,7 @@ public class DatabaseManager {
      *                             method has been exceeded and has at least attempted to cancel
      *                             the currently running {@code Statement}
      */
+    @WillClose
     public Set<Integer> queryInsert(QueryBuilder queryBuilder) throws SQLException {
         String query = queryBuilder.toSQL();
         LOGGER.debug("queryInsert(QueryBuilder queryBuilder) was called with the following SQL query.\nSQL: " + query);
@@ -241,37 +247,37 @@ public class DatabaseManager {
             throw new DatabaseException("queryInsert was called with a query without an INSERT statement!");
         }
 
-        PreparedStatement stmt = getConnection().getConnection().prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+        try (PreparedStatement stmt = getConnection().getConnection().prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+            int preparedIndex = 1;
+            for (Map<String, Object> row : queryBuilder.getItems()) {
+                for (Map.Entry<String, Object> item : row.entrySet()) {
+                    if (item.getValue() == null) {
+                        continue;
+                    }
 
-        int preparedIndex = 1;
-        for (Map<String, Object> row : queryBuilder.getItems()) {
-            for (Map.Entry<String, Object> item : row.entrySet()) {
-                if (item.getValue() == null) {
-                    continue;
+                    String value = item.getValue().toString();
+
+                    if (value.startsWith("RAW:") ||
+                        value.equalsIgnoreCase("true") ||
+                        value.equalsIgnoreCase("false") ||
+                        value.matches("[-+]?\\d*\\.?\\d+")) {
+                        continue;
+                    }
+
+                    stmt.setString(preparedIndex++, value);
                 }
-
-                String value = item.getValue().toString();
-
-                if (value.startsWith("RAW:") ||
-                    value.equalsIgnoreCase("true") ||
-                    value.equalsIgnoreCase("false") ||
-                    value.matches("[-+]?\\d*\\.?\\d+")) {
-                    continue;
-                }
-
-                stmt.setString(preparedIndex++, value);
             }
+
+            stmt.executeUpdate();
+
+            Set<Integer> ids = new HashSet<>();
+
+            ResultSet keys = stmt.getGeneratedKeys();
+            while (keys.next()) {
+                ids.add(keys.getInt(1));
+            }
+
+            return ids;
         }
-
-        stmt.executeUpdate();
-
-        Set<Integer> ids = new HashSet<>();
-
-        ResultSet keys = stmt.getGeneratedKeys();
-        while (keys.next()) {
-            ids.add(keys.getInt(1));
-        }
-
-        return ids;
     }
 }
