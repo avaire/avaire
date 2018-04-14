@@ -72,15 +72,15 @@ public class AutoAssignRoleCommand extends Command {
             return disableAutoRole(context, transformer);
         }
 
-        List<Role> roles = context.getGuild().getRolesByName(String.join(" ", args), true);
-        if (roles.isEmpty()) {
+        String roleName = String.join(" ", args);
+        Role role = RoleUtil.getRoleFromMentionsOrName(context.getMessage(), roleName);
+        if (role == null) {
             context.makeWarning(":user Invalid role, I couldn't find any role called **:role**")
-                .set("role", String.join(" ", args))
+                .set("role", roleName)
                 .queue();
             return false;
         }
 
-        Role role = roles.get(0);
         if (RoleUtil.isRoleHierarchyHigher(context.getMember().getRoles(), role)) {
             context.makeWarning(
                 ":user The **:role** role is positioned higher in the hierarchy than any role you have, you can't add roles with a higher ranking than you have."

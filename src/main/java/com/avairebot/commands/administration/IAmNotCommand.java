@@ -52,10 +52,11 @@ public class IAmNotCommand extends Command {
             return sendErrorMessage(context, "Missing argument, the `role` argument is required.");
         }
 
-        Role role = RoleUtil.getRoleFromMentionsOrName(context.getMessage(), args[0]);
+        String roleName = String.join(" ", args);
+        Role role = RoleUtil.getRoleFromMentionsOrName(context.getMessage(), roleName);
         if (role == null) {
             context.makeWarning(":user Invalid role, I couldn't find any role called **:role**")
-                .set("role", args[0])
+                .set("role", roleName)
                 .queue(message -> handleMessage(context, message));
             return false;
         }
@@ -67,14 +68,14 @@ public class IAmNotCommand extends Command {
 
         if (!transformer.getSelfAssignableRoles().containsValue(role.getName().toLowerCase())) {
             context.makeWarning(":user Invalid role, **:role** is not a self-assignable role.")
-                .set("role", args[0])
+                .set("role", roleName)
                 .queue(message -> handleMessage(context, message));
             return false;
         }
 
         if (RoleUtil.isRoleHierarchyHigher(context.getGuild().getSelfMember().getRoles(), role)) {
             context.makeWarning(":user The role is higher in the role hierarchy, I can't give/remove the **:role**  role from anyone.")
-                .set("role", args[0])
+                .set("role", roleName)
                 .queue(message -> handleMessage(context, message));
             return false;
         }

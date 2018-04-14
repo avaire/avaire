@@ -61,10 +61,11 @@ public class RemoveSelfAssignableRoleCommand extends Command {
             return sendErrorMessage(context, "Missing argument, the `role` argument is required.");
         }
 
-        Role role = RoleUtil.getRoleFromMentionsOrName(context.getMessage(), args[0]);
+        String roleName = String.join(" ", args);
+        Role role = RoleUtil.getRoleFromMentionsOrName(context.getMessage(), roleName);
         if (role == null) {
             context.makeWarning(":user Invalid role, I couldn't find any role called **:role**")
-                .set("role", args[0])
+                .set("role", roleName)
                 .queue();
             return false;
         }

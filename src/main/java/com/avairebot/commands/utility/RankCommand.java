@@ -16,6 +16,7 @@ import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.database.transformers.PlayerTransformer;
 import com.avairebot.factories.MessageFactory;
 import com.avairebot.utilities.LevelUtil;
+import com.avairebot.utilities.MentionableUtil;
 import com.avairebot.utilities.NumberUtil;
 import net.dv8tion.jda.core.entities.User;
 
@@ -88,8 +89,11 @@ public class RankCommand extends Command {
         }
 
         User user = context.getAuthor();
-        if (!context.getMentionedUsers().isEmpty() && !args[0].equals("---skip-mentions")) {
-            user = context.getMentionedUsers().get(0);
+        if (args.length > 0 && !args[0].equals("---skip-mentions")) {
+            user = MentionableUtil.getUser(context, args);
+            if (user == null) {
+                user = context.getAuthor();
+            }
         }
         final User author = user;
 
