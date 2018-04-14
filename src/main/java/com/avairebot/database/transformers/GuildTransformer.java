@@ -154,6 +154,10 @@ public class GuildTransformer extends Transformer {
         return locale;
     }
 
+    public void setLocale(String code) {
+        this.locale = code;
+    }
+
     public boolean isLevels() {
         return levels;
     }

@@ -10,13 +10,13 @@ import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.HashMap;
-import java.util.Locale;
+import java.util.HashSet;
+import java.util.Set;
 
 public class I18n {
 
-    public static final LanguageLocale DEFAULT = new LanguageLocale(new Locale("en", "US"), "en_US", "English");
-    public static final HashMap<String, LanguageLocale> LANGS = new HashMap<>();
+    public static final LanguageHolder DEFAULT = new LanguageHolder(Language.EN_US);
+    private static final Set<LanguageHolder> LANGS = new HashSet<>();
 
     private static final Logger LOGGER = LoggerFactory.getLogger(I18n.class);
 
@@ -25,9 +25,9 @@ public class I18n {
     public static void start(AvaIre avaire) {
         I18n.avaire = avaire;
 
-        LANGS.put("en_US", DEFAULT);
-        LANGS.put("en_PT", new LanguageLocale(new Locale("en", "US"), "en_PT", "Pirate Speak"));
-        LANGS.put("de_DE", new LanguageLocale(new Locale("de", "DE"), "de_DE", "Deutsch"));
+        LANGS.add(DEFAULT);
+        LANGS.add(new LanguageHolder(Language.EN_PT));
+        LANGS.add(new LanguageHolder(Language.DE_DE));
 
         LOGGER.info("Loaded " + LANGS.size() + " languages: " + LANGS);
     }
@@ -49,11 +49,18 @@ public class I18n {
     }
 
     @Nonnull
-    public static LanguageLocale getLocale(@Nonnull Guild guild) {
+    public static LanguageHolder getLocale(@Nonnull Guild guild) {
         try {
             GuildTransformer transformer = GuildController.fetchGuild(avaire, guild);
 
-            return LANGS.getOrDefault(transformer == null ? "" : transformer.getLocale(), DEFAULT);
+            if (transformer != null) {
+                for (LanguageHolder locale : LANGS) {
+                    if (locale.getLanguage().getCode().equalsIgnoreCase(transformer.getLocale())) {
+                        return locale;
+                    }
+                }
+            }
+            return DEFAULT;
         } catch (Exception e) {
             LOGGER.error("Error when reading entity", e);
             return DEFAULT;
