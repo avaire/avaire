@@ -31,6 +31,10 @@ public class Blacklist {
         this.blacklist = new BlacklistList();
     }
 
+    public boolean isBlacklisted(long id) {
+        return blacklist.contains(id);
+    }
+
     public boolean isBlacklisted(@Nonnull Message message) {
         if (userWhiteList.contains(message.getAuthor().getId())) {
             return false;
@@ -61,7 +65,7 @@ public class Blacklist {
     }
 
     public void remove(long id) {
-        if (blacklist.contains(id)) {
+        if (!blacklist.contains(id)) {
             return;
         }
 
@@ -73,6 +77,14 @@ public class Blacklist {
                 iterator.remove();
                 break;
             }
+        }
+
+        try {
+            avaire.getDatabase().newQueryBuilder(Constants.BLACKLIST_TABLE_NAME)
+                .where("id", id)
+                .delete();
+        } catch (SQLException e) {
+            AvaIre.getLogger().error("Failed to sync blacklist with the database: " + e.getMessage(), e);
         }
     }
 
@@ -86,7 +98,7 @@ public class Blacklist {
         return null;
     }
 
-    private void addIdToBlacklist(Scope scope, final long id, final @Nullable String reason) {
+    public void addIdToBlacklist(Scope scope, final long id, final @Nullable String reason) {
         if (blacklist.contains(id)) {
             return;
         }
