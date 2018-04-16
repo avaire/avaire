@@ -16,7 +16,7 @@ import java.util.Set;
 public class I18n {
 
     public static final LanguageHolder DEFAULT = new LanguageHolder(Language.EN_US);
-    private static final Set<LanguageHolder> LANGS = new HashSet<>();
+    public static final Set<LanguageHolder> LANGS = new HashSet<>();
 
     private static final Logger LOGGER = LoggerFactory.getLogger(I18n.class);
 

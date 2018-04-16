@@ -4,7 +4,6 @@ import com.avairebot.BaseTest;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import java.util.Map;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -20,10 +19,10 @@ public class LanguageTests extends BaseTest {
     public void testSubLanguagesIsTheSameSizeAsTheDefaultLanguage() {
         Set<String> defaultStrings = getKeys(I18n.DEFAULT);
 
-        for (Map.Entry<String, LanguageLocale> entry : I18n.LANGS.entrySet()) {
-            Set<String> strings = getKeys(entry.getValue());
+        for (LanguageHolder entry : I18n.LANGS) {
+            Set<String> strings = getKeys(entry);
 
-            assertEquals(defaultStrings.size(), strings.size(), "Comparing keys sizes for the default language and " + entry.getKey());
+            assertEquals(defaultStrings.size(), strings.size(), "Comparing keys sizes for the default language and " + entry.getLanguage().getCode());
         }
     }
 
@@ -31,9 +30,9 @@ public class LanguageTests extends BaseTest {
     public void testSubLanguagesHasAllTheSameKeysAsTheDefaultLanguage() {
         Set<String> defaultStrings = getKeys(I18n.DEFAULT);
 
-        for (Map.Entry<String, LanguageLocale> entry : I18n.LANGS.entrySet()) {
-            for (String str : getKeys(entry.getValue())) {
-                assertTrue(defaultStrings.contains(str), "Checking the \"" + str + "\" string in the \"" + entry.getKey() + "\" language file");
+        for (LanguageHolder entry : I18n.LANGS) {
+            for (String str : getKeys(entry)) {
+                assertTrue(defaultStrings.contains(str), "Checking the \"" + str + "\" string in the \"" + entry.getLanguage().getCode() + "\" language file");
             }
         }
     }
@@ -42,14 +41,14 @@ public class LanguageTests extends BaseTest {
     public void testLanguagesDoesNotReturnNull() {
         Set<String> defaultStrings = getKeys(I18n.DEFAULT);
 
-        for (Map.Entry<String, LanguageLocale> entry : I18n.LANGS.entrySet()) {
+        for (LanguageHolder entry : I18n.LANGS) {
             for (String str : defaultStrings) {
-                assertNotNull(entry.getValue().getConfig().getString(str));
+                assertNotNull(entry.getConfig().getString(str));
             }
         }
     }
 
-    private Set<String> getKeys(LanguageLocale locale) {
+    private Set<String> getKeys(LanguageHolder locale) {
         return locale.getConfig().getKeys(true);
     }
 }
