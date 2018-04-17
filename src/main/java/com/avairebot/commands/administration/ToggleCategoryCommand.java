@@ -144,6 +144,7 @@ public class ToggleCategoryCommand extends Command {
 
             context.makeSuccess(getStatusMessage(channelId))
                 .set("category", category.getName())
+                .set("channel", "<#" + channel.getId() + ">")
                 .set("status", status ? "Enabled" : "Disabled")
                 .queue();
         } catch (SQLException e) {
