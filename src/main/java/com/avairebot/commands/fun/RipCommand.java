@@ -5,6 +5,7 @@ import com.avairebot.Constants;
 import com.avairebot.Statistics;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
+import com.avairebot.utilities.NumberUtil;
 
 import java.awt.*;
 import java.sql.SQLException;
@@ -56,19 +57,21 @@ public class RipCommand extends Command {
         context.makeEmbeddedMessage()
             .setColor(Color.decode("#2A2C31"))
             .setDescription(String.format(context.i18n("hasPaidTheirRespects"), context.getMember().getEffectiveName()))
-            .setFooter(String.format(context.i18n("todayAndOverall"), Statistics.getRespects(), getTotalRespects()))
+            .setFooter(String.format(context.i18n("todayAndOverall"), NumberUtil.formatNicely(Statistics.getRespects()), getTotalRespects()))
             .queue();
 
         return true;
     }
 
-    private int getTotalRespects() {
+    private String getTotalRespects() {
         try {
-            return avaire.getDatabase().newQueryBuilder(Constants.STATISTICS_TABLE_NAME).get().first()
-                .getInt("respects", Statistics.getRespects()) + 1;
+            return NumberUtil.formatNicely(
+                avaire.getDatabase().newQueryBuilder(Constants.STATISTICS_TABLE_NAME).get().first()
+                    .getInt("respects", Statistics.getRespects()) + 1
+            );
         } catch (SQLException e) {
             e.printStackTrace();
-            return 1;
+            return "1";
         }
     }
 }
