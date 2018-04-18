@@ -6,6 +6,7 @@ import com.avairebot.audio.DJGuildLevel;
 import com.avairebot.commands.CommandContainer;
 import com.avairebot.commands.CommandHandler;
 import com.avairebot.commands.administration.IAmCommand;
+import com.avairebot.contracts.middleware.DJCheckMessage;
 import com.avairebot.contracts.middleware.Middleware;
 import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.transformers.GuildTransformer;
@@ -31,28 +32,39 @@ public class RequireDJLevel extends Middleware {
                 return stack.next();
             }
 
-            return sendErrorMessage(message);
+            return sendErrorMessage(message, stack);
         }
 
         if (AudioHandler.canRunDJAction(avaire, message, DJGuildLevel.NORMAL)) {
             return stack.next();
         }
 
-        return sendErrorMessage(message);
+        return sendErrorMessage(message, stack);
     }
 
     @SuppressWarnings("ConstantConditions")
-    private boolean sendErrorMessage(Message message) {
-        GuildTransformer guildTransformer = GuildController.fetchGuild(avaire, message);
-        if (guildTransformer != null && guildTransformer.getSelfAssignableRoles().containsValue("dj")) {
-            CommandContainer command = CommandHandler.getCommand(IAmCommand.class);
-            MessageFactory.makeError(message, "The `DJ` Discord role is required to run this command.\nYou can use the `:iam DJ` command to get the role!")
-                .set("iam", command.getCommand().generateCommandTrigger(message))
-                .queue();
-            return false;
+    private boolean sendErrorMessage(Message message, MiddlewareStack stack) {
+        String djcheckMessage = "The `DJ` Discord role is required to run this command!";
+
+        DJCheckMessage annotation = stack.getCommand().getClass().getAnnotation(DJCheckMessage.class);
+        if (annotation != null && annotation.message().trim().length() > 0) {
+            if (annotation.overwrite()) {
+                djcheckMessage = annotation.message();
+            } else {
+                djcheckMessage += annotation.message();
+            }
         }
 
-        MessageFactory.makeError(message, "The `DJ` Discord role is required to run this command!").queue();
+        GuildTransformer guildTransformer = GuildController.fetchGuild(avaire, message);
+        if (guildTransformer != null && guildTransformer.getSelfAssignableRoles().containsValue("dj")) {
+            djcheckMessage += "\nYou can use the `:iam DJ` command to get the role!";
+        }
+
+        CommandContainer command = CommandHandler.getCommand(IAmCommand.class);
+        MessageFactory.makeError(message, djcheckMessage)
+            .set("iam", command.getCommand().generateCommandTrigger(message))
+            .set("prefix", stack.getCommand().generateCommandPrefix(message))
+            .queue();
 
         return false;
     }

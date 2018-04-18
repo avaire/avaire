@@ -5,12 +5,14 @@ import com.avairebot.audio.AudioHandler;
 import com.avairebot.audio.GuildMusicManager;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
+import com.avairebot.contracts.middleware.DJCheckMessage;
 import com.avairebot.contracts.middleware.ThrottleMessage;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+@DJCheckMessage(message = "\nYou can use the `:prefixvoteskip` command to vote to skip the song.", overwrite = false)
 @ThrottleMessage(message = "Too many `:command` attempts. Please try again in **:time** seconds, or use the `:prefixclearqueue` command to remove all songs from the queue.")
 public class SkipCommand extends Command {
 
