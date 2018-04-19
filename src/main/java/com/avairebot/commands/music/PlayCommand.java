@@ -87,10 +87,8 @@ public class PlayCommand extends ThreadCommand {
             return loadSongFromSession(context, args);
         }
 
-        boolean finalShouldLeaveMessage = shouldLeaveMessage;
-
         AudioHandler.loadAndPlay(context, buildTrackRequestString(args)).handle(
-            musicSuccess(context, finalShouldLeaveMessage),
+            musicSuccess(context, shouldLeaveMessage),
             musicFailure(context),
             musicSession(context, args)
         );
@@ -169,6 +167,8 @@ public class PlayCommand extends ThreadCommand {
             if (!finalShouldLeaveMessage && canDeleteMessage(context)) {
                 context.delete().reason("Song request, removing song to cleanup chat").queue(null, null);
             }
+
+            response.getMusicManager().registerDefaultVolume();
 
             if (response.getMusicManager().getPlayer().isPaused()) {
                 response.getMusicManager().getPlayer().setPaused(false);

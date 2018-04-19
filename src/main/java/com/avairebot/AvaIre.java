@@ -237,7 +237,7 @@ public class AvaIre {
         voteManager = new VoteManager(this);
 
         LOGGER.info("Preparing Lavalink");
-        AudioHandler.setGlobalAvaIreInstance(this);
+        AudioHandler.setAvaire(this);
         LavalinkManager.LavalinkManagerHolder.LAVALINK.start(this);
 
         LOGGER.info("Preparing I18n");

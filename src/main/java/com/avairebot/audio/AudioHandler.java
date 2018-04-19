@@ -44,18 +44,17 @@ public class AudioHandler {
     public static final Map<String, AudioSession> AUDIO_SESSION;
 
     private static AudioPlayerManager playerManager;
-    private static AvaIre avaire = null;
+    private static AvaIre avaire;
 
     static {
         MUSIC_MANAGER = new HashMap<>();
         AUDIO_SESSION = new HashMap<>();
     }
 
-    public static void setGlobalAvaIreInstance(AvaIre avaire) {
+    public static void setAvaire(AvaIre avaire) {
         AudioHandler.avaire = avaire;
     }
 
-    @CheckReturnValue
     public static AudioPlayerManager getPlayerManager() {
         if (playerManager == null) {
             playerManager = registerSourceManagers(new DefaultAudioPlayerManager());
@@ -64,8 +63,10 @@ public class AudioHandler {
                 AudioConfiguration.ResamplingQuality.MEDIUM
             );
 
-            if (LavalinkManager.LavalinkManagerHolder.LAVALINK.isEnabled())
+            if (LavalinkManager.LavalinkManagerHolder.LAVALINK.isEnabled()) {
                 playerManager.enableGcMonitoring();
+            }
+
             playerManager.setFrameBufferDuration(1000);
             playerManager.setItemLoaderThreadPoolSize(500);
 
@@ -201,18 +202,16 @@ public class AudioHandler {
     }
 
     @CheckReturnValue
-    public static synchronized GuildMusicManager getGuildAudioPlayer(Guild guild) {
-        long guildId = Long.parseLong(guild.getId());
-        GuildMusicManager musicManager = MUSIC_MANAGER.get(guildId);
+    public static synchronized GuildMusicManager getGuildAudioPlayer(@Nonnull Guild guild) {
+        GuildMusicManager musicManager = MUSIC_MANAGER.get(guild.getIdLong());
 
-        if (musicManager == null) {
-            musicManager = new GuildMusicManager(getPlayerManager(), guild);
-            prepareDefaultVolume(musicManager, guild);
+        if (musicManager == null && getPlayerManager() != null) {
+            musicManager = new GuildMusicManager(avaire, guild);
 
-            MUSIC_MANAGER.put(guildId, musicManager);
+            MUSIC_MANAGER.put(guild.getIdLong(), musicManager);
         }
 
-        if (!LavalinkManager.LavalinkManagerHolder.LAVALINK.isEnabled()) {
+        if (musicManager != null && !LavalinkManager.LavalinkManagerHolder.LAVALINK.isEnabled()) {
             guild.getAudioManager().setSendingHandler(musicManager.getSendHandler());
         }
 
@@ -325,17 +324,5 @@ public class AudioHandler {
             }
         }
         return false;
-    }
-
-    private static void prepareDefaultVolume(GuildMusicManager manager, Guild guild) {
-        if (avaire == null) {
-            manager.getPlayer().setVolume(50);
-            return;
-        }
-
-        GuildTransformer transformer = GuildController.fetchGuild(avaire, guild);
-        manager.getPlayer().setVolume(
-            transformer != null ? transformer.getDefaultVolume() : 50
-        );
     }
 }

@@ -101,7 +101,7 @@ public class TrackScheduler extends AudioEventAdapterWrapped {
             .set("amount", size)
             .set("duration", container.getFormattedDuration())
             .set("requester", container.getRequester().getAsMention())
-            .set("volume", manager.getPlayer().getVolume())
+            .set("volume", getVolume())
             .queue();
     }
 
@@ -142,7 +142,7 @@ public class TrackScheduler extends AudioEventAdapterWrapped {
                 .set("playlistName", playlist.getName())
                 .set("duration", container.getFormattedDuration())
                 .set("requester", container.getRequester().getAsMention())
-                .set("volume", manager.getPlayer().getVolume())
+                .set("volume", getVolume())
                 .queue();
         }
 
@@ -217,7 +217,7 @@ public class TrackScheduler extends AudioEventAdapterWrapped {
             .set("link", container.getAudioTrack().getInfo().uri)
             .set("duration", container.getFormattedDuration())
             .set("requester", container.getRequester().getAsMention())
-            .set("volume", manager.getPlayer().getVolume())
+            .set("volume", getVolume())
             .queue();
     }
 
@@ -257,5 +257,13 @@ public class TrackScheduler extends AudioEventAdapterWrapped {
 
     private boolean isNodeStateDestroyed(Link.State state) {
         return !state.equals(Link.State.DESTROYED) && !state.equals(Link.State.DESTROYING);
+    }
+
+    private int getVolume() {
+        if (manager.hasPlayedSongBefore()) {
+            return player.getVolume();
+        }
+        manager.setHasPlayedSongBefore(true);
+        return manager.getDefaultVolume();
     }
 }
