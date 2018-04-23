@@ -27,21 +27,6 @@ public abstract class Database implements DatabaseConnection, Grammarable {
         CREATE;
     }
     
-    public String parse(QueryType type, QueryBuilder query, Map<String, Boolean> options) throws SQLException {
-        switch(type) {
-        case SELECT:
-            return select(dbm, query, options);
-        case INSERT:
-            return insert(dbm, query, options);
-        case UPDATE:
-            return update(dbm, query, options);
-        case DELETE:
-            return delete(dbm, query, options);
-        default:
-            return null;
-        }
-    }
-    
     protected DatabaseManager dbm = null;
 
     /**
