@@ -10,6 +10,7 @@ import com.avairebot.database.schema.Blueprint;
 
 import java.sql.*;
 import java.util.Arrays;
+import java.util.Map;
 
 public class SQLite extends FilenameDatabase {
 
@@ -136,23 +137,23 @@ public class SQLite extends FilenameDatabase {
         return statement;
     }
     
-    public String select(DatabaseManager manager, QueryBuilder query) throws SQLException {
+    public String select(DatabaseManager manager, QueryBuilder query, Map<String, Boolean> options) throws SQLException {
 	return setupAndRun(new com.avairebot.database.grammar.sqlite.Select(), query, manager, options);
     }
     
-    public String create(DatabaseManager manager, Blueprint blueprint) throws SQLException {
+    public String create(DatabaseManager manager, Blueprint blueprint, Map<String, Boolean> options) throws SQLException {
 	return setupAndRun(new com.avairebot.database.grammar.sqlite.Create(), blueprint, manager, options);
     }
     
-    public String delete(DatabaseManager manager, QueryBuilder query) throws SQLException {
+    public String delete(DatabaseManager manager, QueryBuilder query, Map<String, Boolean> options) throws SQLException {
 	return setupAndRun(new com.avairebot.database.grammar.sqlite.Delete(), query, manager, options);
     }
     
-    public String insert(DatabaseManager manager, QueryBuilder query) throws SQLException {
+    public String insert(DatabaseManager manager, QueryBuilder query, Map<String, Boolean> options) throws SQLException {
 	return setupAndRun(new com.avairebot.database.grammar.sqlite.Insert(), query, manager, options);
     }
     
-    public String update(DatabaseManager manager, QueryBuilder query) throws SQLException {
+    public String update(DatabaseManager manager, QueryBuilder query, Map<String, Boolean> options) throws SQLException {
 	return setupAndRun(new com.avairebot.database.grammar.sqlite.Update(), query, manager, options);
     }
 }

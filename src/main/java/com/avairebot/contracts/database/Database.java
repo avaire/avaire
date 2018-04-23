@@ -27,7 +27,7 @@ public abstract class Database implements DatabaseConnection, Grammarable {
         CREATE;
     }
     
-    public String parse(QueryType type, QueryBuilder query, HashMap options) throws SQLException {
+    public String parse(QueryType type, QueryBuilder query, Map<String, Boolean> options) throws SQLException {
         switch(type) {
         case SELECT:
             return select(dbm, query, options);
