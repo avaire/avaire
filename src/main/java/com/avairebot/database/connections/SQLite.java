@@ -5,6 +5,8 @@ import com.avairebot.contracts.database.StatementInterface;
 import com.avairebot.contracts.database.connections.FilenameDatabase;
 import com.avairebot.database.DatabaseManager;
 import com.avairebot.database.exceptions.DatabaseException;
+import com.avairebot.database.query.QueryBuilder;
+import com.avairebot.database.schema.Blueprint;
 
 import java.sql.*;
 import java.util.Arrays;
@@ -132,5 +134,25 @@ public class SQLite extends FilenameDatabase {
         statement.setMaxRows(25000);
 
         return statement;
+    }
+    
+    public String select(DatabaseManager manager, QueryBuilder query) throws SQLException {
+	return setupAndRun(new com.avairebot.database.grammar.sqlite.Select(), query, manager, options);
+    }
+    
+    public String create(DatabaseManager manager, Blueprint blueprint) throws SQLException {
+	return setupAndRun(new com.avairebot.database.grammar.sqlite.Create(), blueprint, manager, options);
+    }
+    
+    public String delete(DatabaseManager manager, QueryBuilder query) throws SQLException {
+	return setupAndRun(new com.avairebot.database.grammar.sqlite.Delete(), query, manager, options);
+    }
+    
+    public String insert(DatabaseManager manager, QueryBuilder query) throws SQLException {
+	return setupAndRun(new com.avairebot.database.grammar.sqlite.Insert(), query, manager, options);
+    }
+    
+    public String update(DatabaseManager manager, QueryBuilder query) throws SQLException {
+	return setupAndRun(new com.avairebot.database.grammar.sqlite.Update(), query, manager, options);
     }
 }
