@@ -71,7 +71,7 @@ repositories {
 
 dependencies {
     compile group: 'com.avairebot', name: 'Shared', version: '6405bfa912'
-    compile group: 'net.dv8tion', name: 'JDA', version: '3.6.0_356'
+    compile group: 'net.dv8tion', name: 'JDA', version: '3.6.0_357'
     compile group: 'com.sedmelluq', name: 'lavaplayer', version: '1.2.62'
     compile group: 'com.sedmelluq', name: 'jda-nas', version: '1.0.6'
     compile group: 'com.github.Frederikam', name: 'Lavalink', version: '7f656c3ba664c26641bba61a2a40b22c67b4dff2'
