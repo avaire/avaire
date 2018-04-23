@@ -671,15 +671,15 @@ public final class QueryBuilder {
      */
     public String toSQL() {
         try {
-            switch(type) {
-            case SELECT:
-                return dbm.getConnection().select(dbm, this, null);
-            case INSERT:
-                return dbm.getConnection().insert(dbm, this, null);
-            case UPDATE:
-                return dbm.getConnection().update(dbm, this, null);
-            case DELETE:
-                return dbm.getConnection().delete(dbm, this, null);
+            switch (type) {
+                case SELECT:
+                    return dbm.getConnection().select(dbm, this, null);
+                case INSERT:
+                    return dbm.getConnection().insert(dbm, this, null);
+                case UPDATE:
+                    return dbm.getConnection().update(dbm, this, null);
+                case DELETE:
+                    return dbm.getConnection().delete(dbm, this, null);
             }
         } catch (SQLException e) {
             e.printStackTrace();

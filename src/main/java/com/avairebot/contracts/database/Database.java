@@ -19,14 +19,6 @@ import java.util.Map;
 
 public abstract class Database implements DatabaseConnection, Grammarable {
 
-    public enum QueryType {
-        SELECT,
-        INSERT,
-        UPDATE,
-        DELETE,
-        CREATE;
-    }
-    
     protected DatabaseManager dbm = null;
 
     /**
@@ -41,7 +33,6 @@ public abstract class Database implements DatabaseConnection, Grammarable {
      * fetch, and persist data.
      */
     protected Connection connection;
-
     /**
      * Represents a unix timestamp of the last time we
      * communicated with the database.
@@ -92,7 +83,7 @@ public abstract class Database implements DatabaseConnection, Grammarable {
      */
     public final boolean close() throws SQLException {
         if (connection == null) {
-            dbm.getAvaire().getLogger().warn("Database - Could not close connection, it is null.");
+            AvaIre.getLogger().warn("Database - Could not close connection, it is null.");
             return false;
         }
 
@@ -243,7 +234,6 @@ public abstract class Database implements DatabaseConnection, Grammarable {
         return getConnection().createStatement().executeQuery("SELECT " + (lastUpdate = query.getUpdateCount()));
     }
 
-
     /**
      * Prepares a query as a prepared statement before executing it.
      *
@@ -359,5 +349,13 @@ public abstract class Database implements DatabaseConnection, Grammarable {
         grammar.setOptions(options);
 
         return grammar.format(blueprint);
+    }
+
+    public enum QueryType {
+        SELECT,
+        INSERT,
+        UPDATE,
+        DELETE,
+        CREATE
     }
 }
