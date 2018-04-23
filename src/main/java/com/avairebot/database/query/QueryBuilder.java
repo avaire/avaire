@@ -1,7 +1,7 @@
 package com.avairebot.database.query;
 
+import com.avairebot.contracts.database.Database.QueryType;
 import com.avairebot.contracts.database.QueryClause;
-import com.avairebot.contracts.database.grammar.GrammarParser;
 import com.avairebot.contracts.database.query.ChangeableClosure;
 import com.avairebot.contracts.database.query.ClauseConsumer;
 import com.avairebot.database.DatabaseManager;
@@ -9,8 +9,6 @@ import com.avairebot.database.collection.Collection;
 
 import java.sql.SQLException;
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public final class QueryBuilder {
 
@@ -673,11 +671,7 @@ public final class QueryBuilder {
      */
     public String toSQL() {
         try {
-            GrammarParser grammar = (GrammarParser) type.getGrammar().newInstance();
-
-            return grammar.parse(dbm, this);
-        } catch (InstantiationException | IllegalAccessException ex) {
-            Logger.getLogger(QueryBuilder.class.getName()).log(Level.SEVERE, null, ex);
+            return dbm.getConnection().parse(type, this, new HashMap());
         } catch (SQLException e) {
             e.printStackTrace();
         }
