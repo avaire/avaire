@@ -1,16 +1,15 @@
 package com.avairebot.database.schema;
 
-import com.avairebot.AvaIre;
 import com.avairebot.Statistics;
 import com.avairebot.contracts.database.schema.DatabaseClosure;
 import com.avairebot.database.DatabaseManager;
-import com.avairebot.database.grammar.CreateParser;
-import com.avairebot.database.query.QueryType;
 
 import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Schema {
     /**
@@ -80,10 +79,11 @@ public class Schema {
      */
     public boolean create(String table, DatabaseClosure closure) throws SQLException {
         Blueprint blueprint = createAndRunBlueprint(table, closure);
-        CreateParser grammar = createGrammar(true);
         Statistics.addQueries();
 
-        String query = grammar.parse(dbm, blueprint);
+        Map<String, Boolean> options = new HashMap<>();
+        options.put("ignoreExistingTable", true);
+        String query = dbm.getConnection().create(dbm, blueprint, options);
         Statement stmt = dbm.getConnection().prepare(query);
 
         if (stmt instanceof PreparedStatement) {
@@ -111,10 +111,10 @@ public class Schema {
         }
 
         Blueprint blueprint = createAndRunBlueprint(table, closure);
-        CreateParser grammar = createGrammar(false);
         Statistics.addQueries();
-
-        String query = grammar.parse(dbm, blueprint);
+        Map<String, Boolean> options = new HashMap<>();
+        options.put("ignoreExistingTable", false);
+        String query = dbm.getConnection().create(dbm, blueprint, options);
         Statement stmt = dbm.getConnection().prepare(query);
 
         if (stmt instanceof PreparedStatement) {
@@ -145,20 +145,20 @@ public class Schema {
      * @param shouldIgnoreExistingTable Determines if the grammar instance should ignore existing tables
      * @return The {@link QueryType#CREATE} grammar instance.
      */
-    private CreateParser createGrammar(boolean shouldIgnoreExistingTable) throws SQLException {
-        try {
-            CreateParser grammar = (CreateParser) QueryType.CREATE.getGrammar().newInstance();
-            grammar.setOption("ignoreExistingTable", shouldIgnoreExistingTable);
-
-            return grammar;
-        } catch (InstantiationException ex) {
-            AvaIre.getLogger().error("Invalid grammar object parsed, failed to create a new instance!", ex);
-        } catch (IllegalAccessException ex) {
-            AvaIre.getLogger().error("An attempt was made to create a grammar instance on an object that is not accessible!", ex);
-        }
-
-        throw new SQLException("Failed to create grammar instance for query building");
-    }
+//    private CreateParser createGrammar(boolean shouldIgnoreExistingTable) throws SQLException {
+//        try {
+//            CreateParser grammar = (CreateParser) QueryType.CREATE.getGrammar().newInstance();
+//            grammar.setOption("ignoreExistingTable", shouldIgnoreExistingTable);
+//
+//            return grammar;
+//        } catch (InstantiationException ex) {
+//            AvaIre.getLogger().error("Invalid grammar object parsed, failed to create a new instance!", ex);
+//        } catch (IllegalAccessException ex) {
+//            AvaIre.getLogger().error("An attempt was made to create a grammar instance on an object that is not accessible!", ex);
+//        }
+//
+//        throw new SQLException("Failed to create grammar instance for query building");
+//    }
 
     /**
      * Drops the provided table, if the table doesn't exist an exception will be thrown.
