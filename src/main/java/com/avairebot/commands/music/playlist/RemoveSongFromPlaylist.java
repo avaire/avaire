@@ -41,7 +41,7 @@ public class RemoveSongFromPlaylist extends PlaylistSubCommand {
                 .where("id", playlist.getId()).andWhere("guild_id", context.getGuild().getId())
                 .update(statement -> {
                     statement.set("songs", AvaIre.GSON.toJson(playlist.getSongs()), true);
-                    statement.set("amount", playlist.getSize());
+                    statement.set("amount", playlist.getSongs().size());
                 });
 
             avaire.getCache().getAdapter(CacheType.MEMORY)
