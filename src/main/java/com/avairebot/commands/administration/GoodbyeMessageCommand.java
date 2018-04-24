@@ -116,7 +116,7 @@ public class GoodbyeMessageCommand extends Command {
 
     private boolean sendEnableMessage(CommandMessage context, ChannelTransformer channelTransformer) {
         context.makeSuccess(String.join("\n",
-            "The `Welcome` module message has been set to:",
+            "The `Goodbye` module message has been set to:",
             "",
             "```:message```",
             "",
