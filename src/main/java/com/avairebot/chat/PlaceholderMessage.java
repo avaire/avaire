@@ -140,7 +140,10 @@ public class PlaceholderMessage extends Restable {
 
     private String formatMessage() {
         if (placeholders.isEmpty()) {
-            return formatGlobalMessage(message);
+            return trimString(
+                formatGlobalMessage(message),
+                MessageEmbed.TEXT_MAX_LENGTH
+            );
         }
 
         List<String> keys = new ArrayList<>(placeholders.keySet());
