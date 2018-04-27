@@ -7,8 +7,10 @@ import com.avairebot.commands.CommandHandler;
 import com.avairebot.config.Configuration;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.contracts.database.migrations.Migration;
+import com.avairebot.contracts.middleware.Middleware;
 import com.avairebot.database.DatabaseManager;
 import com.avairebot.database.migrate.Migrations;
+import com.avairebot.middleware.MiddlewareHandler;
 import net.dv8tion.jda.bot.sharding.ShardManager;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import org.slf4j.Logger;
@@ -49,6 +51,20 @@ public abstract class JavaPlugin {
      */
     final Set<ListenerAdapter> getEventListeners() {
         return eventListeners;
+    }
+
+    /**
+     * Registers a middleware with the given name, middlewares can be used through
+     * the {@link Command#getMiddleware() getMiddleware()} method, middleware
+     * names will ignore letter casing and there can't be two middlewares
+     * registered with the same name at the same time.
+     *
+     * @param name       The name of the middleware.
+     * @param middleware The middleware instance that should be linked to the given name.
+     * @throws IllegalArgumentException This is thrown if a middleware is already registered with the given name.
+     */
+    public final void registerMiddleware(String name, Middleware middleware) {
+        MiddlewareHandler.register(name, middleware);
     }
 
     /**
