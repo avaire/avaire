@@ -12,10 +12,31 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Require extends Middleware {
+public class RequirePermissionMiddleware extends Middleware {
 
-    public Require(AvaIre avaire) {
+    public RequirePermissionMiddleware(AvaIre avaire) {
         super(avaire);
+    }
+
+    @Override
+    public String buildHelpDescription(String[] arguments) {
+        arguments = Arrays.copyOfRange(arguments, 1, arguments.length);
+        if (arguments.length == 1) {
+            Permissions node = Permissions.fromNode(arguments[0]);
+            if (node != null) {
+                return String.format("**The `%s` permission is required to use this command!**",
+                    node.getPermission().getName()
+                );
+            }
+            return null;
+        }
+        return String.format("**The `%s` permissions is required to use this command!**",
+            Arrays.stream(arguments)
+                .map(Permissions::fromNode)
+                .map(Permissions::getPermission)
+                .map(Permission::getName)
+                .collect(Collectors.joining("`, `"))
+        );
     }
 
     @Override

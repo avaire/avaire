@@ -35,7 +35,7 @@ public class RepeatMusicQueueCommand extends Command {
     @Override
     public List<String> getMiddleware() {
         return Arrays.asList(
-            "has-dj-level:normal",
+            "hasDJLevel:normal",
             "throttle:guild,2,4"
         );
     }

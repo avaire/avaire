@@ -8,13 +8,12 @@ import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.exceptions.InvalidCommandPrefixException;
 import com.avairebot.metrics.Metrics;
-import com.avairebot.middleware.Middleware;
+import com.avairebot.middleware.MiddlewareHandler;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.utils.Checks;
 
 import javax.annotation.Nonnull;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class CommandHandler {
 
@@ -235,9 +234,8 @@ public class CommandHandler {
 
         for (String middleware : command.getMiddleware()) {
             String[] parts = middleware.split(":");
-            AtomicReference<Middleware> reference = new AtomicReference<>(Middleware.fromName(parts[0]));
 
-            if (reference.get() == null) {
+            if (MiddlewareHandler.getMiddleware(parts[0]) == null) {
                 throw new IllegalArgumentException("Middleware reference may not be null, " + parts[0] + " is not a valid middleware!");
             }
         }

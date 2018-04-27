@@ -9,10 +9,20 @@ import net.dv8tion.jda.core.entities.Role;
 
 import java.util.List;
 
-public class HasRole extends Middleware {
+public class HasRoleMiddleware extends Middleware {
 
-    public HasRole(AvaIre avaire) {
+    public HasRoleMiddleware(AvaIre avaire) {
         super(avaire);
+    }
+
+    @Override
+    public String buildHelpDescription(String[] arguments) {
+        if (arguments.length == 1) {
+            return String.format("**The `%s` role is required to use this command!**", arguments[0]);
+        }
+        return String.format("**The `%s` roles is required to use this command!**",
+            String.join("`, `", arguments)
+        );
     }
 
     @Override

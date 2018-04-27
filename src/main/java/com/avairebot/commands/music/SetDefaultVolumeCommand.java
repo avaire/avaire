@@ -59,9 +59,9 @@ public class SetDefaultVolumeCommand extends Command {
     @Override
     public List<String> getMiddleware() {
         return Arrays.asList(
-            "has-dj-level:normal",
+            "hasDJLevel:normal",
             "throttle:guild,1,4",
-            "has-voted"
+            "hasVoted"
         );
     }
 

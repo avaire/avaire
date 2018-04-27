@@ -1,4 +1,4 @@
-package com.avairebot.middleware;
+package com.avairebot.middleware.global;
 
 import com.avairebot.AvaIre;
 import com.avairebot.commands.CommandHandler;
@@ -8,19 +8,20 @@ import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.transformers.ChannelTransformer;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.factories.MessageFactory;
+import com.avairebot.middleware.MiddlewareStack;
 import com.avairebot.utilities.RestActionUtil;
 import net.dv8tion.jda.core.entities.Message;
 
 import java.util.concurrent.TimeUnit;
 
-public class isCategoryEnabled extends Middleware {
+public class IsCategoryEnabled extends Middleware {
 
-    public isCategoryEnabled(AvaIre avaire) {
+    public IsCategoryEnabled(AvaIre avaire) {
         super(avaire);
     }
 
-    @SuppressWarnings("ConstantConditions")
     @Override
+    @SuppressWarnings("ConstantConditions")
     public boolean handle(Message message, MiddlewareStack stack, String... args) {
         if (!message.getChannelType().isGuild()) {
             return stack.next();

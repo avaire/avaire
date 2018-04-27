@@ -1,4 +1,4 @@
-package com.avairebot.middleware;
+package com.avairebot.middleware.global;
 
 import com.avairebot.AvaIre;
 import com.avairebot.commands.AliasCommandContainer;
@@ -6,6 +6,7 @@ import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.middleware.Middleware;
 import com.avairebot.factories.MessageFactory;
 import com.avairebot.metrics.Metrics;
+import com.avairebot.middleware.MiddlewareStack;
 import com.avairebot.utilities.ArrayUtil;
 import com.avairebot.utilities.CheckPermissionUtil;
 import com.avairebot.utilities.RestActionUtil;

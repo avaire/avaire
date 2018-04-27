@@ -24,6 +24,7 @@ import com.avairebot.handlers.GenericEventHandler;
 import com.avairebot.handlers.MainEventHandler;
 import com.avairebot.language.I18n;
 import com.avairebot.metrics.Metrics;
+import com.avairebot.middleware.*;
 import com.avairebot.plugin.PluginLoader;
 import com.avairebot.plugin.PluginManager;
 import com.avairebot.scheduler.ScheduleHandler;
@@ -148,6 +149,15 @@ public class AvaIre {
             new CreateLogTableMigration(),
             new ReformatBlacklistTableMigration()
         );
+
+        LOGGER.info("Registering default middlewares");
+        MiddlewareHandler.initialize(this);
+        MiddlewareHandler.register("hasRole", new HasRoleMiddleware(this));
+        MiddlewareHandler.register("hasVoted", new HasVotedTodayMiddleware(this));
+        MiddlewareHandler.register("isBotAdmin", new IsBotAdminMiddleware(this));
+        MiddlewareHandler.register("require", new RequirePermissionMiddleware(this));
+        MiddlewareHandler.register("hasDJLevel", new RequireDJLevelMiddleware(this));
+        MiddlewareHandler.register("throttle", new ThrottleMiddleware(this));
 
         LOGGER.info("Registering default command categories");
         String defaultPrefix = getConfig().getString("default-prefix", DiscordConstants.DEFAULT_COMMAND_PREFIX);

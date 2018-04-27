@@ -50,7 +50,7 @@ public class VolumeCommand extends Command {
 
     @Override
     public List<String> getMiddleware() {
-        return Arrays.asList("throttle:user,1,4", "has-voted");
+        return Arrays.asList("throttle:user,1,4", "hasVoted");
     }
 
     @Override

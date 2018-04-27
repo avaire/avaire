@@ -13,9 +13,9 @@ import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.factories.MessageFactory;
 import net.dv8tion.jda.core.entities.Message;
 
-public class RequireDJLevel extends Middleware {
+public class RequireDJLevelMiddleware extends Middleware {
 
-    public RequireDJLevel(AvaIre avaire) {
+    public RequireDJLevelMiddleware(AvaIre avaire) {
         super(avaire);
     }
 

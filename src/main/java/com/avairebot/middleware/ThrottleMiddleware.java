@@ -10,10 +10,17 @@ import com.avairebot.metrics.Metrics;
 import com.avairebot.utilities.NumberUtil;
 import net.dv8tion.jda.core.entities.Message;
 
-public class Throttle extends Middleware {
+public class ThrottleMiddleware extends Middleware {
 
-    public Throttle(AvaIre avaire) {
+    public ThrottleMiddleware(AvaIre avaire) {
         super(avaire);
+    }
+
+    @Override
+    public String buildHelpDescription(String[] arguments) {
+        return String.format("**This command can only be used `%s` time(s) every `%s` seconds per %s**",
+            arguments[1], arguments[2], arguments[0].equalsIgnoreCase("guild") ? "server" : arguments[0]
+        );
     }
 
     @Override

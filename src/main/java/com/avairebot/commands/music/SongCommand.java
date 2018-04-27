@@ -51,7 +51,7 @@ public class SongCommand extends Command {
     @Override
     public List<String> getMiddleware() {
         return Arrays.asList(
-            "has-dj-level:none",
+            "hasDJLevel:none",
             "throttle:channel,2,4"
         );
     }

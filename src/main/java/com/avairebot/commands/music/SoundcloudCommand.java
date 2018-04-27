@@ -43,7 +43,7 @@ public class SoundcloudCommand extends ThreadCommand {
     @Override
     public List<String> getMiddleware() {
         return Arrays.asList(
-            "has-dj-level:none",
+            "hasDJLevel:none",
             "throttle:guild,2,5"
         );
     }

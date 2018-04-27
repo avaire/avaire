@@ -90,7 +90,7 @@ public class PlaylistCommand extends ThreadCommand {
     @Override
     public List<String> getMiddleware() {
         return Arrays.asList(
-            "has-dj-level:normal",
+            "hasDJLevel:normal",
             "throttle:user,2,5"
         );
     }

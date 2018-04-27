@@ -5,10 +5,15 @@ import com.avairebot.contracts.middleware.Middleware;
 import com.avairebot.factories.MessageFactory;
 import net.dv8tion.jda.core.entities.Message;
 
-public class IsBotAdmin extends Middleware {
+public class IsBotAdminMiddleware extends Middleware {
 
-    public IsBotAdmin(AvaIre avaire) {
+    public IsBotAdminMiddleware(AvaIre avaire) {
         super(avaire);
+    }
+
+    @Override
+    public String buildHelpDescription(String[] arguments) {
+        return "**You must be a Bot Administrator to use this command!**";
     }
 
     @Override

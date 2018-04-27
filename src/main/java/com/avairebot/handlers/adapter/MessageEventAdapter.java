@@ -95,7 +95,7 @@ public class MessageEventAdapter extends EventAdapter {
             if (container != null && canExecuteCommand(event, container)) {
                 Statistics.addCommands();
 
-                invokeMiddlewareStack(new MiddlewareStack(avaire, event.getMessage(), container));
+                invokeMiddlewareStack(new MiddlewareStack(event.getMessage(), container));
                 return;
             }
 
@@ -104,7 +104,7 @@ public class MessageEventAdapter extends EventAdapter {
                 if (container != null && canExecuteCommand(event, container)) {
                     Statistics.addCommands();
 
-                    invokeMiddlewareStack(new MiddlewareStack(avaire, event.getMessage(), container, true));
+                    invokeMiddlewareStack(new MiddlewareStack(event.getMessage(), container, true));
                     return;
                 }
 

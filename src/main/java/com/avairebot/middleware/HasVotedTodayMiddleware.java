@@ -13,6 +13,11 @@ public class HasVotedTodayMiddleware extends Middleware {
     }
 
     @Override
+    public String buildHelpDescription(String[] arguments) {
+        return "**You must [vote for Ava](https://discordbots.org/bot/avaire) to use this command**";
+    }
+
+    @Override
     public boolean handle(Message message, MiddlewareStack stack, String... args) {
         if (avaire.getVoteManager().isEnabled() && isServerVIP(message)) {
             return stack.next();

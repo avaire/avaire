@@ -2,7 +2,11 @@ package com.avairebot.contracts.middleware;
 
 import com.avairebot.AvaIre;
 import com.avairebot.middleware.MiddlewareStack;
+import com.avairebot.plugin.JavaPlugin;
+import com.sun.istack.internal.NotNull;
 import net.dv8tion.jda.core.entities.Message;
+
+import javax.annotation.Nullable;
 
 public abstract class Middleware {
 
@@ -22,6 +26,28 @@ public abstract class Middleware {
     }
 
     /**
+     * Instantiates the middleware and sets the avaire class instance through the plugin instance.
+     *
+     * @param plugin The AvaIre application class instance.
+     */
+    public Middleware(JavaPlugin plugin) {
+        this.avaire = plugin.getAvaire();
+    }
+
+    /**
+     * Builds the help description that should be displayed when the help command is used
+     * for a command that uses the middleware, if null is returned the middleware will
+     * be omitted from the help command.
+     *
+     * @param arguments The arguments that was given to the middleware for the current command.
+     * @return Possibly-null, the description of the middleware, or null if no description should be displayed.
+     */
+    @Nullable
+    public String buildHelpDescription(@NotNull String[] arguments) {
+        return null;
+    }
+
+    /**
      * Invoked by the middleware stack, handles the middleware request message
      * event, on success the {@link MiddlewareStack#next()} method should be
      * called to call the next middleware in the chain, on failure the
@@ -32,5 +58,5 @@ public abstract class Middleware {
      * @param args    The arguments given the current middleware.
      * @return Invoke {@link MiddlewareStack#next()} on success, false on failure.
      */
-    public abstract boolean handle(Message message, MiddlewareStack stack, String... args);
+    public abstract boolean handle(@NotNull Message message, @NotNull MiddlewareStack stack, String... args);
 }
