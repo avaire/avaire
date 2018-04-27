@@ -140,27 +140,6 @@ public class Schema {
     }
 
     /**
-     * Creates a {@link QueryType#CREATE} grammar instance with the provided settings.
-     *
-     * @param shouldIgnoreExistingTable Determines if the grammar instance should ignore existing tables
-     * @return The {@link QueryType#CREATE} grammar instance.
-     */
-//    private CreateParser createGrammar(boolean shouldIgnoreExistingTable) throws SQLException {
-//        try {
-//            CreateParser grammar = (CreateParser) QueryType.CREATE.getGrammar().newInstance();
-//            grammar.setOption("ignoreExistingTable", shouldIgnoreExistingTable);
-//
-//            return grammar;
-//        } catch (InstantiationException ex) {
-//            AvaIre.getLogger().error("Invalid grammar object parsed, failed to create a new instance!", ex);
-//        } catch (IllegalAccessException ex) {
-//            AvaIre.getLogger().error("An attempt was made to create a grammar instance on an object that is not accessible!", ex);
-//        }
-//
-//        throw new SQLException("Failed to create grammar instance for query building");
-//    }
-
-    /**
      * Drops the provided table, if the table doesn't exist an exception will be thrown.
      *
      * @param table The table that should be dropped

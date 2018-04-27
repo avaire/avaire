@@ -4,6 +4,7 @@ import com.avairebot.AvaIre;
 import com.avairebot.contracts.database.StatementInterface;
 import com.avairebot.contracts.database.connections.HostnameDatabase;
 import com.avairebot.database.DatabaseManager;
+import com.avairebot.database.grammar.mysql.*;
 import com.avairebot.database.query.QueryBuilder;
 import com.avairebot.database.schema.Blueprint;
 
@@ -141,23 +142,23 @@ public class MySQL extends HostnameDatabase {
         return false;
     }
 
-    public String select(DatabaseManager manager, QueryBuilder query, Map<String, Boolean> options) throws SQLException {
-        return setupAndRun(new com.avairebot.database.grammar.mysql.Select(), query, manager, options);
+    public String select(DatabaseManager manager, QueryBuilder query, Map<String, Boolean> options) {
+        return setupAndRun(new Select(), query, manager, options);
     }
 
-    public String create(DatabaseManager manager, Blueprint blueprint, @Nonnull Map<String, Boolean> options) throws SQLException {
-        return setupAndRun(new com.avairebot.database.grammar.mysql.Create(), blueprint, manager, options);
+    public String create(DatabaseManager manager, Blueprint blueprint, @Nonnull Map<String, Boolean> options) {
+        return setupAndRun(new Create(), blueprint, manager, options);
     }
 
-    public String delete(DatabaseManager manager, QueryBuilder query, Map<String, Boolean> options) throws SQLException {
-        return setupAndRun(new com.avairebot.database.grammar.mysql.Delete(), query, manager, options);
+    public String delete(DatabaseManager manager, QueryBuilder query, Map<String, Boolean> options) {
+        return setupAndRun(new Delete(), query, manager, options);
     }
 
-    public String insert(DatabaseManager manager, QueryBuilder query, Map<String, Boolean> options) throws SQLException {
-        return setupAndRun(new com.avairebot.database.grammar.mysql.Insert(), query, manager, options);
+    public String insert(DatabaseManager manager, QueryBuilder query, Map<String, Boolean> options) {
+        return setupAndRun(new Insert(), query, manager, options);
     }
 
-    public String update(DatabaseManager manager, QueryBuilder query, Map<String, Boolean> options) throws SQLException {
-        return setupAndRun(new com.avairebot.database.grammar.mysql.Update(), query, manager, options);
+    public String update(DatabaseManager manager, QueryBuilder query, Map<String, Boolean> options) {
+        return setupAndRun(new Update(), query, manager, options);
     }
 }
