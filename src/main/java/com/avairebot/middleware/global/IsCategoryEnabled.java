@@ -27,7 +27,7 @@ public class IsCategoryEnabled extends Middleware {
             return stack.next();
         }
 
-        if (isCategoryCommands(stack)) {
+        if (isCategoryCommands(stack) || stack.getCommandContainer().getCategory().isGlobalOrSystem()) {
             return stack.next();
         }
 
