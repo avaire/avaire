@@ -3,9 +3,9 @@ package com.avairebot.contracts.middleware;
 import com.avairebot.AvaIre;
 import com.avairebot.middleware.MiddlewareStack;
 import com.avairebot.plugin.JavaPlugin;
-import com.sun.istack.internal.NotNull;
 import net.dv8tion.jda.core.entities.Message;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public abstract class Middleware {
@@ -43,7 +43,7 @@ public abstract class Middleware {
      * @return Possibly-null, the description of the middleware, or null if no description should be displayed.
      */
     @Nullable
-    public String buildHelpDescription(@NotNull String[] arguments) {
+    public String buildHelpDescription(@Nonnull String[] arguments) {
         return null;
     }
 
@@ -58,5 +58,5 @@ public abstract class Middleware {
      * @param args    The arguments given the current middleware.
      * @return Invoke {@link MiddlewareStack#next()} on success, false on failure.
      */
-    public abstract boolean handle(@NotNull Message message, @NotNull MiddlewareStack stack, String... args);
+    public abstract boolean handle(@Nonnull Message message, @Nonnull MiddlewareStack stack, String... args);
 }

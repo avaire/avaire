@@ -3,9 +3,9 @@ package com.avairebot.middleware;
 import com.avairebot.AvaIre;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.contracts.middleware.Middleware;
-import com.sun.istack.internal.NotNull;
 import net.dv8tion.jda.core.utils.Checks;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,7 +21,7 @@ public class MiddlewareHandler {
      * @return Possibly-null, the instance of the middleware with the given name.
      */
     @Nullable
-    public static Middleware getMiddleware(@NotNull String name) {
+    public static Middleware getMiddleware(@Nonnull String name) {
         return MIDDLEWARES.getOrDefault(name.toLowerCase(), null);
     }
 
@@ -35,7 +35,7 @@ public class MiddlewareHandler {
      * @param middleware The middleware instance that should be linked to the given name.
      * @throws IllegalArgumentException This is thrown if a middleware is already registered with the given name.
      */
-    public static void register(@NotNull String name, @NotNull Middleware middleware) {
+    public static void register(@Nonnull String name, @Nonnull Middleware middleware) {
         Checks.notNull(name, "Middleware name");
         Checks.notNull(middleware, "Middleware");
 
