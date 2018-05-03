@@ -7,6 +7,7 @@ import com.avairebot.commands.CommandContainer;
 import com.avairebot.commands.CommandHandler;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.commands.administration.ModlogReasonCommand;
+import com.avairebot.handlers.events.ModlogActionEvent;
 import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.factories.MessageFactory;
@@ -84,6 +85,10 @@ public class ModlogModule {
                     .addField("Reason", formatReason(transformer, split[1]), false);
                 break;
         }
+
+        avaire.getEventEmitter().push(new ModlogActionEvent(
+            guild.getJDA(), action, transformer.getModlogCase()
+        ));
 
         channel.sendMessage(builder.build()).queue(success -> {
             try {

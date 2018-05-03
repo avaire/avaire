@@ -20,6 +20,7 @@ import com.avairebot.database.transformers.PlaylistTransformer;
 import com.avairebot.exceptions.InvalidApplicationEnvironmentException;
 import com.avairebot.exceptions.InvalidPluginException;
 import com.avairebot.exceptions.InvalidPluginsPathException;
+import com.avairebot.handlers.EventEmitter;
 import com.avairebot.handlers.GenericEventHandler;
 import com.avairebot.handlers.MainEventHandler;
 import com.avairebot.language.I18n;
@@ -83,6 +84,7 @@ public class AvaIre {
     private final PluginManager pluginManager;
     private final VoteManager voteManager;
     private final ShardEntityCounter shardEntityCounter;
+    private final EventEmitter eventEmitter;
 
     private Carbon shutdownTime = null;
     private int shutdownCode = ExitCodes.EXIT_CODE_RESTART;
@@ -101,6 +103,7 @@ public class AvaIre {
         LOGGER.info("Bootstrapping AvaIre v" + AppInfo.getAppInfo().VERSION);
         Reflections.log = null;
 
+        this.eventEmitter = new EventEmitter(this);
         this.cache = new CacheManager(this);
 
         LOGGER.info("Loading configuration");
@@ -344,6 +347,10 @@ public class AvaIre {
 
     public IntelligenceManager getIntelligenceManager() {
         return intelligenceManager;
+    }
+
+    public EventEmitter getEventEmitter() {
+        return eventEmitter;
     }
 
     public void shutdown() {
