@@ -8,12 +8,14 @@ import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.transformers.ChannelTransformer;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.factories.MessageFactory;
+import com.avairebot.utilities.StringReplacementUtil;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.MessageBuilder;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -64,10 +66,12 @@ public class HelpCommand extends Command {
     private boolean showCategories(CommandMessage context) {
         Category category = CategoryHandler.random(false);
 
-        String note = String.format(context.i18n("categoriesNote"),
-            category.getName().toLowerCase(),
-            category.getName().toLowerCase().substring(0, 3)
-        ).replaceAll(":help", generateCommandTrigger(context.getMessage()));
+        String note = StringReplacementUtil.replaceAll(
+            String.format(context.i18n("categoriesNote"),
+                category.getName().toLowerCase(),
+                category.getName().toLowerCase().substring(0, 3)
+            ), ":help", generateCommandTrigger(context.getMessage())
+        );
 
         context.makeInfo(getCategories(context) + note)
             .setTitle(context.i18n("categoriesTitle"))
@@ -91,6 +95,13 @@ public class HelpCommand extends Command {
             return false;
         }
 
+        Optional<CommandContainer> randomCommandFromCategory = CommandHandler.getCommands().stream()
+            .filter(commandContainer -> commandContainer.getCategory().equals(category))
+            .collect(Collectors.collectingAndThen(Collectors.toList(), collected -> {
+                Collections.shuffle(collected);
+                return collected.stream();
+            })).findFirst();
+
         //noinspection ConstantConditions
         context.getMessageChannel().sendMessage(
             new MessageBuilder()
@@ -109,17 +120,13 @@ public class HelpCommand extends Command {
                 // of how get information for the specific command.
                 .setEmbed(MessageFactory.createEmbeddedBuilder()
                     .setColor(MessageType.INFO.getColor())
-                    .setDescription(
-                        context.i18n("commandNote")
-                            .replaceAll(":help", generateCommandTrigger(context.getMessage()))
-                            .replace(":command", CommandHandler.getCommands().stream()
-                                .filter(commandContainer -> commandContainer.getCategory().equals(category))
-                                .collect(Collectors.collectingAndThen(Collectors.toList(), collected -> {
-                                    Collections.shuffle(collected);
-                                    return collected.stream();
-                                }))
-                                .findFirst().get().getCommand().getTriggers().get(0)
-                            ))
+                    .setDescription(StringReplacementUtil.replaceAll(
+                        StringReplacementUtil.replaceAll(
+                            context.i18n("commandNote"),
+                            ":help", generateCommandTrigger(context.getMessage())
+                        ), ":command", randomCommandFromCategory.isPresent() ?
+                            randomCommandFromCategory.get().getCommand().getTriggers().get(0) : "Unknown")
+                    )
                     .build()
                 ).build()
         ).queue();

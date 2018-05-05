@@ -4,6 +4,7 @@ import ai.api.model.AIResponse;
 import com.avairebot.AvaIre;
 import com.avairebot.contracts.ai.Intent;
 import com.avairebot.factories.MessageFactory;
+import com.avairebot.utilities.StringReplacementUtil;
 import net.dv8tion.jda.core.entities.Message;
 
 public class SmallTalk extends Intent {
@@ -24,8 +25,9 @@ public class SmallTalk extends Intent {
             nickname = message.getMember().getEffectiveName();
         }
 
-        MessageFactory.makeInfo(message,
-            response.getResult().getFulfillment().getSpeech().replaceAll("%nick%", nickname)
-        ).queue();
+        MessageFactory.makeInfo(message, StringReplacementUtil.replaceAll(
+            response.getResult().getFulfillment().getSpeech(),
+            "%nick%", nickname
+        )).queue();
     }
 }

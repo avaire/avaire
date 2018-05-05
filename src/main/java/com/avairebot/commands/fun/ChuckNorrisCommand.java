@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.regex.Matcher;
 
 public class ChuckNorrisCommand extends ThreadCommand {
 
@@ -62,13 +63,15 @@ public class ChuckNorrisCommand extends ThreadCommand {
 
     private String prepareJoke(CommandMessage message, String[] args, String joke) {
         if (!message.getMentionedUsers().isEmpty()) {
-            return joke.replaceAll("Chuck Norris", message.getGuild().getMember(
-                message.getMentionedUsers().get(0)
-            ).getEffectiveName());
+            return joke.replaceAll("Chuck Norris", Matcher.quoteReplacement(
+                message.getGuild().getMember(
+                    message.getMentionedUsers().get(0)
+                ).getEffectiveName()
+            ));
         }
 
         if (args.length > 0) {
-            return joke.replaceAll("Chuck Norris", String.join(" ", args));
+            return joke.replaceAll("Chuck Norris", Matcher.quoteReplacement(String.join(" ", args)));
         }
 
         return joke;

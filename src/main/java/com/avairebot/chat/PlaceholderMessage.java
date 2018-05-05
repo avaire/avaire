@@ -1,6 +1,7 @@
 package com.avairebot.chat;
 
 import com.avairebot.contracts.chat.Restable;
+import com.avairebot.utilities.StringReplacementUtil;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.MessageEmbed;
@@ -149,9 +150,9 @@ public class PlaceholderMessage extends Restable {
         List<String> keys = new ArrayList<>(placeholders.keySet());
         keys.sort((o1, o2) -> o2.length() - o1.length());
         keys.forEach(key -> {
-            message = message.replaceAll(":" + key, placeholders.get(key)
-                .replaceAll("\\\\", "\\\\\\\\")
-                .replaceAll("\\$", "\\\\\\$"));
+            message = StringReplacementUtil.replaceAll(
+                message, ":" + key, placeholders.get(key)
+            );
         });
 
         return trimString(

@@ -2,13 +2,17 @@ package com.avairebot.contracts.commands;
 
 import com.avairebot.AvaIre;
 import com.avairebot.chat.PlaceholderMessage;
-import com.avairebot.commands.*;
+import com.avairebot.commands.Category;
+import com.avairebot.commands.CategoryHandler;
+import com.avairebot.commands.CommandMessage;
+import com.avairebot.commands.CommandPriority;
 import com.avairebot.contracts.middleware.Middleware;
 import com.avairebot.contracts.reflection.Reflectionable;
 import com.avairebot.exceptions.MissingCommandDescriptionException;
 import com.avairebot.middleware.MiddlewareHandler;
 import com.avairebot.plugin.JavaPlugin;
 import com.avairebot.utilities.RestActionUtil;
+import com.avairebot.utilities.StringReplacementUtil;
 import net.dv8tion.jda.core.entities.Message;
 
 import java.util.ArrayList;
@@ -18,7 +22,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 public abstract class Command extends Reflectionable {
-
 
     /**
      * Determines if the command can be used in direct messages or not.
@@ -280,11 +283,18 @@ public abstract class Command extends Reflectionable {
      */
     public final String generateDescription(CommandMessage context) {
         if (getMiddleware().isEmpty()) {
-            return getDescription(context).trim().replaceAll(":prefix", generateCommandPrefix(context.getMessage()));
+            return StringReplacementUtil.replaceAll(
+                getDescription(context).trim(),
+                ":prefix", generateCommandPrefix(context.getMessage())
+            );
         }
 
         List<String> description = new ArrayList<>();
-        description.add(getDescription(context).replaceAll(":prefix", generateCommandPrefix(context.getMessage())));
+        description.add(StringReplacementUtil.replaceAll(
+            getDescription(context),
+            ":prefix", generateCommandPrefix(context.getMessage())
+            )
+        );
         description.add("");
 
         for (String middleware : getMiddleware()) {
@@ -388,11 +398,17 @@ public abstract class Command extends Reflectionable {
      * @param string  The string that should be formatted.
      * @return The formatted string.
      */
-    @SuppressWarnings("ConstantConditions")
     private String formatCommandGeneratorString(Message message, String string) {
-        CommandContainer container = CommandHandler.getCommand(this);
-        String command = generateCommandPrefix(message) + container.getCommand().getTriggers().get(0);
+        return StringReplacementUtil.replaceAll(string, ":command", generateCommandTrigger(message));
+    }
 
-        return string.replaceAll(":command", command);
+    @Override
+    public boolean equals(Object obj) {
+        return obj != null && obj instanceof Command && isSame((Command) obj);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this);
     }
 }

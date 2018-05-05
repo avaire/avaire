@@ -7,6 +7,7 @@ import com.avairebot.commands.CommandHandler;
 import com.avairebot.commands.help.HelpCommand;
 import com.avairebot.contracts.ai.Intent;
 import com.avairebot.factories.MessageFactory;
+import com.avairebot.utilities.StringReplacementUtil;
 import net.dv8tion.jda.core.entities.Message;
 
 public class Unknown extends Intent {
@@ -31,7 +32,10 @@ public class Unknown extends Intent {
         }
 
         MessageFactory.makeWarning(message,
-            response.getResult().getFulfillment().getSpeech().replaceAll(".help", helpCommand)
+            StringReplacementUtil.replaceAll(
+                response.getResult().getFulfillment().getSpeech(),
+                "!help", helpCommand
+            )
         ).queue();
     }
 
