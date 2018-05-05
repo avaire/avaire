@@ -68,7 +68,7 @@ public class SoundcloudCommand extends ThreadCommand {
 
         context.setI18nCommandPrefix(container);
 
-        if (AudioHandler.hasAudioSession(context) && NumberUtil.isNumeric(args[0])) {
+        if (AudioHandler.getDefaultAudioHandler().hasAudioSession(context) && NumberUtil.isNumeric(args[0])) {
             return playCommand.loadSongFromSession(context, args);
         }
 

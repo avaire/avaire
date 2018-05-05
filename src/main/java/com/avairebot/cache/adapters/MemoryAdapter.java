@@ -11,7 +11,7 @@ import java.util.WeakHashMap;
 
 public class MemoryAdapter extends CacheAdapter {
 
-    private static final Map<String, CacheItem> CACHES = new WeakHashMap<String, CacheItem>();
+    private final Map<String, CacheItem> CACHES = new WeakHashMap<String, CacheItem>();
 
     @Override
     public boolean put(String token, Object value, int seconds) {

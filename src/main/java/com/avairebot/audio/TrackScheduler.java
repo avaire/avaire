@@ -222,7 +222,7 @@ public class TrackScheduler extends AudioEventAdapterWrapped {
     }
 
     public void handleEndOfQueue(@Nonnull CommandMessage context, boolean sendEndOfQueue) {
-        if (sendEndOfQueue && AudioHandler.MUSIC_MANAGER.containsKey(context.getGuild().getIdLong())) {
+        if (sendEndOfQueue && AudioHandler.getDefaultAudioHandler().musicManagers.containsKey(context.getGuild().getIdLong())) {
             context.makeSuccess(context.i18nRaw("music.internal.queueHasEnded"))
                 .queue(queueMessage -> {
                     queueMessage.delete().queueAfter(45, TimeUnit.SECONDS, null, RestActionUtil.IGNORE);
@@ -231,7 +231,7 @@ public class TrackScheduler extends AudioEventAdapterWrapped {
 
         LavalinkManager.LavalinkManagerHolder.LAVALINK.closeConnection(context.getGuild());
 
-        GuildMusicManager manager = AudioHandler.MUSIC_MANAGER.get(context.getGuild().getIdLong());
+        GuildMusicManager manager = AudioHandler.getDefaultAudioHandler().musicManagers.get(context.getGuild().getIdLong());
         manager.getPlayer().removeListener(this);
 
         if (LavalinkManager.LavalinkManagerHolder.LAVALINK.isEnabled()) {
@@ -246,7 +246,7 @@ public class TrackScheduler extends AudioEventAdapterWrapped {
             context.getGuild().getAudioManager().setSendingHandler(null);
         }
 
-        AudioHandler.MUSIC_MANAGER.remove(
+        AudioHandler.getDefaultAudioHandler().musicManagers.remove(
             context.getGuild().getIdLong()
         );
     }

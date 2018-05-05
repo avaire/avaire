@@ -34,14 +34,14 @@ public class TrackRequest extends Future {
     public void handle(final Consumer success, final Consumer<Throwable> failure, final Consumer<AudioSession> sessionConsumer) {
         Metrics.searchRequests.inc();
 
-        AudioHandler.getPlayerManager().loadItemOrdered(musicManager, trackUrl, new AudioLoadResultHandler() {
+        AudioHandler.getDefaultAudioHandler().getPlayerManager().loadItemOrdered(musicManager, trackUrl, new AudioLoadResultHandler() {
             @Override
             public void trackLoaded(AudioTrack track) {
                 Metrics.tracksLoaded.inc();
 
                 success.accept(new TrackResponse(musicManager, track, trackUrl));
 
-                AudioHandler.play(context, musicManager, track);
+                AudioHandler.getDefaultAudioHandler().play(context, musicManager, track);
             }
 
             @Override
@@ -57,7 +57,7 @@ public class TrackRequest extends Future {
                         return;
                     }
 
-                    sessionConsumer.accept(AudioHandler.createAudioSession(context, playlist));
+                    sessionConsumer.accept(AudioHandler.getDefaultAudioHandler().createAudioSession(context, playlist));
                     return;
                 }
 
@@ -69,7 +69,7 @@ public class TrackRequest extends Future {
                 success.accept(new TrackResponse(musicManager, playlist, trackUrl));
 
                 Metrics.tracksLoaded.inc(playlist.getTracks().size());
-                AudioHandler.play(context, musicManager, playlist);
+                AudioHandler.getDefaultAudioHandler().play(context, musicManager, playlist);
             }
 
             @Override

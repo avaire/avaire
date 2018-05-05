@@ -52,7 +52,7 @@ public class PlaylistImportSourceManager implements AudioSourceManager {
     private static final org.slf4j.Logger log = LoggerFactory.getLogger(PlaylistImportSourceManager.class);
 
     private static final AudioPlayerManager PRIVATE_MANAGER = AudioHandler
-        .registerSourceManagers(new DefaultAudioPlayerManager());
+        .getDefaultAudioHandler().registerSourceManagers(new DefaultAudioPlayerManager());
 
     @Override
     public String getSourceName() {

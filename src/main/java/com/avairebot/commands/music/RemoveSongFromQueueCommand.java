@@ -63,7 +63,7 @@ public class RemoveSongFromQueueCommand extends Command {
             return sendErrorMessage(context, context.i18n("mustBePositiveNumber"));
         }
 
-        GuildMusicManager musicManager = AudioHandler.getGuildAudioPlayer(context.getGuild());
+        GuildMusicManager musicManager = AudioHandler.getDefaultAudioHandler().getGuildAudioPlayer(context.getGuild());
 
         if (musicManager.getScheduler().getQueue().isEmpty()) {
             return sendErrorMessage(context,

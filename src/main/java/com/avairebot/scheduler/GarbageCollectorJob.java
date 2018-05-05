@@ -33,8 +33,8 @@ public class GarbageCollectorJob extends Job {
 
         // Clean music managers and audio sessions by removing
         // them if they have expired or are unused.
-        AudioHandler.MUSIC_MANAGER.entrySet().removeIf(this::musicManagerFilter);
-        AudioHandler.AUDIO_SESSION.entrySet().removeIf(this::audioSessionFilter);
+        AudioHandler.getDefaultAudioHandler().musicManagers.entrySet().removeIf(this::musicManagerFilter);
+        AudioHandler.getDefaultAudioHandler().audioSessions.entrySet().removeIf(this::audioSessionFilter);
     }
 
     /**

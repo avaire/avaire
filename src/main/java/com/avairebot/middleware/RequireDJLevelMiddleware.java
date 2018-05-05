@@ -28,14 +28,14 @@ public class RequireDJLevelMiddleware extends Middleware {
         if (args.length > 0) {
             DJGuildLevel level = DJGuildLevel.fromName(args[0]);
 
-            if (level != null && AudioHandler.canRunDJAction(avaire, message, level)) {
+            if (level != null && AudioHandler.getDefaultAudioHandler().canRunDJAction(avaire, message, level)) {
                 return stack.next();
             }
 
             return sendErrorMessage(message, stack);
         }
 
-        if (AudioHandler.canRunDJAction(avaire, message, DJGuildLevel.NORMAL)) {
+        if (AudioHandler.getDefaultAudioHandler().canRunDJAction(avaire, message, DJGuildLevel.NORMAL)) {
             return stack.next();
         }
 

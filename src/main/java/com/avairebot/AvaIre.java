@@ -360,7 +360,7 @@ public class AvaIre {
     public void shutdown(int exitCode) {
         getLogger().info("Shutting down bot instance gracefully with exit code " + exitCode);
 
-        for (GuildMusicManager manager : AudioHandler.MUSIC_MANAGER.values()) {
+        for (GuildMusicManager manager : AudioHandler.getDefaultAudioHandler().musicManagers.values()) {
             if (manager.getLastActiveMessage() != null) {
                 manager.getLastActiveMessage().makeInfo(
                     "Bot is restarting, sorry for the inconvenience, we'll be right back!"

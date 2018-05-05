@@ -55,7 +55,7 @@ public class VolumeCommand extends Command {
 
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
-        GuildMusicManager musicManager = AudioHandler.getGuildAudioPlayer(context.getGuild());
+        GuildMusicManager musicManager = AudioHandler.getDefaultAudioHandler().getGuildAudioPlayer(context.getGuild());
 
         if (musicManager.getPlayer().getPlayingTrack() == null) {
             return sendErrorMessage(context,
@@ -74,7 +74,7 @@ public class VolumeCommand extends Command {
             return true;
         }
 
-        if (!AudioHandler.canRunDJAction(avaire, context.getMessage(), DJGuildLevel.NORMAL)) {
+        if (!AudioHandler.getDefaultAudioHandler().canRunDJAction(avaire, context.getMessage(), DJGuildLevel.NORMAL)) {
             return sendErrorMessage(context, context.i18n("requireDJRole"));
         }
 

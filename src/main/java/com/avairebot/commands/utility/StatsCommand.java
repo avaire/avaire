@@ -91,8 +91,8 @@ public class StatsCommand extends Command {
             .setAuthor("AvaIre v" + AppInfo.getAppInfo().VERSION, "https://discordapp.com/invite/gt2FWER", avaire.getSelfUser().getEffectiveAvatarUrl())
             .setFooter(String.format(
                 context.i18n("footer"),
-                NumberUtil.formatNicely(AudioHandler.getTotalListenersSize()),
-                NumberUtil.formatNicely(AudioHandler.getTotalQueueSize())
+                NumberUtil.formatNicely(AudioHandler.getDefaultAudioHandler().getTotalListenersSize()),
+                NumberUtil.formatNicely(AudioHandler.getDefaultAudioHandler().getTotalQueueSize())
             ))
             .setDescription(description.toString())
             .queue();

@@ -54,12 +54,12 @@ public class MusicActivityJob extends Job {
 
                     long guildId = manager.getGuild().getIdLong();
 
-                    if (!AudioHandler.MUSIC_MANAGER.containsKey(guildId)) {
+                    if (!AudioHandler.getDefaultAudioHandler().musicManagers.containsKey(guildId)) {
                         handleEmptyMusic(manager, null, null, guildId);
                         continue;
                     }
 
-                    GuildMusicManager guildMusicManager = AudioHandler.MUSIC_MANAGER.get(guildId);
+                    GuildMusicManager guildMusicManager = AudioHandler.getDefaultAudioHandler().musicManagers.get(guildId);
 
                     if (guildMusicManager.getScheduler().getQueue().isEmpty() && guildMusicManager.getPlayer().getPlayingTrack() == null) {
                         handleEmptyMusic(manager, null, guildMusicManager, guildId);
@@ -116,12 +116,12 @@ public class MusicActivityJob extends Job {
             long guildId = link.getGuildIdLong();
 
             try {
-                if (!AudioHandler.MUSIC_MANAGER.containsKey(guildId)) {
+                if (!AudioHandler.getDefaultAudioHandler().musicManagers.containsKey(guildId)) {
                     handleEmptyMusic(null, link, null, guildId);
                     continue;
                 }
 
-                GuildMusicManager guildMusicManager = AudioHandler.MUSIC_MANAGER.get(guildId);
+                GuildMusicManager guildMusicManager = AudioHandler.getDefaultAudioHandler().musicManagers.get(guildId);
                 if (guildMusicManager.getLastActiveMessage() == null) {
                     continue;
                 }
@@ -232,7 +232,7 @@ public class MusicActivityJob extends Job {
                 }
             }
 
-            AudioHandler.MUSIC_MANAGER.remove(guildId);
+            AudioHandler.getDefaultAudioHandler().musicManagers.remove(guildId);
         } else {
             guildMusicManager.getScheduler().handleEndOfQueueWithLastActiveMessage(false);
         }

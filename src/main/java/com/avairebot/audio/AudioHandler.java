@@ -40,22 +40,30 @@ import java.util.concurrent.TimeUnit;
 
 public class AudioHandler {
 
-    public static final Map<Long, GuildMusicManager> MUSIC_MANAGER;
-    public static final Map<String, AudioSession> AUDIO_SESSION;
-
-    private static AudioPlayerManager playerManager;
+    private static final AudioHandler DEFAULT_AUDIO_HANDLER = new AudioHandler(
+        new HashMap<>(),
+        new HashMap<>()
+    );
     private static AvaIre avaire;
 
-    static {
-        MUSIC_MANAGER = new HashMap<>();
-        AUDIO_SESSION = new HashMap<>();
+    public final Map<Long, GuildMusicManager> musicManagers;
+    public final Map<String, AudioSession> audioSessions;
+    private AudioPlayerManager playerManager;
+
+    public AudioHandler(Map<Long, GuildMusicManager> musicManagers, Map<String, AudioSession> audioSessions) {
+        this.musicManagers = musicManagers;
+        this.audioSessions = audioSessions;
     }
 
     public static void setAvaire(AvaIre avaire) {
         AudioHandler.avaire = avaire;
     }
 
-    public static AudioPlayerManager getPlayerManager() {
+    public static AudioHandler getDefaultAudioHandler() {
+        return DEFAULT_AUDIO_HANDLER;
+    }
+
+    public AudioPlayerManager getPlayerManager() {
         if (playerManager == null) {
             playerManager = registerSourceManagers(new DefaultAudioPlayerManager());
 
@@ -77,7 +85,7 @@ public class AudioHandler {
         return playerManager;
     }
 
-    public static AudioPlayerManager registerSourceManagers(AudioPlayerManager manager) {
+    public AudioPlayerManager registerSourceManagers(AudioPlayerManager manager) {
         manager.registerSourceManager(new PlaylistImportSourceManager());
 
         YoutubeAudioSourceManager youtubeAudioSourceManager = new YoutubeAudioSourceManager();
@@ -98,11 +106,11 @@ public class AudioHandler {
     }
 
     @CheckReturnValue
-    public static TrackRequest loadAndPlay(CommandMessage context, @Nonnull String trackUrl) {
+    public TrackRequest loadAndPlay(CommandMessage context, @Nonnull String trackUrl) {
         return new TrackRequest(getGuildAudioPlayer(context.getGuild()), context, trackUrl);
     }
 
-    public static void skipTrack(CommandMessage context) {
+    public void skipTrack(CommandMessage context) {
         GuildMusicManager musicManager = getGuildAudioPlayer(context.getGuild());
         if (musicManager.getScheduler().getAudioTrackContainer() != null) {
             AudioTrackContainer container = musicManager.getScheduler().getAudioTrackContainer();
@@ -117,7 +125,7 @@ public class AudioHandler {
     }
 
     @CheckReturnValue
-    public static VoiceConnectStatus play(CommandMessage context, GuildMusicManager musicManager, AudioTrack track) {
+    public VoiceConnectStatus play(CommandMessage context, GuildMusicManager musicManager, AudioTrack track) {
         VoiceConnectStatus voiceConnectStatus = connectToVoiceChannel(context);
         if (voiceConnectStatus.isSuccess()) {
             musicManager.getScheduler().queue(track, context.getAuthor());
@@ -126,7 +134,7 @@ public class AudioHandler {
     }
 
     @CheckReturnValue
-    public static VoiceConnectStatus play(CommandMessage context, GuildMusicManager musicManager, AudioPlaylist playlist) {
+    public VoiceConnectStatus play(CommandMessage context, GuildMusicManager musicManager, AudioPlaylist playlist) {
         VoiceConnectStatus voiceConnectStatus = connectToVoiceChannel(context);
         if (voiceConnectStatus.isSuccess()) {
             musicManager.getScheduler().queue(playlist, context.getAuthor());
@@ -135,12 +143,12 @@ public class AudioHandler {
     }
 
     @CheckReturnValue
-    public static VoiceConnectStatus connectToVoiceChannel(CommandMessage context) {
+    public VoiceConnectStatus connectToVoiceChannel(CommandMessage context) {
         return connectToVoiceChannel(context, false);
     }
 
     @CheckReturnValue
-    public static VoiceConnectStatus connectToVoiceChannel(CommandMessage context, boolean moveChannelIfConnected) {
+    public VoiceConnectStatus connectToVoiceChannel(CommandMessage context, boolean moveChannelIfConnected) {
         VoiceChannel channel = context.getMember().getVoiceState().getChannel();
         if (channel == null) {
             return VoiceConnectStatus.NOT_CONNECTED;
@@ -175,7 +183,7 @@ public class AudioHandler {
     }
 
     @CheckReturnValue
-    private static VoiceConnectStatus connectToVoiceChannel(CommandMessage context, VoiceChannel channel, AudioManager audioManager) {
+    private VoiceConnectStatus connectToVoiceChannel(CommandMessage context, VoiceChannel channel, AudioManager audioManager) {
         VoiceConnectStatus voiceConnectStatus = canConnectToChannel(context, channel);
         if (voiceConnectStatus != null) {
             return voiceConnectStatus;
@@ -189,7 +197,7 @@ public class AudioHandler {
         return VoiceConnectStatus.CONNECTED;
     }
 
-    private static VoiceConnectStatus canConnectToChannel(CommandMessage context, VoiceChannel channel) {
+    private VoiceConnectStatus canConnectToChannel(CommandMessage context, VoiceChannel channel) {
         List<Permission> permissions = context.getGuild().getMember(context.getJDA().getSelfUser()).getPermissions(channel);
         if (!permissions.contains(Permission.VOICE_CONNECT)) {
             return VoiceConnectStatus.MISSING_PERMISSIONS;
@@ -202,13 +210,13 @@ public class AudioHandler {
     }
 
     @CheckReturnValue
-    public static synchronized GuildMusicManager getGuildAudioPlayer(@Nonnull Guild guild) {
-        GuildMusicManager musicManager = MUSIC_MANAGER.get(guild.getIdLong());
+    public synchronized GuildMusicManager getGuildAudioPlayer(@Nonnull Guild guild) {
+        GuildMusicManager musicManager = musicManagers.get(guild.getIdLong());
 
         if (musicManager == null && getPlayerManager() != null) {
             musicManager = new GuildMusicManager(avaire, guild);
 
-            MUSIC_MANAGER.put(guild.getIdLong(), musicManager);
+            musicManagers.put(guild.getIdLong(), musicManager);
         }
 
         if (musicManager != null && !LavalinkManager.LavalinkManagerHolder.LAVALINK.isEnabled()) {
@@ -219,14 +227,14 @@ public class AudioHandler {
     }
 
     @CheckReturnValue
-    public static int getQueueSize(GuildMusicManager manager) {
+    public int getQueueSize(GuildMusicManager manager) {
         return manager.getPlayer().getPlayingTrack() == null ?
             manager.getScheduler().getQueue().size() :
             manager.getScheduler().getQueue().size() + 1;
     }
 
     @CheckReturnValue
-    public static int getTotalListenersSize() {
+    public int getTotalListenersSize() {
         int total = 0;
 
         if (LavalinkManager.LavalinkManagerHolder.LAVALINK.isEnabled()) {
@@ -239,7 +247,7 @@ public class AudioHandler {
             return total;
         }
 
-        for (GuildMusicManager manager : MUSIC_MANAGER.values()) {
+        for (GuildMusicManager manager : musicManagers.values()) {
             if (manager.getLastActiveMessage() == null) {
                 continue;
             }
@@ -254,19 +262,19 @@ public class AudioHandler {
     }
 
     @CheckReturnValue
-    public static int getTotalQueueSize() {
+    public int getTotalQueueSize() {
         int total = 0;
-        for (GuildMusicManager manager : MUSIC_MANAGER.values()) {
+        for (GuildMusicManager manager : musicManagers.values()) {
             total += getQueueSize(manager);
         }
         return total;
     }
 
     @CheckReturnValue
-    public static AudioSession createAudioSession(CommandMessage context, AudioPlaylist playlist) {
+    public AudioSession createAudioSession(CommandMessage context, AudioPlaylist playlist) {
         AudioSession session = new AudioSession(playlist);
 
-        AUDIO_SESSION.put(
+        audioSessions.put(
             context.getGuild().getId() + ":" + context.getAuthor().getId(),
             session
         );
@@ -275,21 +283,21 @@ public class AudioHandler {
     }
 
     @CheckReturnValue
-    public static boolean hasAudioSession(CommandMessage context) {
-        return AUDIO_SESSION.containsKey(context.getGuild().getId() + ":" + context.getAuthor().getId());
+    public boolean hasAudioSession(CommandMessage context) {
+        return audioSessions.containsKey(context.getGuild().getId() + ":" + context.getAuthor().getId());
     }
 
     @CheckReturnValue
-    public static AudioSession getAudioSession(CommandMessage context) {
-        return AUDIO_SESSION.getOrDefault(context.getGuild().getId() + ":" + context.getAuthor().getId(), null);
+    public AudioSession getAudioSession(CommandMessage context) {
+        return audioSessions.getOrDefault(context.getGuild().getId() + ":" + context.getAuthor().getId(), null);
     }
 
-    public static void removeAudioSession(CommandMessage context) {
-        AUDIO_SESSION.remove(context.getGuild().getId() + ":" + context.getAuthor().getId());
+    public void removeAudioSession(CommandMessage context) {
+        audioSessions.remove(context.getGuild().getId() + ":" + context.getAuthor().getId());
     }
 
     @CheckReturnValue
-    public static boolean canRunDJAction(AvaIre avaire, Message message, DJGuildLevel level) {
+    public boolean canRunDJAction(AvaIre avaire, Message message, DJGuildLevel level) {
         GuildTransformer transformer = GuildController.fetchGuild(avaire, message);
 
         if (transformer == null) {
@@ -313,7 +321,7 @@ public class AudioHandler {
         }
     }
 
-    private static boolean hasDJRole(Message message) {
+    private boolean hasDJRole(Message message) {
         if (message.getMember().hasPermission(Permissions.ADMINISTRATOR.getPermission())) {
             return true;
         }
