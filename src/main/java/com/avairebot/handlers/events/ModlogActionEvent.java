@@ -1,6 +1,7 @@
 package com.avairebot.handlers.events;
 
-import com.avairebot.modules.ModlogModule;
+import com.avairebot.modlog.ModlogAction;
+import com.avairebot.modlog.ModlogType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.Event;
@@ -9,10 +10,10 @@ import javax.annotation.Nullable;
 
 public class ModlogActionEvent extends Event {
 
-    private final ModlogModule.ModlogAction action;
+    private final ModlogAction action;
     private final int caseId;
 
-    public ModlogActionEvent(JDA api, ModlogModule.ModlogAction action, int caseId) {
+    public ModlogActionEvent(JDA api, ModlogAction action, int caseId) {
         super(api);
 
         this.action = action;
@@ -42,7 +43,7 @@ public class ModlogActionEvent extends Event {
         return action.getMessage();
     }
 
-    public ModlogModule.ModlogType getType() {
+    public ModlogType getType() {
         return action.getType();
     }
 

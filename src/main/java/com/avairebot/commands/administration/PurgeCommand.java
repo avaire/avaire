@@ -3,7 +3,9 @@ package com.avairebot.commands.administration;
 import com.avairebot.AvaIre;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
-import com.avairebot.modules.ModlogModule;
+import com.avairebot.modlog.ModlogAction;
+import com.avairebot.modlog.ModlogModule;
+import com.avairebot.modlog.ModlogType;
 import com.avairebot.utilities.NumberUtil;
 import com.avairebot.utilities.RestActionUtil;
 import net.dv8tion.jda.core.entities.Message;
@@ -88,8 +90,8 @@ public class PurgeCommand extends Command {
                     }
 
                     deleteMessages(context, messages).queue(aVoid -> {
-                        ModlogModule.log(avaire, context, new ModlogModule.ModlogAction(
-                                ModlogModule.ModlogType.PURGE,
+                        ModlogModule.log(avaire, context, new ModlogAction(
+                                ModlogType.PURGE,
                                 context.getAuthor(), null,
                                 messages.size() + " messages has been deleted in the " + context.getChannel().getAsMention() + " channel."
                             )
@@ -121,8 +123,8 @@ public class PurgeCommand extends Command {
                     users.add(String.format("<@%s>", userId));
                 }
 
-                ModlogModule.log(avaire, context, new ModlogModule.ModlogAction(
-                        ModlogModule.ModlogType.PURGE,
+                ModlogModule.log(avaire, context, new ModlogAction(
+                        ModlogType.PURGE,
                         context.getAuthor(), null,
                         messages.size() + " messages sent by " + String.join(", ", users) + " has been deleted in the " + context.getChannel().getAsMention() + " channel."
                     )

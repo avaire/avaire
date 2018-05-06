@@ -3,6 +3,8 @@ package com.avairebot.handlers.adapter;
 import com.avairebot.AppInfo;
 import com.avairebot.AvaIre;
 import com.avairebot.Statistics;
+import com.avairebot.cache.CacheItem;
+import com.avairebot.cache.CacheType;
 import com.avairebot.commands.CommandContainer;
 import com.avairebot.commands.CommandHandler;
 import com.avairebot.contracts.commands.ThreadCommand;
@@ -15,9 +17,9 @@ import com.avairebot.database.transformers.PlayerTransformer;
 import com.avairebot.factories.MessageFactory;
 import com.avairebot.metrics.Metrics;
 import com.avairebot.middleware.MiddlewareStack;
-import com.avairebot.modules.SlowmodeModule;
 import com.avairebot.utilities.ArrayUtil;
 import com.avairebot.utilities.LevelUtil;
+import com.avairebot.utilities.NumberUtil;
 import com.avairebot.utilities.RestActionUtil;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
@@ -191,7 +193,7 @@ public class MessageEventAdapter extends EventAdapter {
             event.getAuthor().getId()
         );
 
-        return SlowmodeModule.isThrottled(avaire, fingerprint, channel.getSlowmode().getLimit(), channel.getSlowmode().getDecay());
+        return isThrottled(avaire, fingerprint, channel.getSlowmode().getLimit(), channel.getSlowmode().getDecay());
     }
 
     private void sendTagInformationMessage(MessageReceivedEvent event) {
@@ -260,6 +262,23 @@ public class MessageEventAdapter extends EventAdapter {
             }
             return new DatabaseProperties(guild, PlayerController.fetchPlayer(avaire, event.getMessage()));
         });
+    }
+
+    private boolean isThrottled(AvaIre avaire, String fingerprint, int limit, int decay) {
+        CacheItem cacheItem = avaire.getCache().getAdapter(CacheType.MEMORY).getRaw(fingerprint);
+
+        if (cacheItem == null) {
+            avaire.getCache().getAdapter(CacheType.MEMORY).put(fingerprint, 1, decay);
+            return false;
+        }
+
+        int value = NumberUtil.parseInt(cacheItem.getValue().toString(), 0);
+        if (value++ >= limit) {
+            return true;
+        }
+
+        avaire.getCache().getAdapter(CacheType.MEMORY).put(fingerprint, value, decay);
+        return false;
     }
 
     private class DatabaseProperties {

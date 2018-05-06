@@ -2,14 +2,13 @@ package com.avairebot.commands.administration;
 
 import com.avairebot.AvaIre;
 import com.avairebot.commands.CommandMessage;
-import com.avairebot.contracts.commands.Command;
-import com.avairebot.modules.BanModule;
+import com.avairebot.contracts.commands.BanableCommand;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class SoftBanCommand extends Command {
+public class SoftBanCommand extends BanableCommand {
 
     public SoftBanCommand(AvaIre avaire) {
         super(avaire, false);
@@ -47,6 +46,6 @@ public class SoftBanCommand extends Command {
 
     @Override
     public boolean onCommand(CommandMessage message, String[] args) {
-        return BanModule.ban(avaire, this, message, args, true);
+        return ban(avaire, this, message, args, true);
     }
 }

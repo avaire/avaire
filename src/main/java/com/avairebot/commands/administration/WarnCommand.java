@@ -7,7 +7,9 @@ import com.avairebot.contracts.commands.Command;
 import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.factories.MessageFactory;
-import com.avairebot.modules.ModlogModule;
+import com.avairebot.modlog.ModlogAction;
+import com.avairebot.modlog.ModlogModule;
+import com.avairebot.modlog.ModlogType;
 import com.avairebot.utilities.MentionableUtil;
 import com.avairebot.utilities.RestActionUtil;
 import net.dv8tion.jda.core.entities.User;
@@ -93,8 +95,8 @@ public class WarnCommand extends Command {
             reason = String.join(" ", Arrays.copyOfRange(args, 1, args.length));
         }
 
-        String caseId = ModlogModule.log(avaire, context.getGuild(), transformer, new ModlogModule.ModlogAction(
-                ModlogModule.ModlogType.WARN,
+        String caseId = ModlogModule.log(avaire, context.getGuild(), transformer, new ModlogAction(
+                ModlogType.WARN,
                 context.getAuthor(), user,
                 reason
             )

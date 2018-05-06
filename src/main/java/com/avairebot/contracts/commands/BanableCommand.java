@@ -1,8 +1,10 @@
-package com.avairebot.modules;
+package com.avairebot.contracts.commands;
 
 import com.avairebot.AvaIre;
 import com.avairebot.commands.CommandMessage;
-import com.avairebot.contracts.commands.Command;
+import com.avairebot.modlog.ModlogAction;
+import com.avairebot.modlog.ModlogModule;
+import com.avairebot.modlog.ModlogType;
 import com.avairebot.utilities.RoleUtil;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Role;
@@ -11,9 +13,29 @@ import net.dv8tion.jda.core.entities.User;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
-public class BanModule {
+public abstract class BanableCommand extends Command {
 
     private static final Pattern userRegEX = Pattern.compile("<@(!|)+[0-9]{16,}+>", Pattern.CASE_INSENSITIVE);
+
+    /**
+     * Creates the given command instance by calling {@link Command#Command(AvaIre, boolean)} with allowDM set to true.
+     *
+     * @param avaire The AvaIre class instance.
+     */
+    public BanableCommand(AvaIre avaire) {
+        super(avaire);
+    }
+
+    /**
+     * Creates the given command instance with the given
+     * AvaIre instance and the allowDM settings.
+     *
+     * @param avaire  The AvaIre class instance.
+     * @param allowDM Determines if the command can be used in DMs.
+     */
+    public BanableCommand(AvaIre avaire, boolean allowDM) {
+        super(avaire, allowDM);
+    }
 
     /**
      * Bans the mentioned user from the current server is a valid user was given.
@@ -24,7 +46,7 @@ public class BanModule {
      * @param soft    Determines if the user should be softbanned or not.
      * @return True if the user was banned successfully, false otherwise.
      */
-    public static boolean ban(AvaIre avaire, Command command, CommandMessage context, String[] args, boolean soft) {
+    protected boolean ban(AvaIre avaire, Command command, CommandMessage context, String[] args, boolean soft) {
         if (context.getMentionedUsers().isEmpty() || !userRegEX.matcher(args[0]).matches()) {
             return command.sendErrorMessage(context, "You must mention the user you want to ban.");
         }
@@ -37,8 +59,8 @@ public class BanModule {
         return banUser(avaire, context, user, args, soft);
     }
 
-    private static boolean banUser(AvaIre avaire, CommandMessage context, User user, String[] args, boolean soft) {
-        String reason = generateMessage(args);
+    private boolean banUser(AvaIre avaire, CommandMessage context, User user, String[] args, boolean soft) {
+        String reason = generateReason(args);
 
         context.getGuild().getController().ban(user, soft ? 0 : 7, String.format("%s - %s#%s (%s)",
             reason,
@@ -46,8 +68,8 @@ public class BanModule {
             context.getAuthor().getDiscriminator(),
             context.getAuthor().getId()
         )).queue(aVoid -> {
-            ModlogModule.log(avaire, context, new ModlogModule.ModlogAction(
-                    soft ? ModlogModule.ModlogType.SOFT_BAN : ModlogModule.ModlogType.BAN,
+            ModlogModule.log(avaire, context, new ModlogAction(
+                    soft ? ModlogType.SOFT_BAN : ModlogType.BAN,
                     context.getAuthor(), user, reason
                 )
             );
@@ -64,12 +86,12 @@ public class BanModule {
         return true;
     }
 
-    private static boolean userHasHigherRole(User user, Member author) {
+    private boolean userHasHigherRole(User user, Member author) {
         Role role = RoleUtil.getHighestFrom(author.getGuild().getMember(user));
         return role != null && RoleUtil.isRoleHierarchyHigher(author.getRoles(), role);
     }
 
-    private static String generateMessage(String[] args) {
+    private String generateReason(String[] args) {
         return args.length < 2 ?
             "No reason was given." :
             String.join(" ", Arrays.copyOfRange(args, 1, args.length));

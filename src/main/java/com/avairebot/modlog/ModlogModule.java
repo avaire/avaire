@@ -1,8 +1,7 @@
-package com.avairebot.modules;
+package com.avairebot.modlog;
 
 import com.avairebot.AvaIre;
 import com.avairebot.Constants;
-import com.avairebot.chat.MessageType;
 import com.avairebot.commands.CommandContainer;
 import com.avairebot.commands.CommandHandler;
 import com.avairebot.commands.CommandMessage;
@@ -16,11 +15,8 @@ import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.TextChannel;
-import net.dv8tion.jda.core.entities.User;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.awt.*;
 import java.sql.SQLException;
 import java.time.Instant;
 
@@ -154,105 +150,5 @@ public class ModlogModule {
             return null;
         }
         return reason;
-    }
-
-    public enum ModlogType {
-
-        KICK(1, "Kick", MessageType.WARNING.getColor()),
-        VOICE_KICK(2, "Voice Kick", MessageType.WARNING.getColor()),
-        SOFT_BAN(3, "Soft Ban", MessageType.ERROR.getColor()),
-        BAN(4, "Ban", MessageType.ERROR.getColor()),
-        PURGE(5, "Purge", MessageType.INFO.getColor()),
-        WARN(6, "Warning", MessageType.WARNING.getColor());
-
-        final int id;
-        final String name;
-        final Color color;
-
-        ModlogType(int id, String name, Color color) {
-            this.id = id;
-            this.name = name;
-            this.color = color;
-        }
-
-        public static ModlogType fromId(int id) {
-            for (ModlogType type : values()) {
-                if (type.getId() == id) {
-                    return type;
-                }
-            }
-            return null;
-        }
-
-        public int getId() {
-            return id;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public Color getColor() {
-            return color;
-        }
-    }
-
-    public static class ModlogAction {
-
-        private final User moderator;
-        private final User target;
-
-        private ModlogType type;
-        private String message = null;
-
-        public ModlogAction(@Nonnull ModlogType action, @Nonnull User moderator, User target) {
-            this(action, moderator, target, null);
-        }
-
-        public ModlogAction(@Nonnull ModlogType action, @Nonnull User moderator, User target, String message) {
-            this.moderator = moderator;
-            this.target = target;
-            this.type = action;
-            this.message = message;
-        }
-
-        public User getModerator() {
-            return moderator;
-        }
-
-        public String getStringifiedModerator() {
-            return stringifyUser(moderator);
-        }
-
-        public User getTarget() {
-            return target;
-        }
-
-        public String getStringifiedTarget() {
-            return stringifyUser(target);
-        }
-
-        public ModlogType getType() {
-            return type;
-        }
-
-        public void setType(ModlogType type) {
-            this.type = type;
-        }
-
-        public String getMessage() {
-            return message;
-        }
-
-        public void setMessage(String message) {
-            this.message = message;
-        }
-
-        private String stringifyUser(User user) {
-            if (user == null) {
-                return "";
-            }
-            return user.getName() + "#" + user.getDiscriminator() + " (" + user.getAsMention() + ")";
-        }
     }
 }
