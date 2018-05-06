@@ -12,10 +12,12 @@ import java.util.function.Consumer;
 
 public class GithubChangesJob extends Job {
 
-    public GithubChangesJob(AvaIre avaire) {
-        super(avaire, 30, 75, TimeUnit.MINUTES);
+    private final String cacheToken = "github.commits";
 
-        if (!avaire.getCache().getAdapter(CacheType.FILE).has("github.commits")) {
+    public GithubChangesJob(AvaIre avaire) {
+        super(avaire, 90, 90, TimeUnit.MINUTES);
+
+        if (!avaire.getCache().getAdapter(CacheType.FILE).has(cacheToken)) {
             run();
         }
     }
@@ -26,7 +28,7 @@ public class GithubChangesJob extends Job {
             .send((Consumer<Response>) response -> {
                 List service = (List) response.toService(List.class);
 
-                avaire.getCache().getAdapter(CacheType.FILE).forever("github.commits", service);
+                avaire.getCache().getAdapter(CacheType.FILE).forever(cacheToken, service);
             });
     }
 }
