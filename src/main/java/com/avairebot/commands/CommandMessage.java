@@ -215,10 +215,14 @@ public class CommandMessage implements CommandContext {
     @CheckReturnValue
     public String i18nRaw(@Nonnull String key) {
         if (getI18n().contains(key)) {
-            return getI18n().getString(key).replace("\\n", "\n");
+            return getI18n().getString(key)
+                .replace("\\n", "\n")
+                .replace("\\t", "\t");
         } else {
             LOGGER.warn("Missing language entry for key {} in language {}", key, I18n.getLocale(getGuild()).getLanguage().getCode());
-            return I18n.DEFAULT.getConfig().getString(key).replace("\\n", "\n");
+            return I18n.DEFAULT.getConfig().getString(key)
+                .replace("\\n", "\n")
+                .replace("\\t", "\t");
         }
     }
 

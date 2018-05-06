@@ -110,8 +110,8 @@ public class RankCommand extends Command {
             long level = LevelUtil.getLevelFromExperience(experience);
             long current = LevelUtil.getExperienceFromLevel(level);
 
-            long diff = LevelUtil.getExperienceFromLevel(level + 1) - current;
-            double percentage = ((double) (experience - current) / diff) * 100;
+            long nextLevelXp = LevelUtil.getExperienceFromLevel(level + 1);
+            double percentage = ((double) (experience - current) / (nextLevelXp - current)) * 100;
 
             String levelBar = "";
             for (int i = 1; i <= 40; i++) {
@@ -126,8 +126,8 @@ public class RankCommand extends Command {
                 .addField(context.i18n("fields.experience"), (experience - 100 < 0 ? "0" : String.format("%s (Total: %s)",
                     NumberUtil.formatNicely(experience - 100), NumberUtil.formatNicely(properties.getTotal())
                 )), true)
-                .addField("Experience needed to next Level", String.format("[%s] %s%s",
-                    levelBar, new DecimalFormat("#.##").format(percentage), '%'
+                .addField(context.i18n("fields.experienceToNext"), String.format("[%s] %s%s\n" + context.i18n("fields.youNeedMoreXpToLevelUp"),
+                    levelBar, new DecimalFormat("#.##").format(percentage), '%', NumberUtil.formatNicely(nextLevelXp - experience)
                 ), false)
                 .queue();
         });

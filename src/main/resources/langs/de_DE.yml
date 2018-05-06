@@ -326,6 +326,8 @@ utility:
             rank: 'Rang'
             level: 'Level'
             experience: 'Erfahrungspunkte'
+            experienceToNext: 'Erfahrungspunkte benötigt für das nächste Level'
+            youNeedMoreXpToLevelUp: '\t\t\t\t\t\t\tDu benötigst %s weitere XP für einen Level Up.'
 
     ServerIdCommand:
         message: ':user Die :id: vom Server lautet `:guildid`.'
