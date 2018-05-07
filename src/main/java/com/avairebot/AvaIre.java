@@ -150,7 +150,8 @@ public class AvaIre {
             new AddRolesDataToGuildsTableMigration(),
             new CreateLogTypeTableMigration(),
             new CreateLogTableMigration(),
-            new ReformatBlacklistTableMigration()
+            new ReformatBlacklistTableMigration(),
+            new AddVotePointsToUsersAndGuildsTableMigration()
         );
 
         LOGGER.info("Registering default middlewares");

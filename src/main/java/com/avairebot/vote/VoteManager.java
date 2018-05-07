@@ -189,8 +189,11 @@ public class VoteManager {
 
             avaire.getDatabase().newQueryBuilder(Constants.VOTES_TABLE_NAME)
                 .where("user_id", userId)
-                .update(statement -> statement.set("expires_in", voteLog.get(userId).toDayDateTimeString()));
-
+                .update(statement -> {
+                    statement.set("expires_in", voteLog.get(userId).toDayDateTimeString());
+                    statement.setRaw("points", "`points` + 1");
+                    statement.setRaw("points_total", "`points_total` + 1");
+                });
         } catch (SQLException e) {
             LOGGER.error("An SQLException was thrown while updating user vote information: ", e);
         }
