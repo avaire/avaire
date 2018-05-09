@@ -5,6 +5,7 @@ import com.avairebot.Constants;
 import com.avairebot.cache.CacheType;
 import com.avairebot.database.collection.DataRow;
 import com.avairebot.database.transformers.PlayerTransformer;
+import com.avairebot.utilities.RandomUtil;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.User;
 
@@ -56,7 +57,7 @@ public class PlayerController {
                             .getAdapter(CacheType.MEMORY)
                             .put(cacheToken, new PlayerTransformer(
                                 new DataRow(statement.getItems())
-                            ), 300);
+                            ), RandomUtil.getInteger(120) + 300);
                     });
 
                 return (PlayerTransformer) avaire.getCache().getAdapter(CacheType.MEMORY).get(cacheToken);
@@ -80,7 +81,7 @@ public class PlayerController {
             if (username.startsWith("base64:")) {
                 avaire.getCache()
                     .getAdapter(CacheType.MEMORY)
-                    .put(cacheToken, transformer, 300);
+                    .put(cacheToken, transformer, RandomUtil.getInteger(120) + 300);
 
                 return transformer;
             }

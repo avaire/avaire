@@ -5,6 +5,7 @@ import com.avairebot.Constants;
 import com.avairebot.cache.CacheType;
 import com.avairebot.database.collection.DataRow;
 import com.avairebot.database.transformers.GuildTransformer;
+import com.avairebot.utilities.RandomUtil;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.Role;
@@ -78,7 +79,7 @@ public class GuildController {
 
             avaire.getCache()
                 .getAdapter(CacheType.MEMORY)
-                .put(String.format(CACHE_STRING, guild.getId()), transformer, 300);
+                .put(String.format(CACHE_STRING, guild.getId()), transformer, RandomUtil.getInteger(120) + 300);
 
             return transformer;
         } catch (SQLException ex) {
