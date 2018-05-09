@@ -39,6 +39,7 @@ public class ChannelEventAdapter extends EventAdapter {
     public void updateChannelData(Guild guild) {
         try {
             avaire.getDatabase().newQueryBuilder(Constants.GUILD_TABLE_NAME)
+                .useAsync(true)
                 .where("id", guild.getId())
                 .update(statement -> {
                     statement.set("channels_data", GuildController.buildChannelData(guild.getTextChannels()), true);
@@ -51,6 +52,7 @@ public class ChannelEventAdapter extends EventAdapter {
     private void setDatabaseColumnToNull(String guildId, String column) {
         try {
             avaire.getDatabase().newQueryBuilder(Constants.GUILD_TABLE_NAME)
+                .useAsync(true)
                 .where("id", guildId)
                 .update(statement -> statement.set(column, null));
         } catch (SQLException ignored) {

@@ -49,6 +49,7 @@ public class RipCommand extends Command {
 
         try {
             avaire.getDatabase().newQueryBuilder(Constants.STATISTICS_TABLE_NAME)
+                .useAsync(true)
                 .update(statement -> statement.setRaw("respects", "`respects` + 1"));
         } catch (SQLException ex) {
             return false;
@@ -64,14 +65,15 @@ public class RipCommand extends Command {
     }
 
     private String getTotalRespects() {
-        try {
-            return NumberUtil.formatNicely(
-                avaire.getDatabase().newQueryBuilder(Constants.STATISTICS_TABLE_NAME).get().first()
-                    .getInt("respects", Statistics.getRespects()) + 1
-            );
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return "1";
-        }
+        return avaire.getCache().remember("rip.total", 10, () -> {
+            try {
+                return NumberUtil.formatNicely(
+                    avaire.getDatabase().newQueryBuilder(Constants.STATISTICS_TABLE_NAME).get().first()
+                        .getInt("respects", Statistics.getRespects()) + 1
+                );
+            } catch (SQLException e) {
+                return "1";
+            }
+        }).toString();
     }
 }

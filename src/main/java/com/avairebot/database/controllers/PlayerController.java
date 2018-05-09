@@ -86,6 +86,7 @@ public class PlayerController {
             }
 
             avaire.getDatabase().newQueryBuilder(Constants.PLAYER_EXPERIENCE_TABLE_NAME)
+                .useAsync(true)
                 .where("user_id", message.getAuthor().getId())
                 .update(statement -> statement.set("username", message.getAuthor().getName(), true));
 
@@ -99,6 +100,7 @@ public class PlayerController {
     public static void updateUserData(AvaIre avaire, User user) {
         try {
             avaire.getDatabase().newQueryBuilder(Constants.PLAYER_EXPERIENCE_TABLE_NAME)
+                .useAsync(true)
                 .where("user_id", user.getId())
                 .update(statement -> {
                     statement.set("username", user.getName(), true);

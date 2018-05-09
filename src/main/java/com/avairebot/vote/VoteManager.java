@@ -188,6 +188,7 @@ public class VoteManager {
             }
 
             avaire.getDatabase().newQueryBuilder(Constants.VOTES_TABLE_NAME)
+                .useAsync(true)
                 .where("user_id", userId)
                 .update(statement -> {
                     statement.set("expires_in", voteLog.get(userId).toDayDateTimeString());

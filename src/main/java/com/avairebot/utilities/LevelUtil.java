@@ -138,6 +138,7 @@ public class LevelUtil {
 
         try {
             avaire.getDatabase().newQueryBuilder(Constants.PLAYER_EXPERIENCE_TABLE_NAME)
+                .useAsync(true)
                 .where("user_id", player.getUserId())
                 .andWhere("guild_id", player.getGuildId())
                 .update(statement -> statement.set("experience", player.getExperience()));
