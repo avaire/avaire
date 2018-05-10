@@ -4,7 +4,7 @@ import com.avairebot.handlers.events.ModlogActionEvent;
 import net.dv8tion.jda.core.events.Event;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
-public abstract class EventListener extends ListenerAdapter {
+public abstract class EventListener extends ListenerAdapter implements net.dv8tion.jda.core.hooks.EventListener {
 
     public void onModlogAction(ModlogActionEvent event) {
         //
