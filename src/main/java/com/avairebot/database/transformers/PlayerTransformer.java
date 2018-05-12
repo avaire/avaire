@@ -28,8 +28,6 @@ public class PlayerTransformer extends Transformer {
 
             experience = data.getLong("experience", 0);
         }
-
-        reset();
     }
 
     public String getUserId() {

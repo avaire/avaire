@@ -130,8 +130,6 @@ public class GuildTransformer extends Transformer {
                 }
             }
         }
-
-        reset();
     }
 
     public String getId() {
