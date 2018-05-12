@@ -69,7 +69,7 @@ public class SetDefaultVolumeCommand extends Command {
     public boolean onCommand(CommandMessage context, String[] args) {
         GuildTransformer transformer = GuildController.fetchGuild(avaire, context.getGuild());
         if (transformer == null) {
-            return sendErrorMessage(context, "errorOccurredWhileLoading", "default volume");
+            return sendErrorMessage(context, "errors.errorOccurredWhileLoading", "default volume");
         }
 
         if (args.length == 0) {
