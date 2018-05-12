@@ -32,4 +32,8 @@ public abstract class Transformer implements ConfigurationSerializable {
     public Map<String, Object> serialize() {
         return data.getRaw();
     }
+
+    protected void reset() {
+        this.data = null;
+    }
 }
