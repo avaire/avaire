@@ -182,6 +182,8 @@ public class VoteManager {
                     .insert(statement -> {
                         statement.set("user_id", userId);
                         statement.set("expires_in", voteLog.get(userId).toDayDateTimeString());
+                        statement.set("points", 1);
+                        statement.set("points_total", 1);
                     });
 
                 return;
