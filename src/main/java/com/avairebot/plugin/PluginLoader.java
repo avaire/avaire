@@ -1,8 +1,10 @@
 package com.avairebot.plugin;
 
+import com.avairebot.AppInfo;
 import com.avairebot.AvaIre;
 import com.avairebot.config.YamlConfiguration;
 import com.avairebot.exceptions.InvalidPluginException;
+import com.avairebot.utilities.NumberUtil;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
 import java.io.*;
@@ -150,5 +152,23 @@ public class PluginLoader {
         if (!configuration.contains("version")) {
             throw new InvalidPluginException(getName() + ": Invalid plugin.yml file, the plugin must have a version value at root!");
         }
+
+        if (configuration.contains("requires") && !compareVersion(configuration.getString("requires"))) {
+            throw new InvalidPluginException(getName() + ": Invalid plugin.yml file, the plugin requires AvaIre version %s or higher to work correctly!",
+                configuration.getString("requires")
+            );
+        }
+    }
+
+    private boolean compareVersion(String version) {
+        String[] split = version.split("\\.");
+        String[] versions = AppInfo.getAppInfo().VERSION.split("\\.");
+
+        for (int i = 0; i < split.length && i < versions.length; i++) {
+            if (NumberUtil.parseInt(split[i], 0) < NumberUtil.parseInt(versions[i], 0)) {
+                return false;
+            }
+        }
+        return true;
     }
 }
