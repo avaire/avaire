@@ -75,9 +75,16 @@ public class PurgeCommand extends Command {
         }
 
         int finalToDelete = toDelete;
-        context.getMessage().delete().queue(ignored -> handleCommand(
-            context, Arrays.copyOfRange(args, 1, args.length), finalToDelete
-        ), RestActionUtil.IGNORE);
+        context.getMessage().delete().queue(ignored -> {
+            if (args.length < 1) {
+                handleCommand(context, new String[0], finalToDelete);
+                return;
+            }
+
+            handleCommand(
+                context, Arrays.copyOfRange(args, 1, args.length), finalToDelete
+            );
+        }, RestActionUtil.IGNORE);
 
         return true;
     }
