@@ -7,8 +7,11 @@ import com.avairebot.exceptions.InvalidPluginException;
 import com.avairebot.utilities.NumberUtil;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
+import javax.annotation.Nullable;
 import java.io.*;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
@@ -22,6 +25,8 @@ public class PluginLoader {
     private final PluginClassLoader classLoader;
     private final YamlConfiguration configuration;
 
+    private final List<String> authors = new ArrayList<>();
+
     PluginLoader(File file, File dataFolder) throws InvalidPluginException, IOException {
         this.file = file;
         this.dataFolder = dataFolder;
@@ -34,6 +39,12 @@ public class PluginLoader {
 
         configuration = YamlConfiguration.loadConfiguration(new InputStreamReader(getResource("plugin.yml")));
         checkIfPluginYamlIsValid();
+
+        if (configuration.contains("authors")) {
+            authors.addAll(configuration.getStringList("authors"));
+        } else if (configuration.contains("author")) {
+            authors.add(configuration.getString("author"));
+        }
 
         classLoader = new PluginClassLoader(this, AvaIre.class.getClassLoader(), dataFolder, file);
     }
@@ -63,6 +74,25 @@ public class PluginLoader {
      */
     public String getVersion() {
         return configuration.getString("version");
+    }
+
+    /**
+     * Gets the description of the plugin.
+     *
+     * @return Possibly-null, the description of the plugin.
+     */
+    @Nullable
+    public String getDescription() {
+        return configuration.getString("description");
+    }
+
+    /**
+     * Gets a list of all the authors for the plugin.
+     *
+     * @return Possibly-empty list, a list of the authors for the plugin.
+     */
+    public List<String> getAuthors() {
+        return authors;
     }
 
     /**

@@ -30,18 +30,18 @@ public class PluginLoaderTranslator implements Translator {
 
     @Override
     public String getDescription() {
-        if (holder == null) {
-            return null;
+        if (loader.getDescription() != null) {
+            return loader.getDescription();
         }
-        return holder.getDescription();
+        return holder == null ? null : holder.getDescription();
     }
 
     @Override
     public List<String> getAuthors() {
-        if (holder == null) {
-            return null;
+        if (loader.getAuthors().isEmpty() && holder != null) {
+            return holder.getAuthors();
         }
-        return holder.getAuthors();
+        return loader.getAuthors();
     }
 
     @Override
