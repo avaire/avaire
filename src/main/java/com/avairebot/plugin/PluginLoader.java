@@ -55,6 +55,15 @@ public class PluginLoader {
     }
 
     /**
+     * Gets the version of the plugin.
+     *
+     * @return The version of the plugin.
+     */
+    public String getVersion() {
+        return configuration.getString("version");
+    }
+
+    /**
      * Gets the plugin data folder, the folder is created
      * at the application root called "/plugins".
      *
@@ -131,11 +140,15 @@ public class PluginLoader {
 
     private void checkIfPluginYamlIsValid() throws InvalidPluginException {
         if (!configuration.contains("name")) {
-            throw new InvalidPluginException("Invalid plugin.yml file, the plugin must have a name value at root!");
+            throw new InvalidPluginException(file.getName() + ": Invalid plugin.yml file, the plugin must have a name value at root!");
         }
 
         if (!configuration.contains("main")) {
-            throw new InvalidPluginException("Invalid plugin.yml file, the plugin must have a main value at root!");
+            throw new InvalidPluginException(getName() + ": Invalid plugin.yml file, the plugin must have a main value at root!");
+        }
+
+        if (!configuration.contains("version")) {
+            throw new InvalidPluginException(getName() + ": Invalid plugin.yml file, the plugin must have a version value at root!");
         }
     }
 }
