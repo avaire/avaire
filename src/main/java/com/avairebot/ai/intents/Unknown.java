@@ -4,11 +4,10 @@ import ai.api.model.AIResponse;
 import com.avairebot.AvaIre;
 import com.avairebot.commands.CommandContainer;
 import com.avairebot.commands.CommandHandler;
+import com.avairebot.commands.CommandMessage;
 import com.avairebot.commands.help.HelpCommand;
 import com.avairebot.contracts.ai.Intent;
-import com.avairebot.factories.MessageFactory;
 import com.avairebot.utilities.StringReplacementUtil;
-import net.dv8tion.jda.core.entities.Message;
 
 public class Unknown extends Intent {
 
@@ -22,16 +21,16 @@ public class Unknown extends Intent {
     }
 
     @Override
-    public void onIntent(Message message, AIResponse response) {
+    public void onIntent(CommandMessage context, AIResponse response) {
         String helpCommand = ".help";
-        if (message.getChannelType().isGuild()) {
+        if (context.getMessage().getChannelType().isGuild()) {
             HelpCommand command = getHelpCommand();
             if (command != null) {
-                helpCommand = command.generateCommandTrigger(message);
+                helpCommand = command.generateCommandTrigger(context.getMessage());
             }
         }
 
-        MessageFactory.makeWarning(message,
+        context.makeWarning(
             StringReplacementUtil.replaceAll(
                 response.getResult().getFulfillment().getSpeech(),
                 "!help", helpCommand

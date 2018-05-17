@@ -5,7 +5,6 @@ import com.avairebot.Constants;
 import com.avairebot.commands.CommandHandler;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
-import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.utilities.NumberUtil;
 import com.avairebot.utilities.RoleUtil;
@@ -62,7 +61,7 @@ public class AddLevelRoleCommand extends Command {
     @Override
     @SuppressWarnings("ConstantConditions")
     public boolean onCommand(CommandMessage context, String[] args) {
-        GuildTransformer transformer = GuildController.fetchGuild(avaire, context.getMessage());
+        GuildTransformer transformer = context.getGuildTransformer();
         if (transformer == null || !transformer.isLevels()) {
             return sendErrorMessage(
                 context,

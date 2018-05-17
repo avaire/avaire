@@ -5,7 +5,6 @@ import com.avairebot.Constants;
 import com.avairebot.chat.SimplePaginator;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
-import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.language.Language;
 import com.avairebot.utilities.NumberUtil;
@@ -79,7 +78,7 @@ public class LanguageCommand extends Command {
             );
         }
 
-        GuildTransformer transformer = GuildController.fetchGuild(avaire, context.getGuild());
+        GuildTransformer transformer = context.getGuildTransformer();
         if (transformer == null) {
             return sendErrorMessage(context, "errors.errorOccurredWhileLoading", "server settings");
         }

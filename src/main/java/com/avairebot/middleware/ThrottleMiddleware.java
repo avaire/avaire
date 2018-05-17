@@ -10,6 +10,8 @@ import com.avairebot.metrics.Metrics;
 import com.avairebot.utilities.NumberUtil;
 import net.dv8tion.jda.core.entities.Message;
 
+import javax.annotation.Nonnull;
+
 public class ThrottleMiddleware extends Middleware {
 
     public ThrottleMiddleware(AvaIre avaire) {
@@ -17,14 +19,14 @@ public class ThrottleMiddleware extends Middleware {
     }
 
     @Override
-    public String buildHelpDescription(String[] arguments) {
+    public String buildHelpDescription(@Nonnull String[] arguments) {
         return String.format("**This command can only be used `%s` time(s) every `%s` seconds per %s**",
             arguments[1], arguments[2], arguments[0].equalsIgnoreCase("guild") ? "server" : arguments[0]
         );
     }
 
     @Override
-    public boolean handle(Message message, MiddlewareStack stack, String... args) {
+    public boolean handle(@Nonnull Message message, @Nonnull MiddlewareStack stack, String... args) {
         if (args.length < 3) {
             AvaIre.getLogger().warn(String.format(
                 "\"%s\" is parsing invalid amount of arguments to the throttle middleware, 3 arguments are required.", stack.getCommand()

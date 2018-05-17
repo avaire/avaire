@@ -7,7 +7,6 @@ import com.avairebot.commands.CommandHandler;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.commands.fun.RandomCatCommand;
 import com.avairebot.contracts.ai.Intent;
-import net.dv8tion.jda.core.entities.Message;
 
 public class RequestCat extends Intent {
 
@@ -22,11 +21,11 @@ public class RequestCat extends Intent {
 
     @Override
     @SuppressWarnings("ConstantConditions")
-    public void onIntent(Message message, AIResponse response) {
+    public void onIntent(CommandMessage context, AIResponse response) {
         CommandContainer container = CommandHandler.getCommand(RandomCatCommand.class);
 
         container.getCommand().onCommand(
-            new CommandMessage(container, message), new String[0]
+            new CommandMessage(container, context.getDatabaseEventHolder(), context.getMessage()), new String[0]
         );
     }
 }

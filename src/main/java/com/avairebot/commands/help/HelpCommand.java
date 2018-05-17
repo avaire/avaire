@@ -4,7 +4,6 @@ import com.avairebot.AvaIre;
 import com.avairebot.chat.MessageType;
 import com.avairebot.commands.*;
 import com.avairebot.contracts.commands.Command;
-import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.transformers.ChannelTransformer;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.factories.MessageFactory;
@@ -164,7 +163,7 @@ public class HelpCommand extends Command {
 
         context.getMessageChannel().sendMessage(embed.setDescription(
             command.getCommand().generateDescription(
-                new CommandMessage(command, context.getMessage())
+                new CommandMessage(command, context.getDatabaseEventHolder(), context.getMessage())
                     .setI18n(context.getI18n())
             )
         ).build()).queue();
@@ -190,7 +189,7 @@ public class HelpCommand extends Command {
             return formatCategoriesStream(categories.stream(), isBotAdmin);
         }
 
-        GuildTransformer transformer = GuildController.fetchGuild(avaire, context.getGuild());
+        GuildTransformer transformer = context.getGuildTransformer();
         if (transformer == null) {
             return formatCategoriesStream(categories.stream(), isBotAdmin);
         }

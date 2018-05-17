@@ -9,7 +9,6 @@ import com.avairebot.contracts.commands.ThreadCommand;
 import com.avairebot.database.collection.Collection;
 import com.avairebot.database.collection.DataRow;
 import com.avairebot.database.connections.SQLite;
-import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.controllers.PlaylistController;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.database.transformers.PlaylistTransformer;
@@ -110,7 +109,7 @@ public class PlaylistCommand extends ThreadCommand {
             return sendErrorMessage(context, "errors.errorOccurredWhileLoading", "servers playlist");
         }
 
-        GuildTransformer transformer = GuildController.fetchGuild(avaire, context.getMessage());
+        GuildTransformer transformer = context.getGuildTransformer();
         if (transformer == null) {
             return sendErrorMessage(context, "errors.errorOccurredWhileLoading", "server settings");
         }

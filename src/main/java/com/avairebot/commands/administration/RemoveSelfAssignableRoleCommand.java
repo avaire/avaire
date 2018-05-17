@@ -5,7 +5,6 @@ import com.avairebot.Constants;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.CacheFingerprint;
 import com.avairebot.contracts.commands.Command;
-import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.utilities.RoleUtil;
 import net.dv8tion.jda.core.entities.Role;
@@ -75,7 +74,7 @@ public class RemoveSelfAssignableRoleCommand extends Command {
         }
 
         try {
-            GuildTransformer transformer = GuildController.fetchGuild(avaire, context.getMessage());
+            GuildTransformer transformer = context.getGuildTransformer();
             if (transformer == null) {
                 return sendErrorMessage(context, "errors.errorOccurredWhileLoading", "server settings");
             }

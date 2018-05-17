@@ -6,6 +6,8 @@ import com.avairebot.metrics.Metrics;
 import com.avairebot.middleware.MiddlewareStack;
 import net.dv8tion.jda.core.entities.Message;
 
+import javax.annotation.Nonnull;
+
 public class IncrementMetricsForCommand extends Middleware {
 
     public IncrementMetricsForCommand(AvaIre avaire) {
@@ -13,7 +15,7 @@ public class IncrementMetricsForCommand extends Middleware {
     }
 
     @Override
-    public boolean handle(Message message, MiddlewareStack stack, String... args) {
+    public boolean handle(@Nonnull Message message, @Nonnull MiddlewareStack stack, String... args) {
         Metrics.commandsReceived.labels(stack.getCommand().getClass().getSimpleName()).inc();
 
         return stack.next();

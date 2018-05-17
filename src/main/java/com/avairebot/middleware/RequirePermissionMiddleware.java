@@ -7,6 +7,7 @@ import com.avairebot.permissions.Permissions;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Message;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -19,7 +20,7 @@ public class RequirePermissionMiddleware extends Middleware {
     }
 
     @Override
-    public String buildHelpDescription(String[] arguments) {
+    public String buildHelpDescription(@Nonnull String[] arguments) {
         arguments = Arrays.copyOfRange(arguments, 1, arguments.length);
         if (arguments.length == 1) {
             Permissions node = Permissions.fromNode(arguments[0]);
@@ -40,7 +41,7 @@ public class RequirePermissionMiddleware extends Middleware {
     }
 
     @Override
-    public boolean handle(Message message, MiddlewareStack stack, String... args) {
+    public boolean handle(@Nonnull Message message, @Nonnull MiddlewareStack stack, String... args) {
         if (!message.getChannelType().isGuild()) {
             return stack.next();
         }
@@ -54,6 +55,7 @@ public class RequirePermissionMiddleware extends Middleware {
 
         boolean isUserAdmin = message.getMember().hasPermission(Permissions.ADMINISTRATOR.getPermission());
         RequireType type = RequireType.fromName(args[0]);
+
         List<Permissions> missingBotPermissions = new ArrayList<>();
         List<Permissions> missingUserPermissions = new ArrayList<>();
 

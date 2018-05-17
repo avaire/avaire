@@ -2,6 +2,9 @@ package com.avairebot.contracts.commands;
 
 import com.avairebot.commands.CommandContainer;
 import com.avairebot.config.YamlConfiguration;
+import com.avairebot.database.transformers.GuildTransformer;
+import com.avairebot.database.transformers.PlayerTransformer;
+import com.avairebot.handlers.DatabaseEventHolder;
 import net.dv8tion.jda.core.entities.*;
 
 import javax.annotation.CheckReturnValue;
@@ -22,6 +25,15 @@ public interface CommandContext {
     MessageChannel getMessageChannel();
 
     Message getMessage();
+
+    @Nullable
+    GuildTransformer getGuildTransformer();
+
+    @Nullable
+    PlayerTransformer getPlayerTransformer();
+
+    @Nullable
+    DatabaseEventHolder getDatabaseEventHolder();
 
     List<User> getMentionedUsers();
 

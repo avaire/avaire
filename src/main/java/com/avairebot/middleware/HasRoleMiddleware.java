@@ -7,6 +7,7 @@ import com.avairebot.permissions.Permissions;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.Role;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
 public class HasRoleMiddleware extends Middleware {
@@ -16,7 +17,7 @@ public class HasRoleMiddleware extends Middleware {
     }
 
     @Override
-    public String buildHelpDescription(String[] arguments) {
+    public String buildHelpDescription(@Nonnull String[] arguments) {
         if (arguments.length == 1) {
             return String.format("**The `%s` role is required to use this command!**", arguments[0]);
         }
@@ -26,7 +27,7 @@ public class HasRoleMiddleware extends Middleware {
     }
 
     @Override
-    public boolean handle(Message message, MiddlewareStack stack, String... args) {
+    public boolean handle(@Nonnull Message message, @Nonnull MiddlewareStack stack, String... args) {
         if (!message.getChannelType().isGuild()) {
             return stack.next();
         }

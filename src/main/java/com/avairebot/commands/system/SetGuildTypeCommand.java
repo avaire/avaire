@@ -55,7 +55,7 @@ public class SetGuildTypeCommand extends SystemCommand {
 
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
-        GuildTransformer guildTransformer = GuildController.fetchGuild(avaire, context.getGuild());
+        GuildTransformer guildTransformer = context.getGuildTransformer();
         if (guildTransformer == null) {
             return sendErrorMessage(context,
                 "Something went wrong while trying to get the guild transformer object, check the console for more information."

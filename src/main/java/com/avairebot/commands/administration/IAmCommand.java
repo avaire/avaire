@@ -4,7 +4,6 @@ import com.avairebot.AvaIre;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.contracts.commands.CommandContext;
-import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.factories.MessageFactory;
 import com.avairebot.utilities.RoleUtil;
@@ -60,7 +59,7 @@ public class IAmCommand extends Command {
             return false;
         }
 
-        GuildTransformer transformer = GuildController.fetchGuild(avaire, context.getMessage());
+        GuildTransformer transformer = context.getGuildTransformer();
         if (transformer == null || !transformer.getSelfAssignableRoles().containsValue(role.getName().toLowerCase())) {
             context.makeWarning(":user Invalid role, **:role** is not a self-assignable role.")
                 .set("role", roleName)

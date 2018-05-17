@@ -4,6 +4,7 @@ import com.avairebot.AvaIre;
 import com.avairebot.commands.CommandContainer;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.contracts.middleware.Middleware;
+import com.avairebot.handlers.DatabaseEventHolder;
 import com.avairebot.middleware.global.IncrementMetricsForCommand;
 import com.avairebot.middleware.global.IsCategoryEnabled;
 import com.avairebot.middleware.global.ProcessCommand;
@@ -22,14 +23,16 @@ public class MiddlewareStack {
     private final Message message;
     private final CommandContainer command;
     private final List<MiddlewareContainer> middlewares = new ArrayList<>();
+    private final DatabaseEventHolder databaseEventHolder;
     private final boolean mentionableCommand;
 
     private int index = -1;
 
-    public MiddlewareStack(Message message, CommandContainer command, boolean mentionableCommand) {
+    public MiddlewareStack(Message message, CommandContainer command, DatabaseEventHolder databaseEventHolder, boolean mentionableCommand) {
         this.message = message;
         this.command = command;
         this.mentionableCommand = mentionableCommand;
+        this.databaseEventHolder = databaseEventHolder;
 
         middlewares.add(new MiddlewareContainer(PROCESS_COMMAND));
 
@@ -39,8 +42,8 @@ public class MiddlewareStack {
         middlewares.add(new MiddlewareContainer(INCREMENT_METRICS_FOR_COMMAND));
     }
 
-    public MiddlewareStack(Message message, CommandContainer command) {
-        this(message, command, false);
+    public MiddlewareStack(Message message, CommandContainer command, DatabaseEventHolder databaseEventHolder) {
+        this(message, command, databaseEventHolder, false);
     }
 
     /**
@@ -125,5 +128,15 @@ public class MiddlewareStack {
      */
     public boolean isMentionableCommand() {
         return mentionableCommand;
+    }
+
+    /**
+     * Returns the {@link DatabaseEventHolder database event holder} object for the given
+     * message, the object can be used to get the database record for the guild or user.
+     *
+     * @return The {@link DatabaseEventHolder database event holder} object.
+     */
+    public DatabaseEventHolder getDatabaseEventHolder() {
+        return databaseEventHolder;
     }
 }

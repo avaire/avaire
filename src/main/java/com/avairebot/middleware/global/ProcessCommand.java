@@ -18,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 
+import javax.annotation.Nonnull;
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
@@ -36,7 +37,7 @@ public class ProcessCommand extends Middleware {
     }
 
     @Override
-    public boolean handle(Message message, MiddlewareStack stack, String... args) {
+    public boolean handle(@Nonnull Message message, @Nonnull MiddlewareStack stack, String... args) {
         CheckPermissionUtil.PermissionCheckType permissionType = CheckPermissionUtil.canSendMessages(message.getChannel());
         if (!stack.getCommandContainer().getCategory().getName().equals("System") && !permissionType.canSendEmbed()) {
             if (!permissionType.canSendMessage()) {
@@ -69,7 +70,11 @@ public class ProcessCommand extends Middleware {
 
                 return runCommand(stack,
                     new CommandMessage(
-                        stack.getCommandContainer(), message, stack.isMentionableCommand(), container.getAliasArguments()
+                        stack.getCommandContainer(),
+                        stack.getDatabaseEventHolder(),
+                        message,
+                        stack.isMentionableCommand(),
+                        container.getAliasArguments()
                     ),
                     combineArguments(container.getAliasArguments(), commandArguments)
                 );
@@ -79,7 +84,15 @@ public class ProcessCommand extends Middleware {
 
             timer = Metrics.executionTime.labels(stack.getCommand().getClass().getSimpleName()).startTimer();
 
-            return runCommand(stack, new CommandMessage(stack.getCommandContainer(), message, stack.isMentionableCommand(), new String[0]), commandArguments);
+            return runCommand(stack, new CommandMessage(
+                    stack.getCommandContainer(),
+                    stack.getDatabaseEventHolder(),
+                    message,
+                    stack.isMentionableCommand(),
+                    new String[0]
+                ),
+                commandArguments
+            );
         } catch (Exception ex) {
             Metrics.commandExceptions.labels(ex.getClass().getSimpleName()).inc();
 

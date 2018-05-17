@@ -8,10 +8,11 @@ import com.avairebot.commands.CommandHandler;
 import com.avairebot.commands.administration.IAmCommand;
 import com.avairebot.contracts.middleware.DJCheckMessage;
 import com.avairebot.contracts.middleware.Middleware;
-import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.factories.MessageFactory;
 import net.dv8tion.jda.core.entities.Message;
+
+import javax.annotation.Nonnull;
 
 public class RequireDJLevelMiddleware extends Middleware {
 
@@ -20,7 +21,7 @@ public class RequireDJLevelMiddleware extends Middleware {
     }
 
     @Override
-    public boolean handle(Message message, MiddlewareStack stack, String... args) {
+    public boolean handle(@Nonnull Message message, @Nonnull MiddlewareStack stack, String... args) {
         if (!message.getChannelType().isGuild()) {
             return stack.next();
         }
@@ -55,7 +56,7 @@ public class RequireDJLevelMiddleware extends Middleware {
             }
         }
 
-        GuildTransformer guildTransformer = GuildController.fetchGuild(avaire, message);
+        GuildTransformer guildTransformer = stack.getDatabaseEventHolder().getGuild();
         if (guildTransformer != null && guildTransformer.getSelfAssignableRoles().containsValue("dj")) {
             djcheckMessage += "\nYou can use the `:iam DJ` command to get the role!";
         }

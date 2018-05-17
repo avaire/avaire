@@ -13,8 +13,8 @@ import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.controllers.PlayerController;
 import com.avairebot.database.transformers.ChannelTransformer;
 import com.avairebot.database.transformers.GuildTransformer;
-import com.avairebot.database.transformers.PlayerTransformer;
 import com.avairebot.factories.MessageFactory;
+import com.avairebot.handlers.DatabaseEventHolder;
 import com.avairebot.metrics.Metrics;
 import com.avairebot.middleware.MiddlewareStack;
 import com.avairebot.utilities.ArrayUtil;
@@ -78,26 +78,26 @@ public class MessageEventAdapter extends EventAdapter {
             return;
         }
 
-        loadDatabasePropertiesIntoMemory(event).thenAccept(properties -> {
+        loadDatabasePropertiesIntoMemory(event).thenAccept(databaseEventHolder -> {
             if (!avaire.areWeReadyYet()) {
                 return;
             }
 
-            if (isUserBeingThrottledBySlowmodeInChannel(event, properties)) {
+            if (isUserBeingThrottledBySlowmodeInChannel(event, databaseEventHolder)) {
                 event.getMessage().delete().queue(null, RestActionUtil.IGNORE);
                 Metrics.slowmodeRatelimited.labels(event.getChannel().getId()).inc();
                 return;
             }
 
-            if (properties.getGuild() != null && properties.getPlayer() != null) {
-                LevelUtil.rewardPlayer(avaire, event, properties.getGuild(), properties.getPlayer());
+            if (databaseEventHolder.getGuild() != null && databaseEventHolder.getPlayer() != null) {
+                LevelUtil.rewardPlayer(avaire, event, databaseEventHolder.getGuild(), databaseEventHolder.getPlayer());
             }
 
             CommandContainer container = CommandHandler.getCommand(avaire, event.getMessage(), event.getMessage().getContentRaw());
             if (container != null && canExecuteCommand(event, container)) {
                 Statistics.addCommands();
 
-                invokeMiddlewareStack(new MiddlewareStack(event.getMessage(), container));
+                invokeMiddlewareStack(new MiddlewareStack(event.getMessage(), container, databaseEventHolder));
                 return;
             }
 
@@ -106,14 +106,15 @@ public class MessageEventAdapter extends EventAdapter {
                 if (container != null && canExecuteCommand(event, container)) {
                     Statistics.addCommands();
 
-                    invokeMiddlewareStack(new MiddlewareStack(event.getMessage(), container, true));
+                    invokeMiddlewareStack(new MiddlewareStack(event.getMessage(), container, databaseEventHolder, true));
                     return;
                 }
 
                 if (avaire.getIntelligenceManager().isEnabled()) {
-                    if (isAIEnabledForChannel(event, properties.getGuild())) {
+                    if (isAIEnabledForChannel(event, databaseEventHolder.getGuild())) {
                         avaire.getIntelligenceManager().request(
-                            event.getMessage(), event.getMessage().getContentStripped()
+                            event.getMessage(), databaseEventHolder,
+                            event.getMessage().getContentStripped()
                         );
                     }
                     return;
@@ -173,7 +174,7 @@ public class MessageEventAdapter extends EventAdapter {
         return channel == null || channel.getAI().isEnabled();
     }
 
-    private boolean isUserBeingThrottledBySlowmodeInChannel(MessageReceivedEvent event, DatabaseProperties properties) {
+    private boolean isUserBeingThrottledBySlowmodeInChannel(MessageReceivedEvent event, DatabaseEventHolder databaseEventHolder) {
         if (!event.getMessage().getChannelType().isGuild()) {
             return false;
         }
@@ -182,7 +183,7 @@ public class MessageEventAdapter extends EventAdapter {
             return false;
         }
 
-        ChannelTransformer channel = properties.getGuild().getChannel(event.getChannel().getId());
+        ChannelTransformer channel = databaseEventHolder.getGuild().getChannel(event.getChannel().getId());
         if (channel == null || !channel.getSlowmode().isEnabled()) {
             return false;
         }
@@ -250,17 +251,17 @@ public class MessageEventAdapter extends EventAdapter {
         }
     }
 
-    private CompletableFuture<DatabaseProperties> loadDatabasePropertiesIntoMemory(final MessageReceivedEvent event) {
+    private CompletableFuture<DatabaseEventHolder> loadDatabasePropertiesIntoMemory(final MessageReceivedEvent event) {
         return CompletableFuture.supplyAsync(() -> {
             if (!event.getChannelType().isGuild()) {
-                return new DatabaseProperties(null, null);
+                return new DatabaseEventHolder(null, null);
             }
 
             GuildTransformer guild = GuildController.fetchGuild(avaire, event.getMessage());
             if (guild == null || !guild.isLevels()) {
-                return new DatabaseProperties(guild, null);
+                return new DatabaseEventHolder(guild, null);
             }
-            return new DatabaseProperties(guild, PlayerController.fetchPlayer(avaire, event.getMessage()));
+            return new DatabaseEventHolder(guild, PlayerController.fetchPlayer(avaire, event.getMessage()));
         });
     }
 
@@ -279,24 +280,5 @@ public class MessageEventAdapter extends EventAdapter {
 
         avaire.getCache().getAdapter(CacheType.MEMORY).put(fingerprint, value, decay);
         return false;
-    }
-
-    private class DatabaseProperties {
-
-        private final GuildTransformer guild;
-        private final PlayerTransformer player;
-
-        DatabaseProperties(GuildTransformer guild, PlayerTransformer player) {
-            this.guild = guild;
-            this.player = player;
-        }
-
-        public GuildTransformer getGuild() {
-            return guild;
-        }
-
-        public PlayerTransformer getPlayer() {
-            return player;
-        }
     }
 }

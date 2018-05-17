@@ -7,7 +7,6 @@ import com.avairebot.commands.CategoryHandler;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.commands.CommandPriority;
 import com.avairebot.contracts.commands.Command;
-import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.transformers.GuildTransformer;
 
 import java.sql.SQLException;
@@ -76,7 +75,7 @@ public class ChangePrefixCommand extends Command {
             return sendErrorMessage(context, "Invalid `category` given, there are no command categories that are called, or starts with `%s`", args[0]);
         }
 
-        GuildTransformer transformer = GuildController.fetchGuild(avaire, context.getMessage());
+        GuildTransformer transformer = context.getGuildTransformer();
         if (args.length == 1) {
             return removeCustomPrefix(context, transformer, category);
         }

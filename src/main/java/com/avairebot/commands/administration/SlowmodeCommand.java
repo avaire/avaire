@@ -4,7 +4,6 @@ import com.avairebot.AvaIre;
 import com.avairebot.Constants;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
-import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.transformers.ChannelTransformer;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.factories.MessageFactory;
@@ -70,7 +69,7 @@ public class SlowmodeCommand extends Command {
             return sendErrorMessage(context, "Missing argument, you must either pass in the `limit` and `decay` values to enable slowmode for this channel, or `off` to disable it for this channel.");
         }
 
-        GuildTransformer guildTransformer = GuildController.fetchGuild(avaire, context.getMessage());
+        GuildTransformer guildTransformer = context.getGuildTransformer();
         if (guildTransformer == null) {
             return endWithFailureToFindTransformer(context);
         }

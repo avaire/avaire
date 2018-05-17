@@ -2,6 +2,9 @@ package com.avairebot.commands;
 
 import com.avairebot.config.YamlConfiguration;
 import com.avairebot.contracts.commands.CommandContext;
+import com.avairebot.database.transformers.GuildTransformer;
+import com.avairebot.database.transformers.PlayerTransformer;
+import com.avairebot.handlers.DatabaseEventHolder;
 import net.dv8tion.jda.core.entities.*;
 
 import javax.annotation.Nonnull;
@@ -38,6 +41,21 @@ public class FakeCommandMessage implements CommandContext {
 
     @Override
     public Message getMessage() {
+        return null;
+    }
+
+    @Override
+    public GuildTransformer getGuildTransformer() {
+        return null;
+    }
+
+    @Override
+    public PlayerTransformer getPlayerTransformer() {
+        return null;
+    }
+
+    @Override
+    public DatabaseEventHolder getDatabaseEventHolder() {
         return null;
     }
 

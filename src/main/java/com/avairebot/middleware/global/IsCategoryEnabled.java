@@ -4,7 +4,6 @@ import com.avairebot.AvaIre;
 import com.avairebot.commands.CommandHandler;
 import com.avairebot.commands.administration.ToggleCategoryCommand;
 import com.avairebot.contracts.middleware.Middleware;
-import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.transformers.ChannelTransformer;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.factories.MessageFactory;
@@ -12,6 +11,7 @@ import com.avairebot.middleware.MiddlewareStack;
 import com.avairebot.utilities.RestActionUtil;
 import net.dv8tion.jda.core.entities.Message;
 
+import javax.annotation.Nonnull;
 import java.util.concurrent.TimeUnit;
 
 public class IsCategoryEnabled extends Middleware {
@@ -22,7 +22,7 @@ public class IsCategoryEnabled extends Middleware {
 
     @Override
     @SuppressWarnings("ConstantConditions")
-    public boolean handle(Message message, MiddlewareStack stack, String... args) {
+    public boolean handle(@Nonnull Message message, @Nonnull MiddlewareStack stack, String... args) {
         if (!message.getChannelType().isGuild()) {
             return stack.next();
         }
@@ -31,7 +31,7 @@ public class IsCategoryEnabled extends Middleware {
             return stack.next();
         }
 
-        GuildTransformer transformer = GuildController.fetchGuild(avaire, message.getGuild());
+        GuildTransformer transformer = stack.getDatabaseEventHolder().getGuild();
         if (transformer == null) {
             return stack.next();
         }

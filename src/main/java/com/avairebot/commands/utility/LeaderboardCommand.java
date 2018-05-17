@@ -11,7 +11,6 @@ import com.avairebot.contracts.commands.CacheFingerprint;
 import com.avairebot.contracts.commands.ThreadCommand;
 import com.avairebot.database.collection.Collection;
 import com.avairebot.database.collection.DataRow;
-import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.utilities.LevelUtil;
 import com.avairebot.utilities.NumberUtil;
@@ -52,7 +51,7 @@ public class LeaderboardCommand extends ThreadCommand {
     @Override
     @SuppressWarnings("ConstantConditions")
     public boolean onCommand(CommandMessage context, String[] args) {
-        GuildTransformer transformer = GuildController.fetchGuild(avaire, context.getMessage());
+        GuildTransformer transformer = context.getGuildTransformer();
         if (transformer == null || !transformer.isLevels()) {
             return sendErrorMessage(
                 context,

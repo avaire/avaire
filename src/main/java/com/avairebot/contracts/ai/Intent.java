@@ -2,8 +2,8 @@ package com.avairebot.contracts.ai;
 
 import ai.api.model.AIResponse;
 import com.avairebot.AvaIre;
+import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.reflection.Reflectionable;
-import net.dv8tion.jda.core.entities.Message;
 
 public abstract class Intent extends Reflectionable {
 
@@ -13,5 +13,5 @@ public abstract class Intent extends Reflectionable {
 
     public abstract String getAction();
 
-    public abstract void onIntent(Message message, AIResponse response);
+    public abstract void onIntent(CommandMessage message, AIResponse response);
 }
