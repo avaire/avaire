@@ -151,7 +151,8 @@ public class AvaIre {
             new CreateLogTypeTableMigration(),
             new CreateLogTableMigration(),
             new ReformatBlacklistTableMigration(),
-            new AddVotePointsToUsersAndGuildsTableMigration()
+            new AddVotePointsToUsersAndGuildsTableMigration(),
+            new AddMusicChannelToGuildsTableMigration()
         );
 
         LOGGER.info("Registering default middlewares");
