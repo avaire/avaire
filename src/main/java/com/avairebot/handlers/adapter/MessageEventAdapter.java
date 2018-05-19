@@ -2,7 +2,6 @@ package com.avairebot.handlers.adapter;
 
 import com.avairebot.AppInfo;
 import com.avairebot.AvaIre;
-import com.avairebot.Statistics;
 import com.avairebot.cache.CacheItem;
 import com.avairebot.cache.CacheType;
 import com.avairebot.commands.CommandContainer;
@@ -64,8 +63,6 @@ public class MessageEventAdapter extends EventAdapter {
     }
 
     public void onMessageReceived(MessageReceivedEvent event) {
-        Statistics.addMessage();
-
         if (event.getAuthor().isBot()) {
             return;
         }
@@ -95,8 +92,6 @@ public class MessageEventAdapter extends EventAdapter {
 
             CommandContainer container = CommandHandler.getCommand(avaire, event.getMessage(), event.getMessage().getContentRaw());
             if (container != null && canExecuteCommand(event, container)) {
-                Statistics.addCommands();
-
                 invokeMiddlewareStack(new MiddlewareStack(event.getMessage(), container, databaseEventHolder));
                 return;
             }
@@ -104,8 +99,6 @@ public class MessageEventAdapter extends EventAdapter {
             if (isMentionableAction(event)) {
                 container = CommandHandler.getLazyCommand(ArrayUtil.toArguments(event.getMessage().getContentRaw())[1]);
                 if (container != null && canExecuteCommand(event, container)) {
-                    Statistics.addCommands();
-
                     invokeMiddlewareStack(new MiddlewareStack(event.getMessage(), container, databaseEventHolder, true));
                     return;
                 }

@@ -1,8 +1,8 @@
 package com.avairebot.database.schema;
 
-import com.avairebot.Statistics;
 import com.avairebot.contracts.database.schema.DatabaseClosure;
 import com.avairebot.database.DatabaseManager;
+import com.avairebot.metrics.Metrics;
 
 import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
@@ -42,7 +42,7 @@ public class Schema {
      *                      <code>PreparedStatement</code> or <code>CallableStatement</code>
      */
     public boolean hasTable(String table) throws SQLException {
-        Statistics.addQueries();
+        Metrics.databaseQueries.labels("SELECT").inc();
 
         return dbm.getConnection().hasTable(table);
     }
@@ -60,8 +60,6 @@ public class Schema {
      *                      <code>PreparedStatement</code> or <code>CallableStatement</code>
      */
     public boolean hasColumn(String table, String column) throws SQLException {
-        Statistics.addQueries();
-
         return getMetaData().getColumns(null, null, table, column).next();
     }
 
@@ -79,7 +77,6 @@ public class Schema {
      */
     public boolean create(String table, DatabaseClosure closure) throws SQLException {
         Blueprint blueprint = createAndRunBlueprint(table, closure);
-        Statistics.addQueries();
 
         Map<String, Boolean> options = new HashMap<>();
         options.put("ignoreExistingTable", true);
@@ -111,7 +108,6 @@ public class Schema {
         }
 
         Blueprint blueprint = createAndRunBlueprint(table, closure);
-        Statistics.addQueries();
         Map<String, Boolean> options = new HashMap<>();
         options.put("ignoreExistingTable", false);
         String query = dbm.getConnection().create(dbm, blueprint, options);
@@ -224,7 +220,6 @@ public class Schema {
      *                      <code>PreparedStatement</code> or <code>CallableStatement</code>
      */
     private boolean alterQuery(String query) throws SQLException {
-        Statistics.addQueries();
         Statement stmt = dbm.getConnection().getConnection().createStatement();
 
         return !stmt.execute(query);

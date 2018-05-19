@@ -2,7 +2,6 @@ package com.avairebot.commands.fun;
 
 import com.avairebot.AvaIre;
 import com.avairebot.Constants;
-import com.avairebot.Statistics;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.utilities.NumberUtil;
@@ -13,6 +12,8 @@ import java.util.Collections;
 import java.util.List;
 
 public class RipCommand extends Command {
+
+    public static int RESPECT = 0;
 
     public RipCommand(AvaIre avaire) {
         super(avaire, false);
@@ -45,7 +46,7 @@ public class RipCommand extends Command {
 
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
-        Statistics.addRespects();
+        RESPECT++;
 
         try {
             avaire.getDatabase().newQueryBuilder(Constants.STATISTICS_TABLE_NAME)
@@ -58,7 +59,7 @@ public class RipCommand extends Command {
         context.makeEmbeddedMessage()
             .setColor(Color.decode("#2A2C31"))
             .setDescription(String.format(context.i18n("hasPaidTheirRespects"), context.getMember().getEffectiveName()))
-            .setFooter(String.format(context.i18n("todayAndOverall"), NumberUtil.formatNicely(Statistics.getRespects()), getTotalRespects()))
+            .setFooter(String.format(context.i18n("todayAndOverall"), NumberUtil.formatNicely(RESPECT), getTotalRespects()))
             .queue();
 
         return true;
@@ -69,7 +70,7 @@ public class RipCommand extends Command {
             try {
                 return NumberUtil.formatNicely(
                     avaire.getDatabase().newQueryBuilder(Constants.STATISTICS_TABLE_NAME).get().first()
-                        .getInt("respects", Statistics.getRespects()) + 1
+                        .getInt("respects", RESPECT) + 1
                 );
             } catch (SQLException e) {
                 return "1";

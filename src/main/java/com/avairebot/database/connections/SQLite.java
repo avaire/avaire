@@ -8,6 +8,7 @@ import com.avairebot.database.exceptions.DatabaseException;
 import com.avairebot.database.grammar.sqlite.*;
 import com.avairebot.database.query.QueryBuilder;
 import com.avairebot.database.schema.Blueprint;
+import com.avairebot.metrics.Metrics;
 
 import javax.annotation.Nonnull;
 import java.sql.*;
@@ -131,6 +132,8 @@ public class SQLite extends FilenameDatabase {
 
     @Override
     protected Statement createPreparedStatement(String query) throws SQLException {
+        Metrics.databaseQueries.labels(query.split(" ")[0].toUpperCase()).inc();
+
         Statement statement = getConnection().createStatement();
 
         statement.setQueryTimeout(5);

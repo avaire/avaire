@@ -9,6 +9,7 @@ import com.avairebot.database.exceptions.DatabaseException;
 import com.avairebot.database.migrate.Migrations;
 import com.avairebot.database.query.QueryBuilder;
 import com.avairebot.database.schema.Schema;
+import com.avairebot.metrics.Metrics;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
@@ -201,6 +202,7 @@ public class DatabaseManager {
     @WillClose
     public Set<Integer> queryInsert(String query) throws SQLException {
         LOGGER.debug("queryInsert(String query) was called with the following SQL query.\nSQL: " + query);
+        Metrics.databaseQueries.labels("INSERT").inc();
         MDC.put("query", query);
 
         if (!query.startsWith("INSERT INTO")) {
@@ -241,6 +243,7 @@ public class DatabaseManager {
     public Set<Integer> queryInsert(QueryBuilder queryBuilder) throws SQLException {
         String query = queryBuilder.toSQL();
         LOGGER.debug("queryInsert(QueryBuilder queryBuilder) was called with the following SQL query.\nSQL: " + query);
+        Metrics.databaseQueries.labels("INSERT").inc();
         MDC.put("query", query);
 
         if (query == null) {
