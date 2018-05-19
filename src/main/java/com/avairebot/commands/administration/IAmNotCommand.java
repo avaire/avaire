@@ -22,7 +22,7 @@ public class IAmNotCommand extends Command {
 
     @Override
     public String getName() {
-        return "I Am Command";
+        return "I Am Not Command";
     }
 
     @Override
