@@ -17,7 +17,7 @@ public class AreWeReadyYetFilter implements Filter {
 
     @Override
     public void handle(Request request, Response response) throws Exception {
-        if (!avaire.areWeReadyYet()) {
+        if (avaire.getShardManager() == null) {
             halt(503, "Application is still starting up, try again later.");
         }
     }
