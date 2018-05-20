@@ -93,8 +93,13 @@ public class TrackScheduler extends AudioEventAdapterWrapped {
             queue.offer(new AudioTrackContainer(track, requester));
         }
 
+        String songTitle = container.getAudioTrack().getInfo().title;
+        if (songTitle == null || songTitle.equalsIgnoreCase("Unknown Title")) {
+            songTitle = container.getAudioTrack().getInfo().uri;
+        }
+
         manager.getLastActiveMessage().makeSuccess(message)
-            .set("title", container.getAudioTrack().getInfo().title)
+            .set("title", songTitle)
             .set("link", container.getAudioTrack().getInfo().uri)
             .set("size", NumberUtil.formatNicely(size))
             .set("name", playlist.getName())
@@ -135,8 +140,13 @@ public class TrackScheduler extends AudioEventAdapterWrapped {
                     + "\n" + message;
             }
 
+            String songTitle = container.getAudioTrack().getInfo().title;
+            if (songTitle == null || songTitle.equalsIgnoreCase("Unknown Title")) {
+                songTitle = container.getAudioTrack().getInfo().uri;
+            }
+
             manager.getLastActiveMessage().makeSuccess(message)
-                .set("title", container.getAudioTrack().getInfo().title)
+                .set("title", songTitle)
                 .set("link", container.getAudioTrack().getInfo().uri)
                 .set("playlistSize", NumberUtil.formatNicely(playlist.getTracks().size()))
                 .set("playlistName", playlist.getName())
@@ -210,10 +220,15 @@ public class TrackScheduler extends AudioEventAdapterWrapped {
     }
 
     private void sendNowPlaying(AudioTrackContainer container) {
+        String songTitle = container.getAudioTrack().getInfo().title;
+        if (songTitle == null || songTitle.equalsIgnoreCase("Unknown Title")) {
+            songTitle = container.getAudioTrack().getInfo().uri;
+        }
+
         manager.getLastActiveMessage().makeSuccess(
             manager.getLastActiveMessage().i18nRaw("music.internal.nowPlaying")
         )
-            .set("title", container.getAudioTrack().getInfo().title)
+            .set("title", songTitle)
             .set("link", container.getAudioTrack().getInfo().uri)
             .set("duration", container.getFormattedDuration())
             .set("requester", container.getRequester().getAsMention())

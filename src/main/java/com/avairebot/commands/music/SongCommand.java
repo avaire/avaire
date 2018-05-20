@@ -124,8 +124,13 @@ public class SongCommand extends Command {
             message = context.i18n("formats.stream");
         }
 
+        String songTitle = player.getPlayingTrack().getInfo().title;
+        if (songTitle == null || songTitle.equalsIgnoreCase("Unknown Title")) {
+            songTitle = player.getPlayingTrack().getInfo().uri;
+        }
+
         return String.format(message,
-            player.getPlayingTrack().getInfo().title,
+            songTitle,
             player.getPlayingTrack().getInfo().uri,
             player.getVolume() + "%",
             scheduler.getAudioTrackContainer().getFormattedTotalTimeLeft(player),
