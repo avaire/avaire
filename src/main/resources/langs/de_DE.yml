@@ -121,6 +121,18 @@ music:
         error: 'Nicht mit dem Voicechannel verbunden. Anfragen von Musik ist vorausgesetzt. Tue dies bitte zuerst mit folgendem Befehl: `%splay`'
         nowPlayingIn: 'Ich spiele nun Musik im folgendem Channel: **:channelName**'
 
+    MusicChannelCommand:
+        updated: "The **:type** music channel has been successfully been :status"
+        field:
+            title: "Music Channels"
+            message: "**Text Channel:** :text\n**Voice Channel:** :voice"
+        status:
+            disabled: "disabled"
+            enabled: "set to **%s**"
+        errors:
+            invalidType: "Invalid type of music channel given, the type must be either `text` or `voice`"
+            notValidType: "`%s` is not a not a valid %s channel, you must include a valid voice channel you want to use as the music channel."
+
     PauseCommand:
         error: "Nicht's zum Pausieren vorhanden. Anfragen von Musik ist vorausgesetzt. Tue dies bitte zuerst mit folgendem Befehl: `%splay`"
         alreadyPaused: 'Die Musik ist bereits pausiert. Nutze `!resume` um mit der Musik fortzufahren.'

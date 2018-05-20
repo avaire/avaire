@@ -121,6 +121,18 @@ music:
         error: "Nah connected t' voice, request shanties first wit' `%splay`"
         nowPlayingIn: 'I now be playing music in **:channelName**'
 
+    MusicChannelCommand:
+        updated: "The **:type** music channel has been successfully been :status"
+        field:
+            title: "Music Channels"
+            message: "**Text Channel:** :text\n**Voice Channel:** :voice"
+        status:
+            disabled: "disabled"
+            enabled: "set to **%s**"
+        errors:
+            invalidType: "Invalid type of music channel given, the type must be either `text` or `voice`"
+            notValidType: "`%s` is not a not a valid %s channel, you must include a valid voice channel you want to use as the music channel."
+
     PauseCommand:
         error: "Nothin' t' pause, request chanties first wit' `%splay`"
         alreadyPaused: "Th' chanties be already paused, use `!resume` t' resume th' chanties."

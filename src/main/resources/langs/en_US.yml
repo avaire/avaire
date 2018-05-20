@@ -121,6 +121,18 @@ music:
         error: 'Not connected to voice, request music first with `%splay`'
         nowPlayingIn: 'I am now playing music in **:channelName**'
 
+    MusicChannelCommand:
+        updated: "The **:type** music channel has been successfully been :status"
+        field:
+            title: "Music Channels"
+            message: "**Text Channel:** :text\n**Voice Channel:** :voice"
+        status:
+            disabled: "disabled"
+            enabled: "set to **%s**"
+        errors:
+            invalidType: "Invalid type of music channel given, the type must be either `text` or `voice`"
+            notValidType: "`%s` is not a not a valid %s channel, you must include a valid voice channel you want to use as the music channel."
+
     PauseCommand:
         error: 'Nothing to pause, request music first with `%splay`'
         alreadyPaused: 'The music is already paused, use `!resume` to resume the music.'
