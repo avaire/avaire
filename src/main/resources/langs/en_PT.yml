@@ -110,6 +110,7 @@ music:
         queueHasEnded: "Queue be ended, leavin' voice."
         noMatchFound: "I found nothin' with th' given query: `%s`"
         trackLoadFailed: "I couldn't add that t' th' queue: `%s`"
+        musicChannel: "You can only use music commands in the :channel channel."
 
     ClearQueueCommand:
         error: "Nothin' t' clear, request somethin' first wit' `%splay`"

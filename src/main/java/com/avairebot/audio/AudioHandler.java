@@ -149,7 +149,18 @@ public class AudioHandler {
 
     @CheckReturnValue
     public VoiceConnectStatus connectToVoiceChannel(CommandMessage context, boolean moveChannelIfConnected) {
-        VoiceChannel channel = context.getMember().getVoiceState().getChannel();
+        VoiceChannel channel = null;
+        if (context.getGuildTransformer() != null) {
+            String musicChannelVoice = context.getGuildTransformer().getMusicChannelVoice();
+            if (musicChannelVoice != null) {
+                channel = context.getGuild().getVoiceChannelById(musicChannelVoice);
+            }
+        }
+
+        if (channel == null) {
+            channel = context.getMember().getVoiceState().getChannel();
+        }
+
         if (channel == null) {
             return VoiceConnectStatus.NOT_CONNECTED;
         }

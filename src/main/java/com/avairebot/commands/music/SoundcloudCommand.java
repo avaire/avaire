@@ -44,7 +44,8 @@ public class SoundcloudCommand extends ThreadCommand {
     public List<String> getMiddleware() {
         return Arrays.asList(
             "hasDJLevel:none",
-            "throttle:guild,2,5"
+            "throttle:guild,2,5",
+            "musicChannel"
         );
     }
 

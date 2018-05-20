@@ -53,7 +53,8 @@ public class PlayCommand extends ThreadCommand {
     public List<String> getMiddleware() {
         return Arrays.asList(
             "hasDJLevel:none",
-            "throttle:guild,2,4"
+            "throttle:guild,2,4",
+            "musicChannel"
         );
     }
 

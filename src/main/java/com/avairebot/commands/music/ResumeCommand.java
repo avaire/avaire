@@ -42,7 +42,8 @@ public class ResumeCommand extends Command {
     public List<String> getMiddleware() {
         return Arrays.asList(
             "hasDJLevel:normal",
-            "throttle:guild,1,4"
+            "throttle:guild,1,4",
+            "musicChannel"
         );
     }
 

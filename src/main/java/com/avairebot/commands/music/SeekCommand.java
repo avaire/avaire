@@ -48,7 +48,8 @@ public class SeekCommand extends Command {
     public List<String> getMiddleware() {
         return Arrays.asList(
             "hasDJLevel:normal",
-            "throttle:guild,2,4"
+            "throttle:guild,2,4",
+            "musicChannel"
         );
     }
 

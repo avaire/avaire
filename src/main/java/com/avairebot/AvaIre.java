@@ -163,6 +163,7 @@ public class AvaIre {
         MiddlewareHandler.register("require", new RequirePermissionMiddleware(this));
         MiddlewareHandler.register("hasDJLevel", new RequireDJLevelMiddleware(this));
         MiddlewareHandler.register("throttle", new ThrottleMiddleware(this));
+        MiddlewareHandler.register("musicChannel", new IsMusicChannelMiddleware(this));
 
         LOGGER.info("Registering default command categories");
         String defaultPrefix = getConfig().getString("default-prefix", DiscordConstants.DEFAULT_COMMAND_PREFIX);

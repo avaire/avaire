@@ -37,7 +37,8 @@ public class StopCommand extends Command {
     public List<String> getMiddleware() {
         return Arrays.asList(
             "hasDJLevel:normal",
-            "throttle:guild,1,5"
+            "throttle:guild,1,5",
+            "musicChannel"
         );
     }
 

@@ -48,7 +48,8 @@ public class RemoveSongFromQueueCommand extends Command {
     public List<String> getMiddleware() {
         return Arrays.asList(
             "hasDJLevel:normal",
-            "throttle:user,2,4"
+            "throttle:user,2,4",
+            "musicChannel"
         );
     }
 

@@ -11,7 +11,6 @@ import net.dv8tion.jda.core.entities.GuildVoiceState;
 import net.dv8tion.jda.core.entities.VoiceChannel;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -39,7 +38,10 @@ public class VoteSkipCommand extends Command {
 
     @Override
     public List<String> getMiddleware() {
-        return Collections.singletonList("throttle:user,1,4");
+        return Arrays.asList(
+            "throttle:user,1,4",
+            "musicChannel"
+        );
     }
 
     @Override

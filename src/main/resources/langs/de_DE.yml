@@ -110,6 +110,7 @@ music:
         queueHasEnded: 'Die Warteschlange ist leer. Voicechannel wird verlassen.'
         noMatchFound: "Ich habe nicht's mit der folgenden Eingabe gefunden: `%s`"
         trackLoadFailed: "Ich war nicht in der Lage folgendes in die Warteschlange zu setzen: `%s`"
+        musicChannel: "You can only use music commands in the :channel channel."
 
     ClearQueueCommand:
         error: "Nicht's zum Leeren vorhanden. Anfragen von Musik ist vorausgesetzt. Tue dies bitte zuerst mit folgendem Befehl: `%splay`"

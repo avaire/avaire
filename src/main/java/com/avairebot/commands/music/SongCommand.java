@@ -52,7 +52,8 @@ public class SongCommand extends Command {
     public List<String> getMiddleware() {
         return Arrays.asList(
             "hasDJLevel:none",
-            "throttle:channel,2,4"
+            "throttle:channel,2,4",
+            "musicChannel"
         );
     }
 

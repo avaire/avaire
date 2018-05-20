@@ -60,7 +60,8 @@ public class SetDefaultVolumeCommand extends Command {
         return Arrays.asList(
             "hasDJLevel:normal",
             "throttle:guild,1,4",
-            "hasVoted"
+            "hasVoted",
+            "musicChannel"
         );
     }
 

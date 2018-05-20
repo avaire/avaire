@@ -43,7 +43,8 @@ public class ClearQueueCommand extends Command {
     public List<String> getMiddleware() {
         return Arrays.asList(
             "hasDJLevel:normal",
-            "throttle:user,1,5"
+            "throttle:user,1,5",
+            "musicChannel"
         );
     }
 
