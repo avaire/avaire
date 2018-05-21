@@ -191,6 +191,9 @@ public class AvaIre {
             LOGGER.info(String.format("\tRegistered %s intelligence intents successfully!", intelligenceManager.entrySet().size()));
         }
 
+        LOGGER.info("Preparing I18n");
+        I18n.start(this);
+
         LOGGER.info("Creating plugin manager and registering plugins...");
         pluginManager = new PluginManager(this);
 
@@ -255,9 +258,6 @@ public class AvaIre {
         LOGGER.info("Preparing Lavalink");
         AudioHandler.setAvaire(this);
         LavalinkManager.LavalinkManagerHolder.LAVALINK.start(this);
-
-        LOGGER.info("Preparing I18n");
-        I18n.start(this);
 
         LOGGER.info("Creating bot instance and connecting to Discord network");
 

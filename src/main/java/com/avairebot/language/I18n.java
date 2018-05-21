@@ -66,4 +66,14 @@ public class I18n {
             return DEFAULT;
         }
     }
+
+    @Nonnull
+    public static LanguageHolder getLocale(Language language) {
+        for (LanguageHolder locale : LANGS) {
+            if (locale.getLanguage().equals(language)) {
+                return locale;
+            }
+        }
+        return DEFAULT;
+    }
 }
