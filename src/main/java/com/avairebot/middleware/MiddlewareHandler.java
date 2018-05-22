@@ -26,6 +26,22 @@ public class MiddlewareHandler {
     }
 
     /**
+     * Returns the name of a registered middleware by class.
+     *
+     * @param clazz The type of class that should be returned.
+     * @return The name of the registered middleware by class.
+     */
+    @Nullable
+    public static String getName(@Nonnull Class<? extends Middleware> clazz) {
+        for (Map.Entry<String, Middleware> middleware : MIDDLEWARES.entrySet()) {
+            if (middleware.getValue().getClass().getSimpleName().equalsIgnoreCase(clazz.getSimpleName())) {
+                return middleware.getKey();
+            }
+        }
+        return null;
+    }
+
+    /**
      * Registers a middleware with the given name, middlewares can be used through
      * the {@link Command#getMiddleware() getMiddleware()} method, middleware
      * names will ignore letter casing and there can't be two middlewares

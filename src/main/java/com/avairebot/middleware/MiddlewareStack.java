@@ -61,7 +61,7 @@ public class MiddlewareStack {
      * Builds the middleware stack from the commands {@link Command#getMiddleware() getMiddleware()} method.
      */
     private void buildMiddlewareStack() {
-        List<String> middleware = command.getCommand().getMiddleware();
+        List<String> middleware = command.getMiddleware();
         if (middleware.isEmpty()) {
             return;
         }
