@@ -14,15 +14,15 @@ fun:
     DiceCommand:
         missingDice: "Tu dois inclure le dé que tu souhaites lancer."
         invalidDiceFormat: "`%s` est un format de dé invalide."
-        diceFormatMustBeGreaterThan: "`%s` est un format de dé invalide, le dé doit être supérieur à 0 et inférieur à 35"
+        diceFormatMustBeGreaterThan: "`%s` est un format de dé invalide, le nombre de dés doit être supérieur à 0 et inférieur à 35"
         diceFormatMustBePositive: "`%s` est un format de dé invalide, le nombre de dés doit être un entier valide, compris entre 1 et 35"
         sidesFormatMustBeGreaterThan: "`%s` est un format de dé invalide, les faces doivent être supérieures à 0 et inférieures à 128"
-        sidesFormatMustBePositive: "`%s` est un format de dé invalide, le nombre de face doit être un entier positif valide, compris entre 1 et 128"
+        sidesFormatMustBePositive: "`%s` est un format de dé invalide, le nombre de faces doit être un entier positif valide, compris entre 1 et 128"
         moreThanFiveRollsWasGiven: "\n_Plus de **5** lancés de dé, seuls les 5 premiers jets seront affichés_\n"
         resultedIn: "**%s** a donné le résultat suivant **%s**  (%s)"
 
     EightBallCommand:
-        mustIncludeQuestion: "Tu dois include une quesion pour la 8ball."
+        mustIncludeQuestion: "Tu dois inclure une question pour la 8ball."
         answers:
             - "C'est certain"
             - "Résolument"
@@ -34,8 +34,8 @@ fun:
             - "Les chances sont bonnes"
             - "Oui"
             - "Les signes indiquent que oui"
-            - "La réponse est indistincte, essayez à nouveau"
-            - "Demandez à nouveau plus tard"
+            - "La réponse est indistincte, essaye à nouveau"
+            - "Redemande plus tard"
             - "Mieux vaut ne pas te le dire maintenant"
             - "Impossible à prédire pour le moment"
             - "Concentre toi et demande à nouveau"
@@ -46,7 +46,7 @@ fun:
             - "J'en doute"
 
     MemeCommand:
-        missingArgument: "Argument `action` manquant, tu dois inclure le type du même ou l'utilisateur pour lequel tu souhaites générer un meme, ou `liste` pour afficher tous les types de memes disponibles."
+        missingArgument: "Argument `action` manquant, tu dois inclure le type du meme et l'utilisateur pour lequel tu souhaites générer un meme, ou `liste` pour afficher tous les types de memes disponibles."
         invalidType: "Type de meme invalide, `%s` n'est pas un type de meme valide!"
         mustIncludeTopAndBottomText: "Tu dois inclure les arguments `top text` et `bottom text` pour générer un meme."
         listItem: "`%s` => `%s`"
@@ -60,15 +60,15 @@ fun:
 
     RollCommand:
         invalidValueGiven: "Valeur fournie invalide `%s`, `%s` doit être un nombre!"
-        rolledNumber: ":user a lancé **:number** entre :min - :max"
+        rolledNumber: ":user a obtenu **:number** parmis :min - :max"
 
 help:
     HelpCommand:
         listOfCommands: ":page_with_curl: **Liste des commandes** ```css\n%s```\n"
-        commandNote: "**Tape `:help <command>` pour afficher l'aide de cette commande spécique.**\nExemple: `:help :command`"
-        categoriesNote: ":information_source: Tape `:help <category>` pour obtenir la liste des commande de cette catégorie.\nExemple: `:help %s` ou `:help %s`"
+        commandNote: "**Tape `:help <command>` pour afficher l'aide de cette commande spécifique.**\nExemple: `:help :command`"
+        categoriesNote: ":information_source: Tape `:help <category>` pour obtenir la liste des commandes de cette catégorie.\nExemple: `:help %s` ou `:help %s`"
         categoriesTitle: ":scroll: Catégories de commande"
-        invalidCategory: "Catégorie de ommande invalide, il n'existe pas de catégorie nommée `:category`"
+        invalidCategory: "Catégorie de commande invalide, il n'existe pas de catégorie nommée `:category`"
         invalidCommand: "Commande invalide, il n'existe pas de commande `:trigger`"
         tryingToViewSystemCommands: "Vous n'avez la permission d'exécuter aucune commande dans la catégorie `System`, ces commandes peuvent affecter tous les serveurs où le bot est actuellement actif, et sont par conséquent limité aux administrateurs/développeurs du bot."
         singularHiddenCategories: "_Il existe **%s** catégorie cachée pour ce canal._"
@@ -84,7 +84,7 @@ interaction:
     CuddleCommand: "câline"
     DivorceCommand: "divorce de"
     EatCommand: "mange avec"
-    HelloCommand: "dit salut à"
+    HelloCommand: "salut"
     HighFiveCommand: "high fives"
     HugCommand: "étreint"
     KillCommand: "veut tuer"
@@ -113,13 +113,13 @@ music:
         musicChannel: "Vous ne pouvez utiliser que des commandes musicales dans le canal :channel."
 
     ClearQueueCommand:
-        error: "Rien à vider, demandez d'abord une musique avec `%splay`"
-        emptyQueue: "Rien à vider, aucune musique n'est en attente dans la file actuellement."
-        success: "J'ai supprimé **:queueSize** musiques de la file d'attente, la file est à présent vide!"
+        error: "Rien à vider, demande d'abord une musique avec `%splay`"
+        emptyQueue: "Rien à vider, aucune musique n'est  actuellement en attente dans la file."
+        success: "J'ai supprimé **:queueSize** musiques de la file d'attente, elle est à présent vide!"
 
     MoveHereCommand:
-        error: "Je ne suis pas connecté à un canal vocal, demande une musique d'abord avec `%splay`"
-        nowPlayingIn: "Je diffuse à présent la musique dans le canal **:channelName**"
+        error: "Je ne suis pas connecté à un canal vocal, demande d'abord une musique avec `%splay`"
+        nowPlayingIn: "Je diffuse à présent de la musique dans le canal **:channelName**"
 
     MusicChannelCommand:
         updated: "Le canal musical **:type** a bien été :status"
@@ -130,7 +130,7 @@ music:
             disabled: "désactivé"
             enabled: "fixé à **%s**"
         errors:
-            invalidType: "Type de canal musical invalide, le type doit être soit `text` soit `voice`"
+            invalidType: "Type de canal musical invalide, il doit être soit `text` soit `voice`"
             notValidType: "`%s` n'est pas un canal valide %s, tu dois inclure un canal vocal valide que tu souhaites utiliser comme canal musical."
 
     PauseCommand:
@@ -146,7 +146,7 @@ music:
             footer: "Sélectionnez une musique avec %s <nombre>"
 
     PlaylistCommand:
-        noPlaylists: "Ce serveur n'a pour le moment au playlist musical, tu peux en créer une avec\n`:command` pour la commencer"
+        noPlaylists: "Ce serveur n'a pour le moment aucune playlist musicale, tu peux en créer une avec la commande\n`:command`"
         noPlaylistWithName: "Il n'existe aucune playlist nommée `:playlist`, tu peux en créer une avec la commande\n`:command`"
         invalidProperty: "`property` invalide, Il n'existe pas de propriété de playlist nommée `%s`.\nTu peux en apprendre davantage en utilisant `%shelp %s`"
         invalidFormat: "Format invalide, la propriété `:type` est manquante!\n`:command`"
@@ -157,27 +157,27 @@ music:
         failedToLoad: "Échec de chargement: %s"
         failedToLoadPlaylist: "Échec du chargement de :playlist, essaye plus tard ou reporte ce problème à l'un de mes développeurs."
         failedToSavePlaylist: "Quelque chose s'est mal passé en essayant d'enregistrer la playlist: %s"
-        loadedPlaylist: "La playlist **:name** a été chargé et ajoutée à la file avec **:amount** musiques."
+        loadedPlaylist: "La playlist **:name** a été chargée et ajoutée à la file avec **:amount** musiques."
         noMatches: "Aucun résultat"
         attemptingToAddLivestreamToPlaylist: "Tu ne peux pas ajouter de diffusion en direct à une playlist!"
-        userHasAddedSong: ":user a ajoutée [:name](:url) à la playlist `:playlist` \nLa playlist `:playlist` a encore `:slots` emplacemements de musiques disponibles."
+        userHasAddedSong: ":user a ajouté [:name](:url) à la playlist `:playlist` \nLa playlist `:playlist` a encore `:slots` emplacemements de musiques disponibles."
         alreadyExists: "La playlist `:playlist` existe déjà!"
         onlyNumbersInName: "Le nom de la playlist ne peut pas uniquement contenir des nombres, tu dois y inclure des lettres!"
         renamingPlaylistAlreadyExists: "Impossible de renommer `:oldplaylist` en `:playlist`, une playlist est déjà nommée `:playlist`"
-        playlistCreated: "La playlist `:playlist` a été crée avec succès!\nTu peux commencer à y ajouter des musiques avec `:command :playlist add <musique>`"
+        playlistCreated: "La playlist `:playlist` a été créée avec succès!\nTu peux commencer à y ajouter des musiques avec `:command :playlist add <musique>`"
         playlistDeleted: "La playlist `:name` a été supprimée avec succès!"
         playlistRenamed: "La playlist `:oldplaylist` a été renommée en `:playlist`!"
-        playlistIsEmpty: "Il n'y a aucune musique dans cette playlist, tu peux ajouter des musique en utilisant la commande\n`:command`."
+        playlistIsEmpty: "Il n'y a aucune musique dans cette playlist, tu peux ajouter des musiques en utilisant la commande\n`:command`."
         playlistIsAlreadyEmpty: "La playlist `:playlist` est déjà vide, Il n'y a rien à supprimer."
         songHasBeenRemovedFromPlaylist: ":song a été supprimée avec succès de la playlist `:playlist`"
         playlistTitle: ":musical_note: Playlist Musicale %s"
         playlistSize: "[ %s sur %s ]"
-        playlistLine: "%s\n       La Playlist contient **%s** chason(s)"
+        playlistLine: "%s\n       La Playlist contient **%s** musique(s)"
         playlistSongLine: "`%s` [%s](%s) [%s]"
 
     RemoveSongFromQueueCommand:
-        error: "Argument manquant `song id`, tu dois inclure l'ID de la chason que tu veux retirer de la file d'attente."
-        failedToRemoveSong: "Quelque chose s'est mal passé, échec lors de la suppression de la chason à l'indice `:index`"
+        error: "Argument manquant `song id`, tu dois inclure l'ID de la musique que tu veux retirer de la file d'attente."
+        failedToRemoveSong: "Quelque chose s'est mal passé, échec lors de la suppression de la musique à l'indice `:index`"
         tooHighNumberGiven: "Il y a seulement `%s` musique(s) dans la file d'attente, essaye de donner un nombre plus petit."
         mustBePositiveNumber: "Le `song id` doit être un entier positif valide."
         nothingToRemove: "Rien à supprimer, demande un musique d'abord avec `%splay`"
@@ -185,7 +185,7 @@ music:
 
     RepeatMusicQueueCommand:
         error: "Il n'y a rien à répéter, demande un musique d'abord avec `%splay`"
-        success: "La lecture en boucle de la file d'attente musicale a maintenant sur le status `:status`."
+        success: "La lecture en boucle de la file d'attente musicale est maintenant sur le status `:status`."
         enabled: "ON"
         disabled: "OFF"
 
@@ -196,9 +196,9 @@ music:
 
     SeekCommand:
         error: "Rien n'est en cours de lecture pour le moment, demande d'abord quelque chose avec `%splay`."
-        invalidTimeGiven: "L'argument `number` doit être un format de temps valide qui est égal ou supérieur à secondes."
+        invalidTimeGiven: "L'argument `number` doit être un format de temps valide qui est égal ou supérieur à 0 secondes."
         seekingLive: "Tu ne peux pas aller à un instant différent pour les diffusions en direct."
-        seekingTooFar: "`%s` est plus grand que la durée de la musique courante, si tu veux passer à la prochaine chason utilise plutôt `%sskip`."
+        seekingTooFar: "`%s` est plus grand que la durée de la musique courante, si tu veux passer à la prochaine musique utilise plutôt `%sskip`."
         seekTo: "Recherche **:title** à `:time`"
 
     SetDefaultVolumeCommand:
@@ -228,8 +228,8 @@ music:
             stream: "[%s](%s)\nLecture au volume `%s`, la diffusion `%s` - Demandé par <@%s>"
 
     StopCommand:
-        error: "Rien n'est en cours de lecture, tu ne peux pas arrêter la musique s'il n'y en a pas."
-        success: "La lecture est interrompue, et **:number** musiques ont été supprimée de la file."
+        error: "Aucune lecture en cours, tu ne peux pas arrêter la musique s'il n'y en a pas."
+        success: "La lecture est interrompue, et **:number** musiques ont été supprimées de la file."
 
     VolumeCommand:
         error: "Rien n'est en cours de lecture, demande un musique d'abord avec `%splay`"
@@ -240,7 +240,7 @@ music:
 
     VoteSkipCommand:
         error: "Rien à passer, demande un musique d'abord avec `%splay`"
-        registered: "Ton vote est enregistré! Il manque `:votes` pour passer la musique."
+        registered: "Ton vote est enregistré! Il manque `:votes` votes pour passer la musique."
         alreadyVoted: "Tu ne peux voter qu'une fois pour passer une même musique! Il manque `:votes` pour passer la musique."
 
 search:
@@ -303,7 +303,7 @@ utility:
         title: "Classement d'expérience global"
 
     InviteCommand:
-        message: "Tu peux m'inviter sur ton serveur en [cliquant ici](:oauth) ou utilise le lien ci-dessous:"
+        message: "Tu peux m'inviter sur ton serveur en [cliquant ici](:oauth) ou en utilisant le lien ci-dessous:"
 
     IPInfoCommand:
         hostname: "Nom d'hôte"
@@ -316,7 +316,7 @@ utility:
         title: "Classement %s"
 
     PingCommand:
-        message: "Pong! Temps pris :ping ms (:rating) Plusation Websocket :heartbeat ms"
+        message: "Pong! Temps pris :ping ms (:rating) Pulsation Websocket :heartbeat ms"
         rating:
             10: "Plus rapide que Sonic! :smiley_cat:"
             100: "Super! :smiley:"
@@ -327,21 +327,20 @@ utility:
             600: "plutôt lent.. :frowning2:"
             700: "lent.. :worried:"
             800: "trop lent. :disappointed:"
-            900: 'mauvais
-            .. :sob: (helpme)'
+            900: "mauvais.. :sob: (helpme)"
             1600: "#BlameDiscord. :angry:"
             10000: "cela n'a aucun sens :thinking: #BlameAlexis"
             other: "lent. :dizzy_face:"
 
     RankCommand:
-        botsCannotReceiveXp: "Les Bots ne peuvent pas recevoir d'xp et donc être classé, essaye de d'identifier un utilisateur plutôt."
+        botsCannotReceiveXp: "Les Bots ne peuvent pas recevoir d'xp et donc être classé, essaye plutôt d'identifier un utilisateur."
         unranked: "Non classé"
         fields:
             rank: "Rang"
             level: "Niveau"
             experience: "Expérience"
             experienceToNext: "Expérience jusqu'au prochain niveau"
-            youNeedMoreXpToLevelUp: "\t\t\t\t\t\t\t\t\tTu as besoin %s de plus d'XP pour monter en niveau."
+            youNeedMoreXpToLevelUp: "\t\t\t\t\t\t\t\t\tTu as besoin %s d'XP supplémentaire pour monter en niveau."
 
     ServerIdCommand:
         message: ":user :id: de ce serveur est `:guildid`"
@@ -367,7 +366,7 @@ utility:
         noArgs: "code source AvaIre:"
         command: "code source AvaIre pour la commande **:command**:"
         invalidCommand: "Commande invalide, voici plutôt le code source complet."
-        externalCommand: "La commande est enregistrer via un plugin externe, l'auteur de ce plugin n'a pas rendu public les sources de la commande, ou ils ont oublié d'ajouter le lien, voici à la place le code source complet du bot."
+        externalCommand: "La commande est enregistrée via un plugin externe, les auteurs de ce plugin n'ont pas rendu public les sources de la commande, ou ils ont oublié d'ajouter le lien, voici à la place le code source complet du bot."
 
     StatsCommand:
         title: "Invitation Serveur Officel du Bot"
@@ -381,7 +380,7 @@ utility:
             author: "Auteur"
             botId: "Bot ID"
             library: "Librairie"
-            database: "Requêtes DB Queries Executées"
+            database: "Requêtes BDD Executées"
             messages: "Messages Reçus"
             shard: "Fragments"
             commands: "Commands Executées"
@@ -392,7 +391,7 @@ utility:
             servers: "Serveurs"
 
     UptimeCommand:
-        message: "J'ai été en ligne pendant :time"
+        message: "Je suis en ligne depuis :time"
         footer: "Démarré %s à %s"
         dateFormat: "EEEEEEEE, dd MMM yyyy"
         timeFormat: "HH:mm:ss z"
@@ -409,18 +408,18 @@ utility:
             roles: "Rôles (%s)"
             servers: "Serveurs"
         inServers: "le bot connait %s"
-        noRoles: "*Cette utilisateur n'a aucune rôle*"
+        noRoles: "*Cet utilisateur n'a aucune rôle*"
         timeFormat: "EEE, dd MMM yyyy HH:mm"
 
     VersionCommand:
-        current: "Je suis actuellement `:difference` :type versions derrière!"
+        current: "Je suis actuellement `:difference` versions :type derrière!"
         getLatest: "Tu peux obtenir ma dernière version sur github [avaire/avaire](https://github.com/avaire/avaire)"
         usingLatest: "Vous utilisez la dernière version de AvaIre!"
         latestVersion: "La dernière version de AvaIre est v%s"
         versions:
             majorName: "Majeure"
-            major: "les mises à jour de version Majeure sont un remaniment complet du bot et de comment il fonctionne ou une large compilation de changements mineurs du code source, il est hautement recommandé de mettre à jour lors des changements de version majeurs, puisque les versions plus anciennes ne seront plus supportées pour les corrections de bug et mises à jours."
+            major: "Les mises à jour de version Majeure sont un remaniment complet du bot et de comment il fonctionne, ou il s'agit d'une large compilation de changements mineurs du code source, il est hautement recommandé de mettre à jour lors des changements de version majeurs, puisque les versions plus anciennes ne seront plus supportées pour les corrections de bugs et mises à jours."
             minorName: "Mineure"
             minor: "Les mises à jour de version Mineure sont des nouveaux ajouts, fonctionnalités et modifications du code existant, il est recommandé d'effectuer ces mises à jour pour obtenir les dernières fonctionnalités."
             patchName: "Patch"
-            patch: "les patchs de mise à jour sont des corrections de bugs, remaniement du code existant et des modifications mineures qui n'ont pas d'impact sur le comportement du code, il est recommandé d'effectuer ces mises à jour pour corriger les bugs."
+            patch: "Les patchs de mise à jour sont des corrections de bugs, remaniement du code existant et des modifications mineures qui n'ont pas d'impact sur le comportement du bot, il est recommandé d'effectuer ces mises à jour pour corriger les bugs."
