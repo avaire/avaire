@@ -28,6 +28,7 @@ public class I18n {
         LANGS.add(DEFAULT);
         LANGS.add(new LanguageHolder(Language.EN_PT));
         LANGS.add(new LanguageHolder(Language.DE_DE));
+        LANGS.add(new LanguageHolder(Language.FR_FR));
 
         LOGGER.info("Loaded " + LANGS.size() + " languages: " + LANGS);
     }

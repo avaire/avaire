@@ -11,7 +11,8 @@ public enum Language {
 
     EN_US("en", "US", "English", "English"),
     EN_PT("en", "PT", "Pirate", "Pirate English", "arrr"),
-    DE_DE("de", "DE", "Deutsch", "German");
+    DE_DE("de", "DE", "Deutsch", "German"),
+    FR_FR("fr", "FR", "French", "French");
 
     private final String code;
     private final String nativeName;

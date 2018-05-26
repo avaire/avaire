@@ -69,7 +69,7 @@ help:
         categoriesNote: ":information_source: Tape `:help <category>` pour obtenir la liste des commande de cette catégorie.\nExemple: `:help %s` ou `:help %s`"
         categoriesTitle: ":scroll: Catégories de commande"
         invalidCategory: "Catégorie de ommande invalide, il n'existe pas de catégorie nommée `:category`"
-        invalidCommand: '"Commande invalide, il n'existe pas de commande `:trigger`"
+        invalidCommand: "Commande invalide, il n'existe pas de commande `:trigger`"
         tryingToViewSystemCommands: "Vous n'avez la permission d'exécuter aucune commande dans la catégorie `System`, ces commandes peuvent affecter tous les serveurs où le bot est actuellement actif, et sont par conséquent limité aux administrateurs/développeurs du bot."
         singularHiddenCategories: "_Il existe **%s** catégorie cachée pour ce canal._"
         multipleHiddenCategories: "_Il existe **%s** catégories cachées pour ce canal._"
