@@ -72,7 +72,7 @@ help:
         invalidCommand: 'Invalid command given, there are no command that has the trigger `:trigger`'
         tryingToViewSystemCommands: "You don't have permissions to run any of the commands in the `System` category, system commands can affect all the servers the bot is currently running on, and thus are limited to bot administrators/developers."
         singularHiddenCategories: '_There is **%s** hidden category for this channel._'
-        multipleHiddenCategories: '_There is **%s** hidden categories for this channel._'
+        multipleHiddenCategories: '_There are **%s** hidden categories for this channel._'
         fields:
             usage: 'Usage'
             example: 'Example'
