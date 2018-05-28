@@ -5,9 +5,6 @@ import com.avairebot.database.collection.DataRow;
 
 public class PlayerTransformer extends Transformer {
 
-    private String userId;
-    private String guildId;
-
     private String username;
     private String usernameRaw;
     private String discriminator;
@@ -18,26 +15,14 @@ public class PlayerTransformer extends Transformer {
         super(data);
 
         if (hasData()) {
-            userId = data.getString("user_id");
-            guildId = data.getString("guild_id");
-
             username = data.getString("username");
             usernameRaw = data.get("username").toString();
             discriminator = data.getString("discriminator");
             avatarId = data.getString("avatar");
-
             experience = data.getLong("experience", 0);
         }
 
         reset();
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public String getGuildId() {
-        return guildId;
     }
 
     public String getUsername() {

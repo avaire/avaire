@@ -15,6 +15,9 @@ import java.sql.SQLException;
 public class PlayerController {
 
     private static final String CACHE_STRING = "database.player.%s.%s";
+    private static final String[] REQUIRED_PLAYER_ITEMS = new String[]{
+        "username", "discriminator", "avatar", "experience"
+    };
 
     @CheckReturnValue
     public static PlayerTransformer fetchPlayer(AvaIre avaire, Message message) {
@@ -39,6 +42,7 @@ public class PlayerController {
         try {
             PlayerTransformer transformer = new PlayerTransformer(avaire.getDatabase()
                 .newQueryBuilder(Constants.PLAYER_EXPERIENCE_TABLE_NAME)
+                .select(REQUIRED_PLAYER_ITEMS)
                 .where("user_id", user.getId())
                 .andWhere("guild_id", message.getGuild().getId())
                 .get().first());

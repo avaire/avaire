@@ -76,8 +76,8 @@ public class LevelUtil {
      */
     public static void rewardPlayer(AvaIre avaire, MessageReceivedEvent event, GuildTransformer guild, PlayerTransformer player) {
         String cacheToken = String.format("user-message-xp-event.%s.%s",
-            player.getGuildId(),
-            player.getUserId()
+            event.getGuild().getId(),
+            event.getAuthor().getId()
         );
 
         if (avaire.getCache().getAdapter(CacheType.MEMORY).has(cacheToken)) {
@@ -139,8 +139,8 @@ public class LevelUtil {
         try {
             avaire.getDatabase().newQueryBuilder(Constants.PLAYER_EXPERIENCE_TABLE_NAME)
                 .useAsync(true)
-                .where("user_id", player.getUserId())
-                .andWhere("guild_id", player.getGuildId())
+                .where("user_id", message.getAuthor().getIdLong())
+                .andWhere("guild_id", message.getGuild().getId())
                 .update(statement -> statement.set("experience", player.getExperience()));
 
             if (guild.isLevelAlerts() && getLevelFromExperience(player.getExperience()) > lvl) {
@@ -148,8 +148,8 @@ public class LevelUtil {
 
                 MessageFactory.makeEmbeddedMessage(getLevelUpChannel(message, guild))
                     .setColor(MessageType.SUCCESS.getColor())
-                    .setDescription(String.format("GG <@%s>, you just reached **Level %s**",
-                        player.getUserId(), newLevel
+                    .setDescription(String.format("GG %s, you just reached **Level %s**",
+                        message.getAuthor().getAsMention(), newLevel
                     )).queue();
 
                 if (guild.getLevelRoles().isEmpty()) return;

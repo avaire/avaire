@@ -46,7 +46,8 @@ public class GuildController {
         }
 
         try {
-            GuildTransformer transformer = new GuildTransformer(avaire.getDatabase().newQueryBuilder(Constants.GUILD_TABLE_NAME)
+            GuildTransformer transformer = new GuildTransformer(avaire.getDatabase()
+                .newQueryBuilder(Constants.GUILD_TABLE_NAME)
                 .select(REQUIRED_GUILD_ITEMS)
                 .leftJoin("guild_types", "guilds.type", "guild_types.id")
                 .where("guilds.id", guild.getId())
