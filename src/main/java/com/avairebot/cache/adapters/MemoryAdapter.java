@@ -3,11 +3,11 @@ package com.avairebot.cache.adapters;
 import com.avairebot.AvaIre;
 import com.avairebot.cache.CacheItem;
 import com.avairebot.contracts.cache.CacheAdapter;
-import com.avairebot.contracts.cache.CacheClosure;
 
 import java.util.Map;
 import java.util.Set;
 import java.util.WeakHashMap;
+import java.util.function.Supplier;
 
 public class MemoryAdapter extends CacheAdapter {
 
@@ -20,13 +20,13 @@ public class MemoryAdapter extends CacheAdapter {
     }
 
     @Override
-    public Object remember(String token, int seconds, CacheClosure closure) {
+    public Object remember(String token, int seconds, Supplier<Object> closure) {
         if (has(token)) {
             return get(token);
         }
 
         try {
-            CacheItem item = new CacheItem(token, closure.run(), System.currentTimeMillis() + (seconds * 1000));
+            CacheItem item = new CacheItem(token, closure.get(), System.currentTimeMillis() + (seconds * 1000));
             CACHES.put(token, item);
 
             return item.getValue();

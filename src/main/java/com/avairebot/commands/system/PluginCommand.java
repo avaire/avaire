@@ -16,6 +16,7 @@ import org.json.JSONObject;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -186,17 +187,22 @@ public class PluginCommand extends SystemCommand {
     @SuppressWarnings("unchecked")
     private List<PluginHolder> fetchPluginsFromGithub() {
         Object plugins = avaire.getCache().getAdapter(CacheType.MEMORY).remember("plugins", 10800, () -> {
-            Connection.Response execute = Jsoup.connect("https://raw.githubusercontent.com/avaire/plugins/master/plugins.json")
-                .ignoreContentType(true).execute();
+            try {
+                Connection.Response execute = Jsoup.connect("https://raw.githubusercontent.com/avaire/plugins/master/plugins.json")
+                    .ignoreContentType(true).execute();
 
-            JSONObject obj = new JSONObject(execute.body());
-            JSONArray data = obj.getJSONArray("data");
+                JSONObject obj = new JSONObject(execute.body());
+                JSONArray data = obj.getJSONArray("data");
 
-            List<PluginHolder> pluginList = new ArrayList<>();
-            for (Object aData : data) {
-                pluginList.add(new PluginHolder((JSONObject) aData));
+                List<PluginHolder> pluginList = new ArrayList<>();
+                for (Object aData : data) {
+                    pluginList.add(new PluginHolder((JSONObject) aData));
+                }
+                return pluginList;
+            } catch (IOException e) {
+                AvaIre.getLogger().error("Failed to fetch plugins from github: " + e.getMessage(), e);
+                return null;
             }
-            return pluginList;
         });
 
         if (plugins instanceof List) {

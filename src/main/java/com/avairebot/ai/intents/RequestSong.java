@@ -12,6 +12,7 @@ import com.avairebot.utilities.RandomUtil;
 import com.google.gson.JsonElement;
 import org.jsoup.Jsoup;
 
+import java.io.IOException;
 import java.util.*;
 
 public class RequestSong extends Intent {
@@ -71,13 +72,18 @@ public class RequestSong extends Intent {
 
     private String getRandomSong(final String category) {
         Object cacheItem = avaire.getCache().getAdapter(CacheType.FILE).remember("music-type." + category.toLowerCase(), 31536000, () -> {
-            String item = Jsoup.connect(
-                String.format("https://libraries.amped.fm/libraries/%s/musicbot", category)
-            ).execute().body();
+            try {
+                String item = Jsoup.connect(
+                    String.format("https://libraries.amped.fm/libraries/%s/musicbot", category)
+                ).execute().body();
 
-            String[] items = item.split("\n");
+                String[] items = item.split("\n");
 
-            return Arrays.asList(Arrays.copyOfRange(items, 2, items.length));
+                return Arrays.asList(Arrays.copyOfRange(items, 2, items.length));
+            } catch (IOException e) {
+                AvaIre.getLogger().error("Failed to load {} music category from libraries.amped.fm", category.toLowerCase(), e);
+                return null;
+            }
         });
 
         if (!(cacheItem instanceof ArrayList)) {

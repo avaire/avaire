@@ -4,7 +4,6 @@ import com.avairebot.AvaIre;
 import com.avairebot.Constants;
 import com.avairebot.cache.CacheItem;
 import com.avairebot.contracts.cache.CacheAdapter;
-import com.avairebot.contracts.cache.CacheClosure;
 import com.avairebot.shared.ExitCodes;
 import org.slf4j.LoggerFactory;
 
@@ -17,6 +16,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Supplier;
 
 public class FileAdapter extends CacheAdapter {
 
@@ -37,13 +37,13 @@ public class FileAdapter extends CacheAdapter {
     }
 
     @Override
-    public Object remember(String token, int seconds, CacheClosure closure) {
+    public Object remember(String token, int seconds, Supplier<Object> closure) {
         if (has(token)) {
             return get(token);
         }
 
         try {
-            writeTo(generateCacheFile(token), closure.run(), seconds);
+            writeTo(generateCacheFile(token), closure.get(), seconds);
 
             return get(token);
         } catch (Exception e) {

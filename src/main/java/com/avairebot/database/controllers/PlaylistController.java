@@ -10,6 +10,7 @@ import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
 
 import javax.annotation.CheckReturnValue;
+import java.sql.SQLException;
 import java.util.List;
 
 public class PlaylistController {
@@ -23,9 +24,14 @@ public class PlaylistController {
         }
 
         return (Collection) avaire.getCache().getAdapter(CacheType.MEMORY).remember(getCacheString(message.getGuild()), 300, () -> {
-            return avaire.getDatabase().newQueryBuilder(Constants.MUSIC_PLAYLIST_TABLE_NAME)
-                .selectAll().where("guild_id", message.getGuild().getId())
-                .get();
+            try {
+                return avaire.getDatabase().newQueryBuilder(Constants.MUSIC_PLAYLIST_TABLE_NAME)
+                    .selectAll().where("guild_id", message.getGuild().getId())
+                    .get();
+            } catch (SQLException e) {
+                AvaIre.getLogger().error("Failed to fetch playlists for server " + message.getGuild().getId(), e);
+                return null;
+            }
         });
     }
 
