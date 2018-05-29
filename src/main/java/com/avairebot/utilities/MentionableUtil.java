@@ -37,6 +37,10 @@ public class MentionableUtil {
             return effectiveName.get(0).getUser();
         }
 
+        if (parts[0].length() == 0) {
+            return null;
+        }
+
         List<Member> members = context.getGuild().getMembersByName(parts[0], true);
         for (Member member : members) {
             if (member.getUser().getDiscriminator().equals(parts[1])) {
