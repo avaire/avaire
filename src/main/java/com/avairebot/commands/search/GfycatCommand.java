@@ -59,10 +59,9 @@ public class GfycatCommand extends ThreadCommand {
             .addParameter("count", 25)
             .addParameter("search_text", String.join(" ", args))
             .send((Consumer<Response>) response -> {
-                GfycatService gfyCat = (GfycatService) response.toService(GfycatService.class);
+                String url = getUrlFromResponse(response);
 
-                Map<String, Object> gfycatsItem = gfyCat.getRandomGfycatsItem();
-                if (gfycatsItem == null) {
+                if (url == null) {
                     context.makeError(context.i18n("noResults"))
                         .set("query", String.join(" ", args))
                         .queue();
@@ -70,10 +69,31 @@ public class GfycatCommand extends ThreadCommand {
                     return;
                 }
 
-                context.makeEmbeddedMessage()
-                    .setImage(gfycatsItem.get("gifUrl").toString())
-                    .queue();
+                context.makeEmbeddedMessage().setImage(url).queue();
             });
         return true;
+    }
+
+    private String getUrlFromResponse(Response response) {
+        GfycatService gfyCat = (GfycatService) response.toService(GfycatService.class);
+        if (gfyCat == null) {
+            return null;
+        }
+
+        for (int i = 0; i < 5; i++) {
+            Map<String, Object> item = gfyCat.getRandomGfycatsItem();
+            if (item == null) {
+                break;
+            }
+
+            if (isValidUrl((String) item.get("gifUrl"))) {
+                return (String) item.get("gifUrl");
+            }
+        }
+        return null;
+    }
+
+    private boolean isValidUrl(String url) {
+        return url != null && (url.startsWith("https://") || url.startsWith("http://"));
     }
 }
