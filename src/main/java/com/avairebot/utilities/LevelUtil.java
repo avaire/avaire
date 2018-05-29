@@ -2,13 +2,14 @@ package com.avairebot.utilities;
 
 import com.avairebot.AvaIre;
 import com.avairebot.Constants;
-import com.avairebot.cache.CacheType;
 import com.avairebot.chat.MessageType;
 import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.controllers.PlayerController;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.database.transformers.PlayerTransformer;
 import com.avairebot.factories.MessageFactory;
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.TextChannel;
@@ -19,8 +20,13 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class LevelUtil {
+
+    private static final Cache<Object, Object> cache = CacheBuilder.newBuilder()
+        .expireAfterWrite(60, TimeUnit.SECONDS)
+        .build();
 
     /**
      * The quadratic equation `a` value.
@@ -75,17 +81,10 @@ public class LevelUtil {
      * @param player The player transformer from the current player database instance.
      */
     public static void rewardPlayer(AvaIre avaire, MessageReceivedEvent event, GuildTransformer guild, PlayerTransformer player) {
-        String cacheToken = String.format("user-message-xp-event.%s.%s",
-            event.getGuild().getId(),
-            event.getAuthor().getId()
-        );
-
-        if (avaire.getCache().getAdapter(CacheType.MEMORY).has(cacheToken)) {
-            return;
-        }
-        avaire.getCache().getAdapter(CacheType.MEMORY).put(cacheToken, 0, 60);
-
-        giveExperience(avaire, event.getMessage(), guild, player);
+        CacheUtil.getUncheckedUnwrapped(cache, event.getAuthor().getIdLong(), () -> {
+            giveExperience(avaire, event.getMessage(), guild, player);
+            return 0;
+        });
     }
 
     /**

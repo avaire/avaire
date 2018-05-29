@@ -41,6 +41,11 @@ public class PlayerController {
                     .get().first());
 
                 if (!transformer.hasData()) {
+                    transformer.incrementExperienceBy(100);
+                    transformer.setUsername(user.getName());
+                    transformer.setDiscriminator(user.getDiscriminator());
+                    transformer.setAvatar(user.getAvatarId());
+
                     avaire.getDatabase().newQueryBuilder(Constants.PLAYER_EXPERIENCE_TABLE_NAME)
                         .insert(statement -> {
                             statement.set("guild_id", message.getGuild().getId())
@@ -49,7 +54,6 @@ public class PlayerController {
                                 .set("discriminator", user.getDiscriminator())
                                 .set("avatar", user.getAvatarId())
                                 .set("experience", 100);
-
                         });
 
                     return transformer;
