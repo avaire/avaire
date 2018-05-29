@@ -2,20 +2,25 @@ package com.avairebot.database.controllers;
 
 import com.avairebot.AvaIre;
 import com.avairebot.Constants;
-import com.avairebot.cache.CacheType;
 import com.avairebot.database.collection.Collection;
 import com.avairebot.database.collection.DataRow;
 import com.avairebot.database.transformers.PlaylistTransformer;
-import net.dv8tion.jda.core.entities.Guild;
+import com.avairebot.utilities.CacheUtil;
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import net.dv8tion.jda.core.entities.Message;
 
 import javax.annotation.CheckReturnValue;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class PlaylistController {
 
-    private static final String CACHE_STRING = "playlists.";
+    private static final Cache<Object, Object> cache = CacheBuilder.newBuilder()
+        .expireAfterAccess(2, TimeUnit.MINUTES)
+        .expireAfterWrite(5, TimeUnit.MINUTES)
+        .build();
 
     @CheckReturnValue
     public static Collection fetchPlaylists(AvaIre avaire, Message message) {
@@ -23,7 +28,7 @@ public class PlaylistController {
             return null;
         }
 
-        return (Collection) avaire.getCache().getAdapter(CacheType.MEMORY).remember(getCacheString(message.getGuild()), 300, () -> {
+        return (Collection) CacheUtil.getUncheckedUnwrapped(cache, message.getGuild().getIdLong(), () -> {
             try {
                 return avaire.getDatabase().newQueryBuilder(Constants.MUSIC_PLAYLIST_TABLE_NAME)
                     .selectAll().where("guild_id", message.getGuild().getId())
@@ -50,7 +55,7 @@ public class PlaylistController {
         return new PlaylistTransformer(playlist.get(0));
     }
 
-    public static String getCacheString(Guild guild) {
-        return CACHE_STRING + guild.getId();
+    public static void forgetCache(long guildId) {
+        cache.invalidate(guildId);
     }
 }

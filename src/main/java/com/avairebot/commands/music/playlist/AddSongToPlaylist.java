@@ -3,7 +3,6 @@ package com.avairebot.commands.music.playlist;
 import com.avairebot.AvaIre;
 import com.avairebot.Constants;
 import com.avairebot.audio.AudioHandler;
-import com.avairebot.cache.CacheType;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.commands.music.PlaylistCommand;
 import com.avairebot.contracts.commands.playlist.PlaylistSubCommand;
@@ -113,8 +112,7 @@ public class AddSongToPlaylist extends PlaylistSubCommand {
                     statement.set("amount", playlist.getSongs().size());
                 });
 
-            avaire.getCache().getAdapter(CacheType.MEMORY)
-                .forget(PlaylistController.getCacheString(context.getGuild()));
+            PlaylistController.forgetCache(context.getGuild().getIdLong());
 
             context.makeSuccess(context.i18n("userHasAddedSong"))
                 .set("name", track.getInfo().title)

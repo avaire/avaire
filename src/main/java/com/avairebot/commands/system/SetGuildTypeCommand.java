@@ -136,7 +136,7 @@ public class SetGuildTypeCommand extends SystemCommand {
                 .where("id", context.getGuild().getId())
                 .update(statement -> statement.set("type", typeId));
 
-            GuildController.forgetCache(avaire, context.getGuild().getId());
+            GuildController.forgetCache(context.getGuild().getIdLong());
 
             context.makeSuccess("The guild type for **:guildname** has been changed to **:type**")
                 .set("guildname", context.getGuild().getName())
