@@ -9,13 +9,6 @@ errors:
     missingMusicQueue: 'Fehlende Music `query`. Du musst einen Link zu einem Song angeben, den du dir anhören möchtest. Du kannst mir auch gern den Musiktitel geben.'
     requireLevelFeatureToBeEnabled: 'Dieser Befehl benötigt das `Levels & Experience` Feature. Du kannst den Server-Administrator anfragen, ob dieser damit einverstanden ist diesen mit folgendem Befehl zu aktivieren: `%s`'
     errorOccurredWhileLoading: 'Ein Fehler ist beim Laden von %s aufgetreten. Bitte versuche es später erneut. Sollte dieser Fehler erneut auftreten, so kontaktiere eines unserer Entwickler auf dem [AvaIre Support Server] [https://discord.gg/gt2FWER].'
-    noChannelsWithNameOrId: 'Ich habe keine Channel unter der Namen oder ID `%s` auffinden können.'
-    noUsersWithNameOrId: 'Ich habe keine User unter dem Namen oder ID `%s` auffinden können.'
-    mustBeConnectedToVoice: 'Du musst mit einem Voicechannel verbunden sein um diesen Befehl ausführen zu können!'
-    mustBeConnectedToSameChannel: 'Du musst im selben Voicechannel verbunden sein um folgenden Befehl ausführen zu können: %s!'
-    missingMusicQueue: 'Fehlende Music `query`. Du musst einen Link zu einem Song angeben, den du dir anhören möchtest. Du kannst mir auch gern den Musiktitel geben.'
-    requireLevelFeatureToBeEnabled: 'Dieser Befehl benötigt das `Levels & Experience` Feature. Du kannst den Server-Administrator anfragen, ob dieser damit einverstanden ist diesen mit folgendem Befehl zu aktivieren: `%s`'
-    errorOccurredWhileLoading: 'Ein Fehler ist aufgetreten, während des Ladens von %s. Bitte versuche es erneut. Sollte dieser Fehler erneut auftreten, so kontaktiere eines unserer Entwickler auf dem [AvaIre Support Server] [https://discord.gg/gt2FWER].'
 
 fun:
     DiceCommand:
@@ -117,8 +110,7 @@ music:
         queueHasEnded: 'Die Warteschlange ist leer. Voicechannel wird verlassen.'
         noMatchFound: "Ich habe nicht's mit der folgenden Eingabe gefunden: `%s`"
         trackLoadFailed: "Ich war nicht in der Lage folgenden Titel in die Warteschlange zu setzen: `%s`"
-        trackLoadFailed: "Ich war nicht in der Lage folgenden Titel in die Warteschlange zu setzen: `%s`"
-        musicChannel: "You can only use music commands in the :channel channel."
+        musicChannel: "Du kannst Musik-Befehle nur im :channel Channel nutzen."
 
     ClearQueueCommand:
         error: "Nicht's zum Leeren vorhanden. Anfragen von Musik ist vorausgesetzt. Tue dies bitte zuerst mit folgendem Befehl: `%splay`"
@@ -130,20 +122,19 @@ music:
         nowPlayingIn: 'Ich spiele nun Musik im folgendem Channel: **:channelName**'
 
     MusicChannelCommand:
-        updated: "The **:type** music channel has been successfully been :status"
+        updated: "Der **:type** Musikchannel wurde erfolgreich :status"
         field:
-            title: "Music Channels"
-            message: "**Text Channel:** :text\n**Voice Channel:** :voice"
+            title: "Musik-Channel"
+            message: "**Text-Channel:** :text\n**Voice-Channel:** :voice"
         status:
-            disabled: "disabled"
-            enabled: "set to **%s**"
+            disabled: "deaktiviert"
+            enabled: "gesetzt zu **%s**"
         errors:
-            invalidType: "Invalid type of music channel given, the type must be either `text` or `voice`"
-            notValidType: "`%s` is not a not a valid %s channel, you must include a valid voice channel you want to use as the music channel."
+            invalidType: "Ungültigen Typ vom Musikchannel angegeben. Folgende Typen sind verfügbar: `text`, `voice`"
+            notValidType: "`%s` ist kein gültiger %s Channel. Du musst einen gültigen Voicechannel angeben, den du als Musikchannel nutzen möchtest."
 
     PauseCommand:
         error: "Nicht's zum Pausieren vorhanden. Anfragen von Musik ist vorausgesetzt. Tue dies bitte zuerst mit folgendem Befehl: `%splay`"
-        alreadyPaused: 'Die Musik ist bereits pausiert. Nutze `!resume`, um mit der Musik fortzufahren.'
         alreadyPaused: 'Die Musik ist bereits pausiert. Nutze `!resume`, um mit der Musik fortzufahren.'
         paused: 'Die Musik wurde `pausiert`.'
 
@@ -427,11 +418,6 @@ utility:
         latestVersion: 'Die letzte AvaIre-Version ist: v%s'
         versions:
             majorName: 'Wichtig'
-            major: 'Wichtige Versionsupdates sind vollständige Nachbesserungen des Bot und wie es funktioniert oder eine große Zusammenstellung kleinerer Änderungen am Quellcode. Es wird dringend empfohlen, dass du bei größeren Versionsänderungen updaten, da ältere Versionen nicht für Fehlerbehebungen oder Updates unterstützt werden.'
-            minorName: 'Kleine Änderungen'
-            minor: 'Versionsupdates mit kleinen Änderungen sind neue Ergänzungen, Funktionen und Nachbesserungen der vorhandenen Codebasis. Es wird empfohlen, dass du kleinere Versionsänderungen aktualisieren, um mit den neuen Funktionen Schritt zu halten.'
-            patchName: 'Patch'
-            patch: 'Patch-Versionen sind Bugfixes, Refactoring des vorhandenen Codes und sehr kleine Änderungen, die andere Dinge in der Code-Basis nicht beeinflussen. Es wird empfohlen, dass du die Änderungen der Patch-Version aktualisieren, um mit den Bugfixes und Patches Schritt zu halten.'
             major: 'Wichtige Versionsupdates sind vollständige Nachbesserungen des Bot und wie es funktioniert oder eine große Zusammenstellung kleinerer Änderungen am Quellcode. Es wird dringend empfohlen, dass du bei größeren Versionsänderungen updaten, da ältere Versionen nicht für Fehlerbehebungen oder Updates unterstützt werden.'
             minorName: 'Kleine Änderungen'
             minor: 'Versionsupdates mit kleinen Änderungen sind neue Ergänzungen, Funktionen und Nachbesserungen der vorhandenen Codebasis. Es wird empfohlen, dass du kleinere Versionsänderungen aktualisieren, um mit den neuen Funktionen Schritt zu halten.'
