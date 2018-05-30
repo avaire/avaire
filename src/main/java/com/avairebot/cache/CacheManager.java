@@ -2,7 +2,8 @@ package com.avairebot.cache;
 
 import com.avairebot.AvaIre;
 import com.avairebot.contracts.cache.CacheAdapter;
-import com.avairebot.contracts.cache.CacheClosure;
+
+import java.util.function.Supplier;
 
 public class CacheManager extends CacheAdapter {
 
@@ -22,11 +23,11 @@ public class CacheManager extends CacheAdapter {
     }
 
     @Override
-    public Object remember(String token, int seconds, CacheClosure closure) {
+    public Object remember(String token, int seconds, Supplier<Object> closure) {
         return getAdapter(null).remember(token, seconds, closure);
     }
 
-    public Object remember(CacheType type, String token, int seconds, CacheClosure closure) {
+    public Object remember(CacheType type, String token, int seconds, Supplier<Object> closure) {
         return getAdapter(type).remember(token, seconds, closure);
     }
 

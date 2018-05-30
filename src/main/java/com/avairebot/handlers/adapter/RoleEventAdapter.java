@@ -36,6 +36,7 @@ public class RoleEventAdapter extends EventAdapter {
         try {
             transformer.getSelfAssignableRoles().put(event.getRole().getId(), event.getRole().getName().toLowerCase());
             avaire.getDatabase().newQueryBuilder(Constants.GUILD_TABLE_NAME)
+                .useAsync(true)
                 .where("id", event.getGuild().getId())
                 .update(statement -> {
                     statement.set("claimable_roles", AvaIre.GSON.toJson(transformer.getSelfAssignableRoles()), true);
@@ -64,6 +65,7 @@ public class RoleEventAdapter extends EventAdapter {
         try {
             transformer.setAutorole(null);
             avaire.getDatabase().newQueryBuilder(Constants.GUILD_TABLE_NAME)
+                .useAsync(true)
                 .where("id", event.getGuild().getId())
                 .update(statement -> statement.set("autorole", null));
         } catch (SQLException e) {
@@ -79,6 +81,7 @@ public class RoleEventAdapter extends EventAdapter {
         try {
             transformer.getSelfAssignableRoles().remove(event.getRole().getId());
             avaire.getDatabase().newQueryBuilder(Constants.GUILD_TABLE_NAME)
+                .useAsync(true)
                 .where("id", event.getGuild().getId())
                 .update(statement -> {
                     statement.set("claimable_roles", AvaIre.GSON.toJson(transformer.getSelfAssignableRoles()), true);
@@ -103,6 +106,7 @@ public class RoleEventAdapter extends EventAdapter {
         try {
             transformer.getLevelRoles().remove(key);
             avaire.getDatabase().newQueryBuilder(Constants.GUILD_TABLE_NAME)
+                .useAsync(true)
                 .where("id", event.getGuild().getId())
                 .update(statement -> {
                     statement.set("level_roles", AvaIre.GSON.toJson(transformer.getLevelRoles()), true);
@@ -115,6 +119,7 @@ public class RoleEventAdapter extends EventAdapter {
     public void updateRoleData(Guild guild) {
         try {
             avaire.getDatabase().newQueryBuilder(Constants.GUILD_TABLE_NAME)
+                .useAsync(true)
                 .where("id", guild.getId())
                 .update(statement -> {
                     statement.set("roles_data", GuildController.buildRoleData(guild.getRoles()), true);

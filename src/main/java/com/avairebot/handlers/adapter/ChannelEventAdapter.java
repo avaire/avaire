@@ -7,6 +7,7 @@ import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.transformers.GuildTransformer;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.events.channel.text.TextChannelDeleteEvent;
+import net.dv8tion.jda.core.events.channel.voice.VoiceChannelDeleteEvent;
 
 import java.sql.SQLException;
 
@@ -34,11 +35,27 @@ public class ChannelEventAdapter extends EventAdapter {
         if (transformer.getLevelChannel() != null && transformer.getLevelChannel().equals(event.getChannel().getId())) {
             setDatabaseColumnToNull(event.getGuild().getId(), "level_channel");
         }
+
+        if (transformer.getMusicChannelText() != null && transformer.getMusicChannelText().equals(event.getChannel().getId())) {
+            setDatabaseColumnToNull(event.getGuild().getId(), "music_channel_text");
+        }
+    }
+
+    public void onVoiceChannelDelete(VoiceChannelDeleteEvent event) {
+        GuildTransformer transformer = GuildController.fetchGuild(avaire, event.getGuild());
+        if (transformer == null) {
+            return;
+        }
+
+        if (transformer.getMusicChannelVoice() != null && transformer.getMusicChannelVoice().equals(event.getChannel().getId())) {
+            setDatabaseColumnToNull(event.getGuild().getId(), "music_channel_voice");
+        }
     }
 
     public void updateChannelData(Guild guild) {
         try {
             avaire.getDatabase().newQueryBuilder(Constants.GUILD_TABLE_NAME)
+                .useAsync(true)
                 .where("id", guild.getId())
                 .update(statement -> {
                     statement.set("channels_data", GuildController.buildChannelData(guild.getTextChannels()), true);
@@ -51,6 +68,7 @@ public class ChannelEventAdapter extends EventAdapter {
     private void setDatabaseColumnToNull(String guildId, String column) {
         try {
             avaire.getDatabase().newQueryBuilder(Constants.GUILD_TABLE_NAME)
+                .useAsync(true)
                 .where("id", guildId)
                 .update(statement -> statement.set(column, null));
         } catch (SQLException ignored) {

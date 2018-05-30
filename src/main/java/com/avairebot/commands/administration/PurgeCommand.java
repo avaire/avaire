@@ -1,9 +1,13 @@
 package com.avairebot.commands.administration;
 
 import com.avairebot.AvaIre;
+import com.avairebot.chat.PlaceholderMessage;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
-import com.avairebot.modules.ModlogModule;
+import com.avairebot.modlog.ModlogAction;
+import com.avairebot.modlog.ModlogModule;
+import com.avairebot.modlog.ModlogType;
+import com.avairebot.utilities.MentionableUtil;
 import com.avairebot.utilities.NumberUtil;
 import com.avairebot.utilities.RestActionUtil;
 import net.dv8tion.jda.core.entities.Message;
@@ -12,9 +16,7 @@ import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.requests.RestAction;
 import net.dv8tion.jda.core.utils.MiscUtil;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
@@ -73,23 +75,40 @@ public class PurgeCommand extends Command {
         }
 
         int finalToDelete = toDelete;
-        context.getMessage().delete().queue(ignored -> handleCommand(context, finalToDelete), RestActionUtil.IGNORE);
+        context.getMessage().delete().queue(ignored -> {
+            if (args.length < 1) {
+                handleCommand(context, new String[0], finalToDelete);
+                return;
+            }
+
+            handleCommand(
+                context, Arrays.copyOfRange(args, 1, args.length), finalToDelete
+            );
+        }, RestActionUtil.IGNORE);
 
         return true;
     }
 
-    private void handleCommand(CommandMessage context, final int toDelete) {
-        if (context.getMentionedUsers().isEmpty()) {
+    private void handleCommand(CommandMessage context, String[] args, final int toDelete) {
+        Set<Long> userIds = new HashSet<>();
+        for (int i = 0; i < args.length; i++) {
+            User user = MentionableUtil.getUser(context, args, i);
+            if (user != null) {
+                userIds.add(user.getIdLong());
+            }
+        }
+
+        if (userIds.isEmpty()) {
             context.getChannel().getHistoryBefore(context.getMessage(), 2).queue(history -> {
                 loadMessages(context.getChannel().getHistory(), toDelete, null, messages -> {
                     if (messages.isEmpty()) {
-                        sendNoMessagesMessage(context);
+                        sendNoMessagesMessage(context, null, toDelete);
                         return;
                     }
 
                     deleteMessages(context, messages).queue(aVoid -> {
-                        ModlogModule.log(avaire, context, new ModlogModule.ModlogAction(
-                                ModlogModule.ModlogType.PURGE,
+                        ModlogModule.log(avaire, context, new ModlogAction(
+                                ModlogType.PURGE,
                                 context.getAuthor(), null,
                                 messages.size() + " messages has been deleted in the " + context.getChannel().getAsMention() + " channel."
                             )
@@ -104,14 +123,9 @@ public class PurgeCommand extends Command {
             return;
         }
 
-        List<Long> userIds = new ArrayList<>();
-        for (User user : context.getMentionedUsers()) {
-            userIds.add(user.getIdLong());
-        }
-
         loadMessages(context.getChannel().getHistory(), toDelete, userIds, messages -> {
             if (messages.isEmpty()) {
-                sendNoMessagesMessage(context);
+                sendNoMessagesMessage(context, userIds, toDelete);
                 return;
             }
 
@@ -121,8 +135,8 @@ public class PurgeCommand extends Command {
                     users.add(String.format("<@%s>", userId));
                 }
 
-                ModlogModule.log(avaire, context, new ModlogModule.ModlogAction(
-                        ModlogModule.ModlogType.PURGE,
+                ModlogModule.log(avaire, context, new ModlogAction(
+                        ModlogType.PURGE,
                         context.getAuthor(), null,
                         messages.size() + " messages sent by " + String.join(", ", users) + " has been deleted in the " + context.getChannel().getAsMention() + " channel."
                     )
@@ -136,7 +150,7 @@ public class PurgeCommand extends Command {
         });
     }
 
-    private void loadMessages(MessageHistory history, int toDelete, List<Long> userIds, Consumer<List<Message>> consumer) {
+    private void loadMessages(MessageHistory history, int toDelete, Set<Long> userIds, Consumer<List<Message>> consumer) {
         long maxMessageAge = (System.currentTimeMillis() - TimeUnit.DAYS.toMillis(14) - MiscUtil.DISCORD_EPOCH) << MiscUtil.TIMESTAMP_OFFSET;
         List<Message> messages = new ArrayList<>();
 
@@ -167,10 +181,25 @@ public class PurgeCommand extends Command {
         });
     }
 
-    private void sendNoMessagesMessage(CommandMessage context) {
-        context.makeSuccess(
-            ":x: Nothing to delete, I am unable to delete messages older than 14 days."
-        ).queue(successMessage -> successMessage.delete().queueAfter(8, TimeUnit.SECONDS, null, RestActionUtil.IGNORE));
+    private void sendNoMessagesMessage(CommandMessage context, Set<Long> userIds, int toDelete) {
+        PlaceholderMessage message;
+
+        if (userIds == null) {
+            message = context.makeSuccess(
+                ":x: Nothing to delete, I am unable to delete messages older than 14 days."
+            );
+        } else {
+            List<String> users = new ArrayList<>();
+            for (Long userId : userIds) {
+                users.add(String.format("<@%s>", userId));
+            }
+
+            message = context.makeSuccess(
+                ":x: Nothing to delete, I am unable to find any messages by :users in the last **:number** messages that was sent within the last 14 days."
+            ).set("users", String.join(", ", users)).set("number", toDelete);
+        }
+
+        message.queue(successMessage -> successMessage.delete().queueAfter(8, TimeUnit.SECONDS, null, RestActionUtil.IGNORE));
     }
 
     private RestAction<Void> deleteMessages(CommandMessage context, List<Message> messages) {

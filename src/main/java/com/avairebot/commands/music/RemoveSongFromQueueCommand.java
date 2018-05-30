@@ -47,8 +47,9 @@ public class RemoveSongFromQueueCommand extends Command {
     @Override
     public List<String> getMiddleware() {
         return Arrays.asList(
-            "has-dj-level:normal",
-            "throttle:user,2,4"
+            "hasDJLevel:normal",
+            "throttle:user,2,4",
+            "musicChannel"
         );
     }
 
@@ -63,7 +64,7 @@ public class RemoveSongFromQueueCommand extends Command {
             return sendErrorMessage(context, context.i18n("mustBePositiveNumber"));
         }
 
-        GuildMusicManager musicManager = AudioHandler.getGuildAudioPlayer(context.getGuild());
+        GuildMusicManager musicManager = AudioHandler.getDefaultAudioHandler().getGuildAudioPlayer(context.getGuild());
 
         if (musicManager.getScheduler().getQueue().isEmpty()) {
             return sendErrorMessage(context,

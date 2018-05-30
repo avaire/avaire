@@ -6,6 +6,10 @@ public class InvalidPluginException extends Exception {
         super(message);
     }
 
+    public InvalidPluginException(String message, Object... args) {
+        super(String.format(message, args));
+    }
+
     public InvalidPluginException(String message, Throwable cause) {
         super(message, cause);
     }

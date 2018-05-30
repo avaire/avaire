@@ -4,7 +4,6 @@ import com.avairebot.AvaIre;
 import com.avairebot.Constants;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
-import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.utilities.ComparatorUtil;
 
@@ -60,7 +59,7 @@ public class LevelAlertsCommand extends Command {
 
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
-        GuildTransformer guildTransformer = GuildController.fetchGuild(avaire, context.getMessage());
+        GuildTransformer guildTransformer = context.getGuildTransformer();
         if (guildTransformer == null || !guildTransformer.isLevels()) {
             return sendErrorMessage(context,
                 "This command requires the `Levels & Experience` feature to be enabled for the server, you can ask a server admin if they want to enable it with `.%stogglelevel`",

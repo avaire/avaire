@@ -52,8 +52,9 @@ public class PlayCommand extends ThreadCommand {
     @Override
     public List<String> getMiddleware() {
         return Arrays.asList(
-            "has-dj-level:none",
-            "throttle:guild,2,4"
+            "hasDJLevel:none",
+            "throttle:guild,2,4",
+            "musicChannel"
         );
     }
 
@@ -77,20 +78,18 @@ public class PlayCommand extends ThreadCommand {
             args = Arrays.copyOfRange(args, 0, args.length - 1);
         }
 
-        VoiceConnectStatus voiceConnectStatus = AudioHandler.connectToVoiceChannel(context);
+        VoiceConnectStatus voiceConnectStatus = AudioHandler.getDefaultAudioHandler().connectToVoiceChannel(context);
         if (!voiceConnectStatus.isSuccess()) {
             context.makeWarning(voiceConnectStatus.getErrorMessage()).queue();
             return false;
         }
 
-        if (AudioHandler.hasAudioSession(context) && NumberUtil.isNumeric(args[0])) {
+        if (AudioHandler.getDefaultAudioHandler().hasAudioSession(context) && NumberUtil.isNumeric(args[0])) {
             return loadSongFromSession(context, args);
         }
 
-        boolean finalShouldLeaveMessage = shouldLeaveMessage;
-
-        AudioHandler.loadAndPlay(context, buildTrackRequestString(args)).handle(
-            musicSuccess(context, finalShouldLeaveMessage),
+        AudioHandler.getDefaultAudioHandler().loadAndPlay(context, buildTrackRequestString(args)).handle(
+            musicSuccess(context, shouldLeaveMessage),
             musicFailure(context),
             musicSession(context, args)
         );
@@ -100,7 +99,7 @@ public class PlayCommand extends ThreadCommand {
 
     boolean loadSongFromSession(CommandMessage context, String[] args) {
         int songIndex = NumberUtil.parseInt(args[0], 1) - 1;
-        AudioSession session = AudioHandler.getAudioSession(context);
+        AudioSession session = AudioHandler.getDefaultAudioHandler().getAudioSession(context);
 
         int index = NumberUtil.getBetween(songIndex, 0, session.getSongs().getTracks().size() - 1);
         AudioTrack track = session.getSongs().getTracks().get(index);
@@ -108,18 +107,18 @@ public class PlayCommand extends ThreadCommand {
         Metrics.tracksLoaded.inc();
 
         musicSuccess(context, false).accept(
-            new TrackResponse(AudioHandler.getGuildAudioPlayer(context.getGuild()),
+            new TrackResponse(AudioHandler.getDefaultAudioHandler().getGuildAudioPlayer(context.getGuild()),
                 track,
                 track.getInfo().uri
             )
         );
-        AudioHandler.play(context, AudioHandler.getGuildAudioPlayer(context.getGuild()), track);
+        AudioHandler.getDefaultAudioHandler().play(context, AudioHandler.getDefaultAudioHandler().getGuildAudioPlayer(context.getGuild()), track);
 
         if (session.getMessage() != null) {
             session.getMessage().delete().queue(null, RestActionUtil.IGNORE);
         }
 
-        AudioHandler.removeAudioSession(context);
+        AudioHandler.getDefaultAudioHandler().removeAudioSession(context);
         return false;
     }
 
@@ -131,7 +130,7 @@ public class PlayCommand extends ThreadCommand {
             .set("title", playlist.getName())
             .set("url", response.getTrackUrl())
             .set("queueSize", NumberUtil.formatNicely(
-                AudioHandler.getQueueSize(response.getMusicManager())
+                AudioHandler.getDefaultAudioHandler().getQueueSize(response.getMusicManager())
             ))
             .queue();
     }
@@ -143,7 +142,7 @@ public class PlayCommand extends ThreadCommand {
             .set("title", track.getInfo().title)
             .set("url", track.getInfo().uri)
             .set("queueSize", NumberUtil.formatNicely(
-                AudioHandler.getQueueSize(response.getMusicManager())
+                AudioHandler.getDefaultAudioHandler().getQueueSize(response.getMusicManager())
             ))
             .queue();
     }
@@ -169,6 +168,8 @@ public class PlayCommand extends ThreadCommand {
             if (!finalShouldLeaveMessage && canDeleteMessage(context)) {
                 context.delete().reason("Song request, removing song to cleanup chat").queue(null, null);
             }
+
+            response.getMusicManager().registerDefaultVolume();
 
             if (response.getMusicManager().getPlayer().isPaused()) {
                 response.getMusicManager().getPlayer().setPaused(false);

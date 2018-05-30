@@ -6,7 +6,6 @@ import com.avairebot.commands.CategoryHandler;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.commands.CommandPriority;
 import com.avairebot.contracts.commands.Command;
-import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.transformers.ChannelTransformer;
 import com.avairebot.database.transformers.GuildTransformer;
 import net.dv8tion.jda.core.entities.TextChannel;
@@ -64,12 +63,16 @@ public class CategoriesCommand extends Command {
             DISABLE_GLOBALLY + " Disabled Globally"
         );
 
-        GuildTransformer guildTransformer = GuildController.fetchGuild(avaire, context.getGuild());
+        GuildTransformer guildTransformer = context.getGuildTransformer();
+        if (guildTransformer == null) {
+            return sendErrorMessage(context, "errors.errorOccurredWhileLoading", "server settings");
+        }
+
         ChannelTransformer transformer = guildTransformer.getChannel(channel.getId());
 
         List<String> items = new ArrayList<>();
         for (Category category : CategoryHandler.getValues()) {
-            if (category.isGlobal()) continue;
+            if (category.isGlobalOrSystem()) continue;
 
             if (!transformer.isCategoryEnabledGlobally(category)) {
                 items.add(DISABLE_GLOBALLY + category.getName());

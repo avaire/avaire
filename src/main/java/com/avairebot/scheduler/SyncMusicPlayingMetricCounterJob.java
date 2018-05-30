@@ -15,6 +15,6 @@ public class SyncMusicPlayingMetricCounterJob extends Job {
 
     @Override
     public void run() {
-        Metrics.musicPlaying.set(AudioHandler.getTotalListenersSize());
+        Metrics.musicPlaying.set(AudioHandler.getDefaultAudioHandler().getTotalListenersSize());
     }
 }

@@ -47,7 +47,7 @@ public class RoleUtil {
                 return 0;
             }
             return first.getPosition() > second.getPosition() ? -1 : 1;
-        }).findFirst().get();
+        }).findFirst().orElseGet(null);
     }
 
     /**

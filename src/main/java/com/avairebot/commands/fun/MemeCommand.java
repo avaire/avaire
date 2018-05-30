@@ -86,6 +86,7 @@ public class MemeCommand extends ThreadCommand {
         return sendErrorMessage(context, context.i18n("invalidType"), args[0]);
     }
 
+    @SuppressWarnings("SuspiciousMethodCalls")
     private boolean sendMemeList(CommandMessage context, String[] args) {
         if (memes.isEmpty() || memeKeys.isEmpty()) {
             loadMemesIntoMemory();

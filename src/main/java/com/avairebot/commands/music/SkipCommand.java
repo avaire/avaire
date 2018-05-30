@@ -5,12 +5,14 @@ import com.avairebot.audio.AudioHandler;
 import com.avairebot.audio.GuildMusicManager;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
+import com.avairebot.contracts.middleware.DJCheckMessage;
 import com.avairebot.contracts.middleware.ThrottleMessage;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+@DJCheckMessage(message = "\nYou can use the `:prefixvoteskip` command to vote to skip the song.", overwrite = false)
 @ThrottleMessage(message = "Too many `:command` attempts. Please try again in **:time** seconds, or use the `:prefixclearqueue` command to remove all songs from the queue.")
 public class SkipCommand extends Command {
 
@@ -41,14 +43,15 @@ public class SkipCommand extends Command {
     @Override
     public List<String> getMiddleware() {
         return Arrays.asList(
-            "has-dj-level:normal",
-            "throttle:guild,2,4"
+            "hasDJLevel:normal",
+            "throttle:guild,2,4",
+            "musicChannel"
         );
     }
 
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
-        GuildMusicManager musicManager = AudioHandler.getGuildAudioPlayer(context.getGuild());
+        GuildMusicManager musicManager = AudioHandler.getDefaultAudioHandler().getGuildAudioPlayer(context.getGuild());
 
         if (musicManager.getPlayer().getPlayingTrack() == null) {
             return sendErrorMessage(context,
@@ -58,7 +61,7 @@ public class SkipCommand extends Command {
         }
 
         if (!musicManager.getScheduler().getQueue().isEmpty()) {
-            AudioHandler.skipTrack(context);
+            AudioHandler.getDefaultAudioHandler().skipTrack(context);
             return true;
         }
 

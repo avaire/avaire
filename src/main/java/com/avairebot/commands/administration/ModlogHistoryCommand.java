@@ -6,7 +6,7 @@ import com.avairebot.chat.SimplePaginator;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.database.collection.Collection;
-import com.avairebot.modules.ModlogModule;
+import com.avairebot.modlog.ModlogType;
 import com.avairebot.utilities.MentionableUtil;
 import com.avairebot.utilities.NumberUtil;
 import net.dv8tion.jda.core.entities.User;
@@ -83,7 +83,7 @@ public class ModlogHistoryCommand extends Command {
 
             List<String> records = new ArrayList<>();
             items.forEach(row -> {
-                ModlogModule.ModlogType type = ModlogModule.ModlogType.fromId(row.getInt("type", 0));
+                ModlogType type = ModlogType.fromId(row.getInt("type", 0));
                 String reason = row.getString("reason", "No reason was given.");
 
                 records.add(String.format("**Case ID #%s** | %s\n\t%s",

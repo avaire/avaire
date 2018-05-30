@@ -43,8 +43,9 @@ public class SoundcloudCommand extends ThreadCommand {
     @Override
     public List<String> getMiddleware() {
         return Arrays.asList(
-            "has-dj-level:none",
-            "throttle:guild,2,5"
+            "hasDJLevel:none",
+            "throttle:guild,2,5",
+            "musicChannel"
         );
     }
 
@@ -68,7 +69,7 @@ public class SoundcloudCommand extends ThreadCommand {
 
         context.setI18nCommandPrefix(container);
 
-        if (AudioHandler.hasAudioSession(context) && NumberUtil.isNumeric(args[0])) {
+        if (AudioHandler.getDefaultAudioHandler().hasAudioSession(context) && NumberUtil.isNumeric(args[0])) {
             return playCommand.loadSongFromSession(context, args);
         }
 

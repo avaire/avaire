@@ -4,6 +4,7 @@ import com.avairebot.ai.IntelligenceManager;
 import com.avairebot.audio.AudioHandler;
 import com.avairebot.audio.GuildMusicManager;
 import com.avairebot.audio.LavalinkManager;
+import com.avairebot.blacklist.Blacklist;
 import com.avairebot.cache.CacheManager;
 import com.avairebot.commands.CategoryHandler;
 import com.avairebot.commands.CommandHandler;
@@ -19,10 +20,12 @@ import com.avairebot.database.transformers.PlaylistTransformer;
 import com.avairebot.exceptions.InvalidApplicationEnvironmentException;
 import com.avairebot.exceptions.InvalidPluginException;
 import com.avairebot.exceptions.InvalidPluginsPathException;
+import com.avairebot.handlers.EventEmitter;
 import com.avairebot.handlers.GenericEventHandler;
 import com.avairebot.handlers.MainEventHandler;
 import com.avairebot.language.I18n;
 import com.avairebot.metrics.Metrics;
+import com.avairebot.middleware.*;
 import com.avairebot.plugin.PluginLoader;
 import com.avairebot.plugin.PluginManager;
 import com.avairebot.scheduler.ScheduleHandler;
@@ -75,11 +78,13 @@ public class AvaIre {
     private final Settings settings;
     private final Configuration config;
     private final CacheManager cache;
+    private final Blacklist blacklist;
     private final DatabaseManager database;
     private final IntelligenceManager intelligenceManager;
     private final PluginManager pluginManager;
     private final VoteManager voteManager;
     private final ShardEntityCounter shardEntityCounter;
+    private final EventEmitter eventEmitter;
 
     private Carbon shutdownTime = null;
     private int shutdownCode = ExitCodes.EXIT_CODE_RESTART;
@@ -98,6 +103,7 @@ public class AvaIre {
         LOGGER.info("Bootstrapping AvaIre v" + AppInfo.getAppInfo().VERSION);
         Reflections.log = null;
 
+        this.eventEmitter = new EventEmitter(this);
         this.cache = new CacheManager(this);
 
         LOGGER.info("Loading configuration");
@@ -143,8 +149,22 @@ public class AvaIre {
             new AddDefaultVolumeToGuildsTableMigration(),
             new AddRolesDataToGuildsTableMigration(),
             new CreateLogTypeTableMigration(),
-            new CreateLogTableMigration()
+            new CreateLogTableMigration(),
+            new ReformatBlacklistTableMigration(),
+            new AddVotePointsToUsersAndGuildsTableMigration(),
+            new AddMusicChannelToGuildsTableMigration(),
+            new AddExpiresInFieldToBlacklistTableMigration()
         );
+
+        LOGGER.info("Registering default middlewares");
+        MiddlewareHandler.initialize(this);
+        MiddlewareHandler.register("hasRole", new HasRoleMiddleware(this));
+        MiddlewareHandler.register("hasVoted", new HasVotedTodayMiddleware(this));
+        MiddlewareHandler.register("isBotAdmin", new IsBotAdminMiddleware(this));
+        MiddlewareHandler.register("require", new RequirePermissionMiddleware(this));
+        MiddlewareHandler.register("hasDJLevel", new RequireDJLevelMiddleware(this));
+        MiddlewareHandler.register("throttle", new ThrottleMiddleware(this));
+        MiddlewareHandler.register("musicChannel", new IsMusicChannelMiddleware(this));
 
         LOGGER.info("Registering default command categories");
         String defaultPrefix = getConfig().getString("default-prefix", DiscordConstants.DEFAULT_COMMAND_PREFIX);
@@ -171,6 +191,9 @@ public class AvaIre {
             autoloadPackage(Constants.PACKAGE_INTENTS_PATH, intent -> intelligenceManager.registerIntent((Intent) intent));
             LOGGER.info(String.format("\tRegistered %s intelligence intents successfully!", intelligenceManager.entrySet().size()));
         }
+
+        LOGGER.info("Preparing I18n");
+        I18n.start(this);
 
         LOGGER.info("Creating plugin manager and registering plugins...");
         pluginManager = new PluginManager(this);
@@ -205,6 +228,10 @@ public class AvaIre {
         LOGGER.info("Running database migrations");
         database.getMigrations().up();
 
+        LOGGER.info("Preparing blacklist and syncing the list with the database");
+        blacklist = new Blacklist(this);
+        blacklist.syncBlacklistWithDatabase();
+
         LOGGER.info("Preparing and setting up metrics");
         Metrics.setup(this);
 
@@ -230,11 +257,8 @@ public class AvaIre {
         voteManager = new VoteManager(this);
 
         LOGGER.info("Preparing Lavalink");
-        AudioHandler.setGlobalAvaIreInstance(this);
+        AudioHandler.setAvaire(this);
         LavalinkManager.LavalinkManagerHolder.LAVALINK.start(this);
-
-        LOGGER.info("Preparing I18n");
-        I18n.start(this);
 
         LOGGER.info("Creating bot instance and connecting to Discord network");
 
@@ -309,6 +333,10 @@ public class AvaIre {
         return cache;
     }
 
+    public Blacklist getBlacklist() {
+        return blacklist;
+    }
+
     public DatabaseManager getDatabase() {
         return database;
     }
@@ -325,6 +353,10 @@ public class AvaIre {
         return intelligenceManager;
     }
 
+    public EventEmitter getEventEmitter() {
+        return eventEmitter;
+    }
+
     public void shutdown() {
         shutdown(ExitCodes.EXIT_CODE_RESTART);
     }
@@ -332,7 +364,7 @@ public class AvaIre {
     public void shutdown(int exitCode) {
         getLogger().info("Shutting down bot instance gracefully with exit code " + exitCode);
 
-        for (GuildMusicManager manager : AudioHandler.MUSIC_MANAGER.values()) {
+        for (GuildMusicManager manager : AudioHandler.getDefaultAudioHandler().musicManagers.values()) {
             if (manager.getLastActiveMessage() != null) {
                 manager.getLastActiveMessage().makeInfo(
                     "Bot is restarting, sorry for the inconvenience, we'll be right back!"

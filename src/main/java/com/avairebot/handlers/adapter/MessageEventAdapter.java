@@ -2,7 +2,8 @@ package com.avairebot.handlers.adapter;
 
 import com.avairebot.AppInfo;
 import com.avairebot.AvaIre;
-import com.avairebot.Statistics;
+import com.avairebot.cache.CacheItem;
+import com.avairebot.cache.CacheType;
 import com.avairebot.commands.CommandContainer;
 import com.avairebot.commands.CommandHandler;
 import com.avairebot.contracts.commands.ThreadCommand;
@@ -11,26 +12,32 @@ import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.controllers.PlayerController;
 import com.avairebot.database.transformers.ChannelTransformer;
 import com.avairebot.database.transformers.GuildTransformer;
-import com.avairebot.database.transformers.PlayerTransformer;
 import com.avairebot.factories.MessageFactory;
+import com.avairebot.handlers.DatabaseEventHolder;
 import com.avairebot.metrics.Metrics;
 import com.avairebot.middleware.MiddlewareStack;
-import com.avairebot.modules.SlowmodeModule;
 import com.avairebot.utilities.ArrayUtil;
 import com.avairebot.utilities.LevelUtil;
+import com.avairebot.utilities.NumberUtil;
 import com.avairebot.utilities.RestActionUtil;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
 public class MessageEventAdapter extends EventAdapter {
 
+    public static final Set<Long> hasReceivedInfoMessageInTheLastMinute = new HashSet<>();
+    private static final Logger LOGGER = LoggerFactory.getLogger(MessageEventAdapter.class);
     private static final Pattern userRegEX = Pattern.compile("<@(!|)+[0-9]{16,}+>", Pattern.CASE_INSENSITIVE);
 
     private static final String mentionMessage = String.join("\n", Arrays.asList(
@@ -56,8 +63,6 @@ public class MessageEventAdapter extends EventAdapter {
     }
 
     public void onMessageReceived(MessageReceivedEvent event) {
-        Statistics.addMessage();
-
         if (event.getAuthor().isBot()) {
             return;
         }
@@ -66,42 +71,43 @@ public class MessageEventAdapter extends EventAdapter {
             return;
         }
 
-        loadDatabasePropertiesIntoMemory(event).thenAccept(properties -> {
+        if (avaire.getBlacklist().isBlacklisted(event.getMessage())) {
+            return;
+        }
+
+        loadDatabasePropertiesIntoMemory(event).thenAccept(databaseEventHolder -> {
             if (!avaire.areWeReadyYet()) {
                 return;
             }
 
-            if (isUserBeingThrottledBySlowmodeInChannel(event, properties)) {
+            if (isUserBeingThrottledBySlowmodeInChannel(event, databaseEventHolder)) {
                 event.getMessage().delete().queue(null, RestActionUtil.IGNORE);
                 Metrics.slowmodeRatelimited.labels(event.getChannel().getId()).inc();
                 return;
             }
 
-            if (properties.getGuild() != null && properties.getPlayer() != null) {
-                LevelUtil.rewardPlayer(avaire, event, properties.getGuild(), properties.getPlayer());
+            if (databaseEventHolder.getGuild() != null && databaseEventHolder.getPlayer() != null) {
+                LevelUtil.rewardPlayer(avaire, event, databaseEventHolder.getGuild(), databaseEventHolder.getPlayer());
             }
 
             CommandContainer container = CommandHandler.getCommand(avaire, event.getMessage(), event.getMessage().getContentRaw());
             if (container != null && canExecuteCommand(event, container)) {
-                Statistics.addCommands();
-
-                invokeMiddlewareStack(new MiddlewareStack(avaire, event.getMessage(), container));
+                invokeMiddlewareStack(new MiddlewareStack(event.getMessage(), container, databaseEventHolder));
                 return;
             }
 
             if (isMentionableAction(event)) {
                 container = CommandHandler.getLazyCommand(ArrayUtil.toArguments(event.getMessage().getContentRaw())[1]);
                 if (container != null && canExecuteCommand(event, container)) {
-                    Statistics.addCommands();
-
-                    invokeMiddlewareStack(new MiddlewareStack(avaire, event.getMessage(), container, true));
+                    invokeMiddlewareStack(new MiddlewareStack(event.getMessage(), container, databaseEventHolder, true));
                     return;
                 }
 
                 if (avaire.getIntelligenceManager().isEnabled()) {
-                    if (isAIEnabledForChannel(event, properties.getGuild())) {
+                    if (isAIEnabledForChannel(event, databaseEventHolder.getGuild())) {
                         avaire.getIntelligenceManager().request(
-                            event.getMessage(), event.getMessage().getContentStripped()
+                            event.getMessage(), databaseEventHolder,
+                            event.getMessage().getContentStripped()
                         );
                     }
                     return;
@@ -161,7 +167,7 @@ public class MessageEventAdapter extends EventAdapter {
         return channel == null || channel.getAI().isEnabled();
     }
 
-    private boolean isUserBeingThrottledBySlowmodeInChannel(MessageReceivedEvent event, DatabaseProperties properties) {
+    private boolean isUserBeingThrottledBySlowmodeInChannel(MessageReceivedEvent event, DatabaseEventHolder databaseEventHolder) {
         if (!event.getMessage().getChannelType().isGuild()) {
             return false;
         }
@@ -170,7 +176,7 @@ public class MessageEventAdapter extends EventAdapter {
             return false;
         }
 
-        ChannelTransformer channel = properties.getGuild().getChannel(event.getChannel().getId());
+        ChannelTransformer channel = databaseEventHolder.getGuild().getChannel(event.getChannel().getId());
         if (channel == null || !channel.getSlowmode().isEnabled()) {
             return false;
         }
@@ -181,7 +187,7 @@ public class MessageEventAdapter extends EventAdapter {
             event.getAuthor().getId()
         );
 
-        return SlowmodeModule.isThrottled(avaire, fingerprint, channel.getSlowmode().getLimit(), channel.getSlowmode().getDecay());
+        return isThrottled(avaire, fingerprint, channel.getSlowmode().getLimit(), channel.getSlowmode().getDecay());
     }
 
     private void sendTagInformationMessage(MessageReceivedEvent event) {
@@ -201,15 +207,25 @@ public class MessageEventAdapter extends EventAdapter {
     }
 
     private void sendInformationMessage(MessageReceivedEvent event) {
+        LOGGER.info("Private message received from user(ID: {}) that does not match any commands!",
+            event.getAuthor().getId()
+        );
+
+        if (hasReceivedInfoMessageInTheLastMinute.contains(event.getAuthor().getIdLong())) {
+            return;
+        }
+
+        hasReceivedInfoMessageInTheLastMinute.add(event.getAuthor().getIdLong());
+
         try {
             ArrayList<String> strings = new ArrayList<>();
             strings.addAll(Arrays.asList(
                 "To invite me to your server, use this link:",
                 "*:oauth*",
                 "",
-                "You can use `.help` to see a list of all the categories of commands.",
-                "You can use `.help category` to see a list of commands for that category.",
-                "For specific command help, use `.help command` (for example `.help !ping`, `.help ping` also works)"
+                "You can use `!help` to see a list of all the categories of commands.",
+                "You can use `!help category` to see a list of commands for that category.",
+                "For specific command help, use `!help command` (for example `!help !ping`, `!help ping` also works)"
             ));
 
             if (avaire.getIntelligenceManager().isEnabled()) {
@@ -228,36 +244,34 @@ public class MessageEventAdapter extends EventAdapter {
         }
     }
 
-    private CompletableFuture<DatabaseProperties> loadDatabasePropertiesIntoMemory(final MessageReceivedEvent event) {
+    private CompletableFuture<DatabaseEventHolder> loadDatabasePropertiesIntoMemory(final MessageReceivedEvent event) {
         return CompletableFuture.supplyAsync(() -> {
             if (!event.getChannelType().isGuild()) {
-                return new DatabaseProperties(null, null);
+                return new DatabaseEventHolder(null, null);
             }
 
             GuildTransformer guild = GuildController.fetchGuild(avaire, event.getMessage());
             if (guild == null || !guild.isLevels()) {
-                return new DatabaseProperties(guild, null);
+                return new DatabaseEventHolder(guild, null);
             }
-            return new DatabaseProperties(guild, PlayerController.fetchPlayer(avaire, event.getMessage()));
+            return new DatabaseEventHolder(guild, PlayerController.fetchPlayer(avaire, event.getMessage()));
         });
     }
 
-    private class DatabaseProperties {
+    private boolean isThrottled(AvaIre avaire, String fingerprint, int limit, int decay) {
+        CacheItem cacheItem = avaire.getCache().getAdapter(CacheType.MEMORY).getRaw(fingerprint);
 
-        private final GuildTransformer guild;
-        private final PlayerTransformer player;
-
-        DatabaseProperties(GuildTransformer guild, PlayerTransformer player) {
-            this.guild = guild;
-            this.player = player;
+        if (cacheItem == null) {
+            avaire.getCache().getAdapter(CacheType.MEMORY).put(fingerprint, 1, decay);
+            return false;
         }
 
-        public GuildTransformer getGuild() {
-            return guild;
+        int value = NumberUtil.parseInt(cacheItem.getValue().toString(), 0);
+        if (value++ >= limit) {
+            return true;
         }
 
-        public PlayerTransformer getPlayer() {
-            return player;
-        }
+        avaire.getCache().getAdapter(CacheType.MEMORY).put(fingerprint, value, decay);
+        return false;
     }
 }

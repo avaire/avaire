@@ -43,14 +43,15 @@ public class MoveHereCommand extends Command {
     @Override
     public List<String> getMiddleware() {
         return Arrays.asList(
-            "has-dj-level:normal",
-            "throttle:guild,1,4"
+            "hasDJLevel:normal",
+            "throttle:guild,1,4",
+            "musicChannel"
         );
     }
 
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
-        GuildMusicManager musicManager = AudioHandler.getGuildAudioPlayer(context.getGuild());
+        GuildMusicManager musicManager = AudioHandler.getDefaultAudioHandler().getGuildAudioPlayer(context.getGuild());
 
         if (musicManager.getPlayer().getPlayingTrack() == null) {
             return sendErrorMessage(context,
@@ -64,7 +65,7 @@ public class MoveHereCommand extends Command {
             return sendErrorMessage(context, "errors.mustBeConnectedToVoice");
         }
 
-        VoiceConnectStatus voiceConnectStatus = AudioHandler.connectToVoiceChannel(context, true);
+        VoiceConnectStatus voiceConnectStatus = AudioHandler.getDefaultAudioHandler().connectToVoiceChannel(context, true);
 
         if (!voiceConnectStatus.isSuccess()) {
             context.makeWarning(voiceConnectStatus.getErrorMessage()).queue();

@@ -4,10 +4,11 @@ import com.avairebot.AvaIre;
 import com.avairebot.chat.MessageType;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
-import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.factories.MessageFactory;
-import com.avairebot.modules.ModlogModule;
+import com.avairebot.modlog.ModlogAction;
+import com.avairebot.modlog.ModlogModule;
+import com.avairebot.modlog.ModlogType;
 import com.avairebot.utilities.MentionableUtil;
 import com.avairebot.utilities.RestActionUtil;
 import net.dv8tion.jda.core.entities.User;
@@ -62,7 +63,7 @@ public class WarnCommand extends Command {
 
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
-        GuildTransformer transformer = GuildController.fetchGuild(avaire, context.getGuild());
+        GuildTransformer transformer = context.getGuildTransformer();
         if (transformer == null) {
             return sendErrorMessage(context, "errors.errorOccurredWhileLoading", "server settings");
         }
@@ -93,8 +94,8 @@ public class WarnCommand extends Command {
             reason = String.join(" ", Arrays.copyOfRange(args, 1, args.length));
         }
 
-        String caseId = ModlogModule.log(avaire, context.getGuild(), transformer, new ModlogModule.ModlogAction(
-                ModlogModule.ModlogType.WARN,
+        String caseId = ModlogModule.log(avaire, context.getGuild(), transformer, new ModlogAction(
+                ModlogType.WARN,
                 context.getAuthor(), user,
                 reason
             )

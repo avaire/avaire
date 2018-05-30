@@ -4,7 +4,9 @@ import com.avairebot.AvaIre;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.CacheFingerprint;
 import com.avairebot.contracts.commands.Command;
-import com.avairebot.modules.ModlogModule;
+import com.avairebot.modlog.ModlogAction;
+import com.avairebot.modlog.ModlogModule;
+import com.avairebot.modlog.ModlogType;
 import com.avairebot.utilities.RoleUtil;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Role;
@@ -80,8 +82,8 @@ public class KickCommand extends Command {
             context.getAuthor().getDiscriminator(),
             context.getAuthor().getId()
         )).queue(aVoid -> {
-                ModlogModule.log(avaire, context, new ModlogModule.ModlogAction(
-                        ModlogModule.ModlogType.KICK,
+                ModlogModule.log(avaire, context, new ModlogAction(
+                        ModlogType.KICK,
                         context.getAuthor(),
                         user.getUser(),
                         reason

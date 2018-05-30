@@ -6,7 +6,6 @@ import com.avairebot.commands.CommandHandler;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.commands.fun.RandomDogCommand;
 import com.avairebot.contracts.ai.Intent;
-import net.dv8tion.jda.core.entities.Message;
 
 public class RequestDog extends Intent {
 
@@ -21,8 +20,8 @@ public class RequestDog extends Intent {
 
     @Override
     @SuppressWarnings({"SingleStatementInBlock", "ConstantConditions"})
-    public void onIntent(Message message, AIResponse response) {
+    public void onIntent(CommandMessage context, AIResponse response) {
         CommandHandler.getCommand(RandomDogCommand.class)
-            .getCommand().onCommand(new CommandMessage(message), new String[0]);
+            .getCommand().onCommand(new CommandMessage(context), new String[0]);
     }
 }

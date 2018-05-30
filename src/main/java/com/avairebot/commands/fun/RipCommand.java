@@ -2,9 +2,9 @@ package com.avairebot.commands.fun;
 
 import com.avairebot.AvaIre;
 import com.avairebot.Constants;
-import com.avairebot.Statistics;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
+import com.avairebot.utilities.NumberUtil;
 
 import java.awt.*;
 import java.sql.SQLException;
@@ -12,6 +12,8 @@ import java.util.Collections;
 import java.util.List;
 
 public class RipCommand extends Command {
+
+    public static int RESPECT = 0;
 
     public RipCommand(AvaIre avaire) {
         super(avaire, false);
@@ -44,10 +46,11 @@ public class RipCommand extends Command {
 
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
-        Statistics.addRespects();
+        RESPECT++;
 
         try {
             avaire.getDatabase().newQueryBuilder(Constants.STATISTICS_TABLE_NAME)
+                .useAsync(true)
                 .update(statement -> statement.setRaw("respects", "`respects` + 1"));
         } catch (SQLException ex) {
             return false;
@@ -56,19 +59,22 @@ public class RipCommand extends Command {
         context.makeEmbeddedMessage()
             .setColor(Color.decode("#2A2C31"))
             .setDescription(String.format(context.i18n("hasPaidTheirRespects"), context.getMember().getEffectiveName()))
-            .setFooter(String.format(context.i18n("todayAndOverall"), Statistics.getRespects(), getTotalRespects()))
+            .setFooter(String.format(context.i18n("todayAndOverall"), NumberUtil.formatNicely(RESPECT), getTotalRespects()))
             .queue();
 
         return true;
     }
 
-    private int getTotalRespects() {
-        try {
-            return avaire.getDatabase().newQueryBuilder(Constants.STATISTICS_TABLE_NAME).get().first()
-                .getInt("respects", Statistics.getRespects()) + 1;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return 1;
-        }
+    private String getTotalRespects() {
+        return avaire.getCache().remember("rip.total", 10, () -> {
+            try {
+                return NumberUtil.formatNicely(
+                    avaire.getDatabase().newQueryBuilder(Constants.STATISTICS_TABLE_NAME).get().first()
+                        .getInt("respects", RESPECT) + 1
+                );
+            } catch (SQLException e) {
+                return "1";
+            }
+        }).toString();
     }
 }

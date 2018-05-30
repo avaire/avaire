@@ -49,4 +49,8 @@ public class Category {
         isGlobal = value;
         return this;
     }
+
+    public boolean isGlobalOrSystem() {
+        return isGlobal || name.equalsIgnoreCase("system");
+    }
 }

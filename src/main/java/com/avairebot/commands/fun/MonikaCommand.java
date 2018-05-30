@@ -8,6 +8,7 @@ import com.avairebot.factories.RequestFactory;
 import com.avairebot.requests.Response;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.MessageBuilder;
+import okhttp3.ResponseBody;
 
 import java.util.Arrays;
 import java.util.List;
@@ -42,17 +43,24 @@ public class MonikaCommand extends Command {
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
         RequestFactory.makeGET("https://i.imgur.com/ZupgGkI.jpg")
-            .send((Consumer<Response>) response -> context.getChannel().sendFile(
-                response.getResponse().body().byteStream(),
-                "just-monika.jpg",
-                new MessageBuilder().setEmbed(
-                    new EmbedBuilder()
-                        .setImage("attachment://just-monika.jpg")
-                        .setDescription("Just Monika")
-                        .setFooter("Just Monika", null)
-                        .build()
-                ).build()
-            ).queue());
+            .send((Consumer<Response>) response -> {
+                ResponseBody body = response.getResponse().body();
+
+                if (body == null) {
+                    return;
+                }
+
+                context.getChannel().sendFile(body.byteStream(),
+                    "just-monika.jpg",
+                    new MessageBuilder().setEmbed(
+                        new EmbedBuilder()
+                            .setImage("attachment://just-monika.jpg")
+                            .setDescription("Just Monika")
+                            .setFooter("Just Monika", null)
+                            .build()
+                    ).build()
+                ).queue();
+            });
 
         return true;
     }

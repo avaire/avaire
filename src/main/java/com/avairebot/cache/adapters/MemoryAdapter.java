@@ -3,31 +3,30 @@ package com.avairebot.cache.adapters;
 import com.avairebot.AvaIre;
 import com.avairebot.cache.CacheItem;
 import com.avairebot.contracts.cache.CacheAdapter;
-import com.avairebot.contracts.cache.CacheClosure;
 
-import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 import java.util.WeakHashMap;
+import java.util.function.Supplier;
 
 public class MemoryAdapter extends CacheAdapter {
 
-    private static final Map<String, CacheItem> CACHES = Collections.synchronizedMap(new WeakHashMap<String, CacheItem>());
+    private final Map<String, CacheItem> CACHES = new WeakHashMap<String, CacheItem>();
 
     @Override
-    public synchronized boolean put(String token, Object value, int seconds) {
+    public boolean put(String token, Object value, int seconds) {
         CACHES.put(token, new CacheItem(token, value, System.currentTimeMillis() + (seconds * 1000)));
         return true;
     }
 
     @Override
-    public synchronized Object remember(String token, int seconds, CacheClosure closure) {
+    public Object remember(String token, int seconds, Supplier<Object> closure) {
         if (has(token)) {
             return get(token);
         }
 
         try {
-            CacheItem item = new CacheItem(token, closure.run(), System.currentTimeMillis() + (seconds * 1000));
+            CacheItem item = new CacheItem(token, closure.get(), System.currentTimeMillis() + (seconds * 1000));
             CACHES.put(token, item);
 
             return item.getValue();
@@ -38,14 +37,14 @@ public class MemoryAdapter extends CacheAdapter {
     }
 
     @Override
-    public synchronized boolean forever(String token, Object value) {
+    public boolean forever(String token, Object value) {
         CACHES.put(token, new CacheItem(token, value, -1));
 
         return true;
     }
 
     @Override
-    public synchronized Object get(String token) {
+    public Object get(String token) {
         if (!has(token)) {
             return null;
         }
@@ -58,7 +57,7 @@ public class MemoryAdapter extends CacheAdapter {
     }
 
     @Override
-    public synchronized CacheItem getRaw(String token) {
+    public CacheItem getRaw(String token) {
         if (!has(token)) {
             return null;
         }
@@ -66,22 +65,22 @@ public class MemoryAdapter extends CacheAdapter {
     }
 
     @Override
-    public synchronized boolean has(String token) {
+    public boolean has(String token) {
         return CACHES.containsKey(token) && CACHES.get(token).isExpired();
     }
 
     @Override
-    public synchronized CacheItem forget(String token) {
+    public CacheItem forget(String token) {
         return CACHES.remove(token);
     }
 
     @Override
-    public synchronized boolean flush() {
+    public boolean flush() {
         CACHES.clear();
         return true;
     }
 
-    public synchronized Set<String> getCacheKeys() {
+    public Set<String> getCacheKeys() {
         return CACHES.keySet();
     }
 }

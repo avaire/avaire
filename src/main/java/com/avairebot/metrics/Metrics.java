@@ -143,6 +143,14 @@ public class Metrics {
         .labelNames("class")
         .register();
 
+    // Database requests
+
+    public static final Counter databaseQueries = Counter.build()
+        .name("avaire_database_queries")
+        .help("Total prepared statements created for the given type")
+        .labelNames("type")
+        .register();
+
     // ################################################################################
     // ##                           Method Stuff
     // ################################################################################

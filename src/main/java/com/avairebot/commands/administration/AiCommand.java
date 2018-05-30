@@ -4,7 +4,6 @@ import com.avairebot.AvaIre;
 import com.avairebot.Constants;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
-import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.transformers.ChannelTransformer;
 import com.avairebot.database.transformers.GuildTransformer;
 
@@ -44,7 +43,11 @@ public class AiCommand extends Command {
 
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
-        GuildTransformer guildTransformer = GuildController.fetchGuild(avaire, context.getGuild());
+        GuildTransformer guildTransformer = context.getGuildTransformer();
+        if (guildTransformer == null) {
+            return sendErrorMessage(context, "errors.errorOccurredWhileLoading", "server settings");
+        }
+
         ChannelTransformer channelTransformer = guildTransformer.getChannel(context.getChannel().getId());
 
         if (channelTransformer == null) {

@@ -299,26 +299,6 @@ botAccess:
   - '88739639380172800'
 
 #--------------------------------------------------------------------------
-# Webhook Server Log
-#--------------------------------------------------------------------------
-#
-# The webhook option is only used for logging information about servers
-# when the bot joins or leaves a server, this can give a nice overview
-# of what servers the bot is joining or when it leaves a server,
-# which server it was.
-#
-
-webhook:
-
-  # The ID of the webhook for the channel that should receive the messages.
-  #
-  id: ''
-
-  # The long token at the end of the webhook, used to verify the request.
-  #
-  token: ''
-
-#--------------------------------------------------------------------------
 # Sentry.io Error Logging
 #--------------------------------------------------------------------------
 #

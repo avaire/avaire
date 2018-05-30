@@ -1,5 +1,7 @@
 package com.avairebot.middleware;
 
+import com.avairebot.contracts.middleware.Middleware;
+
 class MiddlewareContainer {
 
     private final Middleware middleware;

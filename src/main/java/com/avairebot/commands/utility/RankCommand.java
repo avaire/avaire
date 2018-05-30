@@ -10,12 +10,11 @@ import com.avairebot.commands.administration.LevelCommand;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.database.collection.Collection;
 import com.avairebot.database.collection.DataRow;
-import com.avairebot.database.controllers.GuildController;
-import com.avairebot.database.controllers.PlayerController;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.database.transformers.PlayerTransformer;
 import com.avairebot.factories.MessageFactory;
 import com.avairebot.utilities.LevelUtil;
+import com.avairebot.utilities.MentionableUtil;
 import com.avairebot.utilities.NumberUtil;
 import net.dv8tion.jda.core.entities.User;
 
@@ -75,9 +74,9 @@ public class RankCommand extends Command {
     }
 
     @Override
-    @SuppressWarnings("SingleStatementInBlock")
+    @SuppressWarnings({"SingleStatementInBlock", "ConstantConditions"})
     public boolean onCommand(CommandMessage context, String[] args) {
-        GuildTransformer guildTransformer = GuildController.fetchGuild(avaire, context.getMessage());
+        GuildTransformer guildTransformer = context.getGuildTransformer();
         if (guildTransformer == null || !guildTransformer.isLevels()) {
             return sendErrorMessage(
                 context,
@@ -88,8 +87,11 @@ public class RankCommand extends Command {
         }
 
         User user = context.getAuthor();
-        if (!context.getMentionedUsers().isEmpty() && !args[0].equals("---skip-mentions")) {
-            user = context.getMentionedUsers().get(0);
+        if (args.length > 0 && !args[0].equals("---skip-mentions")) {
+            user = MentionableUtil.getUser(context, args);
+            if (user == null) {
+                user = context.getAuthor();
+            }
         }
         final User author = user;
 
@@ -106,8 +108,8 @@ public class RankCommand extends Command {
             long level = LevelUtil.getLevelFromExperience(experience);
             long current = LevelUtil.getExperienceFromLevel(level);
 
-            long diff = LevelUtil.getExperienceFromLevel(level + 1) - current;
-            double percentage = ((double) (experience - current) / diff) * 100;
+            long nextLevelXp = LevelUtil.getExperienceFromLevel(level + 1);
+            double percentage = ((double) (experience - current) / (nextLevelXp - current)) * 100;
 
             String levelBar = "";
             for (int i = 1; i <= 40; i++) {
@@ -122,8 +124,8 @@ public class RankCommand extends Command {
                 .addField(context.i18n("fields.experience"), (experience - 100 < 0 ? "0" : String.format("%s (Total: %s)",
                     NumberUtil.formatNicely(experience - 100), NumberUtil.formatNicely(properties.getTotal())
                 )), true)
-                .addField("Experience needed to next Level", String.format("[%s] %s%s",
-                    levelBar, new DecimalFormat("#.##").format(percentage), '%'
+                .addField(context.i18n("fields.experienceToNext"), String.format("[%s] %s%s\n" + context.i18n("fields.youNeedMoreXpToLevelUp"),
+                    levelBar, new DecimalFormat("#.##").format(percentage), '%', NumberUtil.formatNicely(nextLevelXp - experience)
                 ), false)
                 .queue();
         });
@@ -134,7 +136,7 @@ public class RankCommand extends Command {
     private CompletableFuture<DatabaseProperties> loadProperties(CommandMessage context, User author) {
         return CompletableFuture.supplyAsync(() -> {
             try {
-                PlayerTransformer player = PlayerController.fetchPlayer(avaire, context.getMessage(), author);
+                PlayerTransformer player = context.getPlayerTransformer();
                 DataRow data = avaire.getDatabase().newQueryBuilder(Constants.PLAYER_EXPERIENCE_TABLE_NAME)
                     .selectRaw("sum(`experience`) - (count(`user_id`) * 100) as `total`")
                     .where("user_id", author.getId())

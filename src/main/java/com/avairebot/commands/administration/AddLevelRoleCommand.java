@@ -5,7 +5,6 @@ import com.avairebot.Constants;
 import com.avairebot.commands.CommandHandler;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
-import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.utilities.NumberUtil;
 import com.avairebot.utilities.RoleUtil;
@@ -35,14 +34,14 @@ public class AddLevelRoleCommand extends Command {
     @Override
     public List<String> getUsageInstructions() {
         return Collections.singletonList(
-            "`:command <role> <level requirement>` - Adds to role to users when they level up and meet the level requirement."
+            "`:command <level requirement> <role>` - Adds to role to users when they level up and meet the level requirement."
         );
     }
 
     @Override
     public List<String> getExampleUsage() {
         return Collections.singletonList(
-            "`:command Regular 5` - Adds the Regular role to the level up table, users who are level 5 and up will get the role when they level up."
+            "`:command 5 Regular` - Adds the Regular role to the level up table, users who are level 5 and up will get the role when they level up."
         );
     }
 
@@ -62,7 +61,7 @@ public class AddLevelRoleCommand extends Command {
     @Override
     @SuppressWarnings("ConstantConditions")
     public boolean onCommand(CommandMessage context, String[] args) {
-        GuildTransformer transformer = GuildController.fetchGuild(avaire, context.getMessage());
+        GuildTransformer transformer = context.getGuildTransformer();
         if (transformer == null || !transformer.isLevels()) {
             return sendErrorMessage(
                 context,
@@ -73,30 +72,40 @@ public class AddLevelRoleCommand extends Command {
         }
 
         if (args.length == 0) {
+            return sendErrorMessage(context, "Missing argument, the `level requirement` argument is required.");
+        }
+
+        int level = NumberUtil.parseInt(args[0], 0);
+        if (level < 1) {
+            context.makeWarning("Invalid level requirement given, the level requirement must be a positive number.")
+                .queue();
+
+            return false;
+        }
+
+        if (args.length == 1) {
             return sendErrorMessage(context, "Missing argument, the `role` argument is required.");
         }
 
-        Role role = RoleUtil.getRoleFromMentionsOrName(context.getMessage(), args[0]);
+        Role role = RoleUtil.getRoleFromMentionsOrName(context.getMessage(),
+            String.join(" ", Arrays.copyOfRange(args, 1, args.length))
+        );
+
         if (role == null) {
             context.makeWarning(":user Invalid role, I couldn't find any role called **:role**")
-                .set("role", args[0])
+                .set("role", String.join(" ", Arrays.copyOfRange(args, 1, args.length)))
+                .queue();
+            return false;
+        }
+
+        if (transformer.getLevelRoles().containsValue(role.getId())) {
+            context.makeWarning(":user The **:role** is already a level role, you can't use the same role twice.")
+                .set("role", role.getName())
                 .queue();
             return false;
         }
 
         if (!RoleUtil.canInteractWithRole(context.getMessage(), role)) {
-            return false;
-        }
-
-        if (args.length == 1) {
-            return sendErrorMessage(context, "Missing argument, the `level requirement` argument is required.");
-        }
-
-        int level = NumberUtil.parseInt(args[1], 0);
-        if (level < 1) {
-            context.makeWarning("Invalid level requirement given, the level requirement must be a positive number.")
-                .queue();
-
             return false;
         }
 

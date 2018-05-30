@@ -7,7 +7,6 @@ import com.avairebot.commands.CategoryHandler;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.commands.CommandPriority;
 import com.avairebot.contracts.commands.Command;
-import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.transformers.GuildTransformer;
 
 import java.sql.SQLException;
@@ -27,8 +26,7 @@ public class ChangePrefixCommand extends Command {
 
     @Override
     public String getDescription() {
-        return "Sets the prefix that should be used for all commands in a given category, if no prefix is provided the category prefix will be reset back to the default instead.\n" +
-            "**Note:** Command prefixes cannot contain spaces and if multiple categories are using the same prefix, some commands triggers may not run the indented command since multiple commands share the same triggers but has a different prefix by default.";
+        return "Sets the prefix that should be used for all commands in a given category, if no prefix is provided the category prefix will be reset back to the default instead, each category in AvaIre can have a different prefix, or you can choose to change them all at the same time.";
     }
 
     @Override
@@ -41,9 +39,9 @@ public class ChangePrefixCommand extends Command {
     @Override
     public List<String> getExampleUsage() {
         return Arrays.asList(
-            "`:command fun`",
-            "`:command admin /`",
-            "`:command utility %`"
+            "`:command fun` - Resets the prefix back to default for the `fun` commands.",
+            "`:command admin /` - Sets the prefix to `/` for all admin commands.",
+            "`:command all a!` - Sets the prefix for all the categories to `a!`."
         );
     }
 
@@ -76,7 +74,7 @@ public class ChangePrefixCommand extends Command {
             return sendErrorMessage(context, "Invalid `category` given, there are no command categories that are called, or starts with `%s`", args[0]);
         }
 
-        GuildTransformer transformer = GuildController.fetchGuild(avaire, context.getMessage());
+        GuildTransformer transformer = context.getGuildTransformer();
         if (args.length == 1) {
             return removeCustomPrefix(context, transformer, category);
         }

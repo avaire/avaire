@@ -12,6 +12,7 @@ import com.avairebot.utilities.LevelUtil;
 import com.avairebot.utilities.NumberUtil;
 import net.dv8tion.jda.core.entities.Member;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -87,13 +88,18 @@ public class GlobalLeaderboardCommand extends ThreadCommand {
 
     private Collection loadTop100From() {
         return (Collection) avaire.getCache().getAdapter(CacheType.MEMORY).remember("database-xp-leaderboard.global", 300, () -> {
-            return avaire.getDatabase().query("SELECT " +
-                "`user_id`, `username`, `discriminator`, (sum(`experience`) - (count(`user_id`) * 100)) + 100 as `total` " +
-                "FROM `experiences` " +
-                "GROUP BY `user_id` " +
-                "ORDER BY `total` DESC " +
-                "LIMIT 100;"
-            );
+            try {
+                return avaire.getDatabase().query("SELECT " +
+                    "`user_id`, `username`, `discriminator`, (sum(`experience`) - (count(`user_id`) * 100)) + 100 as `total` " +
+                    "FROM `experiences` " +
+                    "GROUP BY `user_id` " +
+                    "ORDER BY `total` DESC " +
+                    "LIMIT 100;"
+                );
+            } catch (SQLException e) {
+                AvaIre.getLogger().error("Failed to fetch global leaderboard data", e);
+                return null;
+            }
         });
     }
 }

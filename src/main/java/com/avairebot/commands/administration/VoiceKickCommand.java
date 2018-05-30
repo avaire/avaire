@@ -4,7 +4,9 @@ import com.avairebot.AvaIre;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.CacheFingerprint;
 import com.avairebot.contracts.commands.Command;
-import com.avairebot.modules.ModlogModule;
+import com.avairebot.modlog.ModlogAction;
+import com.avairebot.modlog.ModlogModule;
+import com.avairebot.modlog.ModlogType;
 import com.avairebot.utilities.RestActionUtil;
 import com.avairebot.utilities.RoleUtil;
 import net.dv8tion.jda.core.entities.Member;
@@ -90,8 +92,8 @@ public class VoiceKickCommand extends Command {
                 .queue(empty -> channel.delete().queue(new Consumer<Void>() {
                         @Override
                         public void accept(Void empty) {
-                            ModlogModule.log(avaire, context, new ModlogModule.ModlogAction(
-                                    ModlogModule.ModlogType.VOICE_KICK,
+                            ModlogModule.log(avaire, context, new ModlogAction(
+                                    ModlogType.VOICE_KICK,
                                     context.getAuthor(), user.getUser(),
                                     originalVoiceChannelName + " (ID: " + originalVoiceChannelId + ")\n" + reason
                                 )

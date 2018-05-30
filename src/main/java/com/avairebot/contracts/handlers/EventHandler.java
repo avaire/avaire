@@ -1,9 +1,8 @@
 package com.avairebot.contracts.handlers;
 
 import com.avairebot.AvaIre;
-import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
-public abstract class EventHandler extends ListenerAdapter {
+public abstract class EventHandler extends EventListener {
 
     /**
      * The AvaIre class instance, this is used to access

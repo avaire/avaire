@@ -1,12 +1,17 @@
 package com.avairebot.plugin;
 
+import com.avairebot.AppInfo;
 import com.avairebot.AvaIre;
 import com.avairebot.config.YamlConfiguration;
 import com.avairebot.exceptions.InvalidPluginException;
+import com.avairebot.utilities.NumberUtil;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
+import javax.annotation.Nullable;
 import java.io.*;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
@@ -20,6 +25,8 @@ public class PluginLoader {
     private final PluginClassLoader classLoader;
     private final YamlConfiguration configuration;
 
+    private final List<String> authors = new ArrayList<>();
+
     PluginLoader(File file, File dataFolder) throws InvalidPluginException, IOException {
         this.file = file;
         this.dataFolder = dataFolder;
@@ -32,6 +39,12 @@ public class PluginLoader {
 
         configuration = YamlConfiguration.loadConfiguration(new InputStreamReader(getResource("plugin.yml")));
         checkIfPluginYamlIsValid();
+
+        if (configuration.contains("authors")) {
+            authors.addAll(configuration.getStringList("authors"));
+        } else if (configuration.contains("author")) {
+            authors.add(configuration.getString("author"));
+        }
 
         classLoader = new PluginClassLoader(this, AvaIre.class.getClassLoader(), dataFolder, file);
     }
@@ -52,6 +65,34 @@ public class PluginLoader {
      */
     public String getMain() {
         return configuration.getString("main");
+    }
+
+    /**
+     * Gets the version of the plugin.
+     *
+     * @return The version of the plugin.
+     */
+    public String getVersion() {
+        return configuration.getString("version");
+    }
+
+    /**
+     * Gets the description of the plugin.
+     *
+     * @return Possibly-null, the description of the plugin.
+     */
+    @Nullable
+    public String getDescription() {
+        return configuration.getString("description");
+    }
+
+    /**
+     * Gets a list of all the authors for the plugin.
+     *
+     * @return Possibly-empty list, a list of the authors for the plugin.
+     */
+    public List<String> getAuthors() {
+        return authors;
     }
 
     /**
@@ -131,11 +172,37 @@ public class PluginLoader {
 
     private void checkIfPluginYamlIsValid() throws InvalidPluginException {
         if (!configuration.contains("name")) {
-            throw new InvalidPluginException("Invalid plugin.yml file, the plugin must have a name value at root!");
+            throw new InvalidPluginException(file.getName() + ": Invalid plugin.yml file, the plugin must have a name value at root!");
         }
 
         if (!configuration.contains("main")) {
-            throw new InvalidPluginException("Invalid plugin.yml file, the plugin must have a main value at root!");
+            throw new InvalidPluginException(getName() + ": Invalid plugin.yml file, the plugin must have a main value at root!");
         }
+
+        if (!configuration.contains("version")) {
+            throw new InvalidPluginException(getName() + ": Invalid plugin.yml file, the plugin must have a version value at root!");
+        }
+
+        if (configuration.contains("requires") && !compareVersion(configuration.getString("requires"))) {
+            throw new InvalidPluginException(getName() + ": Invalid plugin.yml file, the plugin requires AvaIre version %s or higher to work correctly!",
+                configuration.getString("requires")
+            );
+        }
+    }
+
+    private boolean compareVersion(String version) {
+        if (version.equals(AppInfo.getAppInfo().VERSION) || AppInfo.getAppInfo().VERSION.equals("@project.version@")) {
+            return true;
+        }
+
+        String[] split = version.split("\\.");
+        String[] versions = AppInfo.getAppInfo().VERSION.split("\\.");
+
+        for (int i = 0; i < split.length && i < versions.length; i++) {
+            if (NumberUtil.parseInt(split[i], 0) < NumberUtil.parseInt(versions[i], 0)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

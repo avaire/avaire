@@ -8,13 +8,12 @@ import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.exceptions.InvalidCommandPrefixException;
 import com.avairebot.metrics.Metrics;
-import com.avairebot.middleware.Middleware;
+import com.avairebot.middleware.MiddlewareHandler;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.utils.Checks;
 
 import javax.annotation.Nonnull;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class CommandHandler {
 
@@ -202,6 +201,7 @@ public class CommandHandler {
             return commands.get(0);
         }
 
+        //noinspection ConstantConditions
         return commands.stream().sorted((first, second) -> {
             if (first.getPriority().equals(second.getPriority())) {
                 return 0;
@@ -216,6 +216,7 @@ public class CommandHandler {
      *
      * @param command The command that should be registered into the command handler.
      */
+    @SuppressWarnings("ConstantConditions")
     public static void register(@Nonnull Command command) {
         Category category = CategoryHandler.fromCommand(command);
         Checks.notNull(category, String.format("%s :: %s", command.getName(), "Invalid command category, command category"));
@@ -233,9 +234,8 @@ public class CommandHandler {
 
         for (String middleware : command.getMiddleware()) {
             String[] parts = middleware.split(":");
-            AtomicReference<Middleware> reference = new AtomicReference<>(Middleware.fromName(parts[0]));
 
-            if (reference.get() == null) {
+            if (MiddlewareHandler.getMiddleware(parts[0]) == null) {
                 throw new IllegalArgumentException("Middleware reference may not be null, " + parts[0] + " is not a valid middleware!");
             }
         }

@@ -5,7 +5,6 @@ import com.avairebot.Constants;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.CacheFingerprint;
 import com.avairebot.contracts.commands.Command;
-import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.utilities.RoleUtil;
 import net.dv8tion.jda.core.entities.Role;
@@ -61,10 +60,11 @@ public class RemoveSelfAssignableRoleCommand extends Command {
             return sendErrorMessage(context, "Missing argument, the `role` argument is required.");
         }
 
-        Role role = RoleUtil.getRoleFromMentionsOrName(context.getMessage(), args[0]);
+        String roleName = String.join(" ", args);
+        Role role = RoleUtil.getRoleFromMentionsOrName(context.getMessage(), roleName);
         if (role == null) {
             context.makeWarning(":user Invalid role, I couldn't find any role called **:role**")
-                .set("role", args[0])
+                .set("role", roleName)
                 .queue();
             return false;
         }
@@ -74,7 +74,10 @@ public class RemoveSelfAssignableRoleCommand extends Command {
         }
 
         try {
-            GuildTransformer transformer = GuildController.fetchGuild(avaire, context.getMessage());
+            GuildTransformer transformer = context.getGuildTransformer();
+            if (transformer == null) {
+                return sendErrorMessage(context, "errors.errorOccurredWhileLoading", "server settings");
+            }
 
             transformer.getSelfAssignableRoles().remove(role.getId());
             avaire.getDatabase().newQueryBuilder(Constants.GUILD_TABLE_NAME)

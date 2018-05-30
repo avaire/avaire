@@ -18,17 +18,18 @@ import org.slf4j.LoggerFactory;
 import javax.annotation.Nonnull;
 import java.awt.*;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Consumer;
 
 public class VoteManager {
 
     private static final Map<String, Carbon> voteLog = new HashMap<>();
     private static final Logger LOGGER = LoggerFactory.getLogger(VoteManager.class);
-    private static final List<String> hasBeenChecked = new ArrayList<>();
+    private static final Set<String> hasBeenChecked = new HashSet<>();
+    private static int ratelimit = 0;
 
     private final AvaIre avaire;
 
@@ -100,6 +101,13 @@ public class VoteManager {
             return;
         }
 
+        // DiscordBots rates limits their API for up to 60 requests per minute as of right
+        // now, to prevent being blocked we're just checking if we have already preformed
+        // enough requests in the last minute, if we have we'll prematurely return false.
+        if (ratelimit++ > 60) {
+            return;
+        }
+
         LOGGER.info("No vote record was found for {}, checking the API...", userId);
 
         RequestFactory.makeGET("https://discordbots.org/api/bots/275270122082533378/check")
@@ -168,7 +176,7 @@ public class VoteManager {
         }
 
         if (hasBeenChecked.contains(userId)) {
-            hasBeenChecked.remove(hasBeenChecked.indexOf(userId));
+            hasBeenChecked.remove(userId);
         }
 
         voteLog.put(userId, Carbon.now().addHours(24));
@@ -182,18 +190,29 @@ public class VoteManager {
                     .insert(statement -> {
                         statement.set("user_id", userId);
                         statement.set("expires_in", voteLog.get(userId).toDayDateTimeString());
+                        statement.set("points", 1);
+                        statement.set("points_total", 1);
                     });
 
                 return;
             }
 
             avaire.getDatabase().newQueryBuilder(Constants.VOTES_TABLE_NAME)
+                .useAsync(true)
                 .where("user_id", userId)
-                .update(statement -> statement.set("expires_in", voteLog.get(userId).toDayDateTimeString()));
-
+                .update(statement -> {
+                    statement.set("expires_in", voteLog.get(userId).toDayDateTimeString());
+                    statement.setRaw("points", "`points` + 1");
+                    statement.setRaw("points_total", "`points_total` + 1");
+                });
         } catch (SQLException e) {
             LOGGER.error("An SQLException was thrown while updating user vote information: ", e);
         }
+    }
+
+    public void resetHasBeenCheckedSetAndRatelimit() {
+        hasBeenChecked.clear();
+        ratelimit = 0;
     }
 
     public boolean isEnabled() {

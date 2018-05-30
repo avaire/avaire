@@ -2,13 +2,14 @@ package com.avairebot.utilities;
 
 import com.avairebot.AvaIre;
 import com.avairebot.Constants;
-import com.avairebot.cache.CacheType;
 import com.avairebot.chat.MessageType;
 import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.controllers.PlayerController;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.database.transformers.PlayerTransformer;
 import com.avairebot.factories.MessageFactory;
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.TextChannel;
@@ -19,8 +20,13 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class LevelUtil {
+
+    private static final Cache<Object, Object> cache = CacheBuilder.newBuilder()
+        .expireAfterWrite(60, TimeUnit.SECONDS)
+        .build();
 
     /**
      * The quadratic equation `a` value.
@@ -75,17 +81,10 @@ public class LevelUtil {
      * @param player The player transformer from the current player database instance.
      */
     public static void rewardPlayer(AvaIre avaire, MessageReceivedEvent event, GuildTransformer guild, PlayerTransformer player) {
-        String cacheToken = String.format("user-message-xp-event.%s.%s",
-            player.getGuildId(),
-            player.getUserId()
-        );
-
-        if (avaire.getCache().getAdapter(CacheType.MEMORY).has(cacheToken)) {
-            return;
-        }
-        avaire.getCache().getAdapter(CacheType.MEMORY).put(cacheToken, 0, 60);
-
-        giveExperience(avaire, event.getMessage(), guild, player);
+        CacheUtil.getUncheckedUnwrapped(cache, event.getAuthor().getIdLong(), () -> {
+            giveExperience(avaire, event.getMessage(), guild, player);
+            return 0;
+        });
     }
 
     /**
@@ -138,8 +137,9 @@ public class LevelUtil {
 
         try {
             avaire.getDatabase().newQueryBuilder(Constants.PLAYER_EXPERIENCE_TABLE_NAME)
-                .where("user_id", player.getUserId())
-                .andWhere("guild_id", player.getGuildId())
+                .useAsync(true)
+                .where("user_id", message.getAuthor().getIdLong())
+                .andWhere("guild_id", message.getGuild().getId())
                 .update(statement -> statement.set("experience", player.getExperience()));
 
             if (guild.isLevelAlerts() && getLevelFromExperience(player.getExperience()) > lvl) {
@@ -147,8 +147,8 @@ public class LevelUtil {
 
                 MessageFactory.makeEmbeddedMessage(getLevelUpChannel(message, guild))
                     .setColor(MessageType.SUCCESS.getColor())
-                    .setDescription(String.format("GG <@%s>, you just reached **Level %s**",
-                        player.getUserId(), newLevel
+                    .setDescription(String.format("GG %s, you just reached **Level %s**",
+                        message.getAuthor().getAsMention(), newLevel
                     )).queue();
 
                 if (guild.getLevelRoles().isEmpty()) return;

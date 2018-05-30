@@ -93,15 +93,20 @@ public class TrackScheduler extends AudioEventAdapterWrapped {
             queue.offer(new AudioTrackContainer(track, requester));
         }
 
+        String songTitle = container.getAudioTrack().getInfo().title;
+        if (songTitle == null || songTitle.equalsIgnoreCase("Unknown Title")) {
+            songTitle = container.getAudioTrack().getInfo().uri;
+        }
+
         manager.getLastActiveMessage().makeSuccess(message)
-            .set("title", container.getAudioTrack().getInfo().title)
+            .set("title", songTitle)
             .set("link", container.getAudioTrack().getInfo().uri)
             .set("size", NumberUtil.formatNicely(size))
             .set("name", playlist.getName())
             .set("amount", size)
             .set("duration", container.getFormattedDuration())
             .set("requester", container.getRequester().getAsMention())
-            .set("volume", manager.getPlayer().getVolume())
+            .set("volume", getVolume())
             .queue();
     }
 
@@ -135,14 +140,19 @@ public class TrackScheduler extends AudioEventAdapterWrapped {
                     + "\n" + message;
             }
 
+            String songTitle = container.getAudioTrack().getInfo().title;
+            if (songTitle == null || songTitle.equalsIgnoreCase("Unknown Title")) {
+                songTitle = container.getAudioTrack().getInfo().uri;
+            }
+
             manager.getLastActiveMessage().makeSuccess(message)
-                .set("title", container.getAudioTrack().getInfo().title)
+                .set("title", songTitle)
                 .set("link", container.getAudioTrack().getInfo().uri)
                 .set("playlistSize", NumberUtil.formatNicely(playlist.getTracks().size()))
                 .set("playlistName", playlist.getName())
                 .set("duration", container.getFormattedDuration())
                 .set("requester", container.getRequester().getAsMention())
-                .set("volume", manager.getPlayer().getVolume())
+                .set("volume", getVolume())
                 .queue();
         }
 
@@ -210,19 +220,24 @@ public class TrackScheduler extends AudioEventAdapterWrapped {
     }
 
     private void sendNowPlaying(AudioTrackContainer container) {
+        String songTitle = container.getAudioTrack().getInfo().title;
+        if (songTitle == null || songTitle.equalsIgnoreCase("Unknown Title")) {
+            songTitle = container.getAudioTrack().getInfo().uri;
+        }
+
         manager.getLastActiveMessage().makeSuccess(
             manager.getLastActiveMessage().i18nRaw("music.internal.nowPlaying")
         )
-            .set("title", container.getAudioTrack().getInfo().title)
+            .set("title", songTitle)
             .set("link", container.getAudioTrack().getInfo().uri)
             .set("duration", container.getFormattedDuration())
             .set("requester", container.getRequester().getAsMention())
-            .set("volume", manager.getPlayer().getVolume())
+            .set("volume", getVolume())
             .queue();
     }
 
     public void handleEndOfQueue(@Nonnull CommandMessage context, boolean sendEndOfQueue) {
-        if (sendEndOfQueue && AudioHandler.MUSIC_MANAGER.containsKey(context.getGuild().getIdLong())) {
+        if (sendEndOfQueue && AudioHandler.getDefaultAudioHandler().musicManagers.containsKey(context.getGuild().getIdLong())) {
             context.makeSuccess(context.i18nRaw("music.internal.queueHasEnded"))
                 .queue(queueMessage -> {
                     queueMessage.delete().queueAfter(45, TimeUnit.SECONDS, null, RestActionUtil.IGNORE);
@@ -231,7 +246,7 @@ public class TrackScheduler extends AudioEventAdapterWrapped {
 
         LavalinkManager.LavalinkManagerHolder.LAVALINK.closeConnection(context.getGuild());
 
-        GuildMusicManager manager = AudioHandler.MUSIC_MANAGER.get(context.getGuild().getIdLong());
+        GuildMusicManager manager = AudioHandler.getDefaultAudioHandler().musicManagers.get(context.getGuild().getIdLong());
         manager.getPlayer().removeListener(this);
 
         if (LavalinkManager.LavalinkManagerHolder.LAVALINK.isEnabled()) {
@@ -246,7 +261,7 @@ public class TrackScheduler extends AudioEventAdapterWrapped {
             context.getGuild().getAudioManager().setSendingHandler(null);
         }
 
-        AudioHandler.MUSIC_MANAGER.remove(
+        AudioHandler.getDefaultAudioHandler().musicManagers.remove(
             context.getGuild().getIdLong()
         );
     }
@@ -257,5 +272,13 @@ public class TrackScheduler extends AudioEventAdapterWrapped {
 
     private boolean isNodeStateDestroyed(Link.State state) {
         return !state.equals(Link.State.DESTROYED) && !state.equals(Link.State.DESTROYING);
+    }
+
+    private int getVolume() {
+        if (manager.hasPlayedSongBefore()) {
+            return player.getVolume();
+        }
+        manager.setHasPlayedSongBefore(true);
+        return manager.getDefaultVolume();
     }
 }

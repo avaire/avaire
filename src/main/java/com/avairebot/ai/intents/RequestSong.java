@@ -8,12 +8,11 @@ import com.avairebot.commands.CommandHandler;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.commands.music.PlayCommand;
 import com.avairebot.contracts.ai.Intent;
-import com.avairebot.factories.MessageFactory;
 import com.avairebot.utilities.RandomUtil;
 import com.google.gson.JsonElement;
-import net.dv8tion.jda.core.entities.Message;
 import org.jsoup.Jsoup;
 
+import java.io.IOException;
 import java.util.*;
 
 public class RequestSong extends Intent {
@@ -44,11 +43,11 @@ public class RequestSong extends Intent {
 
     @Override
     @SuppressWarnings("ConstantConditions")
-    public void onIntent(Message message, AIResponse response) {
+    public void onIntent(CommandMessage context, AIResponse response) {
         HashMap<String, JsonElement> parameters = response.getResult().getParameters();
 
         if (parameters.isEmpty() || !parameters.containsKey("music")) {
-            MessageFactory.makeWarning(message, "Invalid or unsupported music category, more info coming here soon...").queue();
+            context.makeWarning("Invalid or unsupported music category, more info coming here soon...").queue();
             return;
         }
 
@@ -56,7 +55,7 @@ public class RequestSong extends Intent {
         String type = parameters.get("music").getAsString().toLowerCase();
         if (!CATEGORIES.containsKey(type)) {
             container.getCommand().onCommand(
-                new CommandMessage(container, message), new String[]{type, "---leave-message"}
+                new CommandMessage(container, context.getDatabaseEventHolder(), context.getMessage()), new String[]{type, "---leave-message"}
             );
             return;
         }
@@ -65,7 +64,7 @@ public class RequestSong extends Intent {
         String randomSong = getRandomSong(category);
 
         container.getCommand().onCommand(
-            new CommandMessage(container, message),
+            new CommandMessage(container, context.getDatabaseEventHolder(), context.getMessage()),
             new String[]{randomSong == null
                 ? type : randomSong, "---leave-message"}
         );
@@ -73,13 +72,18 @@ public class RequestSong extends Intent {
 
     private String getRandomSong(final String category) {
         Object cacheItem = avaire.getCache().getAdapter(CacheType.FILE).remember("music-type." + category.toLowerCase(), 31536000, () -> {
-            String item = Jsoup.connect(
-                String.format("https://libraries.amped.fm/libraries/%s/musicbot", category)
-            ).execute().body();
+            try {
+                String item = Jsoup.connect(
+                    String.format("https://libraries.amped.fm/libraries/%s/musicbot", category)
+                ).execute().body();
 
-            String[] items = item.split("\n");
+                String[] items = item.split("\n");
 
-            return Arrays.asList(Arrays.copyOfRange(items, 2, items.length));
+                return Arrays.asList(Arrays.copyOfRange(items, 2, items.length));
+            } catch (IOException e) {
+                AvaIre.getLogger().error("Failed to load {} music category from libraries.amped.fm", category.toLowerCase(), e);
+                return null;
+            }
         });
 
         if (!(cacheItem instanceof ArrayList)) {

@@ -7,7 +7,6 @@ import com.avairebot.commands.CategoryHandler;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.commands.CommandPriority;
 import com.avairebot.contracts.commands.Command;
-import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.transformers.ChannelTransformer;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.utilities.ComparatorUtil;
@@ -75,7 +74,7 @@ public class ToggleCategoryCommand extends Command {
         }
 
         Category category = CategoryHandler.fromLazyName(args[0]);
-        if (category == null || category.isGlobal()) {
+        if (category == null || category.isGlobalOrSystem()) {
             return sendErrorMessage(context, "Invalid category given, `%s` is not a valid category", args[0]);
         }
 
@@ -93,7 +92,11 @@ public class ToggleCategoryCommand extends Command {
         String channelId = args[1].equalsIgnoreCase("global") ?
             "all" : context.getMessage().getMentionedChannels().get(0).getId();
 
-        GuildTransformer transformer = GuildController.fetchGuild(avaire, context.getGuild());
+        GuildTransformer transformer = context.getGuildTransformer();
+        if (transformer == null) {
+            return sendErrorMessage(context, "errors.errorOccurredWhileLoading", "server settings");
+        }
+
         ChannelTransformer channel = transformer.getChannel(channelId);
 
         boolean status = !channel.isCategoryEnabled(category);
@@ -140,6 +143,7 @@ public class ToggleCategoryCommand extends Command {
 
             context.makeSuccess(getStatusMessage(channelId))
                 .set("category", category.getName())
+                .set("channel", "<#" + channel.getId() + ">")
                 .set("status", status ? "Enabled" : "Disabled")
                 .queue();
         } catch (SQLException e) {
