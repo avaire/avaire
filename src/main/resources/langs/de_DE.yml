@@ -2,13 +2,13 @@
 errors:
     missingArgument: 'Fehlendes Argument. Das `%s` Argument wird vorausgesetzt.'
     invalidProperty: 'Ungültige `%s` angegeben. Eine gültige %s wird vorausgesetzt.'
-    noChannelsWithNameOrId: 'Ich habe keine Channels unter der Namen oder ID `%s` auffinden können.'
-    noUsersWithNameOrId: 'Ich habe keine User unter dem Namen oder ID `%s` auffinden können.'
-    mustBeConnectedToVoice: 'Du musst mit einem Voicechannel verbunden sein um diesen Befehl ausführen zu können!'
-    mustBeConnectedToSameChannel: 'Du musst im selben Voicechannel verbunden sein um folgenden Befehl ausführen zu können: %s!'
+    noChannelsWithNameOrId: 'Ich habe keine Channel unter dem Namen oder der ID `%s` auffinden können.'
+    noUsersWithNameOrId: 'Ich habe keine User unter dem Namen oder der ID `%s` auffinden können.'
+    mustBeConnectedToVoice: 'Du musst mit einem Voicechannel verbunden sein, um diesen Befehl ausführen zu können!'
+    mustBeConnectedToSameChannel: 'Du musst im selben Voicechannel verbunden sein, um folgenden Befehl ausführen zu können: %s!'
     missingMusicQueue: 'Fehlende Music `query`. Du musst einen Link zu einem Song angeben, den du dir anhören möchtest. Du kannst mir auch gern den Musiktitel geben.'
     requireLevelFeatureToBeEnabled: 'Dieser Befehl benötigt das `Levels & Experience` Feature. Du kannst den Server-Administrator anfragen, ob dieser damit einverstanden ist diesen mit folgendem Befehl zu aktivieren: `%s`'
-    errorOccurredWhileLoading: 'Ein Fehler ist aufgetreten, während des Ladens von %s. Bitte versuche es erneut. Sollte dieser Fehler erneut auftreten, so kontaktiere eines unserer Entwickler auf dem [AvaIre Support Server] [https://discord.gg/gt2FWER].'
+    errorOccurredWhileLoading: 'Ein Fehler ist beim Laden von %s aufgetreten. Bitte versuche es später erneut. Sollte dieser Fehler erneut auftreten, so kontaktiere eines unserer Entwickler auf dem [AvaIre Support Server] [https://discord.gg/gt2FWER].'
 
 fun:
     DiceCommand:
@@ -65,12 +65,12 @@ fun:
 help:
     HelpCommand:
         listOfCommands: ':page_with_curl: **Liste von Befehlen** ```css\n%s```\n'
-        commandNote: '**Schreibe `:help <command>` um Hilfe für den spezifischen Befehl anzeigen zu lassen.**\nBeispiel: `:help :command`'
-        categoriesNote: ':information_source: Schreibe `:help <category>` um eine Liste von Befehlen für diese Kategorie anzeigen zu lassen.\nBeispiel: `:help %s` oder `:help %s`'
+        commandNote: '**Schreibe `:help <command>`, um Hilfe für den spezifischen Befehl anzeigen zu lassen.**\nBeispiel: `:help :command`'
+        categoriesNote: ':information_source: Schreibe `:help <category>`, um eine Liste von Befehlen für diese Kategorie anzeigen zu lassen.\nBeispiel: `:help %s` oder `:help %s`'
         categoriesTitle: ':scroll: Befehls-Kategorien'
         invalidCategory: 'Ungültige Befehls-Kategorie angegeben. Es existieren keine Kategorien unter dem Namen `:category`.'
         invalidCommand: 'Ungültigen Befehl eingegeben. Es existiert kein Befehl unter folgendem Trigger: `:trigger`'
-        tryingToViewSystemCommands: "Du hast keine Berechtigung dazu, jegliche Befehle aus der `System` Kategorie auszuführen. System-Befehle betreffen alle Server auf die der Bot derzeit eingesetzt wird. Diese Art von Befehlen sind nur für Administatoren oder Entwickler zugünglich."
+        tryingToViewSystemCommands: "Du hast keine Berechtigung dazu, jegliche Befehle aus der `System`-Kategorie auszuführen. System-Befehle betreffen alle Server auf die der Bot derzeit eingesetzt wird. Diese Art von Befehlen sind nur für Administatoren oder Entwickler zugünglich."
         singularHiddenCategories: '_Es existiert **%s** versteckte Kategorie für diesen Channel._'
         multipleHiddenCategories: '_Es existieren **%s** versteckte Kategorien für diesen Channel._'
         fields:
@@ -109,7 +109,7 @@ music:
         nowPlaying: 'Spielt jetzt: [:title](:link)\n`:duration` mit einer Lautstärke von `:volume%` - Angefragt von :requester'
         queueHasEnded: 'Die Warteschlange ist leer. Voicechannel wird verlassen.'
         noMatchFound: "Ich habe nicht's mit der folgenden Eingabe gefunden: `%s`"
-        trackLoadFailed: "Ich war nicht in der Lage folgendes in die Warteschlange zu setzen: `%s`"
+        trackLoadFailed: "Ich war nicht in der Lage folgenden Titel in die Warteschlange zu setzen: `%s`"
 
     ClearQueueCommand:
         error: "Nicht's zum Leeren vorhanden. Anfragen von Musik ist vorausgesetzt. Tue dies bitte zuerst mit folgendem Befehl: `%splay`"
@@ -122,7 +122,7 @@ music:
 
     PauseCommand:
         error: "Nicht's zum Pausieren vorhanden. Anfragen von Musik ist vorausgesetzt. Tue dies bitte zuerst mit folgendem Befehl: `%splay`"
-        alreadyPaused: 'Die Musik ist bereits pausiert. Nutze `!resume` um mit der Musik fortzufahren.'
+        alreadyPaused: 'Die Musik ist bereits pausiert. Nutze `!resume`, um mit der Musik fortzufahren.'
         paused: 'Die Musik wurde `pausiert`.'
 
     PlayCommand:
@@ -178,7 +178,7 @@ music:
 
     ResumeCommand:
         error: "Nicht's zum Fortsetzen vorhanden. Anfragen von Musik ist vorausgesetzt. Tue dies bitte zuerst mit folgendem Befehl: `%splay`"
-        alreadyPlaying: 'Es wird bereits Musik abgespielt. Nutze `:prefixpause` um die Musik zu pausieren.'
+        alreadyPlaying: 'Es wird bereits Musik abgespielt. Nutze `:prefixpause`, um die Musik zu pausieren.'
         resume: 'Die Musik wird nun `fortgesetzt`.'
 
     SeekCommand:
@@ -354,7 +354,7 @@ utility:
         externalCommand: "Der Befehl wird über ein externes Plugin registriert, der Autor des Plugins hat die Quelle des Befehls nicht öffentlich gemacht, oder sie haben vergessen, einen Link hinzuzufügen, hier ist der vollstündige Quellcode für den Bot."
 
     StatsCommand:
-        title: 'Offizielle Bot-Servereinladung'
+        title: 'Offizielle Botserver-Einladung'
         footer: 'Spielt derzeit in %s Server mit %s Song[s] in der Warteschlange.'
         latestChanges: 'Letzte Änderungen:'
         formats:
@@ -368,7 +368,7 @@ utility:
             database: 'DB Queries ausgeführt'
             messages: 'Nachrichten erhalten'
             shard: 'Shard'
-            commands: 'Behehle ausgeführt'
+            commands: 'Befehle ausgeführt'
             memory: 'Speichernutzung'
             uptime: 'Uptime'
             members: 'Member'
@@ -403,9 +403,9 @@ utility:
         latestVersion: 'Die letzte AvaIre-Version ist: v%s'
         versions:
             majorName: 'Wichtig'
-            major: 'Wichtige Versionsupdates sind vollständige Nachbesserungen des Bot und wie es funktioniert oder eine große Zusammenstellung kleinerer Änderungen am Quellcode. Es wird dringend empfohlen, dass Sie bei größeren Versionsänderungen updaten, da ältere Versionen nicht für Fehlerbehebungen oder Updates unterstützt werden.'
+            major: 'Wichtige Versionsupdates sind vollständige Nachbesserungen des Bot und wie es funktioniert oder eine große Zusammenstellung kleinerer Änderungen am Quellcode. Es wird dringend empfohlen, dass du bei größeren Versionsänderungen updaten, da ältere Versionen nicht für Fehlerbehebungen oder Updates unterstützt werden.'
             minorName: 'Kleine ünderungen'
-            minor: 'Versionsupdates mit kleinen Änderungen sind neue Ergänzungen, Funktionen und Nachbesserungen der vorhandenen Codebasis. Es wird empfohlen, dass Sie kleinere Versionsänderungen aktualisieren, um mit den neuen Funktionen Schritt zu halten.'
+            minor: 'Versionsupdates mit kleinen Änderungen sind neue Ergänzungen, Funktionen und Nachbesserungen der vorhandenen Codebasis. Es wird empfohlen, dass du kleinere Versionsänderungen aktualisieren, um mit den neuen Funktionen Schritt zu halten.'
             patchName: 'Patch'
-            patch: 'Patch-Versionen sind Bugfixes, Refactoring des vorhandenen Codes und sehr kleine Änderungen, die andere Dinge in der Code-Basis nicht beeinflussen. Es wird empfohlen, dass Sie die Änderungen der Patch-Version aktualisieren, um mit den Bugfixes und Patches Schritt zu halten.'
+            patch: 'Patch-Versionen sind Bugfixes, Refactoring des vorhandenen Codes und sehr kleine Änderungen, die andere Dinge in der Code-Basis nicht beeinflussen. Es wird empfohlen, dass du die Änderungen der Patch-Version aktualisieren, um mit den Bugfixes und Patches Schritt zu halten.'
 
