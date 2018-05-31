@@ -3,18 +3,58 @@ package com.avairebot.commands.system;
 import com.avairebot.AvaIre;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.SystemCommand;
+import com.avairebot.utilities.NumberUtil;
 import net.dv8tion.jda.core.entities.ChannelType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import javax.annotation.Nullable;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.*;
 
 public class EvalCommand extends SystemCommand {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(EvalCommand.class);
+
+    @Nullable
+    private Future lastTask;
+    private ScriptEngine engine;
+
     public EvalCommand(AvaIre avaire) {
         super(avaire);
+
+        engine = new ScriptEngineManager()
+            .getEngineByName("nashorn");
+
+        try {
+            engine.eval("var imports = new JavaImporter(" +
+                "java.io," +
+                "java.lang," +
+                "java.util," +
+                "Packages.net.dv8tion.jda.core," +
+                "Packages.net.dv8tion.jda.core.entities," +
+                "Packages.net.dv8tion.jda.core.entities.impl," +
+                "Packages.net.dv8tion.jda.core.managers," +
+                "Packages.net.dv8tion.jda.core.managers.impl," +
+                "Packages.net.dv8tion.jda.core.utils," +
+                "Packages.com.avairebot.database.controllers," +
+                "Packages.com.avairebot.permissions," +
+                "Packages.com.avairebot.utilities," +
+                "Packages.com.avairebot.factories," +
+                "Packages.com.avairebot.language," +
+                "Packages.com.avairebot.metrics," +
+                "Packages.com.avairebot.logger," +
+                "Packages.com.avairebot.cache," +
+                "Packages.com.avairebot.audio," +
+                "Packages.com.avairebot.time);");
+        } catch (ScriptException e) {
+            LOGGER.error("Failed to init eval command", e);
+        }
     }
 
     @Override
@@ -29,12 +69,19 @@ public class EvalCommand extends SystemCommand {
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`:command <code>` - Evaluates and executes the given code.");
+        return Arrays.asList(
+            "`:command <code>` - Evaluates and executes the given code.",
+            "`:command <kill|-k>` - Kills the last task if it is still running.",
+            "`:command <timeout|-t> <timeout lenght> <code>` - Evaluates and executes the given code with the given timeout."
+        );
     }
 
     @Override
     public List<String> getExampleUsage() {
-        return Collections.singletonList("`:command 5*(5+9)`");
+        return Arrays.asList(
+            "`:command context.makeInfo(\"Hello, World\").queue();`",
+            "`:command -t 10 return \"Some Code\"`"
+        );
     }
 
     @Override
@@ -49,25 +96,20 @@ public class EvalCommand extends SystemCommand {
             return false;
         }
 
-        try {
-            Object out = createScriptEngine(context).eval("(function() { with (imports) {\n\t" + context.getContentRaw() + "\n}})();");
-            String output = out == null ? "Executed without error, void was returned so there is nothing to show." : out.toString();
-
-            if (output.length() > 1890) {
-                output = output.substring(0, 1890) + "...";
-            }
-
-            context.getMessageChannel().sendMessage("```xl\n" + output + "```").queue();
-        } catch (ScriptException e) {
-            context.getMessageChannel().sendMessage("**Error:**\n```xl\n" + e.toString() + "```").queue();
+        if (args.length == 1 && (args[0].equals("kill") || args[0].equals("-k"))) {
+            return killLastTask(context);
         }
 
-        return true;
-    }
+        final long started = System.currentTimeMillis();
 
-    private ScriptEngine createScriptEngine(CommandMessage context) throws ScriptException {
-        ScriptEngineManager manager = new ScriptEngineManager();
-        ScriptEngine engine = manager.getEngineByName("nashorn");
+        context.getMessageChannel().sendTyping().queue();
+        int timeout = args[0].equals("timeout") || args[0].equals("-t")
+            ? NumberUtil.parseInt(args[1], -1) : -1;
+
+        String[] parts = context.getMessage().getContentRaw().split(" ");
+        final String source = String.join(" ", Arrays.copyOfRange(
+            parts, calculateSourceLength(context, timeout), parts.length
+        ));
 
         engine.put("context", context);
         engine.put("message", context.getMessage());
@@ -80,25 +122,75 @@ public class EvalCommand extends SystemCommand {
             engine.put("member", context.getMember());
         }
 
-        engine.eval("var imports = new JavaImporter(" +
-            "java.io," +
-            "java.lang," +
-            "java.util," +
-            "Packages.net.dv8tion.jda.core," +
-            "Packages.net.dv8tion.jda.core.entities," +
-            "Packages.net.dv8tion.jda.core.entities.impl," +
-            "Packages.net.dv8tion.jda.core.managers," +
-            "Packages.net.dv8tion.jda.core.managers.impl," +
-            "Packages.net.dv8tion.jda.core.utils," +
-            "Packages.com.avairebot.database.controllers," +
-            "Packages.com.avairebot.permissions," +
-            "Packages.com.avairebot.utilities," +
-            "Packages.com.avairebot.factories," +
-            "Packages.com.avairebot.logger," +
-            "Packages.com.avairebot.cache," +
-            "Packages.com.avairebot.audio," +
-            "Packages.com.avairebot.time);");
+        ScheduledExecutorService service = Executors.newScheduledThreadPool(1, r -> new Thread(r, "Eval command execution"));
 
-        return engine;
+        Future<?> future = service.submit(() -> {
+            Object out;
+            try {
+                out = engine.eval(
+                    "(function() {"
+                        + "with (imports) {\n" + source + "\n}"
+                        + "})();");
+
+            } catch (Exception ex) {
+                context.makeWarning(String.format("`%s`\n\n`%sms`",
+                    ex.getMessage(), System.currentTimeMillis() - started)
+                );
+                LOGGER.info("Error occurred in eval", ex);
+                return;
+            }
+
+            String output = out == null ? ":thumbsup::skin-tone-3:" : "```\n" + out.toString() + "\n```";
+            context.getMessageChannel().sendMessage(String.format("**Input** ```java\n%s```\n**Output**\n%s\nEval took _%sms_",
+                source, output, System.currentTimeMillis() - started
+            )).queue();
+        });
+        this.lastTask = future;
+
+        Thread script = new Thread("Eval comm waiter") {
+            @Override
+            public void run() {
+                try {
+                    if (timeout > -1) {
+                        future.get(timeout, TimeUnit.SECONDS);
+                    }
+                } catch (final TimeoutException ex) {
+                    future.cancel(true);
+                    context.makeWarning("Task exceeded time limit of " + timeout + " seconds.").queue();
+                } catch (final Exception ex) {
+                    context.makeError(String.format("`%s`\n\n`%sms`",
+                        ex.getMessage(), System.currentTimeMillis() - started)
+                    ).queue();
+                }
+            }
+        };
+        script.start();
+
+        return true;
+    }
+
+    private boolean killLastTask(CommandMessage context) {
+        if (lastTask == null) {
+            context.makeWarning("No task found to kill.").queue();
+            return false;
+        }
+
+        if (lastTask.isDone() || lastTask.isCancelled()) {
+            context.makeWarning("Task isn't running.").queue();
+            return false;
+        }
+
+        lastTask.cancel(true);
+        context.makeSuccess("Task has been killed.").queue();
+
+        return true;
+    }
+
+    private int calculateSourceLength(CommandMessage context, int timeout) {
+        int sourceLength = context.isMentionableCommand() ? 2 : 1;
+        if (timeout > 0) {
+            sourceLength += 2;
+        }
+        return sourceLength;
     }
 }
