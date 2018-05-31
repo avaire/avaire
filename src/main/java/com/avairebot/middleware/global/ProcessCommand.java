@@ -26,7 +26,7 @@ public class ProcessCommand extends Middleware {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ProcessCommand.class);
 
-    private final static String COMMAND_OUTPUT = "Executing Command \"%command%\" in \"%category%\" category:"
+    private final static String COMMAND_OUTPUT = "Executing Command \"%command%\" in \"%category%\" category in shard %shard%:"
         + "\n\t\tUser:\t %author%"
         + "\n\t\tServer:\t %server%"
         + "\n\t\tChannel: %channel%"
@@ -59,6 +59,7 @@ public class ProcessCommand extends Middleware {
             .replace("%server%", generateServer(message))
             .replace("%channel%", generateChannel(message))
             .replace("%message%", message.getContentRaw())
+            .replace("%shard%", message.getJDA().getShardInfo().getShardString())
         );
 
         Histogram.Timer timer = null;
@@ -107,6 +108,7 @@ public class ProcessCommand extends Middleware {
             }
 
             MDC.putCloseable("guild", message.getGuild() != null ? message.getGuild().getId() : "PRIVATE");
+            MDC.putCloseable("shard", message.getJDA().getShardInfo().getShardString());
             MDC.putCloseable("channel", message.getChannel().getId());
             MDC.putCloseable("author", message.getAuthor().getId());
             LOGGER.error("An error occurred while running the " + stack.getCommand().getName(), ex);
