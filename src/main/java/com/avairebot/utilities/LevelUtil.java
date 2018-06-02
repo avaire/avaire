@@ -140,7 +140,7 @@ public class LevelUtil {
                 .useAsync(true)
                 .where("user_id", message.getAuthor().getIdLong())
                 .andWhere("guild_id", message.getGuild().getId())
-                .update(statement -> statement.set("experience", player.getExperience()));
+                .update(statement -> statement.setRaw("experience", "`experience` + " + amount));
 
             if (guild.isLevelAlerts() && getLevelFromExperience(player.getExperience()) > lvl) {
                 long newLevel = getLevelFromExperience(player.getExperience());
