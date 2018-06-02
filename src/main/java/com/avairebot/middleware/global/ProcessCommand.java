@@ -111,6 +111,7 @@ public class ProcessCommand extends Middleware {
             MDC.putCloseable("shard", message.getJDA().getShardInfo().getShardString());
             MDC.putCloseable("channel", message.getChannel().getId());
             MDC.putCloseable("author", message.getAuthor().getId());
+            MDC.putCloseable("message", message.getContentRaw());
             LOGGER.error("An error occurred while running the " + stack.getCommand().getName(), ex);
             return false;
         } finally {
