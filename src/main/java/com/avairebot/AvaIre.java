@@ -1,5 +1,8 @@
 package com.avairebot;
 
+import ch.qos.logback.classic.Level;
+import ch.qos.logback.classic.LoggerContext;
+import ch.qos.logback.classic.filter.ThresholdFilter;
 import com.avairebot.ai.IntelligenceManager;
 import com.avairebot.audio.AudioHandler;
 import com.avairebot.audio.GuildMusicManager;
@@ -32,12 +35,15 @@ import com.avairebot.scheduler.ScheduleHandler;
 import com.avairebot.shard.ShardEntityCounter;
 import com.avairebot.shared.DiscordConstants;
 import com.avairebot.shared.ExitCodes;
+import com.avairebot.shared.SentryConstants;
 import com.avairebot.time.Carbon;
 import com.avairebot.vote.VoteManager;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.sedmelluq.discord.lavaplayer.tools.PlayerLibrary;
 import io.sentry.Sentry;
+import io.sentry.SentryClient;
+import io.sentry.logback.SentryAppender;
 import lavalink.client.io.Link;
 import lavalink.client.player.LavalinkPlayer;
 import net.dv8tion.jda.bot.sharding.DefaultShardManagerBuilder;
@@ -240,19 +246,28 @@ public class AvaIre {
         String sentryDsn = config.getString("sentryDsn", "").trim();
         if (sentryDsn.length() > 0) {
             LOGGER.info("SentryDSN found, initializing Sentry.io");
-            Sentry.init(sentryDsn);
+            SentryClient sentryClient = Sentry.init(sentryDsn);
 
-            Sentry.getStoredClient().setEnvironment(getEnvironment().getName());
+            sentryClient.addMdcTag(SentryConstants.SENTRY_MDC_TAG_GUILD);
+            sentryClient.addMdcTag(SentryConstants.SENTRY_MDC_TAG_CHANNEL);
+            sentryClient.addMdcTag(SentryConstants.SENTRY_MDC_TAG_SHARD);
+            sentryClient.addMdcTag(SentryConstants.SENTRY_MDC_TAG_AUTHOR);
+            sentryClient.addMdcTag(SentryConstants.SENTRY_MDC_TAG_MESSAGE);
 
+            sentryClient.setEnvironment(getEnvironment().getName());
             switch (getEnvironment()) {
                 case PRODUCTION:
-                    Sentry.getStoredClient().setRelease(GitInfo.getGitInfo().commitId);
+                    sentryClient.setRelease(GitInfo.getGitInfo().commitId);
                     break;
 
                 default:
-                    Sentry.getStoredClient().setRelease(AppInfo.getAppInfo().VERSION);
+                    sentryClient.setRelease(AppInfo.getAppInfo().VERSION);
                     break;
             }
+
+            getSentryLogbackAppender().start();
+        } else {
+            getSentryLogbackAppender().stop();
         }
 
         LOGGER.info("Preparing vote manager");
@@ -453,6 +468,26 @@ public class AvaIre {
         }
 
         return builder.build();
+    }
+
+    private synchronized SentryAppender getSentryLogbackAppender() {
+        LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
+        ch.qos.logback.classic.Logger root = loggerContext.getLogger(Logger.ROOT_LOGGER_NAME);
+
+        SentryAppender sentryAppender = (SentryAppender) root.getAppender(SentryConstants.SENTRY_APPENDER_NAME);
+        if (sentryAppender == null) {
+            sentryAppender = new SentryAppender();
+            sentryAppender.setName(SentryConstants.SENTRY_APPENDER_NAME);
+
+            ThresholdFilter warningsOrAboveFilter = new ThresholdFilter();
+            warningsOrAboveFilter.setLevel(Level.WARN.levelStr);
+            warningsOrAboveFilter.start();
+            sentryAppender.addFilter(warningsOrAboveFilter);
+
+            sentryAppender.setContext(loggerContext);
+            root.addAppender(sentryAppender);
+        }
+        return sentryAppender;
     }
 
     private void autoloadPackage(String path, Consumer<Reflectionable> callback) {

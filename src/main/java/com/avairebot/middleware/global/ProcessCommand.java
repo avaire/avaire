@@ -7,6 +7,7 @@ import com.avairebot.contracts.middleware.Middleware;
 import com.avairebot.factories.MessageFactory;
 import com.avairebot.metrics.Metrics;
 import com.avairebot.middleware.MiddlewareStack;
+import com.avairebot.shared.SentryConstants;
 import com.avairebot.utilities.ArrayUtil;
 import com.avairebot.utilities.CheckPermissionUtil;
 import com.avairebot.utilities.RestActionUtil;
@@ -107,11 +108,11 @@ public class ProcessCommand extends Middleware {
                     .queue(newMessage -> newMessage.delete().queueAfter(30, TimeUnit.SECONDS, null, RestActionUtil.IGNORE));
             }
 
-            MDC.putCloseable("guild", message.getGuild() != null ? message.getGuild().getId() : "PRIVATE");
-            MDC.putCloseable("shard", message.getJDA().getShardInfo().getShardString());
-            MDC.putCloseable("channel", message.getChannel().getId());
-            MDC.putCloseable("author", message.getAuthor().getId());
-            MDC.putCloseable("message", message.getContentRaw());
+            MDC.putCloseable(SentryConstants.SENTRY_MDC_TAG_GUILD, message.getGuild() != null ? message.getGuild().getId() : "PRIVATE");
+            MDC.putCloseable(SentryConstants.SENTRY_MDC_TAG_SHARD, message.getJDA().getShardInfo().getShardString());
+            MDC.putCloseable(SentryConstants.SENTRY_MDC_TAG_CHANNEL, message.getChannel().getId());
+            MDC.putCloseable(SentryConstants.SENTRY_MDC_TAG_AUTHOR, message.getAuthor().getId());
+            MDC.putCloseable(SentryConstants.SENTRY_MDC_TAG_MESSAGE, message.getContentRaw());
             LOGGER.error("An error occurred while running the " + stack.getCommand().getName(), ex);
             return false;
         } finally {
