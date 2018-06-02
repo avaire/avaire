@@ -153,7 +153,8 @@ public class AvaIre {
             new ReformatBlacklistTableMigration(),
             new AddVotePointsToUsersAndGuildsTableMigration(),
             new AddMusicChannelToGuildsTableMigration(),
-            new AddExpiresInFieldToBlacklistTableMigration()
+            new AddExpiresInFieldToBlacklistTableMigration(),
+            new AddOptInToVotesTableMigration()
         );
 
         LOGGER.info("Registering default middlewares");
@@ -165,6 +166,7 @@ public class AvaIre {
         MiddlewareHandler.register("hasDJLevel", new RequireDJLevelMiddleware(this));
         MiddlewareHandler.register("throttle", new ThrottleMiddleware(this));
         MiddlewareHandler.register("musicChannel", new IsMusicChannelMiddleware(this));
+        MiddlewareHandler.register("isDMMessage", new IsDMMessageMiddelware(this));
 
         LOGGER.info("Registering default command categories");
         String defaultPrefix = getConfig().getString("default-prefix", DiscordConstants.DEFAULT_COMMAND_PREFIX);

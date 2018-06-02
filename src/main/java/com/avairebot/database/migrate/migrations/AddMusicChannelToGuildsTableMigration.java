@@ -58,6 +58,5 @@ public class AddMusicChannelToGuildsTableMigration implements Migration {
     private boolean hasColumns(Schema schema) throws SQLException {
         return schema.hasColumn(Constants.GUILD_TABLE_NAME, "music_channel_text")
             && schema.hasColumn(Constants.GUILD_TABLE_NAME, "music_channel_voice");
-
     }
 }
