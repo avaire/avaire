@@ -2,13 +2,18 @@ package com.avairebot.metrics;
 
 import ch.qos.logback.classic.LoggerContext;
 import com.avairebot.AvaIre;
+import com.avairebot.database.controllers.GuildController;
+import com.avairebot.database.controllers.PlayerController;
+import com.avairebot.database.controllers.PlaylistController;
 import com.avairebot.metrics.filters.AreWeReadyYetFilter;
 import com.avairebot.metrics.filters.HttpFilter;
 import com.avairebot.metrics.handlers.SparkExceptionHandler;
 import com.avairebot.metrics.routes.*;
+import com.avairebot.utilities.LevelUtil;
 import io.prometheus.client.Counter;
 import io.prometheus.client.Gauge;
 import io.prometheus.client.Histogram;
+import io.prometheus.client.guava.cache.CacheMetricsCollector;
 import io.prometheus.client.hotspot.DefaultExports;
 import io.prometheus.client.logback.InstrumentedAppender;
 import net.dv8tion.jda.core.events.Event;
@@ -179,6 +184,12 @@ public class Metrics {
         // JVM (hotspot) metrics
         DefaultExports.initialize();
         Metrics.initializeEventMetrics();
+
+        CacheMetricsCollector cacheMetrics = new CacheMetricsCollector().register();
+        cacheMetrics.addCache("levels", LevelUtil.cache);
+        cacheMetrics.addCache("guilds", GuildController.cache);
+        cacheMetrics.addCache("players", PlayerController.cache);
+        cacheMetrics.addCache("playlists", PlaylistController.cache);
 
         if (!avaire.getConfig().getBoolean("metrics.enabled", true)) {
             LOGGER.info("Metrics web API is disabled, skipping igniting Spark API");

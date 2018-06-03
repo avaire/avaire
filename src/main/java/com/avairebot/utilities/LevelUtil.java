@@ -24,7 +24,8 @@ import java.util.concurrent.TimeUnit;
 
 public class LevelUtil {
 
-    private static final Cache<Object, Object> cache = CacheBuilder.newBuilder()
+    public static final Cache<Object, Object> cache = CacheBuilder.newBuilder()
+        .recordStats()
         .expireAfterWrite(60, TimeUnit.SECONDS)
         .build();
 

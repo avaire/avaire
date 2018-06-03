@@ -15,7 +15,8 @@ import java.util.concurrent.TimeUnit;
 
 public class PlayerController {
 
-    private static final Cache<Object, Object> cache = CacheBuilder.newBuilder()
+    public static final Cache<Object, Object> cache = CacheBuilder.newBuilder()
+        .recordStats()
         .expireAfterAccess(2, TimeUnit.MINUTES)
         .expireAfterWrite(5, TimeUnit.MINUTES)
         .build();

@@ -7,7 +7,7 @@ plugins {
 apply plugin: 'java'
 apply plugin: 'idea'
 
-version = '0.6.71'
+version = '0.6.72'
 group = 'com.avairebot'
 description = 'AvaIre Discord Bot'
 mainClassName = 'com.avairebot.Main'
@@ -91,6 +91,7 @@ dependencies {
     compile group: 'io.prometheus', name: 'simpleclient_servlet', version: '0.1.0'
     compile group: 'io.prometheus', name: 'simpleclient_logback', version: '0.1.0'
     compile group: 'io.prometheus', name: 'simpleclient_hotspot', version: '0.1.0'
+    compile group: 'io.prometheus', name: 'simpleclient_guava', version: '0.1.0'
 
     compile group: 'com.udojava', name: 'EvalEx', version: '1.18'
     compile group: 'com.vdurmont', name: 'emoji-java', version: '4.0.0'

@@ -21,7 +21,8 @@ import java.util.concurrent.TimeUnit;
 
 public class GuildController {
 
-    private static final Cache<Object, Object> cache = CacheBuilder.newBuilder()
+    public static final Cache<Object, Object> cache = CacheBuilder.newBuilder()
+        .recordStats()
         .expireAfterAccess(1, TimeUnit.MINUTES)
         .expireAfterWrite(4, TimeUnit.MINUTES)
         .build();
