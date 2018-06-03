@@ -724,7 +724,11 @@ public final class QueryBuilder {
      *                      <code>PreparedStatement</code> or <code>CallableStatement</code>
      */
     public Collection get() throws SQLException {
-        return new Collection(dbm.query(this));
+        // Note: When parsing the result to a collection, we can't use the DBM query method since it auto closes the result,
+        // and the collection still needs to communicated with the result set to get meta data so it can build the keysets
+        // for the column names, this isn't possible if we close the result before parsing it to the collection, instead
+        // we use the direct connection and have the collection close the connection instead.
+        return new Collection(dbm.getConnection().query(this));
     }
 
     /**
