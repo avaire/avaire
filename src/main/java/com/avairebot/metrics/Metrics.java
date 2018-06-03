@@ -2,6 +2,7 @@ package com.avairebot.metrics;
 
 import ch.qos.logback.classic.LoggerContext;
 import com.avairebot.AvaIre;
+import com.avairebot.commands.Category;
 import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.controllers.PlayerController;
 import com.avairebot.database.controllers.PlaylistController;
@@ -190,6 +191,7 @@ public class Metrics {
         cacheMetrics.addCache("guilds", GuildController.cache);
         cacheMetrics.addCache("players", PlayerController.cache);
         cacheMetrics.addCache("playlists", PlaylistController.cache);
+        cacheMetrics.addCache("categoryPrefixes", Category.cache);
 
         if (!avaire.getConfig().getBoolean("metrics.enabled", true)) {
             LOGGER.info("Metrics web API is disabled, skipping igniting Spark API");
