@@ -724,7 +724,7 @@ public final class QueryBuilder {
      *                      <code>PreparedStatement</code> or <code>CallableStatement</code>
      */
     public Collection get() throws SQLException {
-        return new Collection(dbm.getConnection().query(this));
+        return new Collection(dbm.query(this));
     }
 
     /**
