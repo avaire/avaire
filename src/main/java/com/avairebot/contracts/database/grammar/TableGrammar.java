@@ -82,12 +82,19 @@ public abstract class TableGrammar extends Grammar {
             clause.setOrder(OperatorType.AND);
         }
 
-        String field = clause.getTwo().toString();
-        if (!isNumeric(field)) {
-            field = String.format("'%s'", field);
+
+        String field = "NULL";
+        if (clause.getTwo() != null) {
+            if (!isNumeric(field)) {
+                field = String.format("'%s'", field);
+            }
         }
 
-        String stringClause = String.format("%s %s %s", formatField(clause.getOne()), clause.getIdentifier(), field);
+        String stringClause = String.format("%s %s %s", formatField(
+            clause.getOne()),
+            clause.getIdentifier().equals("=") && field.equals("NULL") ? "IS" : clause.getIdentifier(),
+            field
+        );
 
         String operator = "";
         if (!exemptOperator) {
