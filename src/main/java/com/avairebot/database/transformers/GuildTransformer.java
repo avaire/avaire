@@ -7,6 +7,7 @@ import com.avairebot.database.collection.DataRow;
 import com.avairebot.utilities.NumberUtil;
 import com.google.gson.internal.LinkedTreeMap;
 import com.google.gson.reflect.TypeToken;
+import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.TextChannel;
 
 import javax.annotation.CheckReturnValue;
@@ -39,6 +40,16 @@ public class GuildTransformer extends Transformer {
     private int modlogCase = 0;
     private int defaultVolume = 50;
     private DJGuildLevel djGuildLevel = null;
+
+    public GuildTransformer(Guild guild) {
+        super(null);
+
+        locale = null;
+        id = guild.getId();
+        name = guild.getName();
+        nameRaw = guild.getName();
+        guildType = new GuildTypeTransformer(null);
+    }
 
     public GuildTransformer(DataRow data) {
         super(data);

@@ -70,6 +70,7 @@ public class GuildController {
                     } catch (Exception ex) {
                         AvaIre.getLogger().error(ex.getMessage(), ex);
                     }
+                    return new GuildTransformer(guild);
                 }
 
                 return transformer;
