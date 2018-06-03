@@ -123,6 +123,8 @@ public class VoteSkipCommand extends Command {
         GuildVoiceState voiceState = message.getMember().getVoiceState();
         GuildVoiceState selfVoteState = message.getGuild().getSelfMember().getVoiceState();
 
-        return voiceState.getChannel() != null && voiceState.getChannel().getId().equals(selfVoteState.getChannel().getId());
+        return voiceState.getChannel() != null
+            && selfVoteState.getChannel() != null
+            && voiceState.getChannel().getId().equals(selfVoteState.getChannel().getId());
     }
 }
