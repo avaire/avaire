@@ -16,11 +16,13 @@ import com.avairebot.factories.MessageFactory;
 import com.avairebot.handlers.DatabaseEventHolder;
 import com.avairebot.metrics.Metrics;
 import com.avairebot.middleware.MiddlewareStack;
+import com.avairebot.shared.DiscordConstants;
 import com.avairebot.utilities.ArrayUtil;
 import com.avairebot.utilities.LevelUtil;
 import com.avairebot.utilities.NumberUtil;
 import com.avairebot.utilities.RestActionUtil;
 import net.dv8tion.jda.core.Permission;
+import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -63,7 +65,7 @@ public class MessageEventAdapter extends EventAdapter {
     }
 
     public void onMessageReceived(MessageReceivedEvent event) {
-        if (event.getAuthor().isBot()) {
+        if (!isValidMessage(event.getAuthor())) {
             return;
         }
 
@@ -123,6 +125,10 @@ public class MessageEventAdapter extends EventAdapter {
                 sendInformationMessage(event);
             }
         });
+    }
+
+    private boolean isValidMessage(User author) {
+        return !author.isBot() || author.getIdLong() == DiscordConstants.SENITHER_BOT_ID;
     }
 
     private void invokeMiddlewareStack(MiddlewareStack stack) {
@@ -251,7 +257,7 @@ public class MessageEventAdapter extends EventAdapter {
             }
 
             GuildTransformer guild = GuildController.fetchGuild(avaire, event.getMessage());
-            if (guild == null || !guild.isLevels()) {
+            if (guild == null || !guild.isLevels() || event.getAuthor().isBot()) {
                 return new DatabaseEventHolder(guild, null);
             }
             return new DatabaseEventHolder(guild, PlayerController.fetchPlayer(avaire, event.getMessage()));
