@@ -117,7 +117,7 @@ public class PurgeCommand extends Command {
                         context.makeSuccess(":white_check_mark: `:number` messages has been deleted!")
                             .set("number", messages.size())
                             .queue(successMessage -> successMessage.delete().queueAfter(8, TimeUnit.SECONDS, null, RestActionUtil.IGNORE));
-                    });
+                    }, RestActionUtil.IGNORE);
                 });
             });
             return;
@@ -146,7 +146,7 @@ public class PurgeCommand extends Command {
                     .set("number", messages.size())
                     .set("users", String.join(", ", users))
                     .queue(successMessage -> successMessage.delete().queueAfter(8, TimeUnit.SECONDS, null, RestActionUtil.IGNORE));
-            });
+            }, RestActionUtil.IGNORE);
         });
     }
 

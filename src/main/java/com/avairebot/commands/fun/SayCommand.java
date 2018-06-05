@@ -3,6 +3,7 @@ package com.avairebot.commands.fun;
 import com.avairebot.AvaIre;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
+import com.avairebot.utilities.RestActionUtil;
 
 import java.util.Collections;
 import java.util.List;
@@ -52,7 +53,7 @@ public class SayCommand extends Command {
         context.getMessageChannel().sendMessage(context.getContentRaw()).queue();
 
         if (context.isGuildMessage()) {
-            context.delete().reason("AvaIre say command usage").queue();
+            context.delete().reason("AvaIre say command usage").queue(null, RestActionUtil.IGNORE);
         }
 
         return true;

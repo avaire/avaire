@@ -166,7 +166,7 @@ public class PlayCommand extends ThreadCommand {
     private Consumer<TrackResponse> musicSuccess(final CommandMessage context, final boolean finalShouldLeaveMessage) {
         return (TrackResponse response) -> {
             if (!finalShouldLeaveMessage && canDeleteMessage(context)) {
-                context.delete().reason("Song request, removing song to cleanup chat").queue(null, null);
+                context.delete().reason("Song request, removing song to cleanup chat").queue(null, RestActionUtil.IGNORE);
             }
 
             response.getMusicManager().registerDefaultVolume();
