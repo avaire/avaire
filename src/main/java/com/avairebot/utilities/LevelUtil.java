@@ -82,7 +82,7 @@ public class LevelUtil {
      * @param player The player transformer from the current player database instance.
      */
     public static void rewardPlayer(AvaIre avaire, MessageReceivedEvent event, GuildTransformer guild, PlayerTransformer player) {
-        CacheUtil.getUncheckedUnwrapped(cache, event.getAuthor().getIdLong(), () -> {
+        CacheUtil.getUncheckedUnwrapped(cache, asKey(event), () -> {
             giveExperience(avaire, event.getMessage(), guild, player);
             return 0;
         });
@@ -195,5 +195,9 @@ public class LevelUtil {
             }
         }
         return roles;
+    }
+
+    private static Object asKey(MessageReceivedEvent event) {
+        return event.getGuild().getId() + ":" + event.getAuthor().getId();
     }
 }

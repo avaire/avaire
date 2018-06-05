@@ -6,10 +6,12 @@ import com.avairebot.database.transformers.PlayerTransformer;
 import com.avairebot.utilities.CacheUtil;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.User;
 
 import javax.annotation.CheckReturnValue;
+import javax.annotation.Nonnull;
 import java.sql.SQLException;
 import java.util.concurrent.TimeUnit;
 
@@ -32,7 +34,11 @@ public class PlayerController {
 
     @CheckReturnValue
     public static PlayerTransformer fetchPlayer(AvaIre avaire, Message message, User user) {
-        return (PlayerTransformer) CacheUtil.getUncheckedUnwrapped(cache, user.getIdLong(), () -> {
+        if (!message.getChannelType().isGuild()) {
+            return null;
+        }
+
+        return (PlayerTransformer) CacheUtil.getUncheckedUnwrapped(cache, asKey(message.getGuild(), user), () -> {
             try {
                 PlayerTransformer transformer = new PlayerTransformer(avaire.getDatabase()
                     .newQueryBuilder(Constants.PLAYER_EXPERIENCE_TABLE_NAME)
@@ -108,5 +114,9 @@ public class PlayerController {
         return !user.equals(transformer)
             || !user.getDiscriminator().equals(transformer.getDiscriminator())
             || !user.getAvatarId().equals(transformer.getAvatar());
+    }
+
+    private static String asKey(@Nonnull Guild guild, @Nonnull User user) {
+        return guild.getId() + ":" + user.getId();
     }
 }
