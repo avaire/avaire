@@ -17,7 +17,6 @@ import spark.Response;
 
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
-import java.util.Map;
 
 public class GetStats extends SparkRoute {
 
@@ -87,21 +86,9 @@ public class GetStats extends SparkRoute {
     private JSONObject buildMusic() {
         JSONObject music = new JSONObject();
 
-        long seconds = 0;
-        for (Map.Entry<Long, GuildMusicManager> entry : AudioHandler.getDefaultAudioHandler().musicManagers.entrySet()) {
-            for (AudioTrackContainer track : entry.getValue().getScheduler().getQueue()) {
-                if (track.getAudioTrack().getInfo().isStream) {
-                    continue;
-                }
-                seconds += parseAudioTrackDuration(track.getAudioTrack()) / 1000L;
-            }
-
-            if (entry.getValue().getPlayer() == null) {
-                continue;
-            }
-
-            seconds += parseAudioTrackDuration(entry.getValue().getPlayer().getPlayingTrack()) / 1000L;
-        }
+        long seconds = AudioHandler.getDefaultAudioHandler().musicManagers.values().stream()
+            .mapToLong(this::convertMusicMangerToSeconds)
+            .sum();
 
         int listeners = 0;
         if (LavalinkManager.LavalinkManagerHolder.LAVALINK.isEnabled()) {
@@ -139,5 +126,20 @@ public class GetStats extends SparkRoute {
             return 0L;
         }
         return track.getDuration() - track.getPosition();
+    }
+
+    private long convertMusicMangerToSeconds(GuildMusicManager musicManager) {
+        long seconds = 0;
+        for (AudioTrackContainer container : musicManager.getScheduler().getQueue()) {
+            if (container.getAudioTrack().getInfo().isStream) {
+                continue;
+            }
+            seconds += parseAudioTrackDuration(container.getAudioTrack()) / 1000L;
+        }
+
+        if (musicManager.getPlayer() == null) {
+            return seconds;
+        }
+        return seconds + parseAudioTrackDuration(musicManager.getPlayer().getPlayingTrack()) / 1000L;
     }
 }
