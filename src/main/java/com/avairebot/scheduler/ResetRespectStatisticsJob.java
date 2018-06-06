@@ -1,7 +1,7 @@
 package com.avairebot.scheduler;
 
 import com.avairebot.AvaIre;
-import com.avairebot.Statistics;
+import com.avairebot.commands.fun.RipCommand;
 import com.avairebot.contracts.scheduler.Job;
 import com.avairebot.time.Carbon;
 
@@ -16,7 +16,7 @@ public class ResetRespectStatisticsJob extends Job {
     @Override
     public void run() {
         if (!isSameDay()) {
-            Statistics.resetRespects();
+            RipCommand.RESPECT = 0;
         }
     }
 

@@ -1,18 +1,21 @@
 package com.avairebot.database.query;
 
+import com.avairebot.contracts.database.Database.QueryType;
 import com.avairebot.contracts.database.QueryClause;
-import com.avairebot.contracts.database.grammar.GrammarParser;
 import com.avairebot.contracts.database.query.ChangeableClosure;
 import com.avairebot.contracts.database.query.ClauseConsumer;
 import com.avairebot.database.DatabaseManager;
 import com.avairebot.database.collection.Collection;
+import com.avairebot.scheduler.ScheduleHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.SQLException;
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public final class QueryBuilder {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(QueryBuilder.class);
 
     /**
      * The instance of the {@link DatabaseManager}.
@@ -57,6 +60,11 @@ public final class QueryBuilder {
      * to -1 it should be ignored by the grammar generator.
      */
     private int skip = -1;
+    /**
+     * Determines if the query should be executed async or not, if the query is
+     * executed async it will not return any results, or throw any errors.
+     */
+    private boolean async = false;
 
     /**
      * Creates a new Query Builder instance.
@@ -665,6 +673,20 @@ public final class QueryBuilder {
     }
 
     /**
+     * Sets the async status for the query, if async is set to true the query will be executed on a separate
+     * thread, only <code>update</code>, <code>insert</code>, and <code>delete</code> queries can be
+     * executed as async, when async is enabled for a query it will not return any response or
+     * throw any exceptions that can be catched.
+     *
+     * @param async The query async value.
+     */
+    public QueryBuilder useAsync(boolean async) {
+        this.async = async;
+
+        return this;
+    }
+
+    /**
      * Creates the grammar instance and builds the SQL query, if an error occurs
      * while building the query <code>NULL</code> will be returned instead.
      *
@@ -673,11 +695,16 @@ public final class QueryBuilder {
      */
     public String toSQL() {
         try {
-            GrammarParser grammar = (GrammarParser) type.getGrammar().newInstance();
-
-            return grammar.parse(dbm, this);
-        } catch (InstantiationException | IllegalAccessException ex) {
-            Logger.getLogger(QueryBuilder.class.getName()).log(Level.SEVERE, null, ex);
+            switch (type) {
+                case SELECT:
+                    return dbm.getConnection().select(dbm, this, null);
+                case INSERT:
+                    return dbm.getConnection().insert(dbm, this, null);
+                case UPDATE:
+                    return dbm.getConnection().update(dbm, this, null);
+                case DELETE:
+                    return dbm.getConnection().delete(dbm, this, null);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -696,8 +723,12 @@ public final class QueryBuilder {
      *                      <code>ResultSet</code> object, the method is called on a
      *                      <code>PreparedStatement</code> or <code>CallableStatement</code>
      */
-    public com.avairebot.database.collection.Collection get() throws SQLException {
-        return new com.avairebot.database.collection.Collection(dbm.getConnection().query(this));
+    public Collection get() throws SQLException {
+        // Note: When parsing the result to a collection, we can't use the DBM query method since it auto closes the result,
+        // and the collection still needs to communicated with the result set to get meta data so it can build the keysets
+        // for the column names, this isn't possible if we close the result before parsing it to the collection, instead
+        // we use the direct connection and have the collection close the connection instead.
+        return new Collection(dbm.getConnection().query(this));
     }
 
     /**
@@ -717,9 +748,21 @@ public final class QueryBuilder {
         ChangeableStatement statement = new ChangeableStatement(this);
         closure.run(statement);
 
-        this.items.addAll(Arrays.asList(statement.getItems()));
+        this.items.addAll(Collections.singletonList(statement.getItems()));
 
-        return dbm.queryUpdate(this);
+        if (!async) {
+            return dbm.queryUpdate(this);
+        }
+
+        ScheduleHandler.getScheduler().submit(() -> {
+            try {
+                dbm.queryUpdate(this);
+            } catch (SQLException e) {
+                LOGGER.error("Error thrown during async update query: " + toSQL(), e);
+            }
+        });
+
+        return 0;
     }
 
     /**
@@ -753,7 +796,19 @@ public final class QueryBuilder {
 
         this.items.addAll(Arrays.asList(items));
 
-        return dbm.queryUpdate(this);
+        if (!async) {
+            return dbm.queryUpdate(this);
+        }
+
+        ScheduleHandler.getScheduler().submit(() -> {
+            try {
+                dbm.queryUpdate(this);
+            } catch (SQLException e) {
+                LOGGER.error("Error thrown during async update query: " + toSQL(), e);
+            }
+        });
+
+        return 0;
     }
 
     /**
@@ -766,24 +821,27 @@ public final class QueryBuilder {
      *                      this method is called on a closed  <code>PreparedStatement</code>
      *                      or the SQL statement returns a <code>ResultSet</code> object
      */
-    public com.avairebot.database.collection.Collection insert(ChangeableClosure closure) throws SQLException {
+    public Collection insert(ChangeableClosure closure) throws SQLException {
         type = QueryType.INSERT;
 
         ChangeableStatement statement = new ChangeableStatement(this);
         closure.run(statement);
 
-        this.items.addAll(Arrays.asList(statement.getItems()));
+        this.items.addAll(Collections.singletonList(statement.getItems()));
 
-        Set<Integer> keys = dbm.queryInsert(this);
-        List<Map<String, Object>> collectionItems = new ArrayList<>();
-
-        for (int id : keys) {
-            Map<String, Object> row = new HashMap<>();
-            row.put("id", id);
-            collectionItems.add(row);
+        if (!async) {
+            return runInsertQuery();
         }
 
-        return new com.avairebot.database.collection.Collection(collectionItems);
+        ScheduleHandler.getScheduler().submit(() -> {
+            try {
+                dbm.queryInsert(this);
+            } catch (SQLException e) {
+                LOGGER.error("Error thrown during async insert query: " + toSQL(), e);
+            }
+        });
+
+        return new Collection();
     }
 
     /**
@@ -796,7 +854,7 @@ public final class QueryBuilder {
      *                      this method is called on a closed  <code>PreparedStatement</code>
      *                      or the SQL statement returns a <code>ResultSet</code> object
      */
-    public com.avairebot.database.collection.Collection insert(List<String>... arrays) throws SQLException {
+    public Collection insert(List<String>... arrays) throws SQLException {
         return insert(buildMapFromArrays(arrays));
     }
 
@@ -810,21 +868,24 @@ public final class QueryBuilder {
      *                      this method is called on a closed  <code>PreparedStatement</code>
      *                      or the SQL statement returns a <code>ResultSet</code> object
      */
-    public com.avairebot.database.collection.Collection insert(Map<String, Object>... items) throws SQLException {
+    public Collection insert(Map<String, Object>... items) throws SQLException {
         type = QueryType.INSERT;
 
         this.items.addAll(Arrays.asList(items));
 
-        Set<Integer> keys = dbm.queryInsert(this);
-        List<Map<String, Object>> collectionItems = new ArrayList<>();
-
-        for (int id : keys) {
-            Map<String, Object> row = new HashMap<>();
-            row.put("id", id);
-            collectionItems.add(row);
+        if (!async) {
+            return runInsertQuery();
         }
 
-        return new Collection(collectionItems);
+        ScheduleHandler.getScheduler().submit(() -> {
+            try {
+                dbm.queryInsert(this);
+            } catch (SQLException e) {
+                LOGGER.error("Error thrown during async insert query: " + toSQL(), e);
+            }
+        });
+
+        return new Collection();
     }
 
     /**
@@ -840,7 +901,19 @@ public final class QueryBuilder {
     public int delete() throws SQLException {
         type = QueryType.DELETE;
 
-        return dbm.queryUpdate(this);
+        if (!async) {
+            return dbm.queryUpdate(this);
+        }
+
+        ScheduleHandler.getScheduler().submit(() -> {
+            try {
+                dbm.queryUpdate(this);
+            } catch (SQLException e) {
+                LOGGER.error("Error thrown during async delete query: " + toSQL(), e);
+            }
+        });
+
+        return 0;
     }
 
     /**
@@ -861,6 +934,28 @@ public final class QueryBuilder {
         }
 
         return map;
+    }
+
+    /**
+     * Runs the insert query and builds a collection of IDs for
+     * all the new rows that was created by the query.
+     *
+     * @return The collection of IDs for the created rows.
+     * @throws SQLException if a database access error occurs;
+     *                      this method is called on a closed  <code>PreparedStatement</code>
+     *                      or the SQL statement returns a <code>ResultSet</code> object
+     */
+    private Collection runInsertQuery() throws SQLException {
+        Set<Integer> keys = dbm.queryInsert(this);
+        List<Map<String, Object>> collectionItems = new ArrayList<>();
+
+        for (int id : keys) {
+            Map<String, Object> row = new HashMap<>();
+            row.put("id", id);
+            collectionItems.add(row);
+        }
+
+        return new Collection(collectionItems);
     }
 
     /**

@@ -1,6 +1,7 @@
 package com.avairebot.requests;
 
 import com.avairebot.AvaIre;
+import okhttp3.ResponseBody;
 
 import java.io.IOException;
 
@@ -22,10 +23,14 @@ public class Response {
     @Override
     public String toString() {
         try {
-            return response.body().string();
+            try (ResponseBody body = response.body()) {
+                if (body != null) {
+                    return body.string();
+                }
+            }
         } catch (IOException e) {
             e.printStackTrace();
-            return null;
         }
+        return null;
     }
 }

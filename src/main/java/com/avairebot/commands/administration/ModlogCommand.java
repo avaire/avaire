@@ -5,7 +5,6 @@ import com.avairebot.Constants;
 import com.avairebot.chat.PlaceholderMessage;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
-import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.utilities.ComparatorUtil;
 import com.avairebot.utilities.MentionableUtil;
@@ -66,7 +65,7 @@ public class ModlogCommand extends Command {
 
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
-        GuildTransformer transformer = GuildController.fetchGuild(avaire, context.getMessage());
+        GuildTransformer transformer = context.getGuildTransformer();
         if (transformer == null) {
             return sendErrorMessage(context,
                 "Something went wrong while trying to get the guild transformer object, please contact one of my developers to look into this issue."

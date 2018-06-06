@@ -55,7 +55,7 @@ public class SetGuildTypeCommand extends SystemCommand {
 
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
-        GuildTransformer guildTransformer = GuildController.fetchGuild(avaire, context.getGuild());
+        GuildTransformer guildTransformer = context.getGuildTransformer();
         if (guildTransformer == null) {
             return sendErrorMessage(context,
                 "Something went wrong while trying to get the guild transformer object, check the console for more information."
@@ -136,7 +136,7 @@ public class SetGuildTypeCommand extends SystemCommand {
                 .where("id", context.getGuild().getId())
                 .update(statement -> statement.set("type", typeId));
 
-            GuildController.forgetCache(avaire, context.getGuild().getId());
+            GuildController.forgetCache(context.getGuild().getIdLong());
 
             context.makeSuccess("The guild type for **:guildname** has been changed to **:type**")
                 .set("guildname", context.getGuild().getName())

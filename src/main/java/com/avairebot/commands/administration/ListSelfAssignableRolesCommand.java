@@ -4,7 +4,6 @@ import com.avairebot.AvaIre;
 import com.avairebot.chat.SimplePaginator;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
-import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.utilities.NumberUtil;
 import net.dv8tion.jda.core.entities.Role;
@@ -36,7 +35,10 @@ public class ListSelfAssignableRolesCommand extends Command {
 
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
-        GuildTransformer transformer = GuildController.fetchGuild(avaire, context.getMessage());
+        GuildTransformer transformer = context.getGuildTransformer();
+        if (transformer == null) {
+            return sendErrorMessage(context, "errors.errorOccurredWhileLoading", "server settings");
+        }
 
         if (transformer.getSelfAssignableRoles().isEmpty()) {
             context.makeWarning("There are currently no self-assignable roles for this server.").queue();

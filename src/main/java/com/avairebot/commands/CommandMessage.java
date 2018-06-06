@@ -4,7 +4,10 @@ import com.avairebot.chat.MessageType;
 import com.avairebot.chat.PlaceholderMessage;
 import com.avairebot.config.YamlConfiguration;
 import com.avairebot.contracts.commands.CommandContext;
+import com.avairebot.database.transformers.GuildTransformer;
+import com.avairebot.database.transformers.PlayerTransformer;
 import com.avairebot.factories.MessageFactory;
+import com.avairebot.handlers.DatabaseEventHolder;
 import com.avairebot.language.I18n;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.*;
@@ -31,19 +34,24 @@ public class CommandMessage implements CommandContext {
 
     private final boolean mentionableCommand;
     private final String aliasArguments;
+    private final DatabaseEventHolder databaseEventHolder;
 
     private YamlConfiguration i18n;
     private String i18nCommandPrefix;
 
-    public CommandMessage(Message message) {
-        this(null, message, false, new String[0]);
+    public CommandMessage(CommandContext message) {
+        this(null, message.getDatabaseEventHolder(), message.getMessage(), false, new String[0]);
     }
 
-    public CommandMessage(CommandContainer container, Message message) {
-        this(container, message, false, new String[0]);
+    public CommandMessage(CommandContext message, DatabaseEventHolder databaseEventHolder) {
+        this(null, databaseEventHolder, message.getMessage(), false, new String[0]);
     }
 
-    public CommandMessage(CommandContainer container, Message message, boolean mentionableCommand, String[] aliasArguments) {
+    public CommandMessage(CommandContainer container, DatabaseEventHolder databaseEventHolder, Message message) {
+        this(container, databaseEventHolder, message, false, new String[0]);
+    }
+
+    public CommandMessage(CommandContainer container, DatabaseEventHolder databaseEventHolder, Message message, boolean mentionableCommand, String[] aliasArguments) {
         if (container != null) {
             setI18nCommandPrefix(container);
         }
@@ -53,6 +61,7 @@ public class CommandMessage implements CommandContext {
         this.guild = message.getGuild();
         this.member = message.getMember();
         this.channel = message.getTextChannel();
+        this.databaseEventHolder = databaseEventHolder;
 
         this.mentionableCommand = mentionableCommand;
         this.aliasArguments = aliasArguments.length == 0 ?
@@ -126,6 +135,21 @@ public class CommandMessage implements CommandContext {
     @Override
     public Message getMessage() {
         return message;
+    }
+
+    @Override
+    public GuildTransformer getGuildTransformer() {
+        return databaseEventHolder == null ? null : databaseEventHolder.getGuild();
+    }
+
+    @Override
+    public PlayerTransformer getPlayerTransformer() {
+        return databaseEventHolder == null ? null : databaseEventHolder.getPlayer();
+    }
+
+    @Override
+    public DatabaseEventHolder getDatabaseEventHolder() {
+        return databaseEventHolder;
     }
 
     @Override
@@ -215,10 +239,14 @@ public class CommandMessage implements CommandContext {
     @CheckReturnValue
     public String i18nRaw(@Nonnull String key) {
         if (getI18n().contains(key)) {
-            return getI18n().getString(key).replace("\\n", "\n");
+            return getI18n().getString(key)
+                .replace("\\n", "\n")
+                .replace("\\t", "\t");
         } else {
-            LOGGER.warn("Missing language entry for key {} in language {}", key, I18n.getLocale(getGuild()).getCode());
-            return I18n.DEFAULT.getConfig().getString(key).replace("\\n", "\n");
+            LOGGER.warn("Missing language entry for key {} in language {}", key, I18n.getLocale(getGuild()).getLanguage().getCode());
+            return I18n.DEFAULT.getConfig().getString(key)
+                .replace("\\n", "\n")
+                .replace("\\t", "\t");
         }
     }
 

@@ -2,15 +2,17 @@ package com.avairebot.commands.utility;
 
 import com.avairebot.AppInfo;
 import com.avairebot.AvaIre;
-import com.avairebot.Statistics;
 import com.avairebot.audio.AudioHandler;
 import com.avairebot.cache.CacheType;
 import com.avairebot.chat.MessageType;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
+import com.avairebot.metrics.Metrics;
 import com.avairebot.utilities.NumberUtil;
 import com.google.gson.internal.LinkedTreeMap;
+import io.prometheus.client.Collector;
 import net.dv8tion.jda.core.entities.MessageEmbed;
+import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
@@ -80,7 +82,7 @@ public class StatsCommand extends Command {
             new MessageEmbed.Field(context.i18n("fields.database"), getDatabaseQueriesStats(context), true),
             new MessageEmbed.Field(context.i18n("fields.messages"), getMessagesReceivedStats(context), true),
             new MessageEmbed.Field(context.i18n("fields.shard"), "" + context.getJDA().getShardInfo().getShardId(), true),
-            new MessageEmbed.Field(context.i18n("fields.commands"), NumberUtil.formatNicely(Statistics.getCommands()), true),
+            new MessageEmbed.Field(context.i18n("fields.commands"), NumberUtil.formatNicely(getTotalsFrom(Metrics.commandsReceived.collect())), true),
             new MessageEmbed.Field(context.i18n("fields.memory"), memoryUsage(context), true),
             new MessageEmbed.Field(context.i18n("fields.uptime"), applicationUptime(), true),
             new MessageEmbed.Field(context.i18n("fields.members"), NumberUtil.formatNicely(avaire.getShardEntityCounter().getUsers()), true),
@@ -91,8 +93,8 @@ public class StatsCommand extends Command {
             .setAuthor("AvaIre v" + AppInfo.getAppInfo().VERSION, "https://discordapp.com/invite/gt2FWER", avaire.getSelfUser().getEffectiveAvatarUrl())
             .setFooter(String.format(
                 context.i18n("footer"),
-                NumberUtil.formatNicely(AudioHandler.getTotalListenersSize()),
-                NumberUtil.formatNicely(AudioHandler.getTotalQueueSize())
+                NumberUtil.formatNicely(AudioHandler.getDefaultAudioHandler().getTotalListenersSize()),
+                NumberUtil.formatNicely(AudioHandler.getDefaultAudioHandler().getTotalQueueSize())
             ))
             .setDescription(description.toString())
             .queue();
@@ -123,18 +125,20 @@ public class StatsCommand extends Command {
     }
 
     private String getDatabaseQueriesStats(CommandMessage context) {
+        int databaseQueries = getTotalsFrom(Metrics.databaseQueries.collect());
         return String.format(
             context.i18n("formats.database"),
-            NumberUtil.formatNicely(Statistics.getQueries()),
-            decimalNumber.format(Statistics.getQueries() / ((double) ManagementFactory.getRuntimeMXBean().getUptime() / (double) (1000 * 60)))
+            NumberUtil.formatNicely(databaseQueries),
+            decimalNumber.format(databaseQueries / ((double) ManagementFactory.getRuntimeMXBean().getUptime() / (double) (1000 * 60)))
         );
     }
 
     private String getMessagesReceivedStats(CommandMessage context) {
+        double value = Metrics.jdaEvents.labels(MessageReceivedEvent.class.getSimpleName()).get();
         return String.format(
             context.i18n("formats.messages"),
-            NumberUtil.formatNicely(Statistics.getMessages()),
-            decimalNumber.format(Statistics.getMessages() / ((double) ManagementFactory.getRuntimeMXBean().getUptime() / (double) (1000)))
+            NumberUtil.formatNicely(value),
+            decimalNumber.format(value / ((double) ManagementFactory.getRuntimeMXBean().getUptime() / (double) (1000)))
         );
     }
 
@@ -144,5 +148,15 @@ public class StatsCommand extends Command {
             (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / (1024 * 1024),
             Runtime.getRuntime().totalMemory() / (1024 * 1024)
         );
+    }
+
+    private int getTotalsFrom(List<Collector.MetricFamilySamples> familySamples) {
+        double total = 0.0D;
+        for (Collector.MetricFamilySamples family : familySamples) {
+            for (Collector.MetricFamilySamples.Sample sample : family.samples) {
+                total += sample.value;
+            }
+        }
+        return (int) total;
     }
 }

@@ -51,14 +51,15 @@ public class SongCommand extends Command {
     @Override
     public List<String> getMiddleware() {
         return Arrays.asList(
-            "has-dj-level:none",
-            "throttle:channel,2,4"
+            "hasDJLevel:none",
+            "throttle:channel,2,4",
+            "musicChannel"
         );
     }
 
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
-        GuildMusicManager musicManager = AudioHandler.getGuildAudioPlayer(context.getGuild());
+        GuildMusicManager musicManager = AudioHandler.getDefaultAudioHandler().getGuildAudioPlayer(context.getGuild());
 
         if (musicManager.getPlayer().getPlayingTrack() == null) {
             return sendErrorMessage(context,
@@ -124,8 +125,13 @@ public class SongCommand extends Command {
             message = context.i18n("formats.stream");
         }
 
+        String songTitle = player.getPlayingTrack().getInfo().title;
+        if (songTitle == null || songTitle.equalsIgnoreCase("Unknown Title")) {
+            songTitle = player.getPlayingTrack().getInfo().uri;
+        }
+
         return String.format(message,
-            player.getPlayingTrack().getInfo().title,
+            songTitle,
             player.getPlayingTrack().getInfo().uri,
             player.getVolume() + "%",
             scheduler.getAudioTrackContainer().getFormattedTotalTimeLeft(player),

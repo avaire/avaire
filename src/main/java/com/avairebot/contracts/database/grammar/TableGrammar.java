@@ -1,10 +1,13 @@
 package com.avairebot.contracts.database.grammar;
 
 import com.avairebot.contracts.database.QueryClause;
+import com.avairebot.database.exceptions.DatabaseException;
 import com.avairebot.database.query.Clause;
 import com.avairebot.database.query.NestedClause;
 import com.avairebot.database.query.OperatorType;
 import com.avairebot.database.query.QueryBuilder;
+
+import java.sql.SQLException;
 
 public abstract class TableGrammar extends Grammar {
     /**
@@ -80,6 +83,12 @@ public abstract class TableGrammar extends Grammar {
     private void addClause(Clause clause, boolean exemptOperator) {
         if (clause.getOrder() == null) {
             clause.setOrder(OperatorType.AND);
+        }
+
+        if (clause.getTwo() == null) {
+            throw new DatabaseException("Invalid 2nd clause given, the clause comparator can not be NULL! Query so far:  " + getQuery(),
+                new SQLException("Invalid 2nd clause given, the clause comparator can not be NULL!")
+            );
         }
 
         String field = clause.getTwo().toString();

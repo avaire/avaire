@@ -96,14 +96,12 @@ public class MemorySection implements ConfigurationSection {
         char separator = root.options().pathSeparator();
 
         StringBuilder builder = new StringBuilder();
-        if (section != null) {
-            for (ConfigurationSection parent = section; (parent != null) && (parent != relativeTo); parent = parent.getParent()) {
-                if (builder.length() > 0) {
-                    builder.insert(0, separator);
-                }
-
-                builder.insert(0, parent.getName());
+        for (ConfigurationSection parent = section; (parent != null) && (parent != relativeTo); parent = parent.getParent()) {
+            if (builder.length() > 0) {
+                builder.insert(0, separator);
             }
+
+            builder.insert(0, parent.getName());
         }
 
         if ((key != null) && (key.length() > 0)) {
@@ -699,9 +697,9 @@ public class MemorySection implements ConfigurationSection {
             for (Map.Entry<String, Object> entry : sec.map.entrySet()) {
                 output.add(createPath(section, entry.getKey(), this));
 
-                if ((deep) && (entry.getValue() instanceof ConfigurationSection)) {
+                if (deep && (entry.getValue() instanceof ConfigurationSection)) {
                     ConfigurationSection subsection = (ConfigurationSection) entry.getValue();
-                    mapChildrenKeys(output, subsection, deep);
+                    mapChildrenKeys(output, subsection, true);
                 }
             }
         } else {
@@ -722,7 +720,7 @@ public class MemorySection implements ConfigurationSection {
 
                 if (entry.getValue() instanceof ConfigurationSection) {
                     if (deep) {
-                        mapChildrenValues(output, (ConfigurationSection) entry.getValue(), deep);
+                        mapChildrenValues(output, (ConfigurationSection) entry.getValue(), true);
                     }
                 }
             }
@@ -736,6 +734,7 @@ public class MemorySection implements ConfigurationSection {
     }
 
     @Override
+    @SuppressWarnings("StringBufferReplaceableByString")
     public String toString() {
         ConfigurationBase root = getRoot();
         return new StringBuilder()

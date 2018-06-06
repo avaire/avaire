@@ -2,6 +2,8 @@ package com.avairebot.contracts.cache;
 
 import com.avairebot.cache.CacheItem;
 
+import java.util.function.Supplier;
+
 public abstract class CacheAdapter {
 
     /**
@@ -22,7 +24,7 @@ public abstract class CacheAdapter {
      * @param closure The closure that should be invoked if the cache doesn't exists
      * @return the object that exists in the cache, if the cache token is empty the result of the closure will be retruend instead.
      */
-    public abstract Object remember(String token, int seconds, CacheClosure closure);
+    public abstract Object remember(String token, int seconds, Supplier<Object> closure);
 
     /**
      * Store an item in the cache indefinitely.

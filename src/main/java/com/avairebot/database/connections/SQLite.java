@@ -5,9 +5,15 @@ import com.avairebot.contracts.database.StatementInterface;
 import com.avairebot.contracts.database.connections.FilenameDatabase;
 import com.avairebot.database.DatabaseManager;
 import com.avairebot.database.exceptions.DatabaseException;
+import com.avairebot.database.grammar.sqlite.*;
+import com.avairebot.database.query.QueryBuilder;
+import com.avairebot.database.schema.Blueprint;
+import com.avairebot.metrics.Metrics;
 
+import javax.annotation.Nonnull;
 import java.sql.*;
 import java.util.Arrays;
+import java.util.Map;
 
 public class SQLite extends FilenameDatabase {
 
@@ -126,11 +132,33 @@ public class SQLite extends FilenameDatabase {
 
     @Override
     protected Statement createPreparedStatement(String query) throws SQLException {
+        Metrics.databaseQueries.labels(query.split(" ")[0].toUpperCase()).inc();
+
         Statement statement = getConnection().createStatement();
 
         statement.setQueryTimeout(5);
         statement.setMaxRows(25000);
 
         return statement;
+    }
+
+    public String select(DatabaseManager manager, QueryBuilder query, Map<String, Boolean> options) {
+        return setupAndRun(new Select(), query, manager, options);
+    }
+
+    public String create(DatabaseManager manager, Blueprint blueprint, @Nonnull Map<String, Boolean> options) {
+        return setupAndRun(new Create(), blueprint, manager, options);
+    }
+
+    public String delete(DatabaseManager manager, QueryBuilder query, Map<String, Boolean> options) {
+        return setupAndRun(new Delete(), query, manager, options);
+    }
+
+    public String insert(DatabaseManager manager, QueryBuilder query, Map<String, Boolean> options) {
+        return setupAndRun(new Insert(), query, manager, options);
+    }
+
+    public String update(DatabaseManager manager, QueryBuilder query, Map<String, Boolean> options) {
+        return setupAndRun(new Update(), query, manager, options);
     }
 }

@@ -7,7 +7,6 @@ import com.avairebot.contracts.commands.Command;
 import com.avairebot.contracts.commands.CommandContext;
 import com.avairebot.database.collection.Collection;
 import com.avairebot.database.collection.DataRow;
-import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.factories.MessageFactory;
 import com.avairebot.shared.DiscordConstants;
@@ -72,7 +71,7 @@ public class ModlogReasonCommand extends Command {
 
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
-        GuildTransformer transformer = GuildController.fetchGuild(avaire, context.getGuild());
+        GuildTransformer transformer = context.getGuildTransformer();
         if (transformer == null) {
             return sendErrorMessage(context, "errors.errorOccurredWhileLoading", "server settings");
         }

@@ -87,6 +87,10 @@ public class Collection implements Cloneable, Iterable<DataRow> {
 
             items.add(new DataRow(array));
         }
+
+        if (!result.isClosed()) {
+            result.close();
+        }
     }
 
     /**

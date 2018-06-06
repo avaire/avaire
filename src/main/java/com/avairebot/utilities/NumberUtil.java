@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 public class NumberUtil {
 
     private static final Pattern TIMESTAMP_PATTERN = Pattern.compile("^(\\d?\\d)(?::([0-5]?\\d))?(?::([0-5]?\\d))?$");
-    private static final Pattern NUMBER_PATTERN = Pattern.compile("[0-9]+");
+    private static final Pattern NUMBER_PATTERN = Pattern.compile("[-+]?\\d*\\.?\\d+");
     private static final DecimalFormat NICE_FORMAT = new DecimalFormat("#,##0");
 
     /**
@@ -108,7 +108,6 @@ public class NumberUtil {
     public static int getBetween(int number, int min, int max) {
         return Math.min(max, Math.max(min, number));
     }
-
 
     /**
      * Formats time in milliseconds into it's "time" format, into hours:minutes:seconds, if

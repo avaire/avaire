@@ -35,14 +35,15 @@ public class RepeatMusicQueueCommand extends Command {
     @Override
     public List<String> getMiddleware() {
         return Arrays.asList(
-            "has-dj-level:normal",
-            "throttle:guild,2,4"
+            "hasDJLevel:normal",
+            "throttle:guild,2,4",
+            "musicChannel"
         );
     }
 
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
-        GuildMusicManager musicManager = AudioHandler.getGuildAudioPlayer(context.getGuild());
+        GuildMusicManager musicManager = AudioHandler.getDefaultAudioHandler().getGuildAudioPlayer(context.getGuild());
 
         if (musicManager.getPlayer().getPlayingTrack() == null) {
             return sendErrorMessage(context, context.i18n("error"),

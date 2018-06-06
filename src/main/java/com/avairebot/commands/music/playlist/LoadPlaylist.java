@@ -26,14 +26,14 @@ public class LoadPlaylist extends PlaylistSubCommand {
 
     @Override
     public boolean onCommand(CommandMessage context, String[] args, GuildTransformer guild, PlaylistTransformer playlist) {
-        VoiceConnectStatus voiceConnectStatus = AudioHandler.connectToVoiceChannel(context);
+        VoiceConnectStatus voiceConnectStatus = AudioHandler.getDefaultAudioHandler().connectToVoiceChannel(context);
         if (!voiceConnectStatus.isSuccess()) {
             context.makeWarning(voiceConnectStatus.getErrorMessage()).queue();
             return false;
         }
 
         List<AudioTrack> tracks = new ArrayList<>();
-        AudioHandler.getGuildAudioPlayer(context.getGuild()).setLastActiveMessage(context);
+        AudioHandler.getDefaultAudioHandler().getGuildAudioPlayer(context.getGuild()).setLastActiveMessage(context);
 
         int index = 0;
         for (PlaylistTransformer.PlaylistSong song : playlist.getSongs()) {
@@ -63,14 +63,14 @@ public class LoadPlaylist extends PlaylistSubCommand {
             return;
         }
 
-        AudioHandler.getGuildAudioPlayer(context.getGuild())
+        AudioHandler.getDefaultAudioHandler().getGuildAudioPlayer(context.getGuild())
             .getScheduler().queue(playlist, tracks, context.getAuthor());
     }
 
     private void loadSong(PlaylistTransformer.PlaylistSong song, final List<AudioTrack> tracks, Consumer<List<AudioTrack>> success) {
         Metrics.searchRequests.inc();
 
-        AudioHandler.getPlayerManager().loadItemOrdered(AudioHandler.MUSIC_MANAGER, song.getLink(), new AudioLoadResultHandler() {
+        AudioHandler.getDefaultAudioHandler().getPlayerManager().loadItemOrdered(AudioHandler.getDefaultAudioHandler().musicManagers, song.getLink(), new AudioLoadResultHandler() {
             @Override
             public void trackLoaded(AudioTrack track) {
                 Metrics.tracksLoaded.inc();

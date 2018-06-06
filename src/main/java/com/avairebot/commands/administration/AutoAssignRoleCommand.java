@@ -5,7 +5,6 @@ import com.avairebot.Constants;
 import com.avairebot.chat.PlaceholderMessage;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
-import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.utilities.RoleUtil;
 import net.dv8tion.jda.core.entities.Role;
@@ -61,7 +60,7 @@ public class AutoAssignRoleCommand extends Command {
 
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
-        GuildTransformer transformer = GuildController.fetchGuild(avaire, context.getMessage());
+        GuildTransformer transformer = context.getGuildTransformer();
 
         if (args.length == 0) {
             sendCurrentAutoRole(context, transformer).queue();
@@ -72,15 +71,15 @@ public class AutoAssignRoleCommand extends Command {
             return disableAutoRole(context, transformer);
         }
 
-        List<Role> roles = context.getGuild().getRolesByName(String.join(" ", args), true);
-        if (roles.isEmpty()) {
+        String roleName = String.join(" ", args);
+        Role role = RoleUtil.getRoleFromMentionsOrName(context.getMessage(), roleName);
+        if (role == null) {
             context.makeWarning(":user Invalid role, I couldn't find any role called **:role**")
-                .set("role", String.join(" ", args))
+                .set("role", roleName)
                 .queue();
             return false;
         }
 
-        Role role = roles.get(0);
         if (RoleUtil.isRoleHierarchyHigher(context.getMember().getRoles(), role)) {
             context.makeWarning(
                 ":user The **:role** role is positioned higher in the hierarchy than any role you have, you can't add roles with a higher ranking than you have."

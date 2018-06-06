@@ -5,7 +5,6 @@ import com.avairebot.Constants;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.contracts.commands.CommandContext;
-import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.shared.DiscordConstants;
 import com.avairebot.utilities.NumberUtil;
@@ -59,17 +58,18 @@ public class SetDefaultVolumeCommand extends Command {
     @Override
     public List<String> getMiddleware() {
         return Arrays.asList(
-            "has-dj-level:normal",
+            "hasDJLevel:normal",
             "throttle:guild,1,4",
-            "has-voted"
+            "hasVoted",
+            "musicChannel"
         );
     }
 
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
-        GuildTransformer transformer = GuildController.fetchGuild(avaire, context.getGuild());
+        GuildTransformer transformer = context.getGuildTransformer();
         if (transformer == null) {
-            return sendErrorMessage(context, "errorOccurredWhileLoading", "default volume");
+            return sendErrorMessage(context, "errors.errorOccurredWhileLoading", "default volume");
         }
 
         if (args.length == 0) {

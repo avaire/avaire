@@ -9,7 +9,6 @@ import com.avairebot.contracts.commands.ThreadCommand;
 import com.avairebot.database.collection.Collection;
 import com.avairebot.database.collection.DataRow;
 import com.avairebot.database.connections.SQLite;
-import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.controllers.PlaylistController;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.database.transformers.PlaylistTransformer;
@@ -90,8 +89,9 @@ public class PlaylistCommand extends ThreadCommand {
     @Override
     public List<String> getMiddleware() {
         return Arrays.asList(
-            "has-dj-level:normal",
-            "throttle:user,2,5"
+            "hasDJLevel:normal",
+            "throttle:user,2,5",
+            "musicChannel"
         );
     }
 
@@ -107,12 +107,12 @@ public class PlaylistCommand extends ThreadCommand {
 
         Collection playlists = PlaylistController.fetchPlaylists(avaire, context.getMessage());
         if (playlists == null) {
-            return sendErrorMessage(context, "errorOccurredWhileLoading", "servers playlist");
+            return sendErrorMessage(context, "errors.errorOccurredWhileLoading", "servers playlist");
         }
 
-        GuildTransformer transformer = GuildController.fetchGuild(avaire, context.getMessage());
+        GuildTransformer transformer = context.getGuildTransformer();
         if (transformer == null) {
-            return sendErrorMessage(context, "errorOccurredWhileLoading", "server settings");
+            return sendErrorMessage(context, "errors.errorOccurredWhileLoading", "server settings");
         }
 
         if (args.length == 0 && playlists.isEmpty()) {

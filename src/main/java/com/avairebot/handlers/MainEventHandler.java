@@ -8,6 +8,7 @@ import net.dv8tion.jda.core.events.channel.text.TextChannelCreateEvent;
 import net.dv8tion.jda.core.events.channel.text.TextChannelDeleteEvent;
 import net.dv8tion.jda.core.events.channel.text.update.TextChannelUpdateNameEvent;
 import net.dv8tion.jda.core.events.channel.text.update.TextChannelUpdatePositionEvent;
+import net.dv8tion.jda.core.events.channel.voice.VoiceChannelDeleteEvent;
 import net.dv8tion.jda.core.events.guild.GuildJoinEvent;
 import net.dv8tion.jda.core.events.guild.GuildLeaveEvent;
 import net.dv8tion.jda.core.events.guild.member.GuildMemberJoinEvent;
@@ -64,6 +65,11 @@ public class MainEventHandler extends EventHandler {
     @Override
     public void onGuildLeave(GuildLeaveEvent event) {
         guildStateEvent.onGuildLeave(event);
+    }
+
+    @Override
+    public void onVoiceChannelDelete(VoiceChannelDeleteEvent event) {
+        channelEvent.onVoiceChannelDelete(event);
     }
 
     @Override

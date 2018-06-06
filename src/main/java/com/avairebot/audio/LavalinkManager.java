@@ -64,7 +64,7 @@ public class LavalinkManager {
     IPlayer createPlayer(String guildId) {
         return isEnabled()
             ? lavalink.getLink(guildId).getPlayer()
-            : new LavaplayerPlayerWrapper(AudioHandler.getPlayerManager().createPlayer());
+            : new LavaplayerPlayerWrapper(AudioHandler.getDefaultAudioHandler().getPlayerManager().createPlayer());
     }
 
     public void openConnection(VoiceChannel channel) {

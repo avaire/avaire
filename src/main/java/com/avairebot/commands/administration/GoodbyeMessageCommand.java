@@ -5,7 +5,6 @@ import com.avairebot.Constants;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.CacheFingerprint;
 import com.avairebot.contracts.commands.Command;
-import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.transformers.ChannelTransformer;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.utilities.MentionableUtil;
@@ -57,9 +56,9 @@ public class GoodbyeMessageCommand extends Command {
 
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
-        GuildTransformer guildTransformer = GuildController.fetchGuild(avaire, context.getGuild());
+        GuildTransformer guildTransformer = context.getGuildTransformer();
         if (guildTransformer == null) {
-            return sendErrorMessage(context, "errorOccurredWhileLoading", "server data");
+            return sendErrorMessage(context, "errors.errorOccurredWhileLoading", "server data");
         }
 
         ChannelTransformer channelTransformer = guildTransformer.getChannel(context.getChannel().getId());
@@ -116,7 +115,7 @@ public class GoodbyeMessageCommand extends Command {
 
     private boolean sendEnableMessage(CommandMessage context, ChannelTransformer channelTransformer) {
         context.makeSuccess(String.join("\n",
-            "The `Welcome` module message has been set to:",
+            "The `Goodbye` module message has been set to:",
             "",
             "```:message```",
             "",

@@ -72,7 +72,7 @@ help:
         invalidCommand: 'Invalid command given, there are no command that has the trigger `:trigger`'
         tryingToViewSystemCommands: "You don't have permissions to run any of the commands in the `System` category, system commands can affect all the servers the bot is currently running on, and thus are limited to bot administrators/developers."
         singularHiddenCategories: '_There is **%s** hidden category for this channel._'
-        multipleHiddenCategories: '_There is **%s** hidden categories for this channel._'
+        multipleHiddenCategories: '_There are **%s** hidden categories for this channel._'
         fields:
             usage: 'Usage'
             example: 'Example'
@@ -110,6 +110,7 @@ music:
         queueHasEnded: "Queue be ended, leavin' voice."
         noMatchFound: "I found nothin' with th' given query: `%s`"
         trackLoadFailed: "I couldn't add that t' th' queue: `%s`"
+        musicChannel: "You can only use music commands in the :channel channel."
 
     ClearQueueCommand:
         error: "Nothin' t' clear, request somethin' first wit' `%splay`"
@@ -119,6 +120,18 @@ music:
     MoveHereCommand:
         error: "Nah connected t' voice, request shanties first wit' `%splay`"
         nowPlayingIn: 'I now be playing music in **:channelName**'
+
+    MusicChannelCommand:
+        updated: "The **:type** music channel has been successfully been :status"
+        field:
+            title: "Music Channels"
+            message: "**Text Channel:** :text\n**Voice Channel:** :voice"
+        status:
+            disabled: "disabled"
+            enabled: "set to **%s**"
+        errors:
+            invalidType: "Invalid type of music channel given, the type must be either `text` or `voice`"
+            notValidType: "`%s` is not a not a valid %s channel, you must include a valid voice channel you want to use as the music channel."
 
     PauseCommand:
         error: "Nothin' t' pause, request chanties first wit' `%splay`"
@@ -326,6 +339,8 @@ utility:
             rank: 'Rank'
             level: 'Level'
             experience: 'Experience'
+            experienceToNext: 'Experience needed to next Level'
+            youNeedMoreXpToLevelUp: '\t\t\t\t\t\t\t\t\tYou need %s more XP to level up.'
 
     ServerIdCommand:
         message: ':user :id: of this server is `:guildid`'

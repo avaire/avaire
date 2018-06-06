@@ -4,7 +4,6 @@ import com.avairebot.AvaIre;
 import com.avairebot.Constants;
 import com.avairebot.cache.CacheItem;
 import com.avairebot.contracts.cache.CacheAdapter;
-import com.avairebot.contracts.cache.CacheClosure;
 import com.avairebot.shared.ExitCodes;
 import org.slf4j.LoggerFactory;
 
@@ -17,6 +16,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Supplier;
 
 public class FileAdapter extends CacheAdapter {
 
@@ -37,13 +37,13 @@ public class FileAdapter extends CacheAdapter {
     }
 
     @Override
-    public Object remember(String token, int seconds, CacheClosure closure) {
+    public Object remember(String token, int seconds, Supplier<Object> closure) {
         if (has(token)) {
             return get(token);
         }
 
         try {
-            writeTo(generateCacheFile(token), closure.run(), seconds);
+            writeTo(generateCacheFile(token), closure.get(), seconds);
 
             return get(token);
         } catch (Exception e) {
@@ -60,7 +60,7 @@ public class FileAdapter extends CacheAdapter {
     @Override
     public Object get(String token) {
         File cacheFile = generateCacheFile(token);
-        if (!cacheFile.exists()) {
+        if (cacheFile == null || !cacheFile.exists()) {
             return null;
         }
 
@@ -82,7 +82,7 @@ public class FileAdapter extends CacheAdapter {
     @Override
     public CacheItem getRaw(String token) {
         File cacheFile = generateCacheFile(token);
-        if (!cacheFile.exists()) {
+        if (cacheFile == null || !cacheFile.exists()) {
             return null;
         }
 
@@ -97,7 +97,7 @@ public class FileAdapter extends CacheAdapter {
     @Override
     public boolean has(String token) {
         File cacheFile = generateCacheFile(token);
-        if (!cacheFile.exists()) {
+        if (cacheFile == null || !cacheFile.exists()) {
             return false;
         }
 
@@ -117,7 +117,7 @@ public class FileAdapter extends CacheAdapter {
     @Override
     public CacheItem forget(String token) {
         File cacheFile = generateCacheFile(token);
-        if (!cacheFile.exists()) {
+        if (cacheFile == null || !cacheFile.exists()) {
             return null;
         }
 
@@ -201,6 +201,10 @@ public class FileAdapter extends CacheAdapter {
 
     private File generateCacheFile(String string) {
         String cacheToken = encrypt(string);
+        if (cacheToken == null) {
+            return null;
+        }
+
         File cachePath = new File(storagePath,
             cacheToken.substring(0, 2) + File.separator
                 + cacheToken.substring(2, 4) + File.separator

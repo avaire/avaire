@@ -8,7 +8,6 @@ public class ComparatorUtil {
     private final static HashSet<String> fuzzyTrue = new HashSet<>(Arrays.asList("yes", "y", "on", "enable", "true", "confirm", "1"));
     private final static HashSet<String> fuzzyFalse = new HashSet<>(Arrays.asList("no", "n", "off", "disable", "false", "0"));
 
-
     /**
      * Checks if the given {@code text} matches a true statement using the {@link #fuzzyTrue} hash set.
      *

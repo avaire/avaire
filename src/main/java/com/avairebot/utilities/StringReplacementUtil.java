@@ -2,7 +2,21 @@ package com.avairebot.utilities;
 
 import net.dv8tion.jda.core.entities.*;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class StringReplacementUtil {
+
+    public static String replaceAll(String string, String key, String value) {
+        if (key == null || value == null) {
+            return string;
+        }
+
+        return string.replaceAll(
+            Pattern.quote(key),
+            Matcher.quoteReplacement(value)
+        );
+    }
 
     public static String parseGuildJoinLeaveMessage(Guild guild, TextChannel channel, User user, String message) {
         return StringReplacementUtil.parseChannel(channel,
@@ -28,8 +42,8 @@ public class StringReplacementUtil {
     }
 
     public static String parseGuild(Guild guild, String string) {
-        string = string.replaceAll("%server%", guild.getName());
-        string = string.replaceAll("%servername%", guild.getName());
+        string = string.replaceAll("%server%", Matcher.quoteReplacement(guild.getName()));
+        string = string.replaceAll("%servername%", Matcher.quoteReplacement(guild.getName()));
         string = string.replaceAll("%serverid%", guild.getId());
 
         return string;
@@ -41,7 +55,7 @@ public class StringReplacementUtil {
 
     public static String parseChannel(Channel channel, String string) {
         string = string.replaceAll("%channel%", "<#" + channel.getId() + ">");
-        string = string.replaceAll("%channelname%", channel.getName());
+        string = string.replaceAll("%channelname%", Matcher.quoteReplacement(channel.getName()));
         string = string.replaceAll("%channelid%", channel.getId());
 
         return string;
@@ -54,7 +68,7 @@ public class StringReplacementUtil {
     public static String parseUser(User user, String string) {
         string = string.replaceAll("%user%", "<@" + user.getId() + ">");
         string = string.replaceAll("%userid%", user.getId());
-        string = string.replaceAll("%username%", user.getName());
+        string = string.replaceAll("%username%", Matcher.quoteReplacement(user.getName()));
         string = string.replaceAll("%userdisc%", user.getDiscriminator());
 
         return string;

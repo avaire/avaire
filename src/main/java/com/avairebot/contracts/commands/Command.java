@@ -1,26 +1,27 @@
 package com.avairebot.contracts.commands;
 
 import com.avairebot.AvaIre;
-import com.avairebot.commands.*;
+import com.avairebot.chat.PlaceholderMessage;
+import com.avairebot.commands.Category;
+import com.avairebot.commands.CategoryHandler;
+import com.avairebot.commands.CommandMessage;
+import com.avairebot.commands.CommandPriority;
+import com.avairebot.contracts.middleware.Middleware;
 import com.avairebot.contracts.reflection.Reflectionable;
 import com.avairebot.exceptions.MissingCommandDescriptionException;
-import com.avairebot.middleware.Middleware;
-import com.avairebot.permissions.Permissions;
+import com.avairebot.middleware.MiddlewareHandler;
 import com.avairebot.plugin.JavaPlugin;
 import com.avairebot.utilities.RestActionUtil;
-import net.dv8tion.jda.core.Permission;
+import com.avairebot.utilities.StringReplacementUtil;
 import net.dv8tion.jda.core.entities.Message;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 public abstract class Command extends Reflectionable {
-
 
     /**
      * Determines if the command can be used in direct messages or not.
@@ -132,7 +133,7 @@ public abstract class Command extends Reflectionable {
      * command message event fails the command will never be executed.
      *
      * @return An immutable list of command middlewares that should be invoked before the command.
-     * @see com.avairebot.middleware.Middleware
+     * @see com.avairebot.contracts.middleware.Middleware
      */
     public List<String> getMiddleware() {
         return new ArrayList<>();
@@ -252,19 +253,22 @@ public abstract class Command extends Reflectionable {
     }
 
     private boolean sendErrorMessageAndDeleteMessage(CommandMessage context, String error, long deleteIn, TimeUnit unit) {
-        Category category = CategoryHandler.fromCommand(this);
-
-        context.makeError(error)
+        PlaceholderMessage placeholderMessage = context.makeError(error)
             .setTitle(getName())
-            .setFooter("Command category: " + category.getName())
             .addField("Usage", generateUsageInstructions(context.getMessage()), false)
-            .addField("Example Usage", generateExampleUsage(context.getMessage()), false)
-            .queue(message -> {
-                if (deleteIn <= 0) {
-                    return;
-                }
-                message.delete().queueAfter(deleteIn, unit, null, RestActionUtil.IGNORE);
-            });
+            .addField("Example Usage", generateExampleUsage(context.getMessage()), false);
+
+        Category category = CategoryHandler.fromCommand(this);
+        if (category != null) {
+            placeholderMessage.setFooter("Command category: " + category.getName());
+        }
+
+        placeholderMessage.queue(message -> {
+            if (deleteIn <= 0) {
+                return;
+            }
+            message.delete().queueAfter(deleteIn, unit, null, RestActionUtil.IGNORE);
+        });
 
         return false;
     }
@@ -279,63 +283,37 @@ public abstract class Command extends Reflectionable {
      */
     public final String generateDescription(CommandMessage context) {
         if (getMiddleware().isEmpty()) {
-            return getDescription(context).trim().replaceAll(":prefix", generateCommandPrefix(context.getMessage()));
+            return StringReplacementUtil.replaceAll(
+                getDescription(context).trim(),
+                ":prefix", generateCommandPrefix(context.getMessage())
+            );
         }
 
         List<String> description = new ArrayList<>();
-        description.add(getDescription(context).replaceAll(":prefix", generateCommandPrefix(context.getMessage())));
+        description.add(StringReplacementUtil.replaceAll(
+            getDescription(context),
+            ":prefix", generateCommandPrefix(context.getMessage())
+            )
+        );
         description.add("");
 
-        MIDDLEWARE_LOOP:
         for (String middleware : getMiddleware()) {
             String[] split = middleware.split(":");
-            AtomicReference<Middleware> middlewareReference = new AtomicReference<>(Middleware.fromName(split[0]));
+            Middleware reference = MiddlewareHandler.getMiddleware(split[0]);
 
-            switch (middlewareReference.get()) {
-                case IS_BOT_ADMIN:
-                    description.add("**You must be a Bot Administrator to use this command!**");
-                    break MIDDLEWARE_LOOP;
-
-                case THROTTLE:
-                    String[] args = split[1].split(",");
-                    description.add(String.format("**This command can only be used `%s` time(s) every `%s` seconds per %s**",
-                        args[1], args[2], args[0].equalsIgnoreCase("guild") ? "server" : args[0]
-                    ));
-                    break;
-
-                case HAS_ROLE:
-                    String[] roles = split[1].split(",");
-                    if (roles.length == 1) {
-                        description.add(String.format("**The `%s` role is required to use this command!**", roles[0]));
-                        break;
-                    }
-                    description.add(String.format("**The `%s` roles is required to use this command!**",
-                        String.join("`, `", roles)
-                    ));
-                    break;
-
-                case REQUIRE:
-                    String[] nodes = split[1].split(",");
-                    nodes = Arrays.copyOfRange(nodes, 1, nodes.length);
-                    if (nodes.length == 1) {
-                        description.add(String.format("**The `%s` permission is required to use this command!**",
-                            Permissions.fromNode(nodes[0]).getPermission().getName()
-                        ));
-                        break;
-                    }
-                    description.add(String.format("**The `%s` permissions is required to use this command!**",
-                        Arrays.asList(nodes).stream()
-                            .map(Permissions::fromNode)
-                            .map(Permissions::getPermission)
-                            .map(Permission::getName)
-                            .collect(Collectors.joining("`, `"))
-                    ));
-                    break;
-
-                case HAS_VOTED_TODAY:
-                    description.add("**You must [vote for Ava](https://discordbots.org/bot/avaire) to use this command**");
-                    break;
+            if (reference == null) {
+                continue;
             }
+
+            String help = split.length == 1 ?
+                reference.buildHelpDescription(new String[0]) :
+                reference.buildHelpDescription(split[1].split(","));
+
+            if (help == null) {
+                continue;
+            }
+
+            description.add(help);
         }
 
         return description.stream().collect(Collectors.joining("\n"));
@@ -393,6 +371,7 @@ public abstract class Command extends Reflectionable {
      * @param message The JDA message object.
      * @return The dynamic command prefix for the current server.
      */
+    @SuppressWarnings("ConstantConditions")
     public final String generateCommandPrefix(Message message) {
         return CategoryHandler.fromCommand(this).getPrefix(message);
     }
@@ -420,9 +399,16 @@ public abstract class Command extends Reflectionable {
      * @return The formatted string.
      */
     private String formatCommandGeneratorString(Message message, String string) {
-        CommandContainer container = CommandHandler.getCommand(this);
-        String command = generateCommandPrefix(message) + container.getCommand().getTriggers().get(0);
+        return StringReplacementUtil.replaceAll(string, ":command", generateCommandTrigger(message));
+    }
 
-        return string.replaceAll(":command", command);
+    @Override
+    public boolean equals(Object obj) {
+        return obj != null && obj instanceof Command && isSame((Command) obj);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this);
     }
 }

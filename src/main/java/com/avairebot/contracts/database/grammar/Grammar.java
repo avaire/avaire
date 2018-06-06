@@ -42,6 +42,10 @@ public abstract class Grammar {
         this.options = options;
     }
 
+    public String getQuery() {
+        return query;
+    }
+
     /**
      * Checks to see if a string is numeric, this will help
      * determine how to format values into the query.

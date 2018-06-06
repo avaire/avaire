@@ -5,8 +5,9 @@ import com.avairebot.Constants;
 import com.avairebot.commands.CommandHandler;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
-import com.avairebot.database.controllers.GuildController;
+import com.avairebot.contracts.commands.CommandContext;
 import com.avairebot.database.transformers.GuildTransformer;
+import com.avairebot.utilities.NumberUtil;
 import com.avairebot.utilities.RoleUtil;
 import net.dv8tion.jda.core.entities.Role;
 
@@ -34,8 +35,9 @@ public class RemoveLevelRoleCommand extends Command {
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList(
-            "`:command <role>` - Removes the role from the leveling up role table."
+        return Arrays.asList(
+            "`:command <role>` - Removes the role from the leveling up role table.",
+            "`:command <level>` - Removes the role that is assigned to the given level from the role table."
         );
     }
 
@@ -55,7 +57,7 @@ public class RemoveLevelRoleCommand extends Command {
     @Override
     @SuppressWarnings("ConstantConditions")
     public boolean onCommand(CommandMessage context, String[] args) {
-        GuildTransformer transformer = GuildController.fetchGuild(avaire, context.getMessage());
+        GuildTransformer transformer = context.getGuildTransformer();
         if (transformer == null || !transformer.isLevels()) {
             return sendErrorMessage(
                 context,
@@ -69,11 +71,13 @@ public class RemoveLevelRoleCommand extends Command {
             return sendErrorMessage(context, "Missing argument, the `role` argument is required.");
         }
 
-        Role role = RoleUtil.getRoleFromMentionsOrName(context.getMessage(), args[0]);
+
+        Role role = getRoleFromContext(context, transformer, args);
         if (role == null) {
-            context.makeWarning(":user Invalid role, I couldn't find any role called **:role**")
-                .set("role", args[0])
-                .queue();
+            context.makeWarning(NumberUtil.isNumeric(args[0]) ?
+                ":user There are no roles linked to level **:role** on the level up table." :
+                ":user There are no role called **:role** on the level up table."
+            ).set("role", String.join(" ", args)).queue();
             return false;
         }
 
@@ -114,5 +118,21 @@ public class RemoveLevelRoleCommand extends Command {
         }
 
         return false;
+    }
+
+    private Role getRoleFromContext(CommandContext context, GuildTransformer transformer, String[] args) {
+        Role role = RoleUtil.getRoleFromMentionsOrName(context.getMessage(), String.join(" ", args));
+        if (role != null) {
+            return role;
+        }
+
+        int roleLevel = NumberUtil.parseInt(args[0], 0);
+        if (transformer.getLevelRoles().containsKey(roleLevel)) {
+            return context.getGuild().getRoleById(
+                transformer.getLevelRoles().get(roleLevel)
+            );
+        }
+
+        return null;
     }
 }

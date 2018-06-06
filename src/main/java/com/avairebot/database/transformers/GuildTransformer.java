@@ -7,6 +7,7 @@ import com.avairebot.database.collection.DataRow;
 import com.avairebot.utilities.NumberUtil;
 import com.google.gson.internal.LinkedTreeMap;
 import com.google.gson.reflect.TypeToken;
+import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.TextChannel;
 
 import javax.annotation.CheckReturnValue;
@@ -34,9 +35,21 @@ public class GuildTransformer extends Transformer {
     private String levelChannel = null;
     private String autorole = null;
     private String modlog = null;
+    private String musicChannelText = null;
+    private String musicChannelVoice = null;
     private int modlogCase = 0;
     private int defaultVolume = 50;
     private DJGuildLevel djGuildLevel = null;
+
+    public GuildTransformer(Guild guild) {
+        super(null);
+
+        locale = null;
+        id = guild.getId();
+        name = guild.getName();
+        nameRaw = guild.getName();
+        guildType = new GuildTypeTransformer(null);
+    }
 
     public GuildTransformer(DataRow data) {
         super(data);
@@ -54,6 +67,8 @@ public class GuildTransformer extends Transformer {
             levelChannel = data.getString("level_channel");
             autorole = data.getString("autorole");
             modlog = data.getString("modlog");
+            musicChannelText = data.getString("music_channel_text");
+            musicChannelVoice = data.getString("music_channel_voice");
             modlogCase = data.getInt("modlog_case");
             djGuildLevel = DJGuildLevel.fromId(data.getInt("dj_level", DJGuildLevel.getNormal().getId()));
             defaultVolume = data.getInt("default_volume", 50);
@@ -154,6 +169,10 @@ public class GuildTransformer extends Transformer {
         return locale;
     }
 
+    public void setLocale(String code) {
+        this.locale = code;
+    }
+
     public boolean isLevels() {
         return levels;
     }
@@ -188,6 +207,22 @@ public class GuildTransformer extends Transformer {
 
     public void setAutorole(String autorole) {
         this.autorole = autorole;
+    }
+
+    public String getMusicChannelText() {
+        return musicChannelText;
+    }
+
+    public void setMusicChannelText(String musicChannelText) {
+        this.musicChannelText = musicChannelText;
+    }
+
+    public String getMusicChannelVoice() {
+        return musicChannelVoice;
+    }
+
+    public void setMusicChannelVoice(String musicChannelVoice) {
+        this.musicChannelVoice = musicChannelVoice;
     }
 
     public String getModlog() {

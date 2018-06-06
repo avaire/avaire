@@ -2,9 +2,9 @@ package com.avairebot.ai.intents;
 
 import ai.api.model.AIResponse;
 import com.avairebot.AvaIre;
+import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.ai.Intent;
-import com.avairebot.factories.MessageFactory;
-import net.dv8tion.jda.core.entities.Message;
+import com.avairebot.utilities.StringReplacementUtil;
 
 public class SmallTalk extends Intent {
 
@@ -18,14 +18,15 @@ public class SmallTalk extends Intent {
     }
 
     @Override
-    public void onIntent(Message message, AIResponse response) {
-        String nickname = message.getAuthor().getName();
-        if (message.getChannelType().isGuild()) {
-            nickname = message.getMember().getEffectiveName();
+    public void onIntent(CommandMessage context, AIResponse response) {
+        String nickname = context.getAuthor().getName();
+        if (context.getMessage().getChannelType().isGuild()) {
+            nickname = context.getMember().getEffectiveName();
         }
 
-        MessageFactory.makeInfo(message,
-            response.getResult().getFulfillment().getSpeech().replaceAll("%nick%", nickname)
-        ).queue();
+        context.makeInfo(StringReplacementUtil.replaceAll(
+            response.getResult().getFulfillment().getSpeech(),
+            "%nick%", nickname
+        )).queue();
     }
 }

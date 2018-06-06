@@ -32,6 +32,7 @@ public class GuildStateEventAdapter extends EventAdapter {
     public void onGuildUpdateName(GuildUpdateNameEvent event) {
         try {
             avaire.getDatabase().newQueryBuilder(Constants.GUILD_TABLE_NAME)
+                .useAsync(true)
                 .where("id", event.getGuild().getId())
                 .update(statement -> statement.set("name", event.getGuild().getName(), true));
         } catch (SQLException e) {
@@ -53,7 +54,6 @@ public class GuildStateEventAdapter extends EventAdapter {
 
         Metrics.guilds.inc();
         Metrics.geoTracker.labels(event.getGuild().getRegion().getName()).inc();
-//        EventLogger.logGuildJoin(avaire, event);
 
         TextChannel channel = avaire.getShardManager().getTextChannelById(DiscordConstants.ACTIVITY_LOG_CHANNEL_ID);
         if (channel == null) {

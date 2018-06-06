@@ -6,8 +6,10 @@ import ai.api.AIServiceException;
 import ai.api.model.AIRequest;
 import ai.api.model.AIResponse;
 import com.avairebot.AvaIre;
+import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.ai.Intent;
 import com.avairebot.factories.MessageFactory;
+import com.avairebot.handlers.DatabaseEventHolder;
 import com.avairebot.metrics.Metrics;
 import io.prometheus.client.Histogram;
 import net.dv8tion.jda.core.entities.Message;
@@ -66,7 +68,7 @@ public class IntelligenceManager {
         return true;
     }
 
-    public void request(Message message, String request) {
+    public void request(Message message, DatabaseEventHolder databaseEventHolder, String request) {
         if (!isEnabled()) {
             return;
         }
@@ -75,12 +77,12 @@ public class IntelligenceManager {
 
         String[] split = request.split(" ");
 
-        executor.submit(() -> sendRequest(message, String.join(" ",
+        executor.submit(() -> sendRequest(message, databaseEventHolder, String.join(" ",
             Arrays.copyOfRange(split, 1, split.length)
         ).trim()));
     }
 
-    private void sendRequest(Message message, String request) {
+    private void sendRequest(Message message, DatabaseEventHolder databaseEventHolder, String request) {
         try {
             AIResponse response = service.request(new AIRequest(request));
 
@@ -101,12 +103,12 @@ public class IntelligenceManager {
 
             for (Map.Entry<IntentAction, Intent> entry : INTENTS.entrySet()) {
                 if (entry.getKey().isWildcard() && action.startsWith(entry.getKey().getAction())) {
-                    invokeIntent(message, response, entry.getValue());
+                    invokeIntent(message, databaseEventHolder, response, entry.getValue());
                     return;
                 }
 
                 if (entry.getKey().getAction().equals(action)) {
-                    invokeIntent(message, response, entry.getValue());
+                    invokeIntent(message, databaseEventHolder, response, entry.getValue());
                     return;
                 }
             }
@@ -115,11 +117,13 @@ public class IntelligenceManager {
         }
     }
 
-    private void invokeIntent(Message message, AIResponse response, Intent intent) {
+    private void invokeIntent(Message message, DatabaseEventHolder databaseEventHolder, AIResponse response, Intent intent) {
         Metrics.aiRequestsExecuted.labels(intent.getClass().getSimpleName()).inc();
         Histogram.Timer timer = Metrics.aiExecutionTime.labels(intent.getClass().getSimpleName()).startTimer();
 
-        intent.onIntent(message, response);
+        intent.onIntent(new CommandMessage(
+            null, databaseEventHolder, message
+        ), response);
 
         timer.observeDuration();
     }

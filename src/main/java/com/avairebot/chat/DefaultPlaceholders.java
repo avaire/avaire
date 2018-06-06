@@ -1,5 +1,6 @@
 package com.avairebot.chat;
 
+import com.avairebot.utilities.StringReplacementUtil;
 import net.dv8tion.jda.core.entities.*;
 
 class DefaultPlaceholders {
@@ -59,8 +60,7 @@ class DefaultPlaceholders {
     }
 
     private static String parseGuild(Guild guild, String message) {
-        return message
-            .replaceAll(":guildid", guild.getId());
+        return StringReplacementUtil.replaceAll(message, ":guildid", guild.getId());
     }
 
     static String toChannel(Message message, String string) {
@@ -69,10 +69,11 @@ class DefaultPlaceholders {
     }
 
     private static String parseChannel(TextChannel channel, String message) {
-        return message
-            .replaceAll(":channelname", channel.getName())
-            .replaceAll(":channelid", channel.getId())
-            .replaceAll(":channel", channel.getAsMention());
+        message = StringReplacementUtil.replaceAll(message, ":channelname", channel.getName());
+        message = StringReplacementUtil.replaceAll(message, ":channelid", channel.getId());
+        message = StringReplacementUtil.replaceAll(message, ":channel", channel.getAsMention());
+
+        return message;
     }
 
     static String toUser(Message message, String string) {
@@ -81,9 +82,10 @@ class DefaultPlaceholders {
     }
 
     private static String parseUser(User author, String message) {
-        return message
-            .replaceAll(":username", author.getName())
-            .replaceAll(":userid", author.getId())
-            .replaceAll(":user", author.getAsMention());
+        message = StringReplacementUtil.replaceAll(message, ":username", author.getName());
+        message = StringReplacementUtil.replaceAll(message, ":userid", author.getId());
+        message = StringReplacementUtil.replaceAll(message, ":user", author.getAsMention());
+
+        return message;
     }
 }

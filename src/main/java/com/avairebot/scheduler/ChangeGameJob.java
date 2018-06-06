@@ -69,8 +69,9 @@ public class ChangeGameJob extends Job {
         game = game.replaceAll("%users%", NumberUtil.formatNicely(avaire.getShardEntityCounter().getUsers()));
         game = game.replaceAll("%guilds%", NumberUtil.formatNicely(avaire.getShardEntityCounter().getGuilds()));
 
+        game = game.replaceAll("%shard%", shard.getShardInfo().getShardString());
         game = game.replaceAll("%shard-id%", "" + shard.getShardInfo().getShardId());
-        game = game.replaceAll("%shard-total%", "" + avaire.getSettings().getShardCount());
+        game = game.replaceAll("%shard-total%", "" + shard.getShardInfo().getShardTotal());
 
         return game;
     }

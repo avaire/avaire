@@ -13,10 +13,15 @@ import java.util.function.Consumer;
 
 public class FetchMemeTypesJob extends Job {
 
+    private final String cacheToken = "meme.types";
     private final String apiEndpoint = "https://memegen.link/api/templates/";
 
     public FetchMemeTypesJob(AvaIre avaire) {
-        super(avaire, 0, 7, TimeUnit.DAYS);
+        super(avaire, 7, 7, TimeUnit.DAYS);
+
+        if (!avaire.getCache().getAdapter(CacheType.FILE).has(cacheToken)) {
+            run();
+        }
     }
 
     @Override
@@ -37,8 +42,7 @@ public class FetchMemeTypesJob extends Job {
 
                 }
 
-                avaire.getCache().getAdapter(CacheType.FILE).forever("meme.types", cache);
+                avaire.getCache().getAdapter(CacheType.FILE).forever(cacheToken, cache);
             });
-
     }
 }

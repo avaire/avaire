@@ -75,7 +75,7 @@ public class DuckDuckGoCommand extends ThreadCommand {
             headers.putAll(HTTP_HEADERS);
             headers.put("User-Agent", "AvaIre-Discord-Bot (" + avaire.getSelfUser().getId() + ")");
 
-            context.getChannel().sendTyping().queue();
+            context.getMessageChannel().sendTyping().queue();
 
             boolean nsfwEnabled = isNSFWEnabled(context);
             Document document = Jsoup.connect(generateUri(args, nsfwEnabled))
@@ -106,7 +106,7 @@ public class DuckDuckGoCommand extends ThreadCommand {
                 }
             }
 
-            PlaceholderMessage resultMessage = MessageFactory.makeEmbeddedMessage(context.getChannel(), Color.decode("#DE5833"))
+            PlaceholderMessage resultMessage = MessageFactory.makeEmbeddedMessage(context.getMessageChannel(), Color.decode("#DE5833"))
                 .setDescription(String.join("\n", result))
                 .setTitle(String.format(
                     context.i18n("searchResults"),

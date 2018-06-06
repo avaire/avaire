@@ -1,15 +1,23 @@
 package com.avairebot.contracts.database;
 
-import com.avairebot.Statistics;
+import com.avairebot.AvaIre;
+import com.avairebot.contracts.database.grammar.AlterGrammar;
+import com.avairebot.contracts.database.grammar.Grammarable;
+import com.avairebot.contracts.database.grammar.TableGrammar;
 import com.avairebot.database.DatabaseManager;
 import com.avairebot.database.query.QueryBuilder;
+import com.avairebot.database.schema.Blueprint;
+import com.avairebot.metrics.Metrics;
 
+import javax.annotation.WillClose;
+import javax.annotation.WillCloseWhenClosed;
+import javax.annotation.WillNotClose;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class Database implements DatabaseConnection {
+public abstract class Database implements DatabaseConnection, Grammarable {
 
     protected DatabaseManager dbm = null;
 
@@ -25,7 +33,6 @@ public abstract class Database implements DatabaseConnection {
      * fetch, and persist data.
      */
     protected Connection connection;
-
     /**
      * Represents a unix timestamp of the last time we
      * communicated with the database.
@@ -76,7 +83,7 @@ public abstract class Database implements DatabaseConnection {
      */
     public final boolean close() throws SQLException {
         if (connection == null) {
-            dbm.getAvaire().getLogger().warn("Database - Could not close connection, it is null.");
+            AvaIre.getLogger().warn("Database - Could not close connection, it is null.");
             return false;
         }
 
@@ -85,7 +92,7 @@ public abstract class Database implements DatabaseConnection {
 
             return true;
         } catch (SQLException e) {
-            dbm.getAvaire().getLogger().warn("Database - Could not close connection, SQLException: " + e.getMessage());
+            AvaIre.getLogger().warn("Database - Could not close connection, SQLException: " + e.getMessage());
         }
         return false;
     }
@@ -159,10 +166,12 @@ public abstract class Database implements DatabaseConnection {
      * @throws SQLException if a database access error occurs or this method is called on a
      *                      closed <code>Statement</code>
      */
+    @WillCloseWhenClosed
     public final synchronized ResultSet query(String query) throws SQLException {
         queryValidation(getStatement(query));
 
         Statement statement = createPreparedStatement(query);
+        statement.closeOnCompletion();
 
         if (statement.execute(query)) {
             return statement.getResultSet();
@@ -181,6 +190,7 @@ public abstract class Database implements DatabaseConnection {
      * @throws SQLException if a database access error occurs or this method is called on a
      *                      closed <code>Statement</code>
      */
+    @WillCloseWhenClosed
     public final synchronized ResultSet query(QueryBuilder query) throws SQLException {
         return query(query.toSQL());
     }
@@ -194,6 +204,7 @@ public abstract class Database implements DatabaseConnection {
      * @throws SQLException if a database access error occurs or this method is called on a
      *                      closed <code>Statement</code>
      */
+    @WillNotClose
     public final synchronized ResultSet query(PreparedStatement query) throws SQLException {
         ResultSet output = query(query, preparedStatements.get(query));
 
@@ -212,6 +223,7 @@ public abstract class Database implements DatabaseConnection {
      * @throws SQLException if a database access error occurs or this method is called on a
      *                      closed <code>Statement</code>
      */
+    @WillNotClose
     public final synchronized ResultSet query(PreparedStatement query, StatementInterface statement) throws SQLException {
         queryValidation(statement);
 
@@ -222,7 +234,6 @@ public abstract class Database implements DatabaseConnection {
         return getConnection().createStatement().executeQuery("SELECT " + (lastUpdate = query.getUpdateCount()));
     }
 
-
     /**
      * Prepares a query as a prepared statement before executing it.
      *
@@ -232,6 +243,7 @@ public abstract class Database implements DatabaseConnection {
      * @throws SQLException if a database access error occurs or this method is called on a
      *                      closed <code>Statement</code>
      */
+    @WillNotClose
     public final synchronized Statement prepare(String query) throws SQLException {
         StatementInterface statement = getStatement(query);
         Statement ps = createPreparedStatement(query);
@@ -263,18 +275,20 @@ public abstract class Database implements DatabaseConnection {
      *                      <code>ResultSet</code> object, the method is called on a
      *                      <code>PreparedStatement</code> or <code>CallableStatement</code>
      */
+    @WillClose
     public final synchronized ArrayList<Long> insert(String query) throws SQLException {
         ArrayList keys = new ArrayList();
 
-        PreparedStatement pstmt = createPreparedStatement(query, 1);
-        lastUpdate = pstmt.executeUpdate();
+        try (PreparedStatement pstmt = createPreparedStatement(query, 1)) {
+            lastUpdate = pstmt.executeUpdate();
 
-        ResultSet key = pstmt.getGeneratedKeys();
-        if (key.next()) {
-            keys.add(key.getLong(1));
+            ResultSet key = pstmt.getGeneratedKeys();
+            if (key.next()) {
+                keys.add(key.getLong(1));
+            }
+
+            return keys;
         }
-
-        return keys;
     }
 
     /**
@@ -297,6 +311,7 @@ public abstract class Database implements DatabaseConnection {
      *                      <code>ResultSet</code> object, the method is called on a
      *                      <code>PreparedStatement</code> or <code>CallableStatement</code>
      */
+    @WillNotClose
     public final synchronized ArrayList<Long> insert(PreparedStatement query) throws SQLException {
         lastUpdate = query.executeUpdate();
         preparedStatements.remove(query);
@@ -311,14 +326,36 @@ public abstract class Database implements DatabaseConnection {
     }
 
     protected Statement createPreparedStatement(String query) throws SQLException {
-        Statistics.addQueries();
+        Metrics.databaseQueries.labels(query.split(" ")[0].toUpperCase()).inc();
 
         return getConnection().prepareStatement(query);
     }
 
     private PreparedStatement createPreparedStatement(String query, int autoGeneratedKeys) throws SQLException {
-        Statistics.addQueries();
+        Metrics.databaseQueries.labels(query.split(" ")[0].toUpperCase()).inc();
 
         return getConnection().prepareStatement(query, autoGeneratedKeys);
+    }
+
+    protected String setupAndRun(TableGrammar grammar, QueryBuilder builder, DatabaseManager manager, Map<String, Boolean> options) {
+        grammar.setDBM(manager);
+        grammar.setOptions(options);
+
+        return grammar.format(builder);
+    }
+
+    protected String setupAndRun(AlterGrammar grammar, Blueprint blueprint, DatabaseManager manager, Map<String, Boolean> options) {
+        grammar.setDBM(manager);
+        grammar.setOptions(options);
+
+        return grammar.format(blueprint);
+    }
+
+    public enum QueryType {
+        SELECT,
+        INSERT,
+        UPDATE,
+        DELETE,
+        CREATE
     }
 }

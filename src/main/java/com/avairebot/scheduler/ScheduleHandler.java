@@ -13,7 +13,7 @@ import java.util.concurrent.ScheduledFuture;
 public class ScheduleHandler {
 
     private static final Map<String, ScheduledFuture<?>> TASKS = new HashMap<>();
-    private static final ScheduledExecutorService SCHEDULER = Executors.newScheduledThreadPool(1);
+    private static final ScheduledExecutorService SCHEDULER = Executors.newScheduledThreadPool(5);
 
     public static String registerJob(@Nonnull Job job) {
         TASKS.put(job.getUniqueId(), SCHEDULER.scheduleAtFixedRate(job, job.getDelay(), job.getPeriod(), job.getUnit()));
@@ -26,5 +26,9 @@ public class ScheduleHandler {
 
     public static Set<Map.Entry<String, ScheduledFuture<?>>> entrySet() {
         return TASKS.entrySet();
+    }
+
+    public static ScheduledExecutorService getScheduler() {
+        return SCHEDULER;
     }
 }

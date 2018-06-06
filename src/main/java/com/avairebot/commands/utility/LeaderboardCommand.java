@@ -11,12 +11,12 @@ import com.avairebot.contracts.commands.CacheFingerprint;
 import com.avairebot.contracts.commands.ThreadCommand;
 import com.avairebot.database.collection.Collection;
 import com.avairebot.database.collection.DataRow;
-import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.utilities.LevelUtil;
 import com.avairebot.utilities.NumberUtil;
 import net.dv8tion.jda.core.entities.Member;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -52,7 +52,7 @@ public class LeaderboardCommand extends ThreadCommand {
     @Override
     @SuppressWarnings("ConstantConditions")
     public boolean onCommand(CommandMessage context, String[] args) {
-        GuildTransformer transformer = GuildController.fetchGuild(avaire, context.getMessage());
+        GuildTransformer transformer = context.getGuildTransformer();
         if (transformer == null || !transformer.isLevels()) {
             return sendErrorMessage(
                 context,
@@ -107,11 +107,16 @@ public class LeaderboardCommand extends ThreadCommand {
 
     private Collection loadTop100From(CommandMessage context) {
         return (Collection) avaire.getCache().getAdapter(CacheType.MEMORY).remember("database-xp-leaderboard." + context.getGuild().getId(), 60, () -> {
-            return avaire.getDatabase().newQueryBuilder(Constants.PLAYER_EXPERIENCE_TABLE_NAME)
-                .where("guild_id", context.getGuild().getId())
-                .orderBy("experience", "desc")
-                .take(100)
-                .get();
+            try {
+                return avaire.getDatabase().newQueryBuilder(Constants.PLAYER_EXPERIENCE_TABLE_NAME)
+                    .where("guild_id", context.getGuild().getId())
+                    .orderBy("experience", "desc")
+                    .take(100)
+                    .get();
+            } catch (SQLException e) {
+                AvaIre.getLogger().error("Failed to fetch leaderboard data for server: " + context.getGuild().getId(), e);
+                return null;
+            }
         });
     }
 }
