@@ -136,7 +136,7 @@ music:
     PauseCommand:
         error: 'Ingenting å pause, be om musikk først med `%splay`'
         alreadyPaused: 'Musikken er allerede på pause, du kan benytte `!resume` for å fortsette avspillingen.'
-        paused: 'Musikken har blitt satt på `paused`'
+        paused: 'Musikken har blitt satt på `pause`'
 
     PlayCommand:
         addedSong: ':user har lagt til [:title](:url) i køen. Det er `:queueSize` sang(er) før den i køen.'
@@ -155,7 +155,7 @@ music:
         noMoreSongSlots: "`:playlist` spillelisten har ikke flere sang plasser igjen, du kan fjerne noen for og frigjøre plass."
         noMorePlaylistSlots: "Serveren har ikke flere spilleliste plasser igjen, du kan slette en eksisterende spilleliste for og frigjøre plass."
         failedToLoad: 'Feilet med og laste: %s'
-        failedToLoadPlaylist: 'Feilet med og laste inn spillelisten, forsøk igjen senere eller rapporter dette til en av mine utvikklere.'
+        failedToLoadPlaylist: 'Feilet med og laste inn :playlist spillelisten, forsøk igjen senere eller rapporter dette til en av mine utviklere.'
         failedToSavePlaylist: 'Noe gikk galt ved forsøkt på og lagre spillelisten: %s'
         loadedPlaylist: '**:name** spillelisten har blitt lastet og lagt til i køen med **:amount** sanger.'
         noMatches: 'Ingen treff'
@@ -259,7 +259,7 @@ search:
         noResults: ':user Jeg fant ingenting med `:query`'
         untitled: 'Uten tittel'
         example: 'Eksempel'
-        results: ':percentage prosen av folk liker dette. :up👍 :down👎'
+        results: ':percentage prosent av folk liker dette. :up👍 :down👎'
 
     XKCDCommand:
         number: 'XKCD nummer #%s'
@@ -377,7 +377,7 @@ utility:
             messages: '%s (%s per sek)'
             memory: '%sMb / %sMb'
         fields:
-            author: 'Author'
+            author: 'Forfatter'
             botId: 'Bot ID'
             library: 'Bibliotek'
             database: 'DB spørringer kjørt'
