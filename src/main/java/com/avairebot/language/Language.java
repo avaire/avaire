@@ -13,7 +13,8 @@ public enum Language {
     EN_PT("en", "PT", "Pirate", "Pirate English", "arrr"),
     DE_DE("de", "DE", "Deutsch", "German"),
     FR_FR("fr", "FR", "French", "French"),
-    HU_HU("hu", "HU", "Magyar", "Hungarian");
+    HU_HU("hu", "HU", "Magyar", "Hungarian"),
+    NO_NB("no", "NB", "Norsk", "Norwegian");
 
     private final String code;
     private final String nativeName;
