@@ -3,10 +3,12 @@ package com.avairebot.language;
 import com.avairebot.BaseTest;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.opentest4j.AssertionFailedError;
 
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class LanguageTests extends BaseTest {
 
@@ -22,7 +24,11 @@ public class LanguageTests extends BaseTest {
         for (LanguageHolder entry : I18n.LANGS) {
             Set<String> strings = getKeys(entry);
 
-            assertEquals(defaultStrings.size(), strings.size(), "Comparing keys sizes for the default language and " + entry.getLanguage().getCode());
+            if (defaultStrings.size() != strings.size()) {
+                getLogger().error("Comparing keys sizes for the default language and " + entry.getLanguage().getCode() + " failed!\n\nExpected:\t{}\nActual:\t\t{}\n",
+                    defaultStrings.size(), strings.size(), new AssertionFailedError()
+                );
+            }
         }
     }
 
@@ -43,7 +49,7 @@ public class LanguageTests extends BaseTest {
 
         for (LanguageHolder entry : I18n.LANGS) {
             for (String str : defaultStrings) {
-                assertNotNull(entry.getConfig().getString(str));
+                assertNotNull(entry.getConfig().getString(str), str + " in the " + entry.getLanguage().getEnglishName() + " language files was not found!");
             }
         }
     }
