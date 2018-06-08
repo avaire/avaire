@@ -6,6 +6,7 @@ import com.avairebot.contracts.commands.Command;
 import com.udojava.evalex.Expression;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -51,7 +52,7 @@ public class CalculateCommand extends Command {
 
         try {
             Expression expression = createExpression(string);
-            BigDecimal result = expression.eval();
+            BigDecimal result = expression.eval(false);
 
             if (expression.isBoolean()) {
                 context.makeInfo(
@@ -79,6 +80,9 @@ public class CalculateCommand extends Command {
         Expression expression = new Expression(string.substring(0, where).trim())
             .setVariable("tau", new BigDecimal(Math.PI * 2));
 
+        expression.setPrecision(128);
+        expression.setRoundingMode(RoundingMode.UNNECESSARY);
+
         for (String var : string.substring(where + 5, string.length()).trim().split(" and ")) {
             String[] varArgs = var.split("=");
             if (varArgs.length != 2) {
@@ -95,7 +99,7 @@ public class CalculateCommand extends Command {
     }
 
     private String generateEasterEgg(CommandMessage context, Expression expression, BigDecimal result, String query, String stringifiedResult) {
-        if (result.intValueExact() == 69) {
+        if (stringifiedResult.equals("69")) {
             return stringifiedResult + "\t( ͡° ͜ʖ ͡°)";
         }
 
