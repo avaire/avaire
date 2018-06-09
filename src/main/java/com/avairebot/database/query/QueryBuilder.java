@@ -1,5 +1,6 @@
 package com.avairebot.database.query;
 
+import com.avairebot.contracts.database.Database;
 import com.avairebot.contracts.database.Database.QueryType;
 import com.avairebot.contracts.database.QueryClause;
 import com.avairebot.contracts.database.query.ChangeableClosure;
@@ -9,6 +10,7 @@ import com.avairebot.database.collection.Collection;
 import com.avairebot.scheduler.ScheduleHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 
 import java.sql.SQLException;
 import java.util.*;
@@ -712,8 +714,7 @@ public final class QueryBuilder {
     }
 
     /**
-     * Runs the {@link com.avairebot.database.DatabaseManager#queryUpdate(QueryBuilder)}
-     * method with the current instance of the query builder.
+     * Runs the {@link Database#query(String)} method with the generated query.
      *
      * @return a <code>Collection</code> object that contains the data produced
      * by the given query; never <code>null</code>@exception
@@ -724,11 +725,16 @@ public final class QueryBuilder {
      *                      <code>PreparedStatement</code> or <code>CallableStatement</code>
      */
     public Collection get() throws SQLException {
+        String query = toSQL();
+
+        LOGGER.debug("QueryBuilder#get() was called with the following SQL query.\nSQL: " + query);
+        MDC.put("query", query);
+
         // Note: When parsing the result to a collection, we can't use the DBM query method since it auto closes the result,
         // and the collection still needs to communicated with the result set to get meta data so it can build the keysets
         // for the column names, this isn't possible if we close the result before parsing it to the collection, instead
         // we use the direct connection and have the collection close the connection instead.
-        return new Collection(dbm.getConnection().query(this));
+        return new Collection(dbm.getConnection().query(query));
     }
 
     /**
