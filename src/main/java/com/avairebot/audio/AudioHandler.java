@@ -68,7 +68,13 @@ public class AudioHandler {
             playerManager = registerSourceManagers(new DefaultAudioPlayerManager());
 
             playerManager.getConfiguration().setResamplingQuality(
-                AudioConfiguration.ResamplingQuality.MEDIUM
+                AudioConfiguration.ResamplingQuality.valueOf(
+                    avaire.getConfig().getString("audio-quality.resampling", "medium").toUpperCase()
+                )
+            );
+
+            playerManager.getConfiguration().setOpusEncodingQuality(
+                avaire.getConfig().getInt("audio-quality.encoding", AudioConfiguration.OPUS_QUALITY_MAX)
             );
 
             if (LavalinkManager.LavalinkManagerHolder.LAVALINK.isEnabled()) {

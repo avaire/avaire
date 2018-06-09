@@ -285,6 +285,43 @@ music-activity:
   paused-music-timeout: 10
 
 #--------------------------------------------------------------------------
+# Audio Encoding and Resampling Quality
+#--------------------------------------------------------------------------
+#
+# Audio encoding and audio resampling is a way to control the quality of
+# audio the bot will deliver for music related commands.
+#
+# Lower encoding and resampling will use less memory and CPU, but will also
+# produce worse audio quality in the end, while higher encoding and
+# resampling will use more memory and CPU but will in turn produce
+# more clear and "crisp" audio.
+#
+
+audio-quality:
+
+    # Audio resampling is tasked with sending the data from the server the bot
+    # is hosted on to the Discord servers so people can listen to the music.
+    #
+    # Higher resampling rates gives a higher chance that the audio reaches
+    # Discord servers so people can hear the audio by sending each frame
+    # multiple times, higher resampling uses more CPU since it has to
+    # send each frame multiple times.
+    #
+    # The supported resampling qualities are:
+    #     "high", "medium", and "low"
+    #
+    resampling: 'medium'
+
+    # Audio encoding is tasked with encoding the audio track so it is playable by
+    # Discord, higher values will produce a higher quality encoded track, which
+    # in turn uses more CPU, while lower values will produce a worse quality
+    # audio track but ues less CPU to do so.
+    #
+    # The encoding value must be a number between 0 and 10.
+    #
+    encoding: 10
+
+#--------------------------------------------------------------------------
 # Bot Access (Bot Administrators)
 #--------------------------------------------------------------------------
 #

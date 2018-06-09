@@ -40,6 +40,7 @@ import com.avairebot.time.Carbon;
 import com.avairebot.vote.VoteManager;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.sedmelluq.discord.lavaplayer.player.AudioConfiguration;
 import com.sedmelluq.discord.lavaplayer.tools.PlayerLibrary;
 import io.sentry.Sentry;
 import io.sentry.SentryClient;
@@ -276,6 +277,17 @@ public class AvaIre {
         LOGGER.info("Preparing Lavalink");
         AudioHandler.setAvaire(this);
         LavalinkManager.LavalinkManagerHolder.LAVALINK.start(this);
+
+        try {
+            AudioConfiguration.ResamplingQuality.valueOf(
+                getConfig().getString("audio-quality.resampling", "medium").toUpperCase()
+            );
+        } catch (IllegalArgumentException ignored) {
+            LOGGER.warn("Invalid audio resampling quality given, \"{}\" is not a valid quality name, using medium quality instead.",
+                getConfig().getString("audio-quality.resampling", "medium")
+            );
+            config.set("audio-quality.resampling", "medium");
+        }
 
         LOGGER.info("Creating bot instance and connecting to Discord network");
 
