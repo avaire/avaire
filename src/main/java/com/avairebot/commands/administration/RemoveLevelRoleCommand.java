@@ -42,6 +42,14 @@ public class RemoveLevelRoleCommand extends Command {
     }
 
     @Override
+    public List<Class<? extends Command>> getRelations() {
+        return Arrays.asList(
+            AddLevelRoleCommand.class,
+            ListLevelRolesCommand.class
+        );
+    }
+
+    @Override
     public List<String> getTriggers() {
         return Collections.singletonList("rlr");
     }

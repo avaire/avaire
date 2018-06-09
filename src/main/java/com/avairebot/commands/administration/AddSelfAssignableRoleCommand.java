@@ -42,6 +42,14 @@ public class AddSelfAssignableRoleCommand extends Command {
     }
 
     @Override
+    public List<Class<? extends Command>> getRelations() {
+        return Arrays.asList(
+            ListSelfAssignableRolesCommand.class,
+            RemoveSelfAssignableRoleCommand.class
+        );
+    }
+
+    @Override
     public List<String> getTriggers() {
         return Collections.singletonList("asar");
     }

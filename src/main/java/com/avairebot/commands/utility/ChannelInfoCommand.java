@@ -13,6 +13,7 @@ import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.VoiceChannel;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class ChannelInfoCommand extends Command {
@@ -29,6 +30,11 @@ public class ChannelInfoCommand extends Command {
     @Override
     public String getDescription() {
         return "Shows information about the channel the command was run in, or the mentioned channel.";
+    }
+
+    @Override
+    public List<Class<? extends Command>> getRelations() {
+        return Collections.singletonList(ChannelIdCommand.class);
     }
 
     @Override

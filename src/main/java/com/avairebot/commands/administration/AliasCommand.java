@@ -43,6 +43,11 @@ public class AliasCommand extends Command {
     }
 
     @Override
+    public List<Class<? extends Command>> getRelations() {
+        return Collections.singletonList(ListAliasesCommand.class);
+    }
+
+    @Override
     public List<String> getTriggers() {
         return Arrays.asList("alias", "cmdmap");
     }

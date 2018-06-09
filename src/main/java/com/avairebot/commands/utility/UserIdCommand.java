@@ -41,6 +41,11 @@ public class UserIdCommand extends Command {
     }
 
     @Override
+    public List<Class<? extends Command>> getRelations() {
+        return Collections.singletonList(UserInfoCommand.class);
+    }
+
+    @Override
     public List<String> getTriggers() {
         return Arrays.asList("userid", "uid");
     }

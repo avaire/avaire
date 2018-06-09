@@ -48,6 +48,14 @@ public class ModlogHistoryCommand extends Command {
     }
 
     @Override
+    public List<Class<? extends Command>> getRelations() {
+        return Arrays.asList(
+            ModlogCommand.class,
+            ModlogReasonCommand.class
+        );
+    }
+
+    @Override
     public List<String> getTriggers() {
         return Arrays.asList("modloghistory", "history");
     }

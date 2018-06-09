@@ -58,6 +58,14 @@ public class ModlogReasonCommand extends Command {
     }
 
     @Override
+    public List<Class<? extends Command>> getRelations() {
+        return Arrays.asList(
+            ModlogCommand.class,
+            ModlogHistoryCommand.class
+        );
+    }
+
+    @Override
     public List<String> getTriggers() {
         return Collections.singletonList("reason");
     }

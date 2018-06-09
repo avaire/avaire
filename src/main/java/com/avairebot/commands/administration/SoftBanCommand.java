@@ -3,6 +3,7 @@ package com.avairebot.commands.administration;
 import com.avairebot.AvaIre;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.BanableCommand;
+import com.avairebot.contracts.commands.Command;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -32,6 +33,11 @@ public class SoftBanCommand extends BanableCommand {
     @Override
     public List<String> getExampleUsage() {
         return Collections.singletonList("`:command @Senither Being a potato`");
+    }
+
+    @Override
+    public List<Class<? extends Command>> getRelations() {
+        return Collections.singletonList(BanCommand.class);
     }
 
     @Override

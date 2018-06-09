@@ -9,6 +9,7 @@ import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.utilities.NumberUtil;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -33,6 +34,14 @@ public class ListLevelRolesCommand extends Command {
     public List<String> getUsageInstructions() {
         return Collections.singletonList(
             "`:command` - Lists all the roles you can get for leveling up."
+        );
+    }
+
+    @Override
+    public List<Class<? extends Command>> getRelations() {
+        return Arrays.asList(
+            AddLevelRoleCommand.class,
+            RemoveLevelRoleCommand.class
         );
     }
 

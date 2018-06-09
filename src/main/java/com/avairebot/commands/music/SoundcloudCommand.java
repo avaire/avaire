@@ -5,6 +5,7 @@ import com.avairebot.audio.AudioHandler;
 import com.avairebot.commands.CommandContainer;
 import com.avairebot.commands.CommandHandler;
 import com.avairebot.commands.CommandMessage;
+import com.avairebot.contracts.commands.Command;
 import com.avairebot.contracts.commands.ThreadCommand;
 import com.avairebot.utilities.NumberUtil;
 
@@ -33,6 +34,11 @@ public class SoundcloudCommand extends ThreadCommand {
     @Override
     public List<String> getUsageInstructions() {
         return Collections.singletonList("`:command <song>` - Plays the given song");
+    }
+
+    @Override
+    public List<Class<? extends Command>> getRelations() {
+        return Collections.singletonList(PlayCommand.class);
     }
 
     @Override

@@ -59,6 +59,14 @@ public class RankCommand extends Command {
     }
 
     @Override
+    public List<Class<? extends Command>> getRelations() {
+        return Arrays.asList(
+            LeaderboardCommand.class,
+            GlobalLeaderboardCommand.class
+        );
+    }
+
+    @Override
     public List<String> getTriggers() {
         return Arrays.asList("rank", "level");
     }

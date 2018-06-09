@@ -40,6 +40,11 @@ public class IAmCommand extends Command {
     }
 
     @Override
+    public List<Class<? extends Command>> getRelations() {
+        return Collections.singletonList(IAmNotCommand.class);
+    }
+
+    @Override
     public List<String> getTriggers() {
         return Collections.singletonList("iam");
     }

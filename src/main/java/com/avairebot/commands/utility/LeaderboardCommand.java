@@ -8,6 +8,7 @@ import com.avairebot.commands.CommandHandler;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.commands.administration.LevelCommand;
 import com.avairebot.contracts.commands.CacheFingerprint;
+import com.avairebot.contracts.commands.Command;
 import com.avairebot.contracts.commands.ThreadCommand;
 import com.avairebot.database.collection.Collection;
 import com.avairebot.database.collection.DataRow;
@@ -37,6 +38,14 @@ public class LeaderboardCommand extends ThreadCommand {
     @Override
     public String getDescription() {
         return "Displays the server's level leaderboard with the user's name, rank, level and XP. The response is paginated to show 10 users per page.";
+    }
+
+    @Override
+    public List<Class<? extends Command>> getRelations() {
+        return Arrays.asList(
+            RankCommand.class,
+            GlobalLeaderboardCommand.class
+        );
     }
 
     @Override

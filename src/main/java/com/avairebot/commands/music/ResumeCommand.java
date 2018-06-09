@@ -34,6 +34,11 @@ public class ResumeCommand extends Command {
     }
 
     @Override
+    public List<Class<? extends Command>> getRelations() {
+        return Collections.singletonList(PauseCommand.class);
+    }
+
+    @Override
     public List<String> getTriggers() {
         return Collections.singletonList("resume");
     }

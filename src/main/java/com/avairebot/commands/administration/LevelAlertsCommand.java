@@ -3,6 +3,7 @@ package com.avairebot.commands.administration;
 import com.avairebot.AvaIre;
 import com.avairebot.Constants;
 import com.avairebot.commands.CommandMessage;
+import com.avairebot.commands.utility.RankCommand;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.utilities.ComparatorUtil;
@@ -41,6 +42,14 @@ public class LevelAlertsCommand extends Command {
         return Arrays.asList(
             "`:command`",
             "`:command #general`"
+        );
+    }
+
+    @Override
+    public List<Class<? extends Command>> getRelations() {
+        return Arrays.asList(
+            LevelCommand.class,
+            RankCommand.class
         );
     }
 

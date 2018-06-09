@@ -36,6 +36,11 @@ public class SkipCommand extends Command {
     }
 
     @Override
+    public List<Class<? extends Command>> getRelations() {
+        return Collections.singletonList(VoteSkipCommand.class);
+    }
+
+    @Override
     public List<String> getTriggers() {
         return Collections.singletonList("skip");
     }

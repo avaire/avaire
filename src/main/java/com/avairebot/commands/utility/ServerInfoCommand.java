@@ -33,6 +33,11 @@ public class ServerInfoCommand extends Command {
     }
 
     @Override
+    public List<Class<? extends Command>> getRelations() {
+        return Collections.singletonList(ServerIdCommand.class);
+    }
+
+    @Override
     public List<String> getTriggers() {
         return Arrays.asList("serverinfo", "sinfo");
     }

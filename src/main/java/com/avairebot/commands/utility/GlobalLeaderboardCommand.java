@@ -5,6 +5,7 @@ import com.avairebot.cache.CacheType;
 import com.avairebot.chat.SimplePaginator;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.CacheFingerprint;
+import com.avairebot.contracts.commands.Command;
 import com.avairebot.contracts.commands.ThreadCommand;
 import com.avairebot.database.collection.Collection;
 import com.avairebot.database.collection.DataRow;
@@ -33,6 +34,14 @@ public class GlobalLeaderboardCommand extends ThreadCommand {
     @Override
     public String getDescription() {
         return "Shows the top 100 users globally, combining their rank, level, and xp between all servers the users are on.";
+    }
+
+    @Override
+    public List<Class<? extends Command>> getRelations() {
+        return Arrays.asList(
+            RankCommand.class,
+            LeaderboardCommand.class
+        );
     }
 
     @Override

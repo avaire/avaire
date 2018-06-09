@@ -47,6 +47,11 @@ public class KickCommand extends Command {
     }
 
     @Override
+    public List<Class<? extends Command>> getRelations() {
+        return Collections.singletonList(VoiceKickCommand.class);
+    }
+
+    @Override
     public List<String> getTriggers() {
         return Collections.singletonList("kick");
     }

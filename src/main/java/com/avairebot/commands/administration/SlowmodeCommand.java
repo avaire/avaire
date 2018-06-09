@@ -51,6 +51,11 @@ public class SlowmodeCommand extends Command {
     }
 
     @Override
+    public List<Class<? extends Command>> getRelations() {
+        return Collections.singletonList(PurgeCommand.class);
+    }
+
+    @Override
     public List<String> getTriggers() {
         return Collections.singletonList("slowmode");
     }

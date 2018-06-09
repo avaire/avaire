@@ -75,6 +75,7 @@ help:
             usage: 'Használat'
             example: 'Példa'
             aliases: 'Álnevek'
+            seeAlso: 'See Also'
             footer: 'Parancs kategória: '
 
 interaction:

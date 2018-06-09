@@ -77,6 +77,7 @@ help:
             usage: 'Usage'
             example: 'Example'
             aliases: 'Aliases'
+            seeAlso: 'See Also'
             footer: 'Command category: '
 
 interaction:

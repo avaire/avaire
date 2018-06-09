@@ -31,6 +31,11 @@ public class ChannelIdCommand extends Command {
     }
 
     @Override
+    public List<Class<? extends Command>> getRelations() {
+        return Collections.singletonList(ChannelInfoCommand.class);
+    }
+
+    @Override
     public List<String> getTriggers() {
         return Arrays.asList("channelid", "cid");
     }

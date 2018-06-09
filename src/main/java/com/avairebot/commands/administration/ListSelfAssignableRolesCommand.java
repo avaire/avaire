@@ -9,6 +9,7 @@ import com.avairebot.utilities.NumberUtil;
 import net.dv8tion.jda.core.entities.Role;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -26,6 +27,14 @@ public class ListSelfAssignableRolesCommand extends Command {
     @Override
     public String getDescription() {
         return "List all the self-assignable roles, 10 per-page.";
+    }
+
+    @Override
+    public List<Class<? extends Command>> getRelations() {
+        return Arrays.asList(
+            AddSelfAssignableRoleCommand.class,
+            RemoveSelfAssignableRoleCommand.class
+        );
     }
 
     @Override

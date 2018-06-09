@@ -42,6 +42,15 @@ public class GoodbyeMessageCommand extends Command {
     }
 
     @Override
+    public List<Class<? extends Command>> getRelations() {
+        return Arrays.asList(
+            GoodbyeCommand.class,
+            WelcomeCommand.class,
+            WelcomeMessageCommand.class
+        );
+    }
+
+    @Override
     public List<String> getTriggers() {
         return Arrays.asList("goodbyemessage", "byemsg");
     }

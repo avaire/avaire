@@ -3,6 +3,7 @@ package com.avairebot.commands.administration;
 import com.avairebot.AvaIre;
 import com.avairebot.Constants;
 import com.avairebot.commands.CommandMessage;
+import com.avairebot.commands.utility.RankCommand;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.utilities.ComparatorUtil;
@@ -31,6 +32,14 @@ public class LevelCommand extends Command {
     @Override
     public List<String> getUsageInstructions() {
         return Collections.singletonList("`:command` - Toggles the level feature on/off");
+    }
+
+    @Override
+    public List<Class<? extends Command>> getRelations() {
+        return Arrays.asList(
+            LevelAlertsCommand.class,
+            RankCommand.class
+        );
     }
 
     @Override

@@ -9,6 +9,7 @@ import com.avairebot.utilities.NumberUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class ListAliasesCommand extends Command {
@@ -30,6 +31,11 @@ public class ListAliasesCommand extends Command {
     @Override
     public List<String> getTriggers() {
         return Arrays.asList("aliases", "aliaslist");
+    }
+
+    @Override
+    public List<Class<? extends Command>> getRelations() {
+        return Collections.singletonList(AliasCommand.class);
     }
 
     @Override

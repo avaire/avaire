@@ -77,6 +77,7 @@ help:
             usage: "Usage"
             example: "Exemple"
             aliases: "Alias"
+            seeAlso: 'See Also'
             footer: "Catégorie de commande: "
 
 interaction:

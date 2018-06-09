@@ -5,6 +5,7 @@ import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class ServerIdCommand extends Command {
@@ -21,6 +22,11 @@ public class ServerIdCommand extends Command {
     @Override
     public String getDescription() {
         return "Shows the ID of the server the command was ran in.";
+    }
+
+    @Override
+    public List<Class<? extends Command>> getRelations() {
+        return Collections.singletonList(ServerInfoCommand.class);
     }
 
     @Override

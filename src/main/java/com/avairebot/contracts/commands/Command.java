@@ -16,6 +16,7 @@ import com.avairebot.utilities.StringReplacementUtil;
 import net.dv8tion.jda.core.entities.Message;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
@@ -119,6 +120,15 @@ public abstract class Command extends Reflectionable {
     }
 
     /**
+     * Gets a list class objects of commands related to the command.
+     *
+     * @return Possibly-null, A list of classes are related to the current command.
+     */
+    public List<Class<? extends Command>> getRelations() {
+        return null;
+    }
+
+    /**
      * Gets am immutable list of command triggers that can be used to invoke the current
      * command, the first index in the list will be used when the `:command` placeholder
      * is used in {@link #getDescription(CommandContext)} or {@link #getUsageInstructions()} methods.
@@ -136,7 +146,7 @@ public abstract class Command extends Reflectionable {
      * @see com.avairebot.contracts.middleware.Middleware
      */
     public List<String> getMiddleware() {
-        return new ArrayList<>();
+        return Collections.emptyList();
     }
 
     /**

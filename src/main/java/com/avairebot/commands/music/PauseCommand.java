@@ -34,6 +34,11 @@ public class PauseCommand extends Command {
     }
 
     @Override
+    public List<Class<? extends Command>> getRelations() {
+        return Collections.singletonList(ResumeCommand.class);
+    }
+
+    @Override
     public List<String> getTriggers() {
         return Collections.singletonList("pause");
     }

@@ -11,10 +11,7 @@ import com.avairebot.utilities.StringReplacementUtil;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.MessageBuilder;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -157,6 +154,22 @@ public class HelpCommand extends Command {
                     .skip(1)
                     .map(trigger -> commandPrefix + trigger)
                     .collect(Collectors.joining("`, `", "`", "`")),
+                false
+            );
+        }
+
+        if (command.getCommand().getRelations() != null && !command.getCommand().getRelations().isEmpty()) {
+            embed.addField(
+                context.i18n("fields.seeAlso"),
+                command.getCommand().getRelations().stream().map(relation -> {
+                    CommandContainer container = CommandHandler.getCommand(relation);
+                    if (container == null) {
+                        return null;
+                    }
+                    return container.getCommand().generateCommandTrigger(context.getMessage());
+                }).filter(Objects::nonNull).collect(
+                    Collectors.joining("`, `", "`", "`")
+                ),
                 false
             );
         }

@@ -41,6 +41,11 @@ public class CategoriesCommand extends Command {
     }
 
     @Override
+    public List<Class<? extends Command>> getRelations() {
+        return Collections.singletonList(ToggleCategoryCommand.class);
+    }
+
+    @Override
     public List<String> getTriggers() {
         return Arrays.asList("categories", "cats");
     }

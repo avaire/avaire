@@ -14,6 +14,7 @@ import net.dv8tion.jda.core.entities.User;
 
 import java.awt.*;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,6 +32,11 @@ public class UserInfoCommand extends Command {
     @Override
     public String getDescription() {
         return "Shows information about the user that ran the command, or the mentioned user. This includes the users username, ID, roles, the date they joined the server, the date they created their account, and how many servers they're in (That Ava knows about).";
+    }
+
+    @Override
+    public List<Class<? extends Command>> getRelations() {
+        return Collections.singletonList(UserIdCommand.class);
     }
 
     @Override

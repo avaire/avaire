@@ -11,6 +11,7 @@ import net.dv8tion.jda.core.entities.GuildVoiceState;
 import net.dv8tion.jda.core.entities.VoiceChannel;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -29,6 +30,11 @@ public class VoteSkipCommand extends Command {
     @Override
     public String getDescription() {
         return "Use this command to vote on the song currently playing to be skipped, if the vote wins with a majority vote the song will be skipped.";
+    }
+
+    @Override
+    public List<Class<? extends Command>> getRelations() {
+        return Collections.singletonList(SkipCommand.class);
     }
 
     @Override
