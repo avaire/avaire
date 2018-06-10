@@ -133,10 +133,9 @@ public class EvalCommand extends SystemCommand {
                         + "})();");
 
             } catch (Exception ex) {
-                context.makeWarning(String.format("`%s`\n\n`%sms`",
-                    ex.getMessage(), System.currentTimeMillis() - started)
-                );
-                LOGGER.info("Error occurred in eval", ex);
+                context.getChannel().sendMessage(String.format("**Input** ```java\n%s```\n**Error Output**\n```%s```\nEval took _%sms_",
+                    source, ex.getMessage(), System.currentTimeMillis() - started)
+                ).queue();
                 return;
             }
 
