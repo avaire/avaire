@@ -10,6 +10,7 @@ import com.avairebot.commands.administration.LevelCommand;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.database.collection.Collection;
 import com.avairebot.database.collection.DataRow;
+import com.avairebot.database.controllers.PlayerController;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.database.transformers.PlayerTransformer;
 import com.avairebot.factories.MessageFactory;
@@ -144,7 +145,9 @@ public class RankCommand extends Command {
     private CompletableFuture<DatabaseProperties> loadProperties(CommandMessage context, User author) {
         return CompletableFuture.supplyAsync(() -> {
             try {
-                PlayerTransformer player = context.getPlayerTransformer();
+                PlayerTransformer player = context.getAuthor().getIdLong() == author.getIdLong()
+                    ? context.getPlayerTransformer() : PlayerController.fetchPlayer(avaire, context.getMessage(), author);
+
                 DataRow data = avaire.getDatabase().newQueryBuilder(Constants.PLAYER_EXPERIENCE_TABLE_NAME)
                     .selectRaw("sum(`experience`) - (count(`user_id`) * 100) as `total`")
                     .where("user_id", author.getId())
