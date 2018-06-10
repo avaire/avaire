@@ -143,21 +143,25 @@ public class LevelUtil {
                 .andWhere("guild_id", message.getGuild().getId())
                 .update(statement -> statement.setRaw("experience", "`experience` + " + amount));
 
-            if (guild.isLevelAlerts() && getLevelFromExperience(player.getExperience()) > lvl) {
+            if (getLevelFromExperience(player.getExperience()) > lvl) {
                 long newLevel = getLevelFromExperience(player.getExperience());
 
-                MessageFactory.makeEmbeddedMessage(getLevelUpChannel(message, guild))
-                    .setColor(MessageType.SUCCESS.getColor())
-                    .setDescription(String.format("GG %s, you just reached **Level %s**",
-                        message.getAuthor().getAsMention(), newLevel
-                    )).queue();
+                if (guild.isLevelAlerts()) {
+                    MessageFactory.makeEmbeddedMessage(getLevelUpChannel(message, guild))
+                        .setColor(MessageType.SUCCESS.getColor())
+                        .setDescription(String.format("GG %s, you just reached **Level %s**",
+                            message.getAuthor().getAsMention(), newLevel
+                        )).queue();
+                }
 
-                if (guild.getLevelRoles().isEmpty()) return;
+                if (!guild.getLevelRoles().isEmpty()) {
+                    List<Role> roles = getRoleRewards(message, guild, newLevel);
+                    if (roles.isEmpty()) {
+                        return;
+                    }
 
-                List<Role> roles = getRoleRewards(message, guild, newLevel);
-                if (roles.isEmpty()) return;
-
-                message.getGuild().getController().addRolesToMember(message.getMember(), roles).queue();
+                    message.getGuild().getController().addRolesToMember(message.getMember(), roles).queue();
+                }
             }
         } catch (SQLException e) {
             System.err.println(e.getMessage());
