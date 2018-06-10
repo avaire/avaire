@@ -14,7 +14,7 @@ import com.avairebot.commands.CommandHandler;
 import com.avairebot.config.Configuration;
 import com.avairebot.contracts.ai.Intent;
 import com.avairebot.contracts.commands.Command;
-import com.avairebot.contracts.reflection.Reflectionable;
+import com.avairebot.contracts.reflection.Reflectional;
 import com.avairebot.contracts.scheduler.Job;
 import com.avairebot.database.DatabaseManager;
 import com.avairebot.database.migrate.migrations.*;
@@ -502,18 +502,19 @@ public class AvaIre {
         return sentryAppender;
     }
 
-    private void autoloadPackage(String path, Consumer<Reflectionable> callback) {
-        Set<Class<? extends Reflectionable>> types = new Reflections(path).getSubTypesOf(Reflectionable.class);
+    private void autoloadPackage(String path, Consumer<Reflectional> callback) {
+        Set<Class<? extends Reflectional>> types = new Reflections(path).getSubTypesOf(Reflectional.class);
 
         Class[] arguments = new Class[1];
         arguments[0] = AvaIre.class;
 
-        for (Class<? extends Reflectionable> reflectionClass : types) {
+        for (Class<? extends Reflectional> reflectionClass : types) {
             if (reflectionClass.getPackage().getName().contains("contracts")) {
                 continue;
             }
 
             try {
+                //noinspection JavaReflectionMemberAccess
                 callback.accept(reflectionClass.getDeclaredConstructor(arguments).newInstance(this));
             } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
                 getLogger().error("Failed to create a new instance of package {}", reflectionClass.getName(), e);
