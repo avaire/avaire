@@ -64,7 +64,6 @@ import javax.security.auth.login.LoginException;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
-import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ScheduledFuture;
 import java.util.function.Consumer;
@@ -330,6 +329,10 @@ public class AvaIre {
      * @return <code>True</code> if all shards has connected and are ready, <code>False</code> otherwise.
      */
     public boolean areWeReadyYet() {
+        if (getShardManager() == null) {
+            return false;
+        }
+
         for (JDA shard : getShardManager().getShards()) {
             if (shard.getStatus() != JDA.Status.CONNECTED) {
                 return false;
@@ -427,8 +430,8 @@ public class AvaIre {
             shard.shutdown();
         }
 
-        for (Map.Entry<String, ScheduledFuture<?>> job : ScheduleHandler.entrySet()) {
-            job.getValue().cancel(true);
+        for (ScheduledFuture<?> job : ScheduleHandler.entrySet()) {
+            job.cancel(true);
         }
 
         try {

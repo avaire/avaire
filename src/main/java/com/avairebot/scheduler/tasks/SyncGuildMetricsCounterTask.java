@@ -1,23 +1,17 @@
-package com.avairebot.scheduler;
+package com.avairebot.scheduler.tasks;
 
 import com.avairebot.AvaIre;
-import com.avairebot.contracts.scheduler.Job;
+import com.avairebot.contracts.scheduler.Task;
 import com.avairebot.metrics.Metrics;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.Region;
 import net.dv8tion.jda.core.entities.Guild;
 
-import java.util.concurrent.TimeUnit;
-
-public class SyncGuildMetricsCounterJob extends Job {
-
-    public SyncGuildMetricsCounterJob(AvaIre avaire) {
-        super(avaire, 30, 30, TimeUnit.SECONDS);
-    }
+public class SyncGuildMetricsCounterTask implements Task {
 
     @Override
-    public void run() {
-        if (!avaire.areWeReadyYet() || !hasLoadedGuilds()) {
+    public void handle(AvaIre avaire) {
+        if (!avaire.areWeReadyYet() || !hasLoadedGuilds(avaire)) {
             return;
         }
 
@@ -37,7 +31,7 @@ public class SyncGuildMetricsCounterJob extends Job {
         }
     }
 
-    private boolean hasLoadedGuilds() {
+    private boolean hasLoadedGuilds(AvaIre avaire) {
         if (avaire.getShardManager().getShards().size() != avaire.getSettings().getShardCount()) {
             return false;
         }

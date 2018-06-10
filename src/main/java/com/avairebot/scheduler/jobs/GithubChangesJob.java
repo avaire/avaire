@@ -1,8 +1,9 @@
-package com.avairebot.scheduler;
+package com.avairebot.scheduler.jobs;
 
 import com.avairebot.AvaIre;
 import com.avairebot.cache.CacheType;
 import com.avairebot.contracts.scheduler.Job;
+import com.avairebot.contracts.scheduler.Task;
 import com.avairebot.factories.RequestFactory;
 import com.avairebot.requests.Response;
 
@@ -24,11 +25,13 @@ public class GithubChangesJob extends Job {
 
     @Override
     public void run() {
-        RequestFactory.makeGET("https://api.github.com/repos/avaire/avaire/commits")
-            .send((Consumer<Response>) response -> {
-                List service = (List) response.toService(List.class);
+        handleTask((Task) avaire -> {
+            RequestFactory.makeGET("https://api.github.com/repos/avaire/avaire/commits")
+                .send((Consumer<Response>) response -> {
+                    List service = (List) response.toService(List.class);
 
-                avaire.getCache().getAdapter(CacheType.FILE).forever(cacheToken, service);
-            });
+                    avaire.getCache().getAdapter(CacheType.FILE).forever(cacheToken, service);
+                });
+        });
     }
 }

@@ -1,20 +1,16 @@
-package com.avairebot.scheduler;
+package com.avairebot.scheduler.tasks;
 
 import com.avairebot.AvaIre;
 import com.avairebot.commands.fun.RipCommand;
-import com.avairebot.contracts.scheduler.Job;
+import com.avairebot.contracts.scheduler.Task;
 import com.avairebot.time.Carbon;
 
-public class ResetRespectStatisticsJob extends Job {
+public class ResetRespectStatisticsTask implements Task {
 
     private int currentDay = 0;
 
-    public ResetRespectStatisticsJob(AvaIre avaire) {
-        super(avaire);
-    }
-
     @Override
-    public void run() {
+    public void handle(AvaIre avaire) {
         if (!isSameDay()) {
             RipCommand.RESPECT = 0;
         }

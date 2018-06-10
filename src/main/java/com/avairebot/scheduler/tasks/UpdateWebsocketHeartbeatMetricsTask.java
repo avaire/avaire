@@ -1,20 +1,14 @@
-package com.avairebot.scheduler;
+package com.avairebot.scheduler.tasks;
 
 import com.avairebot.AvaIre;
-import com.avairebot.contracts.scheduler.Job;
+import com.avairebot.contracts.scheduler.Task;
 import com.avairebot.metrics.Metrics;
 import net.dv8tion.jda.core.JDA;
 
-import java.util.concurrent.TimeUnit;
-
-public class UpdateWebsocketHeartbeatMetricsJob extends Job {
-
-    public UpdateWebsocketHeartbeatMetricsJob(AvaIre avaire) {
-        super(avaire, 10, 10, TimeUnit.SECONDS);
-    }
+public class UpdateWebsocketHeartbeatMetricsTask implements Task {
 
     @Override
-    public void run() {
+    public void handle(AvaIre avaire) {
         if (!avaire.areWeReadyYet()) {
             return;
         }

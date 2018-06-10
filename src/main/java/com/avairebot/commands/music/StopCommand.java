@@ -6,7 +6,7 @@ import com.avairebot.audio.GuildMusicManager;
 import com.avairebot.audio.LavalinkManager;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
-import com.avairebot.scheduler.MusicActivityJob;
+import com.avairebot.scheduler.tasks.MusicActivityTask;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -57,9 +57,9 @@ public class StopCommand extends Command {
         musicManager.getPlayer().stopTrack();
         musicManager.getScheduler().getQueue().clear();
 
-        MusicActivityJob.MISSING_LISTENERS.remove(guildId);
-        MusicActivityJob.PLAYER_PAUSED.remove(guildId);
-        MusicActivityJob.EMPTY_QUEUE.remove(guildId);
+        MusicActivityTask.MISSING_LISTENERS.remove(guildId);
+        MusicActivityTask.PLAYER_PAUSED.remove(guildId);
+        MusicActivityTask.EMPTY_QUEUE.remove(guildId);
 
         if (LavalinkManager.LavalinkManagerHolder.LAVALINK.isEnabled()) {
             LavalinkManager.LavalinkManagerHolder.LAVALINK.getLavalink()

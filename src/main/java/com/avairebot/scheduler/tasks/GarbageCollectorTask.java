@@ -1,4 +1,4 @@
-package com.avairebot.scheduler;
+package com.avairebot.scheduler.tasks;
 
 import com.avairebot.AvaIre;
 import com.avairebot.audio.AudioHandler;
@@ -7,21 +7,17 @@ import com.avairebot.audio.GuildMusicManager;
 import com.avairebot.audio.LavalinkManager;
 import com.avairebot.cache.CacheType;
 import com.avairebot.cache.adapters.MemoryAdapter;
-import com.avairebot.contracts.scheduler.Job;
+import com.avairebot.contracts.scheduler.Task;
 import com.avairebot.handlers.adapter.MessageEventAdapter;
 import lavalink.client.io.Link;
 import net.dv8tion.jda.core.managers.AudioManager;
 
 import java.util.Map;
 
-public class GarbageCollectorJob extends Job {
-
-    public GarbageCollectorJob(AvaIre avaire) {
-        super(avaire);
-    }
+public class GarbageCollectorTask implements Task {
 
     @Override
-    public void run() {
+    public void handle(AvaIre avaire) {
         // Clears the user cache set for DM info messages, this will reset
         // the list, allowing users to get the DM info message again.
         MessageEventAdapter.hasReceivedInfoMessageInTheLastMinute.clear();
@@ -36,6 +32,7 @@ public class GarbageCollectorJob extends Job {
         AudioHandler.getDefaultAudioHandler().musicManagers.entrySet().removeIf(this::musicManagerFilter);
         AudioHandler.getDefaultAudioHandler().audioSessions.entrySet().removeIf(this::audioSessionFilter);
     }
+
 
     /**
      * Checks if the {@link AudioManager Audio Manager} is connected to a voice channel.
