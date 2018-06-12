@@ -3,6 +3,7 @@ package com.avairebot.vote;
 import com.avairebot.AvaIre;
 import com.avairebot.Constants;
 import com.avairebot.database.collection.Collection;
+import com.avairebot.database.collection.DataRow;
 import com.avairebot.time.Carbon;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.User;
@@ -26,6 +27,8 @@ public class VoteManager {
 
     public VoteManager(AvaIre avaire) {
         this.avaire = avaire;
+
+        this.syncWithDatabase();
     }
 
     public VoteMesseger getMessager() {
@@ -157,5 +160,31 @@ public class VoteManager {
 
     public boolean isEnabled() {
         return avaire.getConfig().getBoolean("vote-lock.enabled", false);
+    }
+
+    private void syncWithDatabase() {
+        LOGGER.info("Syncing votes with the database...");
+        try {
+            Collection collection = avaire.getDatabase().newQueryBuilder(Constants.VOTES_TABLE_NAME).get();
+
+            if (collection.isEmpty()) {
+                return;
+            }
+
+            int size = voteLog.size();
+            for (DataRow row : collection) {
+                Carbon expiresIn = row.getTimestamp("expires_in");
+                if (expiresIn == null || expiresIn.isPast()) {
+                    continue;
+                }
+                voteLog.put(row.getLong("user_id"), expiresIn);
+            }
+
+            LOGGER.info("Syncing complete! {} vote entries was found that has not expired yet and was added to the vote log!",
+                voteLog.size() - size
+            );
+        } catch (SQLException e) {
+            LOGGER.error("An SQLException was thrown while fetching user vote information: ", e);
+        }
     }
 }
