@@ -3,6 +3,8 @@ package com.avairebot.commands.utility;
 import com.avairebot.AvaIre;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
+import com.avairebot.time.Carbon;
+import com.avairebot.vote.VoteEntity;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -31,15 +33,59 @@ public class VoteCommand extends Command {
 
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
+        if (args.length > 0 && args[0].equalsIgnoreCase("check")) {
+            return checkUser(context);
+        }
+
+        String note = String.format(String.join("\n", Arrays.asList(
+            "You'll gain access to the `!volume` and `!default-volume` commands for the",
+            "next 24 hours, as well as getting a vote point, rewards for vote points is",
+            "coming soon!",
+            "",
+            "Have you already voted and didn't get your vote rewards?",
+            "Try run `%s check`"
+        )), generateCommandTrigger(context.getMessage()));
+
+        Carbon expire = avaire.getVoteManager().getExpireTime(context.getAuthor());
+        if (expire != null && expire.isFuture()) {
+            note = "You have already voted today, thanks for that btw!\nYou can vote again in " + expire.diffForHumans() + ".";
+        }
+
         context.makeSuccess(String.join("\n", Arrays.asList(
             "Enjoy using the bot? Consider voting for the bot to help it grow, it's free but means a lot to the team behind Ava ❤",
             "",
             "https://discordbots.org/bot/avaire",
             "",
-            "Rewards for voting will be coming soon!"
+            ":note"
         )))
+            .set("note", note)
             .setTitle("Vote for AvaIre on DBL", "https://discordbots.org/bot/avaire")
             .queue();
+
+        return true;
+    }
+
+    private boolean checkUser(CommandMessage context) {
+        Carbon expire = avaire.getVoteManager().getExpireTime(context.getAuthor());
+        if (expire != null && expire.isFuture()) {
+            context.makeInfo("You have already voted today, thanks for that btw!\nYou can vote again in :time.")
+                .set("time", expire.diffForHumans())
+                .queue();
+            return true;
+        }
+
+        boolean wasAdded = avaire.getVoteManager().queueEntity(new VoteEntity(
+            context.getAuthor().getIdLong(),
+            context.getMessageChannel().getIdLong()
+        ));
+
+        if (!wasAdded) {
+            return false;
+        }
+
+        context.makeInfo(
+            ":user, You've been put on a queue to get your vote rewards. Make sure you've voted or nothing will happen!"
+        ).queue();
 
         return true;
     }
