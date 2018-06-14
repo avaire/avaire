@@ -8,6 +8,7 @@ import com.avairebot.commands.CommandHandler;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.commands.music.PlayCommand;
 import com.avairebot.contracts.ai.Intent;
+import com.avairebot.database.transformers.ChannelTransformer;
 import com.avairebot.utilities.RandomUtil;
 import com.google.gson.JsonElement;
 import org.jsoup.Jsoup;
@@ -44,6 +45,11 @@ public class RequestSong extends Intent {
     @Override
     @SuppressWarnings("ConstantConditions")
     public void onIntent(CommandMessage context, AIResponse response) {
+        if (!isMusicEnabledInCategory(context)) {
+            context.makeWarning("I can't play music for you because the music category is disabled for this channel :(").queue();
+            return;
+        }
+
         HashMap<String, JsonElement> parameters = response.getResult().getParameters();
 
         if (parameters.isEmpty() || !parameters.containsKey("music")) {
@@ -91,5 +97,16 @@ public class RequestSong extends Intent {
         }
 
         return (String) RandomUtil.pickRandom((List<String>) cacheItem);
+    }
+
+    private boolean isMusicEnabledInCategory(CommandMessage context) {
+        if (context.getDatabaseEventHolder() == null || context.getDatabaseEventHolder().getGuild() == null) {
+            return true;
+        }
+
+        ChannelTransformer channel = context.getDatabaseEventHolder()
+            .getGuild().getChannel(context.getMessageChannel().getId());
+
+        return channel == null || channel.isCategoryEnabled("music");
     }
 }
