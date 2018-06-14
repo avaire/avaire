@@ -21,6 +21,10 @@ public class CheckPermissionUtil {
         TextChannel textChannel = (TextChannel) channel;
         Member member = textChannel.getGuild().getSelfMember();
 
+        if (member.hasPermission(textChannel, Permission.ADMINISTRATOR)) {
+            return PermissionCheckType.EMBED;
+        }
+
         if (!member.hasPermission(textChannel, Permission.MESSAGE_WRITE)) {
             return PermissionCheckType.NONE;
         }
