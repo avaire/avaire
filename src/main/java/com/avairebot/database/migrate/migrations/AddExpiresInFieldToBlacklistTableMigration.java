@@ -27,7 +27,7 @@ public class AddExpiresInFieldToBlacklistTableMigration implements Migration {
             ));
         } else {
             schema.getDbm().queryUpdate(String.format(
-                "ALTER TABLE `%s` ADD `expires_in` VARCHAR(128) NOT NULL;",
+                "ALTER TABLE `%s` ADD `expires_in` VARCHAR(128);",
                 Constants.BLACKLIST_TABLE_NAME
             ));
         }
