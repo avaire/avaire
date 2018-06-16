@@ -256,7 +256,7 @@ public class MessageEventAdapter extends EventAdapter {
                 return new DatabaseEventHolder(null, null);
             }
 
-            GuildTransformer guild = GuildController.fetchGuild(avaire, event.getMessage());
+            GuildTransformer guild = GuildController.fetchGuild(avaire, event.getMessage(), event.getChannel());
             if (guild == null || !guild.isLevels() || event.getAuthor().isBot()) {
                 return new DatabaseEventHolder(guild, null);
             }
