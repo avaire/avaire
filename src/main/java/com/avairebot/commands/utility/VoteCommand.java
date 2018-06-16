@@ -60,7 +60,10 @@ public class VoteCommand extends Command {
         )))
             .set("note", note)
             .setTitle("Vote for AvaIre on DBL", "https://discordbots.org/bot/avaire")
-            .queue();
+            .setFooter(expire != null && expire.isFuture()
+                ? "You have " + avaire.getVoteManager().getVotePoints(avaire, context.getAuthor()) + " vote points"
+                : null
+            ).queue();
 
         return true;
     }

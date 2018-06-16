@@ -19,7 +19,7 @@ public class VoteManager {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(VoteManager.class);
     private static final DelayQueue<VoteEntity> queue = new DelayQueue<>();
-    private static final Map<Long, Carbon> voteLog = new HashMap<>();
+    private static final Map<Long, VoteCacheEntity> voteLog = new HashMap<>();
     private static final VoteMesseger messager = new VoteMesseger();
     private static long lastCheck = -1;
 
@@ -65,7 +65,7 @@ public class VoteManager {
     }
 
     public boolean hasVoted(long userId) {
-        return !isEnabled() || voteLog.containsKey(userId) && voteLog.get(userId).isFuture();
+        return !isEnabled() || voteLog.containsKey(userId) && voteLog.get(userId).getCarbon().isFuture();
     }
 
     public Carbon getExpireTime(Member member) {
@@ -86,7 +86,7 @@ public class VoteManager {
         if (!voteLog.containsKey(userId)) {
             return null;
         }
-        return voteLog.get(userId).copy();
+        return voteLog.get(userId).getCarbon().copy();
     }
 
     public void registerVoteFor(Member member) {
@@ -108,7 +108,9 @@ public class VoteManager {
             return;
         }
 
-        voteLog.put(userId, Carbon.now().addHours(24));
+        voteLog.put(userId, new VoteCacheEntity(
+            userId, Carbon.now().addHours(24)
+        ));
 
         try {
             Collection collection = avaire.getDatabase().newQueryBuilder(Constants.VOTES_TABLE_NAME)
@@ -118,10 +120,12 @@ public class VoteManager {
                 avaire.getDatabase().newQueryBuilder(Constants.VOTES_TABLE_NAME)
                     .insert(statement -> {
                         statement.set("user_id", userId);
-                        statement.set("expires_in", voteLog.get(userId).toDayDateTimeString());
+                        statement.set("expires_in", voteLog.get(userId).getCarbon().toDayDateTimeString());
                         statement.set("points", 1);
                         statement.set("points_total", 1);
                     });
+
+                voteLog.get(userId).setVotePoints(1);
 
                 return;
             }
@@ -130,16 +134,22 @@ public class VoteManager {
                 .useAsync(true)
                 .where("user_id", userId)
                 .update(statement -> {
-                    statement.set("expires_in", voteLog.get(userId).toDayDateTimeString());
+                    statement.set("expires_in", voteLog.get(userId).getCarbon().toDayDateTimeString());
                     statement.setRaw("points", "`points` + 1");
                     statement.setRaw("points_total", "`points_total` + 1");
                 });
+
+            voteLog.get(userId).setVotePoints(collection.first().getInt("points", 1) + 1);
         } catch (SQLException e) {
             LOGGER.error("An SQLException was thrown while updating user vote information: ", e);
         }
     }
 
     public int getVotePoints(AvaIre avaire, User userById) {
+        if (voteLog.containsKey(userById.getIdLong())) {
+            return voteLog.get(userById.getIdLong()).getVotePoints();
+        }
+
         try {
             Collection collection = avaire.getDatabase().newQueryBuilder(Constants.VOTES_TABLE_NAME)
                 .where("user_id", userById.getIdLong()).take(1).get();
@@ -177,7 +187,11 @@ public class VoteManager {
                 if (expiresIn == null || expiresIn.isPast()) {
                     continue;
                 }
-                voteLog.put(row.getLong("user_id"), expiresIn);
+                voteLog.put(row.getLong("user_id"), new VoteCacheEntity(
+                    row.getLong("user_id"),
+                    row.getInt("points", 0),
+                    expiresIn
+                ));
             }
 
             LOGGER.info("Syncing complete! {} vote entries was found that has not expired yet and was added to the vote log!",
