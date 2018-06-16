@@ -374,8 +374,8 @@ utility:
         footer: "Lis actuellement dans %s serveurs avec %s musiques dans la file."
         latestChanges: "Derniers changements :"
         formats:
-            database: "%s (%s per min)"
-            messages: "%s (%s per sec)"
+            perMinute: "%s (%s per min)"
+            perSecond: "%s (%s per sec)"
             memory: "%sMb / %sMb"
         fields:
             author: "Auteur"

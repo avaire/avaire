@@ -374,8 +374,8 @@ utility:
         footer: 'Spiller nå i %s servere med %s sanger i køen.'
         latestChanges: 'Seneste endringer:'
         formats:
-            database: '%s (%s per min)'
-            messages: '%s (%s per sek)'
+            perMinute: '%s (%s per min)'
+            perSecond: '%s (%s per sek)'
             memory: '%sMb / %sMb'
         fields:
             author: 'Forfatter'

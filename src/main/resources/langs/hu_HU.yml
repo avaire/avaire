@@ -371,8 +371,8 @@ utility:
         footer: 'Jelenleg %s szerveren játszik, %s zeneszámmal a lejátszási listában.'
         latestChanges: 'Utolsó változtatások:'
         formats:
-            database: '%s (%s percenként)'
-            messages: '%s (%s másodpercenként)'
+            perMinute: '%s (%s percenként)'
+            perSecond: '%s (%s másodpercenként)'
             memory: '%sMb / %sMb'
         fields:
             author: 'Fejlesztő'

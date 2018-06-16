@@ -374,8 +374,8 @@ utility:
         footer: 'Currently playing in %s servers with %s songs in the queue.'
         latestChanges: 'Latest changes:'
         formats:
-            database: '%s (%s per min)'
-            messages: '%s (%s per sec)'
+            perMinute: '%s (%s per min)'
+            perSecond: '%s (%s per sec)'
             memory: '%sMb / %sMb'
         fields:
             author: 'Author'

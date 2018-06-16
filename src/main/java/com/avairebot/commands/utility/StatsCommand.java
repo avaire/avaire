@@ -125,21 +125,11 @@ public class StatsCommand extends Command {
     }
 
     private String getDatabaseQueriesStats(CommandMessage context) {
-        int databaseQueries = getTotalsFrom(Metrics.databaseQueries.collect());
-        return String.format(
-            context.i18n("formats.database"),
-            NumberUtil.formatNicely(databaseQueries),
-            decimalNumber.format(databaseQueries / ((double) ManagementFactory.getRuntimeMXBean().getUptime() / (double) (1000 * 60)))
-        );
+        return formatDynamicValue(context, getTotalsFrom(Metrics.databaseQueries.collect()));
     }
 
     private String getMessagesReceivedStats(CommandMessage context) {
-        double value = Metrics.jdaEvents.labels(MessageReceivedEvent.class.getSimpleName()).get();
-        return String.format(
-            context.i18n("formats.messages"),
-            NumberUtil.formatNicely(value),
-            decimalNumber.format(value / ((double) ManagementFactory.getRuntimeMXBean().getUptime() / (double) (1000)))
-        );
+        return formatDynamicValue(context, (int) Metrics.jdaEvents.labels(MessageReceivedEvent.class.getSimpleName()).get());
     }
 
     private String memoryUsage(CommandMessage context) {
@@ -147,6 +137,15 @@ public class StatsCommand extends Command {
             context.i18n("formats.memory"),
             (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / (1024 * 1024),
             Runtime.getRuntime().totalMemory() / (1024 * 1024)
+        );
+    }
+
+    private String formatDynamicValue(CommandMessage context, int rawValue) {
+        double value = rawValue / ((double) ManagementFactory.getRuntimeMXBean().getUptime() / 1000D);
+        return String.format(
+            context.i18n(value > 90 ? "formats.perSecond" : "formats.perMinute"),
+            NumberUtil.formatNicely(rawValue),
+            decimalNumber.format(value > 90 ? value / 60D : value)
         );
     }
 
