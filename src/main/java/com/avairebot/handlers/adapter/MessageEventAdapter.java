@@ -34,6 +34,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class MessageEventAdapter extends EventAdapter {
@@ -41,7 +42,6 @@ public class MessageEventAdapter extends EventAdapter {
     public static final Set<Long> hasReceivedInfoMessageInTheLastMinute = new HashSet<>();
     private static final Logger LOGGER = LoggerFactory.getLogger(MessageEventAdapter.class);
     private static final Pattern userRegEX = Pattern.compile("<@(!|)+[0-9]{16,}+>", Pattern.CASE_INSENSITIVE);
-
     private static final String mentionMessage = String.join("\n", Arrays.asList(
         "Hi there! I'm **%s**, a multipurpose Discord bot built for fun by %s!",
         "You can see what commands I have by using the `%s` command.",
@@ -54,6 +54,9 @@ public class MessageEventAdapter extends EventAdapter {
         "If you like me please vote for AvaIre to help me grow:",
         "https://discordbots.org/bot/avaire/vote"
     ));
+
+    private static Pattern commandRegEx = null;
+    private static int maxCommandTriggerSize = -1;
 
     /**
      * Instantiates the event adapter and sets the avaire class instance.
@@ -256,7 +259,10 @@ public class MessageEventAdapter extends EventAdapter {
                 return new DatabaseEventHolder(null, null);
             }
 
-            GuildTransformer guild = GuildController.fetchGuild(avaire, event.getMessage(), event.getChannel());
+            GuildTransformer guild = looksLikeCommand(event.getMessage().getContentRaw())
+                ? GuildController.fetchGuild(avaire, event.getMessage(), event.getChannel())
+                : GuildController.fetchGuild(avaire, event.getMessage());
+
             if (guild == null || !guild.isLevels() || event.getAuthor().isBot()) {
                 return new DatabaseEventHolder(guild, null);
             }
@@ -279,5 +285,29 @@ public class MessageEventAdapter extends EventAdapter {
 
         avaire.getCache().getAdapter(CacheType.MEMORY).put(fingerprint, value, decay);
         return false;
+    }
+
+    private boolean looksLikeCommand(String message) {
+        if (commandRegEx == null) {
+            maxCommandTriggerSize = -1;
+            Set<String> commandTriggers = new HashSet<>();
+            for (CommandContainer container : CommandHandler.getCommands()) {
+                for (String trigger : container.getCommand().getTriggers()) {
+                    if (trigger.length() > maxCommandTriggerSize) {
+                        maxCommandTriggerSize = trigger.length();
+                    }
+                    commandTriggers.add(Matcher.quoteReplacement(trigger));
+                }
+            }
+            maxCommandTriggerSize += 4;
+            commandRegEx = Pattern.compile(String.format(
+                "^(\\S){1,3}(%s)$", String.join("|", commandTriggers)),
+                Pattern.CASE_INSENSITIVE
+            );
+        }
+
+        return commandRegEx.matcher(
+            message.substring(0, Math.min(maxCommandTriggerSize, message.length()))
+        ).matches();
     }
 }
