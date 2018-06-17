@@ -1,18 +1,31 @@
 package com.avairebot.middleware;
 
 import com.avairebot.AvaIre;
-import com.avairebot.cache.CacheItem;
 import com.avairebot.contracts.commands.CacheFingerprint;
 import com.avairebot.contracts.middleware.Middleware;
 import com.avairebot.contracts.middleware.ThrottleMessage;
 import com.avairebot.factories.MessageFactory;
 import com.avairebot.metrics.Metrics;
+import com.avairebot.utilities.CacheUtil;
 import com.avairebot.utilities.NumberUtil;
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import net.dv8tion.jda.core.entities.Message;
 
 import javax.annotation.Nonnull;
+import java.util.concurrent.TimeUnit;
 
 public class ThrottleMiddleware extends Middleware {
+
+    public static final Cache<String, ThrottleEntity> cache = CacheBuilder.newBuilder()
+        .recordStats()
+        .expireAfterWrite(60, TimeUnit.SECONDS)
+        .build();
+
+    public static final Cache<Long, Boolean> messageCache = CacheBuilder.newBuilder()
+        .recordStats()
+        .expireAfterWrite(2500, TimeUnit.MILLISECONDS)
+        .build();
 
     public ThrottleMiddleware(AvaIre avaire) {
         super(avaire);
@@ -42,20 +55,14 @@ public class ThrottleMiddleware extends Middleware {
 
             String fingerprint = type.generateCacheString(message, stack);
 
-            CacheItem item = avaire.getCache().getRaw(fingerprint);
-            if (item == null) {
-                item = new CacheItem(fingerprint, 0, -1);
+            ThrottleEntity entity = getEntityFromCache(fingerprint, maxAttempts, decaySeconds);
+            if (entity.getHits() >= maxAttempts) {
+                return cancelCommandThrottleRequest(message, stack, entity);
             }
 
-            int attempts = (Integer) item.getValue();
-            if (attempts >= maxAttempts) {
-                return cancelCommandThrottleRequest(message, stack, item);
-            }
+            entity.incrementHit();
 
-            if (stack.next()) {
-                avaire.getCache().put(fingerprint, ++attempts, decaySeconds);
-            }
-
+            return stack.next();
         } catch (NumberFormatException e) {
             AvaIre.getLogger().warn(String.format(
                 "Invalid integers given to throttle command by \"%s\", args: (%s, %s)", stack.getCommand().getName(), args[1], args[2]
@@ -64,27 +71,42 @@ public class ThrottleMiddleware extends Middleware {
         return false;
     }
 
-    private boolean cancelCommandThrottleRequest(Message message, MiddlewareStack stack, CacheItem item) {
+    private boolean cancelCommandThrottleRequest(Message message, MiddlewareStack stack, ThrottleEntity entity) {
         Metrics.commandsRatelimited.labels(stack.getCommand().getClass().getSimpleName()).inc();
 
-        String throttleMessage = "Too many `:command` attempts. Please try again in **:time** seconds.";
+        return (boolean) CacheUtil.getUncheckedUnwrapped(messageCache, message.getAuthor().getIdLong(), () -> {
+            String throttleMessage = "Too many `:command` attempts. Please try again in **:time** seconds.";
 
-        ThrottleMessage annotation = stack.getCommand().getClass().getAnnotation(ThrottleMessage.class);
-        if (annotation != null && annotation.message().trim().length() > 0) {
-            if (annotation.overwrite()) {
-                throttleMessage = annotation.message();
-            } else {
-                throttleMessage += annotation.message();
+            ThrottleMessage annotation = stack.getCommand().getClass().getAnnotation(ThrottleMessage.class);
+            if (annotation != null && annotation.message().trim().length() > 0) {
+                if (annotation.overwrite()) {
+                    throttleMessage = annotation.message();
+                } else {
+                    throttleMessage += annotation.message();
+                }
             }
+
+            MessageFactory.makeWarning(message, throttleMessage)
+                .set("command", stack.getCommand().getName())
+                .set("time", ((entity.getTime() - System.currentTimeMillis()) / 1000) + 1)
+                .set("prefix", stack.getCommand().generateCommandPrefix(message))
+                .queue();
+
+            return false;
+        });
+    }
+
+    private ThrottleEntity getEntityFromCache(String fingerprint, int maxAttempts, int decaySeconds) {
+        ThrottleEntity entity = (ThrottleEntity) CacheUtil.getUncheckedUnwrapped(cache, fingerprint,
+            () -> new ThrottleEntity(maxAttempts, decaySeconds)
+        );
+
+        if (entity.hasExpired()) {
+            cache.invalidate(fingerprint);
+            return getEntityFromCache(fingerprint, maxAttempts, decaySeconds);
         }
 
-        MessageFactory.makeWarning(message, throttleMessage)
-            .set("command", stack.getCommand().getName())
-            .set("time", ((item.getTime() - System.currentTimeMillis()) / 1000) + 1)
-            .set("prefix", stack.getCommand().generateCommandPrefix(message))
-            .queue();
-
-        return false;
+        return entity;
     }
 
     private enum ThrottleType {
@@ -151,6 +173,39 @@ public class ThrottleMiddleware extends Middleware {
             }
 
             return annotation.name();
+        }
+    }
+
+    private static class ThrottleEntity {
+
+        private final int maxAttempts;
+        private final long time;
+        private int hit;
+
+        ThrottleEntity(int maxAttempts, int decaySeconds) {
+            this.time = System.currentTimeMillis() + (decaySeconds * 1000);
+            this.maxAttempts = maxAttempts;
+            this.hit = 0;
+        }
+
+        public int getHits() {
+            return hit;
+        }
+
+        public void incrementHit() {
+            hit++;
+        }
+
+        public int getMaxAttempts() {
+            return maxAttempts;
+        }
+
+        public long getTime() {
+            return time;
+        }
+
+        public boolean hasExpired() {
+            return System.currentTimeMillis() > time;
         }
     }
 }

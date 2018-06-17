@@ -10,6 +10,7 @@ import com.avairebot.metrics.filters.AreWeReadyYetFilter;
 import com.avairebot.metrics.filters.HttpFilter;
 import com.avairebot.metrics.handlers.SparkExceptionHandler;
 import com.avairebot.metrics.routes.*;
+import com.avairebot.middleware.ThrottleMiddleware;
 import com.avairebot.utilities.LevelUtil;
 import io.prometheus.client.Counter;
 import io.prometheus.client.Gauge;
@@ -192,6 +193,8 @@ public class Metrics {
         cacheMetrics.addCache("players", PlayerController.cache);
         cacheMetrics.addCache("playlists", PlaylistController.cache);
         cacheMetrics.addCache("categoryPrefixes", Category.cache);
+        cacheMetrics.addCache("throttleCommands", ThrottleMiddleware.cache);
+        cacheMetrics.addCache("throttleMessages", ThrottleMiddleware.messageCache);
 
         if (!avaire.getConfig().getBoolean("metrics.enabled", true)) {
             LOGGER.info("Metrics web API is disabled, skipping igniting Spark API");
