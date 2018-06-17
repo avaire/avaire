@@ -12,6 +12,7 @@ import com.avairebot.database.collection.DataRow;
 import com.avairebot.utilities.LevelUtil;
 import com.avairebot.utilities.NumberUtil;
 import net.dv8tion.jda.core.entities.Member;
+import net.dv8tion.jda.core.entities.MessageChannel;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -56,7 +57,7 @@ public class GlobalLeaderboardCommand extends ThreadCommand {
 
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
-        Collection collection = loadTop100From();
+        Collection collection = loadTop100From(context.getMessageChannel());
         if (collection == null) {
             context.makeWarning(context.i18n("noData")).queue();
             return false;
@@ -95,8 +96,10 @@ public class GlobalLeaderboardCommand extends ThreadCommand {
         return true;
     }
 
-    private Collection loadTop100From() {
+    private Collection loadTop100From(MessageChannel channel) {
         return (Collection) avaire.getCache().getAdapter(CacheType.MEMORY).remember("database-xp-leaderboard.global", 300, () -> {
+            channel.sendTyping().queue();
+
             try {
                 return avaire.getDatabase().query("SELECT " +
                     "`user_id`, `username`, `discriminator`, (sum(`experience`) - (count(`user_id`) * 100)) + 100 as `total` " +
