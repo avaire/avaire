@@ -1,25 +1,25 @@
 package com.avairebot.commands.administration;
 
 import com.avairebot.AvaIre;
-import com.avairebot.Constants;
+import com.avairebot.chat.MessageType;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.CacheFingerprint;
+import com.avairebot.contracts.commands.ChannelModuleCommand;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.database.transformers.ChannelTransformer;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.utilities.MentionableUtil;
-import com.avairebot.utilities.StringReplacementUtil;
 import net.dv8tion.jda.core.entities.User;
 
-import java.sql.SQLException;
+import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
 
 @CacheFingerprint(name = "welcome-goodbye-message-command")
-public class GoodbyeMessageCommand extends Command {
+public class GoodbyeMessageCommand extends ChannelModuleCommand {
 
     public GoodbyeMessageCommand(AvaIre avaire) {
-        super(avaire, false);
+        super(avaire);
     }
 
     @Override
@@ -37,7 +37,18 @@ public class GoodbyeMessageCommand extends Command {
         return Arrays.asList(
             "`:command` - Resets the goodbye back to the default message.",
             "`:command <message>` - Sets the goodbye message to the given message.",
+            "`:command embed` - Disables embed messages.",
+            "`:command embed <color>` - Enables embed messages with the given color.",
             "`:command <user>` - If a valid username, nickname or user was mentioned, an example message will be sent for the given user."
+        );
+    }
+
+    @Override
+    public List<String> getExampleUsage() {
+        return Arrays.asList(
+            "`:command Goodbye %user%!` - Sets the message to \"Goodbye @user\".",
+            "`:command embed #ff0000` - Enables embed messages and sets it to red.",
+            "`:command @Senither` - Tests the goodbye message using the mentioned user."
         );
     }
 
@@ -56,14 +67,6 @@ public class GoodbyeMessageCommand extends Command {
     }
 
     @Override
-    public List<String> getMiddleware() {
-        return Arrays.asList(
-            "require:user,general.manage_server",
-            "throttle:channel,1,5"
-        );
-    }
-
-    @Override
     public boolean onCommand(CommandMessage context, String[] args) {
         GuildTransformer guildTransformer = context.getGuildTransformer();
         if (guildTransformer == null) {
@@ -79,62 +82,45 @@ public class GoodbyeMessageCommand extends Command {
             );
         }
 
+        if (args.length > 0 && args[0].equalsIgnoreCase("embed")) {
+            return handleEmbedOption(context, args, guildTransformer, channelTransformer, () -> {
+                String embedColor = getChannelModule(channelTransformer).getEmbedColor();
+
+                context.makeSuccess("The embed option for goodbye messages has been **:status**\n:note")
+                    .set("status", embedColor == null ? "disabled" : "enabled")
+                    .set("note", embedColor == null
+                        ? "Now sending goodbye messages through normal messages."
+                        : "Goodbye messages will now be sent using embedded messages with the color: " + embedColor)
+                    .setColor(embedColor == null ? MessageType.SUCCESS.getColor() : Color.decode(embedColor))
+                    .queue();
+
+                return true;
+            });
+        }
+
         if (args.length == 1) {
             User user = MentionableUtil.getUser(context, args, 0);
 
             if (user != null) {
-                return sendExampleMessage(context, user, channelTransformer);
+                return sendExampleMessage(context, user, channelTransformer, "%user% has left **%server%**! :(");
             }
         }
 
         channelTransformer.getGoodbye().setMessage(args.length == 0 ? null : String.join(" ", args));
 
-        try {
-            avaire.getDatabase().newQueryBuilder(Constants.GUILD_TABLE_NAME)
-                .andWhere("id", context.getGuild().getId())
-                .update(statement -> statement.set("channels", guildTransformer.channelsToJson(), true));
-
+        return updateDatabase(context, guildTransformer, () -> {
             if (channelTransformer.getGoodbye().getMessage() == null) {
                 context.makeSuccess("The `Goodbye` module message has been set back to the default.").queue();
 
                 return true;
             }
 
-            return sendEnableMessage(context, channelTransformer);
-        } catch (SQLException ex) {
-            AvaIre.getLogger().error("Failed to update the goodbye message", ex);
-
-            context.makeError("Failed to save the guild settings: :error")
-                .set("error", ex.getMessage())
-                .queue();
-            return false;
-        }
+            return sendEnableMessage(context, channelTransformer, "Goodbye");
+        });
     }
 
-    private boolean sendExampleMessage(CommandMessage context, User user, ChannelTransformer transformer) {
-        context.getMessageChannel().sendMessage(StringReplacementUtil.parseGuildJoinLeaveMessage(
-            context.getGuild(), context.getChannel(), user,
-            transformer.getGoodbye().getMessage() == null ?
-                "%user% has left **%server%**! :(" :
-                transformer.getGoodbye().getMessage())
-        ).queue();
-
-        return true;
-    }
-
-    private boolean sendEnableMessage(CommandMessage context, ChannelTransformer channelTransformer) {
-        context.makeSuccess(String.join("\n",
-            "The `Goodbye` module message has been set to:",
-            "",
-            "```:message```",
-            "",
-            "You can test the message by using the command again and mentioning a user.",
-            "`:command <user>`"
-        ))
-            .set("message", channelTransformer.getGoodbye().getMessage())
-            .set("command", generateCommandTrigger(context.getMessage()))
-            .queue();
-
-        return true;
+    @Override
+    public ChannelTransformer.MessageModule getChannelModule(ChannelTransformer transformer) {
+        return transformer.getGoodbye();
     }
 }

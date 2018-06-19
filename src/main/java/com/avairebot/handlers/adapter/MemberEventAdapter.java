@@ -5,6 +5,7 @@ import com.avairebot.contracts.handlers.EventAdapter;
 import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.transformers.ChannelTransformer;
 import com.avairebot.database.transformers.GuildTransformer;
+import com.avairebot.factories.MessageFactory;
 import com.avairebot.permissions.Permissions;
 import com.avairebot.utilities.RoleUtil;
 import com.avairebot.utilities.StringReplacementUtil;
@@ -15,6 +16,8 @@ import net.dv8tion.jda.core.events.guild.member.GuildMemberJoinEvent;
 import net.dv8tion.jda.core.events.guild.member.GuildMemberLeaveEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.awt.*;
 
 public class MemberEventAdapter extends EventAdapter {
 
@@ -49,11 +52,24 @@ public class MemberEventAdapter extends EventAdapter {
                     continue;
                 }
 
-                textChannel.sendMessage(StringReplacementUtil.parseGuildJoinLeaveMessage(
+                String message = StringReplacementUtil.parseGuildJoinLeaveMessage(
                     event.getGuild(), textChannel, event.getUser(),
                     channelTransformer.getWelcome().getMessage() == null ?
                         "Welcome %user% to **%server%!**" :
-                        channelTransformer.getWelcome().getMessage())
+                        channelTransformer.getWelcome().getMessage()
+                );
+
+                String embedColor = channelTransformer.getWelcome().getEmbedColor();
+                if (embedColor == null) {
+                    textChannel.sendMessage(message).queue();
+                    continue;
+                }
+
+                textChannel.sendMessage(
+                    MessageFactory.createEmbeddedBuilder()
+                        .setDescription(message)
+                        .setColor(Color.decode(embedColor))
+                        .build()
                 ).queue();
             }
         }
@@ -92,11 +108,24 @@ public class MemberEventAdapter extends EventAdapter {
                     continue;
                 }
 
-                textChannel.sendMessage(StringReplacementUtil.parseGuildJoinLeaveMessage(
+                String message = StringReplacementUtil.parseGuildJoinLeaveMessage(
                     event.getGuild(), textChannel, event.getUser(),
                     channelTransformer.getGoodbye().getMessage() == null ?
                         "%user% has left **%server%**! :(" :
-                        channelTransformer.getGoodbye().getMessage())
+                        channelTransformer.getGoodbye().getMessage()
+                );
+
+                String embedColor = channelTransformer.getGoodbye().getEmbedColor();
+                if (embedColor == null) {
+                    textChannel.sendMessage(message).queue();
+                    continue;
+                }
+
+                textChannel.sendMessage(
+                    MessageFactory.createEmbeddedBuilder()
+                        .setDescription(message)
+                        .setColor(Color.decode(embedColor))
+                        .build()
                 ).queue();
             }
         }

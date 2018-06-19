@@ -37,6 +37,7 @@ public class ChannelTransformer extends Transformer {
 
                 welcome.setEnabled(welcomeData.getBoolean("enabled", false));
                 welcome.setMessage(welcomeData.getString("message", null));
+                welcome.setEmbedColor(welcomeData.getString("embed", null));
             }
 
             if (data.get("goodbye", null) != null) {
@@ -44,6 +45,7 @@ public class ChannelTransformer extends Transformer {
 
                 goodbye.setEnabled(goodbyeData.getBoolean("enabled", false));
                 goodbye.setMessage(goodbyeData.getString("message", null));
+                goodbye.setEmbedColor(goodbyeData.getString("embed", null));
             }
 
             if (data.get("slowmode", null) != null) {
@@ -127,6 +129,15 @@ public class ChannelTransformer extends Transformer {
     public class MessageModule {
         private boolean enabled = false;
         private String message = null;
+        private String embedColor = null;
+
+        public String getEmbedColor() {
+            return embedColor;
+        }
+
+        public void setEmbedColor(String embedColor) {
+            this.embedColor = embedColor;
+        }
 
         public boolean isEnabled() {
             return enabled;
@@ -149,6 +160,7 @@ public class ChannelTransformer extends Transformer {
 
             objects.put("enabled", enabled);
             objects.put("message", message);
+            objects.put("embed", embedColor);
 
             return objects;
         }
