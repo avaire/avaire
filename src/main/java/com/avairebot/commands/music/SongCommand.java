@@ -11,6 +11,7 @@ import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.utilities.NumberUtil;
 import com.avairebot.utilities.RestActionUtil;
+import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import lavalink.client.player.IPlayer;
 
 import java.util.ArrayList;
@@ -105,7 +106,11 @@ public class SongCommand extends Command {
             buildTrackDescription(context, musicManager.getPlayer(), musicManager.getScheduler())
         )
             .setTitle(musicManager.getPlayer().isPaused() ? context.i18n("paused") : context.i18n("playing"))
-            .addField(context.i18n("songsInQueue"), buildSongsInQueue(context, musicManager.getScheduler()), false);
+            .addField(
+                context.i18n("songsInQueue") + " - " + buildQueueLength(musicManager),
+                buildSongsInQueue(context, musicManager.getScheduler()),
+                false
+            );
 
         if (!musicManager.getScheduler().getQueue().isEmpty()) {
             queueMessage.setFooter(String.format(context.i18n("moreSongs"),
@@ -167,5 +172,31 @@ public class SongCommand extends Command {
         }
 
         return songs;
+    }
+
+    private String buildQueueLength(GuildMusicManager manager) {
+        long length = 0L;
+        for (AudioTrackContainer container : manager.getScheduler().getQueue()) {
+            if (container.getAudioTrack().getInfo().isStream) {
+                continue;
+            }
+            length += container.getAudioTrack().getDuration() / 1000L;
+        }
+
+        AudioTrack playingTrack = manager.getPlayer().getPlayingTrack();
+        if (playingTrack != null && !playingTrack.getInfo().isStream) {
+            length += (playingTrack.getDuration() - playingTrack.getPosition()) / 1000L;
+        }
+
+        int seconds = (int) (length % 60L);
+        int minutes = (int) ((length % 3600L) / 60L);
+        int hours = (int) (length / 3600L);
+
+        if (hours != 0) {
+            return hours + " hours, " + minutes + " minutes, and " + seconds + " seconds";
+        } else if (minutes != 0) {
+            return minutes + " minutes, and " + seconds + " seconds";
+        }
+        return seconds + " seconds";
     }
 }
