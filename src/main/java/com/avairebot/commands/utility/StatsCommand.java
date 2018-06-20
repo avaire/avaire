@@ -143,9 +143,9 @@ public class StatsCommand extends Command {
     private String formatDynamicValue(CommandMessage context, int rawValue) {
         double value = rawValue / ((double) ManagementFactory.getRuntimeMXBean().getUptime() / 1000D);
         return String.format(
-            context.i18n(value > 90 ? "formats.perSecond" : "formats.perMinute"),
+            context.i18n(value < 1.5D ? "formats.perMinute" : "formats.perSecond"),
             NumberUtil.formatNicely(rawValue),
-            decimalNumber.format(value > 90 ? value / 60D : value)
+            decimalNumber.format(value < 1.5D ? value * 60D : value)
         );
     }
 
