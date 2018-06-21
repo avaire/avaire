@@ -11,11 +11,11 @@ errors:
     errorOccurredWhileLoading: 'Ein Fehler ist beim Laden von {0} aufgetreten. Bitte versuche es später erneut. Sollte dieser Fehler erneut auftreten, so kontaktiere eines unserer Entwickler auf dem [AvaIre Support Server] [https://discord.gg/gt2FWER].'
 
 levelupMessages:
-    - "GG :user, you just reached **Level :level**"
-    - "Eyy :user, you just leveled up! You're now **Level :level**"
-    - "🌟 You just reached **Level :level* :user! Congrats 🌟"
-    - "You're on 🔥 :user, you've just reached **Level :level**"
-    - "Congratulations :user 🎉 You just leveled up! You're now **Level :level**"
+    - "GG :user, du hast soeben **Level :level** erreicht!"
+    - "Eyy :user, du bist soeben aufgestiegen! Du bist nun auf **Level :level**."
+    - "🌟 Du hast soeben **Level :level* erreicht, :user! Glückwunsch! 🌟"
+    - "Du bist on 🔥 :user, denn du hast soeben **Level :level** erreicht!"
+    - "Glückwunsch, :user! 🎉 Du bist aufgestiegen! Du bist nun auf **Level :level**."
 
 fun:
     DiceCommand:
