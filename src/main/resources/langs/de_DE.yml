@@ -13,7 +13,7 @@ errors:
 levelupMessages:
     - "GG :user, du hast soeben **Level :level** erreicht!"
     - "Eyy :user, du bist soeben aufgestiegen! Du bist nun auf **Level :level**."
-    - "🌟 Du hast soeben **Level :level* erreicht, :user! Glückwunsch! 🌟"
+    - "🌟 Du hast soeben **Level :level** erreicht, :user! Glückwunsch! 🌟"
     - "Du bist on 🔥 :user, denn du hast soeben **Level :level** erreicht!"
     - "Glückwunsch, :user! 🎉 Du bist aufgestiegen! Du bist nun auf **Level :level**."
 
