@@ -22,6 +22,7 @@ import com.avairebot.utilities.LevelUtil;
 import com.avairebot.utilities.NumberUtil;
 import com.avairebot.utilities.RestActionUtil;
 import net.dv8tion.jda.core.Permission;
+import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import org.slf4j.Logger;
@@ -259,7 +260,7 @@ public class MessageEventAdapter extends EventAdapter {
                 return new DatabaseEventHolder(null, null);
             }
 
-            GuildTransformer guild = looksLikeCommand(event.getMessage().getContentRaw())
+            GuildTransformer guild = looksLikeCommand(event.getMessage())
                 ? GuildController.fetchGuild(avaire, event.getMessage(), event.getChannel())
                 : GuildController.fetchGuild(avaire, event.getMessage());
 
@@ -287,7 +288,12 @@ public class MessageEventAdapter extends EventAdapter {
         return false;
     }
 
-    private boolean looksLikeCommand(String message) {
+    private boolean looksLikeCommand(Message message) {
+        if (message.getGuild().getMembers().stream().filter(member -> member.getUser().isBot()).count() > 5) {
+            return false;
+        }
+
+        String content = message.getContentRaw();
         if (commandRegEx == null) {
             maxCommandTriggerSize = -1;
             Set<String> commandTriggers = new HashSet<>();
@@ -307,7 +313,7 @@ public class MessageEventAdapter extends EventAdapter {
         }
 
         return commandRegEx.matcher(
-            message.substring(0, Math.min(maxCommandTriggerSize, message.length()))
+            content.substring(0, Math.min(maxCommandTriggerSize, content.length()))
         ).matches();
     }
 }
