@@ -40,12 +40,11 @@ public class UptimeCommand extends Command {
 
         context.makeInfo(context.i18n("message"))
             .set("time", time.diffForHumans(true))
-            .setFooter(String.format(
-                context.i18n("footer"),
+            .setFooter(context.i18n(
+                "footer",
                 time.format("EEEEEEEE, dd MMM yyyy"),
-                time.format("HH:mm:ss z")
-            ))
-            .queue();
+                time.format("HH:mm:ss z"))
+            ).queue();
 
         return true;
     }

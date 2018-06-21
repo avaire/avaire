@@ -58,8 +58,8 @@ public class RipCommand extends Command {
 
         context.makeEmbeddedMessage()
             .setColor(Color.decode("#2A2C31"))
-            .setDescription(String.format(context.i18n("hasPaidTheirRespects"), context.getMember().getEffectiveName()))
-            .setFooter(String.format(context.i18n("todayAndOverall"), NumberUtil.formatNicely(RESPECT), getTotalRespects()))
+            .setDescription(context.i18n("hasPaidTheirRespects", context.getMember().getEffectiveName()))
+            .setFooter(context.i18n("todayAndOverall", NumberUtil.formatNicely(RESPECT), getTotalRespects()))
             .queue();
 
         return true;

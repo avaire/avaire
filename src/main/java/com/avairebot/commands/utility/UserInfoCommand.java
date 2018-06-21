@@ -89,19 +89,14 @@ public class UserInfoCommand extends Command {
         }
 
         placeholderMessage.addField(new MessageEmbed.Field(
-            String.format(
-                context.i18n("fields.roles"),
-                member.getRoles().size()
-            ), memberRoles, true)
-        );
+            context.i18n("fields.roles", member.getRoles().size()), memberRoles, true
+        ));
+
         placeholderMessage.addField(new MessageEmbed.Field(
             context.i18n("fields.servers"),
-            String.format(
-                context.i18n("inServers"),
-                NumberUtil.formatNicely(
-                    avaire.getShardManager().getMutualGuilds(member.getUser()).size()
-                )
-            ), true));
+            context.i18n("inServers", NumberUtil.formatNicely(
+                avaire.getShardManager().getMutualGuilds(member.getUser()).size()
+            )), true));
 
         placeholderMessage.queue();
         return true;

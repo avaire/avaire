@@ -81,10 +81,7 @@ public class VersionCommand extends Command {
 
         versionMessage
             .setTitle("v" + AppInfo.getAppInfo().VERSION)
-            .setFooter(String.format(
-                context.i18n("latestVersion"),
-                latestVersion
-            ))
+            .setFooter(context.i18n("latestVersion", latestVersion))
             .queue();
 
         return true;

@@ -71,7 +71,7 @@ public class PluginCommand extends SystemCommand {
             return showPlugin(context, Arrays.copyOfRange(args, 1, args.length));
         }
 
-        return sendErrorMessage(context, "Invalid argument given, `%s` is not a valid action!", args[0]);
+        return sendErrorMessage(context, "Invalid argument given, `{0}` is not a valid action!", args[0]);
     }
 
     private boolean listPlugins(CommandMessage context, String[] args) {
@@ -147,7 +147,7 @@ public class PluginCommand extends SystemCommand {
 
         Translator plugin = getPluginByName(args[0]);
         if (plugin == null) {
-            return sendErrorMessage(context, "Couldn't find any plugin called `" + args[0] + "`, are you sure it exists?");
+            return sendErrorMessage(context, "Couldn't find any plugin called `{0}`, are you sure it exists?", args[0]);
         }
 
         context.makeInfo(plugin.getDescription())

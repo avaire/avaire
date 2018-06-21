@@ -1,25 +1,25 @@
 
 errors:
-    missingArgument: 'Manglende argument, `%s` argument er påkrevd!'
-    invalidProperty: 'Ugyldig `%s` brukt, du må benytte en gyldig %s.'
-    noChannelsWithNameOrId: 'Jeg fant ingen kanaler med navn eller ID `%s`'
-    noUsersWithNameOrId: 'Jeg fant ingen brukere med navn eller ID `%s`'
+    missingArgument: 'Manglende argument, `{0}` argument er påkrevd!'
+    invalidProperty: 'Ugyldig `{0}` brukt, du må benytte en gyldig {1}.'
+    noChannelsWithNameOrId: 'Jeg fant ingen kanaler med navn eller ID `{0}`'
+    noUsersWithNameOrId: 'Jeg fant ingen brukere med navn eller ID `{0}`'
     mustBeConnectedToVoice: 'Du må være tilkoblet ett samtale rom for og bruke denne kommandoen!'
-    mustBeConnectedToSameChannel: 'Du må være tilkoblet samme samtale rom som meg for og endre %s!'
+    mustBeConnectedToSameChannel: 'Du må være tilkoblet samme samtale rom som meg for og endre {0}!'
     missingMusicQueue: 'Manglende musikk `query`, du må inkludere en lenke til sangen du ønsker og lytte til, eller gi meg i det minste en sang tittel!'
-    requireLevelFeatureToBeEnabled: 'Denne kommandoen krever at `Levels & Experience` fungsjonen er skrudd på for serveren, du kan spørre en admin om de ønsker og skru på fungsjonen `%s`'
-    errorOccurredWhileLoading: 'En feil oppsto ved lasting av %s, vennligst prøv igjen, om problemet vedvarer, vennligst kontakt en av mine utvikklere på [AvaIre support server](https://discord.gg/gt2FWER).'
+    requireLevelFeatureToBeEnabled: 'Denne kommandoen krever at `Levels & Experience` fungsjonen er skrudd på for serveren, du kan spørre en admin om de ønsker og skru på fungsjonen `{0}`'
+    errorOccurredWhileLoading: 'En feil oppsto ved lasting av {0}, vennligst prøv igjen, om problemet vedvarer, vennligst kontakt en av mine utvikklere på [AvaIre support server](https://discord.gg/gt2FWER).'
 
 fun:
     DiceCommand:
         missingDice: 'Du må inkludere ett gyldig terning format.'
-        invalidDiceFormat: '`%s` er ikke ett gyldig terning format.'
-        diceFormatMustBeGreaterThan: '`%s` er ikke ett gyldig terning format, terningen må være større enn 0 og mindre enn 35'
-        diceFormatMustBePositive: '`%s` er ikke ett gyldig terning format, terning formatet må være ett gyldig tall mellom 1 og 35'
-        sidesFormatMustBeGreaterThan: '`%s` er ikke ett gyldig terning format, sidene må være større enn 0 og mindre enn 128'
-        sidesFormatMustBePositive: '`%s` er ikke ett gyldig terning format, sidene må være ett gyldig tall mellom 1 og 128'
+        invalidDiceFormat: '`{0}` er ikke ett gyldig terning format.'
+        diceFormatMustBeGreaterThan: '`{0}` er ikke ett gyldig terning format, terningen må være større enn 0 og mindre enn 35'
+        diceFormatMustBePositive: '`{0}` er ikke ett gyldig terning format, terning formatet må være ett gyldig tall mellom 1 og 35'
+        sidesFormatMustBeGreaterThan: '`{0}` er ikke ett gyldig terning format, sidene må være større enn 0 og mindre enn 128'
+        sidesFormatMustBePositive: '`{0}` er ikke ett gyldig terning format, sidene må være ett gyldig tall mellom 1 og 128'
         moreThanFiveRollsWasGiven: '\n_Mere enn **5** terning kast, bare de første fem vil bli vist_\n'
-        resultedIn: '**%s** resulterte i **%s**  (%s)'
+        resultedIn: '**{0}** resulterte i **{1}**  ({2})'
 
     EightBallCommand:
         mustIncludeQuestion: 'Du må inkludere ett spørsmål for 8ball.'
@@ -47,32 +47,32 @@ fun:
 
     MemeCommand:
         missingArgument: 'Manglende `action` argument, du må inkludere meme typen eller bruker du ønsker og generere en meme for, eller `list` for og liste alle tiljengelige typer.'
-        invalidType: 'Ugyldig meme type gitt, `%s` er ikke en gyldig meme type!'
+        invalidType: 'Ugyldig meme type gitt, `{0}` er ikke en gyldig meme type!'
         mustIncludeTopAndBottomText: 'Du må inkludere `top text` og `bottom text` argumentene for og generere en meme.'
-        listItem: '`%s` => `%s`'
+        listItem: '`{0}` => `{1}`'
 
     ReverseCommand:
         palindrome: 'Du reverserte ett palindrom, hva forventet du?'
 
     RipCommand:
-        hasPaidTheirRespects: '**%s** har vist sin respekt.'
-        todayAndOverall: '%s I dag, %s alt i alt'
+        hasPaidTheirRespects: '**{0}** har vist sin respekt.'
+        todayAndOverall: '{0} I dag, {1} alt i alt'
 
     RollCommand:
-        invalidValueGiven: 'Ugyldig `%s` verdi oppgitt, `%s` må være ett nummer!'
+        invalidValueGiven: 'Ugyldig `{0}` verdi oppgitt, `{1}` må være ett nummer!'
         rolledNumber: ':user kastet **:number** fra mulige :min - :max'
 
 help:
     HelpCommand:
-        listOfCommands: ':page_with_curl: **Liste med kommandoer** ```css\n%s```\n'
+        listOfCommands: ':page_with_curl: **Liste med kommandoer** ```css\n{0}```\n'
         commandNote: '**Skriv `:help <command>` for å se hjelpen for den spesifikke kommandoen.**\nEksempel: `:help :command`'
-        categoriesNote: ':information_source: Skriv `:help <category>` for og få opp en liste med kommandoer i den kategorien\nEksempel: `:help %s` or `:help %s`'
+        categoriesNote: ':information_source: Skriv `:help <category>` for og få opp en liste med kommandoer i den kategorien\nEksempel: `:help {0}` or `:help {1}`'
         categoriesTitle: ':scroll: Kommando kategorier'
         invalidCategory: 'Ugyldig kategori, ingen kategori er kalt `:category`'
         invalidCommand: 'Ugyldig kommado, det er ingen kommando som har utløseren `:trigger`'
         tryingToViewSystemCommands: "Du har ikke tilgang til å kjøre noen av kommandoene i `System` kategorien, system kommandoer kan påvirke alle serverene som botten kjører i, og er derfor beskyttet så kun administratore/utvikklere kan bruke dem."
-        singularHiddenCategories: '_Det er **%s** gjemt kategori i denne kanalen._'
-        multipleHiddenCategories: '_Det er **%s** gjemte kategorier i denne kanalen._'
+        singularHiddenCategories: '_Det er **{0}** gjemt kategori i denne kanalen._'
+        multipleHiddenCategories: '_Det er **{0}** gjemte kategorier i denne kanalen._'
         fields:
             usage: 'Bruksområde'
             example: 'Eksempel'
@@ -91,7 +91,7 @@ interaction:
     KillCommand: 'ønsker og drepe'
     KissCommand: 'nusser'
     MeowCommand: 'mjauer til'
-    PanCommand: '**%s** slo **%s** med en stekepanne!'
+    PanCommand: '**{0}** slo **{1}** med en stekepanne!'
     PatCommand: 'klapper'
     PokeCommand: 'poker'
     PoutCommand: 'surmuler mot'
@@ -109,17 +109,17 @@ music:
         nowPlayingPlaylist: '**:playlistName** spillelisten har blit lagt til i kø med `:playlistSize` sanger!'
         nowPlaying: 'Spiller nå: [:title](:link)\n`:duration` med `:volume%` volum - Ønsket av :requester'
         queueHasEnded: 'Køen har nådd slutten, går ut av voice kanalen.'
-        noMatchFound: 'Jeg fant ingenting med søkeordet: `%s`'
-        trackLoadFailed: "Jeg fikk ikke lastet inn: `%s` i køen."
+        noMatchFound: 'Jeg fant ingenting med søkeordet: `{0}`'
+        trackLoadFailed: "Jeg fikk ikke lastet inn: `{0}` i køen."
         musicChannel: "Du kan kun benytte musikk kommandoer i :channel kanalen."
 
     ClearQueueCommand:
-        error: 'Ingenting å fjerne, legg til sanger først med `%splay`'
+        error: 'Ingenting å fjerne, legg til sanger først med `{0}play`'
         emptyQueue: 'Ingenting og fjerne, det er ingen sanger i køen akkurat nå.'
         success: 'Jeg har fjernet **:queueSize** fra køen, køen er nå tom!'
 
     MoveHereCommand:
-        error: 'Ikke koblet til voice, be meg legge til noe i køen først med `%splay`'
+        error: 'Ikke koblet til voice, be meg legge til noe i køen først med `{0}play`'
         nowPlayingIn: 'Jeg spiller nå av musikk i **:channelName**'
 
     MusicChannelCommand:
@@ -129,13 +129,13 @@ music:
             message: "**Tekst kanaler:** :text\n**Samtale kanaler:** :voice"
         status:
             disabled: "avslått"
-            enabled: "satt til **%s**"
+            enabled: "satt til **{0}**"
         errors:
             invalidType: "Ugjyldig type av musikk kanal angitt, typen må enten være `tekst` eller `samtale`"
-            notValidType: "`%s` er ikke en gyldig %s kanal, du må inkludere en gyldig samtale kanal du ønsker og bruke som musikk kanal."
+            notValidType: "`{0}` er ikke en gyldig {1} kanal, du må inkludere en gyldig samtale kanal du ønsker og bruke som musikk kanal."
 
     PauseCommand:
-        error: 'Ingenting å pause, be om musikk først med `%splay`'
+        error: 'Ingenting å pause, be om musikk først med `{0}play`'
         alreadyPaused: 'Musikken er allerede på pause, du kan benytte `!resume` for å fortsette avspillingen.'
         paused: 'Musikken har blitt satt på `pause`'
 
@@ -143,21 +143,21 @@ music:
         addedSong: ':user har lagt til [:title](:url) i køen. Det er `:queueSize` sang(er) før den i køen.'
         addedSongsFromPlaylist: ':user har lagt til :songs sanger fra [:title](:url) spillelisten i køen. Det er `:queueSize` sang(er) før den i køen.'
         session:
-            title: 'Resultat for %s'
-            footer: 'Velg en sang med %s <nummer>'
+            title: 'Resultat for {0}'
+            footer: 'Velg en sang med {0} <nummer>'
 
     PlaylistCommand:
         noPlaylists: 'Denne serveren har ingen spillelister enda, du kan lage en med \n`:command` for å komme i gang'
         noPlaylistWithName: 'Det er ingen spilleliste som heter `:playlist`, du kan lage en spilleliste ved å benytte\n`:command` kommandoen'
-        invalidProperty: 'Ugyldig `type` oppgitt, det er ingen spilleliste typer kalt `%s`.\nDu kan lære mere ved og sende `%shelp %s`'
+        invalidProperty: 'Ugyldig `type` oppgitt, det er ingen spilleliste typer kalt `{0}`.\nDu kan lære mere ved og sende `{1}help {2}`'
         invalidFormat: 'Ugyldig format, mangler `:type` typen!\n`:command`'
         invalidIdGiven: 'Ugyldig id oppgitt, nummer oppgitt er for :type\n`:command`'
         invalidIdNumberGiven: "Ugyldig id oppgitt, id'en må være ett nummer\n`:command`"
         noMoreSongSlots: "`:playlist` spillelisten har ikke flere sang plasser igjen, du kan fjerne noen for og frigjøre plass."
         noMorePlaylistSlots: "Serveren har ikke flere spilleliste plasser igjen, du kan slette en eksisterende spilleliste for og frigjøre plass."
-        failedToLoad: 'Feilet med og laste: %s'
+        failedToLoad: 'Feilet med og laste: {0}'
         failedToLoadPlaylist: 'Feilet med og laste inn :playlist spillelisten, forsøk igjen senere eller rapporter dette til en av mine utviklere.'
-        failedToSavePlaylist: 'Noe gikk galt ved forsøkt på og lagre spillelisten: %s'
+        failedToSavePlaylist: 'Noe gikk galt ved forsøkt på og lagre spillelisten: {0}'
         loadedPlaylist: '**:name** spillelisten har blitt lastet og lagt til i køen med **:amount** sanger.'
         noMatches: 'Ingen treff'
         attemptingToAddLivestreamToPlaylist: "Du kan ikke legge til direkte sendte strømmer til spillelister!"
@@ -171,82 +171,82 @@ music:
         playlistIsEmpty: 'Det er ingen sanger i denne spillelisten, du kan legge til sanger ved og benytte kommandoen\n`:command`.'
         playlistIsAlreadyEmpty: '`:playlist` spillelisten er allerede tom, det er intet her og fjerne.'
         songHasBeenRemovedFromPlaylist: ':song har blitt suksessfult fjernet fra `:playlist` spillelisten'
-        playlistTitle: ':musical_note: Musikk spillelister %s'
-        playlistSize: '[ %s ut av %s ]'
-        playlistLine: '%s\n       Spillelisten har **%s** sang(er)'
-        playlistSongLine: '`%s` [%s](%s) [%s]'
+        playlistTitle: ':musical_note: Musikk spillelister {0}'
+        playlistSize: '[ {0} ut av {1} ]'
+        playlistLine: '{0}\n       Spillelisten har **{1}** sang(er)'
+        playlistSongLine: '`{0}` [{1}]({2}) [{3}]'
 
     RemoveSongFromQueueCommand:
         error: "Manglende argument `sang id`, du må inkludere ID'en til sangen du ønsker og fjerne."
         failedToRemoveSong: 'Noe gikk galt, feilet med og fjerne sang med indeks `:index`'
-        tooHighNumberGiven: 'Det er kun `%s` sanger i køen, forsøk med ett lavere tall.'
+        tooHighNumberGiven: 'Det er kun `{0}` sanger i køen, forsøk med ett lavere tall.'
         mustBePositiveNumber: '`Sang ID` må være ett gyldig positivt tall.'
-        nothingToRemove: 'Ingenting og fjerne, etterspør musikk først med `%splay`'
+        nothingToRemove: 'Ingenting og fjerne, etterspør musikk først med `{0}play`'
         success: ':song har blitt suksessfult fjernet fra musikk køen.'
 
     RepeatMusicQueueCommand:
-        error: 'Det er ingenting og gjennta, etterspør musikk først med `%splay`'
+        error: 'Det er ingenting og gjennta, etterspør musikk først med `{0}play`'
         success: 'Musikk kø looping er blitt skrudd `:status`.'
         enabled: 'PÅ'
         disabled: 'AV'
 
     ResumeCommand:
-        error: 'Ingenting og gjennoppta, etterspør musikk først med `%splay`'
+        error: 'Ingenting og gjennoppta, etterspør musikk først med `{0}play`'
         alreadyPlaying: 'Musikken spiller allerede, benytt `:prefixpause` for og pause musikken.'
         resume: 'Musikken har `gjenopptatt`'
 
     SeekCommand:
-        error: 'Ingenting spiller akkurat nå, etterspør noe med `%splay` først.'
+        error: 'Ingenting spiller akkurat nå, etterspør noe med `{0}play` først.'
         invalidTimeGiven: '`Nummer` argumentet må være ett gyldig tall format som er minst 0 eller flere sekunder langt.'
         seekingLive: 'Du kan ikke hoppe til en annen tidskode av en direkte sendt strøm.'
-        seekingTooFar: '`%s` er mere enn den totale lengden av sangen som spilles, om du ønsker og hoppe over sangen, benytt `%sskip` istedenfor.'
+        seekingTooFar: '`{0}` er mere enn den totale lengden av sangen som spilles, om du ønsker og hoppe over sangen, benytt `{0}skip` istedenfor.'
         seekTo: 'Spoler **:title** til `:time`'
 
     SetDefaultVolumeCommand:
         currentVolume: 'Standard volumet for serveren er forøyeblikket `:volume%`'
         changedVolume: 'Standard volumet har blitt satt til `:volume%`'
-        failedToSave: 'Noe gikk galt når jeg prøvde og oppdatere standard volumet: %s'
+        failedToSave: 'Noe gikk galt når jeg prøvde og oppdatere standard volumet: {0}'
         mustBeNumber: '`Volumet` må være ett nummer mellom 10 og 100'
 
     ShuffleCommand:
-        error: 'Musikk køen er allerede tom, du kan etterspøre noe med\n`%splay <sang tittel | url>`'
+        error: 'Musikk køen er allerede tom, du kan etterspøre noe med\n`{0}play <sang tittel | url>`'
         success: '**:amount** sanger har blitt stokket i køen.'
 
     SkipCommand:
-        error: 'Ingenting og hoppe over, etterspør musikk først med `%splay`'
+        error: 'Ingenting og hoppe over, etterspør musikk først med `{0}play`'
 
     SongCommand:
-        error: 'Ingenting og spille, etterspør musikk med `%splay`'
+        error: 'Ingenting og spille, etterspør musikk med `{0}play`'
         paused: 'Er nå pauset'
         playing: 'Spiller nå'
         songsInQueue: 'Sanger i køen'
-        moreSongs: 'Du kan se flere sanger ved og benytte %s <page>'
+        moreSongs: 'Du kan se flere sanger ved og benytte {0} <page>'
         noSongs: 'Det er ingen andre sanger i køen akkurat nå'
-        andXMoreSongs: '_Og **%s** flere sanger%s!_'
+        andXMoreSongs: '_Og **{0}** flere sanger{1}!_'
         formats:
-            line: '**%s** [%s](%s)'
-            song: '[%s](%s)\nSpiller med `%s` volum hvorav `%s` er igjen av sangen - Foreslått av <@%s>'
-            stream: '[%s](%s)\nSpiller med `%s` volum, strømmen er kommet til `%s` - Foreslått av <@%s>'
+            line: '**{0}** [{1}]({2})'
+            song: '[{0}]({1})\nSpiller med `{2}` volum hvorav `{3}` er igjen av sangen - Foreslått av <@{4}>'
+            stream: '[{0}]({1})\nSpiller med `{2}` volum, strømmen er kommet til `{3}` - Foreslått av <@{4}>'
 
     StopCommand:
         error: "Ingenting spiller akkurat nå, du kan ikke stoppe musikken når ingenting spilles av."
         success: 'Spilleren har stoppet, og **:number** sanger har blitt fjernet fra køen.'
 
     VolumeCommand:
-        error: 'Ingenting spiller, etterspør musikk først med `%splay`'
+        error: 'Ingenting spiller, etterspør musikk først med `{0}play`'
         requireDJRole: '`DJ` er påkrevd for og endre volumet!'
         invalidVolume: 'Ugyldig volum oppgitt, volumet må være ett gyldig nummer mellom 1 og 100.'
         nowPlaying: ':musical_note: Musikken spilles med **:volume** volum'
         setTo: ':musical_note: Volumet er satt til **:volume**'
 
     VoteSkipCommand:
-        error: 'Ingenting og hoppeover, etterspør musikk først med `%splay`'
+        error: 'Ingenting og hoppeover, etterspør musikk først med `{0}play`'
         registered: 'Din stemme har blitt motatt! `:votes` flere stemmer trengs for og hoppe over sangen.'
         alreadyVoted: 'Du kan kun stemme for og hoppeover en gang per sang! `:votes` flere stemmer trengs for og hoppe over sangen.'
 
 search:
     DuckDuckGoCommand:
-        searchResults: 'Søkeresultat med: %s'
+        searchResults: 'Søkeresultat med: {0}'
         noResults: 'Jeg fant ingenting med `:query`'
         seeAlso: '**Se også**'
         nsfwStatus:
@@ -263,7 +263,7 @@ search:
         results: ':percentage prosent av folk liker dette. :up👍 :down👎'
 
     XKCDCommand:
-        number: 'XKCD nummer #%s'
+        number: 'XKCD nummer #{0}'
 
 utility:
     CalculateCommand:
@@ -291,7 +291,7 @@ utility:
 
     ExpandUrlCommand:
         noRedirect: ":url omdirigeres ikke."
-        redirects: '%s omdirigeres til %s'
+        redirects: '{0} omdirigeres til {1}'
         jumps: '**Linken går gjennom de følgende sidene:**'
 
     FeedbackCommand:
@@ -314,7 +314,7 @@ utility:
     LeaderboardCommand:
         noData: 'Det er ingen erfarings oversikt data akkurat nå, prøv igjen senere.'
         line: '`:num` **:username** er level **:level** med **:experience** xp.'
-        title: '%s Erfarings oversikt'
+        title: '{0} Erfarings oversikt'
 
     PingCommand:
         message: 'Pong! Tid brukt :ping ms (:rating) Websocket heartbeat :heartbeat ms'
@@ -341,7 +341,7 @@ utility:
             level: 'Level'
             experience: 'Erfaring'
             experienceToNext: 'Erfaring som trengs for neste level'
-            youNeedMoreXpToLevelUp: '\t\t\t\t\t\t\t\t\tDu trenger %s mere XP for og levle opp.'
+            youNeedMoreXpToLevelUp: '[{0}] {1}{2}\n\t\t\t\t\t\t\t\t\tDu trenger {3} mere XP for og levle opp.'
 
     ServerIdCommand:
         message: ':user :id: til denne serveren er `:guildid`'
@@ -356,7 +356,7 @@ utility:
             roles: 'Roller'
             region: 'Region'
             createdAt: 'Laget den'
-            emojis: 'Opplastede Emojis (%s)'
+            emojis: 'Opplastede Emojis ({0})'
         timeFormat: 'EEE, dd MMM yyyy HH:mm'
 
     ShardCommand:
@@ -371,12 +371,12 @@ utility:
 
     StatsCommand:
         title: 'Offisiel bot server invitasjon'
-        footer: 'Spiller nå i %s servere med %s sanger i køen.'
+        footer: 'Spiller nå i {0} servere med {1} sanger i køen.'
         latestChanges: 'Seneste endringer:'
         formats:
-            perMinute: '%s (%s per min)'
-            perSecond: '%s (%s per sek)'
-            memory: '%sMb / %sMb'
+            perMinute: '{0} ({1} per min)'
+            perSecond: '{0} ({1} per sek)'
+            memory: '{0}Mb / {1}Mb'
         fields:
             author: 'Forfatter'
             botId: 'Bot ID'
@@ -393,7 +393,7 @@ utility:
 
     UptimeCommand:
         message: 'Jeg har vert tilkoblet i :time'
-        footer: 'Startet %s på %s'
+        footer: 'Startet {0} på {1}'
         dateFormat: 'EEEEEEEE, dd MMM yyyy'
         timeFormat: 'HH:mm:ss z'
 
@@ -406,9 +406,9 @@ utility:
             userId: 'Bruker ID'
             joinedServer: 'Ble medlem av Serveren'
             joinedDiscord: 'Ble medlem av Discord'
-            roles: 'Roller (%s)'
+            roles: 'Roller ({0})'
             servers: 'Servere'
-        inServers: '%s botten kjenner til'
+        inServers: '{0} botten kjenner til'
         noRoles: '*Brukeren har ingen roller*'
         timeFormat: 'EEE, dd MMM yyyy HH:mm'
 
@@ -416,7 +416,7 @@ utility:
         current: 'Jeg er forøyeblikket `:difference` :type versjoner bak den nyeste!'
         getLatest: 'Du kan hente den nyeste versjonen av meg her: [avaire/avaire](https://github.com/avaire/avaire)'
         usingLatest: "Du benytter den nyeste versjonen av AvaIre!"
-        latestVersion: 'Den seneste versjonen av AvaIre er v%s'
+        latestVersion: 'Den seneste versjonen av AvaIre er v{0}'
         versions:
             majorName: 'Større endringer'
             major: 'Store endringer er større endringer av kildekoden til botten, det er høyst anbefalt og oppdatere ved større endringer da elder versjoner ikke støttes for bug fikser eller oppdateringer.'

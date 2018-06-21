@@ -73,7 +73,7 @@ public class LanguageCommand extends Command {
         if (language == null) {
             return sendErrorMessage(
                 context,
-                "Invalid language code given, `%s` is not a valid language code, or it is not yet supported!",
+                "Invalid language code given, `{0}` is not a valid language code, or it is not yet supported!",
                 String.join(" ", args)
             );
         }

@@ -1,25 +1,25 @@
 
 errors:
-    missingArgument: 'Hiányzó paraméter, a `%s` paraméter szükséges!'
-    invalidProperty: 'Hibás `%s` biztosítva, érvényes %s-t kell biztosítanod.'
-    noChannelsWithNameOrId: 'Nem találtam channelt e név, vagy ID-vel: `%s`'
-    noUsersWithNameOrId: 'Nem találtam felhasználót e név, vagy ID-vel: `%s`'
+    missingArgument: 'Hiányzó paraméter, a `{0}` paraméter szükséges!'
+    invalidProperty: 'Hibás `{0}` biztosítva, érvényes {1}-t kell biztosítanod.'
+    noChannelsWithNameOrId: 'Nem találtam channelt e név, vagy ID-vel: `{0}`'
+    noUsersWithNameOrId: 'Nem találtam felhasználót e név, vagy ID-vel: `{0}`'
     mustBeConnectedToVoice: 'Csatlakozva kell lenned egy szobához, hogy használd ezt a parancsot!'
-    mustBeConnectedToSameChannel: 'Ugyan ahhoz a szobához kell csatlakozva lenned mint én, hogy: %s!'
+    mustBeConnectedToSameChannel: 'Ugyan ahhoz a szobához kell csatlakozva lenned mint én, hogy: {0}!'
     missingMusicQueue: 'Hiányzó zene `szám`, egy linket kell küldened a számhoz amit hallgatnál, vagy legalább add meg a címét!'
-    requireLevelFeatureToBeEnabled: 'Ez a parancs megköveteli a `Levels & Experience` funkciót, hogy be legyen kapcsolva a szerveren. Megkérdheted a szerver tulajdonost, hogy be akarják-e kapcsolni a `%s`-vel'
-    errorOccurredWhileLoading: 'Hiba lépett fel a %s betöltése közben, kérlek próbáld újra, ha a hiba továbbra is fennáll kérlek jelentsd ezt az egyik fejlesztőmnek az [AvaIre support server](https://discord.gg/gt2FWER)-en.'
+    requireLevelFeatureToBeEnabled: 'Ez a parancs megköveteli a `Levels & Experience` funkciót, hogy be legyen kapcsolva a szerveren. Megkérdheted a szerver tulajdonost, hogy be akarják-e kapcsolni a `{0}`-vel'
+    errorOccurredWhileLoading: 'Hiba lépett fel a {0} betöltése közben, kérlek próbáld újra, ha a hiba továbbra is fennáll kérlek jelentsd ezt az egyik fejlesztőmnek az [AvaIre support server](https://discord.gg/gt2FWER)-en.'
 
 fun:
     DiceCommand:
         missingDice: 'Meg kell adnod a kockát amit dobni akarsz.'
-        invalidDiceFormat: '`%s` nem egy valós kocka formátum.'
-        diceFormatMustBeGreaterThan: '`%s` nem egy valós kocka formátum, a kockának nagyobbnak kell lennie mint 0 és kisebbnek mint 35'
-        diceFormatMustBePositive: '`%s` nem egy valós kocka formátum, valós pozitív számnak kell lennie 1 és 35 között'
-        sidesFormatMustBeGreaterThan: '`%s` nem egy valós kocka formátum, az oldalaknak nagyobbnak kell lennie mint 0, és kevesebbnek mint 128'
-        sidesFormatMustBePositive: '`%s` nem egy valós kocka formátum, az oldalak összegének valós pozitív számnak kell lennie 1 és 128 között'
+        invalidDiceFormat: '`{0}` nem egy valós kocka formátum.'
+        diceFormatMustBeGreaterThan: '`{0}` nem egy valós kocka formátum, a kockának nagyobbnak kell lennie mint 0 és kisebbnek mint 35'
+        diceFormatMustBePositive: '`{0}` nem egy valós kocka formátum, valós pozitív számnak kell lennie 1 és 35 között'
+        sidesFormatMustBeGreaterThan: '`{0}` nem egy valós kocka formátum, az oldalaknak nagyobbnak kell lennie mint 0, és kevesebbnek mint 128'
+        sidesFormatMustBePositive: '`{0}` nem egy valós kocka formátum, az oldalak összegének valós pozitív számnak kell lennie 1 és 128 között'
         moreThanFiveRollsWasGiven: '\n_Több mint **5** kocka dobás megadva, csak az első 5 lesz megjelenítve_\n'
-        resultedIn: '**%s** eredménye: **%s**  (%s)'
+        resultedIn: '**{0}** eredménye: **{1}**  ({2})'
 
     EightBallCommand:
         mustIncludeQuestion: 'Meg kell adnod egy kérdést a 8ball számára.'
@@ -45,32 +45,32 @@ fun:
 
     MemeCommand:
         missingArgument: 'Hiányzó `akció` paraméter, meg kell adnod a meme típusát esetleg felhasználót akinek generálni akarsz, vagy `list`, hogy megnézd az összes elérhető meme típust.'
-        invalidType: 'Érvénytelen meme típus megadva, `%s` nem egy valós meme típus!'
+        invalidType: 'Érvénytelen meme típus megadva, `{0}` nem egy valós meme típus!'
         mustIncludeTopAndBottomText: 'Szükséges megadnod a `top text` és `bottom text` paramétereket, hogy meme-t generálj.'
-        listItem: '`%s` => `%s`'
+        listItem: '`{0}` => `{1}`'
 
     ReverseCommand:
         palindrome: 'Megfordítottál egy palindrom-ot, mit gondoltál?'
 
     RipCommand:
-        hasPaidTheirRespects: '**%s** lerótta kegyeletét.'
-        todayAndOverall: '%s Ma, %s Összesen'
+        hasPaidTheirRespects: '**{0}** lerótta kegyeletét.'
+        todayAndOverall: '{0} Ma, {1} Összesen'
 
     RollCommand:
-        invalidValueGiven: 'Érvénytelen `%s` érték megadva, `%s` szám kell, hogy legyen!'
+        invalidValueGiven: 'Érvénytelen `{0}` érték megadva, `{1}` szám kell, hogy legyen!'
         rolledNumber: ':user **:number**-t dobott a :min - :max-ból'
 
 help:
     HelpCommand:
-        listOfCommands: ':page_with_curl: **List of Commands** ```css\n%s```\n'
+        listOfCommands: ':page_with_curl: **List of Commands** ```css\n{0}```\n'
         commandNote: '**Írd be a `:help <parancs>`, hogy lásd a segítséget ahhoz az adott parancshoz.**\nPéldául: `:help :command`'
-        categoriesNote: ':information_source: Írd be: `:help <category>` hogy megtudd a parancsok listáját abban a kategóriában.\nPéldául: `:help %s` vagy `:help %s`'
+        categoriesNote: ':information_source: Írd be: `:help <category>` hogy megtudd a parancsok listáját abban a kategóriában.\nPéldául: `:help {0}` vagy `:help {1}`'
         categoriesTitle: ':scroll: Parancs Kategóriák'
         invalidCategory: 'Érvénytelen parancs kategória megadva, nincs ilyen kategória: `:category`'
         invalidCommand: 'Érvénytelen parancs adva, nincs olyan parancs ami ezt használná: `:trigger`'
         tryingToViewSystemCommands: "Nincs jogod, hogy bármilyen parancsot használj a `System` kategóriában, a rendszer parancsok befolyásolhatják az összes szervert ahol a bot jelenleg fut, ezért limitálva van a bot adminok illetve fejlesztőknek."
-        singularHiddenCategories: '_**%s** rejtett kategória van ehhez a channelhez._'
-        multipleHiddenCategories: '_**%s** rejtett kategóriák vannak ehhez a channelhez._'
+        singularHiddenCategories: '_**{0}** rejtett kategória van ehhez a channelhez._'
+        multipleHiddenCategories: '_**{0}** rejtett kategóriák vannak ehhez a channelhez._'
         fields:
             usage: 'Használat'
             example: 'Példa'
@@ -89,7 +89,7 @@ interaction:
     KillCommand: 'meg akarja ölni'
     KissCommand: 'megcsókolja'
     MeowCommand: 'nyávog valakire'
-    PanCommand: '**%s** éppen megütötte **%s** egy serpenyővel!'
+    PanCommand: '**{0}** éppen megütötte **{1}** egy serpenyővel!'
     PatCommand: 'cirógat'
     PokeCommand: 'megbök'
     PoutCommand: 'duzzog valamin'
@@ -107,17 +107,17 @@ music:
         nowPlayingPlaylist: 'A **:playlistName** lejátszási lista hozzá lett téve a listához `:playlistSize` számmal!'
         nowPlaying: 'Most játszott: [:title](:link)\n`:duration`, `:volume%` hangerővel - Kérte :requester'
         queueHasEnded: 'A lejátszási listának vége, kilépés hangból.'
-        noMatchFound: 'Nem találtam semmit a megadott feltétellel: `%s`'
-        trackLoadFailed: "Nem tudom hozzá adni a listához: `%s`"
+        noMatchFound: 'Nem találtam semmit a megadott feltétellel: `{0}`'
+        trackLoadFailed: "Nem tudom hozzá adni a listához: `{0}`"
         musicChannel: "Csak zene parancsokat használhatsz a :channel channelben."
 
     ClearQueueCommand:
-        error: 'Nincs semmi amit törölni lehetne, előbb kérj zenét a `%splay` parancsal'
+        error: 'Nincs semmi amit törölni lehetne, előbb kérj zenét a `{0}play` parancsal'
         emptyQueue: 'Nincs semmi amit törölni lehetne, nincs várakozó szám a lejátszási listában.'
         success: 'Töröltem **:queueSize** számot a listából, a lista most üres!'
 
     MoveHereCommand:
-        error: 'Nem vagyok csatlakozva hanghoz, előbb kérj zenét a `%splay`-vel'
+        error: 'Nem vagyok csatlakozva hanghoz, előbb kérj zenét a `{0}play`-vel'
         nowPlayingIn: 'Jelenleg zenét játszok a **:channelName**-ben'
 
     MusicChannelCommand:
@@ -127,13 +127,13 @@ music:
             message: "**Szöveges channel:** :text\n**Hang Channel:** :voice"
         status:
             disabled: "letiltva"
-            enabled: "átállítva **%s**-ra"
+            enabled: "átállítva **{0}**-ra"
         errors:
             invalidType: "Érvénytelen típusú zene channel megadva, a típusnak legalább `szöveg` vagy `hang`-nak kell lennie"
-            notValidType: "`%s` is not a not a valid %s channel, you must include a valid voice channel you want to use as the music channel."
+            notValidType: "`{0}` is not a not a valid {1} channel, you must include a valid voice channel you want to use as the music channel."
 
     PauseCommand:
-        error: 'Nincs semmi amit szünetelni lehetne, előbb kérj zenét a `%splay`-vel'
+        error: 'Nincs semmi amit szünetelni lehetne, előbb kérj zenét a `{0}play`-vel'
         alreadyPaused: 'A zene már levan szünetelve, használd a `!resume`-t, hogy folytasd.'
         paused: 'A zeneszám: `leállítva`'
 
@@ -141,21 +141,21 @@ music:
         addedSong: ':user hozzáadta [:title](:url) a listához. Összesen `:queueSize` szám(ok) vannak előtte.'
         addedSongsFromPlaylist: ':user hozzáadta :songs számokat a [:title](:url) lejátszási listából. Összesen `:queueSize` szám(ok) vannak előtte.'
         session:
-            title: 'Találatok erre: %s'
-            footer: 'Válassz egy zeneszámot így: %s <szám>'
+            title: 'Találatok erre: {0}'
+            footer: 'Válassz egy zeneszámot így: {0} <szám>'
 
     PlaylistCommand:
         noPlaylists: 'Ennek a szervernek még nincs lejátszási listája, csinálhatsz egyet a\n`:command` -el.'
         noPlaylistWithName: 'Nincs ilyen nevű lejátszási lista: `:playlist`, csinálhatsz egyet a\n`:command` parancsal'
-        invalidProperty: 'Érvénytelen `tulajdonság` megadva, nincs lejátszási lista tulajdonság ezen a néven: `%s`.\nTöbbet tudhatsz meg: `%shelp %s`'
+        invalidProperty: 'Érvénytelen `tulajdonság` megadva, nincs lejátszási lista tulajdonság ezen a néven: `{0}`.\nTöbbet tudhatsz meg: `{1}help {2}`'
         invalidFormat: 'Érvénytelen formátum, hiányzik a `:type` tulajdonság!\n`:command`'
         invalidIdGiven: 'Érvénytelen id megadva, a megadott szám túl :type\n`:command`'
         invalidIdNumberGiven: 'Érvénytelen id megadva, az id-nek számnak kell lennie\n`:command`'
         noMoreSongSlots: "A `:playlist` lejátszási listában nem maradt több hely."
         noMorePlaylistSlots: "A szervernek nincs több lejátszási lista helye, törölhetsz meglévő lejátszási listákat, hogy felszabadíts helyet."
-        failedToLoad: 'Sikertelen betöltés: %s'
+        failedToLoad: 'Sikertelen betöltés: {0}'
         failedToLoadPlaylist: ':playlist betöltése sikertelen, talán próbáld újra később, vagy jelents ezt a hibát az egyik fejlesztőmnek.'
-        failedToSavePlaylist: 'Valami hiba történt a következő lejátszási lista mentése során: %s'
+        failedToSavePlaylist: 'Valami hiba történt a következő lejátszási lista mentése során: {0}'
         loadedPlaylist: 'A **:name** lejátszási lista betöltve, és a **:amount** szám sikeresen elindítva.'
         noMatches: 'Nincs Találat'
         attemptingToAddLivestreamToPlaylist: "Nem adhatsz élő közvetítést a lejátszási listához!"
@@ -169,81 +169,81 @@ music:
         playlistIsEmpty: 'Nincsenek számok a lejátszási listában, hozzá tudsz adni számokat a the\n`:command` parancsal.'
         playlistIsAlreadyEmpty: 'A `:playlist` lejátszási lista már üres, ezért nincs mit eltávolítani.'
         songHasBeenRemovedFromPlaylist: ':song sikeresen eltávolítva a `:playlist` lejátszási listából.'
-        playlistTitle: ':musical_note: Lejátszási Lista %s'
-        playlistSize: '[ %s out of %s ]'
-        playlistLine: '%s\n       Lejátszási listában **%s** szám(ok) vannak'
-        playlistSongLine: '`%s` [%s](%s) [%s]'
+        playlistTitle: ':musical_note: Lejátszási Lista {0}'
+        playlistSize: '[ {0} out of {1} ]'
+        playlistLine: '{0}\n       Lejátszási listában **{1}** szám(ok) vannak'
+        playlistSongLine: '`{0}` [{1}]({2}) [{3}]'
     RemoveSongFromQueueCommand:
         error: 'Hiányzó paraméter `zene száma`, megkell adnod a zene számát amit törölni akarsz a lejátszási listából.'
         failedToRemoveSong: 'Valami hiva történt, `:index` törlése sikertelen.'
-        tooHighNumberGiven: 'Csak `%s` zeneszám van a listában, próbáld meg csökkenteni a számod egy kicsit.'
+        tooHighNumberGiven: 'Csak `{0}` zeneszám van a listában, próbáld meg csökkenteni a számod egy kicsit.'
         mustBePositiveNumber: 'A `zene száma` egy valós pozitív számnak kell lennie.'
-        nothingToRemove: 'Semmi sincs amit törölni lehetne, előbb kérj zenét a `%splay`-vel'
+        nothingToRemove: 'Semmi sincs amit törölni lehetne, előbb kérj zenét a `{0}play`-vel'
         success: ':song sikeresen törölve a lejátszási listából.'
 
     RepeatMusicQueueCommand:
-        error: 'Semmi sincs amit ismételni lehetne, előbb kérj zenét a `%splay`-vel'
+        error: 'Semmi sincs amit ismételni lehetne, előbb kérj zenét a `{0}play`-vel'
         success: 'A zene ismétlés `:status` lett kapcsolva.'
         enabled: 'BE'
         disabled: 'KI'
 
     ResumeCommand:
-        error: 'Nincs semmi amit folytatni lehetne, előbb kérj zenét a `%splay`-vel'
+        error: 'Nincs semmi amit folytatni lehetne, előbb kérj zenét a `{0}play`-vel'
         alreadyPlaying: 'A zene már jelenleg is szól, használd `:prefixpause` hogy leszüneteld.'
         resume: 'A zeneszám `folytatva`'
 
     SeekCommand:
-        error: 'Semmi sincs játszva most, kérj valamit a `%splay`-el előbb.'
+        error: 'Semmi sincs játszva most, kérj valamit a `{0}play`-el előbb.'
         invalidTimeGiven: 'A `szám` paraméternek valós idő formátumnak kell lennie ami legalább 0 vagy több másodperc hosszúságú.'
         seekingLive: 'Élő adásban nem tudsz különböző időpontokra ugrani.'
-        seekingTooFar: '`%s` több mint a jelenleg játszott szám hosszasága, ha tovább akarsz ugrani a következő számra használd a `%sskip`-t inkább.'
+        seekingTooFar: '`{0}` több mint a jelenleg játszott szám hosszasága, ha tovább akarsz ugrani a következő számra használd a `{1}skip`-t inkább.'
         seekTo: 'Beletekerés **:title**-t `:time`-hez'
 
     SetDefaultVolumeCommand:
         currentVolume: 'Az alapértelmezett hangerő a szerveren jelenleg `:volume%`-re van állítva'
         changedVolume: 'Az alapértelmezett hangerő átállítva `:volume%`-ra'
-        failedToSave: 'Valami hiba történt az alapértelmezett hangerő %s-re állítása során.'
+        failedToSave: 'Valami hiba történt az alapértelmezett hangerő {0}-re állítása során.'
         mustBeNumber: 'A `hangerő`-nek 10 és 100 közt kell lennie'
 
     ShuffleCommand:
-        error: 'A lejátszási lista már üres, kérhetsz valamit a\n`%splay <szám cím | link>`-el'
+        error: 'A lejátszási lista már üres, kérhetsz valamit a\n`{0}play <szám cím | link>`-el'
         success: '**:amount** szám összekeverve a lejátszási listában.'
 
     SkipCommand:
-        error: 'Nincs semmi amit át lehetne ugrani, előbb kérj számot a `%splay`-el'
+        error: 'Nincs semmi amit át lehetne ugrani, előbb kérj számot a `{0}play`-el'
 
     SongCommand:
-        error: 'Semmi sincs amit meg lehetne jeleníteni, előbb kérj számot a `%splay`-el'
+        error: 'Semmi sincs amit meg lehetne jeleníteni, előbb kérj számot a `{0}play`-el'
         paused: 'Jelenleg Szünetelve'
         playing: 'Jelenleg Játszott'
         songsInQueue: 'Számok a lejátszási listában'
-        moreSongs: 'Több számot láthatsz a %s <oldal> használva'
+        moreSongs: 'Több számot láthatsz a {0} <oldal> használva'
         noSongs: 'Nincs más szám a lejátszási listában pillanatnyilag'
-        andXMoreSongs: '_és **%s** további szám%s!_'
+        andXMoreSongs: '_és **{0}** további szám{1}!_'
         formats:
-            line: '**%s** [%s](%s)'
-            song: '[%s](%s)\nLejátszás `%s` hangerővel, `%s` maradt hátra a számból - Listához adta: <@%s>'
-            stream: '[%s](%s)\nLejátszás `%s` hangerővel, az élő adás `%s` - Listához adta: <@%s>'
+            line: '**{0}** [{1}]({2})'
+            song: '[{0}]({1})\nLejátszás `{2}` hangerővel, `{3}` maradt hátra a számból - Listához adta: <@{4}>'
+            stream: '[{0}]({1})\nLejátszás `{2}` hangerővel, az élő adás `{3}` - Listához adta: <@{4}>'
 
     StopCommand:
         error: "Semmi sem szól jelenleg, nem állíthatod meg a zenét ha semmi sem szól."
         success: 'Lejátszás megállítva, és **:number** szám törölve a lejátszási listából.'
 
     VolumeCommand:
-        error: 'Semmi sem szól, előbb kérj számot a `%splay`-el'
+        error: 'Semmi sem szól, előbb kérj számot a `{0}play`-el'
         requireDJRole: 'A `DJ` rang szükséges, hogy hangerőt válts!'
         invalidVolume: 'Érvénytelen hangerő kiválasztva, a hangerőnek valós számnak kell lennie 10 és 100 között.'
         nowPlaying: ':musical_note: Zene szól **:volume** hangerővel'
         setTo: ':musical_note: Hangerő átállítva **:volume**-re'
 
     VoteSkipCommand:
-        error: 'Semmi sincs amit át lehetne ugrani, előbb kérj számot a `%splay`-el'
+        error: 'Semmi sincs amit át lehetne ugrani, előbb kérj számot a `{0}play`-el'
         registered: 'A szavazatod regisztrálva! `:votes` további szavazat szükséges, hogy át lehessen ugrani a számot.'
         alreadyVoted: 'Csak egyszer szavazhatsz átugrásra számonként! `:votes` további szavazat szükséges, hogy át lehessen ugrani a számot.'
 
 search:
     DuckDuckGoCommand:
-        searchResults: 'Keresési eredmény %s-re'
+        searchResults: 'Keresési eredmény {0}-re'
         noResults: 'Nem találtam semmit `:query`-re'
         seeAlso: '**Lásd még**'
         nsfwStatus:
@@ -260,7 +260,7 @@ search:
         results: ':percentage százaléka az embereknek kedvelte. :up👍 :down👎'
 
     XKCDCommand:
-        number: 'XKCD szám #%s'
+        number: 'XKCD szám #{0}'
 
 utility:
     CalculateCommand:
@@ -288,7 +288,7 @@ utility:
 
     ExpandUrlCommand:
         noRedirect: ":url sehová sem küld tovább."
-        redirects: '%s tovább küld %s-re'
+        redirects: '{0} tovább küld {1}-re'
         jumps: '**A link ezeken az oldalakon ugrik tovább:**'
 
     FeedbackCommand:
@@ -311,7 +311,7 @@ utility:
     LeaderboardCommand:
         noData: 'Jelenleg nincs ranglista adat, próbáld később.'
         line: '`:num` **:username**, **:level** szintű **:experience** tapasztalattal.'
-        title: '%s Ranglista'
+        title: '{0} Ranglista'
 
     PingCommand:
         message: 'Pong! Ennyi időbe tellt :ping ms (:rating) Websocket szívdobbanás :heartbeat ms'
@@ -338,7 +338,7 @@ utility:
             level: 'Szint'
             experience: 'Tapasztalat'
             experienceToNext: 'Tapasztalat szükséges a következő szinthez'
-            youNeedMoreXpToLevelUp: '\t\t\t\t\t\t\t\t\tSzükséged van %s tapasztalatra a szintlépéshez.'
+            youNeedMoreXpToLevelUp: '[{0}] {1}{2}\n\t\t\t\t\t\t\t\t\tSzükséged van {3} tapasztalatra a szintlépéshez.'
 
     ServerIdCommand:
             message: ':user :id: a szerver ID-je `:guildid`'
@@ -353,7 +353,7 @@ utility:
             roles: 'Rangok'
             region: 'Régió'
             createdAt: 'Létrehozva ekkor'
-            emojis: 'Egyéni Emojik (%s)'
+            emojis: 'Egyéni Emojik ({0})'
         timeFormat: 'EEE, dd MMM yyyy HH:mm'
 
     ShardCommand:
@@ -368,12 +368,12 @@ utility:
 
     StatsCommand:
         title: 'Hivatalos Bot Szerver'
-        footer: 'Jelenleg %s szerveren játszik, %s zeneszámmal a lejátszási listában.'
+        footer: 'Jelenleg {0} szerveren játszik, {1} zeneszámmal a lejátszási listában.'
         latestChanges: 'Utolsó változtatások:'
         formats:
-            perMinute: '%s (%s percenként)'
-            perSecond: '%s (%s másodpercenként)'
-            memory: '%sMb / %sMb'
+            perMinute: '{0} ({1} percenként)'
+            perSecond: '{0} ({1} másodpercenként)'
+            memory: '{0}Mb / {1}Mb'
         fields:
             author: 'Fejlesztő'
             botId: 'Bot ID'
@@ -390,7 +390,7 @@ utility:
 
     UptimeCommand:
         message: 'Elérhető voltam :time ideje'
-        footer: 'Elindítva %s nap %s percében'
+        footer: 'Elindítva {0} nap {1} percében'
         dateFormat: 'EEEEEEEE, dd MMM yyyy'
         timeFormat: 'HH:mm:ss z'
 
@@ -403,9 +403,9 @@ utility:
             userId: 'Felhasználó Azonosító'
             joinedServer: 'Csatlakozott a Szerverhez'
             joinedDiscord: 'Regisztrált'
-            roles: 'Rangok (%s)'
+            roles: 'Rangok ({0})'
             servers: 'Szerverek'
-        inServers: '%s amiről a bot tud'
+        inServers: '{0} amiről a bot tud'
         noRoles: '*Ennek a felhasználónak nincs egy rangja sem*'
         timeFormat: 'EEE, dd MMM yyyy HH:mm'
 
@@ -413,7 +413,7 @@ utility:
         current: 'Jelenleg `:difference` :type verzióval le vagyok maradva!'
         getLatest: 'Letöltheted a legfrissebb verziót githubról [avaire/avaire](https://github.com/avaire/avaire)'
         usingLatest: "A legfrissebb AvaIre verziót használod!"
-        latestVersion: 'A legfrissebb AvaIre verzió: v%s'
+        latestVersion: 'A legfrissebb AvaIre verzió: v{0}'
         versions:
             majorName: 'Fontos'
             major: 'A fontos frissítések teljes átdolgozását takarják a botnak és működésének, vagy sok kisebb változás egyben a forráskódban. Nagyon ajánlott, hogy lefrissítsd mivel a régebbi verzió nem lesz már támogatva hibák esetén.'

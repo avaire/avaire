@@ -67,10 +67,7 @@ public class RemoveSongFromQueueCommand extends Command {
         GuildMusicManager musicManager = AudioHandler.getDefaultAudioHandler().getGuildAudioPlayer(context.getGuild());
 
         if (musicManager.getScheduler().getQueue().isEmpty()) {
-            return sendErrorMessage(context,
-                context.i18n("nothingToRemove"),
-                generateCommandPrefix(context.getMessage())
-            );
+            return sendErrorMessage(context, context.i18n("nothingToRemove", generateCommandPrefix(context.getMessage())));
         }
 
         if (removeIndex > musicManager.getScheduler().getQueue().size()) {

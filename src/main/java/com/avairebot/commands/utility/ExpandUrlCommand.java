@@ -57,7 +57,7 @@ public class ExpandUrlCommand extends ThreadCommand {
 
 
             List<String> links = new ArrayList<>();
-            links.add(String.format(context.i18n("redirects"), args[0], redirects.get(redirects.size() - 1)));
+            links.add(context.i18n("redirects", args[0], redirects.get(redirects.size() - 1)));
 
             if (redirects.size() > 2) {
                 links.add("\n" + context.i18n("jumps"));

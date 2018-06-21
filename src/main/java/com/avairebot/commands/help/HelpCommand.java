@@ -7,6 +7,7 @@ import com.avairebot.contracts.commands.Command;
 import com.avairebot.database.transformers.ChannelTransformer;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.factories.MessageFactory;
+import com.avairebot.language.I18n;
 import com.avairebot.utilities.StringReplacementUtil;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.MessageBuilder;
@@ -63,7 +64,7 @@ public class HelpCommand extends Command {
         Category category = CategoryHandler.random(false);
 
         String note = StringReplacementUtil.replaceAll(
-            String.format(context.i18n("categoriesNote"),
+            context.i18n("categoriesNote",
                 category.getName().toLowerCase(),
                 category.getName().toLowerCase().substring(0, 3)
             ), ":help", generateCommandTrigger(context.getMessage())
@@ -103,15 +104,13 @@ public class HelpCommand extends Command {
             new MessageBuilder()
                 // Builds and sets the content of the message, this is all the
                 // commands for the given category the command was used for.
-                .setContent(String.format(
-                    context.i18n("listOfCommands"),
+                .setContent(context.i18n("listOfCommands",
                     CommandHandler.getCommands().stream()
                         .filter(container -> filterCommandContainer(container, category, isBotAdmin))
                         .map(container -> mapCommandContainer(context, container))
                         .sorted()
                         .collect(Collectors.joining("\n"))
-                    )
-                )
+                ))
                 // Builds and sets the embedded tip/note, giving people an example
                 // of how get information for the specific command.
                 .setEmbed(MessageFactory.createEmbeddedBuilder()
@@ -222,7 +221,7 @@ public class HelpCommand extends Command {
         return formatCategoriesStream(
             filteredCategories.stream().filter(channel::isCategoryEnabled),
             isBotAdmin,
-            disabled != 0 ? String.format(
+            disabled != 0 ? I18n.format(
                 "\n\n" + (disabled == 1 ?
                     context.i18n("singularHiddenCategories") :
                     context.i18n("multipleHiddenCategories")

@@ -71,8 +71,7 @@ public class WarnCommand extends Command {
         if (transformer.getModlog() == null) {
             String prefix = generateCommandPrefix(context.getMessage());
             return sendErrorMessage(context,
-                "This command requires a modlog channel to be set, a modlog channel can be set using the `%smodlog` command.",
-                prefix
+                "This command requires a modlog channel to be set, a modlog channel can be set using the `{0}modlog` command.", prefix
             );
         }
 

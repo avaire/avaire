@@ -9,6 +9,7 @@ import com.avairebot.chat.PlaceholderMessage;
 import com.avairebot.chat.SimplePaginator;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
+import com.avairebot.language.I18n;
 import com.avairebot.utilities.NumberUtil;
 import com.avairebot.utilities.RestActionUtil;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
@@ -63,10 +64,7 @@ public class SongCommand extends Command {
         GuildMusicManager musicManager = AudioHandler.getDefaultAudioHandler().getGuildAudioPlayer(context.getGuild());
 
         if (musicManager.getPlayer().getPlayingTrack() == null) {
-            return sendErrorMessage(context,
-                context.i18n("error"),
-                generateCommandPrefix(context.getMessage())
-            );
+            return sendErrorMessage(context, context.i18n("error", generateCommandPrefix(context.getMessage())));
         }
 
         if (args.length > 0 && NumberUtil.isNumeric(args[0])) {
@@ -82,7 +80,7 @@ public class SongCommand extends Command {
             paginator.forEach((index, key, val) -> {
                 AudioTrackContainer track = (AudioTrackContainer) val;
 
-                messages.add(String.format(context.i18n("formats.line"),
+                messages.add(context.i18n("formats.line",
                     NumberUtil.parseInt(key.toString()) + 1,
                     track.getAudioTrack().getInfo().title,
                     track.getAudioTrack().getInfo().uri
@@ -113,9 +111,7 @@ public class SongCommand extends Command {
             );
 
         if (!musicManager.getScheduler().getQueue().isEmpty()) {
-            queueMessage.setFooter(String.format(context.i18n("moreSongs"),
-                generateCommandTrigger(context.getMessage())
-            ));
+            queueMessage.setFooter(context.i18n("moreSongs", generateCommandTrigger(context.getMessage())));
         }
 
         queueMessage.queue(message -> message.delete().queueAfter(3, TimeUnit.MINUTES, null, RestActionUtil.IGNORE));
@@ -135,7 +131,7 @@ public class SongCommand extends Command {
             songTitle = player.getPlayingTrack().getInfo().uri;
         }
 
-        return String.format(message,
+        return I18n.format(message,
             songTitle,
             player.getPlayingTrack().getInfo().uri,
             player.getVolume() + "%",
@@ -156,16 +152,15 @@ public class SongCommand extends Command {
         while (iterator.hasNext() && number <= 6) {
             AudioTrackContainer next = iterator.next();
 
-            songs += String.format(
-                context.i18n("formats.line") + "\n",
+            songs += context.i18n("formats.line",
                 number++,
                 next.getAudioTrack().getInfo().title,
                 next.getAudioTrack().getInfo().uri
-            );
+            ) + "\n";
         }
 
         if (scheduler.getQueue().size() > 6) {
-            songs += String.format(context.i18n("andXMoreSongs"),
+            songs += context.i18n("andXMoreSongs",
                 NumberUtil.formatNicely(scheduler.getQueue().size() - 6),
                 scheduler.getQueue().size() == 7 ? "" : 's'
             );

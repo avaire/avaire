@@ -114,7 +114,7 @@ public class BlacklistCommand extends SystemCommand {
         }
 
         if (!avaire.getBlacklist().isBlacklisted(id)) {
-            return sendErrorMessage(context, "There are no records in the blacklist with an ID of `%s`", "" + id);
+            return sendErrorMessage(context, "There are no records in the blacklist with an ID of `{0}`", "" + id);
         }
 
         avaire.getBlacklist().remove(id);

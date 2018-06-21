@@ -83,7 +83,7 @@ public class MemeCommand extends ThreadCommand {
             return sendGeneratedMeme(context, args[0].toLowerCase(), Arrays.copyOfRange(args, 1, args.length));
         }
 
-        return sendErrorMessage(context, context.i18n("invalidType"), args[0]);
+        return sendErrorMessage(context, context.i18n("invalidType", args[0]));
     }
 
     @SuppressWarnings("SuspiciousMethodCalls")
@@ -98,11 +98,9 @@ public class MemeCommand extends ThreadCommand {
         }
 
         final List<String> memesMessages = new ArrayList<>();
-        paginator.forEach((index, key, val) -> {
-            memesMessages.add(String.format(context.i18n("listItem"),
-                val, memes.get(val).get("name")
-            ));
-        });
+        paginator.forEach((index, key, val) -> memesMessages.add(
+            context.i18n("listItem", val, memes.get(val).get("name"))
+        ));
 
         context.makeSuccess(String.format("%s\n\n%s",
             String.join("\n", memesMessages),

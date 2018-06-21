@@ -133,7 +133,7 @@ public class RankCommand extends Command {
                 .addField(context.i18n("fields.experience"), (experience - 100 < 0 ? "0" : String.format("%s (Total: %s)",
                     NumberUtil.formatNicely(experience - 100), NumberUtil.formatNicely(properties.getTotal())
                 )), true)
-                .addField(context.i18n("fields.experienceToNext"), String.format("[%s] %s%s\n" + context.i18n("fields.youNeedMoreXpToLevelUp"),
+                .addField(context.i18n("fields.experienceToNext"), context.i18n("fields.youNeedMoreXpToLevelUp",
                     levelBar, new DecimalFormat("#.##").format(percentage), '%', NumberUtil.formatNicely(nextLevelXp - experience)
                 ), false)
                 .queue();

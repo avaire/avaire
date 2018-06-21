@@ -85,7 +85,7 @@ public class ModlogReasonCommand extends Command {
         }
 
         if (transformer.getModlog() == null) {
-            return sendErrorMessage(context, "");
+            return sendErrorMessage(context, "No modlog channel has been set, you must set a modlog channel to use this command.");
         }
 
         if (args.length == 0) {
@@ -98,7 +98,7 @@ public class ModlogReasonCommand extends Command {
 
         int caseId = NumberUtil.parseInt(args[0], -1);
         if (caseId < 1 || caseId > transformer.getModlogCase()) {
-            return sendErrorMessage(context, "Invalid case id given, the ID must be greater than 0 and less than %s", "" + transformer.getModlogCase());
+            return sendErrorMessage(context, "Invalid case id given, the ID must be greater than 0 and less than {0}", "" + transformer.getModlogCase());
         }
 
         final String reason = String.join(" ", Arrays.copyOfRange(args, 1, args.length));
@@ -111,7 +111,7 @@ public class ModlogReasonCommand extends Command {
                 .get();
 
             if (collection.isEmpty()) {
-                return sendErrorMessage(context, "Couldn't find a modlog case with an ID of %s where you were the moderator, are you sure you're the moderator for the given modlog case?", "" + caseId);
+                return sendErrorMessage(context, "Couldn't find a modlog case with an ID of {0} where you were the moderator, are you sure you're the moderator for the given modlog case?", "" + caseId);
             }
 
             DataRow first = collection.first();

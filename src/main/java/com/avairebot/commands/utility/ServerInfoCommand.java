@@ -66,7 +66,7 @@ public class ServerInfoCommand extends Command {
         if (!guild.getEmotes().isEmpty()) {
             boolean hasMany = guild.getEmotes().size() > 17;
             placeholderMessage.addField(new MessageEmbed.Field(
-                String.format(context.i18n("fields.emojis"), guild.getEmotes().size()),
+                context.i18n("fields.emojis", guild.getEmotes().size()),
                 guild.getEmotes().stream()
                     .map(emote -> emote.getName() + (hasMany ? "" : " " + emote.getAsMention()))
                     .collect(Collectors.joining(", ")),

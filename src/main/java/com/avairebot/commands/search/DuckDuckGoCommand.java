@@ -108,10 +108,7 @@ public class DuckDuckGoCommand extends ThreadCommand {
 
             PlaceholderMessage resultMessage = MessageFactory.makeEmbeddedMessage(context.getMessageChannel(), Color.decode("#DE5833"))
                 .setDescription(String.join("\n", result))
-                .setTitle(String.format(
-                    context.i18n("searchResults"),
-                    String.join(" ", args)
-                ))
+                .setTitle(context.i18n("searchResults", String.join(" ", args)))
                 .setFooter(
                     nsfwEnabled ?
                         context.i18n("nsfwStatus.enabled") :

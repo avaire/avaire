@@ -12,6 +12,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 public class I18n {
 
@@ -34,6 +35,14 @@ public class I18n {
         }
 
         LOGGER.info("Loaded " + LANGS.size() + " languages: " + LANGS);
+    }
+
+    public static String getString(@Nonnull Guild guild, String string, Object... args) {
+        String message = getString(guild, string);
+        if (message == null) {
+            return null;
+        }
+        return format(message, args);
     }
 
     @Nullable
@@ -79,5 +88,27 @@ public class I18n {
             }
         }
         return DEFAULT;
+    }
+
+    public static String format(@Nonnull String message, Object... args) {
+        int argNum = 0;
+        for (Object arg : args) {
+            if (arg == null) {
+                continue;
+            }
+
+            try {
+                message = message.replaceFirst(
+                    Pattern.quote("{" + (argNum++) + "}"),
+                    arg.toString()
+                );
+            } catch (Exception ex) {
+                LOGGER.error(
+                    "An exception was through while formatting \"{}\", error: {}",
+                    message, ex.getMessage(), ex
+                );
+            }
+        }
+        return message;
     }
 }

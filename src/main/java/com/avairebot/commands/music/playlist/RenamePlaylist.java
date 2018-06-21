@@ -63,10 +63,7 @@ public class RenamePlaylist extends PlaylistSubCommand {
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
-            context.makeError(String.format(
-                context.i18n("failedToSavePlaylist"),
-                e.getMessage()
-            )).queue();
+            context.makeError(context.i18n("failedToSavePlaylist", e.getMessage())).queue();
         }
 
         return false;

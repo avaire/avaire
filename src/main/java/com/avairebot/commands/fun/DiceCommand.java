@@ -52,7 +52,7 @@ public class DiceCommand extends Command {
         List<DiceRoll> items = new ArrayList<>();
         int invalidArgument = getInvalidArgument(args);
         if (invalidArgument > -1) {
-            return sendErrorMessage(context, String.format(context.i18n("invalidDiceFormat"), args[invalidArgument]));
+            return sendErrorMessage(context, context.i18n("invalidDiceFormat", args[invalidArgument]));
         }
 
         for (int i = 0; i < args.length && i < 5; i++) {
@@ -63,19 +63,19 @@ public class DiceCommand extends Command {
             try {
                 dice = Integer.parseInt(split[0]);
                 if (dice < 1 || dice > 36) {
-                    return sendErrorMessage(context, String.format(context.i18n("diceFormatMustBeGreaterThan"), arg));
+                    return sendErrorMessage(context, context.i18n("diceFormatMustBeGreaterThan", arg));
                 }
             } catch (NumberFormatException ex) {
-                return sendErrorMessage(context, String.format(context.i18n("diceFormatMustBePositive"), arg));
+                return sendErrorMessage(context, context.i18n("diceFormatMustBePositive", arg));
             }
 
             try {
                 sides = Integer.parseInt(split[1]);
                 if (sides < 1 || sides > 127) {
-                    return sendErrorMessage(context, context.i18n("sidesFormatMustBeGreaterThan"), arg);
+                    return sendErrorMessage(context, context.i18n("sidesFormatMustBeGreaterThan", arg));
                 }
             } catch (NumberFormatException ex) {
-                return sendErrorMessage(context, context.i18n("sidesFormatMustBePositive"), arg);
+                return sendErrorMessage(context, context.i18n("sidesFormatMustBePositive", arg));
             }
 
             DiceRoll diceRoll = new DiceRoll(arg);
@@ -88,7 +88,7 @@ public class DiceCommand extends Command {
 
         StringBuilder result = new StringBuilder();
         for (DiceRoll roll : items) {
-            result.append(String.format(context.i18n("resultedIn"),
+            result.append(context.i18n("resultedIn",
                 roll.getDice(),
                 roll.getSum(),
                 String.join(" + ", roll.getNumbers())

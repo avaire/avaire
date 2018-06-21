@@ -236,6 +236,14 @@ public class CommandMessage implements CommandContext {
     }
 
     @Override
+    public String i18n(@Nonnull String key, Object... args) {
+        if (i18nCommandPrefix != null) {
+            key = i18nCommandPrefix + "." + key;
+        }
+        return i18nRaw(key, args);
+    }
+
+    @Override
     @CheckReturnValue
     public String i18nRaw(@Nonnull String key) {
         if (getI18n().contains(key)) {
@@ -248,6 +256,15 @@ public class CommandMessage implements CommandContext {
                 .replace("\\n", "\n")
                 .replace("\\t", "\t");
         }
+    }
+
+    @Override
+    public String i18nRaw(@Nonnull String key, Object... args) {
+        String message = i18nRaw(key);
+        if (message == null) {
+            return null;
+        }
+        return I18n.format(message, args);
     }
 
     @Override

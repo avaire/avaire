@@ -188,6 +188,40 @@ public interface CommandContext {
     String i18n(@Nonnull String key);
 
     /**
+     * Gets a string from the {@link com.avairebot.language.I18n I18n} language file with the
+     * command as a prefix, if you'd like to get a message from the language file without
+     * using the command prefix you can use the {@link #i18nRaw(String)} method.
+     * <p>
+     * <p>The command prefix is the command category name in all lowercase, followed by a dot,
+     * followed by the commands class name, any commands specific messages can be put at
+     * this path for Ava to easily find then.
+     * <p>
+     * <p><b>For example if we were to use the method from the uptime command:</b>
+     * <pre><code>
+     * context.i18n("footer", "First", "Second");
+     * // Gets the i18n string: utility.UptimeCommand.footer
+     * // And gives the language string two replaceable arguments
+     * </code></pre>
+     * Which would look like this in YAML
+     * <pre><code>
+     * utility:
+     *   UptimeCommand:
+     *     footer: 'Started {0} at {1}'
+     * </code></pre>
+     * <p>
+     * Which produces the following output
+     * <pre><code>
+     * Started First at Second
+     * </code></pre>
+     *
+     * @param key  The key of the {@link com.avairebot.language.I18n I18n} message.
+     * @param args The arguments that should be replaced in the language message.
+     * @return Possibly-null, the message that matches the given I18n string, or null if it doesn't exists.
+     */
+    @CheckReturnValue
+    String i18n(@Nonnull String key, Object... args);
+
+    /**
      * Gets a raw string from the {@link com.avairebot.language.I18n I18n} language file, this will ignore the command
      * prefix, if you'd like to get a message using the command prefix you can use the {@link #i18n(String)} method.
      * <p>
@@ -208,6 +242,34 @@ public interface CommandContext {
      */
     @CheckReturnValue
     String i18nRaw(@Nonnull String key);
+
+    /**
+     * Gets a raw string from the {@link com.avairebot.language.I18n I18n} language file, this will ignore the command
+     * prefix, if you'd like to get a message using the command prefix you can use the {@link #i18n(String)} method.
+     * <p>
+     * <p><b>For example if we were to use the method from the uptime command:</b>
+     * <pre><code>
+     * context.i18nRaw("utility.UptimeCommand.footer", "First", "Second");
+     * // Gets the i18n string: utility.UptimeCommand.footer
+     * // And gives the language string two replaceable arguments
+     * </code></pre>
+     * Which would look like this in YAML
+     * <pre><code>
+     * utility:
+     *   UptimeCommand:
+     *     footer: 'Started {0} at {1}'
+     * </code></pre>
+     * <p>
+     * Which produces the following output
+     * <pre><code>
+     * Started First at Second
+     * </code></pre>
+     *
+     * @param key The key of the {@link com.avairebot.language.I18n I18n} message.
+     * @return Possibly-null, the message that matches the given I18n string, or null if it doesn't exists.
+     */
+    @CheckReturnValue
+    String i18nRaw(@Nonnull String key, Object... args);
 
     /**
      * Gets the {@link com.avairebot.language.I18n I18n} command prefix.

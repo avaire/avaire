@@ -50,9 +50,7 @@ public class ShuffleCommand extends Command {
         GuildMusicManager musicManager = AudioHandler.getDefaultAudioHandler().getGuildAudioPlayer(context.getGuild());
 
         if (musicManager.getScheduler().getQueue().isEmpty()) {
-            return sendErrorMessage(context, context.i18n("error"),
-                generateCommandPrefix(context.getMessage())
-            );
+            return sendErrorMessage(context, context.i18n("error", generateCommandPrefix(context.getMessage())));
         }
 
         List<AudioTrackContainer> queue = new ArrayList<>();

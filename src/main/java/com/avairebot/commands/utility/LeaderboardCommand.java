@@ -105,11 +105,10 @@ public class LeaderboardCommand extends ThreadCommand {
         messages.add("\n" + paginator.generateFooter(generateCommandTrigger(context.getMessage())));
 
         context.makeInfo(String.join("\n", messages))
-            .setTitle(String.format(
-                context.i18n("title"),
-                context.getGuild().getName()
-            ), "https://avairebot.com/leaderboard/" + context.getGuild().getId())
-            .queue();
+            .setTitle(
+                context.i18n("title", context.getGuild().getName()),
+                "https://avairebot.com/leaderboard/" + context.getGuild().getId()
+            ).queue();
 
         return true;
     }

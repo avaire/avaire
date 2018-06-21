@@ -169,8 +169,7 @@ public class PlaylistCommand extends ThreadCommand {
                 return createPlaylist.onCommand(context, args, transformer, playlists);
         }
 
-        return sendErrorMessage(context, String.format(
-            context.i18n("invalidProperty"),
+        return sendErrorMessage(context, context.i18n("invalidProperty",
             args[1],
             CommandHandler.getCommand(HelpCommand.class).getCategory().getPrefix(context.getMessage()),
             getTriggers().get(0)

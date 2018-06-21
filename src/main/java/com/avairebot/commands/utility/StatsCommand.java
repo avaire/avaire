@@ -7,6 +7,7 @@ import com.avairebot.cache.CacheType;
 import com.avairebot.chat.MessageType;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
+import com.avairebot.language.I18n;
 import com.avairebot.metrics.Metrics;
 import com.avairebot.utilities.NumberUtil;
 import com.google.gson.internal.LinkedTreeMap;
@@ -91,8 +92,7 @@ public class StatsCommand extends Command {
         )
             .setTitle(context.i18n("title"), "https://discordapp.com/invite/gt2FWER")
             .setAuthor("AvaIre v" + AppInfo.getAppInfo().VERSION, "https://discordapp.com/invite/gt2FWER", avaire.getSelfUser().getEffectiveAvatarUrl())
-            .setFooter(String.format(
-                context.i18n("footer"),
+            .setFooter(context.i18n("footer",
                 NumberUtil.formatNicely(AudioHandler.getDefaultAudioHandler().getTotalListenersSize()),
                 NumberUtil.formatNicely(AudioHandler.getDefaultAudioHandler().getTotalQueueSize())
             ))
@@ -133,8 +133,7 @@ public class StatsCommand extends Command {
     }
 
     private String memoryUsage(CommandMessage context) {
-        return String.format(
-            context.i18n("formats.memory"),
+        return context.i18n("formats.memory",
             (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / (1024 * 1024),
             Runtime.getRuntime().totalMemory() / (1024 * 1024)
         );
@@ -142,7 +141,7 @@ public class StatsCommand extends Command {
 
     private String formatDynamicValue(CommandMessage context, int rawValue) {
         double value = rawValue / ((double) ManagementFactory.getRuntimeMXBean().getUptime() / 1000D);
-        return String.format(
+        return I18n.format(
             context.i18n(value < 1.5D ? "formats.perMinute" : "formats.perSecond"),
             NumberUtil.formatNicely(rawValue),
             decimalNumber.format(value < 1.5D ? value * 60D : value)

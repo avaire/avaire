@@ -9,6 +9,7 @@ import com.avairebot.commands.CommandPriority;
 import com.avairebot.contracts.middleware.Middleware;
 import com.avairebot.contracts.reflection.Reflectionable;
 import com.avairebot.exceptions.MissingCommandDescriptionException;
+import com.avairebot.language.I18n;
 import com.avairebot.middleware.MiddlewareHandler;
 import com.avairebot.plugin.JavaPlugin;
 import com.avairebot.utilities.RestActionUtil;
@@ -205,16 +206,16 @@ public abstract class Command extends Reflectionable {
     protected final boolean sendErrorMessage(CommandMessage context, String error, String... args) {
         if (!error.contains(".") || error.contains(" ")) {
             return sendErrorMessageAndDeleteMessage(
-                context, String.format(error, (Object[]) args), 150, TimeUnit.SECONDS
+                context, I18n.format(error, (Object[]) args), 150, TimeUnit.SECONDS
             );
         }
 
-        String i18nError = context.i18nRaw(error);
+        String i18nError = context.i18nRaw(error, (Object[]) args);
         if (i18nError != null) {
             error = i18nError;
         }
 
-        return sendErrorMessageAndDeleteMessage(context, String.format(error, (Object[]) args), 150, TimeUnit.SECONDS);
+        return sendErrorMessageAndDeleteMessage(context, error, 150, TimeUnit.SECONDS);
     }
 
     /**

@@ -3,6 +3,7 @@ package com.avairebot.contracts.commands;
 import com.avairebot.AvaIre;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.commands.CommandPriority;
+import com.avairebot.language.I18n;
 import com.avairebot.utilities.MentionableUtil;
 import com.avairebot.utilities.RandomUtil;
 import net.dv8tion.jda.core.EmbedBuilder;
@@ -104,7 +105,7 @@ public abstract class InteractionCommand extends Command {
 
     private String buildMessage(CommandMessage context, User user) {
         if (overwrite) {
-            return String.format(
+            return I18n.format(
                 getInteraction(context, false),
                 context.getMember().getEffectiveName(),
                 context.getGuild().getMember(user).getEffectiveName()

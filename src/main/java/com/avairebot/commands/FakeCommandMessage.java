@@ -91,8 +91,18 @@ public class FakeCommandMessage implements CommandContext {
     }
 
     @Override
+    public String i18n(@Nonnull String key, Object... args) {
+        return i18n(key);
+    }
+
+    @Override
     public String i18nRaw(@Nonnull String key) {
         return "fake-" + key;
+    }
+
+    @Override
+    public String i18nRaw(@Nonnull String key, Object... args) {
+        return i18nRaw(key);
     }
 
     @Override

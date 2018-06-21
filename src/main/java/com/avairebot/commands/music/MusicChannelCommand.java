@@ -107,7 +107,7 @@ public class MusicChannelCommand extends Command {
         args = new String[]{String.join(" ", args)};
         Channel channel = MentionableUtil.getChannel(context.getMessage(), args);
         if (channel == null || !(channel instanceof VoiceChannel)) {
-            return sendErrorMessage(context, context.i18n("errors.notValidType"), args[0], Type.VOICE.name().toLowerCase());
+            return sendErrorMessage(context, context.i18n("errors.notValidType", args[0], Type.VOICE.name().toLowerCase()));
         }
 
         context.getGuildTransformer().setMusicChannelVoice(channel.getId());
@@ -126,7 +126,7 @@ public class MusicChannelCommand extends Command {
         args = new String[]{String.join(" ", args)};
         Channel channel = MentionableUtil.getChannel(context.getMessage(), args);
         if (channel == null || !(channel instanceof TextChannel)) {
-            return sendErrorMessage(context, context.i18n("errors.notValidType"), args[0], Type.TEXT.name().toLowerCase());
+            return sendErrorMessage(context, context.i18n("errors.notValidType", args[0], Type.TEXT.name().toLowerCase()));
         }
 
         context.getGuildTransformer().setMusicChannelText(channel.getId());
@@ -153,7 +153,7 @@ public class MusicChannelCommand extends Command {
                 .set("type", type.name().toLowerCase())
                 .set("status", value == null
                     ? context.i18n("status.disabled")
-                    : String.format(context.i18n("status.enabled"), status)
+                    : context.i18n("status.enabled", status)
                 )
                 .queue();
         } catch (SQLException ignored) {

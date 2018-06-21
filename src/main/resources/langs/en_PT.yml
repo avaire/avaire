@@ -1,25 +1,25 @@
 
 errors:
-    missingArgument: 'Missing argument, the `%s` argument is required!'
-    invalidProperty: 'Invalid `%s` provided, you must provide a valid %s.'
-    noChannelsWithNameOrId: 'I found no channels with the name or ID of `%s`'
-    noUsersWithNameOrId: 'I found no users with the name or ID of `%s`'
+    missingArgument: 'Missing argument, the `{0}` argument is required!'
+    invalidProperty: 'Invalid `{0}` provided, you must provide a valid {1}.'
+    noChannelsWithNameOrId: 'I found no channels with the name or ID of `{0}`'
+    noUsersWithNameOrId: 'I found no users with the name or ID of `{0}`'
     mustBeConnectedToVoice: 'You must be connected to a voice channel to use this command!'
-    mustBeConnectedToSameChannel: 'You must be connected to the same voice channel I am in to %s!'
+    mustBeConnectedToSameChannel: 'You must be connected to the same voice channel I am in to {0}!'
     missingMusicQueue: 'Missing music `query`, you must include a link to the song you want to listen to, or at least give me a song title!'
-    requireLevelFeatureToBeEnabled: 'This command requires the `Levels & Experience` feature to be enabled for the server, you can ask a server admin if they want to enable it with `%s`'
-    errorOccurredWhileLoading: 'An error occurred while loading the %s, please try again, if the problem continues please report this to one of my developers on the [AvaIre support server](https://discord.gg/gt2FWER).'
+    requireLevelFeatureToBeEnabled: 'This command requires the `Levels & Experience` feature to be enabled for the server, you can ask a server admin if they want to enable it with `{0}`'
+    errorOccurredWhileLoading: 'An error occurred while loading the {0}, please try again, if the problem continues please report this to one of my developers on the [AvaIre support server](https://discord.gg/gt2FWER).'
 
 fun:
     DiceCommand:
         missingDice: "Ye must include th' dice ye wants t' furl."
-        invalidDiceFormat: "`%s` ain't a valid dice formant."
-        diceFormatMustBeGreaterThan: "`%s` ain't a valid dice format, th' dice must be greater than 0 'n less than 35"
-        diceFormatMustBePositive: "`%s` ain't a valid dice format, th' dice amount must be a valid positive number between 1 'n 35"
-        sidesFormatMustBeGreaterThan: "`%s` ain't a valid dice format, th' sides must be greater than 0 'n less than 128"
-        sidesFormatMustBePositive: "`%s` ain't a valid dice format, th' sides amount must be a valid positive number between 1 'n 128"
+        invalidDiceFormat: "`{0}` ain't a valid dice formant."
+        diceFormatMustBeGreaterThan: "`{0}` ain't a valid dice format, th' dice must be greater than 0 'n less than 35"
+        diceFormatMustBePositive: "`{0}` ain't a valid dice format, th' dice amount must be a valid positive number between 1 'n 35"
+        sidesFormatMustBeGreaterThan: "`{0}` ain't a valid dice format, th' sides must be greater than 0 'n less than 128"
+        sidesFormatMustBePositive: "`{0}` ain't a valid dice format, th' sides amount must be a valid positive number between 1 'n 128"
         moreThanFiveRollsWasGiven: "\n_More than **5** dice furls given, only th' first five will be displayed_\n"
-        resultedIn: '**%s** resulted in **%s**  (%s)'
+        resultedIn: '**{0}** resulted in **{1}**  ({2})'
 
     EightBallCommand:
         mustIncludeQuestion: 'Ye must include a riddle fer 8ball.'
@@ -47,32 +47,32 @@ fun:
 
     MemeCommand:
         missingArgument: "Missin' `action` argument, ye must include th' meme type or user ye wants t' generate a meme fer, or `list` t' display all th' memes types available."
-        invalidType: "Invalid meme type given, `%s` ain't a valid meme type!"
+        invalidType: "Invalid meme type given, `{0}` ain't a valid meme type!"
         mustIncludeTopAndBottomText: "Ye must include th' `top text` 'n `bottom text` arguments t' generate a meme."
-        listItem: '`%s` => `%s`'
+        listItem: '`{0}` => `{1}`'
 
     ReverseCommand:
         palindrome: "Ye reversed a palindrome, wha' were ye expectin'?"
 
     RipCommand:
-        hasPaidTheirRespects: '**%s** has paid thar respects.'
-        todayAndOverall: "%s Today, %s O'erall"
+        hasPaidTheirRespects: '**{0}** has paid thar respects.'
+        todayAndOverall: "{0} Today, {1} O'erall"
 
     RollCommand:
-        invalidValueGiven: 'Invalid `%s` value given, `%s` must be a number!'
+        invalidValueGiven: 'Invalid `{0}` value given, `{1}` must be a number!'
         rolledNumber: ':user furled **:number** out of :min - :max'
 
 help:
     HelpCommand:
-        listOfCommands: ':page_with_curl: **List of Commands** ```css\n%s```\n'
+        listOfCommands: ':page_with_curl: **List of Commands** ```css\n{0}```\n'
         commandNote: '**Type `:help <command>` to see the help for that specified command.**\nExample: `:help :command`'
-        categoriesNote: ':information_source: Type `:help <category>` to get a list of commands in that category.\nExample: `:help %s` or `:help %s`'
+        categoriesNote: ':information_source: Type `:help <category>` to get a list of commands in that category.\nExample: `:help {0}` or `:help {1}`'
         categoriesTitle: ':scroll: Command Categories'
         invalidCategory: 'Invalid command category given, there are no categories called `:category`'
         invalidCommand: 'Invalid command given, there are no command that has the trigger `:trigger`'
         tryingToViewSystemCommands: "You don't have permissions to run any of the commands in the `System` category, system commands can affect all the servers the bot is currently running on, and thus are limited to bot administrators/developers."
-        singularHiddenCategories: '_There is **%s** hidden category for this channel._'
-        multipleHiddenCategories: '_There are **%s** hidden categories for this channel._'
+        singularHiddenCategories: '_There is **{0}** hidden category for this channel._'
+        multipleHiddenCategories: '_There are **{0}** hidden categories for this channel._'
         fields:
             usage: 'Usage'
             example: 'Example'
@@ -91,7 +91,7 @@ interaction:
     KillCommand: "wants t' scuttle"
     KissCommand: 'kisses'
     MeowCommand: 'meows at'
-    PanCommand: "**%s** jus' hit **%s** wit' a pan!"
+    PanCommand: "**{0}** jus' hit **{1}** wit' a pan!"
     PatCommand: 'pats'
     PokeCommand: 'pokes'
     PoutCommand: 'pouts at'
@@ -109,17 +109,17 @@ music:
         nowPlayingPlaylist: "Th' **:playlistName** playlist has been added t' th' queue wit' `:playlistSize` tracks!"
         nowPlaying: "Now playin': [:title](:link)\n`:duration` - Requested by :requester"
         queueHasEnded: "Queue be ended, leavin' voice."
-        noMatchFound: "I found nothin' with th' given query: `%s`"
-        trackLoadFailed: "I couldn't add that t' th' queue: `%s`"
+        noMatchFound: "I found nothin' with th' given query: `{0}`"
+        trackLoadFailed: "I couldn't add that t' th' queue: `{0}`"
         musicChannel: "You can only use music commands in the :channel channel."
 
     ClearQueueCommand:
-        error: "Nothin' t' clear, request somethin' first wit' `%splay`"
+        error: "Nothin' t' clear, request somethin' first wit' `{0}play`"
         emptyQueue: "Nothin' t' clear, thar are no chanties pendin' in th' queue right now."
         success: "I 'ave scuttled **:queueSize** shanties from th' queue, th' queue be empty now!"
 
     MoveHereCommand:
-        error: "Nah connected t' voice, request shanties first wit' `%splay`"
+        error: "Nah connected t' voice, request shanties first wit' `{0}play`"
         nowPlayingIn: 'I now be playing music in **:channelName**'
 
     MusicChannelCommand:
@@ -129,13 +129,13 @@ music:
             message: "**Text Channel:** :text\n**Voice Channel:** :voice"
         status:
             disabled: "disabled"
-            enabled: "set to **%s**"
+            enabled: "set to **{0}**"
         errors:
             invalidType: "Invalid type of music channel given, the type must be either `text` or `voice`"
-            notValidType: "`%s` is not a not a valid %s channel, you must include a valid voice channel you want to use as the music channel."
+            notValidType: "`{0}` is not a not a valid {1} channel, you must include a valid voice channel you want to use as the music channel."
 
     PauseCommand:
-        error: "Nothin' t' pause, request chanties first wit' `%splay`"
+        error: "Nothin' t' pause, request chanties first wit' `{0}play`"
         alreadyPaused: "Th' chanties be already paused, use `!resume` t' resume th' chanties."
         paused: "Th' shanties has been `paused`"
 
@@ -143,21 +143,21 @@ music:
         addedSong: ":user has added [:title](:url) t' th' queue. Thar are `:queueSize` chantey(s) ahead o' it in th' queue."
         addedSongsFromPlaylist: ":user has added :songs shanties from th' [:title](:url) playlist t' th' queue. Thar are `:queueSize` chantey(s) ahead o' it in th' queue."
         session:
-            title: 'Results fer %s'
-            footer: "Choose a shantey wit' %s <number>"
+            title: 'Results fer {0}'
+            footer: "Choose a shantey wit' {0} <number>"
 
     PlaylistCommand:
         noPlaylists: "This server does nah 'ave any chanties playlists yet, ye can create one wit'\n`:command` t' get started"
         noPlaylistWithName: "Thar are no playlist called `:playlist`, ye can create th' playlist by usin' th'\n`:command` command"
-        invalidProperty: "Invalid `property` given, thar are no playlist properties called `%s`.\nYou can learn more by runnin' `%shelp %s`"
+        invalidProperty: "Invalid `property` given, thar are no playlist properties called `{0}`.\nYou can learn more by runnin' `{1}help {2}`"
         invalidFormat: "Invalid format, missin' th' `:type` property!\n`:command`"
         invalidIdGiven: "Invalid id given, th' number given be too :type\n`:command`"
         invalidIdNumberGiven: "Invalid id given, the id must be a number\n`:command`"
         noMoreSongSlots: "Th' `:playlist` playlist doesn't 'ave any more shantey slots."
         noMorePlaylistSlots: "Th' server doesn't 'ave any more playlist slots, ye can scuttle existin' playlists t' free up slots."
-        failedToLoad: 'Failed to load: %s'
+        failedToLoad: 'Failed to load: {0}'
         failedToLoadPlaylist: "Failed t' load th' :playlist, maybe try again later or report this t' one o' me developers."
-        failedToSavePlaylist: "Somethin' went wrong while tryin' t' save th' playlist: %s"
+        failedToSavePlaylist: "Somethin' went wrong while tryin' t' save th' playlist: {0}"
         loadedPlaylist: "Th' **:name** playlist has been loaded 'n added t' th' queue wit' **:amount** chanties."
         noMatches: 'No Matches'
         attemptingToAddLivestreamToPlaylist: "Ye can nah add livestreams t' a playlist!"
@@ -171,82 +171,82 @@ music:
         playlistIsEmpty: "Thar are no chanties in this playlist, ye can add chanties t' it by usin' th'\n`:command` command."
         playlistIsAlreadyEmpty: "Th' `:playlist` playlist be already empty, thar be naught t' scuttle."
         songHasBeenRemovedFromPlaylist: ":song has been successfully scuttled from th' `:playlist` playlist"
-        playlistTitle: ':musical_note: Music Playlist %s'
-        playlistSize: "[ %s out o' %s ]"
-        playlistLine: '%s\n       Playlist has **%s** shanty(s)'
-        playlistSongLine: '`%s` [%s](%s) [%s]'
+        playlistTitle: ':musical_note: Music Playlist {0}'
+        playlistSize: "[ {0} out o' {1} ]"
+        playlistLine: '{0}\n       Playlist has **{1}** shanty(s)'
+        playlistSongLine: '`{0}` [{1}]({2}) [{3}]'
 
     RemoveSongFromQueueCommand:
         error: "Missin' argument `chantey id`, ye must include th' ID o' th' chantey ye wants t' scuttle from th' queue."
         failedToRemoveSong: "Somethin' went wrong, failed t' scuttle shanty at index `:index`"
-        tooHighNumberGiven: "Thar are only `%s` shanties in th' queue, try lowerin' yer number a bit."
+        tooHighNumberGiven: "Thar are only `{0}` shanties in th' queue, try lowerin' yer number a bit."
         mustBePositiveNumber: "Th' `shantey id` must be a valid positive number."
-        nothingToRemove: "Nothin' t' scuttle, request chanties first wit' `%splay`"
+        nothingToRemove: "Nothin' t' scuttle, request chanties first wit' `{0}play`"
         success: ":song has been successfully scuttled from th' shanties queue."
 
     RepeatMusicQueueCommand:
-        error: "Thar be naught t' repeat, request shanties first wit' `%splay`"
+        error: "Thar be naught t' repeat, request shanties first wit' `{0}play`"
         success: "Music queue loopin' has been turned `:status`."
         enabled: 'ON'
         disabled: 'OFF'
 
     ResumeCommand:
-        error: "Nothin' t' resume, request chanties first wit' `%splay`"
+        error: "Nothin' t' resume, request chanties first wit' `{0}play`"
         alreadyPlaying: "Th' shanties be already playin', use `:prefixpause` t' pause th' shanties first."
         resume: "Th' shanties has been `resumed`"
 
     SeekCommand:
-        error: "Nothin' be playin' right now, request somethin' wit' `%splay` first."
+        error: "Nothin' be playin' right now, request somethin' wit' `{0}play` first."
         invalidTimeGiven: "Th' `number` argument must be a valid time format that be at least 0 or more seconds long."
         seekingLive: "Ye can nah jump t' a different time code fer livestreams."
-        seekingTooFar: "`%s` be more than th' length o' th' current chanty playin', if ye wants t' skip t' th' next chanty use `%sskip` instead."
+        seekingTooFar: "`{0}` be more than th' length o' th' current chanty playin', if ye wants t' skip t' th' next chanty use `{1}skip` instead."
         seekTo: "Seekin' **:title** t' `:time`"
 
     SetDefaultVolumeCommand:
         currentVolume: 'The default volume for the server is currently set to `:volume%`'
         changedVolume: 'The default volume has been set to `:volume%`'
-        failedToSave: 'Something went wrong while trying to save the default volume: %s'
+        failedToSave: 'Something went wrong while trying to save the default volume: {0}'
         mustBeNumber: 'The `volume` must be a number between 10 and 100'
 
     ShuffleCommand:
-        error: "Th' chanties queue be already empty, ye can request somethin' wit'\n`%splay <song title | url>`"
+        error: "Th' chanties queue be already empty, ye can request somethin' wit'\n`{0}play <song title | url>`"
         success: "**:amount** shanties has been shuffled in th' shanties queue."
 
     SkipCommand:
-        error: "Nothin' t' skip, request chanties first wit' `%splay`"
+        error: "Nothin' t' skip, request chanties first wit' `{0}play`"
 
     SongCommand:
-        error: "Nothin' t' display, request chanties first wit' `%splay`"
+        error: "Nothin' t' display, request chanties first wit' `{0}play`"
         paused: 'Currently Paused'
         playing: "Currently Playin'"
         songsInQueue: 'Songs in Queue'
-        moreSongs: "Ye can see more shanties by usin' %s <page>"
+        moreSongs: "Ye can see more shanties by usin' {0} <page>"
         noSongs: "Thar are no other chanties in th' queue right now"
-        andXMoreSongs: "_'n **%s** more song%s!_"
+        andXMoreSongs: "_'n **{0}** more song{1}!_"
         formats:
-            line: '**%s** [%s](%s)'
-            song: "[%s](%s)\nPlayin' at `%s` volume wit' `%s` left o' th' shanty - Requested by <@%s>"
-            stream: "[%s](%s)\nPlayin' at `%s` volume, th' stream be `%s` - Requested by <@%s>"
+            line: '**{0}** [{1}]({2})'
+            song: "[{0}]({1})\nPlayin' at `{2}` volume wit' `{3}` left o' th' shanty - Requested by <@{4}>"
+            stream: "[{0}]({1})\nPlayin' at `{2}` volume, th' stream be `{3}` - Requested by <@{4}>"
 
     StopCommand:
         error: "Nothin' be playin' right now, ye can nah stop th' shanties when naught be playin'."
         success: "Th' player has stopped, 'n **:number** chanties has been scuttled from th' queue."
 
     VolumeCommand:
-        error: "Nothin' be playin', request chanties first wit' `%splay`"
+        error: "Nothin' be playin', request chanties first wit' `{0}play`"
         requireDJRole: "Th' `DJ` role be required t' change th' volume!"
         invalidVolume: "Invalid volume given, th' volume must be a valid number between 1 'n 100."
         nowPlaying: ":musical_note: Music be playin' at **:volume** volume"
         setTo: ":musical_note: Volume set t' **:volume** volume"
 
     VoteSkipCommand:
-        error: "Nothin' t' skip, request chanties first wit' `%splay`"
+        error: "Nothin' t' skip, request chanties first wit' `{0}play`"
         registered: "Yer vote has been registered! `:votes` more votes needed t' skip th' shantey."
         alreadyVoted: "Ye can only vote skip once per chanty! `:votes` more votes needed t' skip th' chanty."
 
 search:
     DuckDuckGoCommand:
-        searchResults: 'Search result for: %s'
+        searchResults: 'Search result for: {0}'
         noResults: 'I found nothing for `:query`'
         seeAlso: '**See also**'
         nsfwStatus:
@@ -263,7 +263,7 @@ search:
         results: ':percentage percentage of people like this. :up👍 :down👎'
 
     XKCDCommand:
-        number: 'XKCD number #%s'
+        number: 'XKCD number #{0}'
 
 utility:
     CalculateCommand:
@@ -291,7 +291,7 @@ utility:
 
     ExpandUrlCommand:
         noRedirect: ":url doesn't redirect anywhere."
-        redirects: '%s redirects to %s'
+        redirects: '{0} redirects to {1}'
         jumps: '**The link jumps through the following sites:**'
 
     FeedbackCommand:
@@ -314,7 +314,7 @@ utility:
     LeaderboardCommand:
         noData: 'There are no leaderboard data right now, try again later.'
         line: '`:num` **:username** is level **:level** with **:experience** xp.'
-        title: '%s Leaderboard'
+        title: '{0} Leaderboard'
 
     PingCommand:
         message: 'Pong! Time taken :ping ms (:rating) Websocket heartbeat :heartbeat ms'
@@ -341,7 +341,7 @@ utility:
             level: 'Level'
             experience: 'Experience'
             experienceToNext: 'Experience needed to next Level'
-            youNeedMoreXpToLevelUp: '\t\t\t\t\t\t\t\t\tYou need %s more XP to level up.'
+            youNeedMoreXpToLevelUp: '[{0}] {1}{2}\n\t\t\t\t\t\t\t\t\tYou need {3} more XP to level up.'
 
     ServerIdCommand:
         message: ':user :id: of this server is `:guildid`'
@@ -356,7 +356,7 @@ utility:
             roles: 'Roles'
             region: 'Region'
             createdAt: 'Created At'
-            emojis: 'Custom Emojis (%s)'
+            emojis: 'Custom Emojis ({0})'
         timeFormat: 'EEE, dd MMM yyyy HH:mm'
 
     ShardCommand:
@@ -371,12 +371,12 @@ utility:
 
     StatsCommand:
         title: 'Official Bot Server Invite'
-        footer: 'Currently playing in %s servers with %s songs in the queue.'
+        footer: 'Currently playing in {0} servers with {1} songs in the queue.'
         latestChanges: 'Latest changes:'
         formats:
-            perMinute: '%s (%s per min)'
-            perSecond: '%s (%s per sec)'
-            memory: '%sMb / %sMb'
+            perMinute: '{0} ({1} per min)'
+            perSecond: '{0} ({1} per sec)'
+            memory: '{0}Mb / {1}Mb'
         fields:
             author: 'Author'
             botId: 'Bot ID'
@@ -393,7 +393,7 @@ utility:
 
     UptimeCommand:
         message: 'I have been online for :time'
-        footer: 'Started %s at %s'
+        footer: 'Started {0} at {1}'
         dateFormat: 'EEEEEEEE, dd MMM yyyy'
         timeFormat: 'HH:mm:ss z'
 
@@ -406,9 +406,9 @@ utility:
             userId: 'User ID'
             joinedServer: 'Joined Server'
             joinedDiscord: 'Joined Discord'
-            roles: 'Roles (%s)'
+            roles: 'Roles ({0})'
             servers: 'Servers'
-        inServers: '%s the bot knows about'
+        inServers: '{0} the bot knows about'
         noRoles: '*This user is not in any roles*'
         timeFormat: 'EEE, dd MMM yyyy HH:mm'
 
@@ -416,7 +416,7 @@ utility:
         current: 'I am currently `:difference` :type versions behind!'
         getLatest: 'You can get the latest version of me on github at [avaire/avaire](https://github.com/avaire/avaire)'
         usingLatest: "You're using the latest version of AvaIre!"
-        latestVersion: 'The latest version of AvaIre is v%s'
+        latestVersion: 'The latest version of AvaIre is v{0}'
         versions:
             majorName: 'Major'
             major: 'Major version updates are total reworks of the bot and how it works or a large compilation of minor changes to the source code, it is highly recommended that you update on major version changes since older versions will not be supported for bug fixes or updates.'

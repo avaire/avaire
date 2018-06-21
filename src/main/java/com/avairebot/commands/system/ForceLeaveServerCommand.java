@@ -45,7 +45,7 @@ public class ForceLeaveServerCommand extends SystemCommand {
         try {
             Guild guild = avaire.getShardManager().getGuildById(args[0]);
             if (guild == null) {
-                return sendErrorMessage(context, "The bot is not in any guild with an ID of `%s`", args[0]);
+                return sendErrorMessage(context, "The bot is not in any guild with an ID of `{0}`", args[0]);
             }
 
             String name = guild.getName();

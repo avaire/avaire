@@ -37,8 +37,7 @@ public class SendSongsInPlaylist extends PlaylistSubCommand {
         paginator.forEach((index, key, val) -> {
             PlaylistTransformer.PlaylistSong song = (PlaylistTransformer.PlaylistSong) val;
 
-            messages.add(String.format(
-                context.i18n("playlistSongLine"),
+            messages.add(context.i18n("playlistSongLine",
                 index + 1,
                 song.getTitle(),
                 song.getLink(),
