@@ -10,6 +10,13 @@ errors:
     requireLevelFeatureToBeEnabled: 'Ez a parancs megköveteli a `Levels & Experience` funkciót, hogy be legyen kapcsolva a szerveren. Megkérdheted a szerver tulajdonost, hogy be akarják-e kapcsolni a `{0}`-vel'
     errorOccurredWhileLoading: 'Hiba lépett fel a {0} betöltése közben, kérlek próbáld újra, ha a hiba továbbra is fennáll kérlek jelentsd ezt az egyik fejlesztőmnek az [AvaIre support server](https://discord.gg/gt2FWER)-en.'
 
+levelupMessages:
+    - "GG :user, you just reached **Level :level**"
+    - "Eyy :user, you just leveled up! You're now **Level :level**"
+    - "🌟 You just reached **Level :level* :user! Congrats 🌟"
+    - "You're on 🔥 :user, you've just reached **Level :level**"
+    - "Congratulations :user 🎉 You just leveled up! You're now **Level :level**"
+
 fun:
     DiceCommand:
         missingDice: 'Meg kell adnod a kockát amit dobni akarsz.'

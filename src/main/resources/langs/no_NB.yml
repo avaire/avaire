@@ -10,6 +10,13 @@ errors:
     requireLevelFeatureToBeEnabled: 'Denne kommandoen krever at `Levels & Experience` fungsjonen er skrudd på for serveren, du kan spørre en admin om de ønsker og skru på fungsjonen `{0}`'
     errorOccurredWhileLoading: 'En feil oppsto ved lasting av {0}, vennligst prøv igjen, om problemet vedvarer, vennligst kontakt en av mine utvikklere på [AvaIre support server](https://discord.gg/gt2FWER).'
 
+levelupMessages:
+    - "GG :user, you just reached **Level :level**"
+    - "Eyy :user, you just leveled up! You're now **Level :level**"
+    - "🌟 You just reached **Level :level* :user! Congrats 🌟"
+    - "You're on 🔥 :user, you've just reached **Level :level**"
+    - "Congratulations :user 🎉 You just leveled up! You're now **Level :level**"
+
 fun:
     DiceCommand:
         missingDice: 'Du må inkludere ett gyldig terning format.'

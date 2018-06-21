@@ -67,17 +67,27 @@ public class I18n {
             GuildTransformer transformer = GuildController.fetchGuild(avaire, guild);
 
             if (transformer != null) {
-                for (LanguageHolder locale : LANGS) {
-                    if (locale.getLanguage().getCode().equalsIgnoreCase(transformer.getLocale())) {
-                        return locale;
-                    }
-                }
+                return getLocale(transformer);
             }
             return DEFAULT;
         } catch (Exception e) {
             LOGGER.error("Error when reading entity", e);
-            return DEFAULT;
         }
+        return DEFAULT;
+    }
+
+    @Nonnull
+    public static LanguageHolder getLocale(@Nonnull GuildTransformer transformer) {
+        try {
+            for (LanguageHolder locale : LANGS) {
+                if (locale.getLanguage().getCode().equalsIgnoreCase(transformer.getLocale())) {
+                    return locale;
+                }
+            }
+        } catch (Exception e) {
+            LOGGER.error("Error when reading entity", e);
+        }
+        return DEFAULT;
     }
 
     @Nonnull

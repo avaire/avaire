@@ -10,6 +10,13 @@ errors:
     requireLevelFeatureToBeEnabled: "Cette commande requiert que la fonctionnalité `Levels & Experience` soit active pour le serveur, tu peux demander à un admin serveur si ils veulent l'activer avec `{0}`"
     errorOccurredWhileLoading: "Une erreur est survenue lors du chargement de {0}, réessayer, si le problème persiste reportez le à l'un de mes développeurs sur le [serveur de support AvaIre](https://discord.gg/gt2FWER)."
 
+levelupMessages:
+    - "GG :user, you just reached **Level :level**"
+    - "Eyy :user, you just leveled up! You're now **Level :level**"
+    - "🌟 You just reached **Level :level* :user! Congrats 🌟"
+    - "You're on 🔥 :user, you've just reached **Level :level**"
+    - "Congratulations :user 🎉 You just leveled up! You're now **Level :level**"
+
 fun:
     DiceCommand:
         missingDice: "Tu dois inclure le dé que tu souhaites lancer."

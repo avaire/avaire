@@ -8,6 +8,7 @@ import com.avairebot.database.controllers.PlayerController;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.database.transformers.PlayerTransformer;
 import com.avairebot.factories.MessageFactory;
+import com.avairebot.language.I18n;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import net.dv8tion.jda.core.entities.Message;
@@ -149,9 +150,10 @@ public class LevelUtil {
                 if (guild.isLevelAlerts()) {
                     MessageFactory.makeEmbeddedMessage(getLevelUpChannel(message, guild))
                         .setColor(MessageType.SUCCESS.getColor())
-                        .setDescription(String.format("GG %s, you just reached **Level %s**",
-                            message.getAuthor().getAsMention(), newLevel
-                        )).queue();
+                        .setDescription(loadRandomLevelupMessage(guild))
+                        .set("user", message.getAuthor().getAsMention())
+                        .set("level", newLevel)
+                        .queue();
                 }
 
                 if (!guild.getLevelRoles().isEmpty()) {
@@ -199,6 +201,12 @@ public class LevelUtil {
             }
         }
         return roles;
+    }
+
+    private static String loadRandomLevelupMessage(GuildTransformer guild) {
+        return (String) RandomUtil.pickRandom(
+            I18n.getLocale(guild).getConfig().getStringList("levelupMessages")
+        );
     }
 
     private static Object asKey(MessageReceivedEvent event) {
