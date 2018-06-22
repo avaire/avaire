@@ -10,10 +10,9 @@ import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.text.MessageFormat;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class I18n {
 
@@ -102,24 +101,25 @@ public class I18n {
     }
 
     public static String format(@Nonnull String message, Object... args) {
-        int argNum = 0;
+        int num = 0;
+        Object[] arguments = new Object[args.length];
         for (Object arg : args) {
             if (arg == null) {
                 continue;
             }
-
-            try {
-                message = message.replaceFirst(
-                    Pattern.quote("{" + (argNum++) + "}"),
-                    Matcher.quoteReplacement(arg.toString())
-                );
-            } catch (Exception ex) {
-                LOGGER.error(
-                    "An exception was through while formatting \"{}\", error: {}",
-                    message, ex.getMessage(), ex
-                );
-            }
+            arguments[num++] = arg.toString();
         }
-        return message;
+
+        try {
+            return MessageFormat.format(
+                message.replace("'", "''"), arguments
+            );
+        } catch (IllegalArgumentException ex) {
+            LOGGER.error(
+                "An exception was through while formatting \"{}\", error: {}",
+                message, ex.getMessage(), ex
+            );
+            return message;
+        }
     }
 }
