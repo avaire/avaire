@@ -12,6 +12,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class I18n {
@@ -110,7 +111,7 @@ public class I18n {
             try {
                 message = message.replaceFirst(
                     Pattern.quote("{" + (argNum++) + "}"),
-                    arg.toString()
+                    Matcher.quoteReplacement(arg.toString())
                 );
             } catch (Exception ex) {
                 LOGGER.error(
