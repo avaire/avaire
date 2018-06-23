@@ -160,7 +160,8 @@ public class AvaIre {
             new AddVotePointsToUsersAndGuildsTableMigration(),
             new AddMusicChannelToGuildsTableMigration(),
             new AddExpiresInFieldToBlacklistTableMigration(),
-            new AddOptInToVotesTableMigration()
+            new AddOptInToVotesTableMigration(),
+            new RecreateFeedbackTableMigration()
         );
 
         LOGGER.info("Registering default middlewares");

@@ -1,6 +1,7 @@
 package com.avairebot.commands.utility;
 
 import com.avairebot.AvaIre;
+import com.avairebot.Constants;
 import com.avairebot.chat.PlaceholderMessage;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
@@ -10,6 +11,7 @@ import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.TextChannel;
 
+import java.sql.SQLException;
 import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
@@ -79,6 +81,16 @@ public class FeedbackCommand extends Command {
 
         placeholderMessage.queue(newMessage -> {
             context.makeSuccess(context.i18n("success")).queue();
+
+            try {
+                avaire.getDatabase().newQueryBuilder(Constants.FEEDBACK_TABLE_NAME).insert(statement -> {
+                    statement.set("user_id", context.getAuthor().getIdLong());
+                    statement.set("channel_id", context.isGuildMessage() ? context.getMessageChannel().getIdLong() : null);
+                    statement.set("message", String.join(" ", args), true);
+                });
+            } catch (SQLException e) {
+                AvaIre.getLogger().error("Failed to store feedback in the database: {}", e.getMessage(), e);
+            }
         }, err -> {
             AvaIre.getLogger().error("Failed to send feedback message: " + err.getMessage(), err);
             context.makeError(context.i18n("failedToSend"))
