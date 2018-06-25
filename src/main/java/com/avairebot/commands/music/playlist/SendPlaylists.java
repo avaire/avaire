@@ -34,24 +34,19 @@ public class SendPlaylists extends PlaylistSubCommand {
         paginator.forEach((index, key, val) -> {
             DataRow row = (DataRow) val;
 
-            messages.add(String.format(
-                context.i18n("playlistLine"),
+            messages.add(context.i18n(
+                "playlistLine",
                 row.getString("name"),
                 row.getInt("amount")
             ));
         });
 
-        String counter = String.format(context.i18n("playlistSize"),
-            playlists.size(), guild.getType().getLimits().getPlaylist().getPlaylists()
-        );
+        String counter = context.i18n("playlistSize", playlists.size(), guild.getType().getLimits().getPlaylist().getPlaylists());
 
         context.makeInfo("\u2022 " +
             String.join("\n\u2022 ", messages) + "\n\n" +
             paginator.generateFooter(command.generateCommandTrigger(context.getMessage()))
-        ).setTitle(String.format(
-            context.i18n("playlistTitle"),
-            counter
-        )).queue();
+        ).setTitle(context.i18n("playlistTitle", counter)).queue();
 
         return true;
     }

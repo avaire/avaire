@@ -84,10 +84,7 @@ public class AddSongToPlaylist extends PlaylistSubCommand {
             @Override
             public void loadFailed(FriendlyException e) {
                 Metrics.trackLoadsFailed.inc();
-                context.makeWarning(String.format(
-                    context.i18n("failedToLoad"),
-                    e.getMessage()
-                )).queue();
+                context.makeWarning(context.i18n("failedToLoad", e.getMessage())).queue();
             }
         });
     }
@@ -123,10 +120,7 @@ public class AddSongToPlaylist extends PlaylistSubCommand {
         } catch (SQLException e) {
             e.printStackTrace();
 
-            context.makeError(String.format(
-                context.i18n("failedToSavePlaylist"),
-                e.getMessage()
-            )).queue();
+            context.makeError(context.i18n("failedToSavePlaylist", e.getMessage())).queue();
         }
     }
 }
