@@ -19,8 +19,7 @@ public class PlaylistController {
 
     public static final Cache<Object, Object> cache = CacheBuilder.newBuilder()
         .recordStats()
-        .expireAfterAccess(2, TimeUnit.MINUTES)
-        .expireAfterWrite(5, TimeUnit.MINUTES)
+        .expireAfterAccess(5, TimeUnit.MINUTES)
         .build();
 
     @CheckReturnValue

@@ -7,6 +7,8 @@ import com.avairebot.utilities.CacheUtil;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import net.dv8tion.jda.core.entities.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.CheckReturnValue;
 import java.sql.SQLException;
@@ -20,9 +22,10 @@ public class GuildController {
 
     public static final Cache<Object, Object> cache = CacheBuilder.newBuilder()
         .recordStats()
-        .expireAfterAccess(1, TimeUnit.MINUTES)
-        .expireAfterWrite(4, TimeUnit.MINUTES)
+        .expireAfterAccess(5, TimeUnit.MINUTES)
         .build();
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(GuildController.class);
 
     private static final String[] REQUIRED_GUILD_ITEMS = new String[]{
         "guild_types.name as type_name", "guild_types.limits as type_limits",
@@ -129,6 +132,8 @@ public class GuildController {
     }
 
     private static GuildTransformer loadGuildFromDatabase(AvaIre avaire, Guild guild) {
+        LOGGER.debug("Guild cache for " + guild.getId() + " was refreshed");
+
         try {
             GuildTransformer transformer = new GuildTransformer(avaire.getDatabase()
                 .newQueryBuilder(Constants.GUILD_TABLE_NAME)

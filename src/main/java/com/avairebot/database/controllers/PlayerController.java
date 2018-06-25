@@ -9,6 +9,8 @@ import com.google.common.cache.CacheBuilder;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nonnull;
@@ -19,9 +21,10 @@ public class PlayerController {
 
     public static final Cache<Object, Object> cache = CacheBuilder.newBuilder()
         .recordStats()
-        .expireAfterAccess(2, TimeUnit.MINUTES)
-        .expireAfterWrite(5, TimeUnit.MINUTES)
+        .expireAfterAccess(210, TimeUnit.SECONDS) // 3½ minute
         .build();
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(PlayerController.class);
 
     private static final String[] REQUIRED_PLAYER_ITEMS = new String[]{
         "username", "discriminator", "avatar", "experience"
@@ -39,6 +42,8 @@ public class PlayerController {
         }
 
         return (PlayerTransformer) CacheUtil.getUncheckedUnwrapped(cache, asKey(message.getGuild(), user), () -> {
+            LOGGER.debug("User cache for " + user.getId() + " was refreshed");
+
             try {
                 PlayerTransformer transformer = new PlayerTransformer(avaire.getDatabase()
                     .newQueryBuilder(Constants.PLAYER_EXPERIENCE_TABLE_NAME)
