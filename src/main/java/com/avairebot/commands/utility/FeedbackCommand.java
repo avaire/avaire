@@ -5,6 +5,7 @@ import com.avairebot.Constants;
 import com.avairebot.chat.PlaceholderMessage;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
+import com.avairebot.database.collection.Collection;
 import com.avairebot.factories.MessageFactory;
 import com.avairebot.shared.DiscordConstants;
 import net.dv8tion.jda.core.entities.Guild;
@@ -83,11 +84,20 @@ public class FeedbackCommand extends Command {
             context.makeSuccess(context.i18n("success")).queue();
 
             try {
-                avaire.getDatabase().newQueryBuilder(Constants.FEEDBACK_TABLE_NAME).insert(statement -> {
+                Collection collection = avaire.getDatabase().newQueryBuilder(Constants.FEEDBACK_TABLE_NAME).insert(statement -> {
                     statement.set("user_id", context.getAuthor().getIdLong());
                     statement.set("channel_id", context.isGuildMessage() ? context.getMessageChannel().getIdLong() : null);
                     statement.set("message", String.join(" ", args), true);
                 });
+
+                if (!collection.isEmpty()) {
+                    String id = collection.first().getString("id");
+
+                    newMessage.editMessage(placeholderMessage
+                        .setFooter("Author ID: " + context.getAuthor().getId() + " | ID: #" + id)
+                        .buildEmbed()
+                    ).queue();
+                }
             } catch (SQLException e) {
                 AvaIre.getLogger().error("Failed to store feedback in the database: {}", e.getMessage(), e);
             }
