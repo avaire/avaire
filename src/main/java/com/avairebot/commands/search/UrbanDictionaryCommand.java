@@ -52,6 +52,14 @@ public class UrbanDictionaryCommand extends ThreadCommand {
 
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
+        if (context.isGuildMessage() && !context.getChannel().isNSFW()) {
+            return sendErrorMessage(context, "The `Urban Dictionary` command can only be used in NSFW channels, as the content of the command may not be appreciate for all.");
+        }
+
+        if (args.length == 0) {
+            return sendErrorMessage(context, "errors.missingArgument", "word or sentence");
+        }
+
         RequestFactory.makeGET("https://api.urbandictionary.com/v0/define")
             .addParameter("term", String.join(" ", args))
             .send((Consumer<Response>) response -> {
