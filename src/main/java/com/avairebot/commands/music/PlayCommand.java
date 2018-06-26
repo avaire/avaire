@@ -221,14 +221,8 @@ public class PlayCommand extends ThreadCommand {
             }
 
             context.makeSuccess(String.join("\n", songs))
-                .setTitle(String.format(
-                    context.i18n("session.title"),
-                    String.join(" ", args)
-                ))
-                .setFooter(String.format(
-                    context.i18n("session.footer"),
-                    command
-                ))
+                .setTitle(context.i18n("session.title", String.join(" ", args)))
+                .setFooter(context.i18n("session.footer", command))
                 .queue(audioSession::setMessage);
         };
     }

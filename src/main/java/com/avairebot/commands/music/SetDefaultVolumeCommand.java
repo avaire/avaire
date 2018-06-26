@@ -95,7 +95,7 @@ public class SetDefaultVolumeCommand extends Command {
             return true;
         } catch (SQLException e) {
             AvaIre.getLogger().error("Failed to store the default volume in the database due to a SQLException: ", e);
-            context.makeError(String.format(context.i18n("failedToSave"), e.getMessage())).queue();
+            context.makeError(context.i18n("failedToSave", e.getMessage())).queue();
         }
 
         return false;
