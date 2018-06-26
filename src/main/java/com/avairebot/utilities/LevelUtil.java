@@ -1,7 +1,6 @@
 package com.avairebot.utilities;
 
 import com.avairebot.AvaIre;
-import com.avairebot.Constants;
 import com.avairebot.chat.MessageType;
 import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.controllers.PlayerController;
@@ -17,10 +16,10 @@ import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
 
 public class LevelUtil {
@@ -29,6 +28,8 @@ public class LevelUtil {
         .recordStats()
         .expireAfterWrite(60, TimeUnit.SECONDS)
         .build();
+
+    private static final List<ExperienceEntity> experienceQueue = new CopyOnWriteArrayList<>();
 
     /**
      * The quadratic equation `a` value.
@@ -77,14 +78,13 @@ public class LevelUtil {
      * same guild through this method before in the last minute, nothing
      * will be given to the player/user.
      *
-     * @param avaire The AvaIre application instance.
      * @param event  The event that should be used in rewarding the player.
      * @param guild  The guild transformer from the current guild database instance.
      * @param player The player transformer from the current player database instance.
      */
-    public static void rewardPlayer(AvaIre avaire, MessageReceivedEvent event, GuildTransformer guild, PlayerTransformer player) {
+    public static void rewardPlayer(MessageReceivedEvent event, GuildTransformer guild, PlayerTransformer player) {
         CacheUtil.getUncheckedUnwrapped(cache, asKey(event), () -> {
-            giveExperience(avaire, event.getMessage(), guild, player);
+            giveExperience(event.getMessage(), guild, player);
             return 0;
         });
     }
@@ -104,7 +104,7 @@ public class LevelUtil {
             return;
         }
 
-        giveExperience(avaire, message, GuildController.fetchGuild(avaire, message), PlayerController.fetchPlayer(avaire, message, user), amount);
+        giveExperience(message, GuildController.fetchGuild(avaire, message), PlayerController.fetchPlayer(avaire, message, user), amount);
     }
 
     /**
@@ -112,63 +112,66 @@ public class LevelUtil {
      * 10 and 15, updating the database and saving it to the
      * transformer, storing it temporarily in memory.
      *
-     * @param avaire  The AvaIre application instance.
      * @param message The guild message event that should be used.
      * @param guild   The guild transformer for the guild the player is from.
      * @param player  The player that should be given the experience.
      */
-    public static void giveExperience(AvaIre avaire, Message message, GuildTransformer guild, PlayerTransformer player) {
-        giveExperience(avaire, message, guild, player, (RandomUtil.getInteger(5) + 10));
+    public static void giveExperience(Message message, GuildTransformer guild, PlayerTransformer player) {
+        giveExperience(message, guild, player, (RandomUtil.getInteger(5) + 10));
     }
 
     /**
      * Give the user the given amount of experience, updating the database and
      * saving it to the transformer, storing it temporarily in memory.
      *
-     * @param avaire  The AvaIre application instance.
      * @param message The guild message event that should be used.
      * @param guild   The guild transformer for the guild the player is from.
      * @param player  The player that should be given the experience.
      * @param amount  The amount of experience that should be given to the player.
      */
-    public static void giveExperience(AvaIre avaire, Message message, GuildTransformer guild, PlayerTransformer player, int amount) {
+    public static void giveExperience(Message message, GuildTransformer guild, PlayerTransformer player, int amount) {
         long exp = player.getExperience();
         long lvl = getLevelFromExperience(exp);
 
         player.incrementExperienceBy(amount);
 
-        try {
-            avaire.getDatabase().newQueryBuilder(Constants.PLAYER_EXPERIENCE_TABLE_NAME)
-                .useAsync(true)
-                .where("user_id", message.getAuthor().getIdLong())
-                .andWhere("guild_id", message.getGuild().getId())
-                .update(statement -> statement.setRaw("experience", "`experience` + " + amount));
+        experienceQueue.add(new ExperienceEntity(
+            message.getAuthor().getIdLong(),
+            message.getGuild().getIdLong(),
+            amount
+        ));
 
-            if (getLevelFromExperience(player.getExperience()) > lvl) {
-                long newLevel = getLevelFromExperience(player.getExperience());
+        if (getLevelFromExperience(player.getExperience()) > lvl) {
+            long newLevel = getLevelFromExperience(player.getExperience());
 
-                if (guild.isLevelAlerts()) {
-                    MessageFactory.makeEmbeddedMessage(getLevelUpChannel(message, guild))
-                        .setColor(MessageType.SUCCESS.getColor())
-                        .setDescription(loadRandomLevelupMessage(guild))
-                        .set("user", message.getAuthor().getAsMention())
-                        .set("level", newLevel)
-                        .queue();
-                }
-
-                if (!guild.getLevelRoles().isEmpty()) {
-                    List<Role> roles = getRoleRewards(message, guild, newLevel);
-                    if (roles.isEmpty()) {
-                        return;
-                    }
-
-                    message.getGuild().getController().addRolesToMember(message.getMember(), roles).queue();
-                }
+            if (guild.isLevelAlerts()) {
+                MessageFactory.makeEmbeddedMessage(getLevelUpChannel(message, guild))
+                    .setColor(MessageType.SUCCESS.getColor())
+                    .setDescription(loadRandomLevelupMessage(guild))
+                    .set("user", message.getAuthor().getAsMention())
+                    .set("level", newLevel)
+                    .queue();
             }
-        } catch (SQLException e) {
-            System.err.println(e.getMessage());
-            e.printStackTrace();
+
+            if (!guild.getLevelRoles().isEmpty()) {
+                List<Role> roles = getRoleRewards(message, guild, newLevel);
+                if (roles.isEmpty()) {
+                    return;
+                }
+
+                message.getGuild().getController().addRolesToMember(message.getMember(), roles).queue();
+            }
         }
+    }
+
+    /**
+     * Gets the experience queue, any user who has received experience and
+     * have yet to be updated in the database are stored in this queue.
+     *
+     * @return The experience queue.
+     */
+    public static List<ExperienceEntity> getExperienceQueue() {
+        return experienceQueue;
     }
 
     /**
@@ -211,5 +214,41 @@ public class LevelUtil {
 
     private static Object asKey(MessageReceivedEvent event) {
         return event.getGuild().getId() + ":" + event.getAuthor().getId();
+    }
+
+    public static class ExperienceEntity {
+
+        private final long userId;
+        private final long guildId;
+        private int experience;
+
+        ExperienceEntity(long userId, long guildId, int experience) {
+            this.userId = userId;
+            this.guildId = guildId;
+            this.experience = experience;
+        }
+
+        public long getUserId() {
+            return userId;
+        }
+
+        public long getGuildId() {
+            return guildId;
+        }
+
+        public int getExperience() {
+            return experience;
+        }
+
+        public void setExperience(int experience) {
+            this.experience = experience;
+        }
+
+        @Override
+        public String toString() {
+            return String.format("[userId:%s, guildId:%s, experience:%s]",
+                userId, guildId, experience
+            );
+        }
     }
 }

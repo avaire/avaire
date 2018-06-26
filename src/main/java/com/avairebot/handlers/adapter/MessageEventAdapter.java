@@ -93,7 +93,7 @@ public class MessageEventAdapter extends EventAdapter {
             }
 
             if (databaseEventHolder.getGuild() != null && databaseEventHolder.getPlayer() != null) {
-                LevelUtil.rewardPlayer(avaire, event, databaseEventHolder.getGuild(), databaseEventHolder.getPlayer());
+                LevelUtil.rewardPlayer(event, databaseEventHolder.getGuild(), databaseEventHolder.getPlayer());
             }
 
             CommandContainer container = CommandHandler.getCommand(avaire, event.getMessage(), event.getMessage().getContentRaw());
