@@ -68,14 +68,6 @@ public class SyncPlayerExperienceWithDatabaseTask implements Task {
                     logSQLException(e1);
                 }
             }
-        } finally {
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch (SQLException e) {
-                    logSQLException(e);
-                }
-            }
         }
     }
 
