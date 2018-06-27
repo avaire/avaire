@@ -116,7 +116,7 @@ public class PlayerController {
     }
 
     private static boolean isChanged(User user, PlayerTransformer transformer) {
-        return !user.equals(transformer)
+        return !user.getName().equals(transformer.getUsername())
             || !user.getDiscriminator().equals(transformer.getDiscriminator())
             || !user.getAvatarId().equals(transformer.getAvatar());
     }
