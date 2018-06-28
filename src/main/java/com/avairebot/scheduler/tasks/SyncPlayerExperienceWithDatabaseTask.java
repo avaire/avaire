@@ -3,7 +3,6 @@ package com.avairebot.scheduler.tasks;
 import com.avairebot.AvaIre;
 import com.avairebot.Constants;
 import com.avairebot.contracts.scheduler.Task;
-import com.avairebot.metrics.Metrics;
 import com.avairebot.utilities.LevelUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,8 +35,6 @@ public class SyncPlayerExperienceWithDatabaseTask implements Task {
             String query = String.format("UPDATE `%s` SET `experience` = ? + `experience` WHERE `user_id` = ? AND `guild_id` = ?",
                 Constants.PLAYER_EXPERIENCE_TABLE_NAME
             );
-
-            Metrics.databaseQueries.labels("UPDATE").inc();
 
             boolean autoCommit = connection.getAutoCommit();
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
