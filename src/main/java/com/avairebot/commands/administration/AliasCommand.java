@@ -76,7 +76,7 @@ public class AliasCommand extends Command {
         }
 
         if (transformer.getAliases().containsKey(args[0].toLowerCase())) {
-            return sendErrorMessage(context, "There is already a custom alias called `%s`", args[0]);
+            return sendErrorMessage(context, "There is already a custom alias called `{0}`", args[0]);
         }
 
         if (transformer.getAliases().size() >= transformer.getType().getLimits().getAliases()) {
@@ -88,7 +88,7 @@ public class AliasCommand extends Command {
         String[] split = String.join(" ", Arrays.copyOfRange(args, 1, args.length)).split(" ");
         CommandContainer command = CommandHandler.getCommand(context.getMessage(), split[0]);
         if (command == null) {
-            return sendErrorMessage(context, "Invalid command given, I don't know of any command called `%s`",
+            return sendErrorMessage(context, "Invalid command given, I don't know of any command called `{0}`",
                 split[0]
             );
         }
@@ -116,7 +116,7 @@ public class AliasCommand extends Command {
 
     private boolean removeCustomAlias(CommandMessage context, GuildTransformer transformer, String[] args) {
         if (!transformer.getAliases().containsKey(args[0].toLowerCase())) {
-            return sendErrorMessage(context, "Invalid alias given, `%s` is not registered as an alias.", args[0]);
+            return sendErrorMessage(context, "Invalid alias given, `{0}` is not registered as an alias.", args[0]);
         }
 
         transformer.getAliases().remove(args[0].toLowerCase());

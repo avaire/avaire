@@ -77,7 +77,7 @@ public class WelcomeMessageCommand extends ChannelModuleCommand {
 
         if (channelTransformer == null || !channelTransformer.getWelcome().isEnabled()) {
             return sendErrorMessage(context,
-                "The `welcome` module must be enabled to use this command, you can enable the `welcome` module by using the `%swelcome` command.",
+                "The `welcome` module must be enabled to use this command, you can enable the `welcome` module by using the `{0}welcome` command.",
                 generateCommandPrefix(context.getMessage()));
         }
 

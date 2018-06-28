@@ -54,7 +54,7 @@ public class ListAliasesCommand extends Command {
         }
 
         if (transformer.getAliases().isEmpty()) {
-            return sendErrorMessage(context, "The server doesn't have any aliases right now, you can create one using the\n`%salias <alias> <command>` command",
+            return sendErrorMessage(context, "The server doesn't have any aliases right now, you can create one using the\n`{0}alias <alias> <command>` command",
                 generateCommandPrefix(context.getMessage())
             );
         }

@@ -71,7 +71,7 @@ public class ChangePrefixCommand extends Command {
 
         Category category = CategoryHandler.fromLazyName(args[0], true);
         if (category == null) {
-            return sendErrorMessage(context, "Invalid `category` given, there are no command categories that are called, or starts with `%s`", args[0]);
+            return sendErrorMessage(context, "Invalid `category` given, there are no command categories that are called, or starts with `{0}`", args[0]);
         }
 
         GuildTransformer transformer = context.getGuildTransformer();
@@ -81,7 +81,7 @@ public class ChangePrefixCommand extends Command {
 
         String prefix = args[1];
         if (prefix.contains(" ") || prefix.length() < 1 || prefix.length() > 16) {
-            return sendErrorMessage(context, "Invalid command prefix given, `%s` is not a valid command prefix, all prefixes must **NOT** contain spaces and be between 1 and 16 characters long.");
+            return sendErrorMessage(context, "Invalid command prefix given, `{0}` is not a valid command prefix, all prefixes must **NOT** contain spaces and be between 1 and 16 characters long.");
         }
 
         try {

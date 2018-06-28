@@ -77,7 +77,7 @@ public class GoodbyeMessageCommand extends ChannelModuleCommand {
 
         if (channelTransformer == null || !channelTransformer.getGoodbye().isEnabled()) {
             return sendErrorMessage(context,
-                "The `goodbye` module must be enabled to use this command, you can enable the `goodbye` module by using the `%sgoodbye` command.",
+                "The `goodbye` module must be enabled to use this command, you can enable the `goodbye` module by using the `{0}goodbye` command.",
                 generateCommandPrefix(context.getMessage())
             );
         }

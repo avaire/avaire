@@ -87,12 +87,12 @@ public class NSFWCommand extends Command {
 
         Channel channel = MentionableUtil.getChannel(context.getMessage(), args);
         if (channel == null || !(channel instanceof TextChannel)) {
-            return sendErrorMessage(context, "`%s` is not a valid text channel!", args[0]);
+            return sendErrorMessage(context, "`{0}` is not a valid text channel!", args[0]);
         }
 
         ComparatorUtil.ComparatorType fuzzyType = ComparatorUtil.getFuzzyType(args[1]);
         if (fuzzyType.equals(ComparatorUtil.ComparatorType.UNKNOWN)) {
-            return sendErrorMessage(context, "`%s` is not a valid status type, you must either pass `on` or `off`.", args[1]);
+            return sendErrorMessage(context, "`{0}` is not a valid status type, you must either pass `on` or `off`.", args[1]);
         }
 
         return updateChannelStatus(context, (TextChannel) channel, fuzzyType.getValue());

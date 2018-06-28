@@ -121,7 +121,7 @@ public class SetGuildTypeCommand extends SystemCommand {
                     .get();
 
                 if (collection.isEmpty()) {
-                    return sendErrorMessage(context, "Invalid guild type given, `%s` is not a valid guild type ID.", "" + typeId);
+                    return sendErrorMessage(context, "Invalid guild type given, `{0}` is not a valid guild type ID.", "" + typeId);
                 }
 
                 typeName = collection.first().getString("name");

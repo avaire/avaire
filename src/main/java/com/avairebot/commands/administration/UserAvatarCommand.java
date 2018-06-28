@@ -44,7 +44,7 @@ public class UserAvatarCommand extends Command {
         }
 
         if (user == null) {
-            return sendErrorMessage(context, "I found no users with the name or ID of `%s`", args[0]);
+            return sendErrorMessage(context, "I found no users with the name or ID of `{0}`", args[0]);
         }
 
         String avatarUrl = generateAvatarUrl(user);

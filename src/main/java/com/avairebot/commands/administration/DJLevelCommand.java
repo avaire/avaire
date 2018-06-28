@@ -101,7 +101,7 @@ public class DJLevelCommand extends Command {
 
         DJGuildLevel level = DJGuildLevel.fromName(args[0]);
         if (level == null) {
-            return sendErrorMessage(context, "`%s` is not a valid `DJ Level` type, please use one of the following:\n`%s`",
+            return sendErrorMessage(context, "`{0}` is not a valid `DJ Level` type, please use one of the following:\n`{1}`",
                 args[0], String.join("`, `", DJGuildLevel.getNames())
             );
         }
