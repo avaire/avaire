@@ -1,6 +1,7 @@
 package com.avairebot.middleware.global;
 
 import com.avairebot.AvaIre;
+import com.avairebot.chat.ConsoleColor;
 import com.avairebot.commands.AliasCommandContainer;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.middleware.Middleware;
@@ -27,11 +28,16 @@ public class ProcessCommand extends Middleware {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ProcessCommand.class);
 
-    private final static String COMMAND_OUTPUT = "Executing Command \"%command%\" in \"%category%\" category in shard %shard%:"
-        + "\n\t\tUser:\t %author%"
-        + "\n\t\tServer:\t %server%"
-        + "\n\t\tChannel: %channel%"
-        + "\n\t\tMessage: %message%";
+    private final static String COMMAND_OUTPUT = ConsoleColor.format(
+        "%cyanExecuting Command \"%reset%command%%cyan\" in \"%reset%category%%cyan\" category in shard %reset%shard%:%reset"
+            + "\n\t\t%cyanUser:\t %author%"
+            + "\n\t\t%cyanServer:\t %server%"
+            + "\n\t\t%cyanChannel: %channel%"
+            + "\n\t\t%cyanMessage: %reset%message%");
+
+    private final static String PROPERTY_OUTPUT = ConsoleColor.format(
+        "%reset%s %cyan[%reset%s%cyan]"
+    );
 
     public ProcessCommand(AvaIre avaire) {
         super(avaire);
@@ -127,9 +133,8 @@ public class ProcessCommand extends Middleware {
     }
 
     private String generateUsername(Message message) {
-        return String.format("%s#%s [%s]",
-            message.getAuthor().getName(),
-            message.getAuthor().getDiscriminator(),
+        return String.format(PROPERTY_OUTPUT,
+            message.getAuthor().getName() + "#" + message.getAuthor().getDiscriminator(),
             message.getAuthor().getId()
         );
     }
@@ -139,7 +144,7 @@ public class ProcessCommand extends Middleware {
             return "PRIVATE";
         }
 
-        return String.format("%s [%s]",
+        return String.format(PROPERTY_OUTPUT,
             message.getGuild().getName(),
             message.getGuild().getId()
         );
@@ -150,7 +155,7 @@ public class ProcessCommand extends Middleware {
             return "PRIVATE";
         }
 
-        return String.format("%s [%s]",
+        return String.format(PROPERTY_OUTPUT,
             message.getChannel().getName(),
             message.getChannel().getId()
         );

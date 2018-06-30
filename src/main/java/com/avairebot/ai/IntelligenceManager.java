@@ -6,6 +6,7 @@ import ai.api.AIServiceException;
 import ai.api.model.AIRequest;
 import ai.api.model.AIResponse;
 import com.avairebot.AvaIre;
+import com.avairebot.chat.ConsoleColor;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.ai.Intent;
 import com.avairebot.factories.MessageFactory;
@@ -23,12 +24,16 @@ import java.util.concurrent.Executors;
 
 public class IntelligenceManager {
 
-    private final static String ACTION_OUTPUT = "Executing Intelligence Action \"%action%\" for:"
-        + "\n\t\tUser:\t %author%"
-        + "\n\t\tServer:\t %server%"
-        + "\n\t\tChannel: %channel%"
-        + "\n\t\tMessage: %message%"
-        + "\n\t\tResponse: %response%";
+    private final static String ACTION_OUTPUT = ConsoleColor.format("%cyanExecuting Intelligence Action \"%reset%action%%cyan\" for:"
+        + "\n\t\t%cyanUser:\t %author%"
+        + "\n\t\t%cyanServer:\t %server%"
+        + "\n\t\t%cyanChannel: %channel%"
+        + "\n\t\t%cyanMessage: %reset%message%"
+        + "\n\t\t%cyanResponse: %reset%response%");
+
+    private final static String PROPERTY_OUTPUT = ConsoleColor.format(
+        "%reset%s %cyan[%reset%s%cyan]"
+    );
 
     private final static Map<IntentAction, Intent> INTENTS = new HashMap<>();
 
@@ -129,19 +134,18 @@ public class IntelligenceManager {
     }
 
     private String generateUsername(Message message) {
-        return String.format("%s#%s [%s]",
-            message.getAuthor().getName(),
-            message.getAuthor().getDiscriminator(),
+        return String.format(PROPERTY_OUTPUT,
+            message.getAuthor().getName() + "#" + message.getAuthor().getDiscriminator(),
             message.getAuthor().getId()
         );
     }
 
     private String generateServer(Message message) {
         if (!message.getChannelType().isGuild()) {
-            return "PRIVATE";
+            return ConsoleColor.GREEN + "PRIVATE";
         }
 
-        return String.format("%s [%s]",
+        return String.format(PROPERTY_OUTPUT,
             message.getGuild().getName(),
             message.getGuild().getId()
         );
@@ -149,10 +153,10 @@ public class IntelligenceManager {
 
     private CharSequence generateChannel(Message message) {
         if (!message.getChannelType().isGuild()) {
-            return "PRIVATE";
+            return ConsoleColor.GREEN + "PRIVATE";
         }
 
-        return String.format("%s [%s]",
+        return String.format(PROPERTY_OUTPUT,
             message.getChannel().getName(),
             message.getChannel().getId()
         );

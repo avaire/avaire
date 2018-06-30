@@ -2,6 +2,7 @@ package com.avairebot.handlers.adapter;
 
 import com.avairebot.AvaIre;
 import com.avairebot.Constants;
+import com.avairebot.chat.ConsoleColor;
 import com.avairebot.contracts.handlers.EventAdapter;
 import com.avairebot.metrics.Metrics;
 import com.avairebot.shared.DiscordConstants;
@@ -46,7 +47,7 @@ public class GuildStateEventAdapter extends EventAdapter {
     }
 
     public void onGuildJoin(GuildJoinEvent event) {
-        AvaIre.getLogger().info("Joined guild with an ID of " + event.getGuild().getId() + " called: " + event.getGuild().getName());
+        AvaIre.getLogger().info(ConsoleColor.GREEN + "Joined guild with an ID of " + event.getGuild().getId() + " called: " + event.getGuild().getName());
 
         if (!avaire.areWeReadyYet()) {
             return;
@@ -77,7 +78,7 @@ public class GuildStateEventAdapter extends EventAdapter {
     }
 
     public void onGuildLeave(GuildLeaveEvent event) {
-        AvaIre.getLogger().info("Left guild with an ID of " + event.getGuild().getId() + " called: " + event.getGuild().getName());
+        AvaIre.getLogger().info(ConsoleColor.RED + "Left guild with an ID of " + event.getGuild().getId() + " called: " + event.getGuild().getName());
 
         if (!avaire.areWeReadyYet()) {
             return;

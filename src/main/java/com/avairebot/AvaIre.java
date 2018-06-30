@@ -9,6 +9,7 @@ import com.avairebot.audio.GuildMusicManager;
 import com.avairebot.audio.LavalinkManager;
 import com.avairebot.blacklist.Blacklist;
 import com.avairebot.cache.CacheManager;
+import com.avairebot.chat.ConsoleColor;
 import com.avairebot.commands.CategoryHandler;
 import com.avairebot.commands.CommandHandler;
 import com.avairebot.config.Configuration;
@@ -309,7 +310,7 @@ public class AvaIre {
     }
 
     static String getVersionInfo() {
-        return "\n\n" +
+        return "\n\n" + ConsoleColor.RED +
             "     ___   ____    ____  ___       __  .______       _______ \n" +
             "    /   \\  \\   \\  /   / /   \\     |  | |   _  \\     |   ____|\n" +
             "   /  ^  \\  \\   \\/   / /  ^  \\    |  | |  |_)  |    |  |__   \n" +
@@ -317,6 +318,7 @@ public class AvaIre {
             " /  _____  \\  \\    / /  _____  \\  |  | |  |\\  \\----.|  |____ \n" +
             "/__/     \\__\\  \\__/ /__/     \\__\\ |__| | _| `._____||_______|\n" +
             ""
+            + ConsoleColor.RESET
             + "\n\tVersion:       " + AppInfo.getAppInfo().VERSION
             + "\n\tJVM:           " + System.getProperty("java.version")
             + "\n\tJDA:           " + JDAInfo.VERSION
