@@ -1,15 +1,8 @@
 package com.avairebot.metrics.routes;
 
-import com.avairebot.audio.AudioHandler;
-import com.avairebot.audio.AudioTrackContainer;
-import com.avairebot.audio.GuildMusicManager;
-import com.avairebot.audio.LavalinkManager;
 import com.avairebot.contracts.metrics.SparkRoute;
 import com.avairebot.metrics.Metrics;
-import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
-import lavalink.client.io.Link;
 import net.dv8tion.jda.core.JDA;
-import net.dv8tion.jda.core.entities.VoiceChannel;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import spark.Request;
@@ -31,7 +24,6 @@ public class GetStats extends SparkRoute {
         root.put("application", buildApplication());
         root.put("shards", buildShards());
         root.put("global", buildGlobal());
-        root.put("music", buildMusic());
 
         return root;
     }
@@ -81,65 +73,5 @@ public class GetStats extends SparkRoute {
         global.put("channels", channels);
 
         return global;
-    }
-
-    private JSONObject buildMusic() {
-        JSONObject music = new JSONObject();
-
-        long seconds = AudioHandler.getDefaultAudioHandler().musicManagers.values().stream()
-            .mapToLong(this::convertMusicMangerToSeconds)
-            .sum();
-
-        int listeners = 0;
-        if (LavalinkManager.LavalinkManagerHolder.LAVALINK.isEnabled()) {
-            for (Link link : LavalinkManager.LavalinkManagerHolder.LAVALINK.getLavalink().getLinks()) {
-                if (link.getChannel() != null) {
-                    listeners += link.getChannel().getMembers().size();
-                    continue;
-                }
-                listeners++;
-            }
-        } else {
-            for (GuildMusicManager manager : AudioHandler.getDefaultAudioHandler().musicManagers.values()) {
-                if (manager.getLastActiveMessage() == null) {
-                    continue;
-                }
-
-                VoiceChannel connectedChannel = LavalinkManager.LavalinkManagerHolder.LAVALINK
-                    .getConnectedChannel(manager.getLastActiveMessage().getGuild());
-                if (connectedChannel != null) {
-                    listeners += connectedChannel.getMembers().size();
-                }
-            }
-        }
-
-        music.put("servers", AudioHandler.getDefaultAudioHandler().getTotalListenersSize());
-        music.put("queueSize", AudioHandler.getDefaultAudioHandler().getTotalQueueSize());
-        music.put("listeners", listeners);
-        music.put("queueTime", seconds);
-
-        return music;
-    }
-
-    private long parseAudioTrackDuration(AudioTrack track) {
-        if (track == null || track.getInfo().isStream) {
-            return 0L;
-        }
-        return track.getDuration() - track.getPosition();
-    }
-
-    private long convertMusicMangerToSeconds(GuildMusicManager musicManager) {
-        long seconds = 0;
-        for (AudioTrackContainer container : musicManager.getScheduler().getQueue()) {
-            if (container.getAudioTrack().getInfo().isStream) {
-                continue;
-            }
-            seconds += parseAudioTrackDuration(container.getAudioTrack()) / 1000L;
-        }
-
-        if (musicManager.getPlayer() == null) {
-            return seconds;
-        }
-        return seconds + parseAudioTrackDuration(musicManager.getPlayer().getPlayingTrack()) / 1000L;
     }
 }
