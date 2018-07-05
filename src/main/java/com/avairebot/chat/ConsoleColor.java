@@ -1,5 +1,8 @@
 package com.avairebot.chat;
 
+import com.avairebot.Settings;
+
+import javax.annotation.Nonnull;
 import java.util.regex.Matcher;
 
 public enum ConsoleColor {
@@ -22,6 +25,8 @@ public enum ConsoleColor {
     WHITE("\u001B[37m", "white"),
     WHITE_BACKGROUND("\u001B[47m", "whiteBg");
 
+    private static Settings settings;
+
     private final String color;
     private final String format;
 
@@ -37,10 +42,14 @@ public enum ConsoleColor {
 
         for (ConsoleColor color : values()) {
             string = string.replaceAll(
-                Matcher.quoteReplacement("%" + color.getFormat()), color.getColor()
+                Matcher.quoteReplacement("%" + color.getFormat()), settings.useColors() ? color.getColor() : ""
             );
         }
         return string;
+    }
+
+    public static void setSettings(@Nonnull Settings settings) {
+        ConsoleColor.settings = settings;
     }
 
     public String getColor() {

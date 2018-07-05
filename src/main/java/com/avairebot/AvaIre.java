@@ -310,7 +310,7 @@ public class AvaIre {
     }
 
     static String getVersionInfo() {
-        return "\n\n" + ConsoleColor.RED +
+        return ConsoleColor.format("%red\n\n" +
             "     ___   ____    ____  ___       __  .______       _______ \n" +
             "    /   \\  \\   \\  /   / /   \\     |  | |   _  \\     |   ____|\n" +
             "   /  ^  \\  \\   \\/   / /  ^  \\    |  | |  |_)  |    |  |__   \n" +
@@ -318,12 +318,13 @@ public class AvaIre {
             " /  _____  \\  \\    / /  _____  \\  |  | |  |\\  \\----.|  |____ \n" +
             "/__/     \\__\\  \\__/ /__/     \\__\\ |__| | _| `._____||_______|\n" +
             ""
-            + ConsoleColor.RESET
+            + "%reset"
             + "\n\tVersion:       " + AppInfo.getAppInfo().VERSION
             + "\n\tJVM:           " + System.getProperty("java.version")
             + "\n\tJDA:           " + JDAInfo.VERSION
             + "\n\tLavaplayer     " + PlayerLibrary.VERSION
-            + "\n";
+            + "\n"
+        );
     }
 
     /**
