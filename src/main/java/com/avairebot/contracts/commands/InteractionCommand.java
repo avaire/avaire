@@ -73,7 +73,7 @@ public abstract class InteractionCommand extends Command {
 
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
-        User user = MentionableUtil.getUser(context, args);
+        User user = MentionableUtil.getUser(context, new String[]{String.join(" ", args)});
         if (user == null) {
             return sendErrorMessage(context, "You must mention a use you want to use the interaction for.");
         }

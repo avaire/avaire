@@ -97,7 +97,7 @@ public class RankCommand extends Command {
 
         User user = context.getAuthor();
         if (args.length > 0 && !args[0].equals("---skip-mentions")) {
-            user = MentionableUtil.getUser(context, args);
+            user = MentionableUtil.getUser(context, new String[]{String.join(" ", args)});
             if (user == null) {
                 user = context.getAuthor();
             }

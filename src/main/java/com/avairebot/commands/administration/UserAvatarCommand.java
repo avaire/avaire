@@ -40,7 +40,7 @@ public class UserAvatarCommand extends Command {
     public boolean onCommand(CommandMessage context, String[] args) {
         User user = context.getAuthor();
         if (args.length > 0) {
-            user = MentionableUtil.getUser(context, args);
+            user = MentionableUtil.getUser(context, new String[]{String.join(" ", args)});
         }
 
         if (user == null) {

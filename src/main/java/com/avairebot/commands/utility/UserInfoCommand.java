@@ -48,7 +48,7 @@ public class UserInfoCommand extends Command {
     public boolean onCommand(CommandMessage context, String[] args) {
         Member member = context.getMember();
         if (args.length > 0) {
-            User user = MentionableUtil.getUser(context, args);
+            User user = MentionableUtil.getUser(context, new String[]{String.join(" ", args)});
             if (user == null) {
                 return sendErrorMessage(context, "errors.noUsersWithNameOrId", args[0]);
             }
