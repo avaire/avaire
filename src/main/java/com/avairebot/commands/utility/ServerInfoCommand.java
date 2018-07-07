@@ -74,7 +74,7 @@ public class ServerInfoCommand extends Command {
             ));
         }
 
-        placeholderMessage.queue();
+        placeholderMessage.requestedBy(context.getMember()).queue();
         return true;
     }
 

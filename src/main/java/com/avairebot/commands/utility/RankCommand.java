@@ -136,6 +136,7 @@ public class RankCommand extends Command {
                 .addField(context.i18n("fields.experienceToNext"), context.i18n("fields.youNeedMoreXpToLevelUp",
                     levelBar, new DecimalFormat("#.##").format(percentage), '%', NumberUtil.formatNicely(nextLevelXp - experience)
                 ), false)
+                .requestedBy(context.getMember())
                 .queue();
         });
 

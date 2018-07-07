@@ -1,11 +1,15 @@
 package com.avairebot.chat;
 
+import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.chat.Restable;
 import com.avairebot.utilities.StringReplacementUtil;
 import net.dv8tion.jda.core.EmbedBuilder;
+import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.MessageEmbed;
+import net.dv8tion.jda.core.entities.User;
 
+import javax.annotation.Nonnull;
 import java.awt.*;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -116,6 +120,37 @@ public class PlaceholderMessage extends Restable {
 
     public PlaceholderMessage addField(MessageEmbed.Field field) {
         builder.addField(field);
+        return this;
+    }
+
+    public PlaceholderType getGlobalPlaceholder() {
+        return globalPlaceholder;
+    }
+
+    public PlaceholderMessage requestedBy(@Nonnull CommandMessage context) {
+        if (context.isGuildMessage()) {
+            return requestedBy(context.getMember());
+        }
+        return requestedBy(context.getAuthor());
+    }
+
+    public PlaceholderMessage requestedBy(@Nonnull Member member) {
+        if (member.getNickname() == null) {
+            return requestedBy(member.getUser());
+        }
+
+        build().setFooter(String.format("Requested by %s (%s#%s)",
+            member.getNickname(),
+            member.getUser().getName(),
+            member.getUser().getDiscriminator()
+        ), member.getUser().getEffectiveAvatarUrl());
+        return this;
+    }
+
+    public PlaceholderMessage requestedBy(@Nonnull User user) {
+        build().setFooter(String.format("Requested by %s#%s",
+            user.getName(), user.getDiscriminator()
+        ), user.getEffectiveAvatarUrl());
         return this;
     }
 

@@ -50,6 +50,7 @@ public class UserAvatarCommand extends Command {
         String avatarUrl = generateAvatarUrl(user);
         MessageFactory.makeEmbeddedMessage(context.getChannel())
             .setTitle(user.getName() + "#" + user.getDiscriminator() + "'s Avatar", avatarUrl)
+            .requestedBy(context.getMember())
             .setImage(avatarUrl)
             .queue();
 

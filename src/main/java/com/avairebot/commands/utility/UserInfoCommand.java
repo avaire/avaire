@@ -98,7 +98,7 @@ public class UserInfoCommand extends Command {
                 avaire.getShardManager().getMutualGuilds(member.getUser()).size()
             )), true));
 
-        placeholderMessage.queue();
+        placeholderMessage.requestedBy(context.getMember()).queue();
         return true;
     }
 

@@ -91,7 +91,9 @@ public class GlobalLeaderboardCommand extends ThreadCommand {
         messages.add("\n" + paginator.generateFooter(generateCommandTrigger(context.getMessage())));
 
         context.makeEmbeddedMessage(null, String.join("\n", messages))
-            .setTitle(context.i18n("title")).queue();
+            .setTitle(context.i18n("title"))
+            .requestedBy(context.getMember())
+            .queue();
 
         return true;
     }

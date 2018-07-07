@@ -36,7 +36,9 @@ public class ServerIdCommand extends Command {
 
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
-        context.makeSuccess(context.i18n("message")).queue();
+        context.makeSuccess(context.i18n("message"))
+            .queue();
+
         return true;
     }
 }

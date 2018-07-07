@@ -91,6 +91,7 @@ public class ChannelInfoCommand extends Command {
                     + "\n*About " + shortenDiffForHumans(time) + "*",
                 true
             )
+            .requestedBy(context.getMember())
             .queue();
 
         return true;

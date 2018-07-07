@@ -106,6 +106,7 @@ public class ListLevelRolesCommand extends Command {
 
         context.makeSuccess(String.join("\n", messages))
             .setTitle(String.format("List of Level Roles (%s)", paginator.getTotal()))
+            .requestedBy(context.getMember())
             .queue();
 
         return false;

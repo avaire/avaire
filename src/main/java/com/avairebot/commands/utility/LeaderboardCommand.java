@@ -108,7 +108,9 @@ public class LeaderboardCommand extends ThreadCommand {
             .setTitle(
                 context.i18n("title", context.getGuild().getName()),
                 "https://avairebot.com/leaderboard/" + context.getGuild().getId()
-            ).queue();
+            )
+            .requestedBy(context.getMember())
+            .queue();
 
         return true;
     }

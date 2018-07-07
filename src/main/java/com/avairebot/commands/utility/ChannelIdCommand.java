@@ -48,7 +48,8 @@ public class ChannelIdCommand extends Command {
         }
 
         context.makeSuccess(context.i18n("message"))
-            .set("targetChannel", channel.getId()).queue();
+            .set("targetChannel", channel.getId())
+            .queue();
 
         return true;
     }

@@ -70,6 +70,7 @@ public class ListAliasesCommand extends Command {
 
         context.makeSuccess(String.join("\n", messages))
             .setTitle(String.format("List of Aliases (%s)", paginator.getTotal()))
+            .requestedBy(context.getMember())
             .queue();
 
         return true;

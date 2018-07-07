@@ -74,6 +74,7 @@ public class ListSelfAssignableRolesCommand extends Command {
 
         context.makeSuccess(String.join("\n", messages))
             .setTitle(String.format("There are %s self-assignable roles", paginator.getTotal()))
+            .requestedBy(context.getMember())
             .queue();
 
         return true;
