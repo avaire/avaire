@@ -38,6 +38,7 @@ import com.avairebot.shared.DiscordConstants;
 import com.avairebot.shared.ExitCodes;
 import com.avairebot.shared.SentryConstants;
 import com.avairebot.time.Carbon;
+import com.avairebot.utilities.JarUtil;
 import com.avairebot.vote.VoteManager;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -64,6 +65,7 @@ import org.slf4j.LoggerFactory;
 import javax.security.auth.login.LoginException;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.net.URISyntaxException;
 import java.sql.SQLException;
 import java.util.Set;
 import java.util.concurrent.ScheduledFuture;
@@ -430,8 +432,10 @@ public class AvaIre {
             e.printStackTrace();
         }
 
-        for (JDA shard : getShardManager().getShards()) {
-            shard.shutdown();
+        if (getShardManager() != null) {
+            for (JDA shard : getShardManager().getShards()) {
+                shard.shutdown();
+            }
         }
 
         for (ScheduledFuture<?> job : ScheduleHandler.entrySet()) {
@@ -442,6 +446,17 @@ public class AvaIre {
             getDatabase().getConnection().close();
         } catch (SQLException ex) {
             getLogger().error("Failed to close database connection during shutdown: ", ex);
+        }
+
+        if (exitCode != ExitCodes.EXIT_CODE_NORMAL && settings.useInternalRestart()) {
+            try {
+                ProcessBuilder process = JarUtil.rebuildJarExecution(settings);
+                if (process != null) {
+                    process.start();
+                }
+            } catch (URISyntaxException | IOException e) {
+                LOGGER.error("Failed starting jar file: {}", e.getMessage(), e);
+            }
         }
 
         System.exit(exitCode);

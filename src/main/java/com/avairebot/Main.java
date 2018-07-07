@@ -17,6 +17,7 @@ public class Main {
         options.addOption(new Option("h", "help", false, "Displays this help menu."));
         options.addOption(new Option("v", "version", false, "Displays the current version of the application."));
         options.addOption(new Option("sc", "shard-count", true, "Sets the amount of shards the bot should start up."));
+        options.addOption(new Option("is", "internal-restart", false, "Enables internal restarts, this will auto restart the bot if it crashes, or the system restart or update commands are used, the only way to really shut down the bot is through the system shutdown command.\nNote: The update command will just act as the restart command with this option enabled."));
         options.addOption(new Option("nocolor", "no-colors", false, "Disables colors for commands and AI actions in the terminal."));
 
         CommandLineParser parser = new DefaultParser();
@@ -33,7 +34,7 @@ public class Main {
                 System.exit(ExitCodes.EXIT_CODE_NORMAL);
             }
 
-            Settings settings = new Settings(cmd);
+            Settings settings = new Settings(cmd, args);
 
             ConsoleColor.setSettings(settings);
             if (!settings.useColors()) {
