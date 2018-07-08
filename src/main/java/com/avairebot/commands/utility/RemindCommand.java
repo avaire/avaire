@@ -30,20 +30,24 @@ public class RemindCommand extends Command {
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`:command <time> <message>` - Reminds you about the message after the time is up.");
+        return Arrays.asList(
+            "`:command me <time> <message>`\n- Reminds you about the message after the time is up in a DM.",
+            "`:command here <time> <message>`\n- Reminds you about the message after the time is up in the channel the command was used in."
+        );
     }
 
     @Override
     public List<String> getExampleUsage() {
         return Arrays.asList(
-            "`:command 25m Something` - Reminds you about something after 25 minutes.",
-            "`:command 2h30m9s Stuff` - Reminds you about stuff after 2 hours, 30 minutes, and 9 seconds."
+            "`:command me 25m Something` - Reminds you about something after 25 minutes.",
+            "`:command me 2h30m9s Stuff` - Reminds you about stuff after 2 hours, 30 minutes, and 9 seconds.",
+            "`:command here 30m Potatoe` - Reminds you about Potatoe in 30 minutes in the current channel."
         );
     }
 
     @Override
     public List<String> getTriggers() {
-        return Collections.singletonList("remind");
+        return Arrays.asList("remindme", "remind");
     }
 
     @Override
@@ -54,36 +58,62 @@ public class RemindCommand extends Command {
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
         if (args.length == 0) {
+            return sendErrorMessage(context, "errors.missingArgument", "type");
+        }
+
+        if (!(args[0].equalsIgnoreCase("here") || args[0].equalsIgnoreCase("me"))) {
+            return sendErrorMessage(context, context.i18n("errors.invalidMeHere"));
+        }
+        boolean respondInDM = args[0].equalsIgnoreCase("me");
+
+        if (args.length == 1) {
             return sendErrorMessage(context, "errors.missingArgument", "time");
         }
 
-        final int time = parse(args[0]);
+        final int time = parse(args[1]);
         if (time == 0) {
             return sendErrorMessage(context, "errors.invalidProperty", "time", "time format");
         }
 
-        if (args.length == 1) {
+        // Time must be greater than 60 seconds and less than 3 days.
+        if (time < 60 || time > 259200) {
+            return sendErrorMessage(context, context.i18n("errors.invalidTime"));
+        }
+
+        if (args.length == 2) {
             return sendErrorMessage(context, "errors.missingArgument", "message");
         }
 
         String message = String.format("%s, %s you asked to be reminded about %s",
             context.getAuthor().getAsMention(),
             Carbon.now().subSeconds(time).diffForHumans(),
-            String.join(" ", Arrays.copyOfRange(args, 1, args.length))
+            String.join(" ", Arrays.copyOfRange(args, 2, args.length))
         );
 
-        context.getAuthor().openPrivateChannel().queue(privateChannel -> {
-            privateChannel.sendMessage(message).queueAfter(time, TimeUnit.SECONDS, null, RestActionUtil.IGNORE);
-        }, throwable -> {
-            context.getMessageChannel().sendMessage(message).queueAfter(time, TimeUnit.SECONDS, null, RestActionUtil.IGNORE);
-        });
+        handleReminderMessage(context, message, time, respondInDM);
 
         context.makeInfo("Alright :user, in :time I'll remind you about :message")
             .set("time", Carbon.now().subSeconds(time).diffForHumans(true))
-            .set("message", String.join(" ", Arrays.copyOfRange(args, 1, args.length)))
+            .set("message", String.join(" ", Arrays.copyOfRange(args, 2, args.length)))
             .queue();
 
         return true;
+    }
+
+    private void handleReminderMessage(CommandMessage context, String message, int time, boolean respondInDM) {
+        if (respondInDM) {
+            context.getAuthor().openPrivateChannel().queue(privateChannel -> {
+                privateChannel.sendMessage(message).queueAfter(time, TimeUnit.SECONDS, null, RestActionUtil.IGNORE);
+            }, throwable -> {
+                context.getMessageChannel().sendMessage(message).queueAfter(time, TimeUnit.SECONDS, null, RestActionUtil.IGNORE);
+            });
+        } else {
+            context.getMessageChannel().sendMessage(message).queueAfter(time, TimeUnit.SECONDS, null, throwable -> {
+                context.getAuthor().openPrivateChannel().queue(privateChannel -> {
+                    privateChannel.sendMessage(message).queueAfter(time, TimeUnit.SECONDS, null, RestActionUtil.IGNORE);
+                });
+            });
+        }
     }
 
     public int parse(String input) {

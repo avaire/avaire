@@ -350,6 +350,11 @@ utility:
             experienceToNext: 'Erfahrungspunkte benötigt für das nächste Level'
             youNeedMoreXpToLevelUp: '[{0}] {1}{2}\n\t\t\t\t\t\t\tDu benötigst {3} weitere XP für einen Level Up.'
 
+    RemindCommand:
+        errors:
+            invalidMeHere: 'Invalid type given, you must declare where you want to be reminded by either using `here` to be reminded in the current channel, or `me` to be reminded in a direct message.'
+            invalidTime: 'Invalid time given, the time must be greater than 60 seconds and less than 3 days.'
+
     ServerIdCommand:
         message: ':user Die :id: vom Server lautet `:guildid`.'
 
