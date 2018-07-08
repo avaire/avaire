@@ -60,9 +60,13 @@ public class ThrottleMiddleware extends Middleware {
                 return cancelCommandThrottleRequest(message, stack, entity);
             }
 
-            entity.incrementHit();
+            boolean response = stack.next();
 
-            return stack.next();
+            if (response) {
+                entity.incrementHit();
+            }
+
+            return response;
         } catch (NumberFormatException e) {
             AvaIre.getLogger().warn(String.format(
                 "Invalid integers given to throttle command by \"%s\", args: (%s, %s)", stack.getCommand().getName(), args[1], args[2]
