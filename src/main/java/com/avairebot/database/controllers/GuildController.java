@@ -11,7 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.CheckReturnValue;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -163,7 +162,7 @@ public class GuildController {
             }
 
             return transformer;
-        } catch (SQLException ex) {
+        } catch (Exception ex) {
             AvaIre.getLogger().error(ex.getMessage(), ex);
             return null;
         }

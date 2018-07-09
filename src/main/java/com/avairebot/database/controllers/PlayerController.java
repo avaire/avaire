@@ -93,7 +93,7 @@ public class PlayerController {
                     .update(statement -> statement.set("username", message.getAuthor().getName(), true));
 
                 return transformer;
-            } catch (SQLException ex) {
+            } catch (Exception ex) {
                 AvaIre.getLogger().error(ex.getMessage(), ex);
                 return null;
             }
