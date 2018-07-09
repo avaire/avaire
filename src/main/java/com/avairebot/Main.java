@@ -26,19 +26,18 @@ public class Main {
         try {
             CommandLine cmd = parser.parse(options, args);
 
+            Settings settings = new Settings(cmd, args);
+            ConsoleColor.setSettings(settings);
+            if (!settings.useColors()) {
+                System.setProperty(ContextInitializer.CONFIG_FILE_PROPERTY, "logback_nocolor.xml");
+            }
+
             if (cmd.hasOption("help")) {
                 formatter.printHelp("Help Menu", options);
                 System.exit(ExitCodes.EXIT_CODE_NORMAL);
             } else if (cmd.hasOption("version")) {
                 System.out.println(AvaIre.getVersionInfo());
                 System.exit(ExitCodes.EXIT_CODE_NORMAL);
-            }
-
-            Settings settings = new Settings(cmd, args);
-
-            ConsoleColor.setSettings(settings);
-            if (!settings.useColors()) {
-                System.setProperty(ContextInitializer.CONFIG_FILE_PROPERTY, "logback_nocolor.xml");
             }
 
             new AvaIre(settings);

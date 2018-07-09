@@ -40,9 +40,11 @@ public enum ConsoleColor {
             return null;
         }
 
+        boolean useColors = settings == null || settings.useColors();
+
         for (ConsoleColor color : values()) {
             string = string.replaceAll(
-                Matcher.quoteReplacement("%" + color.getFormat()), settings.useColors() ? color.getColor() : ""
+                Matcher.quoteReplacement("%" + color.getFormat()), useColors ? color.getColor() : ""
             );
         }
         return string;
