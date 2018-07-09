@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nonnull;
 import java.sql.SQLException;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 public class PlayerController {
@@ -118,7 +119,7 @@ public class PlayerController {
     private static boolean isChanged(User user, PlayerTransformer transformer) {
         return !user.getName().equals(transformer.getUsername())
             || !user.getDiscriminator().equals(transformer.getDiscriminator())
-            || !user.getAvatarId().equals(transformer.getAvatar());
+            || !Objects.equals(user.getAvatarId(), transformer.getAvatar());
     }
 
     private static String asKey(@Nonnull Guild guild, @Nonnull User user) {
