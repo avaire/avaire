@@ -77,7 +77,7 @@ public class TrackRequest extends Future {
                 Metrics.trackLoadsFailed.inc();
 
                 failure.accept(new NoMatchFoundException(
-                    context.i18nRaw("music.internal.noMatchFound"),
+                    context.i18nRaw("music.internal.noMatchFound", trackUrl),
                     trackUrl
                 ));
             }
@@ -87,7 +87,7 @@ public class TrackRequest extends Future {
                 Metrics.trackLoadsFailed.inc();
 
                 failure.accept(new TrackLoadFailedException(
-                    context.i18nRaw("music.internal.trackLoadFailed"),
+                    context.i18nRaw("music.internal.trackLoadFailed", exception.getMessage()),
                     exception.getMessage(),
                     exception
                 ));
