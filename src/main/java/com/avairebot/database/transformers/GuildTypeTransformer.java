@@ -44,9 +44,14 @@ public class GuildTypeTransformer extends Transformer {
 
         private GuildTypePlaylist playlist = new GuildTypePlaylist();
         private int aliases = 20;
+        private int selfAssignableRoles = 15;
 
         public int getAliases() {
             return aliases;
+        }
+
+        public int getSelfAssignableRoles() {
+            return selfAssignableRoles;
         }
 
         public GuildTypePlaylist getPlaylist() {
@@ -54,6 +59,7 @@ public class GuildTypeTransformer extends Transformer {
         }
 
         public class GuildTypePlaylist {
+
             private int lists = 5;
             private int songs = 30;
 

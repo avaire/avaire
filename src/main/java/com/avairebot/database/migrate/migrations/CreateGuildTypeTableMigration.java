@@ -23,12 +23,12 @@ public class CreateGuildTypeTableMigration implements Migration {
         }
 
         return schema.getDbm().newQueryBuilder(Constants.GUILD_TYPES_TABLE_NAME).insert(
-            createRecord("VIP", 10, 50, 50),
-            createRecord("VIP+", 25, 100, 150)
+            createRecord("VIP", 10, 50, 50, 30),
+            createRecord("VIP+", 25, 100, 150, 60)
         ).size() == 2;
     }
 
-    private Map<String, Object> createRecord(String name, int playlistLists, int playlistSongs, int aliases) {
+    private Map<String, Object> createRecord(String name, int playlistLists, int playlistSongs, int aliases, int selfAssignableRoles) {
         Map<String, Integer> playlist = new HashMap<>();
         playlist.put("lists", playlistLists);
         playlist.put("songs", playlistSongs);
@@ -38,6 +38,7 @@ public class CreateGuildTypeTableMigration implements Migration {
 
         limits.put("playlist", playlist);
         limits.put("aliases", aliases);
+        limits.put("selfAssignableRoles", selfAssignableRoles);
 
         items.put("name", name);
         items.put("limits", AvaIre.GSON.toJson(limits));

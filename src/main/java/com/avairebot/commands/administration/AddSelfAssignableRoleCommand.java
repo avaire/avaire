@@ -64,6 +64,18 @@ public class AddSelfAssignableRoleCommand extends Command {
 
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
+        GuildTransformer transformer = context.getGuildTransformer();
+        if (transformer == null) {
+            return sendErrorMessage(context, "errors.errorOccurredWhileLoading", "server settings");
+        }
+
+        if (transformer.getSelfAssignableRoles().size() >= transformer.getType().getLimits().getSelfAssignableRoles()) {
+            context.makeWarning("The server doesn't have any more self-assignable role slots, you can remove existing self-assignable roles to free up slots.")
+                .queue();
+
+            return false;
+        }
+
         if (args.length == 0) {
             return sendErrorMessage(context, "Missing argument, the `role` argument is required.");
         }
@@ -82,11 +94,6 @@ public class AddSelfAssignableRoleCommand extends Command {
         }
 
         try {
-            GuildTransformer transformer = context.getGuildTransformer();
-            if (transformer == null) {
-                return sendErrorMessage(context, "errors.errorOccurredWhileLoading", "server settings");
-            }
-
             transformer.getSelfAssignableRoles().put(role.getId(), role.getName().toLowerCase());
             avaire.getDatabase().newQueryBuilder(Constants.GUILD_TABLE_NAME)
                 .where("id", context.getGuild().getId())
@@ -94,7 +101,8 @@ public class AddSelfAssignableRoleCommand extends Command {
                     statement.set("claimable_roles", AvaIre.GSON.toJson(transformer.getSelfAssignableRoles()), true);
                 });
 
-            context.makeSuccess("Role **:role** role has been added to the self-assignable list.")
+            context.makeSuccess("Role **:role** role has been added to the self-assignable list.\nThe server has `:slots` more self-assignable roles slots available.")
+                .set("slots", transformer.getType().getLimits().getSelfAssignableRoles() - transformer.getSelfAssignableRoles().size())
                 .set("role", role.getName())
                 .queue();
 

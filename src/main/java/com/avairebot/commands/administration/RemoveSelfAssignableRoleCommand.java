@@ -64,6 +64,11 @@ public class RemoveSelfAssignableRoleCommand extends Command {
 
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
+        GuildTransformer transformer = context.getGuildTransformer();
+        if (transformer == null) {
+            return sendErrorMessage(context, "errors.errorOccurredWhileLoading", "server settings");
+        }
+
         if (args.length == 0) {
             return sendErrorMessage(context, "Missing argument, the `role` argument is required.");
         }
@@ -82,11 +87,6 @@ public class RemoveSelfAssignableRoleCommand extends Command {
         }
 
         try {
-            GuildTransformer transformer = context.getGuildTransformer();
-            if (transformer == null) {
-                return sendErrorMessage(context, "errors.errorOccurredWhileLoading", "server settings");
-            }
-
             transformer.getSelfAssignableRoles().remove(role.getId());
             avaire.getDatabase().newQueryBuilder(Constants.GUILD_TABLE_NAME)
                 .where("id", context.getGuild().getId())
@@ -94,7 +94,8 @@ public class RemoveSelfAssignableRoleCommand extends Command {
                     statement.set("claimable_roles", AvaIre.GSON.toJson(transformer.getSelfAssignableRoles()));
                 });
 
-            context.makeSuccess("Role **:role** role has been removed from the self-assignable list.")
+            context.makeSuccess("Role **:role** role has been removed from the self-assignable list.\nThe server has `:slots` more self-assignable roles slots available.")
+                .set("slots", transformer.getType().getLimits().getSelfAssignableRoles() - transformer.getSelfAssignableRoles().size())
                 .set("role", role.getName()).queue();
 
             return true;
