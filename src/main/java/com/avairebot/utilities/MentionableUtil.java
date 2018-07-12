@@ -29,6 +29,10 @@ public class MentionableUtil {
 
         String[] parts = part.split("#");
         if (parts.length != 2) {
+            if (parts[0].trim().length() == 0) {
+                return null;
+            }
+
             List<Member> effectiveName = context.getGuild().getMembersByEffectiveName(parts[0], true);
 
             if (effectiveName.isEmpty()) {
