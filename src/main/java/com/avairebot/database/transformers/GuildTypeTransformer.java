@@ -22,6 +22,14 @@ public class GuildTypeTransformer extends Transformer {
             if (data.getString("type_limits", null) != null) {
                 GuildTypeLimits typeLimits = AvaIre.GSON.fromJson(data.getString("type_limits"), GuildTypeLimits.class);
                 if (typeLimits != null) {
+                    if (typeLimits.levelRoles < limits.levelRoles) {
+                        typeLimits.levelRoles = limits.levelRoles;
+                    }
+
+                    if (typeLimits.selfAssignableRoles < limits.selfAssignableRoles) {
+                        typeLimits.selfAssignableRoles = limits.selfAssignableRoles;
+                    }
+
                     limits = typeLimits;
                 }
             }
