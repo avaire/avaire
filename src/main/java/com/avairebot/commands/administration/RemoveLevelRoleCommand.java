@@ -116,7 +116,8 @@ public class RemoveLevelRoleCommand extends Command {
                     statement.set("level_roles", AvaIre.GSON.toJson(transformer.getLevelRoles()), true);
                 });
 
-            context.makeSuccess("Role **:role** role has been removed from the level-up role list.")
+            context.makeSuccess("Role **:role** role has been removed from the level-up role list.\nThe server now have `:slots` level role slots available.")
+                .set("slots", transformer.getType().getLimits().getLevelRoles() - transformer.getLevelRoles().size())
                 .set("role", role.getName())
                 .queue();
 

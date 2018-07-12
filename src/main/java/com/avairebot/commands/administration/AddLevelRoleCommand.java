@@ -79,6 +79,13 @@ public class AddLevelRoleCommand extends Command {
             );
         }
 
+        if (transformer.getLevelRoles().size() >= transformer.getType().getLimits().getLevelRoles()) {
+            context.makeWarning("The server doesn't have any more level role slots, you can remove existing level roles to free up slots.")
+                .queue();
+
+            return false;
+        }
+
         if (args.length == 0) {
             return sendErrorMessage(context, "Missing argument, the `level requirement` argument is required.");
         }
@@ -139,7 +146,8 @@ public class AddLevelRoleCommand extends Command {
                     statement.set("level_roles", AvaIre.GSON.toJson(transformer.getLevelRoles()), true);
                 });
 
-            context.makeSuccess("Role **:role** role has been added to the level-up role list.")
+            context.makeSuccess("Role **:role** role has been added to the level-up role list.\nThe server has `:slots` more level role slots available.")
+                .set("slots", transformer.getType().getLimits().getLevelRoles() - transformer.getLevelRoles().size())
                 .set("role", role.getName())
                 .queue();
 
