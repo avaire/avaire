@@ -75,6 +75,12 @@ public class KickCommand extends Command {
             return sendErrorMessage(context, "You can't kick people with a higher, or the same role as yourself.");
         }
 
+        if (!context.getGuild().getSelfMember().canInteract(context.getGuild().getMember(user))) {
+            return sendErrorMessage(context, "I can't kick {0}, they have a higher role than me, if you want be to be able to kick the user, please reajust my role position to above {0} highest role.",
+                user.getAsMention()
+            );
+        }
+
         return kickUser(context, context.getGuild().getMember(user), args);
     }
 
