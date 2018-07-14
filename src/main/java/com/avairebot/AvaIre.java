@@ -67,6 +67,8 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ScheduledFuture;
 import java.util.function.Consumer;
@@ -94,6 +96,7 @@ public class AvaIre {
     private final VoteManager voteManager;
     private final ShardEntityCounter shardEntityCounter;
     private final EventEmitter eventEmitter;
+    private final Set<String> botAdmins;
 
     private Carbon shutdownTime = null;
     private int shutdownCode = ExitCodes.EXIT_CODE_RESTART;
@@ -125,6 +128,10 @@ public class AvaIre {
 
             System.exit(ExitCodes.EXIT_CODE_NORMAL);
         }
+
+        botAdmins = Collections.unmodifiableSet(new HashSet<>(
+            config.getStringList("botAccess")
+        ));
 
         APPLICATION_ENVIRONMENT = Environment.fromName(config.getString("environment", "production"));
         if (APPLICATION_ENVIRONMENT == null) {
@@ -393,6 +400,10 @@ public class AvaIre {
 
     public EventEmitter getEventEmitter() {
         return eventEmitter;
+    }
+
+    public Set<String> getBotAdmins() {
+        return botAdmins;
     }
 
     public void shutdown() {

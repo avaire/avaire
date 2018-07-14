@@ -11,7 +11,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -19,15 +18,11 @@ import java.util.List;
 public class Blacklist {
 
     private final AvaIre avaire;
-    private final List<String> userWhiteList;
     private final List<BlacklistEntity> blacklist;
 
     public Blacklist(AvaIre avaire) {
         this.avaire = avaire;
 
-        List<String> botAccess = avaire.getConfig().getStringList("botAccess");
-
-        this.userWhiteList = Collections.unmodifiableList(botAccess);
         this.blacklist = new BlacklistList();
     }
 
@@ -36,7 +31,7 @@ public class Blacklist {
     }
 
     public boolean isBlacklisted(@Nonnull Message message) {
-        if (userWhiteList.contains(message.getAuthor().getId())) {
+        if (avaire.getBotAdmins().contains(message.getAuthor().getId())) {
             return false;
         }
 
@@ -46,7 +41,7 @@ public class Blacklist {
     }
 
     public boolean isBlacklisted(@Nonnull User user) {
-        if (userWhiteList.contains(String.valueOf(user.getIdLong()))) {
+        if (avaire.getBotAdmins().contains(String.valueOf(user.getIdLong()))) {
             return false;
         }
         return blacklist.contains(user.getIdLong());

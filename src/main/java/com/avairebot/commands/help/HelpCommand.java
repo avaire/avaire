@@ -85,7 +85,7 @@ public class HelpCommand extends Command {
             return false;
         }
 
-        boolean isBotAdmin = avaire.getConfig().getStringList("botAccess").contains(context.getAuthor().getId());
+        boolean isBotAdmin = avaire.getBotAdmins().contains(context.getAuthor().getId());
         if (!isBotAdmin && category.getName().equalsIgnoreCase("System")) {
             context.makeError(context.i18n("tryingToViewSystemCommands"))
                 .queue();
@@ -191,7 +191,7 @@ public class HelpCommand extends Command {
     }
 
     private String getCategories(CommandMessage context) {
-        boolean isBotAdmin = avaire.getConfig().getStringList("botAccess").contains(context.getAuthor().getId());
+        boolean isBotAdmin = avaire.getBotAdmins().contains(context.getAuthor().getId());
 
         List<Category> categories = CategoryHandler.getValues().stream()
             .filter(category -> !category.isGlobal())

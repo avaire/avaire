@@ -82,7 +82,7 @@ public class MessageEventAdapter extends EventAdapter {
         }
 
         loadDatabasePropertiesIntoMemory(event).thenAccept(databaseEventHolder -> {
-            if (!avaire.areWeReadyYet()) {
+            if (!avaire.areWeReadyYet() && !avaire.getBotAdmins().contains(event.getAuthor().getId())) {
                 return;
             }
 
