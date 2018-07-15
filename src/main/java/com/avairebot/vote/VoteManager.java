@@ -10,6 +10,8 @@ import net.dv8tion.jda.core.entities.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
@@ -108,9 +110,11 @@ public class VoteManager {
             return;
         }
 
-        voteLog.put(userId, new VoteCacheEntity(
-            userId, Carbon.now().addHours(24)
-        ));
+        if (!voteLog.containsKey(userId)) {
+            voteLog.put(userId, new VoteCacheEntity(
+                userId, Carbon.now().addHours(24)
+            ));
+        }
 
         try {
             Collection collection = avaire.getDatabase().newQueryBuilder(Constants.VOTES_TABLE_NAME)
@@ -139,33 +143,60 @@ public class VoteManager {
                     statement.setRaw("points_total", "`points_total` + 1");
                 });
 
-            voteLog.get(userId).setVotePoints(collection.first().getInt("points", 1) + 1);
+            VoteCacheEntity voteEntity = voteLog.get(userId);
+
+            voteEntity.setVotePoints(collection.first().getInt("points", 1) + 1);
+            voteEntity.setOptIn(collection.first().getBoolean("opt_in", true));
         } catch (SQLException e) {
             LOGGER.error("An SQLException was thrown while updating user vote information: ", e);
         }
     }
 
-    public int getVotePoints(AvaIre avaire, User userById) {
-        if (voteLog.containsKey(userById.getIdLong())) {
-            return voteLog.get(userById.getIdLong()).getVotePoints();
+    @Nullable
+    public VoteCacheEntity getVoteEntity(AvaIre avaire, User user) {
+        if (voteLog.containsKey(user.getIdLong())) {
+            return voteLog.get(user.getIdLong());
         }
 
         try {
             Collection collection = avaire.getDatabase().newQueryBuilder(Constants.VOTES_TABLE_NAME)
-                .where("user_id", userById.getIdLong()).take(1).get();
+                .where("user_id", user.getIdLong()).take(1).get();
 
             if (collection.isEmpty()) {
-                return 0;
+                return null;
             }
 
-            if (collection.first().getInt("opt_in", 1) == 0) {
-                return Integer.MIN_VALUE;
-            }
+            DataRow row = collection.first();
 
-            return collection.first().getInt("points", 0);
+            VoteCacheEntity voteCacheEntity = new VoteCacheEntity(
+                row.getLong("user_id"),
+                row.getInt("points", 0),
+                row.getBoolean("opt_in", true),
+                Carbon.now().subDay()
+            );
+
+            voteLog.put(voteCacheEntity.getUserId(), voteCacheEntity);
+
+            return voteCacheEntity;
         } catch (SQLException ignored) {
-            return 0;
+            return null;
         }
+    }
+
+    @Nonnull
+    public VoteCacheEntity getVoteEntityWithFallback(AvaIre avaire, User user) {
+        VoteCacheEntity voteEntity = getVoteEntity(avaire, user);
+        if (voteEntity != null) {
+            return voteEntity;
+        }
+
+        voteEntity = new VoteCacheEntity(
+            user.getIdLong(), 0, true, Carbon.now().subDay()
+        );
+
+        voteLog.put(user.getIdLong(), voteEntity);
+
+        return voteEntity;
     }
 
     public boolean isEnabled() {
@@ -190,6 +221,7 @@ public class VoteManager {
                 voteLog.put(row.getLong("user_id"), new VoteCacheEntity(
                     row.getLong("user_id"),
                     row.getInt("points", 0),
+                    row.getBoolean("opt_in", true),
                     expiresIn
                 ));
             }

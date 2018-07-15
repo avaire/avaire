@@ -6,6 +6,7 @@ import com.avairebot.factories.RequestFactory;
 import com.avairebot.requests.Response;
 import com.avairebot.time.Carbon;
 import com.avairebot.utilities.NumberUtil;
+import com.avairebot.vote.VoteCacheEntity;
 import com.avairebot.vote.VoteEntity;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.User;
@@ -78,7 +79,7 @@ public class DrainVoteQueueTask implements Task {
             return;
         }
 
-        int points = avaire.getVoteManager().getVotePoints(avaire, user);
+        VoteCacheEntity voteEntity = avaire.getVoteManager().getVoteEntityWithFallback(avaire, user);
         avaire.getVoteManager().registerVoteFor(user);
 
         LOGGER.info("Vote has been registered by {} ({})",
@@ -87,21 +88,21 @@ public class DrainVoteQueueTask implements Task {
 
         TextChannel textChannel = avaire.getShardManager().getTextChannelById(entity.getChannelId());
         if (textChannel == null || !textChannel.canTalk()) {
-            if (points != Integer.MIN_VALUE) {
+            if (voteEntity.isOptIn()) {
                 avaire.getVoteManager().getMessager()
-                    .sendVoteWithPointsMessageInDM(user, points);
+                    .sendVoteWithPointsMessageInDM(user, voteEntity.getVotePoints());
             }
             return;
         }
 
         textChannel.sendMessage(
             avaire.getVoteManager().getMessager().buildVoteWithPointsMessage(
-                "Your vote has been registered!", points
+                "Your vote has been registered!", voteEntity.getVotePoints()
             )
         ).queue(null, error -> {
-            if (points != Integer.MIN_VALUE) {
+            if (voteEntity.isOptIn()) {
                 avaire.getVoteManager().getMessager()
-                    .sendVoteWithPointsMessageInDM(user, points);
+                    .sendVoteWithPointsMessageInDM(user, voteEntity.getVotePoints());
             }
         });
 

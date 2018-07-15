@@ -9,14 +9,16 @@ public class VoteCacheEntity {
     private final long userId;
     private final Carbon carbon;
     private int votePoints;
+    private boolean optIn;
 
     public VoteCacheEntity(long userId, Carbon carbon) {
-        this(userId, 0, carbon);
+        this(userId, 0, true, carbon);
     }
 
-    public VoteCacheEntity(long userId, int votePoints, Carbon carbon) {
+    public VoteCacheEntity(long userId, int votePoints, boolean optIn, Carbon carbon) {
         this.userId = userId;
         this.votePoints = votePoints;
+        this.optIn = optIn;
         this.carbon = carbon;
     }
 
@@ -30,6 +32,14 @@ public class VoteCacheEntity {
 
     public void setVotePoints(int votePoints) {
         this.votePoints = votePoints;
+    }
+
+    public boolean isOptIn() {
+        return optIn;
+    }
+
+    public void setOptIn(boolean optIn) {
+        this.optIn = optIn;
     }
 
     public Carbon getCarbon() {

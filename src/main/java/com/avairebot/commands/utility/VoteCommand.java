@@ -4,6 +4,7 @@ import com.avairebot.AvaIre;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.time.Carbon;
+import com.avairebot.vote.VoteCacheEntity;
 import com.avairebot.vote.VoteEntity;
 
 import java.util.Arrays;
@@ -51,6 +52,8 @@ public class VoteCommand extends Command {
             note = "You have already voted today, thanks for that btw!\nYou can vote again in " + expire.diffForHumans() + ".";
         }
 
+        VoteCacheEntity voteEntity = avaire.getVoteManager().getVoteEntity(avaire, context.getAuthor());
+
         context.makeSuccess(String.join("\n", Arrays.asList(
             "Enjoy using the bot? Consider voting for the bot to help it grow, it's free but means a lot to the team behind Ava ❤",
             "",
@@ -61,7 +64,7 @@ public class VoteCommand extends Command {
             .set("note", note)
             .setTitle("Vote for AvaIre on DBL", "https://discordbots.org/bot/avaire")
             .setFooter(expire != null && expire.isFuture()
-                ? "You have " + avaire.getVoteManager().getVotePoints(avaire, context.getAuthor()) + " vote points"
+                ? "You have " + (voteEntity == null ? 0 : voteEntity.getVotePoints()) + " vote points"
                 : null
             ).queue();
 

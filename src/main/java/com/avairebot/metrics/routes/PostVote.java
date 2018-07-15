@@ -3,6 +3,7 @@ package com.avairebot.metrics.routes;
 import com.avairebot.AvaIre;
 import com.avairebot.contracts.metrics.SparkRoute;
 import com.avairebot.metrics.Metrics;
+import com.avairebot.vote.VoteCacheEntity;
 import net.dv8tion.jda.core.entities.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,18 +42,18 @@ public class PostVote extends SparkRoute {
             return buildResponse(response, 404, "Invalid user ID given, the user is not on any server the bot is on.");
         }
 
-        int userPoints = metrics.getAvaire().getVoteManager().getVotePoints(metrics.getAvaire(), userById);
+        VoteCacheEntity voteEntity = metrics.getAvaire().getVoteManager().getVoteEntityWithFallback(metrics.getAvaire(), userById);
         metrics.getAvaire().getVoteManager().registerVoteFor(userById);
 
         LOGGER.info("Vote has been registered by {} ({})",
             userById.getName() + "#" + userById.getDiscriminator(), userById.getId()
         );
 
-        if (userPoints == Integer.MIN_VALUE) {
+        if (!voteEntity.isOptIn()) {
             return buildResponse(response, 200, "Vote registered, thanks for voting!");
         }
 
-        metrics.getAvaire().getVoteManager().getMessager().sendVoteWithPointsMessageInDM(userById, userPoints);
+        metrics.getAvaire().getVoteManager().getMessager().sendVoteWithPointsMessageInDM(userById, voteEntity.getVotePoints());
 
         return buildResponse(response, 200, "Vote registered, thanks for voting!");
     }

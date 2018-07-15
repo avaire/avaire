@@ -80,6 +80,8 @@ public class VoteOptCommand extends Command {
             .set("type", opt == 0 ? "out" : "in")
             .queue();
 
+        avaire.getVoteManager().getVoteEntityWithFallback(avaire, context.getAuthor()).setOptIn(opt == 1);
+
         return true;
     }
 
