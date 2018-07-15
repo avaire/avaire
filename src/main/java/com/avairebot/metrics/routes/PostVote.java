@@ -4,7 +4,6 @@ import com.avairebot.AvaIre;
 import com.avairebot.contracts.metrics.SparkRoute;
 import com.avairebot.metrics.Metrics;
 import net.dv8tion.jda.core.entities.User;
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spark.Request;
@@ -82,17 +81,6 @@ public class PostVote extends SparkRoute {
 
     private String getAuthorizationToken() {
         return metrics.getAvaire().getConfig().getString("metrics.authToken", "avaire-auth-token");
-    }
-
-    private JSONObject buildResponse(Response response, int code, String message) {
-        response.status(code);
-
-        JSONObject root = new JSONObject();
-
-        root.put("status", code);
-        root.put(code == 200 ? "message" : "reason", message);
-
-        return root;
     }
 
     private class VoteRequest {
