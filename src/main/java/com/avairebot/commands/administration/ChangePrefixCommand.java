@@ -46,6 +46,11 @@ public class ChangePrefixCommand extends Command {
     }
 
     @Override
+    public List<Class<? extends Command>> getRelations() {
+        return Arrays.asList(CategoriesCommand.class, ToggleCategoryCommand.class);
+    }
+
+    @Override
     public List<String> getTriggers() {
         return Arrays.asList("changeprefix", "prefix");
     }

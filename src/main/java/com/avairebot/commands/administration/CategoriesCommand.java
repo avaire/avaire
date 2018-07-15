@@ -42,7 +42,7 @@ public class CategoriesCommand extends Command {
 
     @Override
     public List<Class<? extends Command>> getRelations() {
-        return Collections.singletonList(ToggleCategoryCommand.class);
+        return Arrays.asList(ToggleCategoryCommand.class, ChangePrefixCommand.class);
     }
 
     @Override

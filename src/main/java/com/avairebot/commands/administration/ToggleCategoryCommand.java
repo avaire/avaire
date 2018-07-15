@@ -51,7 +51,7 @@ public class ToggleCategoryCommand extends Command {
 
     @Override
     public List<Class<? extends Command>> getRelations() {
-        return Collections.singletonList(CategoriesCommand.class);
+        return Arrays.asList(CategoriesCommand.class, ChangePrefixCommand.class);
     }
 
 
