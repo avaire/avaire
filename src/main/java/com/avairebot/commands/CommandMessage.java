@@ -10,6 +10,7 @@ import com.avairebot.factories.MessageFactory;
 import com.avairebot.handlers.DatabaseEventHolder;
 import com.avairebot.language.I18n;
 import net.dv8tion.jda.core.JDA;
+import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.*;
 import net.dv8tion.jda.core.requests.restaction.AuditableRestAction;
 import org.slf4j.Logger;
@@ -178,6 +179,17 @@ public class CommandMessage implements CommandContext {
     @Override
     public boolean isGuildMessage() {
         return message.getChannelType().isGuild();
+    }
+
+    @Override
+    public boolean canTalk() {
+        if (!isGuildMessage()) {
+            return true;
+        }
+
+        return message.getGuild().getSelfMember().hasPermission(message.getTextChannel(),
+            Permission.MESSAGE_WRITE, Permission.MESSAGE_READ, Permission.MESSAGE_EMBED_LINKS
+        );
     }
 
     public PlaceholderMessage makeError(String message) {

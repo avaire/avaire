@@ -146,9 +146,23 @@ public interface CommandContext {
     /**
      * Returns true if the message was sent in a guild.
      *
-     * @return True if the message was sent in a guid.
+     * @return True if the message was sent in a guild.
      */
     boolean isGuildMessage();
+
+    /**
+     * Whether we can send messages in the channel the command was invoked in.
+     * <p>
+     * This is an overload of {@link TextChannel#canTalk(Member)} with the SelfMember, if
+     * the command was invoked in a DM, it will always return true.
+     * <p>
+     * Checks for both {@link net.dv8tion.jda.core.Permission#MESSAGE_READ Permission.MESSAGE_READ},
+     * {@link net.dv8tion.jda.core.Permission#MESSAGE_WRITE Permission.MESSAGE_WRITE}, and
+     * {@link net.dv8tion.jda.core.Permission#MESSAGE_EMBED_LINKS Permission#MESSAGE_EMBED_LINKS}.
+     *
+     * @return True, if we are able to read and send messages in this channel.
+     */
+    boolean canTalk();
 
     /**
      * Returns the {@link YamlConfiguration configuration} for the current selected {@link com.avairebot.language.I18n I18n}

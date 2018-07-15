@@ -79,6 +79,11 @@ public class FakeCommandMessage implements CommandContext {
         return false;
     }
 
+    @Override
+    public boolean canTalk() {
+        return true;
+    }
+
     @Nonnull
     @Override
     public YamlConfiguration getI18n() {
