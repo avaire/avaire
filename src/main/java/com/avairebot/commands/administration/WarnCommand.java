@@ -101,7 +101,7 @@ public class WarnCommand extends Command {
         );
 
         if (caseId == null) {
-            return sendErrorMessage(context, "Failed to log warning to the set modlog channel, does the modlog channel still exists?");
+            return sendErrorMessage(context, "Failed to log warning to the set modlog channel, does the modlog channel still exists, can I still send messages in the channel?");
         }
 
         User finalUser = user;

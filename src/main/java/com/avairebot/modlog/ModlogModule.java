@@ -48,6 +48,10 @@ public class ModlogModule {
             return null;
         }
 
+        if (!channel.canTalk()) {
+            return null;
+        }
+
         transformer.setModlogCase(transformer.getModlogCase() + 1);
 
         EmbedBuilder builder = MessageFactory.createEmbeddedBuilder()

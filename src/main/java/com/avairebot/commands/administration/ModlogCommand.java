@@ -8,6 +8,7 @@ import com.avairebot.contracts.commands.Command;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.utilities.ComparatorUtil;
 import com.avairebot.utilities.MentionableUtil;
+import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Channel;
 import net.dv8tion.jda.core.entities.TextChannel;
 
@@ -92,6 +93,10 @@ public class ModlogCommand extends Command {
         Channel channel = MentionableUtil.getChannel(context.getMessage(), args);
         if (channel == null || !(channel instanceof TextChannel)) {
             return sendErrorMessage(context, "Invalid channel argument given, you must mention a valid text channel");
+        }
+
+        if (!((TextChannel) channel).canTalk() || !context.getGuild().getSelfMember().hasPermission(channel, Permission.MESSAGE_EMBED_LINKS)) {
+            return sendErrorMessage(context, "I can't send embed messages in the specified channel, please change my permission level for the {0} channel if you want to use it as a modlog channel.", ((TextChannel) channel).getAsMention());
         }
 
         try {
