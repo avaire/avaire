@@ -8,7 +8,6 @@ import com.avairebot.audio.VoiceConnectStatus;
 import com.avairebot.commands.CommandHandler;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
-import com.avairebot.contracts.commands.ThreadCommand;
 import com.avairebot.metrics.Metrics;
 import com.avairebot.utilities.NumberUtil;
 import com.avairebot.utilities.RestActionUtil;
@@ -24,7 +23,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class PlayCommand extends ThreadCommand {
+public class PlayCommand extends Command {
 
     public PlayCommand(AvaIre avaire) {
         super(avaire, false);

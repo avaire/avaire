@@ -6,7 +6,6 @@ import com.avairebot.cache.CacheItem;
 import com.avairebot.cache.CacheType;
 import com.avairebot.commands.CommandContainer;
 import com.avairebot.commands.CommandHandler;
-import com.avairebot.contracts.commands.ThreadCommand;
 import com.avairebot.contracts.handlers.EventAdapter;
 import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.controllers.PlayerController;
@@ -21,6 +20,7 @@ import com.avairebot.utilities.ArrayUtil;
 import com.avairebot.utilities.LevelUtil;
 import com.avairebot.utilities.NumberUtil;
 import com.avairebot.utilities.RestActionUtil;
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.User;
@@ -34,6 +34,8 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -41,6 +43,13 @@ import java.util.regex.Pattern;
 public class MessageEventAdapter extends EventAdapter {
 
     public static final Set<Long> hasReceivedInfoMessageInTheLastMinute = new HashSet<>();
+
+    private static final ExecutorService COMMAND_SERVICE = Executors.newCachedThreadPool(
+        new ThreadFactoryBuilder()
+            .setNameFormat("avaire-command-thread-%d")
+            .build()
+    );
+
     private static final Logger LOGGER = LoggerFactory.getLogger(MessageEventAdapter.class);
     private static final Pattern userRegEX = Pattern.compile("<@(!|)+[0-9]{16,}+>", Pattern.CASE_INSENSITIVE);
     private static final String mentionMessage = String.join("\n", Arrays.asList(
@@ -136,11 +145,7 @@ public class MessageEventAdapter extends EventAdapter {
     }
 
     private void invokeMiddlewareStack(MiddlewareStack stack) {
-        if (stack.getCommand() instanceof ThreadCommand) {
-            ((ThreadCommand) stack.getCommand()).submitTask(stack::next);
-            return;
-        }
-        stack.next();
+        COMMAND_SERVICE.submit(stack::next);
     }
 
     private boolean canExecuteCommand(MessageReceivedEvent event, CommandContainer container) {

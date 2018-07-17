@@ -2,7 +2,7 @@ package com.avairebot.commands.search;
 
 import com.avairebot.AvaIre;
 import com.avairebot.commands.CommandMessage;
-import com.avairebot.contracts.commands.ThreadCommand;
+import com.avairebot.contracts.commands.Command;
 import com.avairebot.factories.RequestFactory;
 import com.avairebot.requests.Response;
 import com.avairebot.requests.service.GfycatService;
@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
-public class GfycatCommand extends ThreadCommand {
+public class GfycatCommand extends Command {
 
     public GfycatCommand(AvaIre avaire) {
         super(avaire);

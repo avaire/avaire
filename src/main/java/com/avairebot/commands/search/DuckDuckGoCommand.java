@@ -4,7 +4,7 @@ import com.avairebot.AvaIre;
 import com.avairebot.chat.MessageType;
 import com.avairebot.chat.PlaceholderMessage;
 import com.avairebot.commands.CommandMessage;
-import com.avairebot.contracts.commands.ThreadCommand;
+import com.avairebot.contracts.commands.Command;
 import com.avairebot.factories.MessageFactory;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -19,7 +19,7 @@ import java.net.URLEncoder;
 import java.util.*;
 import java.util.List;
 
-public class DuckDuckGoCommand extends ThreadCommand {
+public class DuckDuckGoCommand extends Command {
 
     private static final Map<String, String> HTTP_HEADERS = new HashMap<>();
 

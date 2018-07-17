@@ -2,7 +2,7 @@ package com.avairebot.commands.fun;
 
 import com.avairebot.AvaIre;
 import com.avairebot.commands.CommandMessage;
-import com.avairebot.contracts.commands.ThreadCommand;
+import com.avairebot.contracts.commands.Command;
 import com.avairebot.factories.RequestFactory;
 import com.avairebot.requests.Response;
 import com.avairebot.requests.service.ChuckNorrisService;
@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.regex.Matcher;
 
-public class ChuckNorrisCommand extends ThreadCommand {
+public class ChuckNorrisCommand extends Command {
 
     public ChuckNorrisCommand(AvaIre avaire) {
         super(avaire);

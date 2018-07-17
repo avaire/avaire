@@ -3,7 +3,7 @@ package com.avairebot.commands.search;
 import com.avairebot.AvaIre;
 import com.avairebot.cache.CacheType;
 import com.avairebot.commands.CommandMessage;
-import com.avairebot.contracts.commands.ThreadCommand;
+import com.avairebot.contracts.commands.Command;
 import com.avairebot.factories.RequestFactory;
 import com.avairebot.requests.Response;
 import com.avairebot.time.Carbon;
@@ -19,7 +19,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class XKCDCommand extends ThreadCommand {
+public class XKCDCommand extends Command {
 
     public XKCDCommand(AvaIre avaire) {
         super(avaire);
