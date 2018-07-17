@@ -47,7 +47,9 @@ public class GuildStateEventAdapter extends EventAdapter {
     }
 
     public void onGuildJoin(GuildJoinEvent event) {
-        AvaIre.getLogger().info(ConsoleColor.GREEN + "Joined guild with an ID of " + event.getGuild().getId() + " called: " + event.getGuild().getName());
+        AvaIre.getLogger().info(ConsoleColor.format(
+            "%greenJoined guild with an ID of " + event.getGuild().getId() + " called: " + event.getGuild().getName() + "%reset"
+        ));
 
         if (!avaire.areWeReadyYet()) {
             return;
@@ -78,7 +80,9 @@ public class GuildStateEventAdapter extends EventAdapter {
     }
 
     public void onGuildLeave(GuildLeaveEvent event) {
-        AvaIre.getLogger().info(ConsoleColor.RED + "Left guild with an ID of " + event.getGuild().getId() + " called: " + event.getGuild().getName());
+        AvaIre.getLogger().info(ConsoleColor.format(
+            "%redLeft guild with an ID of " + event.getGuild().getId() + " called: " + event.getGuild().getName() + "%reset"
+        ));
 
         if (!avaire.areWeReadyYet()) {
             return;
