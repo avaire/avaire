@@ -352,8 +352,8 @@ utility:
 
     RemindCommand:
         errors:
-            invalidMeHere: 'Invalid type given, you must declare where you want to be reminded by either using `here` to be reminded in the current channel, or `me` to be reminded in a direct message.'
-            invalidTime: 'Invalid time given, the time must be greater than 60 seconds and less than 3 days.'
+            invalidMeHere: 'Ungültigen Typ angegeben. Du musst angeben, wo du erinnert werden möchtest. Nutze `here`, um diesen Channel zu nutzen. Falls du eine Direktnachricht bevorzugst, so nutze `me`.'
+            invalidTime: 'Ungültige Zeit angegeben. Die Zeit muss länger als 60 Sekunden und weniger als 3 Tage betragen.'
 
     ServerIdCommand:
         message: ':user Die :id: vom Server lautet `:guildid`.'
