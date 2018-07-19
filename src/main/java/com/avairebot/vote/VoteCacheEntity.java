@@ -7,9 +7,9 @@ import java.util.Objects;
 public class VoteCacheEntity {
 
     private final long userId;
-    private final Carbon carbon;
     private int votePoints;
     private boolean optIn;
+    private Carbon carbon;
 
     public VoteCacheEntity(long userId, Carbon carbon) {
         this(userId, 0, true, carbon);
@@ -44,6 +44,10 @@ public class VoteCacheEntity {
 
     public Carbon getCarbon() {
         return carbon;
+    }
+
+    public void setCarbon(Carbon carbon) {
+        this.carbon = carbon;
     }
 
     @Override

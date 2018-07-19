@@ -37,6 +37,10 @@ public class VoteManager {
         return messager;
     }
 
+    public Map<Long, VoteCacheEntity> getVoteLog() {
+        return voteLog;
+    }
+
     public DelayQueue<VoteEntity> getQueue() {
         return queue;
     }
@@ -172,7 +176,7 @@ public class VoteManager {
                 row.getLong("user_id"),
                 row.getInt("points", 0),
                 row.getBoolean("opt_in", true),
-                Carbon.now().subDay()
+                row.getTimestamp("expires_in")
             );
 
             voteLog.put(voteCacheEntity.getUserId(), voteCacheEntity);
