@@ -33,11 +33,26 @@ public abstract class Database implements DatabaseConnection, Grammarable {
      * fetch, and persist data.
      */
     protected Connection connection;
+
     /**
      * Represents a unix timestamp of the last time we
      * communicated with the database.
      */
-    protected int lastUpdate;
+    private int lastUpdate;
+
+    /**
+     * Represents the last connection state the
+     * last time the connection was checked.
+     */
+    private boolean lastState;
+
+    /**
+     * Represents the last time in milliseconds the state of the connection
+     * was checked, if the connection was checked less then a few seconds
+     * before, the last state will be returned instead, preventing
+     * checking the actually database by querying it every time.
+     */
+    private long lastChecked;
 
     /**
      * Sets the Database Manager instance to the database.
@@ -46,6 +61,9 @@ public abstract class Database implements DatabaseConnection, Grammarable {
      */
     public void setDatabaseManager(DatabaseManager dbm) {
         this.dbm = dbm;
+
+        lastState = false;
+        lastChecked = 0L;
     }
 
     /**
@@ -89,6 +107,7 @@ public abstract class Database implements DatabaseConnection, Grammarable {
 
         try {
             connection.close();
+            lastState = false;
 
             return true;
         } catch (SQLException e) {
@@ -111,6 +130,7 @@ public abstract class Database implements DatabaseConnection, Grammarable {
     public Connection getConnection() throws SQLException {
         if (!isOpen()) {
             open();
+            lastState = true;
         }
 
         return connection;
@@ -135,10 +155,16 @@ public abstract class Database implements DatabaseConnection, Grammarable {
      */
     public final boolean isOpen(int seconds) {
         if (connection != null) {
+            // Returns the last state if the connection was checked less than three seconds ago.
+            if (System.currentTimeMillis() - 3000 < lastChecked) {
+                return lastState;
+            }
+
             try {
-                if (connection.isValid(seconds)) {
-                    return true;
-                }
+                lastState = connection.isValid(seconds);
+                lastChecked = lastState ? System.currentTimeMillis() : 0L;
+
+                return lastState;
             } catch (SQLException ignored) {
             }
         }

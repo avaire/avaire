@@ -7,7 +7,7 @@ plugins {
 apply plugin: 'java'
 apply plugin: 'idea'
 
-version = '0.7.43'
+version = '0.7.44'
 group = 'com.avairebot'
 description = 'AvaIre Discord Bot'
 mainClassName = 'com.avairebot.Main'
