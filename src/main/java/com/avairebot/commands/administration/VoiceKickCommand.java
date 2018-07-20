@@ -7,6 +7,7 @@ import com.avairebot.contracts.commands.Command;
 import com.avairebot.modlog.ModlogAction;
 import com.avairebot.modlog.ModlogModule;
 import com.avairebot.modlog.ModlogType;
+import com.avairebot.utilities.MentionableUtil;
 import com.avairebot.utilities.RestActionUtil;
 import com.avairebot.utilities.RoleUtil;
 import net.dv8tion.jda.core.entities.Member;
@@ -70,11 +71,11 @@ public class VoiceKickCommand extends Command {
 
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
-        if (context.getMentionedUsers().isEmpty() || !userRegEX.matcher(args[0]).matches()) {
+        User user = MentionableUtil.getUser(context, args);
+        if (user == null) {
             return sendErrorMessage(context, "You must mention the user you want to kick.");
         }
 
-        User user = context.getMentionedUsers().get(0);
         if (userHasHigherRole(user, context.getMember())) {
             return sendErrorMessage(context, "You can't kick people with a higher, or the same role as yourself.");
         }

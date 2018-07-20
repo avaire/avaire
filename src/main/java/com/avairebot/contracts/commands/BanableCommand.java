@@ -5,6 +5,7 @@ import com.avairebot.commands.CommandMessage;
 import com.avairebot.modlog.ModlogAction;
 import com.avairebot.modlog.ModlogModule;
 import com.avairebot.modlog.ModlogType;
+import com.avairebot.utilities.MentionableUtil;
 import com.avairebot.utilities.RoleUtil;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Role;
@@ -47,11 +48,11 @@ public abstract class BanableCommand extends Command {
      * @return True if the user was banned successfully, false otherwise.
      */
     protected boolean ban(AvaIre avaire, Command command, CommandMessage context, String[] args, boolean soft) {
-        if (context.getMentionedUsers().isEmpty() || !userRegEX.matcher(args[0]).matches()) {
+        User user = MentionableUtil.getUser(context, args);
+        if (user == null) {
             return command.sendErrorMessage(context, "You must mention the user you want to ban.");
         }
 
-        User user = context.getMentionedUsers().get(0);
         if (userHasHigherRole(user, context.getMember())) {
             return command.sendErrorMessage(context, "You can't ban people with a higher, or the same role as yourself.");
         }
