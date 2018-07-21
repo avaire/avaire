@@ -110,7 +110,7 @@ public class PluginLoader {
      * call the {@link JavaPlugin#onEnable() onEnable()} method
      * on the {@link JavaPlugin JavaPlugin} instance.
      *
-     * @param avaire
+     * @param avaire The AvaIre class instance.
      */
     public void invokePlugin(AvaIre avaire) {
         classLoader.getPlugin().init(avaire, this);

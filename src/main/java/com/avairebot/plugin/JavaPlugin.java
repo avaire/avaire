@@ -127,7 +127,7 @@ public abstract class JavaPlugin {
      * the default language file will be added.
      * <p>
      * An example of how to register a English yaml file for a plugin can be found below:
-     * <p>
+     * <br>
      * <pre><code>
      * registerI18n(
      *     Language.EN_US,

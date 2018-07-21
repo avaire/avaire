@@ -51,7 +51,7 @@ public interface CommandContext {
      * <br><b>This is only valid if the Message was actually sent in a TextChannel.</b> This will return {@code null}
      * if it was not sent from a TextChannel.
      * <br>You can check the type of channel this message was sent from using {@link #getMessage() getMessage().getChannelType()}.
-     * <p>
+     * <br>
      * <p>Use {@link #getMessageChannel()} for an ambiguous {@link net.dv8tion.jda.core.entities.MessageChannel MessageChannel}
      * if you do not need functionality specific to {@link net.dv8tion.jda.core.entities.TextChannel TextChannel}.
      *
@@ -126,7 +126,7 @@ public interface CommandContext {
     /**
      * A immutable list of all mentioned {@link net.dv8tion.jda.core.entities.TextChannel TextChannels}.
      * <br>If none were mentioned, this list is empty.
-     * <p>
+     * <br>
      * <p><b>This may include TextChannels from other {@link net.dv8tion.jda.core.entities.Guild Guilds}</b>
      *
      * @return immutable list of mentioned TextChannels
@@ -178,11 +178,11 @@ public interface CommandContext {
      * Gets a string from the {@link com.avairebot.language.I18n I18n} language file with the
      * command as a prefix, if you'd like to get a message from the language file without
      * using the command prefix you can use the {@link #i18nRaw(String)} method.
-     * <p>
+     * <br>
      * <p>The command prefix is the command category name in all lowercase, followed by a dot,
      * followed by the commands class name, any commands specific messages can be put at
      * this path for Ava to easily find then.
-     * <p>
+     * <br>
      * <p><b>For example if we were to use the method from the Ping command:</b>
      * <pre><code>
      * context.i18n("rating.10"); // Gets the i18n string: utility.PingCommand.rating.10
@@ -205,11 +205,11 @@ public interface CommandContext {
      * Gets a string from the {@link com.avairebot.language.I18n I18n} language file with the
      * command as a prefix, if you'd like to get a message from the language file without
      * using the command prefix you can use the {@link #i18nRaw(String)} method.
-     * <p>
+     * <br>
      * <p>The command prefix is the command category name in all lowercase, followed by a dot,
      * followed by the commands class name, any commands specific messages can be put at
      * this path for Ava to easily find then.
-     * <p>
+     * <br>
      * <p><b>For example if we were to use the method from the uptime command:</b>
      * <pre><code>
      * context.i18n("footer", "First", "Second");
@@ -238,7 +238,7 @@ public interface CommandContext {
     /**
      * Gets a raw string from the {@link com.avairebot.language.I18n I18n} language file, this will ignore the command
      * prefix, if you'd like to get a message using the command prefix you can use the {@link #i18n(String)} method.
-     * <p>
+     * <br>
      * <p><b>For example if we were to use the method from the Ping command:</b>
      * <pre><code>
      * context.i18n("utility.PingCommand.rating.10"); // Gets the i18n string: utility.PingCommand.rating.10
@@ -260,7 +260,7 @@ public interface CommandContext {
     /**
      * Gets a raw string from the {@link com.avairebot.language.I18n I18n} language file, this will ignore the command
      * prefix, if you'd like to get a message using the command prefix you can use the {@link #i18n(String)} method.
-     * <p>
+     * <br>
      * <p><b>For example if we were to use the method from the uptime command:</b>
      * <pre><code>
      * context.i18nRaw("utility.UptimeCommand.footer", "First", "Second");
@@ -279,7 +279,8 @@ public interface CommandContext {
      * Started First at Second
      * </code></pre>
      *
-     * @param key The key of the {@link com.avairebot.language.I18n I18n} message.
+     * @param key  The key of the {@link com.avairebot.language.I18n I18n} message.
+     * @param args The arguments that should be replaced in the language message.
      * @return Possibly-null, the message that matches the given I18n string, or null if it doesn't exists.
      */
     @CheckReturnValue
@@ -294,13 +295,13 @@ public interface CommandContext {
 
     /**
      * Generates the new {@link com.avairebot.language.I18n I18n} command prefix off the {@link CommandContainer Command Container}, then calls {@link #setI18nPrefix(String)} with the generated message, command prefixes are generated using the following format:
-     * <p>
+     * <br>
      * <pre><code>
      * command category.command class name.
      * </code></pre>
-     * <p>
+     * <br>
      * So the Ping command prefix would look like this:
-     * <p>
+     * <br>
      * <pre><code>
      * utility.PingCommand.
      * </code></pre>

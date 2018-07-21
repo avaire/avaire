@@ -34,6 +34,7 @@ public class ThreadPoolCollector extends Collector {
      * Any references to the pool are invalidated.
      *
      * @param poolName pool to be removed
+     * @return The previous value associated with the <tt>pool name</tt>, or <tt>null</tt> if there was no mapping for <tt>key</tt>.
      */
     public ThreadPoolExecutor removePool(String poolName) {
         return pools.remove(poolName);

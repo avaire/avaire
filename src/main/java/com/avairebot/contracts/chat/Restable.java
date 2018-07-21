@@ -27,7 +27,7 @@ public abstract class Restable {
      * <br>Using the default callback functions:
      * {@link net.dv8tion.jda.core.requests.RestAction#DEFAULT_SUCCESS DEFAULT_SUCCESS} and
      * {@link net.dv8tion.jda.core.requests.RestAction#DEFAULT_FAILURE DEFAULT_FAILURE}
-     * <p>
+     * <br>
      * <p><b>This method is asynchronous</b>
      */
     public void queue() {
@@ -37,7 +37,7 @@ public abstract class Restable {
     /**
      * Submits a Request for execution.
      * <br>Using the default failure callback function.
-     * <p>
+     * <br>
      * <p><b>This method is asynchronous</b>
      *
      * @param success The success callback that will be called at a convenient time
@@ -49,7 +49,7 @@ public abstract class Restable {
 
     /**
      * Submits a Request for execution.
-     * <p>
+     * <br>
      * <p><b>This method is asynchronous</b>
      *
      * @param success The success callback that will be called at a convenient time
@@ -65,11 +65,11 @@ public abstract class Restable {
      * Schedules a call to {@link #queue()} to be executed after the specified {@code delay}.
      * <br>This is an <b>asynchronous</b> operation that will return a
      * {@link java.util.concurrent.ScheduledFuture ScheduledFuture} representing the task.
-     * <p>
+     * <br>
      * <p>This operation gives no access to the response value.
      * <br>Use {@link #queueAfter(long, java.util.concurrent.TimeUnit, java.util.function.Consumer)} to access
      * the success consumer for {@link #queue(java.util.function.Consumer)}!
-     * <p>
+     * <br>
      * <p>The global JDA {@link java.util.concurrent.ScheduledExecutorService ScheduledExecutorService} is used for this operation.
      * <br>You can change the core pool size for this Executor through {@link net.dv8tion.jda.core.JDABuilder#setCorePoolSize(int) JDABuilder.setCorePoolSize(int)}
      * or provide your own Executor with {@link #queueAfter(long, java.util.concurrent.TimeUnit, java.util.concurrent.ScheduledExecutorService)}
@@ -92,11 +92,11 @@ public abstract class Restable {
      * Schedules a call to {@link #queue(java.util.function.Consumer)} to be executed after the specified {@code delay}.
      * <br>This is an <b>asynchronous</b> operation that will return a
      * {@link java.util.concurrent.ScheduledFuture ScheduledFuture} representing the task.
-     * <p>
+     * <br>
      * <p>This operation gives no access to the failure callback.
      * <br>Use {@link #queueAfter(long, java.util.concurrent.TimeUnit, java.util.function.Consumer, java.util.function.Consumer)} to access
      * the failure consumer for {@link #queue(java.util.function.Consumer, java.util.function.Consumer)}!
-     * <p>
+     * <br>
      * <p>The global JDA {@link java.util.concurrent.ScheduledExecutorService ScheduledExecutorService} is used for this operation.
      * <br>You can change the core pool size for this Executor through {@link net.dv8tion.jda.core.JDABuilder#setCorePoolSize(int) JDABuilder.setCorePoolSize(int)}
      * or provide your own Executor with {@link #queueAfter(long, java.util.concurrent.TimeUnit, java.util.function.Consumer, java.util.concurrent.ScheduledExecutorService)}
@@ -122,7 +122,7 @@ public abstract class Restable {
      * to be executed after the specified {@code delay}.
      * <br>This is an <b>asynchronous</b> operation that will return a
      * {@link java.util.concurrent.ScheduledFuture ScheduledFuture} representing the task.
-     * <p>
+     * <br>
      * <p>The global JDA {@link java.util.concurrent.ScheduledExecutorService ScheduledExecutorService} is used for this operation.
      * <br>You can change the core pool size for this Executor through {@link net.dv8tion.jda.core.JDABuilder#setCorePoolSize(int) JDABuilder.setCorePoolSize(int)}
      * or provide your own Executor with
@@ -150,11 +150,11 @@ public abstract class Restable {
      * Schedules a call to {@link #queue()} to be executed after the specified {@code delay}.
      * <br>This is an <b>asynchronous</b> operation that will return a
      * {@link java.util.concurrent.ScheduledFuture ScheduledFuture} representing the task.
-     * <p>
+     * <br>
      * <p>This operation gives no access to the response value.
      * <br>Use {@link #queueAfter(long, java.util.concurrent.TimeUnit, java.util.function.Consumer)} to access
      * the success consumer for {@link #queue(java.util.function.Consumer)}!
-     * <p>
+     * <br>
      * <p>The specified {@link java.util.concurrent.ScheduledExecutorService ScheduledExecutorService} is used for this operation.
      *
      * @param delay    The delay after which this computation should be executed, negative to execute immediately
@@ -177,11 +177,11 @@ public abstract class Restable {
      * Schedules a call to {@link #queue(java.util.function.Consumer)} to be executed after the specified {@code delay}.
      * <br>This is an <b>asynchronous</b> operation that will return a
      * {@link java.util.concurrent.ScheduledFuture ScheduledFuture} representing the task.
-     * <p>
+     * <br>
      * <p>This operation gives no access to the failure callback.
      * <br>Use {@link #queueAfter(long, java.util.concurrent.TimeUnit, java.util.function.Consumer, java.util.function.Consumer)} to access
      * the failure consumer for {@link #queue(java.util.function.Consumer, java.util.function.Consumer)}!
-     * <p>
+     * <br>
      * <p>The specified {@link java.util.concurrent.ScheduledExecutorService ScheduledExecutorService} is used for this operation.
      *
      * @param delay    The delay after which this computation should be executed, negative to execute immediately
@@ -207,7 +207,7 @@ public abstract class Restable {
      * to be executed after the specified {@code delay}.
      * <br>This is an <b>asynchronous</b> operation that will return a
      * {@link java.util.concurrent.ScheduledFuture ScheduledFuture} representing the task.
-     * <p>
+     * <br>
      * <p>The specified {@link java.util.concurrent.ScheduledExecutorService ScheduledExecutorService} is used for this operation.
      *
      * @param delay    The delay after which this computation should be executed, negative to execute immediately

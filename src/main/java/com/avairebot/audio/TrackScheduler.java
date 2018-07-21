@@ -68,6 +68,7 @@ public class TrackScheduler extends AudioEventAdapterWrapped {
     /**
      * Adds the list of tracks to the queue, if the player is not playing a song the first track in the list will be played.
      *
+     * @param playlist  The playlist transformer for the current guild.
      * @param tracks    The list of tracks to add to the queue.
      * @param requester The user who requested the audio tracks.
      */
@@ -172,6 +173,8 @@ public class TrackScheduler extends AudioEventAdapterWrapped {
 
     /**
      * Start the next track, stopping the current one if it is playing.
+     *
+     * @param sendEndOfQueue Determine if the "End of queue" messages should be sent if the queue is empty as the next track is attempted to be loaded.
      */
     public void nextTrack(boolean sendEndOfQueue) {
         // Start the next track, regardless of if something is already playing or not. In case queue was empty, we are

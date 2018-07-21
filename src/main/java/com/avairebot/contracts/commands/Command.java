@@ -392,7 +392,7 @@ public abstract class Command extends Reflectionable {
      * description, usage instructions, example usage and command triggers.
      *
      * @param command The command that should be compared with the current class.
-     * @return
+     * @return <code>True</code> if it is the same command, <code>False</code> otherwise.
      */
     public final boolean isSame(Command command) {
         return Objects.equals(command.getName(), getName())

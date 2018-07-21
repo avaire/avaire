@@ -681,6 +681,7 @@ public final class QueryBuilder {
      * throw any exceptions that can be catched.
      *
      * @param async The query async value.
+     * @return the query builder instance.
      */
     public QueryBuilder useAsync(boolean async) {
         this.async = async;
