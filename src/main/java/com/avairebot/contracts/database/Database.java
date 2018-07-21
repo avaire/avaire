@@ -15,6 +15,7 @@ import javax.annotation.WillNotClose;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public abstract class Database implements DatabaseConnection, Grammarable {
@@ -25,7 +26,7 @@ public abstract class Database implements DatabaseConnection, Grammarable {
      * Represents our prepared query statements and their statement
      * type, allowing us to quickly render and compile statements.
      */
-    protected Map<PreparedStatement, StatementInterface> preparedStatements = new HashMap();
+    protected Map<PreparedStatement, StatementInterface> preparedStatements = new HashMap<>();
 
     /**
      * Represents our current database connection, this is
@@ -33,12 +34,6 @@ public abstract class Database implements DatabaseConnection, Grammarable {
      * fetch, and persist data.
      */
     protected Connection connection;
-
-    /**
-     * Represents a unix timestamp of the last time we
-     * communicated with the database.
-     */
-    private int lastUpdate;
 
     /**
      * Represents the last connection state the
@@ -127,7 +122,7 @@ public abstract class Database implements DatabaseConnection, Grammarable {
      *                      <code>ResultSet</code> object, the method is called on a
      *                      <code>PreparedStatement</code> or <code>CallableStatement</code>
      */
-    public Connection getConnection() throws SQLException {
+    public synchronized Connection getConnection() throws SQLException {
         if (!isOpen()) {
             open();
             lastState = true;
@@ -153,7 +148,7 @@ public abstract class Database implements DatabaseConnection, Grammarable {
      * @return either (1) <code>TRUE</code> if the database connection is open and valid
      * or (2) <code>FALSE</code> if the database connection is closed
      */
-    public final boolean isOpen(int seconds) {
+    public final synchronized boolean isOpen(int seconds) {
         if (connection != null) {
             // Returns the last state if the connection was checked less than three seconds ago.
             if (System.currentTimeMillis() - 3000 < lastChecked) {
@@ -173,16 +168,6 @@ public abstract class Database implements DatabaseConnection, Grammarable {
     }
 
     /**
-     * Get the unix timestamp of the last time the class
-     * communicated with the database.
-     *
-     * @return the last updated timestamp
-     */
-    public final int getLastUpdateCount() {
-        return lastUpdate;
-    }
-
-    /**
      * Queries the database with the given query, the
      * query should be a <code>SELECT</code> query.
      *
@@ -193,7 +178,7 @@ public abstract class Database implements DatabaseConnection, Grammarable {
      *                      closed <code>Statement</code>
      */
     @WillCloseWhenClosed
-    public final synchronized ResultSet query(String query) throws SQLException {
+    public final ResultSet query(String query) throws SQLException {
         queryValidation(getStatement(query));
 
         Statement statement = createPreparedStatement(query);
@@ -202,8 +187,7 @@ public abstract class Database implements DatabaseConnection, Grammarable {
         if (statement.execute(query)) {
             return statement.getResultSet();
         }
-
-        return getConnection().createStatement().executeQuery("SELECT " + (lastUpdate = statement.getUpdateCount()));
+        throw new SQLException("The query failed to execute successfully: " + query);
     }
 
     /**
@@ -217,7 +201,7 @@ public abstract class Database implements DatabaseConnection, Grammarable {
      *                      closed <code>Statement</code>
      */
     @WillCloseWhenClosed
-    public final synchronized ResultSet query(QueryBuilder query) throws SQLException {
+    public final ResultSet query(QueryBuilder query) throws SQLException {
         return query(query.toSQL());
     }
 
@@ -231,7 +215,7 @@ public abstract class Database implements DatabaseConnection, Grammarable {
      *                      closed <code>Statement</code>
      */
     @WillNotClose
-    public final synchronized ResultSet query(PreparedStatement query) throws SQLException {
+    public final ResultSet query(PreparedStatement query) throws SQLException {
         ResultSet output = query(query, preparedStatements.get(query));
 
         preparedStatements.remove(query);
@@ -250,14 +234,13 @@ public abstract class Database implements DatabaseConnection, Grammarable {
      *                      closed <code>Statement</code>
      */
     @WillNotClose
-    public final synchronized ResultSet query(PreparedStatement query, StatementInterface statement) throws SQLException {
+    public final ResultSet query(PreparedStatement query, StatementInterface statement) throws SQLException {
         queryValidation(statement);
 
         if (query.execute()) {
             return query.getResultSet();
         }
-
-        return getConnection().createStatement().executeQuery("SELECT " + (lastUpdate = query.getUpdateCount()));
+        throw new SQLException("The query failed to execute successfully: " + query);
     }
 
     /**
@@ -270,7 +253,7 @@ public abstract class Database implements DatabaseConnection, Grammarable {
      *                      closed <code>Statement</code>
      */
     @WillNotClose
-    public final synchronized Statement prepare(String query) throws SQLException {
+    public final Statement prepare(String query) throws SQLException {
         StatementInterface statement = getStatement(query);
         Statement ps = createPreparedStatement(query);
 
@@ -302,12 +285,10 @@ public abstract class Database implements DatabaseConnection, Grammarable {
      *                      <code>PreparedStatement</code> or <code>CallableStatement</code>
      */
     @WillClose
-    public final synchronized ArrayList<Long> insert(String query) throws SQLException {
-        ArrayList keys = new ArrayList();
+    public final List<Long> insert(String query) throws SQLException {
+        List<Long> keys = new ArrayList<>();
 
         try (PreparedStatement pstmt = createPreparedStatement(query, 1)) {
-            lastUpdate = pstmt.executeUpdate();
-
             ResultSet key = pstmt.getGeneratedKeys();
             if (key.next()) {
                 keys.add(key.getLong(1));
@@ -338,11 +319,10 @@ public abstract class Database implements DatabaseConnection, Grammarable {
      *                      <code>PreparedStatement</code> or <code>CallableStatement</code>
      */
     @WillNotClose
-    public final synchronized ArrayList<Long> insert(PreparedStatement query) throws SQLException {
-        lastUpdate = query.executeUpdate();
+    public final ArrayList<Long> insert(PreparedStatement query) throws SQLException {
         preparedStatements.remove(query);
 
-        ArrayList<Long> keys = new ArrayList();
+        ArrayList<Long> keys = new ArrayList<>();
         ResultSet key = query.getGeneratedKeys();
         if (key.next()) {
             keys.add(key.getLong(1));
