@@ -22,7 +22,7 @@ public class SendSongsInPlaylist extends PlaylistSubCommand {
     public boolean onCommand(CommandMessage context, String[] args, GuildTransformer guild, PlaylistTransformer playlist) {
         if (playlist.getSongs().isEmpty()) {
             context.makeWarning(context.i18n("playlistIsEmpty"))
-                .set("command", command.generateCommandTrigger(context.getMessage()) + " add <song url>")
+                .set("command", command.generateCommandTrigger(context.getMessage()) + " " + playlist.getName() + " add <song url>")
                 .queue();
 
             return false;
@@ -46,7 +46,7 @@ public class SendSongsInPlaylist extends PlaylistSubCommand {
         });
 
         context.makeInfo(
-            String.join("\n", messages) + "\n\n" + paginator.generateFooter(command.generateCommandTrigger(context.getMessage()))
+            String.join("\n", messages) + "\n\n" + paginator.generateFooter(command.generateCommandTrigger(context.getMessage()) + " " + playlist.getName())
         ).setTitle(":musical_note: " + playlist.getName()).queue();
 
         return true;
