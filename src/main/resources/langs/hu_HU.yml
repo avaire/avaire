@@ -11,11 +11,11 @@ errors:
     errorOccurredWhileLoading: 'Hiba lépett fel a {0} betöltése közben, kérlek próbáld újra, ha a hiba továbbra is fennáll kérlek jelentsd ezt az egyik fejlesztőmnek az [AvaIre support server](https://discord.gg/gt2FWER)-en.'
 
 levelupMessages:
-    - "GG :user, you just reached **Level :level**"
-    - "Eyy :user, you just leveled up! You're now **Level :level**"
-    - "🌟 You just reached **Level :level** :user! Congrats 🌟"
-    - "You're on 🔥 :user, you've just reached **Level :level**"
-    - "Congratulations :user 🎉 You just leveled up! You're now **Level :level**"
+    - "GG :user, éppen elérted a **Level :level** szintet."
+    - "Eyy :user, szintet léptél! Jelenleg **Level :level** vagy."
+    - "🌟 Elérted a **Level :level** szintet, :user! 🌟"
+    - "Lángolsz 🔥 :user, elérted a **Level :level** szintet!"
+    - "Gratulálok :user 🎉 Szintet léptél! Jelenleg **Level :level** vagy."
 
 fun:
     DiceCommand:
@@ -180,6 +180,7 @@ music:
         playlistSize: '[ {0} out of {1} ]'
         playlistLine: '{0}\n       Lejátszási listában **{1}** szám(ok) vannak'
         playlistSongLine: '`{0}` [{1}]({2}) [{3}]'
+        
     RemoveSongFromQueueCommand:
         error: 'Hiányzó paraméter `zene száma`, megkell adnod a zene számát amit törölni akarsz a lejátszási listából.'
         failedToRemoveSong: 'Valami hiva történt, `:index` törlése sikertelen.'
@@ -349,8 +350,8 @@ utility:
 
     RemindCommand:
         errors:
-            invalidMeHere: 'Invalid type given, you must declare where you want to be reminded by either using `here` to be reminded in the current channel, or `me` to be reminded in a direct message.'
-            invalidTime: 'Invalid time given, the time must be greater than 60 seconds and less than 3 days.'
+            invalidMeHere: 'Érvénytelen típus megadva, megkell adnod, hogy hol legyél emlékeztetve vagy `here`-el hogy a jelenlegi szobában, vagy `me`-el, hogy privát üzenetben.'
+            invalidTime: 'Érvénytelen idő megadva, az értéknek többnek kell lennie mint 60 másodperc és kevesebbnek mint 3 days.'
 
     ServerIdCommand:
             message: ':user :id: a szerver ID-je `:guildid`'
