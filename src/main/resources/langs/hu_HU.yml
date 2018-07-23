@@ -128,7 +128,7 @@ music:
         nowPlayingIn: 'Jelenleg zenét játszok a **:channelName**-ben'
 
     MusicChannelCommand:
-        updated: "The **:type** music channel has been successfully been :status"
+        updated: "A **:type** zene szoba sikeresen :status"
         field:
             title: "Zene Channelek"
             message: "**Szöveges channel:** :text\n**Hang Channel:** :voice"
