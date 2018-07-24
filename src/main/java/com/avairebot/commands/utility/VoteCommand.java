@@ -34,8 +34,10 @@ public class VoteCommand extends Command {
 
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
+        VoteCacheEntity voteEntity = avaire.getVoteManager().getVoteEntity(avaire, context.getAuthor());
+
         if (args.length > 0 && args[0].equalsIgnoreCase("check")) {
-            return checkUser(context);
+            return checkUser(context, voteEntity);
         }
 
         String note = String.format(String.join("\n", Arrays.asList(
@@ -52,8 +54,6 @@ public class VoteCommand extends Command {
             note = "You have already voted today, thanks for that btw!\nYou can vote again in " + expire.diffForHumans() + ".";
         }
 
-        VoteCacheEntity voteEntity = avaire.getVoteManager().getVoteEntity(avaire, context.getAuthor());
-
         context.makeSuccess(String.join("\n", Arrays.asList(
             "Enjoy using the bot? Consider voting for the bot to help it grow, it's free but means a lot to the team behind Ava ❤",
             "",
@@ -63,18 +63,17 @@ public class VoteCommand extends Command {
         )))
             .set("note", note)
             .setTitle("Vote for AvaIre on DBL", "https://discordbots.org/bot/avaire")
-            .setFooter(expire != null && expire.isFuture()
-                ? "You have " + (voteEntity == null ? 0 : voteEntity.getVotePoints()) + " vote points"
-                : null
-            ).queue();
+            .setFooter("You have " + (voteEntity == null ? 0 : voteEntity.getVotePoints()) + " vote points")
+            .queue();
 
         return true;
     }
 
-    private boolean checkUser(CommandMessage context) {
+    private boolean checkUser(CommandMessage context, VoteCacheEntity voteEntity) {
         Carbon expire = avaire.getVoteManager().getExpireTime(context.getAuthor());
         if (expire != null && expire.isFuture()) {
             context.makeInfo("You have already voted today, thanks for that btw!\nYou can vote again in :time.")
+                .setFooter("You have " + (voteEntity == null ? 0 : voteEntity.getVotePoints()) + " vote points")
                 .set("time", expire.diffForHumans())
                 .queue();
             return true;

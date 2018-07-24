@@ -23,9 +23,8 @@ public class VoteMesseger {
             .setDescription(String.format(
                 "Thanks for voting for [AvaIre](https://discordbots.org/bot/avaire)! It's really appreciated ❤"
                     + "\nYou now have **%s** vote points, rewards for vote points is coming soon! <a:lurk:425394751357845506>"
-                    + "\nYou now also have access to the `!volume` and `!default-volume` commands for the next 24 hours on servers you have permission to run them on.",
-                (points + 1)
-            )).build();
+                    + "\nYou now also have access to the `!volume` and `!default-volume` commands for the next 24 hours on servers you have permission to run them on.", points))
+            .build();
     }
 
     public void sendVoteWithPointsMessageInDM(@Nonnull User user, int points) {
