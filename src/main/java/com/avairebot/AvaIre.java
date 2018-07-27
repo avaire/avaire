@@ -303,6 +303,7 @@ public class AvaIre {
 
         shardEntityCounter = new ShardEntityCounter(this);
 
+        System.exit(0);
         try {
             shardManager = buildShardManager();
         } catch (LoginException e) {

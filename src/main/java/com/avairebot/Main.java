@@ -19,6 +19,7 @@ public class Main {
         options.addOption(new Option("sc", "shard-count", true, "Sets the amount of shards the bot should start up."));
         options.addOption(new Option("is", "internal-restart", false, "Enables internal restarts, this will auto restart the bot if it crashes, or the system restart or update commands are used, the only way to really shut down the bot is through the system shutdown command.\nNote: The update command will just act as the restart command with this option enabled."));
         options.addOption(new Option("nocolor", "no-colors", false, "Disables colors for commands and AI actions in the terminal."));
+        options.addOption(new Option("d", "debug", false, "Enables debugging mode, this will log extra information to the terminal."));
 
         CommandLineParser parser = new DefaultParser();
         HelpFormatter formatter = new HelpFormatter();
@@ -29,7 +30,11 @@ public class Main {
             Settings settings = new Settings(cmd, args);
             ConsoleColor.setSettings(settings);
             if (!settings.useColors()) {
-                System.setProperty(ContextInitializer.CONFIG_FILE_PROPERTY, "logback_nocolor.xml");
+                System.setProperty(ContextInitializer.CONFIG_FILE_PROPERTY, "logback_nocolor" + (
+                    settings.useDebugging() ? "_debug" : ""
+                ) + ".xml");
+            } else if (settings.useDebugging()) {
+                System.setProperty(ContextInitializer.CONFIG_FILE_PROPERTY, "logback_debug.xml");
             }
 
             if (cmd.hasOption("help")) {

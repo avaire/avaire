@@ -12,6 +12,7 @@ public class Settings {
 
     private final int shardCount;
     private final boolean useColors;
+    private final boolean useDebugging;
     private final boolean internalRestart;
 
     private final List<String> jarArgs;
@@ -21,6 +22,7 @@ public class Settings {
     Settings(CommandLine cmd, String[] args) {
         shardCount = NumberUtil.parseInt(cmd.getOptionValue("shard-count", "0"));
         useColors = !cmd.hasOption("no-colors");
+        useDebugging = cmd.hasOption("debug");
         internalRestart = cmd.hasOption("internal-restart");
 
         RuntimeMXBean runtimeMxBean = ManagementFactory.getRuntimeMXBean();
@@ -34,6 +36,10 @@ public class Settings {
 
     public boolean useColors() {
         return useColors;
+    }
+
+    public boolean useDebugging() {
+        return useDebugging;
     }
 
     public boolean useInternalRestart() {
