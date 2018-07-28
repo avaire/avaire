@@ -302,8 +302,7 @@ public class AvaIre {
         LOGGER.info("Creating bot instance and connecting to Discord network");
 
         shardEntityCounter = new ShardEntityCounter(this);
-
-        System.exit(0);
+        
         try {
             shardManager = buildShardManager();
         } catch (LoginException e) {
