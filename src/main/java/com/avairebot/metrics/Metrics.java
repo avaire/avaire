@@ -6,6 +6,7 @@ import com.avairebot.commands.Category;
 import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.controllers.PlayerController;
 import com.avairebot.database.controllers.PlaylistController;
+import com.avairebot.handlers.adapter.JDAStateEventAdapter;
 import com.avairebot.metrics.filters.AreWeReadyYetFilter;
 import com.avairebot.metrics.filters.HttpFilter;
 import com.avairebot.metrics.handlers.SparkExceptionHandler;
@@ -195,6 +196,7 @@ public class Metrics {
         cacheMetrics.addCache("categoryPrefixes", Category.cache);
         cacheMetrics.addCache("throttleCommands", ThrottleMiddleware.cache);
         cacheMetrics.addCache("throttleMessages", ThrottleMiddleware.messageCache);
+        cacheMetrics.addCache("autorole", JDAStateEventAdapter.cache);
 
         if (!avaire.getConfig().getBoolean("metrics.enabled", true)) {
             LOGGER.info("Metrics web API is disabled, skipping igniting Spark API");

@@ -4,6 +4,8 @@ import com.avairebot.AvaIre;
 import com.avairebot.contracts.handlers.EventHandler;
 import com.avairebot.database.controllers.PlayerController;
 import com.avairebot.handlers.adapter.*;
+import net.dv8tion.jda.core.events.ReadyEvent;
+import net.dv8tion.jda.core.events.ResumedEvent;
 import net.dv8tion.jda.core.events.channel.text.TextChannelCreateEvent;
 import net.dv8tion.jda.core.events.channel.text.TextChannelDeleteEvent;
 import net.dv8tion.jda.core.events.channel.text.update.TextChannelUpdateNameEvent;
@@ -29,8 +31,9 @@ public class MainEventHandler extends EventHandler {
     private final RoleEventAdapter roleEvent;
     private final MemberEventAdapter memberEvent;
     private final ChannelEventAdapter channelEvent;
-    private final GuildStateEventAdapter guildStateEvent;
     private final MessageEventAdapter messageEvent;
+    private final GuildStateEventAdapter guildStateEvent;
+    private final JDAStateEventAdapter jdaStateEventAdapter;
 
     /**
      * Instantiates the event handler and sets the avaire class instance.
@@ -45,6 +48,17 @@ public class MainEventHandler extends EventHandler {
         this.channelEvent = new ChannelEventAdapter(avaire);
         this.messageEvent = new MessageEventAdapter(avaire);
         this.guildStateEvent = new GuildStateEventAdapter(avaire);
+        this.jdaStateEventAdapter = new JDAStateEventAdapter(avaire);
+    }
+
+    @Override
+    public void onReady(ReadyEvent event) {
+        jdaStateEventAdapter.onConnectToShard(event.getJDA());
+    }
+
+    @Override
+    public void onResume(ResumedEvent event) {
+        jdaStateEventAdapter.onConnectToShard(event.getJDA());
     }
 
     @Override
