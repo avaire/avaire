@@ -5,6 +5,7 @@ import com.avairebot.contracts.handlers.EventHandler;
 import com.avairebot.database.controllers.PlayerController;
 import com.avairebot.handlers.adapter.*;
 import net.dv8tion.jda.core.events.ReadyEvent;
+import net.dv8tion.jda.core.events.ReconnectedEvent;
 import net.dv8tion.jda.core.events.ResumedEvent;
 import net.dv8tion.jda.core.events.channel.text.TextChannelCreateEvent;
 import net.dv8tion.jda.core.events.channel.text.TextChannelDeleteEvent;
@@ -58,6 +59,11 @@ public class MainEventHandler extends EventHandler {
 
     @Override
     public void onResume(ResumedEvent event) {
+        jdaStateEventAdapter.onConnectToShard(event.getJDA());
+    }
+
+    @Override
+    public void onReconnect(ReconnectedEvent event) {
         jdaStateEventAdapter.onConnectToShard(event.getJDA());
     }
 
