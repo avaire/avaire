@@ -4,27 +4,18 @@ import java.util.List;
 
 public class UrbanDictionaryService {
 
-    private String result_type;
-    private List<String> tags;
     private List<UrbanDictionary> list;
-
-    public String getResultType() {
-        return result_type;
-    }
-
-    public List<String> getTags() {
-        return tags;
-    }
 
     public List<UrbanDictionary> getList() {
         return list;
     }
 
     public boolean hasData() {
-        return getResultType() != null && getResultType().equals("exact");
+        return getList() != null && !getList().isEmpty();
     }
 
     public class UrbanDictionary {
+
         private int defid;
         private int thumbs_up;
         private int thumbs_down;

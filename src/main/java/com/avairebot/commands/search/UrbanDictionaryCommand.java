@@ -73,6 +73,11 @@ public class UrbanDictionaryCommand extends Command {
                 }
 
                 UrbanDictionaryService.UrbanDictionary definition = service.getList().get(0);
+                for (UrbanDictionaryService.UrbanDictionary entry : service.getList()) {
+                    if (definition.getThumbsUp() < entry.getThumbsUp()) {
+                        definition = entry;
+                    }
+                }
 
                 double thumbsUp = definition.getThumbsUp();
                 double thumbsDown = definition.getThumbsDown();
