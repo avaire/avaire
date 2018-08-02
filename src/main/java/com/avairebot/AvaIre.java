@@ -27,6 +27,7 @@ import com.avairebot.exceptions.InvalidPluginsPathException;
 import com.avairebot.handlers.EventEmitter;
 import com.avairebot.handlers.GenericEventHandler;
 import com.avairebot.handlers.MainEventHandler;
+import com.avairebot.handlers.events.ApplicationShutdownEvent;
 import com.avairebot.language.I18n;
 import com.avairebot.metrics.Metrics;
 import com.avairebot.middleware.*;
@@ -411,6 +412,10 @@ public class AvaIre {
     }
 
     public void shutdown(int exitCode) {
+        if (shardManager != null && !shardManager.getShards().isEmpty()) {
+            eventEmitter.push(new ApplicationShutdownEvent(shardManager.getShards().get(0), exitCode));
+        }
+
         getLogger().info("Shutting down bot instance gracefully with exit code " + exitCode);
 
         for (GuildMusicManager manager : AudioHandler.getDefaultAudioHandler().musicManagers.values()) {
