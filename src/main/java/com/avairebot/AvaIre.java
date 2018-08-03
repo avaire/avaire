@@ -43,6 +43,7 @@ import com.avairebot.utilities.JarUtil;
 import com.avairebot.vote.VoteManager;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.sedmelluq.discord.lavaplayer.jdaudp.NativeAudioSendFactory;
 import com.sedmelluq.discord.lavaplayer.player.AudioConfiguration;
 import com.sedmelluq.discord.lavaplayer.tools.PlayerLibrary;
 import io.sentry.Sentry;
@@ -503,6 +504,10 @@ public class AvaIre {
             .setContextEnabled(true)
             .setShardsTotal(settings.getShardCount());
 
+        if (isNas()) {
+            builder.setAudioSendFactory(new NativeAudioSendFactory(800));
+        }
+
         builder
             .addEventListeners(new MainEventHandler(this))
             .addEventListeners(new GenericEventHandler(this));
@@ -518,6 +523,11 @@ public class AvaIre {
         }
 
         return builder.build();
+    }
+
+    private boolean isNas() {
+        return !System.getProperty("os.arch").equalsIgnoreCase("arm")
+            && !System.getProperty("os.arch").equalsIgnoreCase("arm-linux");
     }
 
     private synchronized SentryAppender getSentryLogbackAppender() {
