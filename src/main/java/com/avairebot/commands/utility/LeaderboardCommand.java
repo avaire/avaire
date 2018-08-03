@@ -96,8 +96,8 @@ public class LeaderboardCommand extends Command {
             messages.add(context.i18n("line")
                 .replace(":num", "" + (index + 1))
                 .replace(":username", username)
-                .replace(":level", "" + LevelUtil.getLevelFromExperience(experience))
-                .replace(":experience", "" + (experience - 100))
+                .replace(":level", NumberUtil.formatNicely(LevelUtil.getLevelFromExperience(experience)))
+                .replace(":experience", NumberUtil.formatNicely((experience - 100)))
             );
         });
 
