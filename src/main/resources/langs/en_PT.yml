@@ -309,6 +309,7 @@ utility:
         noData: 'There are no leaderboard data right now, try again later.'
         line: '`:num` **:username** is level **:level** with **:experience** xp.'
         title: 'Global Experience Leaderboard'
+        yourRank: 'Your rank'
 
     InviteCommand:
         message: 'You can invite me to your server by [clicking here](:oauth) or use the link below:'
@@ -322,6 +323,7 @@ utility:
         noData: 'There are no leaderboard data right now, try again later.'
         line: '`:num` **:username** is level **:level** with **:experience** xp.'
         title: '{0} Leaderboard'
+        yourRank: 'Your rank'
 
     PingCommand:
         message: 'Pong! Time taken :ping ms (:rating) Websocket heartbeat :heartbeat ms'

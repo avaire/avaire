@@ -309,6 +309,7 @@ utility:
         noData: 'Derzeit existieren keine Daten von der Bestenliste. Versuche es später erneut.'
         line: '`:num` **:username** befindet sich auf Level **:level** mit **:experience** XP.'
         title: 'Globale Erfahrungs-Bestenliste'
+        yourRank: 'Your rank'
 
     InviteCommand:
         message: 'Du kannst mich zu deinem Server einladen, indem du hier [hier klickst](:oauth) oder den Link darunter nutzst:'
@@ -322,6 +323,7 @@ utility:
         noData: 'Derzeit existieren keine Daten von der Bestenliste. Versuche es später erneut.'
         line: '`:num` **:username** befindet sich auf Level **:level** mit **:experience** XP.'
         title: '{0} Bestenliste'
+        yourRank: 'Your rank'
 
     PingCommand:
         message: 'Pong! Die benötigte Zeit beträgt :ping Millisekunden [:rating] Websocket Heartbeat beträgt :heartbeat Millisekunden.'

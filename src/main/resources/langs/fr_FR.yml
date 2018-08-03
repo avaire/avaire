@@ -309,6 +309,7 @@ utility:
         noData: "Il n'y a pas de de donnée pour le classement pour le moment, essaye plus tard."
         line: "`:num` **:username** est niveau **:level** avec **:experience** xp."
         title: "Classement d'expérience global"
+        yourRank: 'Your rank'
 
     InviteCommand:
         message: "Tu peux m'inviter sur ton serveur en [cliquant ici](:oauth) ou en utilisant le lien ci-dessous:"
@@ -322,6 +323,7 @@ utility:
         noData: "Il n'y a pas de de donnée pour le classement pour le moment, essaye plus tard."
         line: "`:num` **:username** est niveau **:level** avec **:experience** xp."
         title: "Classement {0}"
+        yourRank: 'Your rank'
 
     PingCommand:
         message: "Pong! Temps pris :ping ms (:rating) Pulsation Websocket :heartbeat ms"

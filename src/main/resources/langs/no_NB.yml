@@ -309,6 +309,7 @@ utility:
         noData: 'Det er ingen oversikts data akkurat nå, prøve igjen senere.'
         line: '`:num` **:username** er level **:level** with **:experience** xp.'
         title: 'Globalt erfarings oversikt'
+        yourRank: 'Your rank'
 
     InviteCommand:
         message: 'Du kan invitere meg til serveren ved og [klikke her](:oauth) eller benytte lenken under:'
@@ -322,6 +323,7 @@ utility:
         noData: 'Det er ingen erfarings oversikt data akkurat nå, prøv igjen senere.'
         line: '`:num` **:username** er level **:level** med **:experience** xp.'
         title: '{0} Erfarings oversikt'
+        yourRank: 'Your rank'
 
     PingCommand:
         message: 'Pong! Tid brukt :ping ms (:rating) Websocket heartbeat :heartbeat ms'

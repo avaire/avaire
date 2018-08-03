@@ -307,6 +307,7 @@ utility:
         noData: 'Jelenleg nincs ranglista adat, próbáld később.'
         line: '`:num` **:username**, **:level** szintű **:experience** tapasztalattal.'
         title: 'Globális ranglista'
+        yourRank: 'Your rank'
 
     InviteCommand:
         message: 'Meghívhatsz a szerveredre azzal, hogy [ide kattintasz](:oauth) vagy használod a linket alább:'
@@ -320,6 +321,7 @@ utility:
         noData: 'Jelenleg nincs ranglista adat, próbáld később.'
         line: '`:num` **:username**, **:level** szintű **:experience** tapasztalattal.'
         title: '{0} Ranglista'
+        yourRank: 'Your rank'
 
     PingCommand:
         message: 'Pong! Ennyi időbe tellt :ping ms (:rating) Websocket szívdobbanás :heartbeat ms'
