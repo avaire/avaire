@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
 public class SyncMusicPlayingMetricCounterJob extends Job {
 
     public SyncMusicPlayingMetricCounterJob(AvaIre avaire) {
-        super(avaire, 5, 5, TimeUnit.SECONDS);
+        super(avaire, 5, 15, TimeUnit.SECONDS);
     }
 
     @Override
