@@ -36,6 +36,8 @@ public class SyncPlayerExperienceWithDatabaseTask implements Task {
                 Constants.PLAYER_EXPERIENCE_TABLE_NAME
             );
 
+            LOGGER.debug("Starting \"Player Experience\" update task with query: " + query);
+
             boolean autoCommit = connection.getAutoCommit();
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 connection.setAutoCommit(false);
@@ -55,7 +57,7 @@ public class SyncPlayerExperienceWithDatabaseTask implements Task {
                 connection.setAutoCommit(autoCommit);
             }
 
-            LOGGER.info("Updated {} players database records", experienceQueue.size());
+            LOGGER.debug("Finished \"Player Experience\" task, updated {} records in the process", experienceQueue.size());
         } catch (SQLException e) {
             logSQLException(e);
             if (connection != null) {
