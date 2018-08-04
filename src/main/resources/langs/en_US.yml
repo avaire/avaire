@@ -310,6 +310,9 @@ utility:
         line: '`:num` **:username** is level **:level** with **:experience** xp.'
         title: 'Global Experience Leaderboard'
         yourRank: 'Your rank'
+        loading:
+            title: 'Loading global leaderboard'
+            message: 'Please wait a second while the global leaderboard is loaded.'
 
     InviteCommand:
         message: 'You can invite me to your server by [clicking here](:oauth) or use the link below:'

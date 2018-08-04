@@ -308,6 +308,9 @@ utility:
         line: '`:num` **:username**, **:level** szintű **:experience** tapasztalattal.'
         title: 'Globális ranglista'
         yourRank: 'Your rank'
+        loading:
+            title: 'Loading global leaderboard'
+            message: 'Please wait a second while the global leaderboard is loaded.'
 
     InviteCommand:
         message: 'Meghívhatsz a szerveredre azzal, hogy [ide kattintasz](:oauth) vagy használod a linket alább:'

@@ -15,10 +15,12 @@ import com.avairebot.utilities.NumberUtil;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.MessageChannel;
+import net.dv8tion.jda.core.entities.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -70,8 +72,25 @@ public class GlobalLeaderboardCommand extends Command {
 
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
-        Collection collection = loadTop100From(context.getMessageChannel());
+        if (cache.asMap().containsKey("leaderboard")) {
+            return handleCommand(context, args, null);
+        }
+
+        context.makeInfo(context.i18n("loading.message"))
+            .setTitle(context.i18n("loading.title"))
+            .queue(message -> handleCommand(context, args, message), error -> {
+                log.error("Failed to load the global leaderboard: {}", error.getMessage(), error);
+            });
+
+        return true;
+    }
+
+    private boolean handleCommand(@Nonnull CommandMessage context, @Nonnull String[] args, @Nullable Message loadingMessage) {
+        Collection collection = loadTop100From();
         if (collection == null) {
+            if (loadingMessage != null) {
+                loadingMessage.delete().queue();
+            }
             context.makeWarning(context.i18n("noData")).queue();
             return false;
         }
@@ -129,15 +148,17 @@ public class GlobalLeaderboardCommand extends Command {
             message.setDescription(String.join("\n", messages));
         }
 
-        message.queue();
+        if (loadingMessage != null) {
+            loadingMessage.editMessage(message.buildEmbed()).queue();
+        } else {
+            message.queue();
+        }
 
         return true;
     }
 
-    private Collection loadTop100From(MessageChannel channel) {
+    private Collection loadTop100From() {
         return (Collection) CacheUtil.getUncheckedUnwrapped(cache, "leaderboard", () -> {
-            channel.sendTyping().queue();
-
             try {
                 return avaire.getDatabase().query("SELECT " +
                     "`user_id`, `username`, `discriminator`, (sum(`experience`) - (count(`user_id`) * 100)) + 100 as `total` " +
