@@ -3,6 +3,7 @@ package com.avairebot.database.migrate;
 import com.avairebot.contracts.database.migrations.Migration;
 
 public class MigrationContainer {
+
     private String name;
     private Migration migration;
     private int batch;

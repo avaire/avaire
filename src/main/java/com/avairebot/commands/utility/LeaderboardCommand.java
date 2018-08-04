@@ -36,7 +36,7 @@ public class LeaderboardCommand extends Command {
         .expireAfterWrite(60, TimeUnit.SECONDS)
         .build();
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(GlobalLeaderboardCommand.class);
+    private static final Logger log = LoggerFactory.getLogger(GlobalLeaderboardCommand.class);
 
     public LeaderboardCommand(AvaIre avaire) {
         super(avaire, false);
@@ -155,7 +155,7 @@ public class LeaderboardCommand extends Command {
                     .take(100)
                     .get();
             } catch (SQLException e) {
-                LOGGER.error("Failed to fetch leaderboard data for server: " + context.getGuild().getId(), e);
+                log.error("Failed to fetch leaderboard data for server: " + context.getGuild().getId(), e);
                 return null;
             }
         });
@@ -173,7 +173,7 @@ public class LeaderboardCommand extends Command {
                     context.getGuild().getId(), context.getAuthor().getId(), context.getGuild().getId()
                 ));
             } catch (SQLException e) {
-                LOGGER.error("Failed to fetch leaderboard data for user: " + context.getGuild().getId(), e);
+                log.error("Failed to fetch leaderboard data for user: " + context.getGuild().getId(), e);
                 return null;
             }
         });

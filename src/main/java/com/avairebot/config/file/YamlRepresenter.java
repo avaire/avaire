@@ -28,7 +28,7 @@ public class YamlRepresenter extends Representer {
         public Node representData(Object data) {
             ConfigurationSerializable serializable = (ConfigurationSerializable) data;
             Map<String, Object> values = new LinkedHashMap<String, Object>();
-            values.put(ConfigurationSerialization.SERIALIZED_TYPE_KEY, ConfigurationSerialization.getAlias(serializable.getClass()));
+            values.put(ConfigurationSerialization.serializedTypeKey, ConfigurationSerialization.getAlias(serializable.getClass()));
             values.putAll(serializable.serialize());
 
             return super.representData(values);

@@ -18,7 +18,7 @@ import java.util.function.Consumer;
 
 public class DrainVoteQueueTask implements Task {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(DrainVoteQueueTask.class);
+    private static final Logger log = LoggerFactory.getLogger(DrainVoteQueueTask.class);
 
     @Override
     public void handle(AvaIre avaire) {
@@ -40,7 +40,7 @@ public class DrainVoteQueueTask implements Task {
             return;
         }
 
-        LOGGER.info("Checking vote requests for {} with the DBL API...", entity.getUserId());
+        log.info("Checking vote requests for {} with the DBL API...", entity.getUserId());
 
         RequestFactory.makeGET("https://discordbots.org/api/bots/275270122082533378/check")
             .addParameter("userId", entity.getUserId())
@@ -72,7 +72,7 @@ public class DrainVoteQueueTask implements Task {
 
         Carbon expiresIn = new Carbon(response.getResponse().header("Date")).addDay();
 
-        LOGGER.info("Vote record for {} was found, registering vote that expires on {}", entity.getUserId(), expiresIn.toDateTimeString());
+        log.info("Vote record for {} was found, registering vote that expires on {}", entity.getUserId(), expiresIn.toDateTimeString());
 
         User user = avaire.getShardManager().getUserById(entity.getUserId());
         if (user == null) {
@@ -84,26 +84,26 @@ public class DrainVoteQueueTask implements Task {
 
         avaire.getVoteManager().registerVoteFor(user.getIdLong());
 
-        LOGGER.info("Vote has been registered by {} ({})",
+        log.info("Vote has been registered by {} ({})",
             user.getName() + "#" + user.getDiscriminator(), user.getId()
         );
 
         TextChannel textChannel = avaire.getShardManager().getTextChannelById(entity.getChannelId());
         if (textChannel == null || !textChannel.canTalk()) {
             if (voteEntity.isOptIn()) {
-                avaire.getVoteManager().getMessager()
+                avaire.getVoteManager().getMessenger()
                     .sendVoteWithPointsMessageInDM(user, voteEntity.getVotePoints());
             }
             return;
         }
 
         textChannel.sendMessage(
-            avaire.getVoteManager().getMessager().buildVoteWithPointsMessage(
+            avaire.getVoteManager().getMessenger().buildVoteWithPointsMessage(
                 "Your vote has been registered!", voteEntity.getVotePoints()
             )
         ).queue(null, error -> {
             if (voteEntity.isOptIn()) {
-                avaire.getVoteManager().getMessager()
+                avaire.getVoteManager().getMessenger()
                     .sendVoteWithPointsMessageInDM(user, voteEntity.getVotePoints());
             }
         });

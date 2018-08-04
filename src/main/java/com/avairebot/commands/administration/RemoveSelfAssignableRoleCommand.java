@@ -91,7 +91,7 @@ public class RemoveSelfAssignableRoleCommand extends Command {
             avaire.getDatabase().newQueryBuilder(Constants.GUILD_TABLE_NAME)
                 .where("id", context.getGuild().getId())
                 .update(statement -> {
-                    statement.set("claimable_roles", AvaIre.GSON.toJson(transformer.getSelfAssignableRoles()));
+                    statement.set("claimable_roles", AvaIre.gson.toJson(transformer.getSelfAssignableRoles()));
                 });
 
             context.makeSuccess("Role **:role** role has been removed from the self-assignable list.\nThe server has `:slots` more self-assignable roles slots available.")

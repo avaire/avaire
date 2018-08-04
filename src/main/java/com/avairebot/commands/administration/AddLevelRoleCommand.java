@@ -143,7 +143,7 @@ public class AddLevelRoleCommand extends Command {
             avaire.getDatabase().newQueryBuilder(Constants.GUILD_TABLE_NAME)
                 .where("id", context.getGuild().getId())
                 .update(statement -> {
-                    statement.set("level_roles", AvaIre.GSON.toJson(transformer.getLevelRoles()), true);
+                    statement.set("level_roles", AvaIre.gson.toJson(transformer.getLevelRoles()), true);
                 });
 
             context.makeSuccess("Role **:role** role has been added to the level-up role list.\nThe server has `:slots` more level role slots available.")

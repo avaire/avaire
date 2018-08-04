@@ -34,7 +34,7 @@ public class GlobalLeaderboardCommand extends Command {
         .expireAfterWrite(300, TimeUnit.SECONDS)
         .build();
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(GlobalLeaderboardCommand.class);
+    private static final Logger log = LoggerFactory.getLogger(GlobalLeaderboardCommand.class);
 
     public GlobalLeaderboardCommand(AvaIre avaire) {
         super(avaire, false);
@@ -147,7 +147,7 @@ public class GlobalLeaderboardCommand extends Command {
                     "LIMIT 100;"
                 );
             } catch (SQLException e) {
-                LOGGER.error("Failed to fetch global leaderboard data", e);
+                log.error("Failed to fetch global leaderboard data", e);
                 return null;
             }
         });
@@ -165,7 +165,7 @@ public class GlobalLeaderboardCommand extends Command {
                     context.getAuthor().getId()
                 ));
             } catch (SQLException e) {
-                LOGGER.error("Failed to fetch leaderboard data for user: " + context.getGuild().getId(), e);
+                log.error("Failed to fetch leaderboard data for user: " + context.getGuild().getId(), e);
                 return null;
             }
         });
@@ -179,7 +179,7 @@ public class GlobalLeaderboardCommand extends Command {
                     .where("user_id", context.getAuthor().getIdLong())
                     .get();
             } catch (SQLException e) {
-                LOGGER.error("Failed to fetch leaderboard data for user: " + context.getGuild().getId(), e);
+                log.error("Failed to fetch leaderboard data for user: " + context.getGuild().getId(), e);
                 return null;
             }
         });

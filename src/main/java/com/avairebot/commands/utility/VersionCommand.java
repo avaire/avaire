@@ -57,7 +57,7 @@ public class VersionCommand extends Command {
         );
 
         PlaceholderMessage versionMessage = null;
-        SemanticVersion currentVersion = new SemanticVersion(AppInfo.getAppInfo().VERSION);
+        SemanticVersion currentVersion = new SemanticVersion(AppInfo.getAppInfo().version);
         if (latestVersion.major > currentVersion.major) {
             versionMessage = context.makeError(template)
                 .set("message", context.i18n("versions.major"))
@@ -80,7 +80,7 @@ public class VersionCommand extends Command {
         }
 
         versionMessage
-            .setTitle("v" + AppInfo.getAppInfo().VERSION)
+            .setTitle("v" + AppInfo.getAppInfo().version)
             .setFooter(context.i18n("latestVersion", latestVersion))
             .queue();
 

@@ -53,13 +53,13 @@ public class LavalinkCommand extends SystemCommand {
 
     @Override
     public CommandPriority getCommandPriority() {
-        return LavalinkManager.LavalinkManagerHolder.LAVALINK.isEnabled()
+        return LavalinkManager.LavalinkManagerHolder.lavalink.isEnabled()
             ? CommandPriority.SYSTEM : CommandPriority.HIDDEN;
     }
 
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
-        if (!LavalinkManager.LavalinkManagerHolder.LAVALINK.isEnabled()) {
+        if (!LavalinkManager.LavalinkManagerHolder.lavalink.isEnabled()) {
             return false;
         }
 
@@ -100,7 +100,7 @@ public class LavalinkCommand extends SystemCommand {
 
         String password = args[3];
 
-        LavalinkManager.LavalinkManagerHolder.LAVALINK.getLavalink().addNode(name, uri, password);
+        LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink().addNode(name, uri, password);
 
         context.makeSuccess("Added node: :name @ :uri")
             .set("name", name)
@@ -116,7 +116,7 @@ public class LavalinkCommand extends SystemCommand {
         }
 
         String nodeName = args[1];
-        List<LavalinkSocket> nodes = LavalinkManager.LavalinkManagerHolder.LAVALINK.getLavalink().getNodes();
+        List<LavalinkSocket> nodes = LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink().getNodes();
 
         int key = -1;
         for (int i = 0; i < nodes.size(); i++) {
@@ -131,7 +131,7 @@ public class LavalinkCommand extends SystemCommand {
             return sendErrorMessage(context, "No nodes was found with the name: " + nodeName);
         }
 
-        LavalinkManager.LavalinkManagerHolder.LAVALINK.getLavalink().removeNode(key);
+        LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink().removeNode(key);
 
         context.makeSuccess(":node has been removed from the Lavalink runtime.")
             .set("node", nodeName)
@@ -141,7 +141,7 @@ public class LavalinkCommand extends SystemCommand {
     }
 
     private boolean showNode(CommandMessage context, String[] args) {
-        if (LavalinkManager.LavalinkManagerHolder.LAVALINK.getLavalink().getNodes().isEmpty()) {
+        if (LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink().getNodes().isEmpty()) {
             return sendErrorMessage(context, "There are no remote lavalink nodes registered.");
         }
 
@@ -150,7 +150,7 @@ public class LavalinkCommand extends SystemCommand {
         }
 
         String nodeName = args[1];
-        List<LavalinkSocket> nodes = LavalinkManager.LavalinkManagerHolder.LAVALINK.getLavalink().getNodes().stream()
+        List<LavalinkSocket> nodes = LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink().getNodes().stream()
             .filter(ll -> ll.getName().equals(nodeName))
             .collect(Collectors.toList());
 
@@ -199,7 +199,7 @@ public class LavalinkCommand extends SystemCommand {
 
     private boolean listNodes(CommandMessage context) {
         List<String> nodes = new ArrayList<>();
-        for (LavalinkSocket socket : LavalinkManager.LavalinkManagerHolder.LAVALINK.getLavalink().getNodes()) {
+        for (LavalinkSocket socket : LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink().getNodes()) {
             nodes.add("- " + socket.getName());
             nodes.add("\t*Status:* " + (socket.isAvailable() ? "Connected" : "Disconnected"));
         }

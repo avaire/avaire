@@ -1,6 +1,7 @@
 package com.avairebot.database.schema;
 
 public enum FieldType {
+
     INTEGER("INT", true, 1, false),
     DECIMAL("DECIMAL", true, 2, true),
     DOUBLE("DOUBLE", true, 1, true),

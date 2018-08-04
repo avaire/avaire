@@ -71,7 +71,7 @@ public class MoveHereCommand extends Command {
 
         context.makeSuccess(context.i18n("nowPlayingIn"))
             .set("channelName", channel.getName())
-            .queue(message -> message.delete().queueAfter(1, TimeUnit.MINUTES, null, RestActionUtil.IGNORE));
+            .queue(message -> message.delete().queueAfter(1, TimeUnit.MINUTES, null, RestActionUtil.ignore));
 
         return true;
     }

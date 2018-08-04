@@ -11,11 +11,11 @@ import java.util.function.Supplier;
 
 public class MemoryAdapter extends CacheAdapter {
 
-    private final Map<String, CacheItem> CACHES = new WeakHashMap<String, CacheItem>();
+    private final Map<String, CacheItem> cache = new WeakHashMap<>();
 
     @Override
     public boolean put(String token, Object value, int seconds) {
-        CACHES.put(token, new CacheItem(token, value, System.currentTimeMillis() + (seconds * 1000)));
+        cache.put(token, new CacheItem(token, value, System.currentTimeMillis() + (seconds * 1000)));
         return true;
     }
 
@@ -27,7 +27,7 @@ public class MemoryAdapter extends CacheAdapter {
 
         try {
             CacheItem item = new CacheItem(token, closure.get(), System.currentTimeMillis() + (seconds * 1000));
-            CACHES.put(token, item);
+            cache.put(token, item);
 
             return item.getValue();
         } catch (Exception e) {
@@ -38,7 +38,7 @@ public class MemoryAdapter extends CacheAdapter {
 
     @Override
     public boolean forever(String token, Object value) {
-        CACHES.put(token, new CacheItem(token, value, -1));
+        cache.put(token, new CacheItem(token, value, -1));
 
         return true;
     }
@@ -61,26 +61,26 @@ public class MemoryAdapter extends CacheAdapter {
         if (!has(token)) {
             return null;
         }
-        return CACHES.getOrDefault(token, null);
+        return cache.getOrDefault(token, null);
     }
 
     @Override
     public boolean has(String token) {
-        return CACHES.containsKey(token) && CACHES.get(token).isExpired();
+        return cache.containsKey(token) && cache.get(token).isExpired();
     }
 
     @Override
     public CacheItem forget(String token) {
-        return CACHES.remove(token);
+        return cache.remove(token);
     }
 
     @Override
     public boolean flush() {
-        CACHES.clear();
+        cache.clear();
         return true;
     }
 
     public Set<String> getCacheKeys() {
-        return CACHES.keySet();
+        return cache.keySet();
     }
 }

@@ -191,12 +191,12 @@ public class PluginLoader {
     }
 
     private boolean compareVersion(String version) {
-        if (version.equals(AppInfo.getAppInfo().VERSION) || AppInfo.getAppInfo().VERSION.equals("@project.version@")) {
+        if (version.equals(AppInfo.getAppInfo().version) || AppInfo.getAppInfo().version.equals("@project.version@")) {
             return true;
         }
 
         String[] split = version.split("\\.");
-        String[] versions = AppInfo.getAppInfo().VERSION.split("\\.");
+        String[] versions = AppInfo.getAppInfo().version.split("\\.");
 
         for (int i = 0; i < split.length && i < versions.length; i++) {
             if (NumberUtil.parseInt(split[i], 0) < NumberUtil.parseInt(versions[i], 0)) {

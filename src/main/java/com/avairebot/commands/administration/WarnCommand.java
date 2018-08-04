@@ -116,14 +116,14 @@ public class WarnCommand extends Command {
                     .setFooter("Case ID #" + caseId, null)
                     .setTimestamp(Instant.now())
                     .build()
-            ).queue(null, RestActionUtil.IGNORE);
+            ).queue(null, RestActionUtil.ignore);
 
             context.makeWarning(":target has been **warned** for \":reason\"")
                 .set("target", finalUser.getName() + "#" + finalUser.getDiscriminator())
                 .set("reason", finalReason)
                 .setFooter("Case ID #" + caseId)
                 .setTimestamp(Instant.now())
-                .queue(null, RestActionUtil.IGNORE);
+                .queue(null, RestActionUtil.ignore);
         }, error -> {
             context.makeWarning("Failed to DM the user with the warning, they most likely have their private settings set to disable all DMs from this server.")
                 .queue();

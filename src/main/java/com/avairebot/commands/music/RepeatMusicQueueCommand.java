@@ -55,7 +55,7 @@ public class RepeatMusicQueueCommand extends Command {
         context.makeSuccess(context.i18n("success"))
             .set("status", musicManager.isRepeatQueue()
                 ? context.i18n("enabled") : context.i18n("disabled"))
-            .queue(message -> message.delete().queueAfter(5, TimeUnit.MINUTES, null, RestActionUtil.IGNORE));
+            .queue(message -> message.delete().queueAfter(5, TimeUnit.MINUTES, null, RestActionUtil.ignore));
 
         return true;
     }

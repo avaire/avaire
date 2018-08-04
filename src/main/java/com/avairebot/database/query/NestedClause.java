@@ -6,6 +6,7 @@ import com.avairebot.database.DatabaseManager;
 import java.util.List;
 
 public class NestedClause implements QueryClause {
+    
     /**
      * The query builder instance that should be parsed to the clause
      * consumer, used for building the separate where clauses.

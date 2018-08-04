@@ -44,13 +44,13 @@ public class MessageEventAdapter extends EventAdapter {
 
     public static final Set<Long> hasReceivedInfoMessageInTheLastMinute = new HashSet<>();
 
-    private static final ExecutorService COMMAND_SERVICE = Executors.newCachedThreadPool(
+    private static final ExecutorService commandService = Executors.newCachedThreadPool(
         new ThreadFactoryBuilder()
             .setNameFormat("avaire-command-thread-%d")
             .build()
     );
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(MessageEventAdapter.class);
+    private static final Logger log = LoggerFactory.getLogger(MessageEventAdapter.class);
     private static final Pattern userRegEX = Pattern.compile("<@(!|)+[0-9]{16,}+>", Pattern.CASE_INSENSITIVE);
     private static final String mentionMessage = String.join("\n", Arrays.asList(
         "Hi there! I'm **%s**, a multipurpose Discord bot built for fun by %s!",
@@ -96,7 +96,7 @@ public class MessageEventAdapter extends EventAdapter {
             }
 
             if (isUserBeingThrottledBySlowmodeInChannel(event, databaseEventHolder)) {
-                event.getMessage().delete().queue(null, RestActionUtil.IGNORE);
+                event.getMessage().delete().queue(null, RestActionUtil.ignore);
                 Metrics.slowmodeRatelimited.labels(event.getChannel().getId()).inc();
                 return;
             }
@@ -145,7 +145,7 @@ public class MessageEventAdapter extends EventAdapter {
     }
 
     private void invokeMiddlewareStack(MiddlewareStack stack) {
-        COMMAND_SERVICE.submit(stack::next);
+        commandService.submit(stack::next);
     }
 
     private boolean canExecuteCommand(MessageReceivedEvent event, CommandContainer container) {
@@ -215,14 +215,14 @@ public class MessageEventAdapter extends EventAdapter {
             avaire.getSelfUser().getName(),
             author,
             CommandHandler.getLazyCommand("help").getCommand().generateCommandTrigger(event.getMessage()),
-            AppInfo.getAppInfo().VERSION
+            AppInfo.getAppInfo().version
         ))
             .setFooter("This message will be automatically deleted in one minute.")
-            .queue(message -> message.delete().queueAfter(1, TimeUnit.MINUTES, null, RestActionUtil.IGNORE));
+            .queue(message -> message.delete().queueAfter(1, TimeUnit.MINUTES, null, RestActionUtil.ignore));
     }
 
     private void sendInformationMessage(MessageReceivedEvent event) {
-        LOGGER.info("Private message received from user(ID: {}) that does not match any commands!",
+        log.info("Private message received from user(ID: {}) that does not match any commands!",
             event.getAuthor().getId()
         );
 

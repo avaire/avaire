@@ -8,5 +8,6 @@ import java.lang.annotation.Target;
 @Target(value = {ElementType.METHOD})
 @Retention(value = RetentionPolicy.RUNTIME)
 public @interface QueryScope {
+
     boolean accessible() default true;
 }

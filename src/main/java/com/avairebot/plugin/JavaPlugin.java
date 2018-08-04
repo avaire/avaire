@@ -31,7 +31,7 @@ public abstract class JavaPlugin {
 
     private final Set<ListenerAdapter> eventListeners = new HashSet<>();
 
-    private Logger logger = LoggerFactory.getLogger(JavaPlugin.class);
+    private Logger log = LoggerFactory.getLogger(JavaPlugin.class);
 
     private AvaIre avaire;
     private PluginLoader loader;
@@ -47,7 +47,7 @@ public abstract class JavaPlugin {
     final void init(AvaIre avaire, PluginLoader loader) {
         this.avaire = avaire;
         this.loader = loader;
-        this.logger = LoggerFactory.getLogger(this.getClass().getCanonicalName());
+        this.log = LoggerFactory.getLogger(this.getClass().getCanonicalName());
     }
 
     /**
@@ -261,7 +261,7 @@ public abstract class JavaPlugin {
      * @return Logger associated with this plugin.
      */
     public final Logger getLogger() {
-        return logger;
+        return log;
     }
 
     /**

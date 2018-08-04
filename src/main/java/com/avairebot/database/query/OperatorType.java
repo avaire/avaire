@@ -1,6 +1,7 @@
 package com.avairebot.database.query;
 
 public enum OperatorType {
+    
     /**
      * The common SQL <code>AND</code> operator.
      */

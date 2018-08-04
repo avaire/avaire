@@ -9,7 +9,7 @@ import net.dv8tion.jda.core.entities.User;
 import javax.annotation.Nonnull;
 import java.awt.*;
 
-public class VoteMesseger {
+public class VoteMessenger {
 
     public MessageEmbed buildVoteWithPointsMessage(int points) {
         return buildVoteWithPointsMessage("Thanks for voting!", points);
@@ -30,7 +30,7 @@ public class VoteMesseger {
     public void sendVoteWithPointsMessageInDM(@Nonnull User user, int points) {
         user.openPrivateChannel().queue(message -> message.sendMessage(
             buildVoteWithPointsMessage(points)
-        ).queue(null, RestActionUtil.IGNORE), RestActionUtil.IGNORE);
+        ).queue(null, RestActionUtil.ignore), RestActionUtil.ignore);
     }
 
     public void sendMustVoteMessage(MessageChannel channel) {

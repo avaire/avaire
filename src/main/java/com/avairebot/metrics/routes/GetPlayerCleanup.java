@@ -17,7 +17,7 @@ import java.util.Set;
 
 public class GetPlayerCleanup extends SparkRoute {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(GetGuildCleanup.class);
+    private static final Logger log = LoggerFactory.getLogger(GetGuildCleanup.class);
 
     public GetPlayerCleanup(Metrics metrics) {
         super(metrics);
@@ -26,7 +26,7 @@ public class GetPlayerCleanup extends SparkRoute {
     @Override
     public Object handle(Request request, Response response) throws Exception {
         if (!hasValidAuthorizationHeader(request)) {
-            LOGGER.warn("Unauthorized request, missing or invalid \"Authorization\" header give.");
+            log.warn("Unauthorized request, missing or invalid \"Authorization\" header give.");
             return buildResponse(response, 401, "Unauthorized request, missing or invalid \"Authorization\" header give.");
         }
 

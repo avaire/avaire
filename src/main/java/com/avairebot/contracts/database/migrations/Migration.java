@@ -5,6 +5,7 @@ import com.avairebot.database.schema.Schema;
 import java.sql.SQLException;
 
 public interface Migration {
+
     /**
      * Gets the time the migration was created at, this is used to order
      * migrations, making sure migrations are rolled out to the

@@ -3,6 +3,7 @@ package com.avairebot.time;
 import java.util.Calendar;
 
 public enum Day {
+
     /**
      * Value of the {@link java.util.Calendar#DAY_OF_WEEK} field indicating
      * Monday.

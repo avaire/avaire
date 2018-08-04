@@ -24,9 +24,9 @@ public class GuildController {
         .expireAfterAccess(5, TimeUnit.MINUTES)
         .build();
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(GuildController.class);
+    private static final Logger log = LoggerFactory.getLogger(GuildController.class);
 
-    private static final String[] REQUIRED_GUILD_ITEMS = new String[]{
+    private static final String[] requiredGuildColumns = new String[]{
         "guild_types.name as type_name", "guild_types.limits as type_limits",
         "guilds.id", "guilds.name", "guilds.icon", "guilds.local", "guilds.channels", "guilds.modules", "guilds.level_roles", "guilds.claimable_roles",
         "guilds.prefixes", "guilds.aliases", "guilds.default_volume", "guilds.dj_level", "guilds.modlog_case", "guilds.modlog", "guilds.autorole",
@@ -100,7 +100,7 @@ public class GuildController {
 
             channels.add(item);
         }
-        return AvaIre.GSON.toJson(channels);
+        return AvaIre.gson.toJson(channels);
     }
 
     public static String buildRoleData(List<Role> roles) {
@@ -123,7 +123,7 @@ public class GuildController {
 
             rolesMap.add(item);
         }
-        return AvaIre.GSON.toJson(rolesMap);
+        return AvaIre.gson.toJson(rolesMap);
     }
 
     public static void forgetCache(long guildId) {
@@ -131,12 +131,12 @@ public class GuildController {
     }
 
     private static GuildTransformer loadGuildFromDatabase(AvaIre avaire, Guild guild) {
-        LOGGER.debug("Guild cache for " + guild.getId() + " was refreshed");
+        log.debug("Guild cache for " + guild.getId() + " was refreshed");
 
         try {
             GuildTransformer transformer = new GuildTransformer(avaire.getDatabase()
                 .newQueryBuilder(Constants.GUILD_TABLE_NAME)
-                .select(REQUIRED_GUILD_ITEMS)
+                .select(requiredGuildColumns)
                 .leftJoin("guild_types", "guilds.type", "guild_types.id")
                 .where("guilds.id", guild.getId())
                 .get().first());

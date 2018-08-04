@@ -120,7 +120,7 @@ public class PlayCommand extends Command {
         AudioHandler.getDefaultAudioHandler().play(context, AudioHandler.getDefaultAudioHandler().getGuildAudioPlayer(context.getGuild()), track);
 
         if (session.getMessage() != null) {
-            session.getMessage().delete().queue(null, RestActionUtil.IGNORE);
+            session.getMessage().delete().queue(null, RestActionUtil.ignore);
         }
 
         AudioHandler.getDefaultAudioHandler().removeAudioSession(context);
@@ -171,7 +171,7 @@ public class PlayCommand extends Command {
     private Consumer<TrackResponse> musicSuccess(final CommandMessage context, final boolean finalShouldLeaveMessage) {
         return (TrackResponse response) -> {
             if (!finalShouldLeaveMessage && canDeleteMessage(context)) {
-                context.delete().reason("Song request, removing song to cleanup chat").queue(null, RestActionUtil.IGNORE);
+                context.delete().reason("Song request, removing song to cleanup chat").queue(null, RestActionUtil.ignore);
             }
 
             response.getMusicManager().registerDefaultVolume();

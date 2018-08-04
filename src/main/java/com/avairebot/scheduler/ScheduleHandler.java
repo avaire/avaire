@@ -12,22 +12,22 @@ import java.util.concurrent.ScheduledFuture;
 
 public class ScheduleHandler {
 
-    private static final Set<ScheduledFuture<?>> TASKS = new HashSet<>();
-    private static final ScheduledExecutorService SCHEDULER = Executors.newScheduledThreadPool(5, new ThreadFactoryBuilder()
+    private static final Set<ScheduledFuture<?>> tasks = new HashSet<>();
+    private static final ScheduledExecutorService schedulerService = Executors.newScheduledThreadPool(5, new ThreadFactoryBuilder()
         .setPriority(Thread.MAX_PRIORITY)
         .setNameFormat("job-schedule-%d")
         .build()
     );
 
     public static void registerJob(@Nonnull Job job) {
-        TASKS.add(SCHEDULER.scheduleAtFixedRate(job, job.getDelay(), job.getPeriod(), job.getUnit()));
+        tasks.add(schedulerService.scheduleAtFixedRate(job, job.getDelay(), job.getPeriod(), job.getUnit()));
     }
 
     public static Set<ScheduledFuture<?>> entrySet() {
-        return TASKS;
+        return tasks;
     }
 
     public static ScheduledExecutorService getScheduler() {
-        return SCHEDULER;
+        return schedulerService;
     }
 }

@@ -63,14 +63,14 @@ public class ResumeCommand extends Command {
         if (!musicManager.getPlayer().isPaused()) {
             context.makeWarning(context.i18n("alreadyPlaying"))
                 .set("prefix", generateCommandPrefix(context.getMessage()))
-                .queue(message -> message.delete().queueAfter(1, TimeUnit.MINUTES, null, RestActionUtil.IGNORE));
+                .queue(message -> message.delete().queueAfter(1, TimeUnit.MINUTES, null, RestActionUtil.ignore));
 
             return true;
         }
 
         musicManager.getPlayer().setPaused(false);
         context.makeSuccess(context.i18n("resume"))
-            .queue(message -> message.delete().queueAfter(1, TimeUnit.MINUTES, null, RestActionUtil.IGNORE));
+            .queue(message -> message.delete().queueAfter(1, TimeUnit.MINUTES, null, RestActionUtil.ignore));
 
         return true;
     }

@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
 
 public abstract class Job extends TimerTask implements Reflectional {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(Job.class);
+    private static final Logger log = LoggerFactory.getLogger(Job.class);
 
     /**
      * The AvaIre class instance, this is used to access
@@ -123,10 +123,10 @@ public abstract class Job extends TimerTask implements Reflectional {
     protected void handleTask(Task... tasks) {
         for (Task task : tasks) {
             try {
-                LOGGER.trace("Invoking {}#handle(avaire)", task.getClass().getName());
+                log.trace("Invoking {}#handle(avaire)", task.getClass().getName());
                 task.handle(avaire);
             } catch (Exception ex) {
-                LOGGER.error("An error occurred while running the {} class, message: {}",
+                log.error("An error occurred while running the {} class, message: {}",
                     task.getClass().getSimpleName(), ex.getMessage(), ex
                 );
             }

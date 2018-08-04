@@ -9,7 +9,7 @@ public class HttpFilter implements Filter {
 
     @Override
     public void handle(Request request, Response response) throws Exception {
-        Metrics.LOGGER.debug(request.requestMethod() + " " + request.pathInfo());
+        Metrics.log.debug(request.requestMethod() + " " + request.pathInfo());
 
         response.header("Access-Control-Allow-Origin", "*");
         response.type("application/json");

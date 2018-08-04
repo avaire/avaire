@@ -165,9 +165,9 @@ public class Metrics {
     // ##                           Method Stuff
     // ################################################################################
 
-    public static final Logger LOGGER = LoggerFactory.getLogger(Metrics.class);
+    public static final Logger log = LoggerFactory.getLogger(Metrics.class);
 
-    private static int PORT = 1256;
+    private static int port = 1256;
 
     private static AvaIre avaire;
     private static boolean isSetup = false;
@@ -203,16 +203,16 @@ public class Metrics {
         cacheMetrics.addCache("global-leaderboard", GlobalLeaderboardCommand.cache);
 
         if (!avaire.getConfig().getBoolean("metrics.enabled", true)) {
-            LOGGER.info("Metrics web API is disabled, skipping igniting Spark API");
+            log.info("Metrics web API is disabled, skipping igniting Spark API");
             Metrics.isSetup = true;
             return;
         }
 
-        PORT = avaire.getConfig().getInt("metrics.port", 1256);
+        port = avaire.getConfig().getInt("metrics.port", 1256);
 
-        LOGGER.info("Igniting Spark API on port: " + PORT);
+        log.info("Igniting Spark API on port: " + port);
 
-        Spark.port(PORT);
+        Spark.port(port);
 
         Spark.notFound(new GetNotFoundRoute(MetricsHolder.METRICS));
         Spark.exception(Exception.class, new SparkExceptionHandler());

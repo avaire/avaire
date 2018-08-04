@@ -17,7 +17,7 @@ public class Response {
     }
 
     public Object toService(Class<?> clazz) {
-        return AvaIre.GSON.fromJson(toString(), clazz);
+        return AvaIre.gson.fromJson(toString(), clazz);
     }
 
     @Override

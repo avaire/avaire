@@ -10,7 +10,6 @@ public class RunEveryMinuteJob extends Job {
 
     private final ChangeGameTask changeGameTask = new ChangeGameTask();
     private final GarbageCollectorTask garbageCollectorTask = new GarbageCollectorTask();
-    private final ResetVoteManagerCacheTask resetVoteManagerCacheTask = new ResetVoteManagerCacheTask();
     private final ResetRespectStatisticsTask resetRespectStatisticsTask = new ResetRespectStatisticsTask();
     private final UpdateWebsocketHeartbeatMetricsTask updateWebsocketHeartbeatMetricsTask = new UpdateWebsocketHeartbeatMetricsTask();
     private final SyncPlayerExperienceWithDatabaseTask syncPlayerExperienceWithDatabaseTask = new SyncPlayerExperienceWithDatabaseTask();
@@ -25,7 +24,6 @@ public class RunEveryMinuteJob extends Job {
         handleTask(
             changeGameTask,
             garbageCollectorTask,
-            resetVoteManagerCacheTask,
             resetRespectStatisticsTask,
             updateWebsocketHeartbeatMetricsTask,
             syncPlayerExperienceWithDatabaseTask,

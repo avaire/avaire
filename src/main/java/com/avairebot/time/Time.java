@@ -1,6 +1,7 @@
 package com.avairebot.time;
 
 public enum Time {
+
     YEARS_PER_CENTURY(100),
     YEARS_PER_DECADE(10),
     MONTHS_PER_YEAR(12),

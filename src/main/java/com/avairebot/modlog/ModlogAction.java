@@ -5,6 +5,7 @@ import net.dv8tion.jda.core.entities.User;
 import javax.annotation.Nonnull;
 
 public class ModlogAction {
+
     private final User moderator;
     private final User target;
 

@@ -18,9 +18,9 @@ import java.util.Map;
 
 public class MusicActivityTask implements Task {
 
-    public final static Map<Long, Integer> MISSING_LISTENERS = new HashMap<>();
-    public final static Map<Long, Integer> EMPTY_QUEUE = new HashMap<>();
-    public final static Map<Long, Integer> PLAYER_PAUSED = new HashMap<>();
+    public final static Map<Long, Integer> missingListener = new HashMap<>();
+    public final static Map<Long, Integer> emptyQueue = new HashMap<>();
+    public final static Map<Long, Integer> playerPaused = new HashMap<>();
 
     @Override
     public void handle(AvaIre avaire) {
@@ -28,7 +28,7 @@ public class MusicActivityTask implements Task {
             return;
         }
 
-        if (LavalinkManager.LavalinkManagerHolder.LAVALINK.isEnabled()) {
+        if (LavalinkManager.LavalinkManagerHolder.lavalink.isEnabled()) {
             handleLavalinkNodes(avaire);
         } else {
             handleInternalLavaplayer(avaire);
@@ -62,8 +62,8 @@ public class MusicActivityTask implements Task {
                         continue;
                     }
 
-                    if (EMPTY_QUEUE.containsKey(guildId)) {
-                        EMPTY_QUEUE.remove(guildId);
+                    if (emptyQueue.containsKey(guildId)) {
+                        emptyQueue.remove(guildId);
                     }
 
                     if (guildMusicManager.getPlayer().isPaused()) {
@@ -88,14 +88,14 @@ public class MusicActivityTask implements Task {
                     }
 
                     if (hasListeners && !manager.getGuild().getSelfMember().getVoiceState().isMuted()) {
-                        MISSING_LISTENERS.remove(guildId);
+                        missingListener.remove(guildId);
                         continue;
                     }
 
-                    int times = MISSING_LISTENERS.getOrDefault(guildId, 0) + 1;
+                    int times = missingListener.getOrDefault(guildId, 0) + 1;
 
                     if (times <= getValue(avaire, "missing-listeners", 5)) {
-                        MISSING_LISTENERS.put(guildId, times);
+                        missingListener.put(guildId, times);
                         continue;
                     }
 
@@ -108,7 +108,7 @@ public class MusicActivityTask implements Task {
     }
 
     private void handleLavalinkNodes(AvaIre avaire) {
-        for (Link link : LavalinkManager.LavalinkManagerHolder.LAVALINK.getLavalink().getLinks()) {
+        for (Link link : LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink().getLinks()) {
             long guildId = link.getGuildIdLong();
 
             try {
@@ -127,8 +127,8 @@ public class MusicActivityTask implements Task {
                     continue;
                 }
 
-                if (EMPTY_QUEUE.containsKey(guildId)) {
-                    EMPTY_QUEUE.remove(guildId);
+                if (emptyQueue.containsKey(guildId)) {
+                    emptyQueue.remove(guildId);
                 }
 
                 if (guildMusicManager.getPlayer().isPaused()) {
@@ -154,14 +154,14 @@ public class MusicActivityTask implements Task {
                     }
 
                     if (hasListeners && !guildMusicManager.getLastActiveMessage().getGuild().getSelfMember().getVoiceState().isMuted()) {
-                        MISSING_LISTENERS.remove(guildId);
+                        missingListener.remove(guildId);
                         continue;
                     }
 
-                    int times = MISSING_LISTENERS.getOrDefault(guildId, 0) + 1;
+                    int times = missingListener.getOrDefault(guildId, 0) + 1;
 
                     if (times <= getValue(avaire, "missing-listeners", 5)) {
-                        MISSING_LISTENERS.put(guildId, times);
+                        missingListener.put(guildId, times);
                         continue;
                     }
                 }
@@ -174,10 +174,10 @@ public class MusicActivityTask implements Task {
     }
 
     private void handleEmptyMusic(AvaIre avaire, @Nullable AudioManager manager, @Nullable Link link, @Nullable GuildMusicManager guildMusicManager, long guildId) {
-        int times = EMPTY_QUEUE.getOrDefault(guildId, 0) + 1;
+        int times = emptyQueue.getOrDefault(guildId, 0) + 1;
 
         if (times <= getValue(avaire, "empty-queue-timeout", 2)) {
-            EMPTY_QUEUE.put(guildId, times);
+            emptyQueue.put(guildId, times);
             return;
         }
 
@@ -185,10 +185,10 @@ public class MusicActivityTask implements Task {
     }
 
     private void handlePausedMusic(AvaIre avaire, @Nullable AudioManager manager, @Nullable Link link, @Nullable GuildMusicManager guildMusicManager, long guildId) {
-        int times = PLAYER_PAUSED.getOrDefault(guildId, 0) + 1;
+        int times = playerPaused.getOrDefault(guildId, 0) + 1;
 
         if (times <= getValue(avaire, "paused-music-timeout", 10)) {
-            PLAYER_PAUSED.put(guildId, times);
+            playerPaused.put(guildId, times);
             return;
         }
 
@@ -198,9 +198,9 @@ public class MusicActivityTask implements Task {
     private void clearItems(@Nullable AudioManager manager, @Nullable Link link, @Nullable GuildMusicManager guildMusicManager, long guildId) {
         if (guildMusicManager != null) {
             guildMusicManager.getScheduler().getQueue().clear();
-            if (LavalinkManager.LavalinkManagerHolder.LAVALINK.isEnabled()) {
+            if (LavalinkManager.LavalinkManagerHolder.lavalink.isEnabled()) {
                 if (guildMusicManager.getLastActiveMessage() != null) {
-                    LavalinkManager.LavalinkManagerHolder.LAVALINK.getLavalink()
+                    LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink()
                         .getLink(guildMusicManager.getLastActiveMessage().getGuild())
                         .destroy();
                 }
@@ -211,18 +211,18 @@ public class MusicActivityTask implements Task {
             }
         }
 
-        MISSING_LISTENERS.remove(guildId);
-        PLAYER_PAUSED.remove(guildId);
-        EMPTY_QUEUE.remove(guildId);
+        missingListener.remove(guildId);
+        playerPaused.remove(guildId);
+        emptyQueue.remove(guildId);
 
         if (guildMusicManager == null) {
             if (manager != null) {
-                LavalinkManager.LavalinkManagerHolder.LAVALINK.closeConnection(manager.getGuild());
+                LavalinkManager.LavalinkManagerHolder.lavalink.closeConnection(manager.getGuild());
             } else if (link != null) {
                 link.disconnect();
             }
 
-            if (LavalinkManager.LavalinkManagerHolder.LAVALINK.isEnabled()) {
+            if (LavalinkManager.LavalinkManagerHolder.lavalink.isEnabled()) {
                 if (manager != null) {
                     manager.getGuild().getAudioManager().setSendingHandler(null);
                 }

@@ -18,19 +18,19 @@ import java.util.*;
 
 public class RequestSong extends Intent {
 
-    private static final Map<String, List<String>> CATEGORIES = new HashMap<>();
+    private static final Map<String, List<String>> categories = new HashMap<>();
 
     static {
-        CATEGORIES.put("electro", Arrays.asList("electro-hub", "electro-swing"));
-        CATEGORIES.put("classical", Collections.singletonList("classical"));
-        CATEGORIES.put("korean", Collections.singletonList("korean-madness"));
-        CATEGORIES.put("hiphop", Collections.singletonList("hip-hop"));
-        CATEGORIES.put("chill", Collections.singletonList("chill-corner"));
-        CATEGORIES.put("metal", Collections.singletonList("metal-mix"));
-        CATEGORIES.put("retro", Collections.singletonList("retro-renegade"));
-        CATEGORIES.put("rock", Collections.singletonList("rock-n-roll"));
-        CATEGORIES.put("jazz", Collections.singletonList("coffee-house-jazz"));
-        CATEGORIES.put("pop", Collections.singletonList("purely-pop"));
+        categories.put("electro", Arrays.asList("electro-hub", "electro-swing"));
+        categories.put("classical", Collections.singletonList("classical"));
+        categories.put("korean", Collections.singletonList("korean-madness"));
+        categories.put("hiphop", Collections.singletonList("hip-hop"));
+        categories.put("chill", Collections.singletonList("chill-corner"));
+        categories.put("metal", Collections.singletonList("metal-mix"));
+        categories.put("retro", Collections.singletonList("retro-renegade"));
+        categories.put("rock", Collections.singletonList("rock-n-roll"));
+        categories.put("jazz", Collections.singletonList("coffee-house-jazz"));
+        categories.put("pop", Collections.singletonList("purely-pop"));
     }
 
     public RequestSong(AvaIre avaire) {
@@ -59,14 +59,14 @@ public class RequestSong extends Intent {
 
         CommandContainer container = CommandHandler.getCommand(PlayCommand.class);
         String type = parameters.get("music").getAsString().toLowerCase();
-        if (!CATEGORIES.containsKey(type)) {
+        if (!categories.containsKey(type)) {
             container.getCommand().onCommand(
                 new CommandMessage(container, context.getDatabaseEventHolder(), context.getMessage()), new String[]{type, "---leave-message"}
             );
             return;
         }
 
-        String category = (String) RandomUtil.pickRandom(CATEGORIES.get(type));
+        String category = (String) RandomUtil.pickRandom(categories.get(type));
         String randomSong = getRandomSong(category);
 
         container.getCommand().onCommand(

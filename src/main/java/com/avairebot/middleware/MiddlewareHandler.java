@@ -12,7 +12,7 @@ import java.util.Map;
 
 public class MiddlewareHandler {
 
-    private static final Map<String, Middleware> MIDDLEWARES = new HashMap<>();
+    private static final Map<String, Middleware> middlewares = new HashMap<>();
 
     /**
      * Gets a middleware by name, the name will ignore letter casing.
@@ -22,7 +22,7 @@ public class MiddlewareHandler {
      */
     @Nullable
     public static Middleware getMiddleware(@Nonnull String name) {
-        return MIDDLEWARES.getOrDefault(name.toLowerCase(), null);
+        return middlewares.getOrDefault(name.toLowerCase(), null);
     }
 
     /**
@@ -33,7 +33,7 @@ public class MiddlewareHandler {
      */
     @Nullable
     public static String getName(@Nonnull Class<? extends Middleware> clazz) {
-        for (Map.Entry<String, Middleware> middleware : MIDDLEWARES.entrySet()) {
+        for (Map.Entry<String, Middleware> middleware : middlewares.entrySet()) {
             if (middleware.getValue().getClass().getSimpleName().equalsIgnoreCase(clazz.getSimpleName())) {
                 return middleware.getKey();
             }
@@ -55,10 +55,10 @@ public class MiddlewareHandler {
         Checks.notNull(name, "Middleware name");
         Checks.notNull(middleware, "Middleware");
 
-        if (MIDDLEWARES.containsKey(name.toLowerCase())) {
+        if (middlewares.containsKey(name.toLowerCase())) {
             throw new IllegalArgumentException(name + " has already been registered as a middleware");
         }
-        MIDDLEWARES.put(name.toLowerCase(), middleware);
+        middlewares.put(name.toLowerCase(), middleware);
     }
 
     /**

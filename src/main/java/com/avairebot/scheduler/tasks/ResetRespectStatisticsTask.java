@@ -12,7 +12,7 @@ public class ResetRespectStatisticsTask implements Task {
     @Override
     public void handle(AvaIre avaire) {
         if (!isSameDay()) {
-            RipCommand.RESPECT = 0;
+            RipCommand.respect = 0;
         }
     }
 

@@ -4,6 +4,7 @@ package com.avairebot.database.connections;
 import com.avairebot.contracts.database.StatementInterface;
 
 public enum SQLiteStatement implements StatementInterface {
+
     SELECT("SELECT"),
     INSERT("INSERT"),
     UPDATE("UPDATE"),

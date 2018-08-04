@@ -734,7 +734,7 @@ public class Collection implements Cloneable, Iterable<DataRow> {
      * @return the JSON collection string
      */
     public String toJson() {
-        return AvaIre.GSON.toJson(items);
+        return AvaIre.gson.toJson(items);
     }
 
     @Override

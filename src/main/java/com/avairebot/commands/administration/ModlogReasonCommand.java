@@ -153,16 +153,16 @@ public class ModlogReasonCommand extends Command {
                     context.makeSuccess("The modlog case with an ID of **:id** was successfully edited and set to the reason of `:reason`")
                         .set("id", caseId)
                         .set("reason", reason)
-                        .queue(successMessage -> successMessage.delete().queueAfter(45, TimeUnit.SECONDS, null, RestActionUtil.IGNORE));
-                    context.delete().queueAfter(45, TimeUnit.SECONDS, null, RestActionUtil.IGNORE);
+                        .queue(successMessage -> successMessage.delete().queueAfter(45, TimeUnit.SECONDS, null, RestActionUtil.ignore));
+                    context.delete().queueAfter(45, TimeUnit.SECONDS, null, RestActionUtil.ignore);
                 }, error -> {
                     context.makeError("Failed to edit modlog message: " + error.getMessage())
-                        .queue(successMessage -> successMessage.delete().queueAfter(45, TimeUnit.SECONDS, null, RestActionUtil.IGNORE));
-                    context.delete().queueAfter(45, TimeUnit.SECONDS, null, RestActionUtil.IGNORE);
+                        .queue(successMessage -> successMessage.delete().queueAfter(45, TimeUnit.SECONDS, null, RestActionUtil.ignore));
+                    context.delete().queueAfter(45, TimeUnit.SECONDS, null, RestActionUtil.ignore);
                 });
             }, error -> {
                 context.makeWarning("Couldn't find the message for the given modlog case, was it deleted?")
-                    .queue(null, RestActionUtil.IGNORE);
+                    .queue(null, RestActionUtil.ignore);
             });
         } catch (SQLException error) {
             return sendErrorMessage(context, "Something went wrong while trying to edit the modlog message: " + error.getMessage());

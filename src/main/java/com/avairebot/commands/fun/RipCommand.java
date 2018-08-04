@@ -13,7 +13,7 @@ import java.util.List;
 
 public class RipCommand extends Command {
 
-    public static int RESPECT = 0;
+    public static int respect = 0;
 
     public RipCommand(AvaIre avaire) {
         super(avaire, false);
@@ -46,7 +46,7 @@ public class RipCommand extends Command {
 
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
-        RESPECT++;
+        respect++;
 
         try {
             avaire.getDatabase().newQueryBuilder(Constants.STATISTICS_TABLE_NAME)
@@ -59,7 +59,7 @@ public class RipCommand extends Command {
         context.makeEmbeddedMessage()
             .setColor(Color.decode("#2A2C31"))
             .setDescription(context.i18n("hasPaidTheirRespects", context.getMember().getEffectiveName()))
-            .setFooter(context.i18n("todayAndOverall", NumberUtil.formatNicely(RESPECT), getTotalRespects()))
+            .setFooter(context.i18n("todayAndOverall", NumberUtil.formatNicely(respect), getTotalRespects()))
             .queue();
 
         return true;
@@ -70,7 +70,7 @@ public class RipCommand extends Command {
             try {
                 return NumberUtil.formatNicely(
                     avaire.getDatabase().newQueryBuilder(Constants.STATISTICS_TABLE_NAME).get().first()
-                        .getInt("respects", RESPECT) + 1
+                        .getInt("respects", respect) + 1
                 );
             } catch (SQLException e) {
                 return "1";

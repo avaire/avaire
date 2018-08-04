@@ -18,7 +18,8 @@ public abstract class Grammar {
         "&", "|", "^", "<<", ">>",
         "rlike", "regexp", "not regexp",
         "~", "~*", "!~*", "similar to",
-        "not similar to"
+        "not similar " +
+            "to"
     );
     /**
      * A list of SQL order operators, this is used to compare

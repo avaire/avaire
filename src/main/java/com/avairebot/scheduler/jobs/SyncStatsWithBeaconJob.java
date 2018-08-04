@@ -16,8 +16,8 @@ import java.util.concurrent.TimeUnit;
 
 public class SyncStatsWithBeaconJob extends Job {
 
-    private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-    private static final Logger LOGGER = LoggerFactory.getLogger(SyncStatsWithBeaconJob.class);
+    private static final MediaType json = MediaType.parse("application/json; charset=utf-8");
+    private static final Logger log = LoggerFactory.getLogger(SyncStatsWithBeaconJob.class);
 
     private final OkHttpClient client = new OkHttpClient();
 
@@ -30,15 +30,15 @@ public class SyncStatsWithBeaconJob extends Job {
         SelfUser selfUser = avaire.getShardManager().getShards().get(0).getSelfUser();
 
         Request.Builder request = new Request.Builder()
-            .addHeader("User-Agent", "AvaIre v" + AppInfo.getAppInfo().VERSION)
+            .addHeader("User-Agent", "AvaIre v" + AppInfo.getAppInfo().version)
             .url("https://beacon.avairebot.com/v1/bot/" + selfUser.getId())
-            .post(RequestBody.create(JSON, buildPayload(selfUser)));
+            .post(RequestBody.create(json, buildPayload(selfUser)));
 
         Response response = null;
         try {
             response = client.newCall(request.build()).execute();
         } catch (IOException e) {
-            LOGGER.error("Failed sending sync with beacon request: " + e.getMessage());
+            log.error("Failed sending sync with beacon request: " + e.getMessage());
         } finally {
             if (response != null) {
                 response.close();

@@ -132,7 +132,7 @@ public class PlaylistCommand extends Command {
             context.makeWarning(context.i18n("noPlaylistWithName"))
                 .set("command", generateCommandTrigger(context.getMessage()) + " <name> create")
                 .set("playlist", args[0])
-                .queue(message -> message.delete().queueAfter(1, TimeUnit.MINUTES, null, RestActionUtil.IGNORE));
+                .queue(message -> message.delete().queueAfter(1, TimeUnit.MINUTES, null, RestActionUtil.ignore));
 
             return false;
         }
@@ -180,7 +180,7 @@ public class PlaylistCommand extends Command {
         context.makeInfo(context.i18n("noPlaylists"))
             .set("command", generateCommandTrigger(context.getMessage()) + " <name> create")
             .setTitle(":musical_note: Music Playlists")
-            .queue(message -> message.delete().queueAfter(1, TimeUnit.MINUTES, null, RestActionUtil.IGNORE));
+            .queue(message -> message.delete().queueAfter(1, TimeUnit.MINUTES, null, RestActionUtil.ignore));
 
         return false;
     }

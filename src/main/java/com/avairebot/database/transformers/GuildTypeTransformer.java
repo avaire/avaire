@@ -6,9 +6,9 @@ import com.avairebot.database.collection.DataRow;
 
 public class GuildTypeTransformer extends Transformer {
 
-    private static final String DEFAULT_NAME = "Default";
+    private static final String defaultName = "Default";
 
-    private String name = GuildTypeTransformer.DEFAULT_NAME;
+    private String name = defaultName;
     private GuildTypeLimits limits = new GuildTypeLimits();
 
     public GuildTypeTransformer(DataRow data) {
@@ -20,7 +20,7 @@ public class GuildTypeTransformer extends Transformer {
             }
 
             if (data.getString("type_limits", null) != null) {
-                GuildTypeLimits typeLimits = AvaIre.GSON.fromJson(data.getString("type_limits"), GuildTypeLimits.class);
+                GuildTypeLimits typeLimits = AvaIre.gson.fromJson(data.getString("type_limits"), GuildTypeLimits.class);
                 if (typeLimits != null) {
                     if (typeLimits.levelRoles < limits.levelRoles) {
                         typeLimits.levelRoles = limits.levelRoles;
@@ -37,7 +37,7 @@ public class GuildTypeTransformer extends Transformer {
     }
 
     public boolean isDefault() {
-        return getName().equals(DEFAULT_NAME);
+        return getName().equals(defaultName);
     }
 
     public String getName() {

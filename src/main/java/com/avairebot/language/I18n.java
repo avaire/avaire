@@ -16,25 +16,28 @@ import java.util.Set;
 
 public class I18n {
 
-    public static final LanguageHolder DEFAULT = new LanguageHolder(Language.EN_US);
-    public static final Set<LanguageHolder> LANGS = new HashSet<>();
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(I18n.class);
+    static final Set<LanguageHolder> languages = new HashSet<>();
+    private static final LanguageHolder defaultLanguage = new LanguageHolder(Language.EN_US);
+    private static final Logger log = LoggerFactory.getLogger(I18n.class);
 
     private static AvaIre avaire;
 
     public static void start(AvaIre avaire) {
         I18n.avaire = avaire;
 
-        LANGS.add(DEFAULT);
+        languages.add(defaultLanguage);
         for (Language language : Language.values()) {
-            if (DEFAULT.getLanguage().equals(language)) {
+            if (defaultLanguage.getLanguage().equals(language)) {
                 continue;
             }
-            LANGS.add(new LanguageHolder(language));
+            languages.add(new LanguageHolder(language));
         }
 
-        LOGGER.info("Loaded " + LANGS.size() + " languages: " + LANGS);
+        log.info("Loaded " + languages.size() + " languages: " + languages);
+    }
+
+    public static LanguageHolder getDefaultLanguage() {
+        return defaultLanguage;
     }
 
     public static String getString(@Nonnull Guild guild, String string, Object... args) {
@@ -50,13 +53,13 @@ public class I18n {
         if (string == null) {
             return null;
         }
-        return get(guild).getString(string, DEFAULT.getConfig().getString(string, null));
+        return get(guild).getString(string, defaultLanguage.getConfig().getString(string, null));
     }
 
     @Nonnull
     public static YamlConfiguration get(@Nullable Guild guild) {
         if (guild == null) {
-            return DEFAULT.getConfig();
+            return defaultLanguage.getConfig();
         }
         return getLocale(guild).getConfig();
     }
@@ -69,35 +72,35 @@ public class I18n {
             if (transformer != null) {
                 return getLocale(transformer);
             }
-            return DEFAULT;
+            return defaultLanguage;
         } catch (Exception e) {
-            LOGGER.error("Error when reading entity", e);
+            log.error("Error when reading entity", e);
         }
-        return DEFAULT;
+        return defaultLanguage;
     }
 
     @Nonnull
     public static LanguageHolder getLocale(@Nonnull GuildTransformer transformer) {
         try {
-            for (LanguageHolder locale : LANGS) {
+            for (LanguageHolder locale : languages) {
                 if (locale.getLanguage().getCode().equalsIgnoreCase(transformer.getLocale())) {
                     return locale;
                 }
             }
         } catch (Exception e) {
-            LOGGER.error("Error when reading entity", e);
+            log.error("Error when reading entity", e);
         }
-        return DEFAULT;
+        return defaultLanguage;
     }
 
     @Nonnull
     public static LanguageHolder getLocale(Language language) {
-        for (LanguageHolder locale : LANGS) {
+        for (LanguageHolder locale : languages) {
             if (locale.getLanguage().equals(language)) {
                 return locale;
             }
         }
-        return DEFAULT;
+        return defaultLanguage;
     }
 
     public static String format(@Nonnull String message, Object... args) {
@@ -115,7 +118,7 @@ public class I18n {
                 message.replace("'", "''"), arguments
             );
         } catch (IllegalArgumentException ex) {
-            LOGGER.error(
+            log.error(
                 "An exception was through while formatting \"{}\", error: {}",
                 message, ex.getMessage(), ex
             );

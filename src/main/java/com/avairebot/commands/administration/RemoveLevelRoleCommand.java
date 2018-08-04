@@ -113,7 +113,7 @@ public class RemoveLevelRoleCommand extends Command {
             avaire.getDatabase().newQueryBuilder(Constants.GUILD_TABLE_NAME)
                 .where("id", context.getGuild().getId())
                 .update(statement -> {
-                    statement.set("level_roles", AvaIre.GSON.toJson(transformer.getLevelRoles()), true);
+                    statement.set("level_roles", AvaIre.gson.toJson(transformer.getLevelRoles()), true);
                 });
 
             context.makeSuccess("Role **:role** role has been removed from the level-up role list.\nThe server now have `:slots` level role slots available.")

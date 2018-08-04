@@ -62,12 +62,12 @@ import static com.sedmelluq.discord.lavaplayer.tools.io.HttpClientTools.getHeade
  */
 public class HttpSourceManager extends HttpAudioSourceManager {
 
-    private static final Pattern PLAYLIST_PATTERN = Pattern.compile("<a[^>]*href=\"([^\"]*\\.(?:m3u|pls))\"");
-    private static final Pattern CHARSET_PATTERN = Pattern.compile("\\bcharset=([^\\s;]+)\\b");
+    private static final Pattern playlistPattern = Pattern.compile("<a[^>]*href=\"([^\"]*\\.(?:m3u|pls))\"");
+    private static final Pattern charsetPattern = Pattern.compile("\\bcharset=([^\\s;]+)\\b");
 
     private MediaContainerDetectionResult checkHtmlResponse(AudioReference reference, PersistentHttpStream stream, MediaContainerHints hints) {
         StringWriter writer = new StringWriter();
-        Matcher mimeMatcher = CHARSET_PATTERN.matcher(hints.mimeType);
+        Matcher mimeMatcher = charsetPattern.matcher(hints.mimeType);
         String charset = mimeMatcher.find() ? mimeMatcher.group(1) : null;
         try {
             //reset position to start of stream to get full html content
@@ -80,7 +80,7 @@ public class HttpSourceManager extends HttpAudioSourceManager {
             throw new FriendlyException("Could not read HTML body", SUSPICIOUS, ex);
         }
         String htmlBody = writer.toString();
-        Matcher matcher = PLAYLIST_PATTERN.matcher(htmlBody);
+        Matcher matcher = playlistPattern.matcher(htmlBody);
         if (matcher.find()) {
             return detectContainer(resolve(reference, matcher.group(1)), true);
         }

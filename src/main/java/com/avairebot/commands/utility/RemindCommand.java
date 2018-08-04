@@ -103,14 +103,14 @@ public class RemindCommand extends Command {
     private void handleReminderMessage(CommandMessage context, String message, int time, boolean respondInDM) {
         if (respondInDM) {
             context.getAuthor().openPrivateChannel().queue(privateChannel -> {
-                privateChannel.sendMessage(message).queueAfter(time, TimeUnit.SECONDS, null, RestActionUtil.IGNORE);
+                privateChannel.sendMessage(message).queueAfter(time, TimeUnit.SECONDS, null, RestActionUtil.ignore);
             }, throwable -> {
-                context.getMessageChannel().sendMessage(message).queueAfter(time, TimeUnit.SECONDS, null, RestActionUtil.IGNORE);
+                context.getMessageChannel().sendMessage(message).queueAfter(time, TimeUnit.SECONDS, null, RestActionUtil.ignore);
             });
         } else {
             context.getMessageChannel().sendMessage(message).queueAfter(time, TimeUnit.SECONDS, null, throwable -> {
                 context.getAuthor().openPrivateChannel().queue(privateChannel -> {
-                    privateChannel.sendMessage(message).queueAfter(time, TimeUnit.SECONDS, null, RestActionUtil.IGNORE);
+                    privateChannel.sendMessage(message).queueAfter(time, TimeUnit.SECONDS, null, RestActionUtil.ignore);
                 });
             });
         }

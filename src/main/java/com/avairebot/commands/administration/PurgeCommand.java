@@ -84,7 +84,7 @@ public class PurgeCommand extends Command {
             handleCommand(
                 context, Arrays.copyOfRange(args, 1, args.length), finalToDelete
             );
-        }, RestActionUtil.IGNORE);
+        }, RestActionUtil.ignore);
 
         return true;
     }
@@ -116,8 +116,8 @@ public class PurgeCommand extends Command {
 
                         context.makeSuccess(":white_check_mark: `:number` messages has been deleted!")
                             .set("number", messages.size())
-                            .queue(successMessage -> successMessage.delete().queueAfter(8, TimeUnit.SECONDS, null, RestActionUtil.IGNORE));
-                    }, RestActionUtil.IGNORE);
+                            .queue(successMessage -> successMessage.delete().queueAfter(8, TimeUnit.SECONDS, null, RestActionUtil.ignore));
+                    }, RestActionUtil.ignore);
                 });
             });
             return;
@@ -145,8 +145,8 @@ public class PurgeCommand extends Command {
                 context.makeSuccess(":white_check_mark: `:number` messages has been deleted from :users")
                     .set("number", messages.size())
                     .set("users", String.join(", ", users))
-                    .queue(successMessage -> successMessage.delete().queueAfter(8, TimeUnit.SECONDS, null, RestActionUtil.IGNORE));
-            }, RestActionUtil.IGNORE);
+                    .queue(successMessage -> successMessage.delete().queueAfter(8, TimeUnit.SECONDS, null, RestActionUtil.ignore));
+            }, RestActionUtil.ignore);
         });
     }
 
@@ -199,7 +199,7 @@ public class PurgeCommand extends Command {
             ).set("users", String.join(", ", users)).set("number", toDelete);
         }
 
-        message.queue(successMessage -> successMessage.delete().queueAfter(8, TimeUnit.SECONDS, null, RestActionUtil.IGNORE));
+        message.queue(successMessage -> successMessage.delete().queueAfter(8, TimeUnit.SECONDS, null, RestActionUtil.ignore));
     }
 
     private RestAction<Void> deleteMessages(CommandMessage context, List<Message> messages) {

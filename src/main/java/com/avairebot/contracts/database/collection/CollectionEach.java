@@ -4,6 +4,7 @@ import com.avairebot.database.collection.Collection;
 import com.avairebot.database.collection.DataRow;
 
 public interface CollectionEach {
+
     /**
      * This is called by by the {@link Collection#each(CollectionEach)}}
      * method, used to loops through every entity in the Collection and parses the key and

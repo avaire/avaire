@@ -160,7 +160,7 @@ public class ChangePrefixCommand extends Command {
         avaire.getDatabase().newQueryBuilder(Constants.GUILD_TABLE_NAME)
             .where("id", context.getGuild().getId())
             .update(statement -> {
-                statement.set("prefixes", AvaIre.GSON.toJson(transformer.getPrefixes()), true);
+                statement.set("prefixes", AvaIre.gson.toJson(transformer.getPrefixes()), true);
             });
     }
 }

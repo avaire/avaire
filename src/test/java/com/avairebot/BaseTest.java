@@ -5,9 +5,9 @@ import org.slf4j.LoggerFactory;
 
 public abstract class BaseTest {
 
-    protected static final Logger LOGGER = LoggerFactory.getLogger(BaseTest.class);
+    private static final Logger log = LoggerFactory.getLogger(BaseTest.class);
 
     public static Logger getLogger() {
-        return LOGGER;
+        return log;
     }
 }

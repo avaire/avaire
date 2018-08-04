@@ -24,20 +24,19 @@ import java.util.concurrent.Executors;
 
 public class IntelligenceManager {
 
-    private final static String ACTION_OUTPUT = ConsoleColor.format("%cyanExecuting Intelligence Action \"%reset%action%%cyan\" for:"
+    private final static String actionOutput = ConsoleColor.format("%cyanExecuting Intelligence Action \"%reset%action%%cyan\" for:"
         + "\n\t\t%cyanUser:\t %author%"
         + "\n\t\t%cyanServer:\t %server%"
         + "\n\t\t%cyanChannel: %channel%"
         + "\n\t\t%cyanMessage: %reset%message%"
         + "\n\t\t%cyanResponse: %reset%response%");
 
-    private final static String PROPERTY_OUTPUT = ConsoleColor.format(
+    private final static String propertyOutput = ConsoleColor.format(
         "%reset%s %cyan[%reset%s%cyan]"
     );
 
-    private final static Map<IntentAction, Intent> INTENTS = new HashMap<>();
+    private final static Map<IntentAction, Intent> intents = new HashMap<>();
 
-    private final AvaIre avaire;
     private final ExecutorService executor;
 
     private boolean enabled = false;
@@ -47,11 +46,9 @@ public class IntelligenceManager {
         String dialogFlowClientToken = avaire.getConfig().getString("apiKeys.dialogflow", "invalid");
         if (dialogFlowClientToken.length() != 32) {
             executor = null;
-            this.avaire = null;
             return;
         }
 
-        this.avaire = avaire;
 
         executor = Executors.newFixedThreadPool(2);
         service = new AIDataService(new AIConfiguration(dialogFlowClientToken));
@@ -69,7 +66,7 @@ public class IntelligenceManager {
 
         Metrics.aiRequestsExecuted.labels(intent.getClass().getSimpleName()).inc(0D);
 
-        INTENTS.put(new IntentAction(intent.getAction()), intent);
+        intents.put(new IntentAction(intent.getAction()), intent);
         return true;
     }
 
@@ -92,7 +89,7 @@ public class IntelligenceManager {
             AIResponse response = service.request(new AIRequest(request));
 
             String action = response.getResult().getAction();
-            AvaIre.getLogger().info(ACTION_OUTPUT
+            AvaIre.getLogger().info(actionOutput
                 .replace("%action%", action)
                 .replace("%author%", generateUsername(message))
                 .replace("%server%", generateServer(message))
@@ -106,7 +103,7 @@ public class IntelligenceManager {
                 return;
             }
 
-            for (Map.Entry<IntentAction, Intent> entry : INTENTS.entrySet()) {
+            for (Map.Entry<IntentAction, Intent> entry : intents.entrySet()) {
                 if (entry.getKey().isWildcard() && action.startsWith(entry.getKey().getAction())) {
                     invokeIntent(message, databaseEventHolder, response, entry.getValue());
                     return;
@@ -134,7 +131,7 @@ public class IntelligenceManager {
     }
 
     private String generateUsername(Message message) {
-        return String.format(PROPERTY_OUTPUT,
+        return String.format(propertyOutput,
             message.getAuthor().getName() + "#" + message.getAuthor().getDiscriminator(),
             message.getAuthor().getId()
         );
@@ -145,7 +142,7 @@ public class IntelligenceManager {
             return ConsoleColor.GREEN + "PRIVATE";
         }
 
-        return String.format(PROPERTY_OUTPUT,
+        return String.format(propertyOutput,
             message.getGuild().getName(),
             message.getGuild().getId()
         );
@@ -156,13 +153,13 @@ public class IntelligenceManager {
             return ConsoleColor.GREEN + "PRIVATE";
         }
 
-        return String.format(PROPERTY_OUTPUT,
+        return String.format(propertyOutput,
             message.getChannel().getName(),
             message.getChannel().getId()
         );
     }
 
     public Set<Map.Entry<IntentAction, Intent>> entrySet() {
-        return INTENTS.entrySet();
+        return intents.entrySet();
     }
 }

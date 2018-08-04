@@ -4,6 +4,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class Blueprint {
+
     private final String table;
     private final LinkedHashMap<String, Field> fields = new LinkedHashMap<>();
     private String engine = DatabaseEngine.InnoDB.toString();

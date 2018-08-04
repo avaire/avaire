@@ -91,7 +91,7 @@ public class RemoveSongFromQueueCommand extends Command {
                 .set("song", String.format("[%s](%s)",
                     track.title, track.uri
                 ))
-                .queue(message -> message.delete().queueAfter(1, TimeUnit.MINUTES, null, RestActionUtil.IGNORE));
+                .queue(message -> message.delete().queueAfter(1, TimeUnit.MINUTES, null, RestActionUtil.ignore));
 
             iterator.remove();
             return true;
@@ -99,7 +99,7 @@ public class RemoveSongFromQueueCommand extends Command {
 
         context.makeError(context.i18n("failedToRemoveSong"))
             .set("index", removeIndex)
-            .queue(message -> message.delete().queueAfter(1, TimeUnit.MINUTES, null, RestActionUtil.IGNORE));
+            .queue(message -> message.delete().queueAfter(1, TimeUnit.MINUTES, null, RestActionUtil.ignore));
 
         return false;
     }

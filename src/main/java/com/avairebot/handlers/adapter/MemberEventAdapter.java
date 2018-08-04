@@ -21,7 +21,7 @@ import java.awt.*;
 
 public class MemberEventAdapter extends EventAdapter {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(MemberEventAdapter.class);
+    private static final Logger log = LoggerFactory.getLogger(MemberEventAdapter.class);
 
     /**
      * Instantiates the event adapter and sets the avaire class instance.
@@ -35,7 +35,7 @@ public class MemberEventAdapter extends EventAdapter {
     public void onGuildMemberJoin(GuildMemberJoinEvent event) {
         GuildTransformer transformer = GuildController.fetchGuild(avaire, event.getGuild());
         if (transformer == null) {
-            LOGGER.warn("Failed to get a valid guild transformer during member join! User:{}, Guild:{}",
+            log.warn("Failed to get a valid guild transformer during member join! User:{}, Guild:{}",
                 event.getMember().getUser().getId(), event.getGuild().getId()
             );
             return;
@@ -91,7 +91,7 @@ public class MemberEventAdapter extends EventAdapter {
     public void onGuildMemberLeave(GuildMemberLeaveEvent event) {
         GuildTransformer transformer = GuildController.fetchGuild(avaire, event.getGuild());
         if (transformer == null) {
-            LOGGER.warn("Failed to get a valid guild transformer during member leave! User:{}, Guild:{}",
+            log.warn("Failed to get a valid guild transformer during member leave! User:{}, Guild:{}",
                 event.getMember().getUser().getId(), event.getGuild().getId()
             );
             return;

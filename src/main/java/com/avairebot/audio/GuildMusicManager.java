@@ -23,7 +23,7 @@ public class GuildMusicManager {
     private CommandMessage lastActiveMessage = null;
 
     public GuildMusicManager(AvaIre avaire, Guild guild) {
-        player = LavalinkManager.LavalinkManagerHolder.LAVALINK.createPlayer(guild.getId());
+        player = LavalinkManager.LavalinkManagerHolder.lavalink.createPlayer(guild.getId());
         scheduler = new TrackScheduler(this, player);
         player.addListener(scheduler);
         hasSetVolume = false;

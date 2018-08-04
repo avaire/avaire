@@ -91,7 +91,7 @@ public class SongCommand extends Command {
                 String.join("\n", messages),
                 paginator.generateFooter(generateCommandTrigger(context.getMessage()))
             )).setTitle(context.i18n("songsInQueue"))
-                .queue(message -> message.delete().queueAfter(3, TimeUnit.MINUTES, null, RestActionUtil.IGNORE));
+                .queue(message -> message.delete().queueAfter(3, TimeUnit.MINUTES, null, RestActionUtil.ignore));
 
             return true;
         }
@@ -114,7 +114,7 @@ public class SongCommand extends Command {
             queueMessage.setFooter(context.i18n("moreSongs", generateCommandTrigger(context.getMessage())));
         }
 
-        queueMessage.queue(message -> message.delete().queueAfter(3, TimeUnit.MINUTES, null, RestActionUtil.IGNORE));
+        queueMessage.queue(message -> message.delete().queueAfter(3, TimeUnit.MINUTES, null, RestActionUtil.ignore));
 
         return true;
     }

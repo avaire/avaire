@@ -20,8 +20,9 @@ import java.util.Map;
  */
 public class YamlConfiguration extends FileConfiguration {
 
-    protected static final String COMMENT_PREFIX = "# ";
-    protected static final String BLANK_CONFIG = "{}\n";
+    private static final String commentPrefix = "# ";
+    private static final String blankConfig = "{}\n";
+
     private final DumperOptions yamlOptions = new DumperOptions();
     private final Representer yamlRepresenter = new YamlRepresenter();
     private final Yaml yaml = new Yaml(new YamlConstructor(), yamlRepresenter, yamlOptions);
@@ -114,13 +115,13 @@ public class YamlConfiguration extends FileConfiguration {
     public String saveToString() {
         yamlOptions.setIndent(options().indent());
         yamlOptions.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
-        yamlOptions.setAllowUnicode(SYSTEM_UTF);
+        yamlOptions.setAllowUnicode(systemUTF);
         yamlRepresenter.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
 
         String header = buildHeader();
         String dump = yaml.dump(getValues(false));
 
-        if (dump.equals(BLANK_CONFIG)) {
+        if (dump.equals(blankConfig)) {
             dump = "";
         }
 
@@ -172,13 +173,13 @@ public class YamlConfiguration extends FileConfiguration {
         for (int i = 0; (i < lines.length) && (readingHeader); i++) {
             String line = lines[i];
 
-            if (line.startsWith(COMMENT_PREFIX)) {
+            if (line.startsWith(commentPrefix)) {
                 if (i > 0) {
                     result.append("\n");
                 }
 
-                if (line.length() > COMMENT_PREFIX.length()) {
-                    result.append(line.substring(COMMENT_PREFIX.length()));
+                if (line.length() > commentPrefix.length()) {
+                    result.append(line.substring(commentPrefix.length()));
                 }
 
                 foundHeader = true;
@@ -222,7 +223,7 @@ public class YamlConfiguration extends FileConfiguration {
 
             if ((startedHeader) || (lines[i].length() != 0)) {
                 builder.insert(0, lines[i]);
-                builder.insert(0, COMMENT_PREFIX);
+                builder.insert(0, commentPrefix);
                 startedHeader = true;
             }
         }

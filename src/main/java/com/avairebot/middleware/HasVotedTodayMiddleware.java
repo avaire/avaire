@@ -28,7 +28,7 @@ public class HasVotedTodayMiddleware extends Middleware {
             return stack.next();
         }
 
-        avaire.getVoteManager().getMessager().sendMustVoteMessage(message.getChannel());
+        avaire.getVoteManager().getMessenger().sendMustVoteMessage(message.getChannel());
 
         return false;
     }

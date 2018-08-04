@@ -137,6 +137,6 @@ public class AliasCommand extends Command {
     private void updateGuildAliases(CommandMessage message, GuildTransformer transformer) throws SQLException {
         avaire.getDatabase().newQueryBuilder(Constants.GUILD_TABLE_NAME)
             .where("id", message.getGuild().getId())
-            .update(statement -> statement.set("aliases", AvaIre.GSON.toJson(transformer.getAliases()), true));
+            .update(statement -> statement.set("aliases", AvaIre.gson.toJson(transformer.getAliases()), true));
     }
 }

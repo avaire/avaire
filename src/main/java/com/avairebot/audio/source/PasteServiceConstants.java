@@ -36,24 +36,25 @@ import java.util.regex.Pattern;
  */
 public class PasteServiceConstants {
 
-    static final Pattern SERVICE_NAME_PATTERN = Pattern.compile("(?:([a-z0-9]+(?:-[a-z0-9]+)*)\\.)+[a-z]{2,}");
+    static final Pattern serverNamePattern = Pattern.compile("(?:([a-z0-9]+(?:-[a-z0-9]+)*)\\.)+[a-z]{2,}");
 
-    static final Pattern HASTEBIN_PATTERN = Pattern
+    static final Pattern hastebinPattern = Pattern
         .compile("^(?:(?:https?://)?(?:www\\.)?)?hastebin\\.com/(?:raw/)?(\\w+)(?:\\..+)?$");
 
-    static final Pattern WASTEBIN_PATTERN = Pattern
+    static final Pattern wastebinPattern = Pattern
         .compile("^(?:(?:https?://)?(?:www\\.)?)?wastebin\\.party/(?:raw/)?(\\w+)(?:\\..+)?$");
 
-    static final Pattern PASTEBIN_PATTERN = Pattern
+    static final Pattern pastebinPattern = Pattern
         .compile("^(?:(?:https?://)?(?:www\\.)?)?pastebin\\.com/(?:raw/)?(\\w+)(?:\\..+)?$");
 
-    static final Map<String, String> PASTE_SERVICE_URLS;
+    static final Map<String, String> pasteServiceUrl;
 
     static {
         Map<String, String> m = new HashMap<>();
         m.put("hastebin", "http://hastebin.com/raw/");
         m.put("wastebin", "https://wastebin.party/raw/");
         m.put("pastebin", "http://pastebin.com/raw/");
-        PASTE_SERVICE_URLS = Collections.unmodifiableMap(m);
+
+        pasteServiceUrl = Collections.unmodifiableMap(m);
     }
 }

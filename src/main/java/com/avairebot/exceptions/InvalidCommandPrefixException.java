@@ -2,7 +2,6 @@ package com.avairebot.exceptions;
 
 public class InvalidCommandPrefixException extends IllegalArgumentException {
 
-
     public InvalidCommandPrefixException(String message, String prefix, String newCommand, String oldCommand) {
         this(String.format(message, prefix, newCommand, oldCommand));
     }

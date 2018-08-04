@@ -26,16 +26,16 @@ import java.util.concurrent.TimeUnit;
 
 public class ProcessCommand extends Middleware {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ProcessCommand.class);
+    private static final Logger log = LoggerFactory.getLogger(ProcessCommand.class);
 
-    private final static String COMMAND_OUTPUT = ConsoleColor.format(
+    private final static String commandOutput = ConsoleColor.format(
         "%cyanExecuting Command \"%reset%command%%cyan\" in \"%reset%category%%cyan\" category in shard %reset%shard%:%reset"
             + "\n\t\t%cyanUser:\t %author%"
             + "\n\t\t%cyanServer:\t %server%"
             + "\n\t\t%cyanChannel: %channel%"
             + "\n\t\t%cyanMessage: %reset%message%");
 
-    private final static String PROPERTY_OUTPUT = ConsoleColor.format(
+    private final static String propertyOutput = ConsoleColor.format(
         "%reset%s %cyan[%reset%s%cyan]"
     );
 
@@ -52,14 +52,14 @@ public class ProcessCommand extends Middleware {
             }
 
             message.getTextChannel().sendMessage("I don't have the `Embed Links` permission, the permission is required for all of my commands to work.\nhttps://avairebot.com/missing-embed-permissions.png\nThis error can sometimes occur when the `everyone` role has it disabled and no other roles enables it.\nThis message will be automatically deleted in 30 seconds.")
-                .queue(newMessage -> newMessage.delete().queueAfter(30, TimeUnit.SECONDS, null, RestActionUtil.IGNORE));
+                .queue(newMessage -> newMessage.delete().queueAfter(30, TimeUnit.SECONDS, null, RestActionUtil.ignore));
 
             return false;
         }
 
         String[] arguments = ArrayUtil.toArguments(message.getContentRaw());
 
-        AvaIre.getLogger().info(COMMAND_OUTPUT
+        AvaIre.getLogger().info(commandOutput
             .replace("%command%", stack.getCommand().getName())
             .replace("%category%", stack.getCommandContainer().getCategory().getName())
             .replace("%author%", generateUsername(message))
@@ -106,12 +106,12 @@ public class ProcessCommand extends Middleware {
 
             if (ex instanceof InsufficientPermissionException) {
                 MessageFactory.makeError(message, "Error: " + ex.getMessage())
-                    .queue(newMessage -> newMessage.delete().queueAfter(30, TimeUnit.SECONDS, null, RestActionUtil.IGNORE));
+                    .queue(newMessage -> newMessage.delete().queueAfter(30, TimeUnit.SECONDS, null, RestActionUtil.ignore));
 
                 return false;
             } else if (ex instanceof FriendlyException) {
                 MessageFactory.makeError(message, "Error: " + ex.getMessage())
-                    .queue(newMessage -> newMessage.delete().queueAfter(30, TimeUnit.SECONDS, null, RestActionUtil.IGNORE));
+                    .queue(newMessage -> newMessage.delete().queueAfter(30, TimeUnit.SECONDS, null, RestActionUtil.ignore));
             }
 
             MDC.putCloseable(SentryConstants.SENTRY_MDC_TAG_GUILD, message.getGuild() != null ? message.getGuild().getId() : "PRIVATE");
@@ -119,7 +119,7 @@ public class ProcessCommand extends Middleware {
             MDC.putCloseable(SentryConstants.SENTRY_MDC_TAG_CHANNEL, message.getChannel().getId());
             MDC.putCloseable(SentryConstants.SENTRY_MDC_TAG_AUTHOR, message.getAuthor().getId());
             MDC.putCloseable(SentryConstants.SENTRY_MDC_TAG_MESSAGE, message.getContentRaw());
-            LOGGER.error("An error occurred while running the " + stack.getCommand().getName(), ex);
+            log.error("An error occurred while running the " + stack.getCommand().getName(), ex);
             return false;
         } finally {
             if (timer != null) {
@@ -133,7 +133,7 @@ public class ProcessCommand extends Middleware {
     }
 
     private String generateUsername(Message message) {
-        return String.format(PROPERTY_OUTPUT,
+        return String.format(propertyOutput,
             message.getAuthor().getName() + "#" + message.getAuthor().getDiscriminator(),
             message.getAuthor().getId()
         );
@@ -144,7 +144,7 @@ public class ProcessCommand extends Middleware {
             return "PRIVATE";
         }
 
-        return String.format(PROPERTY_OUTPUT,
+        return String.format(propertyOutput,
             message.getGuild().getName(),
             message.getGuild().getId()
         );
@@ -155,7 +155,7 @@ public class ProcessCommand extends Middleware {
             return "PRIVATE";
         }
 
-        return String.format(PROPERTY_OUTPUT,
+        return String.format(propertyOutput,
             message.getChannel().getName(),
             message.getChannel().getId()
         );

@@ -92,7 +92,7 @@ public class VolumeCommand extends Command {
         context.makeSuccess(context.i18n("setTo") + "\n:bar")
             .set("volume", newVolume)
             .set("bar", getVolumeString(newVolume, 18))
-            .queue(message -> message.delete().queueAfter(2, TimeUnit.MINUTES, null, RestActionUtil.IGNORE));
+            .queue(message -> message.delete().queueAfter(2, TimeUnit.MINUTES, null, RestActionUtil.ignore));
 
         return true;
     }

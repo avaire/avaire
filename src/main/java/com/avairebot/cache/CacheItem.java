@@ -1,6 +1,7 @@
 package com.avairebot.cache;
 
 public class CacheItem {
+
     private final String key;
     private final Object value;
     private final long time;

@@ -19,7 +19,7 @@ import java.util.concurrent.*;
 
 public class EvalCommand extends SystemCommand {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(EvalCommand.class);
+    private static final Logger log = LoggerFactory.getLogger(EvalCommand.class);
 
     @Nullable
     private Future lastTask;
@@ -53,7 +53,7 @@ public class EvalCommand extends SystemCommand {
                 "Packages.com.avairebot.audio," +
                 "Packages.com.avairebot.time);");
         } catch (ScriptException e) {
-            LOGGER.error("Failed to init eval command", e);
+            log.error("Failed to init eval command", e);
         }
     }
 

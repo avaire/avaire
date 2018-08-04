@@ -61,7 +61,7 @@ public class ShuffleCommand extends Command {
 
         context.makeSuccess(context.i18n("success"))
             .set("amount", NumberUtil.formatNicely(queue.size()))
-            .queue(message -> message.delete().queueAfter(5, TimeUnit.MINUTES, null, RestActionUtil.IGNORE));
+            .queue(message -> message.delete().queueAfter(5, TimeUnit.MINUTES, null, RestActionUtil.ignore));
 
         return true;
     }

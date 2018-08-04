@@ -20,18 +20,20 @@ public abstract class FileConfiguration extends MemoryConfiguration {
     /**
      * This value specifies if the system supports unicode.
      */
-    protected static final boolean SYSTEM_UTF;
+    protected static final boolean systemUTF;
+
     /**
      * This value specified that the system default encoding should be
      * completely ignored, as it cannot handle the ASCII character set, or it
      * is a strict-subset of UTF8 already (plain ASCII).
      */
-    private static final boolean UTF8_OVERRIDE;
+    private static final boolean UTFOverride;
+
     /**
      * This value specifies if the system default encoding is unicode, but
      * cannot parse standard ASCII.
      */
-    private static final boolean UTF_BIG;
+    private static final boolean UTFBig;
 
     static {
         final byte[] testBytes = Base64Coder.decode("ICEiIyQlJicoKSorLC0uLzAxMjM0NTY3ODk6Ozw9Pj9AQUJDREVGR0hJSktMTU5PUFFSU1RVVldYWVpbXF1eX2BhYmNkZWZnaGlqa2xtbm9wcXJzdHV2d3h5ent8fX4NCg==");
@@ -39,9 +41,9 @@ public abstract class FileConfiguration extends MemoryConfiguration {
         final Charset defaultCharset = Charset.defaultCharset();
         final String resultString = new String(testBytes, defaultCharset);
         final boolean trueUTF = defaultCharset.name().contains("UTF");
-        UTF8_OVERRIDE = !testString.equals(resultString) || defaultCharset.equals(Charset.forName("US-ASCII"));
-        SYSTEM_UTF = trueUTF || UTF8_OVERRIDE;
-        UTF_BIG = trueUTF && UTF8_OVERRIDE;
+        UTFOverride = !testString.equals(resultString) || defaultCharset.equals(Charset.forName("US-ASCII"));
+        systemUTF = trueUTF || UTFOverride;
+        UTFBig = trueUTF && UTFOverride;
     }
 
     /**
@@ -83,7 +85,7 @@ public abstract class FileConfiguration extends MemoryConfiguration {
 
         String data = saveToString();
 
-        Writer writer = new OutputStreamWriter(new FileOutputStream(file), UTF8_OVERRIDE && !UTF_BIG ? Charsets.UTF_8 : Charset.defaultCharset());
+        Writer writer = new OutputStreamWriter(new FileOutputStream(file), UTFOverride && !UTFBig ? Charsets.UTF_8 : Charset.defaultCharset());
 
         try {
             writer.write(data);
@@ -131,7 +133,7 @@ public abstract class FileConfiguration extends MemoryConfiguration {
      * thrown.
      * <p>
      * This will attempt to use the {@link Charset#defaultCharset()} for
-     * files, unless {@link #UTF8_OVERRIDE} but not {@link #UTF_BIG} is
+     * files, unless {@link #UTFOverride} but not {@link #UTFBig} is
      * specified.
      *
      * @param file File to load from.
@@ -147,7 +149,7 @@ public abstract class FileConfiguration extends MemoryConfiguration {
 
         final FileInputStream stream = new FileInputStream(file);
 
-        load(new InputStreamReader(stream, UTF8_OVERRIDE && !UTF_BIG ? Charsets.UTF_8 : Charset.defaultCharset()));
+        load(new InputStreamReader(stream, UTFOverride && !UTFBig ? Charsets.UTF_8 : Charset.defaultCharset()));
     }
 
     /**
@@ -158,7 +160,7 @@ public abstract class FileConfiguration extends MemoryConfiguration {
      * from the given stream.
      * <p>
      * This will attempt to use the {@link Charset#defaultCharset()}, unless
-     * {@link #UTF8_OVERRIDE} or {@link #UTF_BIG} is specified.
+     * {@link #UTFOverride} or {@link #UTFBig} is specified.
      *
      * @param stream Stream to load from
      * @throws IOException                   Thrown when the given file cannot be read.
@@ -172,7 +174,7 @@ public abstract class FileConfiguration extends MemoryConfiguration {
     public void load(InputStream stream) throws IOException, InvalidConfigurationException {
         Validate.notNull(stream, "Stream cannot be null");
 
-        load(new InputStreamReader(stream, UTF8_OVERRIDE ? Charsets.UTF_8 : Charset.defaultCharset()));
+        load(new InputStreamReader(stream, UTFOverride ? Charsets.UTF_8 : Charset.defaultCharset()));
     }
 
     /**

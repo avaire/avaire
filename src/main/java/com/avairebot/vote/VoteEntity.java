@@ -6,7 +6,7 @@ import java.util.concurrent.TimeUnit;
 
 public class VoteEntity implements Delayed {
 
-    public static final long DEFAULT_DURATION = 1500;
+    static final long defaultDuration = 1500;
 
     private final long userId;
     private final long channelId;
@@ -15,7 +15,7 @@ public class VoteEntity implements Delayed {
     public VoteEntity(long userId, long channelId) {
         this.userId = userId;
         this.channelId = channelId;
-        setDuration(DEFAULT_DURATION);
+        setDuration(defaultDuration);
     }
 
     public long getUserId() {

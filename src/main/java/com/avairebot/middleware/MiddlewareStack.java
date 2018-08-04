@@ -16,9 +16,9 @@ import java.util.ListIterator;
 
 public class MiddlewareStack {
 
-    private static ProcessCommand PROCESS_COMMAND;
-    private static IsCategoryEnabled IS_CATEGORY_ENABLED;
-    private static IncrementMetricsForCommand INCREMENT_METRICS_FOR_COMMAND;
+    private static ProcessCommand processCommand;
+    private static IsCategoryEnabled isCategoryEnabled;
+    private static IncrementMetricsForCommand incrementMetricsForCommand;
 
     private final Message message;
     private final CommandContainer command;
@@ -34,12 +34,12 @@ public class MiddlewareStack {
         this.mentionableCommand = mentionableCommand;
         this.databaseEventHolder = databaseEventHolder;
 
-        middlewares.add(new MiddlewareContainer(PROCESS_COMMAND));
+        middlewares.add(new MiddlewareContainer(processCommand));
 
         buildMiddlewareStack();
 
-        middlewares.add(new MiddlewareContainer(IS_CATEGORY_ENABLED));
-        middlewares.add(new MiddlewareContainer(INCREMENT_METRICS_FOR_COMMAND));
+        middlewares.add(new MiddlewareContainer(isCategoryEnabled));
+        middlewares.add(new MiddlewareContainer(incrementMetricsForCommand));
     }
 
     public MiddlewareStack(Message message, CommandContainer command, DatabaseEventHolder databaseEventHolder) {
@@ -52,9 +52,9 @@ public class MiddlewareStack {
      * @param avaire The AvaIre application instance.
      */
     static void buildGlobalMiddlewares(AvaIre avaire) {
-        PROCESS_COMMAND = new ProcessCommand(avaire);
-        IS_CATEGORY_ENABLED = new IsCategoryEnabled(avaire);
-        INCREMENT_METRICS_FOR_COMMAND = new IncrementMetricsForCommand(avaire);
+        processCommand = new ProcessCommand(avaire);
+        isCategoryEnabled = new IsCategoryEnabled(avaire);
+        incrementMetricsForCommand = new IncrementMetricsForCommand(avaire);
     }
 
     /**

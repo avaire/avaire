@@ -164,7 +164,7 @@ public class ToggleCategoryCommand extends Command {
         avaire.getDatabase().newQueryBuilder(Constants.GUILD_TABLE_NAME)
             .where("id", context.getGuild().getId())
             .update(statement -> {
-                statement.set("modules", AvaIre.GSON.toJson(transformer.getCategories()));
+                statement.set("modules", AvaIre.gson.toJson(transformer.getCategories()));
             });
     }
 

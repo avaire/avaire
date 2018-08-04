@@ -79,8 +79,8 @@ public class EightBallCommand extends Command {
         }
 
         // Tries to load the answers from the default i18n file instead
-        if (I18n.DEFAULT.getConfig().contains(answers) && I18n.DEFAULT.getConfig().isList(answers)) {
-            return sendAnswerFromList(context, I18n.DEFAULT.getConfig().getStringList(answers));
+        if (I18n.getDefaultLanguage().getConfig().contains(answers) && I18n.getDefaultLanguage().getConfig().isList(answers)) {
+            return sendAnswerFromList(context, I18n.getDefaultLanguage().getConfig().getStringList(answers));
         }
 
         // Sends the default list

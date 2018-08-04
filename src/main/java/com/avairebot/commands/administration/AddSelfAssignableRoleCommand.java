@@ -98,7 +98,7 @@ public class AddSelfAssignableRoleCommand extends Command {
             avaire.getDatabase().newQueryBuilder(Constants.GUILD_TABLE_NAME)
                 .where("id", context.getGuild().getId())
                 .update(statement -> {
-                    statement.set("claimable_roles", AvaIre.GSON.toJson(transformer.getSelfAssignableRoles()), true);
+                    statement.set("claimable_roles", AvaIre.gson.toJson(transformer.getSelfAssignableRoles()), true);
                 });
 
             context.makeSuccess("Role **:role** role has been added to the self-assignable list.\nThe server has `:slots` more self-assignable roles slots available.")

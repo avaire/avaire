@@ -3,6 +3,7 @@ package com.avairebot.database.query;
 import com.avairebot.contracts.database.QueryClause;
 
 public class Clause implements QueryClause {
+
     /**
      * The first field for the clause.
      */

@@ -57,12 +57,12 @@ public class StopCommand extends Command {
         musicManager.getPlayer().stopTrack();
         musicManager.getScheduler().getQueue().clear();
 
-        MusicActivityTask.MISSING_LISTENERS.remove(guildId);
-        MusicActivityTask.PLAYER_PAUSED.remove(guildId);
-        MusicActivityTask.EMPTY_QUEUE.remove(guildId);
+        MusicActivityTask.missingListener.remove(guildId);
+        MusicActivityTask.playerPaused.remove(guildId);
+        MusicActivityTask.emptyQueue.remove(guildId);
 
-        if (LavalinkManager.LavalinkManagerHolder.LAVALINK.isEnabled()) {
-            LavalinkManager.LavalinkManagerHolder.LAVALINK.getLavalink()
+        if (LavalinkManager.LavalinkManagerHolder.lavalink.isEnabled()) {
+            LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink()
                 .getLink(musicManager.getLastActiveMessage().getGuild()).destroy();
         }
 

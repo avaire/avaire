@@ -62,13 +62,13 @@ public class PauseCommand extends Command {
 
         if (musicManager.getPlayer().isPaused()) {
             context.makeWarning(context.i18n("alreadyPaused"))
-                .queue(message -> message.delete().queueAfter(1, TimeUnit.MINUTES, null, RestActionUtil.IGNORE));
+                .queue(message -> message.delete().queueAfter(1, TimeUnit.MINUTES, null, RestActionUtil.ignore));
             return true;
         }
 
         musicManager.getPlayer().setPaused(true);
         context.makeSuccess(context.i18n("paused"))
-            .queue(message -> message.delete().queueAfter(1, TimeUnit.MINUTES, null, RestActionUtil.IGNORE));
+            .queue(message -> message.delete().queueAfter(1, TimeUnit.MINUTES, null, RestActionUtil.ignore));
 
         return true;
     }

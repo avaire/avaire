@@ -58,7 +58,7 @@ public class ClearQueueCommand extends Command {
 
         if (musicManager.getScheduler().getQueue().isEmpty()) {
             context.makeWarning(context.i18n("emptyQueue"))
-                .queue(message -> message.delete().queueAfter(1, TimeUnit.MINUTES, null, RestActionUtil.IGNORE));
+                .queue(message -> message.delete().queueAfter(1, TimeUnit.MINUTES, null, RestActionUtil.ignore));
 
             return false;
         }
@@ -67,7 +67,7 @@ public class ClearQueueCommand extends Command {
             .set("queueSize", NumberUtil.formatNicely(
                 musicManager.getScheduler().getQueue().size()
             ))
-            .queue(message -> message.delete().queueAfter(1, TimeUnit.MINUTES, null, RestActionUtil.IGNORE));
+            .queue(message -> message.delete().queueAfter(1, TimeUnit.MINUTES, null, RestActionUtil.ignore));
 
         musicManager.getScheduler().getQueue().clear();
 

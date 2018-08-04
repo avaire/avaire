@@ -13,7 +13,7 @@ import spark.Response;
 
 public class PostVote extends SparkRoute {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(PostVote.class);
+    private static final Logger log = LoggerFactory.getLogger(PostVote.class);
 
     public PostVote(Metrics metrics) {
         super(metrics);
@@ -21,25 +21,25 @@ public class PostVote extends SparkRoute {
 
     @Override
     public Object handle(Request request, Response response) throws Exception {
-        LOGGER.info("Vote route has been hit by {} with the body: {}",
+        log.info("Vote route has been hit by {} with the body: {}",
             request.ip(), request.body()
         );
 
         if (!hasValidAuthorizationHeader(request)) {
-            LOGGER.warn("Unauthorized request, missing or invalid \"Authorization\" header give.");
+            log.warn("Unauthorized request, missing or invalid \"Authorization\" header give.");
             return buildResponse(response, 401, "Unauthorized request, missing or invalid \"Authorization\" header give.");
         }
 
-        VoteRequest voteRequest = AvaIre.GSON.fromJson(request.body(), VoteRequest.class);
+        VoteRequest voteRequest = AvaIre.gson.fromJson(request.body(), VoteRequest.class);
 
         if (!isValidVoteRequest(voteRequest)) {
-            LOGGER.warn("Bad request, invalid JSON data given to justify a upvote request.");
+            log.warn("Bad request, invalid JSON data given to justify a upvote request.");
             return buildResponse(response, 400, "Bad request, invalid JSON data given to justify a upvote request.");
         }
 
         User userById = metrics.getAvaire().getShardManager().getUserById(voteRequest.user);
         if (userById == null || userById.isBot()) {
-            LOGGER.warn("Invalid user ID given, the user is not on any server the bot is on.");
+            log.warn("Invalid user ID given, the user is not on any server the bot is on.");
             return buildResponse(response, 404, "Invalid user ID given, the user is not on any server the bot is on.");
         }
 
@@ -47,7 +47,7 @@ public class PostVote extends SparkRoute {
         voteEntity.setCarbon(Carbon.now().addHours(24));
         metrics.getAvaire().getVoteManager().registerVoteFor(userById);
 
-        LOGGER.info("Vote has been registered by {} ({})",
+        log.info("Vote has been registered by {} ({})",
             userById.getName() + "#" + userById.getDiscriminator(), userById.getId()
         );
 
@@ -55,7 +55,7 @@ public class PostVote extends SparkRoute {
             return buildResponse(response, 200, "Vote registered, thanks for voting!");
         }
 
-        metrics.getAvaire().getVoteManager().getMessager().sendVoteWithPointsMessageInDM(userById, voteEntity.getVotePoints());
+        metrics.getAvaire().getVoteManager().getMessenger().sendVoteWithPointsMessageInDM(userById, voteEntity.getVotePoints());
 
         return buildResponse(response, 200, "Vote registered, thanks for voting!");
     }

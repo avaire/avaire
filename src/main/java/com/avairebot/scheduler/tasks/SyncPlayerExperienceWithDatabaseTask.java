@@ -15,7 +15,7 @@ import java.util.List;
 
 public class SyncPlayerExperienceWithDatabaseTask implements Task {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SyncPlayerExperienceWithDatabaseTask.class);
+    private static final Logger log = LoggerFactory.getLogger(SyncPlayerExperienceWithDatabaseTask.class);
 
     @Override
     public void handle(AvaIre avaire) {
@@ -36,7 +36,7 @@ public class SyncPlayerExperienceWithDatabaseTask implements Task {
                 Constants.PLAYER_EXPERIENCE_TABLE_NAME
             );
 
-            LOGGER.debug("Starting \"Player Experience\" update task with query: " + query);
+            log.debug("Starting \"Player Experience\" update task with query: " + query);
 
             boolean autoCommit = connection.getAutoCommit();
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -57,7 +57,7 @@ public class SyncPlayerExperienceWithDatabaseTask implements Task {
                 connection.setAutoCommit(autoCommit);
             }
 
-            LOGGER.debug("Finished \"Player Experience\" task, updated {} records in the process", experienceQueue.size());
+            log.debug("Finished \"Player Experience\" task, updated {} records in the process", experienceQueue.size());
         } catch (SQLException e) {
             logSQLException(e);
             if (connection != null) {
@@ -71,6 +71,6 @@ public class SyncPlayerExperienceWithDatabaseTask implements Task {
     }
 
     private void logSQLException(SQLException e) {
-        LOGGER.error("An SQL exception was thrown while updating player experience: ", e);
+        log.error("An SQL exception was thrown while updating player experience: ", e);
     }
 }

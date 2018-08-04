@@ -42,7 +42,7 @@ public class CreateGuildTypeTableMigration implements Migration {
         limits.put("levelRoles", levelRoles);
 
         items.put("name", name);
-        items.put("limits", AvaIre.GSON.toJson(limits));
+        items.put("limits", AvaIre.gson.toJson(limits));
 
         return items;
     }

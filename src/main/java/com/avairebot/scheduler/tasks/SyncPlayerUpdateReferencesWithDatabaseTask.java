@@ -15,7 +15,7 @@ import java.util.Map;
 
 public class SyncPlayerUpdateReferencesWithDatabaseTask implements Task {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SyncPlayerUpdateReferencesWithDatabaseTask.class);
+    private static final Logger log = LoggerFactory.getLogger(SyncPlayerUpdateReferencesWithDatabaseTask.class);
 
     @Override
     public void handle(AvaIre avaire) {
@@ -36,7 +36,7 @@ public class SyncPlayerUpdateReferencesWithDatabaseTask implements Task {
                 Constants.PLAYER_EXPERIENCE_TABLE_NAME
             );
 
-            LOGGER.debug("Starting \"Player Reference\" update task with query: " + query);
+            log.debug("Starting \"Player Reference\" update task with query: " + query);
 
             boolean autoCommit = connection.getAutoCommit();
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -58,7 +58,7 @@ public class SyncPlayerUpdateReferencesWithDatabaseTask implements Task {
                 connection.setAutoCommit(autoCommit);
             }
 
-            LOGGER.debug("Finished \"Player Reference\" task, updated {} records in the process", playerQueue.size());
+            log.debug("Finished \"Player Reference\" task, updated {} records in the process", playerQueue.size());
         } catch (SQLException e) {
             logSQLException(e);
             if (connection != null) {
@@ -72,6 +72,6 @@ public class SyncPlayerUpdateReferencesWithDatabaseTask implements Task {
     }
 
     private void logSQLException(SQLException e) {
-        LOGGER.error("An SQL exception was thrown while updating player references: ", e);
+        log.error("An SQL exception was thrown while updating player references: ", e);
     }
 }

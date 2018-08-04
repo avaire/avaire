@@ -77,7 +77,7 @@ import java.util.function.Consumer;
 
 public class AvaIre {
 
-    public static final Gson GSON = new GsonBuilder()
+    public static final Gson gson = new GsonBuilder()
         .registerTypeAdapter(
             PlaylistTransformer.PlaylistSong.class,
             new PlaylistSongSerializer()
@@ -86,8 +86,8 @@ public class AvaIre {
         .serializeNulls()
         .create();
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AvaIre.class);
-    private static Environment APPLICATION_ENVIRONMENT;
+    private static final Logger log = LoggerFactory.getLogger(AvaIre.class);
+    private static Environment applicationEnvironment;
     private final Settings settings;
     private final Configuration config;
     private final CacheManager cache;
@@ -110,17 +110,17 @@ public class AvaIre {
 
         System.out.println(getVersionInfo());
 
-        LOGGER.debug("====================================================");
-        LOGGER.debug("Starting the application with debug logging enabled!");
-        LOGGER.debug("====================================================\n");
+        log.debug("====================================================");
+        log.debug("Starting the application with debug logging enabled!");
+        log.debug("====================================================\n");
 
-        LOGGER.info("Bootstrapping AvaIre v" + AppInfo.getAppInfo().VERSION);
+        log.info("Bootstrapping AvaIre v" + AppInfo.getAppInfo().version);
         Reflections.log = null;
 
         this.eventEmitter = new EventEmitter(this);
         this.cache = new CacheManager(this);
 
-        LOGGER.info("Loading configuration");
+        log.info("Loading configuration");
         config = new Configuration(this, null, "config.yml");
         if (!config.exists()) {
             getLogger().info("The {} configuration file is missing!", "config.yml");
@@ -135,21 +135,21 @@ public class AvaIre {
             config.getStringList("botAccess")
         ));
 
-        APPLICATION_ENVIRONMENT = Environment.fromName(config.getString("environment", "production"));
-        if (APPLICATION_ENVIRONMENT == null) {
+        applicationEnvironment = Environment.fromName(config.getString("environment", "production"));
+        if (applicationEnvironment == null) {
             throw new InvalidApplicationEnvironmentException(config.getString("environment", "production"));
         }
-        LOGGER.info("Starting application in \"{}\" mode", APPLICATION_ENVIRONMENT.getName());
-        if (APPLICATION_ENVIRONMENT.equals(Environment.DEVELOPMENT)) {
+        log.info("Starting application in \"{}\" mode", applicationEnvironment.getName());
+        if (applicationEnvironment.equals(Environment.DEVELOPMENT)) {
             RestAction.setPassContext(true);
             RestAction.DEFAULT_FAILURE = Throwable::printStackTrace;
-            LOGGER.info("Enabling rest action context parsing and printing stack traces for optimal debugging");
+            log.info("Enabling rest action context parsing and printing stack traces for optimal debugging");
         }
 
-        LOGGER.info("Registering and connecting to database");
+        log.info("Registering and connecting to database");
         database = new DatabaseManager(this);
 
-        LOGGER.info("Registering database table migrations");
+        log.info("Registering database table migrations");
         database.getMigrations().register(
             new CreateGuildTableMigration(),
             new CreateGuildTypeTableMigration(),
@@ -176,7 +176,7 @@ public class AvaIre {
             new RecreateFeedbackTableMigration()
         );
 
-        LOGGER.info("Registering default middlewares");
+        log.info("Registering default middlewares");
         MiddlewareHandler.initialize(this);
         MiddlewareHandler.register("hasRole", new HasRoleMiddleware(this));
         MiddlewareHandler.register("hasVoted", new HasVotedTodayMiddleware(this));
@@ -187,7 +187,7 @@ public class AvaIre {
         MiddlewareHandler.register("musicChannel", new IsMusicChannelMiddleware(this));
         MiddlewareHandler.register("isDMMessage", new IsDMMessageMiddelware(this));
 
-        LOGGER.info("Registering default command categories");
+        log.info("Registering default command categories");
         String defaultPrefix = getConfig().getString("default-prefix", DiscordConstants.DEFAULT_COMMAND_PREFIX);
         CategoryHandler.addCategory(this, "Administration", defaultPrefix);
         CategoryHandler.addCategory(this, "Help", defaultPrefix);
@@ -198,34 +198,34 @@ public class AvaIre {
         CategoryHandler.addCategory(this, "Utility", defaultPrefix);
         CategoryHandler.addCategory(this, "System", ";");
 
-        LOGGER.info("Registering commands...");
+        log.info("Registering commands...");
         autoloadPackage(Constants.PACKAGE_COMMAND_PATH, command -> CommandHandler.register((Command) command));
-        LOGGER.info(String.format("\tRegistered %s commands successfully!", CommandHandler.getCommands().size()));
+        log.info(String.format("\tRegistered %s commands successfully!", CommandHandler.getCommands().size()));
 
-        LOGGER.info("Registering jobs...");
+        log.info("Registering jobs...");
         autoloadPackage(Constants.PACKAGE_JOB_PATH, job -> ScheduleHandler.registerJob((Job) job));
-        LOGGER.info(String.format("\tRegistered %s jobs successfully!", ScheduleHandler.entrySet().size()));
+        log.info(String.format("\tRegistered %s jobs successfully!", ScheduleHandler.entrySet().size()));
 
         intelligenceManager = new IntelligenceManager(this);
         if (intelligenceManager.isEnabled()) {
-            LOGGER.info("Registering intents...");
+            log.info("Registering intents...");
             autoloadPackage(Constants.PACKAGE_INTENTS_PATH, intent -> intelligenceManager.registerIntent((Intent) intent));
-            LOGGER.info(String.format("\tRegistered %s intelligence intents successfully!", intelligenceManager.entrySet().size()));
+            log.info(String.format("\tRegistered %s intelligence intents successfully!", intelligenceManager.entrySet().size()));
         }
 
-        LOGGER.info("Preparing I18n");
+        log.info("Preparing I18n");
         I18n.start(this);
 
-        LOGGER.info("Creating plugin manager and registering plugins...");
-        pluginManager = new PluginManager(this);
+        log.info("Creating plugin manager and registering plugins...");
+        pluginManager = new PluginManager();
 
         try {
             pluginManager.loadPlugins();
 
             if (pluginManager.getPlugins().isEmpty()) {
-                LOGGER.info("\tNo plugins was found");
+                log.info("\tNo plugins was found");
             } else {
-                LOGGER.info(String.format("\t%s plugins was loaded, invoking all plugins", pluginManager.getPlugins().size()));
+                log.info(String.format("\t%s plugins was loaded, invoking all plugins", pluginManager.getPlugins().size()));
                 for (PluginLoader plugin : pluginManager.getPlugins()) {
                     int commands = CommandHandler.getCommands().size();
                     int categories = CategoryHandler.getValues().size();
@@ -233,7 +233,7 @@ public class AvaIre {
 
                     plugin.invokePlugin(this);
 
-                    LOGGER.info("\t\t\"{}\" has been enabled with {} Command(s), {} Command Categories, {} Database Migration(s)",
+                    log.info("\t\t\"{}\" has been enabled with {} Command(s), {} Command Categories, {} Database Migration(s)",
                         plugin.getName(),
                         CommandHandler.getCommands().size() - commands,
                         CategoryHandler.getValues().size() - categories,
@@ -242,23 +242,23 @@ public class AvaIre {
                 }
             }
         } catch (InvalidPluginsPathException | InvalidPluginException e) {
-            LOGGER.error(e.getMessage(), e);
+            log.error(e.getMessage(), e);
             System.exit(ExitCodes.EXIT_CODE_ERROR);
         }
 
-        LOGGER.info("Running database migrations");
+        log.info("Running database migrations");
         database.getMigrations().up();
 
-        LOGGER.info("Preparing blacklist and syncing the list with the database");
+        log.info("Preparing blacklist and syncing the list with the database");
         blacklist = new Blacklist(this);
         blacklist.syncBlacklistWithDatabase();
 
-        LOGGER.info("Preparing and setting up metrics");
+        log.info("Preparing and setting up metrics");
         Metrics.setup(this);
 
         String sentryDsn = config.getString("sentryDsn", "").trim();
         if (sentryDsn.length() > 0) {
-            LOGGER.info("SentryDSN found, initializing Sentry.io");
+            log.info("SentryDSN found, initializing Sentry.io");
             SentryClient sentryClient = Sentry.init(sentryDsn);
 
             sentryClient.addMdcTag(SentryConstants.SENTRY_MDC_TAG_GUILD);
@@ -274,7 +274,7 @@ public class AvaIre {
                     break;
 
                 default:
-                    sentryClient.setRelease(AppInfo.getAppInfo().VERSION);
+                    sentryClient.setRelease(AppInfo.getAppInfo().version);
                     break;
             }
 
@@ -283,25 +283,25 @@ public class AvaIre {
             getSentryLogbackAppender().stop();
         }
 
-        LOGGER.info("Preparing vote manager");
+        log.info("Preparing vote manager");
         voteManager = new VoteManager(this);
 
-        LOGGER.info("Preparing Lavalink");
+        log.info("Preparing Lavalink");
         AudioHandler.setAvaire(this);
-        LavalinkManager.LavalinkManagerHolder.LAVALINK.start(this);
+        LavalinkManager.LavalinkManagerHolder.lavalink.start(this);
 
         try {
             AudioConfiguration.ResamplingQuality.valueOf(
                 getConfig().getString("audio-quality.resampling", "medium").toUpperCase()
             );
         } catch (IllegalArgumentException ignored) {
-            LOGGER.warn("Invalid audio resampling quality given, \"{}\" is not a valid quality name, using medium quality instead.",
+            log.warn("Invalid audio resampling quality given, \"{}\" is not a valid quality name, using medium quality instead.",
                 getConfig().getString("audio-quality.resampling", "medium")
             );
             config.set("audio-quality.resampling", "medium");
         }
 
-        LOGGER.info("Creating bot instance and connecting to Discord network");
+        log.info("Creating bot instance and connecting to Discord network");
 
         shardEntityCounter = new ShardEntityCounter(this);
 
@@ -313,11 +313,11 @@ public class AvaIre {
     }
 
     public static Logger getLogger() {
-        return LOGGER;
+        return log;
     }
 
     public static Environment getEnvironment() {
-        return APPLICATION_ENVIRONMENT;
+        return applicationEnvironment;
     }
 
     static String getVersionInfo() {
@@ -330,7 +330,7 @@ public class AvaIre {
             "/__/     \\__\\  \\__/ /__/     \\__\\ |__| | _| `._____||_______|\n" +
             ""
             + "%reset"
-            + "\n\tVersion:       " + AppInfo.getAppInfo().VERSION
+            + "\n\tVersion:       " + AppInfo.getAppInfo().version
             + "\n\tJVM:           " + System.getProperty("java.version")
             + "\n\tJDA:           " + JDAInfo.VERSION
             + "\n\tLavaplayer     " + PlayerLibrary.VERSION
@@ -429,7 +429,7 @@ public class AvaIre {
             manager.getScheduler().getQueue().clear();
 
             if (manager.getLastActiveMessage() != null) {
-                LavalinkManager.LavalinkManagerHolder.LAVALINK.closeConnection(manager.getLastActiveMessage().getGuild());
+                LavalinkManager.LavalinkManagerHolder.lavalink.closeConnection(manager.getLastActiveMessage().getGuild());
             }
 
             if (manager.getPlayer() instanceof LavalinkPlayer) {
@@ -472,7 +472,7 @@ public class AvaIre {
                     process.start();
                 }
             } catch (URISyntaxException | IOException e) {
-                LOGGER.error("Failed starting jar file: {}", e.getMessage(), e);
+                log.error("Failed starting jar file: {}", e.getMessage(), e);
             }
         }
 
@@ -512,8 +512,8 @@ public class AvaIre {
             .addEventListeners(new MainEventHandler(this))
             .addEventListeners(new GenericEventHandler(this));
 
-        if (LavalinkManager.LavalinkManagerHolder.LAVALINK.isEnabled()) {
-            builder.addEventListeners(LavalinkManager.LavalinkManagerHolder.LAVALINK.getLavalink());
+        if (LavalinkManager.LavalinkManagerHolder.lavalink.isEnabled()) {
+            builder.addEventListeners(LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink());
         }
 
         for (PluginLoader plugin : getPluginManager().getPlugins()) {

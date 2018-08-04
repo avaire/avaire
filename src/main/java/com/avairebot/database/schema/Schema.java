@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Schema {
+    
     /**
      * The DBM main instance.
      */

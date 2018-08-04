@@ -4,7 +4,7 @@ import com.avairebot.contracts.config.PropertyConfiguration;
 
 public class GitInfo extends PropertyConfiguration {
 
-    private static GitInfo INSTANCE;
+    private static GitInfo instance;
 
     public final String branch;
     public final String commitId;
@@ -29,9 +29,9 @@ public class GitInfo extends PropertyConfiguration {
     }
 
     public static GitInfo getGitInfo() {
-        if (INSTANCE == null) {
-            INSTANCE = new GitInfo();
+        if (instance == null) {
+            instance = new GitInfo();
         }
-        return INSTANCE;
+        return instance;
     }
 }

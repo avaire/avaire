@@ -12,12 +12,9 @@ import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.User;
 
 import java.util.Arrays;
-import java.util.regex.Pattern;
 
 public abstract class BanableCommand extends Command {
-
-    private static final Pattern userRegEX = Pattern.compile("<@(!|)+[0-9]{16,}+>", Pattern.CASE_INSENSITIVE);
-
+    
     /**
      * Creates the given command instance by calling {@link Command#Command(AvaIre, boolean)} with allowDM set to true.
      *

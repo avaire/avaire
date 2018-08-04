@@ -111,7 +111,7 @@ public class VoiceKickCommand extends Command {
                                 .set("reason", reason)
                                 .queue();
                         }
-                    }, RestActionUtil.IGNORE)
+                    }, RestActionUtil.ignore)
                 )
         );
         return true;

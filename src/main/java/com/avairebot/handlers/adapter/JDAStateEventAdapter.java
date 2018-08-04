@@ -26,7 +26,7 @@ public class JDAStateEventAdapter extends EventAdapter {
         .expireAfterAccess(3, TimeUnit.MINUTES)
         .build();
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(JDAStateEventAdapter.class);
+    private static final Logger log = LoggerFactory.getLogger(JDAStateEventAdapter.class);
 
     /**
      * Instantiates the event adapter and sets the avaire class instance.
@@ -38,7 +38,7 @@ public class JDAStateEventAdapter extends EventAdapter {
     }
 
     public void onConnectToShard(JDA jda) {
-        LOGGER.debug("Connection to shard {} has been established, running autorole job to sync autoroles missed due to downtime",
+        log.debug("Connection to shard {} has been established, running autorole job to sync autoroles missed due to downtime",
             jda.getShardInfo().getShardId()
         );
 
@@ -75,13 +75,13 @@ public class JDAStateEventAdapter extends EventAdapter {
             }
         }
 
-        LOGGER.debug("Shard {} successfully synced {} new users autorole",
+        log.debug("Shard {} successfully synced {} new users autorole",
             jda.getShardInfo().getShardId(), updatedUsers
         );
     }
 
     private void populateAutoroleCache() {
-        LOGGER.debug("No cache entries was found, populating the auto role cache");
+        log.debug("No cache entries was found, populating the auto role cache");
         try {
             for (DataRow row : avaire.getDatabase().query(String.format(
                 "SELECT `id`, `autorole` FROM `%s` WHERE `autorole` IS NOT NULL;", Constants.GUILD_TABLE_NAME
@@ -89,7 +89,7 @@ public class JDAStateEventAdapter extends EventAdapter {
                 cache.put(row.getLong("id"), row.getLong("autorole"));
             }
         } catch (SQLException e) {
-            LOGGER.error("Failed to populate the autorole cache: {}", e.getMessage(), e);
+            log.error("Failed to populate the autorole cache: {}", e.getMessage(), e);
         }
     }
 }

@@ -16,12 +16,12 @@ import java.util.*;
 
 public class Migrations {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(Migrations.class);
+    private static final Logger log = LoggerFactory.getLogger(Migrations.class);
 
     private final DatabaseManager dbm;
     private final List<MigrationContainer> migrations;
 
-    private final String TABLE_NAME = "avaire_migrations";
+    private final String migrationTableName = "avaire_migrations";
     private boolean ranSetup = false;
 
     public Migrations(DatabaseManager dbm) {
@@ -82,13 +82,13 @@ public class Migrations {
             migration.getMigration().up(dbm.getSchema());
             updateRemoteMigrationBatchValue(migration, 1);
 
-            LOGGER.info("Created \"{}\"", migration.getName());
+            log.info("Created \"{}\"", migration.getName());
 
             ranMigrations = true;
         }
 
         if (!ranMigrations) {
-            LOGGER.info("There were nothing to migrate");
+            log.info("There were nothing to migrate");
         }
 
         return ranMigrations;
@@ -122,13 +122,13 @@ public class Migrations {
             migration.getMigration().down(dbm.getSchema());
             updateRemoteMigrationBatchValue(migration, 0);
 
-            LOGGER.info("Rolled back \"{}\"", migration.getName());
+            log.info("Rolled back \"{}\"", migration.getName());
 
             ranMigrations = true;
         }
 
         if (!ranMigrations) {
-            LOGGER.info("There were nothing to rollback");
+            log.info("There were nothing to rollback");
         }
 
         return ranMigrations;
@@ -168,13 +168,13 @@ public class Migrations {
             migration.getMigration().down(dbm.getSchema());
             updateRemoteMigrationBatchValue(migration, 0);
 
-            LOGGER.info("Rolled back \"{}\"", migration.getName());
+            log.info("Rolled back \"{}\"", migration.getName());
 
             ranMigrations = true;
         }
 
         if (!ranMigrations) {
-            LOGGER.info("There were nothing to rollback");
+            log.info("There were nothing to rollback");
         }
 
         return ranMigrations;
@@ -208,7 +208,7 @@ public class Migrations {
     }
 
     private void runMigrationSetup() throws SQLException {
-        boolean created = dbm.getSchema().createIfNotExists(TABLE_NAME, (Blueprint table) -> {
+        boolean created = dbm.getSchema().createIfNotExists(migrationTableName, (Blueprint table) -> {
             table.Increments("id");
             table.String("name");
             table.Boolean("batch");
@@ -216,7 +216,7 @@ public class Migrations {
         });
 
         if (created) {
-            LOGGER.info("Migration table created successfully");
+            log.info("Migration table created successfully");
         }
     }
 
@@ -250,6 +250,6 @@ public class Migrations {
     }
 
     private QueryBuilder makeQuery() {
-        return dbm.newQueryBuilder(TABLE_NAME);
+        return dbm.newQueryBuilder(migrationTableName);
     }
 }

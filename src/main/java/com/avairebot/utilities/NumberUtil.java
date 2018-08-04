@@ -6,9 +6,9 @@ import java.util.regex.Pattern;
 
 public class NumberUtil {
 
-    private static final Pattern TIMESTAMP_PATTERN = Pattern.compile("^(\\d?\\d)(?::([0-5]?\\d))?(?::([0-5]?\\d))?$");
-    private static final Pattern NUMBER_PATTERN = Pattern.compile("[-+]?\\d*\\.?\\d+");
-    private static final DecimalFormat NICE_FORMAT = new DecimalFormat("#,##0");
+    private static final Pattern timestampPattern = Pattern.compile("^(\\d?\\d)(?::([0-5]?\\d))?(?::([0-5]?\\d))?$");
+    private static final Pattern numberPattern = Pattern.compile("[-+]?\\d*\\.?\\d+");
+    private static final DecimalFormat niceFormat = new DecimalFormat("#,##0");
 
     /**
      * Parses the string argument as a signed integer, if the string argument
@@ -53,18 +53,18 @@ public class NumberUtil {
 
     /**
      * Parses the given string to it's value in milliseconds
-     * if it matches the {@link #TIMESTAMP_PATTERN} pattern.
+     * if it matches the {@link #timestampPattern} pattern.
      *
      * @param string The string that should be parsed to its milliseconds value.
      * @return The parsed number value in milliseconds matching the given string.
-     * @throws IllegalStateException If a string is given that does not match the {@link #TIMESTAMP_PATTERN} pattern this exception is thrown.
+     * @throws IllegalStateException If a string is given that does not match the {@link #timestampPattern} pattern this exception is thrown.
      */
     public static long parseTimeString(String string) {
         long seconds = 0;
         long minutes = 0;
         long hours = 0;
 
-        Matcher matcher = TIMESTAMP_PATTERN.matcher(string);
+        Matcher matcher = timestampPattern.matcher(string);
 
         matcher.find();
 
@@ -152,7 +152,7 @@ public class NumberUtil {
      * @return The formatted value.
      */
     public static String formatNicely(long value) {
-        return NICE_FORMAT.format(value);
+        return niceFormat.format(value);
     }
 
 
@@ -165,7 +165,7 @@ public class NumberUtil {
      * @return The formatted value.
      */
     public static String formatNicely(float value) {
-        return NICE_FORMAT.format(value);
+        return niceFormat.format(value);
     }
 
     /**
@@ -177,7 +177,7 @@ public class NumberUtil {
      * @return The formatted value.
      */
     public static String formatNicely(double value) {
-        return NICE_FORMAT.format(value);
+        return niceFormat.format(value);
     }
 
     /**
@@ -189,7 +189,7 @@ public class NumberUtil {
      * @return The formatted value.
      */
     public static String formatNicely(int value) {
-        return NICE_FORMAT.format(value);
+        return niceFormat.format(value);
     }
 
     /**
@@ -199,6 +199,6 @@ public class NumberUtil {
      * @return True if the string is numeric, false otherwise.
      */
     public static boolean isNumeric(String string) {
-        return NUMBER_PATTERN.matcher(string).matches();
+        return numberPattern.matcher(string).matches();
     }
 }

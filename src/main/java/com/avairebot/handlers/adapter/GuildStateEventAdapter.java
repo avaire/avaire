@@ -76,7 +76,7 @@ public class GuildStateEventAdapter extends EventAdapter {
                     owner.getName(), owner.getDiscriminator(), owner.getId()
                 ), false)
                 .build()
-        ).queue(null, RestActionUtil.IGNORE);
+        ).queue(null, RestActionUtil.ignore);
     }
 
     public void onGuildLeave(GuildLeaveEvent event) {
@@ -104,6 +104,6 @@ public class GuildStateEventAdapter extends EventAdapter {
                     event.getGuild().getName(), event.getGuild().getId()
                 ), false)
                 .build()
-        ).queue(null, RestActionUtil.IGNORE);
+        ).queue(null, RestActionUtil.ignore);
     }
 }

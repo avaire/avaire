@@ -92,6 +92,6 @@ public class LavalinkManager {
     }
 
     public static class LavalinkManagerHolder {
-        public static final LavalinkManager LAVALINK = new LavalinkManager();
+        public static final LavalinkManager lavalink = new LavalinkManager();
     }
 }

@@ -17,7 +17,7 @@ import java.util.*;
 
 public final class QueryBuilder {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(QueryBuilder.class);
+    private static final Logger log = LoggerFactory.getLogger(QueryBuilder.class);
 
     /**
      * The instance of the {@link DatabaseManager}.
@@ -728,7 +728,7 @@ public final class QueryBuilder {
     public Collection get() throws SQLException {
         String query = toSQL();
 
-        LOGGER.debug("QueryBuilder#get() was called with the following SQL query.\nSQL: " + query);
+        log.debug("QueryBuilder#get() was called with the following SQL query.\nSQL: " + query);
         MDC.put("query", query);
 
         // Note: When parsing the result to a collection, we can't use the DBM query method since it auto closes the result,
@@ -765,7 +765,7 @@ public final class QueryBuilder {
             try {
                 dbm.queryUpdate(this);
             } catch (SQLException e) {
-                LOGGER.error("Error thrown during async update query: " + toSQL(), e);
+                log.error("Error thrown during async update query: " + toSQL(), e);
             }
         });
 
@@ -811,7 +811,7 @@ public final class QueryBuilder {
             try {
                 dbm.queryUpdate(this);
             } catch (SQLException e) {
-                LOGGER.error("Error thrown during async update query: " + toSQL(), e);
+                log.error("Error thrown during async update query: " + toSQL(), e);
             }
         });
 
@@ -844,7 +844,7 @@ public final class QueryBuilder {
             try {
                 dbm.queryInsert(this);
             } catch (SQLException e) {
-                LOGGER.error("Error thrown during async insert query: " + toSQL(), e);
+                log.error("Error thrown during async insert query: " + toSQL(), e);
             }
         });
 
@@ -888,7 +888,7 @@ public final class QueryBuilder {
             try {
                 dbm.queryInsert(this);
             } catch (SQLException e) {
-                LOGGER.error("Error thrown during async insert query: " + toSQL(), e);
+                log.error("Error thrown during async insert query: " + toSQL(), e);
             }
         });
 
@@ -916,7 +916,7 @@ public final class QueryBuilder {
             try {
                 dbm.queryUpdate(this);
             } catch (SQLException e) {
-                LOGGER.error("Error thrown during async delete query: " + toSQL(), e);
+                log.error("Error thrown during async delete query: " + toSQL(), e);
             }
         });
 

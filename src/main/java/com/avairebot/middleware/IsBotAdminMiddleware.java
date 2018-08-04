@@ -24,7 +24,7 @@ public class IsBotAdminMiddleware extends Middleware {
     public boolean handle(@Nonnull Message message, @Nonnull MiddlewareStack stack, String... args) {
         if (!avaire.getBotAdmins().contains(message.getAuthor().getId())) {
             MessageFactory.makeError(message, ":warning: You must be a bot administrator to use this command!")
-                .queue(newMessage -> newMessage.delete().queueAfter(45, TimeUnit.SECONDS), RestActionUtil.IGNORE);
+                .queue(newMessage -> newMessage.delete().queueAfter(45, TimeUnit.SECONDS), RestActionUtil.ignore);
             return false;
         }
 

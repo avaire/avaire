@@ -3,6 +3,7 @@ package com.avairebot.time;
 import java.util.Calendar;
 
 public enum Month {
+    
     /**
      * Value of the {@link java.util.Calendar#MONTH} field indicating January.
      */

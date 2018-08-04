@@ -77,7 +77,7 @@ public class AudioHandler {
                 avaire.getConfig().getInt("audio-quality.encoding", AudioConfiguration.OPUS_QUALITY_MAX)
             );
 
-            if (LavalinkManager.LavalinkManagerHolder.LAVALINK.isEnabled()) {
+            if (LavalinkManager.LavalinkManagerHolder.lavalink.isEnabled()) {
                 playerManager.enableGcMonitoring();
             }
 
@@ -125,7 +125,7 @@ public class AudioHandler {
                 .set("title", container.getAudioTrack().getInfo().title)
                 .set("url", container.getAudioTrack().getInfo().uri)
                 .set("author", container.getRequester().getAsMention())
-                .queue(success -> success.delete().queueAfter(30, TimeUnit.SECONDS, null, RestActionUtil.IGNORE));
+                .queue(success -> success.delete().queueAfter(30, TimeUnit.SECONDS, null, RestActionUtil.ignore));
         }
         musicManager.getScheduler().nextTrack();
     }
@@ -171,13 +171,13 @@ public class AudioHandler {
             return VoiceConnectStatus.NOT_CONNECTED;
         }
 
-        if (LavalinkManager.LavalinkManagerHolder.LAVALINK.isEnabled()) {
+        if (LavalinkManager.LavalinkManagerHolder.lavalink.isEnabled()) {
             VoiceConnectStatus voiceConnectStatus = canConnectToChannel(context, channel);
             if (voiceConnectStatus != null) {
                 return voiceConnectStatus;
             }
 
-            LavalinkManager.LavalinkManagerHolder.LAVALINK.openConnection(channel);
+            LavalinkManager.LavalinkManagerHolder.lavalink.openConnection(channel);
 
             return VoiceConnectStatus.CONNECTED;
         }
@@ -236,7 +236,7 @@ public class AudioHandler {
             musicManagers.put(guild.getIdLong(), musicManager);
         }
 
-        if (musicManager != null && !LavalinkManager.LavalinkManagerHolder.LAVALINK.isEnabled()) {
+        if (musicManager != null && !LavalinkManager.LavalinkManagerHolder.lavalink.isEnabled()) {
             guild.getAudioManager().setSendingHandler(musicManager.getSendHandler());
         }
 
@@ -254,8 +254,8 @@ public class AudioHandler {
     public int getTotalListenersSize() {
         int total = 0;
 
-        if (LavalinkManager.LavalinkManagerHolder.LAVALINK.isEnabled()) {
-            for (Link link : LavalinkManager.LavalinkManagerHolder.LAVALINK.getLavalink().getLinks()) {
+        if (LavalinkManager.LavalinkManagerHolder.lavalink.isEnabled()) {
+            for (Link link : LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink().getLinks()) {
                 if (link.getState().equals(Link.State.CONNECTED) || link.getState().equals(Link.State.CONNECTING)) {
                     total++;
                 }

@@ -12,7 +12,7 @@ public class RestActionUtil {
      * This function does nothing other than work as a rest
      * action failure consumer that ignores the failure.
      */
-    public static final Consumer<Throwable> IGNORE = ignored -> {
+    public static final Consumer<Throwable> ignore = ignored -> {
         // Nothing to see here
     };
 
@@ -21,7 +21,7 @@ public class RestActionUtil {
      * unless it meets some special caterina, in which case it
      * may either be ignored, or handled differently.
      */
-    public static final Consumer<Throwable> HANDLE_MESSAGE_CREATE = error -> {
+    public static final Consumer<Throwable> handleMessageCreate = error -> {
         if (error == null) return;
 
         if (error instanceof ErrorResponseException) {

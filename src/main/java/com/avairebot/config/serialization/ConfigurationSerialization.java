@@ -21,7 +21,7 @@ import java.util.logging.Logger;
  */
 public class ConfigurationSerialization {
 
-    public static final String SERIALIZED_TYPE_KEY = "==";
+    public static final String serializedTypeKey = "==";
     private static Map<String, Class<? extends ConfigurationSerializable>> aliases = new HashMap<>();
 
     static {
@@ -74,9 +74,9 @@ public class ConfigurationSerialization {
     public static ConfigurationSerializable deserializeObject(Map<String, ?> args) {
         Class<? extends ConfigurationSerializable> clazz = null;
 
-        if (args.containsKey(SERIALIZED_TYPE_KEY)) {
+        if (args.containsKey(serializedTypeKey)) {
             try {
-                String alias = (String) args.get(SERIALIZED_TYPE_KEY);
+                String alias = (String) args.get(serializedTypeKey);
 
                 if (alias == null) {
                     throw new IllegalArgumentException("Cannot have null alias");
@@ -90,7 +90,7 @@ public class ConfigurationSerialization {
                 throw ex;
             }
         } else {
-            throw new IllegalArgumentException("Args doesn't contain type key ('" + SERIALIZED_TYPE_KEY + "')");
+            throw new IllegalArgumentException("Args doesn't contain type key ('" + serializedTypeKey + "')");
         }
 
         return new ConfigurationSerialization(clazz).deserialize(args);

@@ -53,9 +53,9 @@ public class YamlConfiguration extends FileConfiguration {
             config.load(file);
         } catch (FileNotFoundException ex) {
         } catch (IOException ex) {
-            Configuration.LOGGER.warn("Cannot load " + file, ex);
+            Configuration.log.warn("Cannot load " + file, ex);
         } catch (InvalidConfigurationException ex) {
-            Configuration.LOGGER.warn("Cannot load " + file, ex);
+            Configuration.log.warn("Cannot load " + file, ex);
         }
 
         return config;
@@ -80,9 +80,9 @@ public class YamlConfiguration extends FileConfiguration {
         try {
             config.load(reader);
         } catch (IOException ex) {
-            Configuration.LOGGER.warn("Cannot load configuration from stream", ex);
+            Configuration.log.warn("Cannot load configuration from stream", ex);
         } catch (InvalidConfigurationException ex) {
-            Configuration.LOGGER.warn("Cannot load configuration from stream", ex);
+            Configuration.log.warn("Cannot load configuration from stream", ex);
         }
 
         return config;
@@ -92,7 +92,7 @@ public class YamlConfiguration extends FileConfiguration {
     public String saveToString() {
         yamlOptions.setIndent(options().indent());
         yamlOptions.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
-        yamlOptions.setAllowUnicode(SYSTEM_UTF);
+        yamlOptions.setAllowUnicode(systemUTF);
         yamlRepresenter.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
 
         String header = buildHeader();

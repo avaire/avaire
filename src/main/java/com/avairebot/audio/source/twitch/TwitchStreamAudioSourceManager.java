@@ -34,9 +34,9 @@ import static com.sedmelluq.discord.lavaplayer.tools.FriendlyException.Severity.
  */
 public class TwitchStreamAudioSourceManager implements AudioSourceManager, HttpConfigurable {
 
-    public static final String CLIENT_ID = "jzkbprff40iqj646a697cyrvl0zt2m6";
-    private static final String STREAM_NAME_REGEX = "^https://(?:www\\.|go\\.)?twitch.tv/([^/]+)$";
-    private static final Pattern streamNameRegex = Pattern.compile(STREAM_NAME_REGEX);
+    private static final String clientId = "jzkbprff40iqj646a697cyrvl0zt2m6";
+    private static final String streamNameRegex = "^https://(?:www\\.|go\\.)?twitch.tv/([^/]+)$";
+    private static final Pattern streamNamePattern = Pattern.compile(streamNameRegex);
     private final HttpInterfaceManager httpInterfaceManager;
 
     /**
@@ -53,7 +53,7 @@ public class TwitchStreamAudioSourceManager implements AudioSourceManager, HttpC
      * @return Channel identifier (for API requests)
      */
     public static String getChannelIdentifierFromUrl(String url) {
-        Matcher matcher = streamNameRegex.matcher(url);
+        Matcher matcher = streamNamePattern.matcher(url);
         if (!matcher.matches()) {
             return null;
         }
@@ -78,7 +78,7 @@ public class TwitchStreamAudioSourceManager implements AudioSourceManager, HttpC
     }
 
     private static HttpUriRequest addClientHeaders(HttpUriRequest request) {
-        request.setHeader("Client-ID", CLIENT_ID);
+        request.setHeader("Client-ID", clientId);
         return request;
     }
 

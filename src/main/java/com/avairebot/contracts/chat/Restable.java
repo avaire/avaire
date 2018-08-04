@@ -31,7 +31,7 @@ public abstract class Restable {
      * <p><b>This method is asynchronous</b>
      */
     public void queue() {
-        sendMessage().ifPresent(action -> action.queue(null, RestActionUtil.HANDLE_MESSAGE_CREATE));
+        sendMessage().ifPresent(action -> action.queue(null, RestActionUtil.handleMessageCreate));
     }
 
     /**
@@ -44,7 +44,7 @@ public abstract class Restable {
      *                for the API. (can be null)
      */
     public void queue(Consumer<Message> success) {
-        sendMessage().ifPresent(action -> action.queue(success, RestActionUtil.HANDLE_MESSAGE_CREATE));
+        sendMessage().ifPresent(action -> action.queue(success, RestActionUtil.handleMessageCreate));
     }
 
     /**
@@ -58,7 +58,7 @@ public abstract class Restable {
      *                encounters an exception at its execution point.
      */
     public void queue(Consumer<Message> success, Consumer<Throwable> failure) {
-        sendMessage().ifPresent(action -> action.queue(success, failure == null ? RestActionUtil.HANDLE_MESSAGE_CREATE : failure));
+        sendMessage().ifPresent(action -> action.queue(success, failure == null ? RestActionUtil.handleMessageCreate : failure));
     }
 
     /**
@@ -112,7 +112,7 @@ public abstract class Restable {
     public Future<?> queueAfter(long delay, TimeUnit unit, Consumer<Message> success) {
         Optional<MessageAction> messageAction = sendMessage();
         if (messageAction.isPresent()) {
-            return messageAction.get().queueAfter(delay, unit, success, RestActionUtil.HANDLE_MESSAGE_CREATE);
+            return messageAction.get().queueAfter(delay, unit, success, RestActionUtil.handleMessageCreate);
         }
         return CompletableFuture.completedFuture(null);
     }
@@ -141,7 +141,7 @@ public abstract class Restable {
     public Future<?> queueAfter(long delay, TimeUnit unit, Consumer<Message> success, Consumer<Throwable> failure) {
         Optional<MessageAction> messageAction = sendMessage();
         if (messageAction.isPresent()) {
-            return messageAction.get().queueAfter(delay, unit, success, failure == null ? RestActionUtil.HANDLE_MESSAGE_CREATE : failure);
+            return messageAction.get().queueAfter(delay, unit, success, failure == null ? RestActionUtil.handleMessageCreate : failure);
         }
         return CompletableFuture.completedFuture(null);
     }
@@ -168,7 +168,7 @@ public abstract class Restable {
     public Future<?> queueAfter(long delay, TimeUnit unit, ScheduledExecutorService executor) {
         Optional<MessageAction> messageAction = sendMessage();
         if (messageAction.isPresent()) {
-            return messageAction.get().queueAfter(delay, unit, null, RestActionUtil.HANDLE_MESSAGE_CREATE, executor);
+            return messageAction.get().queueAfter(delay, unit, null, RestActionUtil.handleMessageCreate, executor);
         }
         return CompletableFuture.completedFuture(null);
     }
@@ -197,7 +197,7 @@ public abstract class Restable {
     public Future<?> queueAfter(long delay, TimeUnit unit, Consumer<Message> success, ScheduledExecutorService executor) {
         Optional<MessageAction> messageAction = sendMessage();
         if (messageAction.isPresent()) {
-            return messageAction.get().queueAfter(delay, unit, success, RestActionUtil.HANDLE_MESSAGE_CREATE, executor);
+            return messageAction.get().queueAfter(delay, unit, success, RestActionUtil.handleMessageCreate, executor);
         }
         return CompletableFuture.completedFuture(null);
     }
@@ -226,7 +226,7 @@ public abstract class Restable {
         Optional<MessageAction> messageAction = sendMessage();
         if (messageAction.isPresent()) {
             if (failure == null) {
-                failure = RestActionUtil.HANDLE_MESSAGE_CREATE;
+                failure = RestActionUtil.handleMessageCreate;
             }
             return messageAction.get().queueAfter(delay, unit, success, failure, executor);
         }

@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public enum Formats {
+
     /**
      * Generates a date time string, example:
      * <p>

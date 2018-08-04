@@ -22,7 +22,7 @@ import java.util.Set;
 
 public class DatabaseManager {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseManager.class);
+    private static final Logger log = LoggerFactory.getLogger(DatabaseManager.class);
 
     private final AvaIre avaire;
     private final Schema schema;
@@ -101,7 +101,7 @@ public class DatabaseManager {
      */
     @WillClose
     public Collection query(String query) throws SQLException {
-        LOGGER.debug("query(String query) was called with the following SQL query.\nSQL: " + query);
+        log.debug("query(String query) was called with the following SQL query.\nSQL: " + query);
         MDC.put("query", query);
 
         try (ResultSet resultSet = getConnection().query(query)) {
@@ -150,7 +150,7 @@ public class DatabaseManager {
      */
     @WillClose
     public int queryUpdate(String query) throws SQLException {
-        LOGGER.debug("queryUpdate(String query) was called with the following SQL query.\nSQL: " + query);
+        log.debug("queryUpdate(String query) was called with the following SQL query.\nSQL: " + query);
         MDC.put("query", query);
 
         try (Statement stmt = getConnection().prepare(query)) {
@@ -201,7 +201,7 @@ public class DatabaseManager {
      */
     @WillClose
     public Set<Integer> queryInsert(String query) throws SQLException {
-        LOGGER.debug("queryInsert(String query) was called with the following SQL query.\nSQL: " + query);
+        log.debug("queryInsert(String query) was called with the following SQL query.\nSQL: " + query);
         Metrics.databaseQueries.labels("INSERT").inc();
         MDC.put("query", query);
 
@@ -242,7 +242,7 @@ public class DatabaseManager {
     @WillClose
     public Set<Integer> queryInsert(QueryBuilder queryBuilder) throws SQLException {
         String query = queryBuilder.toSQL();
-        LOGGER.debug("queryInsert(QueryBuilder queryBuilder) was called with the following SQL query.\nSQL: " + query);
+        log.debug("queryInsert(QueryBuilder queryBuilder) was called with the following SQL query.\nSQL: " + query);
         Metrics.databaseQueries.labels("INSERT").inc();
         MDC.put("query", query);
 

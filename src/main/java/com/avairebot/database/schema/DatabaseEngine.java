@@ -1,6 +1,7 @@
 package com.avairebot.database.schema;
 
 public enum DatabaseEngine {
+
     MyISAM("MyISAM"),
     InnoDB("InnoDB"),
     MERGE("MERGE"),
@@ -14,7 +15,7 @@ public enum DatabaseEngine {
 
     private final String engine;
 
-    private DatabaseEngine(String engine) {
+    DatabaseEngine(String engine) {
         this.engine = engine;
     }
 

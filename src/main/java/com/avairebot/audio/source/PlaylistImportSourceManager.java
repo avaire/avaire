@@ -51,7 +51,7 @@ public class PlaylistImportSourceManager implements AudioSourceManager {
 
     private static final org.slf4j.Logger log = LoggerFactory.getLogger(PlaylistImportSourceManager.class);
 
-    private static final AudioPlayerManager PRIVATE_MANAGER = AudioHandler
+    private static final AudioPlayerManager privateManager = AudioHandler
         .getDefaultAudioHandler().registerSourceManagers(new DefaultAudioPlayerManager());
 
     @Override
@@ -68,7 +68,7 @@ public class PlaylistImportSourceManager implements AudioSourceManager {
         String pasteId = parsed[1];
 
 
-        if (pasteId == null || "".equals(pasteId) || !PasteServiceConstants.PASTE_SERVICE_URLS.containsKey(serviceName)) {
+        if (pasteId == null || "".equals(pasteId) || !PasteServiceConstants.pasteServiceUrl.containsKey(serviceName)) {
             return null;
         }
         List<String> trackIds = loadAndParseTrackIds(serviceName, pasteId);
@@ -76,7 +76,7 @@ public class PlaylistImportSourceManager implements AudioSourceManager {
         PasteServiceAudioResultHandler handler = new PasteServiceAudioResultHandler();
         Future<Void> lastFuture = null;
         for (String id : trackIds) {
-            lastFuture = PRIVATE_MANAGER.loadItemOrdered(handler, id, handler);
+            lastFuture = privateManager.loadItemOrdered(handler, id, handler);
         }
 
         if (lastFuture == null) {
@@ -117,7 +117,7 @@ public class PlaylistImportSourceManager implements AudioSourceManager {
     private String[] parse(String identifier) {
         String pasteId;
         Matcher m;
-        Matcher serviceNameMatcher = PasteServiceConstants.SERVICE_NAME_PATTERN.matcher(identifier);
+        Matcher serviceNameMatcher = PasteServiceConstants.serverNamePattern.matcher(identifier);
 
         if (!serviceNameMatcher.find()) {
             return null;
@@ -127,17 +127,17 @@ public class PlaylistImportSourceManager implements AudioSourceManager {
 
         switch (serviceName) {
             case "hastebin":
-                m = PasteServiceConstants.HASTEBIN_PATTERN.matcher(identifier);
+                m = PasteServiceConstants.hastebinPattern.matcher(identifier);
                 pasteId = m.find() ? m.group(1) : null;
                 break;
 
             case "wastebin":
-                m = PasteServiceConstants.WASTEBIN_PATTERN.matcher(identifier);
+                m = PasteServiceConstants.wastebinPattern.matcher(identifier);
                 pasteId = m.find() ? m.group(1) : null;
                 break;
 
             case "pastebin":
-                m = PasteServiceConstants.PASTEBIN_PATTERN.matcher(identifier);
+                m = PasteServiceConstants.pastebinPattern.matcher(identifier);
                 pasteId = m.find() ? m.group(1) : null;
                 break;
 
@@ -156,7 +156,7 @@ public class PlaylistImportSourceManager implements AudioSourceManager {
         try {
             BufferedReader in = new BufferedReader(
                 new InputStreamReader(
-                    new URL(PasteServiceConstants.PASTE_SERVICE_URLS.get(serviceName) + pasteId).openStream()
+                    new URL(PasteServiceConstants.pasteServiceUrl.get(serviceName) + pasteId).openStream()
                 )
             );
 

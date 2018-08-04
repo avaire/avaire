@@ -53,7 +53,7 @@ public class SayCommand extends Command {
         context.getMessageChannel().sendMessage(context.getContentRaw()).queue();
 
         if (context.isGuildMessage()) {
-            context.delete().reason("AvaIre say command usage").queue(null, RestActionUtil.IGNORE);
+            context.delete().reason("AvaIre say command usage").queue(null, RestActionUtil.ignore);
         }
 
         return true;

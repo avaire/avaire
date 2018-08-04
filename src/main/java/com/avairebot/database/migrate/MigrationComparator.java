@@ -12,6 +12,7 @@ import java.util.Comparator;
  * 1 = First argument comes second in the sorted list
  */
 public class MigrationComparator implements Comparator<MigrationContainer> {
+
     private final boolean orderByAsc;
 
     public MigrationComparator(boolean orderByAsc) {

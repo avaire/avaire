@@ -28,7 +28,7 @@ public class PlaylistTransformer extends Transformer {
             name = data.getString("name");
 
             if (data.has("songs") && data.getString("songs").length() > 0) {
-                List<PlaylistSong> songs = AvaIre.GSON.fromJson(data.getString("songs"), (new TypeToken<List<PlaylistSong>>() {
+                List<PlaylistSong> songs = AvaIre.gson.fromJson(data.getString("songs"), (new TypeToken<List<PlaylistSong>>() {
                 }.getType()));
 
                 if (!songs.isEmpty()) {

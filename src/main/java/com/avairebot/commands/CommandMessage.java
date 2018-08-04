@@ -26,7 +26,7 @@ import java.util.List;
 
 public class CommandMessage implements CommandContext {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(CommandMessage.class);
+    private static final Logger log = LoggerFactory.getLogger(CommandMessage.class);
 
     public final Guild guild;
     public final Member member;
@@ -263,8 +263,8 @@ public class CommandMessage implements CommandContext {
                 .replace("\\n", "\n")
                 .replace("\\t", "\t");
         } else {
-            LOGGER.warn("Missing language entry for key {} in language {}", key, I18n.getLocale(getGuild()).getLanguage().getCode());
-            return I18n.DEFAULT.getConfig().getString(key)
+            log.warn("Missing language entry for key {} in language {}", key, I18n.getLocale(getGuild()).getLanguage().getCode());
+            return I18n.getDefaultLanguage().getConfig().getString(key)
                 .replace("\\n", "\n")
                 .replace("\\t", "\t");
         }

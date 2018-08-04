@@ -65,7 +65,7 @@ public class FileAdapter extends CacheAdapter {
         }
 
         try {
-            CacheItem item = AvaIre.GSON.fromJson(new String(Files.readAllBytes(cacheFile.toPath())), CacheItem.class);
+            CacheItem item = AvaIre.gson.fromJson(new String(Files.readAllBytes(cacheFile.toPath())), CacheItem.class);
             if (item == null) {
                 return false;
             }
@@ -87,7 +87,7 @@ public class FileAdapter extends CacheAdapter {
         }
 
         try {
-            return AvaIre.GSON.fromJson(new String(Files.readAllBytes(cacheFile.toPath())), CacheItem.class);
+            return AvaIre.gson.fromJson(new String(Files.readAllBytes(cacheFile.toPath())), CacheItem.class);
         } catch (IOException e) {
             e.printStackTrace();
             return null;
@@ -102,7 +102,7 @@ public class FileAdapter extends CacheAdapter {
         }
 
         try {
-            CacheItem item = AvaIre.GSON.fromJson(new String(Files.readAllBytes(cacheFile.toPath())), CacheItem.class);
+            CacheItem item = AvaIre.gson.fromJson(new String(Files.readAllBytes(cacheFile.toPath())), CacheItem.class);
             if (item == null) {
                 return false;
             }
@@ -122,7 +122,7 @@ public class FileAdapter extends CacheAdapter {
         }
 
         try {
-            CacheItem item = AvaIre.GSON.fromJson(new String(Files.readAllBytes(cacheFile.toPath())), CacheItem.class);
+            CacheItem item = AvaIre.gson.fromJson(new String(Files.readAllBytes(cacheFile.toPath())), CacheItem.class);
             if (item == null) {
                 return null;
             }
@@ -179,7 +179,7 @@ public class FileAdapter extends CacheAdapter {
             fw = new FileWriter(file, false);
             bw = new BufferedWriter(fw);
 
-            bw.write(AvaIre.GSON.toJson(cacheItem) + "\n");
+            bw.write(AvaIre.gson.toJson(cacheItem) + "\n");
         } catch (IOException e) {
             e.printStackTrace();
             return false;

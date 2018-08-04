@@ -1,6 +1,5 @@
 package com.avairebot.plugin;
 
-import com.avairebot.AvaIre;
 import com.avairebot.exceptions.InvalidPluginException;
 import com.avairebot.exceptions.InvalidPluginsPathException;
 import org.slf4j.Logger;
@@ -13,15 +12,13 @@ import java.util.Set;
 
 public class PluginManager {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(PluginManager.class);
+    private static final Logger log = LoggerFactory.getLogger(PluginManager.class);
 
-    private final AvaIre avaire;
     private final File pluginsFolder;
 
     private final Set<PluginLoader> plugins = new HashSet<>();
 
-    public PluginManager(AvaIre avaire) {
-        this.avaire = avaire;
+    public PluginManager() {
         this.pluginsFolder = new File("plugins");
 
         if (!pluginsFolder.exists()) {
@@ -39,7 +36,7 @@ public class PluginManager {
             if (file.isDirectory() || file.isHidden()) continue;
 
             try {
-                LOGGER.debug("Attempting to load plugin: " + file.toString());
+                log.debug("Attempting to load plugin: " + file.toString());
                 PluginLoader pluginLoader = new PluginLoader(file, pluginsFolder);
 
                 plugins.add(pluginLoader);

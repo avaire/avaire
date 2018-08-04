@@ -10,6 +10,7 @@ import com.avairebot.database.query.QueryBuilder;
 import java.sql.SQLException;
 
 public abstract class TableGrammar extends Grammar {
+
     /**
      * The query formatter method, this is called by the query
      * builder when the query should be built.

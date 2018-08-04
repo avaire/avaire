@@ -27,9 +27,9 @@ public class PlayerController {
         .build();
 
     private static final Map<Long, PlayerUpdateReference> playerQueue = new LinkedHashMap<>();
-    private static final Logger LOGGER = LoggerFactory.getLogger(PlayerController.class);
+    private static final Logger log = LoggerFactory.getLogger(PlayerController.class);
 
-    private static final String[] REQUIRED_PLAYER_ITEMS = new String[]{
+    private static final String[] requiredPlayerColumns = new String[]{
         "username", "discriminator", "avatar", "experience"
     };
 
@@ -45,12 +45,12 @@ public class PlayerController {
         }
 
         return (PlayerTransformer) CacheUtil.getUncheckedUnwrapped(cache, asKey(message.getGuild(), user), () -> {
-            LOGGER.debug("User cache for " + user.getId() + " was refreshed");
+            log.debug("User cache for " + user.getId() + " was refreshed");
 
             try {
                 PlayerTransformer transformer = new PlayerTransformer(avaire.getDatabase()
                     .newQueryBuilder(Constants.PLAYER_EXPERIENCE_TABLE_NAME)
-                    .select(REQUIRED_PLAYER_ITEMS)
+                    .select(requiredPlayerColumns)
                     .where("user_id", user.getId())
                     .andWhere("guild_id", message.getGuild().getId())
                     .get().first());

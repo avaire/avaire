@@ -60,14 +60,14 @@ public class RandomCatCommand extends Command {
 
             if (statusCode == 429) {
                 context.makeWarning("Too many attempts was made to the cat API, try again in a minute, or ask a bot administrator to get an API key at [meow.senither.com](https://meow.senither.com/) to allow for more requests.")
-                    .queue(message -> message.delete().queueAfter(45, TimeUnit.SECONDS, null, RestActionUtil.IGNORE));
+                    .queue(message -> message.delete().queueAfter(45, TimeUnit.SECONDS, null, RestActionUtil.ignore));
 
                 return;
             }
 
             if (statusCode == 404) {
                 context.makeWarning("I couldn't find any cat picture D: Try again, maybe they will show up now?")
-                    .queue(message -> message.delete().queueAfter(45, TimeUnit.SECONDS, null, RestActionUtil.IGNORE));
+                    .queue(message -> message.delete().queueAfter(45, TimeUnit.SECONDS, null, RestActionUtil.ignore));
 
                 return;
             }

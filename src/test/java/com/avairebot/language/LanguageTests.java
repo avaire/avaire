@@ -20,7 +20,7 @@ public class LanguageTests extends BaseTest {
     public void testSubLanguagesIsTheSameSizeAsTheDefaultLanguage() {
         Set<String> defaultStrings = getKeys(I18n.DEFAULT);
 
-        for (LanguageHolder entry : I18n.LANGS) {
+        for (LanguageHolder entry : I18n.languages) {
             Set<String> strings = getKeys(entry);
 
             if (defaultStrings.size() != strings.size()) {
@@ -35,7 +35,7 @@ public class LanguageTests extends BaseTest {
     public void testSubLanguagesHasAllTheSameKeysAsTheDefaultLanguage() {
         Set<String> defaultStrings = getKeys(I18n.DEFAULT);
 
-        for (LanguageHolder entry : I18n.LANGS) {
+        for (LanguageHolder entry : I18n.languages) {
             for (String str : getKeys(entry)) {
                 assertTrue(defaultStrings.contains(str), "Checking the \"" + str + "\" string in the \"" + entry.getLanguage().getCode() + "\" language file");
             }
@@ -46,7 +46,7 @@ public class LanguageTests extends BaseTest {
     public void testLanguagesDoesNotReturnNull() {
         Set<String> defaultStrings = getKeys(I18n.DEFAULT);
 
-        for (LanguageHolder entry : I18n.LANGS) {
+        for (LanguageHolder entry : I18n.languages) {
             for (String str : defaultStrings) {
                 assertNotNull(entry.getConfig().getString(str), str + " in the " + entry.getLanguage().getEnglishName() + " language files was not found!");
             }

@@ -104,7 +104,7 @@ public class ModlogModule {
             } catch (SQLException ignored) {
                 //
             }
-        }, RestActionUtil.IGNORE);
+        }, RestActionUtil.ignore);
 
         return "" + transformer.getModlogCase();
     }

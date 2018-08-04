@@ -77,7 +77,7 @@ public class GuildTransformer extends Transformer {
             defaultVolume = NumberUtil.getBetween(defaultVolume, 10, 100);
 
             if (data.getString("aliases", null) != null) {
-                HashMap<String, String> dbAliases = AvaIre.GSON.fromJson(
+                HashMap<String, String> dbAliases = AvaIre.gson.fromJson(
                     data.getString("aliases"),
                     new TypeToken<HashMap<String, String>>() {
                     }.getType());
@@ -88,7 +88,7 @@ public class GuildTransformer extends Transformer {
             }
 
             if (data.getString("prefixes", null) != null) {
-                HashMap<String, String> dbPrefixes = AvaIre.GSON.fromJson(
+                HashMap<String, String> dbPrefixes = AvaIre.gson.fromJson(
                     data.getString("prefixes"),
                     new TypeToken<HashMap<String, String>>() {
                     }.getType());
@@ -99,7 +99,7 @@ public class GuildTransformer extends Transformer {
             }
 
             if (data.getString("claimable_roles", null) != null) {
-                HashMap<String, String> dbSelfAssignableRoles = AvaIre.GSON.fromJson(
+                HashMap<String, String> dbSelfAssignableRoles = AvaIre.gson.fromJson(
                     data.getString("claimable_roles"),
                     new TypeToken<HashMap<String, String>>() {
                     }.getType());
@@ -110,7 +110,7 @@ public class GuildTransformer extends Transformer {
             }
 
             if (data.getString("level_roles", null) != null) {
-                HashMap<String, String> dbLevelRoles = AvaIre.GSON.fromJson(
+                HashMap<String, String> dbLevelRoles = AvaIre.gson.fromJson(
                     data.getString("level_roles"),
                     new TypeToken<HashMap<String, String>>() {
                     }.getType());
@@ -121,7 +121,7 @@ public class GuildTransformer extends Transformer {
             }
 
             if (data.getString("modules", null) != null) {
-                HashMap<String, Map<String, String>> dbModules = AvaIre.GSON.fromJson(
+                HashMap<String, Map<String, String>> dbModules = AvaIre.gson.fromJson(
                     data.getString("modules"),
                     new TypeToken<HashMap<String, Map<String, String>>>() {
                     }.getType());
@@ -132,7 +132,7 @@ public class GuildTransformer extends Transformer {
             }
 
             if (data.getString("channels", null) != null) {
-                HashMap<String, Object> dbChannels = AvaIre.GSON.fromJson(
+                HashMap<String, Object> dbChannels = AvaIre.gson.fromJson(
                     data.getString("channels"),
                     new TypeToken<HashMap<String, Object>>() {
                     }.getType());
@@ -332,6 +332,6 @@ public class GuildTransformer extends Transformer {
             objects.put(transformer.getId(), transformer.toMap());
         }
 
-        return AvaIre.GSON.toJson(objects);
+        return AvaIre.gson.toJson(objects);
     }
 }

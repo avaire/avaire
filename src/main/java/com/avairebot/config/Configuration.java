@@ -17,7 +17,7 @@ import java.util.Set;
 
 public class Configuration implements ConfigurationSection {
 
-    public static final Logger LOGGER = LoggerFactory.getLogger(Configuration.class);
+    public static final Logger log = LoggerFactory.getLogger(Configuration.class);
 
     private final JavaPlugin plugin;
     private final ClassLoader classLoader;
@@ -72,7 +72,7 @@ public class Configuration implements ConfigurationSection {
             try {
                 getConfig().save(configFile);
             } catch (IOException ex) {
-                LOGGER.warn("Could not save config to " + configFile, ex);
+                log.warn("Could not save config to " + configFile, ex);
             }
         }
     }
@@ -129,10 +129,10 @@ public class Configuration implements ConfigurationSection {
                 out.close();
                 in.close();
             } else {
-                LOGGER.warn("Could not save " + outFile.getName() + " to " + outFile + " because " + outFile.getName() + " already exists.");
+                log.warn("Could not save " + outFile.getName() + " to " + outFile + " because " + outFile.getName() + " already exists.");
             }
         } catch (IOException ex) {
-            LOGGER.warn("Could not save " + outFile.getName() + " to " + outFile, ex);
+            log.warn("Could not save " + outFile.getName() + " to " + outFile, ex);
         }
     }
 

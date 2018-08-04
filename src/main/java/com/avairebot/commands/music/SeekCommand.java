@@ -81,7 +81,7 @@ public class SeekCommand extends Command {
             context.makeSuccess(context.i18n("seekTo"))
                 .set("title", musicManager.getPlayer().getPlayingTrack().getInfo().title)
                 .set("time", NumberUtil.formatTime(time))
-                .queue(message -> message.delete().queueAfter(3, TimeUnit.MINUTES, null, RestActionUtil.IGNORE));
+                .queue(message -> message.delete().queueAfter(3, TimeUnit.MINUTES, null, RestActionUtil.ignore));
         } catch (IllegalStateException ex) {
             return sendErrorMessage(context, context.i18n("invalidTimeGiven"));
         }

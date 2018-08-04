@@ -99,9 +99,9 @@ public class MessageFactory {
 
     private static void handleDeleteMessage(@Nonnull Message message, int delay, TimeUnit timeUnit) {
         if (delay < 1 || timeUnit == null) {
-            message.delete().queue(null, RestActionUtil.IGNORE);
+            message.delete().queue(null, RestActionUtil.ignore);
         } else {
-            message.delete().queueAfter(delay, timeUnit, null, RestActionUtil.IGNORE);
+            message.delete().queueAfter(delay, timeUnit, null, RestActionUtil.ignore);
         }
     }
 }

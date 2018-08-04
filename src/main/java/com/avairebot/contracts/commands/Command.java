@@ -278,7 +278,7 @@ public abstract class Command extends Reflectionable {
             if (deleteIn <= 0) {
                 return;
             }
-            message.delete().queueAfter(deleteIn, unit, null, RestActionUtil.IGNORE);
+            message.delete().queueAfter(deleteIn, unit, null, RestActionUtil.ignore);
         });
 
         return false;

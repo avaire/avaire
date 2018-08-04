@@ -88,7 +88,7 @@ public class VoteSkipCommand extends Command {
             context.i18n("alreadyVoted") :
             context.i18n("registered")
         ).set("votes", neededVotes).queue(message -> {
-            message.delete().queueAfter(1, TimeUnit.MINUTES, null, RestActionUtil.IGNORE);
+            message.delete().queueAfter(1, TimeUnit.MINUTES, null, RestActionUtil.ignore);
         });
 
         return true;
@@ -99,7 +99,7 @@ public class VoteSkipCommand extends Command {
     }
 
     private int getAmountOfUsersConnectedToVoice(CommandMessage context) {
-        VoiceChannel connectedChannel = LavalinkManager.LavalinkManagerHolder.LAVALINK.getConnectedChannel(context.getGuild());
+        VoiceChannel connectedChannel = LavalinkManager.LavalinkManagerHolder.lavalink.getConnectedChannel(context.getGuild());
         if (connectedChannel == null) {
             return 0;
         }

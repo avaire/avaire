@@ -39,7 +39,7 @@ public class RoleEventAdapter extends EventAdapter {
                 .useAsync(true)
                 .where("id", event.getGuild().getId())
                 .update(statement -> {
-                    statement.set("claimable_roles", AvaIre.GSON.toJson(transformer.getSelfAssignableRoles()), true);
+                    statement.set("claimable_roles", AvaIre.gson.toJson(transformer.getSelfAssignableRoles()), true);
                 });
         } catch (SQLException e) {
             e.printStackTrace();
@@ -84,7 +84,7 @@ public class RoleEventAdapter extends EventAdapter {
                 .useAsync(true)
                 .where("id", event.getGuild().getId())
                 .update(statement -> {
-                    statement.set("claimable_roles", AvaIre.GSON.toJson(transformer.getSelfAssignableRoles()), true);
+                    statement.set("claimable_roles", AvaIre.gson.toJson(transformer.getSelfAssignableRoles()), true);
                 });
         } catch (SQLException e) {
             e.printStackTrace();
@@ -109,7 +109,7 @@ public class RoleEventAdapter extends EventAdapter {
                 .useAsync(true)
                 .where("id", event.getGuild().getId())
                 .update(statement -> {
-                    statement.set("level_roles", AvaIre.GSON.toJson(transformer.getLevelRoles()), true);
+                    statement.set("level_roles", AvaIre.gson.toJson(transformer.getLevelRoles()), true);
                 });
         } catch (SQLException e) {
             e.printStackTrace();

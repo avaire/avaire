@@ -66,7 +66,7 @@ public class CreatePlaylist extends PlaylistSubCommand {
                 statement.set("guild_id", context.getGuild().getId());
                 statement.set("name", name, true);
                 statement.set("amount", 0);
-                statement.set("songs", AvaIre.GSON.toJson(new ArrayList<>()));
+                statement.set("songs", AvaIre.gson.toJson(new ArrayList<>()));
             });
 
         PlaylistController.forgetCache(context.getGuild().getIdLong());

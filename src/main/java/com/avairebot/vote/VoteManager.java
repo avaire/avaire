@@ -19,10 +19,10 @@ import java.util.concurrent.DelayQueue;
 
 public class VoteManager {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(VoteManager.class);
+    private static final Logger log = LoggerFactory.getLogger(VoteManager.class);
     private static final DelayQueue<VoteEntity> queue = new DelayQueue<>();
     private static final Map<Long, VoteCacheEntity> voteLog = new HashMap<>();
-    private static final VoteMesseger messager = new VoteMesseger();
+    private static final VoteMessenger messenger = new VoteMessenger();
     private static long lastCheck = -1;
 
     private final AvaIre avaire;
@@ -33,8 +33,8 @@ public class VoteManager {
         this.syncWithDatabase();
     }
 
-    public VoteMesseger getMessager() {
-        return messager;
+    public VoteMessenger getMessenger() {
+        return messenger;
     }
 
     public Map<Long, VoteCacheEntity> getVoteLog() {
@@ -53,9 +53,9 @@ public class VoteManager {
         long diff = 0;
         if (lastCheck > System.currentTimeMillis()) {
             diff = lastCheck - System.currentTimeMillis();
-            entity.setDuration(diff + VoteEntity.DEFAULT_DURATION);
+            entity.setDuration(diff + VoteEntity.defaultDuration);
         }
-        lastCheck = System.currentTimeMillis() + diff + VoteEntity.DEFAULT_DURATION;
+        lastCheck = System.currentTimeMillis() + diff + VoteEntity.defaultDuration;
 
         queue.put(entity);
 
@@ -152,7 +152,7 @@ public class VoteManager {
             voteEntity.setVotePoints(collection.first().getInt("points", 1) + 1);
             voteEntity.setOptIn(collection.first().getBoolean("opt_in", true));
         } catch (SQLException e) {
-            LOGGER.error("An SQLException was thrown while updating user vote information: ", e);
+            log.error("An SQLException was thrown while updating user vote information: ", e);
         }
     }
 
@@ -208,7 +208,7 @@ public class VoteManager {
     }
 
     private void syncWithDatabase() {
-        LOGGER.info("Syncing votes with the database...");
+        log.info("Syncing votes with the database...");
         try {
             Collection collection = avaire.getDatabase().newQueryBuilder(Constants.VOTES_TABLE_NAME).get();
 
@@ -230,11 +230,11 @@ public class VoteManager {
                 ));
             }
 
-            LOGGER.info("Syncing complete! {} vote entries was found that has not expired yet and was added to the vote log!",
+            log.info("Syncing complete! {} vote entries was found that has not expired yet and was added to the vote log!",
                 voteLog.size() - size
             );
         } catch (SQLException e) {
-            LOGGER.error("An SQLException was thrown while fetching user vote information: ", e);
+            log.error("An SQLException was thrown while fetching user vote information: ", e);
         }
     }
 }

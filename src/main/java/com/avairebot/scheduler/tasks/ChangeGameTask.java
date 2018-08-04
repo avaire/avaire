@@ -15,7 +15,7 @@ public class ChangeGameTask implements Task {
 
     @Override
     public void handle(AvaIre avaire) {
-        if (SetStatusCommand.HAS_CUSTOM_STATUS || !avaire.areWeReadyYet()) {
+        if (SetStatusCommand.hasCustomStatus || !avaire.areWeReadyYet()) {
             return;
         }
 
