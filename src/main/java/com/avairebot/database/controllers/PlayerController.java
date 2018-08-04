@@ -14,7 +14,8 @@ import org.slf4j.LoggerFactory;
 
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nonnull;
-import java.sql.SQLException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
@@ -25,6 +26,7 @@ public class PlayerController {
         .expireAfterAccess(210, TimeUnit.SECONDS) // 3½ minute
         .build();
 
+    private static final Map<Long, PlayerUpdateReference> playerQueue = new LinkedHashMap<>();
     private static final Logger LOGGER = LoggerFactory.getLogger(PlayerController.class);
 
     private static final String[] REQUIRED_PLAYER_ITEMS = new String[]{
@@ -77,7 +79,7 @@ public class PlayerController {
                     transformer.setDiscriminator(user.getDiscriminator());
                     transformer.setAvatar(user.getAvatarId());
 
-                    updateUserData(avaire, user);
+                    updateUserData(user);
 
                     return transformer;
                 }
@@ -101,19 +103,12 @@ public class PlayerController {
         });
     }
 
-    public static void updateUserData(AvaIre avaire, User user) {
-        try {
-            avaire.getDatabase().newQueryBuilder(Constants.PLAYER_EXPERIENCE_TABLE_NAME)
-                .useAsync(true)
-                .where("user_id", user.getId())
-                .update(statement -> {
-                    statement.set("username", user.getName(), true);
-                    statement.set("discriminator", user.getDiscriminator());
-                    statement.set("avatar", user.getAvatarId());
-                });
-        } catch (SQLException e) {
-            AvaIre.getLogger().error("Failed to update user with an ID of " + user.getId(), e);
-        }
+    public static Map<Long, PlayerUpdateReference> getPlayerQueue() {
+        return playerQueue;
+    }
+
+    public static void updateUserData(User user) {
+        playerQueue.put(user.getIdLong(), new PlayerUpdateReference(user));
     }
 
     private static boolean isChanged(User user, PlayerTransformer transformer) {
@@ -124,5 +119,30 @@ public class PlayerController {
 
     private static String asKey(@Nonnull Guild guild, @Nonnull User user) {
         return guild.getId() + ":" + user.getId();
+    }
+
+    public static class PlayerUpdateReference {
+
+        private final String username;
+        private final String discriminator;
+        private final String avatar;
+
+        PlayerUpdateReference(@Nonnull User user) {
+            this.username = user.getName();
+            this.discriminator = user.getDiscriminator();
+            this.avatar = user.getAvatarId();
+        }
+
+        public String getUsername() {
+            return username;
+        }
+
+        public String getDiscriminator() {
+            return discriminator;
+        }
+
+        public String getAvatar() {
+            return avatar;
+        }
     }
 }

@@ -14,6 +14,7 @@ public class RunEveryMinuteJob extends Job {
     private final ResetRespectStatisticsTask resetRespectStatisticsTask = new ResetRespectStatisticsTask();
     private final UpdateWebsocketHeartbeatMetricsTask updateWebsocketHeartbeatMetricsTask = new UpdateWebsocketHeartbeatMetricsTask();
     private final SyncPlayerExperienceWithDatabaseTask syncPlayerExperienceWithDatabaseTask = new SyncPlayerExperienceWithDatabaseTask();
+    private final SyncPlayerUpdateReferencesWithDatabaseTask syncPlayerUpdateReferencesWithDatabaseTask = new SyncPlayerUpdateReferencesWithDatabaseTask();
 
     public RunEveryMinuteJob(AvaIre avaire) {
         super(avaire, 0, 1, TimeUnit.MINUTES);
@@ -27,7 +28,8 @@ public class RunEveryMinuteJob extends Job {
             resetVoteManagerCacheTask,
             resetRespectStatisticsTask,
             updateWebsocketHeartbeatMetricsTask,
-            syncPlayerExperienceWithDatabaseTask
+            syncPlayerExperienceWithDatabaseTask,
+            syncPlayerUpdateReferencesWithDatabaseTask
         );
     }
 }
