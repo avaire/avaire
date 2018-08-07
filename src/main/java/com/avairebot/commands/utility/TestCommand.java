@@ -24,7 +24,7 @@ public class TestCommand extends Command {
         super(avaire, false);
     }
 
-    public static BufferedImage generateImage(String avatarUrl) throws IOException, FontFormatException {
+    public static BufferedImage generateImage(final String avatarUrl, final String username) throws IOException, FontFormatException {
         final long start = System.currentTimeMillis();
 
         URL url = new URL(avatarUrl);
@@ -48,7 +48,7 @@ public class TestCommand extends Command {
         // Creates our custom font, sets a type and size, and draws our test on top of the background
         Font font = Font.createFont(Font.TRUETYPE_FONT, TestCommand.class.getClassLoader().getResourceAsStream("fonts/FiraCode-Medium.ttf"));
         textGraphics.setFont(font.deriveFont(Font.BOLD, 20F));
-        textGraphics.drawString("Senither#0001", 190, 60);
+        textGraphics.drawString(username, 190, 60);
 
         // Creates a background bar for the XP
         Graphics2D experienceGraphics = backgroundImage.createGraphics();
@@ -96,7 +96,10 @@ public class TestCommand extends Command {
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
         try {
-            BufferedImage bufferedImage = generateImage(context.getAuthor().getEffectiveAvatarUrl());
+            BufferedImage bufferedImage = generateImage(
+                context.getAuthor().getEffectiveAvatarUrl(),
+                context.getAuthor().getName() + "#" + context.getAuthor().getDiscriminator()
+            );
 
             ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
             ImageIO.write(bufferedImage, "png", byteStream);

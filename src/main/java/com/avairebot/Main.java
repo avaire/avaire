@@ -45,7 +45,10 @@ public class Main {
 
             if (cmd.hasOption("test")) {
                 try {
-                    BufferedImage bufferedImage = TestCommand.generateImage("https://cdn.discordapp.com/avatars/88739639380172800/e2b182faea7cebeca33cc7ed34c26feb.png");
+                    BufferedImage bufferedImage = TestCommand.generateImage(
+                        "https://cdn.discordapp.com/avatars/88739639380172800/e2b182faea7cebeca33cc7ed34c26feb.png",
+                        "Senither#0001"
+                    );
                     ImageIO.write(bufferedImage, "png", new File("test-output.png"));
                 } catch (FontFormatException e) {
                     e.printStackTrace();
