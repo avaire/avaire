@@ -35,7 +35,8 @@ public enum Permissions {
     VOICE_MUTE_OTHERS("voice.mute_members", Permission.VOICE_MUTE_OTHERS),
     VOICE_MOVE_OTHERS("voice.move_members", Permission.VOICE_MOVE_OTHERS),
     VOICE_DEAF_OTHERS("voice.deafen_members", Permission.VOICE_DEAF_OTHERS),
-    VOICE_USE_VAD("voice.use_vad", Permission.VOICE_USE_VAD);
+    VOICE_USE_VAD("voice.use_vad", Permission.VOICE_USE_VAD),
+    VOICE_PRIORITY_SPEAKER("voice.priority_speaker", Permission.PRIORITY_SPEAKER);
 
     private final String node;
     private final Permission permission;
