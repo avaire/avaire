@@ -10,7 +10,6 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -37,7 +36,7 @@ public class TestCommand extends Command {
 
         // Create our images
         BufferedImage avatarImage = resize(ImageIO.read(urlConnection.getInputStream()), 150, 150);
-        BufferedImage backgroundImage = resize(ImageIO.read(new File("background.jpg")), 200, 600);
+        BufferedImage backgroundImage = resize(ImageIO.read(TestCommand.class.getClassLoader().getResourceAsStream("backgrounds/example.jpg")), 200, 600);
 
         // Merges the avatar with the background
         Graphics2D avatarGraphics = backgroundImage.createGraphics();
@@ -47,7 +46,7 @@ public class TestCommand extends Command {
         Graphics2D textGraphics = backgroundImage.createGraphics();
 
         // Creates our custom font, sets a type and size, and draws our test on top of the background
-        Font font = Font.createFont(Font.TRUETYPE_FONT, new File("FiraCode-Medium.ttf"));
+        Font font = Font.createFont(Font.TRUETYPE_FONT, TestCommand.class.getClassLoader().getResourceAsStream("fonts/FiraCode-Medium.ttf"));
         textGraphics.setFont(font.deriveFont(Font.BOLD, 20F));
         textGraphics.drawString("Senither#0001", 190, 60);
 
