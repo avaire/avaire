@@ -24,7 +24,7 @@ import java.util.Map;
  * @see SerializableAs
  */
 public interface ConfigurationSerializable {
-    
+
     /**
      * Creates a Map representation of this class.
      * <p>

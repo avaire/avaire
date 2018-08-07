@@ -14,7 +14,7 @@ import net.dv8tion.jda.core.entities.User;
 import java.util.Arrays;
 
 public abstract class BanableCommand extends Command {
-    
+
     /**
      * Creates the given command instance by calling {@link Command#Command(AvaIre, boolean)} with allowDM set to true.
      *

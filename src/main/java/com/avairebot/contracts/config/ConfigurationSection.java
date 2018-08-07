@@ -10,7 +10,7 @@ import java.util.Set;
  * Represents a section of a {@link ConfigurationBase}
  */
 public interface ConfigurationSection {
-    
+
     /**
      * Gets a set containing all keys in this section.
      * <p>

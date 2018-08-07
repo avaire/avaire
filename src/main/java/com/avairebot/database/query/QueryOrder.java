@@ -1,7 +1,7 @@
 package com.avairebot.database.query;
 
 public class QueryOrder {
-    
+
     /**
      * The field that should be used for the query order.
      */

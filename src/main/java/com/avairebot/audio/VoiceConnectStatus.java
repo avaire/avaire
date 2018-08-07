@@ -1,7 +1,7 @@
 package com.avairebot.audio;
 
 public enum VoiceConnectStatus {
-    
+
     /**
      * The bot was connected to the voice channel successfully.
      */
