@@ -1,8 +1,14 @@
 package com.avairebot.commands.utility;
 
 import com.avairebot.AvaIre;
+import com.avairebot.commands.CommandHandler;
 import com.avairebot.commands.CommandMessage;
+import com.avairebot.commands.administration.LevelCommand;
 import com.avairebot.contracts.commands.Command;
+import com.avairebot.database.transformers.GuildTransformer;
+import com.avairebot.database.transformers.PlayerTransformer;
+import com.avairebot.utilities.LevelUtil;
+import com.avairebot.utilities.NumberUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,7 +30,13 @@ public class TestCommand extends Command {
         super(avaire, false);
     }
 
-    public static BufferedImage generateImage(final String avatarUrl, final String username) throws IOException, FontFormatException {
+    public static BufferedImage generateImage(
+        final String avatarUrl,
+        final String username,
+        final String currentXpInLevel,
+        final String missingXpToNextLevel,
+        final double precentage
+    ) throws IOException, FontFormatException {
         final long start = System.currentTimeMillis();
 
         URL url = new URL(avatarUrl);
@@ -32,7 +44,7 @@ public class TestCommand extends Command {
         urlConnection.setRequestProperty("User-Agent", "AvaIre-Discord-Bot");
 
         final int xpBarLength = 375;
-        final String xpBarText = "37,946 out of 104,462 xp";
+        final String xpBarText = String.format("%s out of %s xp", currentXpInLevel, missingXpToNextLevel);
 
         // Create our images
         BufferedImage avatarImage = resize(ImageIO.read(urlConnection.getInputStream()), 150, 150);
@@ -56,7 +68,7 @@ public class TestCommand extends Command {
         experienceGraphics.fillRect(190, 80, xpBarLength, 40);
         // Create the current XP bar for the background
         experienceGraphics.setColor(new Color((float) 88 / 255, (float) 88 / 255, (float) 132 / 255, 0.8F));
-        experienceGraphics.fillRect(195, 85, Math.min(xpBarLength - 10, 654984), 30);
+        experienceGraphics.fillRect(195, 85, (int) Math.min(xpBarLength - 10, (xpBarLength - 10) * (precentage / 100)), 30);
         // Create the text that should be displayed in the middle of the XP bar
         experienceGraphics.setColor(new Color((float) 226 / 255, (float) 226 / 255, (float) 229 / 255, 0.85F));
         Font smallText = font.deriveFont(Font.BOLD, 14F);
@@ -95,10 +107,37 @@ public class TestCommand extends Command {
 
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
+        GuildTransformer guildTransformer = context.getGuildTransformer();
+        if (guildTransformer == null || !guildTransformer.isLevels()) {
+            return sendErrorMessage(
+                context,
+                "errors.requireLevelFeatureToBeEnabled",
+                CommandHandler.getCommand(LevelCommand.class)
+                    .getCommand().generateCommandTrigger(context.getMessage())
+            );
+        }
+
+        PlayerTransformer player = context.getDatabaseEventHolder().getPlayer();
+        if (player == null) {
+            return sendErrorMessage(context, "Player object was null, exiting");
+        }
+
+        long experience = player.getExperience();
+        long level = LevelUtil.getLevelFromExperience(experience);
+        long current = LevelUtil.getExperienceFromLevel(level);
+
+        long nextLevelXp = LevelUtil.getExperienceFromLevel(level + 1);
+        double percentage = ((double) (experience - current) / (nextLevelXp - current)) * 100;
+
+        log.info("Percentage: " + percentage);
+
         try {
             BufferedImage bufferedImage = generateImage(
                 context.getAuthor().getEffectiveAvatarUrl(),
-                context.getAuthor().getName() + "#" + context.getAuthor().getDiscriminator()
+                context.getAuthor().getName() + "#" + context.getAuthor().getDiscriminator(),
+                NumberUtil.formatNicely(experience - current),
+                NumberUtil.formatNicely(nextLevelXp - current),
+                percentage
             );
 
             ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
