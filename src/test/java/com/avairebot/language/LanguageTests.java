@@ -18,7 +18,7 @@ public class LanguageTests extends BaseTest {
 
     @Test
     public void testSubLanguagesIsTheSameSizeAsTheDefaultLanguage() {
-        Set<String> defaultStrings = getKeys(I18n.DEFAULT);
+        Set<String> defaultStrings = getKeys(I18n.getDefaultLanguage());
 
         for (LanguageHolder entry : I18n.languages) {
             Set<String> strings = getKeys(entry);
@@ -33,7 +33,7 @@ public class LanguageTests extends BaseTest {
 
     @Test
     public void testSubLanguagesHasAllTheSameKeysAsTheDefaultLanguage() {
-        Set<String> defaultStrings = getKeys(I18n.DEFAULT);
+        Set<String> defaultStrings = getKeys(I18n.getDefaultLanguage());
 
         for (LanguageHolder entry : I18n.languages) {
             for (String str : getKeys(entry)) {
@@ -44,7 +44,7 @@ public class LanguageTests extends BaseTest {
 
     @Test
     public void testLanguagesDoesNotReturnNull() {
-        Set<String> defaultStrings = getKeys(I18n.DEFAULT);
+        Set<String> defaultStrings = getKeys(I18n.getDefaultLanguage());
 
         for (LanguageHolder entry : I18n.languages) {
             for (String str : defaultStrings) {
