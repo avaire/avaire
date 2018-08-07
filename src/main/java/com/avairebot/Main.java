@@ -2,10 +2,15 @@ package com.avairebot;
 
 import ch.qos.logback.classic.util.ContextInitializer;
 import com.avairebot.chat.ConsoleColor;
+import com.avairebot.commands.utility.TestCommand;
 import com.avairebot.exceptions.InvalidApplicationEnvironmentException;
 import com.avairebot.shared.ExitCodes;
 import org.apache.commons.cli.*;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -20,6 +25,7 @@ public class Main {
         options.addOption(new Option("is", "internal-restart", false, "Enables internal restarts, this will auto restart the bot if it crashes, or the system restart or update commands are used, the only way to really shut down the bot is through the system shutdown command.\nNote: The update command will just act as the restart command with this option enabled."));
         options.addOption(new Option("nocolor", "no-colors", false, "Disables colors for commands and AI actions in the terminal."));
         options.addOption(new Option("d", "debug", false, "Enables debugging mode, this will log extra information to the terminal."));
+        options.addOption(new Option("t", "test", false, "Runs the test code."));
 
         CommandLineParser parser = new DefaultParser();
         HelpFormatter formatter = new HelpFormatter();
@@ -35,6 +41,16 @@ public class Main {
                 ) + ".xml");
             } else if (settings.useDebugging()) {
                 System.setProperty(ContextInitializer.CONFIG_FILE_PROPERTY, "logback_debug.xml");
+            }
+
+            if (cmd.hasOption("test")) {
+                try {
+                    BufferedImage bufferedImage = TestCommand.generateImage("https://cdn.discordapp.com/avatars/88739639380172800/e2b182faea7cebeca33cc7ed34c26feb.png");
+                    ImageIO.write(bufferedImage, "png", new File("test-output.png"));
+                } catch (FontFormatException e) {
+                    e.printStackTrace();
+                }
+                System.exit(ExitCodes.EXIT_CODE_NORMAL);
             }
 
             if (cmd.hasOption("help")) {

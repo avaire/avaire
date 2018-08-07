@@ -31,3 +31,6 @@ target/
 build/
 out/
 AvaIre.jar
+
+# Image Generator Branch
+test-output\.png
