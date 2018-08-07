@@ -17,6 +17,7 @@ import com.avairebot.factories.MessageFactory;
 import com.avairebot.utilities.LevelUtil;
 import com.avairebot.utilities.MentionableUtil;
 import com.avairebot.utilities.NumberUtil;
+import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.User;
 
 import java.awt.*;
@@ -110,8 +111,9 @@ public class RankCommand extends Command {
         }
 
         loadProperties(context, author).thenAccept(properties -> {
-            String score = properties.getScore().equals("Unranked") ?
-                "Unranked" : properties.getScore() + " / " + context.getGuild().getMembers().size();
+            String score = properties.getScore().equals("Unranked")
+                ? "Unranked"
+                : properties.getScore() + " / " + getUsersInGuild(context.getGuild());
 
             long experience = properties.getPlayer().getExperience();
             long level = LevelUtil.getLevelFromExperience(experience);
@@ -189,6 +191,10 @@ public class RankCommand extends Command {
         );
 
         return getScore(context, userId);
+    }
+
+    private long getUsersInGuild(Guild guild) {
+        return guild.getMembers().stream().filter(member -> !member.getUser().isBot()).count();
     }
 
     private class DatabaseProperties {
