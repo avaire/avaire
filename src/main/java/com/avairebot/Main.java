@@ -47,7 +47,8 @@ public class Main {
                 try {
                     BufferedImage bufferedImage = TestCommand.generateImage(
                         "https://cdn.discordapp.com/avatars/88739639380172800/e2b182faea7cebeca33cc7ed34c26feb.png",
-                        "Senither#0001",
+                        "Senither",
+                        "0001",
                         "9,0001",
                         "9,876",
                         35.8D

@@ -34,9 +34,10 @@ public class TestCommand extends Command {
     public static BufferedImage generateImage(
         final String avatarUrl,
         final String username,
+        final String discriminator,
         final String currentXpInLevel,
         final String missingXpToNextLevel,
-        final double precentage
+        final double percentage
     ) throws IOException, FontFormatException {
         final long start = System.currentTimeMillis();
 
@@ -50,26 +51,33 @@ public class TestCommand extends Command {
         final String xpBarText = String.format("%s out of %s xp", currentXpInLevel, missingXpToNextLevel);
 
         // Colors
-        final Color experienceBackground = new Color((float) 168 / 255, (float) 130 / 255, (float) 32 / 255, 0.6F);
-        final Color experienceForeground = new Color((float) 210 / 255, (float) 169 / 255, (float) 64 / 255, 0.8F);
-        final Color experienceDelimiter = new Color((float) 215 / 255, (float) 196 / 255, (float) 148 / 255, 0.8F);
+        final Color experienceBackground = new Color((float) 38 / 255, (float) 39 / 255, (float) 59 / 255, 0.6F);
+        final Color experienceForeground = new Color((float) 104 / 255, (float) 107 / 255, (float) 170 / 255, 0.8F);
+        final Color experienceDelimiter = new Color((float) 140 / 255, (float) 144 / 255, (float) 226 / 255, 0.8F);
         final Color experienceText = new Color((float) 226 / 255, (float) 226 / 255, (float) 229 / 255, 0.85F);
 
         // Create our images
         BufferedImage avatarImage = resize(ImageIO.read(urlConnection.getInputStream()), 95, 95);
-        BufferedImage backgroundImage = resize(ImageIO.read(TestCommand.class.getClassLoader().getResourceAsStream("backgrounds/example.jpg")), 200, 600);
+//        BufferedImage backgroundImage = resize(ImageIO.read(TestCommand.class.getClassLoader().getResourceAsStream("backgrounds/example.jpg")), 200, 600);
+        BufferedImage backgroundImage = new BufferedImage(600, 200, BufferedImage.TYPE_INT_ARGB);
 
         // Merges the avatar with the background
         Graphics2D avatarGraphics = backgroundImage.createGraphics();
         avatarGraphics.drawImage(avatarImage, 25, 15, null);
 
-        // Creates our text graphic
-        Graphics2D textGraphics = backgroundImage.createGraphics();
+        // Creates our custom fonts
+        Font mediumFont = Font.createFont(Font.TRUETYPE_FONT, TestCommand.class.getClassLoader().getResourceAsStream("fonts/Poppins-Medium.ttf"));
+        Font boldFont = Font.createFont(Font.TRUETYPE_FONT, TestCommand.class.getClassLoader().getResourceAsStream("fonts/Poppins-Bold.ttf"));
+        Font regularFont = Font.createFont(Font.TRUETYPE_FONT, TestCommand.class.getClassLoader().getResourceAsStream("fonts/Poppins-Regular.ttf"));
 
-        // Creates our custom font, sets a type and size, and draws our test on top of the background
-        Font font = Font.createFont(Font.TRUETYPE_FONT, TestCommand.class.getClassLoader().getResourceAsStream("fonts/FiraCode-Medium.ttf"));
-        textGraphics.setFont(font.deriveFont(Font.BOLD, 26F));
+        // Creates our text graphic, draws our text on top of the background
+        Graphics2D textGraphics = backgroundImage.createGraphics();
+        textGraphics.setFont(mediumFont.deriveFont(Font.BOLD, 26F));
         textGraphics.drawString(username, startingX, startingY);
+        FontMetrics textGraphicsFontMetrics = textGraphics.getFontMetrics();
+        textGraphics.setFont(mediumFont.deriveFont(Font.PLAIN, 19));
+        textGraphics.setColor(Color.decode("#C1C1C1"));
+        textGraphics.drawString("#" + discriminator, startingX + textGraphicsFontMetrics.stringWidth(username), startingY);
 
         // Creates a background bar for the XP
         Graphics2D experienceGraphics = backgroundImage.createGraphics();
@@ -77,13 +85,13 @@ public class TestCommand extends Command {
         experienceGraphics.fillRect(startingX, startingY + 10, xpBarLength, 50);
         // Create the current XP bar for the background
         experienceGraphics.setColor(experienceForeground);
-        experienceGraphics.fillRect(startingX + 5, startingY + 15, (int) Math.min(xpBarLength - 10, (xpBarLength - 10) * (precentage / 100)), 40);
+        experienceGraphics.fillRect(startingX + 5, startingY + 15, (int) Math.min(xpBarLength - 10, (xpBarLength - 10) * (percentage / 100)), 40);
         // Create a 5 pixel width bar that's just at the end of our "current xp bar"
         experienceGraphics.setColor(experienceDelimiter);
-        experienceGraphics.fillRect(startingX + 5 + (int) Math.min(xpBarLength - 10, (xpBarLength - 10) * (precentage / 100)), startingY + 15, 5, 40);
+        experienceGraphics.fillRect(startingX + 5 + (int) Math.min(xpBarLength - 10, (xpBarLength - 10) * (percentage / 100)), startingY + 15, 5, 40);
         // Create the text that should be displayed in the middle of the XP bar
         experienceGraphics.setColor(experienceText);
-        Font smallText = font.deriveFont(Font.BOLD, 20F);
+        Font smallText = regularFont.deriveFont(Font.BOLD, 20F);
         experienceGraphics.setFont(smallText);
         FontMetrics fontMetrics = experienceGraphics.getFontMetrics(smallText);
         experienceGraphics.drawString(xpBarText, startingX + 5 + ((xpBarLength - fontMetrics.stringWidth(xpBarText)) / 2), startingY + 42);
@@ -146,7 +154,8 @@ public class TestCommand extends Command {
         try {
             BufferedImage bufferedImage = generateImage(
                 context.getAuthor().getEffectiveAvatarUrl(),
-                context.getAuthor().getName() + "#" + context.getAuthor().getDiscriminator(),
+                context.getAuthor().getName(),
+                context.getAuthor().getDiscriminator(),
                 NumberUtil.formatNicely(experience - current),
                 NumberUtil.formatNicely(nextLevelXp - current),
                 percentage
@@ -160,7 +169,7 @@ public class TestCommand extends Command {
 
             MessageBuilder message = new MessageBuilder();
             message.setEmbed(context.makeEmbeddedMessage()
-                .setColor(Color.decode("#D2A940"))
+                .setColor(Color.decode("#5C5F93"))
                 .setImage("attachment://" + context.getAuthor().getId() + "-avatar.png")
                 .buildEmbed()
             );
