@@ -74,11 +74,13 @@ public class TestCommand extends Command {
 
         // Create our images
         BufferedImage avatarImage = resize(ImageIO.read(urlConnection.getInputStream()), 95, 95);
-//        BufferedImage backgroundImage = resize(ImageIO.read(TestCommand.class.getClassLoader().getResourceAsStream("backgrounds/example.jpg")), 200, 600);
-        BufferedImage backgroundImage = new BufferedImage(600, 200, BufferedImage.TYPE_INT_ARGB);
+        BufferedImage backgroundImage = resize(ImageIO.read(TestCommand.class.getClassLoader().getResourceAsStream("backgrounds/test.jpg")), 200, 600);
+//        BufferedImage backgroundImage = new BufferedImage(600, 200, BufferedImage.TYPE_INT_ARGB);
 
         // Merges the avatar with the background
         Graphics2D avatarGraphics = backgroundImage.createGraphics();
+//        avatarGraphics.setColor(Color.decode("#32363C"));
+//        avatarGraphics.fillRect(0, 0, 600, 200);
         avatarGraphics.drawImage(avatarImage, 25, 15, null);
 
         // Creates our custom fonts
@@ -88,6 +90,7 @@ public class TestCommand extends Command {
 
         // Creates our text graphic, draws our text on top of the background
         Graphics2D textGraphics = backgroundImage.createGraphics();
+        textGraphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
         textGraphics.setFont(mediumFont.deriveFont(Font.BOLD, 26F));
         textGraphics.drawString(username, startingX + 5, startingY);
         FontMetrics textGraphicsFontMetrics = textGraphics.getFontMetrics();
@@ -97,6 +100,7 @@ public class TestCommand extends Command {
 
         // Creates a background bar for the XP
         Graphics2D experienceGraphics = backgroundImage.createGraphics();
+        experienceGraphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
         experienceGraphics.setColor(experienceBackground);
         experienceGraphics.fillRect(startingX, startingY + 10, xpBarLength, 50);
         // Create the current XP bar for the background
@@ -114,6 +118,7 @@ public class TestCommand extends Command {
 
         // Create Level, Rank, and Total XP Text
         Graphics2D infoTextGraphics = backgroundImage.createGraphics();
+        infoTextGraphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
         infoTextGraphics.setColor(experienceText);
         // Create Level text
         infoTextGraphics.setFont(mediumFont.deriveFont(Font.PLAIN, 28));
