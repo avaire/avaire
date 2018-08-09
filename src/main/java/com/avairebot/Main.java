@@ -49,6 +49,7 @@ public class Main {
                         "https://cdn.discordapp.com/avatars/88739639380172800/e2b182faea7cebeca33cc7ed34c26feb.png",
                         "Senither",
                         "0001",
+                        "27",
                         "99",
                         "9,001",
                         "9,876",

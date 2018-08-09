@@ -1,15 +1,22 @@
 package com.avairebot.commands.utility;
 
 import com.avairebot.AvaIre;
+import com.avairebot.Constants;
+import com.avairebot.cache.CacheType;
 import com.avairebot.commands.CommandHandler;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.commands.administration.LevelCommand;
 import com.avairebot.contracts.commands.Command;
+import com.avairebot.database.collection.Collection;
+import com.avairebot.database.collection.DataRow;
+import com.avairebot.database.controllers.PlayerController;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.database.transformers.PlayerTransformer;
 import com.avairebot.utilities.LevelUtil;
 import com.avairebot.utilities.NumberUtil;
 import net.dv8tion.jda.core.MessageBuilder;
+import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,12 +27,17 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
 
+@SuppressWarnings({"Duplicates"})
 public class TestCommand extends Command {
 
     private static final Logger log = LoggerFactory.getLogger(TestCommand.class);
+    private final String cacheToken = "database-user-scores.";
 
     public TestCommand(AvaIre avaire) {
         super(avaire, false);
@@ -35,6 +47,7 @@ public class TestCommand extends Command {
         final String avatarUrl,
         final String username,
         final String discriminator,
+        final String rank,
         final String level,
         final String currentXpInLevel,
         final String missingXpToNextLevel,
@@ -76,8 +89,8 @@ public class TestCommand extends Command {
         textGraphics.setFont(mediumFont.deriveFont(Font.BOLD, 26F));
         textGraphics.drawString(username, startingX + 5, startingY);
         FontMetrics textGraphicsFontMetrics = textGraphics.getFontMetrics();
-        textGraphics.setFont(mediumFont.deriveFont(Font.PLAIN, 19));
-        textGraphics.setColor(Color.decode("#C1C1C1"));
+        textGraphics.setFont(mediumFont.deriveFont(Font.PLAIN, 17));
+        textGraphics.setColor(Color.decode("#A6A6A6"));
         textGraphics.drawString("#" + discriminator, startingX + 5 + textGraphicsFontMetrics.stringWidth(username), startingY);
 
         // Creates a background bar for the XP
@@ -97,15 +110,22 @@ public class TestCommand extends Command {
         FontMetrics fontMetrics = experienceGraphics.getFontMetrics(smallText);
         experienceGraphics.drawString(xpBarText, startingX + 5 + ((xpBarLength - fontMetrics.stringWidth(xpBarText)) / 2), startingY + 42);
 
-        // Create Level Text
+        // Create Level, Rank, and Total XP Text
         Graphics2D infoTextGraphics = backgroundImage.createGraphics();
         infoTextGraphics.setColor(experienceText);
+        // Create Level text
         infoTextGraphics.setFont(mediumFont.deriveFont(Font.PLAIN, 28));
         infoTextGraphics.drawString("LEVEL", 35, 140);
-        FontMetrics levelTextMetrics = infoTextGraphics.getFontMetrics();
+        FontMetrics infoTextGraphicsFontMetricsLarge = infoTextGraphics.getFontMetrics();
         infoTextGraphics.setFont(boldFont.deriveFont(Font.BOLD, 48));
-        FontMetrics levelNumberMetrics = infoTextGraphics.getFontMetrics();
-        infoTextGraphics.drawString(level, 35 + ((levelTextMetrics.stringWidth("LEVEL") - levelNumberMetrics.stringWidth(level)) / 2), 185);
+        FontMetrics infoTextGraphicsFontMetricsSmall = infoTextGraphics.getFontMetrics();
+        infoTextGraphics.drawString(level, 35 + ((infoTextGraphicsFontMetricsLarge.stringWidth("LEVEL") - infoTextGraphicsFontMetricsSmall.stringWidth(level)) / 2), 185);
+
+        // Create Score Text
+        infoTextGraphics.setFont(mediumFont.deriveFont(Font.PLAIN, 28));
+        infoTextGraphics.drawString("RANK", 160, 140);
+        infoTextGraphics.setFont(boldFont.deriveFont(Font.BOLD, 48));
+        infoTextGraphics.drawString(rank, 160 + ((infoTextGraphicsFontMetricsLarge.stringWidth("RANK") - infoTextGraphicsFontMetricsSmall.stringWidth(rank)) / 2), 185);
 
         log.info("Finished in {} ms", System.currentTimeMillis() - start);
 
@@ -153,44 +173,129 @@ public class TestCommand extends Command {
             return sendErrorMessage(context, "Player object was null, exiting");
         }
 
-        long experience = player.getExperience();
-        long level = LevelUtil.getLevelFromExperience(experience);
-        long current = LevelUtil.getExperienceFromLevel(level);
+        loadProperties(context, context.getAuthor()).thenAccept(properties -> {
+            String score = properties.getScore().equals("Unranked")
+                ? "Unranked"
+                : properties.getScore();
 
-        long nextLevelXp = LevelUtil.getExperienceFromLevel(level + 1);
-        double percentage = ((double) (experience - current) / (nextLevelXp - current)) * 100;
+            long experience = player.getExperience();
+            long level = LevelUtil.getLevelFromExperience(experience);
+            long current = LevelUtil.getExperienceFromLevel(level);
 
-        log.info("Percentage: " + percentage);
+            long nextLevelXp = LevelUtil.getExperienceFromLevel(level + 1);
+            double percentage = ((double) (experience - current) / (nextLevelXp - current)) * 100;
 
-        try {
-            BufferedImage bufferedImage = generateImage(
-                context.getAuthor().getEffectiveAvatarUrl(),
-                context.getAuthor().getName(),
-                context.getAuthor().getDiscriminator(),
-                NumberUtil.formatNicely(level),
-                NumberUtil.formatNicely(experience - current),
-                NumberUtil.formatNicely(nextLevelXp - current),
-                percentage
-            );
+            log.info("Percentage: " + percentage);
 
-            ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-            ImageIO.write(bufferedImage, "png", byteStream);
-            byteStream.flush();
-            byte[] imageBytes = byteStream.toByteArray();
-            byteStream.close();
+            try {
+                BufferedImage bufferedImage = generateImage(
+                    context.getAuthor().getEffectiveAvatarUrl(),
+                    context.getAuthor().getName(),
+                    context.getAuthor().getDiscriminator(),
+                    score,
+                    NumberUtil.formatNicely(level),
+                    NumberUtil.formatNicely(experience - current),
+                    NumberUtil.formatNicely(nextLevelXp - current),
+                    percentage
+                );
 
-            MessageBuilder message = new MessageBuilder();
-            message.setEmbed(context.makeEmbeddedMessage()
-                .setColor(Color.decode("#5C5F93"))
-                .setImage("attachment://" + context.getAuthor().getId() + "-avatar.png")
-                .buildEmbed()
-            );
-            context.getChannel().sendFile(imageBytes, context.getAuthor().getId() + "-avatar.png", message.build()).queue();
-        } catch (IOException | FontFormatException e) {
-            context.makeError("Failed to run test command: " + e.getMessage()).queue();
-            e.printStackTrace();
-        }
+                ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+                ImageIO.write(bufferedImage, "png", byteStream);
+                byteStream.flush();
+                byte[] imageBytes = byteStream.toByteArray();
+                byteStream.close();
+
+                MessageBuilder message = new MessageBuilder();
+                message.setEmbed(context.makeEmbeddedMessage()
+                    .setColor(Color.decode("#5C5F93"))
+                    .setImage("attachment://" + context.getAuthor().getId() + "-avatar.png")
+                    .buildEmbed()
+                );
+                context.getChannel().sendFile(imageBytes, context.getAuthor().getId() + "-avatar.png", message.build()).queue();
+            } catch (IOException | FontFormatException e) {
+                context.makeError("Failed to run test command: " + e.getMessage()).queue();
+                e.printStackTrace();
+            }
+        });
 
         return true;
+    }
+
+    private CompletableFuture<DatabaseProperties> loadProperties(CommandMessage context, User author) {
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                PlayerTransformer player = context.getAuthor().getIdLong() == author.getIdLong()
+                    ? context.getPlayerTransformer() : PlayerController.fetchPlayer(avaire, context.getMessage(), author);
+
+                DataRow data = avaire.getDatabase().newQueryBuilder(Constants.PLAYER_EXPERIENCE_TABLE_NAME)
+                    .selectRaw("sum(`experience`) - (count(`user_id`) * 100) as `total`")
+                    .where("user_id", author.getId())
+                    .get().first();
+
+                long total = data == null ? (player == null ? 0 : player.getExperience()) : data.getLong("total");
+
+                return new DatabaseProperties(player, total, getScore(context, author.getId()));
+            } catch (SQLException e) {
+                e.printStackTrace();
+                return null;
+            }
+        });
+    }
+
+
+    private String getScore(CommandMessage context, String userId) throws SQLException {
+        if (avaire.getCache().getAdapter(CacheType.MEMORY).has(cacheToken + context.getGuild().getId())) {
+            Collection users = (Collection) avaire.getCache().getAdapter(CacheType.MEMORY).get(cacheToken + context.getGuild().getId());
+            String score = "???"; // Unranked score
+
+            for (int i = 0; i < users.size(); i++) {
+                if (Objects.equals(users.get(i).getString("id"), userId)) {
+                    score = "" + (i + 1);
+                    break;
+                }
+            }
+
+            return score;
+        }
+
+        avaire.getCache().getAdapter(CacheType.MEMORY).put(cacheToken + context.getGuild().getId(),
+            avaire.getDatabase().newQueryBuilder(Constants.PLAYER_EXPERIENCE_TABLE_NAME)
+                .select("user_id as id")
+                .orderBy("experience", "desc")
+                .where("guild_id", context.getGuild().getId())
+                .get(),
+            120
+        );
+
+        return getScore(context, userId);
+    }
+
+    private long getUsersInGuild(Guild guild) {
+        return guild.getMembers().stream().filter(member -> !member.getUser().isBot()).count();
+    }
+
+    private class DatabaseProperties {
+
+        private final PlayerTransformer player;
+        private final long total;
+        private final String score;
+
+        DatabaseProperties(PlayerTransformer player, long total, String score) {
+            this.player = player;
+            this.total = total;
+            this.score = score;
+        }
+
+        public PlayerTransformer getPlayer() {
+            return player;
+        }
+
+        long getTotal() {
+            return total;
+        }
+
+        String getScore() {
+            return score;
+        }
     }
 }
