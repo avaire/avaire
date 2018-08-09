@@ -51,6 +51,8 @@ public class TestCommand extends Command {
         final String level,
         final String currentXpInLevel,
         final String missingXpToNextLevel,
+        final String serverExperience,
+        final String globalExperience,
         final double percentage
     ) throws IOException, FontFormatException {
         final long start = System.currentTimeMillis();
@@ -123,9 +125,18 @@ public class TestCommand extends Command {
 
         // Create Score Text
         infoTextGraphics.setFont(mediumFont.deriveFont(Font.PLAIN, 28));
-        infoTextGraphics.drawString("RANK", 160, 140);
+        infoTextGraphics.drawString("RANK", 165, 140);
         infoTextGraphics.setFont(boldFont.deriveFont(Font.BOLD, 48));
-        infoTextGraphics.drawString(rank, 160 + ((infoTextGraphicsFontMetricsLarge.stringWidth("RANK") - infoTextGraphicsFontMetricsSmall.stringWidth(rank)) / 2), 185);
+        infoTextGraphics.drawString(rank, 165 + ((infoTextGraphicsFontMetricsLarge.stringWidth("RANK") - infoTextGraphicsFontMetricsSmall.stringWidth(rank)) / 2), 185);
+
+        // Create XP states
+        infoTextGraphics.setFont(mediumFont.deriveFont(Font.PLAIN, 26F));
+        infoTextGraphics.drawString("Server XP:", 300, 140);
+        infoTextGraphics.drawString("Global XP:", 300, 180);
+        infoTextGraphics.setFont(regularFont.deriveFont(Font.PLAIN, 24F));
+        infoTextGraphics.setColor(Color.decode("#A6A6A6"));
+        infoTextGraphics.drawString(serverExperience, 455, 140);
+        infoTextGraphics.drawString(globalExperience, 455, 180);
 
         log.info("Finished in {} ms", System.currentTimeMillis() - start);
 
@@ -196,6 +207,8 @@ public class TestCommand extends Command {
                     NumberUtil.formatNicely(level),
                     NumberUtil.formatNicely(experience - current),
                     NumberUtil.formatNicely(nextLevelXp - current),
+                    NumberUtil.formatNicely(experience - 100),
+                    NumberUtil.formatNicely(properties.getTotal()),
                     percentage
                 );
 

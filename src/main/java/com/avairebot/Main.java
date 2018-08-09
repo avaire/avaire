@@ -53,6 +53,8 @@ public class Main {
                         "99",
                         "9,001",
                         "9,876",
+                        "17,679",
+                        "397,421",
                         84.8D
                     );
                     ImageIO.write(bufferedImage, "png", new File("test-output.png"));
