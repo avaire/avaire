@@ -35,6 +35,7 @@ public class TestCommand extends Command {
         final String avatarUrl,
         final String username,
         final String discriminator,
+        final String level,
         final String currentXpInLevel,
         final String missingXpToNextLevel,
         final double percentage
@@ -73,11 +74,11 @@ public class TestCommand extends Command {
         // Creates our text graphic, draws our text on top of the background
         Graphics2D textGraphics = backgroundImage.createGraphics();
         textGraphics.setFont(mediumFont.deriveFont(Font.BOLD, 26F));
-        textGraphics.drawString(username, startingX, startingY);
+        textGraphics.drawString(username, startingX + 5, startingY);
         FontMetrics textGraphicsFontMetrics = textGraphics.getFontMetrics();
         textGraphics.setFont(mediumFont.deriveFont(Font.PLAIN, 19));
         textGraphics.setColor(Color.decode("#C1C1C1"));
-        textGraphics.drawString("#" + discriminator, startingX + textGraphicsFontMetrics.stringWidth(username), startingY);
+        textGraphics.drawString("#" + discriminator, startingX + 5 + textGraphicsFontMetrics.stringWidth(username), startingY);
 
         // Creates a background bar for the XP
         Graphics2D experienceGraphics = backgroundImage.createGraphics();
@@ -95,6 +96,16 @@ public class TestCommand extends Command {
         experienceGraphics.setFont(smallText);
         FontMetrics fontMetrics = experienceGraphics.getFontMetrics(smallText);
         experienceGraphics.drawString(xpBarText, startingX + 5 + ((xpBarLength - fontMetrics.stringWidth(xpBarText)) / 2), startingY + 42);
+
+        // Create Level Text
+        Graphics2D infoTextGraphics = backgroundImage.createGraphics();
+        infoTextGraphics.setColor(experienceText);
+        infoTextGraphics.setFont(mediumFont.deriveFont(Font.PLAIN, 28));
+        infoTextGraphics.drawString("LEVEL", 35, 140);
+        FontMetrics levelTextMetrics = infoTextGraphics.getFontMetrics();
+        infoTextGraphics.setFont(boldFont.deriveFont(Font.BOLD, 48));
+        FontMetrics levelNumberMetrics = infoTextGraphics.getFontMetrics();
+        infoTextGraphics.drawString(level, 35 + ((levelTextMetrics.stringWidth("LEVEL") - levelNumberMetrics.stringWidth(level)) / 2), 185);
 
         log.info("Finished in {} ms", System.currentTimeMillis() - start);
 
@@ -156,6 +167,7 @@ public class TestCommand extends Command {
                 context.getAuthor().getEffectiveAvatarUrl(),
                 context.getAuthor().getName(),
                 context.getAuthor().getDiscriminator(),
+                NumberUtil.formatNicely(level),
                 NumberUtil.formatNicely(experience - current),
                 NumberUtil.formatNicely(nextLevelXp - current),
                 percentage
