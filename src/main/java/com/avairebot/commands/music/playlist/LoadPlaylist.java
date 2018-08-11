@@ -95,11 +95,19 @@ public class LoadPlaylist extends PlaylistSubCommand {
             @Override
             public void noMatches() {
                 Metrics.trackLoadsFailed.inc();
+
+                if (success != null) {
+                    success.accept(tracks);
+                }
             }
 
             @Override
             public void loadFailed(FriendlyException exception) {
                 Metrics.trackLoadsFailed.inc();
+
+                if (success != null) {
+                    success.accept(tracks);
+                }
             }
         });
     }
