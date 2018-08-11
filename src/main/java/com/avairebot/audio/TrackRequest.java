@@ -37,6 +37,11 @@ public class TrackRequest extends Future {
         AudioHandler.getDefaultAudioHandler().getPlayerManager().loadItemOrdered(musicManager, trackUrl, new AudioLoadResultHandler() {
             @Override
             public void trackLoaded(AudioTrack track) {
+                if (track == null) {
+                    noMatches();
+                    return;
+                }
+
                 Metrics.tracksLoaded.inc();
 
                 success.accept(new TrackResponse(musicManager, track, trackUrl));

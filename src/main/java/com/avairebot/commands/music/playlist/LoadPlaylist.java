@@ -73,6 +73,11 @@ public class LoadPlaylist extends PlaylistSubCommand {
         AudioHandler.getDefaultAudioHandler().getPlayerManager().loadItemOrdered(AudioHandler.getDefaultAudioHandler().musicManagers, song.getLink(), new AudioLoadResultHandler() {
             @Override
             public void trackLoaded(AudioTrack track) {
+                if (track == null) {
+                    noMatches();
+                    return;
+                }
+
                 Metrics.tracksLoaded.inc();
 
                 tracks.add(track);

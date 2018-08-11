@@ -65,6 +65,11 @@ public class AddSongToPlaylist extends PlaylistSubCommand {
         AudioHandler.getDefaultAudioHandler().getPlayerManager().loadItemOrdered(AudioHandler.getDefaultAudioHandler().musicManagers, query, new AudioLoadResultHandler() {
             @Override
             public void trackLoaded(AudioTrack track) {
+                if (track == null) {
+                    noMatches();
+                    return;
+                }
+
                 Metrics.tracksLoaded.inc();
 
                 handleTrackLoadedEvent(context, guild, playlist, track);
