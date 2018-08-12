@@ -20,7 +20,13 @@ public class MeowCommand extends InteractionCommand {
             "https://i.imgur.com/WtVaAGp.gif",
             "https://i.imgur.com/E3JpP7e.gif",
             "https://i.imgur.com/wAD0tqK.gif",
-            "https://i.imgur.com/W7qSt0G.gif"
+            "https://i.imgur.com/W7qSt0G.gif",
+            "https://i.imgur.com/PLwWhJz.gif",
+            "https://i.imgur.com/ozn4UyC.gif",
+            "https://i.imgur.com/DbvyqfH.gif",
+            "https://i.imgur.com/WsLsRkd.gif",
+            "https://i.imgur.com/fWLT1Q0.gif",
+            "https://i.imgur.com/zyBznwg.gif"
         );
     }
 
