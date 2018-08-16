@@ -162,6 +162,7 @@ music:
         invalidIdNumberGiven: 'Ungültige ID angegeben. Die ID muss eine Nummer sein\n`:command`'
         noMoreSongSlots: "Die `:playlist` Playlist hat keine weiteren Songslots."
         noMorePlaylistSlots: "Der Server hat keine weiteren Playlist-Slots. Du kannst bereits existierende Playlisten löschen um wieder Slots zu erhalten."
+        sameIdsGiven: "The two ids given are the same, the song won't be moved anywhere that way.\n`:command`"
         failedToLoad: 'Fehler beim Laden: {0}'
         failedToLoadPlaylist: 'Fehler beim Laden der :playlist Playlist. Bitte versuche dies später erneut, oder kontaktiere eines unserer Entwickler.'
         failedToSavePlaylist: 'Es ist ein Fehler aufgetreten beim Versuch folgende Playlist zu speichern: {0}'
@@ -169,6 +170,7 @@ music:
         noMatches: 'Keine Ergebnisse'
         attemptingToAddLivestreamToPlaylist: "Du kannst keine Livestreams in die Playlist hinzufügen!"
         userHasAddedSong: ':user hat [:name](:url) zu der `:playlist` Playlist hinzugefügt.\nDie `:playlist` Playlist hat `:slots` weitere Song-Slots verfügbar.'
+        swapSongInPlaylist: '[:selectedTitle](:selectedLink) have swapped position with [:replacedTitle](:replacedLink) in the `:playlist` playlist.'
         alreadyExists: 'Die `:playlist` Playlist existiert bereits!'
         onlyNumbersInName: "Die Playlist kann nicht nur Nummern beinhalten. Du musst einige Buchstaben zum Namen hinzufügen!"
         renamingPlaylistAlreadyExists: "Ich kann die `:oldplaylist` nicht zu folgendem Namen umbenennen: `:playlist`. Es existiert bereits eine andere Playlist unter dem Namen `:playlist`."

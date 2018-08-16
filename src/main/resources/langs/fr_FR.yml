@@ -162,6 +162,7 @@ music:
         invalidIdNumberGiven: "Id invalide, l'id doit être un nombre\n`:command`"
         noMoreSongSlots: "La playlist `:playlist` n'a plus de place pour davantage de musique."
         noMorePlaylistSlots: "Le serveur n'a plus de place pour davatange de playlist, tu peux supprimer des playlists existantes pour libérer de l'espace."
+        sameIdsGiven: "The two ids given are the same, the song won't be moved anywhere that way.\n`:command`"
         failedToLoad: "Échec de chargement: {0}"
         failedToLoadPlaylist: "Échec du chargement de :playlist, essaye plus tard ou reporte ce problème à l'un de mes développeurs."
         failedToSavePlaylist: "Quelque chose s'est mal passé en essayant d'enregistrer la playlist: {0}"
@@ -169,6 +170,7 @@ music:
         noMatches: "Aucun résultat"
         attemptingToAddLivestreamToPlaylist: "Tu ne peux pas ajouter de diffusion en direct à une playlist!"
         userHasAddedSong: ":user a ajouté [:name](:url) à la playlist `:playlist` \nLa playlist `:playlist` a encore `:slots` emplacemements de musiques disponibles."
+        swapSongInPlaylist: '[:selectedTitle](:selectedLink) have swapped position with [:replacedTitle](:replacedLink) in the `:playlist` playlist.'
         alreadyExists: "La playlist `:playlist` existe déjà!"
         onlyNumbersInName: "Le nom de la playlist ne peut pas uniquement contenir des nombres, tu dois y inclure des lettres!"
         renamingPlaylistAlreadyExists: "Impossible de renommer `:oldplaylist` en `:playlist`, une playlist est déjà nommée `:playlist`"

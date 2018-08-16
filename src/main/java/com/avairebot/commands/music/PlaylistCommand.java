@@ -24,6 +24,7 @@ public class PlaylistCommand extends Command {
 
     private final RemoveSongFromPlaylist removeSongFromLoadPlaylist;
     private final SendSongsInPlaylist sendSongsInPlaylist;
+    private final MoveSongInPlaylist moveSongInPlaylist;
     private final AddSongToPlaylist addSongToPlaylist;
     private final CreatePlaylist createPlaylist;
     private final DeletePlaylist deletePlaylist;
@@ -36,6 +37,7 @@ public class PlaylistCommand extends Command {
 
         removeSongFromLoadPlaylist = new RemoveSongFromPlaylist(avaire, this);
         sendSongsInPlaylist = new SendSongsInPlaylist(avaire, this);
+        moveSongInPlaylist = new MoveSongInPlaylist(avaire, this);
         addSongToPlaylist = new AddSongToPlaylist(avaire, this);
         createPlaylist = new CreatePlaylist(avaire, this);
         deletePlaylist = new DeletePlaylist(avaire, this);
@@ -64,6 +66,7 @@ public class PlaylistCommand extends Command {
             "`:command [name] play` - Plays a playlist.",
             "`:command [name] removesong [id]` - Removes a song from a playlist.",
             "`:command [name] renameto [new name]` - Renames a existing playlist.",
+            "`:command [name] movesong [id] [new id]` - Move a song to a different position.",
             "`:command [name] [page number]` - Shows the songs in a playlist."
         );
     }
@@ -73,6 +76,7 @@ public class PlaylistCommand extends Command {
         return Arrays.asList(
             "`:command test create` - Creates a playlist called `test`.",
             "`:command test add Some song` - Adds `Some song` to the `test` playlist.",
+            "`:command test move 2 1` - Moves the 2nd song to the first place.",
             "`:command test remove 2` - Removes the 2nd song from the `test`playlist.",
             "`:command test rename Music` - Renames the `test` playlist to `Music`.",
             "`:command music 2` - Shows the 2nd page of the `Music` playlist.",
@@ -152,6 +156,11 @@ public class PlaylistCommand extends Command {
             case "a":
             case "add":
                 return addSongToPlaylist.onCommand(context, args, transformer, playlist);
+
+            case "swap":
+            case "move":
+            case "movesong":
+                return moveSongInPlaylist.onCommand(context, args, transformer, playlist);
 
             case "remove":
             case "removesong":

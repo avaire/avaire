@@ -162,6 +162,7 @@ music:
         invalidIdNumberGiven: 'Invalid id given, the id must be a number\n`:command`'
         noMoreSongSlots: "The `:playlist` playlist doesn't have any more song slots."
         noMorePlaylistSlots: "The server doesn't have any more playlist slots, you can delete existing playlists to free up slots."
+        sameIdsGiven: "The two ids given are the same, the song won't be moved anywhere that way.\n`:command`"
         failedToLoad: 'Failed to load: {0}'
         failedToLoadPlaylist: 'Failed to load the :playlist, maybe try again later or report this to one of my developers.'
         failedToSavePlaylist: 'Something went wrong while trying to save the playlist: {0}'
@@ -169,6 +170,7 @@ music:
         noMatches: 'No Matches'
         attemptingToAddLivestreamToPlaylist: "You can't add livestreams to a playlist!"
         userHasAddedSong: ':user has added [:name](:url) to the `:playlist` playlist.\nThe `:playlist` playlist has `:slots` more song slots available.'
+        swapSongInPlaylist: '[:selectedTitle](:selectedLink) have swapped position with [:replacedTitle](:replacedLink) in the `:playlist` playlist.'
         alreadyExists: 'The `:playlist` playlist already exists!'
         onlyNumbersInName: "The playlist can't only be numbers, you have to include some letters in the name!"
         renamingPlaylistAlreadyExists: "Can't rename the `:oldplaylist` to `:playlist`, there are already a playlist called `:playlist`"

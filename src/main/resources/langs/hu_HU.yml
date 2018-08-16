@@ -160,6 +160,7 @@ music:
         invalidIdNumberGiven: 'Érvénytelen id megadva, az id-nek számnak kell lennie\n`:command`'
         noMoreSongSlots: "A `:playlist` lejátszási listában nem maradt több hely."
         noMorePlaylistSlots: "A szervernek nincs több lejátszási lista helye, törölhetsz meglévő lejátszási listákat, hogy felszabadíts helyet."
+        sameIdsGiven: "The two ids given are the same, the song won't be moved anywhere that way.\n`:command`"
         failedToLoad: 'Sikertelen betöltés: {0}'
         failedToLoadPlaylist: ':playlist betöltése sikertelen, talán próbáld újra később, vagy jelents ezt a hibát az egyik fejlesztőmnek.'
         failedToSavePlaylist: 'Valami hiba történt a következő lejátszási lista mentése során: {0}'
@@ -167,6 +168,7 @@ music:
         noMatches: 'Nincs Találat'
         attemptingToAddLivestreamToPlaylist: "Nem adhatsz élő közvetítést a lejátszási listához!"
         userHasAddedSong: ':user hozzáadta [:name](:url) a `:playlist` lejátszási listához.\nA `:playlist` lejátszási listában még `:slots` számnak van hely.'
+        swapSongInPlaylist: '[:selectedTitle](:selectedLink) have swapped position with [:replacedTitle](:replacedLink) in the `:playlist` playlist.'
         alreadyExists: 'A `:playlist` lejátszási lista már létezik!'
         onlyNumbersInName: "A lejátszási lista nem állhat csak számokból, pár betűt is használnod kell a névben!"
         renamingPlaylistAlreadyExists: "Nem lehet átnevezni a `:oldplaylist`-t `:playlist`-re, már van egy ilyen nevű lejátszási lista: `:playlist`"

@@ -162,6 +162,7 @@ music:
         invalidIdNumberGiven: "Ugyldig id oppgitt, id'en må være ett nummer\n`:command`"
         noMoreSongSlots: "`:playlist` spillelisten har ikke flere sang plasser igjen, du kan fjerne noen for og frigjøre plass."
         noMorePlaylistSlots: "Serveren har ikke flere spilleliste plasser igjen, du kan slette en eksisterende spilleliste for og frigjøre plass."
+        sameIdsGiven: "The two ids given are the same, the song won't be moved anywhere that way.\n`:command`"
         failedToLoad: 'Feilet med og laste: {0}'
         failedToLoadPlaylist: 'Feilet med og laste inn :playlist spillelisten, forsøk igjen senere eller rapporter dette til en av mine utviklere.'
         failedToSavePlaylist: 'Noe gikk galt ved forsøkt på og lagre spillelisten: {0}'
@@ -169,6 +170,7 @@ music:
         noMatches: 'Ingen treff'
         attemptingToAddLivestreamToPlaylist: "Du kan ikke legge til direkte sendte strømmer til spillelister!"
         userHasAddedSong: ':user har lagt til [:name](:url) til `:playlist` spillelisten.\n`:playlist` spillelisten har `:slots` gjennværende plasser.'
+        swapSongInPlaylist: '[:selectedTitle](:selectedLink) have swapped position with [:replacedTitle](:replacedLink) in the `:playlist` playlist.'
         alreadyExists: '`:playlist` spillelisten eksisterer allerede!'
         onlyNumbersInName: "Spillelisten kan ikke kun inneholde tall, du må inkludere noen bokstaver i navnet!"
         renamingPlaylistAlreadyExists: "Kan ikke endre navn på `:oldplaylist` til `:playlist`, det er allerede en spilleliste som heter `:playlist`"
