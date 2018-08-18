@@ -179,6 +179,7 @@ public class AvaIre {
         log.info("Registering default middlewares");
         MiddlewareHandler.initialize(this);
         MiddlewareHandler.register("hasRole", new HasRoleMiddleware(this));
+        MiddlewareHandler.register("hasAnyRole", new HasAnyRoleMiddleware(this));
         MiddlewareHandler.register("hasVoted", new HasVotedTodayMiddleware(this));
         MiddlewareHandler.register("isBotAdmin", new IsBotAdminMiddleware(this));
         MiddlewareHandler.register("require", new RequirePermissionMiddleware(this));
