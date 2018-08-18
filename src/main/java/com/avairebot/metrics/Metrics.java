@@ -220,6 +220,7 @@ public class Metrics {
         Spark.before(new HttpFilter());
         Spark.before(new AreWeReadyYetFilter(avaire));
 
+        Spark.get("/leaderboard/:id", new GetLeaderboardPlayers(MetricsHolder.METRICS));
         Spark.get("/players/cleanup", new GetPlayerCleanup(MetricsHolder.METRICS));
         Spark.get("/guilds/cleanup", new GetGuildCleanup(MetricsHolder.METRICS));
         Spark.get("/guilds/:ids/exists", new GetGuildsExists(MetricsHolder.METRICS));
