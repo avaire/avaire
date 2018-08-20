@@ -63,7 +63,7 @@ public class ModlogHistoryCommand extends Command {
     @Override
     public List<String> getMiddleware() {
         return Arrays.asList(
-            "require:user,general.manage_server",
+            "require:user,text.manage_messages",
             "throttle:channel,1,5"
         );
     }
