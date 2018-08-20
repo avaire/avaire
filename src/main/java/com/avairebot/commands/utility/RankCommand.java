@@ -22,7 +22,6 @@ import net.dv8tion.jda.core.entities.User;
 
 import java.awt.*;
 import java.sql.SQLException;
-import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -136,7 +135,7 @@ public class RankCommand extends Command {
                     NumberUtil.formatNicely(experience - 100), NumberUtil.formatNicely(properties.getTotal())
                 )), true)
                 .addField(context.i18n("fields.experienceToNext"), context.i18n("fields.youNeedMoreXpToLevelUp",
-                    levelBar, new DecimalFormat("#.##").format(percentage), '%', NumberUtil.formatNicely(nextLevelXp - experience)
+                    levelBar, NumberUtil.formatNicelyWithDecimals(percentage), '%', NumberUtil.formatNicely(nextLevelXp - experience)
                 ), false)
                 .requestedBy(context.getMember())
                 .queue();

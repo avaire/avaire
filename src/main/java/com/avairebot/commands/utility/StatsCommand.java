@@ -17,24 +17,14 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 public class StatsCommand extends Command {
 
-    private final DecimalFormat decimalNumber;
-
     public StatsCommand(AvaIre avaire) {
         super(avaire);
-
-        DecimalFormatSymbols decimalFormatSymbols = new DecimalFormatSymbols();
-        decimalFormatSymbols.setDecimalSeparator('.');
-        decimalFormatSymbols.setGroupingSeparator(',');
-
-        decimalNumber = new DecimalFormat("#,##0.00", decimalFormatSymbols);
     }
 
     @Override
@@ -144,7 +134,7 @@ public class StatsCommand extends Command {
         return I18n.format(
             context.i18n(value < 1.5D ? "formats.perMinute" : "formats.perSecond"),
             NumberUtil.formatNicely(rawValue),
-            decimalNumber.format(value < 1.5D ? value * 60D : value)
+            NumberUtil.formatNicelyWithDecimals(value < 1.5D ? value * 60D : value)
         );
     }
 

@@ -5,13 +5,13 @@ import com.avairebot.audio.LavalinkManager;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.commands.CommandPriority;
 import com.avairebot.contracts.commands.SystemCommand;
+import com.avairebot.utilities.NumberUtil;
 import lavalink.client.io.LavalinkLoadBalancer;
 import lavalink.client.io.LavalinkSocket;
 import lavalink.client.io.RemoteStats;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -19,8 +19,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class LavalinkCommand extends SystemCommand {
-
-    private static final DecimalFormat percentageFormat = new DecimalFormat("###.##");
 
     public LavalinkCommand(AvaIre avaire) {
         super(avaire);
@@ -220,7 +218,7 @@ public class LavalinkCommand extends SystemCommand {
         long factor = (long) Math.pow(10, 2);
         value = value * factor;
         long tmp = Math.round(value);
-        return percentageFormat.format((double) tmp / factor);
+        return NumberUtil.formatNicelyWithDecimals((double) tmp / factor);
     }
 
     private String formatPercent(double percent) {

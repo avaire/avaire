@@ -6,9 +6,9 @@ import com.avairebot.contracts.commands.Command;
 import com.avairebot.factories.RequestFactory;
 import com.avairebot.requests.Response;
 import com.avairebot.requests.service.UrbanDictionaryService;
+import com.avairebot.utilities.NumberUtil;
 
 import java.awt.*;
-import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -92,7 +92,7 @@ public class UrbanDictionaryCommand extends Command {
                     .addField(context.i18n("example"), definition.getExample(), false)
                     .setFooter(
                         context.i18n("results")
-                            .replace(":percentage", new DecimalFormat("#.##").format(percentage) + "%")
+                            .replace(":percentage", NumberUtil.formatNicelyWithDecimals(percentage) + "%")
                             .replace(":up", "" + definition.getThumbsUp())
                             .replace(":down", "" + definition.getThumbsDown())
                     ).queue();

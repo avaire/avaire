@@ -6,6 +6,7 @@ import com.avairebot.commands.CommandHandler;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.commands.CommandPriority;
 import com.avairebot.contracts.commands.Command;
+import com.avairebot.utilities.NumberUtil;
 import net.dv8tion.jda.core.JDA;
 
 import java.util.ArrayList;
@@ -79,7 +80,7 @@ public class ShardCommand extends Command {
             avaire.getShardEntityCounter().getGuilds(),
             avaire.getShardEntityCounter().getChannels(),
             avaire.getShardEntityCounter().getUsers(),
-            avaire.getShardManager().getAveragePing()
+            NumberUtil.formatNicelyWithDecimals(avaire.getShardManager().getAveragePing())
         ));
         messages.add("```");
 

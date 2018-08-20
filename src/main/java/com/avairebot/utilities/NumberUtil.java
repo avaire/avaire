@@ -9,6 +9,7 @@ public class NumberUtil {
     private static final Pattern timestampPattern = Pattern.compile("^(\\d?\\d)(?::([0-5]?\\d))?(?::([0-5]?\\d))?$");
     private static final Pattern numberPattern = Pattern.compile("[-+]?\\d*\\.?\\d+");
     private static final DecimalFormat niceFormat = new DecimalFormat("#,##0");
+    private static final DecimalFormat niceFormatWithDecimal = new DecimalFormat("#,###.##");
 
     /**
      * Parses the string argument as a signed integer, if the string argument
@@ -190,6 +191,31 @@ public class NumberUtil {
      */
     public static String formatNicely(int value) {
         return niceFormat.format(value);
+    }
+
+
+    /**
+     * Formats the number into a more human-readable format by adding commas to indicate thousands.
+     * <p>
+     * Example: <code>9242.352</code> will get turned into <code>9,242.35</code>
+     *
+     * @param value The float value that should be formatted.
+     * @return The formatted value.
+     */
+    public static String formatNicelyWithDecimals(float value) {
+        return niceFormatWithDecimal.format(value);
+    }
+
+    /**
+     * Formats the number into a more human-readable format by adding commas to indicate thousands.
+     * <p>
+     * Example: <code>9242352</code> will get turned into <code>9,242.35</code>
+     *
+     * @param value The double value that should be formatted.
+     * @return The formatted value.
+     */
+    public static String formatNicelyWithDecimals(double value) {
+        return niceFormatWithDecimal.format(value);
     }
 
     /**
