@@ -2,6 +2,7 @@ package com.avairebot;
 
 import java.io.File;
 
+@SuppressWarnings("WeakerAccess")
 public class Constants {
 
     public static final File STORAGE_PATH = new File("storage");
@@ -24,5 +25,11 @@ public class Constants {
     public static final String PACKAGE_INTENTS_PATH = "com.avairebot.ai.intents";
     public static final String PACKAGE_JOB_PATH = "com.avairebot.scheduler";
 
+    // Emojis
+    public static final String EMOTE_ONLINE = "<:online:324986081378435072>";
+    public static final String EMOTE_AWAY = "<:away:324986135346675712>";
+    public static final String EMOTE_DND = "<:dnd:324986174806425610>";
+
+    // Command source link
     public static final String SOURCE_URI = "https://github.com/avaire/avaire/tree/master/src/main/java/com/avairebot/commands/%s/%s.java";
 }

@@ -1,6 +1,7 @@
 package com.avairebot.commands.administration;
 
 import com.avairebot.AvaIre;
+import com.avairebot.Constants;
 import com.avairebot.commands.Category;
 import com.avairebot.commands.CategoryHandler;
 import com.avairebot.commands.CommandMessage;
@@ -16,10 +17,6 @@ import java.util.Collections;
 import java.util.List;
 
 public class CategoriesCommand extends Command {
-
-    private static final String ONLINE = "<:online:324986081378435072>";
-    private static final String DISABLED = "<:away:324986135346675712>";
-    private static final String DISABLE_GLOBALLY = "<:dnd:324986174806425610>";
 
     public CategoriesCommand(AvaIre avaire) {
         super(avaire, false);
@@ -63,9 +60,9 @@ public class CategoriesCommand extends Command {
         }
 
         String status = String.join("   ",
-            ONLINE + " Enabled",
-            DISABLED + " Disabled in Channel",
-            DISABLE_GLOBALLY + " Disabled Globally"
+            Constants.EMOTE_ONLINE + " Enabled",
+            Constants.EMOTE_AWAY + " Disabled in Channel",
+            Constants.EMOTE_DND + " Disabled Globally"
         );
 
         GuildTransformer guildTransformer = context.getGuildTransformer();
@@ -80,16 +77,16 @@ public class CategoriesCommand extends Command {
             if (category.isGlobalOrSystem()) continue;
 
             if (!transformer.isCategoryEnabledGlobally(category)) {
-                items.add(DISABLE_GLOBALLY + category.getName());
+                items.add(Constants.EMOTE_DND + category.getName());
                 continue;
             }
 
             if (!transformer.isCategoryEnabled(category)) {
-                items.add(DISABLED + category.getName());
+                items.add(Constants.EMOTE_AWAY + category.getName());
                 continue;
             }
 
-            items.add(ONLINE + category.getName());
+            items.add(Constants.EMOTE_ONLINE + category.getName());
         }
 
         context.makeInfo(status + "\n\n" + String.join("\n", items))
