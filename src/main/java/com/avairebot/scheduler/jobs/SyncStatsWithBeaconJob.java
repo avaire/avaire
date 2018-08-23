@@ -27,7 +27,10 @@ public class SyncStatsWithBeaconJob extends Job {
 
     @Override
     public void run() {
-        SelfUser selfUser = avaire.getShardManager().getShards().get(0).getSelfUser();
+        SelfUser selfUser = avaire.getSelfUser();
+        if (selfUser == null) {
+            return;
+        }
 
         Request.Builder request = new Request.Builder()
             .addHeader("User-Agent", "AvaIre v" + AppInfo.getAppInfo().version)

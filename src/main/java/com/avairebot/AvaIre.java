@@ -64,6 +64,7 @@ import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.Nullable;
 import javax.security.auth.login.LoginException;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -365,8 +366,14 @@ public class AvaIre {
         return shardEntityCounter;
     }
 
+    @Nullable
     public SelfUser getSelfUser() {
-        return getShardManager().getShards().get(0).getSelfUser();
+        for (JDA shard : getShardManager().getShards()) {
+            if (shard.getStatus().equals(JDA.Status.CONNECTED)) {
+                return shard.getSelfUser();
+            }
+        }
+        return null;
     }
 
     public Settings getSettings() {
