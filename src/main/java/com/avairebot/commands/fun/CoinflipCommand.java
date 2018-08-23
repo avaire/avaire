@@ -8,6 +8,7 @@ import com.avairebot.utilities.RandomUtil;
 import java.util.Arrays;
 import java.util.List;
 
+@SuppressWarnings("FieldCanBeLocal")
 public class CoinflipCommand extends Command {
 
     private final String heads = "https://cdn.discordapp.com/attachments/279462105277530112/279614727406223360/Heads.png";
@@ -34,8 +35,13 @@ public class CoinflipCommand extends Command {
 
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
-        context.getMessageChannel().sendMessage(RandomUtil.getBoolean() ? heads : tails).queue();
+        boolean isHeads = RandomUtil.getBoolean();
 
-        return false;
+        context.makeEmbeddedMessage()
+            .setTitle("You got " + (isHeads ? "Heads" : "Tails"))
+            .setImage(isHeads ? heads : tails)
+            .queue();
+
+        return true;
     }
 }
