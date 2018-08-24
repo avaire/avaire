@@ -128,7 +128,7 @@ public class LeaderboardCommand extends Command {
                 message.addField("➡ " + context.i18n("yourRank"), context.i18n("line")
                         .replace(":num", NumberUtil.formatNicely(rank))
                         .replace(":username", context.getAuthor().getName() + "#" + context.getAuthor().getDiscriminator())
-                        .replace(":level", NumberUtil.formatNicely(LevelUtil.getLevelFromExperience(context.getPlayerTransformer().getExperience() - 100)))
+                        .replace(":level", NumberUtil.formatNicely(LevelUtil.getLevelFromExperience(context.getPlayerTransformer().getExperience())))
                         .replace(":experience", NumberUtil.formatNicely(context.getPlayerTransformer().getExperience() - 100))
                         + "\n\n" + paginator.generateFooter(generateCommandTrigger(context.getMessage())),
                     false
