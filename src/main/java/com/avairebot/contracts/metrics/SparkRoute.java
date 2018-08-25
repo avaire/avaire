@@ -13,6 +13,16 @@ public abstract class SparkRoute implements Route {
         this.metrics = metrics;
     }
 
+
+    /**
+     * Builds the JSON response, generating a "status" key, along with a "message" key
+     * for 200 successful responses, or a "reason" key for other response codes.
+     *
+     * @param response The spark response for the requests.
+     * @param code     The status code for the response.
+     * @param message  The message or reason for the responses.
+     * @return Builds the spark status responses object.
+     */
     protected JSONObject buildResponse(Response response, int code, String message) {
         response.status(code);
 

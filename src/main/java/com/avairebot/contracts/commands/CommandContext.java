@@ -167,7 +167,7 @@ public interface CommandContext {
     /**
      * Returns the {@link YamlConfiguration configuration} for the current selected {@link com.avairebot.language.I18n I18n}
      * language, if the message was sent as a direct message, or if the guild doesn't have a valid language
-     * selected the {@link com.avairebot.language.I18n#DEFAULT default language} will be used instead.
+     * selected the {@link com.avairebot.language.I18n#defaultLanguage default language} will be used instead.
      *
      * @return The selected {@link YamlConfiguration configuration} for the current messages {@link com.avairebot.language.I18n I18n} language.
      */
