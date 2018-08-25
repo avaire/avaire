@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
 
+@SuppressWarnings({"WeakerAccess", "unused"})
 public class LevelUtil {
 
     public static final Cache<Object, Object> cache = CacheBuilder.newBuilder()
@@ -47,13 +48,18 @@ public class LevelUtil {
     private static final int C = 100;
 
     /**
+     * The experience modifier as an percentage.
+     */
+    private static final double M = 0.3715D;
+
+    /**
      * Get the amount of experience needed to reach the given level.
      *
      * @param level The level the experience should be fetched from.
      * @return The minimum amount of experience needed to reach the given level.
      */
     public static long getExperienceFromLevel(long level) {
-        return (long) (A * Math.pow(level, 2)) + (B * level) + C;
+        return (long) (((long) (A * Math.pow(level, 2)) + (B * level) + C) * (1 + M));
     }
 
     /**
@@ -63,11 +69,11 @@ public class LevelUtil {
      * @return The max level that can be reached with the given amount of experience.
      */
     public static long getLevelFromExperience(long xp) {
-        if (Math.pow(B, 2) - ((4 * A) * (C - xp)) < 0) {
+        if (Math.pow(B, 2) - ((4 * A) * (C - Math.ceil(xp / (1 + M)))) < 0) {
             throw new RuntimeException("Discriminant is less than zero, no real roots");
         }
 
-        double x = (-B + Math.sqrt(Math.pow(B, 2) - ((4 * A) * (C - xp)))) / (2 * A);
+        double x = (-B + Math.sqrt(Math.pow(B, 2) - ((4 * A) * (C - Math.ceil(xp / (1 + M)))))) / (2 * A);
         return x < 0 ? 0 : (long) Math.floor(x);
     }
 
