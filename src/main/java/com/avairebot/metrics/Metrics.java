@@ -9,12 +9,12 @@ import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.controllers.PlayerController;
 import com.avairebot.database.controllers.PlaylistController;
 import com.avairebot.handlers.adapter.JDAStateEventAdapter;
+import com.avairebot.level.LevelManager;
 import com.avairebot.metrics.filters.AreWeReadyYetFilter;
 import com.avairebot.metrics.filters.HttpFilter;
 import com.avairebot.metrics.handlers.SparkExceptionHandler;
 import com.avairebot.metrics.routes.*;
 import com.avairebot.middleware.ThrottleMiddleware;
-import com.avairebot.utilities.LevelUtil;
 import io.prometheus.client.Counter;
 import io.prometheus.client.Gauge;
 import io.prometheus.client.Histogram;
@@ -191,7 +191,7 @@ public class Metrics {
         Metrics.initializeEventMetrics();
 
         CacheMetricsCollector cacheMetrics = new CacheMetricsCollector().register();
-        cacheMetrics.addCache("levels", LevelUtil.cache);
+        cacheMetrics.addCache("levels", LevelManager.cache);
         cacheMetrics.addCache("guilds", GuildController.cache);
         cacheMetrics.addCache("players", PlayerController.cache);
         cacheMetrics.addCache("playlists", PlaylistController.cache);

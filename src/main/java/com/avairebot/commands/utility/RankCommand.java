@@ -14,7 +14,6 @@ import com.avairebot.database.controllers.PlayerController;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.database.transformers.PlayerTransformer;
 import com.avairebot.factories.MessageFactory;
-import com.avairebot.utilities.LevelUtil;
 import com.avairebot.utilities.MentionableUtil;
 import com.avairebot.utilities.NumberUtil;
 import net.dv8tion.jda.core.entities.Guild;
@@ -115,10 +114,10 @@ public class RankCommand extends Command {
                 : properties.getScore() + " / " + getUsersInGuild(context.getGuild());
 
             long experience = properties.getPlayer().getExperience();
-            long level = LevelUtil.getLevelFromExperience(experience);
-            long current = LevelUtil.getExperienceFromLevel(level);
+            long level = avaire.getLevelManager().getLevelFromExperience(experience);
+            long current = avaire.getLevelManager().getExperienceFromLevel(level);
 
-            long nextLevelXp = LevelUtil.getExperienceFromLevel(level + 1);
+            long nextLevelXp = avaire.getLevelManager().getExperienceFromLevel(level + 1);
             double percentage = ((double) (experience - current) / (nextLevelXp - current)) * 100;
 
             String levelBar = "";

@@ -17,7 +17,6 @@ import com.avairebot.metrics.Metrics;
 import com.avairebot.middleware.MiddlewareStack;
 import com.avairebot.shared.DiscordConstants;
 import com.avairebot.utilities.ArrayUtil;
-import com.avairebot.utilities.LevelUtil;
 import com.avairebot.utilities.NumberUtil;
 import com.avairebot.utilities.RestActionUtil;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
@@ -102,7 +101,7 @@ public class MessageEventAdapter extends EventAdapter {
             }
 
             if (databaseEventHolder.getGuild() != null && databaseEventHolder.getPlayer() != null) {
-                LevelUtil.rewardPlayer(event, databaseEventHolder.getGuild(), databaseEventHolder.getPlayer());
+                avaire.getLevelManager().rewardPlayer(event, databaseEventHolder.getGuild(), databaseEventHolder.getPlayer());
             }
 
             CommandContainer container = CommandHandler.getCommand(avaire, event.getMessage(), event.getMessage().getContentRaw());

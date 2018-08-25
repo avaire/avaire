@@ -1,4 +1,4 @@
-package com.avairebot.utilities;
+package com.avairebot.level;
 
 import com.avairebot.AvaIre;
 import com.avairebot.chat.MessageType;
@@ -8,6 +8,8 @@ import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.database.transformers.PlayerTransformer;
 import com.avairebot.factories.MessageFactory;
 import com.avairebot.language.I18n;
+import com.avairebot.utilities.CacheUtil;
+import com.avairebot.utilities.RandomUtil;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import net.dv8tion.jda.core.entities.Message;
@@ -23,34 +25,47 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
 
 @SuppressWarnings({"WeakerAccess", "unused"})
-public class LevelUtil {
+public class LevelManager {
 
+    /**
+     * When a user sends a message, they are checked against the cache to see if they
+     * can be rewarded experience again, if they do have an entry in the cache,
+     * their message is ignored for the level manager and no experience will
+     * be rewarded to them for that message.
+     * <p>
+     * The cache will automatically delete keys after they have existed for 60 seconds.
+     */
     public static final Cache<Object, Object> cache = CacheBuilder.newBuilder()
         .recordStats()
         .expireAfterWrite(60, TimeUnit.SECONDS)
         .build();
 
+    /**
+     * The experience queue, users who have been rewarded experience will
+     * be added to the queue, the queue is then consumed once a minute
+     * to sync the database with the user data.
+     */
     private static final List<ExperienceEntity> experienceQueue = new CopyOnWriteArrayList<>();
 
     /**
      * The quadratic equation `a` value.
      */
-    private static final int A = 5;
+    private final int A = 5;
 
     /**
      * The quadratic equation `b` value.
      */
-    private static final int B = 50;
+    private final int B = 50;
 
     /**
      * The quadratic equation `c` value.
      */
-    private static final int C = 100;
+    private final int C = 100;
 
     /**
      * The experience modifier as an percentage.
      */
-    private static final double M = 0.3715D;
+    private final double M = 0.3715D;
 
     /**
      * Get the amount of experience needed to reach the given level.
@@ -58,8 +73,20 @@ public class LevelUtil {
      * @param level The level the experience should be fetched from.
      * @return The minimum amount of experience needed to reach the given level.
      */
-    public static long getExperienceFromLevel(long level) {
-        return (long) (((long) (A * Math.pow(level, 2)) + (B * level) + C) * (1 + M));
+    public long getExperienceFromLevel(long level) {
+        return getExperienceFromLevel(level, M);
+    }
+
+    /**
+     * Get the amount of experience needed to reach the given level.
+     *
+     * @param level    The level the experience should be fetched from.
+     * @param modifier The modifier that should be added to the XP calculation, the modifier
+     *                 should be a percentage represented as a decimal, so 0.5 = 50%
+     * @return The minimum amount of experience needed to reach the given level.
+     */
+    public long getExperienceFromLevel(long level, double modifier) {
+        return (long) (((long) (A * Math.pow(level, 2)) + (B * level) + C) * (1 + modifier));
     }
 
     /**
@@ -68,12 +95,24 @@ public class LevelUtil {
      * @param xp The experience that should be resolved into the level.
      * @return The max level that can be reached with the given amount of experience.
      */
-    public static long getLevelFromExperience(long xp) {
-        if (Math.pow(B, 2) - ((4 * A) * (C - Math.ceil(xp / (1 + M)))) < 0) {
+    public long getLevelFromExperience(long xp) {
+        return getLevelFromExperience(xp, M);
+    }
+
+    /**
+     * Gets the max level that can be reached with the given amount experience.
+     *
+     * @param xp       The experience that should be resolved into the level.
+     * @param modifier The modifier that should be subtracted from the XP calculation, the modifier
+     *                 should be a percentage represented as a decimal, so 0.5 = 50%
+     * @return The max level that can be reached with the given amount of experience.
+     */
+    public long getLevelFromExperience(long xp, double modifier) {
+        if (Math.pow(B, 2) - ((4 * A) * (C - Math.ceil(xp / (1 + modifier)))) < 0) {
             throw new RuntimeException("Discriminant is less than zero, no real roots");
         }
 
-        double x = (-B + Math.sqrt(Math.pow(B, 2) - ((4 * A) * (C - Math.ceil(xp / (1 + M)))))) / (2 * A);
+        double x = (-B + Math.sqrt(Math.pow(B, 2) - ((4 * A) * (C - Math.ceil(xp / (1 + modifier)))))) / (2 * A);
         return x < 0 ? 0 : (long) Math.floor(x);
     }
 
@@ -88,7 +127,7 @@ public class LevelUtil {
      * @param guild  The guild transformer from the current guild database instance.
      * @param player The player transformer from the current player database instance.
      */
-    public static void rewardPlayer(MessageReceivedEvent event, GuildTransformer guild, PlayerTransformer player) {
+    public void rewardPlayer(MessageReceivedEvent event, GuildTransformer guild, PlayerTransformer player) {
         CacheUtil.getUncheckedUnwrapped(cache, asKey(event), () -> {
             giveExperience(event.getMessage(), guild, player);
             return 0;
@@ -105,7 +144,7 @@ public class LevelUtil {
      * @param user    The user that should be given the experience.
      * @param amount  The amount of experience that should be given to the user.
      */
-    public static void giveExperience(AvaIre avaire, Message message, User user, int amount) {
+    public void giveExperience(AvaIre avaire, Message message, User user, int amount) {
         if (!message.getChannelType().isGuild()) {
             return;
         }
@@ -122,7 +161,7 @@ public class LevelUtil {
      * @param guild   The guild transformer for the guild the player is from.
      * @param player  The player that should be given the experience.
      */
-    public static void giveExperience(Message message, GuildTransformer guild, PlayerTransformer player) {
+    public void giveExperience(Message message, GuildTransformer guild, PlayerTransformer player) {
         giveExperience(message, guild, player, (RandomUtil.getInteger(5) + 10));
     }
 
@@ -135,7 +174,7 @@ public class LevelUtil {
      * @param player  The player that should be given the experience.
      * @param amount  The amount of experience that should be given to the player.
      */
-    public static void giveExperience(Message message, GuildTransformer guild, PlayerTransformer player, int amount) {
+    public void giveExperience(Message message, GuildTransformer guild, PlayerTransformer player, int amount) {
         long exp = player.getExperience();
         long lvl = getLevelFromExperience(exp);
 
@@ -176,7 +215,7 @@ public class LevelUtil {
      *
      * @return The experience queue.
      */
-    public static List<ExperienceEntity> getExperienceQueue() {
+    public List<ExperienceEntity> getExperienceQueue() {
         return experienceQueue;
     }
 
@@ -189,7 +228,7 @@ public class LevelUtil {
      * @param guild   The guild transformer that should be used to get the level up channel.
      * @return The level up channel if one is set, otherwise the text channel from the message object.
      */
-    private static TextChannel getLevelUpChannel(Message message, GuildTransformer guild) {
+    private TextChannel getLevelUpChannel(Message message, GuildTransformer guild) {
         String levelChannel = guild.getLevelChannel();
         if (levelChannel == null) {
             return message.getTextChannel();
@@ -199,7 +238,7 @@ public class LevelUtil {
         return channel == null ? message.getTextChannel() : channel;
     }
 
-    private static List<Role> getRoleRewards(Message message, GuildTransformer guild, long level) {
+    private List<Role> getRoleRewards(Message message, GuildTransformer guild, long level) {
         List<Role> roles = new ArrayList<>();
         for (Map.Entry<Integer, String> entry : guild.getLevelRoles().entrySet()) {
             if (entry.getKey() <= level) {
@@ -212,49 +251,13 @@ public class LevelUtil {
         return roles;
     }
 
-    private static String loadRandomLevelupMessage(GuildTransformer guild) {
+    private String loadRandomLevelupMessage(GuildTransformer guild) {
         return (String) RandomUtil.pickRandom(
             I18n.getLocale(guild).getConfig().getStringList("levelupMessages")
         );
     }
 
-    private static Object asKey(MessageReceivedEvent event) {
+    private Object asKey(MessageReceivedEvent event) {
         return event.getGuild().getId() + ":" + event.getAuthor().getId();
-    }
-
-    public static class ExperienceEntity {
-
-        private final long userId;
-        private final long guildId;
-        private int experience;
-
-        ExperienceEntity(long userId, long guildId, int experience) {
-            this.userId = userId;
-            this.guildId = guildId;
-            this.experience = experience;
-        }
-
-        public long getUserId() {
-            return userId;
-        }
-
-        public long getGuildId() {
-            return guildId;
-        }
-
-        public int getExperience() {
-            return experience;
-        }
-
-        public void setExperience(int experience) {
-            this.experience = experience;
-        }
-
-        @Override
-        public String toString() {
-            return String.format("[userId:%s, guildId:%s, experience:%s]",
-                userId, guildId, experience
-            );
-        }
     }
 }

@@ -13,7 +13,6 @@ import com.avairebot.database.collection.Collection;
 import com.avairebot.database.collection.DataRow;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.utilities.CacheUtil;
-import com.avairebot.utilities.LevelUtil;
 import com.avairebot.utilities.NumberUtil;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
@@ -109,7 +108,7 @@ public class LeaderboardCommand extends Command {
             messages.add(context.i18n("line")
                 .replace(":num", "" + (index + 1))
                 .replace(":username", username)
-                .replace(":level", NumberUtil.formatNicely(LevelUtil.getLevelFromExperience(experience)))
+                .replace(":level", NumberUtil.formatNicely(avaire.getLevelManager().getLevelFromExperience(experience)))
                 .replace(":experience", NumberUtil.formatNicely((experience - 100)))
             );
         });
@@ -128,12 +127,15 @@ public class LeaderboardCommand extends Command {
                 message.addField("➡ " + context.i18n("yourRank"), context.i18n("line")
                         .replace(":num", NumberUtil.formatNicely(rank))
                         .replace(":username", context.getAuthor().getName() + "#" + context.getAuthor().getDiscriminator())
-                        .replace(":level", NumberUtil.formatNicely(LevelUtil.getLevelFromExperience(context.getPlayerTransformer().getExperience())))
+                        .replace(":level", NumberUtil.formatNicely(avaire.getLevelManager().getLevelFromExperience(
+                            context.getPlayerTransformer().getExperience()
+                        )))
                         .replace(":experience", NumberUtil.formatNicely(context.getPlayerTransformer().getExperience() - 100))
                         + "\n\n" + paginator.generateFooter(generateCommandTrigger(context.getMessage())),
                     false
                 );
             }
+
         }
 
         if (message.build().getFields().isEmpty()) {

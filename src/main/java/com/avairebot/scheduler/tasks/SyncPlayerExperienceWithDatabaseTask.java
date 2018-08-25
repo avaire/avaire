@@ -3,7 +3,7 @@ package com.avairebot.scheduler.tasks;
 import com.avairebot.AvaIre;
 import com.avairebot.Constants;
 import com.avairebot.contracts.scheduler.Task;
-import com.avairebot.utilities.LevelUtil;
+import com.avairebot.level.ExperienceEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,14 +19,14 @@ public class SyncPlayerExperienceWithDatabaseTask implements Task {
 
     @Override
     public void handle(AvaIre avaire) {
-        if (LevelUtil.getExperienceQueue().isEmpty()) {
+        if (avaire.getLevelManager().getExperienceQueue().isEmpty()) {
             return;
         }
 
-        List<LevelUtil.ExperienceEntity> experienceQueue;
-        synchronized (LevelUtil.getExperienceQueue()) {
-            experienceQueue = new ArrayList<>(LevelUtil.getExperienceQueue());
-            LevelUtil.getExperienceQueue().clear();
+        List<ExperienceEntity> experienceQueue;
+        synchronized (avaire.getLevelManager().getExperienceQueue()) {
+            experienceQueue = new ArrayList<>(avaire.getLevelManager().getExperienceQueue());
+            avaire.getLevelManager().getExperienceQueue().clear();
         }
 
         Connection connection = null;
@@ -42,7 +42,7 @@ public class SyncPlayerExperienceWithDatabaseTask implements Task {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 connection.setAutoCommit(false);
 
-                for (LevelUtil.ExperienceEntity entity : experienceQueue) {
+                for (ExperienceEntity entity : experienceQueue) {
                     preparedStatement.setInt(1, entity.getExperience());
                     preparedStatement.setString(2, "" + entity.getUserId());
                     preparedStatement.setString(3, "" + entity.getGuildId());

@@ -29,6 +29,7 @@ import com.avairebot.handlers.GenericEventHandler;
 import com.avairebot.handlers.MainEventHandler;
 import com.avairebot.handlers.events.ApplicationShutdownEvent;
 import com.avairebot.language.I18n;
+import com.avairebot.level.LevelManager;
 import com.avairebot.metrics.Metrics;
 import com.avairebot.middleware.*;
 import com.avairebot.plugin.PluginLoader;
@@ -94,6 +95,7 @@ public class AvaIre {
     private final CacheManager cache;
     private final Blacklist blacklist;
     private final DatabaseManager database;
+    private final LevelManager levelManager;
     private final IntelligenceManager intelligenceManager;
     private final PluginManager pluginManager;
     private final VoteManager voteManager;
@@ -120,6 +122,7 @@ public class AvaIre {
 
         this.eventEmitter = new EventEmitter(this);
         this.cache = new CacheManager(this);
+        this.levelManager = new LevelManager();
 
         log.info("Loading configuration");
         config = new Configuration(this, null, "config.yml");
@@ -394,6 +397,10 @@ public class AvaIre {
 
     public DatabaseManager getDatabase() {
         return database;
+    }
+
+    public LevelManager getLevelManager() {
+        return levelManager;
     }
 
     public PluginManager getPluginManager() {
