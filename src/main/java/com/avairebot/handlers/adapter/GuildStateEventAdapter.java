@@ -6,6 +6,7 @@ import com.avairebot.chat.ConsoleColor;
 import com.avairebot.contracts.handlers.EventAdapter;
 import com.avairebot.metrics.Metrics;
 import com.avairebot.shared.DiscordConstants;
+import com.avairebot.utilities.NumberUtil;
 import com.avairebot.utilities.RestActionUtil;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.TextChannel;
@@ -65,10 +66,19 @@ public class GuildStateEventAdapter extends EventAdapter {
 
         User owner = event.getGuild().getOwner().getUser();
 
+        double guildMembers = event.getGuild().getMembers().stream().filter(member -> !member.getUser().isBot()).count();
+        double guildBots = event.getGuild().getMembers().stream().filter(member -> member.getUser().isBot()).count();
+        double percentage = (guildBots / (guildBots + guildMembers)) * 100;
+
         channel.sendMessage(
             new EmbedBuilder()
                 .setColor(Color.decode("#66BB6A"))
                 .setTimestamp(Instant.now())
+                .setFooter(String.format("%s Users, and %s Bots, %s Bots",
+                    NumberUtil.formatNicely(guildMembers),
+                    NumberUtil.formatNicely(guildBots),
+                    NumberUtil.formatNicelyWithDecimals(percentage) + "%"
+                ), null)
                 .addField("Added", String.format("%s (ID: %s)",
                     event.getGuild().getName(), event.getGuild().getId()
                 ), false)
