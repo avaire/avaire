@@ -86,7 +86,7 @@ public class LevelManager {
      * @return The minimum amount of experience needed to reach the given level.
      */
     public long getExperienceFromLevel(long level, double modifier) {
-        return (long) (((long) (A * Math.pow(level, 2)) + (B * level) + C) * (1 + modifier));
+        return (long) (((long) (A * Math.pow(level, 2)) + (B * level) + (C * (1 + modifier))) * (1 + modifier));
     }
 
     /**
@@ -108,11 +108,11 @@ public class LevelManager {
      * @return The max level that can be reached with the given amount of experience.
      */
     public long getLevelFromExperience(long xp, double modifier) {
-        if (Math.pow(B, 2) - ((4 * A) * (C - Math.ceil(xp / (1 + modifier)))) < 0) {
+        if (Math.pow(B, 2) - ((4 * A) * ((C * (1 + modifier)) - Math.ceil(xp / (1 + modifier)))) < 0) {
             throw new RuntimeException("Discriminant is less than zero, no real roots");
         }
 
-        double x = (-B + Math.sqrt(Math.pow(B, 2) - ((4 * A) * (C - Math.ceil(xp / (1 + modifier)))))) / (2 * A);
+        double x = (-B + Math.sqrt(Math.pow(B, 2) - ((4 * A) * ((C * (1 + modifier)) - Math.ceil(xp / (1 + modifier)))))) / (2 * A);
         return x < 0 ? 0 : (long) Math.floor(x);
     }
 
