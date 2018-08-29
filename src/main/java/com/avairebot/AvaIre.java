@@ -177,7 +177,8 @@ public class AvaIre {
             new AddMusicChannelToGuildsTableMigration(),
             new AddExpiresInFieldToBlacklistTableMigration(),
             new AddOptInToVotesTableMigration(),
-            new RecreateFeedbackTableMigration()
+            new RecreateFeedbackTableMigration(),
+            new AddMusicMessagesToGuildsTableMigration()
         );
 
         log.info("Registering default middlewares");

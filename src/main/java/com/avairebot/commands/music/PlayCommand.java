@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
 public class PlayCommand extends Command {
@@ -137,7 +138,11 @@ public class PlayCommand extends Command {
             .set("queueSize", NumberUtil.formatNicely(
                 AudioHandler.getDefaultAudioHandler().getQueueSize(response.getMusicManager())
             ))
-            .queue();
+            .queue(message -> {
+                if (context.getGuildTransformer() != null && context.getGuildTransformer().isMusicMessages()) {
+                    message.delete().queueAfter(30, TimeUnit.SECONDS);
+                }
+            });
     }
 
     private void sendTrackResponse(CommandMessage context, TrackResponse response) {
@@ -149,7 +154,11 @@ public class PlayCommand extends Command {
             .set("queueSize", NumberUtil.formatNicely(
                 AudioHandler.getDefaultAudioHandler().getQueueSize(response.getMusicManager())
             ))
-            .queue();
+            .queue(message -> {
+                if (context.getGuildTransformer() != null && context.getGuildTransformer().isMusicMessages()) {
+                    message.delete().queueAfter(30, TimeUnit.SECONDS);
+                }
+            });
     }
 
     private String buildTrackRequestString(String[] args) {

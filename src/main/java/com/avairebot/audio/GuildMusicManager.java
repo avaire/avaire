@@ -13,6 +13,8 @@ import java.util.concurrent.TimeUnit;
 
 public class GuildMusicManager {
 
+    private final AvaIre avaire;
+    private final Guild guild;
     private final IPlayer player;
     private final TrackScheduler scheduler;
 
@@ -23,6 +25,9 @@ public class GuildMusicManager {
     private CommandMessage lastActiveMessage = null;
 
     public GuildMusicManager(AvaIre avaire, Guild guild) {
+        this.avaire = avaire;
+        this.guild = guild;
+
         player = LavalinkManager.LavalinkManagerHolder.lavalink.createPlayer(guild.getId());
         scheduler = new TrackScheduler(this, player);
         player.addListener(scheduler);
@@ -44,6 +49,10 @@ public class GuildMusicManager {
 
     public AudioPlayerSendHandler getSendHandler() {
         return new AudioPlayerSendHandler((LavaplayerPlayerWrapper) player);
+    }
+
+    public GuildTransformer getGuild() {
+        return GuildController.fetchGuild(avaire, guild);
     }
 
     public IPlayer getPlayer() {

@@ -32,6 +32,7 @@ public class GuildTransformer extends Transformer {
 
     private boolean levels = false;
     private boolean levelAlerts = false;
+    private boolean musicMessages = true;
     private String levelChannel = null;
     private String autorole = null;
     private String modlog = null;
@@ -69,6 +70,7 @@ public class GuildTransformer extends Transformer {
             modlog = data.getString("modlog");
             musicChannelText = data.getString("music_channel_text");
             musicChannelVoice = data.getString("music_channel_voice");
+            musicMessages = data.getBoolean("music_messages", true);
             modlogCase = data.getInt("modlog_case");
             djGuildLevel = DJGuildLevel.fromId(data.getInt("dj_level", DJGuildLevel.getNormal().getId()));
             defaultVolume = data.getInt("default_volume", 50);
@@ -223,6 +225,14 @@ public class GuildTransformer extends Transformer {
 
     public void setMusicChannelVoice(String musicChannelVoice) {
         this.musicChannelVoice = musicChannelVoice;
+    }
+
+    public boolean isMusicMessages() {
+        return musicMessages;
+    }
+
+    public void setMusicMessages(boolean musicMessages) {
+        this.musicMessages = musicMessages;
     }
 
     public String getModlog() {

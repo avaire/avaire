@@ -7,43 +7,38 @@ import com.avairebot.database.schema.Schema;
 
 import java.sql.SQLException;
 
-public class AddExpiresInFieldToBlacklistTableMigration implements Migration {
+public class AddMusicMessagesToGuildsTableMigration implements Migration {
 
     @Override
     public String created_at() {
-        return "Tue, May 22, 2018 8:56 PM";
+        return "2018-08-28 22:45:05";
     }
 
     @Override
     public boolean up(Schema schema) throws SQLException {
-        if (schema.hasColumn(Constants.BLACKLIST_TABLE_NAME, "expires_in")) {
-            return true;
-        }
-
         if (schema.getDbm().getConnection() instanceof MySQL) {
             schema.getDbm().queryUpdate(String.format(
-                "ALTER TABLE `%s` ADD `expires_in` VARCHAR(128) NOT NULL AFTER `reason`;",
-                Constants.BLACKLIST_TABLE_NAME
+                "ALTER TABLE `%s` ADD `music_messages` TINYINT(1) NOT NULL DEFAULT '1' AFTER `music_channel_voice`;",
+                Constants.GUILD_TABLE_NAME
             ));
         } else {
             schema.getDbm().queryUpdate(String.format(
-                "ALTER TABLE `%s` ADD `expires_in` VARCHAR(128);",
-                Constants.BLACKLIST_TABLE_NAME
+                "ALTER TABLE `%s` ADD `music_messages` TINYINT(1) NOT NULL DEFAULT '1';",
+                Constants.GUILD_TABLE_NAME
             ));
         }
-
-        return true;
+        return false;
     }
 
     @Override
     public boolean down(Schema schema) throws SQLException {
-        if (!schema.hasColumn(Constants.BLACKLIST_TABLE_NAME, "expires_in")) {
+        if (!schema.hasColumn(Constants.GUILD_TABLE_NAME, "music_messages")) {
             return true;
         }
 
         schema.getDbm().queryUpdate(String.format(
-            "ALTER TABLE `%s` DROP `expires_in`;",
-            Constants.BLACKLIST_TABLE_NAME
+            "ALTER TABLE `%s` DROP `music_messages`;",
+            Constants.GUILD_TABLE_NAME
         ));
 
         return true;

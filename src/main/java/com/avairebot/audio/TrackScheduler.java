@@ -99,16 +99,18 @@ public class TrackScheduler extends AudioEventAdapterWrapped {
             songTitle = container.getAudioTrack().getInfo().uri;
         }
 
-        manager.getLastActiveMessage().makeSuccess(message)
-            .set("title", songTitle)
-            .set("link", container.getAudioTrack().getInfo().uri)
-            .set("size", NumberUtil.formatNicely(size))
-            .set("name", playlist.getName())
-            .set("amount", size)
-            .set("duration", container.getFormattedDuration())
-            .set("requester", container.getRequester().getAsMention())
-            .set("volume", getVolume())
-            .queue();
+        if (manager.getGuild().isMusicMessages()) {
+            manager.getLastActiveMessage().makeSuccess(message)
+                .set("title", songTitle)
+                .set("link", container.getAudioTrack().getInfo().uri)
+                .set("size", NumberUtil.formatNicely(size))
+                .set("name", playlist.getName())
+                .set("amount", size)
+                .set("duration", container.getFormattedDuration())
+                .set("requester", container.getRequester().getAsMention())
+                .set("volume", getVolume())
+                .queue();
+        }
     }
 
     /**
@@ -146,15 +148,17 @@ public class TrackScheduler extends AudioEventAdapterWrapped {
                 songTitle = container.getAudioTrack().getInfo().uri;
             }
 
-            manager.getLastActiveMessage().makeSuccess(message)
-                .set("title", songTitle)
-                .set("link", container.getAudioTrack().getInfo().uri)
-                .set("playlistSize", NumberUtil.formatNicely(playlist.getTracks().size()))
-                .set("playlistName", playlist.getName())
-                .set("duration", container.getFormattedDuration())
-                .set("requester", container.getRequester().getAsMention())
-                .set("volume", getVolume())
-                .queue();
+            if (manager.getGuild().isMusicMessages()) {
+                manager.getLastActiveMessage().makeSuccess(message)
+                    .set("title", songTitle)
+                    .set("link", container.getAudioTrack().getInfo().uri)
+                    .set("playlistSize", NumberUtil.formatNicely(playlist.getTracks().size()))
+                    .set("playlistName", playlist.getName())
+                    .set("duration", container.getFormattedDuration())
+                    .set("requester", container.getRequester().getAsMention())
+                    .set("volume", getVolume())
+                    .queue();
+            }
         }
 
 
@@ -228,15 +232,17 @@ public class TrackScheduler extends AudioEventAdapterWrapped {
             songTitle = container.getAudioTrack().getInfo().uri;
         }
 
-        manager.getLastActiveMessage().makeSuccess(
-            manager.getLastActiveMessage().i18nRaw("music.internal.nowPlaying")
-        )
-            .set("title", songTitle)
-            .set("link", container.getAudioTrack().getInfo().uri)
-            .set("duration", container.getFormattedDuration())
-            .set("requester", container.getRequester().getAsMention())
-            .set("volume", getVolume())
-            .queue();
+        if (manager.getGuild().isMusicMessages()) {
+            manager.getLastActiveMessage().makeSuccess(
+                manager.getLastActiveMessage().i18nRaw("music.internal.nowPlaying")
+            )
+                .set("title", songTitle)
+                .set("link", container.getAudioTrack().getInfo().uri)
+                .set("duration", container.getFormattedDuration())
+                .set("requester", container.getRequester().getAsMention())
+                .set("volume", getVolume())
+                .queue();
+        }
     }
 
     public void handleEndOfQueue(@Nonnull CommandMessage context, boolean sendEndOfQueue) {

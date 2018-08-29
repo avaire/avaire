@@ -11,6 +11,7 @@ import com.avairebot.scheduler.tasks.MusicActivityTask;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class StopCommand extends Command {
 
@@ -70,7 +71,7 @@ public class StopCommand extends Command {
 
         context.makeInfo(context.i18n("success"))
             .set("number", size)
-            .queue();
+            .queue(message -> message.delete().queueAfter(5, TimeUnit.MINUTES));
 
         return true;
     }
