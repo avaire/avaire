@@ -141,6 +141,18 @@ music:
             invalidType: "Ugjyldig type av musikk kanal angitt, typen må enten være `tekst` eller `samtale`"
             notValidType: "`{0}` er ikke en gyldig {1} kanal, du må inkludere en gyldig samtale kanal du ønsker og bruke som musikk kanal."
 
+    MusicMessagesCommand:
+        message: "Music messages are currently **:status**.\n\n**Info**\n:info"
+        updated: "The music messages has successfully been **:status**."
+        error: "Invalid argument given, the status must be either `on` or `off` to change the music messages status."
+        footer: "To change the music messages, use {0}"
+        status:
+            disabled: "disabled"
+            enabled: "enabled"
+        info:
+            disabled: "When music messages are disabled, the `Now Playing` messages will no longer be sent, and other music related commands will automatically delete themselves after awhile."
+            enabled: "When music messages are enabled, the `Now Playing` messages will stay, even after the song being played changes, some related messages will also stay.\n**Note:** Most music commands will still be auto deleted after awhile."
+
     PauseCommand:
         error: 'Ingenting å pause, be om musikk først med `{0}play`'
         alreadyPaused: 'Musikken er allerede på pause, du kan benytte `!resume` for å fortsette avspillingen.'

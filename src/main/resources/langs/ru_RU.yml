@@ -141,6 +141,18 @@ music:
             invalidType: "Недействительный тип канала, тип должен быть либо `текст`, либо `голос`"
             notValidType: "`{0}` не является недействительным {1} каналом, вы должны включить действительный речевой канал, который вы хотите использовать в качестве музыкального канала."
 
+    MusicMessagesCommand:
+        message: "Music messages are currently **:status**.\n\n**Info**\n:info"
+        updated: "The music messages has successfully been **:status**."
+        error: "Invalid argument given, the status must be either `on` or `off` to change the music messages status."
+        footer: "To change the music messages, use {0}"
+        status:
+            disabled: "disabled"
+            enabled: "enabled"
+        info:
+            disabled: "When music messages are disabled, the `Now Playing` messages will no longer be sent, and other music related commands will automatically delete themselves after awhile."
+            enabled: "When music messages are enabled, the `Now Playing` messages will stay, even after the song being played changes, some related messages will also stay.\n**Note:** Most music commands will still be auto deleted after awhile."
+
     PauseCommand:
         error: 'Нечего останавливать, сначала попросите музыку `{0}play`'
         alreadyPaused: 'Музыка приостановлена, используйте `!resume`, чтобы возобновить проигрывание.'
