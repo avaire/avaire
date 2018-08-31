@@ -7,6 +7,7 @@ import com.avairebot.commands.CommandHandler;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.database.transformers.GuildTransformer;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import java.sql.SQLException;
 import java.util.Arrays;
@@ -129,7 +130,7 @@ public class AliasCommand extends Command {
                 .queue();
             return true;
         } catch (SQLException e) {
-            e.printStackTrace();
+            AvaIre.getLogger().error("SQLException on AliasCommand.removeCustomAlias: \n", ExceptionUtils.getStackTrace(e));
             return false;
         }
     }

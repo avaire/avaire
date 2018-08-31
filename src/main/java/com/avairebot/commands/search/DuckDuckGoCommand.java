@@ -71,8 +71,7 @@ public class DuckDuckGoCommand extends Command {
         }
 
         try {
-            Map<String, String> headers = new HashMap<>();
-            headers.putAll(HTTP_HEADERS);
+            Map<String, String> headers = new HashMap<>(HTTP_HEADERS);
             headers.put("User-Agent", "AvaIre-Discord-Bot (" + avaire.getSelfUser().getId() + ")");
 
             context.getMessageChannel().sendTyping().queue();

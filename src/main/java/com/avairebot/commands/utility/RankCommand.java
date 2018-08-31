@@ -18,6 +18,7 @@ import com.avairebot.utilities.MentionableUtil;
 import com.avairebot.utilities.NumberUtil;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.User;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import java.awt.*;
 import java.sql.SQLException;
@@ -120,9 +121,9 @@ public class RankCommand extends Command {
             long nextLevelXp = avaire.getLevelManager().getExperienceFromLevel(level + 1);
             double percentage = ((double) (experience - current) / (nextLevelXp - current)) * 100;
 
-            String levelBar = "";
+            StringBuilder levelBar = new StringBuilder();
             for (int i = 1; i <= 40; i++) {
-                levelBar += ((i * 2.5) < percentage) ? "\u2592" : "\u2591";
+                levelBar.append(((i * 2.5) < percentage) ? "\u2592" : "\u2591");
             }
 
             MessageFactory.makeEmbeddedMessage(context.getChannel(), Color.decode("#E91E63"))
@@ -134,7 +135,7 @@ public class RankCommand extends Command {
                     NumberUtil.formatNicely(experience - 100), NumberUtil.formatNicely(properties.getTotal())
                 )), true)
                 .addField(context.i18n("fields.experienceToNext"), context.i18n("fields.youNeedMoreXpToLevelUp",
-                    levelBar, NumberUtil.formatNicelyWithDecimals(percentage), '%', NumberUtil.formatNicely(nextLevelXp - experience)
+                    levelBar.toString(), NumberUtil.formatNicelyWithDecimals(percentage), '%', NumberUtil.formatNicely(nextLevelXp - experience)
                 ), false)
                 .requestedBy(context.getMember())
                 .queue();
@@ -154,11 +155,13 @@ public class RankCommand extends Command {
                     .where("user_id", author.getId())
                     .get().first();
 
-                long total = data == null ? (player == null ? 0 : player.getExperience()) : data.getLong("total");
+                long total;
+                if (player == null) total = data == null ? 0 : data.getLong("total");
+                else total = data == null ? player.getExperience() : data.getLong("total");
 
                 return new DatabaseProperties(player, total, getScore(context, author.getId()));
             } catch (SQLException e) {
-                e.printStackTrace();
+                AvaIre.getLogger().error("SQLException on RankCommand.loadProperties \n", ExceptionUtils.getStackTrace(e));
                 return null;
             }
         });

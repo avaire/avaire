@@ -119,7 +119,7 @@ public class VoteSkipCommand extends Command {
             }
         }
 
-        return (int) Math.ceil(usersInVoiceLength / 2);
+        return (usersInVoiceLength / 2);
     }
 
     private boolean canVoteSkip(CommandMessage message) {

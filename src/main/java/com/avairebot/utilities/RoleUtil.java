@@ -42,12 +42,12 @@ public class RoleUtil {
             return null;
         }
 
-        return roles.stream().sorted((first, second) -> {
+        return roles.stream().min((first, second) -> {
             if (first.getPosition() == second.getPosition()) {
                 return 0;
             }
             return first.getPosition() > second.getPosition() ? -1 : 1;
-        }).findFirst().orElseGet(null);
+        }).orElseGet(null);
     }
 
     /**

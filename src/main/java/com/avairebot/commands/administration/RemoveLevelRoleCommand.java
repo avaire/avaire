@@ -10,6 +10,7 @@ import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.utilities.NumberUtil;
 import com.avairebot.utilities.RoleUtil;
 import net.dv8tion.jda.core.entities.Role;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import java.sql.SQLException;
 import java.util.Arrays;
@@ -123,7 +124,7 @@ public class RemoveLevelRoleCommand extends Command {
 
             return true;
         } catch (SQLException e) {
-            e.printStackTrace();
+            AvaIre.getLogger().error("SQLException on RemoveLevelRoleCommand.onCommand: \n", ExceptionUtils.getStackTrace(e));
         }
 
         return false;

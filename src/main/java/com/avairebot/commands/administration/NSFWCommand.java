@@ -68,25 +68,23 @@ public class NSFWCommand extends Command {
         }
 
         if (args.length == 1) {
-            switch (ComparatorUtil.getFuzzyType(args[0])) {
-                case TRUE:
-                    return updateChannelStatus(context, context.getChannel(), true);
+            ComparatorUtil.ComparatorType i = ComparatorUtil.getFuzzyType(args[0]);
+            if (i == ComparatorUtil.ComparatorType.TRUE) {
+                return updateChannelStatus(context, context.getChannel(), true);
+            } else if (i == ComparatorUtil.ComparatorType.FALSE) {
+                return updateChannelStatus(context, context.getChannel(), false);
+            } else if (i == ComparatorUtil.ComparatorType.UNKNOWN) {
+                Channel channel = MentionableUtil.getChannel(context.getMessage(), args);
 
-                case FALSE:
-                    return updateChannelStatus(context, context.getChannel(), false);
-
-                case UNKNOWN:
-                    Channel channel = MentionableUtil.getChannel(context.getMessage(), args);
-
-                    if (channel != null && (channel instanceof TextChannel)) {
-                        return sendChannelStatus(context, (TextChannel) channel);
-                    }
-                    return sendErrorMessage(context, "Invalid channel or status type given!");
+                if (channel instanceof TextChannel) {
+                    return sendChannelStatus(context, (TextChannel) channel);
+                }
+                return sendErrorMessage(context, "Invalid channel or status type given!");
             }
         }
 
         Channel channel = MentionableUtil.getChannel(context.getMessage(), args);
-        if (channel == null || !(channel instanceof TextChannel)) {
+        if (!(channel instanceof TextChannel)) {
             return sendErrorMessage(context, "`{0}` is not a valid text channel!", args[0]);
         }
 

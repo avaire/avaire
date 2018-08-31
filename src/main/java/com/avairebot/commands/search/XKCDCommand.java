@@ -8,6 +8,7 @@ import com.avairebot.factories.RequestFactory;
 import com.avairebot.requests.Response;
 import com.avairebot.time.Carbon;
 import com.avairebot.utilities.NumberUtil;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.json.JSONObject;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -95,7 +96,7 @@ public class XKCDCommand extends Command {
 
                 return new JSONObject(response.body()).get("num");
             } catch (IOException e) {
-                e.printStackTrace();
+                AvaIre.getLogger().error("IOException on XKCDCommand.getLatestComicNumber \n", ExceptionUtils.getStackTrace(e));
                 return 1;
             }
         })).intValue();

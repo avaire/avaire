@@ -20,7 +20,7 @@ public class ScheduleHandler {
     );
 
     public static void registerJob(@Nonnull Job job) {
-        tasks.add(schedulerService.scheduleAtFixedRate(job, job.getDelay(), job.getPeriod(), job.getUnit()));
+        tasks.add(schedulerService.scheduleAtFixedRate(job, job.getDelay(), job.getPeriodBetweenJobExecution(), job.getUnit()));
     }
 
     public static Set<ScheduledFuture<?>> entrySet() {

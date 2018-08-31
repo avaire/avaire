@@ -3,6 +3,7 @@ package com.avairebot.commands.utility;
 import com.avairebot.AvaIre;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -74,7 +75,7 @@ public class ExpandUrlCommand extends Command {
         } catch (UnknownHostException ex) {
             context.makeError("Unknown host for the provided `url`, does it actually go anywhere?").queue();
         } catch (IOException e) {
-            e.printStackTrace();
+            AvaIre.getLogger().error("IOException on ExpandUrl.onCommand \n", ExceptionUtils.getStackTrace(e));
         }
         return false;
     }

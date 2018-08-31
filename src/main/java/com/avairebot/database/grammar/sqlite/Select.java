@@ -24,7 +24,7 @@ public class Select extends SelectGrammar {
             return;
         }
 
-        builder.getColumns().stream().forEach((column) -> {
+        builder.getColumns().forEach((column) -> {
             if (column.startsWith("RAW:")) {
                 query += String.format("%s, ", column.substring(4));
                 return;

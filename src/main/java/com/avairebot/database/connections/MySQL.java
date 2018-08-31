@@ -88,11 +88,13 @@ public class MySQL extends HostnameDatabase {
 
                 AvaIre.getLogger().error("Please use the prepare() method to prepare a query.", exception);
                 throw exception;
+            default:
+                //TODO add a behaviour if it is anything else
         }
     }
 
     @Override
-    public StatementInterface getStatement(String query) throws SQLException {
+    public StatementInterface getStatement(String query) {
         String[] statement = query.trim().split(" ", 2);
 
         try {
@@ -111,8 +113,6 @@ public class MySQL extends HostnameDatabase {
 
             try (ResultSet tables = md.getTables(null, null, table, new String[]{"TABLE"})) {
                 if (tables.next()) {
-                    tables.close();
-
                     return true;
                 }
             }

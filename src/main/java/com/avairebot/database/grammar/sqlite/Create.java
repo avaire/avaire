@@ -32,7 +32,7 @@ public class Create extends CreateGrammar {
     }
 
     private void buildFields(Blueprint blueprint) {
-        String fields = "";
+        StringBuilder fields = new StringBuilder();
         String primary = "";
 
         for (String name : blueprint.getFields().keySet()) {
@@ -59,7 +59,7 @@ public class Create extends CreateGrammar {
             if (field.getDefaultValue() != null) {
                 defaultString = " DEFAULT ";
 
-                if (field.getDefaultValue().toUpperCase().equals("NULL")) {
+                if (field.getDefaultValue().equalsIgnoreCase("NULL")) {
                     defaultString += "NULL";
                 } else if (field.isDefaultSQLAction()) {
                     if (!field.getDefaultValue().toLowerCase().contains("on")) {
@@ -80,11 +80,11 @@ public class Create extends CreateGrammar {
                 defaultString += "PRIMARY KEY";
             }
 
-            fields += line + nullable + defaultString + ", ";
+            fields.append(line).append(nullable).append(defaultString).append(", ");
         }
 
         if (primary.length() > 0) {
-            fields += String.format("PRIMARY KEY (%s), ", primary.substring(0, primary.length() - 2));
+            fields.append(String.format("PRIMARY KEY (%s), ", primary.substring(0, primary.length() - 2)));
         }
 
         addPart(fields.substring(0, fields.length() - 2));

@@ -15,6 +15,7 @@ import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -123,7 +124,7 @@ public class AddSongToPlaylist extends PlaylistSubCommand {
                 .set("slots", guild.getType().getLimits().getPlaylist().getSongs() - playlist.getSongs().size())
                 .queue();
         } catch (SQLException e) {
-            e.printStackTrace();
+            AvaIre.getLogger().error("SQLException on AddSongToPlayList.handleTrackLoadedEvent: \n", ExceptionUtils.getStackTrace(e));
 
             context.makeError(context.i18n("failedToSavePlaylist", e.getMessage())).queue();
         }

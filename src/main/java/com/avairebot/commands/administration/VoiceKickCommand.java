@@ -95,22 +95,19 @@ public class VoiceKickCommand extends Command {
 
         context.getGuild().getController().createVoiceChannel("kick-" + user.getUser().getId()).queue(channel ->
             context.getGuild().getController().moveVoiceMember(user, (VoiceChannel) channel)
-                .queue(empty -> channel.delete().queue(new Consumer<Void>() {
-                        @Override
-                        public void accept(Void empty) {
-                            ModlogModule.log(avaire, context, new ModlogAction(
-                                    ModlogType.VOICE_KICK,
-                                    context.getAuthor(), user.getUser(),
-                                    originalVoiceChannelName + " (ID: " + originalVoiceChannelId + ")\n" + reason
-                                )
-                            );
+                .queue(empty -> channel.delete().queue((Consumer<Void>) empty1 -> {
+                    ModlogModule.log(avaire, context, new ModlogAction(
+                            ModlogType.VOICE_KICK,
+                            context.getAuthor(), user.getUser(),
+                            originalVoiceChannelName + " (ID: " + originalVoiceChannelId + ")\n" + reason
+                        )
+                    );
 
-                            context.makeSuccess("**:target** was kicked from **:voiceChannel** by :user for \":reason\"")
-                                .set("target", user.getUser().getName() + "#" + user.getUser().getDiscriminator())
-                                .set("voiceChannel", originalVoiceChannelName)
-                                .set("reason", reason)
-                                .queue();
-                        }
+                    context.makeSuccess("**:target** was kicked from **:voiceChannel** by :user for \":reason\"")
+                        .set("target", user.getUser().getName() + "#" + user.getUser().getDiscriminator())
+                        .set("voiceChannel", originalVoiceChannelName)
+                        .set("reason", reason)
+                        .queue();
                     }, RestActionUtil.ignore)
                 )
         );

@@ -91,7 +91,7 @@ public class ModlogCommand extends Command {
         }
 
         Channel channel = MentionableUtil.getChannel(context.getMessage(), args);
-        if (channel == null || !(channel instanceof TextChannel)) {
+        if (!(channel instanceof TextChannel)) {
             return sendErrorMessage(context, "Invalid channel argument given, you must mention a valid text channel");
         }
 

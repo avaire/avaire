@@ -24,6 +24,7 @@ import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -232,8 +233,7 @@ public class MessageEventAdapter extends EventAdapter {
         hasReceivedInfoMessageInTheLastMinute.add(event.getAuthor().getIdLong());
 
         try {
-            ArrayList<String> strings = new ArrayList<>();
-            strings.addAll(Arrays.asList(
+            ArrayList<String> strings = new ArrayList<>(Arrays.asList(
                 "To invite me to your server, use this link:",
                 "*:oauth*",
                 "",
@@ -254,7 +254,7 @@ public class MessageEventAdapter extends EventAdapter {
                 .set("botId", avaire.getSelfUser().getId())
                 .queue();
         } catch (Exception ex) {
-            ex.printStackTrace();
+            AvaIre.getLogger().error("Exception on MessageEventAdapter.sendInformationMessage", ExceptionUtils.getStackTrace(ex));
         }
     }
 

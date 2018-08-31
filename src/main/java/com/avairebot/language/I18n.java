@@ -33,7 +33,7 @@ public class I18n {
             languages.add(new LanguageHolder(language));
         }
 
-        log.info("Loaded " + languages.size() + " languages: " + languages);
+        log.info(String.format("Loaded %d languages: %s", languages.size(), languages));
     }
 
     public static LanguageHolder getDefaultLanguage() {

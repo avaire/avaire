@@ -31,6 +31,6 @@ public class Response {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
+        return "";
     }
 }

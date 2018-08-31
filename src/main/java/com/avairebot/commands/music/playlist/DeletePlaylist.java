@@ -8,6 +8,7 @@ import com.avairebot.contracts.commands.playlist.PlaylistSubCommand;
 import com.avairebot.database.controllers.PlaylistController;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.database.transformers.PlaylistTransformer;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import java.sql.SQLException;
 
@@ -33,7 +34,7 @@ public class DeletePlaylist extends PlaylistSubCommand {
 
             return true;
         } catch (SQLException e) {
-            e.printStackTrace();
+            AvaIre.getLogger().error("SQLException on DeletePlaylist.onCommand \n", ExceptionUtils.getStackTrace(e));
             context.makeError("Error: " + e.getMessage()).queue();
         }
 

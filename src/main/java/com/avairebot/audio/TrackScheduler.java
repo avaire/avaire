@@ -211,10 +211,8 @@ public class TrackScheduler extends AudioEventAdapterWrapped {
             return;
         }
 
-        if (endReason.equals(AudioTrackEndReason.FINISHED) && queue.isEmpty()) {
-            if (manager.getLastActiveMessage() != null) {
+        if ((endReason.equals(AudioTrackEndReason.FINISHED) && queue.isEmpty()) && (manager.getLastActiveMessage() != null)) {
                 service.submit(() -> handleEndOfQueueWithLastActiveMessage(true));
-            }
         }
     }
 

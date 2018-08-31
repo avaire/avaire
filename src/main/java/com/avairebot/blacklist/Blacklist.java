@@ -79,7 +79,7 @@ public class Blacklist {
                 .where("id", id)
                 .delete();
         } catch (SQLException e) {
-            AvaIre.getLogger().error("Failed to sync blacklist with the database: " + e.getMessage(), e);
+            AvaIre.getLogger().error(String.format("Failed to sync blacklist with the database: %s", e.getMessage()), e);
         }
     }
 
@@ -111,7 +111,7 @@ public class Blacklist {
                     }
                 });
         } catch (SQLException e) {
-            AvaIre.getLogger().error("Failed to sync blacklist with the database: " + e.getMessage(), e);
+            AvaIre.getLogger().error(String.format("Failed to sync blacklist with the database: %s", e.getMessage()), e);
         }
     }
 

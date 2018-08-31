@@ -8,6 +8,7 @@ import com.avairebot.contracts.commands.Command;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.utilities.RoleUtil;
 import net.dv8tion.jda.core.entities.Role;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import java.sql.SQLException;
 import java.util.Arrays;
@@ -108,7 +109,7 @@ public class AddSelfAssignableRoleCommand extends Command {
 
             return true;
         } catch (SQLException e) {
-            e.printStackTrace();
+            AvaIre.getLogger().error("SQLException on AddAssignableRoleCommand.onCommand: \n", ExceptionUtils.getStackTrace(e));
         }
 
         return false;

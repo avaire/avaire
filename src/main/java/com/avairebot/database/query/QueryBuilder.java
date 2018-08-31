@@ -1,5 +1,6 @@
 package com.avairebot.database.query;
 
+import com.avairebot.AvaIre;
 import com.avairebot.contracts.database.Database;
 import com.avairebot.contracts.database.Database.QueryType;
 import com.avairebot.contracts.database.QueryClause;
@@ -8,6 +9,7 @@ import com.avairebot.contracts.database.query.ClauseConsumer;
 import com.avairebot.database.DatabaseManager;
 import com.avairebot.database.collection.Collection;
 import com.avairebot.scheduler.ScheduleHandler;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
@@ -709,7 +711,7 @@ public final class QueryBuilder {
                     return dbm.getConnection().delete(dbm, this, null);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            AvaIre.getLogger().error("SQLException on QueryBuilder.toSQL: \n", ExceptionUtils.getStackTrace(e));
         }
         return null;
     }
@@ -728,7 +730,7 @@ public final class QueryBuilder {
     public Collection get() throws SQLException {
         String query = toSQL();
 
-        log.debug("QueryBuilder#get() was called with the following SQL query.\nSQL: " + query);
+        log.debug(String.format("QueryBuilder#get() was called with the following SQL query.\nSQL: %s", query));
         MDC.put("query", query);
 
         // Note: When parsing the result to a collection, we can't use the DBM query method since it auto closes the result,

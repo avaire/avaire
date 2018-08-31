@@ -6,15 +6,14 @@ import com.avairebot.contracts.cache.CacheAdapter;
 import com.avairebot.shared.ExitCodes;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.EnumMap;
 
 public enum CacheType {
 
     FILE("File", false, FileAdapter.class),
     MEMORY("Memory", true, MemoryAdapter.class);
 
-    private static final Map<CacheType, CacheAdapter> INSTANCES = new HashMap<>();
+    private static final EnumMap<CacheType, CacheAdapter> INSTANCES = new EnumMap<>(CacheType.class);
 
     static {
         for (CacheType type : values()) {

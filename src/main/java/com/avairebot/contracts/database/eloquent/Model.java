@@ -140,7 +140,7 @@ public abstract class Model extends DefaultFields {
 
             boolean isQueryHandler = false;
             for (Annotation an : method.getAnnotations()) {
-                if (an.annotationType().getName().equals(QueryScope.class.getName())) {
+                if (an.annotationType().isAssignableFrom(QueryScope.class)) {
                     isQueryHandler = true;
                     break;
                 }

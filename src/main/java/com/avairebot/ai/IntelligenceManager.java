@@ -14,6 +14,7 @@ import com.avairebot.handlers.DatabaseEventHolder;
 import com.avairebot.metrics.Metrics;
 import io.prometheus.client.Histogram;
 import net.dv8tion.jda.core.entities.Message;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -115,7 +116,7 @@ public class IntelligenceManager {
                 }
             }
         } catch (AIServiceException e) {
-            e.printStackTrace();
+            AvaIre.getLogger().error("AIServiceException in IntelligenceManager.sendResponse: \n ", ExceptionUtils.getStackTrace(e));
         }
     }
 

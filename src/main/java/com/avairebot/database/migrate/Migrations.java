@@ -40,16 +40,12 @@ public class Migrations {
      * @see com.avairebot.contracts.database.migrations.Migration
      */
     public void register(Migration... migration) {
-        ENTIRE_LOOP:
         for (Migration migrate : migration) {
             for (MigrationContainer container : migrations) {
                 if (container.match(migrate)) {
                     container.setMigration(migrate);
-
-                    continue ENTIRE_LOOP;
                 }
             }
-
             migrations.add(new MigrationContainer(migrate));
         }
     }

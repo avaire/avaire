@@ -24,10 +24,8 @@ public class RestActionUtil {
     public static final Consumer<Throwable> handleMessageCreate = error -> {
         if (error == null) return;
 
-        if (error instanceof ErrorResponseException) {
-            if (((ErrorResponseException) error).getErrorCode() == ErrorResponse.MISSING_ACCESS.getCode()) {
+        if ((error instanceof ErrorResponseException) && ((ErrorResponseException) error).getErrorCode() == ErrorResponse.MISSING_ACCESS.getCode()) {
                 return; // Ignore missing access errors
-            }
         }
 
         RestAction.DEFAULT_FAILURE.accept(error);

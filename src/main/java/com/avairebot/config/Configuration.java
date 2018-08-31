@@ -118,18 +118,17 @@ public class Configuration implements ConfigurationSection {
             outDir.mkdirs();
         }
 
-        try {
+        try (OutputStream out = new FileOutputStream(outFile)) {
             if (!outFile.exists() || replace) {
-                OutputStream out = new FileOutputStream(outFile);
+
                 byte[] buf = new byte[1024];
                 int len;
                 while ((len = in.read(buf)) > 0) {
                     out.write(buf, 0, len);
                 }
-                out.close();
                 in.close();
             } else {
-                log.warn("Could not save " + outFile.getName() + " to " + outFile + " because " + outFile.getName() + " already exists.");
+                log.warn(String.format("Could not save %s to %s because %s already exists.", outFile.getName(), outFile, outFile.getName()));
             }
         } catch (IOException ex) {
             log.warn("Could not save " + outFile.getName() + " to " + outFile, ex);

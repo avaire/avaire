@@ -8,6 +8,7 @@ import com.avairebot.contracts.commands.playlist.PlaylistSubCommand;
 import com.avairebot.database.controllers.PlaylistController;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.database.transformers.PlaylistTransformer;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import java.sql.SQLException;
 
@@ -56,7 +57,7 @@ public class RemoveSongFromPlaylist extends PlaylistSubCommand {
                 .set("command", command.generateCommandTrigger(context.getMessage()) + " " + playlist.getName() + " removesong <song id>")
                 .queue();
         } catch (SQLException e) {
-            e.printStackTrace();
+            AvaIre.getLogger().error("SQLException on RemoveLevelRoleCommand.onCommand: \n", ExceptionUtils.getStackTrace(e));
         }
 
         return false;

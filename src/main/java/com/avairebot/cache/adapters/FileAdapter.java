@@ -5,6 +5,7 @@ import com.avairebot.Constants;
 import com.avairebot.cache.CacheItem;
 import com.avairebot.contracts.cache.CacheAdapter;
 import com.avairebot.shared.ExitCodes;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.LoggerFactory;
 
 import java.io.BufferedWriter;
@@ -74,7 +75,7 @@ public class FileAdapter extends CacheAdapter {
                 return item.getValue();
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            AvaIre.getLogger().error("IOException in FileAdapter.get : \n", ExceptionUtils.getStackTrace(e));
         }
         return null;
     }
@@ -89,7 +90,7 @@ public class FileAdapter extends CacheAdapter {
         try {
             return AvaIre.gson.fromJson(new String(Files.readAllBytes(cacheFile.toPath())), CacheItem.class);
         } catch (IOException e) {
-            e.printStackTrace();
+            AvaIre.getLogger().error("IOException in FileAdapter.getRaw : \n", ExceptionUtils.getStackTrace(e));
             return null;
         }
     }
@@ -109,7 +110,7 @@ public class FileAdapter extends CacheAdapter {
 
             return item.getTime() > System.currentTimeMillis();
         } catch (IOException e) {
-            e.printStackTrace();
+            AvaIre.getLogger().error("IOException in FileAdapter.has : \n", ExceptionUtils.getStackTrace(e));
             return false;
         }
     }
@@ -130,7 +131,7 @@ public class FileAdapter extends CacheAdapter {
 
             return item;
         } catch (IOException e) {
-            e.printStackTrace();
+            AvaIre.getLogger().error("IOException in FileAdapter.forget : \n", ExceptionUtils.getStackTrace(e));
             return null;
         }
     }
@@ -172,29 +173,13 @@ public class FileAdapter extends CacheAdapter {
         cacheItem.put("value", value);
         cacheItem.put("key", file.getName());
 
-        FileWriter fw = null;
-        BufferedWriter bw = null;
 
-        try {
-            fw = new FileWriter(file, false);
-            bw = new BufferedWriter(fw);
+        try (FileWriter fw = new FileWriter(file, false); BufferedWriter bw = new BufferedWriter(fw)) {
 
             bw.write(AvaIre.gson.toJson(cacheItem) + "\n");
         } catch (IOException e) {
-            e.printStackTrace();
+            AvaIre.getLogger().error("IOException in FileAdapter.writeTo : \n", ExceptionUtils.getStackTrace(e));
             return false;
-        } finally {
-            try {
-                if (bw != null) {
-                    bw.close();
-                }
-
-                if (fw != null) {
-                    fw.close();
-                }
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
         }
         return true;
     }
@@ -231,7 +216,7 @@ public class FileAdapter extends CacheAdapter {
 
             return sb.toString();
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            AvaIre.getLogger().error("NoSuchAlgorithmException in FileAdapter.encrypt : \n", ExceptionUtils.getStackTrace(e));
             return null;
         }
     }

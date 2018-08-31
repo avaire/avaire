@@ -74,21 +74,20 @@ public class NumberUtil {
         if (matcher.group(2) != null) capturedGroups++;
         if (matcher.group(3) != null) capturedGroups++;
 
-        switch (capturedGroups) {
-            case 0:
-                throw new IllegalStateException("Unable to match " + string);
-            case 1:
-                seconds = NumberUtil.parseInt(matcher.group(1));
-                break;
-            case 2:
-                minutes = NumberUtil.parseInt(matcher.group(1));
-                seconds = NumberUtil.parseInt(matcher.group(2));
-                break;
-            case 3:
-                hours = NumberUtil.parseInt(matcher.group(1));
-                minutes = NumberUtil.parseInt(matcher.group(2));
-                seconds = NumberUtil.parseInt(matcher.group(3));
-                break;
+        if (capturedGroups == 0) {
+            throw new IllegalStateException("Unable to match " + string);
+        } else if (capturedGroups == 1) {
+            seconds = NumberUtil.parseInt(matcher.group(1));
+
+        } else if (capturedGroups == 2) {
+            minutes = NumberUtil.parseInt(matcher.group(1));
+            seconds = NumberUtil.parseInt(matcher.group(2));
+
+        } else if (capturedGroups == 3) {
+            hours = NumberUtil.parseInt(matcher.group(1));
+            minutes = NumberUtil.parseInt(matcher.group(2));
+            seconds = NumberUtil.parseInt(matcher.group(3));
+
         }
 
         minutes = minutes + hours * 60;

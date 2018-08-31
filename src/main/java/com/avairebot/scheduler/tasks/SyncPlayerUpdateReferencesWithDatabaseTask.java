@@ -36,7 +36,7 @@ public class SyncPlayerUpdateReferencesWithDatabaseTask implements Task {
                 Constants.PLAYER_EXPERIENCE_TABLE_NAME
             );
 
-            log.debug("Starting \"Player Reference\" update task with query: " + query);
+            log.debug(String.format("Starting \"Player Reference\" update task with query: %s", query));
 
             boolean autoCommit = connection.getAutoCommit();
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {

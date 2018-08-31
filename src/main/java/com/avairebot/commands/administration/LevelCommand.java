@@ -66,14 +66,11 @@ public class LevelCommand extends Command {
             ComparatorUtil.ComparatorType.UNKNOWN :
             ComparatorUtil.getFuzzyType(args[0]);
 
-        switch (type) {
-            case TRUE:
-            case FALSE:
-                guildTransformer.setLevels(type.getValue());
-                break;
+        if (type == ComparatorUtil.ComparatorType.TRUE || type == ComparatorUtil.ComparatorType.FALSE) {
+            guildTransformer.setLevels(type.getValue());
 
-            case UNKNOWN:
-                guildTransformer.setLevels(!guildTransformer.isLevels());
+        } else if (type == ComparatorUtil.ComparatorType.UNKNOWN) {
+            guildTransformer.setLevels(!guildTransformer.isLevels());
         }
 
         try {

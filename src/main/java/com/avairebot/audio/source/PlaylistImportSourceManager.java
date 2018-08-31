@@ -98,12 +98,12 @@ public class PlaylistImportSourceManager implements AudioSourceManager {
     }
 
     @Override
-    public void encodeTrack(AudioTrack track, DataOutput output) throws IOException {
+    public void encodeTrack(AudioTrack track, DataOutput output) {
         throw new UnsupportedOperationException("This source manager is only for loading playlists");
     }
 
     @Override
-    public AudioTrack decodeTrack(AudioTrackInfo trackInfo, DataInput input) throws IOException {
+    public AudioTrack decodeTrack(AudioTrackInfo trackInfo, DataInput input) {
         throw new UnsupportedOperationException("This source manager is only for loading playlists");
     }
 
@@ -153,19 +153,17 @@ public class PlaylistImportSourceManager implements AudioSourceManager {
 
     private List<String> loadAndParseTrackIds(String serviceName, String pasteId) {
         StringBuilder response = new StringBuilder();
-        try {
-            BufferedReader in = new BufferedReader(
-                new InputStreamReader(
-                    new URL(PasteServiceConstants.pasteServiceUrl.get(serviceName) + pasteId).openStream()
-                )
-            );
+        try (BufferedReader in = new BufferedReader(new InputStreamReader(
+            new URL(PasteServiceConstants.pasteServiceUrl.get(serviceName) + pasteId).openStream()
+        )
+        )) {
 
             String inputLine;
             while ((inputLine = in.readLine()) != null) {
                 response.append(inputLine);
             }
 
-            in.close();
+
         } catch (IOException ex) {
             throw new FriendlyException(
                 "Couldn't load playlist. Either " + serviceName + " is down or the playlist does not exist.",

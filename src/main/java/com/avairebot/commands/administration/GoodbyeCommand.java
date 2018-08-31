@@ -71,14 +71,11 @@ public class GoodbyeCommand extends Command {
             ComparatorUtil.ComparatorType.UNKNOWN :
             ComparatorUtil.getFuzzyType(args[0]);
 
-        switch (type) {
-            case TRUE:
-            case FALSE:
-                channelTransformer.getGoodbye().setEnabled(type.getValue());
-                break;
+        if (type == ComparatorUtil.ComparatorType.TRUE || type == ComparatorUtil.ComparatorType.FALSE) {
+            channelTransformer.getGoodbye().setEnabled(type.getValue());
 
-            case UNKNOWN:
-                channelTransformer.getGoodbye().setEnabled(!channelTransformer.getGoodbye().isEnabled());
+        } else if (type == ComparatorUtil.ComparatorType.UNKNOWN) {
+            channelTransformer.getGoodbye().setEnabled(!channelTransformer.getGoodbye().isEnabled());
         }
 
         try {

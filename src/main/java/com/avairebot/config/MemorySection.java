@@ -197,10 +197,8 @@ public class MemorySection implements ConfigurationSection {
         ConfigurationBase root = getRoot();
         ConfigurationBase defaults = root == null ? null : root.getDefaults();
 
-        if (defaults != null) {
-            if (defaults.isConfigurationSection(getCurrentPath())) {
+        if (defaults != null && (defaults.isConfigurationSection(getCurrentPath()))) {
                 return defaults.getConfigurationSection(getCurrentPath());
-            }
         }
 
         return null;
@@ -465,7 +463,7 @@ public class MemorySection implements ConfigurationSection {
             return new ArrayList<Boolean>(0);
         }
 
-        List<Boolean> result = new ArrayList<Boolean>();
+        List<Boolean> result = new ArrayList<>();
 
         for (Object object : list) {
             if (object instanceof Boolean) {
@@ -718,10 +716,8 @@ public class MemorySection implements ConfigurationSection {
             for (Map.Entry<String, Object> entry : sec.map.entrySet()) {
                 output.put(createPath(section, entry.getKey(), this), entry.getValue());
 
-                if (entry.getValue() instanceof ConfigurationSection) {
-                    if (deep) {
-                        mapChildrenValues(output, (ConfigurationSection) entry.getValue(), true);
-                    }
+                if (entry.getValue() instanceof ConfigurationSection && deep) {
+                    mapChildrenValues(output, (ConfigurationSection) entry.getValue(), true);
                 }
             }
         } else {

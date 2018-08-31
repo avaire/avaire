@@ -65,12 +65,10 @@ public class JDAStateEventAdapter extends EventAdapter {
             }
 
             for (Member member : guild.getMembers()) {
-                if (member.getJoinDate().toEpochSecond() > thirtyMinutesAgo) {
-                    if (!RoleUtil.hasRole(member, autorole)) {
+                if (member.getJoinDate().toEpochSecond() > thirtyMinutesAgo && !RoleUtil.hasRole(member, autorole)) {
                         updatedUsers++;
                         guild.getController().addSingleRoleToMember(member, autorole)
                             .queue();
-                    }
                 }
             }
         }

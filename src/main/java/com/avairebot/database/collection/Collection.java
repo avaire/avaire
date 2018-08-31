@@ -6,6 +6,7 @@ import com.avairebot.utilities.RandomUtil;
 import com.google.gson.Gson;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.security.SecureRandom;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -129,24 +130,24 @@ public class Collection implements Cloneable, Iterable<DataRow> {
 
             switch (obj.getClass().getTypeName()) {
                 case "java.lang.Double":
-                    decimal = decimal.add(new BigDecimal((Double) obj));
+                    decimal = decimal.add(BigDecimal.valueOf((Double) obj));
                     break;
 
                 case "java.lang.Long":
-                    decimal = decimal.add(new BigDecimal((Long) obj));
+                    decimal = decimal.add(BigDecimal.valueOf((Long) obj));
                     break;
 
                 case "java.lang.Integer":
-                    decimal = decimal.add(new BigDecimal((Integer) obj));
+                    decimal = decimal.add(BigDecimal.valueOf((Integer) obj));
                     break;
 
                 case "java.lang.Float":
-                    decimal = decimal.add(new BigDecimal((Float) obj));
+                    decimal = decimal.add(BigDecimal.valueOf((Float) obj));
                     break;
             }
         }
 
-        return decimal.divide(new BigDecimal(items.size())).doubleValue();
+        return decimal.divide(new BigDecimal(items.size()), RoundingMode.HALF_UP).doubleValue();
     }
 
     /**
@@ -248,12 +249,12 @@ public class Collection implements Cloneable, Iterable<DataRow> {
 
     /**
      * Gets all the keys from the <code>ResultSet</code> object in the form of a
-     * <code>HashMap</code>, where the key is the database table column
+     * <code>Map</code>, where the key is the database table column
      * name, and the value is the database column type.
      *
      * @return A map of all the database keys.
      */
-    public HashMap<String, String> getKeys() {
+    public Map<String, String> getKeys() {
         return keys;
     }
 
@@ -586,7 +587,7 @@ public class Collection implements Cloneable, Iterable<DataRow> {
      * @return the collection instance.
      */
     public Collection sort(Comparator<DataRow> comparator) {
-        Collections.sort(items, comparator);
+        items.sort(comparator);
 
         return this;
     }

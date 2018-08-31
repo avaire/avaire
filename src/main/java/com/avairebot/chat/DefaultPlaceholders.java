@@ -13,6 +13,7 @@ class DefaultPlaceholders {
 
                     return parseGuild(jdaMessage.getGuild(), parseChannel(jdaMessage.getTextChannel(), parseUser(jdaMessage.getAuthor(), message)));
                 }
+                break;
 
             case GUILD:
                 if (object instanceof Guild) {

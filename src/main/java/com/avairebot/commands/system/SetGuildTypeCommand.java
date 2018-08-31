@@ -9,6 +9,7 @@ import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.database.transformers.GuildTypeTransformer;
 import com.avairebot.utilities.NumberUtil;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -100,7 +101,7 @@ public class SetGuildTypeCommand extends SystemCommand {
 
                 return true;
             } catch (SQLException e) {
-                e.printStackTrace();
+                AvaIre.getLogger().error("SQLException on SetGuildTypeCommand.onCommand \n", ExceptionUtils.getStackTrace(e));
             }
             return false;
         }
@@ -126,7 +127,7 @@ public class SetGuildTypeCommand extends SystemCommand {
 
                 typeName = collection.first().getString("name");
             } catch (SQLException e) {
-                e.printStackTrace();
+                AvaIre.getLogger().error("SQLException on SetGuildTypeCommand.onCommand \n", ExceptionUtils.getStackTrace(e));
             }
         }
 
@@ -143,7 +144,7 @@ public class SetGuildTypeCommand extends SystemCommand {
                 .set("type", typeName)
                 .queue();
         } catch (SQLException e) {
-            e.printStackTrace();
+            AvaIre.getLogger().error("SQLException on SetGuildTypeCommand.onCommand \n", ExceptionUtils.getStackTrace(e));
         }
 
         return true;

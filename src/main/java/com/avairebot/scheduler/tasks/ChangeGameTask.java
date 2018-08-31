@@ -36,22 +36,14 @@ public class ChangeGameTask implements Task {
         if (status.contains(":")) {
             String[] split = status.split(":");
             status = String.join(":", Arrays.copyOfRange(split, 1, split.length));
-            switch (split[0].toLowerCase()) {
-                case "listen":
-                case "listening":
-                    return Game.listening(formatGame(avaire, status, shard));
-
-                case "watch":
-                case "watching":
-                    return Game.watching(formatGame(avaire, status, shard));
-
-                case "play":
-                case "playing":
-                    return Game.playing(formatGame(avaire, status, shard));
-
-                case "stream":
-                case "streaming":
-                    return Game.streaming(formatGame(avaire, status, shard), "https://www.twitch.tv/senither");
+            if ("listen".equalsIgnoreCase(split[0]) || "listening".equalsIgnoreCase(split[0])) {
+                return Game.listening(formatGame(avaire, status, shard));
+            } else if ("watch".equalsIgnoreCase(split[0]) || "watching".equalsIgnoreCase(split[0])) {
+                return Game.watching(formatGame(avaire, status, shard));
+            } else if ("play".equalsIgnoreCase(split[0]) || "playing".equalsIgnoreCase(split[0])) {
+                return Game.playing(formatGame(avaire, status, shard));
+            } else if ("stream".equalsIgnoreCase(split[0]) || "streaming".equalsIgnoreCase(split[0])) {
+                return Game.streaming(formatGame(avaire, status, shard), "https://www.twitch.tv/senither");
             }
         }
         return game;
