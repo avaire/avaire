@@ -11,7 +11,7 @@ public class AddMusicMessagesToGuildsTableMigration implements Migration {
 
     @Override
     public String created_at() {
-        return "2018-08-28 22:45:05";
+        return "Tue, Aug 28, 2018 10:45 PM";
     }
 
     @Override
