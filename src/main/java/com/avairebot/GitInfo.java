@@ -2,6 +2,7 @@ package com.avairebot;
 
 import com.avairebot.contracts.config.PropertyConfiguration;
 
+@SuppressWarnings("WeakerAccess")
 public class GitInfo extends PropertyConfiguration {
 
     private static GitInfo instance;

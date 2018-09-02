@@ -2,6 +2,7 @@ package com.avairebot;
 
 import com.avairebot.contracts.config.PropertyConfiguration;
 
+@SuppressWarnings("WeakerAccess")
 public class AppInfo extends PropertyConfiguration {
 
     private static AppInfo instance;

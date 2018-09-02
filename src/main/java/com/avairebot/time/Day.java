@@ -43,7 +43,7 @@ public enum Day {
     private final String name;
     private final int id;
 
-    private Day(String name, int id) {
+    Day(String name, int id) {
         this.name = name;
         this.id = id;
     }

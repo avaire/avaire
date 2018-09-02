@@ -2,6 +2,7 @@ package com.avairebot.time;
 
 import com.avairebot.exceptions.InvalidFormatException;
 
+import javax.annotation.Nonnull;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.OffsetDateTime;
@@ -19,6 +20,7 @@ import java.util.*;
  * @author Alexis Tan
  * @version 0.9.1
  */
+@SuppressWarnings({"unused", "WeakerAccess", "MagicConstant"})
 public final class Carbon {
 
     private static final Day GLOBAL_WEEK_START_AT = Day.MONDAY;
@@ -71,7 +73,7 @@ public final class Carbon {
                 this.time.setTime(supportedFormat.parse(time));
 
                 return;
-            } catch (ParseException ex) {
+            } catch (ParseException ignored) {
             }
         }
 
@@ -104,7 +106,7 @@ public final class Carbon {
                 this.time.setTime(supportedFormat.parse(time));
 
                 return;
-            } catch (ParseException ex) {
+            } catch (ParseException ignored) {
             }
         }
 
@@ -307,17 +309,7 @@ public final class Carbon {
         }
 
         if (params.length >= 4 && params[3] != null) {
-            if (params[3] instanceof TimeZone) {
-                carbon.setTimezone((TimeZone) params[3]);
-
-                return carbon;
-            }
-
-            if (params[3] instanceof String) {
-                carbon.setTimezone((String) params[3]);
-
-                return carbon;
-            }
+            return parseTimezone(carbon, params[3]);
         }
 
         return carbon;
@@ -359,17 +351,7 @@ public final class Carbon {
         }
 
         if (params.length >= 4 && params[3] != null) {
-            if (params[3] instanceof TimeZone) {
-                carbon.setTimezone((TimeZone) params[3]);
-
-                return carbon;
-            }
-
-            if (params[3] instanceof String) {
-                carbon.setTimezone((String) params[3]);
-
-                return carbon;
-            }
+            return parseTimezone(carbon, params[3]);
         }
 
         return carbon;
@@ -558,6 +540,29 @@ public final class Carbon {
     }
 
     /**
+     * Parses the object and sets it to a timezone for the given Carbon instance
+     * if the object given matches one of the valid timezone formats.
+     *
+     * @param carbon The Carbon instance that should be modified.
+     * @param obj    The object that should be parsed into a timezone
+     * @return The modified carbon instance with the new timezone.
+     */
+    @Nonnull
+    private static Carbon parseTimezone(Carbon carbon, Object obj) {
+        if (obj instanceof TimeZone) {
+            return carbon.setTimezone((TimeZone) obj);
+        }
+        if (obj instanceof String) {
+            return carbon.setTimezone((String) obj);
+        }
+        return carbon;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ///////////////////////// GETTERS AND SETTERS /////////////////////
+    ///////////////////////////////////////////////////////////////////
+
+    /**
      * Sets the given calendar field to the given value. The value is not
      * interpreted by this method regardless of the leniency mode.
      *
@@ -572,10 +577,6 @@ public final class Carbon {
 
         return this;
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ///////////////////////// GETTERS AND SETTERS /////////////////////
-    ///////////////////////////////////////////////////////////////////
 
     /**
      * Returns the value of the given calendar field. In lenient mode,
@@ -1021,6 +1022,10 @@ public final class Carbon {
         return this;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    /////////////////// ADDITIONS AND SUBTRACTIONS ////////////////////
+    ///////////////////////////////////////////////////////////////////
+
     /**
      * Adds one second to the carbon instance.
      *
@@ -1029,10 +1034,6 @@ public final class Carbon {
     public Carbon addSecond() {
         return addSeconds(1);
     }
-
-    ///////////////////////////////////////////////////////////////////
-    /////////////////// ADDITIONS AND SUBTRACTIONS ////////////////////
-    ///////////////////////////////////////////////////////////////////
 
     /**
      * Adds the given amount of seconds to the carbon instance.
@@ -1329,6 +1330,10 @@ public final class Carbon {
         return !eq(value);
     }
 
+    ///////////////////////////////////////////////////////////////////
+    /////////////////////////// COMPARISON ////////////////////////////
+    ///////////////////////////////////////////////////////////////////
+
     /**
      * Compares the provided carbon object with the carbon instances.
      * Checks if the current carbon instance is greater than the provided instance.
@@ -1340,10 +1345,6 @@ public final class Carbon {
     public boolean gt(Carbon value) {
         return time.after(value.getTime());
     }
-
-    ///////////////////////////////////////////////////////////////////
-    /////////////////////////// COMPARISON ////////////////////////////
-    ///////////////////////////////////////////////////////////////////
 
     /**
      * Compares the provided carbon object with the carbon instances.
@@ -1405,11 +1406,11 @@ public final class Carbon {
      * or (2) <code>FALSE</code> if the current instance isn't between the two provided instances.
      */
     public boolean between(Carbon first, Carbon second, boolean matchEqual) {
-        if (matchEqual && (eq(first) || eq(second))) {
-            return true;
-        }
+        return matchEqual
+            && (eq(first) || eq(second))
+            || (time.before(first.getTime()) && time.after(second.getTime()))
+            || (time.before(second.getTime()) && time.after(first.getTime()));
 
-        return (time.before(first.getTime()) && time.after(second.getTime())) || (time.before(second.getTime()) && time.after(first.getTime()));
     }
 
     /**
@@ -1436,6 +1437,10 @@ public final class Carbon {
         return carbon.getYear() == getYear() && carbon.getMonth() == getMonth() && carbon.getDay() == getDay();
     }
 
+    ///////////////////////////////////////////////////////////////////
+    /////////////////////////// DIFFERENCES ///////////////////////////
+    ///////////////////////////////////////////////////////////////////
+
     /**
      * Checks to see if the current date of the carbon instance matches tomorrows date.
      *
@@ -1447,10 +1452,6 @@ public final class Carbon {
 
         return carbon.getYear() == getYear() && carbon.getMonth() == getMonth() && carbon.getDay() == getDay();
     }
-
-    ///////////////////////////////////////////////////////////////////
-    /////////////////////////// DIFFERENCES ///////////////////////////
-    ///////////////////////////////////////////////////////////////////
 
     /**
      * Checks to see if the current date of the carbon instance is set in the past.
@@ -1853,6 +1854,10 @@ public final class Carbon {
         return setHour(23).setMinute(59).setSecond(59);
     }
 
+    ///////////////////////////////////////////////////////////////////
+    //////////////////////////// MODIFIERS ////////////////////////////
+    ///////////////////////////////////////////////////////////////////
+
     /**
      * Sets the carbon time to the start of the week.
      *
@@ -1861,10 +1866,6 @@ public final class Carbon {
     public Carbon startOfWeek() {
         return setDayOfWeek(WEEK_START_AT.getId()).startOfDay();
     }
-
-    ///////////////////////////////////////////////////////////////////
-    //////////////////////////// MODIFIERS ////////////////////////////
-    ///////////////////////////////////////////////////////////////////
 
     /**
      * Sets the carbon time to the end of the week.
