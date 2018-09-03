@@ -4,7 +4,6 @@ import com.avairebot.AvaIre;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.utilities.RestActionUtil;
-import net.dv8tion.jda.core.entities.TextChannel;
 
 import java.util.Collections;
 import java.util.List;
@@ -27,7 +26,7 @@ public class SayCommand extends Command {
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`:command <message> <optional:channelName>` - Makes the bot say the given message. Can specify the channel for the message to be said, defaults to current channel.");
+        return Collections.singletonList("`:command <message>` - Makes the bot say the given message");
     }
 
     @Override
@@ -50,17 +49,8 @@ public class SayCommand extends Command {
         if (args.length == 0) {
             return sendErrorMessage(context, "errors.missingArgument", "message");
         }
-        if (args[2] != null) {
-            List<TextChannel> channelsToSendMessage = context.guild.getTextChannelsByName(args[2], true);
-            if (!channelsToSendMessage.isEmpty()) {
-                TextChannel channel = channelsToSendMessage.get(0);
-                channel.sendMessage(context.getContentRaw()).queue();
-            } else {
-                context.getMessageChannel().sendMessage(context.getContentRaw()).queue();
-            }
-        } else {
-            context.getMessageChannel().sendMessage(context.getContentRaw()).queue();
-        }
+
+        context.getMessageChannel().sendMessage(context.getContentRaw()).queue();
 
         if (context.isGuildMessage()) {
             context.delete().reason("AvaIre say command usage").queue(null, RestActionUtil.ignore);
