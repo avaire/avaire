@@ -90,7 +90,7 @@ public class VersionCommand extends Command {
     private SemanticVersion getLatestVersion() {
         Object version = avaire.getCache().getAdapter(CacheType.FILE).remember("github.version", 1800, () -> {
             try {
-                return Jsoup.connect("https://raw.githubusercontent.com/avaire/avaire/master/build.gradle")
+                return Jsoup.connect("https://raw.githubusercontent.com/LTN-Akagi/Kaga/master/build.gradle")
                     .execute().body().split("version = '")[1].split("'")[0];
             } catch (IOException e) {
                 AvaIre.getLogger().error("Failed to get latest version from github", e);
