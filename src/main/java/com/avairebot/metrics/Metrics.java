@@ -161,6 +161,19 @@ public class Metrics {
         .labelNames("type")
         .register();
 
+    // Vote statistics
+
+    public static final Counter dblVotes = Counter.build()
+        .name("avaire_dbl_votes")
+        .help("Vote requests through the webhook vs the command check")
+        .labelNames("type")
+        .register();
+
+    public static final Gauge validVotes = Gauge.build()
+        .name("avaire_total_valid_votes")
+        .help("The amount of valid votes currently active, updated once every minute")
+        .register();
+
     // ################################################################################
     // ##                           Method Stuff
     // ################################################################################
