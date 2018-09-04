@@ -21,7 +21,9 @@ public class TriggeredCommand extends InteractionCommand {
             "https://i.imgur.com/ISGZQzD.gif",
             "https://i.imgur.com/mE7JmCq.gif",
             "https://i.imgur.com/yxl7WzG.gif",
-            "https://i.imgur.com/ssJNnyS.gif"
+            "https://i.imgur.com/ssJNnyS.gif",
+            "https://i.imgur.com/zADMvLF.jpg",
+            "https://i.imgur.com/ygFPDtY.gif"
         );
     }
 
