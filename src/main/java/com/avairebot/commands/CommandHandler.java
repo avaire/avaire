@@ -15,9 +15,10 @@ import net.dv8tion.jda.core.utils.Checks;
 import javax.annotation.Nonnull;
 import java.util.*;
 
+@SuppressWarnings("WeakerAccess")
 public class CommandHandler {
 
-    private static final Map<List<String>, CommandContainer> COMMANDS = new HashMap<>();
+    private static final Set<CommandContainer> COMMANDS = new HashSet<>();
 
     /**
      * Get command container from the given command instance.
@@ -26,9 +27,9 @@ public class CommandHandler {
      * @return Possibly-null, The registered command container instance.
      */
     public static CommandContainer getCommand(Command command) {
-        for (Map.Entry<List<String>, CommandContainer> entry : COMMANDS.entrySet()) {
-            if (entry.getValue().getCommand().isSame(command)) {
-                return entry.getValue();
+        for (CommandContainer container : COMMANDS) {
+            if (container.getCommand().isSame(command)) {
+                return container;
             }
         }
 
@@ -42,7 +43,7 @@ public class CommandHandler {
      * @return Possibly-null, The registered command container instance.
      */
     public static CommandContainer getCommand(@Nonnull Class<? extends Command> command) {
-        for (CommandContainer container : COMMANDS.values()) {
+        for (CommandContainer container : COMMANDS) {
             if (container.getCommand().getClass().getTypeName().equals(command.getTypeName())) {
                 return container;
             }
@@ -106,11 +107,11 @@ public class CommandHandler {
      */
     public static CommandContainer getCommand(Message message, @Nonnull String command) {
         List<CommandContainer> commands = new ArrayList<>();
-        for (Map.Entry<List<String>, CommandContainer> entry : COMMANDS.entrySet()) {
-            String commandPrefix = entry.getValue().getCommand().generateCommandPrefix(message);
-            for (String trigger : entry.getKey()) {
+        for (CommandContainer container : COMMANDS) {
+            String commandPrefix = container.getCommand().generateCommandPrefix(message);
+            for (String trigger : container.getTriggers()) {
                 if (command.equalsIgnoreCase(commandPrefix + trigger)) {
-                    commands.add(entry.getValue());
+                    commands.add(container);
                 }
             }
         }
@@ -170,14 +171,14 @@ public class CommandHandler {
      */
     public static CommandContainer getLazyCommand(@Nonnull String commandTrigger) {
         List<CommandContainer> commands = new ArrayList<>();
-        for (Map.Entry<List<String>, CommandContainer> entry : COMMANDS.entrySet()) {
-            if (entry.getValue().getPriority().equals(CommandPriority.IGNORED)) {
+        for (CommandContainer container : COMMANDS) {
+            if (container.getPriority().equals(CommandPriority.IGNORED)) {
                 continue;
             }
 
-            for (String trigger : entry.getKey()) {
+            for (String trigger : container.getTriggers()) {
                 if (commandTrigger.equalsIgnoreCase(trigger)) {
-                    commands.add(entry.getValue());
+                    commands.add(container);
                 }
             }
         }
@@ -223,10 +224,10 @@ public class CommandHandler {
         Checks.notNull(command.getDescription(new FakeCommandMessage()), String.format("%s :: %s", command.getName(), "Command description"));
 
         for (String trigger : command.getTriggers()) {
-            for (Map.Entry<List<String>, CommandContainer> entry : COMMANDS.entrySet()) {
-                for (String subTrigger : entry.getKey()) {
-                    if (Objects.equals(category.getPrefix() + trigger, entry.getValue().getDefaultPrefix() + subTrigger)) {
-                        throw new InvalidCommandPrefixException(category.getPrefix() + trigger, command.getName(), entry.getValue().getCommand().getName());
+            for (CommandContainer container : COMMANDS) {
+                for (String subTrigger : container.getTriggers()) {
+                    if (Objects.equals(category.getPrefix() + trigger, container.getDefaultPrefix() + subTrigger)) {
+                        throw new InvalidCommandPrefixException(category.getPrefix() + trigger, command.getName(), container.getCommand().getName());
                     }
                 }
             }
@@ -253,7 +254,7 @@ public class CommandHandler {
 
         Metrics.commandsExecuted.labels(command.getClass().getSimpleName()).inc(0D);
 
-        COMMANDS.put(command.getTriggers(), new CommandContainer(command, category, commandUri));
+        COMMANDS.add(new CommandContainer(command, category, commandUri));
     }
 
     /**
@@ -263,6 +264,6 @@ public class CommandHandler {
      * @return A collection of all the commands registered with the command handler.
      */
     public static Collection<CommandContainer> getCommands() {
-        return COMMANDS.values();
+        return COMMANDS;
     }
 }
