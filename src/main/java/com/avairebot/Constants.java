@@ -31,5 +31,5 @@ public class Constants {
     public static final String EMOTE_DND = "<:dnd:324986174806425610>";
 
     // Command source link
-    public static final String SOURCE_URI = "https://github.com/avaire/avaire/tree/master/src/main/java/com/avairebot/commands/%s/%s.java";
+    public static final String SOURCE_URI = "https://github.com/LTN-Akagi/Kaga/tree/master/src/main/java/com/avairebot/commands/%s/%s.java";
 }
