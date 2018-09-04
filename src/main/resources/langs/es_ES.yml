@@ -424,7 +424,7 @@ utility:
 
     UptimeCommand:
         message: 'He estado en línea durante :time'
-        footer: 'Se ha iniciado {0} a las {1}'
+        footer: 'Ha entrado el {0} a las {1}'
         dateFormat: 'EEEEEEEE, dd MMM aaaa'
         timeFormat: 'HH:mm:ss z'
 
@@ -444,7 +444,7 @@ utility:
         timeFormat: 'EEE, dd MMM aaaa HH:mm'
 
     VersionCommand:
-        current: '¡Estoy :type versiones desactualizado `:difference`!'
+        current: '¡La versión carece de actualizaciones de tipo :type (`:difference`)!'
         getLatest: 'Puedes obtener mi última versión en github en [avaire/avaire](https://github.com/avaire/avaire)'
         usingLatest: "¡Tienes la última versión de AvaIre!"
         latestVersion: 'La última versión de AvaIre es v{0}'
