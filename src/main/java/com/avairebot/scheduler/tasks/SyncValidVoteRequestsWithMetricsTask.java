@@ -9,6 +9,10 @@ public class SyncValidVoteRequestsWithMetricsTask implements Task {
 
     @Override
     public void handle(AvaIre avaire) {
+        if (!avaire.areWeReadyYet()) {
+            return;
+        }
+
         int validVotes = 0;
 
         for (VoteCacheEntity cacheEntity : avaire.getVoteManager().getVoteLog().values()) {
