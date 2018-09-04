@@ -77,7 +77,7 @@ help:
         categoriesTitle: ':scroll: Categorías de comandos'
         invalidCategory: 'La categoría no es válida, no hay ninguna categoría llamada ":category"'
         invalidCommand: 'El comando no es válido, no hay ningún comando llamado ":trigger"'
-        tryingToViewSystemCommands: "No tienes permiso para ejecutar ningún comando de la categoría "Sistema", estos comandos pueden afectar a todos los servidores en los que está el bot y está limitado exclusivamente a los administradores y desarrolladores."
+        tryingToViewSystemCommands: "No tienes permiso para ejecutar ningún comando de la categoría \"Sistema\", estos comandos pueden afectar a todos los servidores en los que está el bot y está limitado exclusivamente a los administradores y desarrolladores."
         singularHiddenCategories: '_Hay **{0}** categoría oculta en este canal._'
         multipleHiddenCategories: '_Hay **{0}** categorías ocultas en este canal._'
         fields:
@@ -130,7 +130,7 @@ music:
         nowPlayingIn: 'Estoy reproduciendo música en **:channelName**'
 
     MusicChannelCommand:
-        updated: "El canal de música **:type** se ha establecido en ":status" con éxito."
+        updated: "El canal de música **:type** se ha establecido en \":status\" con éxito."
         field:
             title: "Canales de música"
             message: "**Canal de texto:** :text\n**Canal de voz:** :voice"
@@ -424,7 +424,7 @@ utility:
 
     UptimeCommand:
         message: 'He estado en línea durante :time'
-        footer: 'Ha entrado el {0} a las {1}'
+        footer: 'Se ha iniciado {0} a las {1}'
         dateFormat: 'EEEEEEEE, dd MMM aaaa'
         timeFormat: 'HH:mm:ss z'
 
@@ -444,7 +444,7 @@ utility:
         timeFormat: 'EEE, dd MMM aaaa HH:mm'
 
     VersionCommand:
-        current: '¡La versión carece de actualizaciones de tipo :type (`:difference`)!'
+        current: '¡Estoy :type versiones desactualizado `:difference`!'
         getLatest: 'Puedes obtener mi última versión en github en [avaire/avaire](https://github.com/avaire/avaire)'
         usingLatest: "¡Tienes la última versión de AvaIre!"
         latestVersion: 'La última versión de AvaIre es v{0}'
