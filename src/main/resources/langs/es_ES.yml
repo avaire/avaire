@@ -1,0 +1,457 @@
+
+errors:
+    missingArgument: 'Falta un dato. ¡El dato "{0}" es obligatorio!'
+    invalidProperty: 'Has proporcionado "{0}", debes introducir un {1} válido.'
+    noChannelsWithNameOrId: 'No he encontrado canales con el nombre o ID "{0}"'
+    noUsersWithNameOrId: 'No he encontrado usuarios con el nombre o ID "{0}"'
+    mustBeConnectedToVoice: '¡Debes conectarte a un canal de voz para usar este comando!'
+    mustBeConnectedToSameChannel: '¡Debes estar en el mismo canal de voz que yo para usar {0}!'
+    missingMusicQueue: 'No se ha encontrado cola de música. ¡Debes poner un enlace a una canción o decir al menos un título!'
+    requireLevelFeatureToBeEnabled: 'Este comando necesita la característica "Niveles y experiencia" activada en el servidor, puedes pedirle al administrador del servidor que la active con "{0}"'
+    errorOccurredWhileLoading: 'Se ha producido un error al cargar: {0}. Vuelve a intentarlo y si el problema continúa informa de ello a alguno de mis desarrolladores en el [servidor de atención AvaIre] (https://discord.gg/gt2FWER).'
+
+levelupMessages:
+    - "GG, :user, ha alcanzado el **nivel :level**"
+    - "Oyeee :user, ¡has subido de nivel! Estás al **nivel :level**"
+    - "🌟 ¡Has llegado al **nivel :level** :user! Enhorabuena 🌟"
+    - "¡Vas a 🔥 :user! Estás al **nivel :level**"
+    - "Enhorabuena :user 🎉 ¡Has subido de nivel! Ahora estás al **nivel :level**"
+
+fun:
+    DiceCommand:
+        missingDice: 'Debes incluir el dado que quieres tirar.'
+        invalidDiceFormat: '"{0}" no es un formato de dado válido.'
+        diceFormatMustBeGreaterThan: '"{0}" no es un formato de dado válido, el dado debe ser superior a 0 e inferior a 35'
+        diceFormatMustBePositive: '"{0}" no es un formato de dado válido, el dado debe tener un valor positivo entre 1 y 35'
+        sidesFormatMustBeGreaterThan: '"{0}" no es un formato de dado válido, los lados deben ser superiores a 0 e inferiores a 128'
+        sidesFormatMustBePositive: '"{0}" no es un formato de dado válido, los lados deben tener un valor positivo entre 1 y 128'
+        moreThanFiveRollsWasGiven: '\n_Se han obtenido más de **5** tiradas, solo se mostrarán las 5 primras_\n'
+        resultedIn: '**{0}** ha dado **{1}**  ({2})'
+
+    EightBallCommand:
+        mustIncludeQuestion: 'Tienes que preguntarle algo a la bola 8.'
+        answers:
+            - 'Es probable'
+            - 'Lo veo muy posible'
+            - 'Sin duda'
+            - 'Definitivamente, sí'
+            - 'Puedes estar seguro'
+            - 'Yo creo que sí'
+            - 'Casi seguro'
+            - 'Tengo buenas vibraciones'
+            - 'Sí'
+            - 'Todo apunta a que sí'
+            - 'A ver... vuelve a preguntarme'
+            - 'Pregúntame más tarde'
+            - 'Prefiero callarme por ahora'
+            - 'Ahora mismo no puedo predecirlo'
+            - 'Concéntrate y vuelve a preguntar'
+            - 'No cuentes con ello'
+            - 'Mi respuesta es no'
+            - 'Mis fuentes dicen que no'
+            - 'Algo me da mala espina'
+            - 'Lo dudo mucho'
+
+    MemeCommand:
+        missingArgument: 'Falta el dato "action", debes incluir el tipo de meme o el usuario para el que quieres hacer un meme. Pon "list" para mostrar todos los tipos de meme disponibles.'
+        invalidType: '¡El tipo de meme no es válido, "{0}" no existe!'
+        mustIncludeTopAndBottomText: 'Debes incluir los textos superior e inferior para generar un meme.'
+        listItem: '"{0}" => "{1}"'
+
+    ReverseCommand:
+        palindrome: 'Le has dado la vuelta a un palíndromo, ¿qué esperabas?'
+
+    RipCommand:
+        hasPaidTheirRespects: '**{0}** ha mostrado sus respetos.'
+        todayAndOverall: '{0} hoy, {1} en general'
+
+    RollCommand:
+        invalidValueGiven: 'Valor "{0}" no válido. ¡"{1}" debe ser un número!'
+        rolledNumber: ':user ha sacado un **:number** de :min - :max'
+
+help:
+    HelpCommand:
+        listOfCommands: ':page_with_curl: **Lista de comandos** ```css\n{0}```\n'
+        commandNote: '**Escribe ":help <comando>" para obtener ayuda de dicho comando.**\nEjemplo: ":help :command"'
+        categoriesNote: ':information_source: Escribe ":help <categoría>" para obtener una lista de comandos en dicha categoría.\nEjemplo: ":help {0}" o ":help {1}"'
+        categoriesTitle: ':scroll: Categorías de comandos'
+        invalidCategory: 'La categoría no es válida, no hay ninguna categoría llamada ":category"'
+        invalidCommand: 'El comando no es válido, no hay ningún comando llamado ":trigger"'
+        tryingToViewSystemCommands: "No tienes permiso para ejecutar ningún comando de la categoría \"Sistema\", estos comandos pueden afectar a todos los servidores en los que está el bot y está limitado exclusivamente a los administradores y desarrolladores."
+        singularHiddenCategories: '_Hay **{0}** categoría oculta en este canal._'
+        multipleHiddenCategories: '_Hay **{0}** categorías ocultas en este canal._'
+        fields:
+            usage: 'Uso'
+            example: 'Ejemplo'
+            aliases: 'Alias'
+            seeAlso: 'Véase también'
+            footer: 'Categoría de comandos: '
+
+interaction:
+    BiteCommand: 'bites'
+    CuddleCommand: 'cuddles'
+    DivorceCommand: 'divorces'
+    EatCommand: 'eats some food with'
+    HelloCommand: 'says hello to'
+    HighFiveCommand: 'high fives'
+    HugCommand: 'hugs'
+    KillCommand: 'wants to kill'
+    KissCommand: 'kisses'
+    MeowCommand: 'meows at'
+    PanCommand: '**{0}** just hit **{1}** with a pan!'
+    PatCommand: 'pats'
+    PokeCommand: 'pokes'
+    PoutCommand: 'pouts at'
+    PunchCommand: 'punches'
+    SenpaiCommand: 'wants to be noticed by'
+    ShrugCommand: 'shrugs at'
+    SlapCommand: 'slaps'
+    TickleCommand: 'tickles'
+    TriggeredCommand: 'is triggered by'
+
+music:
+    internal:
+        songWasSkipped: '[:title](:url), solicitado por :author, se ha omitido.'
+        nowPlayingSong: 'Reproduciendo: [:title](:link)\n`:duration` al `:volume%` de volumen. Solicitado por :requester'
+        nowPlayingPlaylist: '¡La lista de reproducción **:playlistName** se ha añadido a la cola con `:playlistSize` canciones!'
+        nowPlaying: 'Reproduciendo: [:title](:link)\n`:duration` al `:volume%` de volumen. Solicitado por :requester'
+        queueHasEnded: 'Reproducción finalizada. Abandonando el canal del voz.'
+        noMatchFound: 'No he encontrado nada con esta consulta: `{0}`'
+        trackLoadFailed: 'No he podido añadir eso a la cola: `{0}`'
+        musicChannel: 'Solo puedes utilizar comandos musicales en el canal ":channel".'
+
+    ClearQueueCommand:
+        error: 'No hay nada que limpiar, solicita música primero con `{0}play`'
+        emptyQueue: 'No hay nada que limpiar, no hay canciones pendientes en la cola.'
+        success: '¡He vaciado la cola, eliminando **:queueSize** canciones!'
+
+    MoveHereCommand:
+        error: 'No estás en un canal de voz. Solicita música con `{0}play`'
+        nowPlayingIn: 'Estoy reproduciendo música en **:channelName**'
+
+    MusicChannelCommand:
+        updated: "El canal de música **:type** se ha establecido en \":status\" con éxito."
+        field:
+            title: "Canales de música"
+            message: "**Canal de texto:** :text\n**Canal de voz:** :voice"
+        status:
+            disabled: "desactivado"
+            enabled: "establecido en **{0}**"
+        errors:
+            invalidType: "El tipo de canal de música no es válido. El tipo debe ser `texto` o `voz`"
+            notValidType: "`{0}` no es un canal de {1} válido, debes incluir un canal de voz válido para usarlo como canal de música."
+
+    MusicMessagesCommand:
+        message: "Los mensajes de música estan actualmente **:status**.\n\n**Información**\n:info"
+        updated: "Los mensajes de música se han establecido en **:status**."
+        error: "El argumento no es válido, el estado debe ser `on` u `off` para cambiar el estado de los mensajes de música."
+        footer: "Para cambiar los mensajes de música, usa {0}"
+        status:
+            disabled: "desactivado"
+            enabled: "activado"
+        info:
+            disabled: "Cuando los mensajes de música están desactivados, los mensajes de `Reproduciendo` no se enviarán y los demás comandos de música se eliminarán automáticamente pasado un rato."
+            enabled: "Cuando los mensajes de música están activados, los mensajes de `Reproduciendo` permanecerán, aunque la canción cambie, todo permanecerá tal cual se envíe.\n**Nota:** La mayoría de comandos de música se seguirán eliminando automáticamente pasado un rato."
+
+    PauseCommand:
+        error: 'No hay nada que pausar, solicita una canción primero con `{0}play`'
+        alreadyPaused: 'La música ya está en pausa, usa `!resume` para reanudarla.'
+        paused: 'La música se ha puesto en `pausa`'
+
+    PlayCommand:
+        addedSong: ':user ha añadido [:title](:url) a la cola. Canciónes en la cola: `:queueSize`.'
+        addedSongsFromPlaylist: ':user ha añadido :songs canciones de la lista de reproducción [:title](:url) a la cola. Canciones en la cola: `:queueSize`.'
+        session:
+            title: 'Resultados de {0}'
+            footer: 'Elige una canción con {0} <número>'
+
+    PlaylistCommand:
+        noPlaylists: 'Este servidor no tiene listas de reproducción. Puedes crear una con\n`:command` para empezar'
+        noPlaylistWithName: 'No hay listas de reproducción llamadas `:playlist`, puedes crear una usando\nel comando `:command`'
+        invalidProperty: '`Propiedad` no válida, no hay listas de reproducción llamadas `{0}`.\nPuedes obtener más información usando `{1}help {2}`'
+        invalidFormat: '¡Formato no válido, falta la propiedad `:type`!\n`:command`'
+        invalidIdGiven: 'ID no válida, el número es demasiado :type\n`:command`'
+        invalidIdNumberGiven: 'ID no válida, la ID debe ser un número\n`:command`'
+        noMoreSongSlots: "La lista de reproducción `:playlist` no tiene más espacios para canciones."
+        noMorePlaylistSlots: "El servidor no tiene más espacio para listas de reproducción, puedes eliminar listas de reproducción para liberar espacio."
+        sameIdsGiven: "Las dos ID son iguales, la canción no se moverá.\n`:command`"
+        failedToLoad: 'Error al cargar: {0}'
+        failedToLoadPlaylist: 'Error al cargar :playlist, vuelve a intentarlo más tarde o informa de esto a mis desarrolladores.'
+        failedToSavePlaylist: 'Algo ha salido mal al intentar guardar la lista de reproducción: {0}'
+        loadedPlaylist: 'La lista de reproducción **:name** se ha cargado y añadido a la cola con **:amount** canciones.'
+        noMatches: 'No hay conincidencias'
+        attemptingToAddLivestreamToPlaylist: "¡No puedes añadir retransmisiones en directo a la lista de reproducción!"
+        userHasAddedSong: ':user ha añadido [:name](:url) a la lista de reproducción `:playlist`.\nLa lista de reproducción `:playlist` tiene espacio para `:slots` más.'
+        swapSongInPlaylist: 'Se ha cambiado la posición de [:selectedTitle](:selectedLink) por [:replacedTitle](:replacedLink) en la lista de reproducción `:playlist`.'
+        alreadyExists: '¡La lista de reproducción `:playlist` ya existe!'
+        onlyNumbersInName: "¡La lista de reproducción no puede ser solo números, debes incluir alguna letra en el nombre!"
+        renamingPlaylistAlreadyExists: "No puedes cambiar el nombre de `:oldplaylist` a `:playlist`, ya hay una lista que se llama `:playlist`"
+        playlistCreated: '¡La lista de reproducción `:playlist` se ha creado con éxito!\nPuedes empezar a añadir música con `:command :playlist add <canción>`'
+        playlistDeleted: '¡La lista de reproducción `:name` se ha eliminado con éxito!'
+        playlistRenamed: '¡La lista de reproducción `:oldplaylist` se ha renombrado como `:playlist`!'
+        playlistIsEmpty: 'No hay canciones en la lista de reproducción, puedes añadirlas usando\nel comando `:command`.'
+        playlistIsAlreadyEmpty: 'La lista de reproducción `:playlist` está vacía, no hay nada que eliminar.'
+        songHasBeenRemovedFromPlaylist: 'Se ha eliminado :song de la lista de reproducción `:playlist`.'
+        playlistTitle: ':musical_note: Lista de reproducción {0}'
+        playlistSize: '[ {0} de {1} ]'
+        playlistLine: '{0}\n       Canciones en la lista de reproducción: **{1}**'
+        playlistSongLine: '`{0}` [{1}]({2}) [{3}]'
+
+    RemoveSongFromQueueCommand:
+        error: 'No se ha encontrado "`song id`", debes incluir la ID de la canción que quieras eliminar de la cola.'
+        failedToRemoveSong: 'Algo ha salido mal, no se ha podido eliminar la canción `:index`'
+        tooHighNumberGiven: 'El número de canciones en cola es `{0}`. Reduce el número un poquito.'
+        mustBePositiveNumber: 'La ID de canción (`song id`) debe ser un número positivo.'
+        nothingToRemove: 'No hay nada que eliminar, pide música primero con "{0}play"'
+        success: ':song se ha eliminado de la cola.'
+
+    RepeatMusicQueueCommand:
+        error: 'No hay nada que repetir, pide música primero con `{0}play`'
+        success: 'El modo búcle de la música se ha establecido en `:status`.'
+        enabled: 'SÍ'
+        disabled: 'NO'
+
+    ResumeCommand:
+        error: 'No hay nada que reanudar, pide música primero con `{0}play`'
+        alreadyPlaying: 'La música ya está reproduciendose, usa `:prefixpause` para ponerla en pausa.'
+        resume: 'La música se ha "reanudado"'
+
+    SeekCommand:
+        error: 'No hay nada sonando, solicita musica con `{0}play`.'
+        invalidTimeGiven: 'El `número` debe ser un formato de tiempo válido superior a 0 segundos.'
+        seekingLive: 'No puedes saltar a distintos momentos de una retransmisión en directo.'
+        seekingTooFar: '`{0}` es superior a la duración de la canción. Si quieres pasarla usa `{1}skip`.'
+        seekTo: 'Buscando **:title** a `:time`'
+
+    SetDefaultVolumeCommand:
+        currentVolume: 'El volumen por defecto del servidor es `:volume%`'
+        changedVolume: 'El volumen por defecto del servidor se ha establecido en `:volume%`'
+        failedToSave: 'Ha ocurrido algo al intentar guardar el volumen por defecto: {0}'
+        mustBeNumber: 'El `volumen` debe estar entre 10 y 100'
+
+    ShuffleCommand:
+        error: 'La cola de música está vacía, puedes solicitar algo con\n`{0}play <título de canción | URL>`'
+        success: 'Se han mezclado **:amount** canciones en la cola de música.'
+
+    SkipCommand:
+        error: 'No hay ninguna canción que pasar, solicita una primero con `{0}play`'
+
+    SongCommand:
+        error: 'No hay nada que mostrar, solicita una canción primero con `{0}play`'
+        paused: 'En pausa'
+        playing: 'Reproduciendo'
+        songsInQueue: 'Canciones en la cola'
+        moreSongs: 'Puedes ver más canciones usando {0} <página>'
+        noSongs: 'Ahora mismo no hay más canciones en la cola'
+        andXMoreSongs: '_¡Y **{0}** más{1}!_'
+        formats:
+            line: '**{0}** [{1}]({2})'
+            song: '[{0}]({1})\nReproduciéndose al `{2}` de volumen con `{3}` restante. Solicitada por <@{4}>'
+            stream: '[{0}]({1})\nReproduciéndose al `{2}` de volumen, es `{3}`. Solicitada por <@{4}>'
+
+    StopCommand:
+        error: "No hay nada que mostrar ahora mismo. No puedes detener la música si no hay nada sonando."
+        success: 'Se ha detenido la reproducción y se han quitado **:number** canciones de la cola.'
+
+    VolumeCommand:
+        error: 'No se está reproduciendo nada, solicita música primero con `{0}play`'
+        requireDJRole: '¡Se necesita el rol de `DJ` para cambiar el volumen!'
+        invalidVolume: 'El volumen no es válido. Debe ser un número entre 1 y 100.'
+        nowPlaying: ':musical_note: Se está reproduciendo al **:volume** de volumen'
+        setTo: ':musical_note: Volumen al **:volume**'
+
+    VoteSkipCommand:
+        error: 'No hay nada que saltar, solicita música primero con `{0}play`'
+        registered: '¡Se ha registrado tu voto! Con `:votes` más se omitirá la canción.'
+        alreadyVoted: '¡Solo puedes votar omitir una vez por canción! Con `:votes` más se omitirá la canción.'
+
+search:
+    DuckDuckGoCommand:
+        searchResults: 'Resultado de búsqueda: {0}'
+        noResults: 'No he encontrado nada para `:query`'
+        seeAlso: '**Véase también**'
+        nsfwStatus:
+            enabled: 'Filtro "NSFW" activado'
+            disabled: 'Filtro "NSFW" desactivado'
+
+    GfycatCommand:
+        noResults: "No puedo encontrar ningún GIF para: `:query`"
+
+    UrbanDictionaryCommand:
+        noResults: ':user, no he encontrado nada respecto a `:query`'
+        untitled: 'Sin título'
+        example: 'Ejemplo'
+        results: 'A un :percentage de gente le gusta esto. :up👍 :down👎'
+
+    XKCDCommand:
+        number: 'Número XKCD n.º{0}'
+
+utility:
+    CalculateCommand:
+        boolean:
+            true: 'Verdadero'
+            false: 'Falso'
+        eastereggs:
+            quickMaths: '	-	¡Matemáticas rápidas!'
+            binary: "¡Hay 10 tipos de personas en el mundo, los que entienden binario y los que no!"
+
+    ChannelIdCommand:
+        message: ':user :id: del canal :channel es `:targetChannel`'
+
+    ChannelInfoCommand:
+        fields:
+            id: 'ID'
+            position: 'Posición'
+            users: 'Usuarios'
+            category: 'Categoría'
+            bitRate: 'Vel. de bits'
+            nsfw: 'NSFW'
+            createdAt: 'Creado en'
+        noTopic: '*No hay ningún tema en este canal*'
+        timeFormat: 'EEE, dd MMM yyyy HH:mm'
+
+    ExpandUrlCommand:
+        noRedirect: ":url no redirige a ninguna parte."
+        redirects: '{0} redirige a {1}'
+        jumps: '**El enlace va a las siguiente webs:**'
+
+    FeedbackCommand:
+        success: 'Comentario enviado con éxito <:tickYes:319985232306765825>'
+        failedToSend: 'Error al enviar el comentario :error'
+
+    GlobalLeaderboardCommand:
+        noData: 'No hay datos de los marcadores ahora mismo, inténtalo más tarde.'
+        line: '`:num` **:username** está al nivel **:level** con **:experience** de EXP.'
+        title: 'Marcador de experiencia global'
+        yourRank: 'Tu clasificación'
+        loading:
+            title: 'Cargando marcador global'
+            message: 'Por favor, espera un segundo hasta que se carga el marcador.'
+
+    InviteCommand:
+        message: 'Puedes invitarme a tu servidor [haciendo clic aquí](:oauth) o con el siguiente enlace:'
+
+    IPInfoCommand:
+        hostname: 'Nombre del host'
+        organisation: 'Organización'
+        country: 'País'
+
+    LeaderboardCommand:
+        noData: 'No hay datos del marcador. Inténtalo más tarde.'
+        line: '`:num` **:username** está al nivel **:level** con **:experience** de EXP.'
+        title: 'Marcador de {0}'
+        yourRank: 'Tu clasificación'
+
+    PingCommand:
+        message: '¡Pong! Tiempo :ping ms (:rating) y ppm :heartbeat ms'
+        rating:
+            10: '¡más rápido que Sonic! :smiley_cat:'
+            100: '¡genial! :smiley:'
+            200: '¡bien! :slight_smile:'
+            300: 'decente. :neutral_face:'
+            400: 'en la media... :confused:'
+            500: 'un poquito lento. :slight_frown:'
+            600: 'lento... :frowning2:'
+            700: 'muy lento... :worried:'
+            800: 'muuuy leeento. :disappointed:'
+            900: 'malo, malo. :sob: (pide ayuda)'
+            1600: '#DiscordCulpable. :angry:'
+            10000: 'esto no tiene sentido :thinking: #AlexisCulpable'
+            other: 'j*didamente lento. :dizzy_face:'
+
+    RankCommand:
+        botsCannotReceiveXp: "Los bots no pueden obtener EXP, por lo que no tienen clasificación. Etiqueta a un usuario."
+        unranked: 'Sin clasificación'
+        fields:
+            rank: 'Clasificación'
+            level: 'Nivel'
+            experience: 'Experiencia'
+            experienceToNext: 'Experiencia al siguiente nivel'
+            youNeedMoreXpToLevelUp: '[{0}] {1}{2}\n\t\t\t\t\t\t\t\t\tNecesitas {3} más de EXP para subir de nivel.'
+
+    RemindCommand:
+        errors:
+            invalidMeHere: 'Tipo no válido. Debes declarar donde debes ser recordado usando `here` en el canal actual o `me` para que se te recuerde a ti directamente a través de un mensaje personal.'
+            invalidTime: 'Tiempo no válido. El tiempo debe ser superior a 60 segundos e inferior a 3 días.'
+
+    ServerIdCommand:
+        message: ':user :id: de este servidor es `:guildid`'
+
+    ServerInfoCommand:
+        fields:
+            id: 'ID'
+            owner: 'Propietario'
+            textChannels: 'Canales de texto'
+            voiceChannels: 'Canales de voz'
+            members: 'Miembros'
+            roles: 'Roles'
+            region: 'Región'
+            createdAt: 'Creado en'
+            emojis: 'Emojis personalizados ({0})'
+        timeFormat: 'EEE, dd MMM aaaa HH:mm'
+
+    ShardCommand:
+        allShards: 'Todos los fragmentos'
+        totalShards: 'Fragmentos totales'
+
+    SourceCommand:
+        noArgs: 'Código fuente de AvaIre:'
+        command: 'Código fuente de AvaIre para el comando **:command**:'
+        invalidCommand: 'Comando no válido, aquí está el código completo en su lugar.'
+        externalCommand: "El comando está registrado a través de una extensión externa. El autor de dicha extensión no ha creado la fuente del comando público o se olvidó de añadir un enlace a ello. Aquí está el código fuente completo para el bot en su lugar."
+
+    StatsCommand:
+        title: 'Invitación del bot al servidor oficial'
+        footer: 'Se está reproduciendo en {0} servidores con {1} canciones en la cola.'
+        latestChanges: 'Últimos cambios:'
+        formats:
+            perMinute: '{0} ({1} por min.)'
+            perSecond: '{0} ({1} por seg.)'
+            memory: '{0}MB / {1}MB'
+        fields:
+            author: 'Autor'
+            botId: 'ID del bot'
+            library: 'Biblioteca'
+            database: 'Consultas DB en marcha'
+            messages: 'Mensajes recibidos'
+            shard: 'Fragmento'
+            commands: 'Comandos en marcha'
+            memory: 'Memoria en uso'
+            uptime: 'Tiempo de actividad'
+            members: 'Miembros'
+            channels: 'Canales'
+            servers: 'Servidores'
+
+    UptimeCommand:
+        message: 'He estado en línea durante :time'
+        footer: 'Se ha iniciado {0} a las {1}'
+        dateFormat: 'EEEEEEEE, dd MMM aaaa'
+        timeFormat: 'HH:mm:ss z'
+
+    UserIdCommand:
+        message: ':id: del usuario **:target** es `:targetid`'
+
+    UserInfoCommand:
+        fields:
+            username: 'Nombre de usuario'
+            userId: 'ID de usuario'
+            joinedServer: 'Se ha unido al servidor'
+            joinedDiscord: 'Se ha unido a Discord'
+            roles: 'Roles ({0})'
+            servers: 'Servidores'
+        inServers: '{0} que el bot sabe'
+        noRoles: '*Este usuario no tiene rol*'
+        timeFormat: 'EEE, dd MMM aaaa HH:mm'
+
+    VersionCommand:
+        current: '¡Estoy :type versiones desactualizado `:difference`!'
+        getLatest: 'Puedes obtener mi última versión en github en [avaire/avaire](https://github.com/avaire/avaire)'
+        usingLatest: "¡Tienes la última versión de AvaIre!"
+        latestVersion: 'La última versión de AvaIre es v{0}'
+        versions:
+            majorName: 'Grande'
+            major: 'Las actualizaciones grandes son restructuraciones totales del bot y su funcionamiento, compuesto por un conjunto de cambios considerados una actualización pequeña y modificaciones dle código fuente, es muy importante actualizar, ya que puede perderse la compatibilidad con una versión anterior.'
+            minorName: 'Pequeña'
+            minor: 'Las actualizaciones pequeñas son elementos y funciones añadidas o reestructuraciones del código, es recomendable actualizar para no perderte las nuevas características.'
+            patchName: 'Parche'
+            patch: 'Los parches son actualizaciones que llevan correciones de errores y cambios leves en el código que no afectan. Es recomendable aplicar los parches para no tener errores.'
