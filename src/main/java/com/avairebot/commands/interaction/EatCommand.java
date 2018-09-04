@@ -23,7 +23,11 @@ public class EatCommand extends InteractionCommand {
             "https://i.imgur.com/sxB3LZt.gif",
             "https://i.imgur.com/y7GdCeq.gif",
             "https://i.imgur.com/pFl0PkY.gif",
-            "https://i.imgur.com/ux8rVDC.gif"
+            "https://i.imgur.com/ux8rVDC.gif",
+            "https://i.imgur.com/ivX1LEy.gif",
+            "https://i.imgur.com/w87lWKL.gif",
+            "https://i.imgur.com/QxZkx3T.gif",
+            "https://i.imgur.com/b8gs8I7.gif"
         );
     }
 

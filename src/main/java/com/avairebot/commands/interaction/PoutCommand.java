@@ -25,7 +25,10 @@ public class PoutCommand extends InteractionCommand {
             "https://i.imgur.com/3EidTZl.gif",
             "https://i.imgur.com/B6Dsfsi.gif",
             "https://i.imgur.com/793Xoz8.gif",
-            "https://i.imgur.com/p2gQm0i.gif"
+            "https://i.imgur.com/p2gQm0i.gif",
+            "https://i.imgur.com/WL4h3fr.jpg",
+            "https://i.imgur.com/cDckWll.gif",
+            "https://i.imgur.com/KqR2rVU.gif"
         );
     }
 

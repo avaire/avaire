@@ -15,7 +15,10 @@ public class DivorceCommand extends InteractionCommand {
 
     @Override
     public List<String> getInteractionImages() {
-        return Collections.singletonList("https://i.imgur.com/VvFzH9D.gif");
+        return Arrary.asList(
+            "https://i.imgur.com/VvFzH9D.gif",
+            "https://i.imgur.com/My83osO.gif"
+        );
     }
 
     @Override

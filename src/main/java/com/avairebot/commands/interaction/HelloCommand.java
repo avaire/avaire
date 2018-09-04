@@ -22,7 +22,8 @@ public class HelloCommand extends InteractionCommand {
             "https://i.imgur.com/DIeaddE.gif",
             "https://i.imgur.com/lUfKcOK.gif",
             "https://i.imgur.com/bwwasl2.gif",
-            "https://i.imgur.com/cYsTgNK.gif"
+            "https://i.imgur.com/cYsTgNK.gif",
+            "https://i.imgur.com/3D3zI0g.gif"
         );
     }
 

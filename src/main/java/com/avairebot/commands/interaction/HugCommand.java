@@ -26,7 +26,8 @@ public class HugCommand extends InteractionCommand {
             "https://i.imgur.com/OPKBDeA.gif",
             "https://i.imgur.com/D0GABc2.gif",
             "https://i.imgur.com/LtVBCX3.gif",
-            "https://i.imgur.com/o8JQtVL.gif"
+            "https://i.imgur.com/o8JQtVL.gif",
+            "https://i.imgur.com/bm7qhg2.gif"
         );
     }
 
