@@ -19,7 +19,8 @@ public class KillCommand extends InteractionCommand {
             "https://i.imgur.com/mHTunac.gif",
             "https://i.imgur.com/xWkNtE5.gif",
             "https://i.imgur.com/1gVPkev.gif",
-            "https://i.imgur.com/qziRg6e.gif"
+            "https://i.imgur.com/qziRg6e.gif",
+            "https://i.imgur.com/8Ryi8xQ.gif"
         );
     }
 
