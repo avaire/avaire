@@ -251,6 +251,12 @@ music:
         error: "Semmi sem szól jelenleg, nem állíthatod meg a zenét ha semmi sem szól."
         success: 'Lejátszás megállítva, és **:number** szám törölve a lejátszási listából.'
 
+    VoiceFixCommand:
+        message: "**Swapping to :swap region:** {0}\n**Swapping back to :original region:** {1}"
+        starting: "Starting swapping process...\n\n"
+        finished: "\n\nDone! Music should now work again!"
+        error: "Failed to finish the swap process, error: {0}"
+
     VolumeCommand:
         error: 'Semmi sem szól, előbb kérj számot a `{0}play`-el'
         requireDJRole: 'A `DJ` rang szükséges, hogy hangerőt válts!'

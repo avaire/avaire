@@ -253,6 +253,12 @@ music:
         error: "No hay nada que mostrar ahora mismo. No puedes detener la música si no hay nada sonando."
         success: 'Se ha detenido la reproducción y se han quitado **:number** canciones de la cola.'
 
+    VoiceFixCommand:
+        message: "**Swapping to :swap region:** {0}\n**Swapping back to :original region:** {1}"
+        starting: "Starting swapping process...\n\n"
+        finished: "\n\nDone! Music should now work again!"
+        error: "Failed to finish the swap process, error: {0}"
+
     VolumeCommand:
         error: 'No se está reproduciendo nada, solicita música primero con `{0}play`'
         requireDJRole: '¡Se necesita el rol de `DJ` para cambiar el volumen!'

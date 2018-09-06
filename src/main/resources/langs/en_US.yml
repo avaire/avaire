@@ -253,6 +253,12 @@ music:
         error: "Nothing is playing right now, you can't stop the music when nothing is playing."
         success: 'The player has stopped, and **:number** songs has been removed from the queue.'
 
+    VoiceFixCommand:
+        message: "**Swapping to :swap region:** {0}\n**Swapping back to :original region:** {1}"
+        starting: "Starting swapping process...\n\n"
+        finished: "\n\nDone! Music should now work again!"
+        error: "Failed to finish the swap process, error: {0}"
+
     VolumeCommand:
         error: 'Nothing is playing, request music first with `{0}play`'
         requireDJRole: 'The `DJ` role is required to change the volume!'
