@@ -10,6 +10,7 @@ import com.avairebot.database.collection.DataRow;
 import com.avairebot.database.controllers.PlaylistController;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.utilities.NumberUtil;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -53,7 +54,7 @@ public class CreatePlaylist extends PlaylistSubCommand {
 
             return true;
         } catch (SQLException e) {
-            e.printStackTrace();
+            AvaIre.getLogger().error("SQLException on RemoveLevelRoleCommand.onCommand: \n", ExceptionUtils.getStackTrace(e));
             context.makeError("Error: " + e.getMessage()).queue();
         }
 

@@ -37,15 +37,9 @@ public class SyncStatsWithBeaconJob extends Job {
             .url("https://beacon.avairebot.com/v1/bot/" + selfUser.getId())
             .post(RequestBody.create(json, buildPayload(selfUser)));
 
-        Response response = null;
-        try {
-            response = client.newCall(request.build()).execute();
+        try (Response response = client.newCall(request.build()).execute()) {
         } catch (IOException e) {
-            log.error("Failed sending sync with beacon request: " + e.getMessage());
-        } finally {
-            if (response != null) {
-                response.close();
-            }
+            log.error(String.format("Failed sending sync with beacon request: %s", e.getMessage()));
         }
     }
 

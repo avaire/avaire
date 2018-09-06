@@ -9,6 +9,7 @@ import com.avairebot.utilities.RandomUtil;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.entities.User;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import java.awt.*;
 import java.io.IOException;
@@ -98,7 +99,7 @@ public abstract class InteractionCommand extends Command {
 
             context.getChannel().sendFile(stream, getClass().getSimpleName() + "-" + imageIndex + ".gif", messageBuilder.build()).queue();
         } catch (IOException e) {
-            e.printStackTrace();
+            AvaIre.getLogger().error("IOException on InteractionCommand.onCommand: \n", ExceptionUtils.getStackTrace(e));
         }
         return true;
     }

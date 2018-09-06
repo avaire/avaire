@@ -71,14 +71,11 @@ public class WelcomeCommand extends Command {
             ComparatorUtil.ComparatorType.UNKNOWN :
             ComparatorUtil.getFuzzyType(args[0]);
 
-        switch (type) {
-            case TRUE:
-            case FALSE:
-                channelTransformer.getWelcome().setEnabled(type.getValue());
-                break;
+        if (type == ComparatorUtil.ComparatorType.TRUE || type == ComparatorUtil.ComparatorType.FALSE) {
+            channelTransformer.getWelcome().setEnabled(type.getValue());
 
-            case UNKNOWN:
-                channelTransformer.getWelcome().setEnabled(!channelTransformer.getWelcome().isEnabled());
+        } else if (type == ComparatorUtil.ComparatorType.UNKNOWN) {
+            channelTransformer.getWelcome().setEnabled(!channelTransformer.getWelcome().isEnabled());
         }
 
         try {

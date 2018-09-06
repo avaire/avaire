@@ -21,17 +21,11 @@ public class Insert extends InsertGrammar {
     private void buildKeyset(QueryBuilder builder) {
         List<Map<String, Object>> items = builder.getItems();
 
-        items.stream().forEach((map) -> {
-            map.keySet().stream().filter((key) -> (!keyset.contains(key))).forEach((key) -> {
-                keyset.add(key);
-            });
-        });
+        items.forEach((map) -> map.keySet().stream().filter((key) -> (!keyset.contains(key))).forEach(keyset::add));
 
         addPart(" (");
 
-        keyset.stream().forEach((key) -> {
-            addPart(String.format("`%s`, ", key));
-        });
+        keyset.forEach((key) -> addPart(String.format("`%s`, ", key)));
 
         removeLast(2).addPart(")");
     }

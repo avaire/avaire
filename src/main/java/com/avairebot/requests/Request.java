@@ -1,7 +1,9 @@
 package com.avairebot.requests;
 
+import com.avairebot.AvaIre;
 import com.avairebot.contracts.async.Future;
 import okhttp3.OkHttpClient;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
@@ -54,10 +56,9 @@ public class Request extends Future {
                 builder.addHeader(entry.getKey(), entry.getValue());
             }
 
-            switch (type) {
-                case GET:
-                    builder.get();
-                    break;
+            if (type == RequestType.GET) {
+                builder.get();
+
             }
 
             success.accept(new Response(client.newCall(builder.build()).execute()));
@@ -75,7 +76,7 @@ public class Request extends Future {
             try {
                 return String.format("%s=%s", item.getKey(), URLEncoder.encode(item.getValue().toString(), "UTF-8"));
             } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
+                AvaIre.getLogger().error("UnsupportedEncodingExcpetion on Request.buildUrlParameters", ExceptionUtils.getStackTrace(e));
                 return String.format("%s=%s", item.getKey(), "invalid-format");
             }
         }).collect(Collectors.joining("&"));

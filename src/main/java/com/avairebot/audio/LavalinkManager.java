@@ -8,6 +8,7 @@ import lavalink.client.player.IPlayer;
 import lavalink.client.player.LavaplayerPlayerWrapper;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.VoiceChannel;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import javax.annotation.Nonnull;
 import java.net.URI;
@@ -50,7 +51,7 @@ public class LavalinkManager {
                     (String) node.get("name"), host, (String) node.get("pass")
                 );
             } catch (URISyntaxException e) {
-                e.printStackTrace();
+                AvaIre.getLogger().error("URIException in LavalinkManager.start : \n", ExceptionUtils.getStackTrace(e));
             }
         }
 

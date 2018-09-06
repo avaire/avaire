@@ -22,11 +22,9 @@ public class Update extends UpdateGrammar {
     private void buildKeyset(QueryBuilder builder) {
         List<Map<String, Object>> items = builder.getItems();
 
-        items.stream().forEach((map) -> {
-            map.keySet().stream().filter((key) -> (!keyset.contains(key))).forEach((key) -> {
-                keyset.add(key);
-            });
-        });
+        items.forEach((map) -> map.keySet().stream().filter((key) -> (!keyset.contains(key))).forEach((key) -> {
+            keyset.add(key);
+        }));
 
     }
 

@@ -118,23 +118,23 @@ public class RemindCommand extends Command {
 
     public int parse(String input) {
         int result = 0;
-        String number = "";
-        String unit = "";
+        StringBuilder number = new StringBuilder();
+        StringBuilder unit = new StringBuilder();
         for (int i = 0; i < input.length(); i++) {
             char c = input.charAt(i);
             if (c >= '0' && c <= '9') {
-                if (!unit.isEmpty() && !number.isEmpty()) {
-                    result += convert(NumberUtil.parseInt(number, 0), unit);
-                    number = "";
-                    unit = "";
+                if ((unit.length() > 0) && (number.length() > 0)) {
+                    result += convert(NumberUtil.parseInt(number.toString(), 0), unit.toString());
+                    number = new StringBuilder();
+                    unit = new StringBuilder();
                 }
-                number += c;
-            } else if (Character.isLetter(c) && !number.isEmpty()) {
-                unit += c;
+                number.append(c);
+            } else if (Character.isLetter(c) && (number.length() > 0)) {
+                unit.append(c);
             }
         }
-        if (!unit.isEmpty() && !number.isEmpty()) {
-            result += convert(NumberUtil.parseInt(number, 0), unit);
+        if ((unit.length() > 0) && (number.length() > 0)) {
+            result += convert(NumberUtil.parseInt(number.toString(), 0), unit.toString());
         }
         return result;
     }
@@ -149,7 +149,8 @@ public class RemindCommand extends Command {
                 return value * 60;
             case "s":
                 return value;
+            default:
+                return 0;
         }
-        return 0;
     }
 }

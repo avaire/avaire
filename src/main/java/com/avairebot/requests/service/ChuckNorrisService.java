@@ -1,6 +1,7 @@
 package com.avairebot.requests.service;
 
 import java.util.List;
+import java.util.Objects;
 
 public class ChuckNorrisService {
 
@@ -16,7 +17,7 @@ public class ChuckNorrisService {
     }
 
     public boolean isSuccess() {
-        return getType() == "success";
+        return Objects.equals(getType(), "success");
     }
 
     public class ChuckNorrisValue {

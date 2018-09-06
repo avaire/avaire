@@ -74,11 +74,11 @@ public class CalculateCommand extends Command {
 
         if (where == -1) {
             return new Expression(string)
-                .setVariable("tau", new BigDecimal(Math.PI * 2));
+                .setVariable("tau", BigDecimal.valueOf(Math.PI * 2));
         }
 
         Expression expression = new Expression(string.substring(0, where).trim())
-            .setVariable("tau", new BigDecimal(Math.PI * 2));
+            .setVariable("tau", BigDecimal.valueOf(Math.PI * 2));
 
         expression.setPrecision(128);
         expression.setRoundingMode(RoundingMode.UNNECESSARY);

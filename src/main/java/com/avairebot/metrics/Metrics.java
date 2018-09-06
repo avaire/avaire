@@ -223,7 +223,7 @@ public class Metrics {
 
         port = avaire.getConfig().getInt("metrics.port", 1256);
 
-        log.info("Igniting Spark API on port: " + port);
+        log.info(String.format("Igniting Spark API on port: %d", port));
 
         Spark.port(port);
 

@@ -124,10 +124,8 @@ public class WarnCommand extends Command {
                 .setFooter("Case ID #" + caseId)
                 .setTimestamp(Instant.now())
                 .queue(null, RestActionUtil.ignore);
-        }, error -> {
-            context.makeWarning("Failed to DM the user with the warning, they most likely have their private settings set to disable all DMs from this server.")
-                .queue();
-        });
+        }, error -> context.makeWarning("Failed to DM the user with the warning, they most likely have their private settings set to disable all DMs from this server.")
+            .queue());
 
         return true;
     }

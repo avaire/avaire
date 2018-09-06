@@ -28,7 +28,7 @@ public abstract class Job extends TimerTask implements Reflectional {
     /**
      * The amount of time in between each time the job should be executed.
      */
-    private final long period;
+    private final long periodBetweenJobExecution;
 
     /**
      * The unit of time that the job should be scaled after.
@@ -39,7 +39,7 @@ public abstract class Job extends TimerTask implements Reflectional {
 
     /**
      * Instantiates the job instance with the given AvaIre application instance, with
-     * a delay of 0, period of 1, and time unit of {@link TimeUnit#MINUTES}.
+     * a delay of 0, periodBetweenJobExecution of 1, and time unit of {@link TimeUnit#MINUTES}.
      *
      * @param avaire The AvaIre application instance.
      */
@@ -49,7 +49,7 @@ public abstract class Job extends TimerTask implements Reflectional {
 
     /**
      * Instantiates the job instance with the given AvaIre application instance and delay,
-     * setting the default period to 1 along with a time unit of {@link TimeUnit#MINUTES}.
+     * setting the default periodBetweenJobExecution to 1 along with a time unit of {@link TimeUnit#MINUTES}.
      *
      * @param avaire The AvaIre application instance.
      * @param delay  The delay before the command should be executed for the first time.
@@ -60,30 +60,30 @@ public abstract class Job extends TimerTask implements Reflectional {
 
     /**
      * Instantiates the job instance with the given AvaIre application instance, delay,
-     * and period, setting the default time unit to {@link TimeUnit#MINUTES}.
+     * and periodBetweenJobExecution, setting the default time unit to {@link TimeUnit#MINUTES}.
      *
      * @param avaire The AvaIre application instance.
      * @param delay  The delay before the command should be executed for the first time.
-     * @param period The time in between executions after the job has already run once.
+     * @param periodBetweenJobExecution The time in between executions after the job has already run once.
      */
-    public Job(AvaIre avaire, long delay, long period) {
-        this(avaire, delay, period, TimeUnit.MINUTES);
+    public Job(AvaIre avaire, long delay, long periodBetweenJobExecution) {
+        this(avaire, delay, periodBetweenJobExecution, TimeUnit.MINUTES);
     }
 
     /**
      * Instantiates the job instance with the given AvaIre application
-     * instance, delay, and, period and time unit.
+     * instance, delay, and, periodBetweenJobExecution and time unit.
      *
      * @param avaire The AvaIre application instance.
      * @param delay  The delay before the command should be executed for the first time.
-     * @param period The time in between executions after the job has already run once.
+     * @param periodBetweenJobExecution The time in between executions after the job has already run once.
      * @param unit   The unit of time the job should measure the delay and periods in.
      */
-    public Job(AvaIre avaire, long delay, long period, TimeUnit unit) {
+    public Job(AvaIre avaire, long delay, long periodBetweenJobExecution, TimeUnit unit) {
         this.avaire = avaire;
 
         this.delay = delay;
-        this.period = period;
+        this.periodBetweenJobExecution = periodBetweenJobExecution;
         this.unit = unit;
     }
 
@@ -97,12 +97,12 @@ public abstract class Job extends TimerTask implements Reflectional {
     }
 
     /**
-     * Gets the job period.
+     * Gets the job periodBetweenJobExecution.
      *
-     * @return The job period.
+     * @return The job periodBetweenJobExecution.
      */
-    public long getPeriod() {
-        return period;
+    public long getPeriodBetweenJobExecution() {
+        return periodBetweenJobExecution;
     }
 
     /**
@@ -135,6 +135,6 @@ public abstract class Job extends TimerTask implements Reflectional {
 
     @Override
     public int hashCode() {
-        return Objects.hash(avaire, delay, period, unit);
+        return Objects.hash(avaire, delay, periodBetweenJobExecution, unit);
     }
 }

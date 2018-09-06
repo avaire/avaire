@@ -9,6 +9,7 @@ import com.avairebot.database.controllers.PlaylistController;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.database.transformers.PlaylistTransformer;
 import com.avairebot.utilities.NumberUtil;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import java.sql.SQLException;
 import java.util.Collections;
@@ -82,7 +83,7 @@ public class MoveSongInPlaylist extends PlaylistSubCommand {
 
             return true;
         } catch (SQLException e) {
-            e.printStackTrace();
+            AvaIre.getLogger().error("SQLException on MoveSongInPlaylist.onCommand: \n", ExceptionUtils.getStackTrace(e));
         }
 
         return false;

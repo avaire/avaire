@@ -131,7 +131,7 @@ public class GuildController {
     }
 
     private static GuildTransformer loadGuildFromDatabase(AvaIre avaire, Guild guild) {
-        log.debug("Guild cache for " + guild.getId() + " was refreshed");
+        log.debug(String.format("Guild cache for %s was refreshed", guild.getId()));
 
         try {
             GuildTransformer transformer = new GuildTransformer(avaire.getDatabase()

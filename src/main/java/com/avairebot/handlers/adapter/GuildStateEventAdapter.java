@@ -15,6 +15,7 @@ import net.dv8tion.jda.core.events.guild.GuildJoinEvent;
 import net.dv8tion.jda.core.events.guild.GuildLeaveEvent;
 import net.dv8tion.jda.core.events.guild.update.GuildUpdateNameEvent;
 import net.dv8tion.jda.core.events.guild.update.GuildUpdateRegionEvent;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import java.awt.*;
 import java.sql.SQLException;
@@ -38,7 +39,7 @@ public class GuildStateEventAdapter extends EventAdapter {
                 .where("id", event.getGuild().getId())
                 .update(statement -> statement.set("name", event.getGuild().getName(), true));
         } catch (SQLException e) {
-            e.printStackTrace();
+            AvaIre.getLogger().error("SQLException on GuildStateEventAdapter.updateChannelData: \n ", ExceptionUtils.getStackTrace(e));
         }
     }
 

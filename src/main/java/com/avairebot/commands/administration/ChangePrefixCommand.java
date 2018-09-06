@@ -8,6 +8,7 @@ import com.avairebot.commands.CommandMessage;
 import com.avairebot.commands.CommandPriority;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.database.transformers.GuildTransformer;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import java.sql.SQLException;
 import java.util.Arrays;
@@ -103,7 +104,7 @@ public class ChangePrefixCommand extends Command {
 
             return true;
         } catch (SQLException e) {
-            e.printStackTrace();
+            AvaIre.getLogger().error("SQLException on ChangePrefixCommand.onCommand: \n", ExceptionUtils.getStackTrace(e));
         }
 
         return false;
@@ -138,7 +139,7 @@ public class ChangePrefixCommand extends Command {
 
             return true;
         } catch (SQLException e) {
-            e.printStackTrace();
+            AvaIre.getLogger().error("SQLException on ChangePrefixCommand.removeCustomPrefix: \n", ExceptionUtils.getStackTrace(e));
         }
         return false;
     }
@@ -159,8 +160,6 @@ public class ChangePrefixCommand extends Command {
     private void updateGuildPrefixes(CommandMessage context, GuildTransformer transformer) throws SQLException {
         avaire.getDatabase().newQueryBuilder(Constants.GUILD_TABLE_NAME)
             .where("id", context.getGuild().getId())
-            .update(statement -> {
-                statement.set("prefixes", AvaIre.gson.toJson(transformer.getPrefixes()), true);
-            });
+            .update(statement -> statement.set("prefixes", AvaIre.gson.toJson(transformer.getPrefixes()), true));
     }
 }

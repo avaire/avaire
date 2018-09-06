@@ -129,18 +129,16 @@ public class DataRow {
             }
         }
 
-        switch (getType(value)) {
-            case "Integer":
-                value = ((Integer) value).doubleValue();
-                break;
+        String s = getType(value);
+        if ("Integer".equals(s)) {
+            value = ((Integer) value).doubleValue();
 
-            case "Long":
-                value = ((Long) value).doubleValue();
-                break;
+        } else if ("Long".equals(s)) {
+            value = ((Long) value).doubleValue();
 
-            case "Float":
-                value = ((Float) value).doubleValue();
-                break;
+        } else if ("Float".equals(s)) {
+            value = ((Float) value).doubleValue();
+
         }
 
         try {
@@ -178,18 +176,16 @@ public class DataRow {
             return NumberUtil.parseInt(str, def);
         }
 
-        switch (getType(value)) {
-            case "Double":
-                value = ((Double) value).intValue();
-                break;
+        String s = getType(value);
+        if ("Double".equals(s)) {
+            value = ((Double) value).intValue();
 
-            case "Long":
-                value = ((Long) value).intValue();
-                break;
+        } else if ("Long".equals(s)) {
+            value = ((Long) value).intValue();
 
-            case "Float":
-                value = ((Float) value).intValue();
-                break;
+        } else if ("Float".equals(s)) {
+            value = ((Float) value).intValue();
+
         }
 
         try {
@@ -231,18 +227,16 @@ public class DataRow {
             }
         }
 
-        switch (getType(value)) {
-            case "Double":
-                value = ((Double) value).longValue();
-                break;
+        String s = getType(value);
+        if ("Double".equals(s)) {
+            value = ((Double) value).longValue();
 
-            case "Integer":
-                value = ((Integer) value).longValue();
-                break;
+        } else if ("Integer".equals(s)) {
+            value = ((Integer) value).longValue();
 
-            case "Float":
-                value = ((Float) value).longValue();
-                break;
+        } else if ("Float".equals(s)) {
+            value = ((Float) value).longValue();
+
         }
 
         try {
@@ -284,18 +278,16 @@ public class DataRow {
             }
         }
 
-        switch (getType(value)) {
-            case "Double":
-                value = ((Double) value).floatValue();
-                break;
+        String s = getType(value);
+        if ("Double".equals(s)) {
+            value = ((Double) value).floatValue();
 
-            case "Integer":
-                value = ((Integer) value).floatValue();
-                break;
+        } else if ("Integer".equals(s)) {
+            value = ((Integer) value).floatValue();
 
-            case "Long":
-                value = ((Long) value).floatValue();
-                break;
+        } else if ("Long".equals(s)) {
+            value = ((Long) value).floatValue();
+
         }
 
         try {

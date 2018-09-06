@@ -7,6 +7,7 @@ import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.utilities.NumberUtil;
 import net.dv8tion.jda.core.entities.User;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -127,7 +128,7 @@ public class MemeCommand extends Command {
                     URLEncoder.encode(user.getEffectiveAvatarUrl(), "UTF-8")
                 )).queue();
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            AvaIre.getLogger().error("UnsupportedEncodingException on MemeCommand.sendUserMeme: \n", ExceptionUtils.getStackTrace(e));
         }
         return true;
     }

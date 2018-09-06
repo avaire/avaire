@@ -10,6 +10,7 @@ import com.avairebot.database.collection.DataRow;
 import com.avairebot.database.controllers.PlaylistController;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.database.transformers.PlaylistTransformer;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import java.sql.SQLException;
 import java.util.Arrays;
@@ -62,7 +63,7 @@ public class RenamePlaylist extends PlaylistSubCommand {
 
             return true;
         } catch (SQLException e) {
-            e.printStackTrace();
+            AvaIre.getLogger().error("SQLException on RenamePlaylist.onCommand \n", ExceptionUtils.getStackTrace(e));
             context.makeError(context.i18n("failedToSavePlaylist", e.getMessage())).queue();
         }
 

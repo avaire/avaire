@@ -7,6 +7,7 @@ import com.avairebot.chat.SimplePaginator;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.SystemCommand;
 import com.avairebot.utilities.NumberUtil;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -95,7 +96,7 @@ public class BlacklistCommand extends SystemCommand {
                 .setTitle("Blacklist Page #" + paginator.getCurrentPage())
                 .queue();
         } catch (SQLException e) {
-            e.printStackTrace();
+            AvaIre.getLogger().error("SQLException on BlackListCommand.listBlacklist \n", ExceptionUtils.getStackTrace(e));
         }
 
         return false;

@@ -36,7 +36,7 @@ public class SyncPlayerExperienceWithDatabaseTask implements Task {
                 Constants.PLAYER_EXPERIENCE_TABLE_NAME
             );
 
-            log.debug("Starting \"Player Experience\" update task with query: " + query);
+            log.debug(String.format("Starting \"Player Experience\" update task with query: %s", query));
 
             boolean autoCommit = connection.getAutoCommit();
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {

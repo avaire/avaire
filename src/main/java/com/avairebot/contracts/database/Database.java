@@ -88,13 +88,8 @@ public abstract class Database implements DatabaseConnection, Grammarable {
      *
      * @return either (1) <code>TRUE</code> if the database connection was closed successfully
      * or (2) <code>FALSE</code> if the connection is already close, or an exception was thrown
-     * @throws SQLException if a database access error occurs,
-     *                      this method is called on a closed <code>Statement</code>, the given
-     *                      SQL statement produces anything other than a single
-     *                      <code>ResultSet</code> object, the method is called on a
-     *                      <code>PreparedStatement</code> or <code>CallableStatement</code>
      */
-    public final boolean close() throws SQLException {
+    public final boolean close() {
         if (connection == null) {
             AvaIre.getLogger().warn("Database - Could not close connection, it is null.");
             return false;
@@ -289,9 +284,10 @@ public abstract class Database implements DatabaseConnection, Grammarable {
         List<Long> keys = new ArrayList<>();
 
         try (PreparedStatement pstmt = createPreparedStatement(query, 1)) {
-            ResultSet key = pstmt.getGeneratedKeys();
-            if (key.next()) {
-                keys.add(key.getLong(1));
+            try (ResultSet key = pstmt.getGeneratedKeys()) {
+                if (key.next()) {
+                    keys.add(key.getLong(1));
+                }
             }
 
             return keys;
@@ -323,9 +319,10 @@ public abstract class Database implements DatabaseConnection, Grammarable {
         preparedStatements.remove(query);
 
         ArrayList<Long> keys = new ArrayList<>();
-        ResultSet key = query.getGeneratedKeys();
-        if (key.next()) {
-            keys.add(key.getLong(1));
+        try (ResultSet key = query.getGeneratedKeys()) {
+            if (key.next()) {
+                keys.add(key.getLong(1));
+            }
         }
 
         return keys;

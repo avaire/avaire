@@ -36,8 +36,8 @@ public class Create extends CreateGrammar {
     }
 
     private void buildFields(Blueprint blueprint) {
-        String fields = "";
-        String primary = "";
+        StringBuilder fields = new StringBuilder();
+        StringBuilder primary = new StringBuilder();
 
         for (String name : blueprint.getFields().keySet()) {
             Field field = blueprint.getFields().get(name);
@@ -60,30 +60,30 @@ public class Create extends CreateGrammar {
             line += field.isNullable() ? " NULL" : " NOT NULL";
 
             if (field.getDefaultValue() != null) {
-                String defaultString = " DEFAULT ";
+                StringBuilder defaultString = new StringBuilder(" DEFAULT ");
 
-                if (field.getDefaultValue().toUpperCase().equals("NULL")) {
-                    defaultString += "NULL";
+                if (field.getDefaultValue().equalsIgnoreCase("NULL")) {
+                    defaultString.append("NULL");
                 } else if (field.isDefaultSQLAction()) {
-                    defaultString += field.getDefaultValue();
+                    defaultString.append(field.getDefaultValue());
                 } else {
-                    defaultString += String.format("'%s'", field.getDefaultValue().replace("'", "\'"));
+                    defaultString.append(String.format("'%s'", field.getDefaultValue().replace("'", "\'")));
                 }
 
                 line += defaultString;
             }
 
             if (field.isAutoIncrement()) {
-                primary += formatField(name) + ", ";
+                primary.append(formatField(name)).append(", ");
 
                 line += " AUTO_INCREMENT";
             }
 
-            fields += line + ", ";
+            fields.append(line).append(", ");
         }
 
         if (primary.length() > 0) {
-            fields += String.format("PRIMARY KEY (%s), ", primary.substring(0, primary.length() - 2));
+            fields.append(String.format("PRIMARY KEY (%s), ", primary.substring(0, primary.length() - 2)));
         }
 
         addPart(fields.substring(0, fields.length() - 2));

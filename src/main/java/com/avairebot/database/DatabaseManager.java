@@ -101,7 +101,7 @@ public class DatabaseManager {
      */
     @WillClose
     public Collection query(String query) throws SQLException {
-        log.debug("query(String query) was called with the following SQL query.\nSQL: " + query);
+        log.debug(String.format("query(String query) was called with the following SQL query.\nSQL: %s", query));
         MDC.put("query", query);
 
         try (ResultSet resultSet = getConnection().query(query)) {
@@ -150,7 +150,7 @@ public class DatabaseManager {
      */
     @WillClose
     public int queryUpdate(String query) throws SQLException {
-        log.debug("queryUpdate(String query) was called with the following SQL query.\nSQL: " + query);
+        log.debug(String.format("queryUpdate(String query) was called with the following SQL query.\nSQL: %s", query));
         MDC.put("query", query);
 
         try (Statement stmt = getConnection().prepare(query)) {
@@ -201,7 +201,7 @@ public class DatabaseManager {
      */
     @WillClose
     public Set<Integer> queryInsert(String query) throws SQLException {
-        log.debug("queryInsert(String query) was called with the following SQL query.\nSQL: " + query);
+        log.debug(String.format("queryInsert(String query) was called with the following SQL query.\nSQL: %s", query));
         Metrics.databaseQueries.labels("INSERT").inc();
         MDC.put("query", query);
 
@@ -214,9 +214,10 @@ public class DatabaseManager {
 
             Set<Integer> ids = new HashSet<>();
 
-            ResultSet keys = stmt.getGeneratedKeys();
-            while (keys.next()) {
-                ids.add(keys.getInt(1));
+            try (ResultSet keys = stmt.getGeneratedKeys()) {
+                while (keys.next()) {
+                    ids.add(keys.getInt(1));
+                }
             }
 
             return ids;
@@ -279,9 +280,10 @@ public class DatabaseManager {
 
             Set<Integer> ids = new HashSet<>();
 
-            ResultSet keys = stmt.getGeneratedKeys();
-            while (keys.next()) {
-                ids.add(keys.getInt(1));
+            try (ResultSet keys = stmt.getGeneratedKeys()) {
+                while (keys.next()) {
+                    ids.add(keys.getInt(1));
+                }
             }
 
             return ids;

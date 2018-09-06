@@ -14,7 +14,7 @@ public class CheckPermissionUtil {
     }
 
     public static PermissionCheckType canSendMessages(MessageChannel channel) {
-        if (channel == null || !(channel instanceof TextChannel)) {
+        if (!(channel instanceof TextChannel)) {
             return PermissionCheckType.EMBED;
         }
 

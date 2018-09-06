@@ -62,9 +62,7 @@ public class MusicActivityTask implements Task {
                         continue;
                     }
 
-                    if (emptyQueue.containsKey(guildId)) {
-                        emptyQueue.remove(guildId);
-                    }
+                    emptyQueue.remove(guildId);
 
                     if (guildMusicManager.getPlayer().isPaused()) {
                         handlePausedMusic(avaire, manager, null, guildMusicManager, guildId);
@@ -127,9 +125,7 @@ public class MusicActivityTask implements Task {
                     continue;
                 }
 
-                if (emptyQueue.containsKey(guildId)) {
-                    emptyQueue.remove(guildId);
-                }
+                emptyQueue.remove(guildId);
 
                 if (guildMusicManager.getPlayer().isPaused()) {
                     handlePausedMusic(avaire, null, link, guildMusicManager, guildId);
@@ -198,12 +194,10 @@ public class MusicActivityTask implements Task {
     private void clearItems(@Nullable AudioManager manager, @Nullable Link link, @Nullable GuildMusicManager guildMusicManager, long guildId) {
         if (guildMusicManager != null) {
             guildMusicManager.getScheduler().getQueue().clear();
-            if (LavalinkManager.LavalinkManagerHolder.lavalink.isEnabled()) {
-                if (guildMusicManager.getLastActiveMessage() != null) {
+            if ((LavalinkManager.LavalinkManagerHolder.lavalink.isEnabled()) && (guildMusicManager.getLastActiveMessage() != null)) {
                     LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink()
                         .getLink(guildMusicManager.getLastActiveMessage().getGuild())
                         .destroy();
-                }
             }
 
             if (guildMusicManager.getLastActiveMessage() != null && guildMusicManager.getLastActiveMessage().getChannel().canTalk()) {
@@ -222,12 +216,9 @@ public class MusicActivityTask implements Task {
                 link.disconnect();
             }
 
-            if (LavalinkManager.LavalinkManagerHolder.lavalink.isEnabled()) {
-                if (manager != null) {
+            if ((LavalinkManager.LavalinkManagerHolder.lavalink.isEnabled()) && (manager != null)) {
                     manager.getGuild().getAudioManager().setSendingHandler(null);
-                }
             }
-
             AudioHandler.getDefaultAudioHandler().musicManagers.remove(guildId);
         } else {
             guildMusicManager.getScheduler().handleEndOfQueueWithLastActiveMessage(false);

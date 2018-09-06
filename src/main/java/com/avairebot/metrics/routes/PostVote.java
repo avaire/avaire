@@ -21,7 +21,8 @@ public class PostVote extends SparkRoute {
     }
 
     @Override
-    public Object handle(Request request, Response response) throws Exception {
+    public Object handle(Request request, Response response) {
+
         log.info("Vote route has been hit by {} with the body: {}",
             request.ip(), request.body()
         );

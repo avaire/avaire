@@ -70,15 +70,10 @@ public class MusicChannelCommand extends Command {
             return displayCurrentChannels(context);
         }
 
-        switch (args[0].toLowerCase()) {
-            case "v":
-            case "voice":
-                return handleVoice(context, Arrays.copyOfRange(args, 1, args.length));
-
-            case "t":
-            case "txt":
-            case "text":
-                return handleText(context, Arrays.copyOfRange(args, 1, args.length));
+        if ("v".equalsIgnoreCase(args[0]) || "voice".equalsIgnoreCase(args[0])) {
+            return handleVoice(context, Arrays.copyOfRange(args, 1, args.length));
+        } else if ("t".equalsIgnoreCase(args[0]) || "txt".equalsIgnoreCase(args[0]) || "text".equalsIgnoreCase(args[0])) {
+            return handleText(context, Arrays.copyOfRange(args, 1, args.length));
         }
 
         return sendErrorMessage(context, context.i18n("errors.invalidType"));
@@ -125,7 +120,7 @@ public class MusicChannelCommand extends Command {
 
         args = new String[]{String.join(" ", args)};
         Channel channel = MentionableUtil.getChannel(context.getMessage(), args);
-        if (channel == null || !(channel instanceof TextChannel)) {
+        if (!(channel instanceof TextChannel)) {
             return sendErrorMessage(context, context.i18n("errors.notValidType", args[0], Type.TEXT.name().toLowerCase()));
         }
 

@@ -8,6 +8,7 @@ import com.avairebot.database.transformers.GuildTransformer;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.events.role.RoleDeleteEvent;
 import net.dv8tion.jda.core.events.role.update.RoleUpdateNameEvent;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import java.sql.SQLException;
 import java.util.Map;
@@ -42,7 +43,7 @@ public class RoleEventAdapter extends EventAdapter {
                     statement.set("claimable_roles", AvaIre.gson.toJson(transformer.getSelfAssignableRoles()), true);
                 });
         } catch (SQLException e) {
-            e.printStackTrace();
+            AvaIre.getLogger().error("SQLException on RoleEventAdapter.onRoleUpdateName", ExceptionUtils.getStackTrace(e));
         }
     }
 
@@ -69,7 +70,7 @@ public class RoleEventAdapter extends EventAdapter {
                 .where("id", event.getGuild().getId())
                 .update(statement -> statement.set("autorole", null));
         } catch (SQLException e) {
-            e.printStackTrace();
+            AvaIre.getLogger().error("SQLException on RoleEventAdapter.handleAutoroles", ExceptionUtils.getStackTrace(e));
         }
     }
 
@@ -87,7 +88,7 @@ public class RoleEventAdapter extends EventAdapter {
                     statement.set("claimable_roles", AvaIre.gson.toJson(transformer.getSelfAssignableRoles()), true);
                 });
         } catch (SQLException e) {
-            e.printStackTrace();
+            AvaIre.getLogger().error("SQLException on RoleEventAdapter.handleSelfAssignableRoles", ExceptionUtils.getStackTrace(e));
         }
     }
 
@@ -112,7 +113,7 @@ public class RoleEventAdapter extends EventAdapter {
                     statement.set("level_roles", AvaIre.gson.toJson(transformer.getLevelRoles()), true);
                 });
         } catch (SQLException e) {
-            e.printStackTrace();
+            AvaIre.getLogger().error("SQLException on RoleEventAdapter.handleLevelRoles", ExceptionUtils.getStackTrace(e));
         }
     }
 
@@ -125,7 +126,7 @@ public class RoleEventAdapter extends EventAdapter {
                     statement.set("roles_data", GuildController.buildRoleData(guild.getRoles()), true);
                 });
         } catch (SQLException e) {
-            e.printStackTrace();
+            AvaIre.getLogger().error("SQLException on RoleEventAdapter.updateRoleData", ExceptionUtils.getStackTrace(e));
         }
     }
 }

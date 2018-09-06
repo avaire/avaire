@@ -68,7 +68,7 @@ public class SQLite extends FilenameDatabase {
     }
 
     @Override
-    protected void queryValidation(StatementInterface paramStatement) throws SQLException {
+    protected void queryValidation(StatementInterface paramStatement) {
         // This does nothing for SQLite
     }
 
@@ -97,8 +97,6 @@ public class SQLite extends FilenameDatabase {
 
             try (ResultSet tables = md.getTables(null, null, table, null)) {
                 if (tables.next()) {
-                    tables.close();
-
                     return true;
                 }
             }
@@ -134,12 +132,13 @@ public class SQLite extends FilenameDatabase {
     protected Statement createPreparedStatement(String query) throws SQLException {
         Metrics.databaseQueries.labels(query.split(" ")[0].toUpperCase()).inc();
 
-        Statement statement = getConnection().createStatement();
+        try (Statement statement = getConnection().createStatement()) {
 
-        statement.setQueryTimeout(5);
-        statement.setMaxRows(25000);
+            statement.setQueryTimeout(5);
+            statement.setMaxRows(25000);
 
-        return statement;
+            return statement;
+        }
     }
 
     public String select(DatabaseManager manager, QueryBuilder query, Map<String, Boolean> options) {

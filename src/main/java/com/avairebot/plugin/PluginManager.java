@@ -1,7 +1,9 @@
 package com.avairebot.plugin;
 
+import com.avairebot.AvaIre;
 import com.avairebot.exceptions.InvalidPluginException;
 import com.avairebot.exceptions.InvalidPluginsPathException;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,12 +38,12 @@ public class PluginManager {
             if (file.isDirectory() || file.isHidden()) continue;
 
             try {
-                log.debug("Attempting to load plugin: " + file.toString());
+                log.debug(String.format("Attempting to load plugin: %s", file));
                 PluginLoader pluginLoader = new PluginLoader(file, pluginsFolder);
 
                 plugins.add(pluginLoader);
             } catch (IOException ex) {
-                ex.printStackTrace();
+                AvaIre.getLogger().error("IOException on PluginManager.loadPlugins", ExceptionUtils.getStackTrace(ex));
             }
         }
     }

@@ -7,6 +7,7 @@ import com.google.gson.internal.LinkedTreeMap;
 
 import javax.annotation.Nonnull;
 import java.util.HashMap;
+import java.util.Map;
 
 public class ChannelTransformer extends Transformer {
 
@@ -84,7 +85,7 @@ public class ChannelTransformer extends Transformer {
         return slowmode;
     }
 
-    public HashMap<String, Object> toMap() {
+    public Map<String, Object> toMap() {
         HashMap<String, Object> objects = new HashMap<>();
 
         objects.put("ai", ai.toMap());

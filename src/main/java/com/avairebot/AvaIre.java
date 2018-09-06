@@ -61,6 +61,7 @@ import net.dv8tion.jda.core.entities.SelfUser;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import net.dv8tion.jda.core.requests.RestAction;
 import net.dv8tion.jda.core.utils.SessionControllerAdapter;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -108,7 +109,7 @@ public class AvaIre {
 
     private ShardManager shardManager = null;
 
-    public AvaIre(Settings settings) throws IOException, SQLException, InvalidApplicationEnvironmentException {
+    public AvaIre(Settings settings) throws SQLException, InvalidApplicationEnvironmentException {
         this.settings = settings;
 
         System.out.println(getVersionInfo());
@@ -275,14 +276,12 @@ public class AvaIre {
             sentryClient.addMdcTag(SentryConstants.SENTRY_MDC_TAG_MESSAGE);
 
             sentryClient.setEnvironment(getEnvironment().getName());
-            switch (getEnvironment()) {
-                case PRODUCTION:
-                    sentryClient.setRelease(GitInfo.getGitInfo().commitId);
-                    break;
+            if (getEnvironment() == Environment.PRODUCTION) {
+                sentryClient.setRelease(GitInfo.getGitInfo().commitId);
 
-                default:
-                    sentryClient.setRelease(AppInfo.getAppInfo().version);
-                    break;
+            } else {
+                sentryClient.setRelease(AppInfo.getAppInfo().version);
+
             }
 
             getSentryLogbackAppender().start();
@@ -315,7 +314,7 @@ public class AvaIre {
         try {
             shardManager = buildShardManager();
         } catch (LoginException e) {
-            e.printStackTrace();
+            log.error("LoginException on Avalre:\n", ExceptionUtils.getStackTrace(e));
         }
     }
 
@@ -463,7 +462,7 @@ public class AvaIre {
         try {
             Thread.sleep(2500);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            getLogger().error("InterruptedException: ", ExceptionUtils.getStackTrace(e));
         }
 
         if (getShardManager() != null) {
