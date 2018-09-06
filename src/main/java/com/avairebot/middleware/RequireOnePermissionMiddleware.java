@@ -13,9 +13,9 @@ import javax.annotation.Nonnull;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
-public class RequirePermissionMiddleware extends Middleware {
+public class RequireOnePermissionMiddleware extends Middleware {
 
-    public RequirePermissionMiddleware(AvaIre avaire) {
+    public RequireOnePermissionMiddleware(AvaIre avaire) {
         super(avaire);
     }
 
@@ -25,7 +25,8 @@ public class RequirePermissionMiddleware extends Middleware {
         if (arguments.length == 1) {
             return PermissionCommon.formatWithOneArgument(arguments[0]);
         }
-        return String.format("**The `%s` permissions is required to use this command!**",
+
+        return String.format("**One of the following permissions is required to use this command:\n `%s`**",
             Arrays.stream(arguments)
                 .map(Permissions::fromNode)
                 .map(Permissions::getPermission)
@@ -52,8 +53,8 @@ public class RequirePermissionMiddleware extends Middleware {
             return false;
         }
 
-        if (!permissionCheck.getMissingUserPermissions().isEmpty()) {
-            MessageFactory.makeError(message, "You're missing the required permission node for this command:\n`:permission`")
+        if (!permissionCheck.userHasAtleastOne()) {
+            MessageFactory.makeError(message, "You must have at least one of the following permission nodes to use this command:\n`:permission`")
                 .set("permission", permissionCheck.getMissingUserPermissions().stream()
                     .map(Permissions::getPermission)
                     .map(Permission::getName)
@@ -61,8 +62,8 @@ public class RequirePermissionMiddleware extends Middleware {
                 ).queue();
         }
 
-        if (!permissionCheck.getMissingBotPermissions().isEmpty()) {
-            MessageFactory.makeError(message, "I'm missing the following permission to run this command successfully:\n`:permission`")
+        if (!permissionCheck.botHasAtleastOne()) {
+            MessageFactory.makeError(message, "I'm missing one of the following permission nodes to run this command:\n`:permission`")
                 .set("permission", permissionCheck.getMissingBotPermissions().stream()
                     .map(Permissions::getPermission)
                     .map(Permission::getName)
@@ -70,6 +71,20 @@ public class RequirePermissionMiddleware extends Middleware {
                 ).queue();
         }
 
-        return permissionCheck.isEmpty() && stack.next();
+        if (permissionCheck.getType().isCheckUser() && permissionCheck.getType().isCheckBot()) {
+            return permissionCheck.userHasAtleastOne()
+                && permissionCheck.botHasAtleastOne()
+                && stack.next();
+        } else if (permissionCheck.getType().isCheckUser()) {
+            return permissionCheck.userHasAtleastOne()
+                && stack.next();
+        } else if (permissionCheck.getType().isCheckBot()) {
+            return permissionCheck.botHasAtleastOne()
+                && stack.next();
+        }
+
+        // This should never be hit, if we do hit
+        // it we'll just kill the middleware.
+        return false;
     }
 }
