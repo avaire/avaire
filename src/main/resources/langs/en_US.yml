@@ -445,7 +445,7 @@ utility:
 
     VersionCommand:
         current: 'I am currently `:difference` :type versions behind!'
-        getLatest: 'You can get the latest version of me on github at [avaire/avaire](https://github.com/avaire/avaire)'
+        getLatest: 'You can get the latest version of me on github at [avaire/avaire](https://github.com/LTN-Akagi/Kaga)'
         usingLatest: "You're using the latest version of AvaIre!"
         latestVersion: 'The latest version of AvaIre is v{0}'
         versions:
