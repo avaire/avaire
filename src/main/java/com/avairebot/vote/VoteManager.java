@@ -4,6 +4,7 @@ import com.avairebot.AvaIre;
 import com.avairebot.Constants;
 import com.avairebot.database.collection.Collection;
 import com.avairebot.database.collection.DataRow;
+import com.avairebot.metrics.Metrics;
 import com.avairebot.time.Carbon;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.User;
@@ -29,6 +30,11 @@ public class VoteManager {
 
     public VoteManager(AvaIre avaire) {
         this.avaire = avaire;
+
+        for (VoteMetricType type : VoteMetricType.values()) {
+            Metrics.dblVotes.labels(type.getName()).inc(0);
+        }
+        Metrics.validVotes.set(0D);
 
         this.syncWithDatabase();
     }

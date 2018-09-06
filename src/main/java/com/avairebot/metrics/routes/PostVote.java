@@ -5,6 +5,7 @@ import com.avairebot.contracts.metrics.SparkRoute;
 import com.avairebot.metrics.Metrics;
 import com.avairebot.time.Carbon;
 import com.avairebot.vote.VoteCacheEntity;
+import com.avairebot.vote.VoteMetricType;
 import net.dv8tion.jda.core.entities.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,6 +47,8 @@ public class PostVote extends SparkRoute {
         VoteCacheEntity voteEntity = metrics.getAvaire().getVoteManager().getVoteEntityWithFallback(metrics.getAvaire(), userById);
         voteEntity.setCarbon(Carbon.now().addHours(24));
         metrics.getAvaire().getVoteManager().registerVoteFor(userById);
+
+        Metrics.dblVotes.labels(VoteMetricType.WEBHOOK.getName()).inc();
 
         log.info("Vote has been registered by {} ({})",
             userById.getName() + "#" + userById.getDiscriminator(), userById.getId()

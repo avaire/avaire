@@ -188,6 +188,7 @@ public class AvaIre {
         MiddlewareHandler.register("hasVoted", new HasVotedTodayMiddleware(this));
         MiddlewareHandler.register("isBotAdmin", new IsBotAdminMiddleware(this));
         MiddlewareHandler.register("require", new RequirePermissionMiddleware(this));
+        MiddlewareHandler.register("requireOne", new RequireOnePermissionMiddleware(this));
         MiddlewareHandler.register("hasDJLevel", new RequireDJLevelMiddleware(this));
         MiddlewareHandler.register("throttle", new ThrottleMiddleware(this));
         MiddlewareHandler.register("musicChannel", new IsMusicChannelMiddleware(this));

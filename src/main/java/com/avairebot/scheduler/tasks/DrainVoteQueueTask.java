@@ -3,11 +3,13 @@ package com.avairebot.scheduler.tasks;
 import com.avairebot.AvaIre;
 import com.avairebot.contracts.scheduler.Task;
 import com.avairebot.factories.RequestFactory;
+import com.avairebot.metrics.Metrics;
 import com.avairebot.requests.Response;
 import com.avairebot.time.Carbon;
 import com.avairebot.utilities.NumberUtil;
 import com.avairebot.vote.VoteCacheEntity;
 import com.avairebot.vote.VoteEntity;
+import com.avairebot.vote.VoteMetricType;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.User;
 import org.slf4j.Logger;
@@ -71,6 +73,8 @@ public class DrainVoteQueueTask implements Task {
         }
 
         Carbon expiresIn = new Carbon(response.getResponse().header("Date")).addDay();
+
+        Metrics.dblVotes.labels(VoteMetricType.COMMAND.getName()).inc();
 
         log.info("Vote record for {} was found, registering vote that expires on {}", entity.getUserId(), expiresIn.toDateTimeString());
 
