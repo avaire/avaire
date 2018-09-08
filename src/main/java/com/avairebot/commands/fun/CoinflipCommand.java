@@ -38,7 +38,7 @@ public class CoinflipCommand extends Command {
         boolean isHeads = RandomUtil.getBoolean();
 
         context.makeEmbeddedMessage()
-            .setTitle("You got " + (isHeads ? "Heads" : "Tails"))
+            .setTitle(context.i18n(isHeads ? "heads" : "tails"))
             .setImage(isHeads ? heads : tails)
             .queue();
 

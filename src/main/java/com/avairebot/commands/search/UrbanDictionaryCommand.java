@@ -53,7 +53,7 @@ public class UrbanDictionaryCommand extends Command {
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
         if (context.isGuildMessage() && !context.getChannel().isNSFW()) {
-            return sendErrorMessage(context, "The `Urban Dictionary` command can only be used in NSFW channels, as the content of the command may not be appreciate for all.");
+            return sendErrorMessage(context, context.i18n("nsfwDisabled"));
         }
 
         if (args.length == 0) {

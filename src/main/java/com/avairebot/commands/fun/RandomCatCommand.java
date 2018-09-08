@@ -59,14 +59,14 @@ public class RandomCatCommand extends Command {
             int statusCode = response.getResponse().code();
 
             if (statusCode == 429) {
-                context.makeWarning("Too many attempts was made to the cat API, try again in a minute, or ask a bot administrator to get an API key at [meow.senither.com](https://meow.senither.com/) to allow for more requests.")
+                context.makeWarning(context.i18n("tooManyAttempts"))
                     .queue(message -> message.delete().queueAfter(45, TimeUnit.SECONDS, null, RestActionUtil.ignore));
 
                 return;
             }
 
             if (statusCode == 404) {
-                context.makeWarning("I couldn't find any cat picture D: Try again, maybe they will show up now?")
+                context.makeWarning(context.i18n("notFound"))
                     .queue(message -> message.delete().queueAfter(45, TimeUnit.SECONDS, null, RestActionUtil.ignore));
 
                 return;
@@ -79,7 +79,7 @@ public class RandomCatCommand extends Command {
                 return;
             }
 
-            context.makeError("Something just went horribly wrong, please tell a bot administrator so they can look into this.").queue();
+            context.makeError(context.i18n("somethingWentWrong")).queue();
         });
         return true;
     }

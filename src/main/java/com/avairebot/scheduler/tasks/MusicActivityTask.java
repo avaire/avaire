@@ -5,6 +5,7 @@ import com.avairebot.audio.AudioHandler;
 import com.avairebot.audio.GuildMusicManager;
 import com.avairebot.audio.LavalinkManager;
 import com.avairebot.contracts.scheduler.Task;
+import com.avairebot.language.I18n;
 import lavalink.client.io.Link;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Member;
@@ -207,7 +208,9 @@ public class MusicActivityTask implements Task {
             }
 
             if (guildMusicManager.getLastActiveMessage() != null && guildMusicManager.getLastActiveMessage().getChannel().canTalk()) {
-                guildMusicManager.getLastActiveMessage().makeInfo("The music has ended due to inactivity.").queue();
+                guildMusicManager.getLastActiveMessage().makeInfo(I18n.getLocale(guildMusicManager.getGuild())
+                    .getConfig().getString("music.internal.endedDueToInactivity", "The music has ended due to inactivity."))
+                    .queue();
             }
         }
 

@@ -28,6 +28,10 @@ fun:
         moreThanFiveRollsWasGiven: '\n_Больше, чем **5** данных о костях не отоброжается. Сейчас отображаются только первые пять._\n'
         resultedIn: '**{0}** привело к **{1}**  ({2})'
 
+    CoinflipCommand:
+        heads: "You got Heads"
+        tails: "You got Tails"
+
     EightBallCommand:
         mustIncludeQuestion: 'Сообщение должено включать в себя вопрос для 8ball.'
         answers:
@@ -57,6 +61,12 @@ fun:
         invalidType: '`{0}` Недопустимый тип мема!'
         mustIncludeTopAndBottomText: 'Вы должны включить аргументы `Заголовок` и `Нижний текст` чтобы создать мем.'
         listItem: '`{0}` => `{1}`'
+
+    RandomCatCommand:
+        tooManyAttempts: "Too many attempts was made to the cat API, try again in a minute, or ask a bot administrator to get an API key at [meow.senither.com](https://meow.senither.com/) to allow for more requests."
+        notFound: "I couldn't find any cat picture D: Try again, maybe they will show up now?"
+        somethingWentWrong: "Something just went horribly wrong, please tell a bot administrator so they can look into this."
+
 
     ReverseCommand:
         palindrome: 'Вы полностью изменили палиндром, что Вы ожидали?'
@@ -116,6 +126,7 @@ music:
         nowPlayingPlaylist: 'Плей-лист **:playlistName** был добавлен в очередь с `:playlistSize` треками!'
         nowPlaying: 'Сейчас играет: [:title](:link) | `:duration`\n- Трек, требуемый :requester\nС громкостью `:volume%`'
         queueHasEnded: 'Бот закончил очередь, оставив вас в одиночестве.'
+        endedDueToInactivity: "The music has ended due to inactivity."
         noMatchFound: 'Я ничего не нашел с данным запросом: `{0}`'
         trackLoadFailed: "Я не могу добавить это в очередь: `{0}`"
         musicChannel: "Вы можете использовать только музыкальные команды в :channel канале."
@@ -288,6 +299,7 @@ search:
         untitled: 'Без названия'
         example: 'пример'
         results: ':percentage процент таких людей. :вверх👍 :вниз👎'
+        nsfwDisabled: "The `Urban Dictionary` command can only be used in NSFW channels, as the content of the command may not be appreciate for all."
 
     XKCDCommand:
         number: 'Номер XKCD #{0}'
