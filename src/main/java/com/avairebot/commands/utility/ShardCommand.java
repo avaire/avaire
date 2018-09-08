@@ -66,7 +66,7 @@ public class ShardCommand extends Command {
 
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
-        if (avaire.getShardManager().getShards().size() < 2) {
+        if (avaire.getSettings().getShardCount() < 2) {
             CommandContainer container = CommandHandler.getCommand(StatsCommand.class);
             if (container == null) {
                 return sendErrorMessage(context, "Sharding is not enabled right now :(");
@@ -84,7 +84,23 @@ public class ShardCommand extends Command {
             : 0;
 
         List<MessageEmbed.Field> shards = new ArrayList<>();
-        for (JDA shard : avaire.getShardManager().getShards()) {
+        for (int i = avaire.getSettings().getShardCount() - 1; i >= 0; i--) {
+            JDA shard = avaire.getShardManager().getShardById(i);
+
+            if (shard == null) {
+                shards.add(new MessageEmbed.Field(String.format("Shard #%s %s",
+                    i, getShardConnectionIcon(JDA.Status.SHUTDOWN)
+                ), "Connecting to Discord...", true));
+                continue;
+            }
+
+            if (!shard.getStatus().equals(JDA.Status.CONNECTED)) {
+                shards.add(new MessageEmbed.Field(String.format("Shard #%s %s",
+                    i, getShardConnectionIcon(shard.getStatus())
+                ), formatShardStatus(shard.getStatus()), true));
+                continue;
+            }
+
             shards.add(new MessageEmbed.Field(String.format("Shard #%s %s%s",
                 shard.getShardInfo().getShardId(),
                 getShardConnectionIcon(shard.getStatus()),
@@ -119,6 +135,11 @@ public class ShardCommand extends Command {
         ).queue();
 
         return true;
+    }
+
+    private String formatShardStatus(JDA.Status status) {
+        final String name = status.name().toLowerCase().replace("_", " ");
+        return name.substring(0, 1).toUpperCase() + name.substring(1);
     }
 
     private String getShardConnectionIcon(JDA.Status status) {

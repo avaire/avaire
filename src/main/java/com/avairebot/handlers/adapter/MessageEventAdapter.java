@@ -90,10 +90,6 @@ public class MessageEventAdapter extends EventAdapter {
         }
 
         loadDatabasePropertiesIntoMemory(event).thenAccept(databaseEventHolder -> {
-            if (!avaire.areWeReadyYet() && !avaire.getBotAdmins().contains(event.getAuthor().getId())) {
-                return;
-            }
-
             if (isUserBeingThrottledBySlowmodeInChannel(event, databaseEventHolder)) {
                 event.getMessage().delete().queue(null, RestActionUtil.ignore);
                 Metrics.slowmodeRatelimited.labels(event.getChannel().getId()).inc();
