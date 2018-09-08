@@ -2,6 +2,7 @@ package com.avairebot.commands.administration;
 
 import com.avairebot.AvaIre;
 import com.avairebot.chat.MessageType;
+import com.avairebot.commands.CommandHandler;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.CacheFingerprint;
 import com.avairebot.contracts.commands.ChannelModuleCommand;
@@ -67,6 +68,7 @@ public class GoodbyeMessageCommand extends ChannelModuleCommand {
     }
 
     @Override
+    @SuppressWarnings({"ConstantConditions", "Duplicates"})
     public boolean onCommand(CommandMessage context, String[] args) {
         GuildTransformer guildTransformer = context.getGuildTransformer();
         if (guildTransformer == null) {
@@ -76,9 +78,9 @@ public class GoodbyeMessageCommand extends ChannelModuleCommand {
         ChannelTransformer channelTransformer = guildTransformer.getChannel(context.getChannel().getId());
 
         if (channelTransformer == null || !channelTransformer.getGoodbye().isEnabled()) {
-            return sendErrorMessage(context,
-                "The `goodbye` module must be enabled to use this command, you can enable the `goodbye` module by using the `{0}goodbye` command.",
-                generateCommandPrefix(context.getMessage())
+            return sendErrorMessage(context, context.i18n("moduleMustBeEnabled",
+                CommandHandler.getCommand(GoodbyeCommand.class)
+                    .getCommand().generateCommandTrigger(context.getMessage()))
             );
         }
 
@@ -86,11 +88,11 @@ public class GoodbyeMessageCommand extends ChannelModuleCommand {
             return handleEmbedOption(context, args, guildTransformer, channelTransformer, () -> {
                 String embedColor = getChannelModule(channelTransformer).getEmbedColor();
 
-                context.makeSuccess("The embed option for goodbye messages has been **:status**\n:note")
-                    .set("status", embedColor == null ? "disabled" : "enabled")
+                context.makeSuccess(context.i18n("message"))
+                    .set("status", context.i18n("status." + (embedColor == null ? "disabled" : "enabled")))
                     .set("note", embedColor == null
-                        ? "Now sending goodbye messages through normal messages."
-                        : "Goodbye messages will now be sent using embedded messages with the color: " + embedColor)
+                        ? context.i18n("note.normal")
+                        : context.i18n("note.embed", embedColor))
                     .setColor(embedColor == null ? MessageType.SUCCESS.getColor() : Color.decode(embedColor))
                     .queue();
 
@@ -110,7 +112,7 @@ public class GoodbyeMessageCommand extends ChannelModuleCommand {
 
         return updateDatabase(context, guildTransformer, () -> {
             if (channelTransformer.getGoodbye().getMessage() == null) {
-                context.makeSuccess("The `Goodbye` module message has been set back to the default.").queue();
+                context.makeSuccess(context.i18n("changedToDefault")).queue();
 
                 return true;
             }

@@ -52,9 +52,7 @@ public class AiCommand extends Command {
 
         if (channelTransformer == null) {
             if (!guildTransformer.createChannelTransformer(context.getChannel())) {
-                context.makeError(
-                    "Something went wrong while trying to create the channel transformer object, please contact one of my developers to look into this issue."
-                ).queue();
+                context.makeError(context.i18nRaw("errors.errorOccurredWhileLoading", "channel transformer")).queue();
                 return false;
             }
             channelTransformer = guildTransformer.getChannel(context.getChannel().getId());
@@ -67,8 +65,8 @@ public class AiCommand extends Command {
                 .andWhere("id", context.getGuild().getId())
                 .update(statement -> statement.set("channels", guildTransformer.channelsToJson(), true));
 
-            context.makeSuccess("The `Artificial Intelligence` module has been **:status** for the :channel channel.")
-                .set("status", channelTransformer.getAI().isEnabled() ? "Enabled" : "Disabled")
+            context.makeSuccess(context.i18n("message"))
+                .set("status", context.i18n(channelTransformer.getAI().isEnabled() ? "status.enabled" : "status.disabled"))
                 .queue();
         } catch (SQLException ex) {
             AvaIre.getLogger().error(ex.getMessage(), ex);

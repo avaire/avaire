@@ -70,9 +70,7 @@ public class WarnCommand extends Command {
 
         if (transformer.getModlog() == null) {
             String prefix = generateCommandPrefix(context.getMessage());
-            return sendErrorMessage(context,
-                "This command requires a modlog channel to be set, a modlog channel can be set using the `{0}modlog` command.", prefix
-            );
+            return sendErrorMessage(context, context.i18n("requiresModlogIsEnabled", prefix));
         }
 
         User user = null;
@@ -81,11 +79,11 @@ public class WarnCommand extends Command {
         }
 
         if (user == null) {
-            return sendErrorMessage(context, "You must mention a user you want warn.");
+            return sendErrorMessage(context, context.i18n("mustMentionUse"));
         }
 
         if (user.isBot()) {
-            return sendErrorMessage(context, "You can't warn bots!");
+            return sendErrorMessage(context, context.i18n("warnBots"));
         }
 
         String reason = "No reason was given.";
@@ -101,7 +99,7 @@ public class WarnCommand extends Command {
         );
 
         if (caseId == null) {
-            return sendErrorMessage(context, "Failed to log warning to the set modlog channel, does the modlog channel still exists, can I still send messages in the channel?");
+            return sendErrorMessage(context, context.i18n("failedToLogWarning"));
         }
 
         User finalUser = user;
@@ -118,14 +116,14 @@ public class WarnCommand extends Command {
                     .build()
             ).queue(null, RestActionUtil.ignore);
 
-            context.makeWarning(":target has been **warned** for \":reason\"")
+            context.makeWarning(context.i18n("message"))
                 .set("target", finalUser.getName() + "#" + finalUser.getDiscriminator())
                 .set("reason", finalReason)
                 .setFooter("Case ID #" + caseId)
                 .setTimestamp(Instant.now())
                 .queue(null, RestActionUtil.ignore);
         }, error -> {
-            context.makeWarning("Failed to DM the user with the warning, they most likely have their private settings set to disable all DMs from this server.")
+            context.makeWarning(context.i18n("failedToSendDM"))
                 .queue();
         });
 

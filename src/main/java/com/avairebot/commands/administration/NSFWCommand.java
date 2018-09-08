@@ -81,18 +81,18 @@ public class NSFWCommand extends Command {
                     if (channel != null && (channel instanceof TextChannel)) {
                         return sendChannelStatus(context, (TextChannel) channel);
                     }
-                    return sendErrorMessage(context, "Invalid channel or status type given!");
+                    return sendErrorMessage(context, context.i18n("invalidChannelOrStatus"));
             }
         }
 
         Channel channel = MentionableUtil.getChannel(context.getMessage(), args);
         if (channel == null || !(channel instanceof TextChannel)) {
-            return sendErrorMessage(context, "`{0}` is not a valid text channel!", args[0]);
+            return sendErrorMessage(context, context.i18n("notValidChannel", args[0]));
         }
 
         ComparatorUtil.ComparatorType fuzzyType = ComparatorUtil.getFuzzyType(args[1]);
         if (fuzzyType.equals(ComparatorUtil.ComparatorType.UNKNOWN)) {
-            return sendErrorMessage(context, "`{0}` is not a valid status type, you must either pass `on` or `off`.", args[1]);
+            return sendErrorMessage(context, context.i18n("notValidStatus", args[1]));
         }
 
         return updateChannelStatus(context, (TextChannel) channel, fuzzyType.getValue());
@@ -100,9 +100,9 @@ public class NSFWCommand extends Command {
 
     private boolean updateChannelStatus(CommandMessage context, TextChannel textChannel, boolean status) {
         textChannel.getManager().setNSFW(status).queue(aVoid -> {
-            context.makeSuccess("The NSFW status for :textChannel has been changed to **:status**")
+            context.makeSuccess(context.i18n("updated"))
                 .set("textChannel", textChannel.getAsMention())
-                .set("status", status ? "Enabled" : "Disabled")
+                .set("status", context.i18n("status." + (status ? "enabled" : "disabled")))
                 .queue();
         }, throwable -> {
             context.makeError("Something went wrong while trying to update the channel status: " + throwable.getLocalizedMessage())
@@ -113,9 +113,9 @@ public class NSFWCommand extends Command {
     }
 
     private boolean sendChannelStatus(CommandMessage context, TextChannel textChannel) {
-        context.makeInfo("The :textChannel channel currently has NSFW **:status**!")
+        context.makeInfo(context.i18n("message"))
             .set("textChannel", textChannel.getAsMention())
-            .set("status", textChannel.isNSFW() ? "Enabled" : "Disabled")
+            .set("status", context.i18n("status." + (textChannel.isNSFW() ? "enabled" : "disabled")))
             .queue();
 
         return false;

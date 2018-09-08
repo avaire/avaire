@@ -63,12 +63,12 @@ public class AliasCommand extends Command {
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
         if (args.length == 0) {
-            return sendErrorMessage(context, "Missing argument, the `alias` argument is required.");
+            return sendErrorMessage(context, "errors.missingArgument", "alias");
         }
 
         GuildTransformer transformer = context.getGuildTransformer();
         if (transformer == null) {
-            return sendErrorMessage(context, "An error occurred while loading the server settings, please try again, if the problem continues please report this to one of my developers on the [AvaIre support server](https://discord.gg/gt2FWER).");
+            return sendErrorMessage(context, "errors.errorOccurredWhileLoading", "server settings");
         }
 
         if (args.length == 1) {
@@ -76,11 +76,11 @@ public class AliasCommand extends Command {
         }
 
         if (transformer.getAliases().containsKey(args[0].toLowerCase())) {
-            return sendErrorMessage(context, "There is already a custom alias called `{0}`", args[0]);
+            return sendErrorMessage(context, context.i18n("alreadyExists", args[0]));
         }
 
         if (transformer.getAliases().size() >= transformer.getType().getLimits().getAliases()) {
-            context.makeWarning("The server doesn't have any more alias slots, you can delete existing aliases to free up slots.").queue();
+            context.makeWarning(context.i18n("noSlotsLeft")).queue();
             return false;
         }
 
@@ -88,9 +88,7 @@ public class AliasCommand extends Command {
         String[] split = String.join(" ", Arrays.copyOfRange(args, 1, args.length)).split(" ");
         CommandContainer command = CommandHandler.getCommand(context.getMessage(), split[0]);
         if (command == null) {
-            return sendErrorMessage(context, "Invalid command given, I don't know of any command called `{0}`",
-                split[0]
-            );
+            return sendErrorMessage(context, context.i18n("invalidCommand", split[0]));
         }
 
         String commandString = command.getDefaultPrefix()
@@ -102,7 +100,7 @@ public class AliasCommand extends Command {
         try {
             updateGuildAliases(context, transformer);
 
-            context.makeSuccess("The `:alias` alias has been linked to `:command`\nThe server has `:slots` more aliases slots available.")
+            context.makeSuccess(context.i18n("created"))
                 .set("alias", args[0])
                 .set("command", commandString)
                 .set("slots", transformer.getType().getLimits().getAliases() - transformer.getAliases().size())
@@ -116,7 +114,7 @@ public class AliasCommand extends Command {
 
     private boolean removeCustomAlias(CommandMessage context, GuildTransformer transformer, String[] args) {
         if (!transformer.getAliases().containsKey(args[0].toLowerCase())) {
-            return sendErrorMessage(context, "Invalid alias given, `{0}` is not registered as an alias.", args[0]);
+            return sendErrorMessage(context, context.i18n("invalidAlias", args[0]));
         }
 
         transformer.getAliases().remove(args[0].toLowerCase());
@@ -124,7 +122,7 @@ public class AliasCommand extends Command {
         try {
             updateGuildAliases(context, transformer);
 
-            context.makeSuccess("The `:alias` alias has been deleted successfully.")
+            context.makeSuccess(context.i18n("deleted"))
                 .set("alias", args[0])
                 .queue();
             return true;

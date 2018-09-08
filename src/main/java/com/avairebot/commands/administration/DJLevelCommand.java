@@ -64,20 +64,14 @@ public class DJLevelCommand extends Command {
     public boolean onCommand(CommandMessage context, String[] args) {
         GuildTransformer transformer = context.getGuildTransformer();
         if (transformer == null) {
-            return sendErrorMessage(context,
-                "Something went wrong while trying to get the guild transformer object, please contact one of my developers to look into this issue."
-            );
+            return sendErrorMessage(context, "errors.errorOccurredWhileLoading", "server settings");
         }
 
         if (args.length == 0) {
-            context.makeInfo(getLevelInformation(transformer.getDJLevel()))
-                .setTitle("Current DJ Level: " + transformer.getDJLevel().getName())
-                .setFooter(String.format(
-                    "Use \"%s types\" to see a full list of the available DJ level types.",
-                    generateCommandTrigger(context.getMessage())
-                ))
+            context.makeInfo(getLevelInformation(context, transformer.getDJLevel()))
+                .setTitle(context.i18n("title", transformer.getDJLevel().getName()))
+                .setFooter(context.i18n("footer", generateCommandTrigger(context.getMessage())))
                 .queue();
-
             return true;
         }
 
@@ -85,15 +79,12 @@ public class DJLevelCommand extends Command {
             PlaceholderMessage placeholderMessage = MessageFactory.makeEmbeddedMessage(context.getChannel());
 
             for (DJGuildLevel level : DJGuildLevel.values()) {
-                placeholderMessage.addField(level.getName(), getLevelInformation(level), false);
+                placeholderMessage.addField(level.getName(), getLevelInformation(context, level), false);
             }
 
             placeholderMessage
-                .setTitle("DJ Level Types")
-                .setFooter(String.format(
-                    "Use \"%s <type>\" to change the DJ Level to the given type for the server.",
-                    generateCommandTrigger(context.getMessage())
-                ))
+                .setTitle(context.i18n("types.title"))
+                .setFooter(context.i18n("types.footer", generateCommandTrigger(context.getMessage())))
                 .queue();
 
             return true;
@@ -101,9 +92,9 @@ public class DJLevelCommand extends Command {
 
         DJGuildLevel level = DJGuildLevel.fromName(args[0]);
         if (level == null) {
-            return sendErrorMessage(context, "`{0}` is not a valid `DJ Level` type, please use one of the following:\n`{1}`",
+            return sendErrorMessage(context, context.i18n("invalidType",
                 args[0], String.join("`, `", DJGuildLevel.getNames())
-            );
+            ));
         }
 
         try {
@@ -114,7 +105,7 @@ public class DJLevelCommand extends Command {
 
             context.makeSuccess("The `DJ Level` status has changed to **:type**.\n:info")
                 .set("type", level.getName())
-                .set("info", getLevelInformation(level))
+                .set("info", getLevelInformation(context, level))
                 .queue();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -124,16 +115,7 @@ public class DJLevelCommand extends Command {
         return false;
     }
 
-    private String getLevelInformation(DJGuildLevel level) {
-        switch (level) {
-            case ALL:
-                return "Anyone can run any music commands, even without the `DJ` role.";
-
-            case NONE:
-                return "No one can run any music commands without the `DJ` role.";
-
-            default:
-                return "Preventing people from using commands like playlists, volume control, and force skip without the `DJ` role, but still allowing people to use the play command without the role.";
-        }
+    private String getLevelInformation(CommandMessage context, DJGuildLevel level) {
+        return context.i18n("information." + level.name().toLowerCase());
     }
 }

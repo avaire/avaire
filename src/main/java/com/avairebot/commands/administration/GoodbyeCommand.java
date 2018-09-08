@@ -2,6 +2,7 @@ package com.avairebot.commands.administration;
 
 import com.avairebot.AvaIre;
 import com.avairebot.Constants;
+import com.avairebot.commands.CommandHandler;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.CacheFingerprint;
 import com.avairebot.contracts.commands.Command;
@@ -53,6 +54,7 @@ public class GoodbyeCommand extends Command {
     }
 
     @Override
+    @SuppressWarnings("ConstantConditions")
     public boolean onCommand(CommandMessage context, String[] args) {
         GuildTransformer guildTransformer = context.getGuildTransformer();
         if (guildTransformer == null) {
@@ -62,9 +64,7 @@ public class GoodbyeCommand extends Command {
         ChannelTransformer channelTransformer = guildTransformer.getChannel(context.getChannel().getId());
 
         if (channelTransformer == null) {
-            return sendErrorMessage(context,
-                "Something went wrong while trying to get the channel transformer object, please contact one of my developers to look into this issue."
-            );
+            return sendErrorMessage(context, "errors.errorOccurredWhileLoading", "channel settings");
         }
 
         ComparatorUtil.ComparatorType type = args.length == 0 ?
@@ -88,13 +88,15 @@ public class GoodbyeCommand extends Command {
 
             String note = "";
             if (channelTransformer.getGoodbye().isEnabled()) {
-                note = String.format("\nYou can customize the message by using `%sgoodbyemessage [message]`",
-                    generateCommandPrefix(context.getMessage())
+                note = context.i18n("note", CommandHandler.getCommand(GoodbyeMessageCommand.class)
+                    .getCommand().generateCommandTrigger(context.getMessage())
                 );
             }
 
-            context.makeSuccess("The `Goodbye` module has been **:status** for the :channel channel." + note)
-                .set("status", channelTransformer.getGoodbye().isEnabled() ? "Enabled" : "Disabled")
+            context.makeSuccess(context.i18n("message") + note)
+                .set("status", context.i18n(
+                    channelTransformer.getGoodbye().isEnabled() ? "status.enabled" : "status.disabled"
+                ))
                 .queue();
         } catch (SQLException ex) {
             AvaIre.getLogger().error("Failed to update the goodbye status", ex);

@@ -16,12 +16,9 @@ import net.dv8tion.jda.core.entities.User;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.regex.Pattern;
 
 @CacheFingerprint(name = "kick-command")
 public class KickCommand extends Command {
-
-    private static final Pattern userRegEX = Pattern.compile("<@(!|)+[0-9]{16,}+>", Pattern.CASE_INSENSITIVE);
 
     public KickCommand(AvaIre avaire) {
         super(avaire, false);
@@ -69,17 +66,15 @@ public class KickCommand extends Command {
     public boolean onCommand(CommandMessage context, String[] args) {
         User user = MentionableUtil.getUser(context, args);
         if (user == null) {
-            return sendErrorMessage(context, "You must mention the user you want to kick.");
+            return sendErrorMessage(context, context.i18n("mustMentionUser"));
         }
 
         if (userHasHigherRole(user, context.getMember())) {
-            return sendErrorMessage(context, "You can't kick people with a higher, or the same role as yourself.");
+            return sendErrorMessage(context, context.i18n("higherOrSameRole"));
         }
 
         if (!context.getGuild().getSelfMember().canInteract(context.getGuild().getMember(user))) {
-            return sendErrorMessage(context, "I can't kick {0}, they have a higher role than me, if you want be to be able to kick the user, please reajust my role position to above {0} highest role.",
-                user.getAsMention()
-            );
+            return sendErrorMessage(context, context.i18n("cantKickUser", user.getAsMention()));
         }
 
         return kickUser(context, context.getGuild().getMember(user), args);
@@ -102,11 +97,11 @@ public class KickCommand extends Command {
                     )
                 );
 
-                context.makeSuccess("**:target** was kicked by :user for \":reason\"")
+                context.makeSuccess(context.i18n("success"))
                     .set("target", user.getUser().getName() + "#" + user.getUser().getDiscriminator())
                     .set("reason", reason)
                     .queue();
-            }, throwable -> context.makeWarning("Failed to kick **:target** due to an error: :error")
+            }, throwable -> context.makeWarning(context.i18n("error"))
                 .set("target", user.getUser().getName() + "#" + user.getUser().getDiscriminator())
                 .set("error", throwable.getMessage())
                 .queue()

@@ -60,12 +60,12 @@ public class VoteOptCommand extends Command {
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
         if (args.length == 0) {
-            return sendErrorMessage(context, "Missing argument, you must either parse `in` or `out` to opt in or out of vote messages.");
+            return sendErrorMessage(context, context.i18n("invalidArgument"));
         }
 
         int opt = getOptValue(args[0]);
         if (opt == -1) {
-            return sendErrorMessage(context, "Invalid argument, you must either parse `in` or `out` to opt in or out of vote messages.");
+            return sendErrorMessage(context, context.i18n("invalidArgument"));
         }
 
         try {
@@ -76,8 +76,8 @@ public class VoteOptCommand extends Command {
         } catch (SQLException ignored) {
         }
 
-        context.makeSuccess("You have now opt-:type of getting vote messages.")
-            .set("type", opt == 0 ? "out" : "in")
+        context.makeSuccess(context.i18n("message"))
+            .set("type", context.i18n("type." + (opt == 0 ? "out" : "in")))
             .queue();
 
         avaire.getVoteManager().getVoteEntityWithFallback(avaire, context.getAuthor()).setOptIn(opt == 1);

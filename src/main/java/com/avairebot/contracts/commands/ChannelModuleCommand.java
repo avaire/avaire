@@ -42,7 +42,7 @@ public abstract class ChannelModuleCommand extends Command {
             }
 
             if (!colorRegEx.matcher(color).matches()) {
-                return sendErrorMessage(context, "Invalid color value given, the color must be a valid HEX value.\nYou can try this [random color picker](https://www.webpagefx.com/web-design/random-color-picker/) to try and get a random HEX color.");
+                return sendErrorMessage(context, context.i18nRaw("administration.channelModule.invalidColorGiven"));
             }
 
             getChannelModule(channelTransformer).setEmbedColor("#" + color);
@@ -90,14 +90,7 @@ public abstract class ChannelModuleCommand extends Command {
     }
 
     protected boolean sendEnableMessage(CommandMessage context, ChannelTransformer channelTransformer, String type) {
-        context.makeSuccess(String.join("\n",
-            "The `:type` module message has been set to:",
-            "",
-            "```:message```",
-            "",
-            "You can test the message by using the command again and mentioning a user.",
-            "`:command <user>`"
-        ))
+        context.makeSuccess(context.i18nRaw("administration.channelModule.message"))
             .set("type", type)
             .set("message", getChannelModule(channelTransformer).getMessage())
             .set("command", generateCommandTrigger(context.getMessage()))

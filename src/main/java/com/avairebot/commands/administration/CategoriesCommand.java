@@ -59,12 +59,6 @@ public class CategoriesCommand extends Command {
             channel = context.getMentionedChannels().get(0);
         }
 
-        String status = String.join("   ",
-            Constants.EMOTE_ONLINE + " Enabled",
-            Constants.EMOTE_AWAY + " Disabled in Channel",
-            Constants.EMOTE_DND + " Disabled Globally"
-        );
-
         GuildTransformer guildTransformer = context.getGuildTransformer();
         if (guildTransformer == null) {
             return sendErrorMessage(context, "errors.errorOccurredWhileLoading", "server settings");
@@ -89,8 +83,11 @@ public class CategoriesCommand extends Command {
             items.add(Constants.EMOTE_ONLINE + category.getName());
         }
 
-        context.makeInfo(status + "\n\n" + String.join("\n", items))
-            .setTitle("Command Category Status for #" + channel.getName())
+        context.makeInfo(context.i18n("status") + "\n\n" + String.join("\n", items))
+            .setTitle(context.i18n("title", channel.getName()))
+            .set("emoteEnabled", Constants.EMOTE_ONLINE)
+            .set("emoteDisabledInChannel", Constants.EMOTE_AWAY)
+            .set("emoteDisabledGlobally", Constants.EMOTE_DND)
             .queue();
 
         return true;

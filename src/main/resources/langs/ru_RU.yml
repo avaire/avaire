@@ -17,6 +17,261 @@ levelupMessages:
     - "Да Вы 🔥 :user, Вы только что достигли **:level уровня**"
     - "Поздравляем 🎉 :user 🎉\nВы получили новый уровень!\nУ вас сейчас - **:level уровень**"
 
+administration:
+    common:
+        invalidRole: ":user Invalid role, I couldn't find any role called **:role**"
+
+    channelModule:
+        invalidColorGiven: "Invalid color value given, the color must be a valid HEX value.\nYou can try this [random color picker](https://www.webpagefx.com/web-design/random-color-picker/) to try and get a random HEX color."
+        message: "The `:type` module message has been set to:\n\n```:message```\n\nYou can test the message by using the command again and mentioning a user.\n`:command <user>`"
+
+    AddLevelRoleCommand:
+        noSlotsLeft: "The server doesn't have any more level role slots, you can remove existing level roles to free up slots."
+        invalidLevel: "Invalid level requirement given, the level requirement must be a positive number."
+        alreadyLevelRole: ":user The **:role** is already a level role, you can't use the same role twice."
+        alreadyARoleAtLevel: "There is already a role assigned to level **:level**, only one role can be given per level."
+        success: "Role **:role** role has been added to the level-up role list.\nThe server has `:slots` more level role slots available."
+
+    AddSelfAssignableRoleCommand:
+        noSlotsLeft: "The server doesn't have any more self-assignable role slots, you can remove existing self-assignable roles to free up slots."
+        success: "Role **:role** role has been added to the self-assignable list.\nThe server has `:slots` more self-assignable roles slots available."
+
+    AiCommand:
+        message: "The `Artificial Intelligence` module has been **:status** for the :channel channel."
+        status:
+            enabled: "Enabled"
+            disabled: "Disabled"
+
+    AliasCommand:
+        noSlotsLeft: "The server doesn't have any more alias slots, you can delete existing aliases to free up slots."
+        alreadyExists: "There is already a custom alias called `{0}`"
+        invalidCommand: "Invalid command given, I don't know of any command called `{0}`"
+        invalidAlias: "Invalid alias given, `{0}` is not registered as an alias."
+        created: "The `:alias` alias has been linked to `:command`\nThe server has `:slots` more aliases slots available."
+        deleted: "The `:alias` alias has been deleted successfully."
+
+    AutoAssignRoleCommand:
+        higherInTheHierarchy:
+            user: ":user The **:role** role is positioned higher in the hierarchy than any role you have, you can't add roles with a higher ranking than you have."
+            bot: ":user The **:role** role is positioned higher in the hierarchy, I can't give/remove this role from users."
+        enabled: ":user **Auto assign role** on user join has been **enabled** and set to  **:role**"
+        disabledNow: ":user **Auto assign role** on user join is now **disabled**."
+        disabled: ":user **Auto assign role** on user join is currently **disabled**."
+        status: ":user The **auto assign role** is currently set to **:role**"
+
+    BanCommand:
+        mustMentionUser: "You must mention the user you want to ban."
+        higherRole: "You can't ban people with a higher, or the same role as yourself."
+        userHaveHigherRole: "I can't ban {0}, they have a higher role than me, if you want be to be able to ban the user, please readjust my role position to above {0} highest role."
+        success: "**:target** was permanently banned by :user for \":reason\""
+        failedToBan: "Failed to ban **:target** due to an error: :error"
+
+    CategoriesCommand:
+        title: "Command Category Status for #{0}"
+        status: ":emoteEnabled Enabled   :emoteDisabledInChannel Disabled in Channel   :emoteDisabledGlobally Disabled Globally"
+
+    ChangePrefixCommand:
+        missingArgument: "Missing argument `category`, you must specify the command category you want to change/reset the prefix for."
+        invalidCategory: "Invalid `category` given, there are no command categories that are called, or starts with `{0}`"
+        invalidPrefix: "Invalid command prefix given, `{0}` is not a valid command prefix, all prefixes must **NOT** contain spaces and be between 1 and 16 characters long."
+        update:
+            global: "All commands in every command category now uses the `:prefix` prefix."
+            category: "All commands in the `:category` command category now uses the `:prefix` prefix."
+        reset:
+            global: "All commands in every command category has been reset to use the `:prefix` prefix."
+            category: "All commands in the `:category` command category has been reset to use the `:prefix` prefix."
+
+    DJLevelCommand:
+        title: "Current DJ Level: {0}"
+        footer: "Use \"{0} types\" to see a full list of the available DJ level types."
+        types:
+            title: "DJ Level Types"
+            footer: "Use \"{0} <type>\" to change the DJ Level to the given type for the server."
+        invalidType: "`{0}` is not a valid `DJ Level` type, please use one of the following:\n`{1}`"
+        changedTo: "The `DJ Level` status has changed to **:type**.\n:info"
+        information:
+            all: "Anyone can run any music commands, even without the `DJ` role."
+            none: "No one can run any music commands without the `DJ` role."
+            normal: "Preventing people from using commands like playlists, volume control, and force skip without the `DJ` role, but still allowing people to use the play command without the role."
+
+    GoodbyeCommand:
+        note: "\nYou can customize the message by using `{0} [message]`"
+        message: "The `Goodbye` module has been **:status** for the :channel channel."
+        status:
+            enabled: "Enabled"
+            disabled: "Disabled"
+
+    GoodbyeMessageCommand:
+        moduleMustBeEnabled: "The `goodbye` module must be enabled to use this command, you can enable the `goodbye` module by using the `{0}` command."
+        message: "The embed option for goodbye messages has been **:status**\n:note"
+        changedToDefault: "The `Goodbye` module message has been set back to the default."
+        status:
+            enabled: "enabled"
+            disabled: "disabled"
+        note:
+            embed: "Goodbye messages will now be sent using embedded messages with the color: {0}"
+            normal: "Now sending goodbye messages through normal messages."
+
+    IAmCommand:
+        notSelfAssignable: ":user Invalid role, **:role** is not a self-assignable role."
+        roleIsHigherInTheHierarchy: ":user The role is higher in the role hierarchy, I can't give/remove the **:role** role from anyone."
+        message: ":user You now have the **:role** role!"
+
+    IAmNotCommand:
+        notSelfAssignable: ":user Invalid role, **:role** is not a self-assignable role."
+        roleIsHigherInTheHierarchy: ":user The role is higher in the role hierarchy, I can't give/remove the **:role** role from anyone."
+        message: ":user You no longer have the **:role** role!"
+
+    KickCommand:
+        mustMentionUser: "You must mention the user you want to kick."
+        higherOrSameRole: "You can't kick people with a higher, or the same role as yourself."
+        cantKickUser: "I can't kick {0}, they have a higher role than me, if you want be to be able to kick the user, please readjust my role position to above {0} highest role."
+        success: "**:target** was kicked by :user for \":reason\""
+        error: "Failed to kick **:target** due to an error: :error"
+
+    LanguageCommand:
+        invalidLanguageCode: "Invalid language code given, `{0}` is not a valid language code, or it is not yet supported!"
+        changed: "The servers language has been successfully been updated to use the :name language!"
+        note: "AvaIre supports several user-contributed languages that you can select with this command. Translations may not be 100% accurate or complete.\nTo select a language use `{0} <code>`"
+
+    LevelAlertsCommand:
+        message: "`Levels up alerts` has been `:status` for the server.:note"
+        note: "\nAll level up messages will be logged into the <#{0}> channel."
+        status:
+            enabled: "Enabled"
+            disabled: "Disabled"
+
+    LevelCommand:
+        message: "`Levels & Experience` has been `:status` for the server.:note"
+        note: "\nLevel alerts are current `{0}`, you can toggle them on or off with `{1}levelalerts`"
+        status:
+            enabled: "Enabled"
+            disabled: "Disabled"
+
+    ListAliasesCommand:
+        noAliases: "The server doesn't have any aliases right now, you can create one using the\n`{0}alias <alias> <command>` command"
+        listAliases: "List of Aliases ({0})"
+
+    ListLevelRolesCommand:
+        noLevelRoles: "There are currently no level roles, an administrator can add roles to the level up table using the `:command` command"
+        listRoles: "List of Level Roles ({0})"
+
+    ListSelfAssignableRolesCommand:
+        noSelfAssignableRoles: "There are currently no self-assignable roles for this server."
+        title: "There are {0} self-assignable roles"
+
+    ModlogCommand:
+        mustMentionTextChannel: "Invalid channel argument given, you must mention a valid text channel"
+        cantSendEmbedMessages: "I can't send embed messages in the specified channel, please change my permission level for the {0} channel if you want to use it as a modlog channel."
+        enable: ":user **Server Modlogging** is now enabled and set to the :modlog channel."
+        enabled: ":user **Server Modlogging** is currently enabled and set to the :modlog channel."
+        disable: ":user **Server Modlogging** is now disabled for the server."
+        disabled: ":user **Server Modlogging** is currently disabled."
+
+    ModlogHistoryCommand:
+        mustMentionUser: "You must mention a valid `user` you want to display the modlog history for."
+        noHistory: "No modlog history was found for this user."
+        title: "{0}#{1} History ({2})"
+        entry: "**Case ID #{0}** | {1}\n\t{2}"
+        noReasonGiven: "No reason was given."
+
+    ModlogReasonCommand:
+        modlogNotEnabled: "No modlog channel has been set, you must set a modlog channel to use this command."
+        invalidCaseId: "Invalid case id given, the ID must be greater than 0 and less than {0}"
+        couldntFindCaseWithId: "Couldn't find a modlog case with an ID of {0} where you were the moderator, are you sure you're the moderator for the given modlog case?"
+        couldntFindModlogChannel: "Couldn't find the modlog channel, was it removed?"
+        success: "The modlog case with an ID of **:id** was successfully edited and set to the reason of `:reason`"
+        failedToEdit: "Failed to edit modlog message: {0}"
+        failedToFindMessage: "Couldn't find the message for the given modlog case, was it deleted?"
+
+    NSFWCommand:
+        invalidChannelOrStatus: "Invalid channel or status type given!"
+        notValidChannel: "`{0}` is not a valid text channel!"
+        notValidStatus: "`{0}` is not a valid status type, you must either pass `on` or `off`."
+        message: "The :textChannel channel currently has NSFW **:status**!"
+        updated: "The NSFW status for :textChannel has been changed to **:status**"
+        status:
+            enabled: "Enabled"
+            disabled: "Disabled"
+
+    PurgeCommand:
+        messagesDeletedIn: "{0} messages has been deleted in the {1} channel."
+        messagesDeletedBy: "{0} messages sent by {1} has been deleted in the {2} channel."
+        success: ":white_check_mark: `:number` messages has been deleted!"
+        successBy: ":white_check_mark: `:number` messages has been deleted from :users"
+        nothingToDelete: ":x: Nothing to delete, I am unable to delete messages older than 14 days."
+        nothingToDeleteBy: ":x: Nothing to delete, I am unable to find any messages by :users in the last **:number** messages that was sent within the last 14 days."
+
+    RemoveLevelRoleCommand:
+        noRolesCalled: ":user There are no role called **:role** on the level up table."
+        noRolesLinked: ":user There are no roles linked to level **:role** on the level up table."
+        notALevelRole: ":user Invalid role, the `:name` role is not on the level up table."
+        message: "Role **:role** role has been removed from the level-up role list.\nThe server now have `:slots` level role slots available."
+
+    RemoveSelfAssignableRoleCommand:
+        message: "Role **:role** role has been removed from the self-assignable list.\nThe server has `:slots` more self-assignable roles slots available."
+
+    SlowmodeCommand:
+        missingArgument: "Missing argument, you must either pass in the `limit` and `decay` values to enable slowmode for this channel, or `off` to disable it for this channel."
+        mustBeValidNumbers: "Invalid argument given, the `limit` and `decay` must be valid numbers."
+        message: "Messages are now limited to :limit message(s) every :decay seconds."
+        disabled: "The `Slowmode` module has been **disabled** for the :channel channel."
+
+    ToggleCategoryCommand:
+        invliadCategory: "Invalid category given, `{0}` is not a valid category"
+        missingArgumentType: "Missing argument `channel/global`, you must include the channel or specify that the command should be run globally."
+        invalidChannelOrGlobalString: "Invalid channel or global string given, you must either mention the channel you want to affect, or write `global` to affect all the channels at the same time."
+        cantEnabledCategory: "Whoops, you can't enable the **:category** command category while it is disabled globally.\nYou can use the command below to enable the category for all channels.\n`:command :category global on`"
+        update:
+            globally: "The `:category` command category has been `:status` for **all channels**."
+            category: "The `:category` command category has been `:status` in :channel."
+        status:
+            enabled: "Enabled"
+            disabled: "Disabled"
+
+    UserAvatarCommand:
+        noUserFound: "I found no users with the name or ID of `{0}`"
+        title: "{0}#{1}'s Avatar"
+
+    VoiceKickCommand:
+        mustMentionUser: "You must mention the user you want to kick."
+        sameOrHigherRole: "You can't kick people with a higher, or the same role as yourself."
+        notConnected: "You can't voice kick people who are not connected to a voice channel."
+        message: "**:target** was kicked from **:voiceChannel** by :user for \":reason\""
+
+    VoteOptCommand:
+        invalidArgument: "Invalid argument, you must either parse `in` or `out` to opt in or out of vote messages."
+        message: "You have now opt-:type of getting vote messages."
+        type:
+            in: "in"
+            out: "out"
+
+    WarnCommand:
+        requiresModlogIsEnabled: "This command requires a modlog channel to be set, a modlog channel can be set using the `{0}modlog` command."
+        mustMentionUse: "You must mention a user you want warn."
+        warnBots: "You can't warn bots!"
+        failedToLogWarning: "Failed to log warning to the set modlog channel, does the modlog channel still exists, can I still send messages in the channel?"
+        message: ":target has been **warned** for \":reason\""
+        failedToSendDM: "Failed to DM the user with the warning, they most likely have their private settings set to disable all DMs from this server."
+
+    WelcomeCommand:
+        note: "\nYou can customize the message by using `{0} [message]`"
+        message: "The `Welcome` module has been **:status** for the :channel channel.:note"
+        status:
+            enabled: "Enabled"
+            disabled: "Disabled"
+
+    WelcomeMessageCommand:
+        moduleMustBeEnabled: "The `welcome` module must be enabled to use this command, you can enable the `welcome` module by using the `{0}welcome` command."
+        message: "The embed option for welcome messages has been **:status**\n:note"
+        changedToDefault: "The `Welcome` module message has been set back to the default."
+        status:
+            enabled: "enabled"
+            disabled: "disabled"
+        note:
+            embed: "Welcome messages will now be sent using embedded messages with the color: {0}"
+            normal: "Now sending welcome messages through normal messages."
+
 fun:
     DiceCommand:
         missingDice: 'Вы должны включить игру в кости, если хотите бросить их.'

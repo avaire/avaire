@@ -54,9 +54,7 @@ public class ListAliasesCommand extends Command {
         }
 
         if (transformer.getAliases().isEmpty()) {
-            return sendErrorMessage(context, "The server doesn't have any aliases right now, you can create one using the\n`{0}alias <alias> <command>` command",
-                generateCommandPrefix(context.getMessage())
-            );
+            return sendErrorMessage(context, context.i18n("noAliases", generateCommandPrefix(context.getMessage())));
         }
 
         SimplePaginator paginator = new SimplePaginator(transformer.getAliases(), 10);
@@ -69,7 +67,7 @@ public class ListAliasesCommand extends Command {
         messages.add("\n" + paginator.generateFooter(generateCommandTrigger(context.getMessage())));
 
         context.makeSuccess(String.join("\n", messages))
-            .setTitle(String.format("List of Aliases (%s)", paginator.getTotal()))
+            .setTitle(context.i18n("listAliases", paginator.getTotal()))
             .requestedBy(context.getMember())
             .queue();
 

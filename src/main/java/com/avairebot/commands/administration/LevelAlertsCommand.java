@@ -2,6 +2,7 @@ package com.avairebot.commands.administration;
 
 import com.avairebot.AvaIre;
 import com.avairebot.Constants;
+import com.avairebot.commands.CommandHandler;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.commands.utility.RankCommand;
 import com.avairebot.contracts.commands.Command;
@@ -67,12 +68,13 @@ public class LevelAlertsCommand extends Command {
     }
 
     @Override
+    @SuppressWarnings("ConstantConditions")
     public boolean onCommand(CommandMessage context, String[] args) {
         GuildTransformer guildTransformer = context.getGuildTransformer();
         if (guildTransformer == null || !guildTransformer.isLevels()) {
-            return sendErrorMessage(context,
-                "This command requires the `Levels & Experience` feature to be enabled for the server, you can ask a server admin if they want to enable it with `.{0}togglelevel`",
-                generateCommandPrefix(context.getMessage())
+            return sendErrorMessage(context, "errors.requireLevelFeatureToBeEnabled",
+                CommandHandler.getCommand(LevelCommand.class)
+                    .getCommand().generateCommandTrigger(context.getMessage())
             );
         }
 
@@ -104,9 +106,9 @@ public class LevelAlertsCommand extends Command {
                     .set("level_channel", guildTransformer.getLevelChannel())
                 );
 
-            String note = channelId == null ? "" : String.format("\nAll level up messages will be logged into the <#%s> channel.", channelId);
-            context.makeSuccess("`Levels up alerts` has been `:status` for the server." + note)
-                .set("status", status ? "Enabled" : "Disabled")
+            context.makeSuccess(context.i18n("message"))
+                .set("status", context.i18n("status." + (status ? "enabled" : "disabled")))
+                .set("note", channelId == null ? "" : context.i18n("note", channelId))
                 .queue();
 
             return true;

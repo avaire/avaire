@@ -70,20 +70,20 @@ public class AddSelfAssignableRoleCommand extends Command {
         }
 
         if (transformer.getSelfAssignableRoles().size() >= transformer.getType().getLimits().getSelfAssignableRoles()) {
-            context.makeWarning("The server doesn't have any more self-assignable role slots, you can remove existing self-assignable roles to free up slots.")
+            context.makeWarning(context.i18n("noSlotsLeft"))
                 .queue();
 
             return false;
         }
 
         if (args.length == 0) {
-            return sendErrorMessage(context, "Missing argument, the `role` argument is required.");
+            return sendErrorMessage(context, "errors.missingArgument", "role");
         }
 
         String roleName = String.join(" ", args);
         Role role = RoleUtil.getRoleFromMentionsOrName(context.getMessage(), roleName);
         if (role == null) {
-            context.makeWarning(":user Invalid role, I couldn't find any role called **:role**")
+            context.makeWarning(context.i18nRaw("administration.common.invalidRole"))
                 .set("role", roleName)
                 .queue();
             return false;
@@ -101,7 +101,7 @@ public class AddSelfAssignableRoleCommand extends Command {
                     statement.set("claimable_roles", AvaIre.gson.toJson(transformer.getSelfAssignableRoles()), true);
                 });
 
-            context.makeSuccess("Role **:role** role has been added to the self-assignable list.\nThe server has `:slots` more self-assignable roles slots available.")
+            context.makeSuccess(context.i18n("success"))
                 .set("slots", transformer.getType().getLimits().getSelfAssignableRoles() - transformer.getSelfAssignableRoles().size())
                 .set("role", role.getName())
                 .queue();

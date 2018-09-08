@@ -6,11 +6,9 @@ import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.database.transformers.ChannelTransformer;
 import com.avairebot.database.transformers.GuildTransformer;
-import com.avairebot.factories.MessageFactory;
 import com.avairebot.permissions.Permissions;
 import com.avairebot.utilities.ComparatorUtil;
 import com.avairebot.utilities.NumberUtil;
-import net.dv8tion.jda.core.entities.Message;
 
 import java.sql.SQLException;
 import java.util.Arrays;
@@ -71,7 +69,7 @@ public class SlowmodeCommand extends Command {
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
         if (args.length == 0) {
-            return sendErrorMessage(context, "Missing argument, you must either pass in the `limit` and `decay` values to enable slowmode for this channel, or `off` to disable it for this channel.");
+            return sendErrorMessage(context, context.i18n("missingArgument"));
         }
 
         GuildTransformer guildTransformer = context.getGuildTransformer();
@@ -89,13 +87,13 @@ public class SlowmodeCommand extends Command {
         }
 
         if (args.length == 2 && NumberUtil.isNumeric(args[0]) && NumberUtil.isNumeric(args[1])) {
-            return enableSlowmode(context.getMessage(), args, guildTransformer, channelTransformer);
+            return enableSlowmode(context, args, guildTransformer, channelTransformer);
         }
 
-        return sendErrorMessage(context, "Invalid argument given, the `limit` and `decay` must be valid numbers.");
+        return sendErrorMessage(context, context.i18n("mustBeValidNumbers"));
     }
 
-    private boolean enableSlowmode(Message message, String[] args, GuildTransformer guildTransformer, ChannelTransformer channelTransformer) {
+    private boolean enableSlowmode(CommandMessage context, String[] args, GuildTransformer guildTransformer, ChannelTransformer channelTransformer) {
         int limit = NumberUtil.getBetween(NumberUtil.parseInt(args[0]), 1, 30);
         int decay = NumberUtil.getBetween(NumberUtil.parseInt(args[1]), 1, 300);
 
@@ -103,8 +101,8 @@ public class SlowmodeCommand extends Command {
         channelTransformer.getSlowmode().setLimit(limit);
         channelTransformer.getSlowmode().setDecay(decay);
 
-        return updateDatabase(message, guildTransformer, v -> {
-            MessageFactory.makeSuccess(message, "Messages are now limited to :limit message(s) every :decay seconds.")
+        return updateDatabase(context, guildTransformer, v -> {
+            context.makeSuccess(context.i18n("message"))
                 .set("limit", limit)
                 .set("decay", decay)
                 .queue();
@@ -114,19 +112,19 @@ public class SlowmodeCommand extends Command {
     private boolean disableSlowmode(CommandMessage context, GuildTransformer guildTransformer, ChannelTransformer transformer) {
         transformer.getSlowmode().setEnabled(false);
 
-        return updateDatabase(context.getMessage(), guildTransformer, v -> {
-            context.makeSuccess("The `Slowmode` module has been **disabled** for the :channel channel.").queue();
+        return updateDatabase(context, guildTransformer, v -> {
+            context.makeSuccess(context.i18n("disabled")).queue();
         });
     }
 
-    private boolean endWithFailureToFindTransformer(CommandMessage message) {
-        return sendErrorMessage(message, "Something went wrong while trying to get the channel transformer object, please contact one of my developers to look into this issue.");
+    private boolean endWithFailureToFindTransformer(CommandMessage context) {
+        return sendErrorMessage(context, "errors.errorOccurredWhileLoading", "channel settings");
     }
 
-    private boolean updateDatabase(Message message, GuildTransformer guildTransformer, Consumer<Void> consumer) {
+    private boolean updateDatabase(CommandMessage context, GuildTransformer guildTransformer, Consumer<Void> consumer) {
         try {
             avaire.getDatabase().newQueryBuilder(Constants.GUILD_TABLE_NAME)
-                .andWhere("id", message.getGuild().getId())
+                .andWhere("id", context.getGuild().getId())
                 .update(statement -> statement.set("channels", guildTransformer.channelsToJson(), true));
 
             consumer.accept(null);
@@ -134,7 +132,7 @@ public class SlowmodeCommand extends Command {
         } catch (SQLException ex) {
             AvaIre.getLogger().error(ex.getMessage(), ex);
 
-            MessageFactory.makeError(message, "Failed to save the guild settings: " + ex.getMessage()).queue();
+            context.makeError("Failed to save the guild settings: " + ex.getMessage()).queue();
         }
         return false;
     }

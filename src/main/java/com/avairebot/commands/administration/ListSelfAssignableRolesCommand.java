@@ -50,7 +50,7 @@ public class ListSelfAssignableRolesCommand extends Command {
         }
 
         if (transformer.getSelfAssignableRoles().isEmpty()) {
-            context.makeWarning("There are currently no self-assignable roles for this server.").queue();
+            context.makeWarning(context.i18n("noSelfAssignableRoles")).queue();
             return true;
         }
 
@@ -73,7 +73,7 @@ public class ListSelfAssignableRolesCommand extends Command {
         messages.add("\n" + paginator.generateFooter(generateCommandTrigger(context.getMessage())));
 
         context.makeSuccess(String.join("\n", messages))
-            .setTitle(String.format("There are %s self-assignable roles", paginator.getTotal()))
+            .setTitle(context.i18n("title", paginator.getTotal()))
             .requestedBy(context.getMember())
             .queue();
 

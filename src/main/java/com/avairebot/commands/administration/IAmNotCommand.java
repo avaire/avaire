@@ -53,13 +53,13 @@ public class IAmNotCommand extends Command {
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
         if (args.length == 0) {
-            return sendErrorMessage(context, "Missing argument, the `role` argument is required.");
+            return sendErrorMessage(context, "errors.missingArgument", "role");
         }
 
         String roleName = String.join(" ", args);
         Role role = RoleUtil.getRoleFromMentionsOrName(context.getMessage(), roleName);
         if (role == null) {
-            context.makeWarning(":user Invalid role, I couldn't find any role called **:role**")
+            context.makeWarning(context.i18nRaw("administration.common.invalidRole"))
                 .set("role", roleName)
                 .queue(message -> handleMessage(context, message));
             return false;
@@ -71,14 +71,14 @@ public class IAmNotCommand extends Command {
         }
 
         if (!transformer.getSelfAssignableRoles().containsValue(role.getName().toLowerCase())) {
-            context.makeWarning(":user Invalid role, **:role** is not a self-assignable role.")
+            context.makeWarning(context.i18n("notSelfAssignable"))
                 .set("role", roleName)
                 .queue(message -> handleMessage(context, message));
             return false;
         }
 
         if (RoleUtil.isRoleHierarchyHigher(context.getGuild().getSelfMember().getRoles(), role)) {
-            context.makeWarning(":user The role is higher in the role hierarchy, I can't give/remove the **:role**  role from anyone.")
+            context.makeWarning(context.i18n("roleIsHigherInTheHierarchy"))
                 .set("role", roleName)
                 .queue(message -> handleMessage(context, message));
             return false;
@@ -88,7 +88,7 @@ public class IAmNotCommand extends Command {
             context.getGuild().getController().removeSingleRoleFromMember(context.getMember(), role).queue();
         }
 
-        context.makeSuccess(":user You no longer have the **:role** role!")
+        context.makeSuccess(context.i18n("message"))
             .set("role", role.getName())
             .queue(message -> handleMessage(context, message));
         return true;

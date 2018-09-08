@@ -47,17 +47,15 @@ public abstract class BanableCommand extends Command {
     protected boolean ban(AvaIre avaire, Command command, CommandMessage context, String[] args, boolean soft) {
         User user = MentionableUtil.getUser(context, args);
         if (user == null) {
-            return command.sendErrorMessage(context, "You must mention the user you want to ban.");
+            return command.sendErrorMessage(context, context.i18n("mustMentionUser"));
         }
 
         if (userHasHigherRole(user, context.getMember())) {
-            return command.sendErrorMessage(context, "You can't ban people with a higher, or the same role as yourself.");
+            return command.sendErrorMessage(context, context.i18n("higherRole"));
         }
 
         if (!context.getGuild().getSelfMember().canInteract(context.getGuild().getMember(user))) {
-            return sendErrorMessage(context, "I can't ban {0}, they have a higher role than me, if you want be to be able to ban the user, please reajust my role position to above {0} highest role.",
-                user.getAsMention()
-            );
+            return sendErrorMessage(context, context.i18n("userHaveHigherRole", user.getAsMention()));
         }
 
         return banUser(avaire, context, user, args, soft);
@@ -78,11 +76,11 @@ public abstract class BanableCommand extends Command {
                 )
             );
 
-            context.makeSuccess("**:target** was permanently banned by :user for \":reason\"")
+            context.makeSuccess(context.i18n("success"))
                 .set("target", user.getName() + "#" + user.getDiscriminator())
                 .set("reason", reason)
                 .queue();
-        }, throwable -> context.makeWarning("Failed to ban **:target** due to an error: :error")
+        }, throwable -> context.makeWarning(context.i18n("failedToBan"))
             .set("target", user.getName() + "#" + user.getDiscriminator())
             .set("error", throwable.getMessage())
             .queue());

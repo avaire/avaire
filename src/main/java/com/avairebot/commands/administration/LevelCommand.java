@@ -83,14 +83,15 @@ public class LevelCommand extends Command {
 
             String note = "";
             if (guildTransformer.isLevels()) {
-                note = String.format("\nLevel alerts are current `%s`, you can toggle them on or off with `%slevelalerts`",
-                    guildTransformer.isLevelAlerts() ? "Enabled" : "Disabled",
+                note = context.i18n("note",
+                    context.i18n("status." + (guildTransformer.isLevels() ? "enabled" : "disabled")),
                     generateCommandPrefix(context.getMessage())
                 );
             }
 
-            context.makeSuccess("`Levels & Experience` has been `:status` for the server." + note)
-                .set("status", guildTransformer.isLevels() ? "Enabled" : "Disabled")
+            context.makeSuccess(context.i18n("message"))
+                .set("status", context.i18n("status." + (guildTransformer.isLevels() ? "enabled" : "disabled")))
+                .set("note", note)
                 .queue();
         } catch (SQLException ex) {
             AvaIre.getLogger().error(ex.getMessage(), ex);

@@ -1,6 +1,7 @@
 package com.avairebot.commands.administration;
 
 import com.avairebot.AvaIre;
+import com.avairebot.commands.CommandHandler;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.BanableCommand;
 import com.avairebot.contracts.commands.Command;
@@ -51,7 +52,12 @@ public class SoftBanCommand extends BanableCommand {
     }
 
     @Override
+    @SuppressWarnings("ConstantConditions")
     public boolean onCommand(CommandMessage message, String[] args) {
+        message.setI18nCommandPrefix(
+            CommandHandler.getCommand(BanCommand.class)
+        );
+
         return ban(avaire, this, message, args, true);
     }
 }

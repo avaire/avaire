@@ -73,16 +73,16 @@ public class VoiceKickCommand extends Command {
     public boolean onCommand(CommandMessage context, String[] args) {
         User user = MentionableUtil.getUser(context, args);
         if (user == null) {
-            return sendErrorMessage(context, "You must mention the user you want to kick.");
+            return sendErrorMessage(context, context.i18n("mustMentionUser"));
         }
 
         if (userHasHigherRole(user, context.getMember())) {
-            return sendErrorMessage(context, "You can't kick people with a higher, or the same role as yourself.");
+            return sendErrorMessage(context, context.i18n("sameOrHigherRole"));
         }
 
         final Member member = context.getGuild().getMember(user);
         if (!member.getVoiceState().inVoiceChannel()) {
-            return sendErrorMessage(context, "You can't voice kick people who are not connected to a voice channel.");
+            return sendErrorMessage(context, context.i18n("notConnected"));
         }
 
         return kickUser(context, member, args);
@@ -105,7 +105,7 @@ public class VoiceKickCommand extends Command {
                                 )
                             );
 
-                            context.makeSuccess("**:target** was kicked from **:voiceChannel** by :user for \":reason\"")
+                            context.makeSuccess(context.i18n("message"))
                                 .set("target", user.getUser().getName() + "#" + user.getUser().getDiscriminator())
                                 .set("voiceChannel", originalVoiceChannelName)
                                 .set("reason", reason)

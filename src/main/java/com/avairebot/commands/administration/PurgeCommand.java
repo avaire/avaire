@@ -110,11 +110,11 @@ public class PurgeCommand extends Command {
                         ModlogModule.log(avaire, context, new ModlogAction(
                                 ModlogType.PURGE,
                                 context.getAuthor(), null,
-                                messages.size() + " messages has been deleted in the " + context.getChannel().getAsMention() + " channel."
+                                context.i18n("messagesDeletedIn", messages.size(), context.getChannel().getAsMention())
                             )
                         );
 
-                        context.makeSuccess(":white_check_mark: `:number` messages has been deleted!")
+                        context.makeSuccess(context.i18n("success"))
                             .set("number", messages.size())
                             .queue(successMessage -> successMessage.delete().queueAfter(8, TimeUnit.SECONDS, null, RestActionUtil.ignore));
                     }, RestActionUtil.ignore);
@@ -138,11 +138,15 @@ public class PurgeCommand extends Command {
                 ModlogModule.log(avaire, context, new ModlogAction(
                         ModlogType.PURGE,
                         context.getAuthor(), null,
-                        messages.size() + " messages sent by " + String.join(", ", users) + " has been deleted in the " + context.getChannel().getAsMention() + " channel."
+                        context.i18n("messagesDeletedBy",
+                            messages.size(),
+                            String.join(", ", users),
+                            context.getChannel().getAsMention()
+                        )
                     )
                 );
 
-                context.makeSuccess(":white_check_mark: `:number` messages has been deleted from :users")
+                context.makeSuccess(context.i18n("successBy"))
                     .set("number", messages.size())
                     .set("users", String.join(", ", users))
                     .queue(successMessage -> successMessage.delete().queueAfter(8, TimeUnit.SECONDS, null, RestActionUtil.ignore));
@@ -185,8 +189,7 @@ public class PurgeCommand extends Command {
         PlaceholderMessage message;
 
         if (userIds == null) {
-            message = context.makeSuccess(
-                ":x: Nothing to delete, I am unable to delete messages older than 14 days."
+            message = context.makeSuccess(context.i18n("nothingToDelete")
             );
         } else {
             List<String> users = new ArrayList<>();
@@ -194,9 +197,9 @@ public class PurgeCommand extends Command {
                 users.add(String.format("<@%s>", userId));
             }
 
-            message = context.makeSuccess(
-                ":x: Nothing to delete, I am unable to find any messages by :users in the last **:number** messages that was sent within the last 14 days."
-            ).set("users", String.join(", ", users)).set("number", toDelete);
+            message = context.makeSuccess(context.i18n("nothingToDeleteBy"))
+                .set("users", String.join(", ", users))
+                .set("number", toDelete);
         }
 
         message.queue(successMessage -> successMessage.delete().queueAfter(8, TimeUnit.SECONDS, null, RestActionUtil.ignore));

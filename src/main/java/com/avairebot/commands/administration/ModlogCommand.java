@@ -76,9 +76,7 @@ public class ModlogCommand extends Command {
     public boolean onCommand(CommandMessage context, String[] args) {
         GuildTransformer transformer = context.getGuildTransformer();
         if (transformer == null) {
-            return sendErrorMessage(context,
-                "Something went wrong while trying to get the guild transformer object, please contact one of my developers to look into this issue."
-            );
+            return sendErrorMessage(context, "errors.errorOccurredWhileLoading", "server settings");
         }
 
         if (args.length == 0) {
@@ -92,17 +90,17 @@ public class ModlogCommand extends Command {
 
         Channel channel = MentionableUtil.getChannel(context.getMessage(), args);
         if (channel == null || !(channel instanceof TextChannel)) {
-            return sendErrorMessage(context, "Invalid channel argument given, you must mention a valid text channel");
+            return sendErrorMessage(context, context.i18n("mustMentionTextChannel"));
         }
 
         if (!((TextChannel) channel).canTalk() || !context.getGuild().getSelfMember().hasPermission(channel, Permission.MESSAGE_EMBED_LINKS)) {
-            return sendErrorMessage(context, "I can't send embed messages in the specified channel, please change my permission level for the {0} channel if you want to use it as a modlog channel.", ((TextChannel) channel).getAsMention());
+            return sendErrorMessage(context, context.i18n("cantSendEmbedMessages", ((TextChannel) channel).getAsMention()));
         }
 
         try {
             updateModlog(transformer, context, channel.getId());
 
-            context.makeSuccess(":user **Server Modlogging** is now enabled and set to the :modlog channel.")
+            context.makeSuccess(context.i18n("enable"))
                 .set("modlog", ((TextChannel) channel).getAsMention())
                 .queue();
         } catch (SQLException ex) {
@@ -116,7 +114,7 @@ public class ModlogCommand extends Command {
         try {
             updateModlog(transformer, context, null);
 
-            context.makeSuccess(":user **Server Modlogging** is now disabled for the server.")
+            context.makeSuccess(context.i18n("disable"))
                 .queue();
         } catch (SQLException ex) {
             AvaIre.getLogger().error(ex.getMessage(), ex);
@@ -127,7 +125,7 @@ public class ModlogCommand extends Command {
 
     private PlaceholderMessage sendModlogChannel(CommandMessage context, GuildTransformer transformer) {
         if (transformer.getModlog() == null) {
-            return context.makeWarning(":user **Server Modlogging** is currently disabled.");
+            return context.makeWarning(context.i18n("disabled"));
         }
 
         TextChannel modlogChannel = context.getGuild().getTextChannelById(transformer.getModlog());
@@ -137,10 +135,10 @@ public class ModlogCommand extends Command {
             } catch (SQLException ex) {
                 AvaIre.getLogger().error(ex.getMessage(), ex);
             }
-            return context.makeInfo(":user **Server Modlogging** is currently disabled.");
+            return context.makeInfo(context.i18n("disabled"));
         }
 
-        return context.makeSuccess(":user **Server Modlogging** is currently enabled and set to the :modlog channel.")
+        return context.makeSuccess(context.i18n("enabled"))
             .set("modlog", modlogChannel.getAsMention());
     }
 

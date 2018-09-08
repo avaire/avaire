@@ -76,15 +76,14 @@ public class RemoveLevelRoleCommand extends Command {
         }
 
         if (args.length == 0) {
-            return sendErrorMessage(context, "Missing argument, the `role` argument is required.");
+            return sendErrorMessage(context, "errors.missingArgument", "role");
         }
-
 
         Role role = getRoleFromContext(context, transformer, args);
         if (role == null) {
-            context.makeWarning(NumberUtil.isNumeric(args[0]) ?
-                ":user There are no roles linked to level **:role** on the level up table." :
-                ":user There are no role called **:role** on the level up table."
+            context.makeWarning(NumberUtil.isNumeric(args[0])
+                ? context.i18n("noRolesLinked")
+                : context.i18n("noRolesCalled")
             ).set("role", String.join(" ", args)).queue();
             return false;
         }
@@ -94,7 +93,7 @@ public class RemoveLevelRoleCommand extends Command {
         }
 
         if (!transformer.getLevelRoles().containsValue(role.getId())) {
-            context.makeWarning(":user Invalid role, the `:name` role is not on the level up table.")
+            context.makeWarning(context.i18n("notALevelRole"))
                 .set("name", role.getName())
                 .queue();
 
@@ -116,7 +115,7 @@ public class RemoveLevelRoleCommand extends Command {
                     statement.set("level_roles", AvaIre.gson.toJson(transformer.getLevelRoles()), true);
                 });
 
-            context.makeSuccess("Role **:role** role has been removed from the level-up role list.\nThe server now have `:slots` level role slots available.")
+            context.makeSuccess(context.i18n("message"))
                 .set("slots", transformer.getType().getLimits().getLevelRoles() - transformer.getLevelRoles().size())
                 .set("role", role.getName())
                 .queue();

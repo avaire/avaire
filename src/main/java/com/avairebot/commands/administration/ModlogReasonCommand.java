@@ -85,7 +85,7 @@ public class ModlogReasonCommand extends Command {
         }
 
         if (transformer.getModlog() == null) {
-            return sendErrorMessage(context, "No modlog channel has been set, you must set a modlog channel to use this command.");
+            return sendErrorMessage(context, context.i18n("modlogNotEnabled"));
         }
 
         if (args.length == 0) {
@@ -98,7 +98,7 @@ public class ModlogReasonCommand extends Command {
 
         int caseId = NumberUtil.parseInt(args[0], -1);
         if (caseId < 1 || caseId > transformer.getModlogCase()) {
-            return sendErrorMessage(context, "Invalid case id given, the ID must be greater than 0 and less than {0}", "" + transformer.getModlogCase());
+            return sendErrorMessage(context, context.i18n("invalidCaseId", transformer.getModlogCase()));
         }
 
         final String reason = String.join(" ", Arrays.copyOfRange(args, 1, args.length));
@@ -111,14 +111,14 @@ public class ModlogReasonCommand extends Command {
                 .get();
 
             if (collection.isEmpty()) {
-                return sendErrorMessage(context, "Couldn't find a modlog case with an ID of {0} where you were the moderator, are you sure you're the moderator for the given modlog case?", "" + caseId);
+                return sendErrorMessage(context, context.i18n("couldntFindCaseWithId", caseId));
             }
 
             DataRow first = collection.first();
 
             TextChannel channel = context.getGuild().getTextChannelById(transformer.getModlog());
             if (channel == null) {
-                return sendErrorMessage(context, "Couldn't find the modlog channel, was it removed?");
+                return sendErrorMessage(context, context.i18n("couldntFindModlogChannel"));
             }
 
             channel.getMessageById(first.getString("message_id")).queue(message -> {
@@ -150,18 +150,18 @@ public class ModlogReasonCommand extends Command {
                 }
 
                 message.editMessage(embeddedBuilder.build()).queue(newMessage -> {
-                    context.makeSuccess("The modlog case with an ID of **:id** was successfully edited and set to the reason of `:reason`")
+                    context.makeSuccess(context.i18n("success"))
                         .set("id", caseId)
                         .set("reason", reason)
                         .queue(successMessage -> successMessage.delete().queueAfter(45, TimeUnit.SECONDS, null, RestActionUtil.ignore));
                     context.delete().queueAfter(45, TimeUnit.SECONDS, null, RestActionUtil.ignore);
                 }, error -> {
-                    context.makeError("Failed to edit modlog message: " + error.getMessage())
+                    context.makeError(context.i18n("failedToEdit", error.getMessage()))
                         .queue(successMessage -> successMessage.delete().queueAfter(45, TimeUnit.SECONDS, null, RestActionUtil.ignore));
                     context.delete().queueAfter(45, TimeUnit.SECONDS, null, RestActionUtil.ignore);
                 });
             }, error -> {
-                context.makeWarning("Couldn't find the message for the given modlog case, was it deleted?")
+                context.makeWarning(context.i18n("failedToFindMessage"))
                     .queue(null, RestActionUtil.ignore);
             });
         } catch (SQLException error) {

@@ -71,7 +71,7 @@ public class ListLevelRolesCommand extends Command {
         }
 
         if (transformer.getLevelRoles().isEmpty()) {
-            context.makeInfo("There are currently no level roles, an administrator can add roles to the level up table using the `:command` command")
+            context.makeInfo(context.i18n("noLevelRoles"))
                 .set("command", CommandHandler.getCommand(AddLevelRoleCommand.class)
                     .getCommand().generateCommandTrigger(context.getMessage()))
                 .queue();
@@ -105,7 +105,7 @@ public class ListLevelRolesCommand extends Command {
         messages.add("\n" + paginator.generateFooter(generateCommandTrigger(context.getMessage())));
 
         context.makeSuccess(String.join("\n", messages))
-            .setTitle(String.format("List of Level Roles (%s)", paginator.getTotal()))
+            .setTitle(context.i18n("listRoles", paginator.getTotal()))
             .requestedBy(context.getMember())
             .queue();
 

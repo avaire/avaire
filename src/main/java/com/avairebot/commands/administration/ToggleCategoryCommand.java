@@ -76,23 +76,20 @@ public class ToggleCategoryCommand extends Command {
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
         if (args.length < 1) {
-            return sendErrorMessage(context, "Missing argument `category`, you must include a category.");
+            return sendErrorMessage(context, "errors.missingArgument", "category");
         }
 
         Category category = CategoryHandler.fromLazyName(args[0]);
         if (category == null || category.isGlobalOrSystem()) {
-            return sendErrorMessage(context, "Invalid category given, `{0}` is not a valid category", args[0]);
+            return sendErrorMessage(context, context.i18n("invliadCategory"), args[0]);
         }
 
         if (args.length < 2) {
-            return sendErrorMessage(context, "Missing argument `channel/global`, you must include the channel or specify that the command should be run globally.");
+            return sendErrorMessage(context, context.i18n("missingArgumentType"));
         }
 
         if (!args[1].equalsIgnoreCase("global") && context.getMessage().getMentionedChannels().size() != 1) {
-            return sendErrorMessage(context,
-                "Invalid channel or global string given, you must either mention the channel you " +
-                    "want to affect, or write `global` to affect all the channels at the same time."
-            );
+            return sendErrorMessage(context, context.i18n("invalidChannelOrGlobalString"));
         }
 
         String channelId = args[1].equalsIgnoreCase("global") ?
@@ -114,10 +111,7 @@ public class ToggleCategoryCommand extends Command {
         }
 
         if (!channelId.equals("all") && status && !channel.isCategoryEnabledGlobally(category)) {
-            context.makeError(String.join("\n",
-                "Whoops, you can't enable the **:category** command category while it is disabled globally.",
-                "You can use the command below to enable the category for all channels.",
-                "`:command :category global on`"))
+            context.makeError(context.i18n("cantEnabledCategory"))
                 .set("command", generateCommandTrigger(context.getMessage()))
                 .set("category", category.getName())
                 .queue();
@@ -147,10 +141,10 @@ public class ToggleCategoryCommand extends Command {
         try {
             updateGuildCategories(context.getMessage(), transformer);
 
-            context.makeSuccess(getStatusMessage(channelId))
+            context.makeSuccess(getStatusMessage(context, channelId))
                 .set("category", category.getName())
                 .set("channel", "<#" + channel.getId() + ">")
-                .set("status", status ? "Enabled" : "Disabled")
+                .set("status", "status." + (status ? "enabled" : "disabled"))
                 .queue();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -168,10 +162,9 @@ public class ToggleCategoryCommand extends Command {
             });
     }
 
-    private String getStatusMessage(String channelId) {
-        if (channelId.equals("all")) {
-            return "The `:category` command category has been `:status` for **all channels**.";
-        }
-        return "The `:category` command category has been `:status` in :channel.";
+    private String getStatusMessage(CommandMessage context, String channelId) {
+        return channelId.equals("all")
+            ? context.i18n("update.globally")
+            : context.i18n("update.category");
     }
 }

@@ -70,13 +70,14 @@ public class RemoveSelfAssignableRoleCommand extends Command {
         }
 
         if (args.length == 0) {
-            return sendErrorMessage(context, "Missing argument, the `role` argument is required.");
+            return sendErrorMessage(context, "errors.missingArgument", "role");
         }
 
         String roleName = String.join(" ", args);
         Role role = RoleUtil.getRoleFromMentionsOrName(context.getMessage(), roleName);
         if (role == null) {
-            context.makeWarning(":user Invalid role, I couldn't find any role called **:role**")
+            context.makeWarning(context.i18nRaw("" +
+                "administration.common.invalidRole"))
                 .set("role", roleName)
                 .queue();
             return false;
@@ -94,7 +95,7 @@ public class RemoveSelfAssignableRoleCommand extends Command {
                     statement.set("claimable_roles", AvaIre.gson.toJson(transformer.getSelfAssignableRoles()));
                 });
 
-            context.makeSuccess("Role **:role** role has been removed from the self-assignable list.\nThe server has `:slots` more self-assignable roles slots available.")
+            context.makeSuccess(context.i18n("message"))
                 .set("slots", transformer.getType().getLimits().getSelfAssignableRoles() - transformer.getSelfAssignableRoles().size())
                 .set("role", role.getName()).queue();
 
