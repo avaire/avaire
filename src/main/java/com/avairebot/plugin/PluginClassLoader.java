@@ -3,6 +3,7 @@ package com.avairebot.plugin;
 import com.avairebot.exceptions.InvalidPluginException;
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -41,11 +42,13 @@ public class PluginClassLoader extends URLClassLoader {
                 throw new InvalidPluginException("main class `" + loader.getMain() + "' does not extend JavaPlugin", ex);
             }
 
-            this.plugin = ((JavaPlugin) pluginClass.newInstance());
-        } catch (IllegalAccessException ex) {
-            throw new InvalidPluginException("No public constructor", ex);
-        } catch (InstantiationException ex) {
-            throw new InvalidPluginException("Abnormal plugin type", ex);
+            this.plugin = ((JavaPlugin) pluginClass.getConstructor().newInstance());
+        } catch (NoSuchMethodException | IllegalAccessException e) {
+            throw new InvalidPluginException("No public constructor", e);
+        } catch (InstantiationException e) {
+            throw new InvalidPluginException("Abnormal plugin type", e);
+        } catch (InvocationTargetException e) {
+            throw new InvalidPluginException("Failed to invoke the plugin constructor", e);
         }
     }
 

@@ -140,6 +140,7 @@ public class GuildTransformer extends Transformer {
                     }.getType());
 
                 for (Map.Entry<String, Object> item : dbChannels.entrySet()) {
+                    // noinspection unchecked
                     LinkedTreeMap<String, Object> value = (LinkedTreeMap<String, Object>) item.getValue();
                     value.put("id", item.getKey());
 

@@ -137,7 +137,12 @@ public class MusicActivityTask implements Task {
                     continue;
                 }
 
-                VoiceChannel voiceChannel = link.getChannel();
+                String channel = link.getChannel();
+                if (channel == null) {
+                    continue;
+                }
+
+                VoiceChannel voiceChannel = avaire.getShardManager().getVoiceChannelById(channel);
 
                 if (voiceChannel != null) {
                     boolean hasListeners = false;

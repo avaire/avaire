@@ -2,7 +2,7 @@ package com.avairebot.audio;
 
 import com.avairebot.AvaIre;
 import com.avairebot.shared.DiscordConstants;
-import lavalink.client.io.Lavalink;
+import lavalink.client.io.jda.JdaLavalink;
 import lavalink.client.io.metrics.LavalinkCollector;
 import lavalink.client.player.IPlayer;
 import lavalink.client.player.LavaplayerPlayerWrapper;
@@ -17,7 +17,7 @@ import java.util.Map;
 
 public class LavalinkManager {
 
-    private Lavalink lavalink = null;
+    private JdaLavalink lavalink = null;
     private boolean enabled;
 
     public void start(AvaIre avaire) {
@@ -33,7 +33,7 @@ public class LavalinkManager {
             return;
         }
 
-        lavalink = new Lavalink(avaire.getConfig().getString("discord.clientId", "" + DiscordConstants.AVAIRE_BOT_ID),
+        lavalink = new JdaLavalink(avaire.getConfig().getString("discord.clientId", "" + DiscordConstants.AVAIRE_BOT_ID),
             avaire.getSettings().getShardCount() < 1 ? 1 : avaire.getSettings().getShardCount(),
             shardId -> avaire.getShardManager().getShardById(shardId)
         );
@@ -87,7 +87,7 @@ public class LavalinkManager {
         return guild.getSelfMember().getVoiceState().getChannel();
     }
 
-    public Lavalink getLavalink() {
+    public JdaLavalink getLavalink() {
         return lavalink;
     }
 
