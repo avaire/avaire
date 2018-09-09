@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 @SuppressWarnings({"WeakerAccess", "unused"})
 public class LevelManager {
@@ -217,6 +218,19 @@ public class LevelManager {
      */
     public List<ExperienceEntity> getExperienceQueue() {
         return experienceQueue;
+    }
+
+    /**
+     * Gets all the experience entities that belongs to the given player
+     * transformer, or an empty list of no entities were found.
+     *
+     * @param transformer The transformer that should be matched with the experience eateries.
+     * @return A list of experience entities that belongs to the given player transformer.
+     */
+    public List<ExperienceEntity> getExperienceEntities(PlayerTransformer transformer) {
+        return experienceQueue.stream()
+            .filter(entity -> entity.getUserId() == transformer.getUserId() && entity.getGuildId() == transformer.getGuildId())
+            .collect(Collectors.toList());
     }
 
     /**
