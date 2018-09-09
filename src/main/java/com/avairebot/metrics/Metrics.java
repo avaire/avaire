@@ -26,6 +26,7 @@ import com.avairebot.AvaIre;
 import com.avairebot.commands.Category;
 import com.avairebot.commands.utility.GlobalLeaderboardCommand;
 import com.avairebot.commands.utility.LeaderboardCommand;
+import com.avairebot.contracts.commands.InteractionCommand;
 import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.controllers.PlayerController;
 import com.avairebot.database.controllers.PlaylistController;
@@ -235,6 +236,7 @@ public class Metrics {
         cacheMetrics.addCache("autorole", JDAStateEventAdapter.cache);
         cacheMetrics.addCache("leaderboard", LeaderboardCommand.cache);
         cacheMetrics.addCache("global-leaderboard", GlobalLeaderboardCommand.cache);
+        cacheMetrics.addCache("interaction-lottery", InteractionCommand.cache);
 
         if (!avaire.getConfig().getBoolean("metrics.enabled", true)) {
             log.info("Metrics web API is disabled, skipping igniting Spark API");

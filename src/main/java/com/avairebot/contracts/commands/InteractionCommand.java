@@ -24,9 +24,12 @@ package com.avairebot.contracts.commands;
 import com.avairebot.AvaIre;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.commands.CommandPriority;
+import com.avairebot.contracts.commands.interactions.Lottery;
 import com.avairebot.language.I18n;
+import com.avairebot.utilities.CacheUtil;
 import com.avairebot.utilities.MentionableUtil;
-import com.avairebot.utilities.RandomUtil;
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.entities.User;
@@ -37,8 +40,14 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public abstract class InteractionCommand extends Command {
+
+    public static final Cache<String, Lottery> cache = CacheBuilder.newBuilder()
+        .recordStats()
+        .expireAfterAccess(5, TimeUnit.MINUTES)
+        .build();
 
     private final String interaction;
     private final boolean overwrite;
@@ -102,7 +111,12 @@ public abstract class InteractionCommand extends Command {
         context.getChannel().sendTyping().queue();
 
         List<String> interactionImages = getInteractionImages();
-        int imageIndex = RandomUtil.getInteger(interactionImages.size());
+
+        Lottery lottery = (Lottery) CacheUtil.getUncheckedUnwrapped(cache, asKey(context),
+            () -> new Lottery(interactionImages.size())
+        );
+
+        int imageIndex = lottery.getWinner();
 
         MessageBuilder messageBuilder = new MessageBuilder();
         EmbedBuilder embedBuilder = new EmbedBuilder();
@@ -145,5 +159,9 @@ public abstract class InteractionCommand extends Command {
             return getTriggers().get(0);
         }
         return interaction == null ? context.i18nRaw(context.getI18nCommandPrefix()) : interaction;
+    }
+
+    private String asKey(CommandContext context) {
+        return getClass().getSimpleName() + "." + context.getGuild().getIdLong();
     }
 }
