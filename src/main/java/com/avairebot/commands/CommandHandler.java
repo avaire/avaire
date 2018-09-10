@@ -141,6 +141,32 @@ public class CommandHandler {
     }
 
     /**
+     * Get the command matching the given command, both the command prefix
+     * and the command trigger must match for the command to be returned,
+     * this method will ignore any command prefix that might've been
+     * set by the guild/server, and will instead use the default.
+     * <p>
+     * If a commands priority is set to {@link CommandPriority#IGNORED}
+     * the command will be omitted from the search.
+     *
+     * @param command The command string that should be matched with the commands.
+     * @return Possibly-null, The command matching the given command with the highest priority.
+     */
+    public static CommandContainer getRawCommand(@Nonnull String command) {
+        List<CommandContainer> commands = new ArrayList<>();
+        for (CommandContainer container : COMMANDS) {
+            String commandPrefix = container.getDefaultPrefix();
+            for (String trigger : container.getTriggers()) {
+                if (command.equalsIgnoreCase(commandPrefix + trigger)) {
+                    commands.add(container);
+                }
+            }
+        }
+
+        return getHighPriorityCommandFromCommands(commands);
+    }
+
+    /**
      * Gets the command matching the given command alias for the current message if
      * the message was sent in a guild and the guild has at least one alias set.
      *
@@ -160,7 +186,7 @@ public class CommandHandler {
         List<CommandContainer> commands = new ArrayList<>();
         for (Map.Entry<String, String> entry : transformer.getAliases().entrySet()) {
             if (commandString.startsWith(entry.getKey())) {
-                CommandContainer commandContainer = getCommand(message, entry.getValue().split(" ")[0]);
+                CommandContainer commandContainer = getRawCommand(entry.getValue().split(" ")[0]);
                 if (commandContainer != null) {
                     commands.add(commandContainer);
                     aliasArguments = entry.getValue().split(" ");
