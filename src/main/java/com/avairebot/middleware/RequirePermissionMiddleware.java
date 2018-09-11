@@ -26,6 +26,7 @@ import com.avairebot.contracts.middleware.Middleware;
 import com.avairebot.factories.MessageFactory;
 import com.avairebot.middleware.permission.PermissionCheck;
 import com.avairebot.middleware.permission.PermissionCommon;
+import com.avairebot.middleware.permission.PermissionType;
 import com.avairebot.permissions.Permissions;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Message;
@@ -42,11 +43,14 @@ public class RequirePermissionMiddleware extends Middleware {
 
     @Override
     public String buildHelpDescription(@Nonnull String[] arguments) {
+        PermissionType type = PermissionType.fromName(arguments[0]);
         arguments = Arrays.copyOfRange(arguments, 1, arguments.length);
+
         if (arguments.length == 1) {
-            return PermissionCommon.formatWithOneArgument(arguments[0]);
+            return PermissionCommon.formatWithOneArgument(type, arguments[0]);
         }
-        return String.format("**The `%s` permissions is required to use this command!**",
+
+        return String.format(PermissionCommon.getPermissionTypeMessage(type, true),
             Arrays.stream(arguments)
                 .map(Permissions::fromNode)
                 .map(Permissions::getPermission)
