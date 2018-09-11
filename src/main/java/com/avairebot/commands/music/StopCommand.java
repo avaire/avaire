@@ -28,6 +28,7 @@ import com.avairebot.audio.LavalinkManager;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.scheduler.tasks.MusicActivityTask;
+import lavalink.client.io.jda.JdaLink;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -84,8 +85,12 @@ public class StopCommand extends Command {
         MusicActivityTask.emptyQueue.remove(guildId);
 
         if (LavalinkManager.LavalinkManagerHolder.lavalink.isEnabled()) {
-            LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink()
-                .getLink(musicManager.getLastActiveMessage().getGuild()).destroy();
+            JdaLink link = LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink()
+                .getLink(musicManager.getLastActiveMessage().getGuild());
+
+            if (!LavalinkManager.LavalinkManagerHolder.lavalink.isLinkBeingDestroyed(link)) {
+                link.destroy();
+            }
         }
 
         musicManager.getScheduler().nextTrack(false);

@@ -27,7 +27,7 @@ import com.avairebot.audio.GuildMusicManager;
 import com.avairebot.audio.LavalinkManager;
 import com.avairebot.contracts.scheduler.Task;
 import com.avairebot.language.I18n;
-import lavalink.client.io.Link;
+import lavalink.client.io.jda.JdaLink;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.VoiceChannel;
@@ -130,7 +130,7 @@ public class MusicActivityTask implements Task {
     }
 
     private void handleLavalinkNodes(AvaIre avaire) {
-        for (Link link : LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink().getLinks()) {
+        for (JdaLink link : LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink().getLinks()) {
             long guildId = link.getGuildIdLong();
 
             try {
@@ -200,7 +200,7 @@ public class MusicActivityTask implements Task {
         }
     }
 
-    private void handleEmptyMusic(AvaIre avaire, @Nullable AudioManager manager, @Nullable Link link, @Nullable GuildMusicManager guildMusicManager, long guildId) {
+    private void handleEmptyMusic(AvaIre avaire, @Nullable AudioManager manager, @Nullable JdaLink link, @Nullable GuildMusicManager guildMusicManager, long guildId) {
         int times = emptyQueue.getOrDefault(guildId, 0) + 1;
 
         if (times <= getValue(avaire, "empty-queue-timeout", 2)) {
@@ -211,7 +211,7 @@ public class MusicActivityTask implements Task {
         clearItems(manager, link, guildMusicManager, guildId);
     }
 
-    private void handlePausedMusic(AvaIre avaire, @Nullable AudioManager manager, @Nullable Link link, @Nullable GuildMusicManager guildMusicManager, long guildId) {
+    private void handlePausedMusic(AvaIre avaire, @Nullable AudioManager manager, @Nullable JdaLink link, @Nullable GuildMusicManager guildMusicManager, long guildId) {
         int times = playerPaused.getOrDefault(guildId, 0) + 1;
 
         if (times <= getValue(avaire, "paused-music-timeout", 10)) {
@@ -222,14 +222,17 @@ public class MusicActivityTask implements Task {
         clearItems(manager, link, guildMusicManager, guildId);
     }
 
-    private void clearItems(@Nullable AudioManager manager, @Nullable Link link, @Nullable GuildMusicManager guildMusicManager, long guildId) {
+    private void clearItems(@Nullable AudioManager manager, @Nullable JdaLink link, @Nullable GuildMusicManager guildMusicManager, long guildId) {
         if (guildMusicManager != null) {
             guildMusicManager.getScheduler().getQueue().clear();
             if (LavalinkManager.LavalinkManagerHolder.lavalink.isEnabled()) {
                 if (guildMusicManager.getLastActiveMessage() != null) {
-                    LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink()
-                        .getLink(guildMusicManager.getLastActiveMessage().getGuild())
-                        .destroy();
+                    JdaLink jdaLink = LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink()
+                        .getLink(guildMusicManager.getLastActiveMessage().getGuild());
+
+                    if (!LavalinkManager.LavalinkManagerHolder.lavalink.isLinkBeingDestroyed(jdaLink)) {
+                        jdaLink.destroy();
+                    }
                 }
             }
 
@@ -247,7 +250,7 @@ public class MusicActivityTask implements Task {
         if (guildMusicManager == null) {
             if (manager != null) {
                 LavalinkManager.LavalinkManagerHolder.lavalink.closeConnection(manager.getGuild());
-            } else if (link != null) {
+            } else if (link != null && !LavalinkManager.LavalinkManagerHolder.lavalink.isLinkBeingDestroyed(link)) {
                 link.disconnect();
             }
 
