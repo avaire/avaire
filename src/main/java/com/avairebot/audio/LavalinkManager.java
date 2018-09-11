@@ -22,8 +22,11 @@
 package com.avairebot.audio;
 
 import com.avairebot.AvaIre;
+import com.avairebot.scheduler.ScheduleHandler;
 import com.avairebot.shared.DiscordConstants;
+import lavalink.client.io.Link;
 import lavalink.client.io.jda.JdaLavalink;
+import lavalink.client.io.jda.JdaLink;
 import lavalink.client.io.metrics.LavalinkCollector;
 import lavalink.client.player.IPlayer;
 import lavalink.client.player.LavaplayerPlayerWrapper;
@@ -35,6 +38,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class LavalinkManager {
 
@@ -90,7 +94,15 @@ public class LavalinkManager {
 
     public void openConnection(VoiceChannel channel) {
         if (isEnabled()) {
-            lavalink.getLink(channel.getGuild()).connect(channel);
+            JdaLink link = lavalink.getLink(channel.getGuild());
+
+            if (link.getState().equals(Link.State.DESTROYING)) {
+                ScheduleHandler.getScheduler().schedule(
+                    () -> openConnection(channel), 500, TimeUnit.MILLISECONDS
+                );
+            }
+
+            link.connect(channel);
         } else {
             channel.getGuild().getAudioManager().openAudioConnection(channel);
         }
