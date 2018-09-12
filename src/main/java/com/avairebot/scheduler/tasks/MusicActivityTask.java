@@ -251,7 +251,10 @@ public class MusicActivityTask implements Task {
             if (manager != null) {
                 LavalinkManager.LavalinkManagerHolder.lavalink.closeConnection(manager.getGuild());
             } else if (link != null && !LavalinkManager.LavalinkManagerHolder.lavalink.isLinkBeingDestroyed(link)) {
-                link.disconnect();
+                // TODO: Fix the disconnect throwing a NPE, or find another solution for it.
+                // https://sentry.io/share/issue/7da9a78489e4495fb8f9a7453bc143a2/
+                //
+                // link.disconnect();
             }
 
             if (LavalinkManager.LavalinkManagerHolder.lavalink.isEnabled()) {

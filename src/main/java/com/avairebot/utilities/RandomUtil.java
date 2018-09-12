@@ -50,7 +50,7 @@ public class RandomUtil {
      * @return The random integer.
      */
     public static int getInteger(int bound) {
-        if (bound < 0) {
+        if (bound <= 0) {
             return 0;
         }
         return RANDOM.nextInt(bound);
