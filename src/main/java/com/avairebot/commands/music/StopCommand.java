@@ -70,7 +70,7 @@ public class StopCommand extends Command {
     public boolean onCommand(CommandMessage context, String[] args) {
         GuildMusicManager musicManager = AudioHandler.getDefaultAudioHandler().getGuildAudioPlayer(context.getGuild());
 
-        if (musicManager.getPlayer().getPlayingTrack() == null) {
+        if (!musicManager.isReady() || musicManager.getPlayer().getPlayingTrack() == null) {
             return sendErrorMessage(context, context.i18n("error"));
         }
 

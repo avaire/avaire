@@ -68,10 +68,6 @@ public class GuildMusicManager {
         this.lastActiveMessage = lastActiveMessage;
     }
 
-    public AudioPlayerSendHandler getSendHandler() {
-        return new AudioPlayerSendHandler((LavaplayerPlayerWrapper) player);
-    }
-
     public GuildTransformer getGuild() {
         return GuildController.fetchGuild(avaire, guild);
     }
@@ -112,5 +108,15 @@ public class GuildMusicManager {
                 getPlayer().setVolume(defaultVolume);
             }, 1000, TimeUnit.MILLISECONDS);
         }
+    }
+
+    public boolean isReady() {
+        return getScheduler() != null
+            && getPlayer() != null
+            && getGuild() != null;
+    }
+
+    AudioPlayerSendHandler getSendHandler() {
+        return new AudioPlayerSendHandler((LavaplayerPlayerWrapper) player);
     }
 }

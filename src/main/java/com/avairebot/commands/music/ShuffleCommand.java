@@ -70,7 +70,7 @@ public class ShuffleCommand extends Command {
     public boolean onCommand(CommandMessage context, String[] args) {
         GuildMusicManager musicManager = AudioHandler.getDefaultAudioHandler().getGuildAudioPlayer(context.getGuild());
 
-        if (musicManager.getScheduler().getQueue().isEmpty()) {
+        if (!musicManager.isReady() || musicManager.getScheduler().getQueue().isEmpty()) {
             return sendErrorMessage(context, context.i18n("error", generateCommandPrefix(context.getMessage())));
         }
 
