@@ -258,6 +258,7 @@ public class Metrics {
 
         Spark.get("/leaderboard/:id", new GetLeaderboardPlayers(MetricsHolder.METRICS));
         Spark.get("/players/cleanup", new GetPlayerCleanup(MetricsHolder.METRICS));
+        Spark.post("/guilds/cleanup", new PostGuildCleanup(MetricsHolder.METRICS));
         Spark.get("/guilds/cleanup", new GetGuildCleanup(MetricsHolder.METRICS));
         Spark.get("/guilds/:ids/exists", new GetGuildsExists(MetricsHolder.METRICS));
         Spark.get("/guilds/:ids", new GetGuilds(MetricsHolder.METRICS));
