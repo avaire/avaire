@@ -24,7 +24,6 @@ package com.avairebot.audio;
 import com.avairebot.AvaIre;
 import com.avairebot.audio.source.HttpSourceManager;
 import com.avairebot.audio.source.PlaylistImportSourceManager;
-import com.avairebot.audio.source.twitch.TwitchStreamAudioSourceManager;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.transformers.GuildTransformer;
@@ -38,6 +37,7 @@ import com.sedmelluq.discord.lavaplayer.source.bandcamp.BandcampAudioSourceManag
 import com.sedmelluq.discord.lavaplayer.source.beam.BeamAudioSourceManager;
 import com.sedmelluq.discord.lavaplayer.source.local.LocalAudioSourceManager;
 import com.sedmelluq.discord.lavaplayer.source.soundcloud.SoundCloudAudioSourceManager;
+import com.sedmelluq.discord.lavaplayer.source.twitch.TwitchStreamAudioSourceManager;
 import com.sedmelluq.discord.lavaplayer.source.vimeo.VimeoAudioSourceManager;
 import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioSourceManager;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
