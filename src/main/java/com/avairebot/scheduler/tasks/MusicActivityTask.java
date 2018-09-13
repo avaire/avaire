@@ -27,6 +27,7 @@ import com.avairebot.audio.GuildMusicManager;
 import com.avairebot.audio.LavalinkManager;
 import com.avairebot.contracts.scheduler.Task;
 import com.avairebot.language.I18n;
+import lavalink.client.io.LavalinkSocket;
 import lavalink.client.io.jda.JdaLink;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Member;
@@ -56,7 +57,6 @@ public class MusicActivityTask implements Task {
             handleInternalLavaplayer(avaire);
         }
     }
-
 
     private void handleInternalLavaplayer(AvaIre avaire) {
         for (JDA shard : avaire.getShardManager().getShards()) {
@@ -225,13 +225,17 @@ public class MusicActivityTask implements Task {
     private void clearItems(@Nullable AudioManager manager, @Nullable JdaLink link, @Nullable GuildMusicManager guildMusicManager, long guildId) {
         if (guildMusicManager != null) {
             guildMusicManager.getScheduler().getQueue().clear();
-            if (LavalinkManager.LavalinkManagerHolder.lavalink.isEnabled()) {
-                if (guildMusicManager.getLastActiveMessage() != null) {
-                    JdaLink jdaLink = LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink()
-                        .getLink(guildMusicManager.getLastActiveMessage().getGuild());
+            if (link != null) {
+                LavalinkSocket node = link.getNode();
 
-                    if (!LavalinkManager.LavalinkManagerHolder.lavalink.isLinkBeingDestroyed(jdaLink)) {
-                        jdaLink.destroy();
+                if (node != null && node.isAvailable() && !LavalinkManager.LavalinkManagerHolder.lavalink.isLinkBeingDestroyed(link)) {
+                    try {
+                        link.destroy();
+                    } catch (NullPointerException ignored) {
+                        // JDA and Lavalink will sometimes throw a null pointer exception when trying
+                        // to close some web socket connection, there is no way to really deal with
+                        // that outside of just catching the error when we try to disconnect
+                        // so we can still clear up the server player.
                     }
                 }
             }
@@ -250,11 +254,6 @@ public class MusicActivityTask implements Task {
         if (guildMusicManager == null) {
             if (manager != null) {
                 LavalinkManager.LavalinkManagerHolder.lavalink.closeConnection(manager.getGuild());
-            } else if (link != null && !LavalinkManager.LavalinkManagerHolder.lavalink.isLinkBeingDestroyed(link)) {
-                // TODO: Fix the disconnect throwing a NPE, or find another solution for it.
-                // https://sentry.io/share/issue/7da9a78489e4495fb8f9a7453bc143a2/
-                //
-                // link.disconnect();
             }
 
             if (LavalinkManager.LavalinkManagerHolder.lavalink.isEnabled()) {
