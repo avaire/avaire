@@ -32,12 +32,14 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.MessageBuilder;
+import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.User;
 
 import java.awt.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -77,12 +79,19 @@ public abstract class InteractionCommand extends Command {
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`:command <user>`");
+        return Arrays.asList(
+            "`:command <target>`",
+            "`:command <user> <target>`"
+        );
     }
 
     @Override
     public List<String> getExampleUsage() {
-        return Collections.singletonList("`:command @AvaIre`");
+        return Arrays.asList(
+            "`:command @AvaIre`",
+            "`:command @AvaIre @Senither`",
+            "`:command @Someone @Me`"
+        );
     }
 
     @Override
@@ -103,12 +112,19 @@ public abstract class InteractionCommand extends Command {
 
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
-        User user = MentionableUtil.getUser(context, new String[]{String.join(" ", args)});
-        if (user == null) {
+        User user = context.getAuthor();
+        User target = MentionableUtil.getUser(context, args, 0);
+        if (target == null) {
             return sendErrorMessage(context, "You must mention a use you want to use the interaction for.");
         }
 
-        context.getChannel().sendTyping().queue();
+        User secondaryTarget = MentionableUtil.getUser(context, args, 1);
+        if (secondaryTarget != null) {
+            user = target;
+            target = secondaryTarget;
+        }
+
+        handleCommandIndication(context);
 
         List<String> interactionImages = getInteractionImages();
 
@@ -119,12 +135,12 @@ public abstract class InteractionCommand extends Command {
         int imageIndex = lottery.getWinner();
 
         MessageBuilder messageBuilder = new MessageBuilder();
-        EmbedBuilder embedBuilder = new EmbedBuilder();
-
-        embedBuilder
+        EmbedBuilder embedBuilder = context.makeEmbeddedMessage()
             .setImage("attachment://" + getClass().getSimpleName() + "-" + imageIndex + ".gif")
-            .setDescription(buildMessage(context, user))
-            .setColor(getInteractionColor());
+            .setDescription(buildMessage(context, user, target))
+            .setColor(getInteractionColor())
+            .requestedBy(context)
+            .build();
 
         messageBuilder.setEmbed(embedBuilder.build());
 
@@ -138,20 +154,31 @@ public abstract class InteractionCommand extends Command {
         return true;
     }
 
-    private String buildMessage(CommandMessage context, User user) {
+    private String buildMessage(CommandMessage context, User user, User target) {
         if (overwrite) {
             return I18n.format(
                 getInteraction(context, false),
-                context.getMember().getEffectiveName(),
-                context.getGuild().getMember(user).getEffectiveName()
+                context.getGuild().getMember(user).getEffectiveName(),
+                context.getGuild().getMember(target).getEffectiveName()
             );
         }
 
         return String.format("**%s** %s **%s**",
-            context.getMember().getEffectiveName(),
+            context.getGuild().getMember(user).getEffectiveName(),
             getInteraction(context, false),
-            context.getGuild().getMember(user).getEffectiveName()
+            context.getGuild().getMember(target).getEffectiveName()
         );
+    }
+
+    private void handleCommandIndication(CommandMessage context) {
+        if (!context.getGuild().getSelfMember().hasPermission(context.getChannel(), Permission.MESSAGE_MANAGE)) {
+            context.getChannel().sendTyping().queue();
+            return;
+        }
+
+        context.getMessage().delete().queue(null, error -> {
+            context.getChannel().sendTyping().queue();
+        });
     }
 
     private String getInteraction(CommandContext context, boolean isDescription) {

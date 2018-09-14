@@ -24,24 +24,73 @@ package com.avairebot.utilities;
 import com.avairebot.commands.CommandMessage;
 import net.dv8tion.jda.core.entities.*;
 
+import javax.annotation.Nullable;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class MentionableUtil {
 
+    /**
+     * A simple regular expression used to match a string
+     * to see if it matches a user mention format.
+     */
+    private static final Pattern userRegEX = Pattern.compile("<@(!|)+[0-9]{16,}+>", Pattern.CASE_INSENSITIVE);
+
+    /**
+     * Gets the first user object matching in the given context and arguments, the
+     * method will try the following to get a user object out the other end.
+     * <p>
+     * <ul>
+     * <li>Discord mentions (@Someone)</li>
+     * <li>Full name mentions (Senither#000)</li>
+     * <li>Name mentions (Senither)</li>
+     * <li>User ID (88739639380172800)</li>
+     * </ul>
+     * <p>
+     * If none of the checks finds a valid user object, <code>null</code> will be returned instead.
+     *
+     * @param context The command message context.
+     * @param args    The arguments parsed to the command.
+     * @return Possibly-null, or the user matching the first index.
+     */
+    @Nullable
     public static User getUser(CommandMessage context, String[] args) {
         return getUser(context, args, 0);
     }
 
+    /**
+     * Gets the <code>N</code>th index user object matching in the given context and arguments,
+     * the method will try the following to get a user object out the other end.
+     * <ul>
+     * <li>Discord mentions (@Someone)</li>
+     * <li>Full name mentions (Senither#000)</li>
+     * <li>Name mentions (Senither)</li>
+     * <li>User ID (88739639380172800)</li>
+     * </ul>
+     * <p>
+     * If none of the checks finds a valid user object, <code>null</code> will be returned instead.
+     *
+     * @param context The command message context.
+     * @param args    The arguments parsed to the command.
+     * @param index   The index of the argument that should be checked.
+     * @return Possibly-null, or the user matching the given index.
+     */
+    @Nullable
     public static User getUser(CommandMessage context, String[] args, int index) {
-        if (!context.getMentionedUsers().isEmpty()) {
-            return context.getMentionedUsers().get(0);
-        }
-
         if (args.length <= index) {
             return null;
         }
 
         String part = args[index].trim();
+
+        if (!context.getMentionedUsers().isEmpty() && userRegEX.matcher(args[index]).matches()) {
+            String userId = part.substring(2, part.length() - 1);
+            if (userId.charAt(0) == '!') {
+                userId = userId.substring(1, userId.length());
+            }
+            Member member = context.getGuild().getMemberById(userId);
+            return member == null ? null : member.getUser();
+        }
 
         if (NumberUtil.isNumeric(part)) {
             Member member = context.getGuild().getMemberById(part);
@@ -76,10 +125,42 @@ public class MentionableUtil {
         return null;
     }
 
+    /**
+     * Gets the first channel object matching in the given context and arguments, the
+     * method will try the following to get a channel object out the other end.
+     * <ul>
+     * <li>Discord mentions (#general)</li>
+     * <li>Name mentions (general)</li>
+     * <li>Channel ID (299205123673030658)</li>
+     * </ul>
+     * <p>
+     * If none of the checks finds a valid channel object, <code>null</code> will be returned instead.
+     *
+     * @param message The command message.
+     * @param args    The arguments parsed to the command.
+     * @return Possibly-null, or the first channel matching the given arguments.
+     */
     public static Channel getChannel(Message message, String[] args) {
         return getChannel(message, args, 0);
     }
 
+    /**
+     * Gets the <code>N</code>th index channel object matching in the given
+     * context and arguments, the method will try the following to get
+     * a channel object out the other end.
+     * <ul>
+     * <li>Discord mentions (#general)</li>
+     * <li>Name mentions (general)</li>
+     * <li>Channel ID (299205123673030658)</li>
+     * </ul>
+     * <p>
+     * If none of the checks finds a valid channel object, <code>null</code> will be returned instead.
+     *
+     * @param message The command message.
+     * @param args    The arguments parsed to the command.
+     * @param index   The index of the argument that should be checked.
+     * @return Possibly-null, or the channel matching the given index.
+     */
     public static Channel getChannel(Message message, String[] args, int index) {
         if (!message.getMentionedChannels().isEmpty()) {
             return message.getMentionedChannels().get(0);
