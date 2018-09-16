@@ -44,8 +44,16 @@ public class SQLite extends FilenameDatabase {
      * @param dbm The database manager class instance.
      */
     public SQLite(DatabaseManager dbm) {
-        String filename = dbm.getAvaire().getConfig().getString("database.filename", "database.sqlite");
+        this(dbm, dbm.getAvaire().getConfig().getString("database.filename", "database.sqlite"));
+    }
 
+    /**
+     * Creates a SQLite database connection instance with the parsed information.
+     *
+     * @param dbm      The database manager class instance.
+     * @param filename The filename of the database.
+     */
+    public SQLite(DatabaseManager dbm, String filename) {
         if (filename.equals(":memory:")) {
             this.setFilename(null);
             return;
