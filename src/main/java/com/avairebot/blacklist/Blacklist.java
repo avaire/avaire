@@ -24,6 +24,8 @@ package com.avairebot.blacklist;
 import com.avairebot.AvaIre;
 import com.avairebot.Constants;
 import com.avairebot.database.collection.Collection;
+import com.avairebot.database.query.ChangeableStatement;
+import com.avairebot.time.Carbon;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.User;
@@ -115,17 +117,26 @@ public class Blacklist {
     }
 
     public void addIdToBlacklist(Scope scope, final long id, final @Nullable String reason) {
+        addIdToBlacklist(scope, id, reason, null);
+    }
+
+    public void addIdToBlacklist(Scope scope, final long id, final @Nullable String reason, @Nullable Carbon expiresIn) {
         if (blacklist.contains(id)) {
             return;
         }
 
-        blacklist.add(new BlacklistEntity(scope, id));
+        blacklist.add(new BlacklistEntity(scope, id, expiresIn));
 
         try {
             avaire.getDatabase().newQueryBuilder(Constants.BLACKLIST_TABLE_NAME)
-                .insert(statement -> {
+                .insert((ChangeableStatement statement) -> {
                     statement.set("id", id);
                     statement.set("type", scope.getId());
+                    statement.set("expires_in", expiresIn);
+
+                    if (expiresIn == null) {
+                        statement.set("expires_in", Carbon.now().addYears(10));
+                    }
 
                     if (reason != null) {
                         statement.set("reason", reason);

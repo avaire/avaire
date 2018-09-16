@@ -21,14 +21,22 @@
 
 package com.avairebot.blacklist;
 
+import com.avairebot.time.Carbon;
+
 public class BlacklistEntity {
 
     private final Scope scope;
     private final long id;
+    private final Carbon expiresIn;
 
-    public BlacklistEntity(Scope scope, long id) {
+    public BlacklistEntity(Scope scope, long id, Carbon expiresIn) {
         this.scope = scope;
         this.id = id;
+        this.expiresIn = expiresIn;
+    }
+
+    public BlacklistEntity(Scope scope, long id) {
+        this(scope, id, null);
     }
 
     public Scope getScope() {
@@ -37,5 +45,9 @@ public class BlacklistEntity {
 
     public long getId() {
         return id;
+    }
+
+    public boolean isExpired() {
+        return expiresIn == null || expiresIn.isFuture();
     }
 }

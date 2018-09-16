@@ -61,6 +61,14 @@ public class BlacklistCommand extends SystemCommand {
     }
 
     @Override
+    public List<String> getExampleUsage() {
+        return Arrays.asList(
+            "`:command add G 123` - Blacklists the guild with an ID of 123",
+            "`:command add U 321 Doing stuff` - Blacklists the user with an ID of 321 for \"Doing stuff\""
+        );
+    }
+
+    @Override
     public List<String> getTriggers() {
         return Collections.singletonList("blacklist");
     }
@@ -154,7 +162,7 @@ public class BlacklistCommand extends SystemCommand {
 
         Scope scope = Scope.parse(args[0]);
         if (scope == null) {
-            return sendErrorMessage(context, "Invalid type given, the type must be a valid blacklist scope!");
+            return sendErrorMessage(context, "Invalid type given, the type must be a valid blacklist scope!\nValid types are `G` for guilds/servers, or `U` for users.");
         }
 
         long id;
