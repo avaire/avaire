@@ -24,10 +24,18 @@ package com.avairebot.blacklist;
 import com.avairebot.utilities.NumberUtil;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public enum Scope {
 
+    /**
+     * The user scope, used for blacklisting users.
+     */
     USER(0, 'U'),
+
+    /**
+     * The guild/server scope, used for blacklisting servers.
+     */
     GUILD(1, 'G');
 
     private final int id;
@@ -38,6 +46,13 @@ public enum Scope {
         this.prefix = prefix;
     }
 
+    /**
+     * Gets the scope from the given ID, if no valid
+     * ID was given, null will be returned instead.
+     *
+     * @param id The ID that the scope should match.
+     * @return Possibly-null, the scope matching the given ID.
+     */
     public static Scope fromId(int id) {
         for (Scope scope : values()) {
             if (scope.getId() == id) {
@@ -47,6 +62,15 @@ public enum Scope {
         return null;
     }
 
+    /**
+     * /**
+     * Parses the given string to a valid scope by comparing
+     * the string to scope prefixes and scope IDs.
+     *
+     * @param string The string that should be parsed.
+     * @return Possible-null, the scope matching the given string.
+     */
+    @Nullable
     public static Scope parse(@Nonnull String string) {
         int parsedInt = NumberUtil.parseInt(string, -1);
         for (Scope scope : values()) {
@@ -61,10 +85,20 @@ public enum Scope {
         return null;
     }
 
+    /**
+     * Gets the ID of the scope.
+     *
+     * @return The ID of the scope.
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     * Gets the prefix of the scope.
+     *
+     * @return The prefix of the scope.
+     */
     public char getPrefix() {
         return prefix;
     }

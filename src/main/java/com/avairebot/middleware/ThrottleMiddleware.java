@@ -78,6 +78,12 @@ public class ThrottleMiddleware extends Middleware {
 
             ThrottleEntity entity = getEntityFromCache(fingerprint, maxAttempts, decaySeconds);
             if (entity.getHits() >= maxAttempts) {
+                // This hits the blacklist ratelimit, the hit method will return
+                // true if the user was blacklisted, and false otherwise.
+                if (avaire.getBlacklist().getRatelimit().hit(message.getAuthor().getIdLong())) {
+                    return false;
+                }
+
                 return cancelCommandThrottleRequest(message, stack, entity);
             }
 

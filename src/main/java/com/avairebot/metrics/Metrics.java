@@ -23,6 +23,7 @@ package com.avairebot.metrics;
 
 import ch.qos.logback.classic.LoggerContext;
 import com.avairebot.AvaIre;
+import com.avairebot.blacklist.Ratelimit;
 import com.avairebot.commands.Category;
 import com.avairebot.commands.utility.GlobalLeaderboardCommand;
 import com.avairebot.commands.utility.LeaderboardCommand;
@@ -237,6 +238,7 @@ public class Metrics {
         cacheMetrics.addCache("leaderboard", LeaderboardCommand.cache);
         cacheMetrics.addCache("global-leaderboard", GlobalLeaderboardCommand.cache);
         cacheMetrics.addCache("interaction-lottery", InteractionCommand.cache);
+        cacheMetrics.addCache("blacklist-ratelimit", Ratelimit.cache);
 
         if (!avaire.getConfig().getBoolean("metrics.enabled", true)) {
             log.info("Metrics web API is disabled, skipping igniting Spark API");
