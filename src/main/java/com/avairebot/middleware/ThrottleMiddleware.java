@@ -27,6 +27,7 @@ import com.avairebot.contracts.middleware.Middleware;
 import com.avairebot.contracts.middleware.ThrottleMessage;
 import com.avairebot.factories.MessageFactory;
 import com.avairebot.metrics.Metrics;
+import com.avairebot.time.Carbon;
 import com.avairebot.utilities.CacheUtil;
 import com.avairebot.utilities.NumberUtil;
 import com.google.common.cache.Cache;
@@ -78,9 +79,9 @@ public class ThrottleMiddleware extends Middleware {
 
             ThrottleEntity entity = getEntityFromCache(fingerprint, maxAttempts, decaySeconds);
             if (entity.getHits() >= maxAttempts) {
-                // This hits the blacklist ratelimit, the hit method will return
-                // true if the user was blacklisted, and false otherwise.
-                if (avaire.getBlacklist().getRatelimit().hit(message.getAuthor().getIdLong())) {
+                Carbon expires = avaire.getBlacklist().getRatelimit().hit(message.getAuthor().getIdLong());
+                if (expires != null) {
+                    avaire.getBlacklist().getRatelimit().sendBlacklistMessage(message.getAuthor(), expires);
                     return false;
                 }
 

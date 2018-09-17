@@ -22,14 +22,19 @@
 package com.avairebot.blacklist;
 
 import com.avairebot.contracts.blacklist.PunishmentLevel;
+import com.avairebot.factories.MessageFactory;
 import com.avairebot.time.Carbon;
 import com.avairebot.utilities.CacheUtil;
+import com.avairebot.utilities.RestActionUtil;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+import net.dv8tion.jda.core.entities.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.Nullable;
+import java.awt.*;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -105,6 +110,32 @@ public class Ratelimit {
     }
 
     /**
+     * Sends the blacklist message to the given use in a direct
+     * message to let the user know that they have been added
+     * to the blacklist automatically.
+     *
+     * @param user    The user that was blacklisted.
+     * @param expires The carbon time instance for when the blacklist expires.
+     */
+    public void sendBlacklistMessage(User user, Carbon expires) {
+        user.openPrivateChannel().queue(channel -> {
+            channel.sendMessage(MessageFactory.createEmbeddedBuilder()
+                .setColor(Color.decode("#A5306B"))
+                .setTitle("Whoa there!", "https://avairebot.com/")
+                .setFooter("Expires", null)
+                .setTimestamp(expires.getTime().toInstant())
+                .setDescription("Looks like you're using commands a bit too fast, I've banned you "
+                    + "from using any commands, or earning any XP until you cool down a bit.\n"
+                    + "Your ban expires in " + expires.addSecond().diffForHumans(true) + ", "
+                    + "keep in mind repeating the behavior will get you banned for longer "
+                    + "periods of time, eventually if you keep it up you will be banned "
+                    + "from using any of my commands permanently."
+                ).build()
+            ).queue();
+        }, RestActionUtil.ignore);
+    }
+
+    /**
      * His the blacklisting ratelimit, if the given user ID has reached the
      * maximum number of hits within the allowed timeframe, the user will
      * be auto blacklisted for a certain amount of time, the time the
@@ -113,14 +144,16 @@ public class Ratelimit {
      * the {@link #levels punishments array}.
      *
      * @param userId The ID of the user that should hit the ratelimit.
-     * @return <code>True</code> if the user was blacklisted, <code>False</code> otherwise.
+     * @return Possibly-null, the time object matching when the blacklist expires,
+     * or <code>null</code> if the user was not blacklisted.
      */
-    public boolean hit(long userId) {
+    @Nullable
+    public Carbon hit(long userId) {
         Rate rate = CacheUtil.getUncheckedUnwrapped(cache, userId);
         if (rate == null) {
             // This should never happen, if it does we'll just return
-            // true to not block any commands by a valid user.
-            return false;
+            // null to not block any commands by a valid user.
+            return null;
         }
 
         //noinspection SynchronizationOnLocalVariableOrMethodParameter
@@ -128,13 +161,19 @@ public class Ratelimit {
             rate.hit();
 
             if (rate.getHits() < hitLimit) {
-                return false;
+                return null;
             }
         }
 
         Long last = rate.getLast();
+
+        // Checks if the user was blacklisted within the last two and half seconds,
+        // the command handling process uses its own thread pool, because of that
+        // it's possible to have two commands come in from the same user in a
+        // very quick succession, instead of punishing the user twice, we
+        // just cancel the blacklist hit here instead.
         if (last != null && last < System.currentTimeMillis() - 2500) {
-            return true;
+            return null;
         }
 
         Carbon punishment = getPunishment(userId);
@@ -149,7 +188,7 @@ public class Ratelimit {
             punishment
         );
 
-        return true;
+        return punishment;
     }
 
     /**
