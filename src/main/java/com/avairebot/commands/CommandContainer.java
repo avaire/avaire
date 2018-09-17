@@ -57,7 +57,7 @@ public class CommandContainer {
         this.middlewares = new ArrayList<>(command.getMiddleware());
 
         if (!hasMiddleware(ThrottleMiddleware.class)) {
-            middlewares.add("throttle:user,3,2");
+            middlewares.add("throttle:user,2,3");
         }
     }
 
