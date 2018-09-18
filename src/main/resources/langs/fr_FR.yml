@@ -218,7 +218,7 @@ administration:
         disabled: "The `Slowmode` module has been **disabled** for the :channel channel."
 
     ToggleCategoryCommand:
-        invliadCategory: "Invalid category given, `{0}` is not a valid category"
+        invalidCategory: "Invalid category given, `{0}` is not a valid category"
         missingArgumentType: "Missing argument `channel/global`, you must include the channel or specify that the command should be run globally."
         invalidChannelOrGlobalString: "Invalid channel or global string given, you must either mention the channel you want to affect, or write `global` to affect all the channels at the same time."
         cantEnabledCategory: "Whoops, you can't enable the **:category** command category while it is disabled globally.\nYou can use the command below to enable the category for all channels.\n`:command :category global on`"

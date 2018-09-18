@@ -102,7 +102,7 @@ public class ToggleCategoryCommand extends Command {
 
         Category category = CategoryHandler.fromLazyName(args[0]);
         if (category == null || category.isGlobalOrSystem()) {
-            return sendErrorMessage(context, context.i18n("invliadCategory"), args[0]);
+            return sendErrorMessage(context, context.i18n("invalidCategory"), args[0]);
         }
 
         if (args.length < 2) {
@@ -165,7 +165,7 @@ public class ToggleCategoryCommand extends Command {
             context.makeSuccess(getStatusMessage(context, channelId))
                 .set("category", category.getName())
                 .set("channel", "<#" + channel.getId() + ">")
-                .set("status", "status." + (status ? "enabled" : "disabled"))
+                .set("status", context.i18n("status." + (status ? "enabled" : "disabled")))
                 .queue();
         } catch (SQLException e) {
             e.printStackTrace();
