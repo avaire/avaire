@@ -68,7 +68,7 @@ powershell -Command "(New-Object Net.WebClient).DownloadFile('https://avairebot.
 echo Done
 
 echo|set /p=" - Deleting existing AvaIre.jar file... "
-rm AvaIre.jar > nul 2> nul
+del /f AvaIre.jar > nul 2> nul
 echo Done
 
 echo|set /p=" - Renaming nightly-build.jar to AvaIre.jar... "
