@@ -86,7 +86,7 @@ public class StopCommand extends Command {
 
         if (LavalinkManager.LavalinkManagerHolder.lavalink.isEnabled()) {
             JdaLink link = LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink()
-                .getLink(musicManager.getLastActiveMessage().getGuild());
+                .getLink(context.getGuild());
 
             if (!LavalinkManager.LavalinkManagerHolder.lavalink.isLinkBeingDestroyed(link)) {
                 link.destroy();
