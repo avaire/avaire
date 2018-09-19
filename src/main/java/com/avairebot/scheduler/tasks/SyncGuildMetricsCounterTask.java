@@ -53,7 +53,8 @@ public class SyncGuildMetricsCounterTask implements Task {
     }
 
     private boolean hasLoadedGuilds(AvaIre avaire) {
-        if (avaire.getShardManager().getShards().size() != avaire.getSettings().getShardCount()) {
+        if (avaire.getSettings().getShardCount() != -1
+            && avaire.getShardManager().getShards().size() != avaire.getSettings().getShardCount()) {
             return false;
         }
 
