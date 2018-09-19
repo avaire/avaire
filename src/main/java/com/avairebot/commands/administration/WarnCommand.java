@@ -25,8 +25,8 @@ import com.avairebot.AvaIre;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.database.transformers.GuildTransformer;
+import com.avairebot.modlog.Modlog;
 import com.avairebot.modlog.ModlogAction;
-import com.avairebot.modlog.ModlogModule;
 import com.avairebot.modlog.ModlogType;
 import com.avairebot.utilities.MentionableUtil;
 import com.avairebot.utilities.RestActionUtil;
@@ -116,13 +116,13 @@ public class WarnCommand extends Command {
             reason
         );
 
-        String caseId = ModlogModule.log(avaire, context.getGuild(), transformer, modlogAction);
+        String caseId = Modlog.log(avaire, context.getGuild(), transformer, modlogAction);
 
         if (caseId == null) {
             return sendErrorMessage(context, context.i18n("failedToLogWarning"));
         }
 
-        ModlogModule.notifyUser(user, context.getGuild(), modlogAction, caseId);
+        Modlog.notifyUser(user, context.getGuild(), modlogAction, caseId);
 
         context.makeWarning(context.i18n("message"))
             .set("target", user.getName() + "#" + user.getDiscriminator())

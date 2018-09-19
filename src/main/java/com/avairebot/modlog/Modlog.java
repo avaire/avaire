@@ -42,16 +42,46 @@ import javax.annotation.Nullable;
 import java.sql.SQLException;
 import java.time.Instant;
 
-public class ModlogModule {
+public class Modlog {
 
+    /**
+     * Logs an action to the modlog channel for the given context.
+     *
+     * @param avaire  The main AvaIre application instance.
+     * @param context The command context the modlog action is occurring in.
+     * @param action  The action that should be logged to the modlog.
+     * @return Possibly-null, the case ID if the modlog was logged successfully,
+     * otherwise <code>null</code> will be returned.
+     */
+    @Nullable
     public static String log(AvaIre avaire, CommandMessage context, ModlogAction action) {
         return log(avaire, context.getGuild(), action);
     }
 
+    /**
+     * Logs an action to the modlog channel for the given message.
+     *
+     * @param avaire  The main AvaIre application instance.
+     * @param message The message that triggered the modlog action.
+     * @param action  The action that should be logged to the modlog.
+     * @return Possibly-null, the case ID if the modlog was logged successfully,
+     * otherwise <code>null</code> will be returned.
+     */
+    @Nullable
     public static String log(AvaIre avaire, Message message, ModlogAction action) {
         return log(avaire, message.getGuild(), action);
     }
 
+    /**
+     * Logs an action to the modlog channel for the given guild.
+     *
+     * @param avaire The main AvaIre application instance.
+     * @param guild  The guild the modlog action should be logged in.
+     * @param action The action that should be logged to the modlog.
+     * @return Possibly-null, the case ID if the modlog was logged successfully,
+     * otherwise <code>null</code> will be returned.
+     */
+    @Nullable
     public static String log(AvaIre avaire, Guild guild, ModlogAction action) {
         GuildTransformer transformer = GuildController.fetchGuild(avaire, guild);
         if (transformer != null) {
@@ -60,6 +90,18 @@ public class ModlogModule {
         return null;
     }
 
+    /**
+     * Logs an action to the modlog channel for the given guild
+     * using the guild transformer, and the modlog action.
+     *
+     * @param avaire      The main AvaIre application instance.
+     * @param guild       The guild the modlog action should be logged in.
+     * @param transformer The guild transformer containing all the guild settings used in the modlog action.
+     * @param action      The action that should be logged to the modlog.
+     * @return Possibly-null, the case ID if the modlog was logged successfully,
+     * otherwise <code>null</code> will be returned.
+     */
+    @Nullable
     public static String log(AvaIre avaire, Guild guild, GuildTransformer transformer, ModlogAction action) {
         if (transformer.getModlog() == null) {
             return null;
@@ -131,33 +173,27 @@ public class ModlogModule {
         return "" + transformer.getModlogCase();
     }
 
-    public static void notifyUser(User user, Guild guild, ModlogAction action, String caseId) {
-        String type = null;
-        switch (action.getType()) {
-            case BAN:
-            case SOFT_BAN:
-                type = "banned";
-                break;
-
-            case KICK:
-                type = "kicked";
-                break;
-
-            case WARN:
-                type = "warned";
-                break;
-        }
-
+    /**
+     * Notifies the given user about a modlog action by DMing them
+     * a message, if the user have DM messages disabled, nothing
+     * will be sent and the method will fail silently.
+     *
+     * @param user   The user that should be notified about a modlog action.
+     * @param guild  The guild that the modlog action happened in.
+     * @param action The modlog action that the user should be notified of.
+     * @param caseId The case ID that is attached to the modlog action.
+     */
+    public static void notifyUser(User user, Guild guild, ModlogAction action, @Nullable String caseId) {
+        String type = action.getType().getNotifyName();
         if (type == null) {
             return;
         }
 
-        final String finalType = type;
         user.openPrivateChannel().queue(channel -> {
             EmbedBuilder message = MessageFactory.createEmbeddedBuilder()
                 .setColor(action.getType().getColor())
                 .setDescription(String.format("You have been **%s** %s " + guild.getName(),
-                    finalType, action.getType().equals(ModlogType.WARN)
+                    type, action.getType().equals(ModlogType.WARN)
                         ? "in" : "from"
                 ))
                 .addField("Moderator", action.getModerator().getName() + "#" + action.getModerator().getDiscriminator(), true)

@@ -25,8 +25,8 @@ import com.avairebot.AvaIre;
 import com.avairebot.chat.PlaceholderMessage;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
+import com.avairebot.modlog.Modlog;
 import com.avairebot.modlog.ModlogAction;
-import com.avairebot.modlog.ModlogModule;
 import com.avairebot.modlog.ModlogType;
 import com.avairebot.utilities.MentionableUtil;
 import com.avairebot.utilities.NumberUtil;
@@ -128,7 +128,7 @@ public class PurgeCommand extends Command {
                     }
 
                     deleteMessages(context, messages).queue(aVoid -> {
-                        ModlogModule.log(avaire, context, new ModlogAction(
+                        Modlog.log(avaire, context, new ModlogAction(
                                 ModlogType.PURGE,
                                 context.getAuthor(), null,
                                 context.i18n("messagesDeletedIn", messages.size(), context.getChannel().getAsMention())
@@ -156,7 +156,7 @@ public class PurgeCommand extends Command {
                     users.add(String.format("<@%s>", userId));
                 }
 
-                ModlogModule.log(avaire, context, new ModlogAction(
+                Modlog.log(avaire, context, new ModlogAction(
                         ModlogType.PURGE,
                         context.getAuthor(), null,
                         context.i18n("messagesDeletedBy",

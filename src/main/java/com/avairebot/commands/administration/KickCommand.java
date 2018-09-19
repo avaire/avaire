@@ -25,8 +25,8 @@ import com.avairebot.AvaIre;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.CacheFingerprint;
 import com.avairebot.contracts.commands.Command;
+import com.avairebot.modlog.Modlog;
 import com.avairebot.modlog.ModlogAction;
-import com.avairebot.modlog.ModlogModule;
 import com.avairebot.modlog.ModlogType;
 import com.avairebot.utilities.MentionableUtil;
 import com.avairebot.utilities.RoleUtil;
@@ -111,9 +111,9 @@ public class KickCommand extends Command {
             reason
         );
 
-        String caseId = ModlogModule.log(avaire, context, modlogAction);
+        String caseId = Modlog.log(avaire, context, modlogAction);
 
-        ModlogModule.notifyUser(user.getUser(), context.getGuild(), modlogAction, caseId);
+        Modlog.notifyUser(user.getUser(), context.getGuild(), modlogAction, caseId);
 
         context.getGuild().getController().kick(user, String.format("%s - %s#%s (%s)",
             reason,

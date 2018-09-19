@@ -23,27 +23,62 @@ package com.avairebot.modlog;
 
 import com.avairebot.chat.MessageType;
 
+import javax.annotation.Nullable;
 import java.awt.*;
 
 public enum ModlogType {
 
-    KICK(1, "Kick", MessageType.WARNING.getColor()),
-    VOICE_KICK(2, "Voice Kick", MessageType.WARNING.getColor()),
-    SOFT_BAN(3, "Soft Ban", MessageType.ERROR.getColor()),
-    BAN(4, "Ban", MessageType.ERROR.getColor()),
-    PURGE(5, "Purge", MessageType.INFO.getColor()),
-    WARN(6, "Warning", MessageType.WARNING.getColor());
+    /**
+     * Represents the action when a user is kicked from a server.
+     */
+    KICK(1, "Kick", true, MessageType.WARNING.getColor()),
+
+    /**
+     * Represents the action when a user is kicked from a voice channel.
+     */
+    VOICE_KICK(2, "Voice Kick", false, MessageType.WARNING.getColor()),
+
+    /**
+     * Represents when a user is banned from a server without the
+     * message they sent over the last 7 days are left alone.
+     */
+    SOFT_BAN(3, "Soft Ban", true, MessageType.ERROR.getColor()),
+
+    /**
+     * Represents when a user is banned from a server, including
+     * deleting any message they have sent in the last 7 days.
+     */
+    BAN(4, "Ban", true, MessageType.ERROR.getColor()),
+
+    /**
+     * Represents when multiple messages are deleted from a channel.
+     */
+    PURGE(5, "Purge", false, MessageType.INFO.getColor()),
+
+    /**
+     * Represents when a user is warned through Avas warn system.
+     */
+    WARN(6, "Warning", true, MessageType.WARNING.getColor());
 
     final int id;
     final String name;
+    final boolean notifyable;
     final Color color;
 
-    ModlogType(int id, String name, Color color) {
+    ModlogType(int id, String name, boolean notifyable, Color color) {
         this.id = id;
         this.name = name;
+        this.notifyable = notifyable;
         this.color = color;
     }
 
+    /**
+     * Tries to get a modlog type by ID, if no modlog types exists with
+     * the given ID, <code>null</code> will be returned instead.
+     *
+     * @param id The ID that the modlog type should have.
+     * @return Possibly-null, the modlog tpe with the given ID.
+     */
     public static ModlogType fromId(int id) {
         for (ModlogType type : values()) {
             if (type.getId() == id) {
@@ -53,15 +88,43 @@ public enum ModlogType {
         return null;
     }
 
+    /**
+     * Gets the ID of the current modlog type.
+     *
+     * @return The ID of the current modlog type.
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     * Gets the name of the current modlog type.
+     *
+     * @return The name of the current modlog type.
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Gets the color of the current modlog type.
+     *
+     * @return The color of the current modlog type.
+     */
     public Color getColor() {
         return color;
+    }
+
+    /**
+     * Gets the notify name for the current modlog type.
+     *
+     * @return The notify name for the current modlog type.
+     */
+    @Nullable
+    public String getNotifyName() {
+        if (!notifyable) {
+            return null;
+        }
+        return getName().toLowerCase() + "ed";
     }
 }

@@ -23,8 +23,8 @@ package com.avairebot.contracts.commands;
 
 import com.avairebot.AvaIre;
 import com.avairebot.commands.CommandMessage;
+import com.avairebot.modlog.Modlog;
 import com.avairebot.modlog.ModlogAction;
-import com.avairebot.modlog.ModlogModule;
 import com.avairebot.modlog.ModlogType;
 import com.avairebot.utilities.MentionableUtil;
 import com.avairebot.utilities.RoleUtil;
@@ -90,9 +90,9 @@ public abstract class BanableCommand extends Command {
             context.getAuthor(), user, reason
         );
 
-        String caseId = ModlogModule.log(avaire, context, modlogAction);
+        String caseId = Modlog.log(avaire, context, modlogAction);
 
-        ModlogModule.notifyUser(user, context.getGuild(), modlogAction, caseId);
+        Modlog.notifyUser(user, context.getGuild(), modlogAction, caseId);
 
         context.getGuild().getController().ban(user, soft ? 0 : 7, String.format("%s - %s#%s (%s)",
             reason,
