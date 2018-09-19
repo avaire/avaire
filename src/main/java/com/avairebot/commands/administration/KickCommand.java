@@ -78,7 +78,7 @@ public class KickCommand extends Command {
     @Override
     public List<String> getMiddleware() {
         return Arrays.asList(
-            "require:user,general.kick_members",
+            "require:all,general.kick_members",
             "throttle:user,1,5"
         );
     }
@@ -104,20 +104,23 @@ public class KickCommand extends Command {
     private boolean kickUser(CommandMessage context, Member user, String[] args) {
         String reason = generateMessage(args);
 
+        ModlogAction modlogAction = new ModlogAction(
+            ModlogType.KICK,
+            context.getAuthor(),
+            user.getUser(),
+            reason
+        );
+
+        String caseId = ModlogModule.log(avaire, context, modlogAction);
+
+        ModlogModule.notifyUser(user.getUser(), context.getGuild(), modlogAction, caseId);
+
         context.getGuild().getController().kick(user, String.format("%s - %s#%s (%s)",
             reason,
             context.getAuthor().getName(),
             context.getAuthor().getDiscriminator(),
             context.getAuthor().getId()
         )).queue(aVoid -> {
-                ModlogModule.log(avaire, context, new ModlogAction(
-                        ModlogType.KICK,
-                        context.getAuthor(),
-                        user.getUser(),
-                        reason
-                    )
-                );
-
                 context.makeSuccess(context.i18n("success"))
                     .set("target", user.getUser().getName() + "#" + user.getUser().getDiscriminator())
                     .set("reason", reason)

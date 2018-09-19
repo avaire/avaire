@@ -22,11 +22,9 @@
 package com.avairebot.commands.administration;
 
 import com.avairebot.AvaIre;
-import com.avairebot.chat.MessageType;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.database.transformers.GuildTransformer;
-import com.avairebot.factories.MessageFactory;
 import com.avairebot.modlog.ModlogAction;
 import com.avairebot.modlog.ModlogModule;
 import com.avairebot.modlog.ModlogType;
@@ -112,41 +110,26 @@ public class WarnCommand extends Command {
             reason = String.join(" ", Arrays.copyOfRange(args, 1, args.length));
         }
 
-        String caseId = ModlogModule.log(avaire, context.getGuild(), transformer, new ModlogAction(
-                ModlogType.WARN,
-                context.getAuthor(), user,
-                reason
-            )
+        ModlogAction modlogAction = new ModlogAction(
+            ModlogType.WARN,
+            context.getAuthor(), user,
+            reason
         );
+
+        String caseId = ModlogModule.log(avaire, context.getGuild(), transformer, modlogAction);
 
         if (caseId == null) {
             return sendErrorMessage(context, context.i18n("failedToLogWarning"));
         }
 
-        User finalUser = user;
-        String finalReason = reason;
-        user.openPrivateChannel().queue(message -> {
-            message.sendMessage(
-                MessageFactory.createEmbeddedBuilder()
-                    .setColor(MessageType.WARNING.getColor())
-                    .setDescription("You have been **warned** in " + context.getGuild().getName())
-                    .addField("Moderator", context.getAuthor().getName() + "#" + context.getAuthor().getDiscriminator(), true)
-                    .addField("Reason", finalReason, true)
-                    .setFooter("Case ID #" + caseId, null)
-                    .setTimestamp(Instant.now())
-                    .build()
-            ).queue(null, RestActionUtil.ignore);
+        ModlogModule.notifyUser(user, context.getGuild(), modlogAction, caseId);
 
-            context.makeWarning(context.i18n("message"))
-                .set("target", finalUser.getName() + "#" + finalUser.getDiscriminator())
-                .set("reason", finalReason)
-                .setFooter("Case ID #" + caseId)
-                .setTimestamp(Instant.now())
-                .queue(null, RestActionUtil.ignore);
-        }, error -> {
-            context.makeWarning(context.i18n("failedToSendDM"))
-                .queue();
-        });
+        context.makeWarning(context.i18n("message"))
+            .set("target", user.getName() + "#" + user.getDiscriminator())
+            .set("reason", reason)
+            .setFooter("Case ID #" + caseId)
+            .setTimestamp(Instant.now())
+            .queue(null, RestActionUtil.ignore);
 
         return true;
     }

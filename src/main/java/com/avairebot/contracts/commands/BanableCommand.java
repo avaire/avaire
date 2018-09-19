@@ -85,18 +85,21 @@ public abstract class BanableCommand extends Command {
     private boolean banUser(AvaIre avaire, CommandMessage context, User user, String[] args, boolean soft) {
         String reason = generateReason(args);
 
+        ModlogAction modlogAction = new ModlogAction(
+            soft ? ModlogType.SOFT_BAN : ModlogType.BAN,
+            context.getAuthor(), user, reason
+        );
+
+        String caseId = ModlogModule.log(avaire, context, modlogAction);
+
+        ModlogModule.notifyUser(user, context.getGuild(), modlogAction, caseId);
+
         context.getGuild().getController().ban(user, soft ? 0 : 7, String.format("%s - %s#%s (%s)",
             reason,
             context.getAuthor().getName(),
             context.getAuthor().getDiscriminator(),
             context.getAuthor().getId()
         )).queue(aVoid -> {
-            ModlogModule.log(avaire, context, new ModlogAction(
-                    soft ? ModlogType.SOFT_BAN : ModlogType.BAN,
-                    context.getAuthor(), user, reason
-                )
-            );
-
             context.makeSuccess(context.i18n("success"))
                 .set("target", user.getName() + "#" + user.getDiscriminator())
                 .set("reason", reason)

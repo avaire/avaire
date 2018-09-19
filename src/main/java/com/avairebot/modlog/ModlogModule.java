@@ -36,6 +36,7 @@ import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.TextChannel;
+import net.dv8tion.jda.core.entities.User;
 
 import javax.annotation.Nullable;
 import java.sql.SQLException;
@@ -128,6 +129,47 @@ public class ModlogModule {
         }, RestActionUtil.ignore);
 
         return "" + transformer.getModlogCase();
+    }
+
+    public static void notifyUser(User user, Guild guild, ModlogAction action, String caseId) {
+        String type = null;
+        switch (action.getType()) {
+            case BAN:
+            case SOFT_BAN:
+                type = "banned";
+                break;
+
+            case KICK:
+                type = "kicked";
+                break;
+
+            case WARN:
+                type = "warned";
+                break;
+        }
+
+        if (type == null) {
+            return;
+        }
+
+        final String finalType = type;
+        user.openPrivateChannel().queue(channel -> {
+            EmbedBuilder message = MessageFactory.createEmbeddedBuilder()
+                .setColor(action.getType().getColor())
+                .setDescription(String.format("You have been **%s** %s " + guild.getName(),
+                    finalType, action.getType().equals(ModlogType.WARN)
+                        ? "in" : "from"
+                ))
+                .addField("Moderator", action.getModerator().getName() + "#" + action.getModerator().getDiscriminator(), true)
+                .addField("Reason", action.getMessage(), true)
+                .setTimestamp(Instant.now());
+
+            if (caseId != null) {
+                message.setFooter("Case ID #" + caseId, null);
+            }
+
+            channel.sendMessage(message.build()).queue(null, RestActionUtil.ignore);
+        }, RestActionUtil.ignore);
     }
 
     private static void logActionToTheDatabase(AvaIre avaire, Guild guild, ModlogAction action, Message message, int modlogCase) {
