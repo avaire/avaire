@@ -152,12 +152,17 @@ public class SongCommand extends Command {
             songTitle = player.getPlayingTrack().getInfo().uri;
         }
 
+        AudioTrackContainer trackContainer = scheduler.getAudioTrackContainer();
+        if (trackContainer == null) {
+            return "Track is still loading... Please wait one moment.";
+        }
+
         return I18n.format(message,
             songTitle,
             player.getPlayingTrack().getInfo().uri,
             player.getVolume() + "%",
-            scheduler.getAudioTrackContainer().getFormattedTotalTimeLeft(player),
-            scheduler.getAudioTrackContainer().getRequester().getId()
+            trackContainer.getFormattedTotalTimeLeft(player),
+            trackContainer.getRequester().getId()
         );
     }
 

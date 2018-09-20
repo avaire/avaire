@@ -36,6 +36,7 @@ import lavalink.client.player.event.AudioEventAdapterWrapped;
 import net.dv8tion.jda.core.entities.User;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.concurrent.*;
 
@@ -225,7 +226,12 @@ public class TrackScheduler extends AudioEventAdapterWrapped {
     public void onTrackEnd(AudioPlayer player, AudioTrack track, AudioTrackEndReason endReason) {
         if (endReason.mayStartNext) {
             if (manager.isRepeatQueue()) {
-                queue.offer(new AudioTrackContainer(track.makeClone(), getAudioTrackContainer().getRequester()));
+                if (audioTrackContainer == null) {
+                    // This should never be null since the container is set when we queue a
+                    // track, and this even should only be fired when an track has ended.
+                    throw new IllegalStateException("Music track has ended while the audio track container is NULL");
+                }
+                queue.offer(new AudioTrackContainer(track.makeClone(), audioTrackContainer.getRequester()));
             }
 
             nextTrack();
@@ -243,6 +249,7 @@ public class TrackScheduler extends AudioEventAdapterWrapped {
         return queue;
     }
 
+    @Nullable
     public AudioTrackContainer getAudioTrackContainer() {
         return audioTrackContainer;
     }

@@ -23,6 +23,7 @@ package com.avairebot.commands.music;
 
 import com.avairebot.AvaIre;
 import com.avairebot.audio.AudioHandler;
+import com.avairebot.audio.AudioTrackContainer;
 import com.avairebot.audio.GuildMusicManager;
 import com.avairebot.audio.LavalinkManager;
 import com.avairebot.commands.CommandMessage;
@@ -116,7 +117,11 @@ public class VoteSkipCommand extends Command {
     }
 
     private List<Long> getSkipsFrom(GuildMusicManager manager) {
-        return manager.getScheduler().getAudioTrackContainer().getSkips();
+        AudioTrackContainer trackContainer = manager.getScheduler().getAudioTrackContainer();
+        if (trackContainer == null) {
+            return Collections.emptyList();
+        }
+        return trackContainer.getSkips();
     }
 
     private int getAmountOfUsersConnectedToVoice(CommandMessage context) {
