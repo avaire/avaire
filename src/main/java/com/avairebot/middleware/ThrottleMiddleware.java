@@ -79,9 +79,14 @@ public class ThrottleMiddleware extends Middleware {
 
             ThrottleEntity entity = getEntityFromCache(fingerprint, maxAttempts, decaySeconds);
             if (entity.getHits() >= maxAttempts) {
-                Carbon expires = avaire.getBlacklist().getRatelimit().hit(message.getAuthor().getIdLong());
+                Carbon expires = type.equals(ThrottleType.USER)
+                    ? avaire.getBlacklist().getRatelimit().hit(type, message.getAuthor().getIdLong())
+                    : avaire.getBlacklist().getRatelimit().hit(type, message.getGuild().getIdLong());
+
                 if (expires != null) {
-                    avaire.getBlacklist().getRatelimit().sendBlacklistMessage(message.getAuthor(), expires);
+                    avaire.getBlacklist().getRatelimit().sendBlacklistMessage(
+                        type.equals(ThrottleType.USER) ? message.getAuthor() : message.getChannel(), expires
+                    );
                     return false;
                 }
 
@@ -141,7 +146,7 @@ public class ThrottleMiddleware extends Middleware {
         return entity;
     }
 
-    private enum ThrottleType {
+    public enum ThrottleType {
         USER("user", "throttle.user.%s.%s.%s"),
         CHANNEL("channel", "throttle.channel.%s.%s.%s"),
         GUILD("guild", "throttle.guild.%s.%s");

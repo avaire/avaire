@@ -23,12 +23,14 @@ package com.avairebot.blacklist;
 
 import com.avairebot.contracts.blacklist.PunishmentLevel;
 import com.avairebot.factories.MessageFactory;
+import com.avairebot.middleware.ThrottleMiddleware;
 import com.avairebot.time.Carbon;
 import com.avairebot.utilities.CacheUtil;
 import com.avairebot.utilities.RestActionUtil;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,7 +59,7 @@ public class Ratelimit {
      * limit, the rate limit won't count it as exceeding
      * the rate limit.
      */
-    static final long hitTime = 25 * 1000;
+    static final long hitTime = 30 * 1000;
 
     /**
      * The cache loader for holding all the ratelimiter rates.
@@ -110,6 +112,22 @@ public class Ratelimit {
     }
 
     /**
+     * Sends the blacklist message, if the object is a message channel
+     * it will send the message in the server, if the given object is
+     * a user object, the user will be DMed with the message instead.
+     *
+     * @param obj     The object that should either be a user or message channel.
+     * @param expires The carbon time instance or when the blacklist expires.
+     */
+    public void sendBlacklistMessage(Object obj, Carbon expires) {
+        if (obj instanceof User) {
+            sendBlacklistMessage((User) obj, expires);
+        } else if (obj instanceof MessageChannel) {
+            sendBlacklistMessage((MessageChannel) obj, expires);
+        }
+    }
+
+    /**
      * Sends the blacklist message to the given use in a direct
      * message to let the user know that they have been added
      * to the blacklist automatically.
@@ -136,20 +154,49 @@ public class Ratelimit {
     }
 
     /**
-     * His the blacklisting ratelimit, if the given user ID has reached the
-     * maximum number of hits within the allowed timeframe, the user will
-     * be auto blacklisted for a certain amount of time, the time the
-     * user is blacklisted for depends on how many earlier offense
-     * they have, all the punishment levels can be seen in
-     * the {@link #levels punishments array}.
+     * Sends the blacklist message to the given channel to let
+     * the user/guild know that they have been added to the
+     * blacklist automatically.
      *
-     * @param userId The ID of the user that should hit the ratelimit.
+     * @param channel The channel that the message should be sent to.
+     * @param expires The carbon time instance for when the blacklist expires.
+     */
+    public void sendBlacklistMessage(MessageChannel channel, Carbon expires) {
+        channel.sendMessage(MessageFactory.createEmbeddedBuilder()
+            .setColor(Color.decode("#A5306B"))
+            .setTitle("Whoa there!", "https://avairebot.com/")
+            .setFooter("Expires", null)
+            .setTimestamp(expires.getTime().toInstant())
+            .setDescription("Looks like people on the server are using commands a bit too fast, "
+                + "I've banned the server from using any commands, or earning any XP until everyone "
+                + "clams down a bit.\n"
+                + "The ban expires in " + expires.addSecond().diffForHumans(true) + ", "
+                + "keep in mind repeating the behavior will get the server banned for longer "
+                + "periods of time, eventually if you keep it up the server will be banned "
+                + "from using any of my commands permanently."
+            ).build()
+        ).queue();
+    }
+
+    /**
+     * His the blacklisting ratelimit, the type will determine if the
+     * user or the guild with the given ID will hit the blacklist.
+     * <p>
+     * If the given ID has reached the  maximum number of hits within
+     * the allowed timeframe, entity with the given ID will be auto
+     * blacklisted for a certain amount of time, the time the
+     * entity is blacklisted for depends on how many earlier
+     * offense they have, all the punishment levels can be
+     * seen in the {@link #levels punishments array}.
+     *
+     * @param type The type of throttle request that hit the blacklist.
+     * @param id   The ID of the user or guild that should hit the ratelimit.
      * @return Possibly-null, the time object matching when the blacklist expires,
      * or <code>null</code> if the user was not blacklisted.
      */
     @Nullable
-    public Carbon hit(long userId) {
-        Rate rate = CacheUtil.getUncheckedUnwrapped(cache, userId);
+    public Carbon hit(ThrottleMiddleware.ThrottleType type, long id) {
+        Rate rate = CacheUtil.getUncheckedUnwrapped(cache, id);
         if (rate == null) {
             // This should never happen, if it does we'll just return
             // null to not block any commands by a valid user.
@@ -176,15 +223,15 @@ public class Ratelimit {
             return null;
         }
 
-        Carbon punishment = getPunishment(userId);
+        Carbon punishment = getPunishment(id);
 
-        log.info("{} has been added to the blacklist for excessive command usage, the blacklist expires {}.",
-            userId, punishment.toDayDateTimeString()
+        log.info("{}:{} has been added to the blacklist for excessive command usage, the blacklist expires {}.",
+            type.getName(), id, punishment.toDayDateTimeString()
         );
 
         blacklist.addIdToBlacklist(
-            Scope.USER, userId,
-            "Automatic blacklist due to excessive command usage.",
+            type.equals(ThrottleMiddleware.ThrottleType.USER) ? Scope.USER : Scope.GUILD,
+            id, "Automatic blacklist due to excessive command usage.",
             punishment
         );
 
