@@ -22,6 +22,7 @@
 package com.avairebot.database.transformers;
 
 import com.avairebot.AvaIre;
+import com.avairebot.contracts.commands.Evalable;
 import com.avairebot.contracts.database.transformers.Transformer;
 import com.avairebot.database.collection.DataRow;
 
@@ -69,7 +70,7 @@ public class GuildTypeTransformer extends Transformer {
         return limits;
     }
 
-    public class GuildTypeLimits {
+    public class GuildTypeLimits extends Evalable {
 
         private GuildTypePlaylist playlist = new GuildTypePlaylist();
         private int aliases = 20;
@@ -92,7 +93,7 @@ public class GuildTypeTransformer extends Transformer {
             return levelRoles;
         }
 
-        public class GuildTypePlaylist {
+        public class GuildTypePlaylist extends Evalable {
 
             private int lists = 5;
             private int songs = 30;

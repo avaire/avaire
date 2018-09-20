@@ -22,6 +22,7 @@
 package com.avairebot.database.transformers;
 
 import com.avairebot.commands.Category;
+import com.avairebot.contracts.commands.Evalable;
 import com.avairebot.contracts.database.transformers.Transformer;
 import com.avairebot.database.collection.DataRow;
 import com.google.gson.internal.LinkedTreeMap;
@@ -147,7 +148,7 @@ public class ChannelTransformer extends Transformer {
         return true;
     }
 
-    public class MessageModule {
+    public class MessageModule extends Evalable {
         private boolean enabled = false;
         private String message = null;
         private String embedColor = null;
@@ -187,7 +188,7 @@ public class ChannelTransformer extends Transformer {
         }
     }
 
-    public class BooleanModule {
+    public class BooleanModule extends Evalable {
         private boolean enabled = true;
 
         public boolean isEnabled() {
@@ -207,7 +208,7 @@ public class ChannelTransformer extends Transformer {
         }
     }
 
-    public class SlowmodeModule {
+    public class SlowmodeModule extends Evalable {
         private int limit = 1;
         private int decay = 5;
         private boolean enabled = false;

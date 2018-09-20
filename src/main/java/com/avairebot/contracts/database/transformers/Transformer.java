@@ -21,12 +21,13 @@
 
 package com.avairebot.contracts.database.transformers;
 
+import com.avairebot.contracts.commands.Evalable;
 import com.avairebot.contracts.config.serialization.ConfigurationSerializable;
 import com.avairebot.database.collection.DataRow;
 
 import java.util.Map;
 
-public abstract class Transformer implements ConfigurationSerializable {
+public abstract class Transformer extends Evalable implements ConfigurationSerializable {
 
     protected DataRow data;
     protected boolean hasData;
@@ -46,7 +47,10 @@ public abstract class Transformer implements ConfigurationSerializable {
 
     @Override
     public String toString() {
-        return data.toString();
+        if (data != null) {
+            return data.toString();
+        }
+        return super.toString();
     }
 
     @Override

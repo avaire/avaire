@@ -153,17 +153,19 @@ public class EvalCommand extends SystemCommand {
                         + "with (imports) {\n" + source + "\n}"
                         + "})();");
 
+                AvaIre.getLogger().debug("Eval output: {}", out == null ? "NULL" : out.toString());
+                String output = out == null ? ":thumbsup::skin-tone-3:" : "```\n" + out.toString() + "\n```";
+
+                context.getMessageChannel().sendMessage(String.format("**Input** ```java\n%s```\n**Output**\n%s\nEval took _%sms_",
+                    source, output, System.currentTimeMillis() - started
+                )).queue();
             } catch (Exception ex) {
+                log.debug("Failed to execute eval command, error: {}", ex.getMessage(), ex);
+
                 context.getChannel().sendMessage(String.format("**Input** ```java\n%s```\n**Error Output**\n```%s```\nEval took _%sms_",
                     source, ex.getMessage(), System.currentTimeMillis() - started)
                 ).queue();
-                return;
             }
-
-            String output = out == null ? ":thumbsup::skin-tone-3:" : "```\n" + out.toString() + "\n```";
-            context.getMessageChannel().sendMessage(String.format("**Input** ```java\n%s```\n**Output**\n%s\nEval took _%sms_",
-                source, output, System.currentTimeMillis() - started
-            )).queue();
         });
         this.lastTask = future;
 

@@ -21,12 +21,13 @@
 
 package com.avairebot.contracts.config;
 
+import com.avairebot.contracts.commands.Evalable;
 import com.avairebot.exceptions.FailedToLoadPropertiesConfigurationException;
 
 import java.io.IOException;
 import java.util.Properties;
 
-public abstract class PropertyConfiguration {
+public abstract class PropertyConfiguration extends Evalable {
 
     protected final Properties properties = new Properties();
 

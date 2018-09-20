@@ -22,6 +22,7 @@
 package com.avairebot.database.transformers;
 
 import com.avairebot.AvaIre;
+import com.avairebot.contracts.commands.Evalable;
 import com.avairebot.contracts.database.transformers.Transformer;
 import com.avairebot.database.collection.DataRow;
 import com.google.gson.reflect.TypeToken;
@@ -93,7 +94,7 @@ public class PlaylistTransformer extends Transformer {
         songs.add(song);
     }
 
-    public class PlaylistSong {
+    public class PlaylistSong extends Evalable {
         private String title;
         private String duration;
         private String link;
