@@ -27,6 +27,7 @@ import com.avairebot.time.Carbon;
 import com.avairebot.utilities.NumberUtil;
 import com.google.gson.Gson;
 
+import javax.annotation.Nonnull;
 import java.util.Base64;
 import java.util.Map;
 import java.util.Set;
@@ -449,8 +450,9 @@ public class DataRow {
         return getType(name).equalsIgnoreCase("string");
     }
 
+    @Nonnull
     private String getType(Object name) {
-        return name.getClass().getSimpleName();
+        return name == null ? "unknown-type" : name.getClass().getSimpleName();
     }
 
     private boolean isEqual(String name, String... items) {
