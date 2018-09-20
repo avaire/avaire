@@ -111,7 +111,7 @@ public class LevelCommand extends Command {
             }
 
             context.makeSuccess(context.i18n("message"))
-                .set("status", context.i18n("status." + (guildTransformer.isLevels() ? "enabled" : "disabled")))
+                .set("status", context.i18n("status." + (guildTransformer.isLevelAlerts() ? "enabled" : "disabled")))
                 .set("note", note)
                 .queue();
         } catch (SQLException ex) {
