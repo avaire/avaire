@@ -385,6 +385,7 @@ music:
         noMatchFound: "Ich habe nicht's mit der folgenden Eingabe gefunden: `{0}`"
         trackLoadFailed: "Ich war nicht in der Lage folgenden Titel in die Warteschlange zu setzen: `{0}`"
         musicChannel: "Du kannst Musik-Befehle nur im :channel Channel nutzen."
+        resumeMusic: "Resuming music, please wait a few seconds while everything is loaded back for you."
 
     ClearQueueCommand:
         error: "Nicht's zum Leeren vorhanden. Anfragen von Musik ist vorausgesetzt. Tue dies bitte zuerst mit folgendem Befehl: `{0}play`"

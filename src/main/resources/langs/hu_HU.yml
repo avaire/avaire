@@ -383,6 +383,7 @@ music:
         noMatchFound: 'Nem találtam semmit a megadott feltétellel: `{0}`'
         trackLoadFailed: "Nem tudom hozzá adni a listához: `{0}`"
         musicChannel: "Csak zene parancsokat használhatsz a :channel channelben."
+        resumeMusic: "Resuming music, please wait a few seconds while everything is loaded back for you."
 
     ClearQueueCommand:
         error: 'Nincs semmi amit törölni lehetne, előbb kérj zenét a `{0}play` parancsal'

@@ -28,8 +28,10 @@ import com.avairebot.ai.IntelligenceManager;
 import com.avairebot.audio.AudioHandler;
 import com.avairebot.audio.GuildMusicManager;
 import com.avairebot.audio.LavalinkManager;
+import com.avairebot.audio.cache.AudioState;
 import com.avairebot.blacklist.Blacklist;
 import com.avairebot.cache.CacheManager;
+import com.avairebot.cache.CacheType;
 import com.avairebot.chat.ConsoleColor;
 import com.avairebot.commands.CategoryHandler;
 import com.avairebot.commands.CommandHandler;
@@ -92,9 +94,7 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ScheduledFuture;
 import java.util.function.Consumer;
 
@@ -461,11 +461,17 @@ public class AvaIre {
 
         getLogger().info("Shutting down bot instance gracefully with exit code " + exitCode);
 
+        List<AudioState> audioStates = new ArrayList<>();
         for (GuildMusicManager manager : AudioHandler.getDefaultAudioHandler().musicManagers.values()) {
             if (manager.getLastActiveMessage() != null) {
                 manager.getLastActiveMessage().makeInfo(
                     "Bot is restarting, sorry for the inconvenience, we'll be right back!"
                 ).queue();
+            }
+
+            //noinspection SynchronizationOnLocalVariableOrMethodParameter
+            synchronized (manager) {
+                audioStates.add(new AudioState(manager, shardManager.getGuildById(manager.getGuild().getId())));
             }
 
             manager.getScheduler().getQueue().clear();
@@ -484,6 +490,10 @@ public class AvaIre {
                 }
             }
         }
+
+        // Caches the audio state for the next three hours so we
+        // can resume the music once the bot boots back up.
+        cache.getAdapter(CacheType.FILE).put("audio.state", gson.toJson(audioStates), 60 * 60 * 3);
 
         try {
             Thread.sleep(2500);

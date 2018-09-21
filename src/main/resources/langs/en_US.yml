@@ -384,6 +384,7 @@ music:
         noMatchFound: 'I found nothing with the given query: `{0}`'
         trackLoadFailed: "I couldn't add that to the queue: `{0}`"
         musicChannel: "You can only use music commands in the :channel channel."
+        resumeMusic: "Resuming music, please wait a few seconds while everything is loaded back for you."
 
     ClearQueueCommand:
         error: 'Nothing to clear, request music first with `{0}play`'

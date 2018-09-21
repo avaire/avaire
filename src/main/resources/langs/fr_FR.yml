@@ -385,6 +385,7 @@ music:
         noMatchFound: "Je n'ai rien trouvé avec la requête: `{0}`"
         trackLoadFailed: "Je ne peux pas ajouter cela à la file d'attente: `{0}`"
         musicChannel: "Vous ne pouvez utiliser que des commandes musicales dans le canal :channel."
+        resumeMusic: "Resuming music, please wait a few seconds while everything is loaded back for you."
 
     ClearQueueCommand:
         error: "Rien à vider, demande d'abord une musique avec `{0}play`"

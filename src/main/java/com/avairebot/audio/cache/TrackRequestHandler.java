@@ -19,43 +19,34 @@
  *
  */
 
-package com.avairebot.audio;
+package com.avairebot.audio.cache;
 
-import com.avairebot.commands.CommandMessage;
-import com.avairebot.contracts.async.Future;
-import com.avairebot.exceptions.NoMatchFoundException;
-import com.avairebot.exceptions.TrackLoadFailedException;
+import com.avairebot.audio.AudioHandler;
+import com.avairebot.audio.GuildMusicManager;
 import com.avairebot.metrics.Metrics;
 import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+import net.dv8tion.jda.core.entities.Member;
 
-import java.util.function.Consumer;
+public class TrackRequestHandler {
 
-public class TrackRequest extends Future {
-
-    private final GuildMusicManager musicManager;
-    private final CommandMessage context;
-    private final String trackUrl;
-
-    TrackRequest(GuildMusicManager musicManager, CommandMessage context, String trackUrl) {
-        this.musicManager = musicManager;
-        this.context = context;
-        this.trackUrl = trackUrl;
-
-        musicManager.setLastActiveMessage(context);
-    }
-
-    @Override
-    public void handle(final Consumer success, final Consumer<Throwable> failure) {
-        handle(success, failure, null);
-    }
-
-    public void handle(final Consumer success, final Consumer<Throwable> failure, final Consumer<AudioSession> sessionConsumer) {
+    /**
+     * Sends an audio track request to try and load the track, if the
+     * track loads successfully it will be added to the music queue
+     * for the server, if the track is the first song to be added
+     * to the queue, it will auto play automatically.
+     *
+     * @param musicManager The guild music manager for the current server.
+     * @param member       The member that originally requested the given audio track.
+     * @param trackUrl     The URL of the track that should be requested.
+     */
+    public static void sendRequest(GuildMusicManager musicManager, Member member, String trackUrl) {
         Metrics.searchRequests.inc();
 
         AudioHandler.getDefaultAudioHandler().getPlayerManager().loadItemOrdered(musicManager, trackUrl, new AudioLoadResultHandler() {
+
             @Override
             public void trackLoaded(AudioTrack track) {
                 if (track == null) {
@@ -65,9 +56,13 @@ public class TrackRequest extends Future {
 
                 Metrics.tracksLoaded.inc();
 
-                success.accept(new TrackResponse(musicManager, track, trackUrl));
+                musicManager.registerDefaultVolume();
 
-                AudioHandler.getDefaultAudioHandler().play(context, musicManager, track);
+                if (musicManager.getPlayer().isPaused()) {
+                    musicManager.getPlayer().setPaused(false);
+                }
+
+                musicManager.getScheduler().queue(track, member.getUser());
             }
 
             @Override
@@ -80,12 +75,7 @@ public class TrackRequest extends Future {
                 Metrics.tracksLoaded.inc(playlist.getTracks().size());
 
                 if (trackUrl.startsWith("ytsearch:") || trackUrl.startsWith("scsearch:")) {
-                    if (sessionConsumer == null) {
-                        trackLoaded(playlist.getTracks().get(0));
-                        return;
-                    }
-
-                    sessionConsumer.accept(AudioHandler.getDefaultAudioHandler().createAudioSession(context, playlist));
+                    trackLoaded(playlist.getTracks().get(0));
                     return;
                 }
 
@@ -94,29 +84,23 @@ public class TrackRequest extends Future {
                     return;
                 }
 
-                success.accept(new TrackResponse(musicManager, playlist, trackUrl));
-                AudioHandler.getDefaultAudioHandler().play(context, musicManager, playlist);
+                musicManager.registerDefaultVolume();
+
+                if (musicManager.getPlayer().isPaused()) {
+                    musicManager.getPlayer().setPaused(false);
+                }
+
+                musicManager.getScheduler().queue(playlist, member.getUser());
             }
 
             @Override
             public void noMatches() {
                 Metrics.trackLoadsFailed.inc();
-
-                failure.accept(new NoMatchFoundException(
-                    context.i18nRaw("music.internal.noMatchFound", trackUrl),
-                    trackUrl
-                ));
             }
 
             @Override
             public void loadFailed(FriendlyException exception) {
                 Metrics.trackLoadsFailed.inc();
-
-                failure.accept(new TrackLoadFailedException(
-                    context.i18nRaw("music.internal.trackLoadFailed", exception.getMessage()),
-                    exception.getMessage(),
-                    exception
-                ));
             }
         });
     }

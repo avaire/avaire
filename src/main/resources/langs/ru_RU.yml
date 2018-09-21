@@ -385,6 +385,7 @@ music:
         noMatchFound: 'Я ничего не нашел с данным запросом: `{0}`'
         trackLoadFailed: "Я не могу добавить это в очередь: `{0}`"
         musicChannel: "Вы можете использовать только музыкальные команды в :channel канале."
+        resumeMusic: "Resuming music, please wait a few seconds while everything is loaded back for you."
 
     ClearQueueCommand:
         error: 'Нечего очищать, сначала попросите музыку `{0}play`'
