@@ -167,7 +167,11 @@ public class AvaIre {
         log.info("Starting application in \"{}\" mode", applicationEnvironment.getName());
         if (applicationEnvironment.equals(Environment.DEVELOPMENT)) {
             RestAction.setPassContext(true);
-            RestAction.DEFAULT_FAILURE = Throwable::printStackTrace;
+            // Setting the default failure to print stack trace will prevent
+            // Sentry catching the error, which makes it pretty hard to
+            // debug the errors that are happening.
+            //
+            // RestAction.DEFAULT_FAILURE = Throwable::printStackTrace;
             log.info("Enabling rest action context parsing and printing stack traces for optimal debugging");
         }
 
