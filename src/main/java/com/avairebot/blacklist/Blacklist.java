@@ -250,12 +250,25 @@ public class Blacklist {
     }
 
     /**
+     * Get the all the entities currently on the blacklist, this
+     * includes both users and guilds, the type can be checked
+     * through the {@link BlacklistEntity#getScope() scope}.
+     *
+     * @return The entities currently on the blacklist.
+     */
+    public List<BlacklistEntity> getBlacklistEntities() {
+        return blacklist;
+    }
+
+    /**
      * Syncs the blacklist with the database.
      */
     public synchronized void syncBlacklistWithDatabase() {
         blacklist.clear();
         try {
-            Collection collection = avaire.getDatabase().newQueryBuilder(Constants.BLACKLIST_TABLE_NAME).get();
+            Collection collection = avaire.getDatabase().newQueryBuilder(Constants.BLACKLIST_TABLE_NAME)
+                .where("expires_in", ">", Carbon.now())
+                .get();
 
             collection.forEach(row -> {
                 String id = row.getString("id", null);
@@ -267,7 +280,11 @@ public class Blacklist {
                     long longId = Long.parseLong(id);
                     Scope scope = Scope.fromId(row.getInt("type", 0));
 
-                    blacklist.add(new BlacklistEntity(scope, longId, row.getTimestamp("expires_in")));
+                    blacklist.add(new BlacklistEntity(
+                        scope, longId,
+                        row.getString("reason"),
+                        row.getTimestamp("expires_in")
+                    ));
                 } catch (NumberFormatException ignored) {
                     // This is ignored
                 }
