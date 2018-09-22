@@ -222,7 +222,7 @@ public class Blacklist {
             blacklist.remove(entity);
         }
 
-        blacklist.add(new BlacklistEntity(scope, id, expiresIn));
+        blacklist.add(new BlacklistEntity(scope, id, reason, expiresIn));
 
         try {
             avaire.getDatabase().newQueryBuilder(Constants.BLACKLIST_TABLE_NAME)

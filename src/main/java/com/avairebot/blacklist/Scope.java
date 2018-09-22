@@ -31,19 +31,21 @@ public enum Scope {
     /**
      * The user scope, used for blacklisting users.
      */
-    USER(0, 'U'),
+    USER(0, 'U', "User"),
 
     /**
      * The guild/server scope, used for blacklisting servers.
      */
-    GUILD(1, 'G');
+    GUILD(1, 'G', "Server");
 
     private final int id;
     private final char prefix;
+    private final String name;
 
-    Scope(int id, char prefix) {
+    Scope(int id, char prefix, String name) {
         this.id = id;
         this.prefix = prefix;
+        this.name = name;
     }
 
     /**
@@ -101,5 +103,14 @@ public enum Scope {
      */
     public char getPrefix() {
         return prefix;
+    }
+
+    /**
+     * Gets the name of the scope
+     *
+     * @return The name of the scope.
+     */
+    public String getName() {
+        return name;
     }
 }

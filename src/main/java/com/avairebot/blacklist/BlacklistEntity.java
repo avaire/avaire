@@ -21,27 +21,31 @@
 
 package com.avairebot.blacklist;
 
+import com.avairebot.contracts.commands.Evalable;
 import com.avairebot.time.Carbon;
 
 import javax.annotation.Nullable;
 
 @SuppressWarnings("WeakerAccess")
-public class BlacklistEntity {
+public class BlacklistEntity extends Evalable {
 
     private final Scope scope;
     private final long id;
     private final Carbon expiresIn;
+    private final String reason;
 
     /**
      * Create a new blacklist entity with the given scope, id, and expires time.
      *
      * @param scope     The scope for the blacklist entity.
      * @param id        The ID that the blacklist entity should be linked to.
+     * @param reason    The reason the entity was blacklisted.
      * @param expiresIn The carbon time instance for when the blacklist entity should expire.
      */
-    BlacklistEntity(Scope scope, long id, @Nullable Carbon expiresIn) {
+    BlacklistEntity(Scope scope, long id, @Nullable String reason, @Nullable Carbon expiresIn) {
         this.scope = scope;
         this.id = id;
+        this.reason = reason;
         this.expiresIn = expiresIn;
     }
 
@@ -50,11 +54,12 @@ public class BlacklistEntity {
      * entity will be created with a <code>null</code> expire time, making
      * the blacklist entity last forever.
      *
-     * @param scope The scope for the blacklist entity.
-     * @param id    The ID that the blacklist entity should be linked to.
+     * @param scope  The scope for the blacklist entity.
+     * @param id     The ID that the blacklist entity should be linked to.
+     * @param reason The reason the entity was blacklisted.
      */
-    public BlacklistEntity(Scope scope, long id) {
-        this(scope, id, null);
+    public BlacklistEntity(Scope scope, long id, @Nullable String reason) {
+        this(scope, id, reason, null);
     }
 
     /**
@@ -82,5 +87,15 @@ public class BlacklistEntity {
      */
     public boolean isBlacklisted() {
         return expiresIn == null || expiresIn.isFuture();
+    }
+
+    /**
+     * Gets the reason the entity was blacklist form, or null.
+     *
+     * @return Possibly-null, the reason the entity was blacklisted for.
+     */
+    @Nullable
+    public String getReason() {
+        return reason;
     }
 }

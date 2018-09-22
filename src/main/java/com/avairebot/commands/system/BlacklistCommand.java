@@ -22,14 +22,13 @@
 package com.avairebot.commands.system;
 
 import com.avairebot.AvaIre;
-import com.avairebot.Constants;
 import com.avairebot.blacklist.Scope;
 import com.avairebot.chat.SimplePaginator;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.SystemCommand;
+import com.avairebot.language.I18n;
 import com.avairebot.utilities.NumberUtil;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -95,37 +94,28 @@ public class BlacklistCommand extends SystemCommand {
     }
 
     private boolean listBlacklist(CommandMessage context, String[] args) {
-        try {
-            List<String> records = new ArrayList<>();
+        List<String> records = new ArrayList<>();
 
-            avaire.getDatabase().newQueryBuilder(Constants.BLACKLIST_TABLE_NAME).get().forEach(dataRow -> {
-                Scope type = Scope.parse(dataRow.getString("type"));
-                if (type == null) {
-                    AvaIre.getLogger().warn("BLACKLIST - A record was found with an invalid scope! " + dataRow.getString("id"));
-                    return;
-                }
+        avaire.getBlacklist().getBlacklistEntities().forEach(entity -> {
+            records.add(I18n.format("{0} **{1}** `{2}`\n ► _\"{3}\"_",
+                entity.getScope().getId() == 0 ? "\uD83E\uDD26" : "\uD83C\uDFEC",
+                entity.getScope().getName(),
+                entity.getId(),
+                entity.getReason() == null ? "No reason was given" : entity.getReason()
+            ));
+        });
 
-                records.add(String.format("`%s` %s\n\t_\"%s\"_",
-                    type.getPrefix(),
-                    dataRow.getString("id"),
-                    dataRow.getString("reason", "No reason given")
-                ));
-            });
-
-            SimplePaginator paginator = new SimplePaginator(records, 10, 1);
-            if (args.length > 0) {
-                paginator.setCurrentPage(NumberUtil.parseInt(args[0], 1));
-            }
-
-            List<String> messages = new ArrayList<>();
-            paginator.forEach((index, key, val) -> messages.add((String) val));
-
-            context.makeInfo(String.join("\n", messages) + "\n\n" + paginator.generateFooter(generateCommandTrigger(context.getMessage()) + " list"))
-                .setTitle("Blacklist Page #" + paginator.getCurrentPage())
-                .queue();
-        } catch (SQLException e) {
-            e.printStackTrace();
+        SimplePaginator paginator = new SimplePaginator(records, 10, 1);
+        if (args.length > 0) {
+            paginator.setCurrentPage(NumberUtil.parseInt(args[0], 1));
         }
+
+        List<String> messages = new ArrayList<>();
+        paginator.forEach((index, key, val) -> messages.add((String) val));
+
+        context.makeInfo(String.join("\n", messages) + "\n\n" + paginator.generateFooter(generateCommandTrigger(context.getMessage()) + " list"))
+            .setTitle("Blacklist Page #" + paginator.getCurrentPage())
+            .queue();
 
         return false;
     }
