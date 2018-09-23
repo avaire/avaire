@@ -23,6 +23,7 @@ package com.avairebot.contracts.handlers;
 
 import com.avairebot.handlers.events.ApplicationShutdownEvent;
 import com.avairebot.handlers.events.ModlogActionEvent;
+import com.avairebot.handlers.events.MusicEndedEvent;
 import com.avairebot.handlers.events.NowPlayingEvent;
 import net.dv8tion.jda.core.events.Event;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
@@ -62,6 +63,23 @@ public abstract class EventListener extends ListenerAdapter implements net.dv8ti
         //
     }
 
+    /**
+     * The end of the music event, this event will be called just before
+     * the bot leaves the voice channel when the music has ended, this
+     * can be due to one of the following things.
+     * <p>
+     * <ol>
+     * <li>The queue is empty and the song that was playing has ended.</li>
+     * <li>A user used the !stop or !skip command with no other songs in the queue.</li>
+     * <li>No one was listening to the music and the music activity job stopped the music.</li>
+     * </ol>
+     *
+     * @param event The end of the music event.
+     */
+    public void onMusicEnded(MusicEndedEvent event) {
+        //
+    }
+
     public final void onCustomEvent(Event event) {
         onGenericEvent(event);
 
@@ -71,6 +89,8 @@ public abstract class EventListener extends ListenerAdapter implements net.dv8ti
             onApplicationShutdown((ApplicationShutdownEvent) event);
         } else if (event instanceof NowPlayingEvent) {
             onNowPlaying((NowPlayingEvent) event);
+        } else if (event instanceof MusicEndedEvent) {
+            onMusicEnded((MusicEndedEvent) event);
         }
     }
 }

@@ -23,6 +23,7 @@ package com.avairebot.audio;
 
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.database.transformers.PlaylistTransformer;
+import com.avairebot.handlers.events.MusicEndedEvent;
 import com.avairebot.handlers.events.NowPlayingEvent;
 import com.avairebot.utilities.NumberUtil;
 import com.avairebot.utilities.RestActionUtil;
@@ -276,6 +277,10 @@ public class TrackScheduler extends AudioEventAdapterWrapped {
     }
 
     public void handleEndOfQueue(@Nonnull CommandMessage context, boolean sendEndOfQueue) {
+        manager.avaire.getEventEmitter().push(new MusicEndedEvent(
+            context.getJDA(), context.getGuild()
+        ));
+
         if (sendEndOfQueue && AudioHandler.getDefaultAudioHandler().musicManagers.containsKey(context.getGuild().getIdLong())) {
             context.makeSuccess(context.i18nRaw("music.internal.queueHasEnded"))
                 .queue(queueMessage -> {
