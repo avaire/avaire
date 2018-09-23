@@ -23,6 +23,7 @@ package com.avairebot.audio;
 
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.database.transformers.PlaylistTransformer;
+import com.avairebot.handlers.events.NowPlayingEvent;
 import com.avairebot.utilities.NumberUtil;
 import com.avairebot.utilities.RestActionUtil;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
@@ -255,16 +256,17 @@ public class TrackScheduler extends AudioEventAdapterWrapped {
     }
 
     private void sendNowPlaying(AudioTrackContainer container) {
-        String songTitle = container.getAudioTrack().getInfo().title;
-        if (songTitle == null || songTitle.equalsIgnoreCase("Unknown Title")) {
-            songTitle = container.getAudioTrack().getInfo().uri;
-        }
+        NowPlayingEvent nowPlayingEvent = new NowPlayingEvent(
+            manager.guild.getJDA(), manager.guild, container
+        );
+
+        manager.avaire.getEventEmitter().push(nowPlayingEvent);
 
         if (manager.getGuild().isMusicMessages()) {
             manager.getLastActiveMessage().makeSuccess(
                 manager.getLastActiveMessage().i18nRaw("music.internal.nowPlaying")
             )
-                .set("title", songTitle)
+                .set("title", nowPlayingEvent.getSongTitle())
                 .set("link", container.getAudioTrack().getInfo().uri)
                 .set("duration", container.getFormattedDuration())
                 .set("requester", container.getRequester().getAsMention())

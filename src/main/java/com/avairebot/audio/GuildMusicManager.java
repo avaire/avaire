@@ -34,8 +34,9 @@ import java.util.concurrent.TimeUnit;
 
 public class GuildMusicManager {
 
-    private final AvaIre avaire;
-    private final Guild guild;
+    protected final AvaIre avaire;
+    protected final Guild guild;
+
     private final IPlayer player;
     private final TrackScheduler scheduler;
 

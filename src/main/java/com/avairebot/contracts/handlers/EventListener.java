@@ -23,10 +23,11 @@ package com.avairebot.contracts.handlers;
 
 import com.avairebot.handlers.events.ApplicationShutdownEvent;
 import com.avairebot.handlers.events.ModlogActionEvent;
+import com.avairebot.handlers.events.NowPlayingEvent;
 import net.dv8tion.jda.core.events.Event;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
-@SuppressWarnings("WeakerAccess")
+@SuppressWarnings({"WeakerAccess", "unused"})
 public abstract class EventListener extends ListenerAdapter implements net.dv8tion.jda.core.hooks.EventListener {
 
     /**
@@ -50,6 +51,17 @@ public abstract class EventListener extends ListenerAdapter implements net.dv8ti
         //
     }
 
+    /**
+     * The music now playing event, this event will be called whenever
+     * the bot starts playing a new song, the guild the song is
+     * being played in can be found through th event.
+     *
+     * @param event The music now playing event.
+     */
+    public void onNowPlaying(NowPlayingEvent event) {
+        //
+    }
+
     public final void onCustomEvent(Event event) {
         onGenericEvent(event);
 
@@ -57,6 +69,8 @@ public abstract class EventListener extends ListenerAdapter implements net.dv8ti
             onModlogAction((ModlogActionEvent) event);
         } else if (event instanceof ApplicationShutdownEvent) {
             onApplicationShutdown((ApplicationShutdownEvent) event);
+        } else if (event instanceof NowPlayingEvent) {
+            onNowPlaying((NowPlayingEvent) event);
         }
     }
 }
