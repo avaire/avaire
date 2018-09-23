@@ -22,7 +22,6 @@
 package com.avairebot.scheduler.tasks;
 
 import com.avairebot.AvaIre;
-import com.avairebot.commands.system.SetStatusCommand;
 import com.avairebot.contracts.scheduler.Task;
 import com.avairebot.utilities.NumberUtil;
 import net.dv8tion.jda.core.JDA;
@@ -32,11 +31,13 @@ import java.util.Arrays;
 
 public class ChangeGameTask implements Task {
 
+    public static boolean hasCustomStatus = false;
+
     private int index = 0;
 
     @Override
     public void handle(AvaIre avaire) {
-        if (SetStatusCommand.hasCustomStatus || !avaire.areWeReadyYet()) {
+        if (hasCustomStatus || !avaire.areWeReadyYet()) {
             return;
         }
 

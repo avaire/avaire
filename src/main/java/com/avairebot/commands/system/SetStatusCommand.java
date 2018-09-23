@@ -24,6 +24,7 @@ package com.avairebot.commands.system;
 import com.avairebot.AvaIre;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.SystemCommand;
+import com.avairebot.scheduler.tasks.ChangeGameTask;
 import net.dv8tion.jda.core.entities.Game;
 
 import java.util.Arrays;
@@ -31,8 +32,6 @@ import java.util.Collections;
 import java.util.List;
 
 public class SetStatusCommand extends SystemCommand {
-
-    public static boolean hasCustomStatus = false;
 
     public SetStatusCommand(AvaIre avaire) {
         super(avaire);
@@ -71,7 +70,7 @@ public class SetStatusCommand extends SystemCommand {
         if (args.length == 0) {
             context.makeInfo(
                 "The bot status cycle has been re-enabled, the change game job can now change the bot status again."
-            ).queue(newMessage -> hasCustomStatus = false);
+            ).queue(newMessage -> ChangeGameTask.hasCustomStatus = false);
 
             return true;
         }
@@ -82,7 +81,7 @@ public class SetStatusCommand extends SystemCommand {
         context.makeSuccess("Changed status to **:type :status**")
             .set("type", getTypeAsString(game.getType()))
             .set("status", game.getName())
-            .queue(newMessage -> hasCustomStatus = true);
+            .queue(newMessage -> ChangeGameTask.hasCustomStatus = true);
 
         return true;
     }
