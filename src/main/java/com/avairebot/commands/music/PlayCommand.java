@@ -161,7 +161,7 @@ public class PlayCommand extends Command {
             ))
             .queue(message -> {
                 if (context.getGuildTransformer() != null && context.getGuildTransformer().isMusicMessages()) {
-                    message.delete().queueAfter(30, TimeUnit.SECONDS);
+                    message.delete().queueAfter(30, TimeUnit.SECONDS, null, RestActionUtil.ignore);
                 }
             });
     }
@@ -177,7 +177,7 @@ public class PlayCommand extends Command {
             ))
             .queue(message -> {
                 if (context.getGuildTransformer() != null && context.getGuildTransformer().isMusicMessages()) {
-                    message.delete().queueAfter(30, TimeUnit.SECONDS);
+                    message.delete().queueAfter(30, TimeUnit.SECONDS, null, RestActionUtil.ignore);
                 }
             });
     }

@@ -28,6 +28,7 @@ import com.avairebot.audio.LavalinkManager;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.scheduler.tasks.MusicActivityTask;
+import com.avairebot.utilities.RestActionUtil;
 import lavalink.client.io.jda.JdaLink;
 
 import java.util.Arrays;
@@ -97,7 +98,7 @@ public class StopCommand extends Command {
 
         context.makeInfo(context.i18n("success"))
             .set("number", size)
-            .queue(message -> message.delete().queueAfter(5, TimeUnit.MINUTES));
+            .queue(message -> message.delete().queueAfter(5, TimeUnit.MINUTES, null, RestActionUtil.ignore));
 
         return true;
     }

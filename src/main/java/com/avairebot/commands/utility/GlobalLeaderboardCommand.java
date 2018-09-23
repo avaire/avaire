@@ -32,6 +32,7 @@ import com.avairebot.database.collection.Collection;
 import com.avairebot.database.collection.DataRow;
 import com.avairebot.utilities.CacheUtil;
 import com.avairebot.utilities.NumberUtil;
+import com.avairebot.utilities.RestActionUtil;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import net.dv8tion.jda.core.entities.Member;
@@ -109,7 +110,7 @@ public class GlobalLeaderboardCommand extends Command {
         Collection collection = loadTop100From();
         if (collection == null) {
             if (loadingMessage != null) {
-                loadingMessage.delete().queue();
+                loadingMessage.delete().queue(null, RestActionUtil.ignore);
             }
             context.makeWarning(context.i18n("noData")).queue();
             return false;
