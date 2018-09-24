@@ -185,7 +185,7 @@ public class Modlog {
      */
     public static void notifyUser(User user, Guild guild, ModlogAction action, @Nullable String caseId) {
         String type = action.getType().getNotifyName();
-        if (type == null) {
+        if (type == null || user.isBot()) {
             return;
         }
 
