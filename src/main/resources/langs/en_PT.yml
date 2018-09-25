@@ -382,6 +382,7 @@ music:
         nowPlaying: "Now playin': [:title](:link)\n`:duration` - Requested by :requester"
         queueHasEnded: "Queue be ended, leavin' voice."
         endedDueToInactivity: "The music has ended due to inactivity."
+        endedDueToWebSocketClose: "The audio web socket was forcefully closed, stopping the music."
         noMatchFound: "I found nothin' with th' given query: `{0}`"
         trackLoadFailed: "I couldn't add that t' th' queue: `{0}`"
         musicChannel: "You can only use music commands in the :channel channel."

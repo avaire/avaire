@@ -22,47 +22,39 @@
 package com.avairebot.audio;
 
 import com.avairebot.commands.CommandMessage;
+import com.avairebot.contracts.audio.AudioEventWrapper;
 import com.avairebot.database.transformers.PlaylistTransformer;
 import com.avairebot.handlers.events.MusicEndedEvent;
-import com.avairebot.handlers.events.NowPlayingEvent;
 import com.avairebot.utilities.NumberUtil;
 import com.avairebot.utilities.RestActionUtil;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
-import lavalink.client.io.Link;
 import lavalink.client.player.IPlayer;
 import lavalink.client.player.LavalinkPlayer;
-import lavalink.client.player.event.AudioEventAdapterWrapped;
 import net.dv8tion.jda.core.entities.User;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
-import java.util.concurrent.*;
+import java.util.concurrent.TimeUnit;
 
 /**
  * This class schedules tracks for the audio player. It contains the queue of tracks.
  */
-public class TrackScheduler extends AudioEventAdapterWrapped {
-
-    public final ExecutorService service = Executors.newCachedThreadPool();
-
-    private final GuildMusicManager manager;
-    private final IPlayer player;
-    private final BlockingQueue<AudioTrackContainer> queue;
+public class TrackScheduler extends AudioEventWrapper {
 
     private AudioTrackContainer audioTrackContainer;
 
     /**
+     * Creates a new track scheduler for the given guild music manager and player.
+     *
      * @param manager The guild music manager.
      * @param player  The audio player this scheduler uses.
      */
-    public TrackScheduler(GuildMusicManager manager, IPlayer player) {
-        this.manager = manager;
-        this.player = player;
-        this.queue = new LinkedBlockingQueue<>();
+    TrackScheduler(GuildMusicManager manager, IPlayer player) {
+        super(manager, player);
     }
 
     /**
@@ -90,7 +82,8 @@ public class TrackScheduler extends AudioEventAdapterWrapped {
     }
 
     /**
-     * Adds the list of tracks to the queue, if the player is not playing a song the first track in the list will be played.
+     * Adds the list of tracks to the queue, if the player is not playing
+     * a song the first track in the list will be played.
      *
      * @param playlist  The playlist transformer for the current guild.
      * @param tracks    The list of tracks to add to the queue.
@@ -123,7 +116,7 @@ public class TrackScheduler extends AudioEventAdapterWrapped {
             songTitle = container.getAudioTrack().getInfo().uri;
         }
 
-        if (manager.getGuild().isMusicMessages()) {
+        if (manager.getGuildTransformer().isMusicMessages()) {
             manager.getLastActiveMessage().makeSuccess(message)
                 .set("title", songTitle)
                 .set("link", container.getAudioTrack().getInfo().uri)
@@ -138,7 +131,9 @@ public class TrackScheduler extends AudioEventAdapterWrapped {
     }
 
     /**
-     * Add the first track in the playlist to the queue or play right away if nothing is in the queue, then adds the rest of the tracks to the queue.
+     * Add the first track in the playlist to the queue or play right
+     * away if nothing is in the queue, then adds the rest of the
+     * tracks to the queue.
      *
      * @param playlist  The playlist of tracks to play or add to the queue.
      * @param requester The user who requested the audio track.
@@ -172,7 +167,7 @@ public class TrackScheduler extends AudioEventAdapterWrapped {
                 songTitle = container.getAudioTrack().getInfo().uri;
             }
 
-            if (manager.getGuild().isMusicMessages()) {
+            if (manager.getGuildTransformer().isMusicMessages()) {
                 manager.getLastActiveMessage().makeSuccess(message)
                     .set("title", songTitle)
                     .set("link", container.getAudioTrack().getInfo().uri)
@@ -185,25 +180,24 @@ public class TrackScheduler extends AudioEventAdapterWrapped {
             }
         }
 
-
         for (int i = 1; i < playlist.getTracks().size(); i++) {
             queue.offer(new AudioTrackContainer(playlist.getTracks().get(i), requester));
         }
     }
 
     /**
-     * Start the next track, stopping the current one if it is playing, if it's
-     * the end of the queue the "End of the queue" message will be sent.
+     * Gets the audio track container, the audio container contains the audio track
+     * that is currently being played, the requested who requested the track, and
+     * all the skip list with the IDs of the users who want to skip the track.
+     *
+     * @return The audio track container.
      */
-    public void nextTrack() {
-        nextTrack(true);
+    @Nullable
+    public AudioTrackContainer getAudioTrackContainer() {
+        return audioTrackContainer;
     }
 
-    /**
-     * Start the next track, stopping the current one if it is playing.
-     *
-     * @param sendEndOfQueue Determine if the "End of queue" messages should be sent if the queue is empty as the next track is attempted to be loaded.
-     */
+    @Override
     public void nextTrack(boolean sendEndOfQueue) {
         // Start the next track, regardless of if something is already playing or not. In case queue was empty, we are
         // giving null to startTrack, which is a valid argument and will simply stop the player.
@@ -235,47 +229,15 @@ public class TrackScheduler extends AudioEventAdapterWrapped {
                 }
                 queue.offer(new AudioTrackContainer(track.makeClone(), audioTrackContainer.getRequester()));
             }
-
             nextTrack();
-            return;
-        }
-
-        if (endReason.equals(AudioTrackEndReason.FINISHED) && queue.isEmpty()) {
+        } else if (endReason.equals(AudioTrackEndReason.FINISHED) && queue.isEmpty()) {
             if (manager.getLastActiveMessage() != null) {
                 service.submit(() -> handleEndOfQueueWithLastActiveMessage(true));
             }
         }
     }
 
-    public BlockingQueue<AudioTrackContainer> getQueue() {
-        return queue;
-    }
-
-    @Nullable
-    public AudioTrackContainer getAudioTrackContainer() {
-        return audioTrackContainer;
-    }
-
-    private void sendNowPlaying(AudioTrackContainer container) {
-        NowPlayingEvent nowPlayingEvent = new NowPlayingEvent(
-            manager.guild.getJDA(), manager.guild, container
-        );
-
-        manager.avaire.getEventEmitter().push(nowPlayingEvent);
-
-        if (manager.getGuild().isMusicMessages()) {
-            manager.getLastActiveMessage().makeSuccess(
-                manager.getLastActiveMessage().i18nRaw("music.internal.nowPlaying")
-            )
-                .set("title", nowPlayingEvent.getSongTitle())
-                .set("link", container.getAudioTrack().getInfo().uri)
-                .set("duration", container.getFormattedDuration())
-                .set("requester", container.getRequester().getAsMention())
-                .set("volume", getVolume())
-                .queue();
-        }
-    }
-
+    @Override
     public void handleEndOfQueue(@Nonnull CommandMessage context, boolean sendEndOfQueue) {
         manager.avaire.getEventEmitter().push(new MusicEndedEvent(
             context.getJDA(), context.getGuild()
@@ -308,21 +270,5 @@ public class TrackScheduler extends AudioEventAdapterWrapped {
         AudioHandler.getDefaultAudioHandler().musicManagers.remove(
             context.getGuild().getIdLong()
         );
-    }
-
-    public void handleEndOfQueueWithLastActiveMessage(boolean sendEndOfQueue) {
-        handleEndOfQueue(manager.getLastActiveMessage(), sendEndOfQueue);
-    }
-
-    private boolean isNodeStateDestroyed(Link.State state) {
-        return !state.equals(Link.State.DESTROYED) && !state.equals(Link.State.DESTROYING);
-    }
-
-    private int getVolume() {
-        if (manager.hasPlayedSongBefore()) {
-            return player.getVolume();
-        }
-        manager.setHasPlayedSongBefore(true);
-        return manager.getDefaultVolume();
     }
 }

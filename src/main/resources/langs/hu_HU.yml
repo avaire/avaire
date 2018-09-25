@@ -380,6 +380,7 @@ music:
         nowPlaying: 'Most játszott: [:title](:link)\n`:duration`, `:volume%` hangerővel - Kérte :requester'
         queueHasEnded: 'A lejátszási listának vége, kilépés hangból.'
         endedDueToInactivity: "The music has ended due to inactivity."
+        endedDueToWebSocketClose: "The audio web socket was forcefully closed, stopping the music."
         noMatchFound: 'Nem találtam semmit a megadott feltétellel: `{0}`'
         trackLoadFailed: "Nem tudom hozzá adni a listához: `{0}`"
         musicChannel: "Csak zene parancsokat használhatsz a :channel channelben."

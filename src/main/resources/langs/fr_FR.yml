@@ -382,6 +382,7 @@ music:
         nowPlaying: "Joue maintenant: [:title](:link)\n`:duration` au volume `:volume%` - Demandé par :requester"
         queueHasEnded: "La file d'attente est terminée, je quitte le vocal."
         endedDueToInactivity: "The music has ended due to inactivity."
+        endedDueToWebSocketClose: "The audio web socket was forcefully closed, stopping the music."
         noMatchFound: "Je n'ai rien trouvé avec la requête: `{0}`"
         trackLoadFailed: "Je ne peux pas ajouter cela à la file d'attente: `{0}`"
         musicChannel: "Vous ne pouvez utiliser que des commandes musicales dans le canal :channel."

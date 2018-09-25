@@ -382,6 +382,7 @@ music:
         nowPlaying: 'Spiller nå: [:title](:link)\n`:duration` med `:volume%` volum - Ønsket av :requester'
         queueHasEnded: 'Køen har nådd slutten, går ut av voice kanalen.'
         endedDueToInactivity: "The music has ended due to inactivity."
+        endedDueToWebSocketClose: "The audio web socket was forcefully closed, stopping the music."
         noMatchFound: 'Jeg fant ingenting med søkeordet: `{0}`'
         trackLoadFailed: "Jeg fikk ikke lastet inn: `{0}` i køen."
         musicChannel: "Du kan kun benytte musikk kommandoer i :channel kanalen."

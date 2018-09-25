@@ -471,7 +471,7 @@ public class AvaIre {
 
             //noinspection SynchronizationOnLocalVariableOrMethodParameter
             synchronized (manager) {
-                audioStates.add(new AudioState(manager, shardManager.getGuildById(manager.getGuild().getId())));
+                audioStates.add(new AudioState(manager, shardManager.getGuildById(manager.getGuildTransformer().getId())));
             }
 
             manager.getScheduler().getQueue().clear();

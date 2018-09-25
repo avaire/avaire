@@ -382,6 +382,7 @@ music:
         nowPlaying: 'Spielt jetzt: [:title](:link)\n`:duration` mit einer Lautstärke von `:volume%` - Angefragt von :requester'
         queueHasEnded: 'Die Warteschlange ist leer. Voicechannel wird verlassen.'
         endedDueToInactivity: "The music has ended due to inactivity."
+        endedDueToWebSocketClose: "The audio web socket was forcefully closed, stopping the music."
         noMatchFound: "Ich habe nicht's mit der folgenden Eingabe gefunden: `{0}`"
         trackLoadFailed: "Ich war nicht in der Lage folgenden Titel in die Warteschlange zu setzen: `{0}`"
         musicChannel: "Du kannst Musik-Befehle nur im :channel Channel nutzen."

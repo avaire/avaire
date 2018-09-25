@@ -382,6 +382,7 @@ music:
         nowPlaying: 'Сейчас играет: [:title](:link) | `:duration`\n- Трек, требуемый :requester\nС громкостью `:volume%`'
         queueHasEnded: 'Бот закончил очередь, оставив вас в одиночестве.'
         endedDueToInactivity: "The music has ended due to inactivity."
+        endedDueToWebSocketClose: "The audio web socket was forcefully closed, stopping the music."
         noMatchFound: 'Я ничего не нашел с данным запросом: `{0}`'
         trackLoadFailed: "Я не могу добавить это в очередь: `{0}`"
         musicChannel: "Вы можете использовать только музыкальные команды в :channel канале."

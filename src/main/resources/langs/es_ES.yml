@@ -382,6 +382,7 @@ music:
         nowPlaying: 'Reproduciendo: [:title](:link)\n`:duration` al `:volume%` de volumen. Solicitado por :requester'
         queueHasEnded: 'Reproducción finalizada. Abandonando el canal del voz.'
         endedDueToInactivity: "The music has ended due to inactivity."
+        endedDueToWebSocketClose: "The audio web socket was forcefully closed, stopping the music."
         noMatchFound: 'No he encontrado nada con esta consulta: `{0}`'
         trackLoadFailed: 'No he podido añadir eso a la cola: `{0}`'
         musicChannel: 'Solo puedes utilizar comandos musicales en el canal ":channel".'

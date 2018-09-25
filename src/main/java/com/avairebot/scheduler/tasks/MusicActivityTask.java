@@ -241,7 +241,7 @@ public class MusicActivityTask implements Task {
             }
 
             if (guildMusicManager.getLastActiveMessage() != null && guildMusicManager.getLastActiveMessage().getChannel().canTalk()) {
-                guildMusicManager.getLastActiveMessage().makeInfo(I18n.getLocale(guildMusicManager.getGuild())
+                guildMusicManager.getLastActiveMessage().makeInfo(I18n.getLocale(guildMusicManager.getGuildTransformer())
                     .getConfig().getString("music.internal.endedDueToInactivity", "The music has ended due to inactivity."))
                     .queue();
             }

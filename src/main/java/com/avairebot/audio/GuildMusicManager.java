@@ -69,7 +69,15 @@ public class GuildMusicManager {
         this.lastActiveMessage = lastActiveMessage;
     }
 
-    public GuildTransformer getGuild() {
+    public AvaIre getAvaire() {
+        return avaire;
+    }
+
+    public Guild getGuild() {
+        return guild;
+    }
+
+    public GuildTransformer getGuildTransformer() {
         return GuildController.fetchGuild(avaire, guild);
     }
 
@@ -114,7 +122,7 @@ public class GuildMusicManager {
     public boolean isReady() {
         return getScheduler() != null
             && getPlayer() != null
-            && getGuild() != null;
+            && getGuildTransformer() != null;
     }
 
     AudioPlayerSendHandler getSendHandler() {
