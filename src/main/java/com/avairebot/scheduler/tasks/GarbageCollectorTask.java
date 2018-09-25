@@ -50,8 +50,12 @@ public class GarbageCollectorTask implements Task {
 
         // Clean music managers and audio sessions by removing
         // them if they have expired or are unused.
-        AudioHandler.getDefaultAudioHandler().musicManagers.entrySet().removeIf(this::musicManagerFilter);
-        AudioHandler.getDefaultAudioHandler().audioSessions.entrySet().removeIf(this::audioSessionFilter);
+        synchronized (AudioHandler.getDefaultAudioHandler().musicManagers) {
+            AudioHandler.getDefaultAudioHandler().musicManagers.entrySet().removeIf(this::musicManagerFilter);
+        }
+        synchronized (AudioHandler.getDefaultAudioHandler().audioSessions) {
+            AudioHandler.getDefaultAudioHandler().audioSessions.entrySet().removeIf(this::audioSessionFilter);
+        }
     }
 
 
