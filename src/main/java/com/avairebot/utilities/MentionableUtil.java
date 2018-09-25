@@ -88,13 +88,22 @@ public class MentionableUtil {
             if (userId.charAt(0) == '!') {
                 userId = userId.substring(1, userId.length());
             }
-            Member member = context.getGuild().getMemberById(userId);
-            return member == null ? null : member.getUser();
+
+            try {
+                Member member = context.getGuild().getMemberById(userId);
+                return member == null ? null : member.getUser();
+            } catch (NumberFormatException e) {
+                return null;
+            }
         }
 
         if (NumberUtil.isNumeric(part)) {
-            Member member = context.getGuild().getMemberById(part);
-            return member == null ? null : member.getUser();
+            try {
+                Member member = context.getGuild().getMemberById(part);
+                return member == null ? null : member.getUser();
+            } catch (NumberFormatException e) {
+                return null;
+            }
         }
 
         String[] parts = part.split("#");

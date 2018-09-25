@@ -26,6 +26,7 @@ import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.BanableCommand;
 import com.avairebot.contracts.commands.Command;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -47,7 +48,10 @@ public class BanCommand extends BanableCommand {
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`:command <user> [reason]` - Bans the mentioned user with the given reason.");
+        return Arrays.asList(
+            "`:command <user> [reason]` - Bans the mentioned user with the given reason.",
+            "`:command <user id> [reason]` - Bans the user with given ID and for the given reason."
+        );
     }
 
     @Override

@@ -30,6 +30,7 @@ public class ModlogAction {
 
     private final User moderator;
     private final User target;
+    private final long targetId;
 
     private ModlogType type;
     private String message = null;
@@ -59,6 +60,25 @@ public class ModlogAction {
         this.target = target;
         this.type = action;
         this.message = message;
+
+        this.targetId = target == null ? 0L : target.getIdLong();
+    }
+
+    /**
+     * Creates a new modlog action with the given action
+     * type, moderator, target ID, and message/reason.
+     *
+     * @param action    The type of modlog action that is being preformed.
+     * @param moderator The moderator for the modlog action.
+     * @param targetId  The target ID of the modlog action.
+     */
+    public ModlogAction(@Nonnull ModlogType action, @Nonnull User moderator, long targetId, @Nullable String message) {
+        this.moderator = moderator;
+        this.type = action;
+        this.message = message;
+
+        this.target = null;
+        this.targetId = targetId;
     }
 
     /**
@@ -96,7 +116,22 @@ public class ModlogAction {
      * @return The stringified version of the target.
      */
     public String getStringifiedTarget() {
+        if (target == null && targetId > 0) {
+            return String.valueOf(targetId);
+        }
         return stringifyUser(target);
+    }
+
+    /**
+     * The ID of the target the modlog action was invoked for, if no target was
+     * provided for the modlog action, the target ID will be 0, if the target
+     * is a user but they're not on the server at the time, the target might
+     * be null but the target ID will contain the ID of the target.
+     *
+     * @return The ID of the target the modlog action was invoked for.
+     */
+    public long getTargetId() {
+        return targetId;
     }
 
     /**

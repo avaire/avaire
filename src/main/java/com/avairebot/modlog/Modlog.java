@@ -141,6 +141,7 @@ public class Modlog {
                 break;
 
             case VOICE_KICK:
+                //noinspection ConstantConditions
                 String[] split = action.getMessage().split("\n");
                 builder
                     .addField("User", action.getStringifiedTarget(), true)
