@@ -26,9 +26,12 @@ import com.avairebot.audio.AudioHandler;
 import com.avairebot.audio.AudioSession;
 import com.avairebot.audio.GuildMusicManager;
 import com.avairebot.audio.LavalinkManager;
+import com.avairebot.blacklist.Ratelimit;
 import com.avairebot.cache.CacheType;
 import com.avairebot.cache.adapters.MemoryAdapter;
+import com.avairebot.contracts.commands.InteractionCommand;
 import com.avairebot.contracts.scheduler.Task;
+import com.avairebot.handlers.adapter.JDAStateEventAdapter;
 import com.avairebot.handlers.adapter.MessageEventAdapter;
 import lavalink.client.io.Link;
 import net.dv8tion.jda.core.managers.AudioManager;
@@ -56,6 +59,11 @@ public class GarbageCollectorTask implements Task {
         synchronized (AudioHandler.getDefaultAudioHandler().audioSessions) {
             AudioHandler.getDefaultAudioHandler().audioSessions.entrySet().removeIf(this::audioSessionFilter);
         }
+
+        // Cleans up caches that are not hit very often, so
+        // instead of just keeping the entities in the
+        // cache, we can clean them up here.
+        cleanupCache();
     }
 
 
@@ -121,5 +129,26 @@ public class GarbageCollectorTask implements Task {
      */
     private boolean audioSessionFilter(Map.Entry<String, AudioSession> next) {
         return (next.getValue().getCreatedAt() + 25000) < System.currentTimeMillis();
+    }
+
+    /**
+     * Goes through some of the less used caches and
+     * cleans up any entities that have expired.
+     */
+    private void cleanupCache() {
+        // blacklist-ratelimit
+        synchronized (Ratelimit.cache) {
+            Ratelimit.cache.cleanUp();
+        }
+
+        // interaction-lottery
+        synchronized (InteractionCommand.cache) {
+            InteractionCommand.cache.cleanUp();
+        }
+
+        // autorole
+        synchronized (JDAStateEventAdapter.cache) {
+            JDAStateEventAdapter.cache.cleanUp();
+        }
     }
 }
