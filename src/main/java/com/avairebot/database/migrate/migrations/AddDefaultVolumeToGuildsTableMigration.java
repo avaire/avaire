@@ -43,12 +43,12 @@ public class AddDefaultVolumeToGuildsTableMigration implements Migration {
 
         if (schema.getDbm().getConnection() instanceof MySQL) {
             schema.getDbm().queryUpdate(String.format(
-                "ALTER TABLE `%s` ADD `default_volume` INT NOT NULL DEFAULT '50' AFTER `dj_level`;",
+                "ALTER TABLE `%s` ADD `default_volume` INT NOT NULL DEFAULT '100' AFTER `dj_level`;",
                 Constants.GUILD_TABLE_NAME
             ));
         } else {
             schema.getDbm().queryUpdate(String.format(
-                "ALTER TABLE `%s` ADD `default_volume` INT NOT NULL DEFAULT '50';",
+                "ALTER TABLE `%s` ADD `default_volume` INT NOT NULL DEFAULT '100';",
                 Constants.GUILD_TABLE_NAME
             ));
         }

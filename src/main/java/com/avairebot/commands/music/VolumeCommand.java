@@ -48,7 +48,7 @@ public class VolumeCommand extends Command {
 
     @Override
     public String getDescription() {
-        return "Changes the volume of the music, by default the music will be playing at 50% volume.";
+        return "Changes the volume of the music, by default the music will be playing at 100% volume.";
     }
 
     @Override

@@ -55,10 +55,10 @@ public class GuildMusicManager {
         player.addListener(scheduler);
         hasSetVolume = false;
         hasPlayedSongBefore = false;
-        defaultVolume = 50;
+        defaultVolume = 100;
 
         GuildTransformer transformer = GuildController.fetchGuild(avaire, guild);
-        defaultVolume = transformer != null ? transformer.getDefaultVolume() : 50;
+        defaultVolume = transformer != null ? transformer.getDefaultVolume() : 100;
     }
 
     public CommandMessage getLastActiveMessage() {
