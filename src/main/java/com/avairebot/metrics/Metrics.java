@@ -197,6 +197,14 @@ public class Metrics {
         .help("The amount of valid votes currently active, updated once every minute")
         .register();
 
+    // Blacklist
+
+    public static final Gauge blacklist = Gauge.build()
+        .name("avaire_blacklist_current")
+        .help("The amount of servers and users that are currently on the blacklist")
+        .labelNames("type")
+        .register();
+
     // ################################################################################
     // ##                           Method Stuff
     // ################################################################################
