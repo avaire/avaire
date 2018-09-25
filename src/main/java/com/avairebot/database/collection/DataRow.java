@@ -110,6 +110,10 @@ public class DataRow {
     public boolean getBoolean(String name, boolean def) {
         Object value = get(name, def);
 
+        if (isNull(value)) {
+            return def;
+        }
+
         if (isString(value)) {
             String str = String.valueOf(value);
 
@@ -140,6 +144,10 @@ public class DataRow {
      */
     public double getDouble(String name, double def) {
         Object value = get(name, def);
+
+        if (isNull(value)) {
+            return def;
+        }
 
         if (isString(value)) {
             String str = String.valueOf(value);
@@ -194,6 +202,10 @@ public class DataRow {
     public int getInt(String name, int def) {
         Object value = get(name, def);
 
+        if (isNull(value)) {
+            return def;
+        }
+
         if (isString(value)) {
             String str = String.valueOf(value);
 
@@ -242,6 +254,10 @@ public class DataRow {
      */
     public long getLong(String name, long def) {
         Object value = get(name, def);
+
+        if (isNull(value)) {
+            return def;
+        }
 
         if (isString(value)) {
             String str = String.valueOf(value);
@@ -295,6 +311,10 @@ public class DataRow {
      */
     public float getFloat(String name, float def) {
         Object value = get(name, def);
+
+        if (isNull(value)) {
+            return def;
+        }
 
         if (isString(value)) {
             String str = String.valueOf(value);
@@ -350,7 +370,7 @@ public class DataRow {
     public String getString(String name, String def) {
         Object value = get(name, def);
 
-        if ((value == null || value == "null")) {
+        if (isNull(value)) {
             return def;
         }
 
@@ -448,6 +468,10 @@ public class DataRow {
 
     private boolean isString(Object name) {
         return getType(name).equalsIgnoreCase("string");
+    }
+
+    private boolean isNull(Object object) {
+        return object == null || object == "null";
     }
 
     @Nonnull
