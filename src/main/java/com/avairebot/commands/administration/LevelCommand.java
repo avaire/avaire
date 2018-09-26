@@ -105,13 +105,13 @@ public class LevelCommand extends Command {
             String note = "";
             if (guildTransformer.isLevels()) {
                 note = context.i18n("note",
-                    context.i18n("status." + (guildTransformer.isLevels() ? "enabled" : "disabled")),
+                    context.i18n("status." + (guildTransformer.isLevelAlerts() ? "enabled" : "disabled")),
                     generateCommandPrefix(context.getMessage())
                 );
             }
 
             context.makeSuccess(context.i18n("message"))
-                .set("status", context.i18n("status." + (guildTransformer.isLevelAlerts() ? "enabled" : "disabled")))
+                .set("status", context.i18n("status." + (guildTransformer.isLevels() ? "enabled" : "disabled")))
                 .set("note", note)
                 .queue();
         } catch (SQLException ex) {
