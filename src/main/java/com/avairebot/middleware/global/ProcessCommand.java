@@ -33,6 +33,9 @@ import com.avairebot.shared.SentryConstants;
 import com.avairebot.utilities.ArrayUtil;
 import com.avairebot.utilities.CheckPermissionUtil;
 import com.avairebot.utilities.RestActionUtil;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import io.prometheus.client.Histogram;
 import net.dv8tion.jda.core.entities.Message;
@@ -46,6 +49,15 @@ import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 public class ProcessCommand extends Middleware {
+
+    public static final LoadingCache<Long, Boolean> commandsPerMinute = CacheBuilder.newBuilder()
+        .expireAfterWrite(1, TimeUnit.MINUTES)
+        .build(new CacheLoader<Long, Boolean>() {
+            @Override
+            public Boolean load(@Nonnull Long key) throws Exception {
+                return true;
+            }
+        });
 
     private static final Logger log = LoggerFactory.getLogger(ProcessCommand.class);
 
@@ -66,6 +78,12 @@ public class ProcessCommand extends Middleware {
 
     @Override
     public boolean handle(@Nonnull Message message, @Nonnull MiddlewareStack stack, String... args) {
+        // Increments the command per minute cache and sets the time
+        // in nano seconds that the command was invoked so we can
+        // remove it after one minute has passed.
+        Metrics.commandsPerMinute.inc();
+        commandsPerMinute.put(System.nanoTime(), false);
+
         CheckPermissionUtil.PermissionCheckType permissionType = CheckPermissionUtil.canSendMessages(message.getChannel());
         if (!stack.getCommandContainer().getCategory().getName().equals("System") && !permissionType.canSendEmbed()) {
             if (!permissionType.canSendMessage()) {

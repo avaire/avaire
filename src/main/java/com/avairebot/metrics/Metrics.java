@@ -157,6 +157,11 @@ public class Metrics {
         .labelNames("class") // class of the exception
         .register();
 
+    public static final Gauge commandsPerMinute = Gauge.build()
+        .name("avaire_commands_per_minute_total")
+        .help("Total amount of commands that are being invoked per minute")
+        .register();
+
     // AI Requests
 
     public static final Counter aiRequestsReceived = Counter.build()
