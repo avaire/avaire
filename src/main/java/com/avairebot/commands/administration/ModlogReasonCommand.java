@@ -142,6 +142,13 @@ public class ModlogReasonCommand extends Command {
                 return sendErrorMessage(context, context.i18n("couldntFindModlogChannel"));
             }
 
+            avaire.getDatabase().newQueryBuilder(Constants.LOG_TABLE_NAME)
+                .useAsync(true)
+                .where("guild_id", context.getGuild().getId())
+                .where("user_id", context.getAuthor().getId())
+                .where("modlogCase", caseId)
+                .update(statement -> statement.set("reason", reason));
+
             channel.getMessageById(first.getString("message_id")).queue(message -> {
                 if (message.getEmbeds().isEmpty()) {
                     // What? This code should never be hit...

@@ -43,7 +43,7 @@ public class CreateLogTableMigration implements Migration {
             table.String("user_id");
             table.String("target_id").nullable();
             table.String("message_id").nullable();
-            table.String("reason").nullable();
+            table.Text("reason").nullable();
             table.Timestamps();
         });
     }
