@@ -36,6 +36,7 @@ public class GuildMusicManager {
 
     protected final AvaIre avaire;
     protected final Guild guild;
+    protected final long guildId;
 
     private final IPlayer player;
     private final TrackScheduler scheduler;
@@ -49,6 +50,7 @@ public class GuildMusicManager {
     public GuildMusicManager(AvaIre avaire, Guild guild) {
         this.avaire = avaire;
         this.guild = guild;
+        this.guildId = guild.getIdLong();
 
         player = LavalinkManager.LavalinkManagerHolder.lavalink.createPlayer(guild.getId());
         scheduler = new TrackScheduler(this, player);
@@ -75,6 +77,10 @@ public class GuildMusicManager {
 
     public Guild getGuild() {
         return guild;
+    }
+
+    public long getGuildId() {
+        return guildId;
     }
 
     public GuildTransformer getGuildTransformer() {

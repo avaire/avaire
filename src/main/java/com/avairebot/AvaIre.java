@@ -469,9 +469,15 @@ public class AvaIre {
                 ).queue();
             }
 
-            //noinspection SynchronizationOnLocalVariableOrMethodParameter
-            synchronized (manager) {
-                audioStates.add(new AudioState(manager, shardManager.getGuildById(manager.getGuildTransformer().getId())));
+            try {
+                //noinspection SynchronizationOnLocalVariableOrMethodParameter
+                synchronized (manager) {
+                    if (manager.getGuild() != null) {
+                        audioStates.add(new AudioState(manager, manager.getGuild()));
+                    }
+                }
+            } catch (Exception e) {
+                log.warn("Failed to create the audio state cache for the guild with an ID of: {}", manager.getGuildId(), e);
             }
 
             manager.getScheduler().getQueue().clear();
