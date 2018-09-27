@@ -100,6 +100,13 @@ public class JDAStateEventAdapter extends EventAdapter {
                 continue;
             }
 
+            long usersInVoiceChannel = voiceChannel.getMembers().stream()
+                .filter(member -> !member.getUser().isBot()).count();
+
+            if (usersInVoiceChannel == 0) {
+                continue;
+            }
+
             TextChannel textChannel = guild.getTextChannelById(state.getMessageChannelId());
             if (textChannel == null) {
                 continue;
