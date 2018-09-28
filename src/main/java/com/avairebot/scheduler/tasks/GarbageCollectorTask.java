@@ -33,6 +33,7 @@ import com.avairebot.contracts.commands.InteractionCommand;
 import com.avairebot.contracts.scheduler.Task;
 import com.avairebot.handlers.adapter.JDAStateEventAdapter;
 import com.avairebot.handlers.adapter.MessageEventAdapter;
+import com.avairebot.scheduler.jobs.LavalinkGarbageNodeCollectorJob;
 import lavalink.client.io.Link;
 import net.dv8tion.jda.core.managers.AudioManager;
 
@@ -149,6 +150,11 @@ public class GarbageCollectorTask implements Task {
         // autorole
         synchronized (JDAStateEventAdapter.cache) {
             JDAStateEventAdapter.cache.cleanUp();
+        }
+
+        // lavalink-destroy-cleanup
+        synchronized (LavalinkGarbageNodeCollectorJob.cache) {
+            LavalinkGarbageNodeCollectorJob.cache.cleanUp();
         }
     }
 }

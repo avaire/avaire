@@ -38,6 +38,7 @@ import com.avairebot.metrics.filters.HttpFilter;
 import com.avairebot.metrics.handlers.SparkExceptionHandler;
 import com.avairebot.metrics.routes.*;
 import com.avairebot.middleware.ThrottleMiddleware;
+import com.avairebot.scheduler.jobs.LavalinkGarbageNodeCollectorJob;
 import io.prometheus.client.Counter;
 import io.prometheus.client.Gauge;
 import io.prometheus.client.Histogram;
@@ -252,6 +253,7 @@ public class Metrics {
         cacheMetrics.addCache("global-leaderboard", GlobalLeaderboardCommand.cache);
         cacheMetrics.addCache("interaction-lottery", InteractionCommand.cache);
         cacheMetrics.addCache("blacklist-ratelimit", Ratelimit.cache);
+        cacheMetrics.addCache("lavalink-destroy-cleanup", LavalinkGarbageNodeCollectorJob.cache);
 
         if (!avaire.getConfig().getBoolean("metrics.enabled", true)) {
             log.info("Metrics web API is disabled, skipping igniting Spark API");

@@ -69,6 +69,7 @@ public class LavalinkManager {
             avaire.getSettings().getShardCount() < 1 ? 1 : avaire.getSettings().getShardCount(),
             shardId -> avaire.getShardManager().getShardById(shardId)
         );
+        Runtime.getRuntime().addShutdownHook(new Thread(lavalink::shutdown, "lavalink-shutdown-hook"));
 
         for (Map<?, ?> node : nodes) {
             if (!node.containsKey("name") || !node.containsKey("host") || !node.containsKey("pass")) {

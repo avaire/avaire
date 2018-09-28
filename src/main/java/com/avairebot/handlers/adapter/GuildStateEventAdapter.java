@@ -23,13 +23,20 @@ package com.avairebot.handlers.adapter;
 
 import com.avairebot.AvaIre;
 import com.avairebot.Constants;
+import com.avairebot.audio.AudioHandler;
+import com.avairebot.audio.GuildMusicManager;
+import com.avairebot.audio.LavalinkManager;
 import com.avairebot.chat.ConsoleColor;
 import com.avairebot.contracts.handlers.EventAdapter;
 import com.avairebot.metrics.Metrics;
+import com.avairebot.scheduler.ScheduleHandler;
+import com.avairebot.scheduler.tasks.MusicActivityTask;
 import com.avairebot.shared.DiscordConstants;
 import com.avairebot.utilities.NumberUtil;
 import com.avairebot.utilities.RestActionUtil;
+import lavalink.client.io.jda.JdaLink;
 import net.dv8tion.jda.core.EmbedBuilder;
+import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.guild.GuildJoinEvent;
@@ -111,8 +118,13 @@ public class GuildStateEventAdapter extends EventAdapter {
     }
 
     public void onGuildLeave(GuildLeaveEvent event) {
+        handleSendGuildLeaveWebhook(event.getGuild());
+        handleAudioConnectionOnGuildLeave(event.getGuild());
+    }
+
+    private void handleSendGuildLeaveWebhook(Guild guild) {
         AvaIre.getLogger().info(ConsoleColor.format(
-            "%redLeft guild with an ID of " + event.getGuild().getId() + " called: " + event.getGuild().getName() + "%reset"
+            "%redLeft guild with an ID of " + guild.getId() + " called: " + guild.getName() + "%reset"
         ));
 
         if (!avaire.areWeReadyYet()) {
@@ -120,7 +132,7 @@ public class GuildStateEventAdapter extends EventAdapter {
         }
 
         Metrics.guilds.dec();
-        Metrics.geoTracker.labels(event.getGuild().getRegion().getName()).dec();
+        Metrics.geoTracker.labels(guild.getRegion().getName()).dec();
 
         TextChannel channel = avaire.getShardManager().getTextChannelById(DiscordConstants.ACTIVITY_LOG_CHANNEL_ID);
         if (channel == null) {
@@ -132,9 +144,45 @@ public class GuildStateEventAdapter extends EventAdapter {
                 .setColor(Color.decode("#EF5350"))
                 .setTimestamp(Instant.now())
                 .addField("Removed", String.format("%s (ID: %s)",
-                    event.getGuild().getName(), event.getGuild().getId()
+                    guild.getName(), guild.getId()
                 ), false)
                 .build()
         ).queue(null, RestActionUtil.ignore);
+    }
+
+    private void handleAudioConnectionOnGuildLeave(Guild guild) {
+        long guildId = guild.getIdLong();
+
+        ScheduleHandler.getScheduler().submit(() -> {
+            GuildMusicManager musicManager = AudioHandler.getDefaultAudioHandler()
+                .musicManagers.getOrDefault(guildId, null);
+
+            if (musicManager == null) {
+                return;
+            }
+
+            musicManager.getPlayer().stopTrack();
+            musicManager.getScheduler().getQueue().clear();
+
+            MusicActivityTask.missingListener.remove(guildId);
+            MusicActivityTask.playerPaused.remove(guildId);
+            MusicActivityTask.emptyQueue.remove(guildId);
+
+            musicManager.getScheduler().nextTrack(false);
+
+            if (LavalinkManager.LavalinkManagerHolder.lavalink.isEnabled()) {
+                JdaLink link = LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink()
+                    .getLink(String.valueOf(guildId));
+
+
+                if (!LavalinkManager.LavalinkManagerHolder.lavalink.isLinkBeingDestroyed(link)) {
+                    link.destroy();
+                }
+
+                LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink().getLinks().clear();
+                LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink().getLinks().removeIf(jdaLink ->
+                    jdaLink.getGuildIdLong() == guildId && LavalinkManager.LavalinkManagerHolder.lavalink.isLinkBeingDestroyed(jdaLink));
+            }
+        });
     }
 }
