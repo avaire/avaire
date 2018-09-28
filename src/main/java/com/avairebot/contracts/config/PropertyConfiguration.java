@@ -21,7 +21,7 @@
 
 package com.avairebot.contracts.config;
 
-import com.avairebot.contracts.commands.Evalable;
+import com.avairebot.contracts.debug.Evalable;
 import com.avairebot.exceptions.FailedToLoadPropertiesConfigurationException;
 
 import java.io.IOException;

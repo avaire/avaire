@@ -21,6 +21,7 @@
 
 package com.avairebot.audio;
 
+import com.avairebot.contracts.debug.Evalable;
 import com.avairebot.utilities.NumberUtil;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import lavalink.client.player.IPlayer;
@@ -29,7 +30,7 @@ import net.dv8tion.jda.core.entities.User;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AudioTrackContainer {
+public class AudioTrackContainer extends Evalable {
 
     private final AudioTrack audioTrack;
     private final User requester;

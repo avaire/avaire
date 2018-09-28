@@ -19,12 +19,13 @@
  *
  */
 
-package com.avairebot.contracts.commands;
+package com.avairebot.contracts.debug;
 
 import org.json.JSONObject;
 
 import java.lang.reflect.Field;
 
+@SuppressWarnings("Duplicates")
 public abstract class Evalable {
 
     /**
@@ -67,6 +68,10 @@ public abstract class Evalable {
 
             if (value instanceof Evalable) {
                 return ((Evalable) value).toEvalableString();
+            }
+
+            if (value instanceof EvalAudioEventWrapper) {
+                return ((EvalAudioEventWrapper) value).toEvalableString();
             }
 
             return value;

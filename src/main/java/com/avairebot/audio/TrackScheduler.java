@@ -23,6 +23,7 @@ package com.avairebot.audio;
 
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.audio.AudioEventWrapper;
+import com.avairebot.contracts.debug.EvalContext;
 import com.avairebot.database.transformers.PlaylistTransformer;
 import com.avairebot.handlers.events.MusicEndedEvent;
 import com.avairebot.utilities.NumberUtil;
@@ -46,6 +47,14 @@ import java.util.concurrent.TimeUnit;
 public class TrackScheduler extends AudioEventWrapper {
 
     private AudioTrackContainer audioTrackContainer;
+
+    private EvalContext queueSize = new EvalContext() {
+
+        @Override
+        public String toString() {
+            return String.valueOf(queue.size());
+        }
+    };
 
     /**
      * Creates a new track scheduler for the given guild music manager and player.

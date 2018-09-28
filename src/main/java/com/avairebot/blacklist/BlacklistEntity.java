@@ -21,7 +21,7 @@
 
 package com.avairebot.blacklist;
 
-import com.avairebot.contracts.commands.Evalable;
+import com.avairebot.contracts.debug.Evalable;
 import com.avairebot.time.Carbon;
 
 import javax.annotation.Nullable;

@@ -24,7 +24,7 @@ package com.avairebot.audio.cache;
 import com.avairebot.audio.AudioTrackContainer;
 import com.avairebot.audio.GuildMusicManager;
 import com.avairebot.audio.LavalinkManager;
-import com.avairebot.contracts.commands.Evalable;
+import com.avairebot.contracts.debug.Evalable;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.VoiceChannel;

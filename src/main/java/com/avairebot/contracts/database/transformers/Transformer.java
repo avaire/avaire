@@ -21,8 +21,8 @@
 
 package com.avairebot.contracts.database.transformers;
 
-import com.avairebot.contracts.commands.Evalable;
 import com.avairebot.contracts.config.serialization.ConfigurationSerializable;
+import com.avairebot.contracts.debug.Evalable;
 import com.avairebot.database.collection.DataRow;
 
 import java.util.Map;

@@ -22,8 +22,8 @@
 package com.avairebot.database.transformers;
 
 import com.avairebot.AvaIre;
-import com.avairebot.contracts.commands.Evalable;
 import com.avairebot.contracts.database.transformers.Transformer;
+import com.avairebot.contracts.debug.Evalable;
 import com.avairebot.database.collection.DataRow;
 
 public class GuildTypeTransformer extends Transformer {

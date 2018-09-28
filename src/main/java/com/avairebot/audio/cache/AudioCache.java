@@ -22,7 +22,7 @@
 package com.avairebot.audio.cache;
 
 import com.avairebot.audio.AudioTrackContainer;
-import com.avairebot.contracts.commands.Evalable;
+import com.avairebot.contracts.debug.Evalable;
 
 @SuppressWarnings("unused")
 public class AudioCache extends Evalable {

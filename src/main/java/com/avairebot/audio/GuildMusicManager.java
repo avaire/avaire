@@ -23,6 +23,7 @@ package com.avairebot.audio;
 
 import com.avairebot.AvaIre;
 import com.avairebot.commands.CommandMessage;
+import com.avairebot.contracts.debug.Evalable;
 import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.scheduler.ScheduleHandler;
@@ -32,7 +33,7 @@ import net.dv8tion.jda.core.entities.Guild;
 
 import java.util.concurrent.TimeUnit;
 
-public class GuildMusicManager {
+public class GuildMusicManager extends Evalable {
 
     protected final AvaIre avaire;
     protected final Guild guild;

@@ -24,6 +24,7 @@ package com.avairebot.contracts.audio;
 import com.avairebot.audio.AudioTrackContainer;
 import com.avairebot.audio.GuildMusicManager;
 import com.avairebot.commands.CommandMessage;
+import com.avairebot.contracts.debug.EvalAudioEventWrapper;
 import com.avairebot.handlers.events.NowPlayingEvent;
 import com.avairebot.utilities.RestActionUtil;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
@@ -32,14 +33,13 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
 import lavalink.client.io.Link;
 import lavalink.client.player.IPlayer;
-import lavalink.client.player.event.AudioEventAdapterWrapped;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nonnull;
 import java.util.concurrent.*;
 
-public abstract class AudioEventWrapper extends AudioEventAdapterWrapped {
+public abstract class AudioEventWrapper extends EvalAudioEventWrapper {
 
     private static final Logger log = LoggerFactory.getLogger(AudioEventWrapper.class);
 
