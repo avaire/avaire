@@ -187,7 +187,7 @@ public abstract class AudioEventWrapper extends EvalAudioEventWrapper {
         onTrackEnd(player, track, AudioTrackEndReason.LOAD_FAILED);
     }
 
-    @Override
+    @Deprecated
     public void onWebSocketClose(AudioPlayer player, int code, String reason, boolean byRemote) {
         queue.clear();
 
