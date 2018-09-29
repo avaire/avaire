@@ -58,7 +58,7 @@ public enum ModlogType {
     /**
      * Represents when a user is warned through Avas warn system.
      */
-    WARN(6, "Warning", true, MessageType.WARNING.getColor());
+    WARN(6, "Warn", true, MessageType.WARNING.getColor());
 
     final int id;
     final String name;
