@@ -1,3 +1,24 @@
+/*
+ * Copyright (c) 2018.
+ *
+ * This file is part of AvaIre.
+ *
+ * AvaIre is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * AvaIre is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with AvaIre.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ *
+ */
+
 package com.avairebot.scheduler.tasks;
 
 import com.avairebot.AvaIre;
@@ -5,10 +26,14 @@ import com.avairebot.audio.AudioHandler;
 import com.avairebot.audio.AudioSession;
 import com.avairebot.audio.GuildMusicManager;
 import com.avairebot.audio.LavalinkManager;
+import com.avairebot.blacklist.Ratelimit;
 import com.avairebot.cache.CacheType;
 import com.avairebot.cache.adapters.MemoryAdapter;
+import com.avairebot.contracts.commands.InteractionCommand;
 import com.avairebot.contracts.scheduler.Task;
+import com.avairebot.handlers.adapter.JDAStateEventAdapter;
 import com.avairebot.handlers.adapter.MessageEventAdapter;
+import com.avairebot.scheduler.jobs.LavalinkGarbageNodeCollectorJob;
 import lavalink.client.io.Link;
 import net.dv8tion.jda.core.managers.AudioManager;
 
@@ -29,8 +54,17 @@ public class GarbageCollectorTask implements Task {
 
         // Clean music managers and audio sessions by removing
         // them if they have expired or are unused.
-        AudioHandler.getDefaultAudioHandler().musicManagers.entrySet().removeIf(this::musicManagerFilter);
-        AudioHandler.getDefaultAudioHandler().audioSessions.entrySet().removeIf(this::audioSessionFilter);
+        synchronized (AudioHandler.getDefaultAudioHandler().musicManagers) {
+            AudioHandler.getDefaultAudioHandler().musicManagers.entrySet().removeIf(this::musicManagerFilter);
+        }
+        synchronized (AudioHandler.getDefaultAudioHandler().audioSessions) {
+            AudioHandler.getDefaultAudioHandler().audioSessions.entrySet().removeIf(this::audioSessionFilter);
+        }
+
+        // Cleans up caches that are not hit very often, so
+        // instead of just keeping the entities in the
+        // cache, we can clean them up here.
+        cleanupCache();
     }
 
 
@@ -96,5 +130,31 @@ public class GarbageCollectorTask implements Task {
      */
     private boolean audioSessionFilter(Map.Entry<String, AudioSession> next) {
         return (next.getValue().getCreatedAt() + 25000) < System.currentTimeMillis();
+    }
+
+    /**
+     * Goes through some of the less used caches and
+     * cleans up any entities that have expired.
+     */
+    private void cleanupCache() {
+        // blacklist-ratelimit
+        synchronized (Ratelimit.cache) {
+            Ratelimit.cache.cleanUp();
+        }
+
+        // interaction-lottery
+        synchronized (InteractionCommand.cache) {
+            InteractionCommand.cache.cleanUp();
+        }
+
+        // autorole
+        synchronized (JDAStateEventAdapter.cache) {
+            JDAStateEventAdapter.cache.cleanUp();
+        }
+
+        // lavalink-destroy-cleanup
+        synchronized (LavalinkGarbageNodeCollectorJob.cache) {
+            LavalinkGarbageNodeCollectorJob.cache.cleanUp();
+        }
     }
 }

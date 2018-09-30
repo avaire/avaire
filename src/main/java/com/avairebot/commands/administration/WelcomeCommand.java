@@ -1,7 +1,29 @@
+/*
+ * Copyright (c) 2018.
+ *
+ * This file is part of AvaIre.
+ *
+ * AvaIre is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * AvaIre is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with AvaIre.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ *
+ */
+
 package com.avairebot.commands.administration;
 
 import com.avairebot.AvaIre;
 import com.avairebot.Constants;
+import com.avairebot.commands.CommandHandler;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.CacheFingerprint;
 import com.avairebot.contracts.commands.Command;
@@ -53,6 +75,7 @@ public class WelcomeCommand extends Command {
     }
 
     @Override
+    @SuppressWarnings("ConstantConditions")
     public boolean onCommand(CommandMessage context, String[] args) {
         GuildTransformer guildTransformer = context.getGuildTransformer();
         if (guildTransformer == null) {
@@ -62,9 +85,7 @@ public class WelcomeCommand extends Command {
         ChannelTransformer channelTransformer = guildTransformer.getChannel(context.getChannel().getId());
 
         if (channelTransformer == null) {
-            return sendErrorMessage(context,
-                "Something went wrong while trying to get the channel transformer object, please contact one of my developers to look into this issue."
-            );
+            return sendErrorMessage(context, "errors.errorOccurredWhileLoading", "channel settings");
         }
 
         ComparatorUtil.ComparatorType type = args.length == 0 ?
@@ -88,14 +109,14 @@ public class WelcomeCommand extends Command {
 
             String note = "";
             if (channelTransformer.getWelcome().isEnabled()) {
-                note = String.format(
-                    "\nYou can customize the message by using `%swelcomemessage [message]`",
-                    generateCommandPrefix(context.getMessage())
-                );
+                note = context.i18n("note", CommandHandler.getCommand(WelcomeMessageCommand.class)
+                    .getCommand().generateCommandTrigger(context.getMessage()));
             }
 
-            context.makeSuccess("The `Welcome` module has been **:status** for the :channel channel.:note")
-                .set("status", channelTransformer.getWelcome().isEnabled() ? "Enabled" : "Disabled")
+            context.makeSuccess(context.i18n("message"))
+                .set("status", context.i18n("status." + (channelTransformer.getWelcome().isEnabled()
+                    ? "enabled" : "disabled"
+                )))
                 .set("note", note)
                 .queue();
         } catch (SQLException ex) {

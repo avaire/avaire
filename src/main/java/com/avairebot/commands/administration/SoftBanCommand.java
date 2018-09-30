@@ -1,6 +1,28 @@
+/*
+ * Copyright (c) 2018.
+ *
+ * This file is part of AvaIre.
+ *
+ * AvaIre is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * AvaIre is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with AvaIre.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ *
+ */
+
 package com.avairebot.commands.administration;
 
 import com.avairebot.AvaIre;
+import com.avairebot.commands.CommandHandler;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.BanableCommand;
 import com.avairebot.contracts.commands.Command;
@@ -27,7 +49,10 @@ public class SoftBanCommand extends BanableCommand {
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`:command <user> [reason]` - Bans the mentioned user with the given reason.");
+        return Arrays.asList(
+            "`:command <user> [reason]` - Bans the mentioned user with the given reason.",
+            "`:command <user id> [reason]` - Bans the user with given ID and for the given reason."
+        );
     }
 
     @Override
@@ -51,7 +76,12 @@ public class SoftBanCommand extends BanableCommand {
     }
 
     @Override
+    @SuppressWarnings("ConstantConditions")
     public boolean onCommand(CommandMessage message, String[] args) {
+        message.setI18nCommandPrefix(
+            CommandHandler.getCommand(BanCommand.class)
+        );
+
         return ban(avaire, this, message, args, true);
     }
 }

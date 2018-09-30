@@ -1,3 +1,24 @@
+/*
+ * Copyright (c) 2018.
+ *
+ * This file is part of AvaIre.
+ *
+ * AvaIre is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * AvaIre is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with AvaIre.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ *
+ */
+
 package com.avairebot.commands.administration;
 
 import com.avairebot.AvaIre;
@@ -53,13 +74,13 @@ public class IAmNotCommand extends Command {
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
         if (args.length == 0) {
-            return sendErrorMessage(context, "Missing argument, the `role` argument is required.");
+            return sendErrorMessage(context, "errors.missingArgument", "role");
         }
 
         String roleName = String.join(" ", args);
         Role role = RoleUtil.getRoleFromMentionsOrName(context.getMessage(), roleName);
         if (role == null) {
-            context.makeWarning(":user Invalid role, I couldn't find any role called **:role**")
+            context.makeWarning(context.i18nRaw("administration.common.invalidRole"))
                 .set("role", roleName)
                 .queue(message -> handleMessage(context, message));
             return false;
@@ -71,14 +92,14 @@ public class IAmNotCommand extends Command {
         }
 
         if (!transformer.getSelfAssignableRoles().containsValue(role.getName().toLowerCase())) {
-            context.makeWarning(":user Invalid role, **:role** is not a self-assignable role.")
+            context.makeWarning(context.i18n("notSelfAssignable"))
                 .set("role", roleName)
                 .queue(message -> handleMessage(context, message));
             return false;
         }
 
         if (RoleUtil.isRoleHierarchyHigher(context.getGuild().getSelfMember().getRoles(), role)) {
-            context.makeWarning(":user The role is higher in the role hierarchy, I can't give/remove the **:role**  role from anyone.")
+            context.makeWarning(context.i18n("roleIsHigherInTheHierarchy"))
                 .set("role", roleName)
                 .queue(message -> handleMessage(context, message));
             return false;
@@ -88,7 +109,7 @@ public class IAmNotCommand extends Command {
             context.getGuild().getController().removeSingleRoleFromMember(context.getMember(), role).queue();
         }
 
-        context.makeSuccess(":user You no longer have the **:role** role!")
+        context.makeSuccess(context.i18n("message"))
             .set("role", role.getName())
             .queue(message -> handleMessage(context, message));
         return true;

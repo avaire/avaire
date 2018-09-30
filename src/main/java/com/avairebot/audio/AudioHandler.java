@@ -1,3 +1,24 @@
+/*
+ * Copyright (c) 2018.
+ *
+ * This file is part of AvaIre.
+ *
+ * AvaIre is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * AvaIre is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with AvaIre.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ *
+ */
+
 package com.avairebot.audio;
 
 import com.avairebot.AvaIre;
@@ -23,10 +44,7 @@ import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import lavalink.client.io.Link;
 import net.dv8tion.jda.core.Permission;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.Role;
-import net.dv8tion.jda.core.entities.VoiceChannel;
+import net.dv8tion.jda.core.entities.*;
 import net.dv8tion.jda.core.managers.AudioManager;
 import org.apache.http.client.config.CookieSpecs;
 import org.apache.http.client.config.RequestConfig;
@@ -155,16 +173,21 @@ public class AudioHandler {
 
     @CheckReturnValue
     public VoiceConnectStatus connectToVoiceChannel(CommandMessage context, boolean moveChannelIfConnected) {
+        return connectToVoiceChannel(context.getGuildTransformer(), context.getMessage(), context.getMember(), moveChannelIfConnected);
+    }
+
+    @CheckReturnValue
+    public VoiceConnectStatus connectToVoiceChannel(GuildTransformer guildTransformer, Message message, Member member, boolean moveChannelIfConnected) {
         VoiceChannel channel = null;
-        if (context.getGuildTransformer() != null) {
-            String musicChannelVoice = context.getGuildTransformer().getMusicChannelVoice();
+        if (guildTransformer != null) {
+            String musicChannelVoice = guildTransformer.getMusicChannelVoice();
             if (musicChannelVoice != null) {
-                channel = context.getGuild().getVoiceChannelById(musicChannelVoice);
+                channel = message.getGuild().getVoiceChannelById(musicChannelVoice);
             }
         }
 
         if (channel == null) {
-            channel = context.getMember().getVoiceState().getChannel();
+            channel = member.getVoiceState().getChannel();
         }
 
         if (channel == null) {
@@ -172,7 +195,7 @@ public class AudioHandler {
         }
 
         if (LavalinkManager.LavalinkManagerHolder.lavalink.isEnabled()) {
-            VoiceConnectStatus voiceConnectStatus = canConnectToChannel(context, channel);
+            VoiceConnectStatus voiceConnectStatus = canConnectToChannel(message, channel);
             if (voiceConnectStatus != null) {
                 return voiceConnectStatus;
             }
@@ -182,7 +205,7 @@ public class AudioHandler {
             return VoiceConnectStatus.CONNECTED;
         }
 
-        AudioManager audioManager = context.getGuild().getAudioManager();
+        AudioManager audioManager = message.getGuild().getAudioManager();
         if (!audioManager.isAttemptingToConnect()) {
             if (audioManager.isConnected()) {
                 if (channel.getIdLong() == audioManager.getConnectedChannel().getIdLong()) {
@@ -190,18 +213,18 @@ public class AudioHandler {
                 }
 
                 if (moveChannelIfConnected) {
-                    return connectToVoiceChannel(context, channel, audioManager);
+                    return connectToVoiceChannel(message, channel, audioManager);
                 }
                 return VoiceConnectStatus.CONNECTED;
             }
-            return connectToVoiceChannel(context, channel, audioManager);
+            return connectToVoiceChannel(message, channel, audioManager);
         }
         return VoiceConnectStatus.CONNECTED;
     }
 
     @CheckReturnValue
-    private VoiceConnectStatus connectToVoiceChannel(CommandMessage context, VoiceChannel channel, AudioManager audioManager) {
-        VoiceConnectStatus voiceConnectStatus = canConnectToChannel(context, channel);
+    public VoiceConnectStatus connectToVoiceChannel(Message message, VoiceChannel channel, AudioManager audioManager) {
+        VoiceConnectStatus voiceConnectStatus = canConnectToChannel(message, channel);
         if (voiceConnectStatus != null) {
             return voiceConnectStatus;
         }
@@ -214,8 +237,8 @@ public class AudioHandler {
         return VoiceConnectStatus.CONNECTED;
     }
 
-    private VoiceConnectStatus canConnectToChannel(CommandMessage context, VoiceChannel channel) {
-        List<Permission> permissions = context.getGuild().getMember(context.getJDA().getSelfUser()).getPermissions(channel);
+    private VoiceConnectStatus canConnectToChannel(Message message, VoiceChannel channel) {
+        List<Permission> permissions = message.getGuild().getMember(message.getJDA().getSelfUser()).getPermissions(channel);
         if (!permissions.contains(Permission.VOICE_CONNECT)) {
             return VoiceConnectStatus.MISSING_PERMISSIONS;
         }

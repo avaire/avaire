@@ -1,3 +1,24 @@
+/*
+ * Copyright (c) 2018.
+ *
+ * This file is part of AvaIre.
+ *
+ * AvaIre is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * AvaIre is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with AvaIre.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ *
+ */
+
 package com.avairebot.time;
 
 import com.avairebot.exceptions.InvalidFormatException;
@@ -738,6 +759,16 @@ public final class Carbon {
 
     /**
      * Sets the month to the carbon instance.
+     *
+     * @param month the month to set
+     * @return the Carbon instance
+     */
+    public Carbon setMonth(Month month) {
+        return set(Calendar.MONTH, month.getId());
+    }
+
+    /**
+     * Sets the month to the carbon instance.
      * <p>
      * This is a calendar-specific value. The first month of the year in the
      * Gregorian and Julian calendars is <code>JANUARY</code> which is 0;
@@ -761,16 +792,6 @@ public final class Carbon {
      */
     public Carbon setMonth(int month) {
         return set(Calendar.MONTH, month - 1);
-    }
-
-    /**
-     * Sets the month to the carbon instance.
-     *
-     * @param month the month to set
-     * @return the Carbon instance
-     */
-    public Carbon setMonth(Month month) {
-        return set(Calendar.MONTH, month.getId());
     }
 
     /**

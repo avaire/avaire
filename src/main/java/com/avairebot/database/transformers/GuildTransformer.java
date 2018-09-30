@@ -1,3 +1,24 @@
+/*
+ * Copyright (c) 2018.
+ *
+ * This file is part of AvaIre.
+ *
+ * AvaIre is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * AvaIre is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with AvaIre.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ *
+ */
+
 package com.avairebot.database.transformers;
 
 import com.avairebot.AvaIre;
@@ -39,7 +60,7 @@ public class GuildTransformer extends Transformer {
     private String musicChannelText = null;
     private String musicChannelVoice = null;
     private int modlogCase = 0;
-    private int defaultVolume = 50;
+    private int defaultVolume = 100;
     private DJGuildLevel djGuildLevel = null;
 
     public GuildTransformer(Guild guild) {
@@ -73,7 +94,7 @@ public class GuildTransformer extends Transformer {
             musicMessages = data.getBoolean("music_messages", true);
             modlogCase = data.getInt("modlog_case");
             djGuildLevel = DJGuildLevel.fromId(data.getInt("dj_level", DJGuildLevel.getNormal().getId()));
-            defaultVolume = data.getInt("default_volume", 50);
+            defaultVolume = data.getInt("default_volume", 100);
 
             // Sets the default volume to a value between 10 and 100.
             defaultVolume = NumberUtil.getBetween(defaultVolume, 10, 100);
@@ -140,6 +161,7 @@ public class GuildTransformer extends Transformer {
                     }.getType());
 
                 for (Map.Entry<String, Object> item : dbChannels.entrySet()) {
+                    // noinspection unchecked
                     LinkedTreeMap<String, Object> value = (LinkedTreeMap<String, Object>) item.getValue();
                     value.put("id", item.getKey());
 

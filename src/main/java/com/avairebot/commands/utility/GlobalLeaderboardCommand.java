@@ -1,3 +1,24 @@
+/*
+ * Copyright (c) 2018.
+ *
+ * This file is part of AvaIre.
+ *
+ * AvaIre is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * AvaIre is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with AvaIre.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ *
+ */
+
 package com.avairebot.commands.utility;
 
 import com.avairebot.AvaIre;
@@ -11,6 +32,7 @@ import com.avairebot.database.collection.Collection;
 import com.avairebot.database.collection.DataRow;
 import com.avairebot.utilities.CacheUtil;
 import com.avairebot.utilities.NumberUtil;
+import com.avairebot.utilities.RestActionUtil;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import net.dv8tion.jda.core.entities.Member;
@@ -88,7 +110,7 @@ public class GlobalLeaderboardCommand extends Command {
         Collection collection = loadTop100From();
         if (collection == null) {
             if (loadingMessage != null) {
-                loadingMessage.delete().queue();
+                loadingMessage.delete().queue(null, RestActionUtil.ignore);
             }
             context.makeWarning(context.i18n("noData")).queue();
             return false;

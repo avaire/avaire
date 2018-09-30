@@ -1,3 +1,24 @@
+/*
+ * Copyright (c) 2018.
+ *
+ * This file is part of AvaIre.
+ *
+ * AvaIre is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * AvaIre is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with AvaIre.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ *
+ */
+
 package com.avairebot.commands.administration;
 
 import com.avairebot.AvaIre;
@@ -52,9 +73,7 @@ public class AiCommand extends Command {
 
         if (channelTransformer == null) {
             if (!guildTransformer.createChannelTransformer(context.getChannel())) {
-                context.makeError(
-                    "Something went wrong while trying to create the channel transformer object, please contact one of my developers to look into this issue."
-                ).queue();
+                context.makeError(context.i18nRaw("errors.errorOccurredWhileLoading", "channel transformer")).queue();
                 return false;
             }
             channelTransformer = guildTransformer.getChannel(context.getChannel().getId());
@@ -67,8 +86,8 @@ public class AiCommand extends Command {
                 .andWhere("id", context.getGuild().getId())
                 .update(statement -> statement.set("channels", guildTransformer.channelsToJson(), true));
 
-            context.makeSuccess("The `Artificial Intelligence` module has been **:status** for the :channel channel.")
-                .set("status", channelTransformer.getAI().isEnabled() ? "Enabled" : "Disabled")
+            context.makeSuccess(context.i18n("message"))
+                .set("status", context.i18n(channelTransformer.getAI().isEnabled() ? "status.enabled" : "status.disabled"))
                 .queue();
         } catch (SQLException ex) {
             AvaIre.getLogger().error(ex.getMessage(), ex);

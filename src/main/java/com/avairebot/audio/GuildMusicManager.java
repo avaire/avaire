@@ -1,7 +1,29 @@
+/*
+ * Copyright (c) 2018.
+ *
+ * This file is part of AvaIre.
+ *
+ * AvaIre is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * AvaIre is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with AvaIre.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ *
+ */
+
 package com.avairebot.audio;
 
 import com.avairebot.AvaIre;
 import com.avairebot.commands.CommandMessage;
+import com.avairebot.contracts.debug.Evalable;
 import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.scheduler.ScheduleHandler;
@@ -11,10 +33,12 @@ import net.dv8tion.jda.core.entities.Guild;
 
 import java.util.concurrent.TimeUnit;
 
-public class GuildMusicManager {
+public class GuildMusicManager extends Evalable {
 
-    private final AvaIre avaire;
-    private final Guild guild;
+    protected final AvaIre avaire;
+    protected final Guild guild;
+    protected final long guildId;
+
     private final IPlayer player;
     private final TrackScheduler scheduler;
 
@@ -27,16 +51,17 @@ public class GuildMusicManager {
     public GuildMusicManager(AvaIre avaire, Guild guild) {
         this.avaire = avaire;
         this.guild = guild;
+        this.guildId = guild.getIdLong();
 
         player = LavalinkManager.LavalinkManagerHolder.lavalink.createPlayer(guild.getId());
         scheduler = new TrackScheduler(this, player);
         player.addListener(scheduler);
         hasSetVolume = false;
         hasPlayedSongBefore = false;
-        defaultVolume = 50;
+        defaultVolume = 100;
 
         GuildTransformer transformer = GuildController.fetchGuild(avaire, guild);
-        defaultVolume = transformer != null ? transformer.getDefaultVolume() : 50;
+        defaultVolume = transformer != null ? transformer.getDefaultVolume() : 100;
     }
 
     public CommandMessage getLastActiveMessage() {
@@ -47,11 +72,19 @@ public class GuildMusicManager {
         this.lastActiveMessage = lastActiveMessage;
     }
 
-    public AudioPlayerSendHandler getSendHandler() {
-        return new AudioPlayerSendHandler((LavaplayerPlayerWrapper) player);
+    public AvaIre getAvaire() {
+        return avaire;
     }
 
-    public GuildTransformer getGuild() {
+    public Guild getGuild() {
+        return guild;
+    }
+
+    public long getGuildId() {
+        return guildId;
+    }
+
+    public GuildTransformer getGuildTransformer() {
         return GuildController.fetchGuild(avaire, guild);
     }
 
@@ -91,5 +124,15 @@ public class GuildMusicManager {
                 getPlayer().setVolume(defaultVolume);
             }, 1000, TimeUnit.MILLISECONDS);
         }
+    }
+
+    public boolean isReady() {
+        return getScheduler() != null
+            && getPlayer() != null
+            && getGuildTransformer() != null;
+    }
+
+    AudioPlayerSendHandler getSendHandler() {
+        return new AudioPlayerSendHandler((LavaplayerPlayerWrapper) player);
     }
 }

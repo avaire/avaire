@@ -1,3 +1,24 @@
+/*
+ * Copyright (c) 2018.
+ *
+ * This file is part of AvaIre.
+ *
+ * AvaIre is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * AvaIre is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with AvaIre.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ *
+ */
+
 package com.avairebot.scheduler.tasks;
 
 import com.avairebot.AvaIre;
@@ -5,7 +26,9 @@ import com.avairebot.audio.AudioHandler;
 import com.avairebot.audio.GuildMusicManager;
 import com.avairebot.audio.LavalinkManager;
 import com.avairebot.contracts.scheduler.Task;
-import lavalink.client.io.Link;
+import com.avairebot.language.I18n;
+import lavalink.client.io.LavalinkSocket;
+import lavalink.client.io.jda.JdaLink;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.VoiceChannel;
@@ -34,7 +57,6 @@ public class MusicActivityTask implements Task {
             handleInternalLavaplayer(avaire);
         }
     }
-
 
     private void handleInternalLavaplayer(AvaIre avaire) {
         for (JDA shard : avaire.getShardManager().getShards()) {
@@ -108,7 +130,7 @@ public class MusicActivityTask implements Task {
     }
 
     private void handleLavalinkNodes(AvaIre avaire) {
-        for (Link link : LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink().getLinks()) {
+        for (JdaLink link : LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink().getLinks()) {
             long guildId = link.getGuildIdLong();
 
             try {
@@ -136,7 +158,12 @@ public class MusicActivityTask implements Task {
                     continue;
                 }
 
-                VoiceChannel voiceChannel = link.getChannel();
+                String channel = link.getChannel();
+                if (channel == null) {
+                    continue;
+                }
+
+                VoiceChannel voiceChannel = avaire.getShardManager().getVoiceChannelById(channel);
 
                 if (voiceChannel != null) {
                     boolean hasListeners = false;
@@ -173,7 +200,7 @@ public class MusicActivityTask implements Task {
         }
     }
 
-    private void handleEmptyMusic(AvaIre avaire, @Nullable AudioManager manager, @Nullable Link link, @Nullable GuildMusicManager guildMusicManager, long guildId) {
+    private void handleEmptyMusic(AvaIre avaire, @Nullable AudioManager manager, @Nullable JdaLink link, @Nullable GuildMusicManager guildMusicManager, long guildId) {
         int times = emptyQueue.getOrDefault(guildId, 0) + 1;
 
         if (times <= getValue(avaire, "empty-queue-timeout", 2)) {
@@ -184,7 +211,7 @@ public class MusicActivityTask implements Task {
         clearItems(manager, link, guildMusicManager, guildId);
     }
 
-    private void handlePausedMusic(AvaIre avaire, @Nullable AudioManager manager, @Nullable Link link, @Nullable GuildMusicManager guildMusicManager, long guildId) {
+    private void handlePausedMusic(AvaIre avaire, @Nullable AudioManager manager, @Nullable JdaLink link, @Nullable GuildMusicManager guildMusicManager, long guildId) {
         int times = playerPaused.getOrDefault(guildId, 0) + 1;
 
         if (times <= getValue(avaire, "paused-music-timeout", 10)) {
@@ -195,19 +222,28 @@ public class MusicActivityTask implements Task {
         clearItems(manager, link, guildMusicManager, guildId);
     }
 
-    private void clearItems(@Nullable AudioManager manager, @Nullable Link link, @Nullable GuildMusicManager guildMusicManager, long guildId) {
+    private void clearItems(@Nullable AudioManager manager, @Nullable JdaLink link, @Nullable GuildMusicManager guildMusicManager, long guildId) {
         if (guildMusicManager != null) {
             guildMusicManager.getScheduler().getQueue().clear();
-            if (LavalinkManager.LavalinkManagerHolder.lavalink.isEnabled()) {
-                if (guildMusicManager.getLastActiveMessage() != null) {
-                    LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink()
-                        .getLink(guildMusicManager.getLastActiveMessage().getGuild())
-                        .destroy();
+            if (link != null) {
+                LavalinkSocket node = link.getNode();
+
+                if (node != null && node.isAvailable() && !LavalinkManager.LavalinkManagerHolder.lavalink.isLinkBeingDestroyed(link)) {
+                    try {
+                        link.destroy();
+                    } catch (NullPointerException ignored) {
+                        // JDA and Lavalink will sometimes throw a null pointer exception when trying
+                        // to close some web socket connection, there is no way to really deal with
+                        // that outside of just catching the error when we try to disconnect
+                        // so we can still clear up the server player.
+                    }
                 }
             }
 
             if (guildMusicManager.getLastActiveMessage() != null && guildMusicManager.getLastActiveMessage().getChannel().canTalk()) {
-                guildMusicManager.getLastActiveMessage().makeInfo("The music has ended due to inactivity.").queue();
+                guildMusicManager.getLastActiveMessage().makeInfo(I18n.getLocale(guildMusicManager.getGuildTransformer())
+                    .getConfig().getString("music.internal.endedDueToInactivity", "The music has ended due to inactivity."))
+                    .queue();
             }
         }
 
@@ -218,8 +254,6 @@ public class MusicActivityTask implements Task {
         if (guildMusicManager == null) {
             if (manager != null) {
                 LavalinkManager.LavalinkManagerHolder.lavalink.closeConnection(manager.getGuild());
-            } else if (link != null) {
-                link.disconnect();
             }
 
             if (LavalinkManager.LavalinkManagerHolder.lavalink.isEnabled()) {

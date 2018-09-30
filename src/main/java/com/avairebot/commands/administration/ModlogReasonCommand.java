@@ -1,3 +1,24 @@
+/*
+ * Copyright (c) 2018.
+ *
+ * This file is part of AvaIre.
+ *
+ * AvaIre is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * AvaIre is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with AvaIre.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ *
+ */
+
 package com.avairebot.commands.administration;
 
 import com.avairebot.AvaIre;
@@ -85,7 +106,7 @@ public class ModlogReasonCommand extends Command {
         }
 
         if (transformer.getModlog() == null) {
-            return sendErrorMessage(context, "No modlog channel has been set, you must set a modlog channel to use this command.");
+            return sendErrorMessage(context, context.i18n("modlogNotEnabled"));
         }
 
         if (args.length == 0) {
@@ -98,7 +119,7 @@ public class ModlogReasonCommand extends Command {
 
         int caseId = NumberUtil.parseInt(args[0], -1);
         if (caseId < 1 || caseId > transformer.getModlogCase()) {
-            return sendErrorMessage(context, "Invalid case id given, the ID must be greater than 0 and less than {0}", "" + transformer.getModlogCase());
+            return sendErrorMessage(context, context.i18n("invalidCaseId", transformer.getModlogCase()));
         }
 
         final String reason = String.join(" ", Arrays.copyOfRange(args, 1, args.length));
@@ -111,15 +132,22 @@ public class ModlogReasonCommand extends Command {
                 .get();
 
             if (collection.isEmpty()) {
-                return sendErrorMessage(context, "Couldn't find a modlog case with an ID of {0} where you were the moderator, are you sure you're the moderator for the given modlog case?", "" + caseId);
+                return sendErrorMessage(context, context.i18n("couldntFindCaseWithId", caseId));
             }
 
             DataRow first = collection.first();
 
             TextChannel channel = context.getGuild().getTextChannelById(transformer.getModlog());
             if (channel == null) {
-                return sendErrorMessage(context, "Couldn't find the modlog channel, was it removed?");
+                return sendErrorMessage(context, context.i18n("couldntFindModlogChannel"));
             }
+
+            avaire.getDatabase().newQueryBuilder(Constants.LOG_TABLE_NAME)
+                .useAsync(true)
+                .where("guild_id", context.getGuild().getId())
+                .where("user_id", context.getAuthor().getId())
+                .where("modlogCase", caseId)
+                .update(statement -> statement.set("reason", reason));
 
             channel.getMessageById(first.getString("message_id")).queue(message -> {
                 if (message.getEmbeds().isEmpty()) {
@@ -150,18 +178,18 @@ public class ModlogReasonCommand extends Command {
                 }
 
                 message.editMessage(embeddedBuilder.build()).queue(newMessage -> {
-                    context.makeSuccess("The modlog case with an ID of **:id** was successfully edited and set to the reason of `:reason`")
+                    context.makeSuccess(context.i18n("success"))
                         .set("id", caseId)
                         .set("reason", reason)
                         .queue(successMessage -> successMessage.delete().queueAfter(45, TimeUnit.SECONDS, null, RestActionUtil.ignore));
                     context.delete().queueAfter(45, TimeUnit.SECONDS, null, RestActionUtil.ignore);
                 }, error -> {
-                    context.makeError("Failed to edit modlog message: " + error.getMessage())
+                    context.makeError(context.i18n("failedToEdit", error.getMessage()))
                         .queue(successMessage -> successMessage.delete().queueAfter(45, TimeUnit.SECONDS, null, RestActionUtil.ignore));
                     context.delete().queueAfter(45, TimeUnit.SECONDS, null, RestActionUtil.ignore);
                 });
             }, error -> {
-                context.makeWarning("Couldn't find the message for the given modlog case, was it deleted?")
+                context.makeWarning(context.i18n("failedToFindMessage"))
                     .queue(null, RestActionUtil.ignore);
             });
         } catch (SQLException error) {

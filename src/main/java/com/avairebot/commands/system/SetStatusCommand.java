@@ -1,8 +1,30 @@
+/*
+ * Copyright (c) 2018.
+ *
+ * This file is part of AvaIre.
+ *
+ * AvaIre is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * AvaIre is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with AvaIre.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ *
+ */
+
 package com.avairebot.commands.system;
 
 import com.avairebot.AvaIre;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.SystemCommand;
+import com.avairebot.scheduler.tasks.ChangeGameTask;
 import net.dv8tion.jda.core.entities.Game;
 
 import java.util.Arrays;
@@ -10,8 +32,6 @@ import java.util.Collections;
 import java.util.List;
 
 public class SetStatusCommand extends SystemCommand {
-
-    public static boolean hasCustomStatus = false;
 
     public SetStatusCommand(AvaIre avaire) {
         super(avaire);
@@ -50,7 +70,7 @@ public class SetStatusCommand extends SystemCommand {
         if (args.length == 0) {
             context.makeInfo(
                 "The bot status cycle has been re-enabled, the change game job can now change the bot status again."
-            ).queue(newMessage -> hasCustomStatus = false);
+            ).queue(newMessage -> ChangeGameTask.hasCustomStatus = false);
 
             return true;
         }
@@ -61,7 +81,7 @@ public class SetStatusCommand extends SystemCommand {
         context.makeSuccess("Changed status to **:type :status**")
             .set("type", getTypeAsString(game.getType()))
             .set("status", game.getName())
-            .queue(newMessage -> hasCustomStatus = true);
+            .queue(newMessage -> ChangeGameTask.hasCustomStatus = true);
 
         return true;
     }

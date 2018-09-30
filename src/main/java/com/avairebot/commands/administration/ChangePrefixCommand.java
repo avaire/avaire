@@ -1,3 +1,24 @@
+/*
+ * Copyright (c) 2018.
+ *
+ * This file is part of AvaIre.
+ *
+ * AvaIre is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * AvaIre is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with AvaIre.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ *
+ */
+
 package com.avairebot.commands.administration;
 
 import com.avairebot.AvaIre;
@@ -71,12 +92,12 @@ public class ChangePrefixCommand extends Command {
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
         if (args.length == 0) {
-            return sendErrorMessage(context, "Missing argument `category`, you must specify the command category you want to change/reset the prefix for.");
+            return sendErrorMessage(context, context.i18n("missingArgument"));
         }
 
         Category category = CategoryHandler.fromLazyName(args[0], true);
         if (category == null) {
-            return sendErrorMessage(context, "Invalid `category` given, there are no command categories that are called, or starts with `{0}`", args[0]);
+            return sendErrorMessage(context, context.i18n("invalidCategory", args[0]));
         }
 
         GuildTransformer transformer = context.getGuildTransformer();
@@ -86,16 +107,16 @@ public class ChangePrefixCommand extends Command {
 
         String prefix = args[1];
         if (prefix.contains(" ") || prefix.length() < 1 || prefix.length() > 16) {
-            return sendErrorMessage(context, "Invalid command prefix given, `{0}` is not a valid command prefix, all prefixes must **NOT** contain spaces and be between 1 and 16 characters long.");
+            return sendErrorMessage(context, context.i18n("invalidPrefix", prefix));
         }
 
         try {
             setCustomPrefix(transformer, category, prefix);
             updateGuildPrefixes(context, transformer);
 
-            context.makeSuccess(!category.isGlobal() ?
-                "All commands in the `:category` command category now uses the `:prefix` prefix." :
-                "All commands in every command category now uses the `:prefix` prefix."
+            context.makeSuccess(!category.isGlobal()
+                ? context.i18n("update.category")
+                : context.i18n("update.global")
             )
                 .set("category", category.getName())
                 .set("prefix", prefix)
@@ -128,9 +149,9 @@ public class ChangePrefixCommand extends Command {
         try {
             updateGuildPrefixes(context, transformer);
 
-            context.makeSuccess(!category.isGlobal() ?
-                "All commands in the `:category` command category has been reset to use the `:prefix` prefix." :
-                "All commands in every command category has been reset to use the `:prefix` prefix."
+            context.makeSuccess(!category.isGlobal()
+                ? context.i18n("reset.category")
+                : context.i18n("reset.global")
             )
                 .set("category", category.getName())
                 .set("prefix", category.getPrefix())

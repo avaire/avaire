@@ -1,14 +1,34 @@
+/*
+ * Copyright (c) 2018.
+ *
+ * This file is part of AvaIre.
+ *
+ * AvaIre is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * AvaIre is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with AvaIre.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ *
+ */
+
 package com.avairebot.commands.system;
 
 import com.avairebot.AvaIre;
-import com.avairebot.Constants;
 import com.avairebot.blacklist.Scope;
 import com.avairebot.chat.SimplePaginator;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.SystemCommand;
+import com.avairebot.language.I18n;
 import com.avairebot.utilities.NumberUtil;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -40,6 +60,14 @@ public class BlacklistCommand extends SystemCommand {
     }
 
     @Override
+    public List<String> getExampleUsage() {
+        return Arrays.asList(
+            "`:command add G 123` - Blacklists the guild with an ID of 123",
+            "`:command add U 321 Doing stuff` - Blacklists the user with an ID of 321 for \"Doing stuff\""
+        );
+    }
+
+    @Override
     public List<String> getTriggers() {
         return Collections.singletonList("blacklist");
     }
@@ -66,37 +94,28 @@ public class BlacklistCommand extends SystemCommand {
     }
 
     private boolean listBlacklist(CommandMessage context, String[] args) {
-        try {
-            List<String> records = new ArrayList<>();
+        List<String> records = new ArrayList<>();
 
-            avaire.getDatabase().newQueryBuilder(Constants.BLACKLIST_TABLE_NAME).get().forEach(dataRow -> {
-                Scope type = Scope.parse(dataRow.getString("type"));
-                if (type == null) {
-                    AvaIre.getLogger().warn("BLACKLIST - A record was found with an invalid scope! " + dataRow.getString("id"));
-                    return;
-                }
+        avaire.getBlacklist().getBlacklistEntities().forEach(entity -> {
+            records.add(I18n.format("{0} **{1}** `{2}`\n ► _\"{3}\"_",
+                entity.getScope().getId() == 0 ? "\uD83E\uDD26" : "\uD83C\uDFEC",
+                entity.getScope().getName(),
+                entity.getId(),
+                entity.getReason() == null ? "No reason was given" : entity.getReason()
+            ));
+        });
 
-                records.add(String.format("`%s` %s\n\t_\"%s\"_",
-                    type.getPrefix(),
-                    dataRow.getString("id"),
-                    dataRow.getString("reason", "No reason given")
-                ));
-            });
-
-            SimplePaginator paginator = new SimplePaginator(records, 10, 1);
-            if (args.length > 0) {
-                paginator.setCurrentPage(NumberUtil.parseInt(args[0], 1));
-            }
-
-            List<String> messages = new ArrayList<>();
-            paginator.forEach((index, key, val) -> messages.add((String) val));
-
-            context.makeInfo(String.join("\n", messages) + "\n\n" + paginator.generateFooter(generateCommandTrigger(context.getMessage()) + " list"))
-                .setTitle("Blacklist Page #" + paginator.getCurrentPage())
-                .queue();
-        } catch (SQLException e) {
-            e.printStackTrace();
+        SimplePaginator paginator = new SimplePaginator(records, 10, 1);
+        if (args.length > 0) {
+            paginator.setCurrentPage(NumberUtil.parseInt(args[0], 1));
         }
+
+        List<String> messages = new ArrayList<>();
+        paginator.forEach((index, key, val) -> messages.add((String) val));
+
+        context.makeInfo(String.join("\n", messages) + "\n\n" + paginator.generateFooter(generateCommandTrigger(context.getMessage()) + " list"))
+            .setTitle("Blacklist Page #" + paginator.getCurrentPage())
+            .queue();
 
         return false;
     }
@@ -133,7 +152,7 @@ public class BlacklistCommand extends SystemCommand {
 
         Scope scope = Scope.parse(args[0]);
         if (scope == null) {
-            return sendErrorMessage(context, "Invalid type given, the type must be a valid blacklist scope!");
+            return sendErrorMessage(context, "Invalid type given, the type must be a valid blacklist scope!\nValid types are `G` for guilds/servers, or `U` for users.");
         }
 
         long id;

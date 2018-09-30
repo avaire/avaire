@@ -1,3 +1,24 @@
+/*
+ * Copyright (c) 2018.
+ *
+ * This file is part of AvaIre.
+ *
+ * AvaIre is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * AvaIre is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with AvaIre.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ *
+ */
+
 package com.avairebot.commands;
 
 import com.avairebot.contracts.commands.Command;
@@ -13,6 +34,9 @@ import java.util.List;
 import java.util.Set;
 
 public class CommandContainer {
+
+    private static final String DEFAULT_GUILD_LIMIT = "throttle:guild,20,15";
+    private static final String DEFAULT_USER_LIMIT = "throttle:user,2,3";
 
     private final Command command;
     private final Category category;
@@ -35,9 +59,7 @@ public class CommandContainer {
         this.triggers = new HashSet<>(command.getTriggers());
         this.middlewares = new ArrayList<>(command.getMiddleware());
 
-        if (!hasMiddleware(ThrottleMiddleware.class)) {
-            middlewares.add("throttle:user,3,2");
-        }
+        this.registerThrottleMiddlewares();
     }
 
     /**
@@ -106,6 +128,51 @@ public class CommandContainer {
     @Nullable
     public String getSourceUri() {
         return sourceUri;
+    }
+
+    /**
+     * Registers the default throttle middlewares unless
+     * the command already has registered one of them.
+     */
+    private void registerThrottleMiddlewares() {
+        if (!hasMiddleware(ThrottleMiddleware.class)) {
+            middlewares.add(DEFAULT_USER_LIMIT);
+            middlewares.add(DEFAULT_GUILD_LIMIT);
+            return;
+        }
+
+        boolean addUser = true, addGuild = true;
+
+        for (String middlewareName : middlewares) {
+            String[] parts = middlewareName.split(":");
+
+            Middleware middleware = MiddlewareHandler.getMiddleware(parts[0]);
+            if (middleware == null || !(middleware instanceof ThrottleMiddleware)) {
+                continue;
+            }
+
+            ThrottleMiddleware.ThrottleType type = ThrottleMiddleware.ThrottleType
+                .fromName(parts[1].split(",")[0]);
+
+            switch (type) {
+                case USER:
+                    addUser = false;
+                    break;
+
+                case GUILD:
+                case CHANNEL:
+                    addGuild = false;
+                    break;
+            }
+        }
+
+        if (addUser) {
+            middlewares.add(DEFAULT_USER_LIMIT);
+        }
+
+        if (addGuild) {
+            middlewares.add(DEFAULT_GUILD_LIMIT);
+        }
     }
 
     /**

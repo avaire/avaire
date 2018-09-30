@@ -1,10 +1,33 @@
+/*
+ * Copyright (c) 2018.
+ *
+ * This file is part of AvaIre.
+ *
+ * AvaIre is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * AvaIre is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with AvaIre.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ *
+ */
+
 package com.avairebot.metrics;
 
 import ch.qos.logback.classic.LoggerContext;
 import com.avairebot.AvaIre;
+import com.avairebot.blacklist.Ratelimit;
 import com.avairebot.commands.Category;
 import com.avairebot.commands.utility.GlobalLeaderboardCommand;
 import com.avairebot.commands.utility.LeaderboardCommand;
+import com.avairebot.contracts.commands.InteractionCommand;
 import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.controllers.PlayerController;
 import com.avairebot.database.controllers.PlaylistController;
@@ -15,6 +38,7 @@ import com.avairebot.metrics.filters.HttpFilter;
 import com.avairebot.metrics.handlers.SparkExceptionHandler;
 import com.avairebot.metrics.routes.*;
 import com.avairebot.middleware.ThrottleMiddleware;
+import com.avairebot.scheduler.jobs.LavalinkGarbageNodeCollectorJob;
 import io.prometheus.client.Counter;
 import io.prometheus.client.Gauge;
 import io.prometheus.client.Histogram;
@@ -134,6 +158,11 @@ public class Metrics {
         .labelNames("class") // class of the exception
         .register();
 
+    public static final Gauge commandsPerMinute = Gauge.build()
+        .name("avaire_commands_per_minute_total")
+        .help("Total amount of commands that are being invoked per minute")
+        .register();
+
     // AI Requests
 
     public static final Counter aiRequestsReceived = Counter.build()
@@ -172,6 +201,14 @@ public class Metrics {
     public static final Gauge validVotes = Gauge.build()
         .name("avaire_total_valid_votes")
         .help("The amount of valid votes currently active, updated once every minute")
+        .register();
+
+    // Blacklist
+
+    public static final Gauge blacklist = Gauge.build()
+        .name("avaire_blacklist_current")
+        .help("The amount of servers and users that are currently on the blacklist")
+        .labelNames("type")
         .register();
 
     // ################################################################################
@@ -214,6 +251,9 @@ public class Metrics {
         cacheMetrics.addCache("autorole", JDAStateEventAdapter.cache);
         cacheMetrics.addCache("leaderboard", LeaderboardCommand.cache);
         cacheMetrics.addCache("global-leaderboard", GlobalLeaderboardCommand.cache);
+        cacheMetrics.addCache("interaction-lottery", InteractionCommand.cache);
+        cacheMetrics.addCache("blacklist-ratelimit", Ratelimit.cache);
+        cacheMetrics.addCache("lavalink-destroy-cleanup", LavalinkGarbageNodeCollectorJob.cache);
 
         if (!avaire.getConfig().getBoolean("metrics.enabled", true)) {
             log.info("Metrics web API is disabled, skipping igniting Spark API");
@@ -235,6 +275,7 @@ public class Metrics {
 
         Spark.get("/leaderboard/:id", new GetLeaderboardPlayers(MetricsHolder.METRICS));
         Spark.get("/players/cleanup", new GetPlayerCleanup(MetricsHolder.METRICS));
+        Spark.post("/guilds/cleanup", new PostGuildCleanup(MetricsHolder.METRICS));
         Spark.get("/guilds/cleanup", new GetGuildCleanup(MetricsHolder.METRICS));
         Spark.get("/guilds/:ids/exists", new GetGuildsExists(MetricsHolder.METRICS));
         Spark.get("/guilds/:ids", new GetGuilds(MetricsHolder.METRICS));

@@ -1,3 +1,24 @@
+/*
+ * Copyright (c) 2018.
+ *
+ * This file is part of AvaIre.
+ *
+ * AvaIre is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * AvaIre is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with AvaIre.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ *
+ */
+
 package com.avairebot.commands.administration;
 
 import com.avairebot.AvaIre;
@@ -72,9 +93,7 @@ public class LanguageCommand extends Command {
         Language language = Language.parse(String.join(" ", args));
         if (language == null) {
             return sendErrorMessage(
-                context,
-                "Invalid language code given, `{0}` is not a valid language code, or it is not yet supported!",
-                String.join(" ", args)
+                context, context.i18n("invalidLanguageCode", String.join(" ", args))
             );
         }
 
@@ -89,7 +108,7 @@ public class LanguageCommand extends Command {
                 .update(statement -> statement.set("local", language.getCode()));
             transformer.setLocale(language.getCode());
 
-            context.makeSuccess("The servers language has been successfully been updated to use the :name language!")
+            context.makeSuccess(context.i18n("changed"))
                 .set("name", language.getNativeName())
                 .queue();
         } catch (SQLException e) {
@@ -113,11 +132,8 @@ public class LanguageCommand extends Command {
         List<String> messages = new ArrayList<>();
         paginator.forEach((index, key, val) -> messages.add((String) val));
 
-        String trigger = generateCommandTrigger(context.message);
-        String note = "AvaIre supports several user-contributed languages that you can select with this command. Translations may not be 100% accurate or complete.\nTo select a language use `" + trigger + " <code>`";
-
         context.makeInfo(":note\n\n:languages\n\n:paginator")
-            .set("note", note)
+            .set("note", context.i18n("note", generateCommandTrigger(context.message)))
             .set("languages", String.join("\n", messages))
             .set("paginator", paginator.generateFooter(generateCommandTrigger(context.getMessage())))
             .queue();
