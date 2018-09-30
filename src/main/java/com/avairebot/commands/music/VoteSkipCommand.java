@@ -80,6 +80,10 @@ public class VoteSkipCommand extends Command {
             return sendErrorMessage(context, context.i18n("error", generateCommandPrefix(context.getMessage())));
         }
 
+        if (!musicManager.canPreformSpecialAction(this, context, "vote skip track")) {
+            return false;
+        }
+
         if (!canVoteSkip(context)) {
             return sendErrorMessage(context, "errors.mustBeConnectedToSameChannel", "vote skip");
         }

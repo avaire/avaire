@@ -75,6 +75,10 @@ public class StopCommand extends Command {
             return sendErrorMessage(context, context.i18n("error"));
         }
 
+        if (!musicManager.canPreformSpecialAction(this, context, "stop music")) {
+            return false;
+        }
+
         String guildId = context.getGuild().getId();
         int size = musicManager.getScheduler().getQueue().size();
 
