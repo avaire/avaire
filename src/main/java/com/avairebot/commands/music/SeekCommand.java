@@ -82,6 +82,10 @@ public class SeekCommand extends Command {
             return sendErrorMessage(context, context.i18n("error", generateCommandPrefix(context.getMessage())));
         }
 
+        if (!musicManager.canPreformSpecialAction(this, context, "seek a song")) {
+            return false;
+        }
+
         if (musicManager.getPlayer().getPlayingTrack().getInfo().isStream) {
             return sendErrorMessage(context, context.i18n("seekingLive"));
         }

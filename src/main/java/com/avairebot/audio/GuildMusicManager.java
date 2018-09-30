@@ -23,14 +23,18 @@ package com.avairebot.audio;
 
 import com.avairebot.AvaIre;
 import com.avairebot.commands.CommandMessage;
+import com.avairebot.contracts.commands.Command;
 import com.avairebot.contracts.debug.Evalable;
 import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.scheduler.ScheduleHandler;
 import lavalink.client.player.IPlayer;
 import lavalink.client.player.LavaplayerPlayerWrapper;
+import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.VoiceChannel;
 
+import javax.annotation.Nonnull;
 import java.util.concurrent.TimeUnit;
 
 public class GuildMusicManager extends Evalable {
@@ -130,6 +134,25 @@ public class GuildMusicManager extends Evalable {
         return getScheduler() != null
             && getPlayer() != null
             && getGuildTransformer() != null;
+    }
+
+    @SuppressWarnings("SimplifiableIfStatement")
+    public boolean canPreformSpecialAction(@Nonnull Command command, @Nonnull CommandMessage context, @Nonnull String action) {
+        if (context.getMember().hasPermission(Permission.ADMINISTRATOR)) {
+            return true;
+        }
+
+        VoiceChannel channel = context.getMember().getVoiceState().getChannel();
+        if (channel == null) {
+            return command.sendErrorMessage(context, "errors.mustBeConnectedToVoice");
+        }
+
+        VoiceChannel selfChannel = context.getGuild().getSelfMember().getVoiceState().getChannel();
+        if (selfChannel == null || selfChannel.getIdLong() != channel.getIdLong()) {
+            return command.sendErrorMessage(context, "errors.mustBeConnectedToSameChannel", action);
+        }
+
+        return true;
     }
 
     AudioPlayerSendHandler getSendHandler() {

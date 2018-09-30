@@ -96,6 +96,10 @@ public class VolumeCommand extends Command {
             return true;
         }
 
+        if (!musicManager.canPreformSpecialAction(this, context, "change volume")) {
+            return false;
+        }
+
         if (!AudioHandler.getDefaultAudioHandler().canRunDJAction(avaire, context.getMessage(), DJGuildLevel.NORMAL)) {
             return sendErrorMessage(context, context.i18n("requireDJRole"));
         }

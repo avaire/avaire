@@ -86,6 +86,10 @@ public class SkipCommand extends Command {
             );
         }
 
+        if (!musicManager.canPreformSpecialAction(this, context, "skip song")) {
+            return false;
+        }
+
         if (!musicManager.getScheduler().getQueue().isEmpty()) {
             AudioHandler.getDefaultAudioHandler().skipTrack(context);
             return true;

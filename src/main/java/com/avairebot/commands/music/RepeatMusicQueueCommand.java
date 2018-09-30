@@ -70,8 +70,11 @@ public class RepeatMusicQueueCommand extends Command {
             return sendErrorMessage(context, context.i18n("error", generateCommandPrefix(context.getMessage())));
         }
 
-        musicManager.setRepeatQueue(!musicManager.isRepeatQueue());
+        if (!musicManager.canPreformSpecialAction(this, context, "loop queue")) {
+            return false;
+        }
 
+        musicManager.setRepeatQueue(!musicManager.isRepeatQueue());
 
         context.makeSuccess(context.i18n("success"))
             .set("status", musicManager.isRepeatQueue()

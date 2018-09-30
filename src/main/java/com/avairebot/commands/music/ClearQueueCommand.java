@@ -77,6 +77,10 @@ public class ClearQueueCommand extends Command {
             return sendErrorMessage(context, context.i18n("error", generateCommandPrefix(context.getMessage())));
         }
 
+        if (!musicManager.canPreformSpecialAction(this, context, "clear queue")) {
+            return false;
+        }
+
         if (musicManager.getScheduler().getQueue().isEmpty()) {
             context.makeWarning(context.i18n("emptyQueue"))
                 .queue(message -> message.delete().queueAfter(1, TimeUnit.MINUTES, null, RestActionUtil.ignore));

@@ -81,6 +81,10 @@ public class ResumeCommand extends Command {
             return sendErrorMessage(context, context.i18n("error", generateCommandPrefix(context.getMessage())));
         }
 
+        if (!musicManager.canPreformSpecialAction(this, context, "resume music")) {
+            return false;
+        }
+
         if (!musicManager.getPlayer().isPaused()) {
             context.makeWarning(context.i18n("alreadyPlaying"))
                 .set("prefix", generateCommandPrefix(context.getMessage()))

@@ -224,7 +224,7 @@ public abstract class Command extends Reflectionable {
      * @param args    The array of arguments that should be replace in the error string.
      * @return false since the error message should only be used on failure.
      */
-    protected final boolean sendErrorMessage(CommandMessage context, String error, String... args) {
+    public final boolean sendErrorMessage(CommandMessage context, String error, String... args) {
         if (!error.contains(".") || error.contains(" ")) {
             return sendErrorMessageAndDeleteMessage(
                 context, I18n.format(error, (Object[]) args), 150, TimeUnit.SECONDS
