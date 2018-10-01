@@ -40,7 +40,7 @@ import java.util.concurrent.TimeUnit;
 public class VoiceFixCommand extends Command {
 
     public VoiceFixCommand(AvaIre avaire) {
-        super(avaire);
+        super(avaire, false);
     }
 
     @Override
