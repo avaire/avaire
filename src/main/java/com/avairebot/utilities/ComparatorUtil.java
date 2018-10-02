@@ -21,6 +21,7 @@
 
 package com.avairebot.utilities;
 
+import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.HashSet;
 
@@ -35,7 +36,7 @@ public class ComparatorUtil {
      * @param string The string that should be checked.
      * @return True if the given text can be considered true.
      */
-    public static boolean isFuzzyTrue(String string) {
+    public static boolean isFuzzyTrue(@Nullable String string) {
         return string != null && fuzzyTrue.contains(string.toLowerCase());
     }
 
@@ -45,7 +46,7 @@ public class ComparatorUtil {
      * @param string The string that should be checked.
      * @return True if the given text can be considered false.
      */
-    public static boolean isFuzzyFalse(String string) {
+    public static boolean isFuzzyFalse(@Nullable String string) {
         return string != null && fuzzyFalse.contains(string.toLowerCase());
     }
 
@@ -56,7 +57,7 @@ public class ComparatorUtil {
      * @param string The string that should be checked.
      * @return The matching companions value matching the given string, or {@link ComparatorType#UNKNOWN} if there were no match.
      */
-    public static ComparatorType getFuzzyType(String string) {
+    public static ComparatorType getFuzzyType(@Nullable String string) {
         if (isFuzzyTrue(string)) {
             return ComparatorType.TRUE;
         }
@@ -68,8 +69,26 @@ public class ComparatorUtil {
         return ComparatorType.UNKNOWN;
     }
 
+    /**
+     * The comparator types, they are used to represent
+     * the actually values of the comparator.
+     */
     public enum ComparatorType {
-        TRUE(true), FALSE(false), UNKNOWN(false);
+
+        /**
+         * Represents the true value for the comparison.
+         */
+        TRUE(true),
+
+        /**
+         * Represents the false value for the comparison.
+         */
+        FALSE(false),
+
+        /**
+         * Represents an unknown value for the comparison.
+         */
+        UNKNOWN(false);
 
         private final boolean value;
 
@@ -77,6 +96,11 @@ public class ComparatorUtil {
             this.value = type;
         }
 
+        /**
+         * Gets the value for the comparison result.
+         *
+         * @return The value for the comparison result.
+         */
         public boolean getValue() {
             return value;
         }

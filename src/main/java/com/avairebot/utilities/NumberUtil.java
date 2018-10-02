@@ -21,6 +21,7 @@
 
 package com.avairebot.utilities;
 
+import javax.annotation.Nonnull;
 import java.text.DecimalFormat;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -39,7 +40,7 @@ public class NumberUtil {
      * @param string The string integer that should be parsed.
      * @return The integer represented by the string argument.
      */
-    public static int parseInt(String string) {
+    public static int parseInt(@Nonnull String string) {
         return parseInt(string, 0);
     }
 
@@ -51,7 +52,7 @@ public class NumberUtil {
      * @param def    The default integer if the string argument is not a valid integer.
      * @return The integer represented by the string argument.
      */
-    public static int parseInt(String string, int def) {
+    public static int parseInt(@Nonnull String string, int def) {
         return parseInt(string, def, 10);
     }
 
@@ -65,7 +66,7 @@ public class NumberUtil {
      * @param radix  the radix to be used while parsing {@code string}.
      * @return The integer represented by the string argument.
      */
-    public static int parseInt(String string, int def, int radix) {
+    public static int parseInt(@Nonnull String string, int def, int radix) {
         try {
             return Integer.parseInt(string, radix);
         } catch (NumberFormatException ex) {
@@ -81,7 +82,7 @@ public class NumberUtil {
      * @return The parsed number value in milliseconds matching the given string.
      * @throws IllegalStateException If a string is given that does not match the {@link #timestampPattern} pattern this exception is thrown.
      */
-    public static long parseTimeString(String string) {
+    public static long parseTimeString(@Nonnull String string) {
         long seconds = 0;
         long minutes = 0;
         long hours = 0;
@@ -245,7 +246,7 @@ public class NumberUtil {
      * @param string The string that should be checked if it is numeric.
      * @return True if the string is numeric, false otherwise.
      */
-    public static boolean isNumeric(String string) {
+    public static boolean isNumeric(@Nonnull String string) {
         return numberPattern.matcher(string).matches();
     }
 }
