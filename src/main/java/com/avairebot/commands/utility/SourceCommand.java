@@ -59,6 +59,11 @@ public class SourceCommand extends Command {
     }
 
     @Override
+    public List<String> getExampleUsage() {
+        return Collections.singletonList("`:command ping`");
+    }
+
+    @Override
     public List<String> getTriggers() {
         return Collections.singletonList("source");
     }

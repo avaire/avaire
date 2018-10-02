@@ -55,6 +55,11 @@ public class VoteSkipCommand extends Command {
     }
 
     @Override
+    public List<String> getUsageInstructions() {
+        return Collections.singletonList("`:command` - Vote to skip the current song.");
+    }
+
+    @Override
     public List<Class<? extends Command>> getRelations() {
         return Collections.singletonList(SkipCommand.class);
     }

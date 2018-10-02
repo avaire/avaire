@@ -76,7 +76,7 @@ public class RankCommand extends Command {
 
     @Override
     public List<String> getExampleUsage() {
-        return Collections.singletonList("`:command`");
+        return Collections.singletonList("`:command @Senither`");
     }
 
     @Override

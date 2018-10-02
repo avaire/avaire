@@ -51,6 +51,11 @@ public class ListSelfAssignableRolesCommand extends Command {
     }
 
     @Override
+    public List<String> getUsageInstructions() {
+        return Collections.singletonList("`:command` - List all the self-assignable roles for the server.");
+    }
+
+    @Override
     public List<Class<? extends Command>> getRelations() {
         return Arrays.asList(
             AddSelfAssignableRoleCommand.class,

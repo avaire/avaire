@@ -66,6 +66,15 @@ public class LavalinkCommand extends SystemCommand {
     }
 
     @Override
+    public List<String> getExampleUsage() {
+        return Arrays.asList(
+            "`:command show some-node`",
+            "`:command remove some-node`",
+            "`:command add some-node ws://localhost:8888 secretpassword`"
+        );
+    }
+
+    @Override
     public List<String> getTriggers() {
         return Collections.singletonList("lavalink");
     }

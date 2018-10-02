@@ -48,7 +48,15 @@ public class ChannelIdCommand extends Command {
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`:command [channel]`");
+        return Collections.singletonList("`:command [channel]` - Gets the ID of the current channel, or the mentioned channel.");
+    }
+
+    @Override
+    public List<String> getExampleUsage() {
+        return Arrays.asList(
+            "`:command #general`",
+            "`:command`"
+        );
     }
 
     @Override

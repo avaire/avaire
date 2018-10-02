@@ -54,6 +54,19 @@ public class ChannelInfoCommand extends Command {
     }
 
     @Override
+    public List<String> getUsageInstructions() {
+        return Collections.singletonList("`:command [channel]` - Gets information about the mentioned channel, or if no channel was mention, get information about the current channel.");
+    }
+
+    @Override
+    public List<String> getExampleUsage() {
+        return Arrays.asList(
+            "`:command #general`",
+            "`:command`"
+        );
+    }
+
+    @Override
     public List<Class<? extends Command>> getRelations() {
         return Collections.singletonList(ChannelIdCommand.class);
     }

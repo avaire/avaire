@@ -50,6 +50,11 @@ public class UptimeCommand extends Command {
     }
 
     @Override
+    public List<String> getUsageInstructions() {
+        return Collections.singletonList("`:command` - Displays how long the bot has been online for.");
+    }
+
+    @Override
     public List<String> getTriggers() {
         return Collections.singletonList("uptime");
     }

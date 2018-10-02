@@ -59,6 +59,11 @@ public class CategoriesCommand extends Command {
     }
 
     @Override
+    public List<String> getExampleUsage() {
+        return Collections.singletonList("`:command #general`");
+    }
+
+    @Override
     public List<Class<? extends Command>> getRelations() {
         return Arrays.asList(ToggleCategoryCommand.class, ChangePrefixCommand.class);
     }

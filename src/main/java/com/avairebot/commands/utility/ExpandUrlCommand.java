@@ -57,6 +57,11 @@ public class ExpandUrlCommand extends Command {
     }
 
     @Override
+    public List<String> getExampleUsage() {
+        return Collections.singletonList("`:command https://avairebot.com/support`");
+    }
+
+    @Override
     public List<String> getTriggers() {
         return Arrays.asList("expand", "resolve", "e");
     }

@@ -65,6 +65,11 @@ public class XKCDCommand extends Command {
     }
 
     @Override
+    public List<String> getExampleUsage() {
+        return Collections.singletonList("`:command 530`");
+    }
+
+    @Override
     public List<String> getTriggers() {
         return Collections.singletonList("xkcd");
     }

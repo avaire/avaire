@@ -45,7 +45,6 @@ public class ListLevelRolesCommand extends Command {
         return "List Level Roles Command";
     }
 
-
     @Override
     public String getDescription() {
         return "List all the leveling roles and the level require to get them.";

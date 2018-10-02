@@ -74,6 +74,15 @@ public class GlobalLeaderboardCommand extends Command {
     }
 
     @Override
+    public List<String> getUsageInstructions() {
+        return Collections.singletonList("`:command` - Displays the top 100 players on the XP leaderboard globally.");
+    }
+
+    public List<String> getExampleUsage() {
+        return Collections.singletonList("`:command 2`");
+    }
+
+    @Override
     public List<Class<? extends Command>> getRelations() {
         return Arrays.asList(
             RankCommand.class,

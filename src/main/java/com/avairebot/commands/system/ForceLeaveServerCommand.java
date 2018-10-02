@@ -53,6 +53,11 @@ public class ForceLeaveServerCommand extends SystemCommand {
     }
 
     @Override
+    public List<String> getExampleUsage() {
+        return Collections.singletonList("`:command 304414699645042690`");
+    }
+
+    @Override
     public List<String> getTriggers() {
         return Collections.singletonList("force-leave");
     }

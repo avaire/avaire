@@ -49,6 +49,19 @@ public class VoteCommand extends Command {
     }
 
     @Override
+    public List<String> getUsageInstructions() {
+        return Arrays.asList(
+            "`:command check` - Checks if you have voted for Ava in the last 12 hours.",
+            "`:command` - Displays the invite link to Ava, or tells you when your vote expires."
+        );
+    }
+
+    @Override
+    public List<String> getExampleUsage() {
+        return Collections.singletonList("`:command check`");
+    }
+
+    @Override
     public List<String> getTriggers() {
         return Collections.singletonList("vote");
     }

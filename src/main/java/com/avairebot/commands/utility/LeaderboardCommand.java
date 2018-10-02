@@ -73,6 +73,16 @@ public class LeaderboardCommand extends Command {
     }
 
     @Override
+    public List<String> getUsageInstructions() {
+        return Collections.singletonList("`:command` - Displays the top 100 players on the XP leaderboard for the server.");
+    }
+
+    @Override
+    public List<String> getExampleUsage() {
+        return Collections.singletonList("`:command 2`");
+    }
+
+    @Override
     public List<Class<? extends Command>> getRelations() {
         return Arrays.asList(
             RankCommand.class,
