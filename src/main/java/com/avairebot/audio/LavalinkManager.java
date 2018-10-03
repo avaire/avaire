@@ -123,19 +123,39 @@ public class LavalinkManager {
      */
     @SuppressWarnings("WeakerAccess")
     public void openConnection(VoiceChannel channel) {
+        openConnection(channel, false);
+    }
+
+    /**
+     * Opens a connection to the given voice channel, in the event Lavalink is enabled
+     * and the link for the current guild is being destroyed, a 500 millisecond
+     * delay will be added every time the link has not finished shutting down
+     * completely until the connection can be successfully be opened.
+     *
+     * @param channel   The voice channel that the bot should be connecting to.
+     * @param forceOpen Determine if the connection should be forcefully opened, this
+     *                  is false by default, but in the event that Lavalink is used,
+     *                  and the link is being destroyed, the method will call
+     *                  itself with force true to make sure we establish a
+     *                  voice connection.
+     */
+    @SuppressWarnings("WeakerAccess")
+    public void openConnection(VoiceChannel channel, boolean forceOpen) {
+        if (!isEnabled() || forceOpen) {
+            channel.getGuild().getAudioManager().openAudioConnection(channel);
+        }
+
         if (isEnabled()) {
             JdaLink link = lavalink.getLink(channel.getGuild());
 
-            if (isLinkBeingDestroyed(link)) {
+            if (isLinkBeingDestroyed(link) && !forceOpen) {
                 ScheduleHandler.getScheduler().schedule(
-                    () -> openConnection(channel), 500, TimeUnit.MILLISECONDS
+                    () -> openConnection(channel, true), 500, TimeUnit.MILLISECONDS
                 );
                 return;
             }
 
             link.connect(channel);
-        } else {
-            channel.getGuild().getAudioManager().openAudioConnection(channel);
         }
     }
 
