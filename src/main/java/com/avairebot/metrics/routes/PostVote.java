@@ -79,7 +79,7 @@ public class PostVote extends SparkRoute {
             return buildResponse(response, 200, "Vote registered, thanks for voting!");
         }
 
-        metrics.getAvaire().getVoteManager().getMessenger().sendVoteWithPointsMessageInDM(userById, voteEntity.getVotePoints());
+        metrics.getAvaire().getVoteManager().getMessenger().SendThanksForVotingMessageInDM(userById, voteEntity.getVotePoints());
 
         return buildResponse(response, 200, "Vote registered, thanks for voting!");
     }

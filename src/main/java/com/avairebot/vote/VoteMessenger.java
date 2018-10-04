@@ -28,15 +28,31 @@ import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.User;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.awt.*;
 
 public class VoteMessenger {
 
-    public MessageEmbed buildVoteWithPointsMessage(int points) {
-        return buildVoteWithPointsMessage("Thanks for voting!", points);
+    /**
+     * Builds the "Thanks for Voting" message with the
+     * given amount of vote points for the user.
+     *
+     * @param points The amounts of points that should be displayed in the message.
+     * @return The JDA message embed object with the thanks for voting message.
+     */
+    public MessageEmbed buildThanksForVotingMessage(int points) {
+        return buildThanksForVotingMessage("Thanks for voting!", points);
     }
 
-    public MessageEmbed buildVoteWithPointsMessage(String title, int points) {
+    /**
+     * Builds the "Thanks for Voting" message with the given title,
+     * and the given amount of vote points for the user.
+     *
+     * @param title  The title that should be used for the message.
+     * @param points The amounts of points that should be displayed in the message.
+     * @return The JDA message embed object with the thanks for voting message.
+     */
+    public MessageEmbed buildThanksForVotingMessage(@Nonnull String title, int points) {
         return MessageFactory.createEmbeddedBuilder()
             .setColor(Color.decode("#E91E63"))
             .setTitle(title, "https://discordbots.org/bot/avaire")
@@ -48,17 +64,38 @@ public class VoteMessenger {
             .build();
     }
 
-    public void sendVoteWithPointsMessageInDM(@Nonnull User user, int points) {
+    /**
+     * Sends the "Thanks for Voting" message in a direct message
+     * to the given user with the given amount of points.
+     *
+     * @param user   The user that should received the message.
+     * @param points The amounts of points that should be displayed in the message.
+     */
+    public void SendThanksForVotingMessageInDM(@Nonnull User user, int points) {
         user.openPrivateChannel().queue(message -> message.sendMessage(
-            buildVoteWithPointsMessage(points)
+            buildThanksForVotingMessage(points)
         ).queue(null, RestActionUtil.ignore), RestActionUtil.ignore);
     }
 
-    public void sendMustVoteMessage(MessageChannel channel) {
+    /**
+     * Sends the "Must Vote" message to the given channel, letting the
+     * user know that they must vote to use the current command.
+     *
+     * @param channel The channel the message should be sent to.
+     */
+    public void sendMustVoteMessage(@Nonnull MessageChannel channel) {
         sendMustVoteMessage(channel, null);
     }
 
-    public void sendMustVoteMessage(MessageChannel channel, String feature) {
+    /**
+     * Sends the "Must Vote" message to the given channel, letting the
+     * user know that they must vote to use the given feature.
+     *
+     * @param channel The channel the message should be sent to.
+     * @param feature The feature that the user has to vote for to use, or
+     *                <code>null</code> to specify the current command.
+     */
+    public void sendMustVoteMessage(@Nonnull MessageChannel channel, @Nullable String feature) {
         channel.sendMessage(MessageFactory.createEmbeddedBuilder()
             .setColor(Color.decode("#E91E63"))
             .setTitle("Vote for AvaIre on DBL", "https://discordbots.org/bot/avaire")
