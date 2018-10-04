@@ -104,7 +104,7 @@ public class DrainVoteQueueTask implements Task {
             return;
         }
 
-        VoteCacheEntity voteEntity = avaire.getVoteManager().getVoteEntityWithFallback(avaire, user);
+        VoteCacheEntity voteEntity = avaire.getVoteManager().getVoteEntityWithFallback(user);
         voteEntity.setCarbon(expiresIn);
 
         avaire.getVoteManager().registerVoteFor(user.getIdLong());

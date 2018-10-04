@@ -101,6 +101,11 @@ public class MemoryAdapter extends CacheAdapter {
         return true;
     }
 
+    /**
+     * Gets the cache keys currently in the memory cache.
+     *
+     * @return The cache keys currently in the memory cache.
+     */
     public Set<String> getCacheKeys() {
         return cache.keySet();
     }

@@ -65,7 +65,7 @@ public class PostVote extends SparkRoute {
             return buildResponse(response, 404, "Invalid user ID given, the user is not on any server the bot is on.");
         }
 
-        VoteCacheEntity voteEntity = metrics.getAvaire().getVoteManager().getVoteEntityWithFallback(metrics.getAvaire(), userById);
+        VoteCacheEntity voteEntity = metrics.getAvaire().getVoteManager().getVoteEntityWithFallback(userById);
         voteEntity.setCarbon(Carbon.now().addHours(24));
         metrics.getAvaire().getVoteManager().registerVoteFor(userById);
 

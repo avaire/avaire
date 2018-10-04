@@ -68,7 +68,7 @@ public class VoteCommand extends Command {
 
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
-        VoteCacheEntity voteEntity = avaire.getVoteManager().getVoteEntity(avaire, context.getAuthor());
+        VoteCacheEntity voteEntity = avaire.getVoteManager().getVoteEntity(context.getAuthor());
 
         if (args.length > 0 && args[0].equalsIgnoreCase("check")) {
             return checkUser(context, voteEntity);
