@@ -212,10 +212,12 @@ administration:
         message: "Role **:role** role has been removed from the self-assignable list.\nThe server has `:slots` more self-assignable roles slots available."
 
     SlowmodeCommand:
-        missingArgument: "Missing argument, you must either pass in the `limit` and `decay` values to enable slowmode for this channel, or `off` to disable it for this channel."
-        mustBeValidNumbers: "Invalid argument given, the `limit` and `decay` must be valid numbers."
-        message: "Messages are now limited to :limit message(s) every :decay seconds."
-        disabled: "The `Slowmode` module has been **disabled** for the :channel channel."
+        missingArgument: "Missing argument, you must either pass in the `seconds` value to enable slowmode for this or the mentioned channel, or `off` to disable it."
+        mustBeValidNumbers: "Invalid slowmode value given, you must provide a number between **1** and **120**."
+        message: "Slowmode has been **enabled** for the :textChannel channel.\nThe channel now allows **:slowmode** messages every second per-user."
+        disabled: "Successfully **disabled** slowmode for the :textChannel channel."
+        invalidTextChannel: "`{0}` is not a not a valid text channel, you must target a text channel to setup slowmode."
+        failedToUpdate: "Failed to update the :textChannel channel, error: :message"
 
     ToggleCategoryCommand:
         invalidCategory: "Invalid category given, `{0}` is not a valid category"

@@ -36,7 +36,6 @@ public class ChannelTransformer extends Transformer {
     private final BooleanModule ai = new BooleanModule();
     private final MessageModule welcome = new MessageModule();
     private final MessageModule goodbye = new MessageModule();
-    private final SlowmodeModule slowmode = new SlowmodeModule();
 
     public ChannelTransformer(DataRow data) {
         this(data, null);
@@ -69,16 +68,6 @@ public class ChannelTransformer extends Transformer {
                 goodbye.setMessage(goodbyeData.getString("message", null));
                 goodbye.setEmbedColor(goodbyeData.getString("embed", null));
             }
-
-            if (data.get("slowmode", null) != null) {
-                DataRow slowmodeData = new DataRow((LinkedTreeMap<String, Object>) data.get("slowmode"));
-
-                if (slowmodeData.getBoolean("enabled", false)) {
-                    slowmode.setEnabled(true);
-                    slowmode.setDecay(slowmodeData.getInt("messageLimit", 5));
-                    slowmode.setLimit(slowmodeData.getInt("messagesPerLimit", 1));
-                }
-            }
         }
     }
 
@@ -102,17 +91,12 @@ public class ChannelTransformer extends Transformer {
         return goodbye;
     }
 
-    public SlowmodeModule getSlowmode() {
-        return slowmode;
-    }
-
     public HashMap<String, Object> toMap() {
         HashMap<String, Object> objects = new HashMap<>();
 
         objects.put("ai", ai.toMap());
         objects.put("welcome", welcome.toMap());
         objects.put("goodbye", goodbye.toMap());
-        objects.put("slowmode", slowmode.toMap());
 
         return objects;
     }

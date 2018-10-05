@@ -23,8 +23,6 @@ package com.avairebot.handlers.adapter;
 
 import com.avairebot.AppInfo;
 import com.avairebot.AvaIre;
-import com.avairebot.cache.CacheItem;
-import com.avairebot.cache.CacheType;
 import com.avairebot.commands.CommandContainer;
 import com.avairebot.commands.CommandHandler;
 import com.avairebot.contracts.handlers.EventAdapter;
@@ -34,14 +32,11 @@ import com.avairebot.database.transformers.ChannelTransformer;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.factories.MessageFactory;
 import com.avairebot.handlers.DatabaseEventHolder;
-import com.avairebot.metrics.Metrics;
 import com.avairebot.middleware.MiddlewareStack;
 import com.avairebot.shared.DiscordConstants;
 import com.avairebot.utilities.ArrayUtil;
-import com.avairebot.utilities.NumberUtil;
 import com.avairebot.utilities.RestActionUtil;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
-import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
@@ -111,12 +106,6 @@ public class MessageEventAdapter extends EventAdapter {
         }
 
         loadDatabasePropertiesIntoMemory(event).thenAccept(databaseEventHolder -> {
-            if (isUserBeingThrottledBySlowmodeInChannel(event, databaseEventHolder)) {
-                event.getMessage().delete().queue(null, RestActionUtil.ignore);
-                Metrics.slowmodeRatelimited.labels(event.getChannel().getId()).inc();
-                return;
-            }
-
             if (databaseEventHolder.getGuild() != null && databaseEventHolder.getPlayer() != null) {
                 avaire.getLevelManager().rewardPlayer(event, databaseEventHolder.getGuild(), databaseEventHolder.getPlayer());
             }
@@ -198,29 +187,6 @@ public class MessageEventAdapter extends EventAdapter {
         return channel == null || channel.getAI().isEnabled();
     }
 
-    private boolean isUserBeingThrottledBySlowmodeInChannel(MessageReceivedEvent event, DatabaseEventHolder databaseEventHolder) {
-        if (!event.getMessage().getChannelType().isGuild()) {
-            return false;
-        }
-
-        if (event.getMember().hasPermission(Permission.MESSAGE_MANAGE)) {
-            return false;
-        }
-
-        ChannelTransformer channel = databaseEventHolder.getGuild().getChannel(event.getChannel().getId());
-        if (channel == null || !channel.getSlowmode().isEnabled()) {
-            return false;
-        }
-
-        String fingerprint = String.format("slowmode.%s.%s.%s",
-            event.getGuild().getId(),
-            event.getChannel().getId(),
-            event.getAuthor().getId()
-        );
-
-        return isThrottled(avaire, fingerprint, channel.getSlowmode().getLimit(), channel.getSlowmode().getDecay());
-    }
-
     private void sendTagInformationMessage(MessageReceivedEvent event) {
         String author = "**Senither#0001**";
         if (event.getMessage().getChannelType().isGuild() && event.getGuild().getMemberById(88739639380172800L) != null) {
@@ -290,23 +256,6 @@ public class MessageEventAdapter extends EventAdapter {
             }
             return new DatabaseEventHolder(guild, PlayerController.fetchPlayer(avaire, event.getMessage()));
         });
-    }
-
-    private boolean isThrottled(AvaIre avaire, String fingerprint, int limit, int decay) {
-        CacheItem cacheItem = avaire.getCache().getAdapter(CacheType.MEMORY).getRaw(fingerprint);
-
-        if (cacheItem == null) {
-            avaire.getCache().getAdapter(CacheType.MEMORY).put(fingerprint, 1, decay);
-            return false;
-        }
-
-        int value = NumberUtil.parseInt(cacheItem.getValue().toString(), 0);
-        if (value++ >= limit) {
-            return true;
-        }
-
-        avaire.getCache().getAdapter(CacheType.MEMORY).put(fingerprint, value, decay);
-        return false;
     }
 
     private boolean looksLikeCommand(Message message) {
