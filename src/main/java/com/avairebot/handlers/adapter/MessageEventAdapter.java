@@ -175,7 +175,7 @@ public class MessageEventAdapter extends EventAdapter {
 
     private boolean isSingleBotMention(String rawContent) {
         return rawContent.equals("<@" + avaire.getSelfUser().getId() + ">") ||
-            rawContent.equals("<!@" + avaire.getSelfUser().getId() + ">");
+            rawContent.equals("<@!" + avaire.getSelfUser().getId() + ">");
     }
 
     private boolean isAIEnabledForChannel(MessageReceivedEvent event, GuildTransformer transformer) {
