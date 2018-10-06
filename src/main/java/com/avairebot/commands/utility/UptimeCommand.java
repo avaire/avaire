@@ -77,7 +77,7 @@ public class UptimeCommand extends Command {
         return true;
     }
 
-    private String formatUptimeNicely(int total) {
+    public String formatUptimeNicely(int total) {
         long days = TimeUnit.SECONDS.toDays(total);
         total -= TimeUnit.DAYS.toSeconds(days);
 
