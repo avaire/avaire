@@ -24,6 +24,7 @@ package com.avairebot.scheduler.jobs;
 import com.avairebot.AvaIre;
 import com.avairebot.Constants;
 import com.avairebot.contracts.scheduler.Job;
+import com.avairebot.database.connections.SQLite;
 import com.avairebot.language.I18n;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,6 +46,13 @@ public class DeleteUnusedPlayerDataJob extends Job {
 
     @Override
     public void run() {
+        try {
+            if (avaire.getDatabase().getConnection() instanceof SQLite) {
+                return;
+            }
+        } catch (SQLException ignored) {
+        }
+
         try {
             avaire.getDatabase().queryUpdate(I18n.format(
                 "DELETE `{0}` FROM `{0}` LEFT JOIN `{1}` ON `{0}`.`guild_id` = `{1}`.`id` WHERE `{1}`.`id` IS NULL;",
