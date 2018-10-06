@@ -37,6 +37,8 @@ import java.util.*;
 
 public class GuildTransformer extends Transformer {
 
+    private static final GuildTypeTransformer partnerTypeTransformer = new PartnerGuildTypeTransformer();
+
     private final Map<String, String> aliases = new HashMap<>();
     private final Map<String, String> prefixes = new HashMap<>();
     private final Map<String, String> selfAssignableRoles = new HashMap<>();
@@ -45,12 +47,12 @@ public class GuildTransformer extends Transformer {
     private final List<ChannelTransformer> channels = new ArrayList<>();
 
     private final GuildTypeTransformer guildType;
+    private boolean partner;
 
     private String id;
     private String name;
     private String nameRaw;
     private String locale;
-
     private boolean levels = false;
     private boolean levelAlerts = false;
     private boolean musicMessages = true;
@@ -70,13 +72,15 @@ public class GuildTransformer extends Transformer {
         id = guild.getId();
         name = guild.getName();
         nameRaw = guild.getName();
-        guildType = new GuildTypeTransformer(null);
+
+        partner = guild.getRegion().isVip();
+        guildType = partner ? partnerTypeTransformer : new GuildTypeTransformer(data);
     }
 
-    public GuildTransformer(DataRow data) {
+    public GuildTransformer(Guild guild, DataRow data) {
         super(data);
 
-        guildType = new GuildTypeTransformer(data);
+        partner = guild.getRegion().isVip();
 
         if (hasData()) {
             id = data.getString("id");
@@ -98,6 +102,11 @@ public class GuildTransformer extends Transformer {
 
             // Sets the default volume to a value between 10 and 100.
             defaultVolume = NumberUtil.getBetween(defaultVolume, 10, 100);
+
+            // Sets the discord partner value if the guild isn't already a Discord partner.
+            if (!partner) {
+                partner = data.getBoolean("partner", false);
+            }
 
             if (data.getString("aliases", null) != null) {
                 HashMap<String, String> dbAliases = AvaIre.gson.fromJson(
@@ -169,6 +178,8 @@ public class GuildTransformer extends Transformer {
                 }
             }
         }
+
+        guildType = partner ? partnerTypeTransformer : new GuildTypeTransformer(data);
 
         reset();
     }
@@ -310,6 +321,10 @@ public class GuildTransformer extends Transformer {
 
     public void setDefaultVolume(int defaultVolume) {
         this.defaultVolume = defaultVolume;
+    }
+
+    public boolean isPartner() {
+        return partner;
     }
 
     @CheckReturnValue

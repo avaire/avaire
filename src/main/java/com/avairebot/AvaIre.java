@@ -203,7 +203,8 @@ public class AvaIre {
             new AddExpiresInFieldToBlacklistTableMigration(),
             new AddOptInToVotesTableMigration(),
             new RecreateFeedbackTableMigration(),
-            new AddMusicMessagesToGuildsTableMigration()
+            new AddMusicMessagesToGuildsTableMigration(),
+            new AddPartnerToGuildsTableMigration()
         );
 
         log.info("Registering default middlewares");

@@ -49,9 +49,10 @@ public class GuildController {
 
     private static final String[] requiredGuildColumns = new String[]{
         "guild_types.name as type_name", "guild_types.limits as type_limits",
-        "guilds.id", "guilds.name", "guilds.icon", "guilds.local", "guilds.channels", "guilds.modules", "guilds.level_roles", "guilds.claimable_roles",
-        "guilds.prefixes", "guilds.aliases", "guilds.default_volume", "guilds.dj_level", "guilds.modlog_case", "guilds.modlog", "guilds.autorole",
-        "guilds.level_channel", "guilds.level_alerts", "guilds.levels", "guilds.music_channel_text", "guilds.music_channel_voice", "music_messages"
+        "guilds.id", "guilds.partner", "guilds.name", "guilds.icon", "guilds.local", "guilds.channels", "guilds.modules", "guilds.level_roles",
+        "guilds.claimable_roles", "guilds.prefixes", "guilds.aliases", "guilds.default_volume", "guilds.dj_level", "guilds.modlog_case",
+        "guilds.modlog", "guilds.autorole", "guilds.level_channel", "guilds.level_alerts", "guilds.levels",
+        "guilds.music_channel_text", "guilds.music_channel_voice", "music_messages"
     };
 
     /**
@@ -155,7 +156,7 @@ public class GuildController {
         log.debug("Guild cache for " + guild.getId() + " was refreshed");
 
         try {
-            GuildTransformer transformer = new GuildTransformer(avaire.getDatabase()
+            GuildTransformer transformer = new GuildTransformer(guild, avaire.getDatabase()
                 .newQueryBuilder(Constants.GUILD_TABLE_NAME)
                 .select(requiredGuildColumns)
                 .leftJoin("guild_types", "guilds.type", "guild_types.id")
