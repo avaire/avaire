@@ -147,7 +147,7 @@ public class ModlogReasonCommand extends Command {
                 .where("guild_id", context.getGuild().getId())
                 .where("user_id", context.getAuthor().getId())
                 .where("modlogCase", caseId)
-                .update(statement -> statement.set("reason", reason));
+                .update(statement -> statement.set("reason", reason, true));
 
             channel.getMessageById(first.getString("message_id")).queue(message -> {
                 if (message.getEmbeds().isEmpty()) {

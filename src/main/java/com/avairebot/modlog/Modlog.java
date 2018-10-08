@@ -227,9 +227,9 @@ public class Modlog {
                     }
 
                     if (action.getType().equals(ModlogType.VOICE_KICK)) {
-                        statement.set("reason", formatReason(null, action.getMessage().split("\n")[1]));
+                        statement.set("reason", formatReason(null, action.getMessage().split("\n")[1]), true);
                     } else {
-                        statement.set("reason", formatReason(null, action.getMessage()));
+                        statement.set("reason", formatReason(null, action.getMessage()), true);
                     }
                 });
         } catch (SQLException ignored) {
