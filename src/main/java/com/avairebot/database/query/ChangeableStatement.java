@@ -40,7 +40,7 @@ public class ChangeableStatement {
     }
 
     public ChangeableStatement set(String key, Object value, boolean encode) {
-        if (!encode) {
+        if (!encode || value == null) {
             items.put(key, value);
             return this;
         }
