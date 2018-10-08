@@ -157,6 +157,11 @@ public class Metrics {
         .help("Total amount of commands that are being invoked per minute")
         .register();
 
+    public static final Gauge commandAttemptsPerMinute = Gauge.build()
+        .name("avaire_command_attempts_per_minute_total")
+        .help("Total amount of command attempts that are being invoked per minute")
+        .register();
+
     // AI Requests
 
     public static final Counter aiRequestsReceived = Counter.build()
