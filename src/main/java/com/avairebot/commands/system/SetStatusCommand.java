@@ -23,6 +23,7 @@ package com.avairebot.commands.system;
 
 import com.avairebot.AvaIre;
 import com.avairebot.commands.CommandMessage;
+import com.avairebot.commands.CommandPriority;
 import com.avairebot.contracts.commands.SystemCommand;
 import com.avairebot.scheduler.tasks.ChangeGameTask;
 import net.dv8tion.jda.core.entities.Game;
@@ -63,6 +64,11 @@ public class SetStatusCommand extends SystemCommand {
     @Override
     public List<String> getTriggers() {
         return Arrays.asList("setstatus", "status");
+    }
+
+    @Override
+    public CommandPriority getCommandPriority() {
+        return CommandPriority.SYSTEM_ROLE;
     }
 
     @Override

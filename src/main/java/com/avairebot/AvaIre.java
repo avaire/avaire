@@ -24,6 +24,7 @@ package com.avairebot;
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.filter.ThresholdFilter;
+import com.avairebot.admin.BotAdmin;
 import com.avairebot.ai.IntelligenceManager;
 import com.avairebot.audio.AudioHandler;
 import com.avairebot.audio.GuildMusicManager;
@@ -122,7 +123,7 @@ public class AvaIre {
     private final VoteManager voteManager;
     private final ShardEntityCounter shardEntityCounter;
     private final EventEmitter eventEmitter;
-    private final Set<String> botAdmins;
+    private final BotAdmin botAdmins;
 
     private Carbon shutdownTime = null;
     private int shutdownCode = ExitCodes.EXIT_CODE_RESTART;
@@ -156,9 +157,9 @@ public class AvaIre {
             System.exit(ExitCodes.EXIT_CODE_NORMAL);
         }
 
-        botAdmins = Collections.unmodifiableSet(new HashSet<>(
+        botAdmins = new BotAdmin(this, Collections.unmodifiableSet(new HashSet<>(
             config.getStringList("botAccess")
-        ));
+        )));
 
         applicationEnvironment = Environment.fromName(config.getString("environment", "production"));
         if (applicationEnvironment == null) {
@@ -447,7 +448,7 @@ public class AvaIre {
         return eventEmitter;
     }
 
-    public Set<String> getBotAdmins() {
+    public BotAdmin getBotAdmins() {
         return botAdmins;
     }
 

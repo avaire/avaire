@@ -43,12 +43,25 @@ public class IsBotAdminMiddleware extends Middleware {
 
     @Override
     public boolean handle(@Nonnull Message message, @Nonnull MiddlewareStack stack, String... args) {
-        if (!avaire.getBotAdmins().contains(message.getAuthor().getId())) {
-            MessageFactory.makeError(message, ":warning: You must be a bot administrator to use this command!")
-                .queue(newMessage -> newMessage.delete().queueAfter(45, TimeUnit.SECONDS), RestActionUtil.ignore);
-            return false;
+        if (avaire.getBotAdmins().isAdmin(message.getAuthor().getId()).isAdmin()) {
+            return stack.next();
+        }
+
+        if (args.length == 0 || !args[0].equalsIgnoreCase("use-role")) {
+            return sendMustBeBotAdminMessage(message);
+        }
+
+        if (!avaire.getBotAdmins().isRoleAdmin(message.getAuthor().getIdLong()).isAdmin()) {
+            return sendMustBeBotAdminMessage(message);
         }
 
         return stack.next();
+    }
+
+    private boolean sendMustBeBotAdminMessage(@Nonnull Message message) {
+        MessageFactory.makeError(message, ":warning: You must be a bot administrator to use this command!")
+            .queue(newMessage -> newMessage.delete().queueAfter(45, TimeUnit.SECONDS), RestActionUtil.ignore);
+
+        return false;
     }
 }

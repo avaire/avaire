@@ -30,6 +30,7 @@ import com.avairebot.audio.LavalinkManager;
 import com.avairebot.chat.MessageType;
 import com.avairebot.commands.CommandHandler;
 import com.avairebot.commands.CommandMessage;
+import com.avairebot.commands.CommandPriority;
 import com.avairebot.commands.utility.UptimeCommand;
 import com.avairebot.contracts.commands.SystemCommand;
 import com.avairebot.language.I18n;
@@ -71,6 +72,11 @@ public class BotStatisticsCommand extends SystemCommand {
     @Override
     public List<String> getTriggers() {
         return Arrays.asList("statistics", "stats");
+    }
+
+    @Override
+    public CommandPriority getCommandPriority() {
+        return CommandPriority.SYSTEM_ROLE;
     }
 
     @Override
