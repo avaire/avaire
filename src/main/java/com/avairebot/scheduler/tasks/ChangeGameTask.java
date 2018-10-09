@@ -45,11 +45,16 @@ public class ChangeGameTask implements Task {
             index = 0;
         }
 
-        for (JDA shard : avaire.getShardManager().getShards()) {
-            shard.getPresence().setGame(
-                getGameFromType(avaire, avaire.getConfig().getStringList("playing").get(index), shard)
-            );
+        String playing = avaire.getConfig().getStringList("playing").get(index);
+
+        if (playing.trim().length() != 0) {
+            for (JDA shard : avaire.getShardManager().getShards()) {
+                shard.getPresence().setGame(getGameFromType(avaire, playing, shard));
+            }
+        } else {
+            avaire.getShardManager().setGame(null);
         }
+
         index++;
     }
 
