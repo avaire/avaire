@@ -218,7 +218,7 @@ public class BotStatisticsCommand extends SystemCommand {
             return seconds;
         }
 
-        if (musicManager.getPlayer().getPlayingTrack() != null || !musicManager.getPlayer().getPlayingTrack().getInfo().isStream) {
+        if (musicManager.getPlayer().getPlayingTrack() != null && !musicManager.getPlayer().getPlayingTrack().getInfo().isStream) {
             seconds += (musicManager.getPlayer().getPlayingTrack().getDuration() - musicManager.getPlayer().getTrackPosition()) / 1000L;
         }
 
