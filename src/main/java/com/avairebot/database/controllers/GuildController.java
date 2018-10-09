@@ -40,7 +40,7 @@ import java.util.concurrent.TimeUnit;
 
 public class GuildController {
 
-    public static final Cache<Object, Object> cache = CacheBuilder.newBuilder()
+    public static final Cache<Long, GuildTransformer> cache = CacheBuilder.newBuilder()
         .recordStats()
         .expireAfterAccess(5, TimeUnit.MINUTES)
         .build();
