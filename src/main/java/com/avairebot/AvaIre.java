@@ -205,7 +205,8 @@ public class AvaIre {
             new AddOptInToVotesTableMigration(),
             new RecreateFeedbackTableMigration(),
             new AddMusicMessagesToGuildsTableMigration(),
-            new AddPartnerToGuildsTableMigration()
+            new AddPartnerToGuildsTableMigration(),
+            new AddHierarchyToGuildsTableMigration()
         );
 
         log.info("Registering default middlewares");

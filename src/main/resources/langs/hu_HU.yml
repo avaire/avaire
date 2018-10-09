@@ -148,6 +148,14 @@ administration:
             enabled: "Enabled"
             disabled: "Disabled"
 
+    LevelHierarchyCommand:
+        invalidTypeGiven: "Invalid type given, to toggle level hierarchy on or off, you must use either `on` or `off`."
+        message: "Level up hierarchy has been `:status` for the server."
+        statusMessage: "Level up hierarchy is currently `:status`, you can toggle it on or off with `:command`"
+        status:
+            enabled: "Enabled"
+            disabled: "Disabled"
+
     ListAliasesCommand:
         noAliases: "The server doesn't have any aliases right now, you can create one using the\n`{0}alias <alias> <command>` command"
         listAliases: "List of Aliases ({0})"

@@ -58,6 +58,7 @@ public class LevelCommand extends Command {
     @Override
     public List<Class<? extends Command>> getRelations() {
         return Arrays.asList(
+            LevelHierarchyCommand.class,
             LevelAlertsCommand.class,
             RankCommand.class
         );

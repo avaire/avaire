@@ -55,6 +55,7 @@ public class GuildTransformer extends Transformer {
     private String locale;
     private boolean levels = false;
     private boolean levelAlerts = false;
+    private boolean levelHierarchy = false;
     private boolean musicMessages = true;
     private String levelChannel = null;
     private String autorole = null;
@@ -90,6 +91,7 @@ public class GuildTransformer extends Transformer {
 
             levels = data.getBoolean("levels");
             levelAlerts = data.getBoolean("level_alerts");
+            levelHierarchy = data.getBoolean("hierarchy");
             levelChannel = data.getString("level_channel");
             autorole = data.getString("autorole");
             modlog = data.getString("modlog");
@@ -222,6 +224,14 @@ public class GuildTransformer extends Transformer {
 
     public void setLevelAlerts(boolean levelAlerts) {
         this.levelAlerts = levelAlerts;
+    }
+
+    public boolean isLevelHierarchy() {
+        return levelHierarchy;
+    }
+
+    public void setLevelHierarchy(boolean levelHierarchy) {
+        this.levelHierarchy = levelHierarchy;
     }
 
     public String getLevelChannel() {

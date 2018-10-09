@@ -143,7 +143,15 @@ administration:
 
     LevelCommand:
         message: "`Levels & Experience` has been `:status` for the server.:note"
-        note: "\nLevel alerts are current `{0}`, you can toggle them on or off with `{1}levelalerts`"
+        note: "\nLevel alerts are currently `{0}`, you can toggle them on or off with `{1}levelalerts`"
+        status:
+            enabled: "Enabled"
+            disabled: "Disabled"
+
+    LevelHierarchyCommand:
+        invalidTypeGiven: "Invalid type given, to toggle level hierarchy on or off, you must use either `on` or `off`."
+        message: "Level up hierarchy has been `:status` for the server."
+        statusMessage: "Level up hierarchy is currently `:status`, you can toggle it on or off with `:command`"
         status:
             enabled: "Enabled"
             disabled: "Disabled"

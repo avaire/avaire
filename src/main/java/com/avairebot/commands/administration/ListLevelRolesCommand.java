@@ -60,8 +60,9 @@ public class ListLevelRolesCommand extends Command {
     @Override
     public List<Class<? extends Command>> getRelations() {
         return Arrays.asList(
-            AddLevelRoleCommand.class,
-            RemoveLevelRoleCommand.class
+            RemoveLevelRoleCommand.class,
+            LevelHierarchyCommand.class,
+            AddLevelRoleCommand.class
         );
     }
 

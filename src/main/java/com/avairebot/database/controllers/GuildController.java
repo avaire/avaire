@@ -51,7 +51,7 @@ public class GuildController {
         "guild_types.name as type_name", "guild_types.limits as type_limits",
         "guilds.id", "guilds.partner", "guilds.name", "guilds.icon", "guilds.local", "guilds.channels", "guilds.modules", "guilds.level_roles",
         "guilds.claimable_roles", "guilds.prefixes", "guilds.aliases", "guilds.default_volume", "guilds.dj_level", "guilds.modlog_case",
-        "guilds.modlog", "guilds.autorole", "guilds.level_channel", "guilds.level_alerts", "guilds.levels",
+        "guilds.modlog", "guilds.autorole", "guilds.level_channel", "guilds.level_alerts", "guilds.levels", "guilds.hierarchy",
         "guilds.music_channel_text", "guilds.music_channel_voice", "music_messages"
     };
 

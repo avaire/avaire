@@ -226,7 +226,45 @@ public class LevelManager {
                     return;
                 }
 
-                message.getGuild().getController().addRolesToMember(message.getMember(), roles).queue();
+                message.getGuild().getController().addRolesToMember(message.getMember(), roles).queue(aVoid -> {
+                    if (!guild.isLevelHierarchy()) {
+                        return;
+                    }
+
+                    boolean reachedUserLevel = false;
+                    List<Role> rolesToRemove = new ArrayList<>();
+                    Role lastGivenRole = null;
+
+                    for (Map.Entry<Integer, String> entry : guild.getLevelRoles().entrySet()) {
+                        if (entry.getKey() >= newLevel) {
+                            reachedUserLevel = true;
+                        }
+
+                        if (entry.getKey() == newLevel || !reachedUserLevel) {
+                            Role role = message.getGuild().getRoleById(entry.getValue());
+                            if (role != null) {
+                                lastGivenRole = role;
+                            }
+                        }
+
+                        if (entry.getKey() <= newLevel) {
+                            Role role = message.getGuild().getRoleById(entry.getValue());
+                            if (role != null) {
+                                rolesToRemove.add(role);
+                            }
+                        }
+                    }
+
+                    if (lastGivenRole == null || rolesToRemove.isEmpty()) {
+                        return;
+                    }
+
+                    rolesToRemove.remove(lastGivenRole);
+
+                    if (!rolesToRemove.isEmpty()) {
+                        message.getGuild().getController().removeRolesFromMember(message.getMember(), rolesToRemove).queue();
+                    }
+                });
             }
         }
     }
