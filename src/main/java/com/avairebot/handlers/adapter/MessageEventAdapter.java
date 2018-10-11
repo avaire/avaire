@@ -248,7 +248,7 @@ public class MessageEventAdapter extends EventAdapter {
             }
 
             GuildTransformer guild = looksLikeCommand(event.getMessage())
-                ? GuildController.fetchGuild(avaire, event.getMessage(), event.getChannel())
+                ? GuildController.fetchGuild(avaire, event.getMessage())
                 : GuildController.fetchGuild(avaire, event.getMessage());
 
             if (guild == null || !guild.isLevels() || event.getAuthor().isBot()) {

@@ -27,7 +27,10 @@ import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.utilities.CacheUtil;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import net.dv8tion.jda.core.entities.*;
+import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.core.entities.Role;
+import net.dv8tion.jda.core.entities.TextChannel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -82,33 +85,6 @@ public class GuildController {
     @CheckReturnValue
     public static GuildTransformer fetchGuild(AvaIre avaire, Guild guild) {
         return (GuildTransformer) CacheUtil.getUncheckedUnwrapped(cache, guild.getIdLong(), () -> loadGuildFromDatabase(avaire, guild));
-    }
-
-    /**
-     * Fetches the guild transformer from the cache, if it doesn't exist in the
-     * cache it will be loaded into the cache and then returned afterwords.
-     * <p>
-     * If the entry wasn't found in the cache, the channel object will also be used to
-     * send a typing event to the channel, to let people know that Ava is working,
-     * but is loading the data from the database, so it might be slow for a
-     * second or two while everything is loaded into the cache.
-     *
-     * @param avaire  The avaire instance, used to talking to the database.
-     * @param message The JDA message instance for the current message.
-     * @param channel The JDA channel instance for the channel the message was sent in.
-     * @return Possibly null, the guild transformer instance for the current guild, or null.
-     */
-    @CheckReturnValue
-    public static GuildTransformer fetchGuild(AvaIre avaire, Message message, MessageChannel channel) {
-        if (!message.getChannelType().isGuild()) {
-            return null;
-        }
-
-        return (GuildTransformer) CacheUtil.getUncheckedUnwrapped(cache, message.getGuild().getIdLong(), () -> {
-            channel.sendTyping().queue();
-
-            return loadGuildFromDatabase(avaire, message.getGuild());
-        });
     }
 
     public static String buildChannelData(List<TextChannel> textChannels) {
