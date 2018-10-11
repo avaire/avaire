@@ -71,24 +71,26 @@ public class LevelManager {
     private static final List<ExperienceEntity> experienceQueue = new CopyOnWriteArrayList<>();
 
     /**
+     * The experience modifier as an percentage.
+     */
+    private static final double M = 0.3715D;
+
+    /**
      * The quadratic equation `a` value.
      */
     private final int A = 5;
-
     /**
      * The quadratic equation `b` value.
      */
     private final int B = 50;
-
     /**
      * The quadratic equation `c` value.
      */
     private final int C = 100;
 
-    /**
-     * The experience modifier as an percentage.
-     */
-    private final double M = 0.3715D;
+    public static double getDefaultModifier() {
+        return M;
+    }
 
     /**
      * Get the amount of experience needed to reach the given level.
@@ -163,11 +165,8 @@ public class LevelManager {
      * @return The max level that can be reached with the given amount of experience.
      */
     public long getLevelFromExperience(long xp, double modifier) {
-        if (Math.pow(B, 2) - ((4 * A) * ((C * (1 + modifier)) - Math.ceil(xp / (1 + modifier)))) < 0) {
-            throw new RuntimeException("Discriminant is less than zero, no real roots");
-        }
-
         double x = (-B + Math.sqrt(Math.pow(B, 2) - ((4 * A) * ((C * (1 + modifier)) - Math.ceil(xp / (1 + modifier)))))) / (2 * A);
+
         return x < 0 ? 0 : (long) Math.floor(x);
     }
 

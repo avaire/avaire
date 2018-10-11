@@ -69,6 +69,7 @@ public class LevelHierarchyCommand extends Command {
             AddLevelRoleCommand.class,
             RemoveLevelRoleCommand.class,
             ListLevelRolesCommand.class,
+            LevelModifierCommand.class,
             LevelAlertsCommand.class,
             LevelCommand.class
         );
