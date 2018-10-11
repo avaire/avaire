@@ -1,3 +1,24 @@
+/*
+ * Copyright (c) 2018.
+ *
+ * This file is part of AvaIre.
+ *
+ * AvaIre is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * AvaIre is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with AvaIre.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ *
+ */
+
 package com.avairebot.commands.music;
 
 import com.avairebot.AvaIre;
@@ -24,6 +45,7 @@ public class PlaylistCommand extends Command {
 
     private final RemoveSongFromPlaylist removeSongFromLoadPlaylist;
     private final SendSongsInPlaylist sendSongsInPlaylist;
+    private final MoveSongInPlaylist moveSongInPlaylist;
     private final AddSongToPlaylist addSongToPlaylist;
     private final CreatePlaylist createPlaylist;
     private final DeletePlaylist deletePlaylist;
@@ -36,6 +58,7 @@ public class PlaylistCommand extends Command {
 
         removeSongFromLoadPlaylist = new RemoveSongFromPlaylist(avaire, this);
         sendSongsInPlaylist = new SendSongsInPlaylist(avaire, this);
+        moveSongInPlaylist = new MoveSongInPlaylist(avaire, this);
         addSongToPlaylist = new AddSongToPlaylist(avaire, this);
         createPlaylist = new CreatePlaylist(avaire, this);
         deletePlaylist = new DeletePlaylist(avaire, this);
@@ -64,6 +87,7 @@ public class PlaylistCommand extends Command {
             "`:command [name] play` - Plays a playlist.",
             "`:command [name] removesong [id]` - Removes a song from a playlist.",
             "`:command [name] renameto [new name]` - Renames a existing playlist.",
+            "`:command [name] movesong [id] [new id]` - Move a song to a different position.",
             "`:command [name] [page number]` - Shows the songs in a playlist."
         );
     }
@@ -73,6 +97,7 @@ public class PlaylistCommand extends Command {
         return Arrays.asList(
             "`:command test create` - Creates a playlist called `test`.",
             "`:command test add Some song` - Adds `Some song` to the `test` playlist.",
+            "`:command test move 2 1` - Moves the 2nd song to the first place.",
             "`:command test remove 2` - Removes the 2nd song from the `test`playlist.",
             "`:command test rename Music` - Renames the `test` playlist to `Music`.",
             "`:command music 2` - Shows the 2nd page of the `Music` playlist.",
@@ -152,6 +177,11 @@ public class PlaylistCommand extends Command {
             case "a":
             case "add":
                 return addSongToPlaylist.onCommand(context, args, transformer, playlist);
+
+            case "swap":
+            case "move":
+            case "movesong":
+                return moveSongInPlaylist.onCommand(context, args, transformer, playlist);
 
             case "remove":
             case "removesong":

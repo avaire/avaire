@@ -1,8 +1,30 @@
+/*
+ * Copyright (c) 2018.
+ *
+ * This file is part of AvaIre.
+ *
+ * AvaIre is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * AvaIre is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with AvaIre.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ *
+ */
+
 package com.avairebot.database.controllers;
 
 import com.avairebot.AvaIre;
 import com.avairebot.Constants;
 import com.avairebot.database.transformers.PlayerTransformer;
+import com.avairebot.level.ExperienceEntity;
 import com.avairebot.utilities.CacheUtil;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
@@ -15,13 +37,14 @@ import org.slf4j.LoggerFactory;
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nonnull;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 public class PlayerController {
 
-    public static final Cache<Object, Object> cache = CacheBuilder.newBuilder()
+    public static final Cache<String, PlayerTransformer> cache = CacheBuilder.newBuilder()
         .recordStats()
         .expireAfterAccess(210, TimeUnit.SECONDS) // 3½ minute
         .build();
@@ -48,12 +71,16 @@ public class PlayerController {
             log.debug("User cache for " + user.getId() + " was refreshed");
 
             try {
-                PlayerTransformer transformer = new PlayerTransformer(avaire.getDatabase()
-                    .newQueryBuilder(Constants.PLAYER_EXPERIENCE_TABLE_NAME)
-                    .select(requiredPlayerColumns)
-                    .where("user_id", user.getId())
-                    .andWhere("guild_id", message.getGuild().getId())
-                    .get().first());
+                PlayerTransformer transformer = new PlayerTransformer(
+                    user.getIdLong(),
+                    message.getGuild().getIdLong(),
+                    avaire.getDatabase()
+                        .newQueryBuilder(Constants.PLAYER_EXPERIENCE_TABLE_NAME)
+                        .select(requiredPlayerColumns)
+                        .where("user_id", user.getId())
+                        .andWhere("guild_id", message.getGuild().getId())
+                        .get().first()
+                );
 
                 if (!transformer.hasData()) {
                     transformer.incrementExperienceBy(100);
@@ -71,7 +98,7 @@ public class PlayerController {
                                 .set("experience", 100);
                         });
 
-                    return transformer;
+                    return mergeWithExperienceEntity(avaire, transformer);
                 }
 
                 if (isChanged(user, transformer)) {
@@ -81,13 +108,13 @@ public class PlayerController {
 
                     updateUserData(user);
 
-                    return transformer;
+                    return mergeWithExperienceEntity(avaire, transformer);
                 }
 
                 // If the users name haven't been encoded yet, we'll do it below.
                 String username = transformer.getUsernameRaw();
                 if (username.startsWith("base64:")) {
-                    return transformer;
+                    return mergeWithExperienceEntity(avaire, transformer);
                 }
 
                 avaire.getDatabase().newQueryBuilder(Constants.PLAYER_EXPERIENCE_TABLE_NAME)
@@ -95,12 +122,25 @@ public class PlayerController {
                     .where("user_id", message.getAuthor().getId())
                     .update(statement -> statement.set("username", message.getAuthor().getName(), true));
 
-                return transformer;
+                return mergeWithExperienceEntity(avaire, transformer);
             } catch (Exception ex) {
                 AvaIre.getLogger().error(ex.getMessage(), ex);
                 return null;
             }
         });
+    }
+
+    private static PlayerTransformer mergeWithExperienceEntity(AvaIre avaire, PlayerTransformer transformer) {
+        List<ExperienceEntity> entities = avaire.getLevelManager().getExperienceEntities(transformer);
+        if (entities.isEmpty()) {
+            return transformer;
+        }
+
+        transformer.incrementExperienceBy(
+            entities.stream().mapToInt(ExperienceEntity::getExperience).sum()
+        );
+
+        return transformer;
     }
 
     public static Map<Long, PlayerUpdateReference> getPlayerQueue() {

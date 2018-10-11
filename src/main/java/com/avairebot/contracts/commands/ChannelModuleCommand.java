@@ -1,3 +1,24 @@
+/*
+ * Copyright (c) 2018.
+ *
+ * This file is part of AvaIre.
+ *
+ * AvaIre is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * AvaIre is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with AvaIre.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ *
+ */
+
 package com.avairebot.contracts.commands;
 
 import com.avairebot.AvaIre;
@@ -42,7 +63,7 @@ public abstract class ChannelModuleCommand extends Command {
             }
 
             if (!colorRegEx.matcher(color).matches()) {
-                return sendErrorMessage(context, "Invalid color value given, the color must be a valid HEX value.\nYou can try this [random color picker](https://www.webpagefx.com/web-design/random-color-picker/) to try and get a random HEX color.");
+                return sendErrorMessage(context, context.i18nRaw("administration.channelModule.invalidColorGiven"));
             }
 
             getChannelModule(channelTransformer).setEmbedColor("#" + color);
@@ -67,7 +88,7 @@ public abstract class ChannelModuleCommand extends Command {
     }
 
     protected boolean sendExampleMessage(CommandMessage context, User user, ChannelTransformer transformer, String defaultValue) {
-        String message = StringReplacementUtil.parseGuildJoinLeaveMessage(
+        String message = StringReplacementUtil.parse(
             context.getGuild(), context.getChannel(), user,
             getChannelModule(transformer).getMessage() == null ?
                 defaultValue : getChannelModule(transformer).getMessage()
@@ -90,14 +111,7 @@ public abstract class ChannelModuleCommand extends Command {
     }
 
     protected boolean sendEnableMessage(CommandMessage context, ChannelTransformer channelTransformer, String type) {
-        context.makeSuccess(String.join("\n",
-            "The `:type` module message has been set to:",
-            "",
-            "```:message```",
-            "",
-            "You can test the message by using the command again and mentioning a user.",
-            "`:command <user>`"
-        ))
+        context.makeSuccess(context.i18nRaw("administration.channelModule.message"))
             .set("type", type)
             .set("message", getChannelModule(channelTransformer).getMessage())
             .set("command", generateCommandTrigger(context.getMessage()))

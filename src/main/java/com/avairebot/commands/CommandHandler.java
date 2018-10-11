@@ -1,3 +1,24 @@
+/*
+ * Copyright (c) 2018.
+ *
+ * This file is part of AvaIre.
+ *
+ * AvaIre is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * AvaIre is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with AvaIre.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ *
+ */
+
 package com.avairebot.commands;
 
 import com.avairebot.AvaIre;
@@ -15,9 +36,10 @@ import net.dv8tion.jda.core.utils.Checks;
 import javax.annotation.Nonnull;
 import java.util.*;
 
+@SuppressWarnings("WeakerAccess")
 public class CommandHandler {
 
-    private static final Map<List<String>, CommandContainer> COMMANDS = new HashMap<>();
+    private static final Set<CommandContainer> COMMANDS = new HashSet<>();
 
     /**
      * Get command container from the given command instance.
@@ -26,9 +48,9 @@ public class CommandHandler {
      * @return Possibly-null, The registered command container instance.
      */
     public static CommandContainer getCommand(Command command) {
-        for (Map.Entry<List<String>, CommandContainer> entry : COMMANDS.entrySet()) {
-            if (entry.getValue().getCommand().isSame(command)) {
-                return entry.getValue();
+        for (CommandContainer container : COMMANDS) {
+            if (container.getCommand().isSame(command)) {
+                return container;
             }
         }
 
@@ -42,7 +64,7 @@ public class CommandHandler {
      * @return Possibly-null, The registered command container instance.
      */
     public static CommandContainer getCommand(@Nonnull Class<? extends Command> command) {
-        for (CommandContainer container : COMMANDS.values()) {
+        for (CommandContainer container : COMMANDS) {
             if (container.getCommand().getClass().getTypeName().equals(command.getTypeName())) {
                 return container;
             }
@@ -106,11 +128,37 @@ public class CommandHandler {
      */
     public static CommandContainer getCommand(Message message, @Nonnull String command) {
         List<CommandContainer> commands = new ArrayList<>();
-        for (Map.Entry<List<String>, CommandContainer> entry : COMMANDS.entrySet()) {
-            String commandPrefix = entry.getValue().getCommand().generateCommandPrefix(message);
-            for (String trigger : entry.getKey()) {
+        for (CommandContainer container : COMMANDS) {
+            String commandPrefix = container.getCommand().generateCommandPrefix(message);
+            for (String trigger : container.getTriggers()) {
                 if (command.equalsIgnoreCase(commandPrefix + trigger)) {
-                    commands.add(entry.getValue());
+                    commands.add(container);
+                }
+            }
+        }
+
+        return getHighPriorityCommandFromCommands(commands);
+    }
+
+    /**
+     * Get the command matching the given command, both the command prefix
+     * and the command trigger must match for the command to be returned,
+     * this method will ignore any command prefix that might've been
+     * set by the guild/server, and will instead use the default.
+     * <p>
+     * If a commands priority is set to {@link CommandPriority#IGNORED}
+     * the command will be omitted from the search.
+     *
+     * @param command The command string that should be matched with the commands.
+     * @return Possibly-null, The command matching the given command with the highest priority.
+     */
+    public static CommandContainer getRawCommand(@Nonnull String command) {
+        List<CommandContainer> commands = new ArrayList<>();
+        for (CommandContainer container : COMMANDS) {
+            String commandPrefix = container.getDefaultPrefix();
+            for (String trigger : container.getTriggers()) {
+                if (command.equalsIgnoreCase(commandPrefix + trigger)) {
+                    commands.add(container);
                 }
             }
         }
@@ -138,7 +186,7 @@ public class CommandHandler {
         List<CommandContainer> commands = new ArrayList<>();
         for (Map.Entry<String, String> entry : transformer.getAliases().entrySet()) {
             if (commandString.startsWith(entry.getKey())) {
-                CommandContainer commandContainer = getCommand(message, entry.getValue().split(" ")[0]);
+                CommandContainer commandContainer = getRawCommand(entry.getValue().split(" ")[0]);
                 if (commandContainer != null) {
                     commands.add(commandContainer);
                     aliasArguments = entry.getValue().split(" ");
@@ -170,14 +218,14 @@ public class CommandHandler {
      */
     public static CommandContainer getLazyCommand(@Nonnull String commandTrigger) {
         List<CommandContainer> commands = new ArrayList<>();
-        for (Map.Entry<List<String>, CommandContainer> entry : COMMANDS.entrySet()) {
-            if (entry.getValue().getPriority().equals(CommandPriority.IGNORED)) {
+        for (CommandContainer container : COMMANDS) {
+            if (container.getPriority().equals(CommandPriority.IGNORED)) {
                 continue;
             }
 
-            for (String trigger : entry.getKey()) {
+            for (String trigger : container.getTriggers()) {
                 if (commandTrigger.equalsIgnoreCase(trigger)) {
-                    commands.add(entry.getValue());
+                    commands.add(container);
                 }
             }
         }
@@ -223,10 +271,10 @@ public class CommandHandler {
         Checks.notNull(command.getDescription(new FakeCommandMessage()), String.format("%s :: %s", command.getName(), "Command description"));
 
         for (String trigger : command.getTriggers()) {
-            for (Map.Entry<List<String>, CommandContainer> entry : COMMANDS.entrySet()) {
-                for (String subTrigger : entry.getKey()) {
-                    if (Objects.equals(category.getPrefix() + trigger, entry.getValue().getDefaultPrefix() + subTrigger)) {
-                        throw new InvalidCommandPrefixException(category.getPrefix() + trigger, command.getName(), entry.getValue().getCommand().getName());
+            for (CommandContainer container : COMMANDS) {
+                for (String subTrigger : container.getTriggers()) {
+                    if (Objects.equals(category.getPrefix() + trigger, container.getDefaultPrefix() + subTrigger)) {
+                        throw new InvalidCommandPrefixException(category.getPrefix() + trigger, command.getName(), container.getCommand().getName());
                     }
                 }
             }
@@ -253,7 +301,7 @@ public class CommandHandler {
 
         Metrics.commandsExecuted.labels(command.getClass().getSimpleName()).inc(0D);
 
-        COMMANDS.put(command.getTriggers(), new CommandContainer(command, category, commandUri));
+        COMMANDS.add(new CommandContainer(command, category, commandUri));
     }
 
     /**
@@ -263,6 +311,6 @@ public class CommandHandler {
      * @return A collection of all the commands registered with the command handler.
      */
     public static Collection<CommandContainer> getCommands() {
-        return COMMANDS.values();
+        return COMMANDS;
     }
 }

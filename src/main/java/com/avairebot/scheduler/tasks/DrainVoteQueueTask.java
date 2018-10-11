@@ -1,13 +1,36 @@
+/*
+ * Copyright (c) 2018.
+ *
+ * This file is part of AvaIre.
+ *
+ * AvaIre is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * AvaIre is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with AvaIre.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ *
+ */
+
 package com.avairebot.scheduler.tasks;
 
 import com.avairebot.AvaIre;
 import com.avairebot.contracts.scheduler.Task;
 import com.avairebot.factories.RequestFactory;
+import com.avairebot.metrics.Metrics;
 import com.avairebot.requests.Response;
 import com.avairebot.time.Carbon;
 import com.avairebot.utilities.NumberUtil;
 import com.avairebot.vote.VoteCacheEntity;
 import com.avairebot.vote.VoteEntity;
+import com.avairebot.vote.VoteMetricType;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.User;
 import org.slf4j.Logger;
@@ -72,6 +95,8 @@ public class DrainVoteQueueTask implements Task {
 
         Carbon expiresIn = new Carbon(response.getResponse().header("Date")).addDay();
 
+        Metrics.dblVotes.labels(VoteMetricType.COMMAND.getName()).inc();
+
         log.info("Vote record for {} was found, registering vote that expires on {}", entity.getUserId(), expiresIn.toDateTimeString());
 
         User user = avaire.getShardManager().getUserById(entity.getUserId());
@@ -79,7 +104,7 @@ public class DrainVoteQueueTask implements Task {
             return;
         }
 
-        VoteCacheEntity voteEntity = avaire.getVoteManager().getVoteEntityWithFallback(avaire, user);
+        VoteCacheEntity voteEntity = avaire.getVoteManager().getVoteEntityWithFallback(user);
         voteEntity.setCarbon(expiresIn);
 
         avaire.getVoteManager().registerVoteFor(user.getIdLong());
@@ -92,19 +117,19 @@ public class DrainVoteQueueTask implements Task {
         if (textChannel == null || !textChannel.canTalk()) {
             if (voteEntity.isOptIn()) {
                 avaire.getVoteManager().getMessenger()
-                    .sendVoteWithPointsMessageInDM(user, voteEntity.getVotePoints());
+                    .SendThanksForVotingMessageInDM(user, voteEntity.getVotePoints());
             }
             return;
         }
 
         textChannel.sendMessage(
-            avaire.getVoteManager().getMessenger().buildVoteWithPointsMessage(
+            avaire.getVoteManager().getMessenger().buildThanksForVotingMessage(
                 "Your vote has been registered!", voteEntity.getVotePoints()
             )
         ).queue(null, error -> {
             if (voteEntity.isOptIn()) {
                 avaire.getVoteManager().getMessenger()
-                    .sendVoteWithPointsMessageInDM(user, voteEntity.getVotePoints());
+                    .SendThanksForVotingMessageInDM(user, voteEntity.getVotePoints());
             }
         });
 

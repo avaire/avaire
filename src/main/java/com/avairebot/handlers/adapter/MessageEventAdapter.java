@@ -1,9 +1,28 @@
+/*
+ * Copyright (c) 2018.
+ *
+ * This file is part of AvaIre.
+ *
+ * AvaIre is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * AvaIre is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with AvaIre.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ *
+ */
+
 package com.avairebot.handlers.adapter;
 
 import com.avairebot.AppInfo;
 import com.avairebot.AvaIre;
-import com.avairebot.cache.CacheItem;
-import com.avairebot.cache.CacheType;
 import com.avairebot.commands.CommandContainer;
 import com.avairebot.commands.CommandHandler;
 import com.avairebot.contracts.handlers.EventAdapter;
@@ -13,15 +32,11 @@ import com.avairebot.database.transformers.ChannelTransformer;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.factories.MessageFactory;
 import com.avairebot.handlers.DatabaseEventHolder;
-import com.avairebot.metrics.Metrics;
 import com.avairebot.middleware.MiddlewareStack;
 import com.avairebot.shared.DiscordConstants;
 import com.avairebot.utilities.ArrayUtil;
-import com.avairebot.utilities.LevelUtil;
-import com.avairebot.utilities.NumberUtil;
 import com.avairebot.utilities.RestActionUtil;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
-import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
@@ -91,18 +106,8 @@ public class MessageEventAdapter extends EventAdapter {
         }
 
         loadDatabasePropertiesIntoMemory(event).thenAccept(databaseEventHolder -> {
-            if (!avaire.areWeReadyYet() && !avaire.getBotAdmins().contains(event.getAuthor().getId())) {
-                return;
-            }
-
-            if (isUserBeingThrottledBySlowmodeInChannel(event, databaseEventHolder)) {
-                event.getMessage().delete().queue(null, RestActionUtil.ignore);
-                Metrics.slowmodeRatelimited.labels(event.getChannel().getId()).inc();
-                return;
-            }
-
             if (databaseEventHolder.getGuild() != null && databaseEventHolder.getPlayer() != null) {
-                LevelUtil.rewardPlayer(event, databaseEventHolder.getGuild(), databaseEventHolder.getPlayer());
+                avaire.getLevelManager().rewardPlayer(event, databaseEventHolder.getGuild(), databaseEventHolder.getPlayer());
             }
 
             CommandContainer container = CommandHandler.getCommand(avaire, event.getMessage(), event.getMessage().getContentRaw());
@@ -170,7 +175,7 @@ public class MessageEventAdapter extends EventAdapter {
 
     private boolean isSingleBotMention(String rawContent) {
         return rawContent.equals("<@" + avaire.getSelfUser().getId() + ">") ||
-            rawContent.equals("<!@" + avaire.getSelfUser().getId() + ">");
+            rawContent.equals("<@!" + avaire.getSelfUser().getId() + ">");
     }
 
     private boolean isAIEnabledForChannel(MessageReceivedEvent event, GuildTransformer transformer) {
@@ -180,29 +185,6 @@ public class MessageEventAdapter extends EventAdapter {
 
         ChannelTransformer channel = transformer.getChannel(event.getChannel().getId());
         return channel == null || channel.getAI().isEnabled();
-    }
-
-    private boolean isUserBeingThrottledBySlowmodeInChannel(MessageReceivedEvent event, DatabaseEventHolder databaseEventHolder) {
-        if (!event.getMessage().getChannelType().isGuild()) {
-            return false;
-        }
-
-        if (event.getMember().hasPermission(Permission.MESSAGE_MANAGE)) {
-            return false;
-        }
-
-        ChannelTransformer channel = databaseEventHolder.getGuild().getChannel(event.getChannel().getId());
-        if (channel == null || !channel.getSlowmode().isEnabled()) {
-            return false;
-        }
-
-        String fingerprint = String.format("slowmode.%s.%s.%s",
-            event.getGuild().getId(),
-            event.getChannel().getId(),
-            event.getAuthor().getId()
-        );
-
-        return isThrottled(avaire, fingerprint, channel.getSlowmode().getLimit(), channel.getSlowmode().getDecay());
     }
 
     private void sendTagInformationMessage(MessageReceivedEvent event) {
@@ -266,7 +248,7 @@ public class MessageEventAdapter extends EventAdapter {
             }
 
             GuildTransformer guild = looksLikeCommand(event.getMessage())
-                ? GuildController.fetchGuild(avaire, event.getMessage(), event.getChannel())
+                ? GuildController.fetchGuild(avaire, event.getMessage())
                 : GuildController.fetchGuild(avaire, event.getMessage());
 
             if (guild == null || !guild.isLevels() || event.getAuthor().isBot()) {
@@ -274,23 +256,6 @@ public class MessageEventAdapter extends EventAdapter {
             }
             return new DatabaseEventHolder(guild, PlayerController.fetchPlayer(avaire, event.getMessage()));
         });
-    }
-
-    private boolean isThrottled(AvaIre avaire, String fingerprint, int limit, int decay) {
-        CacheItem cacheItem = avaire.getCache().getAdapter(CacheType.MEMORY).getRaw(fingerprint);
-
-        if (cacheItem == null) {
-            avaire.getCache().getAdapter(CacheType.MEMORY).put(fingerprint, 1, decay);
-            return false;
-        }
-
-        int value = NumberUtil.parseInt(cacheItem.getValue().toString(), 0);
-        if (value++ >= limit) {
-            return true;
-        }
-
-        avaire.getCache().getAdapter(CacheType.MEMORY).put(fingerprint, value, decay);
-        return false;
     }
 
     private boolean looksLikeCommand(Message message) {

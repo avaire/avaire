@@ -1,3 +1,24 @@
+/*
+ * Copyright (c) 2018.
+ *
+ * This file is part of AvaIre.
+ *
+ * AvaIre is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * AvaIre is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with AvaIre.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ *
+ */
+
 package com.avairebot.commands.music;
 
 import com.avairebot.AvaIre;
@@ -26,12 +47,12 @@ public class SeekCommand extends Command {
 
     @Override
     public String getDescription() {
-        return "Jumps to the given time ";
+        return "Jumps to the given time code in the track that is currently playing.";
     }
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`:command <time>`");
+        return Collections.singletonList("`:command <time>` - Jumps to the given time code.");
     }
 
     @Override
@@ -57,8 +78,12 @@ public class SeekCommand extends Command {
     public boolean onCommand(CommandMessage context, String[] args) {
         GuildMusicManager musicManager = AudioHandler.getDefaultAudioHandler().getGuildAudioPlayer(context.getGuild());
 
-        if (musicManager.getPlayer().getPlayingTrack() == null) {
+        if (!musicManager.isReady() || musicManager.getPlayer().getPlayingTrack() == null) {
             return sendErrorMessage(context, context.i18n("error", generateCommandPrefix(context.getMessage())));
+        }
+
+        if (!musicManager.canPreformSpecialAction(this, context, "seek a song")) {
+            return false;
         }
 
         if (musicManager.getPlayer().getPlayingTrack().getInfo().isStream) {

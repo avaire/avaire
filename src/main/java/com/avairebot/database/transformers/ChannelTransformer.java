@@ -1,7 +1,29 @@
+/*
+ * Copyright (c) 2018.
+ *
+ * This file is part of AvaIre.
+ *
+ * AvaIre is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * AvaIre is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with AvaIre.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ *
+ */
+
 package com.avairebot.database.transformers;
 
 import com.avairebot.commands.Category;
 import com.avairebot.contracts.database.transformers.Transformer;
+import com.avairebot.contracts.debug.Evalable;
 import com.avairebot.database.collection.DataRow;
 import com.google.gson.internal.LinkedTreeMap;
 
@@ -14,7 +36,6 @@ public class ChannelTransformer extends Transformer {
     private final BooleanModule ai = new BooleanModule();
     private final MessageModule welcome = new MessageModule();
     private final MessageModule goodbye = new MessageModule();
-    private final SlowmodeModule slowmode = new SlowmodeModule();
 
     public ChannelTransformer(DataRow data) {
         this(data, null);
@@ -47,16 +68,6 @@ public class ChannelTransformer extends Transformer {
                 goodbye.setMessage(goodbyeData.getString("message", null));
                 goodbye.setEmbedColor(goodbyeData.getString("embed", null));
             }
-
-            if (data.get("slowmode", null) != null) {
-                DataRow slowmodeData = new DataRow((LinkedTreeMap<String, Object>) data.get("slowmode"));
-
-                if (slowmodeData.getBoolean("enabled", false)) {
-                    slowmode.setEnabled(true);
-                    slowmode.setDecay(slowmodeData.getInt("messageLimit", 5));
-                    slowmode.setLimit(slowmodeData.getInt("messagesPerLimit", 1));
-                }
-            }
         }
     }
 
@@ -80,17 +91,12 @@ public class ChannelTransformer extends Transformer {
         return goodbye;
     }
 
-    public SlowmodeModule getSlowmode() {
-        return slowmode;
-    }
-
     public HashMap<String, Object> toMap() {
         HashMap<String, Object> objects = new HashMap<>();
 
         objects.put("ai", ai.toMap());
         objects.put("welcome", welcome.toMap());
         objects.put("goodbye", goodbye.toMap());
-        objects.put("slowmode", slowmode.toMap());
 
         return objects;
     }
@@ -126,7 +132,7 @@ public class ChannelTransformer extends Transformer {
         return true;
     }
 
-    public class MessageModule {
+    public class MessageModule extends Evalable {
         private boolean enabled = false;
         private String message = null;
         private String embedColor = null;
@@ -166,7 +172,7 @@ public class ChannelTransformer extends Transformer {
         }
     }
 
-    public class BooleanModule {
+    public class BooleanModule extends Evalable {
         private boolean enabled = true;
 
         public boolean isEnabled() {
@@ -186,7 +192,7 @@ public class ChannelTransformer extends Transformer {
         }
     }
 
-    public class SlowmodeModule {
+    public class SlowmodeModule extends Evalable {
         private int limit = 1;
         private int decay = 5;
         private boolean enabled = false;

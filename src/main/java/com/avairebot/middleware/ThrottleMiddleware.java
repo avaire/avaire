@@ -1,3 +1,24 @@
+/*
+ * Copyright (c) 2018.
+ *
+ * This file is part of AvaIre.
+ *
+ * AvaIre is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * AvaIre is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with AvaIre.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ *
+ */
+
 package com.avairebot.middleware;
 
 import com.avairebot.AvaIre;
@@ -6,6 +27,7 @@ import com.avairebot.contracts.middleware.Middleware;
 import com.avairebot.contracts.middleware.ThrottleMessage;
 import com.avairebot.factories.MessageFactory;
 import com.avairebot.metrics.Metrics;
+import com.avairebot.time.Carbon;
 import com.avairebot.utilities.CacheUtil;
 import com.avairebot.utilities.NumberUtil;
 import com.google.common.cache.Cache;
@@ -57,6 +79,17 @@ public class ThrottleMiddleware extends Middleware {
 
             ThrottleEntity entity = getEntityFromCache(fingerprint, maxAttempts, decaySeconds);
             if (entity.getHits() >= maxAttempts) {
+                Carbon expires = type.equals(ThrottleType.USER)
+                    ? avaire.getBlacklist().getRatelimit().hit(type, message.getAuthor().getIdLong())
+                    : avaire.getBlacklist().getRatelimit().hit(type, message.getGuild().getIdLong());
+
+                if (expires != null) {
+                    avaire.getBlacklist().getRatelimit().sendBlacklistMessage(
+                        type.equals(ThrottleType.USER) ? message.getAuthor() : message.getChannel(), expires
+                    );
+                    return false;
+                }
+
                 return cancelCommandThrottleRequest(message, stack, entity);
             }
 
@@ -113,7 +146,7 @@ public class ThrottleMiddleware extends Middleware {
         return entity;
     }
 
-    private enum ThrottleType {
+    public enum ThrottleType {
         USER("user", "throttle.user.%s.%s.%s"),
         CHANNEL("channel", "throttle.channel.%s.%s.%s"),
         GUILD("guild", "throttle.guild.%s.%s");

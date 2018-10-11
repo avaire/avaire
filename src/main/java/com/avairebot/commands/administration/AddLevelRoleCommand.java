@@ -1,3 +1,24 @@
+/*
+ * Copyright (c) 2018.
+ *
+ * This file is part of AvaIre.
+ *
+ * AvaIre is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * AvaIre is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with AvaIre.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ *
+ */
+
 package com.avairebot.commands.administration;
 
 import com.avairebot.AvaIre;
@@ -48,6 +69,7 @@ public class AddLevelRoleCommand extends Command {
     @Override
     public List<Class<? extends Command>> getRelations() {
         return Arrays.asList(
+            LevelHierarchyCommand.class,
             ListLevelRolesCommand.class,
             RemoveLevelRoleCommand.class
         );
@@ -80,26 +102,26 @@ public class AddLevelRoleCommand extends Command {
         }
 
         if (transformer.getLevelRoles().size() >= transformer.getType().getLimits().getLevelRoles()) {
-            context.makeWarning("The server doesn't have any more level role slots, you can remove existing level roles to free up slots.")
+            context.makeWarning(context.i18n("noSlotsLeft"))
                 .queue();
 
             return false;
         }
 
         if (args.length == 0) {
-            return sendErrorMessage(context, "Missing argument, the `level requirement` argument is required.");
+            return sendErrorMessage(context, "errors.missingArgument", "level requirement");
         }
 
         int level = NumberUtil.parseInt(args[0], 0);
         if (level < 1) {
-            context.makeWarning("Invalid level requirement given, the level requirement must be a positive number.")
+            context.makeWarning(context.i18n("invalidLevel"))
                 .queue();
 
             return false;
         }
 
         if (args.length == 1) {
-            return sendErrorMessage(context, "Missing argument, the `role` argument is required.");
+            return sendErrorMessage(context, "errors.missingArgument", "role");
         }
 
         Role role = RoleUtil.getRoleFromMentionsOrName(context.getMessage(),
@@ -107,14 +129,14 @@ public class AddLevelRoleCommand extends Command {
         );
 
         if (role == null) {
-            context.makeWarning(":user Invalid role, I couldn't find any role called **:role**")
+            context.makeWarning(context.i18nRaw("administration.common.invalidRole"))
                 .set("role", String.join(" ", Arrays.copyOfRange(args, 1, args.length)))
                 .queue();
             return false;
         }
 
         if (transformer.getLevelRoles().containsValue(role.getId())) {
-            context.makeWarning(":user The **:role** is already a level role, you can't use the same role twice.")
+            context.makeWarning(context.i18n("alreadyLevelRole"))
                 .set("role", role.getName())
                 .queue();
             return false;
@@ -130,7 +152,7 @@ public class AddLevelRoleCommand extends Command {
             );
 
             if (roleById != null) {
-                context.makeWarning("There is already a role assigned to level **:level**, only one role can be given per level.")
+                context.makeWarning(context.i18n("alreadyARoleAtLevel"))
                     .set("level", level)
                     .queue();
 
@@ -146,7 +168,7 @@ public class AddLevelRoleCommand extends Command {
                     statement.set("level_roles", AvaIre.gson.toJson(transformer.getLevelRoles()), true);
                 });
 
-            context.makeSuccess("Role **:role** role has been added to the level-up role list.\nThe server has `:slots` more level role slots available.")
+            context.makeSuccess(context.i18n("success"))
                 .set("slots", transformer.getType().getLimits().getLevelRoles() - transformer.getLevelRoles().size())
                 .set("role", role.getName())
                 .queue();

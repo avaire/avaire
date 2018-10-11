@@ -16,12 +16,12 @@ import static com.sedmelluq.discord.lavaplayer.source.twitch.TwitchStreamAudioSo
 /**
  * Audio track that handles processing Twitch tracks.
  * <p>
- * This is a copy of {@link com.sedmelluq.discord.lavaplayer.source.twitch.TwitchStreamAudioTrack}
+ * The class is taken from PR #132 from the Lavaplayer repository.
+ * https://github.com/sedmelluq/lavaplayer/pull/132
  */
 public class TwitchStreamAudioTrack extends M3uStreamAudioTrack {
 
     private static final Logger log = LoggerFactory.getLogger(TwitchStreamAudioTrack.class);
-
     private final TwitchStreamAudioSourceManager sourceManager;
 
     /**

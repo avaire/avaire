@@ -1,20 +1,44 @@
+/*
+ * Copyright (c) 2018.
+ *
+ * This file is part of AvaIre.
+ *
+ * AvaIre is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * AvaIre is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with AvaIre.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ *
+ */
+
 package com.avairebot.metrics;
 
 import ch.qos.logback.classic.LoggerContext;
 import com.avairebot.AvaIre;
+import com.avairebot.blacklist.Ratelimit;
 import com.avairebot.commands.Category;
 import com.avairebot.commands.utility.GlobalLeaderboardCommand;
 import com.avairebot.commands.utility.LeaderboardCommand;
+import com.avairebot.contracts.commands.InteractionCommand;
 import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.controllers.PlayerController;
 import com.avairebot.database.controllers.PlaylistController;
 import com.avairebot.handlers.adapter.JDAStateEventAdapter;
+import com.avairebot.level.LevelManager;
 import com.avairebot.metrics.filters.AreWeReadyYetFilter;
 import com.avairebot.metrics.filters.HttpFilter;
 import com.avairebot.metrics.handlers.SparkExceptionHandler;
 import com.avairebot.metrics.routes.*;
 import com.avairebot.middleware.ThrottleMiddleware;
-import com.avairebot.utilities.LevelUtil;
+import com.avairebot.scheduler.jobs.LavalinkGarbageNodeCollectorJob;
 import io.prometheus.client.Counter;
 import io.prometheus.client.Gauge;
 import io.prometheus.client.Histogram;
@@ -104,12 +128,6 @@ public class Metrics {
         .labelNames("class") // use the simple name of the command class
         .register();
 
-    public static final Counter slowmodeRatelimited = Counter.build()
-        .name("avaire_slowmode_ratelimited_total")
-        .help("Total ratelimited messages")
-        .labelNames("channel")
-        .register();
-
     public static final Counter commandsReceived = Counter.build()
         .name("avaire_commands_received_total")
         .help("Total received commands. Some of these might get ratelimited.")
@@ -132,6 +150,16 @@ public class Metrics {
         .name("avaire_commands_exceptions_total")
         .help("Total uncaught exceptions thrown by command invocation")
         .labelNames("class") // class of the exception
+        .register();
+
+    public static final Gauge commandsPerMinute = Gauge.build()
+        .name("avaire_commands_per_minute_total")
+        .help("Total amount of commands that are being invoked per minute")
+        .register();
+
+    public static final Gauge commandAttemptsPerMinute = Gauge.build()
+        .name("avaire_command_attempts_per_minute_total")
+        .help("Total amount of command attempts that are being invoked per minute")
         .register();
 
     // AI Requests
@@ -158,6 +186,27 @@ public class Metrics {
     public static final Counter databaseQueries = Counter.build()
         .name("avaire_database_queries")
         .help("Total prepared statements created for the given type")
+        .labelNames("type")
+        .register();
+
+    // Vote statistics
+
+    public static final Counter dblVotes = Counter.build()
+        .name("avaire_dbl_votes")
+        .help("Vote requests through the webhook vs the command check")
+        .labelNames("type")
+        .register();
+
+    public static final Gauge validVotes = Gauge.build()
+        .name("avaire_total_valid_votes")
+        .help("The amount of valid votes currently active, updated once every minute")
+        .register();
+
+    // Blacklist
+
+    public static final Gauge blacklist = Gauge.build()
+        .name("avaire_blacklist_current")
+        .help("The amount of servers and users that are currently on the blacklist")
         .labelNames("type")
         .register();
 
@@ -191,7 +240,7 @@ public class Metrics {
         Metrics.initializeEventMetrics();
 
         CacheMetricsCollector cacheMetrics = new CacheMetricsCollector().register();
-        cacheMetrics.addCache("levels", LevelUtil.cache);
+        cacheMetrics.addCache("levels", LevelManager.cache);
         cacheMetrics.addCache("guilds", GuildController.cache);
         cacheMetrics.addCache("players", PlayerController.cache);
         cacheMetrics.addCache("playlists", PlaylistController.cache);
@@ -201,6 +250,9 @@ public class Metrics {
         cacheMetrics.addCache("autorole", JDAStateEventAdapter.cache);
         cacheMetrics.addCache("leaderboard", LeaderboardCommand.cache);
         cacheMetrics.addCache("global-leaderboard", GlobalLeaderboardCommand.cache);
+        cacheMetrics.addCache("interaction-lottery", InteractionCommand.cache);
+        cacheMetrics.addCache("blacklist-ratelimit", Ratelimit.cache);
+        cacheMetrics.addCache("lavalink-destroy-cleanup", LavalinkGarbageNodeCollectorJob.cache);
 
         if (!avaire.getConfig().getBoolean("metrics.enabled", true)) {
             log.info("Metrics web API is disabled, skipping igniting Spark API");
@@ -220,7 +272,9 @@ public class Metrics {
         Spark.before(new HttpFilter());
         Spark.before(new AreWeReadyYetFilter(avaire));
 
+        Spark.get("/leaderboard/:id", new GetLeaderboardPlayers(MetricsHolder.METRICS));
         Spark.get("/players/cleanup", new GetPlayerCleanup(MetricsHolder.METRICS));
+        Spark.post("/guilds/cleanup", new PostGuildCleanup(MetricsHolder.METRICS));
         Spark.get("/guilds/cleanup", new GetGuildCleanup(MetricsHolder.METRICS));
         Spark.get("/guilds/:ids/exists", new GetGuildsExists(MetricsHolder.METRICS));
         Spark.get("/guilds/:ids", new GetGuilds(MetricsHolder.METRICS));

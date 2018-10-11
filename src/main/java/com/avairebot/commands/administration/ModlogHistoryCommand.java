@@ -1,3 +1,24 @@
+/*
+ * Copyright (c) 2018.
+ *
+ * This file is part of AvaIre.
+ *
+ * AvaIre is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * AvaIre is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with AvaIre.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ *
+ */
+
 package com.avairebot.commands.administration;
 
 import com.avairebot.AvaIre;
@@ -63,7 +84,7 @@ public class ModlogHistoryCommand extends Command {
     @Override
     public List<String> getMiddleware() {
         return Arrays.asList(
-            "require:user,general.manage_server",
+            "require:user,text.manage_messages",
             "throttle:channel,1,5"
         );
     }
@@ -72,7 +93,7 @@ public class ModlogHistoryCommand extends Command {
     public boolean onCommand(CommandMessage context, String[] args) {
         User user = MentionableUtil.getUser(context, args);
         if (user == null) {
-            return sendErrorMessage(context, "You must mention a valid `user` you want to display the modlog history for.");
+            return sendErrorMessage(context, context.i18n("mustMentionUser"));
         }
 
         try {
@@ -82,8 +103,10 @@ public class ModlogHistoryCommand extends Command {
                 .get();
 
             if (items.isEmpty()) {
-                context.makeWarning("No modlog history was found for this user.")
-                    .setTitle(user.getName() + "#" + user.getDiscriminator() + " History (0)")
+                context.makeWarning(context.i18n("noHistory"))
+                    .setTitle(context.i18n("title",
+                        user.getName(), user.getDiscriminator(), 0
+                    ))
                     .queue();
 
                 return true;
@@ -92,12 +115,12 @@ public class ModlogHistoryCommand extends Command {
             List<String> records = new ArrayList<>();
             items.forEach(row -> {
                 ModlogType type = ModlogType.fromId(row.getInt("type", 0));
-                String reason = row.getString("reason", "No reason was given.");
+                String reason = row.getString("reason", context.i18n("noReasonGiven"));
 
-                records.add(String.format("**Case ID #%s** | %s\n\t%s",
+                records.add(context.i18n("entry",
                     row.getString("modlogCase"),
                     type == null ? "Unknown" : type.getName(),
-                    reason == null ? "No reason was given." : reason
+                    reason
                 ));
             });
 
@@ -111,7 +134,9 @@ public class ModlogHistoryCommand extends Command {
             messages.add("\n" + paginator.generateFooter(generateCommandTrigger(context.getMessage())));
 
             context.makeInfo(String.join("\n", messages))
-                .setTitle(user.getName() + "#" + user.getDiscriminator() + " History (" + paginator.getTotal() + ")")
+                .setTitle(context.i18n("title",
+                    user.getName(), user.getDiscriminator(), paginator.getTotal()
+                ))
                 .queue();
         } catch (SQLException e) {
             AvaIre.getLogger().error("Failed to load log records for user {} in guild {}",

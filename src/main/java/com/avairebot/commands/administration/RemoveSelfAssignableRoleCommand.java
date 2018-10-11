@@ -1,3 +1,24 @@
+/*
+ * Copyright (c) 2018.
+ *
+ * This file is part of AvaIre.
+ *
+ * AvaIre is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * AvaIre is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with AvaIre.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ *
+ */
+
 package com.avairebot.commands.administration;
 
 import com.avairebot.AvaIre;
@@ -70,13 +91,14 @@ public class RemoveSelfAssignableRoleCommand extends Command {
         }
 
         if (args.length == 0) {
-            return sendErrorMessage(context, "Missing argument, the `role` argument is required.");
+            return sendErrorMessage(context, "errors.missingArgument", "role");
         }
 
         String roleName = String.join(" ", args);
         Role role = RoleUtil.getRoleFromMentionsOrName(context.getMessage(), roleName);
         if (role == null) {
-            context.makeWarning(":user Invalid role, I couldn't find any role called **:role**")
+            context.makeWarning(context.i18nRaw("" +
+                "administration.common.invalidRole"))
                 .set("role", roleName)
                 .queue();
             return false;
@@ -94,7 +116,7 @@ public class RemoveSelfAssignableRoleCommand extends Command {
                     statement.set("claimable_roles", AvaIre.gson.toJson(transformer.getSelfAssignableRoles()));
                 });
 
-            context.makeSuccess("Role **:role** role has been removed from the self-assignable list.\nThe server has `:slots` more self-assignable roles slots available.")
+            context.makeSuccess(context.i18n("message"))
                 .set("slots", transformer.getType().getLimits().getSelfAssignableRoles() - transformer.getSelfAssignableRoles().size())
                 .set("role", role.getName()).queue();
 

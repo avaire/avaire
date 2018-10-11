@@ -1,3 +1,24 @@
+/*
+ * Copyright (c) 2018.
+ *
+ * This file is part of AvaIre.
+ *
+ * AvaIre is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * AvaIre is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with AvaIre.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ *
+ */
+
 package com.avairebot.middleware;
 
 import com.avairebot.AvaIre;
@@ -22,12 +43,25 @@ public class IsBotAdminMiddleware extends Middleware {
 
     @Override
     public boolean handle(@Nonnull Message message, @Nonnull MiddlewareStack stack, String... args) {
-        if (!avaire.getBotAdmins().contains(message.getAuthor().getId())) {
-            MessageFactory.makeError(message, ":warning: You must be a bot administrator to use this command!")
-                .queue(newMessage -> newMessage.delete().queueAfter(45, TimeUnit.SECONDS), RestActionUtil.ignore);
-            return false;
+        if (avaire.getBotAdmins().isAdmin(message.getAuthor().getId()).isAdmin()) {
+            return stack.next();
+        }
+
+        if (args.length == 0 || !args[0].equalsIgnoreCase("use-role")) {
+            return sendMustBeBotAdminMessage(message);
+        }
+
+        if (!avaire.getBotAdmins().isRoleAdmin(message.getAuthor().getIdLong()).isAdmin()) {
+            return sendMustBeBotAdminMessage(message);
         }
 
         return stack.next();
+    }
+
+    private boolean sendMustBeBotAdminMessage(@Nonnull Message message) {
+        MessageFactory.makeError(message, ":warning: You must be a bot administrator to use this command!")
+            .queue(newMessage -> newMessage.delete().queueAfter(45, TimeUnit.SECONDS), RestActionUtil.ignore);
+
+        return false;
     }
 }

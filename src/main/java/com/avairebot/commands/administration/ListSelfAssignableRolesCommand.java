@@ -1,3 +1,24 @@
+/*
+ * Copyright (c) 2018.
+ *
+ * This file is part of AvaIre.
+ *
+ * AvaIre is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * AvaIre is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with AvaIre.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ *
+ */
+
 package com.avairebot.commands.administration;
 
 import com.avairebot.AvaIre;
@@ -30,6 +51,11 @@ public class ListSelfAssignableRolesCommand extends Command {
     }
 
     @Override
+    public List<String> getUsageInstructions() {
+        return Collections.singletonList("`:command` - List all the self-assignable roles for the server.");
+    }
+
+    @Override
     public List<Class<? extends Command>> getRelations() {
         return Arrays.asList(
             AddSelfAssignableRoleCommand.class,
@@ -50,7 +76,7 @@ public class ListSelfAssignableRolesCommand extends Command {
         }
 
         if (transformer.getSelfAssignableRoles().isEmpty()) {
-            context.makeWarning("There are currently no self-assignable roles for this server.").queue();
+            context.makeWarning(context.i18n("noSelfAssignableRoles")).queue();
             return true;
         }
 
@@ -73,7 +99,7 @@ public class ListSelfAssignableRolesCommand extends Command {
         messages.add("\n" + paginator.generateFooter(generateCommandTrigger(context.getMessage())));
 
         context.makeSuccess(String.join("\n", messages))
-            .setTitle(String.format("There are %s self-assignable roles", paginator.getTotal()))
+            .setTitle(context.i18n("title", paginator.getTotal()))
             .requestedBy(context.getMember())
             .queue();
 

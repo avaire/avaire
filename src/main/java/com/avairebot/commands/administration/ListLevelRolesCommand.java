@@ -1,3 +1,24 @@
+/*
+ * Copyright (c) 2018.
+ *
+ * This file is part of AvaIre.
+ *
+ * AvaIre is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * AvaIre is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with AvaIre.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ *
+ */
+
 package com.avairebot.commands.administration;
 
 import com.avairebot.AvaIre;
@@ -24,7 +45,6 @@ public class ListLevelRolesCommand extends Command {
         return "List Level Roles Command";
     }
 
-
     @Override
     public String getDescription() {
         return "List all the leveling roles and the level require to get them.";
@@ -40,8 +60,9 @@ public class ListLevelRolesCommand extends Command {
     @Override
     public List<Class<? extends Command>> getRelations() {
         return Arrays.asList(
-            AddLevelRoleCommand.class,
-            RemoveLevelRoleCommand.class
+            RemoveLevelRoleCommand.class,
+            LevelHierarchyCommand.class,
+            AddLevelRoleCommand.class
         );
     }
 
@@ -71,7 +92,7 @@ public class ListLevelRolesCommand extends Command {
         }
 
         if (transformer.getLevelRoles().isEmpty()) {
-            context.makeInfo("There are currently no level roles, an administrator can add roles to the level up table using the `:command` command")
+            context.makeInfo(context.i18n("noLevelRoles"))
                 .set("command", CommandHandler.getCommand(AddLevelRoleCommand.class)
                     .getCommand().generateCommandTrigger(context.getMessage()))
                 .queue();
@@ -105,7 +126,7 @@ public class ListLevelRolesCommand extends Command {
         messages.add("\n" + paginator.generateFooter(generateCommandTrigger(context.getMessage())));
 
         context.makeSuccess(String.join("\n", messages))
-            .setTitle(String.format("List of Level Roles (%s)", paginator.getTotal()))
+            .setTitle(context.i18n("listRoles", paginator.getTotal()))
             .requestedBy(context.getMember())
             .queue();
 

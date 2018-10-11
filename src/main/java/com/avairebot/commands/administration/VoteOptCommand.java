@@ -1,3 +1,24 @@
+/*
+ * Copyright (c) 2018.
+ *
+ * This file is part of AvaIre.
+ *
+ * AvaIre is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * AvaIre is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with AvaIre.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ *
+ */
+
 package com.avairebot.commands.administration;
 
 import com.avairebot.AvaIre;
@@ -60,12 +81,12 @@ public class VoteOptCommand extends Command {
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
         if (args.length == 0) {
-            return sendErrorMessage(context, "Missing argument, you must either parse `in` or `out` to opt in or out of vote messages.");
+            return sendErrorMessage(context, context.i18n("invalidArgument"));
         }
 
         int opt = getOptValue(args[0]);
         if (opt == -1) {
-            return sendErrorMessage(context, "Invalid argument, you must either parse `in` or `out` to opt in or out of vote messages.");
+            return sendErrorMessage(context, context.i18n("invalidArgument"));
         }
 
         try {
@@ -76,11 +97,11 @@ public class VoteOptCommand extends Command {
         } catch (SQLException ignored) {
         }
 
-        context.makeSuccess("You have now opt-:type of getting vote messages.")
-            .set("type", opt == 0 ? "out" : "in")
+        context.makeSuccess(context.i18n("message"))
+            .set("type", context.i18n("type." + (opt == 0 ? "out" : "in")))
             .queue();
 
-        avaire.getVoteManager().getVoteEntityWithFallback(avaire, context.getAuthor()).setOptIn(opt == 1);
+        avaire.getVoteManager().getVoteEntityWithFallback(context.getAuthor()).setOptIn(opt == 1);
 
         return true;
     }

@@ -1,3 +1,24 @@
+/*
+ * Copyright (c) 2018.
+ *
+ * This file is part of AvaIre.
+ *
+ * AvaIre is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * AvaIre is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with AvaIre.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ *
+ */
+
 package com.avairebot.commands.system;
 
 import com.avairebot.AvaIre;
@@ -5,13 +26,13 @@ import com.avairebot.audio.LavalinkManager;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.commands.CommandPriority;
 import com.avairebot.contracts.commands.SystemCommand;
+import com.avairebot.utilities.NumberUtil;
 import lavalink.client.io.LavalinkLoadBalancer;
 import lavalink.client.io.LavalinkSocket;
 import lavalink.client.io.RemoteStats;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -19,8 +40,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class LavalinkCommand extends SystemCommand {
-
-    private static final DecimalFormat percentageFormat = new DecimalFormat("###.##");
 
     public LavalinkCommand(AvaIre avaire) {
         super(avaire);
@@ -43,6 +62,15 @@ public class LavalinkCommand extends SystemCommand {
             "`:command show <node>` - Shows in-depth information about the node",
             "`:command remove <name> ` - Removes the node from Lavalink",
             "`:command add <name> <url> <pass>` - Adds the node to Lavalink"
+        );
+    }
+
+    @Override
+    public List<String> getExampleUsage() {
+        return Arrays.asList(
+            "`:command show some-node`",
+            "`:command remove some-node`",
+            "`:command add some-node ws://localhost:8888 secretpassword`"
         );
     }
 
@@ -220,7 +248,7 @@ public class LavalinkCommand extends SystemCommand {
         long factor = (long) Math.pow(10, 2);
         value = value * factor;
         long tmp = Math.round(value);
-        return percentageFormat.format((double) tmp / factor);
+        return NumberUtil.formatNicelyWithDecimals((double) tmp / factor);
     }
 
     private String formatPercent(double percent) {

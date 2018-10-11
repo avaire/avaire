@@ -1,3 +1,24 @@
+/*
+ * Copyright (c) 2018.
+ *
+ * This file is part of AvaIre.
+ *
+ * AvaIre is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * AvaIre is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with AvaIre.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ *
+ */
+
 package com.avairebot.middleware;
 
 import com.avairebot.AvaIre;
@@ -5,16 +26,31 @@ import com.avairebot.commands.CommandContainer;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.contracts.middleware.Middleware;
 import com.avairebot.handlers.DatabaseEventHolder;
+import com.avairebot.metrics.Metrics;
 import com.avairebot.middleware.global.IncrementMetricsForCommand;
 import com.avairebot.middleware.global.IsCategoryEnabled;
 import com.avairebot.middleware.global.ProcessCommand;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 import net.dv8tion.jda.core.entities.Message;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.concurrent.TimeUnit;
 
 public class MiddlewareStack {
+
+    public static final LoadingCache<Long, Boolean> commandAttemptsPerMinute = CacheBuilder.newBuilder()
+        .expireAfterWrite(1, TimeUnit.MINUTES)
+        .build(new CacheLoader<Long, Boolean>() {
+            @Override
+            public Boolean load(@Nonnull Long key) throws Exception {
+                return true;
+            }
+        });
 
     private static ProcessCommand processCommand;
     private static IsCategoryEnabled isCategoryEnabled;
@@ -40,6 +76,12 @@ public class MiddlewareStack {
 
         middlewares.add(new MiddlewareContainer(isCategoryEnabled));
         middlewares.add(new MiddlewareContainer(incrementMetricsForCommand));
+
+        // Increments the command per minute cache and sets the time
+        // in nano seconds that the command was invoked so we can
+        // remove it after one minute has passed.
+        Metrics.commandAttemptsPerMinute.inc();
+        commandAttemptsPerMinute.put(System.nanoTime(), false);
     }
 
     public MiddlewareStack(Message message, CommandContainer command, DatabaseEventHolder databaseEventHolder) {

@@ -1,6 +1,28 @@
+/*
+ * Copyright (c) 2018.
+ *
+ * This file is part of AvaIre.
+ *
+ * AvaIre is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * AvaIre is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with AvaIre.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ *
+ */
+
 package com.avairebot.commands.administration;
 
 import com.avairebot.AvaIre;
+import com.avairebot.Constants;
 import com.avairebot.commands.Category;
 import com.avairebot.commands.CategoryHandler;
 import com.avairebot.commands.CommandMessage;
@@ -16,10 +38,6 @@ import java.util.Collections;
 import java.util.List;
 
 public class CategoriesCommand extends Command {
-
-    private static final String ONLINE = "<:online:324986081378435072>";
-    private static final String DISABLED = "<:away:324986135346675712>";
-    private static final String DISABLE_GLOBALLY = "<:dnd:324986174806425610>";
 
     public CategoriesCommand(AvaIre avaire) {
         super(avaire, false);
@@ -38,6 +56,11 @@ public class CategoriesCommand extends Command {
     @Override
     public List<String> getUsageInstructions() {
         return Collections.singletonList("`:command [channel]` - Displays the status of the command categories in the mentioned channel, or the current channel if no channel was mentioned.");
+    }
+
+    @Override
+    public List<String> getExampleUsage() {
+        return Collections.singletonList("`:command #general`");
     }
 
     @Override
@@ -62,12 +85,6 @@ public class CategoriesCommand extends Command {
             channel = context.getMentionedChannels().get(0);
         }
 
-        String status = String.join("   ",
-            ONLINE + " Enabled",
-            DISABLED + " Disabled in Channel",
-            DISABLE_GLOBALLY + " Disabled Globally"
-        );
-
         GuildTransformer guildTransformer = context.getGuildTransformer();
         if (guildTransformer == null) {
             return sendErrorMessage(context, "errors.errorOccurredWhileLoading", "server settings");
@@ -80,20 +97,23 @@ public class CategoriesCommand extends Command {
             if (category.isGlobalOrSystem()) continue;
 
             if (!transformer.isCategoryEnabledGlobally(category)) {
-                items.add(DISABLE_GLOBALLY + category.getName());
+                items.add(Constants.EMOTE_DND + category.getName());
                 continue;
             }
 
             if (!transformer.isCategoryEnabled(category)) {
-                items.add(DISABLED + category.getName());
+                items.add(Constants.EMOTE_AWAY + category.getName());
                 continue;
             }
 
-            items.add(ONLINE + category.getName());
+            items.add(Constants.EMOTE_ONLINE + category.getName());
         }
 
-        context.makeInfo(status + "\n\n" + String.join("\n", items))
-            .setTitle("Command Category Status for #" + channel.getName())
+        context.makeInfo(context.i18n("status") + "\n\n" + String.join("\n", items))
+            .setTitle(context.i18n("title", channel.getName()))
+            .set("emoteEnabled", Constants.EMOTE_ONLINE)
+            .set("emoteDisabledInChannel", Constants.EMOTE_AWAY)
+            .set("emoteDisabledGlobally", Constants.EMOTE_DND)
             .queue();
 
         return true;

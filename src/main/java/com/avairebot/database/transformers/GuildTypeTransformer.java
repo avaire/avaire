@@ -1,17 +1,44 @@
+/*
+ * Copyright (c) 2018.
+ *
+ * This file is part of AvaIre.
+ *
+ * AvaIre is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * AvaIre is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with AvaIre.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ *
+ */
+
 package com.avairebot.database.transformers;
 
 import com.avairebot.AvaIre;
 import com.avairebot.contracts.database.transformers.Transformer;
+import com.avairebot.contracts.debug.Evalable;
 import com.avairebot.database.collection.DataRow;
 
 public class GuildTypeTransformer extends Transformer {
 
     private static final String defaultName = "Default";
 
-    private String name = defaultName;
-    private GuildTypeLimits limits = new GuildTypeLimits();
+    protected String name = defaultName;
 
-    public GuildTypeTransformer(DataRow data) {
+    GuildTypeLimits limits = new GuildTypeLimits();
+
+    GuildTypeTransformer() {
+        super(null);
+    }
+
+    GuildTypeTransformer(DataRow data) {
         super(data);
 
         if (hasData()) {
@@ -48,12 +75,13 @@ public class GuildTypeTransformer extends Transformer {
         return limits;
     }
 
-    public class GuildTypeLimits {
+    public class GuildTypeLimits extends Evalable {
 
-        private GuildTypePlaylist playlist = new GuildTypePlaylist();
-        private int aliases = 20;
-        private int selfAssignableRoles = 15;
-        private int levelRoles = 10;
+        protected GuildTypePlaylist playlist = new GuildTypePlaylist();
+
+        int aliases = 20;
+        int selfAssignableRoles = 15;
+        int levelRoles = 10;
 
         public int getAliases() {
             return aliases;
@@ -71,10 +99,10 @@ public class GuildTypeTransformer extends Transformer {
             return levelRoles;
         }
 
-        public class GuildTypePlaylist {
+        public class GuildTypePlaylist extends Evalable {
 
-            private int lists = 5;
-            private int songs = 30;
+            int lists = 5;
+            int songs = 30;
 
             public int getPlaylists() {
                 return lists;

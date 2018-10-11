@@ -190,6 +190,9 @@ default-prefix: '!'
 
 playing:
   - '!help'
+  - 'watching:avairebot.com'
+  - 'listening:%users% users'
+  - 'playing:in %guilds% servers'
 
 #--------------------------------------------------------------------------
 # Music Lavalink Nodes (Advanced Music Settings)

@@ -1,7 +1,29 @@
+/*
+ * Copyright (c) 2018.
+ *
+ * This file is part of AvaIre.
+ *
+ * AvaIre is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * AvaIre is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with AvaIre.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ *
+ */
+
 package com.avairebot.commands.music;
 
 import com.avairebot.AvaIre;
 import com.avairebot.audio.AudioHandler;
+import com.avairebot.audio.AudioTrackContainer;
 import com.avairebot.audio.GuildMusicManager;
 import com.avairebot.audio.LavalinkManager;
 import com.avairebot.commands.CommandMessage;
@@ -33,6 +55,11 @@ public class VoteSkipCommand extends Command {
     }
 
     @Override
+    public List<String> getUsageInstructions() {
+        return Collections.singletonList("`:command` - Vote to skip the current song.");
+    }
+
+    @Override
     public List<Class<? extends Command>> getRelations() {
         return Collections.singletonList(SkipCommand.class);
     }
@@ -54,8 +81,12 @@ public class VoteSkipCommand extends Command {
     public boolean onCommand(CommandMessage context, String[] args) {
         GuildMusicManager musicManager = AudioHandler.getDefaultAudioHandler().getGuildAudioPlayer(context.getGuild());
 
-        if (musicManager.getPlayer().getPlayingTrack() == null) {
+        if (!musicManager.isReady() || musicManager.getPlayer().getPlayingTrack() == null) {
             return sendErrorMessage(context, context.i18n("error", generateCommandPrefix(context.getMessage())));
+        }
+
+        if (!musicManager.canPreformSpecialAction(this, context, "vote skip track")) {
+            return false;
         }
 
         if (!canVoteSkip(context)) {
@@ -95,7 +126,11 @@ public class VoteSkipCommand extends Command {
     }
 
     private List<Long> getSkipsFrom(GuildMusicManager manager) {
-        return manager.getScheduler().getAudioTrackContainer().getSkips();
+        AudioTrackContainer trackContainer = manager.getScheduler().getAudioTrackContainer();
+        if (trackContainer == null) {
+            return Collections.emptyList();
+        }
+        return trackContainer.getSkips();
     }
 
     private int getAmountOfUsersConnectedToVoice(CommandMessage context) {

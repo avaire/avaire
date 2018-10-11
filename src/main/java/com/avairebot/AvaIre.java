@@ -1,14 +1,38 @@
+/*
+ * Copyright (c) 2018.
+ *
+ * This file is part of AvaIre.
+ *
+ * AvaIre is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * AvaIre is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with AvaIre.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ *
+ */
+
 package com.avairebot;
 
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.filter.ThresholdFilter;
+import com.avairebot.admin.BotAdmin;
 import com.avairebot.ai.IntelligenceManager;
 import com.avairebot.audio.AudioHandler;
 import com.avairebot.audio.GuildMusicManager;
 import com.avairebot.audio.LavalinkManager;
+import com.avairebot.audio.cache.AudioState;
 import com.avairebot.blacklist.Blacklist;
 import com.avairebot.cache.CacheManager;
+import com.avairebot.cache.CacheType;
 import com.avairebot.chat.ConsoleColor;
 import com.avairebot.commands.CategoryHandler;
 import com.avairebot.commands.CommandHandler;
@@ -29,6 +53,7 @@ import com.avairebot.handlers.GenericEventHandler;
 import com.avairebot.handlers.MainEventHandler;
 import com.avairebot.handlers.events.ApplicationShutdownEvent;
 import com.avairebot.language.I18n;
+import com.avairebot.level.LevelManager;
 import com.avairebot.metrics.Metrics;
 import com.avairebot.middleware.*;
 import com.avairebot.plugin.PluginLoader;
@@ -64,14 +89,13 @@ import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.Nullable;
 import javax.security.auth.login.LoginException;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ScheduledFuture;
 import java.util.function.Consumer;
 
@@ -93,12 +117,13 @@ public class AvaIre {
     private final CacheManager cache;
     private final Blacklist blacklist;
     private final DatabaseManager database;
+    private final LevelManager levelManager;
     private final IntelligenceManager intelligenceManager;
     private final PluginManager pluginManager;
     private final VoteManager voteManager;
     private final ShardEntityCounter shardEntityCounter;
     private final EventEmitter eventEmitter;
-    private final Set<String> botAdmins;
+    private final BotAdmin botAdmins;
 
     private Carbon shutdownTime = null;
     private int shutdownCode = ExitCodes.EXIT_CODE_RESTART;
@@ -119,6 +144,7 @@ public class AvaIre {
 
         this.eventEmitter = new EventEmitter(this);
         this.cache = new CacheManager(this);
+        this.levelManager = new LevelManager();
 
         log.info("Loading configuration");
         config = new Configuration(this, null, "config.yml");
@@ -131,9 +157,9 @@ public class AvaIre {
             System.exit(ExitCodes.EXIT_CODE_NORMAL);
         }
 
-        botAdmins = Collections.unmodifiableSet(new HashSet<>(
+        botAdmins = new BotAdmin(this, Collections.unmodifiableSet(new HashSet<>(
             config.getStringList("botAccess")
-        ));
+        )));
 
         applicationEnvironment = Environment.fromName(config.getString("environment", "production"));
         if (applicationEnvironment == null) {
@@ -142,7 +168,11 @@ public class AvaIre {
         log.info("Starting application in \"{}\" mode", applicationEnvironment.getName());
         if (applicationEnvironment.equals(Environment.DEVELOPMENT)) {
             RestAction.setPassContext(true);
-            RestAction.DEFAULT_FAILURE = Throwable::printStackTrace;
+            // Setting the default failure to print stack trace will prevent
+            // Sentry catching the error, which makes it pretty hard to
+            // debug the errors that are happening.
+            //
+            // RestAction.DEFAULT_FAILURE = Throwable::printStackTrace;
             log.info("Enabling rest action context parsing and printing stack traces for optimal debugging");
         }
 
@@ -173,15 +203,21 @@ public class AvaIre {
             new AddMusicChannelToGuildsTableMigration(),
             new AddExpiresInFieldToBlacklistTableMigration(),
             new AddOptInToVotesTableMigration(),
-            new RecreateFeedbackTableMigration()
+            new RecreateFeedbackTableMigration(),
+            new AddMusicMessagesToGuildsTableMigration(),
+            new AddPartnerToGuildsTableMigration(),
+            new AddHierarchyToGuildsTableMigration(),
+            new AddLevelModifierToGuildsTableMigration()
         );
 
         log.info("Registering default middlewares");
         MiddlewareHandler.initialize(this);
         MiddlewareHandler.register("hasRole", new HasRoleMiddleware(this));
+        MiddlewareHandler.register("hasAnyRole", new HasAnyRoleMiddleware(this));
         MiddlewareHandler.register("hasVoted", new HasVotedTodayMiddleware(this));
         MiddlewareHandler.register("isBotAdmin", new IsBotAdminMiddleware(this));
         MiddlewareHandler.register("require", new RequirePermissionMiddleware(this));
+        MiddlewareHandler.register("requireOne", new RequireOnePermissionMiddleware(this));
         MiddlewareHandler.register("hasDJLevel", new RequireDJLevelMiddleware(this));
         MiddlewareHandler.register("throttle", new ThrottleMiddleware(this));
         MiddlewareHandler.register("musicChannel", new IsMusicChannelMiddleware(this));
@@ -364,8 +400,14 @@ public class AvaIre {
         return shardEntityCounter;
     }
 
+    @Nullable
     public SelfUser getSelfUser() {
-        return getShardManager().getShards().get(0).getSelfUser();
+        for (JDA shard : getShardManager().getShards()) {
+            if (shard.getStatus().equals(JDA.Status.CONNECTED)) {
+                return shard.getSelfUser();
+            }
+        }
+        return null;
     }
 
     public Settings getSettings() {
@@ -388,6 +430,10 @@ public class AvaIre {
         return database;
     }
 
+    public LevelManager getLevelManager() {
+        return levelManager;
+    }
+
     public PluginManager getPluginManager() {
         return pluginManager;
     }
@@ -404,7 +450,7 @@ public class AvaIre {
         return eventEmitter;
     }
 
-    public Set<String> getBotAdmins() {
+    public BotAdmin getBotAdmins() {
         return botAdmins;
     }
 
@@ -419,11 +465,23 @@ public class AvaIre {
 
         getLogger().info("Shutting down bot instance gracefully with exit code " + exitCode);
 
+        List<AudioState> audioStates = new ArrayList<>();
         for (GuildMusicManager manager : AudioHandler.getDefaultAudioHandler().musicManagers.values()) {
             if (manager.getLastActiveMessage() != null) {
                 manager.getLastActiveMessage().makeInfo(
                     "Bot is restarting, sorry for the inconvenience, we'll be right back!"
                 ).queue();
+            }
+
+            try {
+                //noinspection SynchronizationOnLocalVariableOrMethodParameter
+                synchronized (manager) {
+                    if (manager.getGuild() != null) {
+                        audioStates.add(new AudioState(manager, manager.getGuild()));
+                    }
+                }
+            } catch (Exception e) {
+                log.warn("Failed to create the audio state cache for the guild with an ID of: {}", manager.getGuildId(), e);
             }
 
             manager.getScheduler().getQueue().clear();
@@ -442,6 +500,10 @@ public class AvaIre {
                 }
             }
         }
+
+        // Caches the audio state for the next three hours so we
+        // can resume the music once the bot boots back up.
+        cache.getAdapter(CacheType.FILE).put("audio.state", gson.toJson(audioStates), 60 * 60 * 3);
 
         try {
             Thread.sleep(2500);

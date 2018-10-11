@@ -1,7 +1,29 @@
+/*
+ * Copyright (c) 2018.
+ *
+ * This file is part of AvaIre.
+ *
+ * AvaIre is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * AvaIre is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with AvaIre.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ *
+ */
+
 package com.avairebot.database.transformers;
 
 import com.avairebot.AvaIre;
 import com.avairebot.contracts.database.transformers.Transformer;
+import com.avairebot.contracts.debug.Evalable;
 import com.avairebot.database.collection.DataRow;
 import com.google.gson.reflect.TypeToken;
 
@@ -72,7 +94,7 @@ public class PlaylistTransformer extends Transformer {
         songs.add(song);
     }
 
-    public class PlaylistSong {
+    public class PlaylistSong extends Evalable {
         private String title;
         private String duration;
         private String link;

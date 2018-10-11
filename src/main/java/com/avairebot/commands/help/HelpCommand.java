@@ -1,6 +1,28 @@
+/*
+ * Copyright (c) 2018.
+ *
+ * This file is part of AvaIre.
+ *
+ * AvaIre is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * AvaIre is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with AvaIre.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ *
+ */
+
 package com.avairebot.commands.help;
 
 import com.avairebot.AvaIre;
+import com.avairebot.admin.AdminType;
 import com.avairebot.chat.MessageType;
 import com.avairebot.commands.*;
 import com.avairebot.contracts.commands.Command;
@@ -38,6 +60,15 @@ public class HelpCommand extends Command {
             "`:command` - Shows a list of command categories.",
             "`:command <category>` - Shows a list of commands in the given category.",
             "`:command <command>` - Shows detailed information on how to use the given command."
+        );
+    }
+
+    @Override
+    public List<String> getExampleUsage() {
+        return Arrays.asList(
+            "`:command play`,",
+            "`:command help`",
+            "`:command`"
         );
     }
 
@@ -85,8 +116,8 @@ public class HelpCommand extends Command {
             return false;
         }
 
-        boolean isBotAdmin = avaire.getBotAdmins().contains(context.getAuthor().getId());
-        if (!isBotAdmin && category.getName().equalsIgnoreCase("System")) {
+        AdminType adminType = avaire.getBotAdmins().isAdmin(context.getAuthor().getId(), true);
+        if (!adminType.isAdmin() && isSystemCategory(adminType, category.getName())) {
             context.makeError(context.i18n("tryingToViewSystemCommands"))
                 .queue();
             return false;
@@ -106,7 +137,7 @@ public class HelpCommand extends Command {
                 // commands for the given category the command was used for.
                 .setContent(context.i18n("listOfCommands",
                     CommandHandler.getCommands().stream()
-                        .filter(container -> filterCommandContainer(container, category, isBotAdmin))
+                        .filter(container -> filterCommandContainer(container, category, adminType))
                         .map(container -> mapCommandContainer(context, container))
                         .sorted()
                         .collect(Collectors.joining("\n"))
@@ -191,24 +222,24 @@ public class HelpCommand extends Command {
     }
 
     private String getCategories(CommandMessage context) {
-        boolean isBotAdmin = avaire.getBotAdmins().contains(context.getAuthor().getId());
+        AdminType adminType = avaire.getBotAdmins().isAdmin(context.getAuthor().getId(), true);
 
         List<Category> categories = CategoryHandler.getValues().stream()
             .filter(category -> !category.isGlobal())
             .collect(Collectors.toList());
 
         if (context.getGuild() == null) {
-            return formatCategoriesStream(categories.stream(), isBotAdmin);
+            return formatCategoriesStream(categories.stream(), adminType);
         }
 
         GuildTransformer transformer = context.getGuildTransformer();
         if (transformer == null) {
-            return formatCategoriesStream(categories.stream(), isBotAdmin);
+            return formatCategoriesStream(categories.stream(), adminType);
         }
 
         ChannelTransformer channel = transformer.getChannel(context.getChannel().getId());
         if (channel == null) {
-            return formatCategoriesStream(categories.stream(), isBotAdmin);
+            return formatCategoriesStream(categories.stream(), adminType);
         }
 
         long before = categories.size();
@@ -220,7 +251,7 @@ public class HelpCommand extends Command {
 
         return formatCategoriesStream(
             filteredCategories.stream().filter(channel::isCategoryEnabled),
-            isBotAdmin,
+            adminType,
             disabled != 0 ? I18n.format(
                 "\n\n" + (disabled == 1 ?
                     context.i18n("singularHiddenCategories") :
@@ -230,28 +261,31 @@ public class HelpCommand extends Command {
             ) : "\n\n");
     }
 
-    private String formatCategoriesStream(Stream<Category> stream, boolean isBotAdmin) {
-        return formatCategoriesStream(stream, isBotAdmin, "\n\n");
+    private String formatCategoriesStream(Stream<Category> stream, AdminType adminType) {
+        return formatCategoriesStream(stream, adminType, "\n\n");
     }
 
-    private String formatCategoriesStream(Stream<Category> stream, boolean isBotAdmin, String suffix) {
+    private String formatCategoriesStream(Stream<Category> stream, AdminType adminType, String suffix) {
         return stream
             .map(Category::getName)
             .sorted()
-            .filter(category -> isBotAdmin || !category.equalsIgnoreCase("System"))
+            .filter(category -> adminType.isAdmin() || !isSystemCategory(adminType, category))
             .collect(Collectors.joining("\n• ", "• ", suffix));
     }
 
-    private boolean filterCommandContainer(CommandContainer container, Category category, boolean isBotAdmin) {
+    private boolean filterCommandContainer(CommandContainer container, Category category, AdminType adminType) {
         if (container.getPriority().equals(CommandPriority.HIDDEN)) {
             return false;
         }
 
-        if (!isBotAdmin && container.getPriority().equals(CommandPriority.SYSTEM)) {
+        if (!adminType.isAdmin() && container.getPriority().isSystem()) {
             return false;
         }
 
-        return container.getCategory().equals(category);
+        return (!adminType.isAdmin()
+            || !Objects.equals(adminType.getCommandScope(), CommandPriority.SYSTEM_ROLE)
+            || !container.getPriority().equals(CommandPriority.SYSTEM)
+        ) && container.getCategory().equals(category);
     }
 
     private String mapCommandContainer(CommandMessage context, CommandContainer container) {
@@ -272,5 +306,9 @@ public class HelpCommand extends Command {
             aliases[i - 1] = prefix + triggers.get(i);
         }
         return String.format("%s[%s]", trigger.toString(), String.join(", ", aliases));
+    }
+
+    private boolean isSystemCategory(AdminType adminType, String name) {
+        return name.equalsIgnoreCase("System") && !adminType.isAdmin();
     }
 }

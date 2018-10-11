@@ -1,3 +1,24 @@
+/*
+ * Copyright (c) 2018.
+ *
+ * This file is part of AvaIre.
+ *
+ * AvaIre is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * AvaIre is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with AvaIre.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ *
+ */
+
 package com.avairebot.contracts.config.file;
 
 import com.avairebot.config.MemoryConfiguration;
@@ -150,31 +171,6 @@ public abstract class FileConfiguration extends MemoryConfiguration {
         final FileInputStream stream = new FileInputStream(file);
 
         load(new InputStreamReader(stream, UTFOverride && !UTFBig ? Charsets.UTF_8 : Charset.defaultCharset()));
-    }
-
-    /**
-     * Loads this {@link FileConfiguration} from the specified stream.
-     * <p>
-     * All the values contained within this configuration will be removed,
-     * leaving only settings and defaults, and the new values will be loaded
-     * from the given stream.
-     * <p>
-     * This will attempt to use the {@link Charset#defaultCharset()}, unless
-     * {@link #UTFOverride} or {@link #UTFBig} is specified.
-     *
-     * @param stream Stream to load from
-     * @throws IOException                   Thrown when the given file cannot be read.
-     * @throws InvalidConfigurationException Thrown when the given file is not
-     *                                       a valid Configuration.
-     * @throws IllegalArgumentException      Thrown when stream is null.
-     * @see #load(Reader)
-     * @deprecated This does not consider encoding
-     */
-    @Deprecated
-    public void load(InputStream stream) throws IOException, InvalidConfigurationException {
-        Validate.notNull(stream, "Stream cannot be null");
-
-        load(new InputStreamReader(stream, UTFOverride ? Charsets.UTF_8 : Charset.defaultCharset()));
     }
 
     /**

@@ -1,3 +1,24 @@
+/*
+ * Copyright (c) 2018.
+ *
+ * This file is part of AvaIre.
+ *
+ * AvaIre is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * AvaIre is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with AvaIre.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ *
+ */
+
 package com.avairebot.metrics.routes;
 
 import com.avairebot.AvaIre;
@@ -5,6 +26,7 @@ import com.avairebot.contracts.metrics.SparkRoute;
 import com.avairebot.metrics.Metrics;
 import com.avairebot.time.Carbon;
 import com.avairebot.vote.VoteCacheEntity;
+import com.avairebot.vote.VoteMetricType;
 import net.dv8tion.jda.core.entities.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,9 +65,11 @@ public class PostVote extends SparkRoute {
             return buildResponse(response, 404, "Invalid user ID given, the user is not on any server the bot is on.");
         }
 
-        VoteCacheEntity voteEntity = metrics.getAvaire().getVoteManager().getVoteEntityWithFallback(metrics.getAvaire(), userById);
+        VoteCacheEntity voteEntity = metrics.getAvaire().getVoteManager().getVoteEntityWithFallback(userById);
         voteEntity.setCarbon(Carbon.now().addHours(24));
         metrics.getAvaire().getVoteManager().registerVoteFor(userById);
+
+        Metrics.dblVotes.labels(VoteMetricType.WEBHOOK.getName()).inc();
 
         log.info("Vote has been registered by {} ({})",
             userById.getName() + "#" + userById.getDiscriminator(), userById.getId()
@@ -55,7 +79,7 @@ public class PostVote extends SparkRoute {
             return buildResponse(response, 200, "Vote registered, thanks for voting!");
         }
 
-        metrics.getAvaire().getVoteManager().getMessenger().sendVoteWithPointsMessageInDM(userById, voteEntity.getVotePoints());
+        metrics.getAvaire().getVoteManager().getMessenger().SendThanksForVotingMessageInDM(userById, voteEntity.getVotePoints());
 
         return buildResponse(response, 200, "Vote registered, thanks for voting!");
     }

@@ -1,11 +1,32 @@
+/*
+ * Copyright (c) 2018.
+ *
+ * This file is part of AvaIre.
+ *
+ * AvaIre is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * AvaIre is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with AvaIre.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ *
+ */
+
 package com.avairebot.commands.administration;
 
 import com.avairebot.AvaIre;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.CacheFingerprint;
 import com.avairebot.contracts.commands.Command;
+import com.avairebot.modlog.Modlog;
 import com.avairebot.modlog.ModlogAction;
-import com.avairebot.modlog.ModlogModule;
 import com.avairebot.modlog.ModlogType;
 import com.avairebot.utilities.MentionableUtil;
 import com.avairebot.utilities.RoleUtil;
@@ -16,12 +37,9 @@ import net.dv8tion.jda.core.entities.User;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.regex.Pattern;
 
 @CacheFingerprint(name = "kick-command")
 public class KickCommand extends Command {
-
-    private static final Pattern userRegEX = Pattern.compile("<@(!|)+[0-9]{16,}+>", Pattern.CASE_INSENSITIVE);
 
     public KickCommand(AvaIre avaire) {
         super(avaire, false);
@@ -60,7 +78,7 @@ public class KickCommand extends Command {
     @Override
     public List<String> getMiddleware() {
         return Arrays.asList(
-            "require:user,general.kick_members",
+            "require:all,general.kick_members",
             "throttle:user,1,5"
         );
     }
@@ -69,17 +87,15 @@ public class KickCommand extends Command {
     public boolean onCommand(CommandMessage context, String[] args) {
         User user = MentionableUtil.getUser(context, args);
         if (user == null) {
-            return sendErrorMessage(context, "You must mention the user you want to kick.");
+            return sendErrorMessage(context, context.i18n("mustMentionUser"));
         }
 
         if (userHasHigherRole(user, context.getMember())) {
-            return sendErrorMessage(context, "You can't kick people with a higher, or the same role as yourself.");
+            return sendErrorMessage(context, context.i18n("higherOrSameRole"));
         }
 
         if (!context.getGuild().getSelfMember().canInteract(context.getGuild().getMember(user))) {
-            return sendErrorMessage(context, "I can't kick {0}, they have a higher role than me, if you want be to be able to kick the user, please reajust my role position to above {0} highest role.",
-                user.getAsMention()
-            );
+            return sendErrorMessage(context, context.i18n("cantKickUser", user.getAsMention()));
         }
 
         return kickUser(context, context.getGuild().getMember(user), args);
@@ -88,25 +104,28 @@ public class KickCommand extends Command {
     private boolean kickUser(CommandMessage context, Member user, String[] args) {
         String reason = generateMessage(args);
 
+        ModlogAction modlogAction = new ModlogAction(
+            ModlogType.KICK,
+            context.getAuthor(),
+            user.getUser(),
+            reason
+        );
+
+        String caseId = Modlog.log(avaire, context, modlogAction);
+
+        Modlog.notifyUser(user.getUser(), context.getGuild(), modlogAction, caseId);
+
         context.getGuild().getController().kick(user, String.format("%s - %s#%s (%s)",
             reason,
             context.getAuthor().getName(),
             context.getAuthor().getDiscriminator(),
             context.getAuthor().getId()
         )).queue(aVoid -> {
-                ModlogModule.log(avaire, context, new ModlogAction(
-                        ModlogType.KICK,
-                        context.getAuthor(),
-                        user.getUser(),
-                        reason
-                    )
-                );
-
-                context.makeSuccess("**:target** was kicked by :user for \":reason\"")
+                context.makeSuccess(context.i18n("success"))
                     .set("target", user.getUser().getName() + "#" + user.getUser().getDiscriminator())
                     .set("reason", reason)
                     .queue();
-            }, throwable -> context.makeWarning("Failed to kick **:target** due to an error: :error")
+            }, throwable -> context.makeWarning(context.i18n("error"))
                 .set("target", user.getUser().getName() + "#" + user.getUser().getDiscriminator())
                 .set("error", throwable.getMessage())
                 .queue()

@@ -1,13 +1,32 @@
+/*
+ * Copyright (c) 2018.
+ *
+ * This file is part of AvaIre.
+ *
+ * AvaIre is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * AvaIre is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with AvaIre.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ *
+ */
+
 package com.avairebot.commands.administration;
 
 import com.avairebot.AvaIre;
-import com.avairebot.chat.MessageType;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.database.transformers.GuildTransformer;
-import com.avairebot.factories.MessageFactory;
+import com.avairebot.modlog.Modlog;
 import com.avairebot.modlog.ModlogAction;
-import com.avairebot.modlog.ModlogModule;
 import com.avairebot.modlog.ModlogType;
 import com.avairebot.utilities.MentionableUtil;
 import com.avairebot.utilities.RestActionUtil;
@@ -70,9 +89,7 @@ public class WarnCommand extends Command {
 
         if (transformer.getModlog() == null) {
             String prefix = generateCommandPrefix(context.getMessage());
-            return sendErrorMessage(context,
-                "This command requires a modlog channel to be set, a modlog channel can be set using the `{0}modlog` command.", prefix
-            );
+            return sendErrorMessage(context, context.i18n("requiresModlogIsEnabled", prefix));
         }
 
         User user = null;
@@ -81,11 +98,11 @@ public class WarnCommand extends Command {
         }
 
         if (user == null) {
-            return sendErrorMessage(context, "You must mention a user you want warn.");
+            return sendErrorMessage(context, context.i18n("mustMentionUse"));
         }
 
         if (user.isBot()) {
-            return sendErrorMessage(context, "You can't warn bots!");
+            return sendErrorMessage(context, context.i18n("warnBots"));
         }
 
         String reason = "No reason was given.";
@@ -93,41 +110,26 @@ public class WarnCommand extends Command {
             reason = String.join(" ", Arrays.copyOfRange(args, 1, args.length));
         }
 
-        String caseId = ModlogModule.log(avaire, context.getGuild(), transformer, new ModlogAction(
-                ModlogType.WARN,
-                context.getAuthor(), user,
-                reason
-            )
+        ModlogAction modlogAction = new ModlogAction(
+            ModlogType.WARN,
+            context.getAuthor(), user,
+            reason
         );
 
+        String caseId = Modlog.log(avaire, context.getGuild(), transformer, modlogAction);
+
         if (caseId == null) {
-            return sendErrorMessage(context, "Failed to log warning to the set modlog channel, does the modlog channel still exists, can I still send messages in the channel?");
+            return sendErrorMessage(context, context.i18n("failedToLogWarning"));
         }
 
-        User finalUser = user;
-        String finalReason = reason;
-        user.openPrivateChannel().queue(message -> {
-            message.sendMessage(
-                MessageFactory.createEmbeddedBuilder()
-                    .setColor(MessageType.WARNING.getColor())
-                    .setDescription("You have been **warned** in " + context.getGuild().getName())
-                    .addField("Moderator", context.getAuthor().getName() + "#" + context.getAuthor().getDiscriminator(), true)
-                    .addField("Reason", finalReason, true)
-                    .setFooter("Case ID #" + caseId, null)
-                    .setTimestamp(Instant.now())
-                    .build()
-            ).queue(null, RestActionUtil.ignore);
+        Modlog.notifyUser(user, context.getGuild(), modlogAction, caseId);
 
-            context.makeWarning(":target has been **warned** for \":reason\"")
-                .set("target", finalUser.getName() + "#" + finalUser.getDiscriminator())
-                .set("reason", finalReason)
-                .setFooter("Case ID #" + caseId)
-                .setTimestamp(Instant.now())
-                .queue(null, RestActionUtil.ignore);
-        }, error -> {
-            context.makeWarning("Failed to DM the user with the warning, they most likely have their private settings set to disable all DMs from this server.")
-                .queue();
-        });
+        context.makeWarning(context.i18n("message"))
+            .set("target", user.getName() + "#" + user.getDiscriminator())
+            .set("reason", reason)
+            .setFooter("Case ID #" + caseId)
+            .setTimestamp(Instant.now())
+            .queue(null, RestActionUtil.ignore);
 
         return true;
     }

@@ -1,3 +1,24 @@
+/*
+ * Copyright (c) 2018.
+ *
+ * This file is part of AvaIre.
+ *
+ * AvaIre is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * AvaIre is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with AvaIre.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ *
+ */
+
 package com.avairebot.contracts.async;
 
 import com.avairebot.requests.Response;
@@ -12,18 +33,19 @@ public abstract class Future {
     /**
      * The thread executor service provider, all future requests will be added to the pool of threads.
      */
-    private static final ExecutorService SERVICE = Executors.newFixedThreadPool(3);
+    private static final ExecutorService service = Executors.newFixedThreadPool(3);
 
     /**
      * The default success consumer that should be used if no success consumer is given.
      */
-    private Consumer<Response> DEFAULT_SUCCESS = (Response) -> {
+    private Consumer<Response> defaultSuccess = (Response) -> {
+        //
     };
 
     /**
      * The default failure consumer that should be used if no failure consumer is given.
      */
-    private Consumer<Throwable> DEFAULT_FAILURE = (Exception) -> {
+    private Consumer<Throwable> defaultFailure = (Exception) -> {
         LoggerFactory.getLogger(Future.class).error(String.format(
             "Future Consumer returned failure: [%s] %s", Exception.getClass().getSimpleName(), Exception.getMessage()
         ), Exception);
@@ -49,16 +71,16 @@ public abstract class Future {
 
     /**
      * Sends the future request, on success the given success consumer will be
-     * invoked with the content of the reuqest, if the future request fails
+     * invoked with the content of the request, if the future request fails
      * the failure consumer will be invoked instead.
      *
      * @param success The consumer that should be invoked on success.
      * @param failure The consumer that should be invoked on failure.
      */
     public void send(final Consumer success, final Consumer<Throwable> failure) {
-        SERVICE.submit(() -> handle(
-            success == null ? DEFAULT_SUCCESS : success,
-            failure == null ? DEFAULT_FAILURE : failure
+        service.submit(() -> handle(
+            success == null ? defaultSuccess : success,
+            failure == null ? defaultFailure : failure
 
         ));
     }

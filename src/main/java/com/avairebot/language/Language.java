@@ -1,3 +1,24 @@
+/*
+ * Copyright (c) 2018.
+ *
+ * This file is part of AvaIre.
+ *
+ * AvaIre is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * AvaIre is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with AvaIre.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ *
+ */
+
 package com.avairebot.language;
 
 import javax.annotation.Nonnull;
@@ -9,12 +30,15 @@ import java.util.List;
 
 public enum Language {
 
-    EN_US("en", "US", "English", "English"),
-    EN_PT("en", "PT", "Pirate", "Pirate English", "arrr"),
+    DA_DK("da", "DK", "Dansk", "Danish"),
     DE_DE("de", "DE", "Deutsch", "German"),
+    EN_US("en", "US", "English", "English"),
+    ES_ES("es", "ES", "Espanol", "Spanish"),
     FR_FR("fr", "FR", "French", "French"),
     HU_HU("hu", "HU", "Magyar", "Hungarian"),
-    NO_NB("no", "NB", "Norsk", "Norwegian");
+    NO_NB("no", "NB", "Norsk", "Norwegian"),
+    EN_PT("en", "PT", "Pirate", "Pirate English", "arrr"),
+    RU_RU("ru", "RU", "Russian", "Russian");
 
     private final String code;
     private final String nativeName;

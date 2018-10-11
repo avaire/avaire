@@ -1,3 +1,24 @@
+/*
+ * Copyright (c) 2018.
+ *
+ * This file is part of AvaIre.
+ *
+ * AvaIre is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * AvaIre is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with AvaIre.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ *
+ */
+
 package com.avairebot.contracts.commands;
 
 import com.avairebot.AvaIre;
@@ -203,7 +224,7 @@ public abstract class Command extends Reflectionable {
      * @param args    The array of arguments that should be replace in the error string.
      * @return false since the error message should only be used on failure.
      */
-    protected final boolean sendErrorMessage(CommandMessage context, String error, String... args) {
+    public final boolean sendErrorMessage(CommandMessage context, String error, String... args) {
         if (!error.contains(".") || error.contains(" ")) {
             return sendErrorMessageAndDeleteMessage(
                 context, I18n.format(error, (Object[]) args), 150, TimeUnit.SECONDS

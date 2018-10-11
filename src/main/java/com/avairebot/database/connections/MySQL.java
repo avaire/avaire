@@ -1,3 +1,24 @@
+/*
+ * Copyright (c) 2018.
+ *
+ * This file is part of AvaIre.
+ *
+ * AvaIre is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * AvaIre is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with AvaIre.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ *
+ */
+
 package com.avairebot.database.connections;
 
 import com.avairebot.AvaIre;
@@ -16,18 +37,34 @@ import java.util.concurrent.Executors;
 public class MySQL extends HostnameDatabase {
 
     /**
-     * Creates a MySQL database connection instance with the parsed information, the port used will default to <code>3306</code>.
+     * Creates a MySQL database connection instance with the parsed information,
+     * the port used will default to <code>3306</code>.
      *
      * @param dbm The database manager class instance.
      */
     public MySQL(DatabaseManager dbm) {
-        super(
+        this(
+            dbm,
             dbm.getAvaire().getConfig().getString("database.hostname"),
             3306,
             dbm.getAvaire().getConfig().getString("database.database"),
             dbm.getAvaire().getConfig().getString("database.username"),
             dbm.getAvaire().getConfig().getString("database.password")
         );
+    }
+
+    /**
+     * Creates a MySQL database connection instance with the parsed information.
+     *
+     * @param dbm      The database manager class instance.
+     * @param hostname The hostname of the MySQL database.
+     * @param port     The port the connection should be opened on.
+     * @param database The name of the database.
+     * @param username The username for the user that should be used for the connection.
+     * @param password The password for the given username.
+     */
+    public MySQL(DatabaseManager dbm, String hostname, int port, String database, String username, String password) {
+        super(hostname, port, database, username, password);
 
         setDatabaseManager(dbm);
     }

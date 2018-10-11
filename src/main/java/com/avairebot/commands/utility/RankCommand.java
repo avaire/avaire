@@ -1,3 +1,24 @@
+/*
+ * Copyright (c) 2018.
+ *
+ * This file is part of AvaIre.
+ *
+ * AvaIre is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * AvaIre is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with AvaIre.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ *
+ */
+
 package com.avairebot.commands.utility;
 
 import com.avairebot.AvaIre;
@@ -14,7 +35,6 @@ import com.avairebot.database.controllers.PlayerController;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.database.transformers.PlayerTransformer;
 import com.avairebot.factories.MessageFactory;
-import com.avairebot.utilities.LevelUtil;
 import com.avairebot.utilities.MentionableUtil;
 import com.avairebot.utilities.NumberUtil;
 import net.dv8tion.jda.core.entities.Guild;
@@ -22,7 +42,6 @@ import net.dv8tion.jda.core.entities.User;
 
 import java.awt.*;
 import java.sql.SQLException;
-import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -57,7 +76,7 @@ public class RankCommand extends Command {
 
     @Override
     public List<String> getExampleUsage() {
-        return Collections.singletonList("`:command`");
+        return Collections.singletonList("`:command @Senither`");
     }
 
     @Override
@@ -116,10 +135,10 @@ public class RankCommand extends Command {
                 : properties.getScore() + " / " + getUsersInGuild(context.getGuild());
 
             long experience = properties.getPlayer().getExperience();
-            long level = LevelUtil.getLevelFromExperience(experience);
-            long current = LevelUtil.getExperienceFromLevel(level);
+            long level = avaire.getLevelManager().getLevelFromExperience(guildTransformer, experience);
+            long current = avaire.getLevelManager().getExperienceFromLevel(guildTransformer, level);
 
-            long nextLevelXp = LevelUtil.getExperienceFromLevel(level + 1);
+            long nextLevelXp = avaire.getLevelManager().getExperienceFromLevel(guildTransformer, level + 1);
             double percentage = ((double) (experience - current) / (nextLevelXp - current)) * 100;
 
             String levelBar = "";
@@ -136,7 +155,7 @@ public class RankCommand extends Command {
                     NumberUtil.formatNicely(experience - 100), NumberUtil.formatNicely(properties.getTotal())
                 )), true)
                 .addField(context.i18n("fields.experienceToNext"), context.i18n("fields.youNeedMoreXpToLevelUp",
-                    levelBar, new DecimalFormat("#.##").format(percentage), '%', NumberUtil.formatNicely(nextLevelXp - experience)
+                    levelBar, NumberUtil.formatNicelyWithDecimals(percentage), '%', NumberUtil.formatNicely(nextLevelXp - experience)
                 ), false)
                 .requestedBy(context.getMember())
                 .queue();

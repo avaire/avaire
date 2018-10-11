@@ -1,3 +1,24 @@
+/*
+ * Copyright (c) 2018.
+ *
+ * This file is part of AvaIre.
+ *
+ * AvaIre is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * AvaIre is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with AvaIre.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ *
+ */
+
 package com.avairebot.commands.administration;
 
 import com.avairebot.AvaIre;
@@ -74,30 +95,30 @@ public class AutoAssignRoleCommand extends Command {
         String roleName = String.join(" ", args);
         Role role = RoleUtil.getRoleFromMentionsOrName(context.getMessage(), roleName);
         if (role == null) {
-            context.makeWarning(":user Invalid role, I couldn't find any role called **:role**")
+            context.makeWarning(context.i18nRaw("administration.common.invalidRole"))
                 .set("role", roleName)
                 .queue();
             return false;
         }
 
         if (RoleUtil.isRoleHierarchyHigher(context.getMember().getRoles(), role)) {
-            context.makeWarning(
-                ":user The **:role** role is positioned higher in the hierarchy than any role you have, you can't add roles with a higher ranking than you have."
-            ).set("role", role.getName()).queue();
+            context.makeWarning(context.i18n("higherInTheHierarchy.user"))
+                .set("role", role.getName())
+                .queue();
             return false;
         }
 
         if (RoleUtil.isRoleHierarchyHigher(context.getGuild().getSelfMember().getRoles(), role)) {
-            context.makeWarning(
-                ":user The **:role** role is positioned higher in the hierarchy, I can't give/remove this role from users."
-            ).set("role", role.getName()).queue();
+            context.makeWarning(context.i18n("higherInTheHierarchy.bot"))
+                .set("role", role.getName())
+                .queue();
             return false;
         }
 
         try {
             updateAutorole(transformer, context, role.getId());
 
-            context.makeSuccess(":user **Auto assign role** on user join has been **enabled** and set to  **:role**")
+            context.makeSuccess(context.i18n("enabled"))
                 .set("role", role.getName())
                 .queue();
         } catch (SQLException ex) {
@@ -114,7 +135,7 @@ public class AutoAssignRoleCommand extends Command {
                 .where("id", context.getGuild().getId())
                 .update(statement -> statement.set("autorole", null));
 
-            context.makeWarning(":user **Auto assign role** on user join is now **disabled**.").queue();
+            context.makeWarning(context.i18n("disabledNow")).queue();
         } catch (SQLException ex) {
             ex.printStackTrace();
             AvaIre.getLogger().error(ex.getMessage(), ex);
@@ -125,7 +146,7 @@ public class AutoAssignRoleCommand extends Command {
 
     private PlaceholderMessage sendCurrentAutoRole(CommandMessage context, GuildTransformer transformer) {
         if (transformer.getAutorole() == null) {
-            return context.makeWarning(":user **Auto assign role** on user join is currently **disabled**.");
+            return context.makeWarning(context.i18n("disabled"));
         }
 
         Role role = context.getGuild().getRoleById(transformer.getAutorole());
@@ -136,10 +157,10 @@ public class AutoAssignRoleCommand extends Command {
                 ex.printStackTrace();
                 AvaIre.getLogger().error(ex.getMessage(), ex);
             }
-            return context.makeWarning(":user **Auto assign role** on user join is currently **disabled**.");
+            return context.makeWarning(context.i18n("disabled"));
         }
 
-        return context.makeSuccess(":user The **auto assign role** is currently set to **:role**")
+        return context.makeSuccess(context.i18n("status"))
             .set("role", role.getName());
     }
 

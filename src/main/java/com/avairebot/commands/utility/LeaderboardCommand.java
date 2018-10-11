@@ -1,3 +1,24 @@
+/*
+ * Copyright (c) 2018.
+ *
+ * This file is part of AvaIre.
+ *
+ * AvaIre is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * AvaIre is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with AvaIre.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ *
+ */
+
 package com.avairebot.commands.utility;
 
 import com.avairebot.AvaIre;
@@ -13,7 +34,6 @@ import com.avairebot.database.collection.Collection;
 import com.avairebot.database.collection.DataRow;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.utilities.CacheUtil;
-import com.avairebot.utilities.LevelUtil;
 import com.avairebot.utilities.NumberUtil;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
@@ -50,6 +70,16 @@ public class LeaderboardCommand extends Command {
     @Override
     public String getDescription() {
         return "Displays the server's level leaderboard with the user's name, rank, level and XP. The response is paginated to show 10 users per page.";
+    }
+
+    @Override
+    public List<String> getUsageInstructions() {
+        return Collections.singletonList("`:command` - Displays the top 100 players on the XP leaderboard for the server.");
+    }
+
+    @Override
+    public List<String> getExampleUsage() {
+        return Collections.singletonList("`:command 2`");
     }
 
     @Override
@@ -109,7 +139,7 @@ public class LeaderboardCommand extends Command {
             messages.add(context.i18n("line")
                 .replace(":num", "" + (index + 1))
                 .replace(":username", username)
-                .replace(":level", NumberUtil.formatNicely(LevelUtil.getLevelFromExperience(experience)))
+                .replace(":level", NumberUtil.formatNicely(avaire.getLevelManager().getLevelFromExperience(transformer, experience)))
                 .replace(":experience", NumberUtil.formatNicely((experience - 100)))
             );
         });
@@ -128,12 +158,15 @@ public class LeaderboardCommand extends Command {
                 message.addField("➡ " + context.i18n("yourRank"), context.i18n("line")
                         .replace(":num", NumberUtil.formatNicely(rank))
                         .replace(":username", context.getAuthor().getName() + "#" + context.getAuthor().getDiscriminator())
-                        .replace(":level", NumberUtil.formatNicely(LevelUtil.getLevelFromExperience(context.getPlayerTransformer().getExperience() - 100)))
+                        .replace(":level", NumberUtil.formatNicely(avaire.getLevelManager().getLevelFromExperience(
+                            context.getGuildTransformer(), context.getPlayerTransformer().getExperience()
+                        )))
                         .replace(":experience", NumberUtil.formatNicely(context.getPlayerTransformer().getExperience() - 100))
                         + "\n\n" + paginator.generateFooter(generateCommandTrigger(context.getMessage())),
                     false
                 );
             }
+
         }
 
         if (message.build().getFields().isEmpty()) {

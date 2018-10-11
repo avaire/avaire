@@ -1,3 +1,24 @@
+/*
+ * Copyright (c) 2018.
+ *
+ * This file is part of AvaIre.
+ *
+ * AvaIre is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * AvaIre is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with AvaIre.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ *
+ */
+
 package com.avairebot.config.file;
 
 import com.avairebot.AvaIre;
@@ -11,7 +32,10 @@ import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.error.YAMLException;
 import org.yaml.snakeyaml.representer.Representer;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.Reader;
 import java.util.Map;
 
 /**
@@ -52,35 +76,6 @@ public class YamlConfiguration extends FileConfiguration {
             AvaIre.getLogger().warn("Cannot load " + file, ex);
         } catch (InvalidConfigurationException ex) {
             AvaIre.getLogger().warn("Cannot load " + file, ex);
-        }
-
-        return config;
-    }
-
-    /**
-     * Creates a new {@link YamlConfiguration}, loading from the given stream.
-     * <p>
-     * Any errors loading the Configuration will be logged and then ignored.
-     * If the specified input is not a valid config, a blank config will be
-     * returned.
-     *
-     * @param stream Input stream
-     * @return Resulting configuration
-     * @throws IllegalArgumentException Thrown if stream is null
-     * @see #load(InputStream)
-     * @see #loadConfiguration(Reader)
-     * @deprecated does not properly consider encoding
-     */
-    @Deprecated
-    public static YamlConfiguration loadConfiguration(InputStream stream) {
-        Validate.notNull(stream, "Stream cannot be null");
-
-        YamlConfiguration config = new YamlConfiguration();
-
-        try {
-            config.load(stream);
-        } catch (IOException | InvalidConfigurationException ex) {
-            AvaIre.getLogger().warn("Cannot load configuration from stream", ex);
         }
 
         return config;

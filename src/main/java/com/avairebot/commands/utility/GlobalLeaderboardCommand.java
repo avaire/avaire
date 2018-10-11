@@ -1,3 +1,24 @@
+/*
+ * Copyright (c) 2018.
+ *
+ * This file is part of AvaIre.
+ *
+ * AvaIre is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * AvaIre is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with AvaIre.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ *
+ */
+
 package com.avairebot.commands.utility;
 
 import com.avairebot.AvaIre;
@@ -10,8 +31,8 @@ import com.avairebot.contracts.commands.Command;
 import com.avairebot.database.collection.Collection;
 import com.avairebot.database.collection.DataRow;
 import com.avairebot.utilities.CacheUtil;
-import com.avairebot.utilities.LevelUtil;
 import com.avairebot.utilities.NumberUtil;
+import com.avairebot.utilities.RestActionUtil;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import net.dv8tion.jda.core.entities.Member;
@@ -53,6 +74,15 @@ public class GlobalLeaderboardCommand extends Command {
     }
 
     @Override
+    public List<String> getUsageInstructions() {
+        return Collections.singletonList("`:command` - Displays the top 100 players on the XP leaderboard globally.");
+    }
+
+    public List<String> getExampleUsage() {
+        return Collections.singletonList("`:command 2`");
+    }
+
+    @Override
     public List<Class<? extends Command>> getRelations() {
         return Arrays.asList(
             RankCommand.class,
@@ -89,7 +119,7 @@ public class GlobalLeaderboardCommand extends Command {
         Collection collection = loadTop100From();
         if (collection == null) {
             if (loadingMessage != null) {
-                loadingMessage.delete().queue();
+                loadingMessage.delete().queue(null, RestActionUtil.ignore);
             }
             context.makeWarning(context.i18n("noData")).queue();
             return false;
@@ -115,7 +145,7 @@ public class GlobalLeaderboardCommand extends Command {
             messages.add(context.i18n("line")
                 .replace(":num", "" + (index + 1))
                 .replace(":username", username)
-                .replace(":level", NumberUtil.formatNicely(LevelUtil.getLevelFromExperience(experience)))
+                .replace(":level", NumberUtil.formatNicely(avaire.getLevelManager().getLevelFromExperience(experience)))
                 .replace(":experience", NumberUtil.formatNicely(experience - 100))
             );
         });
@@ -134,7 +164,7 @@ public class GlobalLeaderboardCommand extends Command {
                     message.addField("➡ " + context.i18n("yourRank"), context.i18n("line")
                             .replace(":num", NumberUtil.formatNicely(rank))
                             .replace(":username", context.getAuthor().getName() + "#" + context.getAuthor().getDiscriminator())
-                            .replace(":level", NumberUtil.formatNicely(LevelUtil.getLevelFromExperience(experience)))
+                            .replace(":level", NumberUtil.formatNicely(avaire.getLevelManager().getLevelFromExperience(experience)))
                             .replace(":experience", NumberUtil.formatNicely(experience - 100))
                             + "\n\n" + paginator.generateFooter(generateCommandTrigger(context.getMessage())),
                         false

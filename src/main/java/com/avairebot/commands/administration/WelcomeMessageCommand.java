@@ -1,3 +1,24 @@
+/*
+ * Copyright (c) 2018.
+ *
+ * This file is part of AvaIre.
+ *
+ * AvaIre is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * AvaIre is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with AvaIre.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ *
+ */
+
 package com.avairebot.commands.administration;
 
 import com.avairebot.AvaIre;
@@ -67,6 +88,7 @@ public class WelcomeMessageCommand extends ChannelModuleCommand {
     }
 
     @Override
+    @SuppressWarnings("Duplicates")
     public boolean onCommand(CommandMessage context, String[] args) {
         GuildTransformer guildTransformer = context.getGuildTransformer();
         if (guildTransformer == null) {
@@ -76,20 +98,18 @@ public class WelcomeMessageCommand extends ChannelModuleCommand {
         ChannelTransformer channelTransformer = guildTransformer.getChannel(context.getChannel().getId());
 
         if (channelTransformer == null || !channelTransformer.getWelcome().isEnabled()) {
-            return sendErrorMessage(context,
-                "The `welcome` module must be enabled to use this command, you can enable the `welcome` module by using the `{0}welcome` command.",
-                generateCommandPrefix(context.getMessage()));
+            return sendErrorMessage(context, context.i18n("moduleMustBeEnabled", generateCommandPrefix(context.getMessage())));
         }
 
         if (args.length > 0 && args[0].equalsIgnoreCase("embed")) {
             return handleEmbedOption(context, args, guildTransformer, channelTransformer, () -> {
                 String embedColor = getChannelModule(channelTransformer).getEmbedColor();
 
-                context.makeSuccess("The embed option for welcome messages has been **:status**\n:note")
-                    .set("status", embedColor == null ? "disabled" : "enabled")
+                context.makeSuccess(context.i18n("message"))
+                    .set("status", context.i18n("status." + (embedColor == null ? "disabled" : "enabled")))
                     .set("note", embedColor == null
-                        ? "Now sending welcome messages through normal messages."
-                        : "Welcome messages will now be sent using embedded messages with the color: " + embedColor)
+                        ? context.i18n("note.normal")
+                        : context.i18n("note.embed", embedColor))
                     .setColor(embedColor == null ? MessageType.SUCCESS.getColor() : Color.decode(embedColor))
                     .queue();
 
@@ -109,7 +129,7 @@ public class WelcomeMessageCommand extends ChannelModuleCommand {
 
         return updateDatabase(context, guildTransformer, () -> {
             if (channelTransformer.getWelcome().getMessage() == null) {
-                context.makeSuccess("The `Welcome` module message has been set back to the default.").queue();
+                context.makeSuccess(context.i18n("changedToDefault")).queue();
                 return true;
             }
 

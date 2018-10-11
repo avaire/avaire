@@ -1,3 +1,24 @@
+/*
+ * Copyright (c) 2018.
+ *
+ * This file is part of AvaIre.
+ *
+ * AvaIre is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * AvaIre is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with AvaIre.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ *
+ */
+
 package com.avairebot.commands.system;
 
 import com.avairebot.AvaIre;
@@ -132,17 +153,19 @@ public class EvalCommand extends SystemCommand {
                         + "with (imports) {\n" + source + "\n}"
                         + "})();");
 
+                AvaIre.getLogger().debug("Eval output: {}", out == null ? "NULL" : out.toString());
+                String output = out == null ? ":thumbsup::skin-tone-3:" : "```\n" + out.toString() + "\n```";
+
+                context.getMessageChannel().sendMessage(String.format("**Input** ```java\n%s```\n**Output**\n%s\nEval took _%sms_",
+                    source, output, System.currentTimeMillis() - started
+                )).queue();
             } catch (Exception ex) {
+                log.debug("Failed to execute eval command, error: {}", ex.getMessage(), ex);
+
                 context.getChannel().sendMessage(String.format("**Input** ```java\n%s```\n**Error Output**\n```%s```\nEval took _%sms_",
                     source, ex.getMessage(), System.currentTimeMillis() - started)
                 ).queue();
-                return;
             }
-
-            String output = out == null ? ":thumbsup::skin-tone-3:" : "```\n" + out.toString() + "\n```";
-            context.getMessageChannel().sendMessage(String.format("**Input** ```java\n%s```\n**Output**\n%s\nEval took _%sms_",
-                source, output, System.currentTimeMillis() - started
-            )).queue();
         });
         this.lastTask = future;
 

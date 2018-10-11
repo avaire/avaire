@@ -1,22 +1,41 @@
+/*
+ * Copyright (c) 2018.
+ *
+ * This file is part of AvaIre.
+ *
+ * AvaIre is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * AvaIre is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with AvaIre.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ *
+ */
+
 package com.avairebot.commands.administration;
 
 import com.avairebot.AvaIre;
-import com.avairebot.Constants;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
-import com.avairebot.database.transformers.ChannelTransformer;
-import com.avairebot.database.transformers.GuildTransformer;
-import com.avairebot.factories.MessageFactory;
 import com.avairebot.permissions.Permissions;
 import com.avairebot.utilities.ComparatorUtil;
+import com.avairebot.utilities.MentionableUtil;
 import com.avairebot.utilities.NumberUtil;
-import net.dv8tion.jda.core.entities.Message;
+import com.avairebot.utilities.RestActionUtil;
+import net.dv8tion.jda.core.entities.Channel;
+import net.dv8tion.jda.core.entities.ChannelType;
+import net.dv8tion.jda.core.entities.TextChannel;
 
-import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.function.Consumer;
 
 public class SlowmodeCommand extends Command {
 
@@ -31,22 +50,24 @@ public class SlowmodeCommand extends Command {
 
     @Override
     public String getDescription() {
-        return "Disables the slowmode module or enables it with the given settings, users with the **" + Permissions.MESSAGE_MANAGE.getPermission().getName() + "** permission are exempt from slowmode limits.";
+        return "Disables the slowmode or enables it with the given limit, users with the **" + Permissions.MESSAGE_MANAGE.getPermission().getName() + "**  or **" + Permissions.MANAGE_CHANNEL.getPermission().getName() + "** permissions are exempt from slowmode limits.";
     }
 
     @Override
     public List<String> getUsageInstructions() {
         return Arrays.asList(
-            "`:command <off>` - Disables slowmode for the current channel.",
-            "`:command <limit> <decay>` - Enables slowmode with the given settings."
+            "`:command [channel] <off>` - Disables slowmode for the current channel.",
+            "`:command [channel] <seconds>` - Enables slowmode, allowing one message per user every given second."
         );
     }
 
     @Override
     public List<String> getExampleUsage() {
         return Arrays.asList(
-            "`:command off` - Disables slowmode",
-            "`:command 1 5` - Enables slowmode, allowing one message every five seconds."
+            "`:command off` - Disables slowmode.",
+            "`:command #general off` - Disables slowmode in the general channel.",
+            "`:command 5` - Enables slowmode, allowing one message every five seconds.",
+            "`:command #slow-chat 30` - Enables slowmode in the slow chat channel, allowing one message every 30 seconds per user."
         );
     }
 
@@ -63,7 +84,7 @@ public class SlowmodeCommand extends Command {
     @Override
     public List<String> getMiddleware() {
         return Arrays.asList(
-            "require:user,general.manage_server",
+            "require:all,general.manage_channels",
             "throttle:guild,1,5"
         );
     }
@@ -71,71 +92,64 @@ public class SlowmodeCommand extends Command {
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
         if (args.length == 0) {
-            return sendErrorMessage(context, "Missing argument, you must either pass in the `limit` and `decay` values to enable slowmode for this channel, or `off` to disable it for this channel.");
+            return sendErrorMessage(context, context.i18n("missingArgument"));
         }
 
-        GuildTransformer guildTransformer = context.getGuildTransformer();
-        if (guildTransformer == null) {
-            return endWithFailureToFindTransformer(context);
+        Channel channel = MentionableUtil.getChannel(context.getMessage(), args);
+        if (channel == null) {
+            return handleSlowmode(context, context.getChannel(), args);
         }
 
-        ChannelTransformer channelTransformer = guildTransformer.getChannel(context.getChannel().getId());
-        if (channelTransformer == null) {
-            return endWithFailureToFindTransformer(context);
+        if (!channel.getType().equals(ChannelType.TEXT)) {
+            return sendErrorMessage(context, "invalidTextChannel", channel.getName());
         }
 
-        if (args.length == 1 && ComparatorUtil.isFuzzyFalse(args[0])) {
-            return disableSlowmode(context, guildTransformer, channelTransformer);
-        }
-
-        if (args.length == 2 && NumberUtil.isNumeric(args[0]) && NumberUtil.isNumeric(args[1])) {
-            return enableSlowmode(context.getMessage(), args, guildTransformer, channelTransformer);
-        }
-
-        return sendErrorMessage(context, "Invalid argument given, the `limit` and `decay` must be valid numbers.");
+        return handleSlowmode(context, (TextChannel) channel, Arrays.copyOfRange(args, 1, args.length));
     }
 
-    private boolean enableSlowmode(Message message, String[] args, GuildTransformer guildTransformer, ChannelTransformer channelTransformer) {
-        int limit = NumberUtil.getBetween(NumberUtil.parseInt(args[0]), 1, 30);
-        int decay = NumberUtil.getBetween(NumberUtil.parseInt(args[1]), 1, 300);
+    private boolean handleSlowmode(CommandMessage context, TextChannel channel, String[] args) {
+        if (args.length == 0) {
+            return sendErrorMessage(context, context.i18n("missingArgument"));
+        }
 
-        channelTransformer.getSlowmode().setEnabled(true);
-        channelTransformer.getSlowmode().setLimit(limit);
-        channelTransformer.getSlowmode().setDecay(decay);
+        if (ComparatorUtil.isFuzzyFalse(args[0])) {
+            if (channel.getSlowmode() != 0) {
+                channel.getManager().setSlowmode(0).queue(null, RestActionUtil.ignore);
+            }
 
-        return updateDatabase(message, guildTransformer, v -> {
-            MessageFactory.makeSuccess(message, "Messages are now limited to :limit message(s) every :decay seconds.")
-                .set("limit", limit)
-                .set("decay", decay)
+            context.makeSuccess(context.i18n("disabled"))
+                .set("textChannel", channel.getAsMention())
+                .queue();
+
+            return true;
+        }
+
+        int slowmode = NumberUtil.parseInt(args[0], -1);
+        if (slowmode < 1 || slowmode > 120) {
+            return sendErrorMessage(context, context.i18n("mustBeValidNumbers"));
+        }
+
+        if (channel.getSlowmode() == slowmode) {
+            context.makeSuccess(context.i18n("message"))
+                .set("textChannel", channel.getAsMention())
+                .set("slowmode", slowmode)
+                .queue();
+
+            return true;
+        }
+
+        channel.getManager().setSlowmode(slowmode).queue(aVoid -> {
+            context.makeSuccess(context.i18n("message"))
+                .set("textChannel", channel.getAsMention())
+                .set("slowmode", slowmode)
+                .queue();
+        }, error -> {
+            context.makeError(context.i18n("failedToUpdate"))
+                .set("textChannel", channel.getAsMention())
+                .set("message", error.getMessage())
                 .queue();
         });
-    }
 
-    private boolean disableSlowmode(CommandMessage context, GuildTransformer guildTransformer, ChannelTransformer transformer) {
-        transformer.getSlowmode().setEnabled(false);
-
-        return updateDatabase(context.getMessage(), guildTransformer, v -> {
-            context.makeSuccess("The `Slowmode` module has been **disabled** for the :channel channel.").queue();
-        });
-    }
-
-    private boolean endWithFailureToFindTransformer(CommandMessage message) {
-        return sendErrorMessage(message, "Something went wrong while trying to get the channel transformer object, please contact one of my developers to look into this issue.");
-    }
-
-    private boolean updateDatabase(Message message, GuildTransformer guildTransformer, Consumer<Void> consumer) {
-        try {
-            avaire.getDatabase().newQueryBuilder(Constants.GUILD_TABLE_NAME)
-                .andWhere("id", message.getGuild().getId())
-                .update(statement -> statement.set("channels", guildTransformer.channelsToJson(), true));
-
-            consumer.accept(null);
-            return true;
-        } catch (SQLException ex) {
-            AvaIre.getLogger().error(ex.getMessage(), ex);
-
-            MessageFactory.makeError(message, "Failed to save the guild settings: " + ex.getMessage()).queue();
-        }
-        return false;
+        return true;
     }
 }

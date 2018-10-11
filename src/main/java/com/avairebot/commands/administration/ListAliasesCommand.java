@@ -1,3 +1,24 @@
+/*
+ * Copyright (c) 2018.
+ *
+ * This file is part of AvaIre.
+ *
+ * AvaIre is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * AvaIre is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with AvaIre.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ *
+ */
+
 package com.avairebot.commands.administration;
 
 import com.avairebot.AvaIre;
@@ -29,6 +50,11 @@ public class ListAliasesCommand extends Command {
     }
 
     @Override
+    public List<String> getUsageInstructions() {
+        return Collections.singletonList("`:command` - Lists all the aliases for the server.");
+    }
+
+    @Override
     public List<String> getTriggers() {
         return Arrays.asList("aliases", "aliaslist");
     }
@@ -54,9 +80,7 @@ public class ListAliasesCommand extends Command {
         }
 
         if (transformer.getAliases().isEmpty()) {
-            return sendErrorMessage(context, "The server doesn't have any aliases right now, you can create one using the\n`{0}alias <alias> <command>` command",
-                generateCommandPrefix(context.getMessage())
-            );
+            return sendErrorMessage(context, context.i18n("noAliases", generateCommandPrefix(context.getMessage())));
         }
 
         SimplePaginator paginator = new SimplePaginator(transformer.getAliases(), 10);
@@ -69,7 +93,7 @@ public class ListAliasesCommand extends Command {
         messages.add("\n" + paginator.generateFooter(generateCommandTrigger(context.getMessage())));
 
         context.makeSuccess(String.join("\n", messages))
-            .setTitle(String.format("List of Aliases (%s)", paginator.getTotal()))
+            .setTitle(context.i18n("listAliases", paginator.getTotal()))
             .requestedBy(context.getMember())
             .queue();
 

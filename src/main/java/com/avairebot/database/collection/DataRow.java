@@ -1,3 +1,24 @@
+/*
+ * Copyright (c) 2018.
+ *
+ * This file is part of AvaIre.
+ *
+ * AvaIre is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * AvaIre is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with AvaIre.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ *
+ */
+
 package com.avairebot.database.collection;
 
 import com.avairebot.AvaIre;
@@ -6,6 +27,7 @@ import com.avairebot.time.Carbon;
 import com.avairebot.utilities.NumberUtil;
 import com.google.gson.Gson;
 
+import javax.annotation.Nonnull;
 import java.util.Base64;
 import java.util.Map;
 import java.util.Set;
@@ -88,6 +110,10 @@ public class DataRow {
     public boolean getBoolean(String name, boolean def) {
         Object value = get(name, def);
 
+        if (isNull(value)) {
+            return def;
+        }
+
         if (isString(value)) {
             String str = String.valueOf(value);
 
@@ -118,6 +144,10 @@ public class DataRow {
      */
     public double getDouble(String name, double def) {
         Object value = get(name, def);
+
+        if (isNull(value)) {
+            return def;
+        }
 
         if (isString(value)) {
             String str = String.valueOf(value);
@@ -172,6 +202,10 @@ public class DataRow {
     public int getInt(String name, int def) {
         Object value = get(name, def);
 
+        if (isNull(value)) {
+            return def;
+        }
+
         if (isString(value)) {
             String str = String.valueOf(value);
 
@@ -220,6 +254,10 @@ public class DataRow {
      */
     public long getLong(String name, long def) {
         Object value = get(name, def);
+
+        if (isNull(value)) {
+            return def;
+        }
 
         if (isString(value)) {
             String str = String.valueOf(value);
@@ -273,6 +311,10 @@ public class DataRow {
      */
     public float getFloat(String name, float def) {
         Object value = get(name, def);
+
+        if (isNull(value)) {
+            return def;
+        }
 
         if (isString(value)) {
             String str = String.valueOf(value);
@@ -328,7 +370,7 @@ public class DataRow {
     public String getString(String name, String def) {
         Object value = get(name, def);
 
-        if ((value == null || value == "null")) {
+        if (isNull(value)) {
             return def;
         }
 
@@ -428,8 +470,13 @@ public class DataRow {
         return getType(name).equalsIgnoreCase("string");
     }
 
+    private boolean isNull(Object object) {
+        return object == null || object == "null";
+    }
+
+    @Nonnull
     private String getType(Object name) {
-        return name.getClass().getSimpleName();
+        return name == null ? "unknown-type" : name.getClass().getSimpleName();
     }
 
     private boolean isEqual(String name, String... items) {
