@@ -64,6 +64,7 @@ public class GuildTransformer extends Transformer {
     private String musicChannelVoice = null;
     private int modlogCase = 0;
     private int defaultVolume = 100;
+    private double levelModifier = -1;
     private DJGuildLevel djGuildLevel = null;
 
     public GuildTransformer(Guild guild) {
@@ -93,6 +94,7 @@ public class GuildTransformer extends Transformer {
             levelAlerts = data.getBoolean("level_alerts");
             levelHierarchy = data.getBoolean("hierarchy");
             levelChannel = data.getString("level_channel");
+            levelModifier = data.getDouble("level_modifier", -1);
             autorole = data.getString("autorole");
             modlog = data.getString("modlog");
             musicChannelText = data.getString("music_channel_text");
@@ -244,6 +246,14 @@ public class GuildTransformer extends Transformer {
 
     public Map<Integer, String> getLevelRoles() {
         return levelRoles;
+    }
+
+    public double getLevelModifier() {
+        return levelModifier;
+    }
+
+    public void setLevelModifier(double levelModifier) {
+        this.levelModifier = levelModifier;
     }
 
     public String getAutorole() {

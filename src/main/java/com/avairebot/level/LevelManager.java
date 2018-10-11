@@ -39,6 +39,7 @@ import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -100,6 +101,22 @@ public class LevelManager {
     }
 
     /**
+     * Get the amount of experience needed to reach the given level
+     * using the guilds custom modifier if one is set, otherwise
+     * the default {@link #M modifier} will be used.
+     *
+     * @param transformer The guild transformer object that the level modifier should be loaded from.
+     * @param level       The level the experience
+     * @return The minimum amount of experience needed to reach the given level.
+     */
+    public long getExperienceFromLevel(@Nullable GuildTransformer transformer, long level) {
+        if (transformer == null || transformer.getLevelModifier() < 0) {
+            return getExperienceFromLevel(level, M);
+        }
+        return getExperienceFromLevel(level, transformer.getLevelModifier());
+    }
+
+    /**
      * Get the amount of experience needed to reach the given level.
      *
      * @param level    The level the experience should be fetched from.
@@ -119,6 +136,22 @@ public class LevelManager {
      */
     public long getLevelFromExperience(long xp) {
         return getLevelFromExperience(xp, M);
+    }
+
+    /**
+     * Gets the max level that can be reached with the given amount of
+     * experience using the guilds custom modifier if one is set,
+     * otherwise the default {@link #M modifier} will be used.
+     *
+     * @param transformer The guild transformer object that the level modifier should be loaded from.
+     * @param xp          The experience that should be resolved into the level.
+     * @return The max level that can be reached with the given amount of experience.
+     */
+    public long getLevelFromExperience(@Nullable GuildTransformer transformer, long xp) {
+        if (transformer == null || transformer.getLevelModifier() < 0) {
+            return getLevelFromExperience(xp, M);
+        }
+        return getLevelFromExperience(xp, transformer.getLevelModifier());
     }
 
     /**
@@ -198,7 +231,7 @@ public class LevelManager {
      */
     public void giveExperience(Message message, GuildTransformer guild, PlayerTransformer player, int amount) {
         long exp = player.getExperience();
-        long lvl = getLevelFromExperience(exp);
+        long lvl = getLevelFromExperience(guild, exp);
 
         player.incrementExperienceBy(amount);
 
@@ -208,8 +241,8 @@ public class LevelManager {
             amount
         ));
 
-        if (getLevelFromExperience(player.getExperience()) > lvl) {
-            long newLevel = getLevelFromExperience(player.getExperience());
+        if (getLevelFromExperience(guild, player.getExperience()) > lvl) {
+            long newLevel = getLevelFromExperience(guild, player.getExperience());
 
             if (guild.isLevelAlerts()) {
                 MessageFactory.makeEmbeddedMessage(getLevelUpChannel(message, guild))
