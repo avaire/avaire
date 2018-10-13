@@ -28,14 +28,19 @@ import com.avairebot.factories.RequestFactory;
 import com.avairebot.requests.Response;
 import com.avairebot.requests.service.UrbanDictionaryService;
 import com.avairebot.utilities.NumberUtil;
+import com.avairebot.utilities.StringReplacementUtil;
 
 import java.awt.*;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class UrbanDictionaryCommand extends Command {
+
+    private static final Pattern markdownUrlRegEx = Pattern.compile("\\[[A-Za-z0-9\\s]+\\]", Pattern.MULTILINE);
 
     public UrbanDictionaryCommand(AvaIre avaire) {
         super(avaire);
@@ -104,20 +109,36 @@ public class UrbanDictionaryCommand extends Command {
                 double thumbsDown = definition.getThumbsDown();
                 double percentage = (thumbsUp / (thumbsUp + thumbsDown)) * 100;
 
-                context.makeEmbeddedMessage(Color.decode("#1D2439"), definition.getDefinition())
+                context.makeEmbeddedMessage(Color.decode("#1D2439"), formatUrlsInMessage(definition.getDefinition()))
                     .setTitle(
                         definition.getWord().trim().length() == 0
                             ? context.i18n("untitled") : definition.getWord(),
                         definition.getPermalink()
                     )
-                    .addField(context.i18n("example"), definition.getExample(), false)
+                    .addField(context.i18n("example"), formatUrlsInMessage(definition.getExample()), false)
                     .setFooter(
                         context.i18n("results")
                             .replace(":percentage", NumberUtil.formatNicelyWithDecimals(percentage) + "%")
-                            .replace(":up", "" + definition.getThumbsUp())
-                            .replace(":down", "" + definition.getThumbsDown())
+                            .replace(":up", NumberUtil.formatNicely(definition.getThumbsUp()))
+                            .replace(":down", NumberUtil.formatNicely(definition.getThumbsDown()))
                     ).queue();
             });
         return true;
+    }
+
+    private String formatUrlsInMessage(String message) {
+        if (message == null) {
+            return "";
+        }
+
+        Matcher matcher = markdownUrlRegEx.matcher(message);
+        while (matcher.find()) {
+            String term = matcher.group(0);
+            String rawTerm = term.substring(1, term.length() - 1).replace(" ", "+");
+            message = StringReplacementUtil
+                .replaceAll(message, term, term + "(https://www.urbandictionary.com/define.php?term=" + rawTerm + ")");
+        }
+
+        return message;
     }
 }

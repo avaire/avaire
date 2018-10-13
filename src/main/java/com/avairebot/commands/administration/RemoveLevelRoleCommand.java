@@ -63,10 +63,19 @@ public class RemoveLevelRoleCommand extends Command {
     }
 
     @Override
+    public List<String> getExampleUsage() {
+        return Arrays.asList(
+            "`:command Member`",
+            "`:command 10`"
+        );
+    }
+
+    @Override
     public List<Class<? extends Command>> getRelations() {
         return Arrays.asList(
-            AddLevelRoleCommand.class,
-            ListLevelRolesCommand.class
+            LevelHierarchyCommand.class,
+            ListLevelRolesCommand.class,
+            AddLevelRoleCommand.class
         );
     }
 

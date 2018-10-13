@@ -56,6 +56,20 @@ public class UserInfoCommand extends Command {
     }
 
     @Override
+    public List<String> getUsageInstructions() {
+        return Collections.singletonList("`:command [user]` - Gets information about the user who ran the command, or the mentioned user");
+    }
+
+    @Override
+    public List<String> getExampleUsage() {
+        return Arrays.asList(
+            "`:command @Senither`",
+            "`:command alexis`",
+            "`:command 88739639380172800`"
+        );
+    }
+
+    @Override
     public List<Class<? extends Command>> getRelations() {
         return Collections.singletonList(UserIdCommand.class);
     }

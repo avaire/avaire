@@ -27,6 +27,7 @@ import com.avairebot.contracts.commands.Command;
 import com.avairebot.utilities.RandomUtil;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @SuppressWarnings("FieldCanBeLocal")
@@ -47,6 +48,11 @@ public class CoinflipCommand extends Command {
     @Override
     public String getDescription() {
         return "Flips a coin heads or tails.";
+    }
+
+    @Override
+    public List<String> getUsageInstructions() {
+        return Collections.singletonList("`:command` - Flips a coin for either heads or tails.");
     }
 
     @Override

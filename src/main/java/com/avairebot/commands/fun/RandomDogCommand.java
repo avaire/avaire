@@ -50,6 +50,11 @@ public class RandomDogCommand extends Command {
     }
 
     @Override
+    public List<String> getUsageInstructions() {
+        return Collections.singletonList("`:command` - Gets a random picture of a dog and sends it in the channel.");
+    }
+
+    @Override
     public List<Class<? extends Command>> getRelations() {
         return Collections.singletonList(RandomCatCommand.class);
     }

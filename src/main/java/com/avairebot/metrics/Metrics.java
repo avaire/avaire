@@ -128,12 +128,6 @@ public class Metrics {
         .labelNames("class") // use the simple name of the command class
         .register();
 
-    public static final Counter slowmodeRatelimited = Counter.build()
-        .name("avaire_slowmode_ratelimited_total")
-        .help("Total ratelimited messages")
-        .labelNames("channel")
-        .register();
-
     public static final Counter commandsReceived = Counter.build()
         .name("avaire_commands_received_total")
         .help("Total received commands. Some of these might get ratelimited.")
@@ -158,9 +152,10 @@ public class Metrics {
         .labelNames("class") // class of the exception
         .register();
 
-    public static final Gauge commandsPerMinute = Gauge.build()
-        .name("avaire_commands_per_minute_total")
-        .help("Total amount of commands that are being invoked per minute")
+    public static final Counter commandAttempts = Counter.build()
+        .name("avaire_command_attempts_total")
+        .help("Total amount of command attempts by class")
+        .labelNames("class")
         .register();
 
     // AI Requests

@@ -37,6 +37,8 @@ import java.util.*;
 
 public class GuildTransformer extends Transformer {
 
+    private static final GuildTypeTransformer partnerTypeTransformer = new PartnerGuildTypeTransformer();
+
     private final Map<String, String> aliases = new HashMap<>();
     private final Map<String, String> prefixes = new HashMap<>();
     private final Map<String, String> selfAssignableRoles = new HashMap<>();
@@ -45,14 +47,15 @@ public class GuildTransformer extends Transformer {
     private final List<ChannelTransformer> channels = new ArrayList<>();
 
     private final GuildTypeTransformer guildType;
+    private boolean partner;
 
     private String id;
     private String name;
     private String nameRaw;
     private String locale;
-
     private boolean levels = false;
     private boolean levelAlerts = false;
+    private boolean levelHierarchy = false;
     private boolean musicMessages = true;
     private String levelChannel = null;
     private String autorole = null;
@@ -61,6 +64,7 @@ public class GuildTransformer extends Transformer {
     private String musicChannelVoice = null;
     private int modlogCase = 0;
     private int defaultVolume = 100;
+    private double levelModifier = -1;
     private DJGuildLevel djGuildLevel = null;
 
     public GuildTransformer(Guild guild) {
@@ -70,13 +74,15 @@ public class GuildTransformer extends Transformer {
         id = guild.getId();
         name = guild.getName();
         nameRaw = guild.getName();
-        guildType = new GuildTypeTransformer(null);
+
+        partner = guild.getRegion().isVip();
+        guildType = partner ? partnerTypeTransformer : new GuildTypeTransformer(data);
     }
 
-    public GuildTransformer(DataRow data) {
+    public GuildTransformer(Guild guild, DataRow data) {
         super(data);
 
-        guildType = new GuildTypeTransformer(data);
+        partner = guild.getRegion().isVip();
 
         if (hasData()) {
             id = data.getString("id");
@@ -86,7 +92,9 @@ public class GuildTransformer extends Transformer {
 
             levels = data.getBoolean("levels");
             levelAlerts = data.getBoolean("level_alerts");
+            levelHierarchy = data.getBoolean("hierarchy");
             levelChannel = data.getString("level_channel");
+            levelModifier = data.getDouble("level_modifier", -1);
             autorole = data.getString("autorole");
             modlog = data.getString("modlog");
             musicChannelText = data.getString("music_channel_text");
@@ -98,6 +106,11 @@ public class GuildTransformer extends Transformer {
 
             // Sets the default volume to a value between 10 and 100.
             defaultVolume = NumberUtil.getBetween(defaultVolume, 10, 100);
+
+            // Sets the discord partner value if the guild isn't already a Discord partner.
+            if (!partner) {
+                partner = data.getBoolean("partner", false);
+            }
 
             if (data.getString("aliases", null) != null) {
                 HashMap<String, String> dbAliases = AvaIre.gson.fromJson(
@@ -170,6 +183,8 @@ public class GuildTransformer extends Transformer {
             }
         }
 
+        guildType = partner ? partnerTypeTransformer : new GuildTypeTransformer(data);
+
         reset();
     }
 
@@ -213,6 +228,14 @@ public class GuildTransformer extends Transformer {
         this.levelAlerts = levelAlerts;
     }
 
+    public boolean isLevelHierarchy() {
+        return levelHierarchy;
+    }
+
+    public void setLevelHierarchy(boolean levelHierarchy) {
+        this.levelHierarchy = levelHierarchy;
+    }
+
     public String getLevelChannel() {
         return levelChannel;
     }
@@ -223,6 +246,14 @@ public class GuildTransformer extends Transformer {
 
     public Map<Integer, String> getLevelRoles() {
         return levelRoles;
+    }
+
+    public double getLevelModifier() {
+        return levelModifier;
+    }
+
+    public void setLevelModifier(double levelModifier) {
+        this.levelModifier = levelModifier;
     }
 
     public String getAutorole() {
@@ -310,6 +341,10 @@ public class GuildTransformer extends Transformer {
 
     public void setDefaultVolume(int defaultVolume) {
         this.defaultVolume = defaultVolume;
+    }
+
+    public boolean isPartner() {
+        return partner;
     }
 
     @CheckReturnValue

@@ -25,6 +25,7 @@ import com.avairebot.AvaIre;
 import com.avairebot.Constants;
 import com.avairebot.chat.PlaceholderMessage;
 import com.avairebot.commands.CommandMessage;
+import com.avairebot.commands.CommandPriority;
 import com.avairebot.contracts.commands.SystemCommand;
 import com.avairebot.database.collection.DataRow;
 import com.avairebot.utilities.NumberUtil;
@@ -65,6 +66,11 @@ public class FeedbackResponseCommand extends SystemCommand {
     @Override
     public List<String> getTriggers() {
         return Collections.singletonList("feedback");
+    }
+
+    @Override
+    public CommandPriority getCommandPriority() {
+        return CommandPriority.SYSTEM_ROLE;
     }
 
     @Override

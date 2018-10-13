@@ -76,7 +76,7 @@ public class RankCommand extends Command {
 
     @Override
     public List<String> getExampleUsage() {
-        return Collections.singletonList("`:command`");
+        return Collections.singletonList("`:command @Senither`");
     }
 
     @Override
@@ -135,10 +135,10 @@ public class RankCommand extends Command {
                 : properties.getScore() + " / " + getUsersInGuild(context.getGuild());
 
             long experience = properties.getPlayer().getExperience();
-            long level = avaire.getLevelManager().getLevelFromExperience(experience);
-            long current = avaire.getLevelManager().getExperienceFromLevel(level);
+            long level = avaire.getLevelManager().getLevelFromExperience(guildTransformer, experience);
+            long current = avaire.getLevelManager().getExperienceFromLevel(guildTransformer, level);
 
-            long nextLevelXp = avaire.getLevelManager().getExperienceFromLevel(level + 1);
+            long nextLevelXp = avaire.getLevelManager().getExperienceFromLevel(guildTransformer, level + 1);
             double percentage = ((double) (experience - current) / (nextLevelXp - current)) * 100;
 
             String levelBar = "";

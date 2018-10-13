@@ -19,21 +19,18 @@
  *
  */
 
-package com.avairebot.scheduler.tasks;
+package com.avairebot.database.transformers;
 
-import com.avairebot.AvaIre;
-import com.avairebot.contracts.scheduler.Task;
-import com.avairebot.metrics.Metrics;
-import com.avairebot.middleware.global.ProcessCommand;
+class PartnerGuildTypeTransformer extends GuildTypeTransformer {
 
-public class SyncCommandsPerMinuteMetricsTask implements Task {
+    PartnerGuildTypeTransformer() {
+        this.name = "Partner";
 
-    @Override
-    public void handle(AvaIre avaire) {
-        ProcessCommand.commandsPerMinute.cleanUp();
-
-        Metrics.commandsPerMinute.set(
-            ProcessCommand.commandsPerMinute.size()
-        );
+        // Setup partner limits.
+        limits.aliases = 300;
+        limits.levelRoles = 100;
+        limits.selfAssignableRoles = 100;
+        limits.playlist.lists = 100;
+        limits.playlist.songs = 100;
     }
 }

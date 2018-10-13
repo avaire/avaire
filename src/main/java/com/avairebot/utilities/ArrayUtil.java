@@ -21,6 +21,7 @@
 
 package com.avairebot.utilities;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -30,7 +31,15 @@ public class ArrayUtil {
 
     private static final Pattern argumentsRegEX = Pattern.compile("([^\"]\\S*|\".+?\")\\s*", Pattern.MULTILINE);
 
-    public static String[] toArguments(String string) {
+    /**
+     * Parses the given string into multiple arguments using "smart" separation
+     * that will adhere to quotes, allowing multiple words to act as one
+     * argument as long as they're wrapped in quotes.
+     *
+     * @param string The string that should be parsed into an arguments array.
+     * @return The arguments string array.
+     */
+    public static String[] toArguments(@Nonnull String string) {
         List<String> arguments = new ArrayList<>();
 
         Matcher matcher = argumentsRegEX.matcher(string);

@@ -51,7 +51,10 @@ public abstract class SystemCommand extends Command {
 
     @Override
     public List<String> getMiddleware() {
-        return Collections.singletonList("isBotAdmin");
+        if (!getCommandPriority().equals(CommandPriority.SYSTEM_ROLE)) {
+            return Collections.singletonList("isBotAdmin");
+        }
+        return Collections.singletonList("isBotAdmin:use-role");
     }
 
     @Override

@@ -73,7 +73,7 @@ public class MemberEventAdapter extends EventAdapter {
                     continue;
                 }
 
-                String message = StringReplacementUtil.parseGuildJoinLeaveMessage(
+                String message = StringReplacementUtil.parse(
                     event.getGuild(), textChannel, event.getUser(),
                     channelTransformer.getWelcome().getMessage() == null ?
                         "Welcome %user% to **%server%!**" :
@@ -129,7 +129,7 @@ public class MemberEventAdapter extends EventAdapter {
                     continue;
                 }
 
-                String message = StringReplacementUtil.parseGuildJoinLeaveMessage(
+                String message = StringReplacementUtil.parse(
                     event.getGuild(), textChannel, event.getUser(),
                     channelTransformer.getGoodbye().getMessage() == null ?
                         "%user% has left **%server%**! :(" :

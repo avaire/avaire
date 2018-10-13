@@ -49,13 +49,26 @@ public class VoteCommand extends Command {
     }
 
     @Override
+    public List<String> getUsageInstructions() {
+        return Arrays.asList(
+            "`:command check` - Checks if you have voted for Ava in the last 12 hours.",
+            "`:command` - Displays the invite link to Ava, or tells you when your vote expires."
+        );
+    }
+
+    @Override
+    public List<String> getExampleUsage() {
+        return Collections.singletonList("`:command check`");
+    }
+
+    @Override
     public List<String> getTriggers() {
         return Collections.singletonList("vote");
     }
 
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
-        VoteCacheEntity voteEntity = avaire.getVoteManager().getVoteEntity(avaire, context.getAuthor());
+        VoteCacheEntity voteEntity = avaire.getVoteManager().getVoteEntity(context.getAuthor());
 
         if (args.length > 0 && args[0].equalsIgnoreCase("check")) {
             return checkUser(context, voteEntity);

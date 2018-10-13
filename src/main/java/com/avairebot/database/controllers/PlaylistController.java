@@ -37,7 +37,7 @@ import java.util.concurrent.TimeUnit;
 
 public class PlaylistController {
 
-    public static final Cache<Object, Object> cache = CacheBuilder.newBuilder()
+    public static final Cache<Long, Collection> cache = CacheBuilder.newBuilder()
         .recordStats()
         .expireAfterAccess(5, TimeUnit.MINUTES)
         .build();

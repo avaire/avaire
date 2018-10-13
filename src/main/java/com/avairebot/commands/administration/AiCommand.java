@@ -50,6 +50,11 @@ public class AiCommand extends Command {
     }
 
     @Override
+    public List<String> getUsageInstructions() {
+        return Collections.singletonList("`:command` - Toggles the AI on/off for the current channel.");
+    }
+
+    @Override
     public List<String> getTriggers() {
         return Collections.singletonList("ai");
     }

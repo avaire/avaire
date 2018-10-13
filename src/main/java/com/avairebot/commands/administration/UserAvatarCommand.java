@@ -28,6 +28,7 @@ import com.avairebot.factories.MessageFactory;
 import com.avairebot.utilities.MentionableUtil;
 import net.dv8tion.jda.core.entities.User;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -50,6 +51,14 @@ public class UserAvatarCommand extends Command {
     @Override
     public List<String> getUsageInstructions() {
         return Collections.singletonList("`:command <user | user id>` - Gets the avatar of the given user.");
+    }
+
+    @Override
+    public List<String> getExampleUsage() {
+        return Arrays.asList(
+            "`:command @Senither`",
+            "`:command`"
+        );
     }
 
     @Override

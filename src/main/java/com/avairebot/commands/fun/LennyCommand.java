@@ -51,6 +51,11 @@ public class LennyCommand extends Command {
     }
 
     @Override
+    public List<String> getExampleUsage() {
+        return Collections.singletonList("( ͡° ͜ʖ ͡°)");
+    }
+
+    @Override
     public List<String> getTriggers() {
         return Collections.singletonList("lenny");
     }

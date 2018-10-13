@@ -29,6 +29,7 @@ import com.avairebot.contracts.commands.Command;
 import com.avairebot.utilities.RestActionUtil;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -46,6 +47,11 @@ public class RepeatMusicQueueCommand extends Command {
     @Override
     public String getDescription() {
         return "Repeats all the songs in the music queue.";
+    }
+
+    @Override
+    public List<String> getUsageInstructions() {
+        return Collections.singletonList("`:command` - Toggles queue looping on or off.");
     }
 
     @Override

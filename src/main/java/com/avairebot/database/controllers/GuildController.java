@@ -27,7 +27,10 @@ import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.utilities.CacheUtil;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import net.dv8tion.jda.core.entities.*;
+import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.core.entities.Role;
+import net.dv8tion.jda.core.entities.TextChannel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,7 +43,7 @@ import java.util.concurrent.TimeUnit;
 
 public class GuildController {
 
-    public static final Cache<Object, Object> cache = CacheBuilder.newBuilder()
+    public static final Cache<Long, GuildTransformer> cache = CacheBuilder.newBuilder()
         .recordStats()
         .expireAfterAccess(5, TimeUnit.MINUTES)
         .build();
@@ -49,9 +52,10 @@ public class GuildController {
 
     private static final String[] requiredGuildColumns = new String[]{
         "guild_types.name as type_name", "guild_types.limits as type_limits",
-        "guilds.id", "guilds.name", "guilds.icon", "guilds.local", "guilds.channels", "guilds.modules", "guilds.level_roles", "guilds.claimable_roles",
-        "guilds.prefixes", "guilds.aliases", "guilds.default_volume", "guilds.dj_level", "guilds.modlog_case", "guilds.modlog", "guilds.autorole",
-        "guilds.level_channel", "guilds.level_alerts", "guilds.levels", "guilds.music_channel_text", "guilds.music_channel_voice", "music_messages"
+        "guilds.id", "guilds.partner", "guilds.name", "guilds.icon", "guilds.local", "guilds.channels", "guilds.modules", "guilds.level_roles",
+        "guilds.level_modifier", "guilds.claimable_roles", "guilds.prefixes", "guilds.aliases", "guilds.default_volume", "guilds.dj_level",
+        "guilds.modlog_case", "guilds.modlog", "guilds.autorole", "guilds.level_channel", "guilds.level_alerts", "guilds.levels",
+        "guilds.hierarchy", "guilds.music_channel_text", "guilds.music_channel_voice", "music_messages"
     };
 
     /**
@@ -81,33 +85,6 @@ public class GuildController {
     @CheckReturnValue
     public static GuildTransformer fetchGuild(AvaIre avaire, Guild guild) {
         return (GuildTransformer) CacheUtil.getUncheckedUnwrapped(cache, guild.getIdLong(), () -> loadGuildFromDatabase(avaire, guild));
-    }
-
-    /**
-     * Fetches the guild transformer from the cache, if it doesn't exist in the
-     * cache it will be loaded into the cache and then returned afterwords.
-     * <p>
-     * If the entry wasn't found in the cache, the channel object will also be used to
-     * send a typing event to the channel, to let people know that Ava is working,
-     * but is loading the data from the database, so it might be slow for a
-     * second or two while everything is loaded into the cache.
-     *
-     * @param avaire  The avaire instance, used to talking to the database.
-     * @param message The JDA message instance for the current message.
-     * @param channel The JDA channel instance for the channel the message was sent in.
-     * @return Possibly null, the guild transformer instance for the current guild, or null.
-     */
-    @CheckReturnValue
-    public static GuildTransformer fetchGuild(AvaIre avaire, Message message, MessageChannel channel) {
-        if (!message.getChannelType().isGuild()) {
-            return null;
-        }
-
-        return (GuildTransformer) CacheUtil.getUncheckedUnwrapped(cache, message.getGuild().getIdLong(), () -> {
-            channel.sendTyping().queue();
-
-            return loadGuildFromDatabase(avaire, message.getGuild());
-        });
     }
 
     public static String buildChannelData(List<TextChannel> textChannels) {
@@ -155,7 +132,7 @@ public class GuildController {
         log.debug("Guild cache for " + guild.getId() + " was refreshed");
 
         try {
-            GuildTransformer transformer = new GuildTransformer(avaire.getDatabase()
+            GuildTransformer transformer = new GuildTransformer(guild, avaire.getDatabase()
                 .newQueryBuilder(Constants.GUILD_TABLE_NAME)
                 .select(requiredGuildColumns)
                 .leftJoin("guild_types", "guilds.type", "guild_types.id")

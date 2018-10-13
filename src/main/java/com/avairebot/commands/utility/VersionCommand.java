@@ -51,6 +51,11 @@ public class VersionCommand extends Command {
     }
 
     @Override
+    public List<String> getExampleUsage() {
+        return Collections.singletonList("`:command` - Gets the current version of the bot, and displays any changes compared to the master branch if there is any.");
+    }
+
+    @Override
     public List<String> getTriggers() {
         return Collections.singletonList("version");
     }

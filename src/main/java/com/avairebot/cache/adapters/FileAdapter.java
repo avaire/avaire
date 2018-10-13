@@ -43,6 +43,11 @@ public class FileAdapter extends CacheAdapter {
 
     private final File storagePath;
 
+    /**
+     * Creates the new file cache adapter, the file cache adapter
+     * will store things inside the storage cache path, allowing
+     * Ava to store things that are persisted through restarts.
+     */
     public FileAdapter() {
         storagePath = new File(Constants.STORAGE_PATH, "cache");
 

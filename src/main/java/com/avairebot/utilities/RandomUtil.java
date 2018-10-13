@@ -21,6 +21,7 @@
 
 package com.avairebot.utilities;
 
+import javax.annotation.Nonnull;
 import java.security.SecureRandom;
 import java.util.List;
 
@@ -62,7 +63,7 @@ public class RandomUtil {
      * @param strings The strings that should be randomized.
      * @return The random string picked from the list of given strings.
      */
-    public static String pickRandom(String... strings) {
+    public static String pickRandom(@Nonnull String... strings) {
         return strings[RANDOM.nextInt(strings.length)];
     }
 
@@ -72,7 +73,7 @@ public class RandomUtil {
      * @param strings The list of strings that should be used to pick a random string.
      * @return The random string picked from the list of given strings.
      */
-    public static Object pickRandom(List<?> strings) {
+    public static Object pickRandom(@Nonnull List<?> strings) {
         return strings.get(RANDOM.nextInt(strings.size()));
     }
 }

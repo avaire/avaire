@@ -155,7 +155,7 @@ public class GuildStateEventAdapter extends EventAdapter {
 
         ScheduleHandler.getScheduler().submit(() -> {
             GuildMusicManager musicManager = AudioHandler.getDefaultAudioHandler()
-                .musicManagers.getOrDefault(guildId, null);
+                .musicManagers.remove(guildId);
 
             if (musicManager == null) {
                 return;
@@ -178,10 +178,6 @@ public class GuildStateEventAdapter extends EventAdapter {
                 if (!LavalinkManager.LavalinkManagerHolder.lavalink.isLinkBeingDestroyed(link)) {
                     link.destroy();
                 }
-
-                LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink().getLinks().clear();
-                LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink().getLinks().removeIf(jdaLink ->
-                    jdaLink.getGuildIdLong() == guildId && LavalinkManager.LavalinkManagerHolder.lavalink.isLinkBeingDestroyed(jdaLink));
             }
         });
     }

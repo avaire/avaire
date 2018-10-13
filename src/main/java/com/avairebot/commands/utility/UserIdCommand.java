@@ -49,7 +49,7 @@ public class UserIdCommand extends Command {
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`:command [user]`");
+        return Collections.singletonList("`:command [user]` - Gets the ID of the user who ran the command, or the mentioned user.");
     }
 
     @Override

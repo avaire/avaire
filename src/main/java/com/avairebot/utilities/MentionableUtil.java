@@ -24,6 +24,7 @@ package com.avairebot.utilities;
 import com.avairebot.commands.CommandMessage;
 import net.dv8tion.jda.core.entities.*;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -54,7 +55,7 @@ public class MentionableUtil {
      * @return Possibly-null, or the user matching the first index.
      */
     @Nullable
-    public static User getUser(CommandMessage context, String[] args) {
+    public static User getUser(@Nonnull CommandMessage context, @Nonnull String[] args) {
         return getUser(context, args, 0);
     }
 
@@ -76,7 +77,7 @@ public class MentionableUtil {
      * @return Possibly-null, or the user matching the given index.
      */
     @Nullable
-    public static User getUser(CommandMessage context, String[] args, int index) {
+    public static User getUser(@Nonnull CommandMessage context, @Nonnull String[] args, int index) {
         if (args.length <= index) {
             return null;
         }
@@ -149,7 +150,7 @@ public class MentionableUtil {
      * @param args    The arguments parsed to the command.
      * @return Possibly-null, or the first channel matching the given arguments.
      */
-    public static Channel getChannel(Message message, String[] args) {
+    public static Channel getChannel(@Nonnull Message message, @Nonnull String[] args) {
         return getChannel(message, args, 0);
     }
 
@@ -170,7 +171,7 @@ public class MentionableUtil {
      * @param index   The index of the argument that should be checked.
      * @return Possibly-null, or the channel matching the given index.
      */
-    public static Channel getChannel(Message message, String[] args, int index) {
+    public static Channel getChannel(@Nonnull Message message, @Nonnull String[] args, int index) {
         if (!message.getMentionedChannels().isEmpty()) {
             return message.getMentionedChannels().get(0);
         }

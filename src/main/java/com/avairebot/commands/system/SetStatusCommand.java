@@ -23,8 +23,10 @@ package com.avairebot.commands.system;
 
 import com.avairebot.AvaIre;
 import com.avairebot.commands.CommandMessage;
+import com.avairebot.commands.CommandPriority;
 import com.avairebot.contracts.commands.SystemCommand;
 import com.avairebot.scheduler.tasks.ChangeGameTask;
+import com.avairebot.utilities.ComparatorUtil;
 import net.dv8tion.jda.core.entities.Game;
 
 import java.util.Arrays;
@@ -66,11 +68,26 @@ public class SetStatusCommand extends SystemCommand {
     }
 
     @Override
+    public CommandPriority getCommandPriority() {
+        return CommandPriority.SYSTEM_ROLE;
+    }
+
+    @Override
     public boolean onCommand(CommandMessage context, String[] args) {
         if (args.length == 0) {
             context.makeInfo(
                 "The bot status cycle has been re-enabled, the change game job can now change the bot status again."
             ).queue(newMessage -> ChangeGameTask.hasCustomStatus = false);
+
+            return true;
+        }
+
+        if (ComparatorUtil.isFuzzyFalse(String.join(" ", args))) {
+            ChangeGameTask.hasCustomStatus = true;
+            avaire.getShardManager().setGame(null);
+
+            context.makeSuccess("The status message has been **disabled**")
+                .queue();
 
             return true;
         }

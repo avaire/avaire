@@ -104,7 +104,7 @@ public class DrainVoteQueueTask implements Task {
             return;
         }
 
-        VoteCacheEntity voteEntity = avaire.getVoteManager().getVoteEntityWithFallback(avaire, user);
+        VoteCacheEntity voteEntity = avaire.getVoteManager().getVoteEntityWithFallback(user);
         voteEntity.setCarbon(expiresIn);
 
         avaire.getVoteManager().registerVoteFor(user.getIdLong());
@@ -117,19 +117,19 @@ public class DrainVoteQueueTask implements Task {
         if (textChannel == null || !textChannel.canTalk()) {
             if (voteEntity.isOptIn()) {
                 avaire.getVoteManager().getMessenger()
-                    .sendVoteWithPointsMessageInDM(user, voteEntity.getVotePoints());
+                    .SendThanksForVotingMessageInDM(user, voteEntity.getVotePoints());
             }
             return;
         }
 
         textChannel.sendMessage(
-            avaire.getVoteManager().getMessenger().buildVoteWithPointsMessage(
+            avaire.getVoteManager().getMessenger().buildThanksForVotingMessage(
                 "Your vote has been registered!", voteEntity.getVotePoints()
             )
         ).queue(null, error -> {
             if (voteEntity.isOptIn()) {
                 avaire.getVoteManager().getMessenger()
-                    .sendVoteWithPointsMessageInDM(user, voteEntity.getVotePoints());
+                    .SendThanksForVotingMessageInDM(user, voteEntity.getVotePoints());
             }
         });
 

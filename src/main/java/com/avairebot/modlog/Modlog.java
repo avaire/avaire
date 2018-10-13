@@ -136,8 +136,10 @@ public class Modlog {
 
             case PURGE:
                 builder
-                    .addField("Moderator", action.getStringifiedModerator(), false)
-                    .addField("Action", action.getMessage(), false);
+                    .addField("Moderator", action.getStringifiedModerator(), true)
+                    .addField("Action", action.getMessage(), true)
+                    .addField("Reason", formatReason(transformer, null), false);
+                action.setMessage(null);
                 break;
 
             case VOICE_KICK:
@@ -163,9 +165,7 @@ public class Modlog {
                         statement.set("modlog_case", transformer.getModlogCase());
                     });
 
-                if (!action.getType().equals(ModlogType.PURGE)) {
-                    logActionToTheDatabase(avaire, guild, action, success, transformer.getModlogCase());
-                }
+                logActionToTheDatabase(avaire, guild, action, success, transformer.getModlogCase());
             } catch (SQLException ignored) {
                 //
             }
@@ -227,9 +227,9 @@ public class Modlog {
                     }
 
                     if (action.getType().equals(ModlogType.VOICE_KICK)) {
-                        statement.set("reason", formatReason(null, action.getMessage().split("\n")[1]));
+                        statement.set("reason", formatReason(null, action.getMessage().split("\n")[1]), true);
                     } else {
-                        statement.set("reason", formatReason(null, action.getMessage()));
+                        statement.set("reason", formatReason(null, action.getMessage()), true);
                     }
                 });
         } catch (SQLException ignored) {

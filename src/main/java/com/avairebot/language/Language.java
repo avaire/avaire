@@ -30,14 +30,15 @@ import java.util.List;
 
 public enum Language {
 
-    EN_US("en", "US", "English", "English"),
-    EN_PT("en", "PT", "Pirate", "Pirate English", "arrr"),
+    DA_DK("da", "DK", "Dansk", "Danish"),
     DE_DE("de", "DE", "Deutsch", "German"),
+    EN_US("en", "US", "English", "English"),
+    ES_ES("es", "ES", "Espanol", "Spanish"),
     FR_FR("fr", "FR", "French", "French"),
     HU_HU("hu", "HU", "Magyar", "Hungarian"),
     NO_NB("no", "NB", "Norsk", "Norwegian"),
-    RU_RU("ru", "RU", "Russian", "Russian"),
-    ES_ES("es", "ES", "Espanol", "Spanish");
+    EN_PT("en", "PT", "Pirate", "Pirate English", "arrr"),
+    RU_RU("ru", "RU", "Russian", "Russian");
 
     private final String code;
     private final String nativeName;

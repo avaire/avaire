@@ -47,12 +47,12 @@ public class SeekCommand extends Command {
 
     @Override
     public String getDescription() {
-        return "Jumps to the given time ";
+        return "Jumps to the given time code in the track that is currently playing.";
     }
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`:command <time>`");
+        return Collections.singletonList("`:command <time>` - Jumps to the given time code.");
     }
 
     @Override

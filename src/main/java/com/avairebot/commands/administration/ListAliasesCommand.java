@@ -50,6 +50,11 @@ public class ListAliasesCommand extends Command {
     }
 
     @Override
+    public List<String> getUsageInstructions() {
+        return Collections.singletonList("`:command` - Lists all the aliases for the server.");
+    }
+
+    @Override
     public List<String> getTriggers() {
         return Arrays.asList("aliases", "aliaslist");
     }

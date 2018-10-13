@@ -88,7 +88,7 @@ public abstract class ChannelModuleCommand extends Command {
     }
 
     protected boolean sendExampleMessage(CommandMessage context, User user, ChannelTransformer transformer, String defaultValue) {
-        String message = StringReplacementUtil.parseGuildJoinLeaveMessage(
+        String message = StringReplacementUtil.parse(
             context.getGuild(), context.getChannel(), user,
             getChannelModule(transformer).getMessage() == null ?
                 defaultValue : getChannelModule(transformer).getMessage()

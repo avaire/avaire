@@ -33,6 +33,7 @@ import com.avairebot.utilities.ComparatorUtil;
 
 import java.sql.SQLException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @CacheFingerprint(name = "welcome-goodbye-command")
@@ -50,6 +51,11 @@ public class WelcomeCommand extends Command {
     @Override
     public String getDescription() {
         return "Toggles the welcome messages on or off for the current channel.";
+    }
+
+    @Override
+    public List<String> getUsageInstructions() {
+        return Collections.singletonList("`:command` - Toggles the welcome messages on/off for the current channel");
     }
 
     @Override

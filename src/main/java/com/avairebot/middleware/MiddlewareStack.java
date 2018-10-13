@@ -26,6 +26,7 @@ import com.avairebot.commands.CommandContainer;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.contracts.middleware.Middleware;
 import com.avairebot.handlers.DatabaseEventHolder;
+import com.avairebot.metrics.Metrics;
 import com.avairebot.middleware.global.IncrementMetricsForCommand;
 import com.avairebot.middleware.global.IsCategoryEnabled;
 import com.avairebot.middleware.global.ProcessCommand;
@@ -61,6 +62,8 @@ public class MiddlewareStack {
 
         middlewares.add(new MiddlewareContainer(isCategoryEnabled));
         middlewares.add(new MiddlewareContainer(incrementMetricsForCommand));
+
+        Metrics.commandAttempts.labels(command.getClass().getSimpleName()).inc();
     }
 
     public MiddlewareStack(Message message, CommandContainer command, DatabaseEventHolder databaseEventHolder) {

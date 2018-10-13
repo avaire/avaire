@@ -23,7 +23,14 @@ package com.avairebot.vote;
 
 public enum VoteMetricType {
 
+    /**
+     * Represents votes received through the DBL webhook.
+     */
     WEBHOOK("Webhook"),
+
+    /**
+     * Represents votes that was validated through the <code>!vote check</code> command.
+     */
     COMMAND("Command");
 
     private final String name;
@@ -32,6 +39,11 @@ public enum VoteMetricType {
         this.name = name;
     }
 
+    /**
+     * Gets the name of the vote metric type.
+     *
+     * @return The name of the metric type.
+     */
     public String getName() {
         return name;
     }

@@ -27,6 +27,7 @@ import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.utils.Checks;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
 public class RoleUtil {
@@ -40,7 +41,7 @@ public class RoleUtil {
      * @param roleName The name of the role that should be fetched if no role was mentioned.
      * @return Possibly-null, if a role was mentioned the role will be returned, otherwise the role will be fetched from the guilds role list.
      */
-    public static Role getRoleFromMentionsOrName(Message message, String roleName) {
+    public static Role getRoleFromMentionsOrName(@Nonnull Message message, @Nonnull String roleName) {
         if (!message.getMentionedRoles().isEmpty()) {
             return message.getMentionedRoles().get(0);
         }
@@ -55,7 +56,7 @@ public class RoleUtil {
      * @param member The member whos roles should be used.
      * @return Possibly-null, if the user has any roles the role that is ranked highest in the role hierarchy will be returned.
      */
-    public static Role getHighestFrom(Member member) {
+    public static Role getHighestFrom(@Nonnull Member member) {
         Checks.notNull(member, "Member object can not be null");
 
         List<Role> roles = member.getRoles();
@@ -78,7 +79,7 @@ public class RoleUtil {
      * @param matchRole The role which position should be used in the comparison.
      * @return True if the given position is higher than any of the roles in the list, false otherwise.
      */
-    public static boolean isRoleHierarchyHigher(List<Role> roles, Role matchRole) {
+    public static boolean isRoleHierarchyHigher(@Nonnull List<Role> roles, @Nonnull Role matchRole) {
         Checks.notNull(matchRole, "Match roles can not be null");
 
         return isRolePositionHigher(roles, matchRole.getPosition());
@@ -91,7 +92,7 @@ public class RoleUtil {
      * @param hierarchyPosition The position that should be compared with the list.
      * @return True if the given position is higher than any of the roles in the list, false otherwise.
      */
-    public static boolean isRolePositionHigher(List<Role> roles, int hierarchyPosition) {
+    public static boolean isRolePositionHigher(@Nonnull List<Role> roles, int hierarchyPosition) {
         for (Role role : roles) {
             if (role.getPosition() > hierarchyPosition) {
                 return false;
@@ -107,7 +108,7 @@ public class RoleUtil {
      * @param matchRole The role which position should be used in the comparison.
      * @return True if the given position is lower than any of the roles in the list, false otherwise.
      */
-    public static boolean isRoleHierarchyLower(List<Role> roles, Role matchRole) {
+    public static boolean isRoleHierarchyLower(@Nonnull List<Role> roles, @Nonnull Role matchRole) {
         Checks.notNull(matchRole, "Match roles can not be null");
 
         return isRoleHierarchyLower(roles, matchRole.getPosition());
@@ -120,7 +121,7 @@ public class RoleUtil {
      * @param hierarchyPosition The position that should be compared with the list.
      * @return True if the given position is lower than any of the roles in the list, false otherwise.
      */
-    public static boolean isRoleHierarchyLower(List<Role> roles, int hierarchyPosition) {
+    public static boolean isRoleHierarchyLower(@Nonnull List<Role> roles, int hierarchyPosition) {
         for (Role role : roles) {
             if (role.getPosition() > hierarchyPosition) {
                 return true;
@@ -140,7 +141,7 @@ public class RoleUtil {
      * @param role    The role that should be used in the checks.
      * @return True if both the given user and bot can interact with the role, false otherwise.
      */
-    public static boolean canInteractWithRole(Message message, Role role) {
+    public static boolean canInteractWithRole(@Nonnull Message message, @Nonnull Role role) {
         if (RoleUtil.isRoleHierarchyHigher(message.getMember().getRoles(), role)) {
             MessageFactory.makeWarning(message,
                 ":user The **:role** role is positioned higher in the hierarchy than any role you have, you can't add roles with a higher ranking than you have."
@@ -165,7 +166,7 @@ public class RoleUtil {
      * @param role   The role the member should have.
      * @return True if the member has the given role, false otherwise.
      */
-    public static boolean hasRole(Member member, Role role) {
+    public static boolean hasRole(@Nonnull Member member, @Nonnull Role role) {
         for (Role memberRole : member.getRoles()) {
             if (memberRole.getId().equals(role.getId())) {
                 return true;

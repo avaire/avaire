@@ -73,6 +73,16 @@ public class LeaderboardCommand extends Command {
     }
 
     @Override
+    public List<String> getUsageInstructions() {
+        return Collections.singletonList("`:command` - Displays the top 100 players on the XP leaderboard for the server.");
+    }
+
+    @Override
+    public List<String> getExampleUsage() {
+        return Collections.singletonList("`:command 2`");
+    }
+
+    @Override
     public List<Class<? extends Command>> getRelations() {
         return Arrays.asList(
             RankCommand.class,
@@ -129,7 +139,7 @@ public class LeaderboardCommand extends Command {
             messages.add(context.i18n("line")
                 .replace(":num", "" + (index + 1))
                 .replace(":username", username)
-                .replace(":level", NumberUtil.formatNicely(avaire.getLevelManager().getLevelFromExperience(experience)))
+                .replace(":level", NumberUtil.formatNicely(avaire.getLevelManager().getLevelFromExperience(transformer, experience)))
                 .replace(":experience", NumberUtil.formatNicely((experience - 100)))
             );
         });
@@ -149,7 +159,7 @@ public class LeaderboardCommand extends Command {
                         .replace(":num", NumberUtil.formatNicely(rank))
                         .replace(":username", context.getAuthor().getName() + "#" + context.getAuthor().getDiscriminator())
                         .replace(":level", NumberUtil.formatNicely(avaire.getLevelManager().getLevelFromExperience(
-                            context.getPlayerTransformer().getExperience()
+                            context.getGuildTransformer(), context.getPlayerTransformer().getExperience()
                         )))
                         .replace(":experience", NumberUtil.formatNicely(context.getPlayerTransformer().getExperience() - 100))
                         + "\n\n" + paginator.generateFooter(generateCommandTrigger(context.getMessage())),
