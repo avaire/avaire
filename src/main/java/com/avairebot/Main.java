@@ -67,11 +67,11 @@ public class Main {
             if (cmd.hasOption("test")) {
                 try {
                     BufferedImage bufferedImage = TestCommand.generateImage(
-                        "https://cdn.discordapp.com/avatars/88739639380172800/e2b182faea7cebeca33cc7ed34c26feb.png",
+                        "https://cdn.discordapp.com/avatars/88739639380172800/a_d1c159bbdd858674a7f16f3bb7f55748.gif",
                         "Senither",
                         "0001",
                         "27",
-                        "99",
+                        "294",
                         "9,001",
                         "9,876",
                         "17,679",
