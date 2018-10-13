@@ -12,6 +12,7 @@ import com.avairebot.database.collection.DataRow;
 import com.avairebot.database.controllers.PlayerController;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.database.transformers.PlayerTransformer;
+import com.avairebot.imagegen.Fonts;
 import com.avairebot.utilities.NumberUtil;
 import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.entities.Guild;
@@ -66,7 +67,7 @@ public class TestCommand extends Command {
         final String xpBarText = String.format("%s out of %s xp", currentXpInLevel, missingXpToNextLevel);
 
         // Colors
-        final Color experienceBackground = new Color((float) 38 / 255, (float) 39 / 255, (float) 59 / 255, 0.6F);
+        final Color experienceBackground = new Color(38F / 255F, (float) 39 / 255, (float) 59 / 255, 0.6F);
         final Color experienceForeground = new Color((float) 104 / 255, (float) 107 / 255, (float) 170 / 255, 0.8F);
         final Color experienceDelimiter = new Color((float) 140 / 255, (float) 144 / 255, (float) 226 / 255, 0.8F);
         final Color experienceText = new Color((float) 226 / 255, (float) 226 / 255, (float) 229 / 255, 0.85F);
@@ -82,18 +83,13 @@ public class TestCommand extends Command {
 //        avatarGraphics.fillRect(0, 0, 600, 200);
         avatarGraphics.drawImage(avatarImage, 25, 15, null);
 
-        // Creates our custom fonts
-        Font mediumFont = Font.createFont(Font.TRUETYPE_FONT, TestCommand.class.getClassLoader().getResourceAsStream("fonts/Poppins-Medium.ttf"));
-        Font boldFont = Font.createFont(Font.TRUETYPE_FONT, TestCommand.class.getClassLoader().getResourceAsStream("fonts/Poppins-Bold.ttf"));
-        Font regularFont = Font.createFont(Font.TRUETYPE_FONT, TestCommand.class.getClassLoader().getResourceAsStream("fonts/Poppins-Regular.ttf"));
-
         // Creates our text graphic, draws our text on top of the background
         Graphics2D textGraphics = backgroundImage.createGraphics();
         textGraphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-        textGraphics.setFont(mediumFont.deriveFont(Font.BOLD, 26F));
+        textGraphics.setFont(Fonts.medium.deriveFont(Font.BOLD, 26F));
         textGraphics.drawString(username, startingX + 5, startingY);
         FontMetrics textGraphicsFontMetrics = textGraphics.getFontMetrics();
-        textGraphics.setFont(mediumFont.deriveFont(Font.PLAIN, 17));
+        textGraphics.setFont(Fonts.medium.deriveFont(Font.PLAIN, 17));
         textGraphics.setColor(Color.decode("#A6A6A6"));
         textGraphics.drawString("#" + discriminator, startingX + 5 + textGraphicsFontMetrics.stringWidth(username), startingY);
 
@@ -110,7 +106,7 @@ public class TestCommand extends Command {
         experienceGraphics.fillRect(startingX + 5 + (int) Math.min(xpBarLength - 10, (xpBarLength - 10) * (percentage / 100)), startingY + 15, 5, 40);
         // Create the text that should be displayed in the middle of the XP bar
         experienceGraphics.setColor(experienceText);
-        Font smallText = regularFont.deriveFont(Font.BOLD, 20F);
+        Font smallText = Fonts.regular.deriveFont(Font.BOLD, 20F);
         experienceGraphics.setFont(smallText);
         FontMetrics fontMetrics = experienceGraphics.getFontMetrics(smallText);
         experienceGraphics.drawString(xpBarText, startingX + 5 + ((xpBarLength - fontMetrics.stringWidth(xpBarText)) / 2), startingY + 42);
@@ -120,24 +116,24 @@ public class TestCommand extends Command {
         infoTextGraphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
         infoTextGraphics.setColor(experienceText);
         // Create Level text
-        infoTextGraphics.setFont(mediumFont.deriveFont(Font.PLAIN, 28));
+        infoTextGraphics.setFont(Fonts.medium.deriveFont(Font.PLAIN, 28));
         infoTextGraphics.drawString("LEVEL", 35, 140);
         FontMetrics infoTextGraphicsFontMetricsLarge = infoTextGraphics.getFontMetrics();
-        infoTextGraphics.setFont(boldFont.deriveFont(Font.BOLD, 48));
+        infoTextGraphics.setFont(Fonts.bold.deriveFont(Font.BOLD, 48));
         FontMetrics infoTextGraphicsFontMetricsSmall = infoTextGraphics.getFontMetrics();
         infoTextGraphics.drawString(level, 35 + ((infoTextGraphicsFontMetricsLarge.stringWidth("LEVEL") - infoTextGraphicsFontMetricsSmall.stringWidth(level)) / 2), 185);
 
         // Create Score Text
-        infoTextGraphics.setFont(mediumFont.deriveFont(Font.PLAIN, 28));
+        infoTextGraphics.setFont(Fonts.medium.deriveFont(Font.PLAIN, 28));
         infoTextGraphics.drawString("RANK", 165, 140);
-        infoTextGraphics.setFont(boldFont.deriveFont(Font.BOLD, 48));
+        infoTextGraphics.setFont(Fonts.bold.deriveFont(Font.BOLD, 48));
         infoTextGraphics.drawString(rank, 165 + ((infoTextGraphicsFontMetricsLarge.stringWidth("RANK") - infoTextGraphicsFontMetricsSmall.stringWidth(rank)) / 2), 185);
 
         // Create XP states
-        infoTextGraphics.setFont(mediumFont.deriveFont(Font.PLAIN, 26F));
+        infoTextGraphics.setFont(Fonts.medium.deriveFont(Font.PLAIN, 26F));
         infoTextGraphics.drawString("Server XP:", 300, 140);
         infoTextGraphics.drawString("Global XP:", 300, 180);
-        infoTextGraphics.setFont(regularFont.deriveFont(Font.PLAIN, 24F));
+        infoTextGraphics.setFont(Fonts.regular.deriveFont(Font.PLAIN, 24F));
         infoTextGraphics.setColor(Color.decode("#A6A6A6"));
         infoTextGraphics.drawString(serverExperience, 455, 140);
         infoTextGraphics.drawString(globalExperience, 455, 180);
