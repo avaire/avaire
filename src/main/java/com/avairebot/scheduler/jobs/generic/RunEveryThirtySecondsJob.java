@@ -24,7 +24,6 @@ package com.avairebot.scheduler.jobs.generic;
 import com.avairebot.AvaIre;
 import com.avairebot.contracts.scheduler.Job;
 import com.avairebot.scheduler.tasks.MusicActivityTask;
-import com.avairebot.scheduler.tasks.SyncCommandsPerMinuteMetricsTask;
 import com.avairebot.scheduler.tasks.SyncGuildMetricsCounterTask;
 
 import java.util.concurrent.TimeUnit;
@@ -33,7 +32,6 @@ public class RunEveryThirtySecondsJob extends Job {
 
     private final MusicActivityTask musicActivityTask = new MusicActivityTask();
     private final SyncGuildMetricsCounterTask syncGuildMetricsCounterTask = new SyncGuildMetricsCounterTask();
-    private final SyncCommandsPerMinuteMetricsTask syncCommandsPerMinuteMetricsTask = new SyncCommandsPerMinuteMetricsTask();
 
     public RunEveryThirtySecondsJob(AvaIre avaire) {
         super(avaire, 0, 30, TimeUnit.SECONDS);
@@ -43,8 +41,7 @@ public class RunEveryThirtySecondsJob extends Job {
     public void run() {
         handleTask(
             musicActivityTask,
-            syncGuildMetricsCounterTask,
-            syncCommandsPerMinuteMetricsTask
+            syncGuildMetricsCounterTask
         );
     }
 }
