@@ -656,6 +656,7 @@ utility:
         fields:
             rank: 'Rang'
             level: 'Level'
+            total: '{0} (i alt: {1})'
             experience: 'Experience'
             experienceToNext: 'Experience nødvendig til næste Level'
             youNeedMoreXpToLevelUp: '[{0}] {1}{2}\n\t\t\t\t\t\t\t\t\tDu mangler {3} mere XP for at levele op.'

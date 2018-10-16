@@ -151,7 +151,7 @@ public class RankCommand extends Command {
                 .setFooter("https://avairebot.com/leaderboard/" + context.getGuild().getId())
                 .addField(context.i18n("fields.rank"), score, true)
                 .addField(context.i18n("fields.level"), NumberUtil.formatNicely(level), true)
-                .addField(context.i18n("fields.experience"), (experience - 100 < 0 ? "0" : String.format("%s (Total: %s)",
+                .addField(context.i18n("fields.experience"), (experience - 100 < 0 ? "0" : context.i18n("fields.total",
                     NumberUtil.formatNicely(experience - 100), NumberUtil.formatNicely(properties.getTotal())
                 )), true)
                 .addField(context.i18n("fields.experienceToNext"), context.i18n("fields.youNeedMoreXpToLevelUp",

@@ -655,6 +655,7 @@ utility:
         fields:
             rank: 'Rang'
             level: 'Szint'
+            total: '{0} (Total: {1})'
             experience: 'Tapasztalat'
             experienceToNext: 'Tapasztalat szükséges a következő szinthez'
             youNeedMoreXpToLevelUp: '[{0}] {1}{2}\n\t\t\t\t\t\t\t\t\tSzükséged van {3} tapasztalatra a szintlépéshez.'
