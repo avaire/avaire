@@ -134,7 +134,9 @@ public class RankCommand extends Command {
                 ? "Unranked"
                 : properties.getScore() + " / " + getUsersInGuild(context.getGuild());
 
-            long experience = properties.getPlayer().getExperience();
+            long zeroExperience = avaire.getLevelManager().getExperienceFromLevel(guildTransformer, 0) - 100;
+            long experience = properties.getPlayer().getExperience() + zeroExperience;
+
             long level = avaire.getLevelManager().getLevelFromExperience(guildTransformer, experience);
             long current = avaire.getLevelManager().getExperienceFromLevel(guildTransformer, level);
 
@@ -151,8 +153,8 @@ public class RankCommand extends Command {
                 .setFooter("https://avairebot.com/leaderboard/" + context.getGuild().getId())
                 .addField(context.i18n("fields.rank"), score, true)
                 .addField(context.i18n("fields.level"), NumberUtil.formatNicely(level), true)
-                .addField(context.i18n("fields.experience"), (experience - 100 < 0 ? "0" : context.i18n("fields.total",
-                    NumberUtil.formatNicely(experience - 100), NumberUtil.formatNicely(properties.getTotal())
+                .addField(context.i18n("fields.experience"), (experience - zeroExperience - 100 < 0 ? "0" : context.i18n("fields.total",
+                    NumberUtil.formatNicely(experience - zeroExperience - 100), NumberUtil.formatNicely(properties.getTotal())
                 )), true)
                 .addField(context.i18n("fields.experienceToNext"), context.i18n("fields.youNeedMoreXpToLevelUp",
                     levelBar, NumberUtil.formatNicelyWithDecimals(percentage), '%', NumberUtil.formatNicely(nextLevelXp - experience)
