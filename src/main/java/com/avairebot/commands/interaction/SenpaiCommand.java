@@ -39,7 +39,9 @@ public class SenpaiCommand extends InteractionCommand {
         return Arrays.asList(
             "https://i.imgur.com/7X0TzmR.gif",
             "https://i.imgur.com/j4vdwZh.gif",
-            "https://i.imgur.com/e1MXv4L.gif"
+            "https://i.imgur.com/e1MXv4L.gif",
+            "https://i.imgur.com/bUUJS7A.gif",
+            "https://i.imgur.com/qkcRXl6.gif"
         );
     }
 

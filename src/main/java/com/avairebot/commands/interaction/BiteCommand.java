@@ -38,7 +38,10 @@ public class BiteCommand extends InteractionCommand {
         return Arrays.asList(
             "https://i.imgur.com/qcPNLOH.gif",
             "https://i.imgur.com/t89dF2n.gif",
-            "https://i.imgur.com/fPCg6Or.gif"
+            "https://i.imgur.com/fPCg6Or.gif",
+            "https://i.imgur.com/NWBokoF.gif",
+            "https://i.imgur.com/h0FfIKf.gif",
+            "https://i.imgur.com/dnOBA0s.gif"
         );
     }
 
