@@ -32,6 +32,8 @@ import java.util.Map;
 
 public class CreateGuildTypeTableMigration implements Migration {
 
+    private int id = 1;
+
     @Override
     public String created_at() {
         return "Wed, Sep 20, 2017 5:23 PM";
@@ -62,6 +64,7 @@ public class CreateGuildTypeTableMigration implements Migration {
         limits.put("selfAssignableRoles", selfAssignableRoles);
         limits.put("levelRoles", levelRoles);
 
+        items.put("id", id++);
         items.put("name", name);
         items.put("limits", AvaIre.gson.toJson(limits));
 
