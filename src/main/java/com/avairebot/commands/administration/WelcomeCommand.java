@@ -36,7 +36,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-@CacheFingerprint(name = "welcome-goodbye-command")
+@CacheFingerprint(name = "welcome-goodbye-commands")
 public class WelcomeCommand extends Command {
 
     public WelcomeCommand(AvaIre avaire) {
@@ -55,7 +55,7 @@ public class WelcomeCommand extends Command {
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`:command` - Toggles the welcome messages on/off for the current channel");
+        return Collections.singletonList("`:commands` - Toggles the welcome messages on/off for the current channel");
     }
 
     @Override

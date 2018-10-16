@@ -38,7 +38,7 @@ public class IsBotAdminMiddleware extends Middleware {
 
     @Override
     public String buildHelpDescription(@Nonnull String[] arguments) {
-        return "**You must be a Bot Administrator to use this command!**";
+        return "**You must be a Bot Administrator to use this commands!**";
     }
 
     @Override
@@ -59,7 +59,7 @@ public class IsBotAdminMiddleware extends Middleware {
     }
 
     private boolean sendMustBeBotAdminMessage(@Nonnull Message message) {
-        MessageFactory.makeError(message, ":warning: You must be a bot administrator to use this command!")
+        MessageFactory.makeError(message, ":warning: You must be a bot administrator to use this commands!")
             .queue(newMessage -> newMessage.delete().queueAfter(45, TimeUnit.SECONDS), RestActionUtil.ignore);
 
         return false;

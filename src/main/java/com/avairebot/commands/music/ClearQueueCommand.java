@@ -52,7 +52,7 @@ public class ClearQueueCommand extends Command {
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`:command` - Clears the music queue");
+        return Collections.singletonList("`:commands` - Clears the music queue");
     }
 
     @Override

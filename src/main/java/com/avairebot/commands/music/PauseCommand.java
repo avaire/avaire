@@ -51,7 +51,7 @@ public class PauseCommand extends Command {
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`:command` - Pauses the music");
+        return Collections.singletonList("`:commands` - Pauses the music");
     }
 
     @Override

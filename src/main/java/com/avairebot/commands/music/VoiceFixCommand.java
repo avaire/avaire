@@ -58,11 +58,11 @@ public class VoiceFixCommand extends Command {
             "Music will sometimes stop working when Discord forgets to notify bots",
             "about voice state changes, this commands tries to make fixing that a bit easier",
             "to do by forcing a voice update state for the bot through changing the server",
-            "region, the command will pick a server region at random, swap the servers",
+            "region, the commands will pick a server region at random, swap the servers",
             "region to that, and then 2½ seconds later swap right back, this should",
             "fix music 99%s of the time.\n\n",
             "If you're still experiencing voice issues you can try making the bot leave the voice",
-            "channel by using a command like `%sstop`, and then running this command again.\n\n",
+            "channel by using a commands like `%sstop`, and then running this commands again.\n\n",
             "Still having issues even after all that?\nYou can join the [support server](https://discord.gg/gt2FWER)",
             "to get help from the AvaIre support team directly."
         ), "%", prefix);
@@ -70,7 +70,7 @@ public class VoiceFixCommand extends Command {
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`:command` - Finds a random server region, swaps to it and then swaps back again.");
+        return Collections.singletonList("`:commands` - Finds a random server region, swaps to it and then swaps back again.");
     }
 
     @Override
@@ -158,7 +158,7 @@ public class VoiceFixCommand extends Command {
 
     private void logError(CommandMessage context, Throwable exception) {
         context.makeError(context.i18n("error", exception.getMessage()));
-        AvaIre.getLogger().error("An error was thrown in the Voice Fix command while trying to change the server region: "
+        AvaIre.getLogger().error("An error was thrown in the Voice Fix commands while trying to change the server region: "
             + exception.getMessage(), exception
         );
     }

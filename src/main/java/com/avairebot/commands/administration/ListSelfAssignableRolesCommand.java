@@ -52,7 +52,7 @@ public class ListSelfAssignableRolesCommand extends Command {
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`:command` - List all the self-assignable roles for the server.");
+        return Collections.singletonList("`:commands` - List all the self-assignable roles for the server.");
     }
 
     @Override

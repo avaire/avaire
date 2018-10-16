@@ -21,13 +21,18 @@
 
 package com.avairebot.plugin;
 
+import com.avairebot.AvaIre;
+import com.avairebot.base.BackendPluginManager;
+import com.avairebot.base.impl.PluginManagerFactory;
+import com.avairebot.base.util.JSPFProperties;
 import com.avairebot.exceptions.InvalidPluginException;
 import com.avairebot.exceptions.InvalidPluginsPathException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -39,32 +44,29 @@ public class PluginManager {
 
     private final Set<PluginLoader> plugins = new HashSet<>();
 
-    public PluginManager() {
+    public PluginManager(AvaIre bot) {
         this.pluginsFolder = new File("plugins");
 
         if (!pluginsFolder.exists()) {
             pluginsFolder.mkdirs();
         }
+        final JSPFProperties props = new JSPFProperties(); // Lets set up some properties so it's less sloppy looking
+        props.setProperty(PluginManager.class, "cache.enabled", "false");
+        props.setProperty(PluginManager.class, "supervision.enabled", "true");
+        pm = PluginManagerFactory.createPluginManager(props, bot);
     }
 
     public void loadPlugins() throws InvalidPluginsPathException, InvalidPluginException {
         if (!pluginsFolder.isDirectory() || pluginsFolder.listFiles() == null) {
             throw new InvalidPluginsPathException("Invalid plugins path exception, the plugins path is not a directory.");
         }
+        pm.addPluginsFrom(new File("plugins/").toURI()); // One line does it all
+    }
 
-        //noinspection ConstantConditions
-        for (File file : pluginsFolder.listFiles()) {
-            if (file.isDirectory() || file.isHidden()) continue;
+    private BackendPluginManager pm;
 
-            try {
-                log.debug("Attempting to load plugin: " + file.toString());
-                PluginLoader pluginLoader = new PluginLoader(file, pluginsFolder);
-
-                plugins.add(pluginLoader);
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-        }
+    public BackendPluginManager get() {
+        return pm;
     }
 
     public Set<PluginLoader> getPlugins() {

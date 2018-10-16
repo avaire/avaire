@@ -56,7 +56,7 @@ public class RemoveSongFromQueueCommand extends Command {
     @Override
     public List<String> getUsageInstructions() {
         return Collections.singletonList(
-            "`:command <song id>` Removes the song with the given ID from the queue."
+            "`:commands <song id>` Removes the song with the given ID from the queue."
         );
     }
 

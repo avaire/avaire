@@ -49,14 +49,14 @@ public class BanCommand extends BanableCommand {
     @Override
     public List<String> getUsageInstructions() {
         return Arrays.asList(
-            "`:command <user> [reason]` - Bans the mentioned user with the given reason.",
-            "`:command <user id> [reason]` - Bans the user with given ID and for the given reason."
+            "`:commands <user> [reason]` - Bans the mentioned user with the given reason.",
+            "`:commands <user id> [reason]` - Bans the user with given ID and for the given reason."
         );
     }
 
     @Override
     public List<String> getExampleUsage() {
-        return Collections.singletonList("`:command @Senither Spam and acting like a twat`");
+        return Collections.singletonList("`:commands @Senither Spam and acting like a twat`");
     }
 
     @Override

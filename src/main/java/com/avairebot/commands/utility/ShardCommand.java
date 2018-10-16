@@ -59,17 +59,17 @@ public class ShardCommand extends Command {
         }
 
         return "Displays the status of all the shards for the bot, including their server count, channel count, user count and latency."
-            + ((avaire.getShardManager().getShards().size() < 2) ? "\n**Shards are currently disabled: This command will just run the stats command.**" : "");
+            + ((avaire.getShardManager().getShards().size() < 2) ? "\n**Shards are currently disabled: This commands will just run the stats commands.**" : "");
     }
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`:command [page]` Displays the shard information, with 12 shards per page.");
+        return Collections.singletonList("`:commands [page]` Displays the shard information, with 12 shards per page.");
     }
 
     @Override
     public List<String> getExampleUsage() {
-        return Collections.singletonList("`:command 2` - Displays the 2nd page of shard information.");
+        return Collections.singletonList("`:commands 2` - Displays the 2nd page of shard information.");
     }
 
     @Override

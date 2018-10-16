@@ -59,12 +59,12 @@ public class IPInfoCommand extends Command {
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`:command <ip>` - Displays information about the given IP address.");
+        return Collections.singletonList("`:commands <ip>` - Displays information about the given IP address.");
     }
 
     @Override
     public List<String> getExampleUsage() {
-        return Collections.singletonList("`:command 8.8.4.4`");
+        return Collections.singletonList("`:commands 8.8.4.4`");
     }
 
     @Override

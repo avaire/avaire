@@ -53,7 +53,7 @@ public class SoundcloudCommand extends Command {
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`:command <song>` - Plays the given song");
+        return Collections.singletonList("`:commands <song>` - Plays the given song");
     }
 
     @Override
@@ -78,8 +78,8 @@ public class SoundcloudCommand extends Command {
     @Override
     public List<String> getExampleUsage() {
         return Arrays.asList(
-            "`:command A cool song` - Finds songs with the name \"A cool song\".",
-            "`:command https://soundcloud.com/yellowclaw/yellow-claw-flux-pavilion-catch-me-feat-naaz` - Plays the song off a link"
+            "`:commands A cool song` - Finds songs with the name \"A cool song\".",
+            "`:commands https://soundcloud.com/yellowclaw/yellow-claw-flux-pavilion-catch-me-feat-naaz` - Plays the song off a link"
         );
     }
 

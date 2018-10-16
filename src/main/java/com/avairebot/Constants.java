@@ -53,4 +53,7 @@ public class Constants {
 
     // Command source link
     public static final String SOURCE_URI = "https://github.com/avaire/avaire/tree/master/src/main/java/com/avairebot/commands/%s/%s.java";
+
+    // API Version for Plugins
+    public static final String APIVersion = AppInfo.getAppInfo().version; // Change this for each build where API changeI never
 }

@@ -53,12 +53,12 @@ public class ExpandUrlCommand extends Command {
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`:command <url>` - Expands the provided url.");
+        return Collections.singletonList("`:commands <url>` - Expands the provided url.");
     }
 
     @Override
     public List<String> getExampleUsage() {
-        return Collections.singletonList("`:command https://avairebot.com/support`");
+        return Collections.singletonList("`:commands https://avairebot.com/support`");
     }
 
     @Override

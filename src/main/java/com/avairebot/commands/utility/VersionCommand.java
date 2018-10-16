@@ -52,7 +52,7 @@ public class VersionCommand extends Command {
 
     @Override
     public List<String> getExampleUsage() {
-        return Collections.singletonList("`:command` - Gets the current version of the bot, and displays any changes compared to the master branch if there is any.");
+        return Collections.singletonList("`:commands` - Gets the current version of the bot, and displays any changes compared to the master branch if there is any.");
     }
 
     @Override

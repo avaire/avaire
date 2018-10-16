@@ -35,7 +35,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-@CacheFingerprint(name = "self-assignable-role-command")
+@CacheFingerprint(name = "self-assignable-role-commands")
 public class RemoveSelfAssignableRoleCommand extends Command {
 
     public RemoveSelfAssignableRoleCommand(AvaIre avaire) {
@@ -54,12 +54,12 @@ public class RemoveSelfAssignableRoleCommand extends Command {
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`:command <role>` - Removes the mentioned role from the self-assignable roles list.");
+        return Collections.singletonList("`:commands <role>` - Removes the mentioned role from the self-assignable roles list.");
     }
 
     @Override
     public List<String> getExampleUsage() {
-        return Collections.singletonList("`:command DJ`");
+        return Collections.singletonList("`:commands DJ`");
     }
 
     @Override

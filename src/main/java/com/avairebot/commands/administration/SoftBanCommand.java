@@ -50,14 +50,14 @@ public class SoftBanCommand extends BanableCommand {
     @Override
     public List<String> getUsageInstructions() {
         return Arrays.asList(
-            "`:command <user> [reason]` - Bans the mentioned user with the given reason.",
-            "`:command <user id> [reason]` - Bans the user with given ID and for the given reason."
+            "`:commands <user> [reason]` - Bans the mentioned user with the given reason.",
+            "`:commands <user id> [reason]` - Bans the user with given ID and for the given reason."
         );
     }
 
     @Override
     public List<String> getExampleUsage() {
-        return Collections.singletonList("`:command @Senither Being a potato`");
+        return Collections.singletonList("`:commands @Senither Being a potato`");
     }
 
     @Override

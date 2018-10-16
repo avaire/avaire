@@ -28,7 +28,7 @@ public class InvalidCommandPrefixException extends IllegalArgumentException {
     }
 
     public InvalidCommandPrefixException(String prefix, String newCommand, String oldCommand) {
-        this("The \"%s\" prefix from the \"%s\" command is already registered to the \"%s\" command!", prefix, newCommand, oldCommand);
+        this("The \"%s\" prefix from the \"%s\" commands is already registered to the \"%s\" commands!", prefix, newCommand, oldCommand);
     }
 
     public InvalidCommandPrefixException(String message) {

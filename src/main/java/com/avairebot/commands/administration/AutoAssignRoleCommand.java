@@ -54,15 +54,15 @@ public class AutoAssignRoleCommand extends Command {
     @Override
     public List<String> getUsageInstructions() {
         return Arrays.asList(
-            "`:command` - Displays the current auto assignable role if one is set.",
-            "`:command <role>` - The role that should be auto assignable.",
-            "`:command disable` - Disables the auto assignable role."
+            "`:commands` - Displays the current auto assignable role if one is set.",
+            "`:commands <role>` - The role that should be auto assignable.",
+            "`:commands disable` - Disables the auto assignable role."
         );
     }
 
     @Override
     public List<String> getExampleUsage() {
-        return Collections.singletonList("`:command @Member`");
+        return Collections.singletonList("`:commands @Member`");
     }
 
     @Override

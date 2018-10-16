@@ -51,7 +51,7 @@ public class RepeatMusicQueueCommand extends Command {
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`:command` - Toggles queue looping on or off.");
+        return Collections.singletonList("`:commands` - Toggles queue looping on or off.");
     }
 
     @Override

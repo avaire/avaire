@@ -35,7 +35,7 @@ public class IsDMMessageMiddelware extends Middleware {
 
     @Override
     public String buildHelpDescription(@Nonnull String[] arguments) {
-        return "**This command can only be used in DMs.**";
+        return "**This commands can only be used in DMs.**";
     }
 
     @Override

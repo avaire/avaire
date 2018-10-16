@@ -35,7 +35,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-@CacheFingerprint(name = "self-assignable-role-command")
+@CacheFingerprint(name = "self-assignable-role-commands")
 public class AddSelfAssignableRoleCommand extends Command {
 
     public AddSelfAssignableRoleCommand(AvaIre avaire) {
@@ -54,12 +54,12 @@ public class AddSelfAssignableRoleCommand extends Command {
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`:command <role>` - Adds the mentioned role to the self-assignable roles list.");
+        return Collections.singletonList("`:commands <role>` - Adds the mentioned role to the self-assignable roles list.");
     }
 
     @Override
     public List<String> getExampleUsage() {
-        return Collections.singletonList("`:command DJ`");
+        return Collections.singletonList("`:commands DJ`");
     }
 
     @Override

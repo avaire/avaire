@@ -50,17 +50,17 @@ public class CategoriesCommand extends Command {
 
     @Override
     public String getDescription() {
-        return "Shows status of all command categories in the current or mentioned channel, both for globally and per-channel.";
+        return "Shows status of all commands categories in the current or mentioned channel, both for globally and per-channel.";
     }
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`:command [channel]` - Displays the status of the command categories in the mentioned channel, or the current channel if no channel was mentioned.");
+        return Collections.singletonList("`:commands [channel]` - Displays the status of the commands categories in the mentioned channel, or the current channel if no channel was mentioned.");
     }
 
     @Override
     public List<String> getExampleUsage() {
-        return Collections.singletonList("`:command #general`");
+        return Collections.singletonList("`:commands #general`");
     }
 
     @Override

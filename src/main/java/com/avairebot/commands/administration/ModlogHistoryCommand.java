@@ -57,14 +57,14 @@ public class ModlogHistoryCommand extends Command {
     @Override
     public List<String> getUsageInstructions() {
         return Collections.singletonList(
-            "`:command <user>` - Displays the modlog history for the mentioned user."
+            "`:commands <user>` - Displays the modlog history for the mentioned user."
         );
     }
 
     @Override
     public List<String> getExampleUsage() {
         return Collections.singletonList(
-            "`:command @Senither` - Displays all the bad things Senither has done."
+            "`:commands @Senither` - Displays all the bad things Senither has done."
         );
     }
 

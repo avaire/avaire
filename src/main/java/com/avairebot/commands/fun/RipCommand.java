@@ -52,7 +52,7 @@ public class RipCommand extends Command {
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`:command` - Pay your respects");
+        return Collections.singletonList("`:commands` - Pay your respects");
     }
 
     @Override

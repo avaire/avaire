@@ -52,7 +52,7 @@ public class CoinflipCommand extends Command {
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`:command` - Flips a coin for either heads or tails.");
+        return Collections.singletonList("`:commands` - Flips a coin for either heads or tails.");
     }
 
     @Override

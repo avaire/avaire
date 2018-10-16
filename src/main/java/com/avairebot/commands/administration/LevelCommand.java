@@ -52,7 +52,7 @@ public class LevelCommand extends Command {
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`:command` - Toggles the level feature on/off");
+        return Collections.singletonList("`:commands` - Toggles the level feature on/off");
     }
 
     @Override

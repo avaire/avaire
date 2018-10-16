@@ -38,7 +38,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-@CacheFingerprint(name = "kick-command")
+@CacheFingerprint(name = "kick-commands")
 public class KickCommand extends Command {
 
     public KickCommand(AvaIre avaire) {
@@ -57,12 +57,12 @@ public class KickCommand extends Command {
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`:command <user> [reason]` - Kicks the mentioned user with the given reason.");
+        return Collections.singletonList("`:commands <user> [reason]` - Kicks the mentioned user with the given reason.");
     }
 
     @Override
     public List<String> getExampleUsage() {
-        return Collections.singletonList("`:command @Senither Spamming things`");
+        return Collections.singletonList("`:commands @Senither Spamming things`");
     }
 
     @Override

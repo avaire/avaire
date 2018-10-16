@@ -73,12 +73,12 @@ public class EightBallCommand extends Command {
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`:command <question>`");
+        return Collections.singletonList("`:commands <question>`");
     }
 
     @Override
     public List<String> getExampleUsage() {
-        return Collections.singletonList("`:command will i have a good day today?`");
+        return Collections.singletonList("`:commands will i have a good day today?`");
     }
 
     @Override

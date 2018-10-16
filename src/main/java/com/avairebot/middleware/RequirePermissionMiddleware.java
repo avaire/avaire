@@ -78,7 +78,7 @@ public class RequirePermissionMiddleware extends Middleware {
         }
 
         if (!permissionCheck.getMissingUserPermissions().isEmpty()) {
-            MessageFactory.makeError(message, "You're missing the required permission node for this command:\n`:permission`")
+            MessageFactory.makeError(message, "You're missing the required permission node for this commands:\n`:permission`")
                 .set("permission", permissionCheck.getMissingUserPermissions().stream()
                     .map(Permissions::getPermission)
                     .map(Permission::getName)
@@ -87,7 +87,7 @@ public class RequirePermissionMiddleware extends Middleware {
         }
 
         if (!permissionCheck.getMissingBotPermissions().isEmpty()) {
-            MessageFactory.makeError(message, "I'm missing the following permission to run this command successfully:\n`:permission`")
+            MessageFactory.makeError(message, "I'm missing the following permission to run this commands successfully:\n`:permission`")
                 .set("permission", permissionCheck.getMissingBotPermissions().stream()
                     .map(Permissions::getPermission)
                     .map(Permission::getName)

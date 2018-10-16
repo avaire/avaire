@@ -58,17 +58,17 @@ public class MemeCommand extends Command {
     @Override
     public List<String> getUsageInstructions() {
         return Arrays.asList(
-            "`:command list` - Lists all the available meme types.",
-            "`:command <meme> <top text> <bottom text>` - Generates the meme with the given text.",
-            "`:command <user> <top text> <bottom text>` - Generates a meme with the tagged users avatar and the given text."
+            "`:commands list` - Lists all the available meme types.",
+            "`:commands <meme> <top text> <bottom text>` - Generates the meme with the given text.",
+            "`:commands <user> <top text> <bottom text>` - Generates a meme with the tagged users avatar and the given text."
         );
     }
 
     @Override
     public List<String> getExampleUsage() {
         return Arrays.asList(
-            "`:command buzz \"Memes\" \"Memes everywhere\"`",
-            "`:command @Senither \"Creates a Meme command for AvaIre\" \"Almost no one uses it\"`"
+            "`:commands buzz \"Memes\" \"Memes everywhere\"`",
+            "`:commands @Senither \"Creates a Meme commands for AvaIre\" \"Almost no one uses it\"`"
         );
     }
 
@@ -128,7 +128,7 @@ public class MemeCommand extends Command {
             paginator.generateFooter(generateCommandTrigger(context.getMessage()) + " list")
         )).setTitle("Memes").queue();
 
-        // We're returning false here to prevent the Meme command from
+        // We're returning false here to prevent the Meme commands from
         // being throttled for users just wanting to see what types
         // of memes are available without generating any memes.
         return false;

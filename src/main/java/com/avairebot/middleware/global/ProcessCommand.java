@@ -50,7 +50,7 @@ public class ProcessCommand extends Middleware {
     private static final Logger log = LoggerFactory.getLogger(ProcessCommand.class);
 
     private final static String commandOutput = ConsoleColor.format(
-        "%cyanExecuting Command \"%reset%command%%cyan\" in \"%reset%category%%cyan\" category in shard %reset%shard%:%reset"
+        "%cyanExecuting Command \"%reset%commands%%cyan\" in \"%reset%category%%cyan\" category in shard %reset%shard%:%reset"
             + "\n\t\t%cyanUser:\t %author%"
             + "\n\t\t%cyanServer:\t %server%"
             + "\n\t\t%cyanChannel: %channel%"
@@ -81,7 +81,7 @@ public class ProcessCommand extends Middleware {
         String[] arguments = ArrayUtil.toArguments(message.getContentRaw());
 
         AvaIre.getLogger().info(commandOutput
-            .replace("%command%", stack.getCommand().getName())
+            .replace("%commands%", stack.getCommand().getName())
             .replace("%category%", stack.getCommandContainer().getCategory().getName())
             .replace("%author%", generateUsername(message))
             .replace("%server%", generateServer(message))

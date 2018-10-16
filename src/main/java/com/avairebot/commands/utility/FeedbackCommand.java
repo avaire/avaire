@@ -51,17 +51,17 @@ public class FeedbackCommand extends Command {
 
     @Override
     public String getDescription() {
-        return "Send feedback about Ava back to the developers and the staff team, any message passed to the command will be sent in the [#feedback](https://discord.gg/gt2FWER) channel on the [AvaIre Central](https://discord.gg/gt2FWER) server.";
+        return "Send feedback about Ava back to the developers and the staff team, any message passed to the commands will be sent in the [#feedback](https://discord.gg/gt2FWER) channel on the [AvaIre Central](https://discord.gg/gt2FWER) server.";
     }
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`:command <message>` - Sends feedback to the devs.");
+        return Collections.singletonList("`:commands <message>` - Sends feedback to the devs.");
     }
 
     @Override
     public List<String> getExampleUsage() {
-        return Collections.singletonList("`:command The thing about the stuff is doing stuff that doesn't make sense for the thing.`");
+        return Collections.singletonList("`:commands The thing about the stuff is doing stuff that doesn't make sense for the thing.`");
     }
 
     @Override

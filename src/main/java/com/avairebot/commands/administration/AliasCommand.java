@@ -47,20 +47,20 @@ public class AliasCommand extends Command {
 
     @Override
     public String getDescription() {
-        return "Creates and maps a custom alias for a pre-existing command. Provide no alias to remove an existing alias.";
+        return "Creates and maps a custom alias for a pre-existing commands. Provide no alias to remove an existing alias.";
     }
 
     @Override
     public List<String> getUsageInstructions() {
         return Arrays.asList(
-            "`:command <alias>` - Deletes the alias if it exists.",
-            "`:command <alias> <command>` - Creates an alias for the given command."
+            "`:commands <alias>` - Deletes the alias if it exists.",
+            "`:commands <alias> <commands>` - Creates an alias for the given commands."
         );
     }
 
     @Override
     public List<String> getExampleUsage() {
-        return Collections.singletonList("`:command !ava !repeat **Website:** https://avairebot.com/`");
+        return Collections.singletonList("`:commands !ava !repeat **Website:** https://avairebot.com/`");
     }
 
     @Override
@@ -123,7 +123,7 @@ public class AliasCommand extends Command {
 
             context.makeSuccess(context.i18n("created"))
                 .set("alias", args[0])
-                .set("command", commandString)
+                .set("commands", commandString)
                 .set("slots", transformer.getType().getLimits().getAliases() - transformer.getAliases().size())
                 .queue();
             return true;

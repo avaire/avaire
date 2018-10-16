@@ -48,9 +48,9 @@ public class ShutdownCommand extends ApplicationShutdownCommand {
     @Override
     public List<String> getUsageInstructions() {
         return Arrays.asList(
-            "`:command now` - Shuts down the bot now.",
-            "`:command cancel` - Cancels the shutdown process.",
-            "`:command <time>` - Schedules a time the bot should be shutdown."
+            "`:commands now` - Shuts down the bot now.",
+            "`:commands cancel` - Cancels the shutdown process.",
+            "`:commands <time>` - Schedules a time the bot should be shutdown."
         );
     }
 

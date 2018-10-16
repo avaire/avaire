@@ -47,7 +47,7 @@ public class RenamePlaylist extends PlaylistSubCommand {
 
         if (name.trim().length() == 0) {
             context.makeWarning(context.i18n("invalidFormat"))
-                .set("command", command.generateCommandTrigger(context.getMessage()) + " " + playlist.getName() + " renameto <new name>")
+                .set("commands", command.generateCommandTrigger(context.getMessage()) + " " + playlist.getName() + " renameto <new name>")
                 .set("type", "new name")
                 .queue();
 

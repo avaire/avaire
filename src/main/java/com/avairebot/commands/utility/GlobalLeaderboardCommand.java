@@ -49,7 +49,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-@CacheFingerprint(name = "leaderboard-command")
+@CacheFingerprint(name = "leaderboard-commands")
 public class GlobalLeaderboardCommand extends Command {
 
     public static final Cache<String, Collection> cache = CacheBuilder.newBuilder()
@@ -75,11 +75,11 @@ public class GlobalLeaderboardCommand extends Command {
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`:command` - Displays the top 100 players on the XP leaderboard globally.");
+        return Collections.singletonList("`:commands` - Displays the top 100 players on the XP leaderboard globally.");
     }
 
     public List<String> getExampleUsage() {
-        return Collections.singletonList("`:command 2`");
+        return Collections.singletonList("`:commands 2`");
     }
 
     @Override

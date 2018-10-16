@@ -39,7 +39,7 @@ public class RequestCommandPrefix extends Intent {
 
     @Override
     public String getAction() {
-        return "command.prefix";
+        return "commands.prefix";
     }
 
     @Override

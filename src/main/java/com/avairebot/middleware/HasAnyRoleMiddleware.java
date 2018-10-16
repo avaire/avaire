@@ -40,9 +40,9 @@ public class HasAnyRoleMiddleware extends Middleware {
     @Override
     public String buildHelpDescription(@Nonnull String[] arguments) {
         if (arguments.length == 1) {
-            return String.format("**The `%s` role is required to use this command!**", arguments[0]);
+            return String.format("**The `%s` role is required to use this commands!**", arguments[0]);
         }
-        return String.format("**One of the `%s` roles is required to use this command!**",
+        return String.format("**One of the `%s` roles is required to use this commands!**",
             String.join("`, `", arguments)
         );
     }
@@ -64,7 +64,7 @@ public class HasAnyRoleMiddleware extends Middleware {
             }
         }
 
-        MessageFactory.makeError(message, "You don't have any of the required roles to execute this command:\n`:role`")
+        MessageFactory.makeError(message, "You don't have any of the required roles to execute this commands:\n`:role`")
             .set("role", String.join("`, `", args))
             .queue();
 

@@ -57,18 +57,18 @@ public class HelpCommand extends Command {
     @Override
     public List<String> getUsageInstructions() {
         return Arrays.asList(
-            "`:command` - Shows a list of command categories.",
-            "`:command <category>` - Shows a list of commands in the given category.",
-            "`:command <command>` - Shows detailed information on how to use the given command."
+            "`:commands` - Shows a list of commands categories.",
+            "`:commands <category>` - Shows a list of commands in the given category.",
+            "`:commands <commands>` - Shows detailed information on how to use the given commands."
         );
     }
 
     @Override
     public List<String> getExampleUsage() {
         return Arrays.asList(
-            "`:command play`,",
-            "`:command help`",
-            "`:command`"
+            "`:commands play`,",
+            "`:commands help`",
+            "`:commands`"
         );
     }
 
@@ -134,7 +134,7 @@ public class HelpCommand extends Command {
         context.getMessageChannel().sendMessage(
             new MessageBuilder()
                 // Builds and sets the content of the message, this is all the
-                // commands for the given category the command was used for.
+                // commands for the given category the commands was used for.
                 .setContent(context.i18n("listOfCommands",
                     CommandHandler.getCommands().stream()
                         .filter(container -> filterCommandContainer(container, category, adminType))
@@ -143,14 +143,14 @@ public class HelpCommand extends Command {
                         .collect(Collectors.joining("\n"))
                 ))
                 // Builds and sets the embedded tip/note, giving people an example
-                // of how get information for the specific command.
+                // of how get information for the specific commands.
                 .setEmbed(MessageFactory.createEmbeddedBuilder()
                     .setColor(MessageType.INFO.getColor())
                     .setDescription(StringReplacementUtil.replaceAll(
                         StringReplacementUtil.replaceAll(
                             context.i18n("commandNote"),
                             ":help", generateCommandTrigger(context.getMessage())
-                        ), ":command", randomCommandFromCategory.isPresent() ?
+                        ), ":commands", randomCommandFromCategory.isPresent() ?
                             randomCommandFromCategory.get().getCommand().getTriggers().get(0) : "Unknown")
                     )
                     .build()

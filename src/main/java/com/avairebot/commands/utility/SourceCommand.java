@@ -47,20 +47,20 @@ public class SourceCommand extends Command {
 
     @Override
     public String getDescription() {
-        return "Gives you the source code for the Bot, or the code for a given command.";
+        return "Gives you the source code for the Bot, or the code for a given commands.";
     }
 
     @Override
     public List<String> getUsageInstructions() {
         return Arrays.asList(
-            "`:command` - Returns the full source code for the bot.",
-            "`:command <command>` - Returns the source code for the given command."
+            "`:commands` - Returns the full source code for the bot.",
+            "`:commands <commands>` - Returns the source code for the given commands."
         );
     }
 
     @Override
     public List<String> getExampleUsage() {
-        return Collections.singletonList("`:command ping`");
+        return Collections.singletonList("`:commands ping`");
     }
 
     @Override
@@ -87,8 +87,8 @@ public class SourceCommand extends Command {
             return true;
         }
 
-        context.makeInfo(context.i18n("command") + "\n\n" + sourceUri)
-            .set("command", command.getCommand().getName())
+        context.makeInfo(context.i18n("commands") + "\n\n" + sourceUri)
+            .set("commands", command.getCommand().getName())
             .queue();
 
         return true;

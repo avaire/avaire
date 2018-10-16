@@ -51,7 +51,7 @@ public class ResumeCommand extends Command {
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`:command` - Resumes the music");
+        return Collections.singletonList("`:commands` - Resumes the music");
     }
 
     @Override

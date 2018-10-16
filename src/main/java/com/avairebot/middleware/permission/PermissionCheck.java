@@ -107,7 +107,7 @@ public class PermissionCheck {
         for (String permissionNode : permissions) {
             Permissions permission = Permissions.fromNode(permissionNode);
             if (permission == null) {
-                log.warn(String.format("Invalid permission node given for the \"%s\" command: %s", stack.getCommand().getName(), permissionNode));
+                log.warn(String.format("Invalid permission node given for the \"%s\" commands: %s", stack.getCommand().getName(), permissionNode));
                 return false;
             }
 

@@ -114,7 +114,7 @@ public abstract class ChannelModuleCommand extends Command {
         context.makeSuccess(context.i18nRaw("administration.channelModule.message"))
             .set("type", type)
             .set("message", getChannelModule(channelTransformer).getMessage())
-            .set("command", generateCommandTrigger(context.getMessage()))
+            .set("commands", generateCommandTrigger(context.getMessage()))
             .queue();
 
         return true;

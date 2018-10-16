@@ -46,7 +46,7 @@ public class PingCommand extends Command {
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`:command` - Returns the latency of the bot.");
+        return Collections.singletonList("`:commands` - Returns the latency of the bot.");
     }
 
     @Override

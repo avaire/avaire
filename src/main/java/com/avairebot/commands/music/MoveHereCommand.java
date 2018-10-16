@@ -53,7 +53,7 @@ public class MoveHereCommand extends Command {
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`:command` - Moves the bot to your voice channel");
+        return Collections.singletonList("`:commands` - Moves the bot to your voice channel");
     }
 
     @Override

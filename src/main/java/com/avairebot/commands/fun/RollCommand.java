@@ -48,15 +48,15 @@ public class RollCommand extends Command {
     @Override
     public List<String> getUsageInstructions() {
         return Arrays.asList(
-            "`:command`",
-            "`:command [max]`",
-            "`:command [min] [max]`"
+            "`:commands`",
+            "`:commands [max]`",
+            "`:commands [min] [max]`"
         );
     }
 
     @Override
     public List<String> getExampleUsage() {
-        return Collections.singletonList("`:command 3 6`");
+        return Collections.singletonList("`:commands 3 6`");
     }
 
     @Override

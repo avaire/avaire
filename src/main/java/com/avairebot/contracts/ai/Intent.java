@@ -47,9 +47,9 @@ public abstract class Intent extends Reflectionable {
     public abstract String getAction();
 
     /**
-     * Handles the AI intent with the command message and AI responses returned from the AI.
+     * Handles the AI intent with the commands message and AI responses returned from the AI.
      *
-     * @param message  The command message that was used to invoke the AI intent.
+     * @param message  The commands message that was used to invoke the AI intent.
      * @param response The response returned from the AI.
      */
     public abstract void onIntent(CommandMessage message, AIResponse response);

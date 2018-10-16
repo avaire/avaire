@@ -30,12 +30,12 @@ public enum DJGuildLevel {
 
     /**
      * This is the normal music state, preventing people from using commands like playlist,
-     * volume control, force skip, but still allowing people to use play command.
+     * volume control, force skip, but still allowing people to use play commands.
      */
     NORMAL("Normal", 0, 10),
 
     /**
-     * This represents a guild DJ level state where anyone can run any music command.
+     * This represents a guild DJ level state where anyone can run any music commands.
      */
     ALL("All", 1, 25),
 

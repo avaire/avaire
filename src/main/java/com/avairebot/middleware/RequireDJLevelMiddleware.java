@@ -66,7 +66,7 @@ public class RequireDJLevelMiddleware extends Middleware {
 
     @SuppressWarnings("ConstantConditions")
     private boolean sendErrorMessage(Message message, MiddlewareStack stack) {
-        String djcheckMessage = "The `DJ` Discord role is required to run this command!";
+        String djcheckMessage = "The `DJ` Discord role is required to run this commands!";
 
         DJCheckMessage annotation = stack.getCommand().getClass().getAnnotation(DJCheckMessage.class);
         if (annotation != null && annotation.message().trim().length() > 0) {
@@ -79,7 +79,7 @@ public class RequireDJLevelMiddleware extends Middleware {
 
         GuildTransformer guildTransformer = stack.getDatabaseEventHolder().getGuild();
         if (guildTransformer != null && guildTransformer.getSelfAssignableRoles().containsValue("dj")) {
-            djcheckMessage += "\nYou can use the `:iam DJ` command to get the role!";
+            djcheckMessage += "\nYou can use the `:iam DJ` commands to get the role!";
         }
 
         CommandContainer command = CommandHandler.getCommand(IAmCommand.class);

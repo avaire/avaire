@@ -74,7 +74,7 @@ public class EvalCommand extends SystemCommand {
                 "Packages.com.avairebot.audio," +
                 "Packages.com.avairebot.time);");
         } catch (ScriptException e) {
-            log.error("Failed to init eval command", e);
+            log.error("Failed to init eval commands", e);
         }
     }
 
@@ -91,17 +91,17 @@ public class EvalCommand extends SystemCommand {
     @Override
     public List<String> getUsageInstructions() {
         return Arrays.asList(
-            "`:command <code>` - Evaluates and executes the given code.",
-            "`:command <kill|-k>` - Kills the last task if it is still running.",
-            "`:command <timeout|-t> <timeout lenght> <code>` - Evaluates and executes the given code with the given timeout."
+            "`:commands <code>` - Evaluates and executes the given code.",
+            "`:commands <kill|-k>` - Kills the last task if it is still running.",
+            "`:commands <timeout|-t> <timeout lenght> <code>` - Evaluates and executes the given code with the given timeout."
         );
     }
 
     @Override
     public List<String> getExampleUsage() {
         return Arrays.asList(
-            "`:command context.makeInfo(\"Hello, World\").queue();`",
-            "`:command -t 10 return \"Some Code\"`"
+            "`:commands context.makeInfo(\"Hello, World\").queue();`",
+            "`:commands -t 10 return \"Some Code\"`"
         );
     }
 
@@ -143,7 +143,7 @@ public class EvalCommand extends SystemCommand {
             engine.put("member", context.getMember());
         }
 
-        ScheduledExecutorService service = Executors.newScheduledThreadPool(1, r -> new Thread(r, "Eval command execution"));
+        ScheduledExecutorService service = Executors.newScheduledThreadPool(1, r -> new Thread(r, "Eval commands execution"));
 
         Future<?> future = service.submit(() -> {
             Object out;
@@ -160,7 +160,7 @@ public class EvalCommand extends SystemCommand {
                     source, output, System.currentTimeMillis() - started
                 )).queue();
             } catch (Exception ex) {
-                log.debug("Failed to execute eval command, error: {}", ex.getMessage(), ex);
+                log.debug("Failed to execute eval commands, error: {}", ex.getMessage(), ex);
 
                 context.getChannel().sendMessage(String.format("**Input** ```java\n%s```\n**Error Output**\n```%s```\nEval took _%sms_",
                     source, ex.getMessage(), System.currentTimeMillis() - started)

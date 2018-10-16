@@ -52,12 +52,12 @@ public class GfycatCommand extends Command {
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`:command <query>` - Finds a random image with the given query");
+        return Collections.singletonList("`:commands <query>` - Finds a random image with the given query");
     }
 
     @Override
     public List<String> getExampleUsage() {
-        return Collections.singletonList("`:command cats`");
+        return Collections.singletonList("`:commands cats`");
     }
 
     @Override

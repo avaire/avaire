@@ -57,16 +57,16 @@ public class RemoveLevelRoleCommand extends Command {
     @Override
     public List<String> getUsageInstructions() {
         return Arrays.asList(
-            "`:command <role>` - Removes the role from the leveling up role table.",
-            "`:command <level>` - Removes the role that is assigned to the given level from the role table."
+            "`:commands <role>` - Removes the role from the leveling up role table.",
+            "`:commands <level>` - Removes the role that is assigned to the given level from the role table."
         );
     }
 
     @Override
     public List<String> getExampleUsage() {
         return Arrays.asList(
-            "`:command Member`",
-            "`:command 10`"
+            "`:commands Member`",
+            "`:commands 10`"
         );
     }
 

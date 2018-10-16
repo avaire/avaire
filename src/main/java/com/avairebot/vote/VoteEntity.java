@@ -44,8 +44,8 @@ public class VoteEntity implements Delayed {
     /**
      * Creates a new vote entity for the given user ID and channel ID.
      *
-     * @param userId    The ID of the user that used the vote check command.
-     * @param channelId The ID of the channel that the user ran the command in.
+     * @param userId    The ID of the user that used the vote check commands.
+     * @param channelId The ID of the channel that the user ran the commands in.
      */
     public VoteEntity(long userId, long channelId) {
         this.userId = userId;
@@ -63,9 +63,9 @@ public class VoteEntity implements Delayed {
     }
 
     /**
-     * Gets the ID of the channel that the user ran the command in to be added to the vote queue.
+     * Gets the ID of the channel that the user ran the commands in to be added to the vote queue.
      *
-     * @return The ID of the channel the user ran the command in.
+     * @return The ID of the channel the user ran the commands in.
      */
     public long getChannelId() {
         return channelId;

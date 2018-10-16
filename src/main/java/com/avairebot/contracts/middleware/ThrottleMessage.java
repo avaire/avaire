@@ -32,7 +32,7 @@ public @interface ThrottleMessage {
 
     /**
      * Determines if the set message should overwrite the default throttle message
-     * in the event the command has been throttled, if set to false the message
+     * in the event the commands has been throttled, if set to false the message
      * will just be appended to the throttle message instead.
      *
      * @return <code>True</code> if the message should overwrite the throttle message, or

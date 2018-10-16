@@ -53,17 +53,17 @@ public class BlacklistCommand extends SystemCommand {
     @Override
     public List<String> getUsageInstructions() {
         return Arrays.asList(
-            "`:command list` - Lists users and servers on the blacklist",
-            "`:command remove <id>` - Removes the entry with the given ID from the blacklist",
-            "`:command add <type> <id> <reason>` - Add the type with the given ID to the blacklist"
+            "`:commands list` - Lists users and servers on the blacklist",
+            "`:commands remove <id>` - Removes the entry with the given ID from the blacklist",
+            "`:commands add <type> <id> <reason>` - Add the type with the given ID to the blacklist"
         );
     }
 
     @Override
     public List<String> getExampleUsage() {
         return Arrays.asList(
-            "`:command add G 123` - Blacklists the guild with an ID of 123",
-            "`:command add U 321 Doing stuff` - Blacklists the user with an ID of 321 for \"Doing stuff\""
+            "`:commands add G 123` - Blacklists the guild with an ID of 123",
+            "`:commands add U 321 Doing stuff` - Blacklists the user with an ID of 321 for \"Doing stuff\""
         );
     }
 

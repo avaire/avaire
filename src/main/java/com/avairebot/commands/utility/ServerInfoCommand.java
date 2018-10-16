@@ -50,7 +50,7 @@ public class ServerInfoCommand extends Command {
 
     @Override
     public String getDescription() {
-        return "Shows information about the server the command was ran in.";
+        return "Shows information about the server the commands was ran in.";
     }
 
     @Override

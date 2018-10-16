@@ -54,7 +54,7 @@ public class StopCommand extends Command {
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`:command` - Stops the music if anything is playing.");
+        return Collections.singletonList("`:commands` - Stops the music if anything is playing.");
     }
 
     @Override

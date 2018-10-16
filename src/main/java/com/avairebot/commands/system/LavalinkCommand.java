@@ -54,26 +54,26 @@ public class LavalinkCommand extends SystemCommand {
 
     @Override
     public String getDescription() {
-        return "This command can be used to list the status of Lavalink nodes, adding, and removing nodes on the fly during runtime.";
+        return "This commands can be used to list the status of Lavalink nodes, adding, and removing nodes on the fly during runtime.";
     }
 
     @Override
     public List<String> getUsageInstructions() {
         return Arrays.asList(
-            "`:command list` - List all Lavalink nodes",
-            "`:command show <node>` - Shows in-depth information about the node",
-            "`:command remove <name> ` - Removes the node from Lavalink",
-            "`:command overview` - Displays a short overview over all the nodes",
-            "`:command add <name> <url> <pass>` - Adds the node to Lavalink"
+            "`:commands list` - List all Lavalink nodes",
+            "`:commands show <node>` - Shows in-depth information about the node",
+            "`:commands remove <name> ` - Removes the node from Lavalink",
+            "`:commands overview` - Displays a short overview over all the nodes",
+            "`:commands add <name> <url> <pass>` - Adds the node to Lavalink"
         );
     }
 
     @Override
     public List<String> getExampleUsage() {
         return Arrays.asList(
-            "`:command show some-node`",
-            "`:command remove some-node`",
-            "`:command add some-node ws://localhost:8888 secretpassword`"
+            "`:commands show some-node`",
+            "`:commands remove some-node`",
+            "`:commands add some-node ws://localhost:8888 secretpassword`"
         );
     }
 
@@ -95,7 +95,7 @@ public class LavalinkCommand extends SystemCommand {
         }
 
         if (args.length == 0) {
-            return sendErrorMessage(context, "You must specify what command you want to use.");
+            return sendErrorMessage(context, "You must specify what commands you want to use.");
         }
 
         switch (args[0].toLowerCase()) {

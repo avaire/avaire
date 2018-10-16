@@ -50,19 +50,19 @@ public class ChannelInfoCommand extends Command {
 
     @Override
     public String getDescription() {
-        return "Shows information about the channel the command was run in, or the mentioned channel.";
+        return "Shows information about the channel the commands was run in, or the mentioned channel.";
     }
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`:command [channel]` - Gets information about the mentioned channel, or if no channel was mention, get information about the current channel.");
+        return Collections.singletonList("`:commands [channel]` - Gets information about the mentioned channel, or if no channel was mention, get information about the current channel.");
     }
 
     @Override
     public List<String> getExampleUsage() {
         return Arrays.asList(
-            "`:command #general`",
-            "`:command`"
+            "`:commands #general`",
+            "`:commands`"
         );
     }
 

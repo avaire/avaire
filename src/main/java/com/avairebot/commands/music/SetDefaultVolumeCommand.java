@@ -52,7 +52,7 @@ public class SetDefaultVolumeCommand extends Command {
 
         return String.format(String.join("\n", Arrays.asList(
             "Sets the default volume that the music should play at when Ava first joins a voice channel.",
-            "**Note:** This does not change the volume of music already playing, to change that, use the `%svolume` command instead."
+            "**Note:** This does not change the volume of music already playing, to change that, use the `%svolume` commands instead."
         )), prefix);
     }
 
@@ -64,15 +64,15 @@ public class SetDefaultVolumeCommand extends Command {
     @Override
     public List<String> getUsageInstructions() {
         return Arrays.asList(
-            "`:command` - Displays the current default volume",
-            "`:command <volume>` - Changes the default volume to the given volume."
+            "`:commands` - Displays the current default volume",
+            "`:commands <volume>` - Changes the default volume to the given volume."
         );
     }
 
     @Override
     public List<String> getExampleUsage() {
         return Collections.singletonList(
-            "`:command 75` - Sets the default volume to 75"
+            "`:commands 75` - Sets the default volume to 75"
         );
     }
 

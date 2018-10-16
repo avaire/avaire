@@ -74,35 +74,35 @@ public class PlaylistCommand extends Command {
 
     @Override
     public String getDescription() {
-        return "Music playlist command, allows music DJs to create, delete, and load playlists to the music queue, as well as adding and removing songs from any of the playlists.";
+        return "Music playlist commands, allows music DJs to create, delete, and load playlists to the music queue, as well as adding and removing songs from any of the playlists.";
     }
 
     @Override
     public List<String> getUsageInstructions() {
         return Arrays.asList(
-            "`:command` - Lists existing playlists.",
-            "`:command [name] add [song link]` - Adds a song to a playlist.",
-            "`:command [name] create` - Creates a new playlist.",
-            "`:command [name] delete` - Deletes an existing playlist.",
-            "`:command [name] play` - Plays a playlist.",
-            "`:command [name] removesong [id]` - Removes a song from a playlist.",
-            "`:command [name] renameto [new name]` - Renames a existing playlist.",
-            "`:command [name] movesong [id] [new id]` - Move a song to a different position.",
-            "`:command [name] [page number]` - Shows the songs in a playlist."
+            "`:commands` - Lists existing playlists.",
+            "`:commands [name] add [song link]` - Adds a song to a playlist.",
+            "`:commands [name] create` - Creates a new playlist.",
+            "`:commands [name] delete` - Deletes an existing playlist.",
+            "`:commands [name] play` - Plays a playlist.",
+            "`:commands [name] removesong [id]` - Removes a song from a playlist.",
+            "`:commands [name] renameto [new name]` - Renames a existing playlist.",
+            "`:commands [name] movesong [id] [new id]` - Move a song to a different position.",
+            "`:commands [name] [page number]` - Shows the songs in a playlist."
         );
     }
 
     @Override
     public List<String> getExampleUsage() {
         return Arrays.asList(
-            "`:command test create` - Creates a playlist called `test`.",
-            "`:command test add Some song` - Adds `Some song` to the `test` playlist.",
-            "`:command test move 2 1` - Moves the 2nd song to the first place.",
-            "`:command test remove 2` - Removes the 2nd song from the `test`playlist.",
-            "`:command test rename Music` - Renames the `test` playlist to `Music`.",
-            "`:command music 2` - Shows the 2nd page of the `Music` playlist.",
-            "`:command music play` - Plays all the songs in the `Music` playlist.",
-            "`:command music delete` - Deletes the `Music` playlist."
+            "`:commands test create` - Creates a playlist called `test`.",
+            "`:commands test add Some song` - Adds `Some song` to the `test` playlist.",
+            "`:commands test move 2 1` - Moves the 2nd song to the first place.",
+            "`:commands test remove 2` - Removes the 2nd song from the `test`playlist.",
+            "`:commands test rename Music` - Renames the `test` playlist to `Music`.",
+            "`:commands music 2` - Shows the 2nd page of the `Music` playlist.",
+            "`:commands music play` - Plays all the songs in the `Music` playlist.",
+            "`:commands music delete` - Deletes the `Music` playlist."
         );
     }
 
@@ -125,7 +125,7 @@ public class PlaylistCommand extends Command {
     public boolean onCommand(CommandMessage context, String[] args) {
         try {
             if (avaire.getDatabase().getConnection() instanceof SQLite) {
-                return sendErrorMessage(context, "The current selected database type is set to `SQLite`, the playlist command does not support the SQLite syntax(yet), if you want to use the playlist commands, please change to a `MySQL` setup instead.");
+                return sendErrorMessage(context, "The current selected database type is set to `SQLite`, the playlist commands does not support the SQLite syntax(yet), if you want to use the playlist commands, please change to a `MySQL` setup instead.");
             }
         } catch (SQLException ignored) {
         }
@@ -155,7 +155,7 @@ public class PlaylistCommand extends Command {
             }
 
             context.makeWarning(context.i18n("noPlaylistWithName"))
-                .set("command", generateCommandTrigger(context.getMessage()) + " <name> create")
+                .set("commands", generateCommandTrigger(context.getMessage()) + " <name> create")
                 .set("playlist", args[0])
                 .queue(message -> message.delete().queueAfter(1, TimeUnit.MINUTES, null, RestActionUtil.ignore));
 
@@ -208,7 +208,7 @@ public class PlaylistCommand extends Command {
 
     private boolean sendNoPlaylistsForGuildMessage(CommandMessage context) {
         context.makeInfo(context.i18n("noPlaylists"))
-            .set("command", generateCommandTrigger(context.getMessage()) + " <name> create")
+            .set("commands", generateCommandTrigger(context.getMessage()) + " <name> create")
             .setTitle(":musical_note: Music Playlists")
             .queue(message -> message.delete().queueAfter(1, TimeUnit.MINUTES, null, RestActionUtil.ignore));
 

@@ -62,9 +62,9 @@ public class PluginCommand extends SystemCommand {
     @Override
     public List<String> getUsageInstructions() {
         return Arrays.asList(
-            "`:command show <plugin>` - Lists information about the plugin.",
-            "`:command list <installed|i> [page]` - Lists installed plugins.",
-            "`:command list <available|a> [page]` - Lists available plugins."
+            "`:commands show <plugin>` - Lists information about the plugin.",
+            "`:commands list <installed|i> [page]` - Lists installed plugins.",
+            "`:commands list <available|a> [page]` - Lists available plugins."
         );
     }
 
@@ -81,7 +81,7 @@ public class PluginCommand extends SystemCommand {
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
         if (args.length == 0) {
-            return sendErrorMessage(context, "You must parse at least one argument to the command!");
+            return sendErrorMessage(context, "You must parse at least one argument to the commands!");
         }
 
         if (args[0].equalsIgnoreCase("list")) {

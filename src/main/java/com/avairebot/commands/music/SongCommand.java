@@ -61,8 +61,8 @@ public class SongCommand extends Command {
     @Override
     public List<String> getUsageInstructions() {
         return Arrays.asList(
-            "`:command` - Shows info about the song currently playing and the queue.",
-            "`:command [page]` - Shows the songs in the given page in the queue."
+            "`:commands` - Shows info about the song currently playing and the queue.",
+            "`:commands [page]` - Shows the songs in the given page in the queue."
         );
     }
 

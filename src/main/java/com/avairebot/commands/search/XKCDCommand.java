@@ -59,14 +59,14 @@ public class XKCDCommand extends Command {
     @Override
     public List<String> getUsageInstructions() {
         return Arrays.asList(
-            "`:command` - Gets the latest comic",
-            "`:command <id>` - Gets the comic with the given id."
+            "`:commands` - Gets the latest comic",
+            "`:commands <id>` - Gets the comic with the given id."
         );
     }
 
     @Override
     public List<String> getExampleUsage() {
-        return Collections.singletonList("`:command 530`");
+        return Collections.singletonList("`:commands 530`");
     }
 
     @Override

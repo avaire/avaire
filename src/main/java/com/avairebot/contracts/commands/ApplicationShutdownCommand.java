@@ -32,7 +32,7 @@ import java.text.ParseException;
 public abstract class ApplicationShutdownCommand extends SystemCommand {
 
     /**
-     * Creates the given command instance by calling {@link #ApplicationShutdownCommand(AvaIre, boolean)} with allowDM set to true.
+     * Creates the given commands instance by calling {@link #ApplicationShutdownCommand(AvaIre, boolean)} with allowDM set to true.
      *
      * @param avaire The AvaIre class instance.
      */
@@ -41,29 +41,29 @@ public abstract class ApplicationShutdownCommand extends SystemCommand {
     }
 
     /**
-     * Creates the given command instance with the given
+     * Creates the given commands instance with the given
      * AvaIre instance and the allowDM settings.
      *
      * @param avaire  The AvaIre class instance.
-     * @param allowDM Determines if the command can be used in DMs.
+     * @param allowDM Determines if the commands can be used in DMs.
      */
     public ApplicationShutdownCommand(AvaIre avaire, boolean allowDM) {
         super(avaire, allowDM);
     }
 
     /**
-     * The command executor, this method is invoked by the command handler
+     * The commands executor, this method is invoked by the commands handler
      * and the middleware stack when a user sends a message matching the
-     * commands prefix and one of its command triggers.
+     * commands prefix and one of its commands triggers.
      *
      * @param context The JDA message object from the message received event.
-     * @param args    The arguments given to the command, if no arguments was given the array will just be empty.
+     * @param args    The arguments given to the commands, if no arguments was given the array will just be empty.
      * @return true on success, false on failure.
      */
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
         if (context.isMentionableCommand()) {
-            return sendErrorMessage(context, "This command can not be used via mentions!");
+            return sendErrorMessage(context, "This commands can not be used via mentions!");
         }
 
         if (args.length == 0) {

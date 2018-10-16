@@ -64,19 +64,19 @@ public class RankCommand extends Command {
     @Override
     public String getDescription() {
         return "Gets your rank, level, xp for the current server and total xp for all servers that you're on, you can tag a user to see their level stats instead."
-            + "\nThis command requires the `Levels & Experience` feature to be enabled for the server!";
+            + "\nThis commands requires the `Levels & Experience` feature to be enabled for the server!";
     }
 
     @Override
     public List<String> getUsageInstructions() {
         return Arrays.asList(
-            "`:command` - Displays your rank, level, xp and other stuff",
-            "`:command @Senither` - Displays Senither's rank, level, xp...");
+            "`:commands` - Displays your rank, level, xp and other stuff",
+            "`:commands @Senither` - Displays Senither's rank, level, xp...");
     }
 
     @Override
     public List<String> getExampleUsage() {
-        return Collections.singletonList("`:command @Senither`");
+        return Collections.singletonList("`:commands @Senither`");
     }
 
     @Override

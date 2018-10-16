@@ -48,23 +48,23 @@ public class MusicChannelCommand extends Command {
 
     @Override
     public String getDescription() {
-        return "The music channel command can be used to define a text and voice channel that music should be linked to, if a text channel is set through the command, music commands will only work in the given channel, if a voice channel is set Ava will auto join the voice channel on the first music request.";
+        return "The music channel commands can be used to define a text and voice channel that music should be linked to, if a text channel is set through the commands, music commands will only work in the given channel, if a voice channel is set Ava will auto join the voice channel on the first music request.";
     }
 
     @Override
     public List<String> getUsageInstructions() {
         return Arrays.asList(
-            "`:command` - Displays the current music channels.",
-            "`:command <voice|text>` - Disables the music text or voice channel.",
-            "`:command <voice|text> <channel>` - Sets the music text or voice channel."
+            "`:commands` - Displays the current music channels.",
+            "`:commands <voice|text>` - Disables the music text or voice channel.",
+            "`:commands <voice|text> <channel>` - Sets the music text or voice channel."
         );
     }
 
     @Override
     public List<String> getExampleUsage() {
         return Arrays.asList(
-            "`:command text` - Disables the music text channel if one was set.",
-            "`:command voice music` - Sets the voice music channel to the `music` channel."
+            "`:commands text` - Disables the music text channel if one was set.",
+            "`:commands voice music` - Sets the voice music channel to the `music` channel."
         );
     }
 

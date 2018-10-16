@@ -47,7 +47,7 @@ public class InviteCommand extends Command {
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`:command` - Gives you an invite link that can be used to invite AvaIre to servers.");
+        return Collections.singletonList("`:commands` - Gives you an invite link that can be used to invite AvaIre to servers.");
     }
 
     @Override

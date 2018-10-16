@@ -60,7 +60,7 @@ public class StatsCommand extends Command {
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`:command` - Shows some stats about the bot.");
+        return Collections.singletonList("`:commands` - Shows some stats about the bot.");
     }
 
     @Override

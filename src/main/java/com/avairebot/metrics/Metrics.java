@@ -125,7 +125,7 @@ public class Metrics {
     public static final Counter commandsRatelimited = Counter.build()
         .name("avaire_commands_ratelimited_total")
         .help("Total ratelimited commands")
-        .labelNames("class") // use the simple name of the command class
+        .labelNames("class") // use the simple name of the commands class
         .register();
 
     public static final Counter commandsReceived = Counter.build()
@@ -148,13 +148,13 @@ public class Metrics {
 
     public static final Counter commandExceptions = Counter.build()
         .name("avaire_commands_exceptions_total")
-        .help("Total uncaught exceptions thrown by command invocation")
+        .help("Total uncaught exceptions thrown by commands invocation")
         .labelNames("class") // class of the exception
         .register();
 
     public static final Counter commandAttempts = Counter.build()
         .name("avaire_command_attempts_total")
-        .help("Total amount of command attempts by class")
+        .help("Total amount of commands attempts by class")
         .labelNames("class")
         .register();
 
@@ -189,7 +189,7 @@ public class Metrics {
 
     public static final Counter dblVotes = Counter.build()
         .name("avaire_dbl_votes")
-        .help("Vote requests through the webhook vs the command check")
+        .help("Vote requests through the webhook vs the commands check")
         .labelNames("type")
         .register();
 

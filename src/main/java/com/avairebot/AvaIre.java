@@ -223,7 +223,7 @@ public class AvaIre {
         MiddlewareHandler.register("musicChannel", new IsMusicChannelMiddleware(this));
         MiddlewareHandler.register("isDMMessage", new IsDMMessageMiddelware(this));
 
-        log.info("Registering default command categories");
+        log.info("Registering default commands categories");
         String defaultPrefix = getConfig().getString("default-prefix", DiscordConstants.DEFAULT_COMMAND_PREFIX);
         CategoryHandler.addCategory(this, "Administration", defaultPrefix);
         CategoryHandler.addCategory(this, "Help", defaultPrefix);
@@ -253,7 +253,7 @@ public class AvaIre {
         I18n.start(this);
 
         log.info("Creating plugin manager and registering plugins...");
-        pluginManager = new PluginManager();
+        pluginManager = new PluginManager(this);
 
         try {
             pluginManager.loadPlugins();

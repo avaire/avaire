@@ -59,7 +59,7 @@ public class ModlogReasonCommand extends Command {
         String prefix = context.isGuildMessage() ? generateCommandPrefix(context.getMessage()) : DiscordConstants.DEFAULT_COMMAND_PREFIX;
 
         return String.format(
-            "Sets the reason for an old modlog case, this command requires the server has a modlog channel set using the `%smodlog` command.\n%s",
+            "Sets the reason for an old modlog case, this commands requires the server has a modlog channel set using the `%smodlog` commands.\n%s",
             prefix, "You can only set modlog reasons for old modlog cases if you were the moderator for the case."
         );
     }
@@ -67,14 +67,14 @@ public class ModlogReasonCommand extends Command {
     @Override
     public List<String> getUsageInstructions() {
         return Collections.singletonList(
-            "`:command <case id> <reason>` - Sets the reason for the given ID"
+            "`:commands <case id> <reason>` - Sets the reason for the given ID"
         );
     }
 
     @Override
     public List<String> getExampleUsage() {
         return Collections.singletonList(
-            "`:command 9 Advertising stuff in #general` - Sets the 9th modlog case to \"Advertising stuff in #general\""
+            "`:commands 9 Advertising stuff in #general` - Sets the 9th modlog case to \"Advertising stuff in #general\""
         );
     }
 

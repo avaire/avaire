@@ -59,17 +59,17 @@ public class LevelModifierCommand extends Command {
     @Override
     public List<String> getUsageInstructions() {
         return Arrays.asList(
-            "`:command <percentage>` - Sets the level modifier to the given percentage.",
-            "`:command reset` - Resets the level modifier back to the default value."
+            "`:commands <percentage>` - Sets the level modifier to the given percentage.",
+            "`:commands reset` - Resets the level modifier back to the default value."
         );
     }
 
     @Override
     public List<String> getExampleUsage() {
         return Arrays.asList(
-            "`:command 500%` - Sets the modifier to 500%",
-            "`:command 0.01%` - Sets the modifier to 0.01%",
-            "`:command reset` - Resets the modifier back to default."
+            "`:commands 500%` - Sets the modifier to 500%",
+            "`:commands 0.01%` - Sets the modifier to 0.01%",
+            "`:commands reset` - Resets the modifier back to default."
         );
     }
 

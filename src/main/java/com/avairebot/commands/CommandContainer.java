@@ -45,11 +45,11 @@ public class CommandContainer {
     private final List<String> middlewares;
 
     /**
-     * Creates a new {@link Command command} container instance.
+     * Creates a new {@link Command commands} container instance.
      *
-     * @param command   The command that should be assigned the container.
-     * @param category  The category for the command.
-     * @param sourceUri The source URI for finding source code of the command.
+     * @param command   The commands that should be assigned the container.
+     * @param category  The category for the commands.
+     * @param sourceUri The source URI for finding source code of the commands.
      */
     public CommandContainer(@Nonnull Command command, @Nonnull Category category, @Nullable String sourceUri) {
         this.command = command;
@@ -63,67 +63,67 @@ public class CommandContainer {
     }
 
     /**
-     * Get the command linked to the container.
+     * Get the commands linked to the container.
      *
-     * @return The command linked to the container.
+     * @return The commands linked to the container.
      */
     public Command getCommand() {
         return command;
     }
 
     /**
-     * The command category that the command belongs to.
+     * The commands category that the commands belongs to.
      *
-     * @return The command category that the command belongs to.
+     * @return The commands category that the commands belongs to.
      */
     public Category getCategory() {
         return category;
     }
 
     /**
-     * Gets the default prefix from the command category, this is a shortcut for using
+     * Gets the default prefix from the commands category, this is a shortcut for using
      * {@link #getCategory() container.getCategory()}{@link Category#getPrefix() .getPrefix()}.
      *
-     * @return The default prefix for the command category.
+     * @return The default prefix for the commands category.
      */
     public String getDefaultPrefix() {
         return category.getPrefix();
     }
 
     /**
-     * Gets the priority for the command, if the command priority is
-     * {@link CommandPriority#HIDDEN hidden} the command won't be
-     * listed on the help command.
+     * Gets the priority for the commands, if the commands priority is
+     * {@link CommandPriority#HIDDEN hidden} the commands won't be
+     * listed on the help commands.
      *
-     * @return The priority for the command.
+     * @return The priority for the commands.
      */
     public CommandPriority getPriority() {
         return command.getCommandPriority();
     }
 
     /**
-     * Gets the list of middlewares used by the command.
+     * Gets the list of middlewares used by the commands.
      *
-     * @return The list of middlewares used by the command.
+     * @return The list of middlewares used by the commands.
      */
     public List<String> getMiddleware() {
         return middlewares;
     }
 
     /**
-     * Gets the command triggers used to run the command.
+     * Gets the commands triggers used to run the commands.
      *
-     * @return The command triggers used to run the command.
+     * @return The commands triggers used to run the commands.
      */
     public Set<String> getTriggers() {
         return triggers;
     }
 
     /**
-     * The source URI used by the {@link com.avairebot.commands.utility.SourceCommand source code command}
-     * to find out where the source code for a given command can be found.
+     * The source URI used by the {@link com.avairebot.commands.utility.SourceCommand source code commands}
+     * to find out where the source code for a given commands can be found.
      *
-     * @return Possibly-null, the URI to where the code for the command can be found.
+     * @return Possibly-null, the URI to where the code for the commands can be found.
      */
     @Nullable
     public String getSourceUri() {
@@ -132,7 +132,7 @@ public class CommandContainer {
 
     /**
      * Registers the default throttle middlewares unless
-     * the command already has registered one of them.
+     * the commands already has registered one of them.
      */
     private void registerThrottleMiddlewares() {
         if (!hasMiddleware(ThrottleMiddleware.class)) {
@@ -176,10 +176,10 @@ public class CommandContainer {
     }
 
     /**
-     * Checks if the command has the given command middleware.
+     * Checks if the commands has the given commands middleware.
      *
      * @param clazz The middleware class that should be checke.
-     * @return <code>True</code> if the command has the given middleware, <code>False</code> otherwise.
+     * @return <code>True</code> if the commands has the given middleware, <code>False</code> otherwise.
      */
     private boolean hasMiddleware(@Nonnull Class<? extends Middleware> clazz) {
         String key = MiddlewareHandler.getName(clazz);

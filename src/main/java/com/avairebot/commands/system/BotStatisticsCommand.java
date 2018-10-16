@@ -61,12 +61,12 @@ public class BotStatisticsCommand extends SystemCommand {
 
     @Override
     public String getDescription() {
-        return "Displays information about the current state of the bot, this command can be pretty heavy to run since a lot of calculations are being run to get some of the information.";
+        return "Displays information about the current state of the bot, this commands can be pretty heavy to run since a lot of calculations are being run to get some of the information.";
     }
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`:command` - Shows some stats about the bot.");
+        return Collections.singletonList("`:commands` - Shows some stats about the bot.");
     }
 
     @Override

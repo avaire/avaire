@@ -36,7 +36,7 @@ public class HasVotedTodayMiddleware extends Middleware {
 
     @Override
     public String buildHelpDescription(@Nonnull String[] arguments) {
-        return "**You must [vote for Ava](https://discordbots.org/bot/avaire) to use this command**";
+        return "**You must [vote for Ava](https://discordbots.org/bot/avaire) to use this commands**";
     }
 
     @Override

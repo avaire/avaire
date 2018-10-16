@@ -31,14 +31,14 @@ import java.lang.annotation.Target;
 public @interface CommandSource {
 
     /**
-     * The URL to find the source code for the given command, this is used by
+     * The URL to find the source code for the given commands, this is used by
      * the "Source Command" for finding the source code for commands on
      * github, commands that belongs to the core will automatically be
      * assigned this scope, while plugins registered from a plugin
      * will have to add the scope themselves if they wish to make
-     * their command work with the source command.
+     * their commands work with the source commands.
      *
-     * @return The URL to where other people can find the source code for the command.
+     * @return The URL to where other people can find the source code for the commands.
      */
     String uri() default "";
 }

@@ -46,12 +46,12 @@ public class ListAliasesCommand extends Command {
 
     @Override
     public String getDescription() {
-        return "Lists all the existing command aliases.";
+        return "Lists all the existing commands aliases.";
     }
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`:command` - Lists all the aliases for the server.");
+        return Collections.singletonList("`:commands` - Lists all the aliases for the server.");
     }
 
     @Override

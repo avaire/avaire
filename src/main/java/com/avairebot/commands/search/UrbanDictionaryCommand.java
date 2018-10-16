@@ -58,12 +58,12 @@ public class UrbanDictionaryCommand extends Command {
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`:command <word or sentence>` - Gets the definition from Urban Dictionary");
+        return Collections.singletonList("`:commands <word or sentence>` - Gets the definition from Urban Dictionary");
     }
 
     @Override
     public List<String> getExampleUsage() {
-        return Collections.singletonList("`:command potato`");
+        return Collections.singletonList("`:commands potato`");
     }
 
     @Override

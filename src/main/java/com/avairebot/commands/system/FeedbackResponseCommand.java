@@ -55,12 +55,12 @@ public class FeedbackResponseCommand extends SystemCommand {
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`:command <id> <message>` - Responds to the given feedback ID with the message.");
+        return Collections.singletonList("`:commands <id> <message>` - Responds to the given feedback ID with the message.");
     }
 
     @Override
     public List<String> getExampleUsage() {
-        return Collections.singletonList("`:command 23 Thanks for the feedback <3`");
+        return Collections.singletonList("`:commands 23 Thanks for the feedback <3`");
     }
 
     @Override

@@ -49,7 +49,7 @@ public class ToggleCategoryCommand extends Command {
 
     @Override
     public String getDescription() {
-        return "This command allows you to toggle command categories on/off for the " +
+        return "This commands allows you to toggle commands categories on/off for the " +
             "current channel or the whole server in one go, this is useful if you " +
             "like some features in the bot but not others.";
     }
@@ -57,7 +57,7 @@ public class ToggleCategoryCommand extends Command {
     @Override
     public List<String> getUsageInstructions() {
         return Collections.singletonList(
-            "`:command <category> <channel/global> [status]` - Changes the command " +
+            "`:commands <category> <channel/global> [status]` - Changes the commands " +
                 "category status for the mentioned channel or globally if specified."
         );
     }
@@ -65,8 +65,8 @@ public class ToggleCategoryCommand extends Command {
     @Override
     public List<String> getExampleUsage() {
         return Arrays.asList(
-            "`:command fun global off` - Disables all the fun on the server D:",
-            "`:command util #general off` - Disables all the utility commands in the general channel."
+            "`:commands fun global off` - Disables all the fun on the server D:",
+            "`:commands util #general off` - Disables all the utility commands in the general channel."
         );
     }
 
@@ -133,7 +133,7 @@ public class ToggleCategoryCommand extends Command {
 
         if (!channelId.equals("all") && status && !channel.isCategoryEnabledGlobally(category)) {
             context.makeError(context.i18n("cantEnabledCategory"))
-                .set("command", generateCommandTrigger(context.getMessage()))
+                .set("commands", generateCommandTrigger(context.getMessage()))
                 .set("category", category.getName())
                 .queue();
 

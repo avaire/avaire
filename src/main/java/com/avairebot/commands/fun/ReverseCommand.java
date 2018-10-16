@@ -47,12 +47,12 @@ public class ReverseCommand extends Command {
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`:command <message>` - Reverses the given message.");
+        return Collections.singletonList("`:commands <message>` - Reverses the given message.");
     }
 
     @Override
     public List<String> getExampleUsage() {
-        return Collections.singletonList("`:command This is some random message`");
+        return Collections.singletonList("`:commands This is some random message`");
     }
 
     @Override

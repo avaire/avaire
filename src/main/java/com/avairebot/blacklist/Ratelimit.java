@@ -215,7 +215,7 @@ public class Ratelimit {
         Long last = rate.getLast();
 
         // Checks if the user was blacklisted within the last two and half seconds,
-        // the command handling process uses its own thread pool, because of that
+        // the commands handling process uses its own thread pool, because of that
         // it's possible to have two commands come in from the same user in a
         // very quick succession, instead of punishing the user twice, we
         // just cancel the blacklist hit here instead.
@@ -225,13 +225,13 @@ public class Ratelimit {
 
         Carbon punishment = getPunishment(id);
 
-        log.info("{}:{} has been added to the blacklist for excessive command usage, the blacklist expires {}.",
+        log.info("{}:{} has been added to the blacklist for excessive commands usage, the blacklist expires {}.",
             type.getName(), id, punishment.toDayDateTimeString()
         );
 
         blacklist.addIdToBlacklist(
             type.equals(ThrottleMiddleware.ThrottleType.USER) ? Scope.USER : Scope.GUILD,
-            id, "Automatic blacklist due to excessive command usage.",
+            id, "Automatic blacklist due to excessive commands usage.",
             punishment
         );
 

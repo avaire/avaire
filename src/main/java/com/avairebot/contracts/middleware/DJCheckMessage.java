@@ -32,7 +32,7 @@ public @interface DJCheckMessage {
 
     /**
      * Determines if the set message should overwrite the default DJ check message in the
-     * event the command was used by someone with an insufficient DJ level, if set to
+     * event the commands was used by someone with an insufficient DJ level, if set to
      * false the message will just be appended to the DJ check message instead.
      *
      * @return <code>True</code> if the message should overwrite the throttle message, or

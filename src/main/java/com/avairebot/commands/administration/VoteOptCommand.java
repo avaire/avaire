@@ -50,14 +50,14 @@ public class VoteOptCommand extends Command {
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`:command <in|out>` - Opt in/out of vote messages when you vote");
+        return Collections.singletonList("`:commands <in|out>` - Opt in/out of vote messages when you vote");
     }
 
     @Override
     public List<String> getExampleUsage() {
         return Arrays.asList(
-            "`:command in` - Enables vote messages when you vote.",
-            "`:command out` - Disables vote messages when you vote."
+            "`:commands in` - Enables vote messages when you vote.",
+            "`:commands out` - Disables vote messages when you vote."
         );
     }
 

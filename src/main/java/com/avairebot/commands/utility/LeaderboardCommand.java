@@ -48,7 +48,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-@CacheFingerprint(name = "leaderboard-command")
+@CacheFingerprint(name = "leaderboard-commands")
 public class LeaderboardCommand extends Command {
 
     public static final Cache<String, Collection> cache = CacheBuilder.newBuilder()
@@ -74,12 +74,12 @@ public class LeaderboardCommand extends Command {
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`:command` - Displays the top 100 players on the XP leaderboard for the server.");
+        return Collections.singletonList("`:commands` - Displays the top 100 players on the XP leaderboard for the server.");
     }
 
     @Override
     public List<String> getExampleUsage() {
-        return Collections.singletonList("`:command 2`");
+        return Collections.singletonList("`:commands 2`");
     }
 
     @Override

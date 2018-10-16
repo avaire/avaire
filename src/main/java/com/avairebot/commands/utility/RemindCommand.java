@@ -52,17 +52,17 @@ public class RemindCommand extends Command {
     @Override
     public List<String> getUsageInstructions() {
         return Arrays.asList(
-            "`:command me <time> <message>`\n- Reminds you about the message after the time is up in a DM.",
-            "`:command here <time> <message>`\n- Reminds you about the message after the time is up in the channel the command was used in."
+            "`:commands me <time> <message>`\n- Reminds you about the message after the time is up in a DM.",
+            "`:commands here <time> <message>`\n- Reminds you about the message after the time is up in the channel the commands was used in."
         );
     }
 
     @Override
     public List<String> getExampleUsage() {
         return Arrays.asList(
-            "`:command me 25m Something` - Reminds you about something after 25 minutes.",
-            "`:command me 2h30m9s Stuff` - Reminds you about stuff after 2 hours, 30 minutes, and 9 seconds.",
-            "`:command here 30m Potatoe` - Reminds you about Potatoe in 30 minutes in the current channel."
+            "`:commands me 25m Something` - Reminds you about something after 25 minutes.",
+            "`:commands me 2h30m9s Stuff` - Reminds you about stuff after 2 hours, 30 minutes, and 9 seconds.",
+            "`:commands here 30m Potatoe` - Reminds you about Potatoe in 30 minutes in the current channel."
         );
     }
 

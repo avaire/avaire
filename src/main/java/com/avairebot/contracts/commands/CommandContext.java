@@ -136,7 +136,7 @@ public interface CommandContext {
     /**
      * An immutable list of all mentioned {@link net.dv8tion.jda.core.entities.User Users}.
      * <br>If no user was mentioned, this list is empty, if the bot was mentioned as part of
-     * invoking the command, the {@link #isMentionableCommand() isMentionableCommand()}
+     * invoking the commands, the {@link #isMentionableCommand() isMentionableCommand()}
      * should be true, and the bot will be stripped from the mentioned users list.
      *
      * @return immutable list of mentioned users
@@ -156,11 +156,11 @@ public interface CommandContext {
     List<TextChannel> getMentionedChannels();
 
     /**
-     * Returns true if the message was invoked as a mentionable command, this means
-     * that the command was invoked by mentioning the bot instead of using the
-     * defined prefix for the command category.
+     * Returns true if the message was invoked as a mentionable commands, this means
+     * that the commands was invoked by mentioning the bot instead of using the
+     * defined prefix for the commands category.
      *
-     * @return True if the command was invoked through a mention.
+     * @return True if the commands was invoked through a mention.
      */
     boolean isMentionableCommand();
 
@@ -172,10 +172,10 @@ public interface CommandContext {
     boolean isGuildMessage();
 
     /**
-     * Whether we can send messages in the channel the command was invoked in.
+     * Whether we can send messages in the channel the commands was invoked in.
      * <p>
      * This is an overload of {@link TextChannel#canTalk(Member)} with the SelfMember, if
-     * the command was invoked in a DM, it will always return true.
+     * the commands was invoked in a DM, it will always return true.
      * <p>
      * Checks for both {@link net.dv8tion.jda.core.Permission#MESSAGE_READ Permission.MESSAGE_READ},
      * {@link net.dv8tion.jda.core.Permission#MESSAGE_WRITE Permission.MESSAGE_WRITE}, and
@@ -197,14 +197,14 @@ public interface CommandContext {
 
     /**
      * Gets a string from the {@link com.avairebot.language.I18n I18n} language file with the
-     * command as a prefix, if you'd like to get a message from the language file without
-     * using the command prefix you can use the {@link #i18nRaw(String)} method.
+     * commands as a prefix, if you'd like to get a message from the language file without
+     * using the commands prefix you can use the {@link #i18nRaw(String)} method.
      * <br>
-     * <p>The command prefix is the command category name in all lowercase, followed by a dot,
+     * <p>The commands prefix is the commands category name in all lowercase, followed by a dot,
      * followed by the commands class name, any commands specific messages can be put at
      * this path for Ava to easily find then.
      * <br>
-     * <p><b>For example if we were to use the method from the Ping command:</b>
+     * <p><b>For example if we were to use the method from the Ping commands:</b>
      * <pre><code>
      * context.i18n("rating.10"); // Gets the i18n string: utility.PingCommand.rating.10
      * </code></pre>
@@ -224,14 +224,14 @@ public interface CommandContext {
 
     /**
      * Gets a string from the {@link com.avairebot.language.I18n I18n} language file with the
-     * command as a prefix, if you'd like to get a message from the language file without
-     * using the command prefix you can use the {@link #i18nRaw(String)} method.
+     * commands as a prefix, if you'd like to get a message from the language file without
+     * using the commands prefix you can use the {@link #i18nRaw(String)} method.
      * <br>
-     * <p>The command prefix is the command category name in all lowercase, followed by a dot,
+     * <p>The commands prefix is the commands category name in all lowercase, followed by a dot,
      * followed by the commands class name, any commands specific messages can be put at
      * this path for Ava to easily find then.
      * <br>
-     * <p><b>For example if we were to use the method from the uptime command:</b>
+     * <p><b>For example if we were to use the method from the uptime commands:</b>
      * <pre><code>
      * context.i18n("footer", "First", "Second");
      * // Gets the i18n string: utility.UptimeCommand.footer
@@ -257,10 +257,10 @@ public interface CommandContext {
     String i18n(@Nonnull String key, Object... args);
 
     /**
-     * Gets a raw string from the {@link com.avairebot.language.I18n I18n} language file, this will ignore the command
-     * prefix, if you'd like to get a message using the command prefix you can use the {@link #i18n(String)} method.
+     * Gets a raw string from the {@link com.avairebot.language.I18n I18n} language file, this will ignore the commands
+     * prefix, if you'd like to get a message using the commands prefix you can use the {@link #i18n(String)} method.
      * <br>
-     * <p><b>For example if we were to use the method from the Ping command:</b>
+     * <p><b>For example if we were to use the method from the Ping commands:</b>
      * <pre><code>
      * context.i18n("utility.PingCommand.rating.10"); // Gets the i18n string: utility.PingCommand.rating.10
      * </code></pre>
@@ -279,10 +279,10 @@ public interface CommandContext {
     String i18nRaw(@Nonnull String key);
 
     /**
-     * Gets a raw string from the {@link com.avairebot.language.I18n I18n} language file, this will ignore the command
-     * prefix, if you'd like to get a message using the command prefix you can use the {@link #i18n(String)} method.
+     * Gets a raw string from the {@link com.avairebot.language.I18n I18n} language file, this will ignore the commands
+     * prefix, if you'd like to get a message using the commands prefix you can use the {@link #i18n(String)} method.
      * <br>
-     * <p><b>For example if we were to use the method from the uptime command:</b>
+     * <p><b>For example if we were to use the method from the uptime commands:</b>
      * <pre><code>
      * context.i18nRaw("utility.UptimeCommand.footer", "First", "Second");
      * // Gets the i18n string: utility.UptimeCommand.footer
@@ -308,20 +308,20 @@ public interface CommandContext {
     String i18nRaw(@Nonnull String key, Object... args);
 
     /**
-     * Gets the {@link com.avairebot.language.I18n I18n} command prefix.
+     * Gets the {@link com.avairebot.language.I18n I18n} commands prefix.
      *
-     * @return The {@link com.avairebot.language.I18n I18n} command prefix.
+     * @return The {@link com.avairebot.language.I18n I18n} commands prefix.
      */
     String getI18nCommandPrefix();
 
     /**
-     * Generates the new {@link com.avairebot.language.I18n I18n} command prefix off the {@link CommandContainer Command Container}, then calls {@link #setI18nPrefix(String)} with the generated message, command prefixes are generated using the following format:
+     * Generates the new {@link com.avairebot.language.I18n I18n} commands prefix off the {@link CommandContainer Command Container}, then calls {@link #setI18nPrefix(String)} with the generated message, commands prefixes are generated using the following format:
      * <br>
      * <pre><code>
-     * command category.command class name.
+     * commands category.commands class name.
      * </code></pre>
      * <br>
-     * So the Ping command prefix would look like this:
+     * So the Ping commands prefix would look like this:
      * <br>
      * <pre><code>
      * utility.PingCommand.
@@ -332,7 +332,7 @@ public interface CommandContext {
     void setI18nCommandPrefix(@Nonnull CommandContainer container);
 
     /**
-     * Sts the {@link com.avairebot.language.I18n I18n} command prefix to the given string.
+     * Sts the {@link com.avairebot.language.I18n I18n} commands prefix to the given string.
      *
      * @param i18nPrefix The string the {@link com.avairebot.language.I18n I18n} prefix should be set to.
      */

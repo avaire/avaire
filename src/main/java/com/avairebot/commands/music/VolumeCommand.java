@@ -54,14 +54,14 @@ public class VolumeCommand extends Command {
     @Override
     public List<String> getUsageInstructions() {
         return Arrays.asList(
-            "`:command` - Shows the current music volume without changing it",
-            "`:command <volume>` - Sets the music volume to the given number"
+            "`:commands` - Shows the current music volume without changing it",
+            "`:commands <volume>` - Sets the music volume to the given number"
         );
     }
 
     @Override
     public List<String> getExampleUsage() {
-        return Collections.singletonList("`:command 80`");
+        return Collections.singletonList("`:commands 80`");
     }
 
     @Override

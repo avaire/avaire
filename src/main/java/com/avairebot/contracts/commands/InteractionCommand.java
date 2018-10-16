@@ -80,17 +80,17 @@ public abstract class InteractionCommand extends Command {
     @Override
     public List<String> getUsageInstructions() {
         return Arrays.asList(
-            "`:command <target>`",
-            "`:command <user> <target>`"
+            "`:commands <target>`",
+            "`:commands <user> <target>`"
         );
     }
 
     @Override
     public List<String> getExampleUsage() {
         return Arrays.asList(
-            "`:command @AvaIre`",
-            "`:command @AvaIre @Senither`",
-            "`:command @Someone @Me`"
+            "`:commands @AvaIre`",
+            "`:commands @AvaIre @Senither`",
+            "`:commands @Someone @Me`"
         );
     }
 

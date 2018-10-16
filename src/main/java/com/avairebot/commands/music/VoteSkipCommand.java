@@ -51,12 +51,12 @@ public class VoteSkipCommand extends Command {
 
     @Override
     public String getDescription() {
-        return "Use this command to vote on the song currently playing to be skipped, if the vote wins with a majority vote the song will be skipped.";
+        return "Use this commands to vote on the song currently playing to be skipped, if the vote wins with a majority vote the song will be skipped.";
     }
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`:command` - Vote to skip the current song.");
+        return Collections.singletonList("`:commands` - Vote to skip the current song.");
     }
 
     @Override

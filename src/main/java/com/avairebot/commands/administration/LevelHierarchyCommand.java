@@ -47,20 +47,20 @@ public class LevelHierarchyCommand extends Command {
 
     @Override
     public String getDescription() {
-        return "Level Hierarchy determines if level roles give to users should be removed once they level up and get the next role, or if they should keep all of their roles, when the level hierarchy is enabled and a user levels up to get the next role, all other level roles they have will be removed, if they level up to a level without a level role, nothing will happen to them, the feature can be toggled on and off using this command.";
+        return "Level Hierarchy determines if level roles give to users should be removed once they level up and get the next role, or if they should keep all of their roles, when the level hierarchy is enabled and a user levels up to get the next role, all other level roles they have will be removed, if they level up to a level without a level role, nothing will happen to them, the feature can be toggled on and off using this commands.";
     }
 
     @Override
     public List<String> getUsageInstructions() {
         return Arrays.asList(
-            "`:command` - Displays the current level hierarchy status.",
-            "`:command <on/off>` - Toggles the feature on or off."
+            "`:commands` - Displays the current level hierarchy status.",
+            "`:commands <on/off>` - Toggles the feature on or off."
         );
     }
 
     @Override
     public List<String> getExampleUsage() {
-        return Collections.singletonList("`:command on` - Toggles the feature on.");
+        return Collections.singletonList("`:commands on` - Toggles the feature on.");
     }
 
     @Override
@@ -131,7 +131,7 @@ public class LevelHierarchyCommand extends Command {
 
     private boolean sendHierarchyStatus(CommandMessage context, GuildTransformer transformer) {
         context.makeInfo(context.i18n("statusMessage"))
-            .set("command", generateCommandTrigger(context.getMessage()) + " <on/off>")
+            .set("commands", generateCommandTrigger(context.getMessage()) + " <on/off>")
             .set("status", transformer.isLevelHierarchy()
                 ? context.i18n("status.enabled")
                 : context.i18n("status.disabled")

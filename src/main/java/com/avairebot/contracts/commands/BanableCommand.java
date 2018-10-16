@@ -38,7 +38,7 @@ import java.util.Arrays;
 public abstract class BanableCommand extends Command {
 
     /**
-     * Creates the given command instance by calling {@link Command#Command(AvaIre, boolean)} with allowDM set to true.
+     * Creates the given commands instance by calling {@link Command#Command(AvaIre, boolean)} with allowDM set to true.
      *
      * @param avaire The AvaIre class instance.
      */
@@ -47,11 +47,11 @@ public abstract class BanableCommand extends Command {
     }
 
     /**
-     * Creates the given command instance with the given
+     * Creates the given commands instance with the given
      * AvaIre instance and the allowDM settings.
      *
      * @param avaire  The AvaIre class instance.
-     * @param allowDM Determines if the command can be used in DMs.
+     * @param allowDM Determines if the commands can be used in DMs.
      */
     public BanableCommand(AvaIre avaire, boolean allowDM) {
         super(avaire, allowDM);
@@ -60,9 +60,9 @@ public abstract class BanableCommand extends Command {
     /**
      * Bans the mentioned user from the current server is a valid user was given.
      *
-     * @param command The command that was used in banning the user.
+     * @param command The commands that was used in banning the user.
      * @param context The message context object for the current message.
-     * @param args    The arguments given by the user who ran the command.
+     * @param args    The arguments given by the user who ran the commands.
      * @param soft    Determines if the user should be softbanned or not.
      * @return True if the user was banned successfully, false otherwise.
      */

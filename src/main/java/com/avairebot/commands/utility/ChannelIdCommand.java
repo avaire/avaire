@@ -43,19 +43,19 @@ public class ChannelIdCommand extends Command {
 
     @Override
     public String getDescription() {
-        return "Shows the ID of the channel the command was ran in, or the channel tagged in the command.";
+        return "Shows the ID of the channel the commands was ran in, or the channel tagged in the commands.";
     }
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`:command [channel]` - Gets the ID of the current channel, or the mentioned channel.");
+        return Collections.singletonList("`:commands [channel]` - Gets the ID of the current channel, or the mentioned channel.");
     }
 
     @Override
     public List<String> getExampleUsage() {
         return Arrays.asList(
-            "`:command #general`",
-            "`:command`"
+            "`:commands #general`",
+            "`:commands`"
         );
     }
 

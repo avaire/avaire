@@ -60,17 +60,17 @@ public class PurgeCommand extends Command {
     @Override
     public List<String> getUsageInstructions() {
         return Arrays.asList(
-            "`:command` - Deletes the last 5 messages.",
-            "`:command [number]` - Deletes the given number of messages.",
-            "`:command [number] [user]` - Deletes the given number of messages for the mentioned users."
+            "`:commands` - Deletes the last 5 messages.",
+            "`:commands [number]` - Deletes the given number of messages.",
+            "`:commands [number] [user]` - Deletes the given number of messages for the mentioned users."
         );
     }
 
     @Override
     public List<String> getExampleUsage() {
         return Arrays.asList(
-            "`:command 56`",
-            "`:command 30 @Senither`"
+            "`:commands 56`",
+            "`:commands 30 @Senither`"
         );
     }
 

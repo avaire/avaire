@@ -48,7 +48,7 @@ public class Modlog {
      * Logs an action to the modlog channel for the given context.
      *
      * @param avaire  The main AvaIre application instance.
-     * @param context The command context the modlog action is occurring in.
+     * @param context The commands context the modlog action is occurring in.
      * @param action  The action that should be logged to the modlog.
      * @return Possibly-null, the case ID if the modlog was logged successfully,
      * otherwise <code>null</code> will be returned.

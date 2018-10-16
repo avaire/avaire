@@ -54,7 +54,7 @@ public class AddSongToPlaylist extends PlaylistSubCommand {
 
         if (query.trim().length() == 0) {
             context.makeWarning(context.i18n("invalidFormat"))
-                .set("command", command.generateCommandTrigger(context.getMessage()) + " " + playlist.getName() + " add <song title / link>")
+                .set("commands", command.generateCommandTrigger(context.getMessage()) + " " + playlist.getName() + " add <song title / link>")
                 .set("type", "song")
                 .queue();
 

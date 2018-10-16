@@ -48,22 +48,22 @@ public class LevelAlertsCommand extends Command {
     @Override
     public String getDescription() {
         return "Toggles the Leveling alerts system on or off for the current server or channel."
-            + "\nThis command requires the `Levels & Experience` feature to be enabled for the server!";
+            + "\nThis commands requires the `Levels & Experience` feature to be enabled for the server!";
     }
 
     @Override
     public List<String> getUsageInstructions() {
         return Arrays.asList(
-            "`:command` - Toggles the level alerts feature on/off",
-            "`:command <channel>` - Toggles the level alerts feature on for the given channel"
+            "`:commands` - Toggles the level alerts feature on/off",
+            "`:commands <channel>` - Toggles the level alerts feature on for the given channel"
         );
     }
 
     @Override
     public List<String> getExampleUsage() {
         return Arrays.asList(
-            "`:command`",
-            "`:command #general`"
+            "`:commands`",
+            "`:commands #general`"
         );
     }
 

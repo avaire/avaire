@@ -50,8 +50,8 @@ public class MentionableUtil {
      * <p>
      * If none of the checks finds a valid user object, <code>null</code> will be returned instead.
      *
-     * @param context The command message context.
-     * @param args    The arguments parsed to the command.
+     * @param context The commands message context.
+     * @param args    The arguments parsed to the commands.
      * @return Possibly-null, or the user matching the first index.
      */
     @Nullable
@@ -71,8 +71,8 @@ public class MentionableUtil {
      * <p>
      * If none of the checks finds a valid user object, <code>null</code> will be returned instead.
      *
-     * @param context The command message context.
-     * @param args    The arguments parsed to the command.
+     * @param context The commands message context.
+     * @param args    The arguments parsed to the commands.
      * @param index   The index of the argument that should be checked.
      * @return Possibly-null, or the user matching the given index.
      */
@@ -146,8 +146,8 @@ public class MentionableUtil {
      * <p>
      * If none of the checks finds a valid channel object, <code>null</code> will be returned instead.
      *
-     * @param message The command message.
-     * @param args    The arguments parsed to the command.
+     * @param message The commands message.
+     * @param args    The arguments parsed to the commands.
      * @return Possibly-null, or the first channel matching the given arguments.
      */
     public static Channel getChannel(@Nonnull Message message, @Nonnull String[] args) {
@@ -166,8 +166,8 @@ public class MentionableUtil {
      * <p>
      * If none of the checks finds a valid channel object, <code>null</code> will be returned instead.
      *
-     * @param message The command message.
-     * @param args    The arguments parsed to the command.
+     * @param message The commands message.
+     * @param args    The arguments parsed to the commands.
      * @param index   The index of the argument that should be checked.
      * @return Possibly-null, or the channel matching the given index.
      */

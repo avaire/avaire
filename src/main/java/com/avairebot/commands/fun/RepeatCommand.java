@@ -47,12 +47,12 @@ public class RepeatCommand extends Command {
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`:command <message>` - Repeats the given message");
+        return Collections.singletonList("`:commands <message>` - Repeats the given message");
     }
 
     @Override
     public List<String> getExampleUsage() {
-        return Collections.singletonList("`:command I am a BOT`");
+        return Collections.singletonList("`:commands I am a BOT`");
     }
 
     @Override

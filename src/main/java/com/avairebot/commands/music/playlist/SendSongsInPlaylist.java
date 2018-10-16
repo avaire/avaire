@@ -43,7 +43,7 @@ public class SendSongsInPlaylist extends PlaylistSubCommand {
     public boolean onCommand(CommandMessage context, String[] args, GuildTransformer guild, PlaylistTransformer playlist) {
         if (playlist.getSongs().isEmpty()) {
             context.makeWarning(context.i18n("playlistIsEmpty"))
-                .set("command", command.generateCommandTrigger(context.getMessage()) + " " + playlist.getName() + " add <song url>")
+                .set("commands", command.generateCommandTrigger(context.getMessage()) + " " + playlist.getName() + " add <song url>")
                 .queue();
 
             return false;

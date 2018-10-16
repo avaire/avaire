@@ -37,7 +37,7 @@ public class LennyCommand extends Command {
 
     @Override
     public String getName() {
-        return "Lenny command";
+        return "Lenny commands";
     }
 
     @Override
@@ -47,7 +47,7 @@ public class LennyCommand extends Command {
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`:command` - ( ͡° ͜ʖ ͡°)");
+        return Collections.singletonList("`:commands` - ( ͡° ͜ʖ ͡°)");
     }
 
     @Override

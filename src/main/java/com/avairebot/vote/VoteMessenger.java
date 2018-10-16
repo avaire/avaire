@@ -79,7 +79,7 @@ public class VoteMessenger {
 
     /**
      * Sends the "Must Vote" message to the given channel, letting the
-     * user know that they must vote to use the current command.
+     * user know that they must vote to use the current commands.
      *
      * @param channel The channel the message should be sent to.
      */
@@ -93,7 +93,7 @@ public class VoteMessenger {
      *
      * @param channel The channel the message should be sent to.
      * @param feature The feature that the user has to vote for to use, or
-     *                <code>null</code> to specify the current command.
+     *                <code>null</code> to specify the current commands.
      */
     public void sendMustVoteMessage(@Nonnull MessageChannel channel, @Nullable String feature) {
         channel.sendMessage(MessageFactory.createEmbeddedBuilder()
@@ -101,7 +101,7 @@ public class VoteMessenger {
             .setTitle("Vote for AvaIre on DBL", "https://discordbots.org/bot/avaire")
             .setDescription(String.format(
                 "You must vote to %s, voting is free and only takes a few seconds\nTo get started, head over to:\n\nhttps://discordbots.org/bot/avaire\n\nOnce you've voted you'll gain access to this, and other commands for the next 24 hours!",
-                feature == null ? "use this command" : feature
+                feature == null ? "use this commands" : feature
             ))
             .build()
         ).queue();

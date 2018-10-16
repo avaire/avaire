@@ -55,14 +55,14 @@ public class AddLevelRoleCommand extends Command {
     @Override
     public List<String> getUsageInstructions() {
         return Collections.singletonList(
-            "`:command <level requirement> <role>` - Adds to role to users when they level up and meet the level requirement."
+            "`:commands <level requirement> <role>` - Adds to role to users when they level up and meet the level requirement."
         );
     }
 
     @Override
     public List<String> getExampleUsage() {
         return Collections.singletonList(
-            "`:command 5 Regular` - Adds the Regular role to the level up table, users who are level 5 and up will get the role when they level up."
+            "`:commands 5 Regular` - Adds the Regular role to the level up table, users who are level 5 and up will get the role when they level up."
         );
     }
 

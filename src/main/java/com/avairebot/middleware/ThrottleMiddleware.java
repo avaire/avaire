@@ -55,7 +55,7 @@ public class ThrottleMiddleware extends Middleware {
 
     @Override
     public String buildHelpDescription(@Nonnull String[] arguments) {
-        return String.format("**This command can only be used `%s` time(s) every `%s` seconds per %s**",
+        return String.format("**This commands can only be used `%s` time(s) every `%s` seconds per %s**",
             arguments[1], arguments[2], arguments[0].equalsIgnoreCase("guild") ? "server" : arguments[0]
         );
     }
@@ -102,7 +102,7 @@ public class ThrottleMiddleware extends Middleware {
             return response;
         } catch (NumberFormatException e) {
             AvaIre.getLogger().warn(String.format(
-                "Invalid integers given to throttle command by \"%s\", args: (%s, %s)", stack.getCommand().getName(), args[1], args[2]
+                "Invalid integers given to throttle commands by \"%s\", args: (%s, %s)", stack.getCommand().getName(), args[1], args[2]
             ));
         }
         return false;
@@ -112,7 +112,7 @@ public class ThrottleMiddleware extends Middleware {
         Metrics.commandsRatelimited.labels(stack.getCommand().getClass().getSimpleName()).inc();
 
         return (boolean) CacheUtil.getUncheckedUnwrapped(messageCache, message.getAuthor().getIdLong(), () -> {
-            String throttleMessage = "Too many `:command` attempts. Please try again in **:time** seconds.";
+            String throttleMessage = "Too many `:commands` attempts. Please try again in **:time** seconds.";
 
             ThrottleMessage annotation = stack.getCommand().getClass().getAnnotation(ThrottleMessage.class);
             if (annotation != null && annotation.message().trim().length() > 0) {
@@ -124,7 +124,7 @@ public class ThrottleMiddleware extends Middleware {
             }
 
             MessageFactory.makeWarning(message, throttleMessage)
-                .set("command", stack.getCommand().getName())
+                .set("commands", stack.getCommand().getName())
                 .set("time", ((entity.getTime() - System.currentTimeMillis()) / 1000) + 1)
                 .set("prefix", stack.getCommand().generateCommandPrefix(message))
                 .queue();

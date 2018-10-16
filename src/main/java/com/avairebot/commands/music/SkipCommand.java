@@ -33,8 +33,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-@DJCheckMessage(message = "\nYou can use the `:prefixvoteskip` command to vote to skip the song.", overwrite = false)
-@ThrottleMessage(message = "Too many `:command` attempts. Please try again in **:time** seconds, or use the `:prefixclearqueue` command to remove all songs from the queue.")
+@DJCheckMessage(message = "\nYou can use the `:prefixvoteskip` commands to vote to skip the song.", overwrite = false)
+@ThrottleMessage(message = "Too many `:commands` attempts. Please try again in **:time** seconds, or use the `:prefixclearqueue` commands to remove all songs from the queue.")
 public class SkipCommand extends Command {
 
     public SkipCommand(AvaIre avaire) {
@@ -53,7 +53,7 @@ public class SkipCommand extends Command {
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`:command` - Skips to the next song in the queue");
+        return Collections.singletonList("`:commands` - Skips to the next song in the queue");
     }
 
     @Override

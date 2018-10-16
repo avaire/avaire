@@ -47,12 +47,12 @@ public class SayCommand extends Command {
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`:command <message>` - Makes the bot say the given message");
+        return Collections.singletonList("`:commands <message>` - Makes the bot say the given message");
     }
 
     @Override
     public List<String> getExampleUsage() {
-        return Collections.singletonList("`:command I am a BOT`");
+        return Collections.singletonList("`:commands I am a BOT`");
     }
 
     @Override
@@ -74,7 +74,7 @@ public class SayCommand extends Command {
         context.getMessageChannel().sendMessage(context.getContentRaw()).queue();
 
         if (context.isGuildMessage()) {
-            context.delete().reason("AvaIre say command usage").queue(null, RestActionUtil.ignore);
+            context.delete().reason("AvaIre say commands usage").queue(null, RestActionUtil.ignore);
         }
 
         return true;

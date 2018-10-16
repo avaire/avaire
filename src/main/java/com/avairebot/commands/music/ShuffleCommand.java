@@ -54,7 +54,7 @@ public class ShuffleCommand extends Command {
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`:command` - Shuffles all the songs currently in the queue.");
+        return Collections.singletonList("`:commands` - Shuffles all the songs currently in the queue.");
     }
 
     @Override

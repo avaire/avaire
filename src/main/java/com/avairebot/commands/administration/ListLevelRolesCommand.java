@@ -53,7 +53,7 @@ public class ListLevelRolesCommand extends Command {
     @Override
     public List<String> getUsageInstructions() {
         return Collections.singletonList(
-            "`:command` - Lists all the roles you can get for leveling up."
+            "`:commands` - Lists all the roles you can get for leveling up."
         );
     }
 
@@ -93,7 +93,7 @@ public class ListLevelRolesCommand extends Command {
 
         if (transformer.getLevelRoles().isEmpty()) {
             context.makeInfo(context.i18n("noLevelRoles"))
-                .set("command", CommandHandler.getCommand(AddLevelRoleCommand.class)
+                .set("commands", CommandHandler.getCommand(AddLevelRoleCommand.class)
                     .getCommand().generateCommandTrigger(context.getMessage()))
                 .queue();
 

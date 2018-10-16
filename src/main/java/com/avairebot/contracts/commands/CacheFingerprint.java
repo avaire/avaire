@@ -32,8 +32,8 @@ public @interface CacheFingerprint {
 
     /**
      * The cache fingerprint that should be used for commands, setting a custom
-     * cache fingerprint for a command can allow different commands to share
-     * the same limits for things like command throttling.
+     * cache fingerprint for a commands can allow different commands to share
+     * the same limits for things like commands throttling.
      *
      * @return The cache fingerprint.
      */

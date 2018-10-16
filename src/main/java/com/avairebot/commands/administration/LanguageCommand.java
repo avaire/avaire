@@ -54,16 +54,16 @@ public class LanguageCommand extends Command {
     @Override
     public List<String> getUsageInstructions() {
         return Arrays.asList(
-            "`:command [page]` - Displays a list of languages, 10 languages per page.",
-            "`:command [code]` - Sets the language to the given language code."
+            "`:commands [page]` - Displays a list of languages, 10 languages per page.",
+            "`:commands [code]` - Sets the language to the given language code."
         );
     }
 
     @Override
     public List<String> getExampleUsage() {
         return Arrays.asList(
-            "`:command 2` - Displays the languages on page 2",
-            "`:command english` - Changes the language of the bot to English"
+            "`:commands 2` - Displays the languages on page 2",
+            "`:commands english` - Changes the language of the bot to English"
         );
     }
 

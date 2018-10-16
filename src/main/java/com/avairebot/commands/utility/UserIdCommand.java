@@ -44,20 +44,20 @@ public class UserIdCommand extends Command {
 
     @Override
     public String getDescription() {
-        return "Shows your Discord account user ID, or the ID of the user tagged in the command.";
+        return "Shows your Discord account user ID, or the ID of the user tagged in the commands.";
     }
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`:command [user]` - Gets the ID of the user who ran the command, or the mentioned user.");
+        return Collections.singletonList("`:commands [user]` - Gets the ID of the user who ran the commands, or the mentioned user.");
     }
 
     @Override
     public List<String> getExampleUsage() {
         return Arrays.asList(
-            "`:command @Senither`",
-            "`:command alexis`",
-            "`:command 88739639380172800`"
+            "`:commands @Senither`",
+            "`:commands alexis`",
+            "`:commands 88739639380172800`"
         );
     }
 

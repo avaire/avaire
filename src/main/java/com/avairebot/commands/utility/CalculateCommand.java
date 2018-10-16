@@ -50,12 +50,12 @@ public class CalculateCommand extends Command {
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`:command <equation>` - Calculates the result of the given math equation.");
+        return Collections.singletonList("`:commands <equation>` - Calculates the result of the given math equation.");
     }
 
     @Override
     public List<String> getExampleUsage() {
-        return Collections.singletonList("`:command (-50 + sqrt(50 ^ 2 - ((4 * 5) * (100 - 955)))) / (2 * 5) == 9`");
+        return Collections.singletonList("`:commands (-50 + sqrt(50 ^ 2 - ((4 * 5) * (100 - 955)))) / (2 * 5) == 9`");
     }
 
     @Override

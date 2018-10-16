@@ -52,12 +52,12 @@ public class ChuckNorrisCommand extends Command {
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`:command [name]` - Gets a random fact for you, if a name is given \"Chuck Norris\" will be replaced with the given name.");
+        return Collections.singletonList("`:commands [name]` - Gets a random fact for you, if a name is given \"Chuck Norris\" will be replaced with the given name.");
     }
 
     @Override
     public List<String> getExampleUsage() {
-        return Collections.singletonList("`:command @Senither`");
+        return Collections.singletonList("`:commands @Senither`");
     }
 
     @Override

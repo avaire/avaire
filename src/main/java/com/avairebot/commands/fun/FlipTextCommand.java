@@ -49,12 +49,12 @@ public class FlipTextCommand extends Command {
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`:command <message>` - Flips the given message.");
+        return Collections.singletonList("`:commands <message>` - Flips the given message.");
     }
 
     @Override
     public List<String> getExampleUsage() {
-        return Collections.singletonList("`:command This is some random message`");
+        return Collections.singletonList("`:commands This is some random message`");
     }
 
     @Override

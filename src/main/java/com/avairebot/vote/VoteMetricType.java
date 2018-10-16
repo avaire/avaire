@@ -29,7 +29,7 @@ public enum VoteMetricType {
     WEBHOOK("Webhook"),
 
     /**
-     * Represents votes that was validated through the <code>!vote check</code> command.
+     * Represents votes that was validated through the <code>!vote check</code> commands.
      */
     COMMAND("Command");
 

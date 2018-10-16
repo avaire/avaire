@@ -52,14 +52,14 @@ public class SetStatusCommand extends SystemCommand {
     @Override
     public List<String> getUsageInstructions() {
         return Arrays.asList(
-            "`:command <game>` - Sets the bots playing status to the given game.",
-            "`:command <twitch url>` - The URL that the bot should be broadcasting."
+            "`:commands <game>` - Sets the bots playing status to the given game.",
+            "`:commands <twitch url>` - The URL that the bot should be broadcasting."
         );
     }
 
     @Override
     public List<String> getExampleUsage() {
-        return Collections.singletonList("`:command with some stuff`");
+        return Collections.singletonList("`:commands with some stuff`");
     }
 
     @Override

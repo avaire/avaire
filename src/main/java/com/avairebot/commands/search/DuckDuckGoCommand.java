@@ -62,17 +62,17 @@ public class DuckDuckGoCommand extends Command {
 
     @Override
     public String getDescription() {
-        return "Searches [DuckDuckGo.com](https://duckduckgo.com/) with the given query and returns the first six results, if the command is used in a channel with NSFW disabled, all NSFW search results will be removed from the results.";
+        return "Searches [DuckDuckGo.com](https://duckduckgo.com/) with the given query and returns the first six results, if the commands is used in a channel with NSFW disabled, all NSFW search results will be removed from the results.";
     }
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`:command <query>` - Searchs DuckDuckGo for your query.");
+        return Collections.singletonList("`:commands <query>` - Searchs DuckDuckGo for your query.");
     }
 
     @Override
     public List<String> getExampleUsage() {
-        return Collections.singletonList("`:command AvaIre Bot`");
+        return Collections.singletonList("`:commands AvaIre Bot`");
     }
 
     @Override

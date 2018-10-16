@@ -69,7 +69,7 @@ public class CreatePlaylist extends PlaylistSubCommand {
 
             context.makeSuccess(context.i18n("playlistCreated"))
                 .set("playlist", name)
-                .set("command", command.generateCommandTrigger(context.getMessage()))
+                .set("commands", command.generateCommandTrigger(context.getMessage()))
                 .queue();
 
             return true;

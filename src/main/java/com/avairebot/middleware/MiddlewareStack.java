@@ -111,7 +111,7 @@ public class MiddlewareStack {
     /**
      * Jumps to the next middleware in the stack, the end of the stack should
      * always be the {@link ProcessCommand Process Command} middleware in
-     * order for the command to be invoked.
+     * order for the commands to be invoked.
      *
      * @return <code>True</code> if the next middleware in the stack executed successfully, <code>False</code> otherwise.
      */
@@ -128,27 +128,27 @@ public class MiddlewareStack {
     }
 
     /**
-     * Gets the {@link Command command} the middleware stack is running for.
+     * Gets the {@link Command commands} the middleware stack is running for.
      *
-     * @return The {@link Command command} the middleware stack is running for.
+     * @return The {@link Command commands} the middleware stack is running for.
      */
     public Command getCommand() {
         return command.getCommand();
     }
 
     /**
-     * Gets the {@link CommandContainer command container} the middleware stack is running for.
+     * Gets the {@link CommandContainer commands container} the middleware stack is running for.
      *
-     * @return the {@link CommandContainer command container} the middleware stack is running for.
+     * @return the {@link CommandContainer commands container} the middleware stack is running for.
      */
     public CommandContainer getCommandContainer() {
         return command;
     }
 
     /**
-     * Returns <code>True</code> if the command was invoked through mentioning the bot first.
+     * Returns <code>True</code> if the commands was invoked through mentioning the bot first.
      *
-     * @return <code>True</code> if the command was invoked through mentioning the bot first.
+     * @return <code>True</code> if the commands was invoked through mentioning the bot first.
      */
     public boolean isMentionableCommand() {
         return mentionableCommand;

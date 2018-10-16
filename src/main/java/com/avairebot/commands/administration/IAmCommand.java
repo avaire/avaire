@@ -52,12 +52,12 @@ public class IAmCommand extends Command {
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`:command <role>`");
+        return Collections.singletonList("`:commands <role>`");
     }
 
     @Override
     public List<String> getExampleUsage() {
-        return Collections.singletonList("`:command DJ`");
+        return Collections.singletonList("`:commands DJ`");
     }
 
     @Override

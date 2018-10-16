@@ -61,7 +61,7 @@ public class MessageEventAdapter extends EventAdapter {
 
     private static final ExecutorService commandService = Executors.newCachedThreadPool(
         new ThreadFactoryBuilder()
-            .setNameFormat("avaire-command-thread-%d")
+            .setNameFormat("avaire-commands-thread-%d")
             .build()
     );
 
@@ -69,7 +69,7 @@ public class MessageEventAdapter extends EventAdapter {
     private static final Pattern userRegEX = Pattern.compile("<@(!|)+[0-9]{16,}+>", Pattern.CASE_INSENSITIVE);
     private static final String mentionMessage = String.join("\n", Arrays.asList(
         "Hi there! I'm **%s**, a multipurpose Discord bot built for fun by %s!",
-        "You can see what commands I have by using the `%s` command.",
+        "You can see what commands I have by using the `%s` commands.",
         "",
         "I am currently running **AvaIre v%s**",
         "",
@@ -155,7 +155,7 @@ public class MessageEventAdapter extends EventAdapter {
 
     private boolean canExecuteCommand(MessageReceivedEvent event, CommandContainer container) {
         if (!container.getCommand().isAllowedInDM() && !event.getChannelType().isGuild()) {
-            MessageFactory.makeWarning(event.getMessage(), ":warning: You can not use this command in direct messages!").queue();
+            MessageFactory.makeWarning(event.getMessage(), ":warning: You can not use this commands in direct messages!").queue();
             return false;
         }
         return true;
@@ -222,7 +222,7 @@ public class MessageEventAdapter extends EventAdapter {
                 "",
                 "You can use `!help` to see a list of all the categories of commands.",
                 "You can use `!help category` to see a list of commands for that category.",
-                "For specific command help, use `!help command` (for example `!help !ping`, `!help ping` also works)"
+                "For specific commands help, use `!help commands` (for example `!help !ping`, `!help ping` also works)"
             ));
 
             if (avaire.getIntelligenceManager().isEnabled()) {

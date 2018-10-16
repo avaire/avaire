@@ -30,7 +30,7 @@ import java.util.List;
 public abstract class SystemCommand extends Command {
 
     /**
-     * Creates the given command instance by calling {@link #SystemCommand(AvaIre, boolean)} with allowDM set to true.
+     * Creates the given commands instance by calling {@link #SystemCommand(AvaIre, boolean)} with allowDM set to true.
      *
      * @param avaire The AvaIre class instance.
      */
@@ -39,11 +39,11 @@ public abstract class SystemCommand extends Command {
     }
 
     /**
-     * Creates the given command instance with the given
+     * Creates the given commands instance with the given
      * AvaIre instance and the allowDM settings.
      *
      * @param avaire  The AvaIre class instance.
-     * @param allowDM Determines if the command can be used in DMs.
+     * @param allowDM Determines if the commands can be used in DMs.
      */
     public SystemCommand(AvaIre avaire, boolean allowDM) {
         super(avaire, allowDM);

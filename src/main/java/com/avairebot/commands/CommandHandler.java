@@ -42,10 +42,10 @@ public class CommandHandler {
     private static final Set<CommandContainer> COMMANDS = new HashSet<>();
 
     /**
-     * Get command container from the given command instance.
+     * Get commands container from the given commands instance.
      *
-     * @param command The command instance.
-     * @return Possibly-null, The registered command container instance.
+     * @param command The commands instance.
+     * @return Possibly-null, The registered commands container instance.
      */
     public static CommandContainer getCommand(Command command) {
         for (CommandContainer container : COMMANDS) {
@@ -58,10 +58,10 @@ public class CommandHandler {
     }
 
     /**
-     * Get the command container from the given command class instance.
+     * Get the commands container from the given commands class instance.
      *
-     * @param command The command class instance.
-     * @return Possibly-null, The registered command container instance.
+     * @param command The commands class instance.
+     * @return Possibly-null, The registered commands container instance.
      */
     public static CommandContainer getCommand(@Nonnull Class<? extends Command> command) {
         for (CommandContainer container : COMMANDS) {
@@ -73,36 +73,36 @@ public class CommandHandler {
     }
 
     /**
-     * Get the command matching the message raw contents first argument, both
-     * the command prefix and the command trigger must match for the command
-     * to be returned, if the guild/server that the command was executed
+     * Get the commands matching the message raw contents first argument, both
+     * the commands prefix and the commands trigger must match for the commands
+     * to be returned, if the guild/server that the commands was executed
      * in has a custom prefix set the custom prefix will be used to
-     * match the command instead.
+     * match the commands instead.
      * <p>
      * If a commands priority is set to {@link CommandPriority#IGNORED}
-     * the command will be omitted from the search.
+     * the commands will be omitted from the search.
      *
      * @param message The JDA message object for the current message.
-     * @return Possibly-null, The command matching the given command with the highest priority.
+     * @return Possibly-null, The commands matching the given commands with the highest priority.
      */
     public static CommandContainer getCommand(Message message) {
         return getCommand(message, message.getContentRaw().split(" ")[0].toLowerCase());
     }
 
     /**
-     * Gets the command matching the given command, both the command prefix
-     * and the command trigger must match for the command to be returned,
-     * if the guild/server that the command was executed in has a
+     * Gets the commands matching the given commands, both the commands prefix
+     * and the commands trigger must match for the commands to be returned,
+     * if the guild/server that the commands was executed in has a
      * custom prefix set, the custom prefix will be used to
-     * match the command instead.
+     * match the commands instead.
      * <p>
-     * If no commands was found matching the given command string, the guilds
+     * If no commands was found matching the given commands string, the guilds
      * aliases will be checked instead if the current guild has any.
      *
      * @param avaire  The AvaIre application class instance.
      * @param message The JDA message object for the current message.
-     * @param command The command string that should be matched with the commands.
-     * @return Possibly-null, The command matching the given command with the highest priority, or the alias command matching the given command.
+     * @param command The commands string that should be matched with the commands.
+     * @return Possibly-null, The commands matching the given commands with the highest priority, or the alias commands matching the given commands.
      */
     public static CommandContainer getCommand(AvaIre avaire, Message message, @Nonnull String command) {
         CommandContainer commandContainer = getCommand(message);
@@ -113,18 +113,18 @@ public class CommandHandler {
     }
 
     /**
-     * Get the command matching the given command, both the command prefix
-     * and the command trigger must match for the command to be returned,
-     * if the guild/server that the command was executed in has a
+     * Get the commands matching the given commands, both the commands prefix
+     * and the commands trigger must match for the commands to be returned,
+     * if the guild/server that the commands was executed in has a
      * custom prefix set the custom prefix will be used to
-     * match the command instead.
+     * match the commands instead.
      * <p>
      * If a commands priority is set to {@link CommandPriority#IGNORED}
-     * the command will be omitted from the search.
+     * the commands will be omitted from the search.
      *
      * @param message The JDA message object for the current message.
-     * @param command The command string that should be matched with the commands.
-     * @return Possibly-null, The command matching the given command with the highest priority.
+     * @param command The commands string that should be matched with the commands.
+     * @return Possibly-null, The commands matching the given commands with the highest priority.
      */
     public static CommandContainer getCommand(Message message, @Nonnull String command) {
         List<CommandContainer> commands = new ArrayList<>();
@@ -141,16 +141,16 @@ public class CommandHandler {
     }
 
     /**
-     * Get the command matching the given command, both the command prefix
-     * and the command trigger must match for the command to be returned,
-     * this method will ignore any command prefix that might've been
+     * Get the commands matching the given commands, both the commands prefix
+     * and the commands trigger must match for the commands to be returned,
+     * this method will ignore any commands prefix that might've been
      * set by the guild/server, and will instead use the default.
      * <p>
      * If a commands priority is set to {@link CommandPriority#IGNORED}
-     * the command will be omitted from the search.
+     * the commands will be omitted from the search.
      *
-     * @param command The command string that should be matched with the commands.
-     * @return Possibly-null, The command matching the given command with the highest priority.
+     * @param command The commands string that should be matched with the commands.
+     * @return Possibly-null, The commands matching the given commands with the highest priority.
      */
     public static CommandContainer getRawCommand(@Nonnull String command) {
         List<CommandContainer> commands = new ArrayList<>();
@@ -167,13 +167,13 @@ public class CommandHandler {
     }
 
     /**
-     * Gets the command matching the given command alias for the current message if
+     * Gets the commands matching the given commands alias for the current message if
      * the message was sent in a guild and the guild has at least one alias set.
      *
      * @param avaire  The AvaIre application class instance.
      * @param message The JDA message object for the current message.
-     * @param command The command string that should be matched with the commands.
-     * @return Possibly-null, The command matching the given alias with the highest priority.
+     * @param command The commands string that should be matched with the commands.
+     * @return Possibly-null, The commands matching the given alias with the highest priority.
      */
     public static CommandContainer getCommandByAlias(AvaIre avaire, Message message, @Nonnull String command) {
         GuildTransformer transformer = GuildController.fetchGuild(avaire, message);
@@ -207,14 +207,14 @@ public class CommandHandler {
     }
 
     /**
-     * Get any command matching the given command trigger, this method will
-     * use a lazy comparison by omitting the command prefix and only
-     * comparing the command triggers, if a commands priority is
-     * set to {@link CommandPriority#IGNORED} the command will
+     * Get any commands matching the given commands trigger, this method will
+     * use a lazy comparison by omitting the commands prefix and only
+     * comparing the commands triggers, if a commands priority is
+     * set to {@link CommandPriority#IGNORED} the commands will
      * be omitted from the search.
      *
-     * @param commandTrigger The command trigger that should be lazy searched for.
-     * @return Possibly-null, The command matching the given command trigger with the highest priority.
+     * @param commandTrigger The commands trigger that should be lazy searched for.
+     * @return Possibly-null, The commands matching the given commands trigger with the highest priority.
      */
     public static CommandContainer getLazyCommand(@Nonnull String commandTrigger) {
         List<CommandContainer> commands = new ArrayList<>();
@@ -234,11 +234,11 @@ public class CommandHandler {
     }
 
     /**
-     * Gets the highest priority command from the given command
+     * Gets the highest priority commands from the given commands
      * list, if the list is empty null is returned instead.
      *
      * @param commands The list of commands matching some query.
-     * @return Possibly-null, The command container with the highest priority.
+     * @return Possibly-null, The commands container with the highest priority.
      */
     private static CommandContainer getHighPriorityCommandFromCommands(List<CommandContainer> commands) {
         if (commands.isEmpty()) {
@@ -259,15 +259,15 @@ public class CommandHandler {
     }
 
     /**
-     * Register the given command into the command handler, creating the
-     * command container and saving it into the commands collection.
+     * Register the given commands into the commands handler, creating the
+     * commands container and saving it into the commands collection.
      *
-     * @param command The command that should be registered into the command handler.
+     * @param command The commands that should be registered into the commands handler.
      */
     @SuppressWarnings("ConstantConditions")
     public static void register(@Nonnull Command command) {
         Category category = CategoryHandler.fromCommand(command);
-        Checks.notNull(category, String.format("%s :: %s", command.getName(), "Invalid command category, command category"));
+        Checks.notNull(category, String.format("%s :: %s", command.getName(), "Invalid commands category, commands category"));
         Checks.notNull(command.getDescription(new FakeCommandMessage()), String.format("%s :: %s", command.getName(), "Command description"));
 
         for (String trigger : command.getTriggers()) {
@@ -305,10 +305,29 @@ public class CommandHandler {
     }
 
     /**
-     * Gets a collection of all the commands
-     * registered into the command handler.
+     * Un-Register the given commands into the commands handler
      *
-     * @return A collection of all the commands registered with the command handler.
+     * @param command The commands that should be un-registered into the commands handler.
+     */
+    @SuppressWarnings("ConstantConditions")
+    public static void unregister(@Nonnull Command command) {
+
+        for(CommandContainer container : COMMANDS)
+        {
+            if(container.getCommand().getName().equalsIgnoreCase(command.getName()))
+            {
+                COMMANDS.remove(container);
+                break;
+            }
+        }
+    }
+
+
+    /**
+     * Gets a collection of all the commands
+     * registered into the commands handler.
+     *
+     * @return A collection of all the commands registered with the commands handler.
      */
     public static Collection<CommandContainer> getCommands() {
         return COMMANDS;

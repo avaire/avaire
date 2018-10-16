@@ -42,7 +42,7 @@ public class ServerIdCommand extends Command {
 
     @Override
     public String getDescription() {
-        return "Shows the ID of the server the command was ran in.";
+        return "Shows the ID of the server the commands was ran in.";
     }
 
     @Override

@@ -57,18 +57,18 @@ public class ModlogCommand extends Command {
     @Override
     public List<String> getUsageInstructions() {
         return Arrays.asList(
-            "`:command` - Displays the current state of the modlog module for the server.",
-            "`:command <channel>` - Enabled modlogging and sets it to the mentioned channel.",
-            "`:command disable` - Disables the modlogging module for the server."
+            "`:commands` - Displays the current state of the modlog module for the server.",
+            "`:commands <channel>` - Enabled modlogging and sets it to the mentioned channel.",
+            "`:commands disable` - Disables the modlogging module for the server."
         );
     }
 
     @Override
     public List<String> getExampleUsage() {
         return Arrays.asList(
-            "`:command` - ",
-            "`:command #modlog` - Enables modlogging and sets it to the modlog channel.",
-            "`:command disable` - Disables modlogging for the server."
+            "`:commands` - ",
+            "`:commands #modlog` - Enables modlogging and sets it to the modlog channel.",
+            "`:commands disable` - Disables modlogging for the server."
         );
     }
 

@@ -47,31 +47,31 @@ import java.util.stream.Collectors;
 public abstract class Command extends Reflectionable {
 
     /**
-     * Determines if the command can be used in direct messages or not.
+     * Determines if the commands can be used in direct messages or not.
      */
     protected final boolean allowDM;
 
     /**
-     * Create the given command instance by calling {@link #Command(AvaIre)} with the avaire instance and allowDM set to true.
+     * Create the given commands instance by calling {@link #Command(AvaIre)} with the avaire instance and allowDM set to true.
      *
-     * @param plugin The plugin instance that is registering the command.
+     * @param plugin The plugin instance that is registering the commands.
      */
     public Command(JavaPlugin plugin) {
         this(plugin.getAvaire());
     }
 
     /**
-     * Create the given command instance by calling {@link #Command(AvaIre, boolean)} with the avaire instance.
+     * Create the given commands instance by calling {@link #Command(AvaIre, boolean)} with the avaire instance.
      *
-     * @param plugin  The plugin instance that is registering the command.
-     * @param allowDM Determines if the command can be used in DMs.
+     * @param plugin  The plugin instance that is registering the commands.
+     * @param allowDM Determines if the commands can be used in DMs.
      */
     public Command(JavaPlugin plugin, boolean allowDM) {
         this(plugin.getAvaire(), allowDM);
     }
 
     /**
-     * Creates the given command instance by calling {@link #Command(AvaIre, boolean)} with allowDM set to true.
+     * Creates the given commands instance by calling {@link #Command(AvaIre, boolean)} with allowDM set to true.
      *
      * @param avaire The AvaIre class instance.
      */
@@ -80,11 +80,11 @@ public abstract class Command extends Reflectionable {
     }
 
     /**
-     * Creates the given command instance with the given
+     * Creates the given commands instance with the given
      * AvaIre instance and the allowDM settings.
      *
      * @param avaire  The AvaIre class instance.
-     * @param allowDM Determines if the command can be used in DMs.
+     * @param allowDM Determines if the commands can be used in DMs.
      */
     public Command(AvaIre avaire, boolean allowDM) {
         super(avaire);
@@ -93,22 +93,22 @@ public abstract class Command extends Reflectionable {
     }
 
     /**
-     * Gets the command name, this is used in help and error
+     * Gets the commands name, this is used in help and error
      * messages as the title as well as log messages.
      *
-     * @return Never-null, the command name.
+     * @return Never-null, the commands name.
      */
     public abstract String getName();
 
     /**
-     * Gets the command description, this is used in help messages to help
-     * users get a better understanding of what the command does.
+     * Gets the commands description, this is used in help messages to help
+     * users get a better understanding of what the commands does.
      * <p>
      * If this method is not overwritten the {@link #getDescription()}
      * method will be called instead.
      *
-     * @param context The command context used to get the description.
-     * @return Never-null, the command description.
+     * @param context The commands context used to get the description.
+     * @return Never-null, the commands description.
      */
     public String getDescription(CommandContext context) {
         return getDescription();
@@ -119,52 +119,52 @@ public abstract class Command extends Reflectionable {
     }
 
     /**
-     * Gets the command usage instructions for the given command, if the usage instructions
+     * Gets the commands usage instructions for the given commands, if the usage instructions
      * is set to null the {@link #generateUsageInstructions(Message)} method will just
-     * return the command trigger in code syntax quotes.
+     * return the commands trigger in code syntax quotes.
      *
-     * @return Possibly-null, the command usage instructions.
+     * @return Possibly-null, the commands usage instructions.
      */
     public List<String> getUsageInstructions() {
         return null;
     }
 
     /**
-     * Get the example usage for the given command, this is used to help users with
-     * using the command by example, if the example usage is set to null the
+     * Get the example usage for the given commands, this is used to help users with
+     * using the commands by example, if the example usage is set to null the
      * {@link #generateExampleUsage(Message)} method will just return the
-     * command trigger in code syntax quotes.
+     * commands trigger in code syntax quotes.
      *
-     * @return Possibly-null, an example of how to use the command.
+     * @return Possibly-null, an example of how to use the commands.
      */
     public List<String> getExampleUsage() {
         return null;
     }
 
     /**
-     * Gets a list class objects of commands related to the command.
+     * Gets a list class objects of commands related to the commands.
      *
-     * @return Possibly-null, A list of classes are related to the current command.
+     * @return Possibly-null, A list of classes are related to the current commands.
      */
     public List<Class<? extends Command>> getRelations() {
         return null;
     }
 
     /**
-     * Gets am immutable list of command triggers that can be used to invoke the current
-     * command, the first index in the list will be used when the `:command` placeholder
+     * Gets am immutable list of commands triggers that can be used to invoke the current
+     * commands, the first index in the list will be used when the `:commands` placeholder
      * is used in {@link #getDescription(CommandContext)} or {@link #getUsageInstructions()} methods.
      *
-     * @return An immutable list of command triggers that should invoked the command.
+     * @return An immutable list of commands triggers that should invoked the commands.
      */
     public abstract List<String> getTriggers();
 
     /**
-     * Gets an immutable list of middlewares that should be added to the command stack
-     * before the command is executed, if the middleware that intercepts the
-     * command message event fails the command will never be executed.
+     * Gets an immutable list of middlewares that should be added to the commands stack
+     * before the commands is executed, if the middleware that intercepts the
+     * commands message event fails the commands will never be executed.
      *
-     * @return An immutable list of command middlewares that should be invoked before the command.
+     * @return An immutable list of commands middlewares that should be invoked before the commands.
      * @see com.avairebot.contracts.middleware.Middleware
      */
     public List<String> getMiddleware() {
@@ -172,45 +172,45 @@ public abstract class Command extends Reflectionable {
     }
 
     /**
-     * Get the command priority, if a command is used via mentioning the bot and
-     * the trigger used is shared with another command, the command with the
+     * Get the commands priority, if a commands is used via mentioning the bot and
+     * the trigger used is shared with another commands, the commands with the
      * highest priority will be used.
      *
-     * @return The command priority.
+     * @return The commands priority.
      */
     public CommandPriority getCommandPriority() {
         return CommandPriority.NORMAL;
     }
 
     /**
-     * Gets the category the command should belong to, if null is returned
+     * Gets the category the commands should belong to, if null is returned
      * the files package name will be used instead, for example:
      * <p>
      * com.avairebot.avaire.commands.utility.PingCommand, the 2nd package from the
      * right which in this case is utility, will be used as the category.
      *
-     * @return Possibly null, or the command category.
+     * @return Possibly null, or the commands category.
      */
     public Category getCategory() {
         return null;
     }
 
     /**
-     * Determines if the command can be used in direct messages.
+     * Determines if the commands can be used in direct messages.
      *
-     * @return true if the command can be run in DMs, false otherwise.
+     * @return true if the commands can be run in DMs, false otherwise.
      */
     public final boolean isAllowedInDM() {
         return allowDM;
     }
 
     /**
-     * The command executor, this method is invoked by the command handler
+     * The commands executor, this method is invoked by the commands handler
      * and the middleware stack when a user sends a message matching the
-     * commands prefix and one of its command triggers.
+     * commands prefix and one of its commands triggers.
      *
      * @param context The JDA message object from the message received event.
-     * @param args    The arguments given to the command, if no arguments was given the array will just be empty.
+     * @param args    The arguments given to the commands, if no arguments was given the array will just be empty.
      * @return true on success, false on failure.
      */
     public abstract boolean onCommand(CommandMessage context, String[] args);
@@ -306,12 +306,12 @@ public abstract class Command extends Reflectionable {
     }
 
     /**
-     * Generates the command description, any middlewares assigned to the command
-     * will also be dynamically generated and added to the command description
+     * Generates the commands description, any middlewares assigned to the commands
+     * will also be dynamically generated and added to the commands description
      * two lines below the actually description.
      *
      * @param context The JDA message object.
-     * @return The generated command description.
+     * @return The generated commands description.
      */
     public final String generateDescription(CommandMessage context) {
         if (getMiddleware().isEmpty()) {
@@ -352,16 +352,16 @@ public abstract class Command extends Reflectionable {
     }
 
     /**
-     * Generates the command usage instructions, if the {@link #getUsageInstructions()} is null
-     * then the command trigger will just be returned instead inside of markdown code syntax,
+     * Generates the commands usage instructions, if the {@link #getUsageInstructions()} is null
+     * then the commands trigger will just be returned instead inside of markdown code syntax,
      * if the usage instructions are not null, each item in the array will become a new line.
      *
      * @param message The JDA message object.
-     * @return The usage instructions for the current command.
+     * @return The usage instructions for the current commands.
      */
     public final String generateUsageInstructions(Message message) {
         return formatCommandGeneratorString(message,
-            getUsageInstructions() == null ? "`:command`" :
+            getUsageInstructions() == null ? "`:commands`" :
                 getUsageInstructions().stream()
                     .collect(Collectors.joining("\n"))
         );
@@ -369,39 +369,39 @@ public abstract class Command extends Reflectionable {
 
     /**
      * Generates the example usage, if the {@link #generateExampleUsage(Message)} is null then the
-     * command trigger will just be returned instead inside of markdown coe syntax.
+     * commands trigger will just be returned instead inside of markdown coe syntax.
      *
      * @param message The JDA message object.
-     * @return The example usage for the current command.
+     * @return The example usage for the current commands.
      */
     public final String generateExampleUsage(Message message) {
         if (getExampleUsage() == null) {
-            return formatCommandGeneratorString(message, "`:command`");
+            return formatCommandGeneratorString(message, "`:commands`");
         }
 
         return formatCommandGeneratorString(message,
-            getExampleUsage().isEmpty() ? "`:command`" : String.join("\n", getExampleUsage())
+            getExampleUsage().isEmpty() ? "`:commands`" : String.join("\n", getExampleUsage())
         );
     }
 
     /**
-     * Generates the command triggers, if a custom category prefix have
+     * Generates the commands triggers, if a custom category prefix have
      * been set for the current server then the correct category
-     * prefix will be added to the command trigger.
+     * prefix will be added to the commands trigger.
      *
      * @param message The JDA message object.
-     * @return The first command trigger from the command triggers method.
+     * @return The first commands trigger from the commands triggers method.
      */
     public final String generateCommandTrigger(Message message) {
         return generateCommandPrefix(message) + getTriggers().get(0);
     }
 
     /**
-     * Generates the correct command prefix for the command, if no custom command
-     * prefix has been set the default command prefix will be used instead.
+     * Generates the correct commands prefix for the commands, if no custom commands
+     * prefix has been set the default commands prefix will be used instead.
      *
      * @param message The JDA message object.
-     * @return The dynamic command prefix for the current server.
+     * @return The dynamic commands prefix for the current server.
      */
     @SuppressWarnings("ConstantConditions")
     public final String generateCommandPrefix(Message message) {
@@ -409,11 +409,11 @@ public abstract class Command extends Reflectionable {
     }
 
     /**
-     * Checks if the given command matches the current command by comparing the name,
-     * description, usage instructions, example usage and command triggers.
+     * Checks if the given commands matches the current commands by comparing the name,
+     * description, usage instructions, example usage and commands triggers.
      *
-     * @param command The command that should be compared with the current class.
-     * @return <code>True</code> if it is the same command, <code>False</code> otherwise.
+     * @param command The commands that should be compared with the current class.
+     * @return <code>True</code> if it is the same commands, <code>False</code> otherwise.
      */
     public final boolean isSame(Command command) {
         return Objects.equals(command.getName(), getName())
@@ -423,7 +423,7 @@ public abstract class Command extends Reflectionable {
     }
 
     /**
-     * Formats the command generated string by replacing any placeholder variables
+     * Formats the commands generated string by replacing any placeholder variables
      * that might exists in the given string with their actually values.
      *
      * @param message The JDA message object.
@@ -431,7 +431,7 @@ public abstract class Command extends Reflectionable {
      * @return The formatted string.
      */
     private String formatCommandGeneratorString(Message message, String string) {
-        return StringReplacementUtil.replaceAll(string, ":command", generateCommandTrigger(message));
+        return StringReplacementUtil.replaceAll(string, ":commands", generateCommandTrigger(message));
     }
 
     @Override

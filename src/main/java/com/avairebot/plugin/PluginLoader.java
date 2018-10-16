@@ -48,7 +48,7 @@ public class PluginLoader {
 
     private final List<String> authors = new ArrayList<>();
 
-    PluginLoader(File file, File dataFolder) throws InvalidPluginException, IOException {
+    public PluginLoader(File file, File dataFolder) throws InvalidPluginException, IOException {
         this.file = file;
         this.dataFolder = dataFolder;
 
@@ -127,15 +127,12 @@ public class PluginLoader {
     }
 
     /**
-     * Invokes the plugin, this will prepare all the needed data and
-     * call the {@link JavaPlugin#onEnable() onEnable()} method
-     * on the {@link JavaPlugin JavaPlugin} instance.
+     * Invokes the plugin, this will prepare all the needed data
      *
      * @param avaire The AvaIre class instance.
      */
     public void invokePlugin(AvaIre avaire) {
         classLoader.getPlugin().init(avaire, this);
-        classLoader.getPlugin().onEnable();
     }
 
     /**

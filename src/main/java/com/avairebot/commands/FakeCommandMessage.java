@@ -108,7 +108,7 @@ public class FakeCommandMessage implements CommandContext {
     @Nonnull
     @Override
     public YamlConfiguration getI18n() {
-        throw new UnsupportedOperationException("Invoking the i18n method on a fake command message context is not supported!");
+        throw new UnsupportedOperationException("Invoking the i18n method on a fake commands message context is not supported!");
     }
 
     @Override

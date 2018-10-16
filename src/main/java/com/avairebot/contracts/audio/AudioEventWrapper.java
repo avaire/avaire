@@ -152,7 +152,7 @@ public abstract class AudioEventWrapper extends EvalAudioEventWrapper {
     }
 
     /**
-     * Handles the end of the queue with the given command message context.
+     * Handles the end of the queue with the given commands message context.
      *
      * @param context        The context of the last message that was used to either invoke
      *                       the song that was playing, or cause the end of the queue.

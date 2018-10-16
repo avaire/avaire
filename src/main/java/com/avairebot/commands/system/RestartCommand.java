@@ -48,9 +48,9 @@ public class RestartCommand extends ApplicationShutdownCommand {
     @Override
     public List<String> getUsageInstructions() {
         return Arrays.asList(
-            "`:command now` - Restarts the bot now.",
-            "`:command cancel` - Cancels the restart process.",
-            "`:command <time>` - Schedules a time the bot should be restarted."
+            "`:commands now` - Restarts the bot now.",
+            "`:commands cancel` - Cancels the restart process.",
+            "`:commands <time>` - Schedules a time the bot should be restarted."
         );
     }
 

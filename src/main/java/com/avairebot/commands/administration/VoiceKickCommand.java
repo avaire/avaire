@@ -42,7 +42,7 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.regex.Pattern;
 
-@CacheFingerprint(name = "kick-command")
+@CacheFingerprint(name = "kick-commands")
 public class VoiceKickCommand extends Command {
 
     private static final Pattern userRegEX = Pattern.compile("<@(!|)+[0-9]{16,}+>", Pattern.CASE_INSENSITIVE);
@@ -63,12 +63,12 @@ public class VoiceKickCommand extends Command {
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`:command <user> [reason]` - Kicks the mentioned user with the given reason.");
+        return Collections.singletonList("`:commands <user> [reason]` - Kicks the mentioned user with the given reason.");
     }
 
     @Override
     public List<String> getExampleUsage() {
-        return Collections.singletonList("`:command @Senither Yelling at people`");
+        return Collections.singletonList("`:commands @Senither Yelling at people`");
     }
 
     @Override

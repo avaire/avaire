@@ -48,12 +48,12 @@ public class DebugModeCommand extends SystemCommand {
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`:command <on|off>` - Toggles debug mode on or off");
+        return Collections.singletonList("`:commands <on|off>` - Toggles debug mode on or off");
     }
 
     @Override
     public List<String> getExampleUsage() {
-        return Collections.singletonList("`:command on` - Enables debug mode.");
+        return Collections.singletonList("`:commands on` - Enables debug mode.");
     }
 
     @Override

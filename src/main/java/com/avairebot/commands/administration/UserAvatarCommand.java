@@ -50,14 +50,14 @@ public class UserAvatarCommand extends Command {
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`:command <user | user id>` - Gets the avatar of the given user.");
+        return Collections.singletonList("`:commands <user | user id>` - Gets the avatar of the given user.");
     }
 
     @Override
     public List<String> getExampleUsage() {
         return Arrays.asList(
-            "`:command @Senither`",
-            "`:command`"
+            "`:commands @Senither`",
+            "`:commands`"
         );
     }
 

@@ -73,7 +73,7 @@ public abstract class Job extends TimerTask implements Reflectional {
      * setting the default period to 1 along with a time unit of {@link TimeUnit#MINUTES}.
      *
      * @param avaire The AvaIre application instance.
-     * @param delay  The delay before the command should be executed for the first time.
+     * @param delay  The delay before the commands should be executed for the first time.
      */
     public Job(AvaIre avaire, long delay) {
         this(avaire, delay, 1);
@@ -84,7 +84,7 @@ public abstract class Job extends TimerTask implements Reflectional {
      * and period, setting the default time unit to {@link TimeUnit#MINUTES}.
      *
      * @param avaire The AvaIre application instance.
-     * @param delay  The delay before the command should be executed for the first time.
+     * @param delay  The delay before the commands should be executed for the first time.
      * @param period The time in between executions after the job has already run once.
      */
     public Job(AvaIre avaire, long delay, long period) {
@@ -96,7 +96,7 @@ public abstract class Job extends TimerTask implements Reflectional {
      * instance, delay, and, period and time unit.
      *
      * @param avaire The AvaIre application instance.
-     * @param delay  The delay before the command should be executed for the first time.
+     * @param delay  The delay before the commands should be executed for the first time.
      * @param period The time in between executions after the job has already run once.
      * @param unit   The unit of time the job should measure the delay and periods in.
      */

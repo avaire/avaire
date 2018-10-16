@@ -28,7 +28,7 @@ public enum VoiceConnectStatus {
      */
     CONNECTED(true),
     /**
-     * The user that ran the music command is not in a valid voice channel.
+     * The user that ran the music commands is not in a valid voice channel.
      */
     NOT_CONNECTED(false, "You have to be connected to a voice channel."),
     /**

@@ -51,12 +51,12 @@ public class DiceCommand extends Command {
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`:command <dice followed by a D and the sides>` - Rolls some dice randomly");
+        return Collections.singletonList("`:commands <dice followed by a D and the sides>` - Rolls some dice randomly");
     }
 
     @Override
     public List<String> getExampleUsage() {
-        return Collections.singletonList("`:command 4D8 2D4`");
+        return Collections.singletonList("`:commands 4D8 2D4`");
     }
 
     @Override

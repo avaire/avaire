@@ -50,7 +50,7 @@ public class RequireOnePermissionMiddleware extends Middleware {
             return PermissionCommon.formatWithOneArgument(type, arguments[0]);
         }
 
-        return String.format("**One of the following permissions is required to use this command:\n `%s`**",
+        return String.format("**One of the following permissions is required to use this commands:\n `%s`**",
             Arrays.stream(arguments)
                 .map(Permissions::fromNode)
                 .map(Permissions::getPermission)
@@ -78,7 +78,7 @@ public class RequireOnePermissionMiddleware extends Middleware {
         }
 
         if (!permissionCheck.userHasAtleastOne()) {
-            MessageFactory.makeError(message, "You must have at least one of the following permission nodes to use this command:\n`:permission`")
+            MessageFactory.makeError(message, "You must have at least one of the following permission nodes to use this commands:\n`:permission`")
                 .set("permission", permissionCheck.getMissingUserPermissions().stream()
                     .map(Permissions::getPermission)
                     .map(Permission::getName)
@@ -87,7 +87,7 @@ public class RequireOnePermissionMiddleware extends Middleware {
         }
 
         if (!permissionCheck.botHasAtleastOne()) {
-            MessageFactory.makeError(message, "I'm missing one of the following permission nodes to run this command:\n`:permission`")
+            MessageFactory.makeError(message, "I'm missing one of the following permission nodes to run this commands:\n`:permission`")
                 .set("permission", permissionCheck.getMissingBotPermissions().stream()
                     .map(Permissions::getPermission)
                     .map(Permission::getName)

@@ -48,9 +48,9 @@ public class UpdateCommand extends ApplicationShutdownCommand {
     @Override
     public List<String> getUsageInstructions() {
         return Arrays.asList(
-            "`:command now` - Updates the bot now.",
-            "`:command cancel` - Cancels the update process.",
-            "`:command <time>` - Schedules a time the bot should be updated."
+            "`:commands now` - Updates the bot now.",
+            "`:commands cancel` - Cancels the update process.",
+            "`:commands <time>` - Schedules a time the bot should be updated."
         );
     }
 

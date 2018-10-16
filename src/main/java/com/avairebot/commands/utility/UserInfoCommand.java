@@ -52,20 +52,20 @@ public class UserInfoCommand extends Command {
 
     @Override
     public String getDescription() {
-        return "Shows information about the user that ran the command, or the mentioned user. This includes the users username, ID, roles, the date they joined the server, the date they created their account, and how many servers they're in (That Ava knows about).";
+        return "Shows information about the user that ran the commands, or the mentioned user. This includes the users username, ID, roles, the date they joined the server, the date they created their account, and how many servers they're in (That Ava knows about).";
     }
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`:command [user]` - Gets information about the user who ran the command, or the mentioned user");
+        return Collections.singletonList("`:commands [user]` - Gets information about the user who ran the commands, or the mentioned user");
     }
 
     @Override
     public List<String> getExampleUsage() {
         return Arrays.asList(
-            "`:command @Senither`",
-            "`:command alexis`",
-            "`:command 88739639380172800`"
+            "`:commands @Senither`",
+            "`:commands alexis`",
+            "`:commands 88739639380172800`"
         );
     }
 

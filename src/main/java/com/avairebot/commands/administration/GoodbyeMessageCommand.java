@@ -37,7 +37,7 @@ import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
 
-@CacheFingerprint(name = "welcome-goodbye-message-command")
+@CacheFingerprint(name = "welcome-goodbye-message-commands")
 public class GoodbyeMessageCommand extends ChannelModuleCommand {
 
     public GoodbyeMessageCommand(AvaIre avaire) {
@@ -51,26 +51,26 @@ public class GoodbyeMessageCommand extends ChannelModuleCommand {
 
     @Override
     public String getDescription() {
-        return "Sets the message that should be sent when a user leaves the server, this command can only be used if the goodbye module is enabled for the current channel.\nThe goodbye message has support for [placeholders](https://avairebot.com/docs/placeholders), allowing for customizing the message a bit more for each user.\nhttps://avairebot.com/docs/placeholders";
+        return "Sets the message that should be sent when a user leaves the server, this commands can only be used if the goodbye module is enabled for the current channel.\nThe goodbye message has support for [placeholders](https://avairebot.com/docs/placeholders), allowing for customizing the message a bit more for each user.\nhttps://avairebot.com/docs/placeholders";
     }
 
     @Override
     public List<String> getUsageInstructions() {
         return Arrays.asList(
-            "`:command` - Resets the goodbye back to the default message.",
-            "`:command <message>` - Sets the goodbye message to the given message.",
-            "`:command embed` - Disables embed messages.",
-            "`:command embed <color>` - Enables embed messages with the given color.",
-            "`:command <user>` - If a valid username, nickname or user was mentioned, an example message will be sent for the given user."
+            "`:commands` - Resets the goodbye back to the default message.",
+            "`:commands <message>` - Sets the goodbye message to the given message.",
+            "`:commands embed` - Disables embed messages.",
+            "`:commands embed <color>` - Enables embed messages with the given color.",
+            "`:commands <user>` - If a valid username, nickname or user was mentioned, an example message will be sent for the given user."
         );
     }
 
     @Override
     public List<String> getExampleUsage() {
         return Arrays.asList(
-            "`:command Goodbye %user%!` - Sets the message to \"Goodbye @user\".",
-            "`:command embed #ff0000` - Enables embed messages and sets it to red.",
-            "`:command @Senither` - Tests the goodbye message using the mentioned user."
+            "`:commands Goodbye %user%!` - Sets the message to \"Goodbye @user\".",
+            "`:commands embed #ff0000` - Enables embed messages and sets it to red.",
+            "`:commands @Senither` - Tests the goodbye message using the mentioned user."
         );
     }
 

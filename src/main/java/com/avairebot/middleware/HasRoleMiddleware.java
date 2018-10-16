@@ -40,9 +40,9 @@ public class HasRoleMiddleware extends Middleware {
     @Override
     public String buildHelpDescription(@Nonnull String[] arguments) {
         if (arguments.length == 1) {
-            return String.format("**The `%s` role is required to use this command!**", arguments[0]);
+            return String.format("**The `%s` role is required to use this commands!**", arguments[0]);
         }
-        return String.format("**The `%s` roles is required to use this command!**",
+        return String.format("**The `%s` roles is required to use this commands!**",
             String.join("`, `", arguments)
         );
     }
@@ -60,7 +60,7 @@ public class HasRoleMiddleware extends Middleware {
         List<Role> roles = message.getMember().getRoles();
         for (String roleName : args) {
             if (!hasRole(roles, roleName)) {
-                MessageFactory.makeError(message, "You don't have the required role to execute this command:\n`:role`")
+                MessageFactory.makeError(message, "You don't have the required role to execute this commands:\n`:role`")
                     .set("role", roleName)
                     .queue();
                 return false;

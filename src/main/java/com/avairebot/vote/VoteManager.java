@@ -72,7 +72,7 @@ public class VoteManager {
     /**
      * Gets the vote messenger instance, the vote messenger is used to
      * sending vote specific messages, like when someone votes for
-     * the bot, or when a user attempts to use a command that
+     * the bot, or when a user attempts to use a commands that
      * they much vote for to unlock.
      *
      * @return The vote messenger instance.

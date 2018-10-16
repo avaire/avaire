@@ -29,7 +29,7 @@ public class MissingCommandDescriptionException extends RuntimeException {
 
     public MissingCommandDescriptionException(@Nonnull Command command) {
         super(String.format(
-            "The %s class is missing an implementation of the command description method.",
+            "The %s class is missing an implementation of the commands description method.",
             command.getClass().getSimpleName()
         ));
     }

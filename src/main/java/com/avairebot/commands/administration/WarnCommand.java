@@ -56,14 +56,14 @@ public class WarnCommand extends Command {
     @Override
     public List<String> getUsageInstructions() {
         return Collections.singletonList(
-            "`:command <user> [reason]` - Warns the mentioned user with the given reason."
+            "`:commands <user> [reason]` - Warns the mentioned user with the given reason."
         );
     }
 
     @Override
     public List<String> getExampleUsage() {
         return Collections.singletonList(
-            "`:command @Senither Being a potato` - Warns Senither for being a potato."
+            "`:commands @Senither Being a potato` - Warns Senither for being a potato."
         );
     }
 

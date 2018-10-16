@@ -53,16 +53,16 @@ public class ChangePrefixCommand extends Command {
     @Override
     public List<String> getUsageInstructions() {
         return Arrays.asList(
-            "`:command <category>` - Resets the category prefix back to its default prefix.",
-            "`:command <category> [prefix]` - Sets the category prefix to the given prefix.");
+            "`:commands <category>` - Resets the category prefix back to its default prefix.",
+            "`:commands <category> [prefix]` - Sets the category prefix to the given prefix.");
     }
 
     @Override
     public List<String> getExampleUsage() {
         return Arrays.asList(
-            "`:command fun` - Resets the prefix back to default for the `fun` commands.",
-            "`:command admin /` - Sets the prefix to `/` for all admin commands.",
-            "`:command all a!` - Sets the prefix for all the categories to `a!`."
+            "`:commands fun` - Resets the prefix back to default for the `fun` commands.",
+            "`:commands admin /` - Sets the prefix to `/` for all admin commands.",
+            "`:commands all a!` - Sets the prefix for all the categories to `a!`."
         );
     }
 

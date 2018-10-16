@@ -49,22 +49,22 @@ public class PartnerCommand extends SystemCommand {
 
     @Override
     public String getDescription() {
-        return "Allows a bot admin to change the partnership a server has with the bot, servers who are partnered with the bot has less restrictions and more command slots(Like aliases, self-assignable roles, level roles, playlists, etc), if only the server ID is given the current partnership status will be displayed for the server with the given ID instead. ";
+        return "Allows a bot admin to change the partnership a server has with the bot, servers who are partnered with the bot has less restrictions and more commands slots(Like aliases, self-assignable roles, level roles, playlists, etc), if only the server ID is given the current partnership status will be displayed for the server with the given ID instead. ";
     }
 
     @Override
     public List<String> getUsageInstructions() {
         return Arrays.asList(
-            "`:command <server ID>` - Displays the current guild partnership status.",
-            "`:command <server ID> <on|off>` - Toggles partnership on/off for the given server."
+            "`:commands <server ID>` - Displays the current guild partnership status.",
+            "`:commands <server ID> <on|off>` - Toggles partnership on/off for the given server."
         );
     }
 
     @Override
     public List<String> getExampleUsage() {
         return Arrays.asList(
-            "`:command 284083636368834561` - Displays the servers partnerships status.",
-            "`:command 284083636368834561 enable` - Makes the server a partner with Ava."
+            "`:commands 284083636368834561` - Displays the servers partnerships status.",
+            "`:commands 284083636368834561 enable` - Makes the server a partner with Ava."
         );
     }
 

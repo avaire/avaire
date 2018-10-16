@@ -56,11 +56,11 @@ public abstract class Middleware {
     }
 
     /**
-     * Builds the help description that should be displayed when the help command is used
-     * for a command that uses the middleware, if null is returned the middleware will
-     * be omitted from the help command.
+     * Builds the help description that should be displayed when the help commands is used
+     * for a commands that uses the middleware, if null is returned the middleware will
+     * be omitted from the help commands.
      *
-     * @param arguments The arguments that was given to the middleware for the current command.
+     * @param arguments The arguments that was given to the middleware for the current commands.
      * @return Possibly-null, the description of the middleware, or null if no description should be displayed.
      */
     @Nullable
@@ -75,7 +75,7 @@ public abstract class Middleware {
      * method should return false.
      *
      * @param message The JDA message object.
-     * @param stack   The middleware stack for the current command.
+     * @param stack   The middleware stack for the current commands.
      * @param args    The arguments given the current middleware.
      * @return Invoke {@link MiddlewareStack#next()} on success, false on failure.
      */

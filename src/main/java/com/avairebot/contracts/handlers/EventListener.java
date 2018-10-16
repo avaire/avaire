@@ -44,7 +44,7 @@ public abstract class EventListener extends ListenerAdapter implements net.dv8ti
     /**
      * The application shutdown event, this event will be called just before
      * the application shuts down, the event will be invoked when a bot
-     * administrator uses a shutdown, restart, or update command.
+     * administrator uses a shutdown, restart, or update commands.
      *
      * @param event The application shutdown event.
      */
@@ -70,7 +70,7 @@ public abstract class EventListener extends ListenerAdapter implements net.dv8ti
      * <p>
      * <ol>
      * <li>The queue is empty and the song that was playing has ended.</li>
-     * <li>A user used the !stop or !skip command with no other songs in the queue.</li>
+     * <li>A user used the !stop or !skip commands with no other songs in the queue.</li>
      * <li>No one was listening to the music and the music activity job stopped the music.</li>
      * </ol>
      *

@@ -48,13 +48,13 @@ public class ForceLeaveServerCommand extends SystemCommand {
     @Override
     public List<String> getUsageInstructions() {
         return Collections.singletonList(
-            "`:command <id>` - Leaves the server with the given ID if the bot is on the server."
+            "`:commands <id>` - Leaves the server with the given ID if the bot is on the server."
         );
     }
 
     @Override
     public List<String> getExampleUsage() {
-        return Collections.singletonList("`:command 304414699645042690`");
+        return Collections.singletonList("`:commands 304414699645042690`");
     }
 
     @Override

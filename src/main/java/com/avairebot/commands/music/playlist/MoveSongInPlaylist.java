@@ -52,7 +52,7 @@ public class MoveSongInPlaylist extends PlaylistSubCommand {
 
             if (currentPosition == newPosition) {
                 context.makeWarning(context.i18n("sameIdsGiven"))
-                    .set("command", command.generateCommandTrigger(context.getMessage()) + " " + playlist.getName() + " move <song id> <new position>")
+                    .set("commands", command.generateCommandTrigger(context.getMessage()) + " " + playlist.getName() + " move <song id> <new position>")
                     .queue();
 
                 return false;
@@ -60,7 +60,7 @@ public class MoveSongInPlaylist extends PlaylistSubCommand {
 
             if (currentPosition < 0 || currentPosition >= playlist.getSongs().size()) {
                 context.makeWarning(context.i18n("invalidIdGiven"))
-                    .set("command", command.generateCommandTrigger(context.getMessage()) + " " + playlist.getName() + " move <song id> <new position>")
+                    .set("commands", command.generateCommandTrigger(context.getMessage()) + " " + playlist.getName() + " move <song id> <new position>")
                     .set("type", currentPosition < 0 ? "low" : "high")
                     .queue();
 
@@ -69,7 +69,7 @@ public class MoveSongInPlaylist extends PlaylistSubCommand {
 
             if (newPosition < 0 || newPosition >= playlist.getSongs().size()) {
                 context.makeWarning(context.i18n("invalidIdGiven"))
-                    .set("command", command.generateCommandTrigger(context.getMessage()) + " " + playlist.getName() + " move :songId <new position>")
+                    .set("commands", command.generateCommandTrigger(context.getMessage()) + " " + playlist.getName() + " move :songId <new position>")
                     .set("type", newPosition < 0 ? "low" : "high")
                     .set("songId", currentPosition + 1)
                     .queue();
@@ -112,7 +112,7 @@ public class MoveSongInPlaylist extends PlaylistSubCommand {
     private boolean isValidRequest(CommandMessage context, String[] args, PlaylistTransformer playlist) {
         if (args.length < 4) {
             context.makeWarning(context.i18n("invalidFormat"))
-                .set("command", command.generateCommandTrigger(context.getMessage()) + " " + playlist.getName() + " move <song id> <new position>")
+                .set("commands", command.generateCommandTrigger(context.getMessage()) + " " + playlist.getName() + " move <song id> <new position>")
                 .set("type", args.length < 3 ? "song id" : "new position")
                 .queue();
 

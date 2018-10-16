@@ -51,14 +51,14 @@ public class MusicMessagesCommand extends Command {
     @Override
     public List<String> getUsageInstructions() {
         return Arrays.asList(
-            "`:command` - Displays the current music message status.",
-            "`:command [on|off]` - Toggles the music messages on/off."
+            "`:commands` - Displays the current music message status.",
+            "`:commands [on|off]` - Toggles the music messages on/off."
         );
     }
 
     @Override
     public List<String> getExampleUsage() {
-        return Collections.singletonList("`:command off` - Turns off music messages.");
+        return Collections.singletonList("`:commands off` - Turns off music messages.");
     }
 
     @Override

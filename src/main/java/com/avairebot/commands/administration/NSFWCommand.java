@@ -46,7 +46,7 @@ public class NSFWCommand extends Command {
 
     @Override
     public String getDescription() {
-        return "Displays the NSFW status of the current channel, additionally on/off can be passed to the command to change the channels NSFW status.";
+        return "Displays the NSFW status of the current channel, additionally on/off can be passed to the commands to change the channels NSFW status.";
     }
 
     @Override
@@ -57,20 +57,20 @@ public class NSFWCommand extends Command {
     @Override
     public List<String> getUsageInstructions() {
         return Arrays.asList(
-            "`:command` - Displays the NSFW status of the current channel.",
-            "`:command <on | off>` - Changes the NSFW status of the current channel.",
-            "`:command <channel>` - Displays the mentioned channels NSFW status",
-            "`:command <channel> <on | off>` - Changes the NSFW status of the mentioned channel."
+            "`:commands` - Displays the NSFW status of the current channel.",
+            "`:commands <on | off>` - Changes the NSFW status of the current channel.",
+            "`:commands <channel>` - Displays the mentioned channels NSFW status",
+            "`:commands <channel> <on | off>` - Changes the NSFW status of the mentioned channel."
         );
     }
 
     @Override
     public List<String> getExampleUsage() {
         return Arrays.asList(
-            "`:command`",
-            "`:command on`",
-            "`:command #nsfw-stuff`",
-            "`:command #general off`"
+            "`:commands`",
+            "`:commands on`",
+            "`:commands #nsfw-stuff`",
+            "`:commands #general off`"
         );
     }
 

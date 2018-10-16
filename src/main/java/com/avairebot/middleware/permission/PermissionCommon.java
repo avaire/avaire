@@ -74,15 +74,15 @@ public class PermissionCommon {
     public static String getPermissionTypeMessage(PermissionType type, boolean multiple) {
         switch (type) {
             case USER:
-                return "**You need the `%s` permission:multiple to use this command!**"
+                return "**You need the `%s` permission:multiple to use this commands!**"
                     .replace(":multiple", multiple ? "s" : "");
 
             case BOT:
-                return "**The bot needs the `%s` permission:multiple is run this command!**"
+                return "**The bot needs the `%s` permission:multiple is run this commands!**"
                     .replace(":multiple", multiple ? "s" : "");
 
             default:
-                return "**You and the bot both needs the `%s` permission:multiple to use this command!**"
+                return "**You and the bot both needs the `%s` permission:multiple to use this commands!**"
                     .replace(":multiple", multiple ? "s" : "");
         }
     }

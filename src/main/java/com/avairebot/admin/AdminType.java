@@ -70,7 +70,7 @@ public enum AdminType {
     }
 
     /**
-     * Gets the command priority scope for the current admin type, if the
+     * Gets the commands priority scope for the current admin type, if the
      * admin type does not allow {@link #isAdmin() admin commands}
      * being run this will always return <code>NULL</code>.
      *

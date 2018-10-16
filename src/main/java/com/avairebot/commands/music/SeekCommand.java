@@ -52,12 +52,12 @@ public class SeekCommand extends Command {
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`:command <time>` - Jumps to the given time code.");
+        return Collections.singletonList("`:commands <time>` - Jumps to the given time code.");
     }
 
     @Override
     public List<String> getExampleUsage() {
-        return Collections.singletonList("`:command 2:24` - Jumps to 2 minutes 24 seconds of the song.");
+        return Collections.singletonList("`:commands 2:24` - Jumps to 2 minutes 24 seconds of the song.");
     }
 
     @Override

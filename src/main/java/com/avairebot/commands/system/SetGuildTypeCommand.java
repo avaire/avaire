@@ -50,23 +50,23 @@ public class SetGuildTypeCommand extends SystemCommand {
 
     @Override
     public String getDescription() {
-        return "Sets the Guild Type of the server the command was ran in, if no arguments was given the current Guild Type will be displayed instead.";
+        return "Sets the Guild Type of the server the commands was ran in, if no arguments was given the current Guild Type will be displayed instead.";
     }
 
     @Override
     public List<String> getUsageInstructions() {
         return Arrays.asList(
-            "`:command` - Displays the current guild type.",
-            "`:command list` - List available guild types.",
-            "`:command <type id>` - Changes the guild type to the given type."
+            "`:commands` - Displays the current guild type.",
+            "`:commands list` - List available guild types.",
+            "`:commands <type id>` - Changes the guild type to the given type."
         );
     }
 
     @Override
     public List<String> getExampleUsage() {
         return Arrays.asList(
-            "`:command 2` - Sets the guild type to VIP+",
-            "`:command list` - Lists the available guild types."
+            "`:commands 2` - Sets the guild type to VIP+",
+            "`:commands list` - Lists the available guild types."
         );
     }
 

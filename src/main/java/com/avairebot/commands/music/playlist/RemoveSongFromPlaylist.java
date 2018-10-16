@@ -48,7 +48,7 @@ public class RemoveSongFromPlaylist extends PlaylistSubCommand {
             int id = Integer.parseInt(args[2], 10) - 1;
             if (id < 0 || id >= playlist.getSongs().size()) {
                 context.makeWarning(context.i18n("invalidIdGiven"))
-                    .set("command", command.generateCommandTrigger(context.getMessage()) + " " + playlist.getName() + " removesong <song id>")
+                    .set("commands", command.generateCommandTrigger(context.getMessage()) + " " + playlist.getName() + " removesong <song id>")
                     .set("type", id < 0 ? "low" : "high")
                     .queue();
 
@@ -74,7 +74,7 @@ public class RemoveSongFromPlaylist extends PlaylistSubCommand {
             return true;
         } catch (NumberFormatException e) {
             context.makeWarning(context.i18n("invalidIdNumberGiven"))
-                .set("command", command.generateCommandTrigger(context.getMessage()) + " " + playlist.getName() + " removesong <song id>")
+                .set("commands", command.generateCommandTrigger(context.getMessage()) + " " + playlist.getName() + " removesong <song id>")
                 .queue();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -86,7 +86,7 @@ public class RemoveSongFromPlaylist extends PlaylistSubCommand {
     private boolean isValidRequest(CommandMessage context, String[] args, PlaylistTransformer playlist) {
         if (args.length < 3) {
             context.makeWarning(context.i18n("invalidFormat"))
-                .set("command", command.generateCommandTrigger(context.getMessage()) + " " + playlist.getName() + " removesong <song id>")
+                .set("commands", command.generateCommandTrigger(context.getMessage()) + " " + playlist.getName() + " removesong <song id>")
                 .set("type", "song id")
                 .queue();
 

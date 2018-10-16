@@ -56,18 +56,18 @@ public class SlowmodeCommand extends Command {
     @Override
     public List<String> getUsageInstructions() {
         return Arrays.asList(
-            "`:command [channel] <off>` - Disables slowmode for the current channel.",
-            "`:command [channel] <seconds>` - Enables slowmode, allowing one message per user every given second."
+            "`:commands [channel] <off>` - Disables slowmode for the current channel.",
+            "`:commands [channel] <seconds>` - Enables slowmode, allowing one message per user every given second."
         );
     }
 
     @Override
     public List<String> getExampleUsage() {
         return Arrays.asList(
-            "`:command off` - Disables slowmode.",
-            "`:command #general off` - Disables slowmode in the general channel.",
-            "`:command 5` - Enables slowmode, allowing one message every five seconds.",
-            "`:command #slow-chat 30` - Enables slowmode in the slow chat channel, allowing one message every 30 seconds per user."
+            "`:commands off` - Disables slowmode.",
+            "`:commands #general off` - Disables slowmode in the general channel.",
+            "`:commands 5` - Enables slowmode, allowing one message every five seconds.",
+            "`:commands #slow-chat 30` - Enables slowmode in the slow chat channel, allowing one message every 30 seconds per user."
         );
     }
 

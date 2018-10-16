@@ -59,17 +59,17 @@ public class DJLevelCommand extends Command {
     @Override
     public List<String> getUsageInstructions() {
         return Arrays.asList(
-            "`:command` - Displays the current DJ Level for the server.",
-            "`:command types` - Displays all the types and some info about them.",
-            "`:command <type>` - Change the DJ Level to the given type."
+            "`:commands` - Displays the current DJ Level for the server.",
+            "`:commands types` - Displays all the types and some info about them.",
+            "`:commands <type>` - Change the DJ Level to the given type."
         );
     }
 
     @Override
     public List<String> getExampleUsage() {
         return Arrays.asList(
-            "`:command types` - Displays all the types and info about them.",
-            "`:command normal` - Changes the DJ Level to \"normal\"."
+            "`:commands types` - Displays all the types and info about them.",
+            "`:commands normal` - Changes the DJ Level to \"normal\"."
         );
     }
 
