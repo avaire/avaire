@@ -94,13 +94,14 @@ public class TestCommand extends Command {
                     .setTotalXpInLevel(NumberUtil.formatNicely(nextLevelXp - current))
                     .setGlobalExperience(NumberUtil.formatNicely(properties.getTotal()))
                     .setServerExperience(NumberUtil.formatNicely(experience - 100))
-                    .setPercentage(percentage)
+                    .setPercentage(Math.min(100D, Math.max(0D, percentage)))
                     .renderToBytes();
 
                 if (image == null) {
                     context.makeError("Failed to generate the image, something that wasn't suppose to happen, happened.").queue();
                     return;
                 }
+                AvaIre.getLogger().info("Image byte size: " + image.length);
 
                 MessageBuilder message = new MessageBuilder();
                 message.setEmbed(context.makeEmbeddedMessage()
@@ -110,6 +111,7 @@ public class TestCommand extends Command {
                 );
                 context.getChannel().sendFile(image, context.getAuthor().getId() + "-avatar.png", message.build()).queue();
             } catch (IOException e) {
+                AvaIre.getLogger().error("Failed to run test command: " + e.getMessage(), e);
                 context.makeError("Failed to run test command: " + e.getMessage()).queue();
                 e.printStackTrace();
             }

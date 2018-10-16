@@ -21,7 +21,9 @@
 
 package com.avairebot.exceptions;
 
-public class RenderNotReadyYetException extends RuntimeException {
+import java.io.IOException;
+
+public class RenderNotReadyYetException extends IOException {
 
     /**
      * Constructs a new runtime exception with the specified detail message.

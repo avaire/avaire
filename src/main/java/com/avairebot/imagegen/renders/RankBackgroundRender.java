@@ -104,11 +104,11 @@ public class RankBackgroundRender extends Renderer {
             && totalXpInLevel != null
             && serverExperience != null
             && globalExperience != null
-            && percentage > 0;
+            && percentage > -1;
     }
 
     @Override
-    protected BufferedImage handleRender() throws Exception {
+    protected BufferedImage handleRender() throws IOException {
         URL url = new URL(avatarUrl);
         URLConnection urlConnection = url.openConnection();
         urlConnection.setRequestProperty("User-Agent", "AvaIre-Discord-Bot");

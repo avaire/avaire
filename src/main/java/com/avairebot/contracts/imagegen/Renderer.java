@@ -35,19 +35,15 @@ public abstract class Renderer {
     public abstract boolean canRender();
 
     @Nullable
-    protected abstract BufferedImage handleRender() throws Exception;
+    protected abstract BufferedImage handleRender() throws IOException;
 
     @Nullable
-    public BufferedImage render() throws RenderNotReadyYetException {
+    public BufferedImage render() throws IOException {
         if (!canRender()) {
             throw new RenderNotReadyYetException("One or more required arguments for the renderer have not been setup yet.");
         }
 
-        try {
-            return handleRender();
-        } catch (Exception e) {
-            return null;
-        }
+        return handleRender();
     }
 
     public byte[] renderToBytes() throws IOException {
@@ -55,24 +51,20 @@ public abstract class Renderer {
             throw new RenderNotReadyYetException("One or more required arguments for the renderer have not been setup yet.");
         }
 
-        try {
-            final BufferedImage bufferedImage = handleRender();
-            if (bufferedImage == null) {
-                return null;
-            }
-
-            ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-
-            ImageIO.write(bufferedImage, "png", byteStream);
-            byteStream.flush();
-
-            byte[] bytes = byteStream.toByteArray();
-            byteStream.close();
-
-            return bytes;
-        } catch (Exception e) {
+        final BufferedImage bufferedImage = handleRender();
+        if (bufferedImage == null) {
             return null;
         }
+
+        ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+
+        ImageIO.write(bufferedImage, "png", byteStream);
+        byteStream.flush();
+
+        byte[] bytes = byteStream.toByteArray();
+        byteStream.close();
+
+        return bytes;
     }
 
     protected final BufferedImage resize(BufferedImage image, int height, int width) {
