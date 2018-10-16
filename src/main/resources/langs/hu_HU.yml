@@ -377,6 +377,7 @@ interaction:
     HugCommand: 'ölelni'
     KillCommand: 'meg akarja ölni'
     KissCommand: 'megcsókolja'
+    MarryCommand: 'wants to marry'
     MeowCommand: 'nyávog valakire'
     PanCommand: '**{0}** éppen megütötte **{1}** egy serpenyővel!'
     PatCommand: 'cirógat'

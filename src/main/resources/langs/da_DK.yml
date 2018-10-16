@@ -378,6 +378,7 @@ interaction:
     HugCommand: 'krammer '
     KillCommand: 'ønsker at dræbe'
     KissCommand: 'kysser'
+    MarryCommand: 'vil gærne gifte sig med'
     MeowCommand: 'meower af'
     PanCommand: '**{0}** har lige slået **{1}** med en pande!'
     PatCommand: 'pats'

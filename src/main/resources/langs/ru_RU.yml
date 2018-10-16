@@ -379,6 +379,7 @@ interaction:
     HugCommand: 'обнимашки c'
     KillCommand: 'хочет убить'
     KissCommand: 'чмокнул'
+    MarryCommand: 'wants to marry'
     MeowCommand: 'мяукает'
     PanCommand: '**{0}** ударил **{1}** сковородкой! :cooking:'
     PatCommand: 'гладит'

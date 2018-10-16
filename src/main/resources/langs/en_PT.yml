@@ -379,6 +379,7 @@ interaction:
     HugCommand: 'hugs'
     KillCommand: "wants t' scuttle"
     KissCommand: 'kisses'
+    MarryCommand: 'wants to marry'
     MeowCommand: 'meows at'
     PanCommand: "**{0}** jus' hit **{1}** wit' a pan!"
     PatCommand: 'pats'

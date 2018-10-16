@@ -379,6 +379,7 @@ interaction:
     HugCommand: "étreint"
     KillCommand: "veut tuer"
     KissCommand: "embrasse"
+    MarryCommand: 'wants to marry'
     MeowCommand: "miaule à"
     PanCommand: "**{0}** frappe **{1}** avec une poêle!"
     PatCommand: "tapotte"
