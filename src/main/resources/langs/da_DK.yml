@@ -246,6 +246,12 @@ administration:
             enabled: "aktiveret"
             disabled: "deaktiveret"
 
+    UnbanCommand:
+        success: ':target has been successfully unbanned from the server because ":reason".'
+        failedToUnban: "Failed to unban :target due to an error, message: :error"
+        noUserIsBanned: "No user with an ID of `:id` is currently banned from the server."
+        invalidUserIdGiven: "Invalid `user id` was given, the `user id` must be a numeric string of 18 or more numbers long."
+
     UserAvatarCommand:
         noUserFound: "Jeg fandt ingen brugere med et navn eller ID der matcher `{0}`"
         title: "{0}#{1}'s Avatar"

@@ -61,7 +61,10 @@ public class BanCommand extends BanableCommand {
 
     @Override
     public List<Class<? extends Command>> getRelations() {
-        return Collections.singletonList(SoftBanCommand.class);
+        return Arrays.asList(
+            SoftBanCommand.class,
+            UnbanCommand.class
+        );
     }
 
     @Override

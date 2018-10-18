@@ -58,7 +58,12 @@ public enum ModlogType {
     /**
      * Represents when a user is warned through Avas warn system.
      */
-    WARN(6, "Warn", true, MessageType.WARNING.getColor());
+    WARN(6, "Warn", true, MessageType.WARNING.getColor()),
+
+    /**
+     * Represents when a user is unbanned from a server through Ava.
+     */
+    UNBAN(7, "Unban", false, MessageType.SUCCESS.getColor());
 
     final int id;
     final String name;

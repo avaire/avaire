@@ -128,6 +128,7 @@ public class Modlog {
             case KICK:
             case BAN:
             case SOFT_BAN:
+            case UNBAN:
                 builder
                     .addField("User", action.getStringifiedTarget(), true)
                     .addField("Moderator", action.getStringifiedModerator(), true)
