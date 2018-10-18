@@ -22,6 +22,7 @@
 package com.avairebot.commands.utility;
 
 import com.avairebot.AvaIre;
+import com.avairebot.chat.PlaceholderMessage;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
 
@@ -57,8 +58,11 @@ public class InviteCommand extends Command {
 
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
-        context.makeInfo(context.i18n("message") + "\n\n:oauth")
+        PlaceholderMessage note = new PlaceholderMessage(null, context.i18n("note"));
+
+        context.makeInfo(context.i18n("message"))
             .set("oauth", avaire.getConfig().getString("discord.oauth"))
+            .set("note", note.set("edgeInvite", "https://avairebot.com/invite-cutting-edge").toString())
             .queue();
         return true;
     }

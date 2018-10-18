@@ -622,7 +622,8 @@ utility:
             message: 'Por favor, espera un segundo hasta que se carga el marcador.'
 
     InviteCommand:
-        message: 'Puedes invitarme a tu servidor [haciendo clic aquí](:oauth) o con el siguiente enlace:'
+        message: 'Puedes invitarme a tu servidor [haciendo clic aquí](:oauth) o con el siguiente enlace:\n\n:oauth\n\n:note'
+        note: '**Note:**\nIf you would like try out newly developed features before everyone else, you could also try the **Cutting Edge** bot which gets new features added almost daily, you can invite that bot by [clicking here](:edgeInvite) or using the link below:\n\n:edgeInvite'
 
     IPInfoCommand:
         hostname: 'Nombre del host'

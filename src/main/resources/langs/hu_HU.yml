@@ -620,7 +620,8 @@ utility:
             message: 'Please wait a second while the global leaderboard is loaded.'
 
     InviteCommand:
-        message: 'Meghívhatsz a szerveredre azzal, hogy [ide kattintasz](:oauth) vagy használod a linket alább:'
+        message: 'Meghívhatsz a szerveredre azzal, hogy [ide kattintasz](:oauth) vagy használod a linket alább:\n\n:oauth\n\n:note'
+        note: '**Note:**\nIf you would like try out newly developed features before everyone else, you could also try the **Cutting Edge** bot which gets new features added almost daily, you can invite that bot by [clicking here](:edgeInvite) or using the link below:\n\n:edgeInvite'
 
     IPInfoCommand:
         hostname: 'Hoszt név'

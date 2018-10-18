@@ -622,7 +622,8 @@ utility:
             message: 'Please wait a second while the global leaderboard is loaded.'
 
     InviteCommand:
-        message: "Tu peux m'inviter sur ton serveur en [cliquant ici](:oauth) ou en utilisant le lien ci-dessous:"
+        message: "Tu peux m'inviter sur ton serveur en [cliquant ici](:oauth) ou en utilisant le lien ci-dessous:\n\n:oauth\n\n:note"
+        note: '**Note:**\nIf you would like try out newly developed features before everyone else, you could also try the **Cutting Edge** bot which gets new features added almost daily, you can invite that bot by [clicking here](:edgeInvite) or using the link below:\n\n:edgeInvite'
 
     IPInfoCommand:
         hostname: "Nom d'hôte"
