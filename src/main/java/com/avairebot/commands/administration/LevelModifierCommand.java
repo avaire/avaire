@@ -155,7 +155,7 @@ public class LevelModifierCommand extends Command {
     private boolean sendStatusMessage(CommandMessage context, GuildTransformer guildTransformer) {
         context.makeSuccess(context.i18n("statusMessage"))
             .set("modifier", NumberUtil.formatNicelyWithDecimals((guildTransformer.getLevelModifier() < 0
-                ? LevelManager.getDefaultModifier()
+                ? LevelManager.getDefaultModifier() * 100
                 : guildTransformer.getLevelModifier() * 100)
             ) + "%")
             .addField(context.i18n("level", 5), getExperienceForLevel(guildTransformer, 5), true)
