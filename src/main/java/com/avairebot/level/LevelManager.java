@@ -231,7 +231,8 @@ public class LevelManager {
      */
     public void giveExperience(Message message, GuildTransformer guild, PlayerTransformer player, int amount) {
         long exp = player.getExperience();
-        long lvl = getLevelFromExperience(guild, exp);
+        long zxp = getExperienceFromLevel(guild, 0) - 100;
+        long lvl = getLevelFromExperience(guild, exp + zxp);
 
         player.incrementExperienceBy(amount);
 
@@ -241,8 +242,8 @@ public class LevelManager {
             amount
         ));
 
-        if (getLevelFromExperience(guild, player.getExperience()) > lvl) {
-            long newLevel = getLevelFromExperience(guild, player.getExperience());
+        if (getLevelFromExperience(guild, player.getExperience() + zxp) > lvl) {
+            long newLevel = getLevelFromExperience(guild, player.getExperience() + zxp);
 
             if (guild.isLevelAlerts()) {
                 boolean hasLevelupRole = !guild.getLevelRoles().isEmpty() && guild.getLevelRoles().containsKey((int) newLevel);
