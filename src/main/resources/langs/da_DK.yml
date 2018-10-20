@@ -17,6 +17,11 @@ levelupMessages:
     - "🔥 Det kører bare :user, du er lige nået **Level :level**"
     - "Tillykke :user 🎉 Du har lige levelet op! Du er nu **Level :level**"
 
+levelupRoleMessages:
+    - "GG :user, you just reached **Level :level**, you now have the **:role** role"
+    - "Eyy :user, you just leveled up! You're now **Level :level**, have the **:role** role, you earned it."
+    - "Congratulations :user 🎉 You just leveled up! You're now **Level :level**, you have also earned yourself the **:role** role"
+
 administration:
     common:
         invalidRole: ":user Ugyldig rolle, jeg kunne ikke finde nogen rolle kaldet **:role**"

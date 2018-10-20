@@ -23,6 +23,7 @@ package com.avairebot.level;
 
 import com.avairebot.AvaIre;
 import com.avairebot.chat.MessageType;
+import com.avairebot.chat.PlaceholderMessage;
 import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.controllers.PlayerController;
 import com.avairebot.database.transformers.GuildTransformer;
@@ -244,12 +245,25 @@ public class LevelManager {
             long newLevel = getLevelFromExperience(guild, player.getExperience());
 
             if (guild.isLevelAlerts()) {
-                MessageFactory.makeEmbeddedMessage(getLevelUpChannel(message, guild))
+                boolean hasLevelupRole = !guild.getLevelRoles().isEmpty() && guild.getLevelRoles().containsKey((int) newLevel);
+
+                PlaceholderMessage alertMessage = MessageFactory.makeEmbeddedMessage(getLevelUpChannel(message, guild))
                     .setColor(MessageType.SUCCESS.getColor())
-                    .setDescription(loadRandomLevelupMessage(guild))
+                    .setDescription(loadRandomLevelupMessage(guild, hasLevelupRole))
                     .set("user", message.getAuthor().getAsMention())
-                    .set("level", newLevel)
-                    .queue();
+                    .set("level", newLevel);
+
+                if (hasLevelupRole) {
+                    Role levelRole = message.getGuild().getRoleById(guild.getLevelRoles().get((int) newLevel));
+
+                    if (levelRole == null) {
+                        alertMessage.setDescription(loadRandomLevelupMessage(guild, false));
+                    } else {
+                        alertMessage.set("role", levelRole.getName());
+                    }
+                }
+
+                alertMessage.queue();
             }
 
             if (!guild.getLevelRoles().isEmpty()) {
@@ -356,9 +370,9 @@ public class LevelManager {
         return roles;
     }
 
-    private String loadRandomLevelupMessage(GuildTransformer guild) {
+    private String loadRandomLevelupMessage(GuildTransformer guild, boolean hasLevelupRole) {
         return (String) RandomUtil.pickRandom(
-            I18n.getLocale(guild).getConfig().getStringList("levelupMessages")
+            I18n.getLocale(guild).getConfig().getStringList(hasLevelupRole ? "levelupRoleMessages" : "levelupMessages")
         );
     }
 
