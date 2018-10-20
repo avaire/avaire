@@ -201,6 +201,7 @@ administration:
         couldntFindCaseWithId: "Couldn't find a modlog case with an ID of {0} where you were the moderator, are you sure you're the moderator for the given modlog case?"
         couldntFindModlogChannel: "Couldn't find the modlog channel, was it removed?"
         success: "The modlog case with an ID of **:id** was successfully edited and set to the reason of `:reason`"
+        modlogCaseWasPardoned: "The modlog case with an ID of `{0}` has been pardoned, you can't edit pardoned modlog cases."
         failedToEdit: "Failed to edit modlog message: {0}"
         failedToFindMessage: "Couldn't find the message for the given modlog case, was it deleted?"
 

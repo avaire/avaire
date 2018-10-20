@@ -195,12 +195,21 @@ administration:
         entry: "**Case ID #{0}** | {1}\n\t{2}"
         noReasonGiven: "No reason was given."
 
+    ModlogPardonCommand:
+        modlogNotEnabled: "No modlog channel has been set, you must set a modlog channel to use this command."
+        invalidCaseId: "Invalid case id given, the ID must be greater than 0 and less than {0}"
+        couldntFindCaseWithId: "Couldn't find a modlog case with an ID of {0} where you were the moderator, are you sure you're the moderator for the given modlog case?"
+        caseAlreadyPardoned: "The modlog case ID with an ID of `{0}` is already pardoned."
+        notAPunishment: "The modlog case ID with an ID of `{0}` is not a punishment!"
+        message: "The modlog case with an ID of **:case** has been been pardoned successfully."
+
     ModlogReasonCommand:
         modlogNotEnabled: "No modlog channel has been set, you must set a modlog channel to use this command."
         invalidCaseId: "Invalid case id given, the ID must be greater than 0 and less than {0}"
         couldntFindCaseWithId: "Couldn't find a modlog case with an ID of {0} where you were the moderator, are you sure you're the moderator for the given modlog case?"
         couldntFindModlogChannel: "Couldn't find the modlog channel, was it removed?"
         success: "The modlog case with an ID of **:id** was successfully edited and set to the reason of `:reason`"
+        modlogCaseWasPardoned: "The modlog case with an ID of `{0}` has been pardoned, you can't edit pardoned modlog cases."
         failedToEdit: "Failed to edit modlog message: {0}"
         failedToFindMessage: "Couldn't find the message for the given modlog case, was it deleted?"
 

@@ -208,7 +208,8 @@ public class AvaIre {
             new AddMusicMessagesToGuildsTableMigration(),
             new AddPartnerToGuildsTableMigration(),
             new AddHierarchyToGuildsTableMigration(),
-            new AddLevelModifierToGuildsTableMigration()
+            new AddLevelModifierToGuildsTableMigration(),
+            new AddPardonToLogTableMigration()
         );
 
         log.info("Registering default middlewares");

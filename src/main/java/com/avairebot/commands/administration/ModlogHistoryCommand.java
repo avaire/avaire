@@ -100,6 +100,7 @@ public class ModlogHistoryCommand extends Command {
             Collection items = avaire.getDatabase().newQueryBuilder(Constants.LOG_TABLE_NAME)
                 .where("guild_id", context.getGuild().getId())
                 .where("target_id", user.getId())
+                .where("pardon", 0)
                 .get();
 
             if (items.isEmpty()) {
