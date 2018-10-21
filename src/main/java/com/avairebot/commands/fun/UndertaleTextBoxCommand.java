@@ -18,8 +18,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Pattern;
 
+@SuppressWarnings("FieldCanBeLocal")
 public class UndertaleTextBoxCommand extends Command {
+
+    private final Pattern imageRegex = Pattern.compile("(http(s?):)([/|.|\\w|\\s|-])*\\.(?:jpg|jpeg|gif|png)");
 
     private final String templateUrl = "https://www.demirramon.com/gen/undertale_box.png?&ext=.png";
     private final String messageQueryString = "&message={0}";
@@ -38,7 +42,7 @@ public class UndertaleTextBoxCommand extends Command {
     @Override
     public String getDescription() {
         return "Create your own Undertale text boxes with any character and text! \n" +
-            " Generator owned by  Demirramon. Undertale owned by Toby Fox. All rights reserved. ";
+            "Generator owned by Demirramon. Undertale owned by Toby Fox. All rights reserved. ";
     }
 
     @Override
@@ -87,73 +91,33 @@ public class UndertaleTextBoxCommand extends Command {
 
             messageBuilder.setEmbed(embedBuilder.build());
 
-            if (!isValidImageUrl(args[0])) {
-                InputStream stream = new URL(I18n.format(
-                    templateUrl + messageQueryString + characterQueryString,
-                    encode(String.join(" ", Arrays.copyOfRange(args, 1, args.length))),
-                    encode(args[0])
-                )).openStream();
+            InputStream stream = getImageInputStream(args);
+            context.getChannel().sendFile(stream, getClass().getSimpleName() + "-" + args[0] + ".png", messageBuilder.build()).queue();
 
-                context.getChannel().sendFile(stream, getClass().getSimpleName() + "-" + args[0] + ".png", messageBuilder.build()).queue();
-
-                return true;
-            } else {
-
-
-                InputStream stream = new URL(I18n.format(
-                    templateUrl + messageQueryString + urlQueryString,
-                    encode(String.join(" ", Arrays.copyOfRange(args, 1, args.length))),
-                    args[0]
-                ) + "&character=custom").openStream();
-
-                context.getChannel().sendFile(stream, getClass().getSimpleName() + "-" + args[0] + ".png", messageBuilder.build()).queue();
-
-                return true;
-            }
-        } catch (UnsupportedEncodingException e) {
-            context.makeError(e.getMessage());
+            return true;
         } catch (IOException e) {
-            context.makeError(e.getMessage());
+            context.makeError(e.getMessage()).queue();
         }
 
         return false;
+    }
+
+    private InputStream getImageInputStream(String[] args) throws IOException {
+        boolean isValidImageUrl = imageRegex.matcher(args[0]).find();
+
+        return new URL(I18n.format(
+            templateUrl + messageQueryString + (isValidImageUrl ? urlQueryString : characterQueryString),
+            encode(String.join(" ", Arrays.copyOfRange(args, 1, args.length))),
+            encode(args[0])
+        ) + (isValidImageUrl ? "&character=custom" : "")).openStream();
     }
 
     private String encode(String string) throws UnsupportedEncodingException {
         return URLEncoder.encode(string, "UTF-8").replace("+", "%20");
     }
 
-    private boolean isValidImageUrl(String urlString) {
-        try {
-            URL url = new URL(urlString);
-            String stringUri = url.toURI().toString();
-            List<String> fileFormats = new ArrayList<>();
-            fileFormats.add("png");
-            fileFormats.add("jpg");
-            if (stringUri.contains(".")) {
-                for (String fileFormat : fileFormats) {
-                    if (fileFormat.equalsIgnoreCase(stringUri.substring(stringUri.lastIndexOf('.') + 1))) {
-                        return true;
-                    }
-                }
-
-                return false;
-            } else {
-                return false;
-            }
-
-        } catch (Exception exception) {
-            return false;
-        }
-    }
-
     private boolean sendCharacterList(CommandMessage context, String[] args) {
-        List<String> items = new ArrayList<>();
-        for (Character character : Character.values()) {
-            items.add(character.name());
-        }
-
-        SimplePaginator paginator = new SimplePaginator(items, 10);
+        SimplePaginator paginator = new SimplePaginator(Character.names, 10);
         if (args.length > 0) {
             paginator.setCurrentPage(NumberUtil.parseInt(args[0], 1));
         }
@@ -166,11 +130,22 @@ public class UndertaleTextBoxCommand extends Command {
             .set("characters", String.join("\n", messages))
             .set("paginator", paginator.generateFooter(generateCommandTrigger(context.getMessage())))
             .queue();
+
         return false;
     }
 
     private enum Character {
         Alphys, Asgore, Asriel, Chara, Flowey, Frisk, Gaster, Grillby, Mettaton,
-        MettatonEX, Napstablook, OmegaFlowey, Papyrus, Sans, Temmie, Undyne
+        MettatonEX, Napstablook, OmegaFlowey, Papyrus, Sans, Temmie, Undyne;
+
+        private static final List<String> names;
+
+        static {
+            List<String> characterNames = new ArrayList<>();
+            for (Character character : values()) {
+                characterNames.add(character.name());
+            }
+            names = Collections.unmodifiableList(characterNames);
+        }
     }
 }
