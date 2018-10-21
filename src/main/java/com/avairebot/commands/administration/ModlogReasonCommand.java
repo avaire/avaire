@@ -136,6 +136,9 @@ public class ModlogReasonCommand extends Command {
             }
 
             DataRow first = collection.first();
+            if (first.getBoolean("pardon")) {
+                return sendErrorMessage(context, context.i18n("modlogCaseWasPardoned", caseId));
+            }
 
             TextChannel channel = context.getGuild().getTextChannelById(transformer.getModlog());
             if (channel == null) {

@@ -23,6 +23,7 @@ package com.avairebot.level;
 
 import com.avairebot.AvaIre;
 import com.avairebot.chat.MessageType;
+import com.avairebot.chat.PlaceholderMessage;
 import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.controllers.PlayerController;
 import com.avairebot.database.transformers.GuildTransformer;
@@ -230,7 +231,8 @@ public class LevelManager {
      */
     public void giveExperience(Message message, GuildTransformer guild, PlayerTransformer player, int amount) {
         long exp = player.getExperience();
-        long lvl = getLevelFromExperience(guild, exp);
+        long zxp = getExperienceFromLevel(guild, 0) - 100;
+        long lvl = getLevelFromExperience(guild, exp + zxp);
 
         player.incrementExperienceBy(amount);
 
@@ -240,16 +242,29 @@ public class LevelManager {
             amount
         ));
 
-        if (getLevelFromExperience(guild, player.getExperience()) > lvl) {
-            long newLevel = getLevelFromExperience(guild, player.getExperience());
+        if (getLevelFromExperience(guild, player.getExperience() + zxp) > lvl) {
+            long newLevel = getLevelFromExperience(guild, player.getExperience() + zxp);
 
             if (guild.isLevelAlerts()) {
-                MessageFactory.makeEmbeddedMessage(getLevelUpChannel(message, guild))
+                boolean hasLevelupRole = !guild.getLevelRoles().isEmpty() && guild.getLevelRoles().containsKey((int) newLevel);
+
+                PlaceholderMessage alertMessage = MessageFactory.makeEmbeddedMessage(getLevelUpChannel(message, guild))
                     .setColor(MessageType.SUCCESS.getColor())
-                    .setDescription(loadRandomLevelupMessage(guild))
+                    .setDescription(loadRandomLevelupMessage(guild, hasLevelupRole))
                     .set("user", message.getAuthor().getAsMention())
-                    .set("level", newLevel)
-                    .queue();
+                    .set("level", newLevel);
+
+                if (hasLevelupRole) {
+                    Role levelRole = message.getGuild().getRoleById(guild.getLevelRoles().get((int) newLevel));
+
+                    if (levelRole == null) {
+                        alertMessage.setDescription(loadRandomLevelupMessage(guild, false));
+                    } else {
+                        alertMessage.set("role", levelRole.getName());
+                    }
+                }
+
+                alertMessage.queue();
             }
 
             if (!guild.getLevelRoles().isEmpty()) {
@@ -356,9 +371,9 @@ public class LevelManager {
         return roles;
     }
 
-    private String loadRandomLevelupMessage(GuildTransformer guild) {
+    private String loadRandomLevelupMessage(GuildTransformer guild, boolean hasLevelupRole) {
         return (String) RandomUtil.pickRandom(
-            I18n.getLocale(guild).getConfig().getStringList("levelupMessages")
+            I18n.getLocale(guild).getConfig().getStringList(hasLevelupRole ? "levelupRoleMessages" : "levelupMessages")
         );
     }
 

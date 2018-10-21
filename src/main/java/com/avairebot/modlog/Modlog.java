@@ -41,6 +41,7 @@ import net.dv8tion.jda.core.entities.User;
 import javax.annotation.Nullable;
 import java.sql.SQLException;
 import java.time.Instant;
+import java.util.Arrays;
 
 public class Modlog {
 
@@ -118,6 +119,7 @@ public class Modlog {
 
         transformer.setModlogCase(transformer.getModlogCase() + 1);
 
+        String[] split = null;
         EmbedBuilder builder = MessageFactory.createEmbeddedBuilder()
             .setTitle(action.getType().getName() + " | Case #" + transformer.getModlogCase())
             .setColor(action.getType().getColor())
@@ -145,12 +147,33 @@ public class Modlog {
 
             case VOICE_KICK:
                 //noinspection ConstantConditions
-                String[] split = action.getMessage().split("\n");
+                split = action.getMessage().split("\n");
                 builder
                     .addField("User", action.getStringifiedTarget(), true)
                     .addField("Moderator", action.getStringifiedModerator(), true)
                     .addField("Voice Channel", split[0], false)
-                    .addField("Reason", formatReason(transformer, split[1]), false);
+                    .addField("Reason", formatReason(transformer, String.join("\n",
+                        Arrays.copyOfRange(split, 1, split.length)
+                    )), false);
+
+                action.setMessage(String.join("\n",
+                    Arrays.copyOfRange(split, 1, split.length)
+                ));
+                break;
+
+            case PARDON:
+                //noinspection ConstantConditions
+                split = action.getMessage().split("\n");
+                builder
+                    .addField("Pardoned Case ID", split[0], true)
+                    .addField("Moderator", action.getStringifiedModerator(), true)
+                    .addField("Reason", formatReason(transformer, String.join("\n",
+                        Arrays.copyOfRange(split, 1, split.length)
+                    )), false);
+
+                action.setMessage(String.join("\n",
+                    Arrays.copyOfRange(split, 1, split.length)
+                ));
                 break;
         }
 

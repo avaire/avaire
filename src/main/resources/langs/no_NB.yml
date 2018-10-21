@@ -17,6 +17,11 @@ levelupMessages:
     - "You're on 🔥 :user, you've just reached **Level :level**"
     - "Congratulations :user 🎉 You just leveled up! You're now **Level :level**"
 
+levelupRoleMessages:
+    - "GG :user, you just reached **Level :level**, you now have the **:role** role"
+    - "Eyy :user, you just leveled up! You're now **Level :level**, have the **:role** role, you earned it."
+    - "Congratulations :user 🎉 You just leveled up! You're now **Level :level**, you have also earned yourself the **:role** role"
+
 administration:
     common:
         invalidRole: ":user Invalid role, I couldn't find any role called **:role**"
@@ -196,6 +201,7 @@ administration:
         couldntFindCaseWithId: "Couldn't find a modlog case with an ID of {0} where you were the moderator, are you sure you're the moderator for the given modlog case?"
         couldntFindModlogChannel: "Couldn't find the modlog channel, was it removed?"
         success: "The modlog case with an ID of **:id** was successfully edited and set to the reason of `:reason`"
+        modlogCaseWasPardoned: "The modlog case with an ID of `{0}` has been pardoned, you can't edit pardoned modlog cases."
         failedToEdit: "Failed to edit modlog message: {0}"
         failedToFindMessage: "Couldn't find the message for the given modlog case, was it deleted?"
 
