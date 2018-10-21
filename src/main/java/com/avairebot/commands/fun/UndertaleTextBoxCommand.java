@@ -41,25 +41,25 @@ public class UndertaleTextBoxCommand extends Command {
 
     @Override
     public String getDescription() {
-        return "Create your own Undertale text boxes with any character and text! \n" +
-            "Generator owned by Demirramon. Undertale owned by Toby Fox. All rights reserved. ";
+        return "Create your own Undertale text boxes with any character and text you want, you can also specify a image through a URL that should be used as the avatar instead.!\n" +
+            "Generator owned by [Demirramon](https://demirramon.com/). Undertale owned by Toby Fox. All rights reserved.";
     }
 
     @Override
     public List<String> getUsageInstructions() {
         return Arrays.asList(
-            "`:command <url> <message>` - Returns an undertale textbox image containing" +
-                " the specified text said by the custom character provided in the picture URL.\n"
-                + "If you need to upload the picture you want to use, use Imgur.",
-            "`:command <message>` - Returns an undertale textbox image containing the specified text.",
-            "`:command <character> <message>` - Returns an undertale textbox image containing the specified text " +
-                "said by the character of your choice."
+            "`:command` - Lists some undertale characters the generator supports.",
+            "`:command <url> <message>` - Generates the image using the given image url and message.",
+            "`:command <character> <message>` - Generates the image using the provided undertale character as the avatar, and the provided message."
         );
     }
 
     @Override
     public List<String> getExampleUsage() {
-        return Arrays.asList("`:command Toriel Greetings, my child `", "`:command https://www.demirramon.com/img/generators/utgen/char_undertale-frisk_default.png I'm Frisk `");
+        return Arrays.asList(
+            "`:command Toriel Greetings, my child`",
+            "`:command https://i.imgur.com/ZupgGkI.jpg What to play?`"
+        );
     }
 
     @Override
@@ -69,7 +69,7 @@ public class UndertaleTextBoxCommand extends Command {
 
     @Override
     public List<String> getTriggers() {
-        return Arrays.asList("utbox", "textbox");
+        return Arrays.asList("undertale", "ut");
     }
 
     @Override
