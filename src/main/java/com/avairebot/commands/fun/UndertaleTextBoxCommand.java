@@ -48,7 +48,7 @@ public class UndertaleTextBoxCommand extends Command {
     @Override
     public List<String> getUsageInstructions() {
         return Arrays.asList(
-            "`:command` - Lists some undertale characters the generator supports.",
+            "`:command list [page]` - Lists some undertale characters the generator supports.",
             "`:command <url> <message>` - Generates the image using the given image url and message.",
             "`:command <character> <message>` - Generates the image using the provided undertale character as the avatar, and the provided message."
         );
@@ -58,7 +58,7 @@ public class UndertaleTextBoxCommand extends Command {
     public List<String> getExampleUsage() {
         return Arrays.asList(
             "`:command Toriel Greetings, my child`",
-            "`:command https://i.imgur.com/ZupgGkI.jpg What to play?`"
+            "`:command https://i.imgur.com/ZupgGkI.jpg Want to play?`"
         );
     }
 
@@ -74,7 +74,11 @@ public class UndertaleTextBoxCommand extends Command {
 
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
-        if (args.length == 0 || (args.length == 1 && NumberUtil.isNumeric(args[0]))) {
+        if (args.length == 0) {
+            return sendErrorMessage(context, "Missing argument, you must either provide `list` to see a list of characters you can choose from, or to generate an image, `character` or a valid image `url` to build the image for.");
+        }
+
+        if (args.length < 3 && args[0].equalsIgnoreCase("list")) {
             return sendCharacterList(context, args);
         }
 
@@ -118,8 +122,8 @@ public class UndertaleTextBoxCommand extends Command {
 
     private boolean sendCharacterList(CommandMessage context, String[] args) {
         SimplePaginator paginator = new SimplePaginator(Character.names, 10);
-        if (args.length > 0) {
-            paginator.setCurrentPage(NumberUtil.parseInt(args[0], 1));
+        if (args.length > 1) {
+            paginator.setCurrentPage(NumberUtil.parseInt(args[1], 1));
         }
 
         List<String> messages = new ArrayList<>();
