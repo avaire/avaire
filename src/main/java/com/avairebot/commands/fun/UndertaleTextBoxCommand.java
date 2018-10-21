@@ -75,7 +75,7 @@ public class UndertaleTextBoxCommand extends Command {
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
         if (args.length == 0) {
-            return sendErrorMessage(context, "Missing argument, you must either provide `list` to see a list of characters you can choose from, or to generate an image, `character` or a valid image `url` to build the image for.");
+            return sendErrorMessage(context, context.i18n("noArgumentsGiven"));
         }
 
         if (args.length < 3 && args[0].equalsIgnoreCase("list")) {
@@ -100,10 +100,8 @@ public class UndertaleTextBoxCommand extends Command {
 
             return true;
         } catch (IOException e) {
-            context.makeError(e.getMessage()).queue();
+            return sendErrorMessage(context, context.i18n("failedToGenerateImage"));
         }
-
-        return false;
     }
 
     private InputStream getImageInputStream(String[] args) throws IOException {
@@ -130,7 +128,7 @@ public class UndertaleTextBoxCommand extends Command {
         paginator.forEach((index, key, val) -> messages.add((String) val));
 
         context.makeInfo(":characters\n\n:paginator")
-            .setTitle("Undertale Character List")
+            .setTitle(context.i18n("title"))
             .set("characters", String.join("\n", messages))
             .set("paginator", paginator.generateFooter(generateCommandTrigger(context.getMessage())))
             .queue();

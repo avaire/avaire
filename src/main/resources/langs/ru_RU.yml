@@ -357,6 +357,11 @@ fun:
         invalidValueGiven: 'Недопустимое `{0}` значение, `{1}` должно быть числом!'
         rolledNumber: ':user выбросил **:number** из :min - :max'
 
+    UndertaleTextBoxCommand:
+        noArgumentsGiven: "Missing argument, you must either provide `list` to see a list of characters you can choose from, or to generate an image, `character` or a valid image `url` to build the image for."
+        failedToGenerateImage: "Failed to generate the the image, are you sure you provided a correct image URL or character name?"
+        title: "Undertale Character List"
+
 help:
     HelpCommand:
         listOfCommands: ':page_with_curl: **Список команд** ```css\n{0}```\n'
