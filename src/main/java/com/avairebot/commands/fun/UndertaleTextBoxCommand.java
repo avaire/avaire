@@ -25,8 +25,7 @@ public class UndertaleTextBoxCommand extends Command {
 
     private final Pattern imageRegex = Pattern.compile("(http(s?):)([/|.|\\w|\\s|-])*\\.(?:jpg|jpeg|gif|png)");
 
-    private final String templateUrl = "https://www.demirramon.com/gen/undertale_box.png?&ext=.png";
-    private final String messageQueryString = "&message={0}";
+    private final String templateUrl = "https://www.demirramon.com/gen/undertale_box.png?message={0}";
     private final String characterQueryString = "&character={1}";
     private final String urlQueryString = "&url={1}";
 
@@ -96,7 +95,7 @@ public class UndertaleTextBoxCommand extends Command {
             messageBuilder.setEmbed(embedBuilder.build());
 
             InputStream stream = getImageInputStream(args);
-            context.getChannel().sendFile(stream, getClass().getSimpleName() + "-" + args[0] + ".png", messageBuilder.build()).queue();
+            context.getMessageChannel().sendFile(stream, getClass().getSimpleName() + "-" + args[0] + ".png", messageBuilder.build()).queue();
 
             return true;
         } catch (IOException e) {
@@ -108,7 +107,7 @@ public class UndertaleTextBoxCommand extends Command {
         boolean isValidImageUrl = imageRegex.matcher(args[0]).find();
 
         return new URL(I18n.format(
-            templateUrl + messageQueryString + (isValidImageUrl ? urlQueryString : characterQueryString),
+            templateUrl + (isValidImageUrl ? urlQueryString : characterQueryString),
             encode(String.join(" ", Arrays.copyOfRange(args, 1, args.length))),
             encode(args[0])
         ) + (isValidImageUrl ? "&character=custom" : "")).openStream();
