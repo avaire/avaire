@@ -22,7 +22,7 @@ levelupRoleMessages:
     - "Eyy :user, du bist soeben aufgestiegen! Du bist nun auf **Level :level**. Hier, die **:role** Rolle. Hast du dir verdient!"
     - "Glückwunsch, :user! 🎉 Du bist aufgestiegen! Du bist nun auf **Level :level**. Das heißt: Hier ein **:role** Rang. Nur für dich!"
 
-	administration:
+administration:
     common:
         invalidRole: "Ungültige Rolle, :user! Ich konnte keine Role namens **:role** auffinden."
 
@@ -194,8 +194,8 @@ levelupRoleMessages:
         title: "{0}#{1} Verlauf ({2})"
         entry: "**Fall-ID #{0}** | {1}\n\t{2}"
         noReasonGiven: "Keine Begründung angegeben."
-    
-	ModlogPardonCommand:
+
+    ModlogPardonCommand:
         modlogNotEnabled: "Keinen Modlog-Channel gesetzt. Du musst zuerst einen Modlog-Channel festlegen, bevor du diesen Befehl nutzen kannst."
         invalidCaseId: "Ungültige Fall-ID angegeben. Die ID muss höher als 0 und niedriger als {0} sein."
         couldntFindCaseWithId: "Es konnte kein Log mit der Fall-ID {0} aufgefunden werden. Bist du der Moderator, der für diese Fall-ID zuständig ist?"
@@ -209,7 +209,7 @@ levelupRoleMessages:
         couldntFindCaseWithId: "Es konnte kein Log mit der Fall-ID {0} aufgefunden werden. Bist du der Moderator, der für diese Fall-ID zuständig ist?"
         couldntFindModlogChannel: "Der Modlog-Channel kann nicht aufgefunden werden. Wurde dieser entfernt?"
         success: "Der Fall mit der ID **:id** wurde erfolgreich editieren und mit folgender Begründung versehen: `:reason`"
-		modlogCaseWasPardoned: "Der Fall mit der ID `{0}` wurde enfernt. Du kannst keine entfernen Fälle editieren."
+        modlogCaseWasPardoned: "Der Fall mit der ID `{0}` wurde enfernt. Du kannst keine entfernen Fälle editieren."
         failedToEdit: "Editieren der Modlog-Nachricht fehlgeschlagen: {0}"
         failedToFindMessage: "Die Nachricht für den angegebenen Modlog-Fall konnte nicht aufgefunden werden. Wurde dieser entfernt?"
 
@@ -266,7 +266,7 @@ levelupRoleMessages:
         noUserIsBanned: "Kein User mit der ID `:id` ist auf dem Server verbannt."
         invalidUserIdGiven: "Ungültige `User-ID` angegeben. Die `User-ID` muss eine 18-stellige oder längere Nummer sein."
 
-	UserAvatarCommand:
+    UserAvatarCommand:
         noUserFound: "Ich konnte keine Users mit dem Namen oder der ID`{0}` auffinden."
         title: "{0}#{1}'s Avatar"
 
@@ -371,7 +371,7 @@ fun:
         invalidValueGiven: 'Ungültigen `{0}` Wert angegeben. `{1}` muss eine Nummer sein!'
         rolledNumber: ':user hat eine **:number** zwischen einer Zahl von :min - :max gewürfelt.'
 
-	UndertaleTextBoxCommand:
+    UndertaleTextBoxCommand:
         noArgumentsGiven: "Fehlendes Argument. Du musst `list` angeben, um eine Liste von Charakteren einzusehen, von denen du was aussuchen kannst, um ein Bild zu generieren `character`, oder ein bereits verfügbares Bild `url` um dein Bild damit zu erstellen."
         failedToGenerateImage: "Beim Versuch das Bild zu generieren ist ein Fehler aufgetreten. Bist du dir sicher, dass du eine richtige URL oder einen richtigen Charakternamen ausgewählt hast?"
         title: "Undertale Charakteren-Liste"
