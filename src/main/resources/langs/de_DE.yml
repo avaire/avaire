@@ -18,296 +18,296 @@ levelupMessages:
     - "Glückwunsch, :user! 🎉 Du bist aufgestiegen! Du bist nun auf **Level :level**."
 
 levelupRoleMessages:
-    - "GG :user, you just reached **Level :level**, you now have the **:role** role"
-    - "Eyy :user, you just leveled up! You're now **Level :level**, have the **:role** role, you earned it."
-    - "Congratulations :user 🎉 You just leveled up! You're now **Level :level**, you have also earned yourself the **:role** role"
+    - "GG :user, du hast soeben **Level :level** erreicht. Dazu erhälst du die **:role** Rolle."
+    - "Eyy :user, du bist soeben aufgestiegen! Du bist nun auf **Level :level**. Hier, die **:role** Rolle. Hast du dir verdient!"
+    - "Glückwunsch, :user! 🎉 Du bist aufgestiegen! Du bist nun auf **Level :level**. Das heißt: Hier ein **:role** Rang. Nur für dich!"
 
 administration:
     common:
-        invalidRole: ":user Invalid role, I couldn't find any role called **:role**"
+        invalidRole: "Ungültige Rolle, :user! Ich konnte keine Role namens **:role** auffinden."
 
     channelModule:
-        invalidColorGiven: "Invalid color value given, the color must be a valid HEX value.\nYou can try this [random color picker](https://www.webpagefx.com/web-design/random-color-picker/) to try and get a random HEX color."
-        message: "The `:type` module message has been set to:\n\n```:message```\n\nYou can test the message by using the command again and mentioning a user.\n`:command <user>`"
+        invalidColorGiven: "Untültigen Farbenwert angegeben. Die Farbe muss einen HEX-Wert haben.\nVersuch doch den [Random Color Picker](https://www.webpagefx.com/web-design/random-color-picker/) aus und versuche eine zufällige HEX-Farbe zu erhalten."
+        message: "Die `:type` Modulnachricht wurde auf folgendes gesetzt:\n\n```:message```\n\nDu kannst die Nachricht testen, indem du den Befehl erneut verwendest und einen User erwähnst.\n`:command <user>`"
 
     AddLevelRoleCommand:
-        noSlotsLeft: "The server doesn't have any more level role slots, you can remove existing level roles to free up slots."
-        invalidLevel: "Invalid level requirement given, the level requirement must be a positive number."
-        alreadyLevelRole: ":user The **:role** is already a level role, you can't use the same role twice."
-        alreadyARoleAtLevel: "There is already a role assigned to level **:level**, only one role can be given per level."
-        success: "Role **:role** role has been added to the level-up role list.\nThe server has `:slots` more level role slots available."
+        noSlotsLeft: "Der Server hat keine weiteren Rollenslots. Entferne hierzu bitte zuerst eine Rolle, um eine neue hinzuzufügen."
+        invalidLevel: "Ungültige Level-Vorraussetzung angegeben. Die angegebene Nummer muss positiv sein."
+        alreadyLevelRole: ":user Die **:role** ist bereits eine Level-Rolle. Du kannst die selbe Rolle nicht mehrfach festlegen."
+        alreadyARoleAtLevel: "Es existiert bereits einen Rollenaufstieg für Level **:level**. Nur eine Rolle kann per Level vergeben werden."
+        success: "Die Rolle **:role** wurde zu der Level-Up-Liste hinzugefügt.\nDer Server hat `:slots` weitere verfügbare Level-Rollenslots."
 
     AddSelfAssignableRoleCommand:
-        noSlotsLeft: "The server doesn't have any more self-assignable role slots, you can remove existing self-assignable roles to free up slots."
-        success: "Role **:role** role has been added to the self-assignable list.\nThe server has `:slots` more self-assignable roles slots available."
+        noSlotsLeft: "Der Server hat keine weiteren Rollenslots für Rollen, die du dir selbst setzen kannst. Entferne hierzu bitte zuerst eine Rolle, um eine neue hinzuzufügen."
+        success: "Die Rolle **:role** wurde zu der Liste der selbst setzbaren Rollen hinzugefügt.\n Der Server hat `:slots` weitere Rollenslots für Rollen, die du dir selbst setzen kannst."
 
     AiCommand:
-        message: "The `Artificial Intelligence` module has been **:status** for the :channel channel."
+        message: "Der `Künstliche Intelligenz` Modul wurde **:status** für folgenden Channel: :channel"
         status:
-            enabled: "Enabled"
-            disabled: "Disabled"
+            enabled: "aktiviert"
+            disabled: "deaktiviert"
 
     AliasCommand:
-        noSlotsLeft: "The server doesn't have any more alias slots, you can delete existing aliases to free up slots."
-        alreadyExists: "There is already a custom alias called `{0}`"
-        invalidCommand: "Invalid command given, I don't know of any command called `{0}`"
-        invalidAlias: "Invalid alias given, `{0}` is not registered as an alias."
-        created: "The `:alias` alias has been linked to `:command`\nThe server has `:slots` more aliases slots available."
-        deleted: "The `:alias` alias has been deleted successfully."
+        noSlotsLeft: "Der Server hat keine weiteren Alias-Slots. Entferne hierzu bitte zuerst einen Alias, um eine neue hinzuzufügen."
+        alreadyExists: "Es existiert bereits ein eigener Alias namens `{0}`."
+        invalidCommand: "Ungültigen Befehl eingegeben. Ich kenne keinen Befehl namens `{0}`."
+        invalidAlias: "Ungültigen Alias angegeben. `{0}` ist nicht als Alias festgelegt worden."
+        created: "Der `:alias` Alias wurde zu folgendem Befehl verlinkt: `:command`\nDer Server hat `:slots` weitere Alias-Slots verfügbar."
+        deleted: "Der `:alias` Alias wurde erfolgreich entfernt."
 
     AutoAssignRoleCommand:
         higherInTheHierarchy:
-            user: ":user The **:role** role is positioned higher in the hierarchy than any role you have, you can't add roles with a higher ranking than you have."
-            bot: ":user The **:role** role is positioned higher in the hierarchy, I can't give/remove this role from users."
-        enabled: ":user **Auto assign role** on user join has been **enabled** and set to  **:role**"
-        disabledNow: ":user **Auto assign role** on user join is now **disabled**."
-        disabled: ":user **Auto assign role** on user join is currently **disabled**."
-        status: ":user The **auto assign role** is currently set to **:role**"
+            user: ":user Die **:role** Rolle ist in der Hierarchie höher positioniert als alle anderen Rollen. Du kannst keine Rollen hinzufügen, die einen höheren Ranking haben als du hast."
+            bot: ":user Die **:role** Rolle ist in der Hierarchie höher positioniert. Ich kann diese Rolle an User weder vergeben, noch abnehmen."
+        enabled: ":user Die **Auto Assign Role**, die vergeben wird, wenn ein User den Server beitritt wurde **aktiviert** und für folgende Rolle gesetzt: **:role**"
+        disabledNow: ":user **Auto Assign Role**, die vergeben wird, wenn ein User den Server beitritt wurde **deaktiviert**."
+        disabled: ":user **Auto Assign Role**, die vergeben wird, wenn ein User den Server beitritt ist derzeit **deaktiviert**."
+        status: ":user Die **Auto Assign Role** ist derzeit auf folgender Rolle gesetzt: **:role**"
 
     BanCommand:
-        mustMentionUser: "You must mention the user you want to ban."
-        higherRole: "You can't ban people with a higher, or the same role as yourself."
-        userHaveHigherRole: "I can't ban {0}, they have a higher role than me, if you want be to be able to ban the user, please readjust my role position to above {0} highest role."
-        success: "**:target** was permanently banned by :user for \":reason\""
-        failedToBan: "Failed to ban **:target** due to an error: :error"
+        mustMentionUser: "Du musst den User erwähnen, den du ausschließen möchtest."
+        higherRole: "Du kannst keinen User ausschließen, der die selbe oder eine höhere Rolle hat als du."
+        userHaveHigherRole: "Ich kann {0} nicht ausschließen, da dieser User eine höhere Rolle hat als ich. Wenn du dazu in der Lage sein möchtest, verschiebe meine Rollenposition zu der {0}. höchsten Rolle."
+        success: "**:target** wurde von :user permanent aus dem Server ausgeschlossen. Grund: \":reason\""
+        failedToBan: "Ausschließen des Users **:target** ist aufgrund eines Fehlers fehlgeschlagen: :error"
 
     CategoriesCommand:
-        title: "Command Category Status for #{0}"
-        status: ":emoteEnabled Enabled   :emoteDisabledInChannel Disabled in Channel   :emoteDisabledGlobally Disabled Globally"
+        title: "Befehls-Kategoriestatus für #{0}"
+        status: ":emoteEnabled Aktiviert   :emoteDisabledInChannel Im Channel deaktiviert   :emoteDisabledGlobally Global deaktiviert"
 
     ChangePrefixCommand:
-        missingArgument: "Missing argument `category`, you must specify the command category you want to change/reset the prefix for."
-        invalidCategory: "Invalid `category` given, there are no command categories that are called, or starts with `{0}`"
-        invalidPrefix: "Invalid command prefix given, `{0}` is not a valid command prefix, all prefixes must **NOT** contain spaces and be between 1 and 16 characters long."
+        missingArgument: "Fehlendes `Kategorie`-Argument. Du musst die Befehls-Kategorie angegeben, für die du den Prefix ändern oder zurücksetzen möchtest."
+        invalidCategory: "Ungültige `Kategorie` angegeben. Es existieren keine Befehls-Kategorien die mit `{0}` anfangen."
+        invalidPrefix: "Ungültigen Befehls-Prefix angegeben. `{0}` ist kein gültiger Befehls-Prefix. Alle Prefixe dürfen **KEINE** Leerzeichen beinhalten und zwischen 1-16 Zeichen lang sein."
         update:
-            global: "All commands in every command category now uses the `:prefix` prefix."
-            category: "All commands in the `:category` command category now uses the `:prefix` prefix."
+            global: "Alle Befehle jeder Befehls-Kategorie nutzen nun den`:prefix`-Prefix."
+            category: "Alle Befehle der `:category` Befehls-Kategorie nutzen nun den `:prefix`-Prefix."
         reset:
-            global: "All commands in every command category has been reset to use the `:prefix` prefix."
-            category: "All commands in the `:category` command category has been reset to use the `:prefix` prefix."
+            global: "Alle Befehle jeder Befehls-Kategorie wurden zurückgesetzt und nutzen nun den`:prefix`-Prefix."
+            category: "Alle Befehle der `:category` Befehls-Kategorie wurden zurückgesetzt und nutzen nun den `:prefix`-Prefix."
 
     DJLevelCommand:
-        title: "Current DJ Level: {0}"
-        footer: "Use \"{0} types\" to see a full list of the available DJ level types."
+        title: "Derzeitiges DJ-Level: {0}"
+        footer: "Nutze \"{0} types\" um eine Liste von verfügbaren DJ-Level einzusehen."
         types:
-            title: "DJ Level Types"
-            footer: "Use \"{0} <type>\" to change the DJ Level to the given type for the server."
-        invalidType: "`{0}` is not a valid `DJ Level` type, please use one of the following:\n`{1}`"
-        changedTo: "The `DJ Level` status has changed to **:type**.\n:info"
+            title: "DJ Level-Typen"
+            footer: "Nutze \"{0} <type>\" um den DJ-Level zum angegebenen Typen zu ändern."
+        invalidType: "`{0}` ist kein gültiges `DJ-Level`-Typ. Bitte nutze eines der folgenden:\n`{1}`"
+        changedTo: "Der `DJ-Level`-Status wurde geändert zu **:type**.\n:info"
         information:
-            all: "Anyone can run any music commands, even without the `DJ` role."
-            none: "No one can run any music commands without the `DJ` role."
-            normal: "Preventing people from using commands like playlists, volume control, and force skip without the `DJ` role, but still allowing people to use the play command without the role."
+            all: "Jeder kann alle Musikbefehle verwenden. Auch User ohne `DJ`-Rolle."
+            none: "Keiner kann ohne der `DJ`-Rolle Musikbefehle verwenden."
+            normal: "Verhindert, dass Leute ohne der `DJ`-Rolle Befehle wie das Kontrollieren der Playlists, Lautstärke und das sofortige Überspringen von Songs nutzen können."
 
     GoodbyeCommand:
-        note: "\nYou can customize the message by using `{0} [message]`"
-        message: "The `Goodbye` module has been **:status** for the :channel channel."
+        note: "\nDu kannst deine Nachricht individualisieren, indem du folgendes eingibst: `{0} [Nachricht]`"
+        message: "Das `Goodbye`-Modul wurde für den :channel-Channel **:status**."
         status:
-            enabled: "Enabled"
-            disabled: "Disabled"
+            enabled: "aktiviert"
+            disabled: "deaktiviert"
 
     GoodbyeMessageCommand:
-        moduleMustBeEnabled: "The `goodbye` module must be enabled to use this command, you can enable the `goodbye` module by using the `{0}` command."
-        message: "The embed option for goodbye messages has been **:status**\n:note"
-        changedToDefault: "The `Goodbye` module message has been set back to the default."
+        moduleMustBeEnabled: "Das `Goodbye` Modul muss altiviert sein um diesen Befehl nutzen zu können. Du kannst das `Goodbye` Modul aktivieren, indem du folgenden Befehl eingibst: `{0}`"
+        message: "Die eingebettete Version der Verabschiedungsnachrichten wurde **:status**\n:note"
+        changedToDefault: "Die `Goodbye` Modulnachricht wurde zurückgesetzt."
         status:
-            enabled: "enabled"
-            disabled: "disabled"
+            enabled: "aktiviert"
+            disabled: "deaktiviert"
         note:
-            embed: "Goodbye messages will now be sent using embedded messages with the color: {0}"
-            normal: "Now sending goodbye messages through normal messages."
+            embed: "Eingebettete Verabschiedungsnachrichten werden nun in folgender Farbe verschickt: {0}"
+            normal: "Eingebettete Verabschiedungsnachrichten werden nun wieder uneingebettes verschickt."
 
     IAmCommand:
-        notSelfAssignable: ":user Invalid role, **:role** is not a self-assignable role."
-        roleIsHigherInTheHierarchy: ":user The role is higher in the role hierarchy, I can't give/remove the **:role** role from anyone."
-        message: ":user You now have the **:role** role!"
+        notSelfAssignable: "Ungültige Rolle, :user. **:role** ist keine selbst-zuweisbare Rolle."
+        roleIsHigherInTheHierarchy: "Die Rolle ist höher in der Rangordnung, :user. Ich kann die **:role**-Rolle weder an jemanden vergeben, noch entfernen."
+        message: "Du hast nun die **:role**-Rolle, :user."
 
     IAmNotCommand:
-        notSelfAssignable: ":user Invalid role, **:role** is not a self-assignable role."
-        roleIsHigherInTheHierarchy: ":user The role is higher in the role hierarchy, I can't give/remove the **:role** role from anyone."
-        message: ":user You no longer have the **:role** role!"
+        notSelfAssignable: "Ungültige Rolle, :user. **:role** ist keine selbst-zuweisbare Rolle."
+        roleIsHigherInTheHierarchy: "Die Rolle ist höher in der Rangordnung, :user. Ich kann die **:role**-Rolle weder an jemanden vergeben, noch entfernen."
+        message: "Du hast nun nicht mehr die **:role**-Rolle, :user."
 
     KickCommand:
-        mustMentionUser: "You must mention the user you want to kick."
-        higherOrSameRole: "You can't kick people with a higher, or the same role as yourself."
-        cantKickUser: "I can't kick {0}, they have a higher role than me, if you want be to be able to kick the user, please readjust my role position to above {0} highest role."
-        success: "**:target** was kicked by :user for \":reason\""
-        error: "Failed to kick **:target** due to an error: :error"
+        mustMentionUser: "Du musst den User erwähnen, den du aus dem Server kicken möchtest."
+        higherOrSameRole: "Du kannst keinen User kicken, die einen höheren und gleichwertige Rolle haben als du."
+        cantKickUser: "Ich kann {0} nicht kicken, da dieser User eine höhere Rolle hat als ich. Wenn du in der Lage sein möchtest diesen User zu kicken, so bewege meine Rolle zu der {0} höchsten Rolle."
+        success: "**:target** wurde von :user aus dem Server gekickt. Grund: \":reason\""
+        error: "Beim Versuch **:target** aus dem Server zu kicken ist ein Fehler aufgetreten: :error"
 
     LanguageCommand:
-        invalidLanguageCode: "Invalid language code given, `{0}` is not a valid language code, or it is not yet supported!"
-        changed: "The servers language has been successfully been updated to use the :name language!"
-        note: "AvaIre supports several user-contributed languages that you can select with this command. Translations may not be 100% accurate or complete.\nTo select a language use `{0} <code>`"
+        invalidLanguageCode: "Ungültiger Locale angegeben. `{0}` ist kein gültiger Locale oder wird derzeit nicht unterstützt."
+        changed: "Die Serversprache wurde erfolgreich aktualisiert. Nun wird die :name Sprache verwendet."
+        note: "AvaIre supportet mehrere von Unterstützern bereitgestellten Sprachen die du mit diesem Befehl auswählen kannst. Die Sprachen könnten unvollständig sein, oder Fehler beinhalten.\nUm eine Sprache auszuwählen, so nutze `{0} <code>`."
 
     LevelAlertsCommand:
-        message: "`Levels up alerts` has been `:status` for the server.:note"
-        note: "\nAll level up messages will be logged into the <#{0}> channel."
+        message: "`Levels-Up Alerts` wurde für den Server `:status`.:note"
+        note: "\nAlle Level-Up Nachrichten werden im <#{0}> protokolliert."
         status:
-            enabled: "Enabled"
-            disabled: "Disabled"
+            enabled: "aktiviert"
+            disabled: "deaktiviert"
 
     LevelCommand:
-        message: "`Levels & Experience` has been `:status` for the server.:note"
-        note: "\nLevel alerts are current `{0}`, you can toggle them on or off with `{1}levelalerts`"
+        message: "`Levels & Experience` wurde für den Server `:status`.:note"
+        note: "\nLevel-Up Benachrichtigungen sind derzeit `{0}`. Du kannst sie umschalten, indem du folgenden Befehl nutzt: `{1}levelalerts`"
         status:
-            enabled: "Enabled"
-            disabled: "Disabled"
+            enabled: "aktiviert"
+            disabled: "deaktiviert"
 
     LevelHierarchyCommand:
-        invalidTypeGiven: "Invalid type given, to toggle level hierarchy on or off, you must use either `on` or `off`."
-        message: "Level up hierarchy has been `:status` for the server."
-        statusMessage: "Level up hierarchy is currently `:status`, you can toggle it on or off with `:command`"
+        invalidTypeGiven: "Ungültiger Typ angegeben. Um die Level-Rangordnung umzuschalten musst du noch eines der folgenden Wörter angeben: `on`, `off`"
+        message: "Die Level-Up Rangordnung wurde für den Server `:status`."
+        statusMessage: "Die Level-Up Rangordnung ist derzeit `:status`. Du kannst sie umschalten, indem du folgenden Befehl nutzt: `:command`"
         status:
-            enabled: "Enabled"
-            disabled: "Disabled"
+            enabled: "aktiviert"
+            disabled: "deaktiviert"
 
     LevelModifierCommand:
-        invalidNumberGiven: "Invalid modifier given, the modifier much be a positive percentage between `0.01%` and `500%`"
-        resetToDefault: "The level modifier has been reset back to using the default **:modifier** modifier."
-        changedTo: "The level and experience modifier have been change to **:modifier**."
-        statusMessage: "The server is currently using a **:modifier** modifier for levels and experience.\n\n**Required XP to reach some levels**\n"
+        invalidNumberGiven: "Ungültige Eingabe. Der Wert muss einen positiven Prozentsatz zwischen `0.01%` und `500%` beinhalten."
+        resetToDefault: "Der Level-Modifikator wurde zurückgesetzt und nutzt nun den **:modifier** Wert."
+        changedTo: "Der Level & Experience-Wert wurde zu **:modifier** geändert."
+        statusMessage: "Der Server nutzt momentan einen **:modifier** Wert für Levels & Experience.\n\n**Benötigte XP um Levels zu erreichen.**\n"
         level: "Level {0}"
 
     ListAliasesCommand:
-        noAliases: "The server doesn't have any aliases right now, you can create one using the\n`{0}alias <alias> <command>` command"
-        listAliases: "List of Aliases ({0})"
+        noAliases: "Der Server hat momentan keine Alias. Du kannst einen mit dem\n`{0}alias <alias> <command>`-Befehl erstellen."
+        listAliases: "Liste von Alias: ({0})"
 
     ListLevelRolesCommand:
-        noLevelRoles: "There are currently no level roles, an administrator can add roles to the level up table using the `:command` command"
-        listRoles: "List of Level Roles ({0})"
+        noLevelRoles: "Derzeit existieren keine Level-Rollen. Ein Administrator kann Rollen zum Level Up-Table festlegen, in dem dieser den`:command`-Befehl nutzt."
+        listRoles: "Liste von Level-Rollen:({0})"
 
     ListSelfAssignableRolesCommand:
-        noSelfAssignableRoles: "There are currently no self-assignable roles for this server."
-        title: "There are {0} self-assignable roles"
+        noSelfAssignableRoles: "Derzeit sind keine selbst-zuweisbaren Rollen festgelegt."
+        title: "Es existieren {0} selbst-zuweisbare Rollen"
 
     ModlogCommand:
-        mustMentionTextChannel: "Invalid channel argument given, you must mention a valid text channel"
-        cantSendEmbedMessages: "I can't send embed messages in the specified channel, please change my permission level for the {0} channel if you want to use it as a modlog channel."
-        enable: ":user **Server Modlogging** is now enabled and set to the :modlog channel."
-        enabled: ":user **Server Modlogging** is currently enabled and set to the :modlog channel."
-        disable: ":user **Server Modlogging** is now disabled for the server."
-        disabled: ":user **Server Modlogging** is currently disabled."
+        mustMentionTextChannel: "Ungültiger Channel-Argument angegeben. Du musst einen gültigen Textchannel erwähnen."
+        cantSendEmbedMessages: "Ich kann keine eingebetteten Nachrichten in dem angegeben Channel versenden. Prüfe die Berechtigungen für die Rollen für den {0}-Channel, wenn du es als Channel nutzt möchtest, um den Server zu protokollieren."
+        enable: ":user **Server Modlogging** ist nun aktiviert und für den :modlog Channel gesetzt."
+        enabled: ":user **Server Modlogging** ist derzeit aktiviert und für den :modlog Channel gesetzt."
+        disable: ":user **Server Modlogging** ist nun für den Server deaktiviert."
+        disabled: ":user **Server Modlogging** ist derzeit deaktiviert."
 
     ModlogHistoryCommand:
-        mustMentionUser: "You must mention a valid `user` you want to display the modlog history for."
-        noHistory: "No modlog history was found for this user."
-        title: "{0}#{1} History ({2})"
-        entry: "**Case ID #{0}** | {1}\n\t{2}"
-        noReasonGiven: "No reason was given."
+        mustMentionUser: "Du musst einen gültigen `User` erwähnen, bei dem du dir den Modlog anschauen möchtest."
+        noHistory: "Keinen Modlog für diesen User. Scheint unauffällig gewesen zu sein."
+        title: "{0}#{1} Verlauf ({2})"
+        entry: "**Fall-ID #{0}** | {1}\n\t{2}"
+        noReasonGiven: "Keine Begründung angegeben."
 
     ModlogPardonCommand:
-        modlogNotEnabled: "No modlog channel has been set, you must set a modlog channel to use this command."
-        invalidCaseId: "Invalid case id given, the ID must be greater than 0 and less than {0}"
-        couldntFindCaseWithId: "Couldn't find a modlog case with an ID of {0} where you were the moderator, are you sure you're the moderator for the given modlog case?"
-        caseAlreadyPardoned: "The modlog case ID with an ID of `{0}` is already pardoned."
-        notAPunishment: "The modlog case ID with an ID of `{0}` is not a punishment!"
-        message: "The modlog case with an ID of **:case** has been been pardoned successfully."
+        modlogNotEnabled: "Keinen Modlog-Channel gesetzt. Du musst zuerst einen Modlog-Channel festlegen, bevor du diesen Befehl nutzen kannst."
+        invalidCaseId: "Ungültige Fall-ID angegeben. Die ID muss höher als 0 und niedriger als {0} sein."
+        couldntFindCaseWithId: "Es konnte kein Log mit der Fall-ID {0} aufgefunden werden. Bist du der Moderator, der für diese Fall-ID zuständig ist?"
+        caseAlreadyPardoned: "Der Fall mit der ID `{0}` wurde bereits entfernt."
+        notAPunishment: "Der Fall mit der ID `{0}` ist keine Bestrafung."
+        message: "Der Fall mit der ID **:case** wurde erfolgreich entfernt."
 
     ModlogReasonCommand:
-        modlogNotEnabled: "No modlog channel has been set, you must set a modlog channel to use this command."
-        invalidCaseId: "Invalid case id given, the ID must be greater than 0 and less than {0}"
-        couldntFindCaseWithId: "Couldn't find a modlog case with an ID of {0} where you were the moderator, are you sure you're the moderator for the given modlog case?"
-        couldntFindModlogChannel: "Couldn't find the modlog channel, was it removed?"
-        success: "The modlog case with an ID of **:id** was successfully edited and set to the reason of `:reason`"
-        modlogCaseWasPardoned: "The modlog case with an ID of `{0}` has been pardoned, you can't edit pardoned modlog cases."
-        failedToEdit: "Failed to edit modlog message: {0}"
-        failedToFindMessage: "Couldn't find the message for the given modlog case, was it deleted?"
+        modlogNotEnabled: "Keinen Modlog-Channel gesetzt. Du musst zuerst einen Modlog-Channel festlegen, bevor du diesen Befehl nutzen kannst."
+        invalidCaseId: "Ungültige Fall-ID angegeben. Die ID muss höher als 0 und niedriger als {0} sein."
+        couldntFindCaseWithId: "Es konnte kein Log mit der Fall-ID {0} aufgefunden werden. Bist du der Moderator, der für diese Fall-ID zuständig ist?"
+        couldntFindModlogChannel: "Der Modlog-Channel kann nicht aufgefunden werden. Wurde dieser entfernt?"
+        success: "Der Fall mit der ID **:id** wurde erfolgreich editieren und mit folgender Begründung versehen: `:reason`"
+        modlogCaseWasPardoned: "Der Fall mit der ID `{0}` wurde enfernt. Du kannst keine entfernen Fälle editieren."
+        failedToEdit: "Editieren der Modlog-Nachricht fehlgeschlagen: {0}"
+        failedToFindMessage: "Die Nachricht für den angegebenen Modlog-Fall konnte nicht aufgefunden werden. Wurde dieser entfernt?"
 
     NSFWCommand:
-        invalidChannelOrStatus: "Invalid channel or status type given!"
-        notValidChannel: "`{0}` is not a valid text channel!"
-        notValidStatus: "`{0}` is not a valid status type, you must either pass `on` or `off`."
-        message: "The :textChannel channel currently has NSFW **:status**!"
-        updated: "The NSFW status for :textChannel has been changed to **:status**"
+        invalidChannelOrStatus: "Ungültiger Channel oder Status-Typ angegeben."
+        notValidChannel: "`{0}` ist kein gültiger Textchannel."
+        notValidStatus: "`{0}` ist kein gültiger Status-Typ. Entscheide darüber, ob du in ein- oder ausschalten willst indem du jeweils eines dieser Input's nutzt: `on` oder `off`"
+        message: "Der :textChannel Channel ist derzeit für NSFW **:status**!"
+        updated: "Der NSFW Status für den :textChannel Channel wurde **:status**."
         status:
-            enabled: "Enabled"
-            disabled: "Disabled"
+            enabled: "aktiviert"
+            disabled: "deaktiviert"
 
     PurgeCommand:
-        messagesDeletedIn: "{0} messages has been deleted in the {1} channel."
-        messagesDeletedBy: "{0} messages sent by {1} has been deleted in the {2} channel."
-        success: ":white_check_mark: `:number` messages has been deleted!"
-        successBy: ":white_check_mark: `:number` messages has been deleted from :users"
-        nothingToDelete: ":x: Nothing to delete, I am unable to delete messages older than 14 days."
-        nothingToDeleteBy: ":x: Nothing to delete, I am unable to find any messages by :users in the last **:number** messages that was sent within the last 14 days."
+        messagesDeletedIn: "{0} Nachrichten wurden aus dem {1} Channel entfernt."
+        messagesDeletedBy: "{0} Nachrichten, die von {1} versendet wurden, wurden aus dem {2} Channel entfernt."
+        success: ":white_check_mark: `:number` Nachtichten wurden erfolgreich entfernt."
+        successBy: ":white_check_mark: `:number` Nachrichten von :users wurden erfolgreich entfernt."
+        nothingToDelete: ":x: Nicht's zum Entfernen vorhanden. Ich bin nicht dazu in der Lage Nachrichten die älter als 14 Tage sind zu entfernen. #BlameDiscord"
+        nothingToDeleteBy: ":x: Nicht's zum Entfernen vorhanden. Ich bin nicht dazu in der Lage **:number** Nachrichten von :users zu entfernen, da diese älter als 14 Tage sind. #BlameDiscord"
 
     RemoveLevelRoleCommand:
-        noRolesCalled: ":user There are no role called **:role** on the level up table."
-        noRolesLinked: ":user There are no roles linked to level **:role** on the level up table."
-        notALevelRole: ":user Invalid role, the `:name` role is not on the level up table."
-        message: "Role **:role** role has been removed from the level-up role list.\nThe server now have `:slots` level role slots available."
+        noRolesCalled: ":user Es existiert keine Rolle namens **:role** im Level Up-Table."
+        noRolesLinked: ":user Es existieren keine Rollen verlinkt zum Level **:role** im Level Up-Table."
+        notALevelRole: ":user Ungültige Rolle, die `:name` Rolle ist nicht auf dem Level Up-Table."
+        message: "Die **:role** Rolle wurde erfolgreich aus der Level-Up Rollenliste entfernt.\nDer Server hat noch `:slots` weitere verfügbare Levelrollen-Slots verfügbar."
 
     RemoveSelfAssignableRoleCommand:
-        message: "Role **:role** role has been removed from the self-assignable list.\nThe server has `:slots` more self-assignable roles slots available."
+        message: "Die **:role** Rolle wurde erfolgreich aus der Liste der selbst-zuweisbaren Rollen enfernt.\nDer Server hat noch `:slots` weitere selbst-zuweisbare Rollenslots verfügbar."
 
     SlowmodeCommand:
-        missingArgument: "Missing argument, you must either pass in the `seconds` value to enable slowmode for this or the mentioned channel, or `off` to disable it."
-        mustBeValidNumbers: "Invalid slowmode value given, you must provide a number between **1** and **120**."
-        message: "Slowmode has been **enabled** for the :textChannel channel.\nThe channel now allows **:slowmode** messages every second per-user."
-        disabled: "Successfully **disabled** slowmode for the :textChannel channel."
-        invalidTextChannel: "`{0}` is not a not a valid text channel, you must target a text channel to setup slowmode."
-        failedToUpdate: "Failed to update the :textChannel channel, error: :message"
+        missingArgument: "Fehlendes Argument. Du musst den Wert in `Sekunden` angegeben. Um diesen zu entfernen, so schreibe `off` hinter dem Befehl."
+        mustBeValidNumbers: "Ungültiger Slowmode-Wert angegeben. Du musst eine Zahl zwischen **1** und **120** angeben."
+        message: "Der Slowmode wurde für den :textChannel Channel **aktiviert**.\nDer Channel erlaubt nun **:slowmode** Nachrichten jede Sekunde pro User."
+        disabled: "Der Slowmode wurden erfolgreich für den :textChannel Channel deaktiviert."
+        invalidTextChannel: "`{0}` ist kein gültiger Textchannel. Du musst einen Textchannel angeben, um einen Slowmode einzurichten."
+        failedToUpdate: "Das Aktualisieren des :textChannel Channels ist fehlgeschlagen. Fehlermeldung: :message"
 
     ToggleCategoryCommand:
-        invalidCategory: "Invalid category given, `{0}` is not a valid category"
-        missingArgumentType: "Missing argument `channel/global`, you must include the channel or specify that the command should be run globally."
-        invalidChannelOrGlobalString: "Invalid channel or global string given, you must either mention the channel you want to affect, or write `global` to affect all the channels at the same time."
-        cantEnabledCategory: "Whoops, you can't enable the **:category** command category while it is disabled globally.\nYou can use the command below to enable the category for all channels.\n`:command :category global on`"
+        invalidCategory: "Ungültige Kategorie angegeben. `{0}` ist keine gültige Kategorie."
+        missingArgumentType: "Fehlendes `channel/global` Argument. Du musst den Channel angeben oder angeben ob dieser Befehl global ausgeführt werden soll."
+        invalidChannelOrGlobalString: "Ungültiger Channel oder Global-Inputwert angegeben. Du musst den dazugehörigen Channel angeben, oder `global` schreiben um alle Channels gleichzeitig auszuwählen und den Befehl für alle Channels auszuführen."
+        cantEnabledCategory: "Whoops, du kannst die **:category**-Befehls-Kategorie nicht aktivieren, wenn es global deaktiviert ist.\nDu kannst den Befehl unten nutzen, um die Kategorie wieder für alle Channels zu aktivieren.\n`:command :category global on`"
         update:
-            globally: "The `:category` command category has been `:status` for **all channels**."
-            category: "The `:category` command category has been `:status` in :channel."
+            globally: "Die `:category` Befehls-Kategorie wurde für **alle Channels** `:status`."
+            category: "Die `:category` Befehls-Kategorie wurde für den :channel Channel `:status`"
         status:
-            enabled: "Enabled"
-            disabled: "Disabled"
+            enabled: "aktiviert"
+            disabled: "deaktiviert"
 
     UnbanCommand:
-        success: ':target has been successfully unbanned from the server because ":reason".'
-        failedToUnban: "Failed to unban :target due to an error, message: :error"
-        noUserIsBanned: "No user with an ID of `:id` is currently banned from the server."
-        invalidUserIdGiven: "Invalid `user id` was given, the `user id` must be a numeric string of 18 or more numbers long."
+        success: ':target wurde erfolgreich auf dem Server entbannt. Grund: ":reason".'
+        failedToUnban: "Beim Versuch :target zu Entbannen ist ein Fehler aufgetreten. Fehlermeldung: :error"
+        noUserIsBanned: "Kein User mit der ID `:id` ist auf dem Server verbannt."
+        invalidUserIdGiven: "Ungültige `User-ID` angegeben. Die `User-ID` muss eine 18-stellige oder längere Nummer sein."
 
     UserAvatarCommand:
-        noUserFound: "I found no users with the name or ID of `{0}`"
+        noUserFound: "Ich konnte keine Users mit dem Namen oder der ID`{0}` auffinden."
         title: "{0}#{1}'s Avatar"
 
     VoiceKickCommand:
-        mustMentionUser: "You must mention the user you want to kick."
-        sameOrHigherRole: "You can't kick people with a higher, or the same role as yourself."
-        notConnected: "You can't voice kick people who are not connected to a voice channel."
-        message: "**:target** was kicked from **:voiceChannel** by :user for \":reason\""
+        mustMentionUser: "Du musst den User angeben, den du aus dem Voice-Channel kicken möchtest."
+        sameOrHigherRole: "Ich kann keinen User aus dem Voice-Channel kicken, der die selbe oder eine höhere Rolle hat als du."
+        notConnected: "Du kannst keine User aus Voice-Channel kicken, wenn sie in keinem sind. Klingt logisch, oder?"
+        message: "**:target** wurde von :user erfolgreich aus dem **:voiceChannel** gekickt. Grund: \":reason\""
 
     VoteOptCommand:
-        invalidArgument: "Invalid argument, you must either parse `in` or `out` to opt in or out of vote messages."
-        message: "You have now opt-:type of getting vote messages."
+        invalidArgument: "Ungültiger Argument. Du musst entweder `in` oder `out` angegeben, um Voting-Nachrichten zu aktivieren oder zu deaktivieren."
+        message: "Du hast nun den opt-:type beim Erhalten von Vote-Nachrichten."
         type:
             in: "in"
             out: "out"
 
     WarnCommand:
-        requiresModlogIsEnabled: "This command requires a modlog channel to be set, a modlog channel can be set using the `{0}modlog` command."
-        mustMentionUse: "You must mention a user you want warn."
-        warnBots: "You can't warn bots!"
-        failedToLogWarning: "Failed to log warning to the set modlog channel, does the modlog channel still exists, can I still send messages in the channel?"
-        message: ":target has been **warned** for \":reason\""
-        failedToSendDM: "Failed to DM the user with the warning, they most likely have their private settings set to disable all DMs from this server."
+        requiresModlogIsEnabled: "Dieser Befehl setzt einen Modlog-Channel voraus. Du kannst einen mit dem `{0}modlog` Befehl festlegen.."
+        mustMentionUse: "Du musst den User erwähnen, den du verwarnen möchtest."
+        warnBots: "Du kannst keine Bots verwarnen."
+        failedToLogWarning: "Beim Versuch die Verwarnung zu protokollieren ist ein Fehler aufgetreten. Exisitert der Modlog-Channel noch und bin ich noch in der Lage in diesen zu schreiben?"
+        message: ":target wurde **verwarnt**. Grund: \":reason\""
+        failedToSendDM: "Beim Versuch den User privat mit der Verwarnung zu konfrontieren ist ein Fehler aufgetreten. Der User akzeptiert höchstwahrscheinlich keine Nachrichten von Leuten, die nicht in der Freundesliste sind."
 
     WelcomeCommand:
-        note: "\nYou can customize the message by using `{0} [message]`"
-        message: "The `Welcome` module has been **:status** for the :channel channel.:note"
+        note: "\nDu kannst die Nachricht selbst festlegen, indem du folgenden Befehl nutzt: `{0} [Nachricht]`"
+        message: "Der `Welcome`-Modul wurde für den :channel Channel **:status**.\n:note"
         status:
-            enabled: "Enabled"
-            disabled: "Disabled"
+            enabled: "aktiviert"
+            disabled: "deaktiviert"
 
     WelcomeMessageCommand:
-        moduleMustBeEnabled: "The `welcome` module must be enabled to use this command, you can enable the `welcome` module by using the `{0}welcome` command."
-        message: "The embed option for welcome messages has been **:status**\n:note"
-        changedToDefault: "The `Welcome` module message has been set back to the default."
+        moduleMustBeEnabled: "Der `Welcome`-Modul muss aktiviert sein, um diesen Befehl nutzen zu können. Du kannst den `Welcome`-Modul aktivieren, indem du den `{0}welcome` Befehl nutzt."
+        message: "Die eingebettete Option für Willkommensnachrichten wurde **:status**\n:note"
+        changedToDefault: "Der `Welcome`-Modul wurde zurückgesetzt."
         status:
-            enabled: "enabled"
-            disabled: "disabled"
+            enabled: "aktiviert"
+            disabled: "deaktiviert"
         note:
-            embed: "Welcome messages will now be sent using embedded messages with the color: {0}"
-            normal: "Now sending welcome messages through normal messages."
+            embed: "Willkommensnachrichten werden nun eingebettet mit folgender Farbe verschickt: {0}"
+            normal: "Willkommensnachrichten werden nun als normale Nachricht verschickt."
 
 fun:
     DiceCommand:
@@ -321,8 +321,8 @@ fun:
         resultedIn: '**{0}** ergab folgendes Ergebnis: **{1}**  [{2}]'
 
     CoinflipCommand:
-        heads: "You got Heads"
-        tails: "You got Tails"
+        heads: "Kopf!"
+        tails: "Zahl!"
 
     EightBallCommand:
         mustIncludeQuestion: 'Du musst eine Frage für 8ball hinzufügen.'
@@ -355,9 +355,9 @@ fun:
         listItem: '`{0}` => `{1}`'
 
     RandomCatCommand:
-        tooManyAttempts: "Too many attempts was made to the cat API, try again in a minute, or ask a bot administrator to get an API key at [meow.senither.com](https://meow.senither.com/) to allow for more requests."
-        notFound: "I couldn't find any cat picture D: Try again, maybe they will show up now?"
-        somethingWentWrong: "Something just went horribly wrong, please tell a bot administrator so they can look into this."
+        tooManyAttempts: "Zu viele Versuche wurden zur Cat API getätigt. Warte eine Minute und versuche es erneut. Andernfalls, kontaktiere einen Bot-Administrator um die API [meow.senither.com](https://meow.senither.com/) zu erhalten, um mehr Anfragen zu ermöglichen."
+        notFound: "Ich konnte kein Katzenbild finden! Versuch es doch erneut. Vielleicht siehst du jetzt eins."
+        somethingWentWrong: "Etwas Unartiges ist passiert. Kontakiere einen Bot-Administrator, der sich das anschauen kann."
 
 
     ReverseCommand:
@@ -372,9 +372,9 @@ fun:
         rolledNumber: ':user hat eine **:number** zwischen einer Zahl von :min - :max gewürfelt.'
 
     UndertaleTextBoxCommand:
-        noArgumentsGiven: "Missing argument, you must either provide `list` to see a list of characters you can choose from, or to generate an image, `character` or a valid image `url` to build the image for."
-        failedToGenerateImage: "Failed to generate the the image, are you sure you provided a correct image URL or character name?"
-        title: "Undertale Character List"
+        noArgumentsGiven: "Fehlendes Argument. Du musst `list` angeben, um eine Liste von Charakteren einzusehen, von denen du was aussuchen kannst, um ein Bild zu generieren `character`, oder ein bereits verfügbares Bild `url` um dein Bild damit zu erstellen."
+        failedToGenerateImage: "Beim Versuch das Bild zu generieren ist ein Fehler aufgetreten. Bist du dir sicher, dass du eine richtige URL oder einen richtigen Charakternamen ausgewählt hast?"
+        title: "Undertale Charakteren-Liste"
 
 help:
     HelpCommand:
@@ -404,7 +404,7 @@ interaction:
     HugCommand: 'umarmt'
     KillCommand: 'möchte jemanden umbringen und zwar'
     KissCommand: 'küsst'
-    MarryCommand: 'wants to marry'
+    MarryCommand: 'möchte jemanden heiraten und zwar'
     MeowCommand: 'miaut zu'
     PanCommand: '**{0}** hat gerade **{1}** mit einer Bratpfanne erschlagen!'
     PatCommand: 'streichelt'
@@ -424,12 +424,12 @@ music:
         nowPlayingPlaylist: 'Die **:playlistName** Playlist wurde zur Warteschlange hinzugefügt. Diese beinhaltet `:playlistSize` Songs!'
         nowPlaying: 'Spielt jetzt: [:title](:link)\n`:duration` mit einer Lautstärke von `:volume%` - Angefragt von :requester'
         queueHasEnded: 'Die Warteschlange ist leer. Voicechannel wird verlassen.'
-        endedDueToInactivity: "The music has ended due to inactivity."
-        endedDueToWebSocketClose: "The audio web socket was forcefully closed, stopping the music."
+        endedDueToInactivity: "Die Musik endete aufgrund von Inaktivität."
+        endedDueToWebSocketClose: "Der Audio Websocket wurde erzwungen geschlossen. Die Musik wurde gestoppt."
         noMatchFound: "Ich habe nicht's mit der folgenden Eingabe gefunden: `{0}`"
         trackLoadFailed: "Ich war nicht in der Lage folgenden Titel in die Warteschlange zu setzen: `{0}`"
         musicChannel: "Du kannst Musik-Befehle nur im :channel Channel nutzen."
-        resumeMusic: "Resuming music, please wait a few seconds while everything is loaded back for you."
+        resumeMusic: "Musik wird fortgesetzt. Bitte warte einige Sekunden bis alles wieder für dich geladen ist."
 
     ClearQueueCommand:
         error: "Nicht's zum Leeren vorhanden. Anfragen von Musik ist vorausgesetzt. Tue dies bitte zuerst mit folgendem Befehl: `{0}play`"
@@ -453,16 +453,16 @@ music:
             notValidType: "`{0}` ist kein gültiger {1} Channel. Du musst einen gültigen Voicechannel angeben, den du als Musikchannel nutzen möchtest."
 
     MusicMessagesCommand:
-        message: "Music messages are currently **:status**.\n\n**Info**\n:info"
-        updated: "The music messages has successfully been **:status**."
-        error: "Invalid argument given, the status must be either `on` or `off` to change the music messages status."
-        footer: "To change the music messages, use {0}"
+        message: "Musiknachrichten sind derzeit **:status**.\n\n**Info**\n:info"
+        updated: "Die Musiknachrichten wurden erfolgreich **:status**."
+        error: "Ungültiges Argument angegeben. Der Status muss entweder `on` oder `off` betragen."
+        footer: "Um die Musiknachrichten zu ändern, so nutze {0}."
         status:
-            disabled: "disabled"
-            enabled: "enabled"
+            disabled: "deaktiviert"
+            enabled: "aktiviert"
         info:
-            disabled: "When music messages are disabled, the `Now Playing` messages will no longer be sent, and other music related commands will automatically delete themselves after awhile."
-            enabled: "When music messages are enabled, the `Now Playing` messages will stay, even after the song being played changes, some related messages will also stay.\n**Note:** Most music commands will still be auto deleted after awhile."
+            disabled: "Wenn Musiknachrichten deaktiviert sind, werden Nachrichten, wenn ein neuer Song abgespielt wird nicht mehr versenden. Andere Befehle die mit der Musikkategorie zu tun haben werden nach einer Weile entfernt."
+            enabled: "Wenn Musiknachrichten aktiviert sind, werden Nachrichten, wenn ein neuer Song angespielt angezeigt angezeigt. Auch, wenn der Song bereits vorbei ist un der nächste beginnt. Andere Befehle die mit der Musikkategorie zu tun haben bleiben auch erhalten.\n**Note:** Die meisten Musikbefehle werden dennoch nach einer Zeit entfernt."
 
 
     PauseCommand:
@@ -566,10 +566,10 @@ music:
         success: 'Die Musik-Wiedergabe wurde gestoppt und **:number** Song[s] wurden von der Warteschlange entfernt.'
 
     VoiceFixCommand:
-        message: "**Swapping to :swap region:** {0}\n**Swapping back to :original region:** {1}"
-        starting: "Starting swapping process...\n\n"
-        finished: "\n\nDone! Music should now work again!"
-        error: "Failed to finish the swap process, error: {0}"
+        message: "**Wechselt zur :swap Region:** {0}\n**Wechselt zurück zur :original Region:** {1}"
+        starting: "Starte Swapping-Prozess...\n\n"
+        finished: "\n\nFertig! Die Musik sollte nun wieder zu hören sein."
+        error: "Beim Versuch den Welchel der Regionen durchzuführen ist ein Fehler aufgetreten. Fehlermeldung: {0}"
 
     VolumeCommand:
         error: "Derzeit wird nicht's abgespielt. Anfragen von Musik ist vorausgesetzt. Tue dies bitte zuerst mit folgendem Befehl: `{0}play`"
@@ -600,7 +600,7 @@ search:
         untitled: 'Kein Titel'
         example: 'Beispiel'
         results: ':percentage vom Prozentsatz der Leute, die diesen Beitrag bewertet haben mügen das. :up👍 :down👎'
-        nsfwDisabled: "The `Urban Dictionary` command can only be used in NSFW channels, as the content of the command may not be appreciate for all."
+        nsfwDisabled: "Der `Urban Dictionary`-Befehl kann nur in NSFW-Channels verwendet werden, da viele Inhalte aus der Website nicht für alle bestimmt sind."
 
     XKCDCommand:
         number: 'XKCD Nummer #{0}'
@@ -644,12 +644,12 @@ utility:
         title: 'Globale Erfahrungs-Bestenliste'
         yourRank: 'Your rank'
         loading:
-            title: 'Loading global leaderboard'
-            message: 'Please wait a second while the global leaderboard is loaded.'
+            title: 'Lade globale Bestenliste'
+            message: 'Warte einen Moment, bis die Bestenliste geladen ist.'
 
     InviteCommand:
-        message: 'Du kannst mich zu deinem Server einladen, indem du hier [hier klickst](:oauth) oder den Link darunter nutzst:\n\n:oauth\n\n:note'
-        note: '**Note:**\nIf you would like try out newly developed features before everyone else, you could also try the **Cutting Edge** bot which gets new features added almost daily, you can invite that bot by [clicking here](:edgeInvite) or using the link below:\n\n:edgeInvite'
+        message: 'Du kannst mich zu deinem Server einladen, indem du hier [hier klickst](:oauth) oder den Link darunter nutzst:'
+        note: '**Info:**\nWenn du unseren neuen Developer-Features bevor allen anderen haben möchtest solltest du dir den **Cutting Edge** Bot anschauen, der allzu jeden Tag neue Dinge bereitstellt. Lad den Bot ein, indem du [hier klickst](:edgeInvite) oder den Link unten nutzt:\n\n:edgeInvite'
 
     IPInfoCommand:
         hostname: 'Hostname'
@@ -660,7 +660,7 @@ utility:
         noData: 'Derzeit existieren keine Daten von der Bestenliste. Versuche es später erneut.'
         line: '`:num` **:username** befindet sich auf Level **:level** mit **:experience** XP.'
         title: '{0} Bestenliste'
-        yourRank: 'Your rank'
+        yourRank: 'Dein Rang'
 
     PingCommand:
         message: 'Pong! Die benötigte Zeit beträgt :ping Millisekunden [:rating] Websocket Heartbeat beträgt :heartbeat Millisekunden.'
@@ -685,7 +685,7 @@ utility:
         fields:
             rank: 'Rang'
             level: 'Level'
-            total: '{0} (Total: {1})'
+            total: '{0} [Insgesamt: {1}]'
             experience: 'Erfahrungspunkte'
             experienceToNext: 'Erfahrungspunkte benötigt für das nächste Level'
             youNeedMoreXpToLevelUp: '[{0}] {1}{2}\n\t\t\t\t\t\t\tDu benötigst {3} weitere XP für einen Level Up.'
