@@ -12,6 +12,7 @@ import com.avairebot.database.collection.DataRow;
 import com.avairebot.database.controllers.PlayerController;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.database.transformers.PlayerTransformer;
+import com.avairebot.imagegen.RankBackgrounds;
 import com.avairebot.imagegen.renders.RankBackgroundRender;
 import com.avairebot.utilities.NumberUtil;
 import net.dv8tion.jda.core.MessageBuilder;
@@ -95,6 +96,7 @@ public class TestCommand extends Command {
                     .setGlobalExperience(NumberUtil.formatNicely(properties.getTotal()))
                     .setServerExperience(NumberUtil.formatNicely(experience - 100))
                     .setPercentage(Math.min(100D, Math.max(0D, percentage)))
+                    .setBackground(RankBackgrounds.PIKACHU)
                     .renderToBytes();
 
                 if (image == null) {
@@ -140,7 +142,6 @@ public class TestCommand extends Command {
             }
         });
     }
-
 
     private String getScore(CommandMessage context, String userId) throws SQLException {
         if (avaire.getCache().getAdapter(CacheType.MEMORY).has(cacheToken + context.getGuild().getId())) {

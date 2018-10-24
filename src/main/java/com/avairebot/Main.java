@@ -24,6 +24,7 @@ package com.avairebot;
 import ch.qos.logback.classic.util.ContextInitializer;
 import com.avairebot.chat.ConsoleColor;
 import com.avairebot.exceptions.InvalidApplicationEnvironmentException;
+import com.avairebot.imagegen.RankBackgrounds;
 import com.avairebot.imagegen.renders.RankBackgroundRender;
 import com.avairebot.shared.ExitCodes;
 import org.apache.commons.cli.*;
@@ -77,6 +78,7 @@ public class Main {
                     .setGlobalExperience("397,421")
                     .setServerExperience("17,679")
                     .setPercentage(84.8D)
+                    .setBackground(RankBackgrounds.PIKACHU)
                     .render();
 
                 ImageIO.write(rankBackgroundRender.render(), "png", new File("test-output.png"));

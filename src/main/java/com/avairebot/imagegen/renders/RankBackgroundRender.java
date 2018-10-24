@@ -23,9 +23,11 @@ package com.avairebot.imagegen.renders;
 
 import com.avairebot.contracts.imagegen.Renderer;
 import com.avairebot.imagegen.Fonts;
+import com.avairebot.imagegen.RankBackgrounds;
 import net.dv8tion.jda.core.entities.User;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -43,6 +45,9 @@ public class RankBackgroundRender extends Renderer {
     private final String discriminator;
     private final String avatarUrl;
 
+    @Nullable
+    private RankBackgrounds background;
+
     private String rank = null;
     private String level = null;
     private String currentXpInLevel = null;
@@ -59,6 +64,11 @@ public class RankBackgroundRender extends Renderer {
         this.username = username;
         this.discriminator = discriminator;
         this.avatarUrl = avatarUrl;
+    }
+
+    public RankBackgroundRender setBackground(RankBackgrounds background) {
+        this.background = background;
+        return this;
     }
 
     public RankBackgroundRender setRank(String rank) {
@@ -115,7 +125,7 @@ public class RankBackgroundRender extends Renderer {
 
         final String xpBarText = String.format("%s out of %s xp", currentXpInLevel, totalXpInLevel);
 
-        BufferedImage backgroundImage = loadAndBuildBackground(true);
+        BufferedImage backgroundImage = loadAndBuildBackground();
 
         // Creates our graphics and prepares it for use.
         Graphics2D graphics = backgroundImage.createGraphics();
@@ -132,10 +142,10 @@ public class RankBackgroundRender extends Renderer {
         return backgroundImage;
     }
 
-    private BufferedImage loadAndBuildBackground(boolean useBackground) throws IOException {
-        if (useBackground) {
+    private BufferedImage loadAndBuildBackground() throws IOException {
+        if (background != null) {
             return resize(
-                ImageIO.read(Renderer.class.getClassLoader().getResourceAsStream("backgrounds/test.jpg")),
+                ImageIO.read(Renderer.class.getClassLoader().getResourceAsStream("backgrounds/" + background.getFile())),
                 200, 600
             );
         }
