@@ -24,12 +24,14 @@ package com.avairebot.commands.administration;
 import com.avairebot.AvaIre;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.BanableCommand;
+import com.avairebot.contracts.commands.CacheFingerprint;
 import com.avairebot.contracts.commands.Command;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+@CacheFingerprint(name = "banable-user-command")
 public class BanCommand extends BanableCommand {
 
     public BanCommand(AvaIre avaire) {
@@ -61,7 +63,10 @@ public class BanCommand extends BanableCommand {
 
     @Override
     public List<Class<? extends Command>> getRelations() {
-        return Collections.singletonList(SoftBanCommand.class);
+        return Arrays.asList(
+            SoftBanCommand.class,
+            UnbanCommand.class
+        );
     }
 
     @Override
@@ -71,7 +76,10 @@ public class BanCommand extends BanableCommand {
 
     @Override
     public List<String> getMiddleware() {
-        return Collections.singletonList("require:all,general.ban_members");
+        return Arrays.asList(
+            "require:all,general.ban_members",
+            "throttle:user,1,4"
+        );
     }
 
     @Override

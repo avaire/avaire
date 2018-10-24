@@ -30,7 +30,9 @@ import com.avairebot.utilities.NumberUtil;
 import lavalink.client.io.LavalinkLoadBalancer;
 import lavalink.client.io.LavalinkSocket;
 import lavalink.client.io.RemoteStats;
+import net.dv8tion.jda.core.MessageBuilder;
 
+import javax.annotation.Nonnull;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -61,6 +63,7 @@ public class LavalinkCommand extends SystemCommand {
             "`:command list` - List all Lavalink nodes",
             "`:command show <node>` - Shows in-depth information about the node",
             "`:command remove <name> ` - Removes the node from Lavalink",
+            "`:command overview` - Displays a short overview over all the nodes",
             "`:command add <name> <url> <pass>` - Adds the node to Lavalink"
         );
     }
@@ -106,10 +109,61 @@ public class LavalinkCommand extends SystemCommand {
             case "info":
                 return showNode(context, args);
 
+            case "stats":
+            case "overview":
+                return showOverview(context);
+
             case "list":
             default:
                 return listNodes(context);
         }
+    }
+
+    private boolean showOverview(CommandMessage context) {
+        List<String> messages = new ArrayList<>();
+        messages.add(addFillerSpaceToString("NAME", 32) + "PLAYERS (PLAYING / TOTAL)");
+        messages.add(addFillerSpaceToString("", 64, '='));
+
+        int players = 0,
+            total = 0;
+
+        synchronized (LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink().getNodes()) {
+            for (LavalinkSocket socket : LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink().getNodes()) {
+                String line = addFillerSpaceToString(socket.getName(), 32);
+
+                if (socket.getStats() == null) {
+                    messages.add(line + "- No stats right now -");
+                    continue;
+                }
+
+                players += socket.getStats().getPlayingPlayers();
+                total += socket.getStats().getPlayers();
+
+                line += String.format("%s / %s",
+                    NumberUtil.formatNicely(socket.getStats().getPlayingPlayers()),
+                    NumberUtil.formatNicely(socket.getStats().getPlayers())
+                );
+
+                messages.add(line);
+            }
+        }
+
+        messages.add(addFillerSpaceToString("", 64, '='));
+        messages.add(addFillerSpaceToString("TOTAL STATS", 32) + String.format("%s / %s",
+            NumberUtil.formatNicely(players),
+            NumberUtil.formatNicely(total)
+        ));
+
+
+        context.getMessageChannel()
+            .sendMessage((new MessageBuilder())
+                .setContent("```\n" + String.join("\n", messages) + "```")
+                .setEmbed(context.makeInfo(
+                    "**Note:** This uses the Lavalink web-socket cached stats, there might be a delay between the live stats, and what is displayed above."
+                ).buildEmbed()).build()
+            ).queue();
+
+        return true;
     }
 
     private boolean addNode(CommandMessage context, String[] args) {
@@ -190,7 +244,6 @@ public class LavalinkCommand extends SystemCommand {
 
         RemoteStats stats = socket.getStats();
 
-
         List<String> messages = new ArrayList<>();
 
         messages.add("Name:                    " + socket.getName());
@@ -253,5 +306,22 @@ public class LavalinkCommand extends SystemCommand {
 
     private String formatPercent(double percent) {
         return roundToTwo(percent * 100) + "%";
+    }
+
+    @Nonnull
+    private String addFillerSpaceToString(String string, int length) {
+        return addFillerSpaceToString(string, length, ' ');
+    }
+
+    @Nonnull
+    private String addFillerSpaceToString(String string, int length, char filler) {
+        if (string == null) {
+            return " - Unknown - ";
+        }
+
+        for (int i = string.length(); i < length; i++) {
+            string += filler;
+        }
+        return string;
     }
 }

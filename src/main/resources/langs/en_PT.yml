@@ -17,6 +17,11 @@ levelupMessages:
     - "You're on 🔥 :user, you've just reached **Level :level**"
     - "Congratulations :user 🎉 You just leveled up! You're now **Level :level**"
 
+levelupRoleMessages:
+    - "GG :user, you just reached **Level :level**, you now have the **:role** role"
+    - "Eyy :user, you just leveled up! You're now **Level :level**, have the **:role** role, you earned it."
+    - "Congratulations :user 🎉 You just leveled up! You're now **Level :level**, you have also earned yourself the **:role** role"
+
 administration:
     common:
         invalidRole: ":user Invalid role, I couldn't find any role called **:role**"
@@ -190,12 +195,21 @@ administration:
         entry: "**Case ID #{0}** | {1}\n\t{2}"
         noReasonGiven: "No reason was given."
 
+    ModlogPardonCommand:
+        modlogNotEnabled: "No modlog channel has been set, you must set a modlog channel to use this command."
+        invalidCaseId: "Invalid case id given, the ID must be greater than 0 and less than {0}"
+        couldntFindCaseWithId: "Couldn't find a modlog case with an ID of {0} where you were the moderator, are you sure you're the moderator for the given modlog case?"
+        caseAlreadyPardoned: "The modlog case ID with an ID of `{0}` is already pardoned."
+        notAPunishment: "The modlog case ID with an ID of `{0}` is not a punishment!"
+        message: "The modlog case with an ID of **:case** has been been pardoned successfully."
+
     ModlogReasonCommand:
         modlogNotEnabled: "No modlog channel has been set, you must set a modlog channel to use this command."
         invalidCaseId: "Invalid case id given, the ID must be greater than 0 and less than {0}"
         couldntFindCaseWithId: "Couldn't find a modlog case with an ID of {0} where you were the moderator, are you sure you're the moderator for the given modlog case?"
         couldntFindModlogChannel: "Couldn't find the modlog channel, was it removed?"
         success: "The modlog case with an ID of **:id** was successfully edited and set to the reason of `:reason`"
+        modlogCaseWasPardoned: "The modlog case with an ID of `{0}` has been pardoned, you can't edit pardoned modlog cases."
         failedToEdit: "Failed to edit modlog message: {0}"
         failedToFindMessage: "Couldn't find the message for the given modlog case, was it deleted?"
 
@@ -245,6 +259,12 @@ administration:
         status:
             enabled: "Enabled"
             disabled: "Disabled"
+
+    UnbanCommand:
+        success: ':target has been successfully unbanned from the server because ":reason".'
+        failedToUnban: "Failed to unban :target due to an error, message: :error"
+        noUserIsBanned: "No user with an ID of `:id` is currently banned from the server."
+        invalidUserIdGiven: "Invalid `user id` was given, the `user id` must be a numeric string of 18 or more numbers long."
 
     UserAvatarCommand:
         noUserFound: "I found no users with the name or ID of `{0}`"
@@ -351,6 +371,11 @@ fun:
         invalidValueGiven: 'Invalid `{0}` value given, `{1}` must be a number!'
         rolledNumber: ':user furled **:number** out of :min - :max'
 
+    UndertaleTextBoxCommand:
+        noArgumentsGiven: "Missing argument, you must either provide `list` to see a list of characters you can choose from, or to generate an image, `character` or a valid image `url` to build the image for."
+        failedToGenerateImage: "Failed to generate the the image, are you sure you provided a correct image URL or character name?"
+        title: "Undertale Character List"
+
 help:
     HelpCommand:
         listOfCommands: ':page_with_curl: **List of Commands** ```css\n{0}```\n'
@@ -379,6 +404,7 @@ interaction:
     HugCommand: 'hugs'
     KillCommand: "wants t' scuttle"
     KissCommand: 'kisses'
+    MarryCommand: 'wants to marry'
     MeowCommand: 'meows at'
     PanCommand: "**{0}** jus' hit **{1}** wit' a pan!"
     PatCommand: 'pats'
@@ -621,7 +647,8 @@ utility:
             message: 'Please wait a second while the global leaderboard is loaded.'
 
     InviteCommand:
-        message: 'You can invite me to your server by [clicking here](:oauth) or use the link below:'
+        message: 'You can invite me to your server by [clicking here](:oauth) or use the link below:\n\n:oauth\n\n:note'
+        note: '**Note:**\nIf you would like try out newly developed features before everyone else, you could also try the **Cutting Edge** bot which gets new features added almost daily, you can invite that bot by [clicking here](:edgeInvite) or using the link below:\n\n:edgeInvite'
 
     IPInfoCommand:
         hostname: 'Hostname'
@@ -657,6 +684,7 @@ utility:
         fields:
             rank: 'Rank'
             level: 'Level'
+            total: '{0} (Total: {1})'
             experience: 'Experience'
             experienceToNext: 'Experience needed to next Level'
             youNeedMoreXpToLevelUp: '[{0}] {1}{2}\n\t\t\t\t\t\t\t\t\tYou need {3} more XP to level up.'

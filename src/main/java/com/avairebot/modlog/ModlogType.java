@@ -58,17 +58,33 @@ public enum ModlogType {
     /**
      * Represents when a user is warned through Avas warn system.
      */
-    WARN(6, "Warn", true, MessageType.WARNING.getColor());
+    WARN(6, "Warn", true, MessageType.WARNING.getColor()),
+
+    /**
+     * Represents when a user is unbanned from a server through Ava.
+     */
+    UNBAN(7, "Unban", false, false, MessageType.SUCCESS.getColor()),
+
+    /**
+     * Represents when a user is pardoned for an old modlog case.
+     */
+    PARDON(8, "Pardon", false, false, MessageType.SUCCESS.getColor());
 
     final int id;
     final String name;
     final boolean notifyable;
+    final boolean punishment;
     final Color color;
 
     ModlogType(int id, String name, boolean notifyable, Color color) {
+        this(id, name, notifyable, true, color);
+    }
+
+    ModlogType(int id, String name, boolean notifyable, boolean punishment, Color color) {
         this.id = id;
         this.name = name;
         this.notifyable = notifyable;
+        this.punishment = punishment;
         this.color = color;
     }
 
@@ -126,5 +142,14 @@ public enum ModlogType {
             return null;
         }
         return getName().toLowerCase() + "ed";
+    }
+
+    /**
+     * Checks if the current modlog type is a punishment or not.
+     *
+     * @return <code>True</code> if the modlog type is a punishment, <code>False</code> otherwise.
+     */
+    public boolean isPunishment() {
+        return punishment;
     }
 }

@@ -40,7 +40,9 @@ public class SlapCommand extends InteractionCommand {
             "https://i.imgur.com/nSDYCNZ.gif",
             "https://i.imgur.com/bF9ruep.gif",
             "https://i.imgur.com/1aqwJq4.gif",
-            "https://i.imgur.com/xQYw5E6.gif"
+            "https://i.imgur.com/xQYw5E6.gif",
+            "https://i.imgur.com/jyl49EQ.gif",
+            "https://i.imgur.com/G51eVZr.gif"
         );
     }
 
