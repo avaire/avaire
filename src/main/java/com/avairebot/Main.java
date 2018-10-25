@@ -78,7 +78,7 @@ public class Main {
                     .setGlobalExperience("397,421")
                     .setServerExperience("17,679")
                     .setPercentage(84.8D)
-                    .setBackground(RankBackgrounds.MAUNTAIN_RANGE)
+                    .setBackground(RankBackgrounds.PIKACHU)
                     .render();
 
                 ImageIO.write(rankBackgroundRender.render(), "png", new File("test-output.png"));

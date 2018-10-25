@@ -136,6 +136,11 @@ public class RankBackgroundRender extends Renderer {
         Graphics2D graphics = backgroundImage.createGraphics();
         graphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
+        if (background.getBackgroundColors().getBackgroundCoverColor() != null) {
+            graphics.setColor(background.getBackgroundColors().getBackgroundCoverColor());
+            graphics.fillRect(17, 8, 566, 184);
+        }
+
         // Draws the avatar image on top of the background.
         graphics.drawImage(resize(ImageIO.read(urlConnection.getInputStream()), 95, 95), 25, 15, null);
 
@@ -166,6 +171,7 @@ public class RankBackgroundRender extends Renderer {
 
     private void createUserGraphics(Graphics2D graphics) {
         graphics.setFont(Fonts.medium.deriveFont(Font.BOLD, 26F));
+        graphics.setColor(background.getBackgroundColors().getMainTextColor());
 
         graphics.drawString(username, startingX + 5, startingY);
 

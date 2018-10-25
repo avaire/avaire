@@ -24,9 +24,16 @@ package com.avairebot.imagegen.colors.ranks;
 import com.avairebot.contracts.imagegen.BackgroundRankColors;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.awt.*;
 
 public class PikachuColors extends BackgroundRankColors {
+
+    @Nullable
+    @Override
+    public Color getBackgroundCoverColor() {
+        return makeColor(0, 0, 0, 22);
+    }
 
     @Nonnull
     @Override

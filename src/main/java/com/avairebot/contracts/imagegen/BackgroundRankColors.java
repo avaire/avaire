@@ -22,6 +22,7 @@
 package com.avairebot.contracts.imagegen;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.awt.*;
 
 public abstract class BackgroundRankColors implements BackgroundColors {
@@ -29,6 +30,11 @@ public abstract class BackgroundRankColors implements BackgroundColors {
     @Nonnull
     public Color getBackgroundColor() {
         return makeColor(50, 54, 60);
+    }
+
+    @Nullable
+    public Color getBackgroundCoverColor() {
+        return null;
     }
 
     @Nonnull
