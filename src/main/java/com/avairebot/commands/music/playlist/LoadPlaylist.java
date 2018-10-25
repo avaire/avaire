@@ -86,6 +86,9 @@ public class LoadPlaylist extends PlaylistSubCommand {
 
         AudioHandler.getDefaultAudioHandler().getGuildAudioPlayer(context.getGuild())
             .getScheduler().queue(playlist, tracks, context.getAuthor());
+
+        AudioHandler.getDefaultAudioHandler().getGuildAudioPlayer(context.getGuild())
+            .registerDefaultVolume();
     }
 
     private void loadSong(PlaylistTransformer.PlaylistSong song, final List<AudioTrack> tracks, Consumer<List<AudioTrack>> success) {

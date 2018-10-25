@@ -55,6 +55,6 @@ public class HelloCommand extends InteractionCommand {
 
     @Override
     public List<String> getTriggers() {
-        return Arrays.asList("hello", "herro", "hi");
+        return Arrays.asList("hello", "herro", "hi", "wave");
     }
 }

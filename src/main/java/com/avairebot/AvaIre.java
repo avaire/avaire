@@ -85,6 +85,7 @@ import net.dv8tion.jda.core.entities.SelfUser;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import net.dv8tion.jda.core.requests.RestAction;
 import net.dv8tion.jda.core.utils.SessionControllerAdapter;
+import net.dv8tion.jda.core.utils.cache.CacheFlag;
 import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -207,7 +208,8 @@ public class AvaIre {
             new AddMusicMessagesToGuildsTableMigration(),
             new AddPartnerToGuildsTableMigration(),
             new AddHierarchyToGuildsTableMigration(),
-            new AddLevelModifierToGuildsTableMigration()
+            new AddLevelModifierToGuildsTableMigration(),
+            new AddPardonToLogTableMigration()
         );
 
         log.info("Registering default middlewares");
@@ -564,6 +566,7 @@ public class AvaIre {
             .setAutoReconnect(true)
             .setAudioEnabled(true)
             .setContextEnabled(true)
+            .setDisabledCacheFlags(EnumSet.of(CacheFlag.GAME))
             .setShardsTotal(settings.getShardCount());
 
         if (isNas()) {

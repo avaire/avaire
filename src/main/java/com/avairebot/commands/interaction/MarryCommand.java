@@ -25,33 +25,34 @@ import com.avairebot.AvaIre;
 import com.avairebot.contracts.commands.InteractionCommand;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
-public class SenpaiCommand extends InteractionCommand {
+public class MarryCommand extends InteractionCommand {
 
-    public SenpaiCommand(AvaIre avaire) {
+    public MarryCommand(AvaIre avaire) {
         super(avaire);
+    }
+
+    @Override
+    public String getName() {
+        return "Marry Me Command";
+    }
+
+    @Override
+    public List<String> getTriggers() {
+        return Arrays.asList("marryme", "marry");
     }
 
     @Override
     public List<String> getInteractionImages() {
         return Arrays.asList(
-            "https://i.imgur.com/7X0TzmR.gif",
-            "https://i.imgur.com/j4vdwZh.gif",
-            "https://i.imgur.com/e1MXv4L.gif",
-            "https://i.imgur.com/bUUJS7A.gif",
-            "https://i.imgur.com/qkcRXl6.gif"
+            "https://i.imgur.com/JBdzTFS.gif",
+            "https://i.imgur.com/kXKaIlV.gif",
+            "https://i.imgur.com/bIZDJoG.gif",
+            "https://i.imgur.com/Uq4gCOM.gif",
+            "https://i.imgur.com/hULfQUb.gif",
+            "https://i.imgur.com/EP3Wc5N.gif",
+            "https://i.imgur.com/P8d7tM6.gif"
         );
-    }
-
-    @Override
-    public String getName() {
-        return "Senpai Command";
-    }
-
-    @Override
-    public List<String> getTriggers() {
-        return Collections.singletonList("senpai");
     }
 }

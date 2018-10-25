@@ -68,6 +68,14 @@ public class WarnCommand extends Command {
     }
 
     @Override
+    public List<Class<? extends Command>> getRelations() {
+        return Arrays.asList(
+            ModlogHistoryCommand.class,
+            ModlogReasonCommand.class
+        );
+    }
+
+    @Override
     public List<String> getTriggers() {
         return Collections.singletonList("warn");
     }

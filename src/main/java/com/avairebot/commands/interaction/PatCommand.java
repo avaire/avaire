@@ -40,7 +40,8 @@ public class PatCommand extends InteractionCommand {
             "https://i.imgur.com/gGfSj84.gif",
             "https://i.imgur.com/17NzO6G.gif",
             "https://i.imgur.com/rGMvRNn.gif",
-            "https://i.imgur.com/XuV9dUZ.gif"
+            "https://i.imgur.com/XuV9dUZ.gif",
+            "https://i.imgur.com/8VniExt.gif"
         );
     }
 

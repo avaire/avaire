@@ -38,7 +38,12 @@ public class CuddleCommand extends InteractionCommand {
         return Arrays.asList(
             "https://i.imgur.com/HqFckvG.gif",
             "https://i.imgur.com/pH8TTOd.gif",
-            "https://i.imgur.com/3SqJTbV.gif"
+            "https://i.imgur.com/3SqJTbV.gif",
+            "https://i.imgur.com/SVAA1NH.gif",
+            "https://i.imgur.com/6RyqnBL.gif",
+            "https://i.imgur.com/YrMqjtQ.gif",
+            "https://i.imgur.com/EAk4KtB.gif",
+            "https://i.imgur.com/FAGX2zs.gif"
         );
     }
 

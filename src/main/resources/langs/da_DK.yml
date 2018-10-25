@@ -17,6 +17,11 @@ levelupMessages:
     - "🔥 Det kører bare :user, du er lige nået **Level :level**"
     - "Tillykke :user 🎉 Du har lige levelet op! Du er nu **Level :level**"
 
+levelupRoleMessages:
+    - "GG :user, you just reached **Level :level**, you now have the **:role** role"
+    - "Eyy :user, you just leveled up! You're now **Level :level**, have the **:role** role, you earned it."
+    - "Congratulations :user 🎉 You just leveled up! You're now **Level :level**, you have also earned yourself the **:role** role"
+
 administration:
     common:
         invalidRole: ":user Ugyldig rolle, jeg kunne ikke finde nogen rolle kaldet **:role**"
@@ -190,12 +195,21 @@ administration:
         entry: "**Case-ID #{0}** | {1}\n\t{2}"
         noReasonGiven: "Ingen grund blev givet."
 
+    ModlogPardonCommand:
+        modlogNotEnabled: "No modlog channel has been set, you must set a modlog channel to use this command."
+        invalidCaseId: "Invalid case id given, the ID must be greater than 0 and less than {0}"
+        couldntFindCaseWithId: "Couldn't find a modlog case with an ID of {0} where you were the moderator, are you sure you're the moderator for the given modlog case?"
+        caseAlreadyPardoned: "The modlog case ID with an ID of `{0}` is already pardoned."
+        notAPunishment: "The modlog case ID with an ID of `{0}` is not a punishment!"
+        message: "The modlog case with an ID of **:case** has been been pardoned successfully."
+
     ModlogReasonCommand:
         modlogNotEnabled: "Ingen modlogkanal er blevet set op, du skal sette en modlogkanal op for at bruge denne kommando."
         invalidCaseId: "Ugyldigt case-id givet, IDet skal være større end 0 og mindre end {0}"
         couldntFindCaseWithId: "Kunne ikke finde et modlog tilfælde med IDet {0} hvor du var moderator, er du sikker på at du er moderator for det givne modlog-tilfælde?"
         couldntFindModlogChannel: "Kunne ikke finde modlogkanalen, er den blevet slettet?"
         success: "Modlog-sagen med IDet **:id** blev redigeret og sat grunden til `:reason`"
+        modlogCaseWasPardoned: "The modlog case with an ID of `{0}` has been pardoned, you can't edit pardoned modlog cases."
         failedToEdit: "Kunne ikke redigere modlog besked: {0}"
         failedToFindMessage: "Kunne ikke finde meddelelsen for det givne modlog-case ID, er den blevet slettet?"
 
@@ -245,6 +259,12 @@ administration:
         status:
             enabled: "aktiveret"
             disabled: "deaktiveret"
+
+    UnbanCommand:
+        success: ':target has been successfully unbanned from the server because ":reason".'
+        failedToUnban: "Failed to unban :target due to an error, message: :error"
+        noUserIsBanned: "No user with an ID of `:id` is currently banned from the server."
+        invalidUserIdGiven: "Invalid `user id` was given, the `user id` must be a numeric string of 18 or more numbers long."
 
     UserAvatarCommand:
         noUserFound: "Jeg fandt ingen brugere med et navn eller ID der matcher `{0}`"
@@ -350,6 +370,11 @@ fun:
         invalidValueGiven: 'Ugyldig værdi givet, `{1}` skal være et tal!'
         rolledNumber: ':user rullet **:number** ud af :min - :max'
 
+    UndertaleTextBoxCommand:
+        noArgumentsGiven: "Missing argument, you must either provide `list` to see a list of characters you can choose from, or to generate an image, `character` or a valid image `url` to build the image for."
+        failedToGenerateImage: "Failed to generate the the image, are you sure you provided a correct image URL or character name?"
+        title: "Undertale Character List"
+
 help:
     HelpCommand:
         listOfCommands: ':page_with_curl: **Liste over kommandoer** ```css\n{0}```\n'
@@ -378,6 +403,7 @@ interaction:
     HugCommand: 'krammer '
     KillCommand: 'ønsker at dræbe'
     KissCommand: 'kysser'
+    MarryCommand: 'vil gærne gifte sig med'
     MeowCommand: 'meower af'
     PanCommand: '**{0}** har lige slået **{1}** med en pande!'
     PatCommand: 'pats'
@@ -620,7 +646,8 @@ utility:
             message: 'Vent et øjeblik, mens det globale leaderboard er indlæst.'
 
     InviteCommand:
-        message: 'Du kan invitere mig til din server ved at klikke [her](:oauth) eller bruge linket herunder:'
+        message: 'Du kan invitere mig til din server ved at klikke [her](:oauth) eller bruge linket herunder:\n\n:oauth\n\n:note'
+        note: '**Note:**\nIf you would like try out newly developed features before everyone else, you could also try the **Cutting Edge** bot which gets new features added almost daily, you can invite that bot by [clicking here](:edgeInvite) or using the link below:\n\n:edgeInvite'
 
     IPInfoCommand:
         hostname: 'Værtsnavn'
@@ -656,6 +683,7 @@ utility:
         fields:
             rank: 'Rang'
             level: 'Level'
+            total: '{0} (i alt: {1})'
             experience: 'Experience'
             experienceToNext: 'Experience nødvendig til næste Level'
             youNeedMoreXpToLevelUp: '[{0}] {1}{2}\n\t\t\t\t\t\t\t\t\tDu mangler {3} mere XP for at levele op.'

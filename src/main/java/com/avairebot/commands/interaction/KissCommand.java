@@ -40,7 +40,8 @@ public class KissCommand extends InteractionCommand {
             "https://i.imgur.com/CEyl2rH.gif",
             "https://i.imgur.com/gYkehjd.gif",
             "https://i.imgur.com/k2nNews.gif",
-            "https://i.imgur.com/ehOIkBq.gif"
+            "https://i.imgur.com/ehOIkBq.gif",
+            "https://i.imgur.com/PIyPCfZ.gif"
         );
     }
 
