@@ -35,6 +35,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.net.URLConnection;
 
+@SuppressWarnings("FieldCanBeLocal")
 public class RankBackgroundRender extends Renderer {
 
     private final int xpBarLength = 420;
@@ -45,7 +46,7 @@ public class RankBackgroundRender extends Renderer {
     private final String discriminator;
     private final String avatarUrl;
 
-    @Nullable
+    @Nonnull
     private RankBackgrounds background;
 
     private String rank = null;
@@ -64,10 +65,14 @@ public class RankBackgroundRender extends Renderer {
         this.username = username;
         this.discriminator = discriminator;
         this.avatarUrl = avatarUrl;
+        this.background = RankBackgrounds.getDefaultBackground();
     }
 
-    public RankBackgroundRender setBackground(RankBackgrounds background) {
-        this.background = background;
+    public RankBackgroundRender setBackground(@Nullable RankBackgrounds background) {
+        this.background = background == null
+            ? RankBackgrounds.getDefaultBackground()
+            : background;
+
         return this;
     }
 
@@ -143,9 +148,9 @@ public class RankBackgroundRender extends Renderer {
     }
 
     private BufferedImage loadAndBuildBackground() throws IOException {
-        if (background != null) {
+        if (background.getBackgroundFile() != null) {
             return resize(
-                ImageIO.read(Renderer.class.getClassLoader().getResourceAsStream("backgrounds/" + background.getFile())),
+                ImageIO.read(Renderer.class.getClassLoader().getResourceAsStream("backgrounds/" + background.getBackgroundFile())),
                 200, 600
             );
         }
@@ -153,7 +158,7 @@ public class RankBackgroundRender extends Renderer {
         BufferedImage backgroundImage = new BufferedImage(600, 200, BufferedImage.TYPE_INT_ARGB);
 
         Graphics2D avatarGraphics = backgroundImage.createGraphics();
-        avatarGraphics.setColor(Color.decode("#32363C"));
+        avatarGraphics.setColor(background.getBackgroundColors().getBackgroundColor());
         avatarGraphics.fillRect(0, 0, 600, 200);
 
         return backgroundImage;
@@ -167,25 +172,25 @@ public class RankBackgroundRender extends Renderer {
         FontMetrics fontMetrics = graphics.getFontMetrics();
 
         graphics.setFont(Fonts.medium.deriveFont(Font.PLAIN, 17));
-        graphics.setColor(Color.decode("#A6A6A6"));
+        graphics.setColor(background.getBackgroundColors().getSecondaryTextColor());
 
         graphics.drawString("#" + discriminator, startingX + 5 + fontMetrics.stringWidth(username), startingY);
     }
 
     private void createBackgroundGraphics(Graphics2D graphics, String xpBarText) {
-        graphics.setColor(getColor(38, 39, 59, 60));
+        graphics.setColor(background.getBackgroundColors().getExperienceBackgroundColor());
         graphics.fillRect(startingX, startingY + 10, xpBarLength, 50);
 
         // Create the current XP bar for the background
-        graphics.setColor(getColor(104, 107, 170, 80));
+        graphics.setColor(background.getBackgroundColors().getExperienceForegroundColor());
         graphics.fillRect(startingX + 5, startingY + 15, (int) Math.min(xpBarLength - 10, (xpBarLength - 10) * (percentage / 100)), 40);
 
         // Create a 5 pixel width bar that's just at the end of our "current xp bar"
-        graphics.setColor(getColor(140, 144, 226, 80));
+        graphics.setColor(background.getBackgroundColors().getExperienceSeparatorColor());
         graphics.fillRect(startingX + 5 + (int) Math.min(xpBarLength - 10, (xpBarLength - 10) * (percentage / 100)), startingY + 15, 5, 40);
 
         // Create the text that should be displayed in the middle of the XP bar
-        graphics.setColor(getColor(226, 226, 229, 85));
+        graphics.setColor(background.getBackgroundColors().getExperienceTextColor());
 
         Font smallText = Fonts.regular.deriveFont(Font.BOLD, 20F);
         graphics.setFont(smallText);
@@ -195,7 +200,7 @@ public class RankBackgroundRender extends Renderer {
     }
 
     private void createLevelAndRankGraphics(Graphics2D graphics) {
-        graphics.setColor(getColor(226, 226, 229, 85));
+        graphics.setColor(background.getBackgroundColors().getMainTextColor());
 
         // Create Level text
         graphics.setFont(Fonts.medium.deriveFont(Font.PLAIN, 28));
@@ -219,12 +224,14 @@ public class RankBackgroundRender extends Renderer {
     }
 
     private void createExperienceGraphics(Graphics2D graphics) {
+        graphics.setColor(background.getBackgroundColors().getMainTextColor());
+
         graphics.setFont(Fonts.medium.deriveFont(Font.PLAIN, 26F));
         graphics.drawString("Server XP:", 300, 140);
         graphics.drawString("Global XP:", 300, 180);
 
         graphics.setFont(Fonts.regular.deriveFont(Font.PLAIN, 24F));
-        graphics.setColor(Color.decode("#A6A6A6"));
+        graphics.setColor(background.getBackgroundColors().getSecondaryTextColor());
         graphics.drawString(serverExperience, 455, 140);
         graphics.drawString(globalExperience, 455, 180);
     }

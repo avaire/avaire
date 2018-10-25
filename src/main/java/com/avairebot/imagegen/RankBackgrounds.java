@@ -21,24 +21,62 @@
 
 package com.avairebot.imagegen;
 
+import com.avairebot.contracts.imagegen.BackgroundRankColors;
+import com.avairebot.imagegen.colors.ranks.MountainRangeColors;
+import com.avairebot.imagegen.colors.ranks.PikachuColors;
+import com.avairebot.imagegen.colors.ranks.PurpleColors;
+import com.avairebot.shared.ExitCodes;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.EnumMap;
+
 public enum RankBackgrounds {
 
-    PIKACHU(1, "pikachu.jpg"),
-    MAUNTAIN_RANGE(2, "mountain-range.jpg");
+    PURPLE(0, null, PurpleColors.class),
+    PIKACHU(1, "pikachu.jpg", PikachuColors.class),
+    MAUNTAIN_RANGE(2, "mountain-range.jpg", MountainRangeColors.class);
+
+    private static final RankBackgrounds DEFAULT_BACKGROUND = RankBackgrounds.PURPLE;
+    private static final EnumMap<RankBackgrounds, BackgroundRankColors> backgroundColors = new EnumMap<>(RankBackgrounds.class);
+
+    static {
+        for (RankBackgrounds type : values()) {
+            try {
+                backgroundColors.put(type, type.getClassInstance().getDeclaredConstructor().newInstance());
+            } catch (InstantiationException | NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
+                System.out.printf("Invalid cache type given: %s", e.getMessage());
+                System.exit(ExitCodes.EXIT_CODE_ERROR);
+            }
+        }
+    }
 
     private final int id;
     private final String file;
+    private final Class<? extends BackgroundRankColors> instance;
 
-    RankBackgrounds(int id, String file) {
+    RankBackgrounds(int id, String file, Class<? extends BackgroundRankColors> instance) {
         this.id = id;
         this.file = file;
+        this.instance = instance;
+    }
+
+    public static RankBackgrounds getDefaultBackground() {
+        return DEFAULT_BACKGROUND;
     }
 
     public int getId() {
         return id;
     }
 
-    public String getFile() {
+    public String getBackgroundFile() {
         return file;
+    }
+
+    public Class<? extends BackgroundRankColors> getClassInstance() {
+        return instance;
+    }
+
+    public BackgroundRankColors getBackgroundColors() {
+        return backgroundColors.get(this);
     }
 }
