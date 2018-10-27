@@ -41,6 +41,7 @@ public class Main {
         options.addOption(new Option("is", "internal-restart", false, "Enables internal restarts, this will auto restart the bot if it crashes, or the system restart or update commands are used, the only way to really shut down the bot is through the system shutdown command.\nNote: The update command will just act as the restart command with this option enabled."));
         options.addOption(new Option("nocolor", "no-colors", false, "Disables colors for commands and AI actions in the terminal."));
         options.addOption(new Option("d", "debug", false, "Enables debugging mode, this will log extra information to the terminal."));
+        options.addOption(new Option("t", "test", false, "Runs the test code."));
 
         CommandLineParser parser = new DefaultParser();
         HelpFormatter formatter = new HelpFormatter();
