@@ -57,10 +57,24 @@ public class RankBackgroundRender extends Renderer {
     private String globalExperience = null;
     private double percentage = -1;
 
+    /**
+     * Creates the rank background render instance with the
+     * given users username, discriminator, and avatar.
+     *
+     * @param user The user that should be sued for the rank background render.
+     */
     public RankBackgroundRender(@Nonnull User user) {
         this(user.getName(), user.getDiscriminator(), user.getEffectiveAvatarUrl());
     }
 
+    /**
+     * Creates the rank background render instance with the given username, discriminator,
+     * and avatar URL, the avatar URL must be a link to a valid image.
+     *
+     * @param username      The username that should be used.
+     * @param discriminator The discriminator that should be used.
+     * @param avatarUrl     The avatar URL that should be used.
+     */
     public RankBackgroundRender(String username, String discriminator, String avatarUrl) {
         this.username = username;
         this.discriminator = discriminator;
@@ -68,6 +82,13 @@ public class RankBackgroundRender extends Renderer {
         this.background = RankBackgrounds.getDefaultBackground();
     }
 
+    /**
+     * Sets the background that should be used for the render, if <code>NULL</code> is given the
+     * {@link RankBackgrounds#DEFAULT_BACKGROUND default background} will be used instead.
+     *
+     * @param background The background that should be used.
+     * @return The rank background instance.
+     */
     public RankBackgroundRender setBackground(@Nullable RankBackgrounds background) {
         this.background = background == null
             ? RankBackgrounds.getDefaultBackground()
@@ -76,36 +97,78 @@ public class RankBackgroundRender extends Renderer {
         return this;
     }
 
-    public RankBackgroundRender setRank(String rank) {
+    /**
+     * Sets the rank that should be displayed on the finished image.
+     *
+     * @param rank The users rank that should be displayed on the finished image.
+     * @return The rank background instance.
+     */
+    public RankBackgroundRender setRank(@Nonnull String rank) {
         this.rank = rank;
         return this;
     }
 
-    public RankBackgroundRender setLevel(String level) {
+    /**
+     * Sets the level that should be displayed on the finished image.
+     *
+     * @param level The users level that should be displayed on the finished image.
+     * @return The rank background instance.
+     */
+    public RankBackgroundRender setLevel(@Nonnull String level) {
         this.level = level;
         return this;
     }
 
-    public RankBackgroundRender setCurrentXpInLevel(String currentXpInLevel) {
+    /**
+     * Sets the current amount of XP the user has into their current level.
+     *
+     * @param currentXpInLevel The amount of XP the user has into their current level.
+     * @return The rank background instance.
+     */
+    public RankBackgroundRender setCurrentXpInLevel(@Nonnull String currentXpInLevel) {
         this.currentXpInLevel = currentXpInLevel;
         return this;
     }
 
-    public RankBackgroundRender setTotalXpInLevel(String totalXpInLevel) {
+    /**
+     * Sets the total amount of XP needed for the users current level.
+     *
+     * @param totalXpInLevel The total amount of XP needed for the users current level.
+     * @return The rank background instance.
+     */
+    public RankBackgroundRender setTotalXpInLevel(@Nonnull String totalXpInLevel) {
         this.totalXpInLevel = totalXpInLevel;
         return this;
     }
 
-    public RankBackgroundRender setServerExperience(String serverExperience) {
+    /**
+     * Sets the users total amount of XP they have on the current server.
+     *
+     * @param serverExperience The users total amount of XP they have on the current server.
+     * @return The rank background instance.
+     */
+    public RankBackgroundRender setServerExperience(@Nonnull String serverExperience) {
         this.serverExperience = serverExperience;
         return this;
     }
 
-    public RankBackgroundRender setGlobalExperience(String globalExperience) {
+    /**
+     * Sets the users total amount of XP they have globally.
+     *
+     * @param globalExperience The users total amount of XP they have globally.
+     * @return The rank background instance.
+     */
+    public RankBackgroundRender setGlobalExperience(@Nonnull String globalExperience) {
         this.globalExperience = globalExperience;
         return this;
     }
 
+    /**
+     * Sets the percentage of progress the user has made into their current level.
+     *
+     * @param percentage The progress the user has made into their current level.
+     * @return The rank background instance.
+     */
     public RankBackgroundRender setPercentage(double percentage) {
         this.percentage = percentage;
         return this;

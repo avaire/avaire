@@ -60,22 +60,47 @@ public enum RankBackgrounds {
         this.instance = instance;
     }
 
+    /**
+     * Gets the default background that should be used for rank commands if none other is set.
+     *
+     * @return The background color scheme for the current background image.
+     */
     public static RankBackgrounds getDefaultBackground() {
         return DEFAULT_BACKGROUND;
     }
 
+    /**
+     * Gets the ID for the image, can be used as a reference in the database.
+     *
+     * @return The image ID.
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     * Gets the background image file name.
+     *
+     * @return The background image file name.
+     */
     public String getBackgroundFile() {
         return file;
     }
 
+    /**
+     * Gets the background image color scheme instance.
+     *
+     * @return The background image color scheme instance.
+     */
     public Class<? extends BackgroundRankColors> getClassInstance() {
         return instance;
     }
 
+    /**
+     * Gets the background color scheme for the current background image.
+     *
+     * @return The background color scheme for the current background image.
+     */
     public BackgroundRankColors getBackgroundColors() {
         return backgroundColors.get(this);
     }

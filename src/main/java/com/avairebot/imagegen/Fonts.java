@@ -28,8 +28,25 @@ import java.io.IOException;
 
 public class Fonts {
 
+    /**
+     * The Poppins Regular font.
+     * <p>
+     * For more information see: https://fonts.google.com/specimen/Poppins
+     */
     public static final Font regular;
+
+    /**
+     * The Poppins Medium font.
+     * <p>
+     * For more information see: https://fonts.google.com/specimen/Poppins
+     */
     public static final Font medium;
+
+    /**
+     * The Poppins Bold font.
+     * <p>
+     * For more information see: https://fonts.google.com/specimen/Poppins
+     */
     public static final Font bold;
 
     static {
