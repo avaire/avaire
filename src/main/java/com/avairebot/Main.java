@@ -24,13 +24,9 @@ package com.avairebot;
 import ch.qos.logback.classic.util.ContextInitializer;
 import com.avairebot.chat.ConsoleColor;
 import com.avairebot.exceptions.InvalidApplicationEnvironmentException;
-import com.avairebot.imagegen.RankBackgrounds;
-import com.avairebot.imagegen.renders.RankBackgroundRender;
 import com.avairebot.shared.ExitCodes;
 import org.apache.commons.cli.*;
 
-import javax.imageio.ImageIO;
-import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -61,28 +57,6 @@ public class Main {
                 ) + ".xml");
             } else if (settings.useDebugging()) {
                 System.setProperty(ContextInitializer.CONFIG_FILE_PROPERTY, "logback_debug.xml");
-            }
-
-            if (cmd.hasOption("test")) {
-                RankBackgroundRender rankBackgroundRender = new RankBackgroundRender(
-                    "Senither",
-                    "0001",
-                    "https://cdn.discordapp.com/avatars/88739639380172800/a_d1c159bbdd858674a7f16f3bb7f55748.gif"
-                );
-
-                rankBackgroundRender
-                    .setRank("27")
-                    .setLevel("294")
-                    .setCurrentXpInLevel("9,001")
-                    .setTotalXpInLevel("9,876")
-                    .setGlobalExperience("397,421")
-                    .setServerExperience("17,679")
-                    .setPercentage(84.8D)
-                    .setBackground(RankBackgrounds.PIKACHU)
-                    .render();
-
-                ImageIO.write(rankBackgroundRender.render(), "png", new File("test-output.png"));
-                System.exit(ExitCodes.EXIT_CODE_NORMAL);
             }
 
             if (cmd.hasOption("help")) {
