@@ -38,6 +38,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 import java.util.function.Consumer;
 
 public class XKCDCommand extends Command {
@@ -60,13 +61,14 @@ public class XKCDCommand extends Command {
     public List<String> getUsageInstructions() {
         return Arrays.asList(
             "`:command` - Gets the latest comic",
-            "`:command <id>` - Gets the comic with the given id."
+            "`:command <id>` - Gets the comic with the given id.",
+            "':command <random>' - Gets a comic with a random id."
         );
     }
 
     @Override
     public List<String> getExampleUsage() {
-        return Collections.singletonList("`:command 530`");
+        return Arrays.asList("`:command 530`","':command random'");
     }
 
     @Override
@@ -85,8 +87,21 @@ public class XKCDCommand extends Command {
             return requestComic(context, "https://xkcd.com/info.0.json", getLatestComicNumber());
         }
 
-        int comic = NumberUtil.getBetween(NumberUtil.parseInt(args[0]), 1, getLatestComicNumber());
-        return requestComic(context, "https://xkcd.com/" + comic + "/info.0.json", comic);
+
+        if(NumberUtil.isNumeric(args[0]))
+        {
+            int comic = NumberUtil.getBetween(NumberUtil.parseInt(args[0]), 1, getLatestComicNumber());
+            return requestComic(context, "https://xkcd.com/" + comic + "/info.0.json", comic);
+        }
+        else
+        {
+            int latestComicNum = getLatestComicNumber();
+            Random r = new Random();
+            int comicNumber = r.nextInt(latestComicNum) + 1;
+            return requestComic(context,"https://xkcd.com/" + comicNumber + "/info.0.json",comicNumber);
+        }
+
+
     }
 
     private boolean requestComic(CommandMessage context, String url, int comic) {
@@ -102,6 +117,7 @@ public class XKCDCommand extends Command {
         });
         return true;
     }
+
 
     private void sendComic(CommandMessage context, JSONObject json, Carbon date, int comic) {
         context.makeEmbeddedMessage(
