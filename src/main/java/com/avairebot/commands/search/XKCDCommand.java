@@ -68,7 +68,10 @@ public class XKCDCommand extends Command {
 
     @Override
     public List<String> getExampleUsage() {
-        return Arrays.asList("`:command 530`","':command random'");
+        return Arrays.asList(
+            "`:command 530`",
+            "':command random'"
+        );
     }
 
     @Override
@@ -87,21 +90,15 @@ public class XKCDCommand extends Command {
             return requestComic(context, "https://xkcd.com/info.0.json", getLatestComicNumber());
         }
 
-
-        if(NumberUtil.isNumeric(args[0]))
-        {
+        if (NumberUtil.isNumeric(args[0])) {
             int comic = NumberUtil.getBetween(NumberUtil.parseInt(args[0]), 1, getLatestComicNumber());
             return requestComic(context, "https://xkcd.com/" + comic + "/info.0.json", comic);
         }
-        else
-        {
-            int latestComicNum = getLatestComicNumber();
-            Random r = new Random();
-            int comicNumber = r.nextInt(latestComicNum) + 1;
-            return requestComic(context,"https://xkcd.com/" + comicNumber + "/info.0.json",comicNumber);
-        }
 
-
+        int latestComicNum = getLatestComicNumber();
+        Random r = new Random();
+        int comicNumber = r.nextInt(latestComicNum) + 1;
+        return requestComic(context, "https://xkcd.com/" + comicNumber + "/info.0.json", comicNumber);
     }
 
     private boolean requestComic(CommandMessage context, String url, int comic) {
@@ -117,7 +114,6 @@ public class XKCDCommand extends Command {
         });
         return true;
     }
-
 
     private void sendComic(CommandMessage context, JSONObject json, Carbon date, int comic) {
         context.makeEmbeddedMessage(
