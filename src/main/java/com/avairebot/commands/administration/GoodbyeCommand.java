@@ -27,10 +27,13 @@ import com.avairebot.commands.CommandHandler;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.CacheFingerprint;
 import com.avairebot.contracts.commands.Command;
+import com.avairebot.contracts.commands.CommandGroup;
+import com.avairebot.contracts.commands.CommandGroups;
 import com.avairebot.database.transformers.ChannelTransformer;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.utilities.ComparatorUtil;
 
+import javax.annotation.Nonnull;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Collections;
@@ -78,6 +81,12 @@ public class GoodbyeCommand extends Command {
             "require:user,general.manage_server",
             "throttle:channel,1,5"
         );
+    }
+
+    @Nonnull
+    @Override
+    public List<CommandGroup> getGroups() {
+        return Collections.singletonList(CommandGroups.JOIN_LEAVE_MESSAGES);
     }
 
     @Override

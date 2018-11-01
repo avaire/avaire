@@ -24,6 +24,8 @@ package com.avairebot.commands.administration;
 import com.avairebot.AvaIre;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
+import com.avairebot.contracts.commands.CommandGroup;
+import com.avairebot.contracts.commands.CommandGroups;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.modlog.Modlog;
 import com.avairebot.modlog.ModlogAction;
@@ -32,6 +34,7 @@ import com.avairebot.utilities.MentionableUtil;
 import com.avairebot.utilities.RestActionUtil;
 import net.dv8tion.jda.core.entities.User;
 
+import javax.annotation.Nonnull;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.Collections;
@@ -86,6 +89,12 @@ public class WarnCommand extends Command {
             "require:user,text.manage_messages",
             "throttle:channel,1,5"
         );
+    }
+
+    @Nonnull
+    @Override
+    public List<CommandGroup> getGroups() {
+        return Collections.singletonList(CommandGroups.MODERATION);
     }
 
     @Override

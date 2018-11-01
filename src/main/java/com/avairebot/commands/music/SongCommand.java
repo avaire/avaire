@@ -30,16 +30,16 @@ import com.avairebot.chat.PlaceholderMessage;
 import com.avairebot.chat.SimplePaginator;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
+import com.avairebot.contracts.commands.CommandGroup;
+import com.avairebot.contracts.commands.CommandGroups;
 import com.avairebot.language.I18n;
 import com.avairebot.utilities.NumberUtil;
 import com.avairebot.utilities.RestActionUtil;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import lavalink.client.player.IPlayer;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
+import javax.annotation.Nonnull;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 public class SongCommand extends Command {
@@ -78,6 +78,12 @@ public class SongCommand extends Command {
             "throttle:channel,2,4",
             "musicChannel"
         );
+    }
+
+    @Nonnull
+    @Override
+    public List<CommandGroup> getGroups() {
+        return Collections.singletonList(CommandGroups.MUSIC_QUEUE);
     }
 
     @Override

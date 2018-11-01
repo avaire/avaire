@@ -25,12 +25,15 @@ import com.avairebot.AvaIre;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.contracts.commands.CommandContext;
+import com.avairebot.contracts.commands.CommandGroup;
+import com.avairebot.contracts.commands.CommandGroups;
 import com.avairebot.shared.DiscordConstants;
 import com.avairebot.utilities.RandomUtil;
 import net.dv8tion.jda.core.Region;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -87,6 +90,12 @@ public class VoiceFixCommand extends Command {
             "require:bot,general.manage_server",
             "musicChannel"
         );
+    }
+
+    @Nonnull
+    @Override
+    public List<CommandGroup> getGroups() {
+        return Collections.singletonList(CommandGroups.MUSIC_SETTINGS);
     }
 
     @Override

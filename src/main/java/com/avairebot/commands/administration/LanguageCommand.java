@@ -26,13 +26,17 @@ import com.avairebot.Constants;
 import com.avairebot.chat.SimplePaginator;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
+import com.avairebot.contracts.commands.CommandGroup;
+import com.avairebot.contracts.commands.CommandGroups;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.language.Language;
 import com.avairebot.utilities.NumberUtil;
 
+import javax.annotation.Nonnull;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class LanguageCommand extends Command {
@@ -78,6 +82,12 @@ public class LanguageCommand extends Command {
             "require:user,general.administrator",
             "throttle:guild,1,5"
         );
+    }
+
+    @Nonnull
+    @Override
+    public List<CommandGroup> getGroups() {
+        return Collections.singletonList(CommandGroups.COMMAND_CUSTOMIZATION);
     }
 
     @Override

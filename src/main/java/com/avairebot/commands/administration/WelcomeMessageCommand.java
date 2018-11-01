@@ -24,16 +24,16 @@ package com.avairebot.commands.administration;
 import com.avairebot.AvaIre;
 import com.avairebot.chat.MessageType;
 import com.avairebot.commands.CommandMessage;
-import com.avairebot.contracts.commands.CacheFingerprint;
-import com.avairebot.contracts.commands.ChannelModuleCommand;
-import com.avairebot.contracts.commands.Command;
+import com.avairebot.contracts.commands.*;
 import com.avairebot.database.transformers.ChannelTransformer;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.utilities.MentionableUtil;
 import net.dv8tion.jda.core.entities.User;
 
+import javax.annotation.Nonnull;
 import java.awt.*;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @CacheFingerprint(name = "welcome-goodbye-message-command")
@@ -85,6 +85,12 @@ public class WelcomeMessageCommand extends ChannelModuleCommand {
     @Override
     public List<String> getTriggers() {
         return Arrays.asList("welcomemessage", "welmsg");
+    }
+
+    @Nonnull
+    @Override
+    public List<CommandGroup> getGroups() {
+        return Collections.singletonList(CommandGroups.JOIN_LEAVE_MESSAGES);
     }
 
     @Override

@@ -25,12 +25,15 @@ import com.avairebot.AvaIre;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.CacheFingerprint;
 import com.avairebot.contracts.commands.Command;
+import com.avairebot.contracts.commands.CommandGroup;
+import com.avairebot.contracts.commands.CommandGroups;
 import com.avairebot.modlog.Modlog;
 import com.avairebot.modlog.ModlogAction;
 import com.avairebot.modlog.ModlogType;
 import com.avairebot.utilities.NumberUtil;
 import net.dv8tion.jda.core.entities.Guild;
 
+import javax.annotation.Nonnull;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -83,6 +86,12 @@ public class UnbanCommand extends Command {
             "require:all,general.ban_members",
             "throttle:user,1,4"
         );
+    }
+
+    @Nonnull
+    @Override
+    public List<CommandGroup> getGroups() {
+        return Collections.singletonList(CommandGroups.MODERATION);
     }
 
     @Override

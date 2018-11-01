@@ -26,9 +26,12 @@ import com.avairebot.chat.SimplePaginator;
 import com.avairebot.commands.CommandHandler;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
+import com.avairebot.contracts.commands.CommandGroup;
+import com.avairebot.contracts.commands.CommandGroups;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.utilities.NumberUtil;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -75,6 +78,15 @@ public class ListLevelRolesCommand extends Command {
     public List<String> getMiddleware() {
         return Collections.singletonList(
             "throttle:channel,1,5"
+        );
+    }
+
+    @Nonnull
+    @Override
+    public List<CommandGroup> getGroups() {
+        return Arrays.asList(
+            CommandGroups.LEVEL_AND_EXPERIENCE,
+            CommandGroups.ROLE_ASSIGNMENTS
         );
     }
 

@@ -27,8 +27,11 @@ import com.avairebot.commands.CommandContainer;
 import com.avairebot.commands.CommandHandler;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
+import com.avairebot.contracts.commands.CommandGroup;
+import com.avairebot.contracts.commands.CommandGroups;
 import com.avairebot.database.transformers.GuildTransformer;
 
+import javax.annotation.Nonnull;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Collections;
@@ -79,6 +82,12 @@ public class AliasCommand extends Command {
             "throttle:user,2,5",
             "require:user,general.manage_server"
         );
+    }
+
+    @Nonnull
+    @Override
+    public List<CommandGroup> getGroups() {
+        return Collections.singletonList(CommandGroups.COMMAND_CUSTOMIZATION);
     }
 
     @Override

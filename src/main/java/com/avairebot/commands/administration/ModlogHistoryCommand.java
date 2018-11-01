@@ -26,12 +26,15 @@ import com.avairebot.Constants;
 import com.avairebot.chat.SimplePaginator;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
+import com.avairebot.contracts.commands.CommandGroup;
+import com.avairebot.contracts.commands.CommandGroups;
 import com.avairebot.database.collection.Collection;
 import com.avairebot.modlog.ModlogType;
 import com.avairebot.utilities.MentionableUtil;
 import com.avairebot.utilities.NumberUtil;
 import net.dv8tion.jda.core.entities.User;
 
+import javax.annotation.Nonnull;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -87,6 +90,12 @@ public class ModlogHistoryCommand extends Command {
             "require:user,text.manage_messages",
             "throttle:channel,1,5"
         );
+    }
+
+    @Nonnull
+    @Override
+    public List<CommandGroup> getGroups() {
+        return Collections.singletonList(CommandGroups.MODERATION);
     }
 
     @Override

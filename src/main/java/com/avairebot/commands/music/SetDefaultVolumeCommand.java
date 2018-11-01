@@ -26,10 +26,13 @@ import com.avairebot.Constants;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.contracts.commands.CommandContext;
+import com.avairebot.contracts.commands.CommandGroup;
+import com.avairebot.contracts.commands.CommandGroups;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.shared.DiscordConstants;
 import com.avairebot.utilities.NumberUtil;
 
+import javax.annotation.Nonnull;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Collections;
@@ -84,6 +87,12 @@ public class SetDefaultVolumeCommand extends Command {
             "hasVoted",
             "musicChannel"
         );
+    }
+
+    @Nonnull
+    @Override
+    public List<CommandGroup> getGroups() {
+        return Collections.singletonList(CommandGroups.MUSIC_SETTINGS);
     }
 
     @Override

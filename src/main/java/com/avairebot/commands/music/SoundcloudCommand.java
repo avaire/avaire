@@ -27,8 +27,11 @@ import com.avairebot.commands.CommandContainer;
 import com.avairebot.commands.CommandHandler;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
+import com.avairebot.contracts.commands.CommandGroup;
+import com.avairebot.contracts.commands.CommandGroups;
 import com.avairebot.utilities.NumberUtil;
 
+import javax.annotation.Nonnull;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
@@ -81,6 +84,12 @@ public class SoundcloudCommand extends Command {
             "`:command A cool song` - Finds songs with the name \"A cool song\".",
             "`:command https://soundcloud.com/yellowclaw/yellow-claw-flux-pavilion-catch-me-feat-naaz` - Plays the song off a link"
         );
+    }
+
+    @Nonnull
+    @Override
+    public List<CommandGroup> getGroups() {
+        return Collections.singletonList(CommandGroups.MUSIC_START_PLAYING);
     }
 
     @Override

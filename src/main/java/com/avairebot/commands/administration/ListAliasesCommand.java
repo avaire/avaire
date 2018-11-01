@@ -25,9 +25,12 @@ import com.avairebot.AvaIre;
 import com.avairebot.chat.SimplePaginator;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
+import com.avairebot.contracts.commands.CommandGroup;
+import com.avairebot.contracts.commands.CommandGroups;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.utilities.NumberUtil;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -70,6 +73,12 @@ public class ListAliasesCommand extends Command {
             "throttle:channel,1,5",
             "require:user,general.manage_server"
         );
+    }
+
+    @Nonnull
+    @Override
+    public List<CommandGroup> getGroups() {
+        return Collections.singletonList(CommandGroups.COMMAND_CUSTOMIZATION);
     }
 
     @Override

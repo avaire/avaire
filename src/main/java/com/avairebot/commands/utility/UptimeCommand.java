@@ -24,9 +24,12 @@ package com.avairebot.commands.utility;
 import com.avairebot.AvaIre;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
+import com.avairebot.contracts.commands.CommandGroup;
+import com.avairebot.contracts.commands.CommandGroups;
 import com.avairebot.time.Carbon;
 import com.avairebot.utilities.NumberUtil;
 
+import javax.annotation.Nonnull;
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
 import java.util.Collections;
@@ -57,6 +60,12 @@ public class UptimeCommand extends Command {
     @Override
     public List<String> getTriggers() {
         return Collections.singletonList("uptime");
+    }
+
+    @Nonnull
+    @Override
+    public List<CommandGroup> getGroups() {
+        return Collections.singletonList(CommandGroups.BOT_INFORMATION);
     }
 
     @Override

@@ -28,6 +28,8 @@ import com.avairebot.cache.CacheType;
 import com.avairebot.chat.MessageType;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
+import com.avairebot.contracts.commands.CommandGroup;
+import com.avairebot.contracts.commands.CommandGroups;
 import com.avairebot.language.I18n;
 import com.avairebot.metrics.Metrics;
 import com.avairebot.utilities.NumberUtil;
@@ -36,6 +38,7 @@ import io.prometheus.client.Collector;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
+import javax.annotation.Nonnull;
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
 import java.util.Arrays;
@@ -66,6 +69,12 @@ public class StatsCommand extends Command {
     @Override
     public List<String> getTriggers() {
         return Arrays.asList("stats", "about");
+    }
+
+    @Nonnull
+    @Override
+    public List<CommandGroup> getGroups() {
+        return Collections.singletonList(CommandGroups.BOT_INFORMATION);
     }
 
     @Override

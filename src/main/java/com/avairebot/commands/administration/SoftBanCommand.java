@@ -24,10 +24,9 @@ package com.avairebot.commands.administration;
 import com.avairebot.AvaIre;
 import com.avairebot.commands.CommandHandler;
 import com.avairebot.commands.CommandMessage;
-import com.avairebot.contracts.commands.BanableCommand;
-import com.avairebot.contracts.commands.CacheFingerprint;
-import com.avairebot.contracts.commands.Command;
+import com.avairebot.contracts.commands.*;
 
+import javax.annotation.Nonnull;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -81,6 +80,12 @@ public class SoftBanCommand extends BanableCommand {
             "require:all,general.ban_members",
             "throttle:user,1,4"
         );
+    }
+
+    @Nonnull
+    @Override
+    public List<CommandGroup> getGroups() {
+        return Collections.singletonList(CommandGroups.MODERATION);
     }
 
     @Override

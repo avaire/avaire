@@ -26,6 +26,8 @@ import com.avairebot.Constants;
 import com.avairebot.chat.PlaceholderMessage;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
+import com.avairebot.contracts.commands.CommandGroup;
+import com.avairebot.contracts.commands.CommandGroups;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.utilities.ComparatorUtil;
 import com.avairebot.utilities.MentionableUtil;
@@ -33,6 +35,7 @@ import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Channel;
 import net.dv8tion.jda.core.entities.TextChannel;
 
+import javax.annotation.Nonnull;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Collections;
@@ -91,6 +94,12 @@ public class ModlogCommand extends Command {
             "require:user,general.manage_server",
             "throttle:user,1,5"
         );
+    }
+
+    @Nonnull
+    @Override
+    public List<CommandGroup> getGroups() {
+        return Collections.singletonList(CommandGroups.MODERATION);
     }
 
     @Override

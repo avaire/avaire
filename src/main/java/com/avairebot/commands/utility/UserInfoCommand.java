@@ -25,6 +25,8 @@ import com.avairebot.AvaIre;
 import com.avairebot.chat.PlaceholderMessage;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
+import com.avairebot.contracts.commands.CommandGroup;
+import com.avairebot.contracts.commands.CommandGroups;
 import com.avairebot.time.Carbon;
 import com.avairebot.utilities.MentionableUtil;
 import com.avairebot.utilities.NumberUtil;
@@ -33,6 +35,7 @@ import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.User;
 
+import javax.annotation.Nonnull;
 import java.awt.*;
 import java.util.Arrays;
 import java.util.Collections;
@@ -77,6 +80,12 @@ public class UserInfoCommand extends Command {
     @Override
     public List<String> getTriggers() {
         return Arrays.asList("userinfo", "uinfo");
+    }
+
+    @Nonnull
+    @Override
+    public List<CommandGroup> getGroups() {
+        return Collections.singletonList(CommandGroups.INFORMATION);
     }
 
     @Override

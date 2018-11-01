@@ -378,7 +378,7 @@ fun:
 
 help:
     HelpCommand:
-        listOfCommands: ":page_with_curl: **Liste des commandes** ```css\n{0}```\n"
+        listOfCommands: ":page_with_curl: **Liste des commandes**"
         commandNote: "**Tape `:help <command>` pour afficher l'aide de cette commande spécifique.**\nExemple: `:help :command`"
         categoriesNote: ":information_source: Tape `:help <category>` pour obtenir la liste des commandes de cette catégorie.\nExemple: `:help {0}` ou `:help {1}`"
         categoriesTitle: ":scroll: Catégories de commande"

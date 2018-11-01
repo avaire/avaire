@@ -24,6 +24,8 @@ package com.avairebot.commands.administration;
 import com.avairebot.AvaIre;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
+import com.avairebot.contracts.commands.CommandGroup;
+import com.avairebot.contracts.commands.CommandGroups;
 import com.avairebot.permissions.Permissions;
 import com.avairebot.utilities.ComparatorUtil;
 import com.avairebot.utilities.MentionableUtil;
@@ -33,6 +35,7 @@ import net.dv8tion.jda.core.entities.Channel;
 import net.dv8tion.jda.core.entities.ChannelType;
 import net.dv8tion.jda.core.entities.TextChannel;
 
+import javax.annotation.Nonnull;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -87,6 +90,12 @@ public class SlowmodeCommand extends Command {
             "require:all,general.manage_channels",
             "throttle:guild,1,5"
         );
+    }
+
+    @Nonnull
+    @Override
+    public List<CommandGroup> getGroups() {
+        return Collections.singletonList(CommandGroups.MODERATION);
     }
 
     @Override

@@ -25,6 +25,8 @@ import com.avairebot.AvaIre;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.CacheFingerprint;
 import com.avairebot.contracts.commands.Command;
+import com.avairebot.contracts.commands.CommandGroup;
+import com.avairebot.contracts.commands.CommandGroups;
 import com.avairebot.modlog.Modlog;
 import com.avairebot.modlog.ModlogAction;
 import com.avairebot.modlog.ModlogType;
@@ -36,16 +38,14 @@ import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.entities.VoiceChannel;
 
+import javax.annotation.Nonnull;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
-import java.util.regex.Pattern;
 
 @CacheFingerprint(name = "kick-command")
 public class VoiceKickCommand extends Command {
-
-    private static final Pattern userRegEX = Pattern.compile("<@(!|)+[0-9]{16,}+>", Pattern.CASE_INSENSITIVE);
 
     public VoiceKickCommand(AvaIre avaire) {
         super(avaire, false);
@@ -88,6 +88,12 @@ public class VoiceKickCommand extends Command {
             "require:bot,general.manage_channels,voice.move_members",
             "throttle:user,1,5"
         );
+    }
+
+    @Nonnull
+    @Override
+    public List<CommandGroup> getGroups() {
+        return Collections.singletonList(CommandGroups.MODERATION);
     }
 
     @Override

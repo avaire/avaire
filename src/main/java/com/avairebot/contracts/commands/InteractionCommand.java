@@ -35,6 +35,7 @@ import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.User;
 
+import javax.annotation.Nonnull;
 import java.awt.*;
 import java.io.IOException;
 import java.io.InputStream;
@@ -97,6 +98,12 @@ public abstract class InteractionCommand extends Command {
     @Override
     public List<String> getMiddleware() {
         return Collections.singletonList("throttle:user,1,5");
+    }
+
+    @Nonnull
+    @Override
+    public List<CommandGroup> getGroups() {
+        return Collections.singletonList(CommandGroups.INTERACTIONS);
     }
 
     @Override

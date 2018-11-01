@@ -25,6 +25,8 @@ import com.avairebot.AvaIre;
 import com.avairebot.Constants;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
+import com.avairebot.contracts.commands.CommandGroup;
+import com.avairebot.contracts.commands.CommandGroups;
 import com.avairebot.database.collection.Collection;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.modlog.Modlog;
@@ -33,6 +35,7 @@ import com.avairebot.modlog.ModlogType;
 import com.avairebot.utilities.NumberUtil;
 import net.dv8tion.jda.core.Permission;
 
+import javax.annotation.Nonnull;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Collections;
@@ -92,6 +95,12 @@ public class ModlogPardonCommand extends Command {
             "throttle:user,1,4",
             "requireOne:user,text.manage_messages,general.kick_members,general.ban_members"
         );
+    }
+
+    @Nonnull
+    @Override
+    public List<CommandGroup> getGroups() {
+        return Collections.singletonList(CommandGroups.MODERATION);
     }
 
     @Override

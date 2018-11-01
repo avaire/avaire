@@ -25,12 +25,15 @@ import com.avairebot.AvaIre;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.contracts.commands.CommandContext;
+import com.avairebot.contracts.commands.CommandGroup;
+import com.avairebot.contracts.commands.CommandGroups;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.factories.MessageFactory;
 import com.avairebot.utilities.RoleUtil;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.Role;
 
+import javax.annotation.Nonnull;
 import java.util.Collections;
 import java.util.List;
 
@@ -68,6 +71,12 @@ public class IAmCommand extends Command {
     @Override
     public List<String> getTriggers() {
         return Collections.singletonList("iam");
+    }
+
+    @Nonnull
+    @Override
+    public List<CommandGroup> getGroups() {
+        return Collections.singletonList(CommandGroups.ROLE_ASSIGNMENTS);
     }
 
     @Override
