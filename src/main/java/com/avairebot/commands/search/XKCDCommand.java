@@ -29,6 +29,7 @@ import com.avairebot.factories.RequestFactory;
 import com.avairebot.requests.Response;
 import com.avairebot.time.Carbon;
 import com.avairebot.utilities.NumberUtil;
+import com.avairebot.utilities.RandomUtil;
 import org.json.JSONObject;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -60,13 +61,17 @@ public class XKCDCommand extends Command {
     public List<String> getUsageInstructions() {
         return Arrays.asList(
             "`:command` - Gets the latest comic",
-            "`:command <id>` - Gets the comic with the given id."
+            "`:command <id>` - Gets the comic with the given id.",
+            "`:command random` - Gets a random comic."
         );
     }
 
     @Override
     public List<String> getExampleUsage() {
-        return Collections.singletonList("`:command 530`");
+        return Arrays.asList(
+            "`:command 530` - Gets the comic with an ID of `530`.",
+            "`:command random` - Gets a random comic."
+        );
     }
 
     @Override
@@ -85,8 +90,17 @@ public class XKCDCommand extends Command {
             return requestComic(context, "https://xkcd.com/info.0.json", getLatestComicNumber());
         }
 
-        int comic = NumberUtil.getBetween(NumberUtil.parseInt(args[0]), 1, getLatestComicNumber());
-        return requestComic(context, "https://xkcd.com/" + comic + "/info.0.json", comic);
+        if (NumberUtil.isNumeric(args[0])) {
+            int comic = NumberUtil.getBetween(NumberUtil.parseInt(args[0]), 1, getLatestComicNumber());
+            return requestComic(context, "https://xkcd.com/" + comic + "/info.0.json", comic);
+        }
+
+        if (args[0].equalsIgnoreCase("rand") || args[0].equalsIgnoreCase("random")) {
+            int comic = RandomUtil.getInteger(getLatestComicNumber()) + 1;
+            return requestComic(context, "https://xkcd.com/" + comic + "/info.0.json", comic);
+        }
+
+        return sendErrorMessage(context, context.i18n("invalidArgument", getLatestComicNumber()));
     }
 
     private boolean requestComic(CommandMessage context, String url, int comic) {
