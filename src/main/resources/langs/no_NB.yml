@@ -601,6 +601,7 @@ search:
         nsfwDisabled: "The `Urban Dictionary` command can only be used in NSFW channels, as the content of the command may not be appreciate for all."
 
     XKCDCommand:
+        invalidArgument: "Invalid argument given, the argument must be a valid number between `1` and `{0}`, or `random` to get a random comic."
         number: 'XKCD nummer #{0}'
 
 utility:

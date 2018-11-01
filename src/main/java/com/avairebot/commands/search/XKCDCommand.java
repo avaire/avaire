@@ -95,8 +95,12 @@ public class XKCDCommand extends Command {
             return requestComic(context, "https://xkcd.com/" + comic + "/info.0.json", comic);
         }
 
-        int comic = RandomUtil.getInteger(getLatestComicNumber()) + 1;
-        return requestComic(context, "https://xkcd.com/" + comic + "/info.0.json", comic);
+        if (args[0].equalsIgnoreCase("rand") || args[0].equalsIgnoreCase("random")) {
+            int comic = RandomUtil.getInteger(getLatestComicNumber()) + 1;
+            return requestComic(context, "https://xkcd.com/" + comic + "/info.0.json", comic);
+        }
+
+        return sendErrorMessage(context, context.i18n("invalidArgument", getLatestComicNumber()));
     }
 
     private boolean requestComic(CommandMessage context, String url, int comic) {
