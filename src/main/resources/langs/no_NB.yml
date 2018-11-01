@@ -437,6 +437,7 @@ music:
 
     MoveHereCommand:
         error: 'Ikke koblet til voice, be meg legge til noe i køen først med `{0}play`'
+        hasMusicChannel: "The server has a music voice channel setup, if you'd like me to move to a different voice channel, please get an admin on the server to drag 'n drop me into a different voice channel."
         nowPlayingIn: 'Jeg spiller nå av musikk i **:channelName**'
 
     MusicChannelCommand:

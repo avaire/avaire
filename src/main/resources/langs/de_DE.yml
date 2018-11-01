@@ -438,6 +438,7 @@ music:
 
     MoveHereCommand:
         error: 'Nicht mit dem Voicechannel verbunden. Anfragen von Musik ist vorausgesetzt. Tue dies bitte zuerst mit folgendem Befehl: `{0}play`'
+        hasMusicChannel: "The server has a music voice channel setup, if you'd like me to move to a different voice channel, please get an admin on the server to drag 'n drop me into a different voice channel."
         nowPlayingIn: 'Ich spiele nun Musik im folgendem Channel: **:channelName**'
 
     MusicChannelCommand:

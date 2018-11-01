@@ -444,6 +444,7 @@ music:
 
     MoveHereCommand:
         error: 'Nem vagyok csatlakozva hanghoz, előbb kérj zenét a `{0}play`-vel'
+        hasMusicChannel: "The server has a music voice channel setup, if you'd like me to move to a different voice channel, please get an admin on the server to drag 'n drop me into a different voice channel."
         nowPlayingIn: 'Jelenleg zenét játszok a **:channelName**-ben'
 
     MusicChannelCommand:

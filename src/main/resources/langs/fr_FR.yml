@@ -438,6 +438,7 @@ music:
 
     MoveHereCommand:
         error: "Je ne suis pas connecté à un canal vocal, demande d'abord une musique avec `{0}play`"
+        hasMusicChannel: "The server has a music voice channel setup, if you'd like me to move to a different voice channel, please get an admin on the server to drag 'n drop me into a different voice channel."
         nowPlayingIn: "Je diffuse à présent de la musique dans le canal **:channelName**"
 
     MusicChannelCommand:

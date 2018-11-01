@@ -438,6 +438,7 @@ music:
 
     MoveHereCommand:
         error: 'Бот не подключен к голосовому каналу, сначала попросите музыку `{0}play`'
+        hasMusicChannel: "The server has a music voice channel setup, if you'd like me to move to a different voice channel, please get an admin on the server to drag 'n drop me into a different voice channel."
         nowPlayingIn: 'Сейчас я играю музыку в **:channelName**'
 
     MusicChannelCommand:
