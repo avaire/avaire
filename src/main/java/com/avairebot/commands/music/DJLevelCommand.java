@@ -19,7 +19,7 @@
  *
  */
 
-package com.avairebot.commands.administration;
+package com.avairebot.commands.music;
 
 import com.avairebot.AvaIre;
 import com.avairebot.Constants;
@@ -27,9 +27,12 @@ import com.avairebot.audio.DJGuildLevel;
 import com.avairebot.chat.PlaceholderMessage;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
+import com.avairebot.contracts.commands.CommandGroup;
+import com.avairebot.contracts.commands.CommandGroups;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.factories.MessageFactory;
 
+import javax.annotation.Nonnull;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Collections;
@@ -79,6 +82,12 @@ public class DJLevelCommand extends Command {
             "require:user,general.manage_server",
             "throttle:guild,1,4"
         );
+    }
+
+    @Nonnull
+    @Override
+    public List<CommandGroup> getGroups() {
+        return Collections.singletonList(CommandGroups.MUSIC_SETTINGS);
     }
 
     @Override

@@ -27,9 +27,12 @@ import com.avairebot.cache.CacheType;
 import com.avairebot.chat.PlaceholderMessage;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
+import com.avairebot.contracts.commands.CommandGroup;
+import com.avairebot.contracts.commands.CommandGroups;
 import com.avairebot.utilities.NumberUtil;
 import org.jsoup.Jsoup;
 
+import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
@@ -65,6 +68,12 @@ public class VersionCommand extends Command {
         return Collections.singletonList(
             "throttle:channel,1,5"
         );
+    }
+
+    @Nonnull
+    @Override
+    public List<CommandGroup> getGroups() {
+        return Collections.singletonList(CommandGroups.BOT_INFORMATION);
     }
 
     @Override

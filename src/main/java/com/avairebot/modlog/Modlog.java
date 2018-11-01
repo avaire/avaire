@@ -236,6 +236,7 @@ public class Modlog {
     private static void logActionToTheDatabase(AvaIre avaire, Guild guild, ModlogAction action, Message message, int modlogCase) {
         try {
             avaire.getDatabase().newQueryBuilder(Constants.LOG_TABLE_NAME)
+                .useAsync(true)
                 .insert(statement -> {
                     statement.set("modlogCase", modlogCase);
                     statement.set("type", action.getType().getId());
@@ -250,11 +251,7 @@ public class Modlog {
                         statement.set("message_id", message.getId());
                     }
 
-                    if (action.getType().equals(ModlogType.VOICE_KICK)) {
-                        statement.set("reason", formatReason(null, action.getMessage().split("\n")[1]), true);
-                    } else {
-                        statement.set("reason", formatReason(null, action.getMessage()), true);
-                    }
+                    statement.set("reason", formatReason(null, action.getMessage()), true);
                 });
         } catch (SQLException ignored) {
             //

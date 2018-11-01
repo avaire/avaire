@@ -25,12 +25,15 @@ import com.avairebot.AvaIre;
 import com.avairebot.chat.PlaceholderMessage;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
+import com.avairebot.contracts.commands.CommandGroup;
+import com.avairebot.contracts.commands.CommandGroups;
 import com.avairebot.time.Carbon;
 import com.avairebot.utilities.NumberUtil;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.Role;
 
+import javax.annotation.Nonnull;
 import java.awt.*;
 import java.util.Arrays;
 import java.util.Collections;
@@ -66,6 +69,12 @@ public class ServerInfoCommand extends Command {
     @Override
     public List<String> getMiddleware() {
         return Collections.singletonList("throttle:channel,2,5");
+    }
+
+    @Nonnull
+    @Override
+    public List<CommandGroup> getGroups() {
+        return Collections.singletonList(CommandGroups.INFORMATION);
     }
 
     @Override

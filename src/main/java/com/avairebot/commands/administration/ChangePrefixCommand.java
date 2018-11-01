@@ -28,10 +28,14 @@ import com.avairebot.commands.CategoryHandler;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.commands.CommandPriority;
 import com.avairebot.contracts.commands.Command;
+import com.avairebot.contracts.commands.CommandGroup;
+import com.avairebot.contracts.commands.CommandGroups;
 import com.avairebot.database.transformers.GuildTransformer;
 
+import javax.annotation.Nonnull;
 import java.sql.SQLException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class ChangePrefixCommand extends Command {
@@ -87,6 +91,12 @@ public class ChangePrefixCommand extends Command {
     @Override
     public CommandPriority getCommandPriority() {
         return CommandPriority.HIGHEST;
+    }
+
+    @Nonnull
+    @Override
+    public List<CommandGroup> getGroups() {
+        return Collections.singletonList(CommandGroups.COMMAND_CUSTOMIZATION);
     }
 
     @Override

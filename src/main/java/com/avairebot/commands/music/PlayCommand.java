@@ -29,6 +29,8 @@ import com.avairebot.audio.VoiceConnectStatus;
 import com.avairebot.commands.CommandHandler;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
+import com.avairebot.contracts.commands.CommandGroup;
+import com.avairebot.contracts.commands.CommandGroups;
 import com.avairebot.metrics.Metrics;
 import com.avairebot.utilities.NumberUtil;
 import com.avairebot.utilities.RestActionUtil;
@@ -36,6 +38,7 @@ import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import net.dv8tion.jda.core.Permission;
 
+import javax.annotation.Nonnull;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -92,6 +95,13 @@ public class PlayCommand extends Command {
             "`:command https://www.youtube.com/watch?v=dQw4w9WgXcQ` - Plays the song off a link"
         );
     }
+
+    @Nonnull
+    @Override
+    public List<CommandGroup> getGroups() {
+        return Collections.singletonList(CommandGroups.MUSIC_START_PLAYING);
+    }
+
 
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {

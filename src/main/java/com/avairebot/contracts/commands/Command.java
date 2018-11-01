@@ -37,6 +37,7 @@ import com.avairebot.utilities.RestActionUtil;
 import com.avairebot.utilities.StringReplacementUtil;
 import net.dv8tion.jda.core.entities.Message;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -114,6 +115,12 @@ public abstract class Command extends Reflectionable {
         return getDescription();
     }
 
+    /**
+     * Gets the command description, this is used in help messages to help
+     * users get a better understanding of what the command does.
+     *
+     * @return Never-null, the command description.
+     */
     public String getDescription() {
         throw new MissingCommandDescriptionException(this);
     }
@@ -193,6 +200,18 @@ public abstract class Command extends Reflectionable {
      */
     public Category getCategory() {
         return null;
+    }
+
+    /**
+     * Gets the group the command belongs to, command groups is used to
+     * group together different commands in the help menu to make it
+     * easier for users to find what they're looking for.
+     *
+     * @return Never-null, the command group the command should belong to.
+     */
+    @Nonnull
+    public List<CommandGroup> getGroups() {
+        return Collections.singletonList(CommandGroups.MISCELLANEOUS);
     }
 
     /**

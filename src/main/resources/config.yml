@@ -173,6 +173,12 @@ database:
 
 default-prefix: '!'
 
+# The system commands can only be used by bot administrators, bot
+# administrators are users who have their user ID in the
+# "botAccess" field in the config.
+#
+system-prefix: ';'
+
 #--------------------------------------------------------------------------
 # Bot Status
 #--------------------------------------------------------------------------

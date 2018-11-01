@@ -27,6 +27,8 @@ import com.avairebot.commands.CommandMessage;
 import com.avairebot.commands.help.HelpCommand;
 import com.avairebot.commands.music.playlist.*;
 import com.avairebot.contracts.commands.Command;
+import com.avairebot.contracts.commands.CommandGroup;
+import com.avairebot.contracts.commands.CommandGroups;
 import com.avairebot.database.collection.Collection;
 import com.avairebot.database.collection.DataRow;
 import com.avairebot.database.connections.SQLite;
@@ -36,6 +38,7 @@ import com.avairebot.database.transformers.PlaylistTransformer;
 import com.avairebot.utilities.NumberUtil;
 import com.avairebot.utilities.RestActionUtil;
 
+import javax.annotation.Nonnull;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
@@ -54,7 +57,7 @@ public class PlaylistCommand extends Command {
     private final LoadPlaylist loadPlaylist;
 
     public PlaylistCommand(AvaIre avaire) {
-        super(avaire);
+        super(avaire, false);
 
         removeSongFromLoadPlaylist = new RemoveSongFromPlaylist(avaire, this);
         sendSongsInPlaylist = new SendSongsInPlaylist(avaire, this);
@@ -119,6 +122,16 @@ public class PlaylistCommand extends Command {
             "musicChannel"
         );
     }
+
+    @Nonnull
+    @Override
+    public List<CommandGroup> getGroups() {
+        return Arrays.asList(
+            CommandGroups.MUSIC_START_PLAYING,
+            CommandGroups.MISCELLANEOUS
+        );
+    }
+
 
     @Override
     @SuppressWarnings({"SingleStatementInBlock", "ConstantConditions"})

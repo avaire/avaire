@@ -27,10 +27,13 @@ import com.avairebot.audio.GuildMusicManager;
 import com.avairebot.audio.LavalinkManager;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
+import com.avairebot.contracts.commands.CommandGroup;
+import com.avairebot.contracts.commands.CommandGroups;
 import com.avairebot.scheduler.tasks.MusicActivityTask;
 import com.avairebot.utilities.RestActionUtil;
 import lavalink.client.io.jda.JdaLink;
 
+import javax.annotation.Nonnull;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -69,6 +72,12 @@ public class StopCommand extends Command {
             "throttle:guild,1,5",
             "musicChannel"
         );
+    }
+
+    @Nonnull
+    @Override
+    public List<CommandGroup> getGroups() {
+        return Collections.singletonList(CommandGroups.MUSIC_QUEUE);
     }
 
     @Override

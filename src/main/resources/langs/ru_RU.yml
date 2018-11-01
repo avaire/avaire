@@ -378,7 +378,7 @@ fun:
 
 help:
     HelpCommand:
-        listOfCommands: ':page_with_curl: **Список команд** ```css\n{0}```\n'
+        listOfCommands: ':page_with_curl: **Список команд**'
         commandNote: '**Введите `:help <команда>`, чтобы увидеть справку для указанной команды.**\nПример: `:help :command`'
         categoriesNote: ':information_source: Введите `:help <категория>`, чтобы получить список команд в этой категории.\nПример: `:help {0}` или `:help {1}`'
         categoriesTitle: ':scroll: Категории команд'
@@ -438,6 +438,7 @@ music:
 
     MoveHereCommand:
         error: 'Бот не подключен к голосовому каналу, сначала попросите музыку `{0}play`'
+        hasMusicChannel: "The server has a music voice channel setup, if you'd like me to move to a different voice channel, please get an admin on the server to drag 'n drop me into a different voice channel."
         nowPlayingIn: 'Сейчас я играю музыку в **:channelName**'
 
     MusicChannelCommand:

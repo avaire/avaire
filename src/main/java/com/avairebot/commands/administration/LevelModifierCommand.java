@@ -27,6 +27,8 @@ import com.avairebot.commands.CommandHandler;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.commands.utility.RankCommand;
 import com.avairebot.contracts.commands.Command;
+import com.avairebot.contracts.commands.CommandGroup;
+import com.avairebot.contracts.commands.CommandGroups;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.level.LevelManager;
 import com.avairebot.utilities.ComparatorUtil;
@@ -34,8 +36,10 @@ import com.avairebot.utilities.NumberUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.Nonnull;
 import java.sql.SQLException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class LevelModifierCommand extends Command {
@@ -94,6 +98,12 @@ public class LevelModifierCommand extends Command {
             "throttle:guild,1,5",
             "require:user,general.manage_server"
         );
+    }
+
+    @Nonnull
+    @Override
+    public List<CommandGroup> getGroups() {
+        return Collections.singletonList(CommandGroups.LEVEL_AND_EXPERIENCE);
     }
 
     @Override

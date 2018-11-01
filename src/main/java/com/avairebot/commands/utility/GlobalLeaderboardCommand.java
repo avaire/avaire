@@ -28,6 +28,8 @@ import com.avairebot.chat.SimplePaginator;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.CacheFingerprint;
 import com.avairebot.contracts.commands.Command;
+import com.avairebot.contracts.commands.CommandGroup;
+import com.avairebot.contracts.commands.CommandGroups;
 import com.avairebot.database.collection.Collection;
 import com.avairebot.database.collection.DataRow;
 import com.avairebot.utilities.CacheUtil;
@@ -98,6 +100,12 @@ public class GlobalLeaderboardCommand extends Command {
     @Override
     public List<String> getMiddleware() {
         return Collections.singletonList("throttle:channel,2,5");
+    }
+
+    @Nonnull
+    @Override
+    public List<CommandGroup> getGroups() {
+        return Collections.singletonList(CommandGroups.LEVEL_AND_EXPERIENCE);
     }
 
     @Override

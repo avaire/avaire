@@ -26,6 +26,8 @@ import com.avairebot.chat.MessageType;
 import com.avairebot.chat.PlaceholderMessage;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
+import com.avairebot.contracts.commands.CommandGroup;
+import com.avairebot.contracts.commands.CommandGroups;
 import com.avairebot.factories.MessageFactory;
 import com.avairebot.time.Carbon;
 import com.avairebot.utilities.MentionableUtil;
@@ -33,6 +35,7 @@ import net.dv8tion.jda.core.entities.Channel;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.VoiceChannel;
 
+import javax.annotation.Nonnull;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -74,6 +77,12 @@ public class ChannelInfoCommand extends Command {
     @Override
     public List<String> getTriggers() {
         return Arrays.asList("channelinfo", "cinfo");
+    }
+
+    @Nonnull
+    @Override
+    public List<CommandGroup> getGroups() {
+        return Collections.singletonList(CommandGroups.INFORMATION);
     }
 
     @Override

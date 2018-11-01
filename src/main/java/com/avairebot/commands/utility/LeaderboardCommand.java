@@ -30,6 +30,8 @@ import com.avairebot.commands.CommandMessage;
 import com.avairebot.commands.administration.LevelCommand;
 import com.avairebot.contracts.commands.CacheFingerprint;
 import com.avairebot.contracts.commands.Command;
+import com.avairebot.contracts.commands.CommandGroup;
+import com.avairebot.contracts.commands.CommandGroups;
 import com.avairebot.database.collection.Collection;
 import com.avairebot.database.collection.DataRow;
 import com.avairebot.database.transformers.GuildTransformer;
@@ -41,6 +43,7 @@ import net.dv8tion.jda.core.entities.Member;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.Nonnull;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -98,6 +101,12 @@ public class LeaderboardCommand extends Command {
     @Override
     public List<String> getMiddleware() {
         return Collections.singletonList("throttle:channel,2,5");
+    }
+
+    @Nonnull
+    @Override
+    public List<CommandGroup> getGroups() {
+        return Collections.singletonList(CommandGroups.LEVEL_AND_EXPERIENCE);
     }
 
     @Override

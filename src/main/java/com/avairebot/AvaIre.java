@@ -225,8 +225,14 @@ public class AvaIre {
         MiddlewareHandler.register("musicChannel", new IsMusicChannelMiddleware(this));
         MiddlewareHandler.register("isDMMessage", new IsDMMessageMiddelware(this));
 
-        log.info("Registering default command categories");
         String defaultPrefix = getConfig().getString("default-prefix", DiscordConstants.DEFAULT_COMMAND_PREFIX);
+        if (getConfig().getString("system-prefix", DiscordConstants.DEFAULT_SYSTEM_PREFIX).equals(defaultPrefix)) {
+            log.error("The default prefix and the system prefix is the same.");
+            log.error("The system and default prefix can not be the same, stopping the bot");
+            System.exit(ExitCodes.EXIT_CODE_NORMAL);
+        }
+
+        log.info("Registering default command categories");
         CategoryHandler.addCategory(this, "Administration", defaultPrefix);
         CategoryHandler.addCategory(this, "Help", defaultPrefix);
         CategoryHandler.addCategory(this, "Fun", defaultPrefix);
@@ -234,7 +240,9 @@ public class AvaIre {
         CategoryHandler.addCategory(this, "Music", defaultPrefix);
         CategoryHandler.addCategory(this, "Search", defaultPrefix);
         CategoryHandler.addCategory(this, "Utility", defaultPrefix);
-        CategoryHandler.addCategory(this, "System", ";");
+        CategoryHandler.addCategory(this, "System", getConfig().getString(
+            "system-prefix", DiscordConstants.DEFAULT_SYSTEM_PREFIX
+        ));
 
         log.info("Registering commands...");
         autoloadPackage(Constants.PACKAGE_COMMAND_PATH, command -> CommandHandler.register((Command) command));

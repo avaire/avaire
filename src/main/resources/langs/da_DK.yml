@@ -377,7 +377,7 @@ fun:
 
 help:
     HelpCommand:
-        listOfCommands: ':page_with_curl: **Liste over kommandoer** ```css\n{0}```\n'
+        listOfCommands: ':page_with_curl: **Liste over kommandoer**'
         commandNote: '**Skriv `:help <command>` for at se hjælpen til den angivne kommando.**\nExample: `:help :command`'
         categoriesNote: ':information_source: Skriv `:help <kategori>` for at få en liste over kommandoer i den givet kategori.\nExempel: `:help {0}` eller `:help {1}`'
         categoriesTitle: ':scroll: Kommandokategorier'
@@ -437,6 +437,7 @@ music:
 
     MoveHereCommand:
         error: 'Ikke tilsluttet en stemme kanal, start noget musik først med `{0}play`'
+        hasMusicChannel: "The server has a music voice channel setup, if you'd like me to move to a different voice channel, please get an admin on the server to drag 'n drop me into a different voice channel."
         nowPlayingIn: 'Jeg spiller nu musik i **:channelName**'
 
     MusicChannelCommand:

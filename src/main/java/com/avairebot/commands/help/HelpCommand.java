@@ -24,16 +24,19 @@ package com.avairebot.commands.help;
 import com.avairebot.AvaIre;
 import com.avairebot.admin.AdminType;
 import com.avairebot.chat.MessageType;
+import com.avairebot.chat.PlaceholderMessage;
 import com.avairebot.commands.*;
 import com.avairebot.contracts.commands.Command;
+import com.avairebot.contracts.commands.CommandGroup;
 import com.avairebot.database.transformers.ChannelTransformer;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.factories.MessageFactory;
 import com.avairebot.language.I18n;
 import com.avairebot.utilities.StringReplacementUtil;
 import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.MessageBuilder;
+import net.dv8tion.jda.core.entities.MessageEmbed;
 
+import javax.annotation.Nonnull;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -123,6 +126,9 @@ public class HelpCommand extends Command {
             return false;
         }
 
+        // Gets a random command from the command category, this is used
+        // in the command note to show a random command as the
+        // example for how to use the command.
         Optional<CommandContainer> randomCommandFromCategory = CommandHandler.getCommands().stream()
             .filter(commandContainer -> commandContainer.getCategory().equals(category))
             .collect(Collectors.collectingAndThen(Collectors.toList(), collected -> {
@@ -130,32 +136,57 @@ public class HelpCommand extends Command {
                 return collected.stream();
             })).findFirst();
 
-        //noinspection ConstantConditions
-        context.getMessageChannel().sendMessage(
-            new MessageBuilder()
-                // Builds and sets the content of the message, this is all the
-                // commands for the given category the command was used for.
-                .setContent(context.i18n("listOfCommands",
-                    CommandHandler.getCommands().stream()
-                        .filter(container -> filterCommandContainer(container, category, adminType))
-                        .map(container -> mapCommandContainer(context, container))
-                        .sorted()
-                        .collect(Collectors.joining("\n"))
-                ))
-                // Builds and sets the embedded tip/note, giving people an example
-                // of how get information for the specific command.
-                .setEmbed(MessageFactory.createEmbeddedBuilder()
-                    .setColor(MessageType.INFO.getColor())
-                    .setDescription(StringReplacementUtil.replaceAll(
-                        StringReplacementUtil.replaceAll(
-                            context.i18n("commandNote"),
-                            ":help", generateCommandTrigger(context.getMessage())
-                        ), ":command", randomCommandFromCategory.isPresent() ?
-                            randomCommandFromCategory.get().getCommand().getTriggers().get(0) : "Unknown")
-                    )
-                    .build()
-                ).build()
-        ).queue();
+        // Creates the embedded message object with a blue colour.
+        PlaceholderMessage message = context.makeEmbeddedMessage(MessageType.INFO)
+            .setTitle(context.i18n("listOfCommands"));
+
+        // Filters down the commands to just the ones belonging to the command category,
+        // and adding them to the commands map by their command group.
+        Map<CommandGroup, List<CommandContainer>> commands = new HashMap<>();
+        CommandHandler.getCommands().stream()
+            .filter(container -> filterCommandContainer(container, category, adminType))
+            .forEach(container -> {
+                for (CommandGroup group : container.getCommand().getGroups()) {
+                    if (!commands.containsKey(group)) {
+                        commands.put(group, new ArrayList<>());
+                    }
+                    commands.get(group).add(container);
+                }
+            });
+
+        // Creates the message embedded fields with their title,
+        // value, and dynamically set inline value.
+        List<MessageEmbed.Field> fields = new ArrayList<>();
+        commands.forEach((key, value) -> {
+            String stringifiedCommands = mapCommandContainers(context, value);
+            if (stringifiedCommands.endsWith("-")) {
+                fields.add(new MessageEmbed.Field(
+                    key.getName(), stringifiedCommands.substring(0, stringifiedCommands.length() - 1), false)
+                );
+            } else {
+                fields.add(new MessageEmbed.Field(
+                    key.getName(), stringifiedCommands, true
+                ));
+            }
+        });
+
+        // Sorts the fields by line-break length and adding them to the message.
+        fields.stream().sorted((l1, l2) -> {
+            if (l1.getValue().split("\n").length == l2.getValue().split("\n").length) {
+                return 0;
+            }
+            return l1.getValue().split("\n").length > l2.getValue().split("\n").length ? -1 : 1;
+        }).forEach(message::addField);
+
+        // Builds the note, adds it as a field to the bottom
+        // of the command, and then sends it off to Discord.
+        message.addField("", context.makeEmbeddedMessage()
+            .setDescription(context.i18n("commandNote"))
+            .set("help", generateCommandTrigger(context.getMessage()))
+            .set("command", randomCommandFromCategory.isPresent() ?
+                randomCommandFromCategory.get().getCommand().getTriggers().get(0) : "Unknown"
+            ).toString(), false)
+            .queue();
 
         return true;
     }
@@ -288,24 +319,27 @@ public class HelpCommand extends Command {
         ) && container.getCategory().equals(category);
     }
 
-    private String mapCommandContainer(CommandMessage context, CommandContainer container) {
-        StringBuilder trigger = new StringBuilder(container.getCommand().generateCommandTrigger(context.getMessage()));
+    @Nonnull
+    private String mapCommandContainers(CommandMessage context, List<CommandContainer> containers) {
+        boolean canBreak = true;
+        List<String> lines = new ArrayList<>();
+        StringBuilder message = new StringBuilder("```css\n");
 
-        for (int i = trigger.length(); i < 16; i++) {
-            trigger.append(" ");
+        for (CommandContainer container : containers) {
+            String trigger = container.getCommand().generateCommandTrigger(context.getMessage());
+            if (trigger.length() > 16) {
+                canBreak = false;
+            }
+            lines.add(trigger);
         }
 
-        List<String> triggers = container.getCommand().getTriggers();
-        if (triggers.size() == 1) {
-            return trigger + "[]";
-        }
+        Collections.sort(lines);
 
-        String prefix = container.getCommand().generateCommandPrefix(context.getMessage());
-        String[] aliases = new String[triggers.size() - 1];
-        for (int i = 1; i < triggers.size(); i++) {
-            aliases[i - 1] = prefix + triggers.get(i);
-        }
-        return String.format("%s[%s]", trigger.toString(), String.join(", ", aliases));
+        return message
+            .append(String.join("\n", lines))
+            .append("```")
+            .append(canBreak ? ' ' : '-')
+            .toString();
     }
 
     private boolean isSystemCategory(AdminType adminType, String name) {

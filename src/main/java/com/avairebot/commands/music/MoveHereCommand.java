@@ -72,6 +72,10 @@ public class MoveHereCommand extends Command {
 
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
+        if (context.getGuildTransformer() == null) {
+            return sendErrorMessage(context, "errors.errorOccurredWhileLoading", "music channels");
+        }
+
         GuildMusicManager musicManager = AudioHandler.getDefaultAudioHandler().getGuildAudioPlayer(context.getGuild());
 
         if (!musicManager.isReady() || musicManager.getPlayer().getPlayingTrack() == null) {
@@ -81,6 +85,13 @@ public class MoveHereCommand extends Command {
         VoiceChannel channel = context.getMember().getVoiceState().getChannel();
         if (channel == null) {
             return sendErrorMessage(context, "errors.mustBeConnectedToVoice");
+        }
+
+        if (context.getGuildTransformer().getMusicChannelVoice() != null) {
+            VoiceChannel voiceChannel = context.getGuild().getVoiceChannelById(context.getGuildTransformer().getMusicChannelVoice());
+            if (voiceChannel != null) {
+                return sendErrorMessage(context, context.i18n("hasMusicChannel"));
+            }
         }
 
         VoiceConnectStatus voiceConnectStatus = AudioHandler.getDefaultAudioHandler().connectToVoiceChannel(context, true);

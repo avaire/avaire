@@ -384,7 +384,7 @@ fun:
 
 help:
     HelpCommand:
-        listOfCommands: ':page_with_curl: **List of Commands** ```css\n{0}```\n'
+        listOfCommands: ':page_with_curl: **List of Commands**'
         commandNote: '**Írd be a `:help <parancs>`, hogy lásd a segítséget ahhoz az adott parancshoz.**\nPéldául: `:help :command`'
         categoriesNote: ':information_source: Írd be: `:help <category>` hogy megtudd a parancsok listáját abban a kategóriában.\nPéldául: `:help {0}` vagy `:help {1}`'
         categoriesTitle: ':scroll: Parancs Kategóriák'
@@ -444,6 +444,7 @@ music:
 
     MoveHereCommand:
         error: 'Nem vagyok csatlakozva hanghoz, előbb kérj zenét a `{0}play`-vel'
+        hasMusicChannel: "The server has a music voice channel setup, if you'd like me to move to a different voice channel, please get an admin on the server to drag 'n drop me into a different voice channel."
         nowPlayingIn: 'Jelenleg zenét játszok a **:channelName**-ben'
 
     MusicChannelCommand:

@@ -29,6 +29,8 @@ import com.avairebot.commands.CommandMessage;
 import com.avairebot.commands.CommandPriority;
 import com.avairebot.commands.administration.LevelCommand;
 import com.avairebot.contracts.commands.Command;
+import com.avairebot.contracts.commands.CommandGroup;
+import com.avairebot.contracts.commands.CommandGroups;
 import com.avairebot.database.collection.Collection;
 import com.avairebot.database.collection.DataRow;
 import com.avairebot.database.controllers.PlayerController;
@@ -40,6 +42,7 @@ import com.avairebot.utilities.NumberUtil;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.User;
 
+import javax.annotation.Nonnull;
 import java.awt.*;
 import java.sql.SQLException;
 import java.util.Arrays;
@@ -100,6 +103,12 @@ public class RankCommand extends Command {
     @Override
     public CommandPriority getCommandPriority() {
         return CommandPriority.HIGH;
+    }
+
+    @Nonnull
+    @Override
+    public List<CommandGroup> getGroups() {
+        return Collections.singletonList(CommandGroups.LEVEL_AND_EXPERIENCE);
     }
 
     @Override

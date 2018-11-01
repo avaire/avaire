@@ -25,10 +25,13 @@ import com.avairebot.AvaIre;
 import com.avairebot.chat.SimplePaginator;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
+import com.avairebot.contracts.commands.CommandGroup;
+import com.avairebot.contracts.commands.CommandGroups;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.utilities.NumberUtil;
 import net.dv8tion.jda.core.entities.Role;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -66,6 +69,12 @@ public class ListSelfAssignableRolesCommand extends Command {
     @Override
     public List<String> getTriggers() {
         return Collections.singletonList("lsar");
+    }
+
+    @Nonnull
+    @Override
+    public List<CommandGroup> getGroups() {
+        return Collections.singletonList(CommandGroups.ROLE_ASSIGNMENTS);
     }
 
     @Override

@@ -24,6 +24,8 @@ package com.avairebot.commands.utility;
 import com.avairebot.AvaIre;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
+import com.avairebot.contracts.commands.CommandGroup;
+import com.avairebot.contracts.commands.CommandGroups;
 import com.avairebot.factories.MessageFactory;
 import com.avairebot.factories.RequestFactory;
 import com.avairebot.requests.Response;
@@ -31,6 +33,7 @@ import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import org.json.JSONObject;
 
+import javax.annotation.Nonnull;
 import java.awt.*;
 import java.util.Collections;
 import java.util.List;
@@ -75,6 +78,12 @@ public class IPInfoCommand extends Command {
     @Override
     public List<String> getMiddleware() {
         return Collections.singletonList("throttle:user,1,5");
+    }
+
+    @Nonnull
+    @Override
+    public List<CommandGroup> getGroups() {
+        return Collections.singletonList(CommandGroups.INFORMATION);
     }
 
     @Override
