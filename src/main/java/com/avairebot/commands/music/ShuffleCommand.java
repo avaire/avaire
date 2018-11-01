@@ -42,7 +42,7 @@ import java.util.concurrent.TimeUnit;
 public class ShuffleCommand extends Command {
 
     public ShuffleCommand(AvaIre avaire) {
-        super(avaire);
+        super(avaire, false);
     }
 
     @Override

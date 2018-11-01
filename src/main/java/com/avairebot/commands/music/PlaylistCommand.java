@@ -57,7 +57,7 @@ public class PlaylistCommand extends Command {
     private final LoadPlaylist loadPlaylist;
 
     public PlaylistCommand(AvaIre avaire) {
-        super(avaire);
+        super(avaire, false);
 
         removeSongFromLoadPlaylist = new RemoveSongFromPlaylist(avaire, this);
         sendSongsInPlaylist = new SendSongsInPlaylist(avaire, this);
