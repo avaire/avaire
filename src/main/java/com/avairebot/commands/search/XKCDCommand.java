@@ -62,15 +62,15 @@ public class XKCDCommand extends Command {
         return Arrays.asList(
             "`:command` - Gets the latest comic",
             "`:command <id>` - Gets the comic with the given id.",
-            "':command <random>' - Gets a comic with a random id."
+            "`:command random` - Gets a random comic."
         );
     }
 
     @Override
     public List<String> getExampleUsage() {
         return Arrays.asList(
-            "`:command 530`",
-            "':command random'"
+            "`:command 530` - Gets the comic with an ID of `530`.",
+            "`:command random` - Gets a random comic."
         );
     }
 
