@@ -29,6 +29,7 @@ import com.avairebot.factories.RequestFactory;
 import com.avairebot.requests.Response;
 import com.avairebot.time.Carbon;
 import com.avairebot.utilities.NumberUtil;
+import com.avairebot.utilities.RandomUtil;
 import org.json.JSONObject;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -38,7 +39,6 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 import java.util.function.Consumer;
 
 public class XKCDCommand extends Command {
@@ -95,10 +95,8 @@ public class XKCDCommand extends Command {
             return requestComic(context, "https://xkcd.com/" + comic + "/info.0.json", comic);
         }
 
-        int latestComicNum = getLatestComicNumber();
-        Random r = new Random();
-        int comicNumber = r.nextInt(latestComicNum) + 1;
-        return requestComic(context, "https://xkcd.com/" + comicNumber + "/info.0.json", comicNumber);
+        int comic = RandomUtil.getInteger(getLatestComicNumber()) + 1;
+        return requestComic(context, "https://xkcd.com/" + comic + "/info.0.json", comic);
     }
 
     private boolean requestComic(CommandMessage context, String url, int comic) {
