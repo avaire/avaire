@@ -122,22 +122,19 @@ public class VoiceKickCommand extends Command {
 
         context.getGuild().getController().createVoiceChannel("kick-" + user.getUser().getId()).queue(channel ->
             context.getGuild().getController().moveVoiceMember(user, (VoiceChannel) channel)
-                .queue(empty -> channel.delete().queue(new Consumer<Void>() {
-                        @Override
-                        public void accept(Void empty) {
-                            Modlog.log(avaire, context, new ModlogAction(
-                                    ModlogType.VOICE_KICK,
-                                    context.getAuthor(), user.getUser(),
-                                    originalVoiceChannelName + " (ID: " + originalVoiceChannelId + ")\n" + reason
-                                )
-                            );
+                .queue(empty -> channel.delete().queue((Consumer<Void>) aVoid -> {
+                        Modlog.log(avaire, context, new ModlogAction(
+                                ModlogType.VOICE_KICK,
+                                context.getAuthor(), user.getUser(),
+                                originalVoiceChannelName + " (ID: " + originalVoiceChannelId + ")\n" + reason
+                            )
+                        );
 
-                            context.makeSuccess(context.i18n("message"))
-                                .set("target", user.getUser().getName() + "#" + user.getUser().getDiscriminator())
-                                .set("voiceChannel", originalVoiceChannelName)
-                                .set("reason", reason)
-                                .queue();
-                        }
+                        context.makeSuccess(context.i18n("message"))
+                            .set("target", user.getUser().getName() + "#" + user.getUser().getDiscriminator())
+                            .set("voiceChannel", originalVoiceChannelName)
+                            .set("reason", reason)
+                            .queue();
                     }, RestActionUtil.ignore)
                 )
         );
