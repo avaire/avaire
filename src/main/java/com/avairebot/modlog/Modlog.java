@@ -169,8 +169,11 @@ public class Modlog {
             case PARDON:
                 //noinspection ConstantConditions
                 split = action.getMessage().split("\n");
+                String[] modlogParts = split[0].split(":");
                 builder
-                    .addField("Pardoned Case ID", split[0], true)
+                    .addField("Pardoned Case ID", I18n.format("#[{0}](https://discordapp.com/channels/{1}/{2}/{3})",
+                        modlogParts[0], transformer.getId(), transformer.getModlog(), modlogParts[1]
+                    ), true)
                     .addField("Moderator", action.getStringifiedModerator(), true)
                     .addField("Reason", formatReason(transformer, String.join("\n",
                         Arrays.copyOfRange(split, 1, split.length)

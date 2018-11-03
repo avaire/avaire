@@ -28,6 +28,7 @@ import com.avairebot.contracts.commands.Command;
 import com.avairebot.contracts.commands.CommandGroup;
 import com.avairebot.contracts.commands.CommandGroups;
 import com.avairebot.database.collection.Collection;
+import com.avairebot.database.collection.DataRow;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.modlog.Modlog;
 import com.avairebot.modlog.ModlogAction;
@@ -137,15 +138,17 @@ public class ModlogPardonCommand extends Command {
                 return sendErrorMessage(context, context.i18n("couldntFindCaseWithId", caseId));
             }
 
-            if (!canEditModlogCase(context, collection)) {
+            DataRow row = collection.first();
+
+            if (!canEditModlogCase(context, row)) {
                 return sendErrorMessage(context, context.i18n("couldntFindCaseWithId", caseId));
             }
 
-            if (collection.first().getBoolean("pardon", false)) {
+            if (row.getBoolean("pardon", false)) {
                 return sendErrorMessage(context, context.i18n("caseAlreadyPardoned", caseId));
             }
 
-            ModlogType type = ModlogType.fromId(collection.first().getInt("type", -1));
+            ModlogType type = ModlogType.fromId(row.getInt("type", -1));
             if (type != null && !type.isPunishment()) {
                 return sendErrorMessage(context, context.i18n("notAPunishment", caseId));
             }
@@ -159,7 +162,7 @@ public class ModlogPardonCommand extends Command {
             ModlogAction modlogAction = new ModlogAction(
                 ModlogType.PARDON,
                 context.getAuthor(), null,
-                caseId + "\n" + reason
+                caseId + ":" + row.getString("message_id") + "\n" + reason
             );
 
             Modlog.log(avaire, context.getGuild(), transformer, modlogAction);
@@ -174,8 +177,8 @@ public class ModlogPardonCommand extends Command {
         return true;
     }
 
-    private boolean canEditModlogCase(CommandMessage context, Collection collection) {
+    private boolean canEditModlogCase(CommandMessage context, DataRow collection) {
         return context.getMember().hasPermission(Permission.ADMINISTRATOR)
-            || collection.first().getString("user_id", "").equals(context.getAuthor().getId());
+            || collection.getString("user_id", "").equals(context.getAuthor().getId());
     }
 }
