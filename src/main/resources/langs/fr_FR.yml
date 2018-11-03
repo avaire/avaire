@@ -192,7 +192,7 @@ administration:
         mustMentionUser: "You must mention a valid `user` you want to display the modlog history for."
         noHistory: "No modlog history was found for this user."
         title: "{0}#{1} History ({2})"
-        entry: "**Case ID #{0}** | {1}\n\t{2}"
+        entry: "**{1}** | **#{0}** | **Moderator:** {2}\n**Date:** {3}\n**Reason:** {4}"
         noReasonGiven: "No reason was given."
 
     ModlogPardonCommand:

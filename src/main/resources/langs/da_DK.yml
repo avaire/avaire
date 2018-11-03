@@ -192,7 +192,7 @@ administration:
         mustMentionUser: "Du skal nævne en gyldig `bruger`, du vil vise modloghistorikken for."
         noHistory: "Der blev ikke fundet nogen modloghistorik for denne bruger."
         title: "{0}#{1} Historie ({2})"
-        entry: "**Case-ID #{0}** | {1}\n\t{2}"
+        entry: "**{1}** | **#{0}** | **Moderator:** {2}\n**Date:** {3}\n**Reason:** {4}"
         noReasonGiven: "Ingen grund blev givet."
 
     ModlogPardonCommand:
