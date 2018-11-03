@@ -30,6 +30,7 @@ import com.avairebot.contracts.commands.CommandGroup;
 import com.avairebot.contracts.commands.CommandGroups;
 import com.avairebot.database.collection.Collection;
 import com.avairebot.database.collection.DataRow;
+import com.avairebot.language.I18n;
 import com.avairebot.modlog.ModlogType;
 import com.avairebot.time.Carbon;
 import com.avairebot.utilities.MentionableUtil;
@@ -131,8 +132,17 @@ public class ModlogHistoryCommand extends Command {
 
                 Carbon time = row.getTimestamp("created_at");
 
-                records.add(context.i18n("entry",
+                String modlogCaseId = context.getGuildTransformer() == null
+                    ? row.getString("modlogCase")
+                    : I18n.format("[{0}](https://discordapp.com/channels/{1}/{2}/{3})",
                     row.getString("modlogCase"),
+                    context.getGuild().getIdLong(),
+                    context.getGuildTransformer().getModlog(),
+                    row.getString("message_id")
+                );
+
+                records.add(context.i18n("entry",
+                    modlogCaseId,
                     type == null ? "Unknown" : type.getEmote() + " " + type.getName(),
                     formatUser(avaire.getShardManager().getUserById(row.getLong("user_id")), row),
                     time == null ? "Unknown" : time.format("EEE, MMM dd, yyyy h:mm aaa z"),
