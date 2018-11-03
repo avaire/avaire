@@ -23,6 +23,7 @@ package com.avairebot.modlog;
 
 import com.avairebot.chat.MessageType;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.awt.*;
 
@@ -31,58 +32,61 @@ public enum ModlogType {
     /**
      * Represents the action when a user is kicked from a server.
      */
-    KICK(1, "Kick", true, MessageType.WARNING.getColor()),
+    KICK(1, "Kick", "\uD83D\uDC62", true, MessageType.WARNING.getColor()),
 
     /**
      * Represents the action when a user is kicked from a voice channel.
      */
-    VOICE_KICK(2, "Voice Kick", false, MessageType.WARNING.getColor()),
+    VOICE_KICK(2, "Voice Kick", "\uD83D\uDC62", false, MessageType.WARNING.getColor()),
 
     /**
      * Represents when a user is banned from a server without the
      * message they sent over the last 7 days are left alone.
      */
-    SOFT_BAN(3, "Soft Ban", true, MessageType.ERROR.getColor()),
+    SOFT_BAN(3, "Soft Ban", "\uD83D\uDD28", true, MessageType.ERROR.getColor()),
 
     /**
      * Represents when a user is banned from a server, including
      * deleting any message they have sent in the last 7 days.
      */
-    BAN(4, "Ban", true, MessageType.ERROR.getColor()),
+    BAN(4, "Ban", "\uD83D\uDD28", true, MessageType.ERROR.getColor()),
 
     /**
      * Represents when multiple messages are deleted from a channel.
      */
-    PURGE(5, "Purge", false, MessageType.INFO.getColor()),
+    PURGE(5, "Purge", null, false, MessageType.INFO.getColor()),
 
     /**
      * Represents when a user is warned through Avas warn system.
      */
-    WARN(6, "Warn", true, MessageType.WARNING.getColor()),
+    WARN(6, "Warn", "\uD83D\uDCE2", true, MessageType.WARNING.getColor()),
 
     /**
      * Represents when a user is unbanned from a server through Ava.
      */
-    UNBAN(7, "Unban", false, false, MessageType.SUCCESS.getColor()),
+    UNBAN(7, "Unban", null, false, false, MessageType.SUCCESS.getColor()),
 
     /**
      * Represents when a user is pardoned for an old modlog case.
      */
-    PARDON(8, "Pardon", false, false, MessageType.SUCCESS.getColor());
+    PARDON(8, "Pardon", null, false, false, MessageType.SUCCESS.getColor());
 
     final int id;
     final String name;
+    @Nullable
+    final String emote;
     final boolean notifyable;
     final boolean punishment;
     final Color color;
 
-    ModlogType(int id, String name, boolean notifyable, Color color) {
-        this(id, name, notifyable, true, color);
+    ModlogType(int id, String name, String emote, boolean notifyable, Color color) {
+        this(id, name, emote, notifyable, true, color);
     }
 
-    ModlogType(int id, String name, boolean notifyable, boolean punishment, Color color) {
+    ModlogType(int id, String name, String emote, boolean notifyable, boolean punishment, Color color) {
         this.id = id;
         this.name = name;
+        this.emote = emote;
         this.notifyable = notifyable;
         this.punishment = punishment;
         this.color = color;
@@ -120,6 +124,16 @@ public enum ModlogType {
      */
     public String getName() {
         return name;
+    }
+
+    /**
+     * Gets the emote that is associated with the modlog type.
+     *
+     * @return The emote that is associated with the modlog type.
+     */
+    @Nonnull
+    public String getEmote() {
+        return emote == null ? "" : emote;
     }
 
     /**

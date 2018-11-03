@@ -31,6 +31,7 @@ import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.factories.MessageFactory;
 import com.avairebot.handlers.events.ModlogActionEvent;
+import com.avairebot.language.I18n;
 import com.avairebot.utilities.RestActionUtil;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Guild;
@@ -121,7 +122,11 @@ public class Modlog {
 
         String[] split = null;
         EmbedBuilder builder = MessageFactory.createEmbeddedBuilder()
-            .setTitle(action.getType().getName() + " | Case #" + transformer.getModlogCase())
+            .setTitle(I18n.format("{0} {1} | Case #{2}",
+                action.getType().getEmote(),
+                action.getType().getName(),
+                transformer.getModlogCase()
+            ))
             .setColor(action.getType().getColor())
             .setTimestamp(Instant.now());
 
@@ -217,8 +222,10 @@ public class Modlog {
         user.openPrivateChannel().queue(channel -> {
             EmbedBuilder message = MessageFactory.createEmbeddedBuilder()
                 .setColor(action.getType().getColor())
-                .setDescription(String.format("You have been **%s** %s " + guild.getName(),
-                    type, action.getType().equals(ModlogType.WARN)
+                .setDescription(String.format("%s You have been **%s** %s " + guild.getName(),
+                    action.getType().getEmote(),
+                    type,
+                    action.getType().equals(ModlogType.WARN)
                         ? "in" : "from"
                 ))
                 .addField("Moderator", action.getModerator().getName() + "#" + action.getModerator().getDiscriminator(), true)
