@@ -777,3 +777,12 @@ utility:
             minor: 'Minor version opdateringer er nye tilføjelser, funktioner og reworks af den eksisterende codebase, det anbefales at du opdaterer om Minor version ændringer for at få alle de nye funktioner.'
             patchName: 'Patch'
             patch: 'Opdateringer af patchversioner er fejlrettelser, refactoring af eksisterende kode og meget små ændringer, der ikke påvirker andre ting i kodebase. Det anbefales at opdatere ændringer af patchversioner for at holde op med fejlrettelserne og patcherne.'
+
+    WeatherCommand:
+        noCityFound: "No city was found with the name of **:name**, are you sure you spelt it correctly?"
+        fields:
+            weatherFor: "Weather for {0}, {1}"
+            country: "Country"
+            temperature: "Temperature"
+            windDirection: "Wind Direction"
+            windSpeed: "Wind Speed"

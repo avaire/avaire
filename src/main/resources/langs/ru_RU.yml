@@ -777,3 +777,12 @@ utility:
             minor: 'Незначительные обновления версий - это новые дополнения, функции и реорганизация существующей кодовой базы, рекомендуется обновлять небольшие версии, чтобы не отставать от новых функций.'
             patchName: 'Patch'
             patch: 'Patch обновления версий - исправления ошибок, реорганизация существующего кода и очень незначительные изменения, которые не влияют на другие вещи в базе кода, рекомендуется обновлять изменения патчей, чтобы не отставать от исправлений ошибок и исправлений.'
+
+    WeatherCommand:
+        noCityFound: "No city was found with the name of **:name**, are you sure you spelt it correctly?"
+        fields:
+            weatherFor: "Weather for {0}, {1}"
+            country: "Country"
+            temperature: "Temperature"
+            windDirection: "Wind Direction"
+            windSpeed: "Wind Speed"

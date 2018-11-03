@@ -776,3 +776,12 @@ utility:
             minor: 'Mindre endringer er nye fungsjoner, endringer av eksisterende kode (ikke større endringer), det anbefales at du oppdaterer ved mindre endringer for og holde deg oppdatert med nye fungsjoner.'
             patchName: 'Fiks'
             patch: 'Fiks er bug fikser, mindre endringert på eksisterende kode og meget små endringer som ikke påvirker andre deler av kodebasen. Det anbefales og holde seg oppdatert på fiks versjoner for og få inn nyeste bug fikser.'
+
+    WeatherCommand:
+        noCityFound: "No city was found with the name of **:name**, are you sure you spelt it correctly?"
+        fields:
+            weatherFor: "Weather for {0}, {1}"
+            country: "Country"
+            temperature: "Temperature"
+            windDirection: "Wind Direction"
+            windSpeed: "Wind Speed"

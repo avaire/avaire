@@ -132,6 +132,5 @@ public class DrainVoteQueueTask implements Task {
                     .SendThanksForVotingMessageInDM(user, voteEntity.getVotePoints());
             }
         });
-
     }
 }

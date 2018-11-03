@@ -783,3 +783,12 @@ utility:
             minor: 'A kisebb verzió frissítések általában új dolgok hozzáadása, és/vagy a meglévő forráskód átírása. Ajánlott, hogy frissíts kisebb verzió változásakor, hogy naprakész maradj.'
             patchName: 'Foltozás'
             patch: 'A foltozó verziók hiba javítások, kisebb meglévő kód átgondolása vagy nagyon kis változtatások amik nem befolyásolják a bot működését. Ajánlott, hogy frissíts ezen verzió változásakor, hogy naprakész maradj.'
+
+    WeatherCommand:
+        noCityFound: "No city was found with the name of **:name**, are you sure you spelt it correctly?"
+        fields:
+            weatherFor: "Weather for {0}, {1}"
+            country: "Country"
+            temperature: "Temperature"
+            windDirection: "Wind Direction"
+            windSpeed: "Wind Speed"

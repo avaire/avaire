@@ -777,3 +777,12 @@ utility:
             minor: "Les mises à jour de version Mineure sont des nouveaux ajouts, fonctionnalités et modifications du code existant, il est recommandé d'effectuer ces mises à jour pour obtenir les dernières fonctionnalités."
             patchName: "Patch"
             patch: "Les patchs de mise à jour sont des corrections de bugs, remaniement du code existant et des modifications mineures qui n'ont pas d'impact sur le comportement du bot, il est recommandé d'effectuer ces mises à jour pour corriger les bugs."
+
+    WeatherCommand:
+        noCityFound: "No city was found with the name of **:name**, are you sure you spelt it correctly?"
+        fields:
+            weatherFor: "Weather for {0}, {1}"
+            country: "Country"
+            temperature: "Temperature"
+            windDirection: "Wind Direction"
+            windSpeed: "Wind Speed"

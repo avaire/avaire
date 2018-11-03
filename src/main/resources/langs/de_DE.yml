@@ -778,3 +778,12 @@ utility:
             minor: 'Versionsupdates mit kleinen Änderungen sind neue Ergänzungen, Funktionen und Nachbesserungen der vorhandenen Codebasis. Es wird empfohlen, dass du kleinere Versionsänderungen aktualisieren, um mit den neuen Funktionen Schritt zu halten.'
             patchName: 'Patch'
             patch: 'Patch-Versionen sind Bugfixes, Refactoring des vorhandenen Codes und sehr kleine Änderungen, die andere Dinge in der Code-Basis nicht beeinflussen. Es wird empfohlen, dass du die Änderungen der Patch-Version aktualisieren, um mit den Bugfixes und Patches Schritt zu halten.'
+
+    WeatherCommand:
+        noCityFound: "No city was found with the name of **:name**, are you sure you spelt it correctly?"
+        fields:
+            weatherFor: "Weather for {0}, {1}"
+            country: "Country"
+            temperature: "Temperature"
+            windDirection: "Wind Direction"
+            windSpeed: "Wind Speed"

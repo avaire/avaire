@@ -25,6 +25,7 @@ import com.avairebot.AvaIre;
 import com.avairebot.contracts.scheduler.Job;
 import com.avairebot.scheduler.tasks.ApplicationShutdownTask;
 import com.avairebot.scheduler.tasks.DrainVoteQueueTask;
+import com.avairebot.scheduler.tasks.DrainWeatherQueueTask;
 
 import java.util.concurrent.TimeUnit;
 
@@ -32,6 +33,7 @@ public class RunEverySecondJob extends Job {
 
     private final DrainVoteQueueTask emptyVoteQueueTask = new DrainVoteQueueTask();
     private final ApplicationShutdownTask shutdownTask = new ApplicationShutdownTask();
+    private final DrainWeatherQueueTask drainWeatherQueueTask = new DrainWeatherQueueTask();
 
     public RunEverySecondJob(AvaIre avaire) {
         super(avaire, 0, 1, TimeUnit.SECONDS);
@@ -39,6 +41,6 @@ public class RunEverySecondJob extends Job {
 
     @Override
     public void run() {
-        handleTask(emptyVoteQueueTask, shutdownTask);
+        handleTask(emptyVoteQueueTask, shutdownTask, drainWeatherQueueTask);
     }
 }
