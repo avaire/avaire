@@ -86,19 +86,6 @@ administration:
             global: "Alle kommandoer i all kommando kategorier er blevet nulstillet til at bruge `:prefix` prefixet."
             category: "Alle kommandoer i all kommando kategorien `:category` er blivet nulstillet til at bruge `:prefix` prefixet."
 
-    DJLevelCommand:
-        title: "Nuværende DJ-niveau: {0}"
-        footer: "Brug \"{0} types\" for at se en komplet liste over de tilgængelige DJ niveau typer."
-        types:
-            title: "DJ Niveau Typer"
-            footer: "Brug \"{0} <type>\" at ændre DJ-niveauet til den givne type for serveren."
-        invalidType: "`{0}` er ikke et gyldig `DJ Level` type, brug venligst et af følgende:\n`{1}`"
-        changedTo: "`DJ-niveauet` er blivet ændret til **:type**.\n:info"
-        information:
-            all: "Alle kan køre nogen musikkommandoer, også selvom de ikke har 'DJ'-rollen."
-            none: "Ingen kan køre nogen musikkommandoer uden 'DJ'-rollen."
-            normal: "Folk uden 'DJ'-rollen kan ikke bruge kommandoer som afspilningslister og volumenkontrol, men stadig tillader folk at bruge afspilningskommandoen uden rollen."
-
     GoodbyeCommand:
         note: "\nDu kan tilpasse beskeden ved at bruge `{0} [besked]`"
         message: "`Farvel` modellen er blivet **:status** for :channel kanalen."
@@ -266,10 +253,6 @@ administration:
         noUserIsBanned: "No user with an ID of `:id` is currently banned from the server."
         invalidUserIdGiven: "Invalid `user id` was given, the `user id` must be a numeric string of 18 or more numbers long."
 
-    UserAvatarCommand:
-        noUserFound: "Jeg fandt ingen brugere med et navn eller ID der matcher `{0}`"
-        title: "{0}#{1}'s Avatar"
-
     VoiceKickCommand:
         mustMentionUser: "Du skal nævne den bruger du ønsker at kicke."
         sameOrHigherRole: "Du kan ikke kicke folk med en højere eller samme rolle som dig selv."
@@ -434,6 +417,19 @@ music:
         error: 'Intet at rydde, anmode om musik først med `{0}play`'
         emptyQueue: 'Intet at rydde, der er ingen sange i musik køen lige nu.'
         success: 'Jeg har fjernet **:queueSize** sange fra køen, køen er nu tom!'
+
+    DJLevelCommand:
+            title: "Nuværende DJ-niveau: {0}"
+            footer: "Brug \"{0} types\" for at se en komplet liste over de tilgængelige DJ niveau typer."
+            types:
+                title: "DJ Niveau Typer"
+                footer: "Brug \"{0} <type>\" at ændre DJ-niveauet til den givne type for serveren."
+            invalidType: "`{0}` er ikke et gyldig `DJ Level` type, brug venligst et af følgende:\n`{1}`"
+            changedTo: "`DJ-niveauet` er blivet ændret til **:type**.\n:info"
+            information:
+                all: "Alle kan køre nogen musikkommandoer, også selvom de ikke har 'DJ'-rollen."
+                none: "Ingen kan køre nogen musikkommandoer uden 'DJ'-rollen."
+                normal: "Folk uden 'DJ'-rollen kan ikke bruge kommandoer som afspilningslister og volumenkontrol, men stadig tillader folk at bruge afspilningskommandoen uden rollen."
 
     MoveHereCommand:
         error: 'Ikke tilsluttet en stemme kanal, start noget musik først med `{0}play`'
@@ -749,6 +745,10 @@ utility:
         footer: 'Startet {0} ved {1}'
         dateFormat: 'EEEEEEEE, dd MMM yyyy'
         timeFormat: 'HH:mm:ss z'
+
+    UserAvatarCommand:
+            noUserFound: "Jeg fandt ingen brugere med et navn eller ID der matcher `{0}`"
+            title: "{0}#{1}'s Avatar"
 
     UserIdCommand:
         message: ':id: For brugeren **:target** er `:targetid`'

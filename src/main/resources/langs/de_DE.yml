@@ -86,19 +86,6 @@ administration:
             global: "Alle Befehle jeder Befehls-Kategorie wurden zurückgesetzt und nutzen nun den`:prefix`-Prefix."
             category: "Alle Befehle der `:category` Befehls-Kategorie wurden zurückgesetzt und nutzen nun den `:prefix`-Prefix."
 
-    DJLevelCommand:
-        title: "Derzeitiges DJ-Level: {0}"
-        footer: "Nutze \"{0} types\" um eine Liste von verfügbaren DJ-Level einzusehen."
-        types:
-            title: "DJ Level-Typen"
-            footer: "Nutze \"{0} <type>\" um den DJ-Level zum angegebenen Typen zu ändern."
-        invalidType: "`{0}` ist kein gültiges `DJ-Level`-Typ. Bitte nutze eines der folgenden:\n`{1}`"
-        changedTo: "Der `DJ-Level`-Status wurde geändert zu **:type**.\n:info"
-        information:
-            all: "Jeder kann alle Musikbefehle verwenden. Auch User ohne `DJ`-Rolle."
-            none: "Keiner kann ohne der `DJ`-Rolle Musikbefehle verwenden."
-            normal: "Verhindert, dass Leute ohne der `DJ`-Rolle Befehle wie das Kontrollieren der Playlists, Lautstärke und das sofortige Überspringen von Songs nutzen können."
-
     GoodbyeCommand:
         note: "\nDu kannst deine Nachricht individualisieren, indem du folgendes eingibst: `{0} [Nachricht]`"
         message: "Das `Goodbye`-Modul wurde für den :channel-Channel **:status**."
@@ -266,10 +253,6 @@ administration:
         noUserIsBanned: "Kein User mit der ID `:id` ist auf dem Server verbannt."
         invalidUserIdGiven: "Ungültige `User-ID` angegeben. Die `User-ID` muss eine 18-stellige oder längere Nummer sein."
 
-    UserAvatarCommand:
-        noUserFound: "Ich konnte keine Users mit dem Namen oder der ID`{0}` auffinden."
-        title: "{0}#{1}'s Avatar"
-
     VoiceKickCommand:
         mustMentionUser: "Du musst den User angeben, den du aus dem Voice-Channel kicken möchtest."
         sameOrHigherRole: "Ich kann keinen User aus dem Voice-Channel kicken, der die selbe oder eine höhere Rolle hat als du."
@@ -435,6 +418,19 @@ music:
         error: "Nicht's zum Leeren vorhanden. Anfragen von Musik ist vorausgesetzt. Tue dies bitte zuerst mit folgendem Befehl: `{0}play`"
         emptyQueue: "Nicht's zum Leeren vorhanden. Es befinden sich keine ausstehenden Songs in der Warteschlange."
         success: 'Ich habe **:queueSize** Songs aus der Warteschlange entfernt. Die Warteschlange ist nun leer.'
+
+    DJLevelCommand:
+            title: "Derzeitiges DJ-Level: {0}"
+            footer: "Nutze \"{0} types\" um eine Liste von verfügbaren DJ-Level einzusehen."
+            types:
+                title: "DJ Level-Typen"
+                footer: "Nutze \"{0} <type>\" um den DJ-Level zum angegebenen Typen zu ändern."
+            invalidType: "`{0}` ist kein gültiges `DJ-Level`-Typ. Bitte nutze eines der folgenden:\n`{1}`"
+            changedTo: "Der `DJ-Level`-Status wurde geändert zu **:type**.\n:info"
+            information:
+                all: "Jeder kann alle Musikbefehle verwenden. Auch User ohne `DJ`-Rolle."
+                none: "Keiner kann ohne der `DJ`-Rolle Musikbefehle verwenden."
+                normal: "Verhindert, dass Leute ohne der `DJ`-Rolle Befehle wie das Kontrollieren der Playlists, Lautstärke und das sofortige Überspringen von Songs nutzen können."
 
     MoveHereCommand:
         error: 'Nicht mit dem Voicechannel verbunden. Anfragen von Musik ist vorausgesetzt. Tue dies bitte zuerst mit folgendem Befehl: `{0}play`'
@@ -750,6 +746,10 @@ utility:
         footer: 'Ich startete {0} um {1}'
         dateFormat: 'EEEEEEEE, dd. MMM yyyy'
         timeFormat: 'HH:mm:ss z'
+
+    UserAvatarCommand:
+            noUserFound: "Ich konnte keine Users mit dem Namen oder der ID`{0}` auffinden."
+            title: "{0}#{1}'s Avatar"
 
     UserIdCommand:
         message: 'Die :id: vom User **:target** lautet `:targetid`.'
