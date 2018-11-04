@@ -22,9 +22,7 @@
 package com.avairebot.audio;
 
 import com.avairebot.AvaIre;
-import com.avairebot.audio.source.HttpSourceManager;
 import com.avairebot.audio.source.PlaylistImportSourceManager;
-import com.avairebot.audio.source.twitch.TwitchStreamAudioSourceManager;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.transformers.GuildTransformer;
@@ -36,8 +34,10 @@ import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
 import com.sedmelluq.discord.lavaplayer.source.bandcamp.BandcampAudioSourceManager;
 import com.sedmelluq.discord.lavaplayer.source.beam.BeamAudioSourceManager;
+import com.sedmelluq.discord.lavaplayer.source.http.HttpAudioSourceManager;
 import com.sedmelluq.discord.lavaplayer.source.local.LocalAudioSourceManager;
 import com.sedmelluq.discord.lavaplayer.source.soundcloud.SoundCloudAudioSourceManager;
+import com.sedmelluq.discord.lavaplayer.source.twitch.TwitchStreamAudioSourceManager;
 import com.sedmelluq.discord.lavaplayer.source.vimeo.VimeoAudioSourceManager;
 import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioSourceManager;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
@@ -119,12 +119,12 @@ public class AudioHandler {
 
         manager.registerSourceManager(youtubeAudioSourceManager);
         manager.registerSourceManager(new SoundCloudAudioSourceManager());
-        manager.registerSourceManager(new BandcampAudioSourceManager());
         manager.registerSourceManager(new TwitchStreamAudioSourceManager());
+        manager.registerSourceManager(new BandcampAudioSourceManager());
         manager.registerSourceManager(new VimeoAudioSourceManager());
         manager.registerSourceManager(new BeamAudioSourceManager());
         manager.registerSourceManager(new LocalAudioSourceManager());
-        manager.registerSourceManager(new HttpSourceManager());
+        manager.registerSourceManager(new HttpAudioSourceManager());
 
         return manager;
     }
