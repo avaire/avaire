@@ -23,7 +23,6 @@ package com.avairebot.commands.utility;
 
 import com.avairebot.AvaIre;
 import com.avairebot.Constants;
-import com.avairebot.cache.CacheType;
 import com.avairebot.commands.CommandHandler;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.commands.CommandPriority;
@@ -37,8 +36,11 @@ import com.avairebot.database.controllers.PlayerController;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.database.transformers.PlayerTransformer;
 import com.avairebot.factories.MessageFactory;
+import com.avairebot.utilities.CacheUtil;
 import com.avairebot.utilities.MentionableUtil;
 import com.avairebot.utilities.NumberUtil;
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.User;
 
@@ -50,10 +52,14 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 
 public class RankCommand extends Command {
 
-    private final String cacheToken = "database-user-scores.";
+    public static final Cache<Long, Collection> cache = CacheBuilder.newBuilder()
+        .recordStats()
+        .expireAfterWrite(120, TimeUnit.SECONDS)
+        .build();
 
     public RankCommand(AvaIre avaire) {
         super(avaire, false);
@@ -197,30 +203,21 @@ public class RankCommand extends Command {
     }
 
     private String getScore(CommandMessage context, String userId) throws SQLException {
-        if (avaire.getCache().getAdapter(CacheType.MEMORY).has(cacheToken + context.getGuild().getId())) {
-            Collection users = (Collection) avaire.getCache().getAdapter(CacheType.MEMORY).get(cacheToken + context.getGuild().getId());
-            String score = context.i18n("unranked");
-
-            for (int i = 0; i < users.size(); i++) {
-                if (Objects.equals(users.get(i).getString("id"), userId)) {
-                    score = "" + (i + 1);
-                    break;
-                }
-            }
-
-            return score;
-        }
-
-        avaire.getCache().getAdapter(CacheType.MEMORY).put(cacheToken + context.getGuild().getId(),
+        Collection users = (Collection) CacheUtil.getUncheckedUnwrapped(cache, context.getGuild().getIdLong(), () ->
             avaire.getDatabase().newQueryBuilder(Constants.PLAYER_EXPERIENCE_TABLE_NAME)
                 .select("user_id as id")
                 .orderBy("experience", "desc")
                 .where("guild_id", context.getGuild().getId())
-                .get(),
-            120
+                .get()
         );
 
-        return getScore(context, userId);
+        for (int i = 0; i < users.size(); i++) {
+            if (Objects.equals(users.get(i).getString("id"), userId)) {
+                return "" + (i + 1);
+            }
+        }
+
+        return context.i18n("unranked");
     }
 
     private long getUsersInGuild(Guild guild) {

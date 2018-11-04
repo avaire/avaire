@@ -27,6 +27,7 @@ import com.avairebot.blacklist.Ratelimit;
 import com.avairebot.commands.Category;
 import com.avairebot.commands.utility.GlobalLeaderboardCommand;
 import com.avairebot.commands.utility.LeaderboardCommand;
+import com.avairebot.commands.utility.RankCommand;
 import com.avairebot.contracts.commands.InteractionCommand;
 import com.avairebot.contracts.middleware.Middleware;
 import com.avairebot.database.controllers.GuildController;
@@ -245,6 +246,7 @@ public class Metrics {
         cacheMetrics.addCache("throttleCommands", ThrottleMiddleware.cache);
         cacheMetrics.addCache("middlewareThrottleMessages", Middleware.messageCache);
         cacheMetrics.addCache("autorole", JDAStateEventAdapter.cache);
+        cacheMetrics.addCache("rankScores", RankCommand.cache);
         cacheMetrics.addCache("leaderboard", LeaderboardCommand.cache);
         cacheMetrics.addCache("global-leaderboard", GlobalLeaderboardCommand.cache);
         cacheMetrics.addCache("interaction-lottery", InteractionCommand.cache);
