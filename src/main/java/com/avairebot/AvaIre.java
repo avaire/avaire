@@ -223,7 +223,7 @@ public class AvaIre {
         MiddlewareHandler.register("hasDJLevel", new RequireDJLevelMiddleware(this));
         MiddlewareHandler.register("throttle", new ThrottleMiddleware(this));
         MiddlewareHandler.register("musicChannel", new IsMusicChannelMiddleware(this));
-        MiddlewareHandler.register("isDMMessage", new IsDMMessageMiddelware(this));
+        MiddlewareHandler.register("isDMMessage", new IsDMMessageMiddleware(this));
 
         String defaultPrefix = getConfig().getString("default-prefix", DiscordConstants.DEFAULT_COMMAND_PREFIX);
         if (getConfig().getString("system-prefix", DiscordConstants.DEFAULT_SYSTEM_PREFIX).equals(defaultPrefix)) {

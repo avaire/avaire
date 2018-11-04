@@ -22,8 +22,6 @@
 package com.avairebot.middleware;
 
 import com.avairebot.AvaIre;
-import com.avairebot.cache.CacheType;
-import com.avairebot.contracts.cache.CacheAdapter;
 import com.avairebot.contracts.middleware.Middleware;
 import com.avairebot.factories.MessageFactory;
 import com.avairebot.language.I18n;
@@ -62,7 +60,7 @@ public class IsMusicChannelMiddleware extends Middleware {
             return stack.next();
         }
 
-        if (shouldSendMessage(textChannelById.getIdLong())) {
+        return runMessageCheck(message, () -> {
             MessageFactory.makeWarning(message, I18n.get(message.getGuild()).getString(
                 "music.internal.musicChannel",
                 "You can only use music commands in the :channel channel."
@@ -70,21 +68,8 @@ public class IsMusicChannelMiddleware extends Middleware {
                 musicMessage -> musicMessage.delete().queueAfter(30, TimeUnit.SECONDS),
                 RestActionUtil.ignore
             );
-        }
 
-        return false;
-    }
-
-    private boolean shouldSendMessage(long id) {
-        if (getMemoryAdapter().has("music-channel." + id)) {
             return false;
-        }
-
-        getMemoryAdapter().put("music-channel." + id, 1, 30);
-        return true;
-    }
-
-    private CacheAdapter getMemoryAdapter() {
-        return avaire.getCache().getAdapter(CacheType.MEMORY);
+        });
     }
 }

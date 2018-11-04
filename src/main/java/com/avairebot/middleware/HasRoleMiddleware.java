@@ -42,6 +42,7 @@ public class HasRoleMiddleware extends Middleware {
         if (arguments.length == 1) {
             return String.format("**The `%s` role is required to use this command!**", arguments[0]);
         }
+
         return String.format("**The `%s` roles is required to use this command!**",
             String.join("`, `", arguments)
         );
@@ -60,10 +61,13 @@ public class HasRoleMiddleware extends Middleware {
         List<Role> roles = message.getMember().getRoles();
         for (String roleName : args) {
             if (!hasRole(roles, roleName)) {
-                MessageFactory.makeError(message, "You don't have the required role to execute this command:\n`:role`")
-                    .set("role", roleName)
-                    .queue();
-                return false;
+                return runMessageCheck(message, () -> {
+                    MessageFactory.makeError(message, "You don't have the required role to execute this command:\n`:role`")
+                        .set("role", roleName)
+                        .queue();
+
+                    return false;
+                });
             }
         }
 

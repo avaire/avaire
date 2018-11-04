@@ -42,6 +42,7 @@ public class HasAnyRoleMiddleware extends Middleware {
         if (arguments.length == 1) {
             return String.format("**The `%s` role is required to use this command!**", arguments[0]);
         }
+
         return String.format("**One of the `%s` roles is required to use this command!**",
             String.join("`, `", arguments)
         );
@@ -64,11 +65,13 @@ public class HasAnyRoleMiddleware extends Middleware {
             }
         }
 
-        MessageFactory.makeError(message, "You don't have any of the required roles to execute this command:\n`:role`")
-            .set("role", String.join("`, `", args))
-            .queue();
+        return runMessageCheck(message, () -> {
+            MessageFactory.makeError(message, "You don't have any of the required roles to execute this command:\n`:role`")
+                .set("role", String.join("`, `", args))
+                .queue();
 
-        return false;
+            return false;
+        });
     }
 
     private boolean hasRole(List<Role> roles, String roleName) {

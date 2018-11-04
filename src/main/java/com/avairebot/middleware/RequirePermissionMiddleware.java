@@ -78,21 +78,29 @@ public class RequirePermissionMiddleware extends Middleware {
         }
 
         if (!permissionCheck.getMissingUserPermissions().isEmpty()) {
-            MessageFactory.makeError(message, "You're missing the required permission node for this command:\n`:permission`")
-                .set("permission", permissionCheck.getMissingUserPermissions().stream()
-                    .map(Permissions::getPermission)
-                    .map(Permission::getName)
-                    .collect(Collectors.joining("`, `"))
-                ).queue();
+            runMessageCheck(message, () -> {
+                MessageFactory.makeError(message, "You're missing the required permission node for this command:\n`:permission`")
+                    .set("permission", permissionCheck.getMissingUserPermissions().stream()
+                        .map(Permissions::getPermission)
+                        .map(Permission::getName)
+                        .collect(Collectors.joining("`, `"))
+                    ).queue();
+
+                return false;
+            });
         }
 
         if (!permissionCheck.getMissingBotPermissions().isEmpty()) {
-            MessageFactory.makeError(message, "I'm missing the following permission to run this command successfully:\n`:permission`")
-                .set("permission", permissionCheck.getMissingBotPermissions().stream()
-                    .map(Permissions::getPermission)
-                    .map(Permission::getName)
-                    .collect(Collectors.joining("`, `"))
-                ).queue();
+            runMessageCheck(message, () -> {
+                MessageFactory.makeError(message, "I'm missing the following permission to run this command successfully:\n`:permission`")
+                    .set("permission", permissionCheck.getMissingBotPermissions().stream()
+                        .map(Permissions::getPermission)
+                        .map(Permission::getName)
+                        .collect(Collectors.joining("`, `"))
+                    ).queue();
+
+                return false;
+            });
         }
 
         return permissionCheck.isEmpty() && stack.next();

@@ -49,9 +49,11 @@ public class HasVotedTodayMiddleware extends Middleware {
             return stack.next();
         }
 
-        avaire.getVoteManager().getMessenger().sendMustVoteMessage(message.getChannel());
+        return runMessageCheck(message, () -> {
+            avaire.getVoteManager().getMessenger().sendMustVoteMessage(message.getChannel());
 
-        return false;
+            return false;
+        });
     }
 
     private boolean isServerVIP(MiddlewareStack stack, Message message) {

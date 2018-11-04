@@ -66,28 +66,30 @@ public class RequireDJLevelMiddleware extends Middleware {
 
     @SuppressWarnings("ConstantConditions")
     private boolean sendErrorMessage(Message message, MiddlewareStack stack) {
-        String djcheckMessage = "The `DJ` Discord role is required to run this command!";
+        return runMessageCheck(message, () -> {
+            String djcheckMessage = "The `DJ` Discord role is required to run this command!";
 
-        DJCheckMessage annotation = stack.getCommand().getClass().getAnnotation(DJCheckMessage.class);
-        if (annotation != null && annotation.message().trim().length() > 0) {
-            if (annotation.overwrite()) {
-                djcheckMessage = annotation.message();
-            } else {
-                djcheckMessage += annotation.message();
+            DJCheckMessage annotation = stack.getCommand().getClass().getAnnotation(DJCheckMessage.class);
+            if (annotation != null && annotation.message().trim().length() > 0) {
+                if (annotation.overwrite()) {
+                    djcheckMessage = annotation.message();
+                } else {
+                    djcheckMessage += annotation.message();
+                }
             }
-        }
 
-        GuildTransformer guildTransformer = stack.getDatabaseEventHolder().getGuild();
-        if (guildTransformer != null && guildTransformer.getSelfAssignableRoles().containsValue("dj")) {
-            djcheckMessage += "\nYou can use the `:iam DJ` command to get the role!";
-        }
+            GuildTransformer guildTransformer = stack.getDatabaseEventHolder().getGuild();
+            if (guildTransformer != null && guildTransformer.getSelfAssignableRoles().containsValue("dj")) {
+                djcheckMessage += "\nYou can use the `:iam DJ` command to get the role!";
+            }
 
-        CommandContainer command = CommandHandler.getCommand(IAmCommand.class);
-        MessageFactory.makeError(message, djcheckMessage)
-            .set("iam", command.getCommand().generateCommandTrigger(message))
-            .set("prefix", stack.getCommand().generateCommandPrefix(message))
-            .queue();
+            CommandContainer command = CommandHandler.getCommand(IAmCommand.class);
+            MessageFactory.makeError(message, djcheckMessage)
+                .set("iam", command.getCommand().generateCommandTrigger(message))
+                .set("prefix", stack.getCommand().generateCommandPrefix(message))
+                .queue();
 
-        return false;
+            return false;
+        });
     }
 }

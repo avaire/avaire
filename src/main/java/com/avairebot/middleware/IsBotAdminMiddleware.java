@@ -59,9 +59,11 @@ public class IsBotAdminMiddleware extends Middleware {
     }
 
     private boolean sendMustBeBotAdminMessage(@Nonnull Message message) {
-        MessageFactory.makeError(message, ":warning: You must be a bot administrator to use this command!")
-            .queue(newMessage -> newMessage.delete().queueAfter(45, TimeUnit.SECONDS), RestActionUtil.ignore);
+        return runMessageCheck(message, () -> {
+            MessageFactory.makeError(message, ":warning: You must be a bot administrator to use this command!")
+                .queue(newMessage -> newMessage.delete().queueAfter(45, TimeUnit.SECONDS), RestActionUtil.ignore);
 
-        return false;
+            return false;
+        });
     }
 }

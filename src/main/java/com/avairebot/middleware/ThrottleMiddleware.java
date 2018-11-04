@@ -44,11 +44,6 @@ public class ThrottleMiddleware extends Middleware {
         .expireAfterWrite(60, TimeUnit.SECONDS)
         .build();
 
-    public static final Cache<Long, Boolean> messageCache = CacheBuilder.newBuilder()
-        .recordStats()
-        .expireAfterWrite(2500, TimeUnit.MILLISECONDS)
-        .build();
-
     public ThrottleMiddleware(AvaIre avaire) {
         super(avaire);
     }
@@ -111,7 +106,7 @@ public class ThrottleMiddleware extends Middleware {
     private boolean cancelCommandThrottleRequest(Message message, MiddlewareStack stack, ThrottleEntity entity) {
         Metrics.commandsRatelimited.labels(stack.getCommand().getClass().getSimpleName()).inc();
 
-        return (boolean) CacheUtil.getUncheckedUnwrapped(messageCache, message.getAuthor().getIdLong(), () -> {
+        return runMessageCheck(message, () -> {
             String throttleMessage = "Too many `:command` attempts. Please try again in **:time** seconds.";
 
             ThrottleMessage annotation = stack.getCommand().getClass().getAnnotation(ThrottleMessage.class);
@@ -147,6 +142,7 @@ public class ThrottleMiddleware extends Middleware {
     }
 
     public enum ThrottleType {
+
         USER("user", "throttle.user.%s.%s.%s"),
         CHANNEL("channel", "throttle.channel.%s.%s.%s"),
         GUILD("guild", "throttle.guild.%s.%s");

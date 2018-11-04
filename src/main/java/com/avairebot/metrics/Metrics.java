@@ -28,6 +28,7 @@ import com.avairebot.commands.Category;
 import com.avairebot.commands.utility.GlobalLeaderboardCommand;
 import com.avairebot.commands.utility.LeaderboardCommand;
 import com.avairebot.contracts.commands.InteractionCommand;
+import com.avairebot.contracts.middleware.Middleware;
 import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.controllers.PlayerController;
 import com.avairebot.database.controllers.PlaylistController;
@@ -242,7 +243,7 @@ public class Metrics {
         cacheMetrics.addCache("playlists", PlaylistController.cache);
         cacheMetrics.addCache("categoryPrefixes", Category.cache);
         cacheMetrics.addCache("throttleCommands", ThrottleMiddleware.cache);
-        cacheMetrics.addCache("throttleMessages", ThrottleMiddleware.messageCache);
+        cacheMetrics.addCache("middlewareThrottleMessages", Middleware.messageCache);
         cacheMetrics.addCache("autorole", JDAStateEventAdapter.cache);
         cacheMetrics.addCache("leaderboard", LeaderboardCommand.cache);
         cacheMetrics.addCache("global-leaderboard", GlobalLeaderboardCommand.cache);

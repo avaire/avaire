@@ -78,21 +78,29 @@ public class RequireOnePermissionMiddleware extends Middleware {
         }
 
         if (!permissionCheck.userHasAtleastOne()) {
-            MessageFactory.makeError(message, "You must have at least one of the following permission nodes to use this command:\n`:permission`")
-                .set("permission", permissionCheck.getMissingUserPermissions().stream()
-                    .map(Permissions::getPermission)
-                    .map(Permission::getName)
-                    .collect(Collectors.joining("`, `"))
-                ).queue();
+            runMessageCheck(message, () -> {
+                MessageFactory.makeError(message, "You must have at least one of the following permission nodes to use this command:\n`:permission`")
+                    .set("permission", permissionCheck.getMissingUserPermissions().stream()
+                        .map(Permissions::getPermission)
+                        .map(Permission::getName)
+                        .collect(Collectors.joining("`, `"))
+                    ).queue();
+
+                return false;
+            });
         }
 
         if (!permissionCheck.botHasAtleastOne()) {
-            MessageFactory.makeError(message, "I'm missing one of the following permission nodes to run this command:\n`:permission`")
-                .set("permission", permissionCheck.getMissingBotPermissions().stream()
-                    .map(Permissions::getPermission)
-                    .map(Permission::getName)
-                    .collect(Collectors.joining("`, `"))
-                ).queue();
+            runMessageCheck(message, () -> {
+                MessageFactory.makeError(message, "I'm missing one of the following permission nodes to run this command:\n`:permission`")
+                    .set("permission", permissionCheck.getMissingBotPermissions().stream()
+                        .map(Permissions::getPermission)
+                        .map(Permission::getName)
+                        .collect(Collectors.joining("`, `"))
+                    ).queue();
+
+                return false;
+            });
         }
 
         if (permissionCheck.getType().isCheckUser() && permissionCheck.getType().isCheckBot()) {

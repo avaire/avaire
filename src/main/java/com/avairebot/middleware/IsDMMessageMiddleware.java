@@ -27,9 +27,9 @@ import net.dv8tion.jda.core.entities.Message;
 
 import javax.annotation.Nonnull;
 
-public class IsDMMessageMiddelware extends Middleware {
+public class IsDMMessageMiddleware extends Middleware {
 
-    public IsDMMessageMiddelware(AvaIre avaire) {
+    public IsDMMessageMiddleware(AvaIre avaire) {
         super(avaire);
     }
 

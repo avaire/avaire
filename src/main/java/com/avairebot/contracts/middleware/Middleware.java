@@ -24,12 +24,22 @@ package com.avairebot.contracts.middleware;
 import com.avairebot.AvaIre;
 import com.avairebot.middleware.MiddlewareStack;
 import com.avairebot.plugin.JavaPlugin;
+import com.avairebot.utilities.CacheUtil;
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import net.dv8tion.jda.core.entities.Message;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.concurrent.Callable;
+import java.util.concurrent.TimeUnit;
 
 public abstract class Middleware {
+
+    public static final Cache<Long, Boolean> messageCache = CacheBuilder.newBuilder()
+        .recordStats()
+        .expireAfterWrite(2500, TimeUnit.MILLISECONDS)
+        .build();
 
     /**
      * The AvaIre class instance, this is used to access
@@ -80,4 +90,20 @@ public abstract class Middleware {
      * @return Invoke {@link MiddlewareStack#next()} on success, false on failure.
      */
     public abstract boolean handle(@Nonnull Message message, @Nonnull MiddlewareStack stack, String... args);
+
+    /**
+     * Checks the message cache to see if the user has received an error message in
+     * the last 2½ seconds, if they did the callback will be ignored and the
+     * previous value will be returned instead, if they haven't received
+     * an error message in the last 2½ seconds, the callback will be
+     * invoked and the returned value will be cached.
+     *
+     * @param message  The JDA message that invoked the middleware stack.
+     * @param callback The callback that should be invoked to send the message to the user.
+     * @return The value returned by the callback, or the previous value returned by the callback if
+     * the user has received an error message in the last 2½ seconds.
+     */
+    protected boolean runMessageCheck(@Nonnull Message message, @Nonnull Callable<Boolean> callback) {
+        return (boolean) CacheUtil.getUncheckedUnwrapped(messageCache, message.getAuthor().getIdLong(), callback);
+    }
 }
