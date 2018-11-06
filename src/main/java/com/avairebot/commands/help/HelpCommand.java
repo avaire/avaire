@@ -83,7 +83,10 @@ public class HelpCommand extends Command {
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
         if (args.length == 0) {
-            return showCategories(context);
+            if (!avaire.getSettings().isMusicOnlyMode()) {
+                return showCategories(context);
+            }
+            return showCategoryCommands(context, CategoryHandler.fromLazyName("music"), "music");
         }
 
         CommandContainer command = getCommand(context, args[0]);
