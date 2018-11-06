@@ -77,6 +77,12 @@ public class Category {
         });
     }
 
+    public boolean hasCommands() {
+        return CommandHandler.getCommands().stream().
+            filter(container -> container.getCategory().equals(this))
+            .count() > 0;
+    }
+
     public boolean isGlobal() {
         return isGlobal;
     }

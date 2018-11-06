@@ -112,7 +112,7 @@ public class HelpCommand extends Command {
     }
 
     private boolean showCategoryCommands(CommandMessage context, Category category, String categoryString) {
-        if (category == null) {
+        if (category == null || !category.hasCommands()) {
             context.makeError(context.i18n("invalidCategory"))
                 .set("category", categoryString)
                 .queue();
@@ -257,6 +257,7 @@ public class HelpCommand extends Command {
 
         List<Category> categories = CategoryHandler.getValues().stream()
             .filter(category -> !category.isGlobal())
+            .filter(Category::hasCommands)
             .collect(Collectors.toList());
 
         if (context.getGuild() == null) {
