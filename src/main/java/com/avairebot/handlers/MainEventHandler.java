@@ -137,12 +137,16 @@ public class MainEventHandler extends EventHandler {
 
     @Override
     public void onGuildMemberJoin(GuildMemberJoinEvent event) {
-        memberEvent.onGuildMemberJoin(event);
+        if (!avaire.getSettings().isMusicOnlyMode()) {
+            memberEvent.onGuildMemberJoin(event);
+        }
     }
 
     @Override
     public void onGuildMemberLeave(GuildMemberLeaveEvent event) {
-        memberEvent.onGuildMemberLeave(event);
+        if (!avaire.getSettings().isMusicOnlyMode()) {
+            memberEvent.onGuildMemberLeave(event);
+        }
     }
 
     @Override
@@ -179,16 +183,22 @@ public class MainEventHandler extends EventHandler {
 
     @Override
     public void onUserUpdateDiscriminator(UserUpdateDiscriminatorEvent event) {
-        PlayerController.updateUserData(event.getUser());
+        if (!avaire.getSettings().isMusicOnlyMode()) {
+            PlayerController.updateUserData(event.getUser());
+        }
     }
 
     @Override
     public void onUserUpdateAvatar(UserUpdateAvatarEvent event) {
-        PlayerController.updateUserData(event.getUser());
+        if (!avaire.getSettings().isMusicOnlyMode()) {
+            PlayerController.updateUserData(event.getUser());
+        }
     }
 
     @Override
     public void onUserUpdateName(UserUpdateNameEvent event) {
-        PlayerController.updateUserData(event.getUser());
+        if (!avaire.getSettings().isMusicOnlyMode()) {
+            PlayerController.updateUserData(event.getUser());
+        }
     }
 }

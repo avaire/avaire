@@ -134,7 +134,7 @@ public class AvaIre {
     public AvaIre(Settings settings) throws IOException, SQLException, InvalidApplicationEnvironmentException {
         this.settings = settings;
 
-        System.out.println(getVersionInfo());
+        System.out.println(getVersionInfo(settings));
 
         log.debug("====================================================");
         log.debug("Starting the application with debug logging enabled!");
@@ -245,7 +245,13 @@ public class AvaIre {
         ));
 
         log.info("Registering commands...");
-        autoloadPackage(Constants.PACKAGE_COMMAND_PATH, command -> CommandHandler.register((Command) command));
+        if (settings.isMusicOnlyMode()) {
+            autoloadPackage(Constants.PACKAGE_COMMAND_PATH + ".help", command -> CommandHandler.register((Command) command));
+            autoloadPackage(Constants.PACKAGE_COMMAND_PATH + ".music", command -> CommandHandler.register((Command) command));
+            autoloadPackage(Constants.PACKAGE_COMMAND_PATH + ".system", command -> CommandHandler.register((Command) command));
+        } else {
+            autoloadPackage(Constants.PACKAGE_COMMAND_PATH, command -> CommandHandler.register((Command) command));
+        }
         log.info(String.format("\tRegistered %s commands successfully!", CommandHandler.getCommands().size()));
 
         log.info("Registering jobs...");
@@ -366,7 +372,7 @@ public class AvaIre {
         return applicationEnvironment;
     }
 
-    static String getVersionInfo() {
+    static String getVersionInfo(@Nullable Settings settings) {
         return ConsoleColor.format("%red\n\n" +
             "     ___   ____    ____  ___       __  .______       _______ \n" +
             "    /   \\  \\   \\  /   / /   \\     |  | |   _  \\     |   ____|\n" +
@@ -376,10 +382,11 @@ public class AvaIre {
             "/__/     \\__\\  \\__/ /__/     \\__\\ |__| | _| `._____||_______|\n" +
             ""
             + "%reset"
-            + "\n\tVersion:       " + AppInfo.getAppInfo().version
-            + "\n\tJVM:           " + System.getProperty("java.version")
-            + "\n\tJDA:           " + JDAInfo.VERSION
-            + "\n\tLavaplayer     " + PlayerLibrary.VERSION
+            + "\n\tVersion:          " + AppInfo.getAppInfo().version
+            + "\n\tJVM:              " + System.getProperty("java.version")
+            + "\n\tJDA:              " + JDAInfo.VERSION
+            + "\n\tLavaplayer:       " + PlayerLibrary.VERSION
+            + "\n\tMusic Only Mode:  " + (settings == null ? "No" : (settings.isMusicOnlyMode() ? "Yes" : "No"))
             + "\n"
         );
     }

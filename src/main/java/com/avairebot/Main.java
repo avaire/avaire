@@ -39,6 +39,7 @@ public class Main {
         options.addOption(new Option("v", "version", false, "Displays the current version of the application."));
         options.addOption(new Option("sc", "shard-count", true, "Sets the amount of shards the bot should start up."));
         options.addOption(new Option("is", "internal-restart", false, "Enables internal restarts, this will auto restart the bot if it crashes, or the system restart or update commands are used, the only way to really shut down the bot is through the system shutdown command.\nNote: The update command will just act as the restart command with this option enabled."));
+        options.addOption(new Option("m", "music", false, "Enables music-only mode, disabling any feature that is not related to the music features."));
         options.addOption(new Option("nocolor", "no-colors", false, "Disables colors for commands and AI actions in the terminal."));
         options.addOption(new Option("d", "debug", false, "Enables debugging mode, this will log extra information to the terminal."));
 
@@ -62,7 +63,7 @@ public class Main {
                 formatter.printHelp("Help Menu", options);
                 System.exit(ExitCodes.EXIT_CODE_NORMAL);
             } else if (cmd.hasOption("version")) {
-                System.out.println(AvaIre.getVersionInfo());
+                System.out.println(AvaIre.getVersionInfo(settings));
                 System.exit(ExitCodes.EXIT_CODE_NORMAL);
             }
 
