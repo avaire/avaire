@@ -4,6 +4,7 @@ docs/
 database\.sqlite
 /config.json
 /config.yml
+/commandMap\.json
 *.class
 
 # Mobile Tools for Java (J2ME)
@@ -34,3 +35,4 @@ AvaIre.jar
 
 # Image Generator Branch
 test-output\.png
+
