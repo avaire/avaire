@@ -377,7 +377,7 @@ sentryDsn: ''
 # are exposed on ip:port/stats
 #
 # For an real-world example of what the metrics looks like when they're
-# setup using Grafana, checkout: https://status.avairebot.com
+# setup using Grafana, checkout: https://goo.gl/tmeiwe
 #
 # For setup guides, see:
 #
