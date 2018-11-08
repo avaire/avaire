@@ -25,6 +25,7 @@ import com.avairebot.AppInfo;
 import com.avairebot.AvaIre;
 import com.avairebot.commands.CommandContainer;
 import com.avairebot.commands.CommandHandler;
+import com.avairebot.commands.help.HelpCommand;
 import com.avairebot.contracts.handlers.EventAdapter;
 import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.controllers.PlayerController;
@@ -32,6 +33,7 @@ import com.avairebot.database.transformers.ChannelTransformer;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.factories.MessageFactory;
 import com.avairebot.handlers.DatabaseEventHolder;
+import com.avairebot.language.I18n;
 import com.avairebot.middleware.MiddlewareStack;
 import com.avairebot.shared.DiscordConstants;
 import com.avairebot.utilities.ArrayUtil;
@@ -203,6 +205,7 @@ public class MessageEventAdapter extends EventAdapter {
             .queue(message -> message.delete().queueAfter(1, TimeUnit.MINUTES, null, RestActionUtil.ignore));
     }
 
+    @SuppressWarnings("ConstantConditions")
     private void sendInformationMessage(MessageReceivedEvent event) {
         log.info("Private message received from user(ID: {}) that does not match any commands!",
             event.getAuthor().getId()
@@ -220,9 +223,9 @@ public class MessageEventAdapter extends EventAdapter {
                 "To invite me to your server, use this link:",
                 "*:oauth*",
                 "",
-                "You can use `!help` to see a list of all the categories of commands.",
-                "You can use `!help category` to see a list of commands for that category.",
-                "For specific command help, use `!help command` (for example `!help !ping`, `!help ping` also works)"
+                "You can use `{0}help` to see a list of all the categories of commands.",
+                "You can use `{0}help category` to see a list of commands for that category.",
+                "For specific command help, use `{0}help command` (for example `{0}help {1}{2}`,\n`{0}help {2}` also works)"
             ));
 
             if (avaire.getIntelligenceManager().isEnabled()) {
@@ -232,7 +235,17 @@ public class MessageEventAdapter extends EventAdapter {
             strings.add("\n**Full list of commands**\n*https://avairebot.com/docs/commands*");
             strings.add("\nAvaIre Support Server:\n*https://avairebot.com/support*");
 
-            MessageFactory.makeEmbeddedMessage(event.getMessage(), Color.decode("#E91E63"), String.join("\n", strings))
+            CommandContainer commandContainer = CommandHandler.getCommands().stream()
+                .filter(container -> !container.getCategory().isGlobalOrSystem())
+                .findAny()
+                .get();
+
+            MessageFactory.makeEmbeddedMessage(event.getMessage(), Color.decode("#E91E63"), I18n.format(
+                String.join("\n", strings),
+                CommandHandler.getCommand(HelpCommand.class).getCategory().getPrefix(event.getMessage()),
+                commandContainer.getCategory().getPrefix(event.getMessage()),
+                commandContainer.getTriggers().iterator().next()
+            ))
                 .set("oauth", avaire.getConfig().getString("discord.oauth"))
                 .set("botId", avaire.getSelfUser().getId())
                 .queue();
