@@ -23,6 +23,7 @@ package com.avairebot.contracts.database.connections;
 
 import com.avairebot.contracts.database.Database;
 import com.avairebot.database.exceptions.DatabaseException;
+import com.avairebot.utilities.NumberUtil;
 
 public abstract class HostnameDatabase extends Database {
 
@@ -67,6 +68,14 @@ public abstract class HostnameDatabase extends Database {
         this.database = database;
         this.username = username;
         this.password = password;
+
+        if (hostname.contains(":")) {
+            String[] parts = hostname.split(":");
+            if (parts.length == 2) {
+                setHostname(parts[0]);
+                setPort(NumberUtil.parseInt(parts[1], port));
+            }
+        }
     }
 
     /**
