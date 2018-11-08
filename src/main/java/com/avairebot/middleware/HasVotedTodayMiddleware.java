@@ -36,6 +36,9 @@ public class HasVotedTodayMiddleware extends Middleware {
 
     @Override
     public String buildHelpDescription(@Nonnull String[] arguments) {
+        if (!avaire.getConfig().getBoolean("vote-lock.enabled", true)) {
+            return null;
+        }
         return "**You must [vote for Ava](https://discordbots.org/bot/avaire) to use this command**";
     }
 
