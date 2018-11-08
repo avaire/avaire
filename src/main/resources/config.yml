@@ -156,6 +156,13 @@ database:
   #
   password: 'password'
 
+  # Determine if server certificates should be verified upon connecting to
+  # the database, disabling this will still allow for a valid connection
+  # from a cryptographic perspective, but the database server will not
+  # be verified if it is actually the right server or not.
+  #
+  verifyServerCertificate: true
+
 #--------------------------------------------------------------------------
 # Default Command Prefix
 #--------------------------------------------------------------------------

@@ -85,7 +85,10 @@ public class MySQL extends HostnameDatabase {
     @Override
     public boolean open() throws SQLException {
         try {
-            String url = String.format("jdbc:mysql://%s:%d/%s", getHostname(), getPort(), getDatabase());
+            String url = String.format("jdbc:mysql://%s:%d/%s?verifyServerCertificate=%s&useSSL=true",
+                getHostname(), getPort(), getDatabase(),
+                dbm.getAvaire().getConfig().getBoolean("database.verifyServerCertificate", true) ? "true" : "false"
+            );
 
             if (initialize()) {
                 connection = DriverManager.getConnection(url, getUsername(), getPassword());
