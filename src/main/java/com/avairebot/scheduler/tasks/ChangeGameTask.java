@@ -59,29 +59,28 @@ public class ChangeGameTask implements Task {
     }
 
     private Game getGameFromType(AvaIre avaire, String status, JDA shard) {
-        Game game = Game.playing(status);
-        if (status.contains(":")) {
-            String[] split = status.split(":");
-            status = String.join(":", Arrays.copyOfRange(split, 1, split.length));
-            switch (split[0].toLowerCase()) {
-                case "listen":
-                case "listening":
-                    return Game.listening(formatGame(avaire, status, shard));
-
-                case "watch":
-                case "watching":
-                    return Game.watching(formatGame(avaire, status, shard));
-
-                case "play":
-                case "playing":
-                    return Game.playing(formatGame(avaire, status, shard));
-
-                case "stream":
-                case "streaming":
-                    return Game.streaming(formatGame(avaire, status, shard), "https://www.twitch.tv/senither");
-            }
+        if (!status.contains(":")) {
+            return Game.playing(formatGame(avaire, status, shard));
         }
-        return game;
+
+        String[] split = status.split(":");
+        status = String.join(":", Arrays.copyOfRange(split, 1, split.length));
+        switch (split[0].toLowerCase()) {
+            case "listen":
+            case "listening":
+                return Game.listening(formatGame(avaire, status, shard));
+
+            case "watch":
+            case "watching":
+                return Game.watching(formatGame(avaire, status, shard));
+
+            case "stream":
+            case "streaming":
+                return Game.streaming(formatGame(avaire, status, shard), "https://www.twitch.tv/senither");
+
+            default:
+                return Game.playing(formatGame(avaire, status, shard));
+        }
     }
 
     private String formatGame(AvaIre avaire, String game, JDA shard) {
