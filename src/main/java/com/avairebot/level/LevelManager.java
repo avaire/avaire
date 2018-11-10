@@ -89,6 +89,11 @@ public class LevelManager {
      */
     private final int C = 100;
 
+    /**
+     * Gets the default level experience modifier.
+     *
+     * @return The default level experience modifier.
+     */
     public static double getDefaultModifier() {
         return M;
     }
