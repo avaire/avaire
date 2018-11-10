@@ -52,6 +52,13 @@ public enum Language {
         this.other = new LanguageList(Arrays.asList(other));
     }
 
+    /**
+     * Parse the given string, trying to match it with one of the languages.
+     *
+     * @param string The string representation of the that should be returned.
+     * @return Possibly-null, the language matching the given string, or <code>NULL</code>
+     * if no languages matched the given string.
+     */
     @Nullable
     public static Language parse(@Nonnull String string) {
         for (Language language : values()) {
@@ -65,18 +72,38 @@ public enum Language {
         return null;
     }
 
+    /**
+     * Gets the language code for the current language.
+     *
+     * @return The language code for the current language.
+     */
     public String getCode() {
         return code;
     }
 
+    /**
+     * Gets the native name for the current language.
+     *
+     * @return The native name for the current language.
+     */
     public String getNativeName() {
         return nativeName;
     }
 
+    /**
+     * Gets the English version of the name for the current language.
+     *
+     * @return The English version of the name for the current language.
+     */
     public String getEnglishName() {
         return englishName;
     }
 
+    /**
+     * Gets a list of other names that can be associated with the current language.
+     *
+     * @return A list of other names associated with the current language.
+     */
     public List<String> getOther() {
         return other;
     }

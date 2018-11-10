@@ -23,14 +23,15 @@ package com.avairebot.language;
 
 import com.avairebot.config.YamlConfiguration;
 
+import javax.annotation.Nonnull;
 import java.io.InputStreamReader;
 
-public class LanguageHolder {
+public class LanguageContainer {
 
     private final Language language;
     private final YamlConfiguration config;
 
-    LanguageHolder(Language language) {
+    LanguageContainer(@Nonnull Language language) {
         this.language = language;
 
         config = YamlConfiguration.loadConfiguration(new InputStreamReader(
@@ -38,10 +39,23 @@ public class LanguageHolder {
         ));
     }
 
+    /**
+     * Gets the language representation of the language container, both the English and
+     * the native name for the language can be loaded through that, as well as the
+     * language code and other names that can be associated with the language.
+     *
+     * @return The language representation the current language container.
+     */
     public Language getLanguage() {
         return language;
     }
 
+    /**
+     * Gets the language configuration, the config can be used to
+     * load strings, lists, and values directly off the language.
+     *
+     * @return The language configuration.
+     */
     public YamlConfiguration getConfig() {
         return config;
     }

@@ -35,7 +35,7 @@ import com.avairebot.database.migrate.Migrations;
 import com.avairebot.exceptions.InvalidConfigurationException;
 import com.avairebot.language.I18n;
 import com.avairebot.language.Language;
-import com.avairebot.language.LanguageHolder;
+import com.avairebot.language.LanguageContainer;
 import com.avairebot.middleware.MiddlewareHandler;
 import net.dv8tion.jda.bot.sharding.ShardManager;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
@@ -184,7 +184,7 @@ public abstract class JavaPlugin {
     }
 
     private void mergeConfiguration(Language language, YamlConfiguration pluginConfig) {
-        LanguageHolder locale = I18n.getLocale(language);
+        LanguageContainer locale = I18n.getLocale(language);
         for (String key : pluginConfig.getKeys(true)) {
             if (!locale.getConfig().contains(key)) {
                 locale.getConfig().set(key, pluginConfig.get(key));
