@@ -62,7 +62,7 @@ discord:
   # create one, once you have it, replace the text between the
   # quotes with your client id.
   #
-  clientId: 'YouBotClientIdShouldGoHere'
+  clientId: 'YourBotClientIdShouldGoHere'
 
   # This is your Discord application token, if you don't have a Discord
   # application, check the link above and follow the short guide to
