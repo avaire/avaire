@@ -26,6 +26,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.opentest4j.AssertionFailedError;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -35,6 +36,35 @@ public class LanguageTests extends BaseTest {
     @BeforeAll
     public static void initAll() {
         I18n.start(null);
+    }
+
+    @Test
+    public void testEveryLanguageAccessorIsUnique() {
+        Set<String> accessors = new HashSet<>();
+        for (Language language : Language.values()) {
+            assertTrue(
+                accessors.add(language.getCode()),
+                "The " + language.getEnglishName() + "'s language code has already been registered by another language."
+            );
+            assertTrue(
+                accessors.add(language.getNativeName()),
+                "The " + language.getEnglishName() + "'s native name has already been registered by another language."
+            );
+
+            if (!language.getEnglishName().equalsIgnoreCase(language.getNativeName())) {
+                assertTrue(
+                    accessors.add(language.getEnglishName()),
+                    "The " + language.getEnglishName() + "'s English name has already been registered by another language."
+                );
+
+            }
+            for (String name : language.getOther()) {
+                assertTrue(
+                    accessors.add(name),
+                    "The " + language.getEnglishName() + "'s \"other names\" has already been registered by another language."
+                );
+            }
+        }
     }
 
     @Test
