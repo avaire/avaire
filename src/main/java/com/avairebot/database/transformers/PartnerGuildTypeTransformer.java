@@ -32,5 +32,7 @@ class PartnerGuildTypeTransformer extends GuildTypeTransformer {
         limits.selfAssignableRoles = 100;
         limits.playlist.lists = 100;
         limits.playlist.songs = 100;
+        limits.reactionRoles.messages = 30;
+        limits.reactionRoles.rolesPerMessage = 20;
     }
 }

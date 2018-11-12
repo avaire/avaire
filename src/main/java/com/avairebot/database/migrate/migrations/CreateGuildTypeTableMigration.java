@@ -46,15 +46,28 @@ public class CreateGuildTypeTableMigration implements Migration {
         }
 
         return schema.getDbm().newQueryBuilder(Constants.GUILD_TYPES_TABLE_NAME).insert(
-            createRecord("VIP", 10, 50, 50, 30, 30),
-            createRecord("VIP+", 25, 100, 150, 60, 50)
+            createRecord("VIP", 10, 50, 50, 30, 30, 8, 8),
+            createRecord("VIP+", 25, 100, 150, 60, 50, 15, 15)
         ).size() == 2;
     }
 
-    private Map<String, Object> createRecord(String name, int playlistLists, int playlistSongs, int aliases, int selfAssignableRoles, int levelRoles) {
+    private Map<String, Object> createRecord(
+        String name,
+        int playlistLists,
+        int playlistSongs,
+        int aliases,
+        int selfAssignableRoles,
+        int levelRoles,
+        int reactionRoleMessages,
+        int reactionRoleReactions
+    ) {
         Map<String, Integer> playlist = new HashMap<>();
         playlist.put("lists", playlistLists);
         playlist.put("songs", playlistSongs);
+
+        Map<String, Integer> reactionRoles = new HashMap<>();
+        reactionRoles.put("messages", reactionRoleMessages);
+        reactionRoles.put("rolesPerMessage", reactionRoleReactions);
 
         Map<String, Object> limits = new HashMap<>();
         Map<String, Object> items = new HashMap<>();
@@ -62,6 +75,7 @@ public class CreateGuildTypeTableMigration implements Migration {
         limits.put("playlist", playlist);
         limits.put("aliases", aliases);
         limits.put("selfAssignableRoles", selfAssignableRoles);
+        limits.put("reactionRoles", reactionRoles);
         limits.put("levelRoles", levelRoles);
 
         items.put("id", id++);

@@ -77,6 +77,7 @@ public class GuildTypeTransformer extends Transformer {
 
     public class GuildTypeLimits extends Evalable {
 
+        protected GuildReactionRoles reactionRoles = new GuildReactionRoles();
         protected GuildTypePlaylist playlist = new GuildTypePlaylist();
 
         int aliases = 20;
@@ -91,12 +92,16 @@ public class GuildTypeTransformer extends Transformer {
             return selfAssignableRoles;
         }
 
+        public int getLevelRoles() {
+            return levelRoles;
+        }
+
         public GuildTypePlaylist getPlaylist() {
             return playlist;
         }
 
-        public int getLevelRoles() {
-            return levelRoles;
+        public GuildReactionRoles getReactionRoles() {
+            return reactionRoles;
         }
 
         public class GuildTypePlaylist extends Evalable {
@@ -110,6 +115,20 @@ public class GuildTypeTransformer extends Transformer {
 
             public int getSongs() {
                 return songs;
+            }
+        }
+
+        public class GuildReactionRoles extends Evalable {
+
+            int messages = 3;
+            int rolesPerMessage = 5;
+
+            public int getMessages() {
+                return messages;
+            }
+
+            public int getRolesPerMessage() {
+                return rolesPerMessage;
             }
         }
     }
