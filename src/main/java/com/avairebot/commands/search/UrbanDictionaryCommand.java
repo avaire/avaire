@@ -86,8 +86,10 @@ public class UrbanDictionaryCommand extends Command {
             return sendErrorMessage(context, "errors.missingArgument", "word or sentence");
         }
 
+        String word = String.join(" ", args);
+
         RequestFactory.makeGET("https://api.urbandictionary.com/v0/define")
-            .addParameter("term", String.join(" ", args))
+            .addParameter("term", word)
             .send((Consumer<Response>) response -> {
                 UrbanDictionaryService service = (UrbanDictionaryService) response.toService(UrbanDictionaryService.class);
 
@@ -98,12 +100,16 @@ public class UrbanDictionaryCommand extends Command {
                     return;
                 }
 
-                UrbanDictionaryService.UrbanDictionary definition = service.getList().get(0);
-                for (UrbanDictionaryService.UrbanDictionary entry : service.getList()) {
-                    if (definition.getThumbsUp() < entry.getThumbsUp()) {
-                        definition = entry;
-                    }
-                }
+                UrbanDictionaryService.UrbanDictionary definition = service.getList().stream()
+                    .sorted((d1, d2) -> {
+                        int d1Score = buildScore(d1, word);
+                        int d2Score = buildScore(d2, word);
+
+                        if (d1Score == d2Score) {
+                            return 0;
+                        }
+                        return d1Score > d2Score ? 1 : -1;
+                    }).findFirst().get();
 
                 double thumbsUp = definition.getThumbsUp();
                 double thumbsDown = definition.getThumbsDown();
@@ -140,5 +146,10 @@ public class UrbanDictionaryCommand extends Command {
         }
 
         return message;
+    }
+
+    private int buildScore(UrbanDictionaryService.UrbanDictionary definition, String originalWord) {
+        return (definition.getThumbsUp() / (definition.getThumbsUp() + definition.getThumbsDown()) * 100)
+            * (definition.getWord().equalsIgnoreCase(originalWord) ? 2 : 1);
     }
 }
