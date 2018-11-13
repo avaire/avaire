@@ -23,6 +23,8 @@ package com.avairebot.requests;
 
 import com.avairebot.contracts.async.Future;
 import okhttp3.OkHttpClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
@@ -34,6 +36,8 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 public class Request extends Future {
+
+    private static final Logger log = LoggerFactory.getLogger(Request.class);
 
     private final String url;
     private final RequestType type;
@@ -88,13 +92,19 @@ public class Request extends Future {
     }
 
     private URL buildUrl() throws MalformedURLException {
-        return new URL(url + (url.contains("?") ? "" : '?') + buildUrlParameters());
+        String builtUrl = url + (url.contains("?") ? "" : '?') + buildUrlParameters();
+
+        log.debug("Building URL request: {} {}", type.name(), builtUrl);
+
+        return new URL(builtUrl);
     }
 
     private String buildUrlParameters() {
         return parameters.entrySet().stream().map(item -> {
             try {
-                return String.format("%s=%s", item.getKey(), URLEncoder.encode(item.getValue().toString(), "UTF-8"));
+                return String.format("%s=%s", item.getKey(), URLEncoder.encode(
+                    item.getValue().toString(), "UTF-8"
+                ));
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
                 return String.format("%s=%s", item.getKey(), "invalid-format");
