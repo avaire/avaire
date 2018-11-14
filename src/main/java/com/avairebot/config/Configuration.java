@@ -285,7 +285,7 @@ public class Configuration implements ConfigurationSection {
      */
     @Override
     public String getName() {
-        return getConfig().getName();
+        return configFile.getName();
     }
 
     /**

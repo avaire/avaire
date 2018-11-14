@@ -37,6 +37,7 @@ import com.avairebot.chat.ConsoleColor;
 import com.avairebot.commands.CategoryHandler;
 import com.avairebot.commands.CommandHandler;
 import com.avairebot.config.Configuration;
+import com.avairebot.config.EnvironmentOverride;
 import com.avairebot.contracts.ai.Intent;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.contracts.reflection.Reflectional;
@@ -156,6 +157,11 @@ public class AvaIre {
             config.saveDefaultConfig();
 
             System.exit(ExitCodes.EXIT_CODE_NORMAL);
+        }
+
+        if (settings.useEnvOverride()) {
+            log.debug("Environment override is enabled, looking for environment variables and replacing the config equivalent values");
+            EnvironmentOverride.overrideWithPrefix("AVA", config);
         }
 
         botAdmins = new BotAdmin(this, Collections.unmodifiableSet(new HashSet<>(

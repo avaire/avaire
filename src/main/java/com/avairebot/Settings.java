@@ -35,6 +35,7 @@ public class Settings {
     private final int shardCount;
     private final boolean useColors;
     private final boolean useDebugging;
+    private final boolean useEnvOverride;
     private final boolean internalRestart;
     private final boolean musicOnlyMode;
 
@@ -46,6 +47,7 @@ public class Settings {
         shardCount = NumberUtil.parseInt(cmd.getOptionValue("shard-count", "0"));
         useColors = !cmd.hasOption("no-colors");
         useDebugging = cmd.hasOption("debug");
+        useEnvOverride = cmd.hasOption("use-environment-variables");
         internalRestart = cmd.hasOption("internal-restart");
         musicOnlyMode = cmd.hasOption("music");
 
@@ -68,6 +70,10 @@ public class Settings {
 
     public boolean useInternalRestart() {
         return internalRestart;
+    }
+
+    public boolean useEnvOverride() {
+        return useEnvOverride;
     }
 
     public boolean isMusicOnlyMode() {
