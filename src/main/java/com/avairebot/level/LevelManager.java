@@ -32,8 +32,10 @@ import com.avairebot.factories.MessageFactory;
 import com.avairebot.language.I18n;
 import com.avairebot.utilities.CacheUtil;
 import com.avairebot.utilities.RandomUtil;
+import com.avairebot.utilities.RoleUtil;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.TextChannel;
@@ -273,8 +275,17 @@ public class LevelManager {
             }
 
             if (!guild.getLevelRoles().isEmpty()) {
+                if (!message.getGuild().getSelfMember().hasPermission(Permission.MANAGE_ROLES)) {
+                    return;
+                }
+
                 List<Role> roles = getRoleRewards(message, guild, newLevel);
                 if (roles.isEmpty()) {
+                    return;
+                }
+
+                Role highestRole = RoleUtil.getHighestFrom(message.getGuild().getSelfMember());
+                if (highestRole == null || !RoleUtil.isRoleHierarchyHigher(roles, highestRole)) {
                     return;
                 }
 
