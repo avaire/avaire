@@ -22,6 +22,10 @@
 	}
   ],
  "env": {
+    "GRADLE_TASK":{
+      "description": "Tells Heroku how to compile AvaIre. Leave it as it, unless you know what your doing.",
+  	  "required": true,
+	  "value": "build"      
     "AVA_ENVIRONMENT": {
       "description": "Let the value be production to have the bot work as normal. Change it to development if you know what your doing.",
 	  "required": true,
