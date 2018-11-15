@@ -85,11 +85,6 @@
 	  "required": true,
 	  "value": ";"
     },
-    "AVA_PLAYING": {
-      "description": "Here you can change the status AvaIre displays on her profile.",
-	  "required": true,
-	  "value": "  - '!help'  - 'watching:avairebot.com'  - 'listening:%users% users'  - 'playing:in %guilds% servers'"
-    },
     "AVA_MUSIC-ACTIVITY_ENABLED": {
       "description": "This determines if the music activity tracker should be enabled or not. False means it will stay connected, unless the queue is empty or forced to leave by a user. You can change this to false or true.",
 	  "required": true,
