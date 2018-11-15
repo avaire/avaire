@@ -75,11 +75,6 @@
 	  "required": true,
 	  "value": "DATABASEPASSWORD"
     },
-    "AVA_DATABASE_VERIFYSERVERCERTIFICATE": {
-      "description": "When using Heroku. You get a small warning if you had this set to true. You can leave this on false.",
-	  "required": true,
-	  "value": "false"
-    },
     "AVA_DEFAULT-PREFIX": {
       "description": "Change the default prefix the bot uses to your liking.",
 	  "required": true,
