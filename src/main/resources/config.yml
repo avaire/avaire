@@ -161,7 +161,7 @@ database:
   # from a cryptographic perspective, but the database server will not
   # be verified if it is actually the right server or not.
   #
-  verifyServerCertificate: true
+  verifyServerCertificate: false
 
 #--------------------------------------------------------------------------
 # Default Command Prefix
