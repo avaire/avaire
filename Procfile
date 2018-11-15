@@ -1,1 +1,1 @@
-worker: java -jar AvaIre.jar -music -env
+worker: java -jar AvaIre.jar -env
