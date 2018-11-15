@@ -46,7 +46,7 @@
 	  "value": "https://discordapp.com/oauth2/authorize?&client_id=<client_id>&scope=bot&permissions=66186303"
     },
     "AVA_DATABASE_TYPE": {
-      "description": "Let de value be mysql to have the bot working as normal. Chagne it to sqlite if you rather don't want to save what is normally saved in the database.",
+      "description": "Let de value be mysql to have the bot working as normal. Change it to sqlite if you rather don't want to save what is normally saved in the database.",
 	  "required": true,
 	  "value": "mysql"
     },
