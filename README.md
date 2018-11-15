@@ -22,6 +22,12 @@ AvaIre is a multipurpose Discord bot made for fun, written in Java 8, using the 
 
 Visit our [website](https://avairebot.com/) for more information.
 
+## Deploy AvaIre on Heroku
+You can deploy in a simple way to Heroku using the button below.
+
+[![Deploy to Heroku](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
+*Before deploying, read [the configuration guide](https://avairebot.com/docs/master/configuration/), aswell as [the guide](https://avairebot.com/docs/master/heroku) regarding hosting with Heroku.
+
 ## Contributing
 
 Thank you for considering contributing to AvaIre! The contribution guide can be found in the [AvaIre documentation](https://avairebot.com/docs/contributions).
