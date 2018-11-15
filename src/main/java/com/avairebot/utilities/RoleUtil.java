@@ -73,7 +73,7 @@ public class RoleUtil {
     }
 
     /**
-     * Checks if the given roles hierarchy position is higher than any role given in the list.
+     * Checks if the given roles hierarchy position is higher than all roles given in the list.
      *
      * @param roles     The list to compare the role position to.
      * @param matchRole The role which position should be used in the comparison.
@@ -86,7 +86,7 @@ public class RoleUtil {
     }
 
     /**
-     * Checks if the given hierarchy position is higher than any role given in the list.
+     * Checks if the given hierarchy position is higher than all roles given in the list.
      *
      * @param roles             The list to compare the position to.
      * @param hierarchyPosition The position that should be compared with the list.
@@ -102,7 +102,7 @@ public class RoleUtil {
     }
 
     /**
-     * Checks if the given roles hierarchy position is lower than any role given in the list.
+     * Checks if the given roles hierarchy position is lower than all roles given in the list.
      *
      * @param roles     The list to compare the role position to.
      * @param matchRole The role which position should be used in the comparison.
@@ -115,7 +115,7 @@ public class RoleUtil {
     }
 
     /**
-     * Checks if the given hierarchy position is lower than any role given in the list.
+     * Checks if the given hierarchy position is lower than all roles given in the list.
      *
      * @param roles             The list to compare the position to.
      * @param hierarchyPosition The position that should be compared with the list.
@@ -123,11 +123,11 @@ public class RoleUtil {
      */
     public static boolean isRoleHierarchyLower(@Nonnull List<Role> roles, int hierarchyPosition) {
         for (Role role : roles) {
-            if (role.getPosition() > hierarchyPosition) {
-                return true;
+            if (role.getPosition() < hierarchyPosition) {
+                return false;
             }
         }
-        return false;
+        return true;
     }
 
     /**
@@ -142,11 +142,13 @@ public class RoleUtil {
      * @return True if both the given user and bot can interact with the role, false otherwise.
      */
     public static boolean canInteractWithRole(@Nonnull Message message, @Nonnull Role role) {
-        if (RoleUtil.isRoleHierarchyHigher(message.getMember().getRoles(), role)) {
-            MessageFactory.makeWarning(message,
-                ":user The **:role** role is positioned higher in the hierarchy than any role you have, you can't add roles with a higher ranking than you have."
-            ).set("role", role.getName()).queue();
-            return false;
+        if (message.getGuild().getOwner().getUser().getIdLong() != message.getMember().getUser().getIdLong()) {
+            if (RoleUtil.isRoleHierarchyHigher(message.getMember().getRoles(), role)) {
+                MessageFactory.makeWarning(message,
+                    ":user The **:role** role is positioned higher in the hierarchy than any role you have, you can't add roles with a higher ranking than you have."
+                ).set("role", role.getName()).queue();
+                return false;
+            }
         }
 
         if (RoleUtil.isRoleHierarchyHigher(message.getGuild().getSelfMember().getRoles(), role)) {
