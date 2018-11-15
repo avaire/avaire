@@ -142,23 +142,58 @@ public class RoleUtil {
      * @return True if both the given user and bot can interact with the role, false otherwise.
      */
     public static boolean canInteractWithRole(@Nonnull Message message, @Nonnull Role role) {
-        if (message.getGuild().getOwner().getUser().getIdLong() != message.getMember().getUser().getIdLong()) {
-            if (RoleUtil.isRoleHierarchyHigher(message.getMember().getRoles(), role)) {
-                MessageFactory.makeWarning(message,
-                    ":user The **:role** role is positioned higher in the hierarchy than any role you have, you can't add roles with a higher ranking than you have."
-                ).set("role", role.getName()).queue();
-                return false;
-            }
+        return canUserInteractWithRole(message, role) && canBotInteractWithRole(message, role);
+    }
+
+    /**
+     * Checks if the user can interact with the given role by making sure the role
+     * is  not higher in the role hierarchy than any role the user has, if the
+     * method returns true the user has at least one role which is in a
+     * higher position in the role hierarchy.
+     * <p>
+     * <strong>Note:</strong> If the user is the owner of the current guild,
+     * this method will always return {@code true}.
+     *
+     * @param message The JDA message instance for the current guild.
+     * @param role    The role that the user should be able to interact with.
+     * @return {@code True} if the user can interact with the given role, {@code False} otherwise
+     */
+    public static boolean canUserInteractWithRole(@Nonnull Message message, @Nonnull Role role) {
+        if (message.getMember().isOwner()) {
+            return true;
         }
 
-        if (RoleUtil.isRoleHierarchyHigher(message.getGuild().getSelfMember().getRoles(), role)) {
-            MessageFactory.makeWarning(message,
-                ":user The **:role** role is positioned higher in the hierarchy, I can't give/remove this role from users."
-            ).set("role", role.getName()).queue();
-            return false;
+        if (!RoleUtil.isRoleHierarchyHigher(message.getMember().getRoles(), role)) {
+            return true;
         }
 
-        return true;
+        MessageFactory.makeWarning(message,
+            ":user The **:role** role is positioned higher in the hierarchy than any role you have, you can't add roles with a higher ranking than you have."
+        ).set("role", role.getName()).queue();
+
+        return false;
+    }
+
+    /**
+     * Checks if the bot can interact with the given role by making sure the role
+     * is not higher in the role hierarchy than any role the bot has, if the
+     * method returns true the bot has at least one role which is in a
+     * higher position in the role hierarchy.
+     *
+     * @param message The JDA message instance for the current guild.
+     * @param role    The role that the user should be able to interact with.
+     * @return {@code True} if the user can interact with the given role, {@code False} otherwise
+     */
+    public static boolean canBotInteractWithRole(@Nonnull Message message, @Nonnull Role role) {
+        if (!RoleUtil.isRoleHierarchyHigher(message.getGuild().getSelfMember().getRoles(), role)) {
+            return true;
+        }
+
+        MessageFactory.makeWarning(message,
+            ":user The **:role** role is positioned higher in the hierarchy, I can't give/remove this role from users."
+        ).set("role", role.getName()).queue();
+
+        return false;
     }
 
     /**
