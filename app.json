@@ -68,17 +68,17 @@
     "AVA_DATABASE_USERNAME": {
       "description": "IMPORTANT! After you deployed AvaIre to Heroku. Go to: https://dashboard.jawsdb.com/mysql/dashboard and copy the Username value into this variable! You can change variables by going to the Heroku dashboard and in settings, click on Reveal Config Vars.",
 	  "required": true,
-	  "value": "DATABASEUSERNAME",
+	  "value": "DATABASEUSERNAME"
     },
     "AVA_DATABASE_PASSWORD": {
       "description": "IMPORTANT! After you deployed AvaIre to Heroku. Go to: https://dashboard.jawsdb.com/mysql/dashboard and copy the Password value into this variable! You can change variables by going to the Heroku dashboard and in settings, click on Reveal Config Vars.",
 	  "required": true,
-	  "value": "DATABASEPASSWORD",
+	  "value": "DATABASEPASSWORD"
     },
     "AVA_DATABASE_VERIFYSERVERCERTIFICATE": {
       "description": "When using Heroku. You get a small warning if you had this set to true. You can leave this on false.",
 	  "required": true,
-	  "value": "false",
+	  "value": "false"
     },
     "AVA_DEFAULT-PREFIX": {
       "description": "Change the default prefix the bot uses to your liking.",
@@ -189,12 +189,10 @@
   },
   "buildpacks": [
 	{
-		"url": "https://github.com/weibeld/heroku-buildpack-run",
+		"url": "https://github.com/weibeld/heroku-buildpack-run"
+    },
+    {
 		"url": "heroku/gradle"
 	}
   ]
 }
-
-
-
-
