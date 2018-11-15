@@ -1,1 +1,1 @@
-worker: java -jar AvaIre.jar -env
+worker: java -jar AvaIre.jar --no-colors -env
