@@ -11,6 +11,10 @@ database\.sqlite
 .mtj.tmp/
 
 # Package Files #
+*.jar
+!gradle-wrapper.jar
+
+# Package Files #
 *.war
 *.ear
 
