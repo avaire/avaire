@@ -100,7 +100,7 @@
 	  "required": false,
 	  "value": "2"
     },
-    "AVA_MUSIC_ACTIVITY_PAUSED-MUSIC_TIMEOUT": {
+    "AVA_MUSIC_ACTIVITY_PAUSED_MUSIC_TIMEOUT": {
       "description": "This is the time in minutes that the bot should wait before disconnecting if the music is paused.",
 	  "required": false,
 	  "value": "10"
@@ -118,7 +118,7 @@
     "AVA_BOTACCESS": {
       "description": "Specifies which users can use the system commands of Avaire.",
 	  "required": false,
-	  "value": " - '88739639380172800'"
+	  "value": "88739639380172800"
     },
     "AVA_SENTRYDSN": {
       "description": "If you want to use Sentry for error loging. You can get the DSN url from: https://sentry.io/welcome/. You can leave this blank.",
