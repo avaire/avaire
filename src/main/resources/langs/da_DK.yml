@@ -86,6 +86,19 @@ administration:
             global: "Alle kommandoer i all kommando kategorier er blevet nulstillet til at bruge `:prefix` prefixet."
             category: "Alle kommandoer i all kommando kategorien `:category` er blivet nulstillet til at bruge `:prefix` prefixet."
 
+    DJLevelCommand:
+        title: "Nuværende DJ-niveau: {0}"
+        footer: "Brug \"{0} types\" for at se en komplet liste over de tilgængelige DJ niveau typer."
+        types:
+            title: "DJ Niveau Typer"
+            footer: "Brug \"{0} <type>\" at ændre DJ-niveauet til den givne type for serveren."
+        invalidType: "`{0}` er ikke et gyldig `DJ Level` type, brug venligst et af følgende:\n`{1}`"
+        changedTo: "`DJ-niveauet` er blivet ændret til **:type**.\n:info"
+        information:
+            all: "Alle kan køre nogen musikkommandoer, også selvom de ikke har 'DJ'-rollen."
+            none: "Ingen kan køre nogen musikkommandoer uden 'DJ'-rollen."
+            normal: "Folk uden 'DJ'-rollen kan ikke bruge kommandoer som afspilningslister og volumenkontrol, men stadig tillader folk at bruge afspilningskommandoen uden rollen."
+
     GoodbyeCommand:
         note: "\nDu kan tilpasse beskeden ved at bruge `{0} [besked]`"
         message: "`Farvel` modellen er blivet **:status** for :channel kanalen."
@@ -179,7 +192,7 @@ administration:
         mustMentionUser: "Du skal nævne en gyldig `bruger`, du vil vise modloghistorikken for."
         noHistory: "Der blev ikke fundet nogen modloghistorik for denne bruger."
         title: "{0}#{1} Historie ({2})"
-        entry: "**{1}** | **#{0}** | **Moderator:** {2}\n**Date:** {3}\n**Reason:** {4}"
+        entry: "**Case-ID #{0}** | {1}\n\t{2}"
         noReasonGiven: "Ingen grund blev givet."
 
     ModlogPardonCommand:
@@ -252,6 +265,10 @@ administration:
         failedToUnban: "Failed to unban :target due to an error, message: :error"
         noUserIsBanned: "No user with an ID of `:id` is currently banned from the server."
         invalidUserIdGiven: "Invalid `user id` was given, the `user id` must be a numeric string of 18 or more numbers long."
+
+    UserAvatarCommand:
+        noUserFound: "Jeg fandt ingen brugere med et navn eller ID der matcher `{0}`"
+        title: "{0}#{1}'s Avatar"
 
     VoiceKickCommand:
         mustMentionUser: "Du skal nævne den bruger du ønsker at kicke."
@@ -360,7 +377,7 @@ fun:
 
 help:
     HelpCommand:
-        listOfCommands: ':page_with_curl: **Liste over kommandoer**'
+        listOfCommands: ':page_with_curl: **Liste over kommandoer** ```css\n{0}```\n'
         commandNote: '**Skriv `:help <command>` for at se hjælpen til den angivne kommando.**\nExample: `:help :command`'
         categoriesNote: ':information_source: Skriv `:help <kategori>` for at få en liste over kommandoer i den givet kategori.\nExempel: `:help {0}` eller `:help {1}`'
         categoriesTitle: ':scroll: Kommandokategorier'
@@ -378,6 +395,7 @@ help:
 
 interaction:
     BiteCommand: 'bider'
+    BlushCommand: 'rødmer på'
     CuddleCommand: 'cuddles'
     DivorceCommand: 'skilsmisser'
     EatCommand: 'spiser noget mad med'
@@ -418,22 +436,8 @@ music:
         emptyQueue: 'Intet at rydde, der er ingen sange i musik køen lige nu.'
         success: 'Jeg har fjernet **:queueSize** sange fra køen, køen er nu tom!'
 
-    DJLevelCommand:
-            title: "Nuværende DJ-niveau: {0}"
-            footer: "Brug \"{0} types\" for at se en komplet liste over de tilgængelige DJ niveau typer."
-            types:
-                title: "DJ Niveau Typer"
-                footer: "Brug \"{0} <type>\" at ændre DJ-niveauet til den givne type for serveren."
-            invalidType: "`{0}` er ikke et gyldig `DJ Level` type, brug venligst et af følgende:\n`{1}`"
-            changedTo: "`DJ-niveauet` er blivet ændret til **:type**.\n:info"
-            information:
-                all: "Alle kan køre nogen musikkommandoer, også selvom de ikke har 'DJ'-rollen."
-                none: "Ingen kan køre nogen musikkommandoer uden 'DJ'-rollen."
-                normal: "Folk uden 'DJ'-rollen kan ikke bruge kommandoer som afspilningslister og volumenkontrol, men stadig tillader folk at bruge afspilningskommandoen uden rollen."
-
     MoveHereCommand:
         error: 'Ikke tilsluttet en stemme kanal, start noget musik først med `{0}play`'
-        hasMusicChannel: "The server has a music voice channel setup, if you'd like me to move to a different voice channel, please get an admin on the server to drag 'n drop me into a different voice channel."
         nowPlayingIn: 'Jeg spiller nu musik i **:channelName**'
 
     MusicChannelCommand:
@@ -598,7 +602,6 @@ search:
         nsfwDisabled: "`Urban Dictionary` kommandoen kan kun bruges i NSFW-kanaler, da indholdet af kommandoen måske ikke er passende for alle."
 
     XKCDCommand:
-        invalidArgument: "Invalid argument given, the argument must be a valid number between `1` and `{0}`, or `random` to get a random comic."
         number: 'XKCD nummer #{0}'
 
 utility:
@@ -746,10 +749,6 @@ utility:
         dateFormat: 'EEEEEEEE, dd MMM yyyy'
         timeFormat: 'HH:mm:ss z'
 
-    UserAvatarCommand:
-            noUserFound: "Jeg fandt ingen brugere med et navn eller ID der matcher `{0}`"
-            title: "{0}#{1}'s Avatar"
-
     UserIdCommand:
         message: ':id: For brugeren **:target** er `:targetid`'
 
@@ -777,12 +776,3 @@ utility:
             minor: 'Minor version opdateringer er nye tilføjelser, funktioner og reworks af den eksisterende codebase, det anbefales at du opdaterer om Minor version ændringer for at få alle de nye funktioner.'
             patchName: 'Patch'
             patch: 'Opdateringer af patchversioner er fejlrettelser, refactoring af eksisterende kode og meget små ændringer, der ikke påvirker andre ting i kodebase. Det anbefales at opdatere ændringer af patchversioner for at holde op med fejlrettelserne og patcherne.'
-
-    WeatherCommand:
-        noCityFound: "No city was found with the name of **:name**, are you sure you spelt it correctly?"
-        fields:
-            weatherFor: "Weather for {0}, {1}"
-            country: "Country"
-            temperature: "Temperature"
-            windDirection: "Wind Direction"
-            windSpeed: "Wind Speed"

@@ -86,6 +86,19 @@ administration:
             global: "All commands in every command category has been reset to use the `:prefix` prefix."
             category: "All commands in the `:category` command category has been reset to use the `:prefix` prefix."
 
+    DJLevelCommand:
+        title: "Current DJ Level: {0}"
+        footer: "Use \"{0} types\" to see a full list of the available DJ level types."
+        types:
+            title: "DJ Level Types"
+            footer: "Use \"{0} <type>\" to change the DJ Level to the given type for the server."
+        invalidType: "`{0}` is not a valid `DJ Level` type, please use one of the following:\n`{1}`"
+        changedTo: "The `DJ Level` status has changed to **:type**.\n:info"
+        information:
+            all: "Anyone can run any music commands, even without the `DJ` role."
+            none: "No one can run any music commands without the `DJ` role."
+            normal: "Preventing people from using commands like playlists, volume control, and force skip without the `DJ` role, but still allowing people to use the play command without the role."
+
     GoodbyeCommand:
         note: "\nYou can customize the message by using `{0} [message]`"
         message: "The `Goodbye` module has been **:status** for the :channel channel."
@@ -179,7 +192,7 @@ administration:
         mustMentionUser: "You must mention a valid `user` you want to display the modlog history for."
         noHistory: "No modlog history was found for this user."
         title: "{0}#{1} History ({2})"
-        entry: "**{1}** | **#{0}** | **Moderator:** {2}\n**Date:** {3}\n**Reason:** {4}"
+        entry: "**Case ID #{0}** | {1}\n\t{2}"
         noReasonGiven: "No reason was given."
 
     ModlogPardonCommand:
@@ -252,6 +265,10 @@ administration:
         failedToUnban: "Failed to unban :target due to an error, message: :error"
         noUserIsBanned: "No user with an ID of `:id` is currently banned from the server."
         invalidUserIdGiven: "Invalid `user id` was given, the `user id` must be a numeric string of 18 or more numbers long."
+
+    UserAvatarCommand:
+        noUserFound: "I found no users with the name or ID of `{0}`"
+        title: "{0}#{1}'s Avatar"
 
     VoiceKickCommand:
         mustMentionUser: "You must mention the user you want to kick."
@@ -360,7 +377,7 @@ fun:
 
 help:
     HelpCommand:
-        listOfCommands: ':page_with_curl: **List of Commands**'
+        listOfCommands: ':page_with_curl: **List of Commands** ```css\n{0}```\n'
         commandNote: '**Type `:help <command>` to see the help for that specified command.**\nExample: `:help :command`'
         categoriesNote: ':information_source: Type `:help <category>` to get a list of commands in that category.\nExample: `:help {0}` or `:help {1}`'
         categoriesTitle: ':scroll: Command Categories'
@@ -378,6 +395,7 @@ help:
 
 interaction:
     BiteCommand: 'bites'
+    BlushCommand: 'blushes at'
     CuddleCommand: 'cuddles'
     DivorceCommand: 'divorces'
     EatCommand: 'eats some food with'
@@ -418,22 +436,8 @@ music:
         emptyQueue: 'Nothing to clear, there are no songs pending in the queue right now.'
         success: 'I have removed **:queueSize** songs from the queue, the queue is now empty!'
 
-    DJLevelCommand:
-            title: "Current DJ Level: {0}"
-            footer: "Use \"{0} types\" to see a full list of the available DJ level types."
-            types:
-                title: "DJ Level Types"
-                footer: "Use \"{0} <type>\" to change the DJ Level to the given type for the server."
-            invalidType: "`{0}` is not a valid `DJ Level` type, please use one of the following:\n`{1}`"
-            changedTo: "The `DJ Level` status has changed to **:type**.\n:info"
-            information:
-                all: "Anyone can run any music commands, even without the `DJ` role."
-                none: "No one can run any music commands without the `DJ` role."
-                normal: "Preventing people from using commands like playlists, volume control, and force skip without the `DJ` role, but still allowing people to use the play command without the role."
-
     MoveHereCommand:
         error: 'Not connected to voice, request music first with `{0}play`'
-        hasMusicChannel: "The server has a music voice channel setup, if you'd like me to move to a different voice channel, please get an admin on the server to drag 'n drop me into a different voice channel."
         nowPlayingIn: 'I am now playing music in **:channelName**'
 
     MusicChannelCommand:
@@ -598,7 +602,6 @@ search:
         nsfwDisabled: "The `Urban Dictionary` command can only be used in NSFW channels, as the content of the command may not be appreciate for all."
 
     XKCDCommand:
-        invalidArgument: "Invalid argument given, the argument must be a valid number between `1` and `{0}`, or `random` to get a random comic."
         number: 'XKCD number #{0}'
 
 utility:
@@ -745,10 +748,6 @@ utility:
         dateFormat: 'EEEEEEEE, dd MMM yyyy'
         timeFormat: 'HH:mm:ss z'
 
-    UserAvatarCommand:
-            noUserFound: "I found no users with the name or ID of `{0}`"
-            title: "{0}#{1}'s Avatar"
-
     UserIdCommand:
         message: ':id: of the user **:target** is `:targetid`'
 
@@ -776,12 +775,3 @@ utility:
             minor: 'Minor version updates are new additions, features and reworks of the existing codebase, it is recommended that you update on minor version changes to keep up with the new features.'
             patchName: 'Patch'
             patch: 'Patch version updates are bug fixes, refactoring of existing code and very minor changes that wont affect other things in the code base, it is recommended that you update on patch version changes to keep up with the bug fixes and patches.'
-
-    WeatherCommand:
-        noCityFound: "No city was found with the name of **:name**, are you sure you spelt it correctly?"
-        fields:
-            weatherFor: "Weather for {0}, {1}"
-            country: "Country"
-            temperature: "Temperature"
-            windDirection: "Wind Direction"
-            windSpeed: "Wind Speed"
