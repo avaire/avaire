@@ -1,4 +1,3 @@
-plugins/
 storage/
 docs/
 database\.sqlite
@@ -6,12 +5,12 @@ database\.sqlite
 /config.yml
 /commandMap\.json
 *.class
+.DS_Store
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
 # Package Files #
-*.jar
 *.war
 *.ear
 
