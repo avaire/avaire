@@ -75,42 +75,42 @@
 	  "required": true,
 	  "value": "DATABASEPASSWORD"
     },
-    "AVA_DEFAULT-PREFIX": {
+    "AVA_DEFAULT_PREFIX": {
       "description": "Change the default prefix the bot uses to your liking.",
 	  "required": true,
 	  "value": "!"
     },
-    "AVA_SYSTEM-PREFIX": {
+    "AVA_SYSTEM_PREFIX": {
       "description": "Change the system prefix the bot uses to your liking.",
 	  "required": true,
 	  "value": ";"
     },
-    "AVA_MUSIC-ACTIVITY_ENABLED": {
+    "AVA_MUSIC_ACTIVITY_ENABLED": {
       "description": "This determines if the music activity tracker should be enabled or not. False means it will stay connected, unless the queue is empty or forced to leave by a user. You can change this to false or true.",
 	  "required": true,
 	  "value": "true"
     },
-    "AVA_MUSIC-ACTIVITY_MISSING-LISTENERS": {
+    "AVA_MUSIC_ACTIVITY_MISSING_LISTENERS": {
       "description": "This is the time in minutes that the bot should wait before disconnecting if no one is listening to the bot.",
 	  "required": false,
 	  "value": "5"
     },
-    "AVA_MUSIC-ACTIVITY_EMPTY-QUEUE-TIMEOUT": {
+    "AVA_MUSIC_ACTIVITY_EMPTY_QUEUE_TIMEOUT": {
       "description": "his is the time in minutes that the bot should wait before disconnecting if the queue is empty and nothing is added before the timer runs out.",
 	  "required": false,
 	  "value": "2"
     },
-    "AVA_MUSIC-ACTIVITY_PAUSED-MUSIC-TIMEOUT": {
+    "AVA_MUSIC_ACTIVITY_PAUSED-MUSIC_TIMEOUT": {
       "description": "This is the time in minutes that the bot should wait before disconnecting if the music is paused.",
 	  "required": false,
 	  "value": "10"
     },
-    "AVA_AUDIO-QUALITY_RESAMPLING": {
+    "AVA_AUDIO_QUALITY_RESAMPLING": {
       "description": "Higher resampling rates gives a higher chance that the audio reaches Discord servers so people can hear the audio by sending each frame multiple times. You can set this to: high, medium, or low.",
 	  "required": true,
 	  "value": "high"
     },
-    "AVA_AUDIO-QUALITY_ENCODING": {
+    "AVA_AUDIO_QUALITY_ENCODING": {
       "description": "Audio encoding is tasked with encoding the audio track so it is playable by Discord, higher values will produce a higher quality encoded track, which in turn uses more CPU. You can set this number between: 0 and 10.",
 	  "required": true,
 	  "value": "10"
@@ -140,12 +140,12 @@
 	  "required": true,
 	  "value": "avaire-auth-token"
     },
-    "AVA_VOTE-LOCK_ENABLED": {
+    "AVA_VOTE_LOCK_ENABLED": {
       "description": "This option determines if the vote-locking feature should be enabled at all, if set to true, any command or feature using the 'vote' middleware will be restricted to users who have voted for the bot within the last 24 hours. You can it to true or false.",
 	  "required": true,
 	  "value": "false"
     },
-    "AVA_VOTE-LOCK_VOTE-SYNC-TOKEN": {
+    "AVA_VOTE_LOCK_VOTE_SYNC_TOKEN": {
       "description": "This is the bot application API token for DBL(Discord Bot List), the API token is used to sync votes between the API and the bot during startup, so anyone who voted while the bot was offline will still get their rewards.",
 	  "required": true,
 	  "value": "ReplaceThisWithYourAPITokenForDBL"
