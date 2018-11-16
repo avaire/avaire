@@ -14,8 +14,6 @@ database\.sqlite
 # Package Files #
 *.jar
 !gradle-wrapper.jar
-
-# Package Files #
 *.war
 *.ear
 
@@ -35,7 +33,6 @@ hs_err_pid*
 target/
 build/
 out/
-AvaIre.jar
 
 # Image Generator Branch
 test-output\.png
