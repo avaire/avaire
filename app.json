@@ -75,6 +75,11 @@
 	  "required": true,
 	  "value": "DATABASEPASSWORD"
     },
+    "AVA_DATABASE_VERIFYSERVERCERTIFICATE": {
+      "description": "Determine if server certificates should be verified upon connecting to the database. For Heroku this needs to be set to false.",
+	  "required": true,
+	  "value": "false"
+    },
     "AVA_DEFAULT_PREFIX": {
       "description": "Change the default prefix the bot uses to your liking.",
 	  "required": true,
@@ -165,7 +170,7 @@
 	  "required": false,
 	  "value": ""
     },
-    "AVA_APIKEYS_MEOWAPI_OPENWEATHERMAP": {
+    "AVA_APIKEYS_OPENWEATHERMAP": {
       "description": "Open Weather Map is a free service that provides lots of ways to get weather and wind data based on a location. Withoud the API key the command will disable itself. You can get an API key at: https://home.openweathermap.org/api_keys.",
 	  "required": false,
 	  "value": ""
