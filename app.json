@@ -27,11 +27,6 @@
       "required": true,
       "value": "build"
     },
-    "AVA_ENVIRONMENT": {
-      "description": "Let the value be production to have the bot work as normal. Change it to development if you know what your doing.",
-	  "required": true,
-	  "value": "production"
-    },
     "AVA_DISCORD_CLIENTID": {
       "description": "Get your CLIENT ID from https://discordapp.com/developers/applications/.",
 	  "required": true
