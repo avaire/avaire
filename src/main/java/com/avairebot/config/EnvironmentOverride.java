@@ -23,7 +23,6 @@ package com.avairebot.config;
 
 import com.avairebot.utilities.ComparatorUtil;
 import com.avairebot.utilities.NumberUtil;
-import com.google.common.collect.Sets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -127,8 +126,6 @@ public class EnvironmentOverride {
             }
         } else if (configuration.isList(key)) {
             configuration.set(key, convertStringToList(value));
-        } else if (configuration.isSet(key)) {
-            configuration.set(key, Sets.newHashSet(convertStringToList(value)));
         } else {
             configuration.set(key, value);
         }

@@ -169,7 +169,7 @@ public class AvaIre {
             config.getStringList("botAccess")
         )));
 
-        applicationEnvironment = Environment.fromName(config.getString("environment", "production"));
+        applicationEnvironment = Environment.fromName(config.getString("environment", Environment.PRODUCTION.getName()));
         if (applicationEnvironment == null) {
             throw new InvalidApplicationEnvironmentException(config.getString("environment", "production"));
         }
