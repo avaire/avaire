@@ -33,7 +33,7 @@ hs_err_pid*
 target/
 build/
 out/
-!/AvaIre.jar
+AvaIre.jar
 
 # Image Generator Branch
 test-output\.png
