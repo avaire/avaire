@@ -90,6 +90,21 @@
 	  "required": true,
 	  "value": ";"
     },
+    "AVA_PLAYING": {
+      "description": "Once every minute, Ava will change her 'playing' status to something on the list below. You can set the type of the status by using one of the prefixes below.",
+	  "required": true,
+	  "value": "!help; watching:avairebot.com; listening:%users% users; playing:in %guilds% servers"
+    },
+    "AVA_LAVALINK_ENABLED": {
+      "description": "NOT SUPPORTED WITH ENV VARIABLES! This determines if Ava should use Lavalink for encoding and sending the audio instead of doing it internally, if Lavalink is enabled and no valid nodes has been provided, none of the music will work.",
+	  "required": true,
+	  "value": "false"
+    },
+    "AVA_LAVALINK_NODES": {
+      "description": "NOT SUPPORTED WITH ENV VARIABLES! This is your Lavalink encoding nodes, each node must have a valid name that the node is identified by, a valid web-socket host and port, and a valid password for the given Lavalink node.",
+	  "required": false,
+	  "value": "- name : 'local' host : 'ws://localhost:5555' pass : 'youshallnotpass'"
+    },
     "AVA_MUSIC_ACTIVITY_ENABLED": {
       "description": "This determines if the music activity tracker should be enabled or not. False means it will stay connected, unless the queue is empty or forced to leave by a user. You can change this to false or true.",
 	  "required": true,
@@ -121,7 +136,7 @@
 	  "value": "10"
     },
     "AVA_BOTACCESS": {
-      "description": "Specifies which users can use the system commands of Avaire.",
+      "description": "Specifies which users can use the system commands of Avaire. You can add multiple by doing: <userid>; <seconduserid>.",
 	  "required": false,
 	  "value": "88739639380172800"
     },
