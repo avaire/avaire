@@ -1,0 +1,193 @@
+{
+  "name": "AvaIre",
+  "description": "AvaIre is a high quality Music bot, with moderation, interaction, search, administration commands, highly customizable and much more!",
+  "keywords": [
+    "Heroku",
+    "AvaIre",
+    "AvaIreBot",
+    "Discord Bot",
+    "Entertainment",
+    "Music",
+    "Moderation",
+    "Senither",
+    "Java",
+    "Selfhosting"
+  ],
+  "website": "https://avairebot.com/",
+  "repository": "https://github.com/avaire/avaire",
+  "logo": "https://imgur.com/H8RCD5F.png",
+  "addons": [
+	{
+		"plan": "jawsdb:kitefin"
+	}
+  ],
+ "env": {
+    "GRADLE_TASK": {
+      "description": "Tells Heroku how to compile AvaIre. Leave it as it, unless you know what your doing.",
+      "required": true,
+      "value": "build"
+    },
+    "AVA_ENVIRONMENT": {
+      "description": "Let the value be production to have the bot work as normal. Change it to development if you know what your doing.",
+	  "required": true,
+	  "value": "production"
+    },     
+    "AVA_DISCORD_CLIENTID": {
+      "description": "Get your CLIENT ID from https://discordapp.com/developers/applications/.",
+	  "required": true
+    },
+    "AVA_DISCORD_TOKEN": {
+      "description": "Get your BOT TOKEN from https://discordapp.com/developers/applications/.",
+	  "required": true
+    },
+    "AVA_DISCORD_OAUTH": {
+      "description": "Replace <client_id> with the CLIENT ID.",
+	  "required": true,
+	  "value": "https://discordapp.com/oauth2/authorize?&client_id=<client_id>&scope=bot&permissions=66186303"
+    },
+    "AVA_DATABASE_TYPE": {
+      "description": "Let de value be mysql to have the bot working as normal. Change it to sqlite if you rather don't want to save what is normally saved in the database.",
+	  "required": true,
+	  "value": "mysql"
+    },
+    "AVA_DATABASE_FILENAME": {
+      "description": "If you choose to use sqlite. Your using this aswell. Let the value be database.sqlite or change it if you know what your doing.",
+	  "required": true,
+	  "value": "database.sqlite"
+    },
+    "AVA_DATABASE_DATABASE": {
+      "description": "IMPORTANT! After you deployed AvaIre to Heroku. Go to: https://dashboard.jawsdb.com/mysql/dashboard and copy the Database value into this variable! You can change variables by going to the Heroku dashboard and in settings, click on Reveal Config Vars.",
+	  "required": true,
+	  "value": "DATABASENAME"
+    },
+    "AVA_DATABASE_HOSTNAME": {
+      "description": "IMPORTANT! After you deployed AvaIre to Heroku. Go to: https://dashboard.jawsdb.com/mysql/dashboard and copy the Host value into this variable! You can change variables by going to the Heroku dashboard and in settings, click on Reveal Config Vars.",
+	  "required": true,
+	  "value": "HOSTNAME"
+    },
+    "AVA_DATABASE_USERNAME": {
+      "description": "IMPORTANT! After you deployed AvaIre to Heroku. Go to: https://dashboard.jawsdb.com/mysql/dashboard and copy the Username value into this variable! You can change variables by going to the Heroku dashboard and in settings, click on Reveal Config Vars.",
+	  "required": true,
+	  "value": "DATABASEUSERNAME"
+    },
+    "AVA_DATABASE_PASSWORD": {
+      "description": "IMPORTANT! After you deployed AvaIre to Heroku. Go to: https://dashboard.jawsdb.com/mysql/dashboard and copy the Password value into this variable! You can change variables by going to the Heroku dashboard and in settings, click on Reveal Config Vars.",
+	  "required": true,
+	  "value": "DATABASEPASSWORD"
+    },
+    "AVA_DATABASE_VERIFYSERVERCERTIFICATE": {
+      "description": "Determine if server certificates should be verified upon connecting to the database. For Heroku this needs to be set to false.",
+	  "required": true,
+	  "value": "false"
+    },
+    "AVA_DEFAULT_PREFIX": {
+      "description": "Change the default prefix the bot uses to your liking.",
+	  "required": true,
+	  "value": "!"
+    },
+    "AVA_SYSTEM_PREFIX": {
+      "description": "Change the system prefix the bot uses to your liking.",
+	  "required": true,
+	  "value": ";"
+    },
+    "AVA_MUSIC_ACTIVITY_ENABLED": {
+      "description": "This determines if the music activity tracker should be enabled or not. False means it will stay connected, unless the queue is empty or forced to leave by a user. You can change this to false or true.",
+	  "required": true,
+	  "value": "true"
+    },
+    "AVA_MUSIC_ACTIVITY_MISSING_LISTENERS": {
+      "description": "This is the time in minutes that the bot should wait before disconnecting if no one is listening to the bot.",
+	  "required": false,
+	  "value": "5"
+    },
+    "AVA_MUSIC_ACTIVITY_EMPTY_QUEUE_TIMEOUT": {
+      "description": "his is the time in minutes that the bot should wait before disconnecting if the queue is empty and nothing is added before the timer runs out.",
+	  "required": false,
+	  "value": "2"
+    },
+    "AVA_MUSIC_ACTIVITY_PAUSED_MUSIC_TIMEOUT": {
+      "description": "This is the time in minutes that the bot should wait before disconnecting if the music is paused.",
+	  "required": false,
+	  "value": "10"
+    },
+    "AVA_AUDIO_QUALITY_RESAMPLING": {
+      "description": "Higher resampling rates gives a higher chance that the audio reaches Discord servers so people can hear the audio by sending each frame multiple times. You can set this to: high, medium, or low.",
+	  "required": true,
+	  "value": "high"
+    },
+    "AVA_AUDIO_QUALITY_ENCODING": {
+      "description": "Audio encoding is tasked with encoding the audio track so it is playable by Discord, higher values will produce a higher quality encoded track, which in turn uses more CPU. You can set this number between: 0 and 10.",
+	  "required": true,
+	  "value": "10"
+    },
+    "AVA_BOTACCESS": {
+      "description": "Specifies which users can use the system commands of Avaire.",
+	  "required": false,
+	  "value": "88739639380172800"
+    },
+    "AVA_SENTRYDSN": {
+      "description": "If you want to use Sentry for error loging. You can get the DSN url from: https://sentry.io/welcome/. You can leave this blank.",
+	  "required": false,
+	  "value": ""
+    },
+    "AVA_METRICS_ENABLED": {
+      "description": "This option determines if the web API should be enabled at all. As of now, this won't work on Heroku sadly.",
+	  "required": true,
+	  "value": "false"
+    },
+    "AVA_METRICS_PORT": {
+      "description": "The port the API and metrics should be exposed to, the port must not be used by another application on the system. As of now, this won't work on Heroku sadly.",
+	  "required": true,
+	  "value": "1256"
+    },
+    "AVA_METRICS_AUTHTOKEN": {
+      "description": "This is the auth token that should be given to validate incoming vote requests. All requests withoud the auth header will be ignored. As of now, this won't work on Heroku sadly.",
+	  "required": true,
+	  "value": "avaire-auth-token"
+    },
+    "AVA_VOTE_LOCK_ENABLED": {
+      "description": "This option determines if the vote-locking feature should be enabled at all, if set to true, any command or feature using the 'vote' middleware will be restricted to users who have voted for the bot within the last 24 hours. You can it to true or false.",
+	  "required": true,
+	  "value": "false"
+    },
+    "AVA_VOTE_LOCK_VOTE_SYNC_TOKEN": {
+      "description": "This is the bot application API token for DBL(Discord Bot List), the API token is used to sync votes between the API and the bot during startup, so anyone who voted while the bot was offline will still get their rewards.",
+	  "required": true,
+	  "value": "ReplaceThisWithYourAPITokenForDBL"
+    },
+    "AVA_APIKEYS_GOOGLE": {
+      "description": "Google API key, this is used for music requests to YouTube and the Shorten API for shortening links, note the play command will still work with youtube links without an API key.",
+	  "required": false,
+	  "value": ""
+    },
+    "AVA_APIKEYS_DIAGFLOW": {
+      "description": "DialogFlow is the service used by Ava for her artificial intelligence. The AI will be disabled withoud the API key. You can registar for an API key on their website as well as creating your own custom AI agent. If you want, you can use the same AI agent as Ava uses at: https://github.com/avaire/agent.",
+	  "required": false,
+	  "value": ""
+    },
+    "AVA_APIKEYS_MEOWAPI": {
+      "description": "Meow API is a simple services that provides lots of cat pictures. The API can be used without a key, although it will only allow 10 requests per minute, if your needs are higher then that, you can request for an API key at: https://meow.senither.com/.",
+	  "required": false,
+	  "value": ""
+    },
+    "AVA_APIKEYS_OPENWEATHERMAP": {
+      "description": "Open Weather Map is a free service that provides lots of ways to get weather and wind data based on a location. Withoud the API key the command will disable itself. You can get an API key at: https://home.openweathermap.org/api_keys.",
+	  "required": false,
+	  "value": ""
+    }
+  },
+  "formation": {
+    "worker": {
+      "quantity": 1,
+      "size": "free"
+    }
+  },
+  "buildpacks": [
+	{
+		"url": "https://github.com/weibeld/heroku-buildpack-run"
+    },
+    {
+		"url": "heroku/gradle"
+	}
+  ]
+}
