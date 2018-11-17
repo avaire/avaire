@@ -31,7 +31,7 @@ import java.util.List;
 public class PanCommand extends InteractionCommand {
 
     public PanCommand(AvaIre avaire) {
-        super(avaire, null, true);
+        super(avaire);
     }
 
     @Override
