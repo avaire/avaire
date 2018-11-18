@@ -68,7 +68,6 @@ public class Metrics {
         .labelNames("class") // GuildJoinedEvent, MessageReceivedEvent, ReconnectEvent etc
         .register();
 
-
     public static final Gauge memoryTotal = Gauge.build()
         .name("avaire_memory_total")
         .help("Total number bytes of memory dedicated to the app")
@@ -83,9 +82,26 @@ public class Metrics {
     // ##                             AvaIre Stats
     // ################################################################################
 
+    public static final Gauge uptime = Gauge.build()
+        .name("avaire_uptime")
+        .help("Total number of seconds the bot has been online for")
+        .labelNames("type")
+        .register();
+
     public static final Gauge guilds = Gauge.build()
         .name("avaire_guilds_total")
         .help("Total number of guilds the bot is in")
+        .register();
+
+    public static final Gauge channels = Gauge.build()
+        .name("avaire_channels_total")
+        .help("Total number of channels the bot is in")
+        .labelNames("type")
+        .register();
+
+    public static final Gauge users = Gauge.build()
+        .name("avaire_users_total")
+        .help("Total number of users the bot is in")
         .register();
 
     public static final Gauge geoTracker = Gauge.build()
@@ -225,6 +241,7 @@ public class Metrics {
         }
 
         Metrics.avaire = avaire;
+        uptime.labels("static").set(System.currentTimeMillis());
 
         final LoggerContext factory = (LoggerContext) LoggerFactory.getILoggerFactory();
         final ch.qos.logback.classic.Logger root = factory.getLogger(Logger.ROOT_LOGGER_NAME);

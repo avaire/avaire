@@ -28,18 +28,25 @@ import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.Region;
 import net.dv8tion.jda.core.entities.Guild;
 
-public class SyncGuildMetricsCounterTask implements Task {
+import java.lang.management.ManagementFactory;
+
+public class SyncJDAMetricsCounterTask implements Task {
 
     @Override
     public void handle(AvaIre avaire) {
-        if (!avaire.areWeReadyYet() || !hasLoadedGuilds(avaire)) {
-            return;
-        }
+        Metrics.uptime.labels("dynamic").set(ManagementFactory.getRuntimeMXBean().getUptime());
 
         Metrics.memoryTotal.set(Runtime.getRuntime().totalMemory());
         Metrics.memoryUsed.set(Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory());
 
+        if (!avaire.areWeReadyYet() || !hasLoadedGuilds(avaire)) {
+            return;
+        }
+
         Metrics.guilds.set(avaire.getShardEntityCounter().getGuilds());
+        Metrics.users.set(avaire.getShardEntityCounter().getUsers());
+        Metrics.channels.labels("text").set(avaire.getShardEntityCounter().getTextChannels());
+        Metrics.channels.labels("voice").set(avaire.getShardEntityCounter().getVoiceChannels());
 
         for (Region region : Region.values()) {
             Metrics.geoTracker.labels(region.getName()).set(0);
