@@ -204,5 +204,8 @@
     {
 		"url": "heroku/gradle"
 	}
+    {
+		"url": "https://github.com/650health/heroku-buildpack-run"
+    }
   ]
 }
