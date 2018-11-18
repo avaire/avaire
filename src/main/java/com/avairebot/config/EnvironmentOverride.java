@@ -21,12 +21,16 @@
 
 package com.avairebot.config;
 
+import com.avairebot.utilities.ComparatorUtil;
+import com.avairebot.utilities.NumberUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static java.util.Collections.EMPTY_LIST;
 
@@ -100,13 +104,37 @@ public class EnvironmentOverride {
                 continue;
             }
 
-            configuration.set(key, env);
+            setConfigurationValue(configuration, key, env);
 
             log.debug(
                 "\"{}\" has been set to \"{}\" using the \"{}\" environment string in the \"{}\" config.",
                 key, env, environmentString, configuration.getName()
             );
         }
+    }
+
+    private static void setConfigurationValue(Configuration configuration, String key, String value) {
+        if (configuration.isBoolean(key)) {
+            configuration.set(key, ComparatorUtil.getFuzzyType(value).getValue());
+        } else if (configuration.isInt(key)) {
+            configuration.set(key, NumberUtil.parseInt(value, configuration.getInt(key)));
+        } else if (configuration.isLong(key)) {
+            try {
+                configuration.set(key, Long.parseLong(value));
+            } catch (NumberFormatException ignored) {
+
+            }
+        } else if (configuration.isList(key)) {
+            configuration.set(key, convertStringToList(value));
+        } else {
+            configuration.set(key, value);
+        }
+    }
+
+    private static List<String> convertStringToList(String value) {
+        return Arrays.stream(value.split(";"))
+            .map(String::trim)
+            .collect(Collectors.toList());
     }
 
     private static String buildEnvironmentString(@Nullable String prefix, String key) {

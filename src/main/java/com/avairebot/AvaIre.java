@@ -36,6 +36,7 @@ import com.avairebot.cache.CacheType;
 import com.avairebot.chat.ConsoleColor;
 import com.avairebot.commands.CategoryHandler;
 import com.avairebot.commands.CommandHandler;
+import com.avairebot.commands.administration.ChangePrefixCommand;
 import com.avairebot.config.Configuration;
 import com.avairebot.config.EnvironmentOverride;
 import com.avairebot.contracts.ai.Intent;
@@ -168,7 +169,7 @@ public class AvaIre {
             config.getStringList("botAccess")
         )));
 
-        applicationEnvironment = Environment.fromName(config.getString("environment", "production"));
+        applicationEnvironment = Environment.fromName(config.getString("environment", Environment.PRODUCTION.getName()));
         if (applicationEnvironment == null) {
             throw new InvalidApplicationEnvironmentException(config.getString("environment", "production"));
         }
@@ -252,6 +253,7 @@ public class AvaIre {
 
         log.info("Registering commands...");
         if (settings.isMusicOnlyMode()) {
+            CommandHandler.register(new ChangePrefixCommand(this));
             autoloadPackage(Constants.PACKAGE_COMMAND_PATH + ".help", command -> CommandHandler.register((Command) command));
             autoloadPackage(Constants.PACKAGE_COMMAND_PATH + ".music", command -> CommandHandler.register((Command) command));
             autoloadPackage(Constants.PACKAGE_COMMAND_PATH + ".system", command -> CommandHandler.register((Command) command));
