@@ -86,19 +86,6 @@ administration:
             global: "All commands in every command category has been reset to use the `:prefix` prefix."
             category: "All commands in the `:category` command category has been reset to use the `:prefix` prefix."
 
-    DJLevelCommand:
-        title: "Current DJ Level: {0}"
-        footer: "Use \"{0} types\" to see a full list of the available DJ level types."
-        types:
-            title: "DJ Level Types"
-            footer: "Use \"{0} <type>\" to change the DJ Level to the given type for the server."
-        invalidType: "`{0}` is not a valid `DJ Level` type, please use one of the following:\n`{1}`"
-        changedTo: "The `DJ Level` status has changed to **:type**.\n:info"
-        information:
-            all: "Anyone can run any music commands, even without the `DJ` role."
-            none: "No one can run any music commands without the `DJ` role."
-            normal: "Preventing people from using commands like playlists, volume control, and force skip without the `DJ` role, but still allowing people to use the play command without the role."
-
     GoodbyeCommand:
         note: "\nYou can customize the message by using `{0} [message]`"
         message: "The `Goodbye` module has been **:status** for the :channel channel."
@@ -192,8 +179,16 @@ administration:
         mustMentionUser: "You must mention a valid `user` you want to display the modlog history for."
         noHistory: "No modlog history was found for this user."
         title: "{0}#{1} History ({2})"
-        entry: "**Case ID #{0}** | {1}\n\t{2}"
+        entry: "**{1}** | **#{0}** | **Moderator:** {2}\n**Date:** {3}\n**Reason:** {4}"
         noReasonGiven: "No reason was given."
+
+    ModlogPardonCommand:
+        modlogNotEnabled: "No modlog channel has been set, you must set a modlog channel to use this command."
+        invalidCaseId: "Invalid case id given, the ID must be greater than 0 and less than {0}"
+        couldntFindCaseWithId: "Couldn't find a modlog case with an ID of {0} where you were the moderator, are you sure you're the moderator for the given modlog case?"
+        caseAlreadyPardoned: "The modlog case ID with an ID of `{0}` is already pardoned."
+        notAPunishment: "The modlog case ID with an ID of `{0}` is not a punishment!"
+        message: "The modlog case with an ID of **:case** has been been pardoned successfully."
 
     ModlogPardonCommand:
         modlogNotEnabled: "No modlog channel has been set, you must set a modlog channel to use this command."
@@ -265,10 +260,6 @@ administration:
         failedToUnban: "Failed to unban :target due to an error, message: :error"
         noUserIsBanned: "No user with an ID of `:id` is currently banned from the server."
         invalidUserIdGiven: "Invalid `user id` was given, the `user id` must be a numeric string of 18 or more numbers long."
-
-    UserAvatarCommand:
-        noUserFound: "I found no users with the name or ID of `{0}`"
-        title: "{0}#{1}'s Avatar"
 
     VoiceKickCommand:
         mustMentionUser: "You must mention the user you want to kick."
@@ -376,7 +367,7 @@ fun:
 
 help:
     HelpCommand:
-        listOfCommands: ':page_with_curl: **List of Commands** ```css\n{0}```\n'
+        listOfCommands: ':page_with_curl: **List of Commands**'
         commandNote: '**Írd be a `:help <parancs>`, hogy lásd a segítséget ahhoz az adott parancshoz.**\nPéldául: `:help :command`'
         categoriesNote: ':information_source: Írd be: `:help <category>` hogy megtudd a parancsok listáját abban a kategóriában.\nPéldául: `:help {0}` vagy `:help {1}`'
         categoriesTitle: ':scroll: Parancs Kategóriák'
@@ -393,28 +384,28 @@ help:
             footer: 'Parancs kategória: '
 
 interaction:
-    BiteCommand: 'harapja'
-    BlushCommand: 'elpirul'
-    CuddleCommand: 'megöleli'
-    DivorceCommand: 'elválasztja'
-    EatCommand: 'megeszi'
-    HelloCommand: 'köszön'
-    HighFiveCommand: 'pacsi'
-    HugCommand: 'ölelni'
-    KillCommand: 'meg akarja ölni'
-    KissCommand: 'megcsókolja'
-    MarryCommand: 'wants to marry'
-    MeowCommand: 'nyávog valakire'
+    BiteCommand: '**{0}** harapja **{1}**'
+    BlushCommand: "**{0}** elpirul **{1}**"
+    CuddleCommand: '**{0}** megöleli **{1}**'
+    DivorceCommand: '**{0}** elválasztja **{1}**'
+    EatCommand: '**{0}** megeszi **{1}**'
+    HelloCommand: '**{0}** köszön **{1}**'
+    HighFiveCommand: '**{0}** pacsi **{1}**'
+    HugCommand: '**{0}** ölelni **{1}**'
+    KillCommand: '**{0}** meg akarja ölni **{1}**'
+    KissCommand: '**{0}** megcsókolja **{1}**'
+    MarryCommand: '**{0}** wants to marry **{1}**'
+    MeowCommand: '**{0}** nyávog valakire **{1}**'
     PanCommand: '**{0}** éppen megütötte **{1}** egy serpenyővel!'
-    PatCommand: 'cirógat'
-    PokeCommand: 'megbök'
-    PoutCommand: 'duzzog valamin'
-    PunchCommand: 'megüt'
-    SenpaiCommand: 'észre akarja vetetni magát'
-    ShrugCommand: 'vállat von'
-    SlapCommand: 'megcsap'
-    TickleCommand: 'csiklandoz'
-    TriggeredCommand: 'kivan borulva'
+    PatCommand: '**{0}** cirógat **{1}**'
+    PokeCommand: '**{0}** megbök **{1}**'
+    PoutCommand: '**{0}** duzzog valamin **{1}**'
+    PunchCommand: '**{0}** megüt **{1}**'
+    SenpaiCommand: '**{0}** észre akarja vetetni magát **{1}**'
+    ShrugCommand: '**{0}** vállat von **{1}**'
+    SlapCommand: '**{0}** megcsap **{1}**'
+    TickleCommand: '**{0}** csiklandoz **{1}**'
+    TriggeredCommand: '**{0}** kivan borulva **{1}**'
 
 music:
     internal:
@@ -435,8 +426,22 @@ music:
         emptyQueue: 'Nincs semmi amit törölni lehetne, nincs várakozó szám a lejátszási listában.'
         success: 'Töröltem **:queueSize** számot a listából, a lista most üres!'
 
+    DJLevelCommand:
+            title: "Current DJ Level: {0}"
+            footer: "Use \"{0} types\" to see a full list of the available DJ level types."
+            types:
+                title: "DJ Level Types"
+                footer: "Use \"{0} <type>\" to change the DJ Level to the given type for the server."
+            invalidType: "`{0}` is not a valid `DJ Level` type, please use one of the following:\n`{1}`"
+            changedTo: "The `DJ Level` status has changed to **:type**.\n:info"
+            information:
+                all: "Anyone can run any music commands, even without the `DJ` role."
+                none: "No one can run any music commands without the `DJ` role."
+                normal: "Preventing people from using commands like playlists, volume control, and force skip without the `DJ` role, but still allowing people to use the play command without the role."
+
     MoveHereCommand:
         error: 'Nem vagyok csatlakozva hanghoz, előbb kérj zenét a `{0}play`-vel'
+        hasMusicChannel: "The server has a music voice channel setup, if you'd like me to move to a different voice channel, please get an admin on the server to drag 'n drop me into a different voice channel."
         nowPlayingIn: 'Jelenleg zenét játszok a **:channelName**-ben'
 
     MusicChannelCommand:
@@ -601,6 +606,7 @@ search:
         nsfwDisabled: "The `Urban Dictionary` command can only be used in NSFW channels, as the content of the command may not be appreciate for all."
 
     XKCDCommand:
+        invalidArgument: "Invalid argument given, the argument must be a valid number between `1` and `{0}`, or `random` to get a random comic."
         number: 'XKCD szám #{0}'
 
 utility:
@@ -747,6 +753,10 @@ utility:
         dateFormat: 'EEEEEEEE, dd MMM yyyy'
         timeFormat: 'HH:mm:ss z'
 
+    UserAvatarCommand:
+            noUserFound: "I found no users with the name or ID of `{0}`"
+            title: "{0}#{1}'s Avatar"
+
     UserIdCommand:
         message: ':id:-je **:target** felhasználónak: `:targetid`'
 
@@ -774,3 +784,12 @@ utility:
             minor: 'A kisebb verzió frissítések általában új dolgok hozzáadása, és/vagy a meglévő forráskód átírása. Ajánlott, hogy frissíts kisebb verzió változásakor, hogy naprakész maradj.'
             patchName: 'Foltozás'
             patch: 'A foltozó verziók hiba javítások, kisebb meglévő kód átgondolása vagy nagyon kis változtatások amik nem befolyásolják a bot működését. Ajánlott, hogy frissíts ezen verzió változásakor, hogy naprakész maradj.'
+
+    WeatherCommand:
+        noCityFound: "No city was found with the name of **:name**, are you sure you spelt it correctly?"
+        fields:
+            weatherFor: "Weather for {0}, {1}"
+            country: "Country"
+            temperature: "Temperature"
+            windDirection: "Wind Direction"
+            windSpeed: "Wind Speed"

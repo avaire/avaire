@@ -86,19 +86,6 @@ administration:
             global: "All commands in every command category has been reset to use the `:prefix` prefix."
             category: "All commands in the `:category` command category has been reset to use the `:prefix` prefix."
 
-    DJLevelCommand:
-        title: "Current DJ Level: {0}"
-        footer: "Use \"{0} types\" to see a full list of the available DJ level types."
-        types:
-            title: "DJ Level Types"
-            footer: "Use \"{0} <type>\" to change the DJ Level to the given type for the server."
-        invalidType: "`{0}` is not a valid `DJ Level` type, please use one of the following:\n`{1}`"
-        changedTo: "The `DJ Level` status has changed to **:type**.\n:info"
-        information:
-            all: "Anyone can run any music commands, even without the `DJ` role."
-            none: "No one can run any music commands without the `DJ` role."
-            normal: "Preventing people from using commands like playlists, volume control, and force skip without the `DJ` role, but still allowing people to use the play command without the role."
-
     GoodbyeCommand:
         note: "\nYou can customize the message by using `{0} [message]`"
         message: "The `Goodbye` module has been **:status** for the :channel channel."
@@ -192,7 +179,7 @@ administration:
         mustMentionUser: "You must mention a valid `user` you want to display the modlog history for."
         noHistory: "No modlog history was found for this user."
         title: "{0}#{1} History ({2})"
-        entry: "**Case ID #{0}** | {1}\n\t{2}"
+        entry: "**{1}** | **#{0}** | **Moderator:** {2}\n**Date:** {3}\n**Reason:** {4}"
         noReasonGiven: "No reason was given."
 
     ModlogPardonCommand:
@@ -265,10 +252,6 @@ administration:
         failedToUnban: "Failed to unban :target due to an error, message: :error"
         noUserIsBanned: "No user with an ID of `:id` is currently banned from the server."
         invalidUserIdGiven: "Invalid `user id` was given, the `user id` must be a numeric string of 18 or more numbers long."
-
-    UserAvatarCommand:
-        noUserFound: "I found no users with the name or ID of `{0}`"
-        title: "{0}#{1}'s Avatar"
 
     VoiceKickCommand:
         mustMentionUser: "You must mention the user you want to kick."
@@ -377,7 +360,7 @@ fun:
 
 help:
     HelpCommand:
-        listOfCommands: ':page_with_curl: **Liste med kommandoer** ```css\n{0}```\n'
+        listOfCommands: ':page_with_curl: **Liste med kommandoer**'
         commandNote: '**Skriv `:help <command>` for å se hjelpen for den spesifikke kommandoen.**\nEksempel: `:help :command`'
         categoriesNote: ':information_source: Skriv `:help <category>` for og få opp en liste med kommandoer i den kategorien\nEksempel: `:help {0}` or `:help {1}`'
         categoriesTitle: ':scroll: Kommando kategorier'
@@ -394,28 +377,28 @@ help:
             footer: 'Kommando kategori: '
 
 interaction:
-    BiteCommand: 'biter'
-    BlushCommand: 'rødmer på'
-    CuddleCommand: 'koser'
-    DivorceCommand: 'skillsmisser'
-    EatCommand: 'spiser mat med'
-    HelloCommand: 'sier hei til'
-    HighFiveCommand: 'high fiver'
-    HugCommand: 'klemmer'
-    KillCommand: 'ønsker og drepe'
-    KissCommand: 'nusser'
-    MarryCommand: 'wants to marry'
-    MeowCommand: 'mjauer til'
+    BiteCommand: '**{0}** biter **{1}**'
+    Blushommand: '**{0}** rødmer på **{1}**'
+    CuddleCommand: '**{0}** koser **{1}**'
+    DivorceCommand: '**{0}** skillsmisser **{1}**'
+    EatCommand: '**{0}** spiser mat med **{1}**'
+    HelloCommand: '**{0}** sier hei til **{1}**'
+    HighFiveCommand: '**{0}** high fiver **{1}**'
+    HugCommand: '**{0}** klemmer **{1}**'
+    KillCommand: '**{0}** ønsker og drepe **{1}**'
+    KissCommand: '**{0}** nusser **{1}**'
+    MarryCommand: '**{0}** wants to marry **{1}**'
+    MeowCommand: '**{0}** mjauer til **{1}**'
     PanCommand: '**{0}** slo **{1}** med en stekepanne!'
-    PatCommand: 'klapper'
-    PokeCommand: 'poker'
-    PoutCommand: 'surmuler mot'
-    PunchCommand: 'slår'
-    SenpaiCommand: 'ønsker å bli lagt merke til av'
-    ShrugCommand: 'trekker på skuldrene til'
-    SlapCommand: 'slår'
-    TickleCommand: 'kiler'
-    TriggeredCommand: 'er provosert av'
+    PatCommand: '**{0}** klapper **{1}**'
+    PokeCommand: '**{0}** poker **{1}**'
+    PoutCommand: '**{0}** surmuler mot **{1}**'
+    PunchCommand: '**{0}** slår **{1}**'
+    SenpaiCommand: '**{0}** ønsker å bli lagt merke til av **{1}**'
+    ShrugCommand: '**{0}** trekker på skuldrene til **{1}**'
+    SlapCommand: '**{0}** slår **{1}**'
+    TickleCommand: '**{0}** kiler **{1}**'
+    TriggeredCommand: '**{0}** er provosert av **{1}**'
 
 music:
     internal:
@@ -436,8 +419,22 @@ music:
         emptyQueue: 'Ingenting og fjerne, det er ingen sanger i køen akkurat nå.'
         success: 'Jeg har fjernet **:queueSize** fra køen, køen er nå tom!'
 
+    DJLevelCommand:
+            title: "Current DJ Level: {0}"
+            footer: "Use \"{0} types\" to see a full list of the available DJ level types."
+            types:
+                title: "DJ Level Types"
+                footer: "Use \"{0} <type>\" to change the DJ Level to the given type for the server."
+            invalidType: "`{0}` is not a valid `DJ Level` type, please use one of the following:\n`{1}`"
+            changedTo: "The `DJ Level` status has changed to **:type**.\n:info"
+            information:
+                all: "Anyone can run any music commands, even without the `DJ` role."
+                none: "No one can run any music commands without the `DJ` role."
+                normal: "Preventing people from using commands like playlists, volume control, and force skip without the `DJ` role, but still allowing people to use the play command without the role."
+
     MoveHereCommand:
         error: 'Ikke koblet til voice, be meg legge til noe i køen først med `{0}play`'
+        hasMusicChannel: "The server has a music voice channel setup, if you'd like me to move to a different voice channel, please get an admin on the server to drag 'n drop me into a different voice channel."
         nowPlayingIn: 'Jeg spiller nå av musikk i **:channelName**'
 
     MusicChannelCommand:
@@ -602,6 +599,7 @@ search:
         nsfwDisabled: "The `Urban Dictionary` command can only be used in NSFW channels, as the content of the command may not be appreciate for all."
 
     XKCDCommand:
+        invalidArgument: "Invalid argument given, the argument must be a valid number between `1` and `{0}`, or `random` to get a random comic."
         number: 'XKCD nummer #{0}'
 
 utility:
@@ -748,6 +746,10 @@ utility:
         dateFormat: 'EEEEEEEE, dd MMM yyyy'
         timeFormat: 'HH:mm:ss z'
 
+    UserAvatarCommand:
+            noUserFound: "I found no users with the name or ID of `{0}`"
+            title: "{0}#{1}'s Avatar"
+
     UserIdCommand:
         message: ':id: til brukeren **:target** er `:targetid`'
 
@@ -775,3 +777,12 @@ utility:
             minor: 'Mindre endringer er nye fungsjoner, endringer av eksisterende kode (ikke større endringer), det anbefales at du oppdaterer ved mindre endringer for og holde deg oppdatert med nye fungsjoner.'
             patchName: 'Fiks'
             patch: 'Fiks er bug fikser, mindre endringert på eksisterende kode og meget små endringer som ikke påvirker andre deler av kodebasen. Det anbefales og holde seg oppdatert på fiks versjoner for og få inn nyeste bug fikser.'
+
+    WeatherCommand:
+        noCityFound: "No city was found with the name of **:name**, are you sure you spelt it correctly?"
+        fields:
+            weatherFor: "Weather for {0}, {1}"
+            country: "Country"
+            temperature: "Temperature"
+            windDirection: "Wind Direction"
+            windSpeed: "Wind Speed"

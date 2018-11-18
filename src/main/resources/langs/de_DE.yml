@@ -86,19 +86,6 @@ administration:
             global: "Alle Befehle jeder Befehls-Kategorie wurden zurückgesetzt und nutzen nun den`:prefix`-Prefix."
             category: "Alle Befehle der `:category` Befehls-Kategorie wurden zurückgesetzt und nutzen nun den `:prefix`-Prefix."
 
-    DJLevelCommand:
-        title: "Derzeitiges DJ-Level: {0}"
-        footer: "Nutze \"{0} types\" um eine Liste von verfügbaren DJ-Level einzusehen."
-        types:
-            title: "DJ Level-Typen"
-            footer: "Nutze \"{0} <type>\" um den DJ-Level zum angegebenen Typen zu ändern."
-        invalidType: "`{0}` ist kein gültiges `DJ-Level`-Typ. Bitte nutze eines der folgenden:\n`{1}`"
-        changedTo: "Der `DJ-Level`-Status wurde geändert zu **:type**.\n:info"
-        information:
-            all: "Jeder kann alle Musikbefehle verwenden. Auch User ohne `DJ`-Rolle."
-            none: "Keiner kann ohne der `DJ`-Rolle Musikbefehle verwenden."
-            normal: "Verhindert, dass Leute ohne der `DJ`-Rolle Befehle wie das Kontrollieren der Playlists, Lautstärke und das sofortige Überspringen von Songs nutzen können."
-
     GoodbyeCommand:
         note: "\nDu kannst deine Nachricht individualisieren, indem du folgendes eingibst: `{0} [Nachricht]`"
         message: "Das `Goodbye`-Modul wurde für den :channel-Channel **:status**."
@@ -192,7 +179,7 @@ administration:
         mustMentionUser: "Du musst einen gültigen `User` erwähnen, bei dem du dir den Modlog anschauen möchtest."
         noHistory: "Keinen Modlog für diesen User. Scheint unauffällig gewesen zu sein."
         title: "{0}#{1} Verlauf ({2})"
-        entry: "**Fall-ID #{0}** | {1}\n\t{2}"
+        entry: "**{1}** | **#{0}** | **Moderator:** {2}\n**Date:** {3}\n**Reason:** {4}"
         noReasonGiven: "Keine Begründung angegeben."
 
     ModlogPardonCommand:
@@ -265,10 +252,6 @@ administration:
         failedToUnban: "Beim Versuch :target zu Entbannen ist ein Fehler aufgetreten. Fehlermeldung: :error"
         noUserIsBanned: "Kein User mit der ID `:id` ist auf dem Server verbannt."
         invalidUserIdGiven: "Ungültige `User-ID` angegeben. Die `User-ID` muss eine 18-stellige oder längere Nummer sein."
-
-    UserAvatarCommand:
-        noUserFound: "Ich konnte keine Users mit dem Namen oder der ID`{0}` auffinden."
-        title: "{0}#{1}'s Avatar"
 
     VoiceKickCommand:
         mustMentionUser: "Du musst den User angeben, den du aus dem Voice-Channel kicken möchtest."
@@ -378,7 +361,7 @@ fun:
 
 help:
     HelpCommand:
-        listOfCommands: ':page_with_curl: **Liste von Befehlen** ```css\n{0}```\n'
+        listOfCommands: ':page_with_curl: **Liste von Befehlen**'
         commandNote: '**Schreibe `:help <command>`, um Hilfe für den spezifischen Befehl anzeigen zu lassen.**\nBeispiel: `:help :command`'
         categoriesNote: ':information_source: Schreibe `:help <category>`, um eine Liste von Befehlen für diese Kategorie anzeigen zu lassen.\nBeispiel: `:help {0}` oder `:help {1}`'
         categoriesTitle: ':scroll: Befehls-Kategorien'
@@ -395,28 +378,28 @@ help:
             footer: 'Befehls-Kategorie: '
 
 interaction:
-    BiteCommand: 'beißt'
-    BlushCommand: 'errötet bei'
-    CuddleCommand: 'knuddelt'
-    DivorceCommand: 'scheidet'
-    EatCommand: 'isst etwas mit'
-    HelloCommand: 'sagt Hallo zu'
-    HighFiveCommand: 'gibt ein High Five zu'
-    HugCommand: 'umarmt'
-    KillCommand: 'möchte jemanden umbringen und zwar'
-    KissCommand: 'küsst'
-    MarryCommand: 'möchte jemanden heiraten und zwar'
-    MeowCommand: 'miaut zu'
+    BiteCommand: '**{0}** beißt **{1}**'
+    BlushCommand: '**{0}** errötet bei **{1}**'
+    CuddleCommand: '**{0}** knuddelt **{1}**'
+    DivorceCommand: '**{0}** scheidet **{1}**'
+    EatCommand: '**{0}** isst etwas mit **{1}**'
+    HelloCommand: '**{0}** sagt Hallo zu **{1}**'
+    HighFiveCommand: '**{0}** gibt ein High Five zu **{1}**'
+    HugCommand: '**{0}** umarmt **{1}**'
+    KillCommand: '**{0}** möchte jemanden umbringen und zwar **{1}**'
+    KissCommand: '**{0}** küsst **{1}**'
+    MarryCommand: '**{0}** möchte jemanden heiraten und zwar **{1}**'
+    MeowCommand: '**{0}** miaut zu **{1}**'
     PanCommand: '**{0}** hat gerade **{1}** mit einer Bratpfanne erschlagen!'
-    PatCommand: 'streichelt'
-    PokeCommand: 'stupst'
-    PoutCommand: 'schmollt bei'
-    PunchCommand: 'haut'
-    SenpaiCommand: 'möchte wahrgenommen werden von'
-    ShrugCommand: 'zuckt mit den Schultern zu'
-    SlapCommand: 'ohrfeigt'
-    TickleCommand: 'kitzelt'
-    TriggeredCommand: 'wird getriggert von'
+    PatCommand: '**{0}** streichelt **{1}**'
+    PokeCommand: '**{0}** stupst **{1}**'
+    PoutCommand: '**{0}** schmollt bei **{1}**'
+    PunchCommand: '**{0}** haut **{1}**'
+    SenpaiCommand: '**{0}** möchte wahrgenommen werden von **{1}**'
+    ShrugCommand: '**{0}** zuckt mit den Schultern zu **{1}**'
+    SlapCommand: '**{0}** ohrfeigt **{1}**'
+    TickleCommand: '**{0}** kitzelt **{1}**'
+    TriggeredCommand: '**{0}** wird getriggert von **{1}**'
 
 music:
     internal:
@@ -437,8 +420,22 @@ music:
         emptyQueue: "Nicht's zum Leeren vorhanden. Es befinden sich keine ausstehenden Songs in der Warteschlange."
         success: 'Ich habe **:queueSize** Songs aus der Warteschlange entfernt. Die Warteschlange ist nun leer.'
 
+    DJLevelCommand:
+            title: "Derzeitiges DJ-Level: {0}"
+            footer: "Nutze \"{0} types\" um eine Liste von verfügbaren DJ-Level einzusehen."
+            types:
+                title: "DJ Level-Typen"
+                footer: "Nutze \"{0} <type>\" um den DJ-Level zum angegebenen Typen zu ändern."
+            invalidType: "`{0}` ist kein gültiges `DJ-Level`-Typ. Bitte nutze eines der folgenden:\n`{1}`"
+            changedTo: "Der `DJ-Level`-Status wurde geändert zu **:type**.\n:info"
+            information:
+                all: "Jeder kann alle Musikbefehle verwenden. Auch User ohne `DJ`-Rolle."
+                none: "Keiner kann ohne der `DJ`-Rolle Musikbefehle verwenden."
+                normal: "Verhindert, dass Leute ohne der `DJ`-Rolle Befehle wie das Kontrollieren der Playlists, Lautstärke und das sofortige Überspringen von Songs nutzen können."
+
     MoveHereCommand:
         error: 'Nicht mit dem Voicechannel verbunden. Anfragen von Musik ist vorausgesetzt. Tue dies bitte zuerst mit folgendem Befehl: `{0}play`'
+        hasMusicChannel: "The server has a music voice channel setup, if you'd like me to move to a different voice channel, please get an admin on the server to drag 'n drop me into a different voice channel."
         nowPlayingIn: 'Ich spiele nun Musik im folgendem Channel: **:channelName**'
 
     MusicChannelCommand:
@@ -604,6 +601,7 @@ search:
         nsfwDisabled: "Der `Urban Dictionary`-Befehl kann nur in NSFW-Channels verwendet werden, da viele Inhalte aus der Website nicht für alle bestimmt sind."
 
     XKCDCommand:
+        invalidArgument: "Invalid argument given, the argument must be a valid number between `1` and `{0}`, or `random` to get a random comic."
         number: 'XKCD Nummer #{0}'
 
 utility:
@@ -750,6 +748,10 @@ utility:
         dateFormat: 'EEEEEEEE, dd. MMM yyyy'
         timeFormat: 'HH:mm:ss z'
 
+    UserAvatarCommand:
+            noUserFound: "Ich konnte keine Users mit dem Namen oder der ID`{0}` auffinden."
+            title: "{0}#{1}'s Avatar"
+
     UserIdCommand:
         message: 'Die :id: vom User **:target** lautet `:targetid`.'
 
@@ -777,3 +779,12 @@ utility:
             minor: 'Versionsupdates mit kleinen Änderungen sind neue Ergänzungen, Funktionen und Nachbesserungen der vorhandenen Codebasis. Es wird empfohlen, dass du kleinere Versionsänderungen aktualisieren, um mit den neuen Funktionen Schritt zu halten.'
             patchName: 'Patch'
             patch: 'Patch-Versionen sind Bugfixes, Refactoring des vorhandenen Codes und sehr kleine Änderungen, die andere Dinge in der Code-Basis nicht beeinflussen. Es wird empfohlen, dass du die Änderungen der Patch-Version aktualisieren, um mit den Bugfixes und Patches Schritt zu halten.'
+
+    WeatherCommand:
+        noCityFound: "No city was found with the name of **:name**, are you sure you spelt it correctly?"
+        fields:
+            weatherFor: "Weather for {0}, {1}"
+            country: "Country"
+            temperature: "Temperature"
+            windDirection: "Wind Direction"
+            windSpeed: "Wind Speed"
