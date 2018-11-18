@@ -202,7 +202,7 @@ system-prefix: ';'
 #
 
 playing:
-  - ' '
+  - ''
 
 #--------------------------------------------------------------------------
 # Music Lavalink Nodes (Advanced Music Settings)
