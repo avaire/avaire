@@ -15,11 +15,11 @@ public class BlushCommand extends InteractionCommand {
     @Override
     public List<String> getInteractionImages() {
         return Arrays.asList(
-            "https://i.imgur.com/qDcjxkC.gif",
-            "https://i.imgur.com/bNZOp5E.gif",
-            "https://i.imgur.com/1LpATjX.gif",
-            "https://i.imgur.com/n9DOnX5.gif",
-            "https://i.imgur.com/Yj0OukW.gif"
+            "https://i.imgur.com/m5q2jwP.gif",
+            "https://i.imgur.com/8XzsQ8v.gif",
+            "https://i.imgur.com/iCWneqB.gif",
+            "https://i.imgur.com/etHFA8z.gif",
+            "https://i.imgur.com/5Hs93Q7.gif"
         );
     }
 
