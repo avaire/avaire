@@ -63,7 +63,7 @@
     "AVA_DATABASE_HOSTNAME": {
       "description": "IMPORTANT! After you deployed AvaIre to Heroku. Go to: https://dashboard.jawsdb.com/mysql/dashboard and copy the Host value into this variable! You can change variables by going to the Heroku dashboard and in settings, click on Reveal Config Vars.",
 	  "required": true,
-	  "value": "HOSTNAME"
+	  "value": "DATABASEHOSTNAME"
     },
     "AVA_DATABASE_USERNAME": {
       "description": "IMPORTANT! After you deployed AvaIre to Heroku. Go to: https://dashboard.jawsdb.com/mysql/dashboard and copy the Username value into this variable! You can change variables by going to the Heroku dashboard and in settings, click on Reveal Config Vars.",
