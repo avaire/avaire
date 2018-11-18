@@ -379,6 +379,7 @@ help:
 
 interaction:
     BiteCommand: '**{0}** сделал кусь **{1}**'
+    BlushCommand: '**{0}** краснеть **{1}**'
     CuddleCommand: '**{0}** обнимашки c **{1}**'
     DivorceCommand: '**{0}** :tongue: развел **{1}**'
     EatCommand: '**{0}** ест всякую фигню с **{1}**'

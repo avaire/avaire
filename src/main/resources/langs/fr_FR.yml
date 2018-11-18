@@ -379,6 +379,7 @@ help:
 
 interaction:
     BiteCommand: "**{0}** mord **{1}**"
+    BlushCommand: "**{0}** rougit à **{1}**"
     CuddleCommand: "**{0}** câline **{1}**"
     DivorceCommand: "**{0}** divorce de **{1}**"
     EatCommand: "**{0}** mange avec **{1}**"

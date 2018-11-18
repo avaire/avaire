@@ -379,6 +379,7 @@ help:
 
 interaction:
     BiteCommand: '**{0}** beißt **{1}**'
+    BlushCommand: '**{0}** errötet bei **{1}**'
     CuddleCommand: '**{0}** knuddelt **{1}**'
     DivorceCommand: '**{0}** scheidet **{1}**'
     EatCommand: '**{0}** isst etwas mit **{1}**'

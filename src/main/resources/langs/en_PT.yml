@@ -379,6 +379,7 @@ help:
 
 interaction:
     BiteCommand: '**{0}** bites **{1}**'
+    BlushCommand: '**{0}** blushes at **{1}**'
     CuddleCommand: '**{0}** cuddles **{1}**'
     DivorceCommand: '**{0}** divorces **{1}**'
     EatCommand: "**{0}** eats some grub wit' **{1}**"

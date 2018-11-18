@@ -378,6 +378,7 @@ help:
 
 interaction:
     BiteCommand: '**{0}** bider **{1}**'
+    BlushCommand: '**{0}** rødmer på **{1}**'
     CuddleCommand: '**{0}** cuddles **{1}**'
     DivorceCommand: '**{0}** skilsmisser **{1}**'
     EatCommand: '**{0}** spiser noget mad med **{1}**'
