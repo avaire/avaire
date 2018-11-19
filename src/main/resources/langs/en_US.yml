@@ -513,6 +513,14 @@ music:
         nothingToRemove: 'Nothing to remove, request music first with `{0}play`'
         success: ':song has been successfully removed from the music queue.'
 
+    RemoveMultipleFromQueueCommand:
+        error: 'Missing argument `start-song-id` or `end-song-id`, you must include the IDs of the song you want to remove from the queue.'
+        tooHighNumberGiven: 'There are only `{0}` songs in the queue, try lowering your numbers a bit.'
+        invalidRange: 'Invalid range given, give the range of IDs in a start to end format, like `3-6`.'
+        mustBePositiveNumber: 'The `song ids` must be a valid positive number.'
+        nothingToRemove: 'Nothing to remove, request music first with `{0}play`'
+        success: 'Songs `:start-:end` successfully removed from the music queue.'
+
     RepeatMusicQueueCommand:
         error: 'There is nothing to repeat, request music first with `{0}play`'
         success: 'Music queue looping has been turned `:status`.'
