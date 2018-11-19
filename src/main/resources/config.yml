@@ -207,13 +207,13 @@ playing:
   - 'playing:with my myself- ✯'
   - 'watching:over %users% users'
   - 'watching:in %guilds% servers'
-  - 'listening:to some music 🎶'
-  - 'streaming: Lofi Hiphop 🎧'
+  - 'listening:some music 🎶'
+  - 'streaming:Lofi Hiphop 🎧'
   - 'watching:the news 📰'
   - 'playing:on the 💻'
-  - 'streaming: Pixels @ deltabot.me/dzone'
+  - 'streaming:Pixels @ deltabot.me/dzone'
   - 'watching:the sunset 🌇'
-  - 'playing: with 👻👻👻😨'
+  - 'playing:with 👻👻👻😨'
 
 #--------------------------------------------------------------------------
 # Music Lavalink Nodes (Advanced Music Settings)
