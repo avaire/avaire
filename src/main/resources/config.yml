@@ -204,16 +204,16 @@ system-prefix: ';'
 playing:
   - 'watching:deltabot.me'
   - 'streaming:my bits & bites 🎥🥵'
-  - 'playing:with my myself- ✯`
+  - 'playing:with my myself- ✯'
   - 'watching:over %users% users'
   - 'watching:in %guilds% servers'
   - 'listening:to some music 🎶'
   - 'streaming: Lofi Hiphop 🎧'
   - 'watching:the news 📰'
   - 'playing:on the 💻'
-  - `streaming: Pixels @ deltabot.me/dzone`
-  - `watching:the sunset 🌇`
-  - `playing: with 👻👻👻😨`
+  - 'streaming: Pixels @ deltabot.me/dzone'
+  - 'watching:the sunset 🌇'
+  - 'playing: with 👻👻👻😨'
 
 #--------------------------------------------------------------------------
 # Music Lavalink Nodes (Advanced Music Settings)
