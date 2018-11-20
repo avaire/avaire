@@ -185,7 +185,7 @@ public class CommandHandler {
         String commandString = command.split(" ")[0].toLowerCase();
         List<CommandContainer> commands = new ArrayList<>();
         for (Map.Entry<String, String> entry : transformer.getAliases().entrySet()) {
-            if (commandString.startsWith(entry.getKey())) {
+            if (commandString.equalsIgnoreCase(entry.getKey())) {
                 CommandContainer commandContainer = getRawCommand(entry.getValue().split(" ")[0]);
                 if (commandContainer != null) {
                     commands.add(commandContainer);
