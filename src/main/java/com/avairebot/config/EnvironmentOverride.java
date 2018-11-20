@@ -21,6 +21,7 @@
 
 package com.avairebot.config;
 
+import com.avairebot.contracts.config.EnvironmentMacro;
 import com.avairebot.utilities.ComparatorUtil;
 import com.avairebot.utilities.NumberUtil;
 import org.slf4j.Logger;
@@ -29,7 +30,9 @@ import org.slf4j.LoggerFactory;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static java.util.Collections.EMPTY_LIST;
@@ -38,11 +41,44 @@ import static java.util.Collections.EMPTY_LIST;
 public class EnvironmentOverride {
 
     private static final Logger log = LoggerFactory.getLogger(EnvironmentOverride.class);
+    private static final Map<String, EnvironmentMacro> macros = new HashMap<>();
+
+    /**
+     * Registers a environment macro with a handler that should be invoked when the
+     * given macro name is found for a config, the environment macro handler can
+     * set multiple values for a config through a single macro.
+     *
+     * @param macro   The environment variable that should invoke the macro.
+     * @param handler The macro handler that should be called when the macro is found for a config.
+     * @return {@code True} if the macro was registered, {@code False} otherwise.
+     */
+    public static boolean registerMacro(@Nonnull String macro, @Nonnull EnvironmentMacro handler) {
+        if (macros.containsKey(macro)) {
+            return false;
+        }
+
+        macros.put(macro, handler);
+        return true;
+    }
+
+    /**
+     * Unregisters the macro with the given name, letter casing matters here.
+     *
+     * @param macro The name of the macro that should be unregistered.
+     * @return {@code True} if the macro was unregistered, {@code False} otherwise.
+     */
+    public static boolean unregisterMacro(@Nonnull String macro) {
+        return macros.remove(macro) != null;
+    }
 
     /**
      * Overrides all the keys found in the config with their corresponding
      * environment variables, a key like "thing.stuff" would be replaced
      * with the environment variable "THING_STUFF".
+     * <p>
+     * <strong>Note:</strong> Any {@link #macros macro} that has been registered will be looked
+     * up and replaced first if any valid macro is found, all the other environment variables
+     * will only be replaced after the macros has been replaced.
      *
      * @param configuration The configuration that should have its values overridden.
      */
@@ -56,6 +92,10 @@ public class EnvironmentOverride {
      * with the environment variable "THING_STUFF", config keys that
      * are found in the {@code protectedKeys} list will be
      * ignored and stay as they are.
+     * <p>
+     * <strong>Note:</strong> Any {@link #macros macro} that has been registered will be looked
+     * up and replaced first if any valid macro is found, all the other environment variables
+     * will only be replaced after the macros has been replaced.
      *
      * @param configuration The configuration that should have its values overridden.
      * @param protectedKeys The list of keys that should be ignored by the replacer.
@@ -71,6 +111,10 @@ public class EnvironmentOverride {
      * <p>
      * Setting the {@code prefix} to {@code NULL} is the same as
      * calling the {@link #override(Configuration)} method.
+     * <p>
+     * <strong>Note:</strong> Any {@link #macros macro} that has been registered will be looked
+     * up and replaced first if any valid macro is found, all the other environment variables
+     * will only be replaced after the macros has been replaced.
      *
      * @param prefix        The prefix that should be added to all environment variables.
      * @param configuration The configuration that should have its values overridden.
@@ -88,11 +132,22 @@ public class EnvironmentOverride {
      * <p>
      * Setting the {@code prefix} to {@code NULL} is the same as calling
      * the {@link #override(Configuration, List)} method.
+     * <p>
+     * <strong>Note:</strong> Any {@link #macros macro} that has been registered will be looked
+     * up and replaced first if any valid macro is found, all the other environment variables
+     * will only be replaced after the macros has been replaced.
      *
      * @param prefix        The prefix that should be added to all environment variables.
      * @param configuration The configuration that should have its values overridden.
      */
     public static void overrideWithPrefix(String prefix, @Nonnull Configuration configuration, @Nonnull List<String> protectedKeys) {
+        for (Map.Entry<String, EnvironmentMacro> entry : macros.entrySet()) {
+            String env = System.getenv(entry.getKey());
+            if (env != null) {
+                entry.getValue().handle(env, configuration);
+            }
+        }
+
         for (String key : configuration.getKeys(true)) {
             if (protectedKeys.contains(key) || configuration.isConfigurationSection(key)) {
                 continue;
