@@ -38,6 +38,7 @@ import com.avairebot.commands.CategoryHandler;
 import com.avairebot.commands.CommandHandler;
 import com.avairebot.commands.administration.ChangePrefixCommand;
 import com.avairebot.config.Configuration;
+import com.avairebot.config.EnvironmentMacros;
 import com.avairebot.config.EnvironmentOverride;
 import com.avairebot.contracts.ai.Intent;
 import com.avairebot.contracts.commands.Command;
@@ -162,6 +163,7 @@ public class AvaIre {
 
         if (settings.useEnvOverride()) {
             log.debug("Environment override is enabled, looking for environment variables and replacing the config equivalent values");
+            EnvironmentMacros.registerDefaults();
             EnvironmentOverride.overrideWithPrefix("AVA", config);
         }
 
