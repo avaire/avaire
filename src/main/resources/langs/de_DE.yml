@@ -511,9 +511,12 @@ music:
         error: 'Fehlendes Argument, `Song ID`. Du musst die ID von dem Song angeben, dass du von der Warteschlange entfernen möchtest.'
         failedToRemoveSong: 'Es ist ein Fehler aufgetreten beim Versuch einen Song auf dem Index `:index` zu entfernen.'
         tooHighNumberGiven: 'Es befinden sich nur `{0}` Song[s] in der Warteschlange. Versuche die Nummer etwas herunter zu senken.'
+        invalidRange: 'Invalid range given, give the range of IDs in a start to end format, like `3-6`.'
         mustBePositiveNumber: 'Die `Song ID` muss eine gültige, positive Nummer sein.'
         nothingToRemove: "Nicht's zum Entfernen. Anfragen von Musik ist vorausgesetzt. Tue dies bitte zuerst mit folgendem Befehl: `{0}play`"
         success: ':song wurde erfolgreich von der Warteschlange entfernt.'
+        successMultiple: 'Songs from `:start` to `:end` were successfully removed from the music queue.\n:tracks'
+        successMultipleNote: "\nAnd **{0}** more songs were removed from the queue."
 
     RepeatMusicQueueCommand:
         error: "Nicht's zum Wiederholen vorhanden. Anfragen von Musik ist vorausgesetzt. Tue dies bitte zuerst mit folgendem Befehl: `{0}play`"

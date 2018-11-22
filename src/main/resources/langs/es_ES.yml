@@ -510,9 +510,12 @@ music:
         error: 'No se ha encontrado "`song id`", debes incluir la ID de la canción que quieras eliminar de la cola.'
         failedToRemoveSong: 'Algo ha salido mal, no se ha podido eliminar la canción `:index`'
         tooHighNumberGiven: 'El número de canciones en cola es `{0}`. Reduce el número un poquito.'
+        invalidRange: 'Invalid range given, give the range of IDs in a start to end format, like `3-6`.'
         mustBePositiveNumber: 'La ID de canción (`song id`) debe ser un número positivo.'
         nothingToRemove: 'No hay nada que eliminar, pide música primero con "{0}play"'
         success: ':song se ha eliminado de la cola.'
+        successMultiple: 'Songs from `:start` to `:end` were successfully removed from the music queue.\n:tracks'
+        successMultipleNote: "\nAnd **{0}** more songs were removed from the queue."
 
     RepeatMusicQueueCommand:
         error: 'No hay nada que repetir, pide música primero con `{0}play`'

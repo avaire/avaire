@@ -509,9 +509,12 @@ music:
         error: "Manglende argument `sang id`, du må inkludere ID'en til sangen du ønsker og fjerne."
         failedToRemoveSong: 'Noe gikk galt, feilet med og fjerne sang med indeks `:index`'
         tooHighNumberGiven: 'Det er kun `{0}` sanger i køen, forsøk med ett lavere tall.'
+        invalidRange: 'Invalid range given, give the range of IDs in a start to end format, like `3-6`.'
         mustBePositiveNumber: '`Sang ID` må være ett gyldig positivt tall.'
         nothingToRemove: 'Ingenting og fjerne, etterspør musikk først med `{0}play`'
         success: ':song har blitt suksessfult fjernet fra musikk køen.'
+        successMultiple: 'Songs from `:start` to `:end` were successfully removed from the music queue.\n:tracks'
+        successMultipleNote: "\nAnd **{0}** more songs were removed from the queue."
 
     RepeatMusicQueueCommand:
         error: 'Det er ingenting og gjennta, etterspør musikk først med `{0}play`'
