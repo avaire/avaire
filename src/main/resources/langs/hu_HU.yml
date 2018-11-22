@@ -516,9 +516,12 @@ music:
         error: 'Hiányzó paraméter `zene száma`, megkell adnod a zene számát amit törölni akarsz a lejátszási listából.'
         failedToRemoveSong: 'Valami hiva történt, `:index` törlése sikertelen.'
         tooHighNumberGiven: 'Csak `{0}` zeneszám van a listában, próbáld meg csökkenteni a számod egy kicsit.'
+        invalidRange: 'Invalid range given, give the range of IDs in a start to end format, like `3-6`.'
         mustBePositiveNumber: 'A `zene száma` egy valós pozitív számnak kell lennie.'
         nothingToRemove: 'Semmi sincs amit törölni lehetne, előbb kérj zenét a `{0}play`-vel'
         success: ':song sikeresen törölve a lejátszási listából.'
+        successMultiple: 'Songs from `:start` to `:end` were successfully removed from the music queue.\n:tracks'
+        successMultipleNote: "\nAnd **{0}** more songs where removed from the queue."
 
     RepeatMusicQueueCommand:
         error: 'Semmi sincs amit ismételni lehetne, előbb kérj zenét a `{0}play`-vel'
