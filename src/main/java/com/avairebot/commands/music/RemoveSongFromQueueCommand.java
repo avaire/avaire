@@ -34,10 +34,7 @@ import com.avairebot.utilities.RestActionUtil;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo;
 
 import javax.annotation.Nonnull;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 public class RemoveSongFromQueueCommand extends Command {
@@ -105,10 +102,9 @@ public class RemoveSongFromQueueCommand extends Command {
         }
 
         if (args[0].indexOf('-') > 0) {
-            int beforeHyphen, afterHyphen;
             try {
-                beforeHyphen = NumberUtil.parseInt(args[0].trim().split("-")[0], -1);
-                afterHyphen = NumberUtil.parseInt(args[0].trim().split("-")[1], -1);
+                int beforeHyphen = NumberUtil.parseInt(args[0].trim().split("-")[0], -1);
+                int afterHyphen = NumberUtil.parseInt(args[0].trim().split("-")[1], -1);
                 if (beforeHyphen < 1 || afterHyphen < 1) {
                     return sendErrorMessage(context, context.i18n("mustBePositiveNumber"));
                 }
@@ -124,10 +120,14 @@ public class RemoveSongFromQueueCommand extends Command {
                     );
                 }
 
+                if (beforeHyphen == afterHyphen) {
+                    return removeSingle(context, musicManager, beforeHyphen);
+                }
+
+                return removeMultiple(context, musicManager, beforeHyphen, afterHyphen);
             } catch (ArrayIndexOutOfBoundsException e) {
                 return sendErrorMessage(context, context.i18n("mustBePositiveNumber"));
             }
-            return removeMultiple(context, beforeHyphen, afterHyphen);
         }
 
         int removeIndex = NumberUtil.parseInt(args[0], -1);
@@ -141,13 +141,17 @@ public class RemoveSongFromQueueCommand extends Command {
             );
         }
 
+        return removeSingle(context, musicManager, removeIndex);
+    }
+
+    private boolean removeSingle(CommandMessage context, GuildMusicManager musicManager, int index) {
         Iterator<AudioTrackContainer> iterator = musicManager.getScheduler().getQueue().iterator();
 
         int counter = 0;
         while (iterator.hasNext()) {
             AudioTrackContainer next = iterator.next();
 
-            if (++counter != removeIndex) {
+            if (++counter != index) {
                 continue;
             }
 
@@ -163,20 +167,24 @@ public class RemoveSongFromQueueCommand extends Command {
         }
 
         context.makeError(context.i18n("failedToRemoveSong"))
-            .set("index", removeIndex)
+            .set("index", index)
             .queue(message -> message.delete().queueAfter(1, TimeUnit.MINUTES, null, RestActionUtil.ignore));
 
         return false;
     }
 
-    private boolean removeMultiple(CommandMessage context, int startIndex, int endIndex) {
-        GuildMusicManager musicManager = AudioHandler.getDefaultAudioHandler().getGuildAudioPlayer(context.getGuild());
+    private boolean removeMultiple(CommandMessage context, GuildMusicManager musicManager, int startIndex, int endIndex) {
         Iterator<AudioTrackContainer> iterator = musicManager.getScheduler().getQueue().iterator();
 
+        List<String> removedTracks = new ArrayList<>();
         for (int counter = 0; counter < endIndex; counter++) {
-            iterator.next();
+            AudioTrackContainer trackContainer = iterator.next();
 
             if (counter >= startIndex - 1) {
+                AudioTrackInfo track = trackContainer.getAudioTrack().getInfo();
+                removedTracks.add(String.format("**%d** [%s](%s)",
+                    counter + 1, track.title, track.uri
+                ));
                 iterator.remove();
             }
         }
@@ -184,8 +192,19 @@ public class RemoveSongFromQueueCommand extends Command {
         context.makeInfo(context.i18n("successMultiple"))
             .set("start", startIndex)
             .set("end", endIndex)
+            .set("tracks", formatRemovedTracks(context, removedTracks))
             .queue(message -> message.delete().queueAfter(1, TimeUnit.MINUTES, null, RestActionUtil.ignore));
 
         return true;
+    }
+
+    private String formatRemovedTracks(CommandMessage context, List<String> removedTracks) {
+        if (removedTracks.size() <= 10) {
+            return String.join("\n", removedTracks);
+        }
+
+        return String.join("\n", Arrays.copyOfRange(removedTracks.toArray(
+            new String[removedTracks.size()]
+        ), 0, 10)) + context.i18n("successMultipleNote", removedTracks.size() - 10);
     }
 }

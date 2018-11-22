@@ -513,7 +513,8 @@ music:
         mustBePositiveNumber: 'The `song id` must be a valid positive number.'
         nothingToRemove: 'Nothing to remove, request music first with `{0}play`'
         success: ':song has been successfully removed from the music queue.'
-        successMultiple: 'Songs `:start-:end` successfully removed from the music queue.'
+        successMultiple: 'Songs from `:start` to `:end` were successfully removed from the music queue.\n:tracks'
+        successMultipleNote: "\nAnd **{0}** more songs where removed from the queue."
 
     RepeatMusicQueueCommand:
         error: 'There is nothing to repeat, request music first with `{0}play`'
