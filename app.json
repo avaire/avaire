@@ -46,7 +46,7 @@
 	  "value": "https://discordapp.com/oauth2/authorize?&client_id=<client_id>&scope=bot&permissions=66186303"
     },
     "AVA_DATABASE_TYPE": {
-      "description": "Let de value be mysql to have the bot working as normal. Change it to sqlite if you rather don't want to save what is normally saved in the database.",
+      "description": "AvaIre normally uses MySQL with JawsDB MySQL on Heroku. If you want to use your own MySQL server with heroku, add your own variables for it. You can find them here: https://bit.ly/2R3r40E.",
 	  "required": true,
 	  "value": "mysql"
     },
@@ -54,26 +54,6 @@
       "description": "If you choose to use sqlite. Your using this aswell. Let the value be database.sqlite or change it if you know what your doing.",
 	  "required": true,
 	  "value": "database.sqlite"
-    },
-    "AVA_DATABASE_DATABASE": {
-      "description": "IMPORTANT! After you deployed AvaIre to Heroku. Go to: https://dashboard.jawsdb.com/mysql/dashboard and copy the Database value into this variable! You can change variables by going to the Heroku dashboard and in settings, click on Reveal Config Vars.",
-	  "required": true,
-	  "value": "DATABASENAME"
-    },
-    "AVA_DATABASE_HOSTNAME": {
-      "description": "IMPORTANT! After you deployed AvaIre to Heroku. Go to: https://dashboard.jawsdb.com/mysql/dashboard and copy the Host value into this variable! You can change variables by going to the Heroku dashboard and in settings, click on Reveal Config Vars.",
-	  "required": true,
-	  "value": "DATABASEHOSTNAME"
-    },
-    "AVA_DATABASE_USERNAME": {
-      "description": "IMPORTANT! After you deployed AvaIre to Heroku. Go to: https://dashboard.jawsdb.com/mysql/dashboard and copy the Username value into this variable! You can change variables by going to the Heroku dashboard and in settings, click on Reveal Config Vars.",
-	  "required": true,
-	  "value": "DATABASEUSERNAME"
-    },
-    "AVA_DATABASE_PASSWORD": {
-      "description": "IMPORTANT! After you deployed AvaIre to Heroku. Go to: https://dashboard.jawsdb.com/mysql/dashboard and copy the Password value into this variable! You can change variables by going to the Heroku dashboard and in settings, click on Reveal Config Vars.",
-	  "required": true,
-	  "value": "DATABASEPASSWORD"
     },
     "AVA_DATABASE_VERIFYSERVERCERTIFICATE": {
       "description": "Determine if server certificates should be verified upon connecting to the database. For Heroku this needs to be set to false.",
