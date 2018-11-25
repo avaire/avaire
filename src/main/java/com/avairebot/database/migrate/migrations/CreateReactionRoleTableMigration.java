@@ -37,6 +37,7 @@ public class CreateReactionRoleTableMigration implements Migration {
     @Override
     public boolean up(Schema schema) throws SQLException {
         return schema.createIfNotExists(Constants.REACTION_ROLES_TABLE_NAME, table -> {
+            table.Long("guild_id").unsigned();
             table.Long("channel_id").unsigned();
             table.Long("message_id").unsigned();
             table.Text("roles");
