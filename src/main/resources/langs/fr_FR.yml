@@ -510,9 +510,12 @@ music:
         error: "Argument manquant `song id`, tu dois inclure l'ID de la musique que tu veux retirer de la file d'attente."
         failedToRemoveSong: "Quelque chose s'est mal passé, échec lors de la suppression de la musique à l'indice `:index`"
         tooHighNumberGiven: "Il y a seulement `{0}` musique(s) dans la file d'attente, essaye de donner un nombre plus petit."
+        invalidRange: 'Invalid range given, give the range of IDs in a start to end format, like `3-6`.'
         mustBePositiveNumber: "Le `song id` doit être un entier positif valide."
         nothingToRemove: "Rien à supprimer, demande un musique d'abord avec `{0}play`"
         success: ":song supprimée avec succès de la file d'attente."
+        successMultiple: 'Songs from `:start` to `:end` were successfully removed from the music queue.\n:tracks'
+        successMultipleNote: "\nAnd **{0}** more songs were removed from the queue."
 
     RepeatMusicQueueCommand:
         error: "Il n'y a rien à répéter, demande un musique d'abord avec `{0}play`"

@@ -510,9 +510,12 @@ music:
         error: 'Отсутствует аргумент `song id`, вы должны указать ID трека, которую хотите удалить из очереди.'
         failedToRemoveSong: 'Что-то пошло не так, не удалось удалить трек с индексом `:index`'
         tooHighNumberGiven: 'Количество песен в очереди `{0}`'
+        invalidRange: 'Invalid range given, give the range of IDs in a start to end format, like `3-6`.'
         mustBePositiveNumber: 'Идентификатор `song id` должен быть действительным, положительным числом.'
         nothingToRemove: 'Нечего удалять, сначала попросите музыку `{0}play`'
         success: ':song успешно удален из музыкальной очереди.'
+        successMultiple: 'Songs from `:start` to `:end` were successfully removed from the music queue.\n:tracks'
+        successMultipleNote: "\nAnd **{0}** more songs were removed from the queue."
 
     RepeatMusicQueueCommand:
         error: 'Нечего повторять, сначала попросите музыку `{0}play`'

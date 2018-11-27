@@ -509,9 +509,12 @@ music:
         error: 'Missing argument `song id`, you must include the ID of the song you want to remove from the queue.'
         failedToRemoveSong: 'Something went wrong, failed to remove song at index `:index`'
         tooHighNumberGiven: 'There are only `{0}` songs in the queue, try lowering your number a bit.'
+        invalidRange: 'Invalid range given, give the range of IDs in a start to end format, like `3-6`.'
         mustBePositiveNumber: 'The `song id` must be a valid positive number.'
         nothingToRemove: 'Nothing to remove, request music first with `{0}play`'
         success: ':song has been successfully removed from the music queue.'
+        successMultiple: 'Songs from `:start` to `:end` were successfully removed from the music queue.\n:tracks'
+        successMultipleNote: "\nAnd **{0}** more songs were removed from the queue."
 
     RepeatMusicQueueCommand:
         error: 'There is nothing to repeat, request music first with `{0}play`'

@@ -510,9 +510,12 @@ music:
         error: "Missin' argument `chantey id`, ye must include th' ID o' th' chantey ye wants t' scuttle from th' queue."
         failedToRemoveSong: "Somethin' went wrong, failed t' scuttle shanty at index `:index`"
         tooHighNumberGiven: "Thar are only `{0}` shanties in th' queue, try lowerin' yer number a bit."
+        invalidRange: 'Invalid range given, give the range of IDs in a start to end format, like `3-6`.'
         mustBePositiveNumber: "Th' `shantey id` must be a valid positive number."
         nothingToRemove: "Nothin' t' scuttle, request chanties first wit' `{0}play`"
         success: ":song has been successfully scuttled from th' shanties queue."
+        successMultiple: 'Songs from `:start` to `:end` were successfully removed from the music queue.\n:tracks'
+        successMultipleNote: "\nAnd **{0}** more songs were removed from the queue."
 
     RepeatMusicQueueCommand:
         error: "Thar be naught t' repeat, request shanties first wit' `{0}play`"
