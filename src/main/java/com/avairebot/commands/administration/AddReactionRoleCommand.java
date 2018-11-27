@@ -112,7 +112,7 @@ public class AddReactionRoleCommand extends Command {
         }
 
         Emote emote = context.getMessage().getEmotes().get(0);
-        if (emote.getGuild().getIdLong() != context.getGuild().getIdLong()) {
+        if (emote.getGuild() == null || emote.getGuild().getIdLong() != context.getGuild().getIdLong()) {
             return sendErrorMessage(context, "The emote does not belong to this server, you can only use emotes from this server as reaction emotes.");
         }
 
