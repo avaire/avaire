@@ -39,7 +39,9 @@ import net.dv8tion.jda.core.events.guild.member.GuildMemberJoinEvent;
 import net.dv8tion.jda.core.events.guild.member.GuildMemberLeaveEvent;
 import net.dv8tion.jda.core.events.guild.update.GuildUpdateNameEvent;
 import net.dv8tion.jda.core.events.guild.update.GuildUpdateRegionEvent;
+import net.dv8tion.jda.core.events.message.MessageBulkDeleteEvent;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.events.message.guild.GuildMessageDeleteEvent;
 import net.dv8tion.jda.core.events.role.RoleCreateEvent;
 import net.dv8tion.jda.core.events.role.RoleDeleteEvent;
 import net.dv8tion.jda.core.events.role.update.RoleUpdateNameEvent;
@@ -48,6 +50,8 @@ import net.dv8tion.jda.core.events.role.update.RoleUpdatePositionEvent;
 import net.dv8tion.jda.core.events.user.update.UserUpdateAvatarEvent;
 import net.dv8tion.jda.core.events.user.update.UserUpdateDiscriminatorEvent;
 import net.dv8tion.jda.core.events.user.update.UserUpdateNameEvent;
+
+import java.util.Collections;
 
 public class MainEventHandler extends EventHandler {
 
@@ -152,6 +156,16 @@ public class MainEventHandler extends EventHandler {
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
         messageEvent.onMessageReceived(event);
+    }
+
+    @Override
+    public void onGuildMessageDelete(GuildMessageDeleteEvent event) {
+        messageEvent.onMessageDelete(event.getChannel(), Collections.singletonList(event.getMessageId()));
+    }
+
+    @Override
+    public void onMessageBulkDelete(MessageBulkDeleteEvent event) {
+        messageEvent.onMessageDelete(event.getChannel(), event.getMessageIds());
     }
 
     @Override
