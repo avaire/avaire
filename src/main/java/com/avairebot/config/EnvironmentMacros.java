@@ -40,7 +40,7 @@ public class EnvironmentMacros {
      * Registers the default environment override macros.
      */
     private static boolean registerHerokuMetricsPort() {
-    return EnvironmentOverride.registerMacro("port", ((environmentValue, configuration) -> {
+    return EnvironmentOverride.registerMacro("PORT", ((environmentValue, configuration) -> {
         configuration.set("metrics.port", environmentValue);
         }));
     }
