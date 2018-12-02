@@ -43,9 +43,7 @@ public class EnvironmentMacros {
         if (!registerJAWSDB_URL()) {
             log.warn("Failed to register the JAWSDB_URL environment variable macro, a macro with that name is already registered.");
         }
-    }
 
-    public static void registerDefaults() {
         if (!registerPORT()) {
             log.warn("Failed to register the PORT environment variable macro, a macro with that name is already registered.");
         }
@@ -77,7 +75,7 @@ public class EnvironmentMacros {
         });
     }
     
-    private static boolean registerHerokuMetricsPort() {
+    private static boolean registerPORT() {
         return EnvironmentOverride.registerMacro("PORT", ((environmentValue, configuration) -> {
             configuration.set("metrics.port", environmentValue);
         }));
