@@ -40,6 +40,7 @@ public class CreateReactionRoleTableMigration implements Migration {
             table.Long("guild_id").unsigned();
             table.Long("channel_id").unsigned();
             table.Long("message_id").unsigned();
+            table.String("snippet");
             table.Text("roles");
         });
     }

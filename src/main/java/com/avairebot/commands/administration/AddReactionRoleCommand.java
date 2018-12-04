@@ -201,6 +201,9 @@ public class AddReactionRoleCommand extends Command {
                         statement.set("channel_id", message.getChannel().getId());
                         statement.set("message_id", message.getId());
                         statement.set("roles", AvaIre.gson.toJson(reactionTransformer.getRoles()));
+                        statement.set("snippet", message.getContentRaw().substring(
+                            0, Math.min(message.getContentRaw().length(), 64)
+                        ), true);
                     });
 
                 ReactionController.forgetCache(context.getGuild().getIdLong());
