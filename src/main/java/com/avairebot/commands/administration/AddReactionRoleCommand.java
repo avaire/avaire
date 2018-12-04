@@ -195,14 +195,20 @@ public class AddReactionRoleCommand extends Command {
             reactionTransformer.addReaction(emote, role);
 
             try {
+                String messageContent = message.getContentStripped();
+                if (messageContent.isEmpty() && !message.getEmbeds().isEmpty()) {
+                    messageContent = message.getEmbeds().get(0).getDescription();
+                }
+
+                String finalMessageContent = messageContent;
                 avaire.getDatabase().newQueryBuilder(Constants.REACTION_ROLES_TABLE_NAME)
                     .insert(statement -> {
                         statement.set("guild_id", message.getGuild().getId());
                         statement.set("channel_id", message.getChannel().getId());
                         statement.set("message_id", message.getId());
                         statement.set("roles", AvaIre.gson.toJson(reactionTransformer.getRoles()));
-                        statement.set("snippet", message.getContentRaw().substring(
-                            0, Math.min(message.getContentRaw().length(), 64)
+                        statement.set("snippet", finalMessageContent.substring(
+                            0, Math.min(finalMessageContent.length(), 64)
                         ), true);
                     });
 

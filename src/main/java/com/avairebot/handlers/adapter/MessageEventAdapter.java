@@ -354,12 +354,18 @@ public class MessageEventAdapter extends EventAdapter {
         }
 
         try {
+            String messageContent = event.getMessage().getContentStripped();
+            if (messageContent.trim().length() == 0 && !event.getMessage().getEmbeds().isEmpty()) {
+                messageContent = event.getMessage().getEmbeds().get(0).getDescription();
+            }
+
+            String finalMessageContent = messageContent;
             avaire.getDatabase().newQueryBuilder(Constants.REACTION_ROLES_TABLE_NAME)
                 .where("guild_id", event.getGuild().getId())
                 .where("message_id", event.getMessage().getId())
                 .update(statement -> {
-                    statement.set("snippet", event.getMessage().getContentRaw().substring(
-                        0, Math.min(event.getMessage().getContentRaw().length(), 64)
+                    statement.set("snippet", finalMessageContent.substring(
+                        0, Math.min(finalMessageContent.length(), 64)
                     ), true);
                 });
 
