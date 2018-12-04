@@ -48,6 +48,7 @@ import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.events.message.MessageUpdateEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -338,6 +339,34 @@ public class MessageEventAdapter extends EventAdapter {
         } catch (SQLException e) {
             log.error("Failed to delete {} reaction messages for the guild with an ID of {}",
                 removedReactionMessageIds.size(), channel.getGuild().getId(), e
+            );
+        }
+    }
+
+    public void onMessageUpdate(MessageUpdateEvent event) {
+        Collection reactions = ReactionController.fetchReactions(avaire, event.getGuild());
+        if (reactions == null) {
+            return;
+        }
+
+        if (reactions.where("message_id", event.getMessage().getId()).isEmpty()) {
+            return;
+        }
+
+        try {
+            avaire.getDatabase().newQueryBuilder(Constants.REACTION_ROLES_TABLE_NAME)
+                .where("guild_id", event.getGuild().getId())
+                .where("message_id", event.getMessage().getId())
+                .update(statement -> {
+                    statement.set("snippet", event.getMessage().getContentRaw().substring(
+                        0, Math.min(event.getMessage().getContentRaw().length(), 64)
+                    ), true);
+                });
+
+            ReactionController.forgetCache(event.getGuild().getIdLong());
+        } catch (SQLException e) {
+            log.error("Failed to update the reaction role message with a message ID of {}, error: {}",
+                event.getMessage().getId(), e.getMessage(), e
             );
         }
     }
