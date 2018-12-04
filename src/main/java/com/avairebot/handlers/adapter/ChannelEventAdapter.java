@@ -24,15 +24,21 @@ package com.avairebot.handlers.adapter;
 import com.avairebot.AvaIre;
 import com.avairebot.Constants;
 import com.avairebot.contracts.handlers.EventAdapter;
+import com.avairebot.database.collection.Collection;
 import com.avairebot.database.controllers.GuildController;
+import com.avairebot.database.controllers.ReactionController;
 import com.avairebot.database.transformers.GuildTransformer;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.events.channel.text.TextChannelDeleteEvent;
 import net.dv8tion.jda.core.events.channel.voice.VoiceChannelDeleteEvent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.SQLException;
 
 public class ChannelEventAdapter extends EventAdapter {
+
+    private static final Logger log = LoggerFactory.getLogger(ChannelEventAdapter.class);
 
     /**
      * Instantiates the event adapter and sets the avaire class instance.
@@ -44,6 +50,11 @@ public class ChannelEventAdapter extends EventAdapter {
     }
 
     public void onTextChannelDelete(TextChannelDeleteEvent event) {
+        handleTextChannelDeleteReqactionRoles(event);
+        handleTextChannelDeleteGuildSettings(event);
+    }
+
+    private void handleTextChannelDeleteGuildSettings(TextChannelDeleteEvent event) {
         GuildTransformer transformer = GuildController.fetchGuild(avaire, event.getGuild());
         if (transformer == null) {
             return;
@@ -59,6 +70,29 @@ public class ChannelEventAdapter extends EventAdapter {
 
         if (transformer.getMusicChannelText() != null && transformer.getMusicChannelText().equals(event.getChannel().getId())) {
             setDatabaseColumnToNull(event.getGuild().getId(), "music_channel_text");
+        }
+    }
+
+    private void handleTextChannelDeleteReqactionRoles(TextChannelDeleteEvent event) {
+        Collection collection = ReactionController.fetchReactions(avaire, event.getGuild());
+        if (collection == null) {
+            return;
+        }
+
+        if (collection.where("channel_id", event.getChannel().getId()).isEmpty()) {
+            return;
+        }
+
+        try {
+            avaire.getDatabase().newQueryBuilder(Constants.REACTION_ROLES_TABLE_NAME)
+                .where("channel_id", event.getChannel().getId())
+                .delete();
+
+            ReactionController.forgetCache(event.getGuild().getIdLong());
+        } catch (SQLException e) {
+            log.error("Failed to delete reaction roles from {} for channel ID {}, error: {}",
+                event.getGuild().getId(), event.getChannel().getId(), e.getMessage(), e
+            );
         }
     }
 
