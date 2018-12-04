@@ -44,6 +44,8 @@ import net.dv8tion.jda.core.events.message.MessageBulkDeleteEvent;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.events.message.MessageUpdateEvent;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageDeleteEvent;
+import net.dv8tion.jda.core.events.message.react.MessageReactionAddEvent;
+import net.dv8tion.jda.core.events.message.react.MessageReactionRemoveEvent;
 import net.dv8tion.jda.core.events.role.RoleCreateEvent;
 import net.dv8tion.jda.core.events.role.RoleDeleteEvent;
 import net.dv8tion.jda.core.events.role.update.RoleUpdateNameEvent;
@@ -228,5 +230,21 @@ public class MainEventHandler extends EventHandler {
     @Override
     public void onEmoteRemoved(EmoteRemovedEvent event) {
         reactionEmoteEventAdapter.onEmoteRemoved(event);
+    }
+
+    @Override
+    public void onMessageReactionAdd(MessageReactionAddEvent event) {
+        if (event.getGuild() == null) {
+            return;
+        }
+        reactionEmoteEventAdapter.onMessageReactionAdd(event);
+    }
+
+    @Override
+    public void onMessageReactionRemove(MessageReactionRemoveEvent event) {
+        if (event.getGuild() == null) {
+            return;
+        }
+        reactionEmoteEventAdapter.onMessageReactionRemove(event);
     }
 }

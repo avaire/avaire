@@ -28,9 +28,18 @@ import com.avairebot.database.collection.Collection;
 import com.avairebot.database.collection.DataRow;
 import com.avairebot.database.controllers.ReactionController;
 import com.avairebot.database.transformers.ReactionTransformer;
+import com.avairebot.utilities.RoleUtil;
+import net.dv8tion.jda.core.Permission;
+import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.events.emote.EmoteRemovedEvent;
+import net.dv8tion.jda.core.events.message.react.MessageReactionAddEvent;
+import net.dv8tion.jda.core.events.message.react.MessageReactionRemoveEvent;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.sql.SQLException;
+import java.util.List;
 
 public class ReactionEmoteEventAdapter extends EventAdapter {
 
@@ -63,5 +72,83 @@ public class ReactionEmoteEventAdapter extends EventAdapter {
                 }
             }
         }
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    public void onMessageReactionAdd(MessageReactionAddEvent event) {
+        ReactionTransformer transformer = getReactionTransformerFromMessageIdAndCheckPermissions(
+            event.getGuild(), event.getMessageId(), event.getReactionEmote().getEmote().getIdLong()
+        );
+
+        if (transformer == null) {
+            return;
+        }
+
+        Role role = event.getGuild().getRoleById(transformer.getRoleIdFromEmote(event.getReactionEmote().getEmote()));
+        if (role == null) {
+            return;
+        }
+
+        if (RoleUtil.hasRole(event.getMember(), role)) {
+            return;
+        }
+
+        // TODO: Move this into a queue task so we can prevent sending any rest actions when we don't need to.
+        // This would solve people spam reaction and removing their reactions faster than the bot can update
+        // the users roles, this way we only send the rest reactions we actually need to send.
+        event.getGuild().getController().addRolesToMember(event.getMember(), role).queue();
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    public void onMessageReactionRemove(MessageReactionRemoveEvent event) {
+        ReactionTransformer transformer = getReactionTransformerFromMessageIdAndCheckPermissions(
+            event.getGuild(), event.getMessageId(), event.getReactionEmote().getEmote().getIdLong()
+        );
+
+        if (transformer == null) {
+            return;
+        }
+
+        Role role = event.getGuild().getRoleById(transformer.getRoleIdFromEmote(event.getReactionEmote().getEmote()));
+        if (role == null) {
+            return;
+        }
+
+        if (!RoleUtil.hasRole(event.getMember(), role)) {
+            return;
+        }
+
+        event.getGuild().getController().removeRolesFromMember(event.getMember(), role).queue();
+    }
+
+    private ReactionTransformer getReactionTransformerFromMessageIdAndCheckPermissions(@Nonnull Guild guild, @Nonnull String messageId, long emoteId) {
+        if (!hasPermission(guild)) {
+            return null;
+        }
+
+        Collection collection = ReactionController.fetchReactions(avaire, guild);
+        if (collection == null || collection.isEmpty()) {
+            return null;
+        }
+
+        ReactionTransformer transformer = getReactionTransformerFromId(collection, messageId);
+        if (transformer == null || !transformer.getRoles().containsKey(emoteId)) {
+            return null;
+        }
+        return transformer;
+    }
+
+    private boolean hasPermission(Guild guild) {
+        return guild.getSelfMember().hasPermission(Permission.ADMINISTRATOR)
+            || guild.getSelfMember().hasPermission(Permission.MANAGE_ROLES);
+    }
+
+    @Nullable
+    private ReactionTransformer getReactionTransformerFromId(@Nonnull Collection collection, @Nonnull String messageId) {
+        List<DataRow> messages = collection.where("message_id", messageId);
+        if (messageId.isEmpty()) {
+            return null;
+        }
+        return new ReactionTransformer(messages.get(0));
     }
 }
