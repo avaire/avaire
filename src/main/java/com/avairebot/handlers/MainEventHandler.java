@@ -33,6 +33,7 @@ import net.dv8tion.jda.core.events.channel.text.TextChannelDeleteEvent;
 import net.dv8tion.jda.core.events.channel.text.update.TextChannelUpdateNameEvent;
 import net.dv8tion.jda.core.events.channel.text.update.TextChannelUpdatePositionEvent;
 import net.dv8tion.jda.core.events.channel.voice.VoiceChannelDeleteEvent;
+import net.dv8tion.jda.core.events.emote.EmoteRemovedEvent;
 import net.dv8tion.jda.core.events.guild.GuildJoinEvent;
 import net.dv8tion.jda.core.events.guild.GuildLeaveEvent;
 import net.dv8tion.jda.core.events.guild.member.GuildMemberJoinEvent;
@@ -62,6 +63,7 @@ public class MainEventHandler extends EventHandler {
     private final MessageEventAdapter messageEvent;
     private final GuildStateEventAdapter guildStateEvent;
     private final JDAStateEventAdapter jdaStateEventAdapter;
+    private final ReactionEmoteEventAdapter reactionEmoteEventAdapter;
 
     /**
      * Instantiates the event handler and sets the avaire class instance.
@@ -77,6 +79,7 @@ public class MainEventHandler extends EventHandler {
         this.messageEvent = new MessageEventAdapter(avaire);
         this.guildStateEvent = new GuildStateEventAdapter(avaire);
         this.jdaStateEventAdapter = new JDAStateEventAdapter(avaire);
+        this.reactionEmoteEventAdapter = new ReactionEmoteEventAdapter(avaire);
     }
 
     @Override
@@ -220,5 +223,10 @@ public class MainEventHandler extends EventHandler {
         if (!avaire.getSettings().isMusicOnlyMode()) {
             PlayerController.updateUserData(event.getUser());
         }
+    }
+
+    @Override
+    public void onEmoteRemoved(EmoteRemovedEvent event) {
+        reactionEmoteEventAdapter.onEmoteRemoved(event);
     }
 }

@@ -74,6 +74,14 @@ public class ReactionTransformer extends Transformer {
         roles.put(emote.getIdLong(), role.getIdLong());
     }
 
+    public boolean removeReaction(@Nonnull Emote emote) {
+        if (roles.containsKey(emote.getIdLong())) {
+            roles.remove(emote.getIdLong());
+            return true;
+        }
+        return false;
+    }
+
     public Map<Long, Long> getRoles() {
         return roles;
     }
