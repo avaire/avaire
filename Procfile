@@ -1,1 +1,1 @@
-web: java -jar AvaIre.jar --no-colors -env --music
+web: java -jar AvaIre.jar --no-colors -env
