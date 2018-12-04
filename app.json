@@ -129,7 +129,7 @@
 	  "value": ""
     },
     "AVA_METRICS_ENABLED": {
-      "description": "This option determines if the web API should be enabled at all. If you want to turn this off, you also need to change the Procfile from web to worker. Otherwise AvaIre won't stay up.",
+      "description": "This option determines if the web API should be enabled at all. If you want to turn this off, instead enable the worker dyno, instead of web dyno in the resources tab. Otherwise AvaIre won't stay up.",
 	  "required": true,
 	  "value": "true"
     },
