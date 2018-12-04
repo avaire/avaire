@@ -11,7 +11,9 @@
     "Moderation",
     "Senither",
     "Java",
-    "Selfhosting"
+    "Selfhosting",
+    "Music Bot",
+    "Discord Music Bot"
   ],
   "website": "https://avairebot.com/",
   "repository": "https://github.com/avaire/avaire",
@@ -126,17 +128,12 @@
 	  "value": ""
     },
     "AVA_METRICS_ENABLED": {
-      "description": "This option determines if the web API should be enabled at all. As of now, this won't work on Heroku sadly.",
+      "description": "This option determines if the web API should be enabled at all. If you want to turn this off, you also need to change the Procfile from web to worker. Otherwise AvaIre won't stay up.",
 	  "required": true,
-	  "value": "false"
-    },
-    "AVA_METRICS_PORT": {
-      "description": "The port the API and metrics should be exposed to, the port must not be used by another application on the system. As of now, this won't work on Heroku sadly.",
-	  "required": true,
-	  "value": "1256"
+	  "value": "true"
     },
     "AVA_METRICS_AUTHTOKEN": {
-      "description": "This is the auth token that should be given to validate incoming vote requests. All requests withoud the auth header will be ignored. As of now, this won't work on Heroku sadly.",
+      "description": "This is the auth token that should be given to validate incoming vote requests. All requests withoud the auth header will be ignored.",
 	  "required": true,
 	  "value": "avaire-auth-token"
     },
