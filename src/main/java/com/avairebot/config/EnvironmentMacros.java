@@ -49,11 +49,11 @@ public static void registerDefaults() {
     }
 }
 
-private static boolean registerMetricsPort() {
-    return EnvironmentOverride.registerMacro("PORT", (environmentValue, configuration) -> {
-        configuration.set("metrics.port", Integer.valueOf(environmentValue));
-    });
-}
+    private static boolean registerMetricsPort() {
+        return EnvironmentOverride.registerMacro("PORT", (environmentValue, configuration) -> {
+            configuration.set("metrics.port", Integer.valueOf(environmentValue));
+        });
+    }
 
     private static boolean registerJAWSDB_URL() {
         return EnvironmentOverride.registerMacro("JAWSDB_URL", (environmentValue, configuration) -> {
