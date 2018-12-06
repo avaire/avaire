@@ -39,15 +39,15 @@ public class EnvironmentMacros {
     /**
      * Registers the default environment override macros.
      */
-public static void registerDefaults() {
-    if (!registerJAWSDB_URL()) {
-        log.warn("Failed to register the JAWSDB_URL environment variable macro, a macro with that name is already registered.");
-    }
+    public static void registerDefaults() {
+        if (!registerJAWSDB_URL()) {
+            log.warn("Failed to register the JAWSDB_URL environment variable macro, a macro with that name is already registered.");
+        }
 
-    if (!registerMetricsPort()) {
-        log.warn("Failed to register the PORT environment variable macro, a macro with that name is already registered.");
+        if (!registerMetricsPort()) {
+            log.warn("Failed to register the PORT environment variable macro, a macro with that name is already registered.");
+        }
     }
-}
 
     private static boolean registerMetricsPort() {
         return EnvironmentOverride.registerMacro("PORT", (environmentValue, configuration) -> {
