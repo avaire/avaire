@@ -65,6 +65,7 @@ public class ReactionController {
                     .newQueryBuilder(Constants.REACTION_ROLES_TABLE_NAME)
                     .selectAll()
                     .where("guild_id", guild.getId())
+                    .orderBy("message_id")
                     .get();
             } catch (Exception ex) {
                 AvaIre.getLogger().error(ex.getMessage(), ex);
