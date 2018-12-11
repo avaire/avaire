@@ -99,7 +99,7 @@ public class PurgeCommand extends Command {
 
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
-        int toDelete = 100;
+        int toDelete = 5;
         if (args.length > 0) {
             toDelete = NumberUtil.getBetween(NumberUtil.parseInt(args[0]), 1, 100);
         }
