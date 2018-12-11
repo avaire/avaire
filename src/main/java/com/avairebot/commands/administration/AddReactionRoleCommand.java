@@ -30,6 +30,7 @@ import com.avairebot.contracts.commands.CommandGroups;
 import com.avairebot.database.collection.Collection;
 import com.avairebot.database.controllers.ReactionController;
 import com.avairebot.database.transformers.GuildTransformer;
+import com.avairebot.database.transformers.GuildTypeTransformer;
 import com.avairebot.database.transformers.ReactionTransformer;
 import com.avairebot.utilities.RoleUtil;
 import net.dv8tion.jda.core.entities.Emote;
@@ -145,7 +146,7 @@ public class AddReactionRoleCommand extends Command {
             }
 
             if (reactionTransformer.getRoles().size() >= guildTransformer.getType().getLimits().getReactionRoles().getRolesPerMessage()) {
-                context.makeWarning("Can't add more reaction roles to this message, out of slots...")
+                context.makeWarning("The message doesn't have anymore reaction role slots available, you can remove existing reaction-roles to free up slots, or delete reaction role messages to add the role to a new reaction role message.")
                     .queue(noSlotsMessage -> noSlotsMessage.delete().queueAfter(15, TimeUnit.SECONDS));
                 return;
             }
@@ -161,13 +162,17 @@ public class AddReactionRoleCommand extends Command {
                         statement.set("roles", AvaIre.gson.toJson(reactionTransformer.getRoles()));
                     });
 
-                ReactionController.forgetCache(context.getGuild().getIdLong());
+                GuildTypeTransformer.GuildTypeLimits.GuildReactionRoles reactionLimits = guildTransformer.getType().getLimits().getReactionRoles();
 
                 message.addReaction(emote).queue();
-                context.makeSuccess("The :role role has been registered as an reaction role for the :emote emote.")
+                context.makeSuccess("The :role role has been registered as an reaction role for the :emote emote.\nThe message has `:roleSlots` more reaction-role slots available for the message, and `:messageSlots` reaction-message slots available.")
                     .set("role", role.getAsMention())
                     .set("emote", emote.getAsMention())
+                    .set("roleSlots", reactionLimits.getRolesPerMessage() - reactionTransformer.getRoles().size())
+                    .set("messageSlots", reactionLimits.getMessages() - ReactionController.fetchReactions(avaire, context.getGuild()).size())
                     .queue(successMessage -> successMessage.delete().queueAfter(15, TimeUnit.SECONDS));
+
+                ReactionController.forgetCache(context.getGuild().getIdLong());
             } catch (SQLException e) {
                 log.error("Failed to save the reaction role to the database: {}", e.getMessage(), e);
                 sendErrorMessage(context, "Failed to save the reaction role to the database, {0}", e.getMessage());
@@ -185,7 +190,7 @@ public class AddReactionRoleCommand extends Command {
         }
 
         if (collection.size() >= transformer.getType().getLimits().getReactionRoles().getMessages()) {
-            context.makeWarning("Can't create new reaction role messages, out of slots...")
+            context.makeWarning("Can't create new reaction role messages, the server doesn't have anymore reaction messages slots, you can deleting existing reaction role messages to free up slots, or add your reaction role to a reaction message if there are available slots on the message for more roles.")
                 .queue(noSlotsMessage -> noSlotsMessage.delete().queueAfter(15, TimeUnit.SECONDS));
             return false;
         }
@@ -212,12 +217,16 @@ public class AddReactionRoleCommand extends Command {
                         ), true);
                     });
 
-                ReactionController.forgetCache(context.getGuild().getIdLong());
+                GuildTypeTransformer.GuildTypeLimits.GuildReactionRoles reactionLimits = transformer.getType().getLimits().getReactionRoles();
 
-                context.makeSuccess("The :role role has been registered as an reaction role for the :emote emote.")
+                context.makeSuccess("The :role role has been registered as an reaction role for the :emote emote.\nThe server has `:roleSlots` more reaction-role slots available for the message, and `:messageSlots` reaction-message slots available.")
                     .set("role", role.getAsMention())
                     .set("emote", emote.getAsMention())
+                    .set("roleSlots", reactionLimits.getRolesPerMessage() - reactionTransformer.getRoles().size())
+                    .set("messageSlots", reactionLimits.getMessages() - (collection.size() + 1))
                     .queue(successMessage -> successMessage.delete().queueAfter(15, TimeUnit.SECONDS));
+
+                ReactionController.forgetCache(context.getGuild().getIdLong());
             } catch (SQLException e) {
                 log.error("Failed to save the reaction role to the database: {}", e.getMessage(), e);
                 sendErrorMessage(context, "Failed to save the reaction role to the database, {0}", e.getMessage());
