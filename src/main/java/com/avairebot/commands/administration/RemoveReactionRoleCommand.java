@@ -31,7 +31,10 @@ import com.avairebot.contracts.commands.CommandGroups;
 import com.avairebot.database.collection.Collection;
 import com.avairebot.database.collection.DataRow;
 import com.avairebot.database.controllers.ReactionController;
+import com.avairebot.database.transformers.GuildTypeTransformer;
+import com.avairebot.database.transformers.ReactionTransformer;
 import com.avairebot.utilities.NumberUtil;
+import net.dv8tion.jda.core.entities.Emote;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,6 +43,7 @@ import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class RemoveReactionRoleCommand extends Command {
 
@@ -131,6 +135,10 @@ public class RemoveReactionRoleCommand extends Command {
             );
         }
 
+        if (args.length > 1) {
+            return removeSingleRoleOrEmoteFromMessage(context, Arrays.copyOfRange(args, 1, args.length), row);
+        }
+
         try {
             avaire.getDatabase().newQueryBuilder(Constants.REACTION_ROLES_TABLE_NAME)
                 .where("guild_id", context.getGuild().getId())
@@ -151,5 +159,52 @@ public class RemoveReactionRoleCommand extends Command {
         }
 
         return true;
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    private boolean removeSingleRoleOrEmoteFromMessage(CommandMessage context, String[] args, DataRow row) {
+        if (context.getMessage().getEmotes().isEmpty()) {
+            return sendErrorMessage(context, "You must include the emote you want to remove from the reaction message.");
+        }
+
+        Emote emote = context.getMessage().getEmotes().get(0);
+        if (emote.getGuild() == null || emote.getGuild().getIdLong() != context.getGuild().getIdLong()) {
+            return sendErrorMessage(context, "The emote does not belong to this server, you can only use emotes from this server as reaction emotes.");
+        }
+        ReactionTransformer transformer = new ReactionTransformer(row);
+        if (!transformer.removeReaction(emote)) {
+            return sendErrorMessage(context, "The specified reaction message doesn't have a reaction role attached to it using the {0} emote.",
+                emote.getAsMention()
+            );
+        }
+        try {
+            if (transformer.getRoles().isEmpty()) {
+                avaire.getDatabase().newQueryBuilder(Constants.REACTION_ROLES_TABLE_NAME)
+                    .where("guild_id", context.getGuild().getId())
+                    .where("message_id", row.getString("message_id"))
+                    .delete();
+            } else {
+                avaire.getDatabase().newQueryBuilder(Constants.REACTION_ROLES_TABLE_NAME)
+                    .where("guild_id", transformer.getGuildId())
+                    .where("message_id", transformer.getMessageId())
+                    .update(statement -> {
+                        statement.set("roles", AvaIre.gson.toJson(transformer.getRoles()));
+                    });
+            }
+
+            ReactionController.forgetCache(context.getGuild().getIdLong());
+            GuildTypeTransformer.GuildTypeLimits.GuildReactionRoles reactionLimits = context.getGuildTransformer()
+                .getType().getLimits().getReactionRoles();
+
+            context.makeSuccess("The :emote emote has been successfully removed from the reaction message.\nThe message has `:roleSlots` more reaction-role slots available for the message, and `:messageSlots` reaction-message slots available.")
+                .set("emote", emote.getAsMention())
+                .set("roleSlots", reactionLimits.getRolesPerMessage() - transformer.getRoles().size())
+                .set("messageSlots", reactionLimits.getMessages() - ReactionController.fetchReactions(avaire, context.getGuild()).size())
+                .queue(successMessage -> successMessage.delete().queueAfter(15, TimeUnit.SECONDS));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false;
     }
 }
