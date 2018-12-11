@@ -61,20 +61,28 @@ public class AddReactionRoleCommand extends Command {
 
     @Override
     public String getDescription() {
-        return "--- TODO ---";
+        return "Adds a reaction emote to the last message sent in the channel, and attaches a role to the emote, users can then reaction to the message using the emote to get the role linked with the emote.\n**Note:** reaction emotes has to belong to the server the message is created on, you can't use global emotes or emotes from other servers.";
     }
 
     @Override
     public List<String> getUsageInstructions() {
         return Collections.singletonList(
-            "--- TODO ---"
+            "`:command <emote> <role name>` - Creates a reaction role with the given emote and role name."
         );
     }
 
     @Override
     public List<String> getExampleUsage() {
         return Collections.singletonList(
-            "--- TODO ---"
+            "`:command :avaPotato Potato` - Gives users the Potato role when the reaction with the :avaPotato: reaction."
+        );
+    }
+
+    @Override
+    public List<Class<? extends Command>> getRelations() {
+        return Arrays.asList(
+            ListReactionRoleCommand.class,
+            RemoveReactionRoleCommand.class
         );
     }
 

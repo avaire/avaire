@@ -60,20 +60,30 @@ public class RemoveReactionRoleCommand extends Command {
 
     @Override
     public String getDescription() {
-        return "--- TODO ---";
+        return "Removes a reaction message and all of its reaction roles, or removes just a single reaction role from a reaction message.";
     }
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList(
-            "--- TODO ---"
+        return Arrays.asList(
+            "`:command <reaction message id>` - Deletes the reaction message with the given ID, along with all reaction roles attached to the message.",
+            "`:command <reaction message id> <emote>` - Deletes the reaction role attached to the given emote from the given reaction message ID."
         );
     }
 
     @Override
     public List<String> getExampleUsage() {
-        return Collections.singletonList(
-            "--- TODO ---"
+        return Arrays.asList(
+            "`:command 3` - Removes the reaction message with an ID of 3.",
+            "`:command 2 :avaPotato:` - Removes the :avaPotato: emote from the reaction message with an ID of 2."
+        );
+    }
+
+    @Override
+    public List<Class<? extends Command>> getRelations() {
+        return Arrays.asList(
+            AddReactionRoleCommand.class,
+            ListReactionRoleCommand.class
         );
     }
 

@@ -52,20 +52,21 @@ public class ListReactionRoleCommand extends Command {
 
     @Override
     public String getDescription() {
-        return "--- TODO ---";
+        return "List reaction messages with a snippet of the message, along with what roles and emotes are linked to the message.";
     }
 
     @Override
     public List<String> getUsageInstructions() {
         return Collections.singletonList(
-            "--- TODO ---"
+            "`:command [page]` - Lists all the reaction role messages on the server."
         );
     }
 
     @Override
-    public List<String> getExampleUsage() {
-        return Collections.singletonList(
-            "--- TODO ---"
+    public List<Class<? extends Command>> getRelations() {
+        return Arrays.asList(
+            AddReactionRoleCommand.class,
+            RemoveReactionRoleCommand.class
         );
     }
 
