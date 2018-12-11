@@ -37,6 +37,12 @@ administration:
         alreadyARoleAtLevel: "Es existiert bereits einen Rollenaufstieg für Level **:level**. Nur eine Rolle kann per Level vergeben werden."
         success: "Die Rolle **:role** wurde zu der Level-Up-Liste hinzugefügt.\nDer Server hat `:slots` weitere verfügbare Level-Rollenslots."
 
+    AddReactionRoleCommand:
+        emoteDoestBelongToServer: "The emote does not belong to this server, you can only use emotes from this server as reaction emotes."
+        messageHasNoSlots: "The message doesn't have anymore reaction role slots available, you can remove existing reaction-roles to free up slots, or delete reaction role messages to add the role to a new reaction role message."
+        serverHasNoSlots: "Can't create new reaction role messages, the server doesn't have anymore reaction messages slots, you can deleting existing reaction role messages to free up slots, or add your reaction role to a reaction message if there are available slots on the message for more roles."
+        success: "The :role role has been registered as an reaction role for the :emote emote.\nThe message has `:roleSlots` more reaction-role slots available for the message, and `:messageSlots` reaction-message slots available."
+
     AddSelfAssignableRoleCommand:
         noSlotsLeft: "Der Server hat keine weiteren Rollenslots für Rollen, die du dir selbst setzen kannst. Entferne hierzu bitte zuerst eine Rolle, um eine neue hinzuzufügen."
         success: "Die Rolle **:role** wurde zu der Liste der selbst setzbaren Rollen hinzugefügt.\n Der Server hat `:slots` weitere Rollenslots für Rollen, die du dir selbst setzen kannst."
@@ -163,6 +169,10 @@ administration:
         noLevelRoles: "Derzeit existieren keine Level-Rollen. Ein Administrator kann Rollen zum Level Up-Table festlegen, in dem dieser den`:command`-Befehl nutzt."
         listRoles: "Liste von Level-Rollen:({0})"
 
+    ListReactionRoleCommand:
+        noReactionRoles: "The server doesn't have any reaction roles right now, you can create one using\n`{0}arr <emote> <role>`"
+        listReactionRoles: "List of Reaction Roles ({0})"
+
     ListSelfAssignableRolesCommand:
         noSelfAssignableRoles: "Derzeit sind keine selbst-zuweisbaren Rollen festgelegt."
         title: "Es existieren {0} selbst-zuweisbare Rollen"
@@ -223,6 +233,17 @@ administration:
         noRolesLinked: ":user Es existieren keine Rollen verlinkt zum Level **:role** im Level Up-Table."
         notALevelRole: ":user Ungültige Rolle, die `:name` Rolle ist nicht auf dem Level Up-Table."
         message: "Die **:role** Rolle wurde erfolgreich aus der Level-Up Rollenliste entfernt.\nDer Server hat noch `:slots` weitere verfügbare Levelrollen-Slots verfügbar."
+
+    RemoveReactionRoleCommand:
+            noReactionRoles: "The server doesn't have any reaction roles right now, you can create one using\n`{0}arr <emote> <role>`"
+            messageIdMustBeGreaterThanOne: "Invalid `message id` given, the `message id` must be at least 1 or greater."
+            messageIdMustBeLowerThanRolesSize: "Invalid `message id` given, the `message id` cannot be higher than the amount of reaction roles the server currently has, which is `{0}` right now."
+            failedToFetchMessage: "Something went wrong while trying to fetch the reaction role message with an ID of `{0}`, if this issue continues to happen, please report it to one of my developers."
+            mustIncludeEmote: "You must include the emote you want to remove from the reaction message."
+            emoteDoestBelongToServer: "The emote does not belong to this server, you can only use emotes from this server as reaction emotes."
+            roleNotFoundOnMessage: "The specified reaction message doesn't have a reaction role attached to it using the {0} emote."
+            deletedMessage: "The reaction role message with an ID of **#:id** has successfully been deleted!"
+            deletedEmote: "The :emote emote has been successfully removed from the reaction message.\nThe message has `:roleSlots` more reaction-role slots available for the message, and `:messageSlots` reaction-message slots available."
 
     RemoveSelfAssignableRoleCommand:
         message: "Die **:role** Rolle wurde erfolgreich aus der Liste der selbst-zuweisbaren Rollen enfernt.\nDer Server hat noch `:slots` weitere selbst-zuweisbare Rollenslots verfügbar."

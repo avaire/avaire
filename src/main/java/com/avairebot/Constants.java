@@ -40,6 +40,7 @@ public class Constants {
     public static final String SHARDS_TABLE_NAME = "shards";
     public static final String LOG_TABLE_NAME = "logs";
     public static final String LOG_TYPES_TABLE_NAME = "log_types";
+    public static final String REACTION_ROLES_TABLE_NAME = "reaction_roles";
 
     // Package Specific Information
     public static final String PACKAGE_COMMAND_PATH = "com.avairebot.commands";

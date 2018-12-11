@@ -33,6 +33,7 @@ import com.avairebot.contracts.middleware.Middleware;
 import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.controllers.PlayerController;
 import com.avairebot.database.controllers.PlaylistController;
+import com.avairebot.database.controllers.ReactionController;
 import com.avairebot.handlers.adapter.JDAStateEventAdapter;
 import com.avairebot.level.LevelManager;
 import com.avairebot.metrics.filters.AreWeReadyYetFilter;
@@ -260,6 +261,7 @@ public class Metrics {
         cacheMetrics.addCache("players", PlayerController.cache);
         cacheMetrics.addCache("playlists", PlaylistController.cache);
         cacheMetrics.addCache("categoryPrefixes", Category.cache);
+        cacheMetrics.addCache("reaction-roles", ReactionController.cache);
         cacheMetrics.addCache("throttleCommands", ThrottleMiddleware.cache);
         cacheMetrics.addCache("middlewareThrottleMessages", Middleware.messageCache);
         cacheMetrics.addCache("autorole", JDAStateEventAdapter.cache);

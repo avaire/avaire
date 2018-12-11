@@ -37,6 +37,12 @@ administration:
         alreadyARoleAtLevel: "There is already a role assigned to level **:level**, only one role can be given per level."
         success: "Role **:role** role has been added to the level-up role list.\nThe server has `:slots` more level role slots available."
 
+    AddReactionRoleCommand:
+        emoteDoestBelongToServer: "The emote does not belong to this server, you can only use emotes from this server as reaction emotes."
+        messageHasNoSlots: "The message doesn't have anymore reaction role slots available, you can remove existing reaction-roles to free up slots, or delete reaction role messages to add the role to a new reaction role message."
+        serverHasNoSlots: "Can't create new reaction role messages, the server doesn't have anymore reaction messages slots, you can deleting existing reaction role messages to free up slots, or add your reaction role to a reaction message if there are available slots on the message for more roles."
+        success: "The :role role has been registered as an reaction role for the :emote emote.\nThe message has `:roleSlots` more reaction-role slots available for the message, and `:messageSlots` reaction-message slots available."
+
     AddSelfAssignableRoleCommand:
         noSlotsLeft: "The server doesn't have any more self-assignable role slots, you can remove existing self-assignable roles to free up slots."
         success: "Role **:role** role has been added to the self-assignable list.\nThe server has `:slots` more self-assignable roles slots available."
@@ -163,6 +169,10 @@ administration:
         noLevelRoles: "There are currently no level roles, an administrator can add roles to the level up table using the `:command` command"
         listRoles: "List of Level Roles ({0})"
 
+    ListReactionRoleCommand:
+        noReactionRoles: "The server doesn't have any reaction roles right now, you can create one using\n`{0}arr <emote> <role>`"
+        listReactionRoles: "List of Reaction Roles ({0})"
+
     ListSelfAssignableRolesCommand:
         noSelfAssignableRoles: "There are currently no self-assignable roles for this server."
         title: "There are {0} self-assignable roles"
@@ -223,6 +233,17 @@ administration:
         noRolesLinked: ":user There are no roles linked to level **:role** on the level up table."
         notALevelRole: ":user Invalid role, the `:name` role is not on the level up table."
         message: "Role **:role** role has been removed from the level-up role list.\nThe server now have `:slots` level role slots available."
+
+    RemoveReactionRoleCommand:
+            noReactionRoles: "The server doesn't have any reaction roles right now, you can create one using\n`{0}arr <emote> <role>`"
+            messageIdMustBeGreaterThanOne: "Invalid `message id` given, the `message id` must be at least 1 or greater."
+            messageIdMustBeLowerThanRolesSize: "Invalid `message id` given, the `message id` cannot be higher than the amount of reaction roles the server currently has, which is `{0}` right now."
+            failedToFetchMessage: "Something went wrong while trying to fetch the reaction role message with an ID of `{0}`, if this issue continues to happen, please report it to one of my developers."
+            mustIncludeEmote: "You must include the emote you want to remove from the reaction message."
+            emoteDoestBelongToServer: "The emote does not belong to this server, you can only use emotes from this server as reaction emotes."
+            roleNotFoundOnMessage: "The specified reaction message doesn't have a reaction role attached to it using the {0} emote."
+            deletedMessage: "The reaction role message with an ID of **#:id** has successfully been deleted!"
+            deletedEmote: "The :emote emote has been successfully removed from the reaction message.\nThe message has `:roleSlots` more reaction-role slots available for the message, and `:messageSlots` reaction-message slots available."
 
     RemoveSelfAssignableRoleCommand:
         message: "Role **:role** role has been removed from the self-assignable list.\nThe server has `:slots` more self-assignable roles slots available."

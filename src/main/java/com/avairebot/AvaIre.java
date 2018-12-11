@@ -218,7 +218,8 @@ public class AvaIre {
             new AddPartnerToGuildsTableMigration(),
             new AddHierarchyToGuildsTableMigration(),
             new AddLevelModifierToGuildsTableMigration(),
-            new AddPardonToLogTableMigration()
+            new AddPardonToLogTableMigration(),
+            new CreateReactionRoleTableMigration()
         );
 
         log.info("Registering default middlewares");

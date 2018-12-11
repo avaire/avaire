@@ -33,13 +33,19 @@ import net.dv8tion.jda.core.events.channel.text.TextChannelDeleteEvent;
 import net.dv8tion.jda.core.events.channel.text.update.TextChannelUpdateNameEvent;
 import net.dv8tion.jda.core.events.channel.text.update.TextChannelUpdatePositionEvent;
 import net.dv8tion.jda.core.events.channel.voice.VoiceChannelDeleteEvent;
+import net.dv8tion.jda.core.events.emote.EmoteRemovedEvent;
 import net.dv8tion.jda.core.events.guild.GuildJoinEvent;
 import net.dv8tion.jda.core.events.guild.GuildLeaveEvent;
 import net.dv8tion.jda.core.events.guild.member.GuildMemberJoinEvent;
 import net.dv8tion.jda.core.events.guild.member.GuildMemberLeaveEvent;
 import net.dv8tion.jda.core.events.guild.update.GuildUpdateNameEvent;
 import net.dv8tion.jda.core.events.guild.update.GuildUpdateRegionEvent;
+import net.dv8tion.jda.core.events.message.MessageBulkDeleteEvent;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.events.message.MessageUpdateEvent;
+import net.dv8tion.jda.core.events.message.guild.GuildMessageDeleteEvent;
+import net.dv8tion.jda.core.events.message.react.MessageReactionAddEvent;
+import net.dv8tion.jda.core.events.message.react.MessageReactionRemoveEvent;
 import net.dv8tion.jda.core.events.role.RoleCreateEvent;
 import net.dv8tion.jda.core.events.role.RoleDeleteEvent;
 import net.dv8tion.jda.core.events.role.update.RoleUpdateNameEvent;
@@ -49,6 +55,8 @@ import net.dv8tion.jda.core.events.user.update.UserUpdateAvatarEvent;
 import net.dv8tion.jda.core.events.user.update.UserUpdateDiscriminatorEvent;
 import net.dv8tion.jda.core.events.user.update.UserUpdateNameEvent;
 
+import java.util.Collections;
+
 public class MainEventHandler extends EventHandler {
 
     private final RoleEventAdapter roleEvent;
@@ -57,6 +65,7 @@ public class MainEventHandler extends EventHandler {
     private final MessageEventAdapter messageEvent;
     private final GuildStateEventAdapter guildStateEvent;
     private final JDAStateEventAdapter jdaStateEventAdapter;
+    private final ReactionEmoteEventAdapter reactionEmoteEventAdapter;
 
     /**
      * Instantiates the event handler and sets the avaire class instance.
@@ -72,6 +81,7 @@ public class MainEventHandler extends EventHandler {
         this.messageEvent = new MessageEventAdapter(avaire);
         this.guildStateEvent = new GuildStateEventAdapter(avaire);
         this.jdaStateEventAdapter = new JDAStateEventAdapter(avaire);
+        this.reactionEmoteEventAdapter = new ReactionEmoteEventAdapter(avaire);
     }
 
     @Override
@@ -155,6 +165,21 @@ public class MainEventHandler extends EventHandler {
     }
 
     @Override
+    public void onGuildMessageDelete(GuildMessageDeleteEvent event) {
+        messageEvent.onMessageDelete(event.getChannel(), Collections.singletonList(event.getMessageId()));
+    }
+
+    @Override
+    public void onMessageBulkDelete(MessageBulkDeleteEvent event) {
+        messageEvent.onMessageDelete(event.getChannel(), event.getMessageIds());
+    }
+
+    @Override
+    public void onMessageUpdate(MessageUpdateEvent event) {
+        messageEvent.onMessageUpdate(event);
+    }
+
+    @Override
     public void onRoleUpdateName(RoleUpdateNameEvent event) {
         roleEvent.updateRoleData(event.getGuild());
         roleEvent.onRoleUpdateName(event);
@@ -200,5 +225,26 @@ public class MainEventHandler extends EventHandler {
         if (!avaire.getSettings().isMusicOnlyMode()) {
             PlayerController.updateUserData(event.getUser());
         }
+    }
+
+    @Override
+    public void onEmoteRemoved(EmoteRemovedEvent event) {
+        reactionEmoteEventAdapter.onEmoteRemoved(event);
+    }
+
+    @Override
+    public void onMessageReactionAdd(MessageReactionAddEvent event) {
+        if (event.getGuild() == null) {
+            return;
+        }
+        reactionEmoteEventAdapter.onMessageReactionAdd(event);
+    }
+
+    @Override
+    public void onMessageReactionRemove(MessageReactionRemoveEvent event) {
+        if (event.getGuild() == null) {
+            return;
+        }
+        reactionEmoteEventAdapter.onMessageReactionRemove(event);
     }
 }
