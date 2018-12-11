@@ -47,6 +47,16 @@ public class ReactionController {
 
     private static final Logger log = LoggerFactory.getLogger(ReactionController.class);
 
+    /**
+     * Fetches a collection of reaction roles/messages for the server the message was
+     * sent in, if the server doesn't have any reaction roles an empty collection
+     * will be returned instead, if the message was not sent in a server then
+     * {@code NULL} will be returned.
+     *
+     * @param avaire  The avaire instance, used to talking to the database.
+     * @param message The JDA message instance for the current message.
+     * @return Possibly null, the reaction collections for the current guild, or null.
+     */
     @CheckReturnValue
     public static Collection fetchReactions(AvaIre avaire, Message message) {
         if (!message.getChannelType().isGuild()) {
@@ -55,6 +65,15 @@ public class ReactionController {
         return fetchReactions(avaire, message.getGuild());
     }
 
+    /**
+     * Fetches a collection of reaction roles/messages for the given server,
+     * if the server doesn't have any reaction roles an empty collection
+     * will be returned instead,
+     *
+     * @param avaire The avaire instance, used to talking to the database.
+     * @param guild  The JDA guild instance for the current guild.
+     * @return Possibly null, the reaction collections for the current guild, or null.
+     */
     @CheckReturnValue
     public static Collection fetchReactions(AvaIre avaire, Guild guild) {
         return (Collection) CacheUtil.getUncheckedUnwrapped(cache, guild.getIdLong(), () -> {
@@ -74,6 +93,15 @@ public class ReactionController {
         });
     }
 
+    /**
+     * Fetches the reaction message transformer for the given message,
+     * if the message doesn't have any reaction roles attached to it
+     * then {@code NULL} will be returned instead.
+     *
+     * @param avaire  The avaire instance, used to talking to the database.
+     * @param message The JDA message instance for the current message.
+     * @return Possibly null, the reaction message transformer containing the reaction roles for the given message.
+     */
     @CheckReturnValue
     public static ReactionTransformer fetchReactionFromMessage(AvaIre avaire, Message message) {
         Collection reactions = fetchReactions(avaire, message);
@@ -89,6 +117,11 @@ public class ReactionController {
         return new ReactionTransformer(reaction.get(0));
     }
 
+    /**
+     * Forgets all the cache entities for the given guild ID.
+     *
+     * @param guildId The ID of the guild that the cache entities should be forgotten for.
+     */
     public static void forgetCache(long guildId) {
         cache.invalidate(guildId);
     }

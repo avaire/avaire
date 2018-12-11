@@ -38,6 +38,12 @@ public class DrainReactionRoleQueueTask implements Task {
     private static final DelayQueue<ReactionActionEntity> queue = new DelayQueue<>();
     private static long lastCheck = -1;
 
+    /**
+     * Queues the given reaction action entity, adding or
+     * removing the role for the user in the entity.
+     *
+     * @param entity The reaction action entity that should be added to the queue.
+     */
     public static void queueReactionActionEntity(ReactionActionEntity entity) {
         if (queue.contains(entity)) {
             queue.remove(entity);
@@ -70,22 +76,22 @@ public class DrainReactionRoleQueueTask implements Task {
     }
 
     private void run(AvaIre avaire, ReactionActionEntity entity) {
-        Guild guild = avaire.getShardManager().getGuildById(entity.getGuildId());
+        Guild guild = avaire.getShardManager().getGuildById(entity.guildId);
         if (guild == null) {
             return;
         }
 
-        Member member = guild.getMemberById(entity.getUserId());
+        Member member = guild.getMemberById(entity.userId);
         if (member == null) {
             return;
         }
 
-        Role role = guild.getRoleById(entity.getRoleId());
+        Role role = guild.getRoleById(entity.roleId);
         if (role == null) {
             return;
         }
 
-        switch (entity.getType()) {
+        switch (entity.type) {
             case ADD:
                 if (RoleUtil.hasRole(member, role)) {
                     return;
@@ -102,12 +108,20 @@ public class DrainReactionRoleQueueTask implements Task {
         }
     }
 
+    /**
+     * The type of reaction action that should be preformed.
+     */
     public enum ReactionActionType {
         ADD, REMOVE
     }
 
     public static class ReactionActionEntity implements Delayed {
 
+        /**
+         * The default time in milliseconds that should be between reaction checks
+         * that are sent to the Discords API, their ratelimit allows one request
+         * a second, per server, or sixty requests every minute.
+         */
         static final long defaultDuration = 500;
 
         private final long guildId;
@@ -123,26 +137,13 @@ public class DrainReactionRoleQueueTask implements Task {
             this.type = type;
         }
 
-        public long getGuildId() {
-            return guildId;
-        }
-
-        public long getUserId() {
-            return userId;
-        }
-
-        public long getRoleId() {
-            return roleId;
-        }
-
-        public ReactionActionType getType() {
-            return type;
-        }
-
-        public long getDuration() {
-            return duration;
-        }
-
+        /**
+         * Sets the duration in milliseconds for when the reaction entity can be consumed
+         * by the {@link DrainReactionRoleQueueTask drain reaction queue task}, the duration
+         * will be added to the current time in milliseconds.
+         *
+         * @param duration The time in milliseconds before the vote entity can be consumed.
+         */
         public void setDuration(long duration) {
             this.duration = System.currentTimeMillis() + duration;
         }
@@ -150,8 +151,8 @@ public class DrainReactionRoleQueueTask implements Task {
         @Override
         public boolean equals(Object obj) {
             return obj instanceof ReactionActionEntity
-                && ((ReactionActionEntity) obj).getUserId() == getUserId()
-                && ((ReactionActionEntity) obj).getRoleId() == getRoleId();
+                && ((ReactionActionEntity) obj).userId == userId
+                && ((ReactionActionEntity) obj).roleId == roleId;
         }
 
         @Override
@@ -161,7 +162,7 @@ public class DrainReactionRoleQueueTask implements Task {
 
         @Override
         public int compareTo(@NotNull Delayed obj) {
-            return (int) (this.duration - ((ReactionActionEntity) obj).getDuration());
+            return (int) (this.duration - ((ReactionActionEntity) obj).duration);
         }
 
         @Override
