@@ -122,7 +122,7 @@ public class ThrottleMiddleware extends Middleware {
                 .set("command", stack.getCommand().getName())
                 .set("time", ((entity.getTime() - System.currentTimeMillis()) / 1000) + 1)
                 .set("prefix", stack.getCommand().generateCommandPrefix(message))
-                .queue();
+                .queue(newMessage -> newMessage.delete().queueAfter(45, TimeUnit.SECONDS));
 
             return false;
         });

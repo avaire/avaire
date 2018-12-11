@@ -33,6 +33,7 @@ import net.dv8tion.jda.core.entities.Message;
 
 import javax.annotation.Nonnull;
 import java.util.Arrays;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 public class RequirePermissionMiddleware extends Middleware {
@@ -84,7 +85,7 @@ public class RequirePermissionMiddleware extends Middleware {
                         .map(Permissions::getPermission)
                         .map(Permission::getName)
                         .collect(Collectors.joining("`, `"))
-                    ).queue();
+                    ).queue(newMessage -> newMessage.delete().queueAfter(45, TimeUnit.SECONDS));
 
                 return false;
             });
@@ -97,7 +98,7 @@ public class RequirePermissionMiddleware extends Middleware {
                         .map(Permissions::getPermission)
                         .map(Permission::getName)
                         .collect(Collectors.joining("`, `"))
-                    ).queue();
+                    ).queue(newMessage -> newMessage.delete().queueAfter(45, TimeUnit.SECONDS));
 
                 return false;
             });

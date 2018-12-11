@@ -34,6 +34,7 @@ import com.avairebot.factories.MessageFactory;
 import net.dv8tion.jda.core.entities.Message;
 
 import javax.annotation.Nonnull;
+import java.util.concurrent.TimeUnit;
 
 public class RequireDJLevelMiddleware extends Middleware {
 
@@ -87,7 +88,7 @@ public class RequireDJLevelMiddleware extends Middleware {
             MessageFactory.makeError(message, djcheckMessage)
                 .set("iam", command.getCommand().generateCommandTrigger(message))
                 .set("prefix", stack.getCommand().generateCommandPrefix(message))
-                .queue();
+                .queue(newMessage -> newMessage.delete().queueAfter(45, TimeUnit.SECONDS));
 
             return false;
         });

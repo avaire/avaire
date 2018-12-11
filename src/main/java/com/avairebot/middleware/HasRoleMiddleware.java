@@ -30,6 +30,7 @@ import net.dv8tion.jda.core.entities.Role;
 
 import javax.annotation.Nonnull;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class HasRoleMiddleware extends Middleware {
 
@@ -64,7 +65,7 @@ public class HasRoleMiddleware extends Middleware {
                 return runMessageCheck(message, () -> {
                     MessageFactory.makeError(message, "You don't have the required role to execute this command:\n`:role`")
                         .set("role", roleName)
-                        .queue();
+                        .queue(newMessage -> newMessage.delete().queueAfter(45, TimeUnit.SECONDS));
 
                     return false;
                 });
