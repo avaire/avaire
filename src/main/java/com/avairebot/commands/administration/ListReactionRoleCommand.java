@@ -96,13 +96,16 @@ public class ListReactionRoleCommand extends Command {
     public boolean onCommand(CommandMessage context, String[] args) {
         Collection collection = ReactionController.fetchReactions(avaire, context.getGuild());
         if (collection == null) {
-            return sendErrorMessage(context, "Failed to load the reaction roles from the server, please try again later, if this continues to happen please report it to one of my developers on the official AvaIre Discord Server.");
+            return sendErrorMessage(context, "errors.errorOccurredWhileLoading",
+                "reaction roles"
+            );
         }
 
         if (collection.isEmpty()) {
-            return sendErrorMessage(context, "The server doesn't have any reaction roles right now, you can create one using the\n{0}arr <emote> <role>",
+            return sendErrorMessage(context, context.i18n("noReactionRoles",
                 CommandHandler.getCommand(AddReactionRoleCommand.class)
                     .getCategory().getPrefix(context.getMessage())
+                )
             );
         }
 
@@ -151,7 +154,7 @@ public class ListReactionRoleCommand extends Command {
         messages.add("\n" + paginator.generateFooter(generateCommandTrigger(context.getMessage())));
 
         context.makeInfo(String.join("\n", messages))
-            .setTitle(I18n.format("List of Reaction Roles ({0})",
+            .setTitle(context.i18n("listReactionRoles",
                 collection.size()
             )).queue();
 

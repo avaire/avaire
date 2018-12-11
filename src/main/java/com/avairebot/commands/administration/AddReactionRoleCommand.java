@@ -111,8 +111,8 @@ public class AddReactionRoleCommand extends Command {
     public boolean onCommand(CommandMessage context, String[] args) {
         GuildTransformer guildTransformer = context.getGuildTransformer();
         if (guildTransformer == null) {
-            return sendErrorMessage(context,
-                "Something went wrong while trying to get the guild transformer object, check the console for more information."
+            return sendErrorMessage(context, "errors.errorOccurredWhileLoading",
+                "guild settings"
             );
         }
 
@@ -122,7 +122,7 @@ public class AddReactionRoleCommand extends Command {
 
         Emote emote = context.getMessage().getEmotes().get(0);
         if (emote.getGuild() == null || emote.getGuild().getIdLong() != context.getGuild().getIdLong()) {
-            return sendErrorMessage(context, "The emote does not belong to this server, you can only use emotes from this server as reaction emotes.");
+            return sendErrorMessage(context, context.i18n("emoteDoestBelongToServer"));
         }
 
         if (args.length == 1) {
@@ -154,7 +154,7 @@ public class AddReactionRoleCommand extends Command {
             }
 
             if (reactionTransformer.getRoles().size() >= guildTransformer.getType().getLimits().getReactionRoles().getRolesPerMessage()) {
-                context.makeWarning("The message doesn't have anymore reaction role slots available, you can remove existing reaction-roles to free up slots, or delete reaction role messages to add the role to a new reaction role message.")
+                context.makeWarning(context.i18n("messageHasNoSlots"))
                     .queue(noSlotsMessage -> noSlotsMessage.delete().queueAfter(15, TimeUnit.SECONDS));
                 return;
             }
@@ -173,7 +173,7 @@ public class AddReactionRoleCommand extends Command {
                 GuildTypeTransformer.GuildTypeLimits.GuildReactionRoles reactionLimits = guildTransformer.getType().getLimits().getReactionRoles();
 
                 message.addReaction(emote).queue();
-                context.makeSuccess("The :role role has been registered as an reaction role for the :emote emote.\nThe message has `:roleSlots` more reaction-role slots available for the message, and `:messageSlots` reaction-message slots available.")
+                context.makeSuccess(context.i18n("success"))
                     .set("role", role.getAsMention())
                     .set("emote", emote.getAsMention())
                     .set("roleSlots", reactionLimits.getRolesPerMessage() - reactionTransformer.getRoles().size())
@@ -194,11 +194,13 @@ public class AddReactionRoleCommand extends Command {
     private boolean createNewReactionRoleMessage(CommandMessage context, GuildTransformer transformer, Emote emote, Role role, Message message) {
         Collection collection = ReactionController.fetchReactions(avaire, context.getGuild());
         if (collection == null) {
-            return sendErrorMessage(context, "Failed to load the reaction roles from the server, please try again later, if this continues to happen please report it to one of my developers on the official AvaIre Discord Server.");
+            return sendErrorMessage(context, "errors.errorOccurredWhileLoading",
+                "reaction roles"
+            );
         }
 
         if (collection.size() >= transformer.getType().getLimits().getReactionRoles().getMessages()) {
-            context.makeWarning("Can't create new reaction role messages, the server doesn't have anymore reaction messages slots, you can deleting existing reaction role messages to free up slots, or add your reaction role to a reaction message if there are available slots on the message for more roles.")
+            context.makeWarning(context.i18n("serverHasNoSlots"))
                 .queue(noSlotsMessage -> noSlotsMessage.delete().queueAfter(15, TimeUnit.SECONDS));
             return false;
         }
@@ -227,7 +229,7 @@ public class AddReactionRoleCommand extends Command {
 
                 GuildTypeTransformer.GuildTypeLimits.GuildReactionRoles reactionLimits = transformer.getType().getLimits().getReactionRoles();
 
-                context.makeSuccess("The :role role has been registered as an reaction role for the :emote emote.\nThe server has `:roleSlots` more reaction-role slots available for the message, and `:messageSlots` reaction-message slots available.")
+                context.makeSuccess(context.i18n("success"))
                     .set("role", role.getAsMention())
                     .set("emote", emote.getAsMention())
                     .set("roleSlots", reactionLimits.getRolesPerMessage() - reactionTransformer.getRoles().size())

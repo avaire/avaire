@@ -113,13 +113,16 @@ public class RemoveReactionRoleCommand extends Command {
     public boolean onCommand(CommandMessage context, String[] args) {
         Collection collection = ReactionController.fetchReactions(avaire, context.getGuild());
         if (collection == null) {
-            return sendErrorMessage(context, "Failed to load the reaction roles from the server, please try again later, if this continues to happen please report it to one of my developers on the official AvaIre Discord Server.");
+            return sendErrorMessage(context, "errors.errorOccurredWhileLoading",
+                "reaction roles"
+            );
         }
 
         if (collection.isEmpty()) {
-            return sendErrorMessage(context, "The server doesn't have any reaction roles right now, you can create one using the\n{0}arr <emote> <role>",
+            return sendErrorMessage(context, context.i18n("noReactionRoles",
                 CommandHandler.getCommand(AddReactionRoleCommand.class)
                     .getCategory().getPrefix(context.getMessage())
+                )
             );
         }
 
@@ -129,18 +132,18 @@ public class RemoveReactionRoleCommand extends Command {
 
         int index = NumberUtil.parseInt(args[0], -1);
         if (index < 1) {
-            return sendErrorMessage(context, "Invalid `message id` given, the `message id` must be at least 1 or greater.");
+            return sendErrorMessage(context, context.i18n("messageIdMustBeGreaterThanOne"));
         }
 
         if (index > collection.size()) {
-            return sendErrorMessage(context, "Invalid `message id` given, the `message id` cannot be higher than the amount of reaction roles the server currently has, which is `{0}` right now.",
+            return sendErrorMessage(context, context.i18n("messageIdMustBeLowerThanRolesSize",
                 String.valueOf(collection.size())
-            );
+            ));
         }
 
         DataRow row = collection.get(index - 1);
         if (row == null) {
-            return sendErrorMessage(context, "Something went wrong while trying to fetch the reaction role message with an ID of `{0}`, if this issue continues to happen, please report it to one of my developers.",
+            return sendErrorMessage(context, context.i18n("failedToFetchMessage"),
                 String.valueOf(index)
             );
         }
@@ -157,7 +160,7 @@ public class RemoveReactionRoleCommand extends Command {
 
             ReactionController.forgetCache(context.getGuild().getIdLong());
 
-            context.makeSuccess("The reaction role message with an ID of **#:id** has successfully been deleted!")
+            context.makeSuccess(context.i18n("deletedMessage"))
                 .set("id", index)
                 .queue();
         } catch (SQLException e) {
@@ -174,18 +177,18 @@ public class RemoveReactionRoleCommand extends Command {
     @SuppressWarnings("ConstantConditions")
     private boolean removeSingleRoleOrEmoteFromMessage(CommandMessage context, String[] args, DataRow row) {
         if (context.getMessage().getEmotes().isEmpty()) {
-            return sendErrorMessage(context, "You must include the emote you want to remove from the reaction message.");
+            return sendErrorMessage(context, context.i18n("mustIncludeEmote"));
         }
 
         Emote emote = context.getMessage().getEmotes().get(0);
         if (emote.getGuild() == null || emote.getGuild().getIdLong() != context.getGuild().getIdLong()) {
-            return sendErrorMessage(context, "The emote does not belong to this server, you can only use emotes from this server as reaction emotes.");
+            return sendErrorMessage(context, context.i18n("emoteDoestBelongToServer"));
         }
         ReactionTransformer transformer = new ReactionTransformer(row);
         if (!transformer.removeReaction(emote)) {
-            return sendErrorMessage(context, "The specified reaction message doesn't have a reaction role attached to it using the {0} emote.",
+            return sendErrorMessage(context, context.i18n("roleNotFoundOnMessage",
                 emote.getAsMention()
-            );
+            ));
         }
         try {
             if (transformer.getRoles().isEmpty()) {
@@ -206,7 +209,7 @@ public class RemoveReactionRoleCommand extends Command {
             GuildTypeTransformer.GuildTypeLimits.GuildReactionRoles reactionLimits = context.getGuildTransformer()
                 .getType().getLimits().getReactionRoles();
 
-            context.makeSuccess("The :emote emote has been successfully removed from the reaction message.\nThe message has `:roleSlots` more reaction-role slots available for the message, and `:messageSlots` reaction-message slots available.")
+            context.makeSuccess(context.i18n("deletedEmote"))
                 .set("emote", emote.getAsMention())
                 .set("roleSlots", reactionLimits.getRolesPerMessage() - transformer.getRoles().size())
                 .set("messageSlots", reactionLimits.getMessages() - ReactionController.fetchReactions(avaire, context.getGuild()).size())
