@@ -37,6 +37,7 @@ import com.avairebot.utilities.RestActionUtil;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import net.dv8tion.jda.core.Permission;
+import net.dv8tion.jda.core.entities.User;
 
 import javax.annotation.Nonnull;
 import java.net.MalformedURLException;
@@ -125,7 +126,7 @@ public class PlayCommand extends Command {
             return loadSongFromSession(context, args);
         }
 
-        AudioHandler.getDefaultAudioHandler().loadAndPlay(context, buildTrackRequestString(args)).handle(
+        AudioHandler.getDefaultAudioHandler().loadAndPlay(context, buildTrackRequestString(context.getAuthor(), args)).handle(
             musicSuccess(context, shouldLeaveMessage),
             musicFailure(context),
             musicSession(context, args)
@@ -192,11 +193,15 @@ public class PlayCommand extends Command {
             });
     }
 
-    private String buildTrackRequestString(String[] args) {
+    private String buildTrackRequestString(User requester, String[] args) {
         String string = String.join(" ", args);
 
         if (string.startsWith("scsearch:")) {
             return string;
+        }
+
+        if (string.startsWith("local:") && avaire.getBotAdmins().isAdmin(requester.getId()).isAdmin()) {
+            return string.substring(6, string.length());
         }
 
         try {

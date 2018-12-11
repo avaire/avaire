@@ -93,7 +93,8 @@ public class FeedbackResponseCommand extends SystemCommand {
             return sendErrorMessage(context, "The original text channel for the given feedback ID no longer exists, can't send feedback message.");
         }
 
-        String message = String.join(" ", Arrays.copyOfRange(args, 1, args.length));
+        String message = String.join(" ", Arrays.copyOfRange(args, 1, args.length))
+            .replaceAll("\\\\n", "\n");
 
         PlaceholderMessage response = context.makeEmbeddedMessage()
             .setDescription(message)

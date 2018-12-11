@@ -399,27 +399,28 @@ help:
             footer: 'Befehls-Kategorie: '
 
 interaction:
-    BiteCommand: 'beißt'
-    CuddleCommand: 'knuddelt'
-    DivorceCommand: 'scheidet'
-    EatCommand: 'isst etwas mit'
-    HelloCommand: 'sagt Hallo zu'
-    HighFiveCommand: 'gibt ein High Five zu'
-    HugCommand: 'umarmt'
-    KillCommand: 'möchte jemanden umbringen und zwar'
-    KissCommand: 'küsst'
-    MarryCommand: 'möchte jemanden heiraten und zwar'
-    MeowCommand: 'miaut zu'
+    BiteCommand: '**{0}** beißt **{1}**'
+    BlushCommand: '**{0}** errötet bei **{1}**'
+    CuddleCommand: '**{0}** knuddelt **{1}**'
+    DivorceCommand: '**{0}** scheidet **{1}**'
+    EatCommand: '**{0}** isst etwas mit **{1}**'
+    HelloCommand: '**{0}** sagt Hallo zu **{1}**'
+    HighFiveCommand: '**{0}** gibt ein High Five zu **{1}**'
+    HugCommand: '**{0}** umarmt **{1}**'
+    KillCommand: '**{0}** möchte jemanden umbringen und zwar **{1}**'
+    KissCommand: '**{0}** küsst **{1}**'
+    MarryCommand: '**{0}** möchte jemanden heiraten und zwar **{1}**'
+    MeowCommand: '**{0}** miaut zu **{1}**'
     PanCommand: '**{0}** hat gerade **{1}** mit einer Bratpfanne erschlagen!'
-    PatCommand: 'streichelt'
-    PokeCommand: 'stupst'
-    PoutCommand: 'schmollt bei'
-    PunchCommand: 'haut'
-    SenpaiCommand: 'möchte wahrgenommen werden von'
-    ShrugCommand: 'zuckt mit den Schultern zu'
-    SlapCommand: 'ohrfeigt'
-    TickleCommand: 'kitzelt'
-    TriggeredCommand: 'wird getriggert von'
+    PatCommand: '**{0}** streichelt **{1}**'
+    PokeCommand: '**{0}** stupst **{1}**'
+    PoutCommand: '**{0}** schmollt bei **{1}**'
+    PunchCommand: '**{0}** haut **{1}**'
+    SenpaiCommand: '**{0}** möchte wahrgenommen werden von **{1}**'
+    ShrugCommand: '**{0}** zuckt mit den Schultern zu **{1}**'
+    SlapCommand: '**{0}** ohrfeigt **{1}**'
+    TickleCommand: '**{0}** kitzelt **{1}**'
+    TriggeredCommand: '**{0}** wird getriggert von **{1}**'
 
 music:
     internal:
@@ -531,9 +532,12 @@ music:
         error: 'Fehlendes Argument, `Song ID`. Du musst die ID von dem Song angeben, dass du von der Warteschlange entfernen möchtest.'
         failedToRemoveSong: 'Es ist ein Fehler aufgetreten beim Versuch einen Song auf dem Index `:index` zu entfernen.'
         tooHighNumberGiven: 'Es befinden sich nur `{0}` Song[s] in der Warteschlange. Versuche die Nummer etwas herunter zu senken.'
+        invalidRange: 'Invalid range given, give the range of IDs in a start to end format, like `3-6`.'
         mustBePositiveNumber: 'Die `Song ID` muss eine gültige, positive Nummer sein.'
         nothingToRemove: "Nicht's zum Entfernen. Anfragen von Musik ist vorausgesetzt. Tue dies bitte zuerst mit folgendem Befehl: `{0}play`"
         success: ':song wurde erfolgreich von der Warteschlange entfernt.'
+        successMultiple: 'Songs from `:start` to `:end` were successfully removed from the music queue.\n:tracks'
+        successMultipleNote: "\nAnd **{0}** more songs were removed from the queue."
 
     RepeatMusicQueueCommand:
         error: "Nicht's zum Wiederholen vorhanden. Anfragen von Musik ist vorausgesetzt. Tue dies bitte zuerst mit folgendem Befehl: `{0}play`"

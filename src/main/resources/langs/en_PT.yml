@@ -399,27 +399,28 @@ help:
             footer: 'Command category: '
 
 interaction:
-    BiteCommand: 'bites'
-    CuddleCommand: 'cuddles'
-    DivorceCommand: 'divorces'
-    EatCommand: "eats some grub wit'"
-    HelloCommand: "says ahoy t'"
-    HighFiveCommand: 'high fives'
-    HugCommand: 'hugs'
-    KillCommand: "wants t' scuttle"
-    KissCommand: 'kisses'
-    MarryCommand: 'wants to marry'
-    MeowCommand: 'meows at'
+    BiteCommand: '**{0}** bites **{1}**'
+    BlushCommand: '**{0}** blushes at **{1}**'
+    CuddleCommand: '**{0}** cuddles **{1}**'
+    DivorceCommand: '**{0}** divorces **{1}**'
+    EatCommand: "**{0}** eats some grub wit' **{1}**"
+    HelloCommand: "**{0}** says ahoy t' **{1}**"
+    HighFiveCommand: '**{0}** high fives **{1}**'
+    HugCommand: '**{0}** hugs **{1}**'
+    KillCommand: "**{0}** wants t' scuttle **{1}**"
+    KissCommand: '**{0}** kisses **{1}**'
+    MarryCommand: '**{0}** wants to marry **{1}**'
+    MeowCommand: '**{0}** meows at **{1}**'
     PanCommand: "**{0}** jus' hit **{1}** wit' a pan!"
-    PatCommand: 'pats'
-    PokeCommand: 'pokes'
-    PoutCommand: 'pouts at'
-    PunchCommand: 'punches'
-    SenpaiCommand: "wants t' be noticed by"
-    ShrugCommand: 'shrugs at'
-    SlapCommand: 'slaps'
-    TickleCommand: 'tickles'
-    TriggeredCommand: 'be triggered by'
+    PatCommand: '**{0}** pats **{1}**'
+    PokeCommand: '**{0}** pokes **{1}**'
+    PoutCommand: '**{0}** pouts at **{1}**'
+    PunchCommand: '**{0}** punches **{1}**'
+    SenpaiCommand: "**{0}** wants t' be noticed by **{1}**"
+    ShrugCommand: '**{0}** shrugs at **{1}**'
+    SlapCommand: '**{0}** slaps **{1}**'
+    TickleCommand: '**{0}** tickles **{1}**'
+    TriggeredCommand: '**{0}** be triggered by **{1}**'
 
 music:
     internal:
@@ -530,9 +531,12 @@ music:
         error: "Missin' argument `chantey id`, ye must include th' ID o' th' chantey ye wants t' scuttle from th' queue."
         failedToRemoveSong: "Somethin' went wrong, failed t' scuttle shanty at index `:index`"
         tooHighNumberGiven: "Thar are only `{0}` shanties in th' queue, try lowerin' yer number a bit."
+        invalidRange: 'Invalid range given, give the range of IDs in a start to end format, like `3-6`.'
         mustBePositiveNumber: "Th' `shantey id` must be a valid positive number."
         nothingToRemove: "Nothin' t' scuttle, request chanties first wit' `{0}play`"
         success: ":song has been successfully scuttled from th' shanties queue."
+        successMultiple: 'Songs from `:start` to `:end` were successfully removed from the music queue.\n:tracks'
+        successMultipleNote: "\nAnd **{0}** more songs were removed from the queue."
 
     RepeatMusicQueueCommand:
         error: "Thar be naught t' repeat, request shanties first wit' `{0}play`"

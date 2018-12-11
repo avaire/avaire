@@ -63,6 +63,13 @@ public class ChangePrefixCommand extends Command {
 
     @Override
     public List<String> getExampleUsage() {
+        if (avaire.getSettings().isMusicOnlyMode()) {
+            return Arrays.asList(
+                "`:command all a!` - Sets the prefix for all commands to `a!`.",
+                "`:command all` - Resets the prefix back to using the default."
+            );
+        }
+
         return Arrays.asList(
             "`:command fun` - Resets the prefix back to default for the `fun` commands.",
             "`:command admin /` - Sets the prefix to `/` for all admin commands.",

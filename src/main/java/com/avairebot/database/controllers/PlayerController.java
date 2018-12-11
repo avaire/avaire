@@ -36,10 +36,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nonnull;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 public class PlayerController {
@@ -107,20 +104,7 @@ public class PlayerController {
                     transformer.setAvatar(user.getAvatarId());
 
                     updateUserData(user);
-
-                    return mergeWithExperienceEntity(avaire, transformer);
                 }
-
-                // If the users name haven't been encoded yet, we'll do it below.
-                String username = transformer.getUsernameRaw();
-                if (username.startsWith("base64:")) {
-                    return mergeWithExperienceEntity(avaire, transformer);
-                }
-
-                avaire.getDatabase().newQueryBuilder(Constants.PLAYER_EXPERIENCE_TABLE_NAME)
-                    .useAsync(true)
-                    .where("user_id", message.getAuthor().getId())
-                    .update(statement -> statement.set("username", message.getAuthor().getName(), true));
 
                 return mergeWithExperienceEntity(avaire, transformer);
             } catch (Exception ex) {
@@ -154,7 +138,8 @@ public class PlayerController {
     private static boolean isChanged(User user, PlayerTransformer transformer) {
         return !user.getName().equals(transformer.getUsername())
             || !user.getDiscriminator().equals(transformer.getDiscriminator())
-            || !Objects.equals(user.getAvatarId(), transformer.getAvatar());
+            || !Objects.equals(user.getAvatarId(), transformer.getAvatar())
+            || !transformer.getUsernameRaw().startsWith("base64:");
     }
 
     private static String asKey(@Nonnull Guild guild, @Nonnull User user) {
@@ -168,7 +153,9 @@ public class PlayerController {
         private final String avatar;
 
         PlayerUpdateReference(@Nonnull User user) {
-            this.username = user.getName();
+            this.username = "base64:" + new String(
+                Base64.getEncoder().encode(user.getName().getBytes())
+            );
             this.discriminator = user.getDiscriminator();
             this.avatar = user.getAvatarId();
         }

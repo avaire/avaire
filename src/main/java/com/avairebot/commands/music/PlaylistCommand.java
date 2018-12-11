@@ -22,6 +22,7 @@
 package com.avairebot.commands.music;
 
 import com.avairebot.AvaIre;
+import com.avairebot.Constants;
 import com.avairebot.commands.CommandHandler;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.commands.help.HelpCommand;
@@ -136,11 +137,8 @@ public class PlaylistCommand extends Command {
     @Override
     @SuppressWarnings({"SingleStatementInBlock", "ConstantConditions"})
     public boolean onCommand(CommandMessage context, String[] args) {
-        try {
-            if (avaire.getDatabase().getConnection() instanceof SQLite) {
-                return sendErrorMessage(context, "The current selected database type is set to `SQLite`, the playlist command does not support the SQLite syntax(yet), if you want to use the playlist commands, please change to a `MySQL` setup instead.");
-            }
-        } catch (SQLException ignored) {
+        if (isRunningOutdatedSQLite()) {
+            return sendErrorMessage(context, "The current selected database is running an outdated version of the `SQLite` setup, if you want to use the playlist commands, either re-generate the SQLite database to get the new version, or change to a `MySQL` setup instead.");
         }
 
         Collection playlists = PlaylistController.fetchPlaylists(avaire, context.getMessage());
@@ -225,6 +223,18 @@ public class PlaylistCommand extends Command {
             .setTitle(":musical_note: Music Playlists")
             .queue(message -> message.delete().queueAfter(1, TimeUnit.MINUTES, null, RestActionUtil.ignore));
 
+        return false;
+    }
+
+    private boolean isRunningOutdatedSQLite() {
+        try {
+            if (avaire.getDatabase().getConnection() instanceof SQLite && !avaire.getDatabase().getSchema().hasColumn(
+                Constants.MUSIC_PLAYLIST_TABLE_NAME, "amount"
+            )) {
+                return true;
+            }
+        } catch (SQLException ignored) {
+        }
         return false;
     }
 }

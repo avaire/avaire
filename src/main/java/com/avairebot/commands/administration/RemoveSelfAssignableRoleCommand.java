@@ -113,7 +113,7 @@ public class RemoveSelfAssignableRoleCommand extends Command {
             return false;
         }
 
-        if (!RoleUtil.canInteractWithRole(context.getMessage(), role)) {
+        if (!RoleUtil.canUserInteractWithRole(context.getMessage(), role)) {
             return false;
         }
 

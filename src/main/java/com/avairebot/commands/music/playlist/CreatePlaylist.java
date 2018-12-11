@@ -28,15 +28,21 @@ import com.avairebot.commands.music.PlaylistCommand;
 import com.avairebot.contracts.commands.playlist.PlaylistSubCommand;
 import com.avairebot.database.collection.Collection;
 import com.avairebot.database.collection.DataRow;
+import com.avairebot.database.connections.SQLite;
 import com.avairebot.database.controllers.PlaylistController;
+import com.avairebot.database.query.ChangeableStatement;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.utilities.NumberUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CreatePlaylist extends PlaylistSubCommand {
+
+    private static final Logger log = LoggerFactory.getLogger(CreatePlaylist.class);
 
     public CreatePlaylist(AvaIre avaire, PlaylistCommand command) {
         super(avaire, command);
@@ -84,6 +90,8 @@ public class CreatePlaylist extends PlaylistSubCommand {
     private void storeInDatabase(CommandMessage context, String name) throws SQLException {
         avaire.getDatabase().newQueryBuilder(Constants.MUSIC_PLAYLIST_TABLE_NAME)
             .insert(statement -> {
+                addIncrementingIdWhenUsingSQLite(statement);
+
                 statement.set("guild_id", context.getGuild().getId());
                 statement.set("name", name, true);
                 statement.set("amount", 0);
@@ -91,5 +99,23 @@ public class CreatePlaylist extends PlaylistSubCommand {
             });
 
         PlaylistController.forgetCache(context.getGuild().getIdLong());
+    }
+
+    private void addIncrementingIdWhenUsingSQLite(ChangeableStatement statement) {
+        try {
+            if (!(avaire.getDatabase().getConnection() instanceof SQLite)) {
+                return;
+            }
+
+            DataRow row = avaire.getDatabase().newQueryBuilder(Constants.MUSIC_PLAYLIST_TABLE_NAME)
+                .orderBy("created_at", "desc")
+                .take(1)
+                .get()
+                .first();
+
+            statement.set("id", row == null ? 1 : row.getLong("id") + 1);
+        } catch (SQLException e) {
+            log.error("Failed to generate the playlist ID, error: {}", e.getMessage(), e);
+        }
     }
 }

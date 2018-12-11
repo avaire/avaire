@@ -36,6 +36,7 @@ import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.User;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.awt.*;
 import java.io.IOException;
 import java.io.InputStream;
@@ -52,22 +53,8 @@ public abstract class InteractionCommand extends Command {
         .expireAfterAccess(5, TimeUnit.MINUTES)
         .build();
 
-    private final String interaction;
-    private final boolean overwrite;
-
-    public InteractionCommand(AvaIre avaire, String interaction, boolean overwrite) {
-        super(avaire, false);
-
-        this.overwrite = overwrite;
-        this.interaction = interaction;
-    }
-
-    public InteractionCommand(AvaIre avaire, String interaction) {
-        this(avaire, interaction, false);
-    }
-
     public InteractionCommand(AvaIre avaire) {
-        this(avaire, null, false);
+        super(avaire, false);
     }
 
     @Override
@@ -111,10 +98,13 @@ public abstract class InteractionCommand extends Command {
         return CommandPriority.HIGH;
     }
 
+    @Nullable
+    @SuppressWarnings("WeakerAccess")
     public Color getInteractionColor() {
         return null;
     }
 
+    @Nonnull
     public abstract List<String> getInteractionImages();
 
     @Override
@@ -162,17 +152,9 @@ public abstract class InteractionCommand extends Command {
     }
 
     private String buildMessage(CommandMessage context, User user, User target) {
-        if (overwrite) {
-            return I18n.format(
-                getInteraction(context, false),
-                context.getGuild().getMember(user).getEffectiveName(),
-                context.getGuild().getMember(target).getEffectiveName()
-            );
-        }
-
-        return String.format("**%s** %s **%s**",
-            context.getGuild().getMember(user).getEffectiveName(),
+        return I18n.format(
             getInteraction(context, false),
+            context.getGuild().getMember(user).getEffectiveName(),
             context.getGuild().getMember(target).getEffectiveName()
         );
     }
@@ -189,10 +171,10 @@ public abstract class InteractionCommand extends Command {
     }
 
     private String getInteraction(CommandContext context, boolean isDescription) {
-        if (isDescription && overwrite) {
+        if (isDescription) {
             return getTriggers().get(0);
         }
-        return interaction == null ? context.i18nRaw(context.getI18nCommandPrefix()) : interaction;
+        return context.i18nRaw(context.getI18nCommandPrefix());
     }
 
     private String asKey(CommandContext context) {
