@@ -28,6 +28,7 @@ import com.avairebot.database.collection.Collection;
 import com.avairebot.database.collection.DataRow;
 import com.avairebot.database.controllers.ReactionController;
 import com.avairebot.database.transformers.ReactionTransformer;
+import com.avairebot.scheduler.tasks.DrainReactionRoleQueueTask;
 import com.avairebot.utilities.RoleUtil;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Guild;
@@ -93,10 +94,12 @@ public class ReactionEmoteEventAdapter extends EventAdapter {
             return;
         }
 
-        // TODO: Move this into a queue task so we can prevent sending any rest actions when we don't need to.
-        // This would solve people spam reaction and removing their reactions faster than the bot can update
-        // the users roles, this way we only send the rest reactions we actually need to send.
-        event.getGuild().getController().addRolesToMember(event.getMember(), role).queue();
+        DrainReactionRoleQueueTask.queueReactionActionEntity(new DrainReactionRoleQueueTask.ReactionActionEntity(
+            event.getGuild().getIdLong(),
+            event.getMember().getUser().getIdLong(),
+            role.getIdLong(),
+            DrainReactionRoleQueueTask.ReactionActionType.ADD
+        ));
     }
 
     @SuppressWarnings("ConstantConditions")
@@ -118,7 +121,12 @@ public class ReactionEmoteEventAdapter extends EventAdapter {
             return;
         }
 
-        event.getGuild().getController().removeRolesFromMember(event.getMember(), role).queue();
+        DrainReactionRoleQueueTask.queueReactionActionEntity(new DrainReactionRoleQueueTask.ReactionActionEntity(
+            event.getGuild().getIdLong(),
+            event.getMember().getUser().getIdLong(),
+            role.getIdLong(),
+            DrainReactionRoleQueueTask.ReactionActionType.REMOVE
+        ));
     }
 
     private ReactionTransformer getReactionTransformerFromMessageIdAndCheckPermissions(@Nonnull Guild guild, @Nonnull String messageId, long emoteId) {
