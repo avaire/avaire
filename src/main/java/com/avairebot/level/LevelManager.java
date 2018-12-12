@@ -30,6 +30,7 @@ import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.database.transformers.PlayerTransformer;
 import com.avairebot.factories.MessageFactory;
 import com.avairebot.language.I18n;
+import com.avairebot.scheduler.ScheduleHandler;
 import com.avairebot.utilities.CacheUtil;
 import com.avairebot.utilities.RandomUtil;
 import com.avairebot.utilities.RoleUtil;
@@ -44,6 +45,7 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -298,38 +300,37 @@ public class LevelManager {
                         return;
                     }
 
-                    boolean reachedUserLevel = false;
-                    List<Role> rolesToRemove = new ArrayList<>();
-                    Role lastGivenRole = null;
 
-                    for (Map.Entry<Integer, String> entry : guild.getLevelRoles().entrySet()) {
-                        if (entry.getKey() >= newLevel) {
-                            reachedUserLevel = true;
+                    List<Integer> levelKeys = new ArrayList<>(guild.getLevelRoles().keySet());
+                    Collections.sort(levelKeys);
+                    Collections.reverse(levelKeys);
+
+                    List<Role> rolesToRemove = new ArrayList<>(roles);
+
+                    for (int roleLevel : levelKeys) {
+                        String roleId = guild.getLevelRoles().get(roleLevel);
+                        if (roleId == null) {
+                            // This should never be hit... Ever, better to be safe than sorry tho.
+                            continue;
                         }
 
-                        if (entry.getKey() == newLevel || !reachedUserLevel) {
-                            Role role = message.getGuild().getRoleById(entry.getValue());
-                            if (role != null) {
-                                lastGivenRole = role;
+                        Role roleToRemove = null;
+                        for (Role role : rolesToRemove) {
+                            if (role.getId().equals(roleId)) {
+                                roleToRemove = role;
                             }
                         }
 
-                        if (entry.getKey() <= newLevel) {
-                            Role role = message.getGuild().getRoleById(entry.getValue());
-                            if (role != null) {
-                                rolesToRemove.add(role);
-                            }
+                        if (roleToRemove != null) {
+                            rolesToRemove.remove(roleToRemove);
+                            break;
                         }
                     }
-
-                    if (lastGivenRole == null || rolesToRemove.isEmpty()) {
-                        return;
-                    }
-
-                    rolesToRemove.remove(lastGivenRole);
 
                     if (!rolesToRemove.isEmpty()) {
-                        message.getGuild().getController().removeRolesFromMember(message.getMember(), rolesToRemove).queue();
+                        ScheduleHandler.getScheduler().schedule(() -> {
+                            message.getGuild().getController().removeRolesFromMember(message.getMember(), rolesToRemove).queue();
+                        }, 500, TimeUnit.MILLISECONDS);
                     }
                 });
             }
