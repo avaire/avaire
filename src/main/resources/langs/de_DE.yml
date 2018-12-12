@@ -92,6 +92,18 @@ administration:
             global: "Alle Befehle jeder Befehls-Kategorie wurden zurückgesetzt und nutzen nun den`:prefix`-Prefix."
             category: "Alle Befehle der `:category` Befehls-Kategorie wurden zurückgesetzt und nutzen nun den `:prefix`-Prefix."
 
+    ChannelLevelCommand:
+        invalidChannel: "Invalid channel given, the channel must be a valid text channel."
+        cantTalkInChannel: "I can't talk in the {0} channel, so no users will be rewarded any XP for talking in the channel, if you want me to give users XP, please change my permission level for the channel so I can send messages in the channel."
+        noChannelsWithRewardsDisabled: "There are currently no channels with the level rewards disabled, you can add one by using the `{0} <channel>` command"
+        failedToUpdate: "Failed to save the changes to the database, please try again, if the issue persists, please contact one of my developers."
+        listChannels: "All the channels mentioned below currently has their level rewards turned off, any channel not on this list is unaffected.\n\n:channels"
+        listChannelsTitle: "Channels with their Level Rewards disabled ({0})"
+        success: "The XP rewards for the :channel channel has been **:status**!"
+        status:
+            enabled: "Enabled"
+            disabled: "Disabled"
+
     GoodbyeCommand:
         note: "\nDu kannst deine Nachricht individualisieren, indem du folgendes eingibst: `{0} [Nachricht]`"
         message: "Das `Goodbye`-Modul wurde für den :channel-Channel **:status**."

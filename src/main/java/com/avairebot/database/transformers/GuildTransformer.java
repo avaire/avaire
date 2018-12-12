@@ -45,6 +45,7 @@ public class GuildTransformer extends Transformer {
     private final Map<Integer, String> levelRoles = new HashMap<>();
     private final Map<String, Map<String, String>> modules = new HashMap<>();
     private final List<ChannelTransformer> channels = new ArrayList<>();
+    private final Set<Long> levelExemptChannels = new HashSet<>();
 
     private final GuildTypeTransformer guildType;
     private boolean partner;
@@ -156,6 +157,23 @@ public class GuildTransformer extends Transformer {
                 }
             }
 
+            if (data.getString("level_exempt_channels", null) != null) {
+                List<String> dbExemptExperienceChannels = AvaIre.gson.fromJson(
+                    data.getString("level_exempt_channels"),
+                    new TypeToken<List<String>>() {
+                    }.getType());
+
+                for (String channelId : dbExemptExperienceChannels) {
+                    try {
+                        levelExemptChannels.add(
+                            Long.parseLong(channelId)
+                        );
+                    } catch (NumberFormatException ignored) {
+                        //
+                    }
+                }
+            }
+
             if (data.getString("modules", null) != null) {
                 HashMap<String, Map<String, String>> dbModules = AvaIre.gson.fromJson(
                     data.getString("modules"),
@@ -254,6 +272,10 @@ public class GuildTransformer extends Transformer {
 
     public void setLevelModifier(double levelModifier) {
         this.levelModifier = levelModifier;
+    }
+
+    public Set<Long> getLevelExemptChannels() {
+        return levelExemptChannels;
     }
 
     public String getAutorole() {

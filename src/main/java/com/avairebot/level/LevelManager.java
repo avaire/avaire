@@ -190,6 +190,10 @@ public class LevelManager {
      * @param player The player transformer from the current player database instance.
      */
     public void rewardPlayer(MessageReceivedEvent event, GuildTransformer guild, PlayerTransformer player) {
+        if (guild.getLevelExemptChannels().contains(event.getChannel().getIdLong())) {
+            return;
+        }
+
         CacheUtil.getUncheckedUnwrapped(cache, asKey(event), () -> {
             giveExperience(event.getMessage(), guild, player);
             return 0;

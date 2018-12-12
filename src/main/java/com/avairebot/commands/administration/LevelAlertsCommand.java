@@ -76,6 +76,7 @@ public class LevelAlertsCommand extends Command {
         return Arrays.asList(
             LevelHierarchyCommand.class,
             LevelModifierCommand.class,
+            ChannelLevelCommand.class,
             LevelCommand.class,
             RankCommand.class
         );

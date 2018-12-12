@@ -82,6 +82,7 @@ public class LevelModifierCommand extends Command {
         return Arrays.asList(
             LevelHierarchyCommand.class,
             LevelAlertsCommand.class,
+            ChannelLevelCommand.class,
             LevelCommand.class,
             RankCommand.class
         );
