@@ -35,6 +35,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.CheckReturnValue;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -75,7 +77,11 @@ public class ReactionController {
      * @return Possibly null, the reaction collections for the current guild, or null.
      */
     @CheckReturnValue
-    public static Collection fetchReactions(AvaIre avaire, Guild guild) {
+    public static Collection fetchReactions(@Nonnull AvaIre avaire, @Nullable Guild guild) {
+        if (guild == null) {
+            return null;
+        }
+
         return (Collection) CacheUtil.getUncheckedUnwrapped(cache, guild.getIdLong(), () -> {
             log.debug("Guild Reaction cache for " + guild.getId() + " was refreshed");
 

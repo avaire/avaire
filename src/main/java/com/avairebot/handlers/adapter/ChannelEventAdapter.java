@@ -50,7 +50,7 @@ public class ChannelEventAdapter extends EventAdapter {
     }
 
     public void onTextChannelDelete(TextChannelDeleteEvent event) {
-        handleTextChannelDeleteReqactionRoles(event);
+        handleTextChannelDeleteReactionsRoles(event);
         handleTextChannelDeleteGuildSettings(event);
     }
 
@@ -73,7 +73,7 @@ public class ChannelEventAdapter extends EventAdapter {
         }
     }
 
-    private void handleTextChannelDeleteReqactionRoles(TextChannelDeleteEvent event) {
+    private void handleTextChannelDeleteReactionsRoles(TextChannelDeleteEvent event) {
         Collection collection = ReactionController.fetchReactions(avaire, event.getGuild());
         if (collection == null) {
             return;
