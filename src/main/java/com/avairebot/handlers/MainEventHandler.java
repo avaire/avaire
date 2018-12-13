@@ -234,7 +234,7 @@ public class MainEventHandler extends EventHandler {
 
     @Override
     public void onMessageReactionAdd(MessageReactionAddEvent event) {
-        if (event.getGuild() == null) {
+        if (event.getGuild() == null || event.getReactionEmote().getEmote() == null) {
             return;
         }
         reactionEmoteEventAdapter.onMessageReactionAdd(event);
@@ -242,7 +242,7 @@ public class MainEventHandler extends EventHandler {
 
     @Override
     public void onMessageReactionRemove(MessageReactionRemoveEvent event) {
-        if (event.getGuild() == null) {
+        if (event.getGuild() == null || event.getReactionEmote().getEmote() == null) {
             return;
         }
         reactionEmoteEventAdapter.onMessageReactionRemove(event);
