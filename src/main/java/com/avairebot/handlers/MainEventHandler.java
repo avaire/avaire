@@ -44,6 +44,7 @@ import net.dv8tion.jda.core.events.message.MessageBulkDeleteEvent;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.events.message.MessageUpdateEvent;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageDeleteEvent;
+import net.dv8tion.jda.core.events.message.react.GenericMessageReactionEvent;
 import net.dv8tion.jda.core.events.message.react.MessageReactionAddEvent;
 import net.dv8tion.jda.core.events.message.react.MessageReactionRemoveEvent;
 import net.dv8tion.jda.core.events.role.RoleCreateEvent;
@@ -234,17 +235,21 @@ public class MainEventHandler extends EventHandler {
 
     @Override
     public void onMessageReactionAdd(MessageReactionAddEvent event) {
-        if (event.getGuild() == null || event.getReactionEmote().getEmote() == null) {
-            return;
+        if (isValidMessageReactionEvent(event)) {
+            reactionEmoteEventAdapter.onMessageReactionAdd(event);
         }
-        reactionEmoteEventAdapter.onMessageReactionAdd(event);
     }
 
     @Override
     public void onMessageReactionRemove(MessageReactionRemoveEvent event) {
-        if (event.getGuild() == null || event.getReactionEmote().getEmote() == null) {
-            return;
+        if (isValidMessageReactionEvent(event)) {
+            reactionEmoteEventAdapter.onMessageReactionRemove(event);
         }
-        reactionEmoteEventAdapter.onMessageReactionRemove(event);
+    }
+
+    private boolean isValidMessageReactionEvent(GenericMessageReactionEvent event) {
+        return !event.getMember().getUser().isBot()
+            && event.getGuild() != null
+            && event.getReactionEmote().getEmote() != null;
     }
 }
