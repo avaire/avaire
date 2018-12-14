@@ -154,7 +154,7 @@ public class ReactionEmoteEventAdapter extends EventAdapter {
     @Nullable
     private ReactionTransformer getReactionTransformerFromId(@Nonnull Collection collection, @Nonnull String messageId) {
         List<DataRow> messages = collection.where("message_id", messageId);
-        if (messageId.isEmpty()) {
+        if (messages.isEmpty()) {
             return null;
         }
         return new ReactionTransformer(messages.get(0));
