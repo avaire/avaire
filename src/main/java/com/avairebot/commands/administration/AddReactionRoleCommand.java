@@ -32,6 +32,7 @@ import com.avairebot.database.controllers.ReactionController;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.database.transformers.GuildTypeTransformer;
 import com.avairebot.database.transformers.ReactionTransformer;
+import com.avairebot.utilities.RestActionUtil;
 import com.avairebot.utilities.RoleUtil;
 import net.dv8tion.jda.core.entities.Emote;
 import net.dv8tion.jda.core.entities.Message;
@@ -148,9 +149,10 @@ public class AddReactionRoleCommand extends Command {
             if (messages.size() != 2) {
                 return;
             }
-            Message message = messages.get(1);
-            context.getMessage().delete().queue();
 
+            context.delete().queue(null, RestActionUtil.ignore);
+
+            Message message = messages.get(1);
             ReactionTransformer reactionTransformer = ReactionController.fetchReactionFromMessage(avaire, message);
             if (reactionTransformer == null) {
                 createNewReactionRoleMessage(context, guildTransformer, emote, role, message);
