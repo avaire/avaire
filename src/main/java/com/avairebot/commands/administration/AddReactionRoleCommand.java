@@ -140,6 +140,10 @@ public class AddReactionRoleCommand extends Command {
             return sendErrorMessage(context, "errors.invalidProperty", "reaction role");
         }
 
+        if (!RoleUtil.canInteractWithRole(context.getMessage(), role)) {
+            return false;
+        }
+
         context.getChannel().getHistory().retrievePast(2).queue(messages -> {
             if (messages.size() != 2) {
                 return;

@@ -90,7 +90,7 @@ public class ReactionEmoteEventAdapter extends EventAdapter {
             return;
         }
 
-        if (RoleUtil.hasRole(event.getMember(), role)) {
+        if (RoleUtil.hasRole(event.getMember(), role) || !event.getGuild().getSelfMember().canInteract(role)) {
             return;
         }
 
@@ -117,7 +117,7 @@ public class ReactionEmoteEventAdapter extends EventAdapter {
             return;
         }
 
-        if (!RoleUtil.hasRole(event.getMember(), role)) {
+        if (!RoleUtil.hasRole(event.getMember(), role) || !event.getGuild().getSelfMember().canInteract(role)) {
             return;
         }
 
