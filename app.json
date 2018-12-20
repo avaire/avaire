@@ -182,7 +182,7 @@
       "value": "master"
     },
     "GITHUB_SECRET_TOKEN": {
-      "description": "Copy GitHub personal access token here, required for auto updates with Scheduler!",
+      "description": "Copy GitHub personal access token here, required for auto updates with Scheduler! You can get a personal access token here: https://github.com/settings/tokens",
 	  "required": false,
 	  "value": ""
     },
