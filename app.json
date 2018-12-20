@@ -29,12 +29,12 @@
   ],
  "env": {
     "GRADLE_TASK": {
-      "description": "Tells Heroku how to compile AvaIre. Leave it as it, unless you know what you're doing.",
+      "description": "Tells Heroku how to compile AvaIre. Leave it as it, unless you know what your doing.",
       "required": true,
       "value": "build"
     },
     "AVA_ENVIRONMENT": {
-      "description": "Let the value be production to have the bot work as normal. Change it to development if you know what you're doing.",
+      "description": "Let the value be production to have the bot work as normal. Change it to development if you know what your doing.",
 	  "required": true,
 	  "value": "production"
     },     
@@ -57,7 +57,7 @@
 	  "value": "mysql"
     },
     "AVA_DATABASE_FILENAME": {
-      "description": "The name of the database file if you choose to use sqlite. Let the value be database.sqlite or change it if you know what you're doing.",
+      "description": "If you choose to use sqlite. Your using this aswell. Let the value be database.sqlite or change it if you know what your doing.",
 	  "required": true,
 	  "value": "database.sqlite"
     },
@@ -167,7 +167,7 @@
 	  "value": ""
     },
     "AVA_APIKEYS_OPENWEATHERMAP": {
-      "description": "Open Weather Map is a free service that provides lots of ways to get weather and wind data based on a location. Without the API key the command will disable itself. You can get an API key at: https://home.openweathermap.org/api_keys.",
+      "description": "Open Weather Map is a free service that provides lots of ways to get weather and wind data based on a location. Withoud the API key the command will disable itself. You can get an API key at: https://home.openweathermap.org/api_keys.",
 	  "required": false,
 	  "value": ""
     },
@@ -175,6 +175,11 @@
       "description": "Copy part of the link after `https://github.com/` (e.g `chaNcharge/avaire`) and paste it here, required for auto updates with Scheduler!",
 	  "required": false,
 	  "value": ""
+    },
+    "GITHUB_REPO_BRANCH": {
+      "description": "The branch of your fork to update, required for auto updates with Scheduler!",
+      "required": false,
+      "value": "master"
     },
     "GITHUB_SECRET_TOKEN": {
       "description": "Copy GitHub personal access token here, required for auto updates with Scheduler!",
@@ -185,6 +190,11 @@
       "description": "The link to the upstream repo to update from, leave this as is for AvaIre",
 	  "required": false,
 	  "value": "https://github.com/avaire/avaire/"
+    },
+    "UPSTREAM_BRANCH": {
+      "description": "The branch of the upstream repo, leave this as is for AvaIre",
+      "required": false,
+      "value": "master"
     }
   },
   "formation": {
