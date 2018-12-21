@@ -189,7 +189,7 @@
     "UPSTREAM_REPO": {
       "description": "The link to the upstream repo to update from, leave this as is for AvaIre",
 	  "required": false,
-	  "value": "https://github.com/avaire/avaire/"
+	  "value": "avaire/avaire"
     },
     "UPSTREAM_BRANCH": {
       "description": "The branch of the upstream repo, leave this as is for AvaIre",

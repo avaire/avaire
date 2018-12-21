@@ -10,7 +10,7 @@ git clone "https://github.com/$GITHUB_REPO" "$repo_temp"
 cd "$repo_temp"
 
 git checkout -b upstream $GITHUB_REPO_BRANCH
-git pull --no-edit $UPSTREAM_REPO $UPSTREAM_BRANCH
+git pull --no-edit https://github.com/$UPSTREAM_REPO $UPSTREAM_BRANCH
 
 CONFLICTS=$(git ls-files -u | wc -l)
 if [ "$CONFLICTS" -gt 0 ] ; then
