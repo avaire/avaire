@@ -20,9 +20,12 @@
   "logo": "https://imgur.com/H8RCD5F.png",
   "success_url": "/stats",
   "addons": [
-	{
-		"plan": "jawsdb:kitefin"
-	}
+	  {
+		  "plan": "jawsdb:kitefin"
+    },
+    {
+      "plan": "scheduler:standard"
+    }
   ],
  "env": {
     "GRADLE_TASK": {
@@ -167,6 +170,31 @@
       "description": "Open Weather Map is a free service that provides lots of ways to get weather and wind data based on a location. Withoud the API key the command will disable itself. You can get an API key at: https://home.openweathermap.org/api_keys.",
 	  "required": false,
 	  "value": ""
+    },
+    "GITHUB_REPO": {
+      "description": "Copy part of the link after `https://github.com/` (e.g `chaNcharge/avaire`) and paste it here, required for auto updates with Scheduler!",
+	  "required": false,
+	  "value": ""
+    },
+    "GITHUB_REPO_BRANCH": {
+      "description": "The branch of your fork to update, required for auto updates with Scheduler!",
+      "required": false,
+      "value": "master"
+    },
+    "GITHUB_SECRET_TOKEN": {
+      "description": "Copy GitHub personal access token here, required for auto updates with Scheduler! You can get a personal access token here: https://github.com/settings/tokens",
+	  "required": false,
+	  "value": ""
+    },
+    "UPSTREAM_REPO": {
+      "description": "The link to the upstream repo to update from, leave this as is for AvaIre",
+	  "required": false,
+	  "value": "avaire/avaire"
+    },
+    "UPSTREAM_BRANCH": {
+      "description": "The branch of the upstream repo, leave this as is for AvaIre",
+      "required": false,
+      "value": "master"
     }
   },
   "formation": {
