@@ -117,8 +117,12 @@ public class AddReactionRoleCommand extends Command {
             );
         }
 
-        if (args.length == 0 || context.getMessage().getEmotes().isEmpty()) {
+        if (args.length == 0) {
             return sendErrorMessage(context, "errors.missingArgument", "reaction emote");
+        }
+
+        if (context.getMessage().getEmotes().isEmpty()) {
+            return sendErrorMessage(context, context.i18n("emoteDoestBelongToServer"));
         }
 
         Emote emote = context.getMessage().getEmotes().get(0);
