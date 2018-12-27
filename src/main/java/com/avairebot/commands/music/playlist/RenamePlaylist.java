@@ -43,9 +43,9 @@ public class RenamePlaylist extends PlaylistSubCommand {
     }
 
     public boolean onCommand(CommandMessage context, String[] args, GuildTransformer guild, PlaylistTransformer playlist, Collection playlists) {
-        String name = String.join(" ", Arrays.copyOfRange(args, 2, args.length));
+        String name = String.join(" ", Arrays.copyOfRange(args, 2, args.length)).trim();
 
-        if (name.trim().length() == 0) {
+        if (name.length() == 0) {
             context.makeWarning(context.i18n("invalidFormat"))
                 .set("command", command.generateCommandTrigger(context.getMessage()) + " " + playlist.getName() + " renameto <new name>")
                 .set("type", "new name")
@@ -53,6 +53,8 @@ public class RenamePlaylist extends PlaylistSubCommand {
 
             return false;
         }
+
+        name = name.split(" ")[0];
 
         List<DataRow> playlistItems = playlists.whereLoose("name", name);
         if (!playlistItems.isEmpty()) {

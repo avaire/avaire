@@ -133,7 +133,6 @@ public class PlaylistCommand extends Command {
         );
     }
 
-
     @Override
     @SuppressWarnings({"SingleStatementInBlock", "ConstantConditions"})
     public boolean onCommand(CommandMessage context, String[] args) {
