@@ -29,7 +29,7 @@ administration:
         invalidRole: ":user Invalid role, I couldn't find any role called **:role**"
 
     channelModule:
-        invalidColorGiven: "Invalid colour value given, the colour must be a valid HEX value.\nYou can try this [random colour picker](https://www.webpagefx.com/web-design/random-color-picker/) to try and get a random HEX color."
+        invalidColorGiven: "Invalid colour value given, the colour must be a valid HEX value.\nYou can try this [random colour picker](https://www.webpagefx.com/web-design/random-color-picker/) to try and get a random HEX colour."
         message: "The `:type` module message has been set to:\n\n```:message```\n\nYou can test the message by using the command again and mentioning a user.\n`:command <user>`"
 
     AddLevelRoleCommand:
