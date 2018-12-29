@@ -68,7 +68,7 @@ public class SongCommand extends Command {
 
     @Override
     public List<String> getTriggers() {
-        return Arrays.asList("song", "songs", "queue");
+        return Arrays.asList("song", "songs", "queue", "np");
     }
 
     @Override
