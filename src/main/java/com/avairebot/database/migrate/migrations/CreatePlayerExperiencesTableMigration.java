@@ -42,7 +42,7 @@ public class CreatePlayerExperiencesTableMigration implements Migration {
             table.Text("username").nullable();
             table.String("discriminator").nullable();
             table.String("avatar").nullable();
-            table.Integer("experience").defaultValue(0);
+            table.Long("experience").defaultValue(0);
             table.Timestamps();
         });
     }
