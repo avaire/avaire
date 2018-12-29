@@ -221,7 +221,8 @@ public class AvaIre {
             new AddLevelModifierToGuildsTableMigration(),
             new AddPardonToLogTableMigration(),
             new CreateReactionRoleTableMigration(),
-            new AddLevelExemptChannelsToGuildsTableMigration()
+            new AddLevelExemptChannelsToGuildsTableMigration(),
+            new AddGlobalExperienceToExperienceTableMigration()
         );
 
         log.info("Registering default middlewares");
