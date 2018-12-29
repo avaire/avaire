@@ -199,7 +199,7 @@ public class GlobalLeaderboardCommand extends Command {
         return (Collection) CacheUtil.getUncheckedUnwrapped(cache, "leaderboard", () -> {
             try {
                 return avaire.getDatabase().query("SELECT " +
-                    "`user_id`, `username`, `discriminator`, (sum(`experience`) - (count(`user_id`) * 100)) + 100 as `total` " +
+                    "`user_id`, `username`, `discriminator`, (sum(`global_experience`) - (count(`user_id`) * 100)) + 100 as `total` " +
                     "FROM `experiences` " +
                     "GROUP BY `user_id` " +
                     "ORDER BY `total` DESC " +
@@ -217,8 +217,8 @@ public class GlobalLeaderboardCommand extends Command {
             try {
                 return avaire.getDatabase().query(String.format(
                     "SELECT COUNT(*) AS rank FROM (" +
-                        "    SELECT `user_id` FROM `experiences` GROUP BY `user_id` HAVING SUM(`experience`) > (" +
-                        "        SELECT SUM(`experience`) FROM `experiences` WHERE `user_id` = '%s'" +
+                        "    SELECT `user_id` FROM `experiences` GROUP BY `user_id` HAVING SUM(`global_experience`) > (" +
+                        "        SELECT SUM(`global_experience`) FROM `experiences` WHERE `user_id` = '%s'" +
                         "    )" +
                         ") t;",
                     context.getAuthor().getId()
@@ -234,7 +234,7 @@ public class GlobalLeaderboardCommand extends Command {
         return (Collection) CacheUtil.getUncheckedUnwrapped(cache, "user.xp." + context.getAuthor().getId(), () -> {
             try {
                 return avaire.getDatabase().newQueryBuilder(Constants.PLAYER_EXPERIENCE_TABLE_NAME)
-                    .selectRaw("(sum(`experience`) - (count(`user_id`) * 100)) + 100 as `total`")
+                    .selectRaw("(sum(`global_experience`) - (count(`user_id`) * 100)) + 100 as `total`")
                     .where("user_id", context.getAuthor().getIdLong())
                     .get();
             } catch (SQLException e) {
