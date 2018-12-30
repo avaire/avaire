@@ -263,7 +263,7 @@ administration:
     SlowmodeCommand:
         missingArgument: "Missing argument, you must either pass in the `seconds` value to enable slowmode for this or the mentioned channel, or `off` to disable it."
         mustBeValidNumbers: "Invalid slowmode value given, you must provide a number between **1** and **120**."
-        message: "Slowmode has been **enabled** for the :textChannel channel.\nThe channel now allows **:slowmode** messages every second per-user."
+        message: "Slowmode has been **enabled** for the :textChannel channel.\nThe channel now allows **1** message every **:slowmode** seconds per-user."
         disabled: "Successfully **disabled** slowmode for the :textChannel channel."
         invalidTextChannel: "`{0}` is not a not a valid text channel, you must target a text channel to setup slowmode."
         failedToUpdate: "Failed to update the :textChannel channel, error: :message"
