@@ -143,6 +143,10 @@ public class JDAStateEventAdapter extends EventAdapter {
 
                 int trackCounter = 0;
                 for (AudioCache audioCache : audioStateTacks) {
+                    if (audioCache == null) {
+                        continue;
+                    }
+
                     // Limits the track request loop to 100 tracks, some servers likes
                     // to add 1,000+ tracks to the queue, we don't want to spam
                     // YouTube or SoundClouds API as soon as we start up.
@@ -159,8 +163,10 @@ public class JDAStateEventAdapter extends EventAdapter {
                 }
             });
 
+            AudioCache track = state.getPlayingTrack();
+
             log.debug("{} stopped playing {} with {} songs in the queue",
-                guild.getId(), state.getPlayingTrack().getTrackUrl(), state.getQueue().size()
+                guild.getId(), track == null ? "Unknown Track" : track.getTrackUrl(), state.getQueue().size()
             );
         }
 

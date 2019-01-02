@@ -29,6 +29,7 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.VoiceChannel;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,7 +72,8 @@ public class AudioState extends Evalable {
             playingTrack.getPosition()
         );
 
-        musicManager.getScheduler().getQueue().stream().map(AudioCache::new)
+        musicManager.getScheduler().getQueue().stream()
+            .map(AudioCache::new)
             .forEach(queue::add);
     }
 
@@ -92,6 +94,7 @@ public class AudioState extends Evalable {
      *
      * @return The audio track that was playing when the bot shut down.
      */
+    @Nullable
     public AudioCache getPlayingTrack() {
         return playingTrack;
     }
