@@ -619,6 +619,7 @@ music:
 
 search:
     DuckDuckGoCommand:
+        nsfwDisabled: "The `Duck Duck GO` command can only be used in NSFW channels, as the search results may return NSFW content."
         searchResults: 'Suchergebnisse für: {0}'
         noResults: "Ich habe nicht's für diese Anfrage gefunden: `:query`"
         seeAlso: '**Siehe auch**'

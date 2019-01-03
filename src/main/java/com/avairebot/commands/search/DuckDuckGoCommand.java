@@ -87,6 +87,10 @@ public class DuckDuckGoCommand extends Command {
 
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
+        if (context.isGuildMessage() && !context.getChannel().isNSFW()) {
+            return sendErrorMessage(context, context.i18n("nsfwDisabled"));
+        }
+
         if (args.length == 0) {
             return sendErrorMessage(context, "errors.missingArgument", "query");
         }
@@ -129,12 +133,7 @@ public class DuckDuckGoCommand extends Command {
 
             PlaceholderMessage resultMessage = MessageFactory.makeEmbeddedMessage(context.getMessageChannel(), Color.decode("#DE5833"))
                 .setDescription(String.join("\n", result))
-                .setTitle(context.i18n("searchResults", String.join(" ", args)))
-                .setFooter(
-                    nsfwEnabled ?
-                        context.i18n("nsfwStatus.enabled") :
-                        context.i18n("nsfwStatus.disabled")
-                );
+                .setTitle(context.i18n("searchResults", String.join(" ", args)));
 
             if (result.isEmpty() || (result.size() == 1 && result.get(0).startsWith("-1&uddg"))) {
                 resultMessage
@@ -166,14 +165,9 @@ public class DuckDuckGoCommand extends Command {
     }
 
     private String generateUri(String[] args, boolean isNSFWEnabled) throws UnsupportedEncodingException {
-        String url = "https://duckduckgo.com/html/?q=" + URLEncoder.encode(
+        return "https://duckduckgo.com/html/?q=" + URLEncoder.encode(
             removeBangs(String.join(" ", args)), "UTF-8"
-        );
-
-        if (isNSFWEnabled) {
-            url += "&t=hf&ia=web&kp=-2";
-        }
-        return url;
+        ) + "&t=hf&ia=web&kp=" + (isNSFWEnabled ? "-2" : "1");
     }
 
     private String removeBangs(String text) {

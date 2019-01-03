@@ -624,6 +624,7 @@ music:
 
 search:
     DuckDuckGoCommand:
+        nsfwDisabled: "The `Duck Duck GO` command can only be used in NSFW channels, as the search results may return NSFW content."
         searchResults: 'Keresési eredmény {0}-re'
         noResults: 'Nem találtam semmit `:query`-re'
         seeAlso: '**Lásd még**'
