@@ -345,7 +345,7 @@ audio-quality:
 # able to access all system commands for Ava, things like restarting,
 # system information, code evaluation, etc.
 #
-# You can find your user ID by using the .userid command in Ava.
+# You can find your user ID by using the !userid command in Ava.
 #
 
 botAccess:
@@ -382,9 +382,6 @@ sentryDsn: ''
 #
 # The metrics stats are exposed on ip:port/metrics, and the stats API
 # are exposed on ip:port/stats
-#
-# For an real-world example of what the metrics looks like when they're
-# setup using Grafana, checkout: https://goo.gl/tmeiwe
 #
 # For setup guides, see:
 #
