@@ -21,11 +21,12 @@
 
 package com.avairebot.contracts.database.migrations;
 
+import com.avairebot.contracts.reflection.Reflectional;
 import com.avairebot.database.schema.Schema;
 
 import java.sql.SQLException;
 
-public interface Migration {
+public interface Migration extends Reflectional {
 
     /**
      * Gets the time the migration was created at, this is used to order
