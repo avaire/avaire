@@ -43,6 +43,7 @@ import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -191,13 +192,13 @@ public class LevelManager {
      * @param guild  The guild transformer from the current guild database instance.
      * @param player The player transformer from the current player database instance.
      */
-    public void rewardPlayer(MessageReceivedEvent event, GuildTransformer guild, PlayerTransformer player) {
+    public void rewardPlayer(@Nonnull MessageReceivedEvent event, @Nonnull GuildTransformer guild, @Nonnull PlayerTransformer player) {
         if (guild.getLevelExemptChannels().contains(event.getChannel().getIdLong())) {
             return;
         }
 
         CacheUtil.getUncheckedUnwrapped(cache, asKey(event), () -> {
-            giveExperience(event.getMessage(), guild, player);
+            giveExperience(event.getMessage(), event.getMessage().getAuthor(), guild, player);
             return 0;
         });
     }
@@ -212,12 +213,22 @@ public class LevelManager {
      * @param user    The user that should be given the experience.
      * @param amount  The amount of experience that should be given to the user.
      */
-    public void giveExperience(AvaIre avaire, Message message, User user, int amount) {
+    public void giveExperience(@Nonnull AvaIre avaire, @Nonnull Message message, @Nonnull User user, int amount) {
         if (!message.getChannelType().isGuild()) {
             return;
         }
 
-        giveExperience(message, GuildController.fetchGuild(avaire, message), PlayerController.fetchPlayer(avaire, message, user), amount);
+        GuildTransformer guildTransformer = GuildController.fetchGuild(avaire, message);
+        if (guildTransformer == null) {
+            return;
+        }
+
+        PlayerTransformer playerTransformer = PlayerController.fetchPlayer(avaire, message, user);
+        if (playerTransformer == null) {
+            return;
+        }
+
+        giveExperience(message, user, guildTransformer, playerTransformer, amount);
     }
 
     /**
@@ -226,11 +237,12 @@ public class LevelManager {
      * transformer, storing it temporarily in memory.
      *
      * @param message The guild message event that should be used.
+     * @param user    The user instance used to represent the user in JDA.
      * @param guild   The guild transformer for the guild the player is from.
      * @param player  The player that should be given the experience.
      */
-    public void giveExperience(Message message, GuildTransformer guild, PlayerTransformer player) {
-        giveExperience(message, guild, player, (RandomUtil.getInteger(5) + 10));
+    public void giveExperience(@Nonnull Message message, @Nonnull User user, @Nonnull GuildTransformer guild, @Nonnull PlayerTransformer player) {
+        giveExperience(message, user, guild, player, (RandomUtil.getInteger(5) + 10));
     }
 
     /**
@@ -238,11 +250,12 @@ public class LevelManager {
      * saving it to the transformer, storing it temporarily in memory.
      *
      * @param message The guild message event that should be used.
+     * @param user    The user instance used to represent the user in JDA.
      * @param guild   The guild transformer for the guild the player is from.
      * @param player  The player that should be given the experience.
      * @param amount  The amount of experience that should be given to the player.
      */
-    public void giveExperience(Message message, GuildTransformer guild, PlayerTransformer player, int amount) {
+    public void giveExperience(@Nonnull Message message, @Nonnull User user, @Nonnull GuildTransformer guild, @Nonnull PlayerTransformer player, int amount) {
         long exp = player.getExperience();
         long zxp = getExperienceFromLevel(guild, 0) - 100;
         long lvl = getLevelFromExperience(guild, exp + zxp);
@@ -250,7 +263,7 @@ public class LevelManager {
         player.incrementExperienceBy(amount);
 
         experienceQueue.add(new ExperienceEntity(
-            message.getAuthor().getIdLong(),
+            user.getIdLong(),
             message.getGuild().getIdLong(),
             amount
         ));
@@ -354,7 +367,7 @@ public class LevelManager {
      * @param transformer The transformer that should be matched with the experience eateries.
      * @return A list of experience entities that belongs to the given player transformer.
      */
-    public List<ExperienceEntity> getExperienceEntities(PlayerTransformer transformer) {
+    public List<ExperienceEntity> getExperienceEntities(@Nonnull PlayerTransformer transformer) {
         return experienceQueue.stream()
             .filter(entity -> entity.getUserId() == transformer.getUserId() && entity.getGuildId() == transformer.getGuildId())
             .collect(Collectors.toList());
