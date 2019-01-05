@@ -75,7 +75,7 @@ public class AddReactionRoleCommand extends Command {
     @Override
     public List<String> getExampleUsage() {
         return Collections.singletonList(
-            "`:command :avaPotato Potato` - Gives users the Potato role when the reaction with the :avaPotato: reaction."
+            "`:command :avaPotato: Potato` - Gives users the Potato role when the reaction with the :avaPotato: reaction."
         );
     }
 
@@ -96,6 +96,7 @@ public class AddReactionRoleCommand extends Command {
     public List<String> getMiddleware() {
         return Arrays.asList(
             "require:user,general.administrator",
+            "require:bot,general.manage_roles",
             "throttle:guild,1,5"
         );
     }
