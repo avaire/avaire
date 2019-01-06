@@ -32,6 +32,7 @@ import com.mysql.jdbc.exceptions.jdbc4.MySQLNonTransientConnectionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.Nullable;
 import javax.annotation.WillClose;
 import javax.annotation.WillCloseWhenClosed;
 import javax.annotation.WillNotClose;
@@ -211,6 +212,7 @@ public abstract class Database implements DatabaseConnection, Grammarable {
      * @throws SQLException if a database access error occurs or this method is called on a
      *                      closed <code>Statement</code>
      */
+    @Nullable
     @WillCloseWhenClosed
     public final ResultSet query(String query) throws SQLException {
         return handleQuery(() -> {
@@ -236,6 +238,7 @@ public abstract class Database implements DatabaseConnection, Grammarable {
      * @throws SQLException if a database access error occurs or this method is called on a
      *                      closed <code>Statement</code>
      */
+    @Nullable
     @WillCloseWhenClosed
     public final ResultSet query(QueryBuilder query) throws SQLException {
         return query(query.toSQL());
@@ -250,6 +253,7 @@ public abstract class Database implements DatabaseConnection, Grammarable {
      * @throws SQLException if a database access error occurs or this method is called on a
      *                      closed <code>Statement</code>
      */
+    @Nullable
     @WillNotClose
     public final ResultSet query(PreparedStatement query) throws SQLException {
         ResultSet output = query(query, preparedStatements.get(query));
@@ -269,6 +273,7 @@ public abstract class Database implements DatabaseConnection, Grammarable {
      * @throws SQLException if a database access error occurs or this method is called on a
      *                      closed <code>Statement</code>
      */
+    @Nullable
     @WillNotClose
     public final ResultSet query(PreparedStatement query, StatementInterface statement) throws SQLException {
         return handleQuery(() -> {
@@ -285,8 +290,7 @@ public abstract class Database implements DatabaseConnection, Grammarable {
      * Prepares a query as a prepared statement before executing it.
      *
      * @param query The query to prepare.
-     * @return the current result as a <code>ResultSet</code> object or
-     * <code>null</code> if the result is an update count or there are no more results
+     * @return The JDBC prepared statement object for the given query.
      * @throws SQLException if a database access error occurs or this method is called on a
      *                      closed <code>Statement</code>
      */
@@ -369,6 +373,7 @@ public abstract class Database implements DatabaseConnection, Grammarable {
         return keys;
     }
 
+    @Nullable
     private ResultSet handleQuery(SupplierWithSQL<ResultSet> callback) throws SQLException {
         try {
             return callback.get();
