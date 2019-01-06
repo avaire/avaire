@@ -22,6 +22,7 @@
 package com.avairebot.contracts.database.connections;
 
 import com.avairebot.contracts.database.Database;
+import com.avairebot.database.DatabaseManager;
 import com.avairebot.database.exceptions.DatabaseException;
 import com.avairebot.utilities.NumberUtil;
 
@@ -56,13 +57,16 @@ public abstract class HostnameDatabase extends Database {
     /**
      * Creates a new host name database instance.
      *
+     * @param dbm      The database manager class instance.
      * @param hostname The host name to connect to.
      * @param port     The port the database is listing on.
      * @param database The database name to use.
      * @param username The login username.
      * @param password The login password.
      */
-    public HostnameDatabase(String hostname, int port, String database, String username, String password) {
+    public HostnameDatabase(DatabaseManager dbm, String hostname, int port, String database, String username, String password) {
+        super(dbm);
+
         this.hostname = hostname;
         this.port = port;
         this.database = database;

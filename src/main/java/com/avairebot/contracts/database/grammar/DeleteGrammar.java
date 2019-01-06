@@ -23,6 +23,10 @@ package com.avairebot.contracts.database.grammar;
 
 public abstract class DeleteGrammar extends TableGrammar {
 
+    /**
+     * Creates the delete query grammar by preparing
+     * the {@link #query} parameter.
+     */
     public DeleteGrammar() {
         query = "DELETE FROM ";
     }

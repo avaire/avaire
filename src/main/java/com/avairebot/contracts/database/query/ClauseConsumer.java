@@ -22,8 +22,18 @@
 package com.avairebot.contracts.database.query;
 
 import com.avairebot.database.query.NestedClause;
+import com.avairebot.database.query.QueryBuilder;
 
+@FunctionalInterface
 public interface ClauseConsumer {
 
+    /**
+     * Builds the nested clauses by wrapping the nested clause builder into the build
+     * type, used by {@link QueryBuilder#where(ClauseConsumer) where},
+     * {@link QueryBuilder#andWhere(ClauseConsumer)}, and
+     * {@link QueryBuilder#orWhere(ClauseConsumer)}.
+     *
+     * @param builder The nested clause builder for the current type.
+     */
     void build(NestedClause builder);
 }

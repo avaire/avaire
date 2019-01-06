@@ -23,6 +23,10 @@ package com.avairebot.contracts.database.grammar;
 
 public abstract class SelectGrammar extends TableGrammar {
 
+    /**
+     * Creates the select query grammar by preparing
+     * the {@link #query} parameter.
+     */
     public SelectGrammar() {
         query = "SELECT ";
     }

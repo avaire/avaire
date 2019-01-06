@@ -52,7 +52,7 @@ public abstract class Grammar {
 
     /**
      * The query SQL string, this string will be appended to
-     * and formated by the addPart and removeLast methods.
+     * and formatted by the addPart and removeLast methods.
      */
     protected String query;
 

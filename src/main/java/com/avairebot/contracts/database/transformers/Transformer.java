@@ -25,22 +25,51 @@ import com.avairebot.contracts.config.serialization.ConfigurationSerializable;
 import com.avairebot.contracts.debug.Evalable;
 import com.avairebot.database.collection.DataRow;
 
+import javax.annotation.Nullable;
 import java.util.Map;
 
 public abstract class Transformer extends Evalable implements ConfigurationSerializable {
 
+    /**
+     * The main data object, used for retrieving
+     * all the data for the transformer.
+     */
     protected DataRow data;
+
+    /**
+     * Determines if the transformer has data or not.
+     */
     protected boolean hasData;
 
+    /**
+     * Creates a new transformer instance using
+     * the given data row object.
+     *
+     * @param data The data row object that should be used
+     *             for creating the transformer instance.
+     */
     public Transformer(DataRow data) {
         this.data = data;
         hasData = (data != null);
     }
 
+    /**
+     * Gets the raw data row object instance for the transformer, or the data has been
+     * reset since creating the transformer, the raw data may be {@code NULL}.
+     *
+     * @return The raw data row object instance, or {@code NULL}.
+     */
+    @Nullable
+    @SuppressWarnings("unused")
     public DataRow getRawData() {
         return data;
     }
 
+    /**
+     * Checks if the transformer instance has data or not.
+     *
+     * @return {@code True} if the transformer has data, {@code False} otherwise.
+     */
     public boolean hasData() {
         return hasData;
     }
@@ -58,6 +87,9 @@ public abstract class Transformer extends Evalable implements ConfigurationSeria
         return data.getRaw();
     }
 
+    /**
+     * Resets the raw data row instance, setting it to {@code NULL}.
+     */
     protected void reset() {
         this.data = null;
     }

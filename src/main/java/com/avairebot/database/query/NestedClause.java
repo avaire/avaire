@@ -44,7 +44,7 @@ public class NestedClause implements QueryClause {
      *
      * @param dbm The database manager instance.
      */
-    public NestedClause(DatabaseManager dbm) {
+    NestedClause(DatabaseManager dbm) {
         builder = new QueryBuilder(dbm);
 
         this.operator = OperatorType.AND;
@@ -56,7 +56,7 @@ public class NestedClause implements QueryClause {
      * @param dbm      The database manager instance.
      * @param operator The operator type to use.
      */
-    public NestedClause(DatabaseManager dbm, OperatorType operator) {
+    NestedClause(DatabaseManager dbm, OperatorType operator) {
         builder = new QueryBuilder(dbm);
 
         this.operator = operator;

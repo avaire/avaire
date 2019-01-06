@@ -54,6 +54,8 @@ public class SQLite extends FilenameDatabase {
      * @param filename The filename of the database.
      */
     public SQLite(DatabaseManager dbm, String filename) {
+        super(dbm);
+
         if (filename.equals(":memory:")) {
             this.setFilename(null);
             return;
@@ -171,22 +173,27 @@ public class SQLite extends FilenameDatabase {
         return statement;
     }
 
+    @Override
     public String select(DatabaseManager manager, QueryBuilder query, Map<String, Boolean> options) {
         return setupAndRun(new Select(), query, manager, options);
     }
 
+    @Override
     public String create(DatabaseManager manager, Blueprint blueprint, @Nonnull Map<String, Boolean> options) {
         return setupAndRun(new Create(), blueprint, manager, options);
     }
 
+    @Override
     public String delete(DatabaseManager manager, QueryBuilder query, Map<String, Boolean> options) {
         return setupAndRun(new Delete(), query, manager, options);
     }
 
+    @Override
     public String insert(DatabaseManager manager, QueryBuilder query, Map<String, Boolean> options) {
         return setupAndRun(new Insert(), query, manager, options);
     }
 
+    @Override
     public String update(DatabaseManager manager, QueryBuilder query, Map<String, Boolean> options) {
         return setupAndRun(new Update(), query, manager, options);
     }

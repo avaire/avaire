@@ -35,6 +35,7 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.*;
 
+@SuppressWarnings({"WeakerAccess", "unused"})
 public class Collection implements Cloneable, Iterable<DataRow> {
 
     private final HashMap<String, String> keys;
@@ -612,7 +613,7 @@ public class Collection implements Cloneable, Iterable<DataRow> {
      * @return the collection instance.
      */
     public Collection sort(Comparator<DataRow> comparator) {
-        Collections.sort(items, comparator);
+        items.sort(comparator);
 
         return this;
     }
@@ -629,7 +630,7 @@ public class Collection implements Cloneable, Iterable<DataRow> {
             return this;
         }
 
-        return sort((DataRow first, DataRow second) -> first.get(field).hashCode() - second.get(field).hashCode());
+        return sort(Comparator.comparingInt(row -> row.get(field).hashCode()));
     }
 
     /**
@@ -763,6 +764,7 @@ public class Collection implements Cloneable, Iterable<DataRow> {
         return AvaIre.gson.toJson(items);
     }
 
+    @Nonnull
     @Override
     public Iterator<DataRow> iterator() {
         return new CollectionIterator();

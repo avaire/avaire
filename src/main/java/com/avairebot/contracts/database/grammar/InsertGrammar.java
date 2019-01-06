@@ -26,8 +26,15 @@ import java.util.List;
 
 public abstract class InsertGrammar extends TableGrammar {
 
+    /**
+     * List of key that should be added to the query.
+     */
     protected final List<String> keyset = new ArrayList<>();
 
+    /**
+     * Creates the insert query grammar by preparing
+     * the {@link #query} parameter.
+     */
     public InsertGrammar() {
         query = "INSERT INTO ";
     }

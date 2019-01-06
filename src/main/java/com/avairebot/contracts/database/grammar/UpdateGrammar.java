@@ -26,8 +26,15 @@ import java.util.List;
 
 public abstract class UpdateGrammar extends TableGrammar {
 
+    /**
+     * List of key that should be added to the query.
+     */
     protected final List<String> keyset = new ArrayList<>();
 
+    /**
+     * Creates the update query grammar by preparing
+     * the {@link #query} parameter.
+     */
     public UpdateGrammar() {
         query = "UPDATE ";
     }

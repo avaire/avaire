@@ -25,5 +25,10 @@ import com.avairebot.database.schema.Blueprint;
 
 public interface DatabaseClosure {
 
+    /**
+     * Runs the database closure using the given blueprint.
+     *
+     * @param table The migration/schema blueprint that should be built.
+     */
     void run(Blueprint table);
 }

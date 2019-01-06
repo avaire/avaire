@@ -91,8 +91,6 @@ public class DatabaseManager {
                 default:
                     throw new DatabaseException("Invalid database type given, failed to create a new database connection.");
             }
-
-            connection.setDatabaseManager(this);
         }
 
         if (connection.isOpen()) {

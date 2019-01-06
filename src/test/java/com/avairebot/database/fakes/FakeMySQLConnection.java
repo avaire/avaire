@@ -39,7 +39,9 @@ import java.util.Map;
 
 public class FakeMySQLConnection extends FilenameDatabase {
 
-    FakeMySQLConnection() {
+    FakeMySQLConnection(DatabaseManager dbm) {
+        super(dbm);
+
         this.setFilename(":memory:");
     }
 

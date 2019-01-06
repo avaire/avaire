@@ -33,6 +33,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
+@SuppressWarnings("WeakerAccess")
 public class DataRow {
 
     private final Map<String, Object> items;

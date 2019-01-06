@@ -64,9 +64,7 @@ public class MySQL extends HostnameDatabase {
      * @param password The password for the given username.
      */
     public MySQL(DatabaseManager dbm, String hostname, int port, String database, String username, String password) {
-        super(hostname, port, database, username, password);
-
-        setDatabaseManager(dbm);
+        super(dbm, hostname, port, database, username, password);
     }
 
     @Override
@@ -182,22 +180,27 @@ public class MySQL extends HostnameDatabase {
         return false;
     }
 
+    @Override
     public String select(DatabaseManager manager, QueryBuilder query, Map<String, Boolean> options) {
         return setupAndRun(new Select(), query, manager, options);
     }
 
+    @Override
     public String create(DatabaseManager manager, Blueprint blueprint, @Nonnull Map<String, Boolean> options) {
         return setupAndRun(new Create(), blueprint, manager, options);
     }
 
+    @Override
     public String delete(DatabaseManager manager, QueryBuilder query, Map<String, Boolean> options) {
         return setupAndRun(new Delete(), query, manager, options);
     }
 
+    @Override
     public String insert(DatabaseManager manager, QueryBuilder query, Map<String, Boolean> options) {
         return setupAndRun(new Insert(), query, manager, options);
     }
 
+    @Override
     public String update(DatabaseManager manager, QueryBuilder query, Map<String, Boolean> options) {
         return setupAndRun(new Update(), query, manager, options);
     }

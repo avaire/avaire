@@ -22,8 +22,16 @@
 package com.avairebot.contracts.database.query;
 
 import com.avairebot.database.query.ChangeableStatement;
+import com.avairebot.database.query.QueryBuilder;
 
+@FunctionalInterface
 public interface ChangeableClosure {
 
+    /**
+     * Runs the changeable closure function, setting up all the columns that should be
+     * updated in the {@link QueryBuilder#update(ChangeableClosure) update} method.
+     *
+     * @param statement The changeable statement used to update the records in the query builder.
+     */
     void run(ChangeableStatement statement);
 }

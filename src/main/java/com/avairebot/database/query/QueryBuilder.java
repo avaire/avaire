@@ -44,45 +44,55 @@ public final class QueryBuilder {
      * The instance of the {@link DatabaseManager}.
      */
     private final DatabaseManager dbm;
+
     /**
      * The list of {@link QueryOrder} clauses that should be used by the generator.
      */
     private final List<QueryOrder> order = new ArrayList<>();
+
     /**
      * The list of {@link Clause} clauses that should be used by the generator.
      */
     private final List<QueryClause> wheres = new ArrayList<>();
+
     /**
      * The list of {@link String} clauses that should be used by the generator.
      */
     private final List<String> columns = new ArrayList<>();
+
     /**
      * The list of {@link JoinClause} objects that should be used by the generator.
      */
     private final List<JoinClause> joins = new ArrayList<>();
+
     /**
      * The list of {@link Map} objects that should be used by the generator, containing
      * the column name as the key, and value for the column as a map value.
      */
     private final List<Map<String, Object>> items = new ArrayList<>();
+
     /**
      * The query type that's being preformed.
      */
     private QueryType type;
+
     /**
      * The table the query builder to used.
      */
     private String table = null;
+
     /**
      * The amount of rows to take(LIMIT), if the value is set
      * to -1 it should be ignored by the grammar generator.
      */
     private int take = -1;
+
     /**
      * The amount of rows to skip(OFFSET), if the value is set
      * to -1 it should be ignored by the grammar generator.
      */
     private int skip = -1;
+
     /**
      * Determines if the query should be executed async or not, if the query is
      * executed async it will not return any results, or throw any errors.
@@ -165,13 +175,13 @@ public final class QueryBuilder {
      * <p>
      * Would re-name the username field in the table to name in the collection object.
      *
-     * @param colums The varargs list of columns that should be selected.
+     * @param columns The varargs list of columns that should be selected.
      * @return the query builder instance.
      */
-    public QueryBuilder select(String... colums) {
+    public QueryBuilder select(String... columns) {
         type = QueryType.SELECT;
 
-        for (String column : colums) {
+        for (String column : columns) {
             addColumn(column);
         }
 

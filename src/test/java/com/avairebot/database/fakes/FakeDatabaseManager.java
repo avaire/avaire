@@ -35,6 +35,6 @@ public class FakeDatabaseManager extends DatabaseManager {
 
     @Override
     public Database getConnection() throws SQLException, DatabaseException {
-        return new FakeMySQLConnection();
+        return new FakeMySQLConnection(null);
     }
 }

@@ -23,6 +23,10 @@ package com.avairebot.contracts.database.grammar;
 
 public abstract class CreateGrammar extends AlterGrammar {
 
+    /**
+     * Creates the create query grammar by preparing
+     * the {@link #query} parameter.
+     */
     public CreateGrammar() {
         query = "CREATE TABLE ";
     }

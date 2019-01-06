@@ -46,6 +46,10 @@ public abstract class Database implements DatabaseConnection, Grammarable {
 
     private static final Logger log = LoggerFactory.getLogger(Database.class);
 
+    /**
+     * The main database manage instance, used to communicate
+     * with the rest of the application.
+     */
     protected DatabaseManager dbm = null;
 
     /**
@@ -80,7 +84,7 @@ public abstract class Database implements DatabaseConnection, Grammarable {
      *
      * @param dbm The database manager class instance.
      */
-    public void setDatabaseManager(DatabaseManager dbm) {
+    public Database(DatabaseManager dbm) {
         this.dbm = dbm;
 
         lastState = false;

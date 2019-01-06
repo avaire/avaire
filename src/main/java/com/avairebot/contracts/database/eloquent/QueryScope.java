@@ -26,9 +26,17 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+@SuppressWarnings("unused")
 @Target(value = {ElementType.METHOD})
 @Retention(value = RetentionPolicy.RUNTIME)
 public @interface QueryScope {
 
+    /**
+     * Determines if the eloquent model query scope is accessible
+     * through the {@link Model#with(String...)} method.
+     *
+     * @return {@code True} if the method is accessible for the
+     * {@link Model#with(String...)} method, {@code False} otherwise.
+     */
     boolean accessible() default true;
 }

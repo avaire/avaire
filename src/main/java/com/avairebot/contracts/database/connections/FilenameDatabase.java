@@ -23,6 +23,7 @@ package com.avairebot.contracts.database.connections;
 
 
 import com.avairebot.contracts.database.Database;
+import com.avairebot.database.DatabaseManager;
 import com.avairebot.database.exceptions.DatabaseException;
 
 import java.io.File;
@@ -51,8 +52,12 @@ public abstract class FilenameDatabase extends Database {
 
     /**
      * Creates a new filename database instance.
+     *
+     * @param dbm The database manager class instance.
      */
-    public FilenameDatabase() {
+    public FilenameDatabase(DatabaseManager dbm) {
+        super(dbm);
+
         file = null;
     }
 
