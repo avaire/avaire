@@ -92,7 +92,8 @@ public class PlayerController {
                                 .set("username", user.getName(), true)
                                 .set("discriminator", user.getDiscriminator())
                                 .set("avatar", user.getAvatarId())
-                                .set("experience", 100);
+                                .set("experience", 100)
+                                .set("global_experience", 100);
                         });
 
                     return mergeWithExperienceEntity(avaire, transformer);
