@@ -28,8 +28,6 @@ import com.avairebot.database.controllers.PlayerController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
@@ -50,19 +48,14 @@ public class SyncPlayerUpdateReferencesWithDatabaseTask implements Task {
             PlayerController.getPlayerQueue().clear();
         }
 
-        Connection connection = null;
+        String query = String.format("UPDATE `%s` SET `avatar` = ?, `username` = ?, `discriminator` = ? WHERE `user_id` = ?",
+            Constants.PLAYER_EXPERIENCE_TABLE_NAME
+        );
+
+        log.debug("Starting \"Player Reference\" update task with query: " + query);
+
         try {
-            connection = avaire.getDatabase().getConnection().getConnection();
-            String query = String.format("UPDATE `%s` SET `avatar` = ?, `username` = ?, `discriminator` = ? WHERE `user_id` = ?",
-                Constants.PLAYER_EXPERIENCE_TABLE_NAME
-            );
-
-            log.debug("Starting \"Player Reference\" update task with query: " + query);
-
-            boolean autoCommit = connection.getAutoCommit();
-            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-                connection.setAutoCommit(false);
-
+            avaire.getDatabase().queryBatch(query, preparedStatement -> {
                 for (Map.Entry<Long, PlayerController.PlayerUpdateReference> entity : playerQueue.entrySet()) {
                     preparedStatement.setString(1, entity.getValue().getAvatar());
                     preparedStatement.setString(2, entity.getValue().getUsername());
@@ -70,29 +63,11 @@ public class SyncPlayerUpdateReferencesWithDatabaseTask implements Task {
                     preparedStatement.setString(4, entity.getKey().toString());
                     preparedStatement.addBatch();
                 }
-
-                preparedStatement.executeBatch();
-                connection.commit();
-            }
-
-            if (connection.getAutoCommit() != autoCommit) {
-                connection.setAutoCommit(autoCommit);
-            }
+            });
 
             log.debug("Finished \"Player Reference\" task, updated {} records in the process", playerQueue.size());
         } catch (SQLException e) {
-            logSQLException(e);
-            if (connection != null) {
-                try {
-                    connection.rollback();
-                } catch (SQLException e1) {
-                    logSQLException(e1);
-                }
-            }
+            log.error("An SQL exception was thrown while updating player references: ", e);
         }
-    }
-
-    private void logSQLException(SQLException e) {
-        log.error("An SQL exception was thrown while updating player references: ", e);
     }
 }

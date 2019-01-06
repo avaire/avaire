@@ -28,8 +28,6 @@ import com.avairebot.level.ExperienceEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,9 +48,7 @@ public class SyncPlayerExperienceWithDatabaseTask implements Task {
             avaire.getLevelManager().getExperienceQueue().clear();
         }
 
-        Connection connection = null;
         try {
-            connection = avaire.getDatabase().getConnection().getConnection();
             String query = String.format(
                 "UPDATE `%s` SET `experience` = ? + `experience`, `global_experience` = ? + `global_experience` WHERE `user_id` = ? AND `guild_id` = ?",
                 Constants.PLAYER_EXPERIENCE_TABLE_NAME
@@ -60,40 +56,19 @@ public class SyncPlayerExperienceWithDatabaseTask implements Task {
 
             log.debug("Starting \"Player Experience\" update task with query: " + query);
 
-            boolean autoCommit = connection.getAutoCommit();
-            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-                connection.setAutoCommit(false);
-
+            avaire.getDatabase().queryBatch(query, statement -> {
                 for (ExperienceEntity entity : experienceQueue) {
-                    preparedStatement.setInt(1, entity.getExperience());
-                    preparedStatement.setInt(2, entity.getExperience());
-                    preparedStatement.setString(3, "" + entity.getUserId());
-                    preparedStatement.setString(4, "" + entity.getGuildId());
-                    preparedStatement.addBatch();
+                    statement.setInt(1, entity.getExperience());
+                    statement.setInt(2, entity.getExperience());
+                    statement.setString(3, "" + entity.getUserId());
+                    statement.setString(4, "" + entity.getGuildId());
+                    statement.addBatch();
                 }
-
-                preparedStatement.executeBatch();
-                connection.commit();
-            }
-
-            if (connection.getAutoCommit() != autoCommit) {
-                connection.setAutoCommit(autoCommit);
-            }
+            });
 
             log.debug("Finished \"Player Experience\" task, updated {} records in the process", experienceQueue.size());
         } catch (SQLException e) {
-            logSQLException(e);
-            if (connection != null) {
-                try {
-                    connection.rollback();
-                } catch (SQLException e1) {
-                    logSQLException(e1);
-                }
-            }
+            log.error("An SQL exception was thrown while updating player experience: ", e);
         }
-    }
-
-    private void logSQLException(SQLException e) {
-        log.error("An SQL exception was thrown while updating player experience: ", e);
     }
 }

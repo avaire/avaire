@@ -22,6 +22,7 @@
 package com.avairebot.database;
 
 import com.avairebot.AvaIre;
+import com.avairebot.contracts.database.BatchQueryFunction;
 import com.avairebot.contracts.database.Database;
 import com.avairebot.database.collection.Collection;
 import com.avairebot.database.connections.MySQL;
@@ -40,6 +41,7 @@ import java.sql.*;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class DatabaseManager {
 
@@ -49,12 +51,18 @@ public class DatabaseManager {
     private final Schema schema;
     private final Migrations migrations;
 
+    private final AtomicInteger batchIncrementer;
+    private final Set<Integer> runningBatchRequests;
+
     private Database connection = null;
 
     public DatabaseManager(AvaIre avaire) {
         this.avaire = avaire;
         this.schema = new Schema(this);
         this.migrations = new Migrations(this);
+
+        this.batchIncrementer = new AtomicInteger(0);
+        this.runningBatchRequests = new HashSet<>();
     }
 
     public AvaIre getAvaire() {
@@ -307,5 +315,80 @@ public class DatabaseManager {
 
             return ids;
         }
+    }
+
+    /**
+     * Creates a batch request query, creating a prepared statement from the given query, and sets
+     * up a batch request which is then invoked at the end of the {@code queryFunction}, the
+     * {@code queryFunction} should only add batches to the prepared statement, the actual
+     * executing of the batch request, committing the query, and rolling back in case of
+     * errors is all done by the queryBatch method.
+     * <p>
+     * <strong>Example:</strong>
+     * <pre><code>
+     * // The IDs that will be used within for the "condition" in the SQL query.
+     * List<Integer> ids = Arrays.asList(1, 3, 5, 7, 9);
+     *
+     * databaseManager.queryBatch("UPDATE `some_table` SET `something` = true WHERE `condition` = ?", statement -> {
+     *     for (int id : ids) {
+     *         // Adds the ID to the first question mark(?)
+     *         statement.setInt(1, id);
+     *
+     *         // Adds the finished statement to the batch request queue.
+     *         statement.addBatch();
+     *     }
+     * });
+     * // The batch query will automatically be executed and committed at this point.
+     * </code></pre>
+     *
+     * @param query         The query that should be used for the batch request.
+     * @param queryFunction The function that should be called for setting up the batch request.
+     * @throws SQLException        if a database access error occurs;
+     *                             this method is called on a closed  <code>PreparedStatement</code>
+     *                             or the SQL statement returns a <code>ResultSet</code> object
+     * @throws SQLTimeoutException when the driver has determined that the
+     *                             timeout value that was specified by the {@code setQueryTimeout}
+     *                             method has been exceeded and has at least attempted to cancel
+     *                             the currently running {@code Statement}
+     */
+    public void queryBatch(String query, BatchQueryFunction<PreparedStatement> queryFunction) throws SQLException {
+        Connection connection = getConnection().getConnection();
+
+        int batchId = batchIncrementer.getAndIncrement();
+        runningBatchRequests.add(batchId);
+
+        try {
+            connection.setAutoCommit(false);
+
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                queryFunction.run(preparedStatement);
+
+                preparedStatement.executeBatch();
+            }
+        } catch (SQLException e) {
+            log.error("An SQL exception was thrown while running a batch query: {}", query, e);
+
+            try {
+                connection.rollback();
+            } catch (SQLException e1) {
+                log.error("An SQL exception was thrown while attempting to rollback a batch query: {}", query, e);
+            }
+        } finally {
+            connection.commit();
+
+            runningBatchRequests.remove(batchId);
+            if (runningBatchRequests.isEmpty()) {
+                connection.setAutoCommit(true);
+            }
+        }
+    }
+
+    /**
+     * Checks if there are any running batch query requests running right now.
+     *
+     * @return {@code True} if there are batch requests running, {@code False} otherwise.
+     */
+    public boolean hasRunningBatchQueries() {
+        return !runningBatchRequests.isEmpty();
     }
 }

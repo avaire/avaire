@@ -31,8 +31,6 @@ import org.slf4j.LoggerFactory;
 import spark.Request;
 import spark.Response;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -69,29 +67,18 @@ public class PostGuildCleanup extends SparkRoute {
             }
         }
 
-        Connection connection = metrics.getAvaire().getDatabase().getConnection().getConnection();
         String query = String.format("DELETE FROM `%s` WHERE `id` = ?",
             Constants.GUILD_TABLE_NAME
         );
 
         log.debug("Starting \"Guild Cleanup\" route task with query: " + query);
 
-        boolean autoCommit = connection.getAutoCommit();
-        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            connection.setAutoCommit(false);
-
+        metrics.getAvaire().getDatabase().queryBatch(query, statement -> {
             for (Long id : idsToDelete) {
-                preparedStatement.setLong(1, id);
-                preparedStatement.addBatch();
+                statement.setLong(1, id);
+                statement.addBatch();
             }
-
-            preparedStatement.executeBatch();
-            connection.commit();
-        }
-
-        if (connection.getAutoCommit() != autoCommit) {
-            connection.setAutoCommit(autoCommit);
-        }
+        });
 
         log.debug("Finished \"Guild Cleanup\" route task, deleted {} records in the process", idsToDelete.size());
 
