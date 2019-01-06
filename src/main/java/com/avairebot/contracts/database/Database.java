@@ -177,11 +177,15 @@ public abstract class Database implements DatabaseConnection, Grammarable {
     public final synchronized boolean isOpen(int seconds) {
         if (connection != null) {
             // Returns the last state if the connection was checked less than three seconds ago.
-            if (System.currentTimeMillis() - 3000 < lastChecked) {
+            if (System.currentTimeMillis() - 5000 < lastChecked) {
                 return lastState;
             }
 
             try {
+                if (connection.isClosed()) {
+                    return false;
+                }
+
                 lastState = connection.isValid(seconds);
                 lastChecked = System.currentTimeMillis() - (lastState ? 0L : 250L);
 
