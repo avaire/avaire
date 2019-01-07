@@ -48,7 +48,7 @@ public class AddGlobalExperienceToExperienceTableMigration implements Migration 
             ));
         } else {
             schema.getDbm().queryUpdate(String.format(
-                "ALTER TABLE `%s` ADD `global_experience` BIGINT NOT NULL DEFAULT '0' AFTER `experience`",
+                "ALTER TABLE `%s` ADD `global_experience` BIGINT NOT NULL DEFAULT '0'",
                 Constants.PLAYER_EXPERIENCE_TABLE_NAME
             ));
         }
