@@ -28,12 +28,21 @@ import spark.Route;
 
 public abstract class SparkRoute implements Route {
 
+    /**
+     * The metrics application instance, used to communicate with
+     * the rest of the application from within the route.
+     */
     protected final Metrics metrics;
 
+    /**
+     * Creates a new spark route instance.
+     *
+     * @param metrics The metrics application instance, used to communicate
+     *                with the rest of the application.
+     */
     public SparkRoute(Metrics metrics) {
         this.metrics = metrics;
     }
-
 
     /**
      * Builds the JSON response, generating a "status" key, along with a "message" key

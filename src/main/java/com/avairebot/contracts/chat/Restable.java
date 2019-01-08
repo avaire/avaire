@@ -28,6 +28,7 @@ import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.requests.restaction.MessageAction;
 
+import javax.annotation.Nullable;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
@@ -37,11 +38,30 @@ import java.util.function.Consumer;
 
 public abstract class Restable {
 
+    /**
+     * The message channel that the restable instance should be used for.
+     */
     protected final MessageChannel channel;
 
-    public Restable(MessageChannel channel) {
+    /**
+     * Creates a new restable instance for the given message channel, allowing
+     * for easy access to JDAs queue system for Rest messages, if no channel
+     * is given the message won't be able to be sent, and will throw a
+     * {@link RuntimeException runtime exception} instead.
+     *
+     * @param channel The channel that the message should be sent to, or {@code NULL}.
+     */
+    public Restable(@Nullable MessageChannel channel) {
         this.channel = channel;
     }
+
+    /**
+     * Builds the embedded message that should
+     * be sent to the set message channel.
+     *
+     * @return The JDA {@link MessageEmbed embed} instance.
+     */
+    public abstract MessageEmbed buildEmbed();
 
     /**
      * Submits a Request for execution.
@@ -256,7 +276,7 @@ public abstract class Restable {
 
     private Optional<MessageAction> sendMessage() {
         if (channel == null) {
-            throw new RuntimeException("Invalid channel given, the channel can not be null!");
+            throw new RuntimeException("Message channel is NULL, can't queue message if the channel is not set!");
         }
 
         CheckPermissionUtil.PermissionCheckType type = CheckPermissionUtil.canSendMessages(channel);
@@ -275,6 +295,4 @@ public abstract class Restable {
 
         return Optional.empty();
     }
-
-    public abstract MessageEmbed buildEmbed();
 }

@@ -36,6 +36,12 @@ import java.util.concurrent.TimeUnit;
 
 public abstract class Middleware {
 
+    /**
+     * The Guava cache instance, used for caching the sent messages, and
+     * helps determine if the response message should be sent or not.
+     *
+     * @see com.avairebot.metrics.Metrics#setup(AvaIre) Metrics setup.
+     */
     public static final Cache<Long, Boolean> messageCache = CacheBuilder.newBuilder()
         .recordStats()
         .expireAfterWrite(2500, TimeUnit.MILLISECONDS)

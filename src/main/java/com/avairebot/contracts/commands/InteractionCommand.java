@@ -48,11 +48,22 @@ import java.util.concurrent.TimeUnit;
 
 public abstract class InteractionCommand extends Command {
 
+    /**
+     * The Guava cache instance, used for caching the sent messages, and
+     * helps determine if the response message should be sent or not.
+     *
+     * @see com.avairebot.metrics.Metrics#setup(AvaIre) Metrics setup.
+     */
     public static final Cache<String, Lottery> cache = CacheBuilder.newBuilder()
         .recordStats()
         .expireAfterAccess(5, TimeUnit.MINUTES)
         .build();
 
+    /**
+     * Creates a new interaction command instance.
+     *
+     * @param avaire The main {@link AvaIre avaire} application instance.
+     */
     public InteractionCommand(AvaIre avaire) {
         super(avaire, false);
     }
@@ -98,12 +109,27 @@ public abstract class InteractionCommand extends Command {
         return CommandPriority.HIGH;
     }
 
+    /**
+     * Gets the colour that should be used for the ebbed message when
+     * he interaction message is sent, by default this will return
+     * {@code NULL} which will not set any colour.
+     *
+     * @return The colour that should be used for the embed message.
+     */
     @Nullable
     @SuppressWarnings("WeakerAccess")
     public Color getInteractionColor() {
         return null;
     }
 
+    /**
+     * Gets the list of interaction images that can be returned by the
+     * interaction, using the image full URL to where it is hosted.
+     * <p>
+     * Example: https://i.imgur.com/ZupgGkI.jpg
+     *
+     * @return A list of interaction images.
+     */
     @Nonnull
     public abstract List<String> getInteractionImages();
 

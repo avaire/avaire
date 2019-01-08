@@ -30,6 +30,7 @@ import com.avairebot.factories.MessageFactory;
 import com.avairebot.utilities.StringReplacementUtil;
 import net.dv8tion.jda.core.entities.User;
 
+import javax.annotation.Nonnull;
 import java.awt.*;
 import java.sql.SQLException;
 import java.util.Arrays;
@@ -41,6 +42,11 @@ public abstract class ChannelModuleCommand extends Command {
 
     private static final Pattern colorRegEx = Pattern.compile("^[0-9A-F]{6}$");
 
+    /**
+     * Creates a new channel module instance that won't work in DMs.
+     *
+     * @param avaire The main {@link AvaIre avaire} application instance.
+     */
     public ChannelModuleCommand(AvaIre avaire) {
         super(avaire, false);
     }
@@ -53,7 +59,27 @@ public abstract class ChannelModuleCommand extends Command {
         );
     }
 
-    protected boolean handleEmbedOption(CommandMessage context, String[] args, GuildTransformer guildTransformer, ChannelTransformer channelTransformer, Supplier<Boolean> callback) {
+    /**
+     * Handles the embed option for the channel module, this method is called
+     * when the command specifies that it should use or disable embed
+     * messages, by either parsing a colour code in a HEX format to
+     * set the embed colour, or when using it with no additional
+     * arguments to disable the feature.
+     *
+     * @param context            The command message context.
+     * @param args               The arguments passed to the original command.
+     * @param guildTransformer   The guild database transformer representing the current guild.
+     * @param channelTransformer The channel database transformer representing the current channel.
+     * @param callback           The callback that should be invoked when the database record is updated.
+     * @return {@code True} if everything ran successfully, or {@code False} if an error occurred, or invalid arguments was given.
+     */
+    protected boolean handleEmbedOption(
+        CommandMessage context,
+        String[] args,
+        GuildTransformer guildTransformer,
+        ChannelTransformer channelTransformer,
+        Supplier<Boolean> callback
+    ) {
         getChannelModule(channelTransformer).setEmbedColor(null);
 
         if (args.length > 1) {
@@ -72,6 +98,16 @@ public abstract class ChannelModuleCommand extends Command {
         return updateDatabase(context, guildTransformer, callback);
     }
 
+    /**
+     * Updates the database for the current guild, and
+     * then calls the callback supplier on success.
+     *
+     * @param context          The command message context.
+     * @param guildTransformer The guild database transformer representing the current guild.
+     * @param callback         The callback that should be invoked when the database record is updated.
+     * @return The result of the {@code callback} if the database record was
+     * updated successfully, or {@code False} if an error occurred.
+     */
     protected boolean updateDatabase(CommandMessage context, GuildTransformer guildTransformer, Supplier<Boolean> callback) {
         try {
             avaire.getDatabase().newQueryBuilder(Constants.GUILD_TABLE_NAME)
@@ -87,6 +123,18 @@ public abstract class ChannelModuleCommand extends Command {
         }
     }
 
+    /**
+     * Sends the example message of the command module by using
+     * the provided command context, channel transformer,
+     * and default value, sending it to the given user.
+     *
+     * @param context      The command message context.
+     * @param user         The user that should be used for the user placeholders.
+     * @param transformer  The channel database transformer representing the current channel.
+     * @param defaultValue The default value that should be displayed if the
+     *                     guild doesn't have one set for the module.
+     * @return Always returns {@code True}.
+     */
     protected boolean sendExampleMessage(CommandMessage context, User user, ChannelTransformer transformer, String defaultValue) {
         String message = StringReplacementUtil.parse(
             context.getGuild(), context.getChannel(), user,
@@ -110,6 +158,15 @@ public abstract class ChannelModuleCommand extends Command {
         return true;
     }
 
+    /**
+     * Sends the "Module has been enabled" message for the
+     * given channel transformer, and the given type.
+     *
+     * @param context            The command message context.
+     * @param channelTransformer The channel database transformer representing the current channel.
+     * @param type               The of enabled message that should be sent.
+     * @return Always returns {@code True}.
+     */
     protected boolean sendEnableMessage(CommandMessage context, ChannelTransformer channelTransformer, String type) {
         context.makeSuccess(context.i18nRaw("administration.channelModule.message"))
             .set("type", type)
@@ -120,5 +177,14 @@ public abstract class ChannelModuleCommand extends Command {
         return true;
     }
 
+    /**
+     * Returns the channel module that should be
+     * used for the channel module instance.
+     *
+     * @param transformer The channel transformer the module should be pulled from.
+     * @return The {@link ChannelTransformer.MessageModule channel message module}
+     * that should be used for the channel module instance.
+     */
+    @Nonnull
     public abstract ChannelTransformer.MessageModule getChannelModule(ChannelTransformer transformer);
 }

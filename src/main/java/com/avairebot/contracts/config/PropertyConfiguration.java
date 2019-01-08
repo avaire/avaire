@@ -29,6 +29,10 @@ import java.util.Properties;
 
 public abstract class PropertyConfiguration extends Evalable {
 
+    /**
+     * The properties holder, the object can be used
+     * to pull out the loaded properties values.
+     */
     protected final Properties properties = new Properties();
 
     /**

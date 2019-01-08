@@ -23,6 +23,7 @@ package com.avairebot.contracts.chat;
 
 import com.avairebot.utilities.NumberUtil;
 
+import javax.annotation.Nonnull;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -31,22 +32,60 @@ import java.util.Map;
 @SuppressWarnings("WeakerAccess")
 public abstract class Paginator implements Cloneable {
 
+    /**
+     * The items that should be paginated.
+     */
     protected final Map<Object, Object> items;
+
+    /**
+     * The amount of items to display per-page.
+     */
     protected final int perPage;
+
+    /**
+     * The current page ID.
+     */
     protected int currentPage;
 
-    public Paginator(Map<?, ?> items, int perPage, int currentPage) {
+    /**
+     * Creates a new paginator instance using the given
+     * items, per page, and current page values.
+     *
+     * @param items       The items that should be paginated.
+     * @param perPage     The amount of items to show per-page.
+     * @param currentPage The current page that should be shown.
+     */
+    public Paginator(@Nonnull Map<?, ?> items, int perPage, int currentPage) {
         this.items = new HashMap<>(items);
         this.perPage = perPage;
 
         this.setCurrentPage(currentPage);
     }
 
-    public Paginator(Map<?, ?> items, int perPage, String currentPage) {
+    /**
+     * Creates a new paginator instance using the given items, per page,
+     * and current page, if the current page is not a valid number,
+     * the first page will be selected instead.
+     *
+     * @param items       The items that should be paginated.
+     * @param perPage     The amount of items to show per-page.
+     * @param currentPage The current page that should be shown.
+     */
+    public Paginator(@Nonnull Map<?, ?> items, int perPage, @Nonnull String currentPage) {
         this(items, perPage, NumberUtil.parseInt(currentPage, 1));
     }
 
-    public Paginator(List<?> items, int perPage, int currentPage) {
+    /**
+     * Creates a new paginator instance using the given items list, per page,
+     * and current page, the items will be converted to a map, where the
+     * key for the map is the index for the record in the list element,
+     * and the value will stay as the value.
+     *
+     * @param items       The items that should be paginated.
+     * @param perPage     The amount of items to show per-page.
+     * @param currentPage The current page that should be shown.
+     */
+    public Paginator(@Nonnull List<?> items, int perPage, int currentPage) {
         Map<Object, Object> map = new HashMap<>();
         for (int i = 0; i < items.size(); i++) {
             map.put(i, items.get(i));
@@ -57,7 +96,33 @@ public abstract class Paginator implements Cloneable {
         this.setCurrentPage(currentPage);
     }
 
-    public Paginator(Iterator<?> iterator, int perPage, int currentPage) {
+    /**
+     * Creates a new paginator instance using the given items list, per page,
+     * and current page, the items will be converted to a map, where the
+     * key for the map is the index for the record in the list element,
+     * and the value will stay as the value.
+     * <p>
+     * The current page will be parsed to a integer, if the current page is
+     * not a valid number, the first page will be selected instead.
+     *
+     * @param items       The items that should be paginated.
+     * @param perPage     The amount of items to show per-page.
+     * @param currentPage The current page that should be shown.
+     */
+    public Paginator(@Nonnull List<?> items, int perPage, @Nonnull String currentPage) {
+        this(items, perPage, NumberUtil.parseInt(currentPage, 1));
+    }
+
+    /**
+     * Creates a new paginator instance using the given iterator, per page, and
+     * current page, the items will be pulled from the iterator and be stored
+     * into a map, where the key is the index in the given iterator.
+     *
+     * @param iterator    The iterator containing all the items that should be paginated.
+     * @param perPage     The amount of items to show per-page.
+     * @param currentPage The current page that should be shown.
+     */
+    public Paginator(@Nonnull Iterator<?> iterator, int perPage, int currentPage) {
         int index = 0;
         Map<Object, Object> items = new HashMap<>();
         while (iterator.hasNext()) {
@@ -70,9 +135,6 @@ public abstract class Paginator implements Cloneable {
         this.setCurrentPage(currentPage);
     }
 
-    public Paginator(List<?> items, int perPage, String currentPage) {
-        this(items, perPage, NumberUtil.parseInt(currentPage, 1));
-    }
 
     /**
      * Loops over each item in the paginator for the current page
@@ -80,7 +142,7 @@ public abstract class Paginator implements Cloneable {
      *
      * @param closure The closure that should get the paginator item for the current page.
      */
-    public void forEach(PaginatorClosure closure) {
+    public void forEach(@Nonnull PaginatorClosure closure) {
         int counter = 0;
         int start = perPage * (getCurrentPage() - 1);
         int end = start + getPerPage();

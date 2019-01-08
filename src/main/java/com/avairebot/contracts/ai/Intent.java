@@ -28,6 +28,11 @@ import com.avairebot.contracts.reflection.Reflectionable;
 
 public abstract class Intent extends Reflectionable {
 
+    /**
+     * Creates the DialogFlow AI intent action.
+     *
+     * @param avaire The main {@link AvaIre avaire} instance.
+     */
     public Intent(AvaIre avaire) {
         super(avaire);
     }

@@ -31,6 +31,11 @@ public abstract class Reflectionable implements Reflectional {
      */
     protected final AvaIre avaire;
 
+    /**
+     * Creates a new reflectionable class instance.
+     *
+     * @param avaire The main {@link AvaIre avaire} application instance.
+     */
     public Reflectionable(AvaIre avaire) {
         this.avaire = avaire;
     }

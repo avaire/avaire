@@ -80,6 +80,13 @@ public abstract class EventListener extends ListenerAdapter implements net.dv8ti
         //
     }
 
+    /**
+     * Handles the given custom event by passing the event to
+     * the correct method, and calls the generic event
+     * handler to log the event to the metrics.
+     *
+     * @param event The custom event that should be handled.
+     */
     public final void onCustomEvent(Event event) {
         onGenericEvent(event);
 

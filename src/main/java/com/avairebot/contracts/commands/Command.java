@@ -108,7 +108,8 @@ public abstract class Command extends Reflectionable {
      * If this method is not overwritten the {@link #getDescription()}
      * method will be called instead.
      *
-     * @param context The command context used to get the description.
+     * @param context The command message context generated using the
+     *                JDA message event that invoked the command.
      * @return Never-null, the command description.
      */
     public String getDescription(CommandContext context) {
@@ -228,7 +229,8 @@ public abstract class Command extends Reflectionable {
      * and the middleware stack when a user sends a message matching the
      * commands prefix and one of its command triggers.
      *
-     * @param context The JDA message object from the message received event.
+     * @param context The command message context generated using the
+     *                JDA message event that invoked the command.
      * @param args    The arguments given to the command, if no arguments was given the array will just be empty.
      * @return true on success, false on failure.
      */
@@ -238,7 +240,8 @@ public abstract class Command extends Reflectionable {
      * Builds and sends the given error message to the
      * given channel for the JDA message object.
      *
-     * @param context The JDA message object.
+     * @param context The command message context generated using the
+     *                JDA message event that invoked the command.
      * @param error   The error message that should be sent.
      * @param args    The array of arguments that should be replace in the error string.
      * @return false since the error message should only be used on failure.
@@ -262,7 +265,8 @@ public abstract class Command extends Reflectionable {
      * Builds and sends the given error message to the
      * given channel for the JDA message object.
      *
-     * @param context The JDA message object.
+     * @param context The command message context generated using the
+     *                JDA message event that invoked the command.
      * @param error   The error message that should be sent.
      * @return false since the error message should only be used on failure.
      */
@@ -282,7 +286,8 @@ public abstract class Command extends Reflectionable {
      * Builds and sends the given error message to the given channel for the JDA
      * message object, then deletes the message again after the allotted time.
      *
-     * @param context  The JDA message object.
+     * @param context  The command message context generated using the
+     *                 JDA message event that invoked the command.
      * @param error    The error message that should be sent.
      * @param deleteIn The amount of time the message should stay up before being deleted.
      * @param unit     The unit of time before the message should be deleted.
@@ -303,33 +308,13 @@ public abstract class Command extends Reflectionable {
         return sendErrorMessageAndDeleteMessage(context, error, deleteIn, unit);
     }
 
-    private boolean sendErrorMessageAndDeleteMessage(CommandMessage context, String error, long deleteIn, TimeUnit unit) {
-        PlaceholderMessage placeholderMessage = context.makeError(error)
-            .setTitle(getName())
-            .addField("Usage", generateUsageInstructions(context.getMessage()), false)
-            .addField("Example Usage", generateExampleUsage(context.getMessage()), false);
-
-        Category category = CategoryHandler.fromCommand(this);
-        if (category != null) {
-            placeholderMessage.setFooter("Command category: " + category.getName());
-        }
-
-        placeholderMessage.queue(message -> {
-            if (deleteIn <= 0) {
-                return;
-            }
-            message.delete().queueAfter(deleteIn, unit, null, RestActionUtil.ignore);
-        });
-
-        return false;
-    }
-
     /**
      * Generates the command description, any middlewares assigned to the command
      * will also be dynamically generated and added to the command description
      * two lines below the actually description.
      *
-     * @param context The JDA message object.
+     * @param context The command message context generated using the
+     *                JDA message event that invoked the command.
      * @return The generated command description.
      */
     public final String generateDescription(CommandMessage context) {
@@ -451,6 +436,27 @@ public abstract class Command extends Reflectionable {
      */
     private String formatCommandGeneratorString(Message message, String string) {
         return StringReplacementUtil.replaceAll(string, ":command", generateCommandTrigger(message));
+    }
+
+    private boolean sendErrorMessageAndDeleteMessage(CommandMessage context, String error, long deleteIn, TimeUnit unit) {
+        PlaceholderMessage placeholderMessage = context.makeError(error)
+            .setTitle(getName())
+            .addField("Usage", generateUsageInstructions(context.getMessage()), false)
+            .addField("Example Usage", generateExampleUsage(context.getMessage()), false);
+
+        Category category = CategoryHandler.fromCommand(this);
+        if (category != null) {
+            placeholderMessage.setFooter("Command category: " + category.getName());
+        }
+
+        placeholderMessage.queue(message -> {
+            if (deleteIn <= 0) {
+                return;
+            }
+            message.delete().queueAfter(deleteIn, unit, null, RestActionUtil.ignore);
+        });
+
+        return false;
     }
 
     @Override
