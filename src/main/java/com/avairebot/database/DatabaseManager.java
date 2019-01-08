@@ -232,7 +232,7 @@ public class DatabaseManager {
         Metrics.databaseQueries.labels("INSERT").inc();
         MDC.put("query", query);
 
-        if (!query.startsWith("INSERT INTO")) {
+        if (!query.toUpperCase().startsWith("INSERT INTO")) {
             throw new DatabaseException("queryInsert was called with a query without an INSERT statement!");
         }
 
@@ -277,7 +277,7 @@ public class DatabaseManager {
             throw new SQLException("null query was generated, null can not be used as a valid query");
         }
 
-        if (!query.startsWith("INSERT INTO")) {
+        if (!query.toUpperCase().startsWith("INSERT INTO")) {
             throw new DatabaseException("queryInsert was called with a query without an INSERT statement!");
         }
 
