@@ -32,6 +32,7 @@ import com.avairebot.database.migrate.Migrations;
 import com.avairebot.database.query.QueryBuilder;
 import com.avairebot.database.schema.Schema;
 import com.avairebot.metrics.Metrics;
+import com.mysql.jdbc.exceptions.MySQLTransactionRollbackException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
@@ -54,6 +55,7 @@ public class DatabaseManager {
     private final AtomicInteger batchIncrementer;
     private final Set<Integer> runningBatchRequests;
 
+    private int queryRetries = 5;
     private Database connection = null;
 
     public DatabaseManager(AvaIre avaire) {
@@ -104,6 +106,10 @@ public class DatabaseManager {
         return connection;
     }
 
+    public void setRetries(int retries) {
+        this.queryRetries = retries;
+    }
+
     public QueryBuilder newQueryBuilder() {
         return new QueryBuilder(this);
     }
@@ -131,9 +137,7 @@ public class DatabaseManager {
         log.debug("query(String query) was called with the following SQL query.\nSQL: " + query);
         MDC.put("query", query);
 
-        try (ResultSet resultSet = getConnection().query(query)) {
-            return new Collection(resultSet);
-        }
+        return runQuery(query, queryRetries);
     }
 
     /**
@@ -180,13 +184,7 @@ public class DatabaseManager {
         log.debug("queryUpdate(String query) was called with the following SQL query.\nSQL: " + query);
         MDC.put("query", query);
 
-        try (Statement stmt = getConnection().prepare(query)) {
-            if (stmt instanceof PreparedStatement) {
-                return ((PreparedStatement) stmt).executeUpdate();
-            }
-
-            return stmt.executeUpdate(query);
-        }
+        return runQueryUpdate(query, queryRetries);
     }
 
     /**
@@ -236,18 +234,7 @@ public class DatabaseManager {
             throw new DatabaseException("queryInsert was called with a query without an INSERT statement!");
         }
 
-        try (PreparedStatement stmt = getConnection().getConnection().prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
-            stmt.executeUpdate();
-
-            Set<Integer> ids = new HashSet<>();
-
-            ResultSet keys = stmt.getGeneratedKeys();
-            while (keys.next()) {
-                ids.add(keys.getInt(1));
-            }
-
-            return ids;
-        }
+        return runQueryInsert(query, queryRetries);
     }
 
     /**
@@ -281,38 +268,7 @@ public class DatabaseManager {
             throw new DatabaseException("queryInsert was called with a query without an INSERT statement!");
         }
 
-        try (PreparedStatement stmt = getConnection().getConnection().prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
-            int preparedIndex = 1;
-            for (Map<String, Object> row : queryBuilder.getItems()) {
-                for (Map.Entry<String, Object> item : row.entrySet()) {
-                    if (item.getValue() == null) {
-                        continue;
-                    }
-
-                    String value = item.getValue().toString();
-
-                    if (value.startsWith("RAW:") ||
-                        value.equalsIgnoreCase("true") ||
-                        value.equalsIgnoreCase("false") ||
-                        value.matches("[-+]?\\d*\\.?\\d+")) {
-                        continue;
-                    }
-
-                    stmt.setString(preparedIndex++, value);
-                }
-            }
-
-            stmt.executeUpdate();
-
-            Set<Integer> ids = new HashSet<>();
-
-            ResultSet keys = stmt.getGeneratedKeys();
-            while (keys.next()) {
-                ids.add(keys.getInt(1));
-            }
-
-            return ids;
-        }
+        return runQueryInsert(queryBuilder, queryRetries);
     }
 
     /**
@@ -350,10 +306,124 @@ public class DatabaseManager {
      *                             the currently running {@code Statement}
      */
     public void queryBatch(String query, BatchQueryFunction<PreparedStatement> queryFunction) throws SQLException {
+        runQueryBatch(query, queryFunction, batchIncrementer.getAndIncrement(), queryRetries);
+    }
+
+    /**
+     * Checks if there are any running batch query requests running right now.
+     *
+     * @return {@code True} if there are batch requests running, {@code False} otherwise.
+     */
+    public boolean hasRunningBatchQueries() {
+        return !runningBatchRequests.isEmpty();
+    }
+
+    @WillClose
+    private Collection runQuery(String query, int retriesLeft) throws SQLException {
+        try (ResultSet resultSet = getConnection().query(query)) {
+            return new Collection(resultSet);
+        } catch (MySQLTransactionRollbackException e) {
+            if (--retriesLeft > 0) {
+                return runQuery(query, --retriesLeft);
+            }
+            throw new MySQLTransactionRollbackException(
+                e.getMessage(), e.getSQLState(), e.getErrorCode()
+            );
+        }
+    }
+
+    @WillClose
+    private int runQueryUpdate(String query, int retriesLeft) throws SQLException {
+        try (Statement stmt = getConnection().prepare(query)) {
+            if (stmt instanceof PreparedStatement) {
+                return ((PreparedStatement) stmt).executeUpdate();
+            }
+
+            return stmt.executeUpdate(query);
+        } catch (MySQLTransactionRollbackException e) {
+            if (--retriesLeft > 0) {
+                return runQueryUpdate(query, retriesLeft);
+            }
+            throw new MySQLTransactionRollbackException(
+                e.getMessage(), e.getSQLState(), e.getErrorCode()
+            );
+        }
+    }
+
+    @WillClose
+    private Set<Integer> runQueryInsert(String query, int retriesLeft) throws SQLException {
+        try (PreparedStatement stmt = getConnection().getConnection().prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+            stmt.executeUpdate();
+
+            Set<Integer> ids = new HashSet<>();
+
+            ResultSet keys = stmt.getGeneratedKeys();
+            while (keys.next()) {
+                ids.add(keys.getInt(1));
+            }
+
+            return ids;
+        } catch (MySQLTransactionRollbackException e) {
+            if (--retriesLeft > 0) {
+                return runQueryInsert(query, retriesLeft);
+            }
+            throw new MySQLTransactionRollbackException(
+                e.getMessage(), e.getSQLState(), e.getErrorCode()
+            );
+        }
+    }
+
+    @WillClose
+    private Set<Integer> runQueryInsert(QueryBuilder queryBuilder, int retriesLeft) throws SQLException {
+        String query = queryBuilder.toSQL();
+
+        try (PreparedStatement stmt = getConnection().getConnection().prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+            int preparedIndex = 1;
+            for (Map<String, Object> row : queryBuilder.getItems()) {
+                for (Map.Entry<String, Object> item : row.entrySet()) {
+                    if (item.getValue() == null) {
+                        continue;
+                    }
+
+                    String value = item.getValue().toString();
+
+                    if (value.startsWith("RAW:") ||
+                        value.equalsIgnoreCase("true") ||
+                        value.equalsIgnoreCase("false") ||
+                        value.matches("[-+]?\\d*\\.?\\d+")) {
+                        continue;
+                    }
+
+                    stmt.setString(preparedIndex++, value);
+                }
+            }
+
+            stmt.executeUpdate();
+
+            Set<Integer> ids = new HashSet<>();
+
+            ResultSet keys = stmt.getGeneratedKeys();
+            while (keys.next()) {
+                ids.add(keys.getInt(1));
+            }
+
+            return ids;
+        } catch (MySQLTransactionRollbackException e) {
+            if (--retriesLeft > 0) {
+                return runQueryInsert(query, retriesLeft);
+            }
+            throw new MySQLTransactionRollbackException(
+                e.getMessage(), e.getSQLState(), e.getErrorCode()
+            );
+        }
+    }
+
+    private void runQueryBatch(String query, BatchQueryFunction<PreparedStatement> queryFunction, int batchId, int retriesLeft) throws SQLException {
         Connection connection = getConnection().getConnection();
 
-        int batchId = batchIncrementer.getAndIncrement();
-        runningBatchRequests.add(batchId);
+        if (!runningBatchRequests.contains(batchId)) {
+            runningBatchRequests.add(batchId);
+        }
 
         try {
             connection.setAutoCommit(false);
@@ -372,21 +442,18 @@ public class DatabaseManager {
                 log.error("An SQL exception was thrown while attempting to rollback a batch query: {}", query, e);
             }
         } finally {
-            connection.commit();
+            try {
+                connection.commit();
 
-            runningBatchRequests.remove(batchId);
-            if (runningBatchRequests.isEmpty()) {
-                connection.setAutoCommit(true);
+                runningBatchRequests.remove(batchId);
+                if (runningBatchRequests.isEmpty()) {
+                    connection.setAutoCommit(true);
+                }
+            } catch (MySQLTransactionRollbackException e) {
+                if (--retriesLeft > 0) {
+                    runQueryBatch(query, queryFunction, batchId, retriesLeft);
+                }
             }
         }
-    }
-
-    /**
-     * Checks if there are any running batch query requests running right now.
-     *
-     * @return {@code True} if there are batch requests running, {@code False} otherwise.
-     */
-    public boolean hasRunningBatchQueries() {
-        return !runningBatchRequests.isEmpty();
     }
 }
