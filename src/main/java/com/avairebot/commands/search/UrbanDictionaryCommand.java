@@ -149,7 +149,11 @@ public class UrbanDictionaryCommand extends Command {
     }
 
     private int buildScore(UrbanDictionaryService.UrbanDictionary definition, String originalWord) {
-        return (definition.getThumbsUp() / (definition.getThumbsUp() + definition.getThumbsDown()) * 100)
-            * (definition.getWord().equalsIgnoreCase(originalWord) ? 2 : 1);
+        try {
+            return (definition.getThumbsUp() / (definition.getThumbsUp() + definition.getThumbsDown()) * 100)
+                * (definition.getWord().equalsIgnoreCase(originalWord) ? 2 : 1);
+        } catch (ArithmeticException ignored) {
+            return 0;
+        }
     }
 }
