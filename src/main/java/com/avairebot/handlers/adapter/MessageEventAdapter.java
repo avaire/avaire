@@ -44,7 +44,6 @@ import com.avairebot.shared.DiscordConstants;
 import com.avairebot.utilities.ArrayUtil;
 import com.avairebot.utilities.RestActionUtil;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
-import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
@@ -60,7 +59,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class MessageEventAdapter extends EventAdapter {
@@ -87,9 +85,6 @@ public class MessageEventAdapter extends EventAdapter {
         "If you like me please vote for AvaIre to help me grow:",
         "https://discordbots.org/bot/avaire/vote"
     ));
-
-    private static Pattern commandRegEx = null;
-    private static int maxCommandTriggerSize = -1;
 
     /**
      * Instantiates the event adapter and sets the avaire class instance.
@@ -266,44 +261,13 @@ public class MessageEventAdapter extends EventAdapter {
                 return new DatabaseEventHolder(null, null);
             }
 
-            GuildTransformer guild = looksLikeCommand(event.getMessage())
-                ? GuildController.fetchGuild(avaire, event.getMessage())
-                : GuildController.fetchGuild(avaire, event.getMessage());
+            GuildTransformer guild = GuildController.fetchGuild(avaire, event.getMessage());
 
             if (guild == null || !guild.isLevels() || event.getAuthor().isBot()) {
                 return new DatabaseEventHolder(guild, null);
             }
             return new DatabaseEventHolder(guild, PlayerController.fetchPlayer(avaire, event.getMessage()));
         });
-    }
-
-    private boolean looksLikeCommand(Message message) {
-        if (message.getGuild().getMembers().stream().filter(member -> member.getUser().isBot()).count() > 5) {
-            return false;
-        }
-
-        String content = message.getContentRaw();
-        if (commandRegEx == null) {
-            maxCommandTriggerSize = -1;
-            Set<String> commandTriggers = new HashSet<>();
-            for (CommandContainer container : CommandHandler.getCommands()) {
-                for (String trigger : container.getCommand().getTriggers()) {
-                    if (trigger.length() > maxCommandTriggerSize) {
-                        maxCommandTriggerSize = trigger.length();
-                    }
-                    commandTriggers.add(Matcher.quoteReplacement(trigger));
-                }
-            }
-            maxCommandTriggerSize += 4;
-            commandRegEx = Pattern.compile(String.format(
-                "^(\\S){1,3}(%s)$", String.join("|", commandTriggers)),
-                Pattern.CASE_INSENSITIVE
-            );
-        }
-
-        return commandRegEx.matcher(
-            content.substring(0, Math.min(maxCommandTriggerSize, content.length()))
-        ).matches();
     }
 
     public void onMessageDelete(TextChannel channel, List<String> messageIds) {
