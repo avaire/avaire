@@ -34,6 +34,7 @@ import com.avairebot.database.transformers.GuildTypeTransformer;
 import com.avairebot.database.transformers.ReactionTransformer;
 import com.avairebot.utilities.RestActionUtil;
 import com.avairebot.utilities.RoleUtil;
+import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Emote;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.Role;
@@ -155,7 +156,9 @@ public class AddReactionRoleCommand extends Command {
                 return;
             }
 
-            context.delete().queue(null, RestActionUtil.ignore);
+            if (context.getGuild().getSelfMember().hasPermission(context.getChannel(), Permission.MESSAGE_MANAGE)) {
+                context.delete().queue(null, RestActionUtil.ignore);
+            }
 
             Message message = messages.get(1);
             ReactionTransformer reactionTransformer = ReactionController.fetchReactionFromMessage(avaire, message);
