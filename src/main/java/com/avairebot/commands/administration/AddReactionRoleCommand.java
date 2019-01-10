@@ -166,7 +166,7 @@ public class AddReactionRoleCommand extends Command {
 
             if (reactionTransformer.getRoles().size() >= guildTransformer.getType().getLimits().getReactionRoles().getRolesPerMessage()) {
                 context.makeWarning(context.i18n("messageHasNoSlots"))
-                    .queue(noSlotsMessage -> noSlotsMessage.delete().queueAfter(15, TimeUnit.SECONDS));
+                    .queue(noSlotsMessage -> noSlotsMessage.delete().queueAfter(15, TimeUnit.SECONDS, null, RestActionUtil.ignore));
                 return;
             }
 
@@ -189,7 +189,7 @@ public class AddReactionRoleCommand extends Command {
                     .set("emote", emote.getAsMention())
                     .set("roleSlots", reactionLimits.getRolesPerMessage() - reactionTransformer.getRoles().size())
                     .set("messageSlots", reactionLimits.getMessages() - ReactionController.fetchReactions(avaire, context.getGuild()).size())
-                    .queue(successMessage -> successMessage.delete().queueAfter(15, TimeUnit.SECONDS));
+                    .queue(successMessage -> successMessage.delete().queueAfter(15, TimeUnit.SECONDS, null, RestActionUtil.ignore));
 
                 ReactionController.forgetCache(context.getGuild().getIdLong());
             } catch (SQLException e) {
@@ -212,7 +212,7 @@ public class AddReactionRoleCommand extends Command {
 
         if (collection.size() >= transformer.getType().getLimits().getReactionRoles().getMessages()) {
             context.makeWarning(context.i18n("serverHasNoSlots"))
-                .queue(noSlotsMessage -> noSlotsMessage.delete().queueAfter(15, TimeUnit.SECONDS));
+                .queue(noSlotsMessage -> noSlotsMessage.delete().queueAfter(15, TimeUnit.SECONDS, null, RestActionUtil.ignore));
             return false;
         }
 
@@ -245,7 +245,7 @@ public class AddReactionRoleCommand extends Command {
                     .set("emote", emote.getAsMention())
                     .set("roleSlots", reactionLimits.getRolesPerMessage() - reactionTransformer.getRoles().size())
                     .set("messageSlots", reactionLimits.getMessages() - (collection.size() + 1))
-                    .queue(successMessage -> successMessage.delete().queueAfter(15, TimeUnit.SECONDS));
+                    .queue(successMessage -> successMessage.delete().queueAfter(15, TimeUnit.SECONDS, null, RestActionUtil.ignore));
 
                 ReactionController.forgetCache(context.getGuild().getIdLong());
             } catch (SQLException e) {

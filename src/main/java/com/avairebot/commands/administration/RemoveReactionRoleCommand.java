@@ -34,6 +34,7 @@ import com.avairebot.database.controllers.ReactionController;
 import com.avairebot.database.transformers.GuildTypeTransformer;
 import com.avairebot.database.transformers.ReactionTransformer;
 import com.avairebot.utilities.NumberUtil;
+import com.avairebot.utilities.RestActionUtil;
 import net.dv8tion.jda.core.entities.Emote;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -213,7 +214,7 @@ public class RemoveReactionRoleCommand extends Command {
                 .set("emote", emote.getAsMention())
                 .set("roleSlots", reactionLimits.getRolesPerMessage() - transformer.getRoles().size())
                 .set("messageSlots", reactionLimits.getMessages() - ReactionController.fetchReactions(avaire, context.getGuild()).size())
-                .queue(successMessage -> successMessage.delete().queueAfter(15, TimeUnit.SECONDS));
+                .queue(successMessage -> successMessage.delete().queueAfter(15, TimeUnit.SECONDS, null, RestActionUtil.ignore));
         } catch (SQLException e) {
             e.printStackTrace();
         }

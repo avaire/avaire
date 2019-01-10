@@ -65,7 +65,7 @@ public class IsMusicChannelMiddleware extends Middleware {
                 "music.internal.musicChannel",
                 "You can only use music commands in the :channel channel."
             )).set("channel", textChannelById.getAsMention()).queue(
-                musicMessage -> musicMessage.delete().queueAfter(30, TimeUnit.SECONDS),
+                musicMessage -> musicMessage.delete().queueAfter(30, TimeUnit.SECONDS, null, RestActionUtil.ignore),
                 RestActionUtil.ignore
             );
 

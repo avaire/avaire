@@ -28,6 +28,7 @@ import com.avairebot.middleware.permission.PermissionCheck;
 import com.avairebot.middleware.permission.PermissionCommon;
 import com.avairebot.middleware.permission.PermissionType;
 import com.avairebot.permissions.Permissions;
+import com.avairebot.utilities.RestActionUtil;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Message;
 
@@ -85,7 +86,7 @@ public class RequireOnePermissionMiddleware extends Middleware {
                         .map(Permissions::getPermission)
                         .map(Permission::getName)
                         .collect(Collectors.joining("`, `"))
-                    ).queue(newMessage -> newMessage.delete().queueAfter(90, TimeUnit.SECONDS));
+                    ).queue(newMessage -> newMessage.delete().queueAfter(90, TimeUnit.SECONDS, null, RestActionUtil.ignore));
 
                 return false;
             });
@@ -98,7 +99,7 @@ public class RequireOnePermissionMiddleware extends Middleware {
                         .map(Permissions::getPermission)
                         .map(Permission::getName)
                         .collect(Collectors.joining("`, `"))
-                    ).queue(newMessage -> newMessage.delete().queueAfter(45, TimeUnit.SECONDS));
+                    ).queue(newMessage -> newMessage.delete().queueAfter(45, TimeUnit.SECONDS, null, RestActionUtil.ignore));
 
                 return false;
             });
