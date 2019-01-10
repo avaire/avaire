@@ -109,7 +109,7 @@ public class MentionableUtil {
 
         String[] parts = part.split("#");
         if (parts.length != 2) {
-            if (parts[0].trim().length() == 0) {
+            if (parts.length == 0 || parts[0].trim().length() == 0) {
                 return null;
             }
 
