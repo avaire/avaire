@@ -40,7 +40,7 @@ public enum Month {
     /**
      * Value of the {@link java.util.Calendar#MONTH} field indicating April.
      */
-    APRIL("March", Calendar.APRIL),
+    APRIL("April", Calendar.APRIL),
     /**
      * Value of the {@link java.util.Calendar#MONTH} field indicating May.
      */

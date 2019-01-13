@@ -44,7 +44,7 @@ public enum Formats {
      * <p>
      * Dec 25, 1975
      */
-    FORMATTED_DATE("MMMMM dd, yyyy"),
+    FORMATTED_DATE("MMM dd, yyyy"),
     /**
      * Generates a time string, example:
      * <p>
