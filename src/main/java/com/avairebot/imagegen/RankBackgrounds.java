@@ -22,9 +22,7 @@
 package com.avairebot.imagegen;
 
 import com.avairebot.contracts.imagegen.BackgroundRankColors;
-import com.avairebot.imagegen.colors.ranks.MountainRangeColors;
-import com.avairebot.imagegen.colors.ranks.PikachuColors;
-import com.avairebot.imagegen.colors.ranks.PurpleColors;
+import com.avairebot.imagegen.colors.ranks.*;
 import com.avairebot.shared.ExitCodes;
 
 import java.lang.reflect.InvocationTargetException;
@@ -32,9 +30,11 @@ import java.util.EnumMap;
 
 public enum RankBackgrounds {
 
-    PURPLE(0, null, PurpleColors.class),
-    PIKACHU(1, "pikachu.jpg", PikachuColors.class),
-    MAUNTAIN_RANGE(2, "mountain-range.jpg", MountainRangeColors.class);
+    DISCORD_DARK(0, null, DiscordDarkColors.class),
+    DISCORD_LIGHT(1, null, DiscordLightColors.class),
+    PURPLE(2, null, PurpleColors.class),
+    PIKACHU(10, "pikachu.jpg", PikachuColors.class),
+    MAUNTAIN_RANGE(11, "mountain-range.jpg", MountainRangeColors.class);
 
     private static final RankBackgrounds DEFAULT_BACKGROUND = RankBackgrounds.PURPLE;
     private static final EnumMap<RankBackgrounds, BackgroundRankColors> backgroundColors = new EnumMap<>(RankBackgrounds.class);
