@@ -90,8 +90,14 @@ public class CommandMessage implements CommandContext {
             null : String.join(" ", aliasArguments);
     }
 
+    public boolean canDelete() {
+        return isGuildMessage() && getGuild().getSelfMember().hasPermission(
+            getChannel(), Permission.MESSAGE_MANAGE
+        );
+    }
+
     public AuditableRestAction<Void> delete() {
-        return message.delete();
+        return canDelete() ? message.delete() : new AuditableRestAction.EmptyRestAction<>(getJDA());
     }
 
     public JDA getJDA() {
