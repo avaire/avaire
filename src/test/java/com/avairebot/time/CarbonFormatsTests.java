@@ -114,8 +114,12 @@ public class CarbonFormatsTests extends BaseTest {
 
     @Test
     public void testCarbonDayDateTimeStringIsGeneratedCorrectly() throws ParseException {
-        assertEquals("Sun, Jan 13, 2019 7:37 pm", Carbon.createFromFormat(
+        // Windows likes to make the "PM" lowercase, while any other distribution wants
+        // to make it upper case, to make the test pass regardless of OS we're just
+        // forcing it into lowercase here so we can check the end result without
+        // caring about letter casing.
+        assertEquals("sun, jan 13, 2019 7:37 pm", Carbon.createFromFormat(
             Formats.DAY_DATE_TIME.getFormat(), "Sun, Jan 13, 2019 7:37 PM"
-        ).toDayDateTimeString());
+        ).toDayDateTimeString().toLowerCase());
     }
 }
