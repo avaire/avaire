@@ -4,7 +4,7 @@ GITHUB_USER=$(cut -d/ -f1 <<< "$GITHUB_REPO")
 repo_temp=$(mktemp -d)
 push_uri="https://$GITHUB_USER:$GITHUB_SECRET_TOKEN@github.com/$GITHUB_REPO"
 
-git config --global user.email "updater@updater" && git config --global user.name "AutoUpdater"
+git config --global user.email "updater@updater" && git config --global user.name "ForkUpdater"
 
 git clone "https://github.com/$GITHUB_REPO" "$repo_temp"
 cd "$repo_temp"
@@ -16,7 +16,10 @@ CONFLICTS=$(git ls-files -u | wc -l)
 if [ "$CONFLICTS" -gt 0 ] ; then
     echo "There is a merge conflict. Aborting"
     git merge --abort
-    curl -u $GITHUB_USER:$GITHUB_SECRET_TOKEN -H "Content-Type: application/json" -X POST -d '{"title": "Merge conflict detected", "body": "Heroku could not update your repo. Please check for merge conflicts and update manually!","labels": ["merge conflict"]}' https://api.github.com/repos/$GITHUB_REPO/issues
+    conflicts=$(curl https://api.github.com/search/issues?q=is:issue+is:open+repo:$GITHUB_REPO+author:$GITHUB_USER+label:merge-conflict | grep "url") # I would use jq, but for simple heroku purposes, I'll use a dirty way
+    if [ -n "$var" ] ; then
+        curl -u $GITHUB_USER:$GITHUB_SECRET_TOKEN -H "Content-Type: application/json" -X POST -d '{"title": "Merge conflict detected", "body": "ForkUpdater could not update your repo. Please check for merge conflicts and update manually!","labels": ["merge-conflict"]}' https://api.github.com/repos/$GITHUB_REPO/issues
+    fi
     exit 1
 fi
 
