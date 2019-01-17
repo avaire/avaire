@@ -40,7 +40,6 @@ import org.jsoup.Jsoup;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class PluginCommand extends SystemCommand {
@@ -75,7 +74,7 @@ public class PluginCommand extends SystemCommand {
 
     @Override
     public List<String> getTriggers() {
-        return Collections.singletonList("plugin");
+        return Arrays.asList("plugins", "plugin");
     }
 
     @Override
