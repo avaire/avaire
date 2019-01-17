@@ -26,5 +26,5 @@ fi
 git checkout $GITHUB_REPO_BRANCH
 git merge --no-edit --no-ff upstream
 
-Redirect to /dev/null to avoid secret leakage
+# Redirect to /dev/null to avoid secret leakage
 git push "$push_uri" $GITHUB_REPO_BRANCH >/dev/null 2>&1
