@@ -248,9 +248,15 @@ public class TrackScheduler extends AudioEventWrapper {
 
     @Override
     public void handleEndOfQueue(@Nonnull CommandMessage context, boolean sendEndOfQueue) {
-        manager.avaire.getEventEmitter().push(new MusicEndedEvent(
+        MusicEndedEvent event = new MusicEndedEvent(
             context.getJDA(), context.getGuild()
-        ));
+        );
+
+        manager.avaire.getEventEmitter().push(event);
+
+        if (event.isCancelled()) {
+            return;
+        }
 
         if (sendEndOfQueue && AudioHandler.getDefaultAudioHandler().musicManagers.containsKey(context.getGuild().getIdLong())) {
             context.makeSuccess(context.i18nRaw("music.internal.queueHasEnded"))

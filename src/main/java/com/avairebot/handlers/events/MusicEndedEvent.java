@@ -21,14 +21,16 @@
 
 package com.avairebot.handlers.events;
 
+import com.avairebot.contracts.events.Cancellable;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.events.Event;
 
-public class MusicEndedEvent extends Event {
+public class MusicEndedEvent extends Event implements Cancellable {
 
     private final Guild guild;
     private final long guildId;
+    private boolean cancelled;
 
     /**
      * Creates a new music has ended even.
@@ -59,5 +61,15 @@ public class MusicEndedEvent extends Event {
      */
     public long getGuildId() {
         return guildId;
+    }
+
+    @Override
+    public boolean isCancelled() {
+        return cancelled;
+    }
+
+    @Override
+    public void setCancelled(boolean cancel) {
+        this.cancelled = cancel;
     }
 }
