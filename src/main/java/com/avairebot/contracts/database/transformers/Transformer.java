@@ -42,6 +42,11 @@ public abstract class Transformer extends Evalable implements ConfigurationSeria
     protected boolean hasData;
 
     /**
+     * Determines if the transformer has been checked if it has any data or not.
+     */
+    private boolean hasBeenChecked;
+
+    /**
      * Creates a new transformer instance using
      * the given data row object.
      *
@@ -50,7 +55,7 @@ public abstract class Transformer extends Evalable implements ConfigurationSeria
      */
     public Transformer(DataRow data) {
         this.data = data;
-        hasData = (data != null);
+        this.hasBeenChecked = false;
     }
 
     /**
@@ -70,8 +75,21 @@ public abstract class Transformer extends Evalable implements ConfigurationSeria
      *
      * @return {@code True} if the transformer has data, {@code False} otherwise.
      */
-    public boolean hasData() {
+    public final boolean hasData() {
+        if (!hasBeenChecked) {
+            hasData = checkIfTransformerHasData();
+            hasBeenChecked = true;
+        }
         return hasData;
+    }
+
+    /**
+     * Checks if the transformer has any data.
+     *
+     * @return {@code True} if the transformer has data, {@code False} otherwise.
+     */
+    protected boolean checkIfTransformerHasData() {
+        return data != null;
     }
 
     @Override
