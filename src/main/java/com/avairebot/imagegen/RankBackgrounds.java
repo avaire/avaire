@@ -22,13 +22,15 @@
 package com.avairebot.imagegen;
 
 import com.avairebot.contracts.imagegen.BackgroundRankColors;
+import com.avairebot.contracts.shop.PurchaseType;
 import com.avairebot.imagegen.colors.ranks.*;
 import com.avairebot.shared.ExitCodes;
 
+import javax.annotation.Nonnull;
 import java.lang.reflect.InvocationTargetException;
 import java.util.EnumMap;
 
-public enum RankBackgrounds {
+public enum RankBackgrounds implements PurchaseType {
 
     DISCORD_DARK(0, null, DiscordDarkColors.class),
     DISCORD_LIGHT(1, null, DiscordLightColors.class),
@@ -103,5 +105,11 @@ public enum RankBackgrounds {
      */
     public BackgroundRankColors getBackgroundColors() {
         return backgroundColors.get(this);
+    }
+
+    @Nonnull
+    @Override
+    public String getPurchaseType() {
+        return "rank-background";
     }
 }
