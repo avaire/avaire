@@ -21,6 +21,7 @@
 
 package com.avairebot.imagegen;
 
+import com.avairebot.Constants;
 import com.avairebot.contracts.imagegen.BackgroundRankColors;
 import com.avairebot.contracts.shop.PurchaseType;
 import com.avairebot.imagegen.colors.ranks.*;
@@ -110,6 +111,6 @@ public enum RankBackgrounds implements PurchaseType {
     @Nonnull
     @Override
     public String getPurchaseType() {
-        return "rank-background";
+        return Constants.RANK_BACKGROUND_PURCHASE_TYPE;
     }
 }

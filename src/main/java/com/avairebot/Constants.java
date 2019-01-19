@@ -54,6 +54,9 @@ public class Constants {
     public static final String EMOTE_AWAY = "<:away:324986135346675712>";
     public static final String EMOTE_DND = "<:dnd:324986174806425610>";
 
+    // Purchase Types
+    public static final String RANK_BACKGROUND_PURCHASE_TYPE = "rank-background";
+
     // Command source link
     public static final String SOURCE_URI = "https://github.com/avaire/avaire/tree/master/src/main/java/com/avairebot/commands/%s/%s.java";
 }
