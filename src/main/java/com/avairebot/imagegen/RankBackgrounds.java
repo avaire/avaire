@@ -62,10 +62,7 @@ public enum RankBackgrounds implements PurchaseType {
 
         unsortedNamesToCost.entrySet().stream()
             .sorted(Map.Entry.comparingByValue())
-            .forEach(entry -> {
-                System.out.println(entry.getKey() + " :: " + entry.getValue());
-                namesToCost.put(entry.getKey(), entry.getValue());
-            });
+            .forEach(entry -> namesToCost.put(entry.getKey(), entry.getValue()));
     }
 
     private final int id;
