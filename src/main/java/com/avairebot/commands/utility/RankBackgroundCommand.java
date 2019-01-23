@@ -22,12 +22,19 @@
 package com.avairebot.commands.utility;
 
 import com.avairebot.AvaIre;
+import com.avairebot.chat.SimplePaginator;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.contracts.commands.CommandGroup;
 import com.avairebot.contracts.commands.CommandGroups;
+import com.avairebot.database.transformers.PlayerTransformer;
+import com.avairebot.imagegen.RankBackgrounds;
+import com.avairebot.language.I18n;
+import com.avairebot.utilities.NumberUtil;
+import com.avairebot.vote.VoteCacheEntity;
 
 import javax.annotation.Nonnull;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -107,6 +114,52 @@ public class RankBackgroundCommand extends Command {
     }
 
     private boolean handleList(CommandMessage context, String[] args) {
+        PlayerTransformer player = context.getPlayerTransformer();
+        if (player == null) {
+            return sendErrorMessage(context, "errors.errorOccurredWhileLoading", "player transformer");
+        }
+
+        VoteCacheEntity voteEntity = avaire.getVoteManager().getVoteEntity(context.getAuthor());
+        int votePoints = voteEntity == null ? 0 : voteEntity.getVotePoints();
+
+        SimplePaginator paginator = new SimplePaginator(
+            RankBackgrounds.getNameToCost(), 5, 1
+        );
+
+        if (args.length > 0) {
+            paginator.setCurrentPage(NumberUtil.parseInt(args[0], 1));
+        }
+
+        List<String> message = new ArrayList<>();
+        message.add(I18n.format(
+            "Rank backgrounds can be unlocked using **[Vote Points]({0})**,",
+            "https://discordbots.org/bot/avaire"
+        ));
+        message.add("you'll get **1 point** each time you vote for the bot.");
+        message.add("-------------------------------");
+
+        String purchaseType = RankBackgrounds.getDefaultBackground().getPurchaseType();
+        paginator.forEach((index, name, cost) -> {
+            //noinspection ConstantConditions
+            boolean alreadyOwns = player.hasPurchases() && player.getPurchases().hasPuraches(
+                purchaseType, RankBackgrounds.fromName((String) name).getId()
+            );
+
+            if (alreadyOwns) {
+                message.add(I18n.format("**{0}**\n - _You already own this background._", name));
+            } else {
+                message.add(I18n.format("**{0}**\n - Costs {1} vote points", name, cost));
+            }
+        });
+
+        message.add("-------------------------------");
+        message.add(paginator.generateFooter(generateCommandTrigger(context.getMessage()) + " "));
+
+        context.makeInfo(String.join("\n", message))
+            .setTitle(I18n.format("Rank Backgrounds ({0})", paginator.getTotal()))
+            .setFooter("You have " + votePoints + " vote points")
+            .queue();
+
         return false;
     }
 
