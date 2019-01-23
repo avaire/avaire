@@ -29,17 +29,27 @@ import com.avairebot.contracts.commands.CommandGroup;
 import com.avairebot.contracts.commands.CommandGroups;
 import com.avairebot.database.transformers.PlayerTransformer;
 import com.avairebot.imagegen.RankBackgrounds;
+import com.avairebot.imagegen.renders.RankBackgroundRender;
 import com.avairebot.language.I18n;
 import com.avairebot.utilities.NumberUtil;
+import com.avairebot.utilities.RandomUtil;
 import com.avairebot.vote.VoteCacheEntity;
+import net.dv8tion.jda.core.EmbedBuilder;
+import net.dv8tion.jda.core.MessageBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nonnull;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 public class RankBackgroundCommand extends Command {
+
+    private static final Logger log = LoggerFactory.getLogger(RankBackgroundCommand.class);
 
     public RankBackgroundCommand(AvaIre avaire) {
         super(avaire, false);
@@ -97,16 +107,25 @@ public class RankBackgroundCommand extends Command {
         }
 
         switch (args[0].toLowerCase().trim()) {
+            case "l":
             case "list":
                 return handleList(context, prepareArguments(args));
 
+            case "s":
             case "show":
             case "test":
+            case "example":
                 return handleShow(context, prepareArguments(args));
 
+            case "b":
             case "buy":
             case "purchases":
                 return handlePurchases(context, prepareArguments(args));
+
+            case "u":
+            case "use":
+            case "select":
+                return handleSelect(context, prepareArguments(args));
 
             default:
                 return sendErrorMessage(context, "errors.invalidProperty", "option", "option");
@@ -164,10 +183,57 @@ public class RankBackgroundCommand extends Command {
     }
 
     private boolean handleShow(CommandMessage context, String[] args) {
-        return false;
+        RankBackgrounds background = RankBackgrounds.fromName(String.join(" ", args));
+        if (background == null) {
+            return sendErrorMessage(context, "errors.invalidProperty", "background name", "background");
+        }
+
+        long zeroExperience = avaire.getLevelManager().getExperienceFromLevel(0) - 100;
+        long experience = 74187 + zeroExperience + RandomUtil.getInteger(1433);
+
+        long level = avaire.getLevelManager().getLevelFromExperience(experience);
+        long current = avaire.getLevelManager().getExperienceFromLevel(level);
+
+        long nextLevelXp = avaire.getLevelManager().getExperienceFromLevel(level + 1);
+        double percentage = ((double) (experience - current) / (nextLevelXp - current)) * 100;
+
+        RankBackgroundRender render = new RankBackgroundRender(context.getAuthor())
+            .setBackground(background)
+            .setCurrentXpInLevel(NumberUtil.formatNicely(nextLevelXp - experience))
+            .setTotalXpInLevel(NumberUtil.formatNicely(nextLevelXp - current))
+            .setGlobalExperience(NumberUtil.formatNicely(99999))
+            .setServerExperience(NumberUtil.formatNicely(experience - zeroExperience - 100))
+            .setLevel(NumberUtil.formatNicely(level))
+            .setRank("1")
+            .setPercentage(percentage);
+
+        MessageBuilder message = new MessageBuilder();
+        EmbedBuilder embed = new EmbedBuilder()
+            .setTitle(background.getName() + " Example")
+            .setFooter(background.getName() + " costs " + background.getCost() + " vote points", null)
+            .setImage("attachment://rank-background.png")
+            .setColor(background.getBackgroundColors().getExperienceForegroundColor());
+        message.setEmbed(embed.build());
+
+        try {
+            //noinspection ConstantConditions
+            context.getMessageChannel().sendFile(
+                new ByteArrayInputStream(render.renderToBytes()),
+                "rank-background.png", message.build()
+            ).queue();
+        } catch (IOException e) {
+            log.error("Failed to render background image: {}", e.getMessage(), e);
+            return sendErrorMessage(context, "");
+        }
+
+        return true;
     }
 
     private boolean handlePurchases(CommandMessage context, String[] args) {
+        return false;
+    }
+
+    private boolean handleSelect(CommandMessage context, String[] args) {
         return false;
     }
 
