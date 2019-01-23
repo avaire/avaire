@@ -159,6 +159,19 @@ public class PlayerController {
         return guild.getId() + ":" + user.getId();
     }
 
+    public static void forgetCache(long userId) {
+        List<String> toRemove = new ArrayList<>();
+        for (String key : cache.asMap().keySet()) {
+            if (key.endsWith(":" + userId)) {
+                toRemove.add(key);
+            }
+        }
+
+        if (!toRemove.isEmpty()) {
+            cache.invalidateAll(toRemove);
+        }
+    }
+
     public static class PlayerUpdateReference {
 
         private final String username;

@@ -22,11 +22,13 @@
 package com.avairebot.commands.utility;
 
 import com.avairebot.AvaIre;
+import com.avairebot.Constants;
 import com.avairebot.chat.SimplePaginator;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.contracts.commands.CommandGroup;
 import com.avairebot.contracts.commands.CommandGroups;
+import com.avairebot.database.controllers.PlayerController;
 import com.avairebot.database.transformers.PlayerTransformer;
 import com.avairebot.imagegen.RankBackgrounds;
 import com.avairebot.imagegen.renders.RankBackgroundRender;
@@ -42,6 +44,7 @@ import org.slf4j.LoggerFactory;
 import javax.annotation.Nonnull;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -223,14 +226,69 @@ public class RankBackgroundCommand extends Command {
             ).queue();
         } catch (IOException e) {
             log.error("Failed to render background image: {}", e.getMessage(), e);
-            return sendErrorMessage(context, "");
+            return sendErrorMessage(context, "Something went wrong: " + e.getMessage());
         }
 
         return true;
     }
 
     private boolean handlePurchases(CommandMessage context, String[] args) {
-        return false;
+        RankBackgrounds background = RankBackgrounds.fromName(String.join(" ", args));
+        if (background == null) {
+            return sendErrorMessage(context, "errors.invalidProperty", "background name", "background");
+        }
+
+        PlayerTransformer player = context.getPlayerTransformer();
+        if (player == null) {
+            return sendErrorMessage(context, "errors.errorOccurredWhileLoading", "player transformer");
+        }
+
+        if (player.getPurchases().hasPuraches(background.getPurchaseType(), background.getId())) {
+            context.makeWarning("You already own the **:name** background!")
+                .set("name", background.getName())
+                .queue();
+            return false;
+        }
+
+        VoteCacheEntity voteEntity = avaire.getVoteManager().getVoteEntity(context.getAuthor());
+        int votePoints = voteEntity == null ? 0 : voteEntity.getVotePoints();
+
+        if (background.getCost() > votePoints) {
+            return sendErrorMessage(context, "You don't have enough vote points to buy this background, the background costs `{0}`, and you have `{1}` vote points.",
+                NumberUtil.formatNicely(background.getCost()), NumberUtil.formatNicely(votePoints)
+            );
+        }
+
+        try {
+            avaire.getDatabase().newQueryBuilder(Constants.PURCHASES_TABLE_NAME)
+                .insert(statement -> {
+                    statement.set("user_id", context.getAuthor().getIdLong());
+                    statement.set("type", background.getPurchaseType());
+                    statement.set("type_id", background.getId());
+                });
+
+            avaire.getDatabase().newQueryBuilder(Constants.VOTES_TABLE_NAME)
+                .where("user_id", context.getAuthor().getIdLong())
+                .update(statement -> {
+                    statement.setRaw("points", "`points` - " + background.getCost());
+                });
+
+            if (voteEntity != null) {
+                voteEntity.setVotePoints(votePoints - background.getCost());
+            }
+
+            PlayerController.forgetCache(context.getAuthor().getIdLong());
+        } catch (SQLException e) {
+            log.error("Something went wrong while a use was trying to buy a background: {}", e.getMessage(), e);
+
+            return sendErrorMessage(context, "Something went wrong while buying the background, error: " + e.getMessage());
+        }
+
+        context.makeSuccess("Congratulation! You now own the **:name** background!")
+            .set("name", background.getName())
+            .queue();
+
+        return true;
     }
 
     private boolean handleSelect(CommandMessage context, String[] args) {
