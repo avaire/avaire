@@ -92,7 +92,8 @@ public class RankCommand extends Command {
     public List<Class<? extends Command>> getRelations() {
         return Arrays.asList(
             LeaderboardCommand.class,
-            GlobalLeaderboardCommand.class
+            GlobalLeaderboardCommand.class,
+            RankBackgroundCommand.class
         );
     }
 
