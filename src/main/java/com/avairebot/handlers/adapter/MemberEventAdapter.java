@@ -28,7 +28,6 @@ import com.avairebot.database.transformers.ChannelTransformer;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.factories.MessageFactory;
 import com.avairebot.permissions.Permissions;
-import com.avairebot.utilities.RoleUtil;
 import com.avairebot.utilities.StringReplacementUtil;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Role;
@@ -154,7 +153,8 @@ public class MemberEventAdapter extends EventAdapter {
 
     private boolean canGiveRole(GuildMemberJoinEvent event, Role role) {
         return role != null
-            && event.getGuild().getSelfMember().hasPermission(Permissions.MANAGE_ROLES.getPermission())
-            && RoleUtil.isRoleHierarchyLower(event.getGuild().getSelfMember().getRoles(), role);
+            && event.getGuild().getSelfMember().canInteract(role)
+            && (event.getGuild().getSelfMember().hasPermission(Permissions.MANAGE_ROLES.getPermission())
+            || event.getGuild().getSelfMember().hasPermission(Permissions.ADMINISTRATOR.getPermission()));
     }
 }
