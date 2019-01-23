@@ -30,21 +30,25 @@ import com.avairebot.shared.ExitCodes;
 import javax.annotation.Nonnull;
 import java.lang.reflect.InvocationTargetException;
 import java.util.EnumMap;
+import java.util.HashSet;
+import java.util.Set;
 
 public enum RankBackgrounds implements PurchaseType {
 
-    DISCORD_DARK(0, null, DiscordDarkColors.class),
-    DISCORD_LIGHT(1, null, DiscordLightColors.class),
-    PURPLE(2, null, PurpleColors.class),
-    PIKACHU(10, "pikachu.jpg", PikachuColors.class),
-    MAUNTAIN_RANGE(11, "mountain-range.jpg", MountainRangeColors.class);
+    DISCORD_DARK(0, "Discord Dark Theme", null, DiscordDarkColors.class),
+    DISCORD_LIGHT(1, "Discord Light Theme", null, DiscordLightColors.class),
+    PURPLE(2, "Purple", null, PurpleColors.class),
+    PIKACHU(10, "Pikachu", "pikachu.jpg", PikachuColors.class),
+    MOUNTAIN_RANGE(11, "Mountain Range", "mountain-range.jpg", MountainRangeColors.class);
 
     private static final RankBackgrounds DEFAULT_BACKGROUND = RankBackgrounds.PURPLE;
     private static final EnumMap<RankBackgrounds, BackgroundRankColors> backgroundColors = new EnumMap<>(RankBackgrounds.class);
+    private static final Set<String> names = new HashSet<>();
 
     static {
         for (RankBackgrounds type : values()) {
             try {
+                names.add(type.getName());
                 backgroundColors.put(type, type.getClassInstance().getDeclaredConstructor().newInstance());
             } catch (InstantiationException | NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
                 System.out.printf("Invalid cache type given: %s", e.getMessage());
@@ -54,11 +58,13 @@ public enum RankBackgrounds implements PurchaseType {
     }
 
     private final int id;
+    private final String name;
     private final String file;
     private final Class<? extends BackgroundRankColors> instance;
 
-    RankBackgrounds(int id, String file, Class<? extends BackgroundRankColors> instance) {
+    RankBackgrounds(int id, String name, String file, Class<? extends BackgroundRankColors> instance) {
         this.id = id;
+        this.name = name;
         this.file = file;
         this.instance = instance;
     }
@@ -73,12 +79,30 @@ public enum RankBackgrounds implements PurchaseType {
     }
 
     /**
+     * Gets the names of all the rank backgrounds.
+     *
+     * @return A set of all the rank background names.
+     */
+    public static Set<String> getNames() {
+        return names;
+    }
+
+    /**
      * Gets the ID for the image, can be used as a reference in the database.
      *
      * @return The image ID.
      */
     public int getId() {
         return id;
+    }
+
+    /**
+     * Gets the name of the rank background.
+     *
+     * @return The name of the rank background.
+     */
+    public String getName() {
+        return name;
     }
 
     /**
