@@ -28,10 +28,12 @@ import com.avairebot.imagegen.colors.ranks.*;
 import com.avairebot.shared.ExitCodes;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.lang.reflect.InvocationTargetException;
 import java.util.EnumMap;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public enum RankBackgrounds implements PurchaseType {
 
@@ -43,18 +45,27 @@ public enum RankBackgrounds implements PurchaseType {
 
     private static final RankBackgrounds DEFAULT_BACKGROUND = RankBackgrounds.PURPLE;
     private static final EnumMap<RankBackgrounds, BackgroundRankColors> backgroundColors = new EnumMap<>(RankBackgrounds.class);
-    private static final Set<String> names = new HashSet<>();
+    private static final LinkedHashMap<String, Integer> namesToCost = new LinkedHashMap<>();
 
     static {
+        Map<String, Integer> unsortedNamesToCost = new HashMap<>();
+
         for (RankBackgrounds type : values()) {
             try {
-                names.add(type.getName());
+                unsortedNamesToCost.put(type.getName(), type.getCost());
                 backgroundColors.put(type, type.getClassInstance().getDeclaredConstructor().newInstance());
             } catch (InstantiationException | NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
                 System.out.printf("Invalid cache type given: %s", e.getMessage());
                 System.exit(ExitCodes.EXIT_CODE_ERROR);
             }
         }
+
+        unsortedNamesToCost.entrySet().stream()
+            .sorted(Map.Entry.comparingByValue())
+            .forEach(entry -> {
+                System.out.println(entry.getKey() + " :: " + entry.getValue());
+                namesToCost.put(entry.getKey(), entry.getValue());
+            });
     }
 
     private final int id;
@@ -81,12 +92,30 @@ public enum RankBackgrounds implements PurchaseType {
     }
 
     /**
-     * Gets the names of all the rank backgrounds.
+     * Gets the names of all the rank backgrounds as the keys, with
+     * the cost of the rank background name as the value.
      *
-     * @return A set of all the rank background names.
+     * @return A map of all the rank background names, with the cost of the background as the value.
      */
-    public static Set<String> getNames() {
-        return names;
+    public static LinkedHashMap<String, Integer> getNameToCost() {
+        return namesToCost;
+    }
+
+    /**
+     * Gets the rank background with the given name, the check uses a loss check
+     * by ignoring letter casing and just checking if the letters match.
+     *
+     * @param name The name of the background that should be returned.
+     * @return Possibly {@code NULL}, or the background with a matching name.
+     */
+    @Nullable
+    public static RankBackgrounds fromName(@Nonnull String name) {
+        for (RankBackgrounds background : values()) {
+            if (background.getName().equalsIgnoreCase(name)) {
+                return background;
+            }
+        }
+        return null;
     }
 
     /**
