@@ -37,4 +37,12 @@ public interface PurchaseType extends Reflectional {
      */
     @Nonnull
     String getPurchaseType();
+
+    /**
+     * Returns the cost of the item, the cost will be used
+     * to determine if the user can buy the item.
+     *
+     * @return The cost of the item.
+     */
+    int getCost();
 }

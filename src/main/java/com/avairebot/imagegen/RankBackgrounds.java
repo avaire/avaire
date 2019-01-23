@@ -35,11 +35,11 @@ import java.util.Set;
 
 public enum RankBackgrounds implements PurchaseType {
 
-    DISCORD_DARK(0, "Discord Dark Theme", null, DiscordDarkColors.class),
-    DISCORD_LIGHT(1, "Discord Light Theme", null, DiscordLightColors.class),
-    PURPLE(2, "Purple", null, PurpleColors.class),
-    PIKACHU(10, "Pikachu", "pikachu.jpg", PikachuColors.class),
-    MOUNTAIN_RANGE(11, "Mountain Range", "mountain-range.jpg", MountainRangeColors.class);
+    DISCORD_DARK(0, 20, "Discord Dark Theme", null, DiscordDarkColors.class),
+    DISCORD_LIGHT(1, 20, "Discord Light Theme", null, DiscordLightColors.class),
+    PURPLE(2, 10, "Purple", null, PurpleColors.class),
+    PIKACHU(10, 50, "Pikachu", "pikachu.jpg", PikachuColors.class),
+    MOUNTAIN_RANGE(11, 50, "Mountain Range", "mountain-range.jpg", MountainRangeColors.class);
 
     private static final RankBackgrounds DEFAULT_BACKGROUND = RankBackgrounds.PURPLE;
     private static final EnumMap<RankBackgrounds, BackgroundRankColors> backgroundColors = new EnumMap<>(RankBackgrounds.class);
@@ -58,12 +58,14 @@ public enum RankBackgrounds implements PurchaseType {
     }
 
     private final int id;
+    private final int cost;
     private final String name;
     private final String file;
     private final Class<? extends BackgroundRankColors> instance;
 
-    RankBackgrounds(int id, String name, String file, Class<? extends BackgroundRankColors> instance) {
+    RankBackgrounds(int id, int cost, String name, String file, Class<? extends BackgroundRankColors> instance) {
         this.id = id;
+        this.cost = cost;
         this.name = name;
         this.file = file;
         this.instance = instance;
@@ -130,6 +132,11 @@ public enum RankBackgrounds implements PurchaseType {
      */
     public BackgroundRankColors getBackgroundColors() {
         return backgroundColors.get(this);
+    }
+
+    @Override
+    public int getCost() {
+        return cost;
     }
 
     @Nonnull
