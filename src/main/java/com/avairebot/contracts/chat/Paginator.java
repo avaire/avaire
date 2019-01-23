@@ -24,8 +24,8 @@ package com.avairebot.contracts.chat;
 import com.avairebot.utilities.NumberUtil;
 
 import javax.annotation.Nonnull;
-import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -35,7 +35,7 @@ public abstract class Paginator implements Cloneable {
     /**
      * The items that should be paginated.
      */
-    protected final Map<Object, Object> items;
+    protected final LinkedHashMap<Object, Object> items;
 
     /**
      * The amount of items to display per-page.
@@ -56,7 +56,7 @@ public abstract class Paginator implements Cloneable {
      * @param currentPage The current page that should be shown.
      */
     public Paginator(@Nonnull Map<?, ?> items, int perPage, int currentPage) {
-        this.items = new HashMap<>(items);
+        this.items = new LinkedHashMap<>(items);
         this.perPage = perPage;
 
         this.setCurrentPage(currentPage);
@@ -86,7 +86,7 @@ public abstract class Paginator implements Cloneable {
      * @param currentPage The current page that should be shown.
      */
     public Paginator(@Nonnull List<?> items, int perPage, int currentPage) {
-        Map<Object, Object> map = new HashMap<>();
+        LinkedHashMap<Object, Object> map = new LinkedHashMap<>();
         for (int i = 0; i < items.size(); i++) {
             map.put(i, items.get(i));
         }
@@ -124,7 +124,7 @@ public abstract class Paginator implements Cloneable {
      */
     public Paginator(@Nonnull Iterator<?> iterator, int perPage, int currentPage) {
         int index = 0;
-        Map<Object, Object> items = new HashMap<>();
+        LinkedHashMap<Object, Object> items = new LinkedHashMap<>();
         while (iterator.hasNext()) {
             items.put(index++, iterator.next());
         }
