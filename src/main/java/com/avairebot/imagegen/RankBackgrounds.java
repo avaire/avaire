@@ -115,6 +115,16 @@ public enum RankBackgrounds implements PurchaseType {
         return null;
     }
 
+    @Nullable
+    public static RankBackgrounds fromId(int backgroundId) {
+        for (RankBackgrounds background : values()) {
+            if (background.getId() == backgroundId) {
+                return background;
+            }
+        }
+        return null;
+    }
+
     /**
      * Gets the ID for the image, can be used as a reference in the database.
      *
