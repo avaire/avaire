@@ -80,9 +80,9 @@ public class PurchasesTransformer extends Transformer {
             return null;
         }
 
-        for (PurchasesId id : purchases) {
-            if (id.isSelected()) {
-                return id.getId();
+        for (PurchasesId item : purchases) {
+            if (item.isSelected()) {
+                return item.getId();
             }
         }
 
@@ -91,8 +91,17 @@ public class PurchasesTransformer extends Transformer {
 
     @SuppressWarnings("SuspiciousMethodCalls")
     public boolean hasPurchase(String type, int id) {
-        return purchases.containsKey(type)
-            && purchases.get(type).contains(id);
+        if (!purchases.containsKey(type)) {
+            return false;
+        }
+
+        for (PurchasesId item : purchases.get(type)) {
+            if (item.getId() == id) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public class PurchasesId {
