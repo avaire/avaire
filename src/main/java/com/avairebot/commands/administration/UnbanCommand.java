@@ -31,6 +31,7 @@ import com.avairebot.modlog.Modlog;
 import com.avairebot.modlog.ModlogAction;
 import com.avairebot.modlog.ModlogType;
 import com.avairebot.utilities.NumberUtil;
+import com.avairebot.utilities.RestActionUtil;
 import net.dv8tion.jda.core.entities.Guild;
 
 import javax.annotation.Nonnull;
@@ -134,7 +135,7 @@ public class UnbanCommand extends Command {
             context.makeSuccess(context.i18n("success"))
                 .set("target", ban.getUser().getName() + "#" + ban.getUser().getDiscriminator())
                 .set("reason", reason)
-                .queue();
+                .queue(ignoreMessage -> context.delete().queue(null, RestActionUtil.ignore));
         }, throwable -> context.makeWarning(context.i18n("failedToUnban"))
             .set("target", ban.getUser().getName() + "#" + ban.getUser().getDiscriminator())
             .set("error", throwable.getMessage())
