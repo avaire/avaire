@@ -292,7 +292,41 @@ public class RankBackgroundCommand extends Command {
     }
 
     private boolean handleSelect(CommandMessage context, String[] args) {
-        return false;
+        RankBackgrounds background = RankBackgrounds.fromName(String.join(" ", args));
+        if (background == null) {
+            return sendErrorMessage(context, "errors.invalidProperty", "background name", "background");
+        }
+
+        PlayerTransformer player = context.getPlayerTransformer();
+        if (player == null) {
+            return sendErrorMessage(context, "errors.errorOccurredWhileLoading", "player transformer");
+        }
+
+        if (!player.getPurchases().hasPurchase(background.getPurchaseType(), background.getId())) {
+            context.makeWarning("You don't own the **:name** background, however you can buy it for **:cost** Vote Points!")
+                .set("name", background.getName())
+                .set("cost", background.getCost())
+                .queue();
+
+            return false;
+        }
+
+        try {
+            avaire.getDatabase().newQueryBuilder(Constants.VOTES_TABLE_NAME)
+                .update(statement -> statement.set("selected_bg", background.getId()));
+
+            PlayerController.forgetCache(context.getAuthor().getIdLong());
+
+            context.makeSuccess("You have successfully changed to use the **:name** background.")
+                .set("name", background.getName())
+                .queue();
+        } catch (SQLException e) {
+            log.error("Failed to set background for user {}, error: {}", context.getAuthor().getId(), e.getMessage(), e);
+
+            return sendErrorMessage(context, "Failed to set the background due to a database error, try again later, if this error continues to appear, please contact one of my developers.");
+        }
+
+        return true;
     }
 
     private String[] prepareArguments(String[] args) {
