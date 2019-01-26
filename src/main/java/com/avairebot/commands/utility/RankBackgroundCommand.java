@@ -163,7 +163,7 @@ public class RankBackgroundCommand extends Command {
         String purchaseType = RankBackgrounds.getDefaultBackground().getPurchaseType();
         paginator.forEach((index, name, cost) -> {
             //noinspection ConstantConditions
-            boolean alreadyOwns = player.hasPurchases() && player.getPurchases().hasPuraches(
+            boolean alreadyOwns = player.hasPurchases() && player.getPurchases().hasPurchase(
                 purchaseType, RankBackgrounds.fromName((String) name).getId()
             );
 
@@ -243,7 +243,7 @@ public class RankBackgroundCommand extends Command {
             return sendErrorMessage(context, "errors.errorOccurredWhileLoading", "player transformer");
         }
 
-        if (player.getPurchases().hasPuraches(background.getPurchaseType(), background.getId())) {
+        if (player.getPurchases().hasPurchase(background.getPurchaseType(), background.getId())) {
             context.makeWarning("You already own the **:name** background!")
                 .set("name", background.getName())
                 .queue();
