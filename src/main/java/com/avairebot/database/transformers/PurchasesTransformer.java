@@ -31,15 +31,15 @@ import java.util.*;
 
 public class PurchasesTransformer extends Transformer {
 
-    private static final Map<String, Set<Integer>> emptyPurchases = new HashMap<>();
+    private static final Map<String, Set<PurchasesId>> emptyPurchases = new HashMap<>();
 
-    private Map<String, Set<Integer>> purchases = emptyPurchases;
+    private Map<String, Set<PurchasesId>> purchases = emptyPurchases;
 
     public PurchasesTransformer(Collection collection) {
         super(null);
 
         if (collection != null && !collection.isEmpty()) {
-            Map<String, Set<Integer>> purchases = new HashMap<>();
+            Map<String, Set<PurchasesId>> purchases = new HashMap<>();
             for (DataRow row : collection) {
                 if (row == null || row.getString("type") == null || row.getString("type_id") == null) {
                     continue;
@@ -52,24 +52,75 @@ public class PurchasesTransformer extends Transformer {
                     purchases.put(type, new HashSet<>());
                 }
 
-                purchases.get(type).add(typeId);
+                purchases.get(type).add(
+                    new PurchasesId(
+                        typeId,
+                        row.get("selected") != null
+                    )
+                );
             }
             this.purchases = Collections.unmodifiableMap(purchases);
         }
     }
 
     @Nonnull
-    public Map<String, Set<Integer>> getPurchases() {
+    public Map<String, Set<PurchasesId>> getPurchases() {
         return purchases;
     }
 
     @Nullable
-    public Set<Integer> getPurchasesFromType(String type) {
+    public Set<PurchasesId> getPurchasesFromType(String type) {
         return purchases.getOrDefault(type, null);
     }
 
-    public boolean hasPuraches(String type, int id) {
+    @Nullable
+    public Integer getSelectedPurchasesForType(String type) {
+        Set<PurchasesId> purchases = getPurchasesFromType(type);
+        if (purchases == null) {
+            return null;
+        }
+
+        for (PurchasesId id : purchases) {
+            if (id.isSelected()) {
+                return id.getId();
+            }
+        }
+
+        return null;
+    }
+
+    @SuppressWarnings("SuspiciousMethodCalls")
+    public boolean hasPurchase(String type, int id) {
         return purchases.containsKey(type)
             && purchases.get(type).contains(id);
+    }
+
+    public class PurchasesId {
+
+        private final int id;
+        private final boolean selected;
+
+        PurchasesId(int id, boolean selected) {
+            this.id = id;
+            this.selected = selected;
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        public boolean isSelected() {
+            return selected;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (obj instanceof PurchasesId) {
+                return ((PurchasesId) obj).id == id;
+            } else if (obj instanceof Integer) {
+                return ((Integer) obj) == id;
+            }
+            return false;
+        }
     }
 }

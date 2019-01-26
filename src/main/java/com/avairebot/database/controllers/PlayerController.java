@@ -55,6 +55,10 @@ public class PlayerController {
         "`experiences`.`experience`", "count(`purchases`.`user_id`) as purchases"
     };
 
+    private static final String[] requiredPurchasesColumns = new String[]{
+        "`purchases`.`type`", "`purchases`.`type_id`", "`votes`.`selected_bg` as 'selected'"
+    };
+
     @CheckReturnValue
     public static PlayerTransformer fetchPlayer(AvaIre avaire, Message message) {
         return fetchPlayer(avaire, message, message.getAuthor());
@@ -105,8 +109,9 @@ public class PlayerController {
                 if (transformer.hasPurchases()) {
                     transformer.setPurchases(new PurchasesTransformer(
                         avaire.getDatabase().newQueryBuilder(Constants.PURCHASES_TABLE_NAME)
-                            .select("type", "type_id")
-                            .where("user_id", user.getIdLong())
+                            .selectRaw(String.join(", ", requiredPurchasesColumns))
+                            .leftJoin(Constants.VOTES_TABLE_NAME, "votes.selected_bg", "purchases.type_id")
+                            .where("purchases.user_id", user.getIdLong())
                             .get()
                     ));
                 }
