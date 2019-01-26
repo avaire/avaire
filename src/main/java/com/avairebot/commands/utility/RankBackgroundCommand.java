@@ -26,6 +26,7 @@ import com.avairebot.Constants;
 import com.avairebot.chat.SimplePaginator;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
+import com.avairebot.contracts.commands.CommandContext;
 import com.avairebot.contracts.commands.CommandGroup;
 import com.avairebot.contracts.commands.CommandGroups;
 import com.avairebot.database.controllers.PlayerController;
@@ -33,6 +34,7 @@ import com.avairebot.database.transformers.PlayerTransformer;
 import com.avairebot.imagegen.RankBackgrounds;
 import com.avairebot.imagegen.renders.RankBackgroundRender;
 import com.avairebot.language.I18n;
+import com.avairebot.shared.DiscordConstants;
 import com.avairebot.utilities.NumberUtil;
 import com.avairebot.utilities.RandomUtil;
 import com.avairebot.vote.VoteCacheEntity;
@@ -63,21 +65,37 @@ public class RankBackgroundCommand extends Command {
         return "Rank Background Command";
     }
 
+
     @Override
-    public String getDescription() {
-        return "TODO";
+    public String getDescription(CommandContext context) {
+        String prefix = context.isGuildMessage() ? generateCommandPrefix(context.getMessage()) : DiscordConstants.DEFAULT_COMMAND_PREFIX;
+
+        return String.format(String.join("\n",
+            "Rank backgrounds are used for the `%srank` command, when a user has a rank",
+            "background selected, their rank and experience will be displayed using a generated",
+            "image instead, the background image can be changed at any time.",
+            "You can buy backgrounds using [vote points](https://discordbots.org/bot/avaire), use `%svote` for more info."
+        ), prefix, prefix);
     }
 
     @Override
     public List<String> getUsageInstructions() {
         return Arrays.asList(
-            "TODO"
+            "`:command list` - Lists all the backgrounds available.",
+            "`:command test <name>` - Displays an example of how the background will look like if you buy it.",
+            "`:command buy <name>` - Buys the background with vote points.",
+            "`:command use <name>` - Selects the background so it is used in the future for rank commands."
         );
     }
 
     @Override
     public List<String> getExampleUsage() {
-        return Collections.singletonList(":command");
+        return Arrays.asList(
+            "`:command list`",
+            "`:command test discord dark theme`",
+            "`:command buy discord dark theme`",
+            "`:command use discord dark theme`"
+        );
     }
 
     @Override
