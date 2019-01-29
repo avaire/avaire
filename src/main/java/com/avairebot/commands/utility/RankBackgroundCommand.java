@@ -35,6 +35,7 @@ import com.avairebot.imagegen.RankBackgrounds;
 import com.avairebot.imagegen.renders.RankBackgroundRender;
 import com.avairebot.language.I18n;
 import com.avairebot.shared.DiscordConstants;
+import com.avairebot.utilities.ComparatorUtil;
 import com.avairebot.utilities.NumberUtil;
 import com.avairebot.utilities.RandomUtil;
 import com.avairebot.vote.VoteCacheEntity;
@@ -83,7 +84,8 @@ public class RankBackgroundCommand extends Command {
             "`:command list` - Lists all the backgrounds available.",
             "`:command test <name>` - Displays an example of how the background will look like if you buy it.",
             "`:command buy <name>` - Buys the background with vote points.",
-            "`:command use <name>` - Selects the background so it is used in the future for rank commands."
+            "`:command use <name>` - Selects the background so it is used in the future for rank commands.",
+            "`:command off` - Disables the rank background, returns to using embedded rank messages."
         );
     }
 
@@ -93,7 +95,8 @@ public class RankBackgroundCommand extends Command {
             "`:command list`",
             "`:command test discord dark theme`",
             "`:command buy discord dark theme`",
-            "`:command use discord dark theme`"
+            "`:command use discord dark theme`",
+            "`:command off`"
         );
     }
 
@@ -148,6 +151,9 @@ public class RankBackgroundCommand extends Command {
                 return handleSelect(context, prepareArguments(args));
 
             default:
+                if (ComparatorUtil.isFuzzyFalse(args[0])) {
+                    return handleDisable(context);
+                }
                 return sendErrorMessage(context, "errors.invalidProperty", "option", "option");
         }
     }
@@ -339,6 +345,31 @@ public class RankBackgroundCommand extends Command {
                 .queue();
         } catch (SQLException e) {
             log.error("Failed to set background for user {}, error: {}", context.getAuthor().getId(), e.getMessage(), e);
+
+            return sendErrorMessage(context, "Failed to set the background due to a database error, try again later, if this error continues to appear, please contact one of my developers.");
+        }
+
+        return true;
+    }
+
+    private boolean handleDisable(CommandMessage context) {
+        PlayerTransformer player = context.getPlayerTransformer();
+        if (player == null) {
+            return sendErrorMessage(context, "errors.errorOccurredWhileLoading", "player transformer");
+        }
+
+        try {
+            if (player.getPurchases().getSelectedPurchasesForType(RankBackgrounds.getDefaultBackground().getPurchaseType()) != null) {
+                avaire.getDatabase().newQueryBuilder(Constants.VOTES_TABLE_NAME)
+                    .update(statement -> statement.set("selected_bg", null));
+
+                PlayerController.forgetCache(context.getAuthor().getIdLong());
+            }
+
+            context.makeSuccess("Rank backgrounds have successfully been disabled, you are now using embedded messages for rank commands again.")
+                .queue();
+        } catch (SQLException e) {
+            log.error("Failed to reset background for user {}, error: {}", context.getAuthor().getId(), e.getMessage(), e);
 
             return sendErrorMessage(context, "Failed to set the background due to a database error, try again later, if this error continues to appear, please contact one of my developers.");
         }
