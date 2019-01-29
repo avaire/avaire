@@ -33,7 +33,6 @@ import com.avairebot.database.controllers.PlayerController;
 import com.avairebot.database.transformers.PlayerTransformer;
 import com.avairebot.imagegen.RankBackgrounds;
 import com.avairebot.imagegen.renders.RankBackgroundRender;
-import com.avairebot.language.I18n;
 import com.avairebot.shared.DiscordConstants;
 import com.avairebot.utilities.ComparatorUtil;
 import com.avairebot.utilities.NumberUtil;
@@ -176,11 +175,7 @@ public class RankBackgroundCommand extends Command {
         }
 
         List<String> message = new ArrayList<>();
-        message.add(I18n.format(
-            "Rank backgrounds can be unlocked using **[Vote Points]({0})**,",
-            "https://discordbots.org/bot/avaire"
-        ));
-        message.add("you'll get **1 point** each time you vote for the bot.");
+        message.add(context.i18n("canBeUnlocked"));
         message.add("-------------------------------");
 
         String purchaseType = RankBackgrounds.getDefaultBackground().getPurchaseType();
@@ -190,19 +185,17 @@ public class RankBackgroundCommand extends Command {
                 purchaseType, RankBackgrounds.fromName((String) name).getId()
             );
 
-            if (alreadyOwns) {
-                message.add(I18n.format("**{0}**\n - _You already own this background._", name));
-            } else {
-                message.add(I18n.format("**{0}**\n - Costs {1} vote points", name, cost));
-            }
+            message.add(context.i18n(alreadyOwns ? "buyNotes.alreadyOwns" : "buyNotes.doesntOwns",
+                name, cost
+            ));
         });
 
         message.add("-------------------------------");
         message.add(paginator.generateFooter(generateCommandTrigger(context.getMessage()) + " "));
 
         context.makeInfo(String.join("\n", message))
-            .setTitle(I18n.format("Rank Backgrounds ({0})", paginator.getTotal()))
-            .setFooter("You have " + votePoints + " vote points")
+            .setTitle(context.i18n("listTitle", paginator.getTotal()))
+            .setFooter(context.i18n("youHaveVotePoints", votePoints))
             .queue();
 
         return false;
@@ -235,8 +228,8 @@ public class RankBackgroundCommand extends Command {
 
         MessageBuilder message = new MessageBuilder();
         EmbedBuilder embed = new EmbedBuilder()
-            .setTitle(background.getName() + " Example")
-            .setFooter(background.getName() + " costs " + background.getCost() + " vote points", null)
+            .setTitle(context.i18n("exampleTitle", background.getName()))
+            .setFooter(context.i18n("exampleFooter", background.getName(), background.getCost()), null)
             .setImage("attachment://rank-background.png")
             .setColor(background.getBackgroundColors().getExperienceForegroundColor());
         message.setEmbed(embed.build());
@@ -249,7 +242,9 @@ public class RankBackgroundCommand extends Command {
             ).queue();
         } catch (IOException e) {
             log.error("Failed to render background image: {}", e.getMessage(), e);
-            return sendErrorMessage(context, "Something went wrong: " + e.getMessage());
+            return sendErrorMessage(context, context.i18n("failedToSendExampleMessage",
+                background.getName(), e.getMessage()
+            ));
         }
 
         return true;
@@ -267,7 +262,7 @@ public class RankBackgroundCommand extends Command {
         }
 
         if (player.getPurchases().hasPurchase(background.getPurchaseType(), background.getId())) {
-            context.makeWarning("You already own the **:name** background!")
+            context.makeWarning(context.i18n("alreadyOwnsBackground"))
                 .set("name", background.getName())
                 .queue();
             return false;
@@ -277,9 +272,9 @@ public class RankBackgroundCommand extends Command {
         int votePoints = voteEntity == null ? 0 : voteEntity.getVotePoints();
 
         if (background.getCost() > votePoints) {
-            return sendErrorMessage(context, "You don't have enough vote points to buy this background, the background costs `{0}`, and you have `{1}` vote points.",
+            return sendErrorMessage(context, context.i18n("doesntHaveEnoughPoints",
                 NumberUtil.formatNicely(background.getCost()), NumberUtil.formatNicely(votePoints)
-            );
+            ));
         }
 
         try {
@@ -304,11 +299,12 @@ public class RankBackgroundCommand extends Command {
         } catch (SQLException e) {
             log.error("Something went wrong while a use was trying to buy a background: {}", e.getMessage(), e);
 
-            return sendErrorMessage(context, "Something went wrong while buying the background, error: " + e.getMessage());
+            return sendErrorMessage(context, context.i18n("failedToBuyTheBackground", e.getMessage()));
         }
 
-        context.makeSuccess("Congratulation! You now own the **:name** background!")
+        context.makeSuccess(context.i18n("boughtBackgroundSuccessfully"))
             .set("name", background.getName())
+            .set("command", generateCommandTrigger(context.getMessage()) + " use " + background.getName())
             .queue();
 
         return true;
@@ -326,7 +322,7 @@ public class RankBackgroundCommand extends Command {
         }
 
         if (!player.getPurchases().hasPurchase(background.getPurchaseType(), background.getId())) {
-            context.makeWarning("You don't own the **:name** background, however you can buy it for **:cost** Vote Points!")
+            context.makeWarning(context.i18n("youDontOwnThisBackground"))
                 .set("name", background.getName())
                 .set("cost", background.getCost())
                 .queue();
@@ -340,13 +336,13 @@ public class RankBackgroundCommand extends Command {
 
             PlayerController.forgetCache(context.getAuthor().getIdLong());
 
-            context.makeSuccess("You have successfully changed to use the **:name** background.")
+            context.makeSuccess(context.i18n("successfullyChangedBackground"))
                 .set("name", background.getName())
                 .queue();
         } catch (SQLException e) {
             log.error("Failed to set background for user {}, error: {}", context.getAuthor().getId(), e.getMessage(), e);
 
-            return sendErrorMessage(context, "Failed to set the background due to a database error, try again later, if this error continues to appear, please contact one of my developers.");
+            return sendErrorMessage(context, context.i18n("failedToSetBackground"));
         }
 
         return true;
@@ -366,12 +362,12 @@ public class RankBackgroundCommand extends Command {
                 PlayerController.forgetCache(context.getAuthor().getIdLong());
             }
 
-            context.makeSuccess("Rank backgrounds have successfully been disabled, you are now using embedded messages for rank commands again.")
+            context.makeSuccess(context.i18n("disabledBackgrounds"))
                 .queue();
         } catch (SQLException e) {
             log.error("Failed to reset background for user {}, error: {}", context.getAuthor().getId(), e.getMessage(), e);
 
-            return sendErrorMessage(context, "Failed to set the background due to a database error, try again later, if this error continues to appear, please contact one of my developers.");
+            return sendErrorMessage(context, context.i18n("failedToSetBackground"));
         }
 
         return true;
