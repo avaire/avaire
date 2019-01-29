@@ -143,7 +143,7 @@ public class AddReactionRoleCommand extends Command {
         );
 
         if (role == null) {
-            return sendErrorMessage(context, "errors.invalidProperty", "reaction role");
+            return sendErrorMessage(context, "errors.invalidProperty", "reaction role", "role");
         }
 
         if (!RoleUtil.canInteractWithRole(context.getMessage(), role)) {

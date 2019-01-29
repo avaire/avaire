@@ -134,7 +134,7 @@ public class VoiceKickCommand extends Command {
                             .set("target", user.getUser().getName() + "#" + user.getUser().getDiscriminator())
                             .set("voiceChannel", originalVoiceChannelName)
                             .set("reason", reason)
-                            .queue();
+                            .queue(ignoreMessage -> context.delete().queue(null, RestActionUtil.ignore));
                     }, RestActionUtil.ignore)
                 )
         );

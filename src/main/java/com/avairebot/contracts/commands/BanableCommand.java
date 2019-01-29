@@ -28,6 +28,7 @@ import com.avairebot.modlog.ModlogAction;
 import com.avairebot.modlog.ModlogType;
 import com.avairebot.utilities.MentionableUtil;
 import com.avairebot.utilities.NumberUtil;
+import com.avairebot.utilities.RestActionUtil;
 import com.avairebot.utilities.RoleUtil;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Role;
@@ -116,7 +117,7 @@ public abstract class BanableCommand extends Command {
             context.makeSuccess(context.i18n("success"))
                 .set("target", userId)
                 .set("reason", reason)
-                .queue();
+                .queue(ignoreMessage -> context.delete().queue(null, RestActionUtil.ignore));
         }, throwable -> context.makeWarning(context.i18n("failedToBan"))
             .set("target", userId)
             .set("error", throwable.getMessage())

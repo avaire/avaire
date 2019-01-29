@@ -146,7 +146,7 @@ public class WarnCommand extends Command {
             .set("reason", reason)
             .setFooter("Case ID #" + caseId)
             .setTimestamp(Instant.now())
-            .queue(null, RestActionUtil.ignore);
+            .queue(ignoreMessage -> context.delete().queue(null, RestActionUtil.ignore), RestActionUtil.ignore);
 
         return true;
     }
