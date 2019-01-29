@@ -24,6 +24,7 @@ package com.avairebot.database.controllers;
 import com.avairebot.AvaIre;
 import com.avairebot.Constants;
 import com.avairebot.database.transformers.PlayerTransformer;
+import com.avairebot.database.transformers.PurchasesTransformer;
 import com.avairebot.level.ExperienceEntity;
 import com.avairebot.utilities.CacheUtil;
 import com.google.common.cache.Cache;
@@ -50,7 +51,12 @@ public class PlayerController {
     private static final Logger log = LoggerFactory.getLogger(PlayerController.class);
 
     private static final String[] requiredPlayerColumns = new String[]{
-        "username", "discriminator", "avatar", "experience"
+        "`experiences`.`username`", "`experiences`.`discriminator`", "`experiences`.`avatar`",
+        "`experiences`.`experience`", "count(`purchases`.`user_id`) as purchases"
+    };
+
+    private static final String[] requiredPurchasesColumns = new String[]{
+        "`purchases`.`type`", "`purchases`.`type_id`", "`votes`.`selected_bg` as 'selected'"
     };
 
     @CheckReturnValue
@@ -73,9 +79,10 @@ public class PlayerController {
                     message.getGuild().getIdLong(),
                     avaire.getDatabase()
                         .newQueryBuilder(Constants.PLAYER_EXPERIENCE_TABLE_NAME)
-                        .select(requiredPlayerColumns)
-                        .where("user_id", user.getId())
-                        .andWhere("guild_id", message.getGuild().getId())
+                        .selectRaw(String.join(", ", requiredPlayerColumns))
+                        .where("experiences.user_id", user.getId())
+                        .andWhere("experiences.guild_id", message.getGuild().getId())
+                        .leftJoin(Constants.PURCHASES_TABLE_NAME, "purchases.user_id", "experiences.user_id")
                         .get().first()
                 );
 
@@ -97,6 +104,16 @@ public class PlayerController {
                         });
 
                     return mergeWithExperienceEntity(avaire, transformer);
+                }
+
+                if (transformer.hasPurchases()) {
+                    transformer.setPurchases(new PurchasesTransformer(
+                        avaire.getDatabase().newQueryBuilder(Constants.PURCHASES_TABLE_NAME)
+                            .selectRaw(String.join(", ", requiredPurchasesColumns))
+                            .leftJoin(Constants.VOTES_TABLE_NAME, "votes.selected_bg", "purchases.type_id")
+                            .where("purchases.user_id", user.getIdLong())
+                            .get()
+                    ));
                 }
 
                 if (isChanged(user, transformer)) {
@@ -145,6 +162,19 @@ public class PlayerController {
 
     private static String asKey(@Nonnull Guild guild, @Nonnull User user) {
         return guild.getId() + ":" + user.getId();
+    }
+
+    public static void forgetCache(long userId) {
+        List<String> toRemove = new ArrayList<>();
+        for (String key : cache.asMap().keySet()) {
+            if (key.endsWith(":" + userId)) {
+                toRemove.add(key);
+            }
+        }
+
+        if (!toRemove.isEmpty()) {
+            cache.invalidateAll(toRemove);
+        }
     }
 
     public static class PlayerUpdateReference {

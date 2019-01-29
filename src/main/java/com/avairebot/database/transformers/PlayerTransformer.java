@@ -24,7 +24,11 @@ package com.avairebot.database.transformers;
 import com.avairebot.contracts.database.transformers.Transformer;
 import com.avairebot.database.collection.DataRow;
 
+import javax.annotation.Nonnull;
+
 public class PlayerTransformer extends Transformer {
+
+    private static final PurchasesTransformer EMPTY_PURCHASES = new PurchasesTransformer(null);
 
     private final long userId;
     private final long guildId;
@@ -34,6 +38,9 @@ public class PlayerTransformer extends Transformer {
     private String discriminator;
     private String avatarId;
     private long experience = 0;
+
+    private boolean hasPurchases = false;
+    private PurchasesTransformer purchases = EMPTY_PURCHASES;
 
     public PlayerTransformer(long userId, long guildId, DataRow data) {
         super(data);
@@ -47,6 +54,7 @@ public class PlayerTransformer extends Transformer {
             discriminator = data.getString("discriminator");
             avatarId = data.getString("avatar");
             experience = data.getLong("experience", 0);
+            hasPurchases = data.getInt("purchases", 0) > 0;
         }
 
         reset();
@@ -94,5 +102,26 @@ public class PlayerTransformer extends Transformer {
 
     public void incrementExperienceBy(int amount) {
         experience = experience + amount;
+    }
+
+    public boolean hasPurchases() {
+        return hasPurchases;
+    }
+
+    @Nonnull
+    public PurchasesTransformer getPurchases() {
+        return purchases;
+    }
+
+    public void setPurchases(@Nonnull PurchasesTransformer purchases) {
+        this.purchases = purchases;
+    }
+
+    @Override
+    protected boolean checkIfTransformerHasData() {
+        return data != null
+            && data.getString("username") != null
+            && data.getString("experience") != null
+            && data.getString("discriminator") != null;
     }
 }

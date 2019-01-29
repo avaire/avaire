@@ -41,6 +41,7 @@ public class Constants {
     public static final String LOG_TABLE_NAME = "logs";
     public static final String LOG_TYPES_TABLE_NAME = "log_types";
     public static final String REACTION_ROLES_TABLE_NAME = "reaction_roles";
+    public static final String PURCHASES_TABLE_NAME = "purchases";
 
     // Package Specific Information
     public static final String PACKAGE_MIGRATION_PATH = "com.avairebot.database.migrate";
@@ -52,6 +53,9 @@ public class Constants {
     public static final String EMOTE_ONLINE = "<:online:324986081378435072>";
     public static final String EMOTE_AWAY = "<:away:324986135346675712>";
     public static final String EMOTE_DND = "<:dnd:324986174806425610>";
+
+    // Purchase Types
+    public static final String RANK_BACKGROUND_PURCHASE_TYPE = "rank-background";
 
     // Command source link
     public static final String SOURCE_URI = "https://github.com/avaire/avaire/tree/master/src/main/java/com/avairebot/commands/%s/%s.java";

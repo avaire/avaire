@@ -713,6 +713,25 @@ utility:
             10000: 'det her giver ingen mening :thinking: #BlameAlexis'
             other: 'langsom af. :dizzy_face:'
 
+    RankBackgroundCommand:
+        canBeUnlocked: "Rank backgrounds can be unlocked using **[Vote Points](https://discordbots.org/bot/avaire)**,\nyou'll get **1 point** each time you vote for the bot."
+        listTitle: "Rank Backgrounds ({0})"
+        youHaveVotePoints: "You have {0} vote points."
+        exampleTitle: "{0} Example"
+        exampleFooter: "{0} costs {1} vote points"
+        alreadyOwnsBackground: "You already own the **:name** background!"
+        doesntHaveEnoughPoints: "You don't have enough vote points to buy this background, the background costs `{0}`, and you have `{1}` vote points."
+        boughtBackgroundSuccessfully: "Congratulation! You now own the **:name** background!\nYou can use the `:command` command to use the background."
+        youDontOwnThisBackground: "You don't own the **:name** background, however you can buy it for **:cost** Vote Points!"
+        successfullyChangedBackground: "You have successfully changed to use the **:name** background."
+        disabledBackgrounds: "Rank backgrounds have successfully been disabled, you are now using embedded messages for rank commands again."
+        buyNotes:
+            alreadyOwns: "**{0}**\n- _You already own this background._"
+            doesntOwns: "**{0}**\n - Costs {1} vote points."
+        failedToSendExampleMessage: "Something went wrong while trying to send the example image for the {0} background, error: {1}."
+        failedToBuyTheBackground: "Something went wrong while buying the background, error: {0}"
+        failedToSetBackground: "Failed to set the background due to a database error, try again later, if this error continues to appear, please contact one of my developers."
+
     RankCommand:
         botsCannotReceiveXp: "Bots kan ikke modtage xp og kan derfor ikke rangeres, prøv at tagge en bruger i stedet."
         unranked: 'Unranked'
