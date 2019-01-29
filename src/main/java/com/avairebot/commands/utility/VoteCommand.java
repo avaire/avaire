@@ -22,10 +22,13 @@
 package com.avairebot.commands.utility;
 
 import com.avairebot.AvaIre;
+import com.avairebot.commands.CommandHandler;
 import com.avairebot.commands.CommandMessage;
+import com.avairebot.commands.music.PlayCommand;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.contracts.commands.CommandGroup;
 import com.avairebot.contracts.commands.CommandGroups;
+import com.avairebot.language.I18n;
 import com.avairebot.time.Carbon;
 import com.avairebot.vote.VoteCacheEntity;
 import com.avairebot.vote.VoteEntity;
@@ -83,14 +86,17 @@ public class VoteCommand extends Command {
             return checkUser(context, voteEntity);
         }
 
-        String note = String.format(String.join("\n", Arrays.asList(
-            "You'll gain access to the `!volume` and `!default-volume` commands for the",
-            "next 24 hours, as well as getting a vote point, rewards for vote points is",
-            "coming soon!",
+        String utilityPrefix = generateCommandPrefix(context.getMessage());
+
+        //noinspection ConstantConditions
+        String note = I18n.format(String.join("\n", Arrays.asList(
+            "You'll gain access to the `{0}volume` and `{0}default-volume` commands for the",
+            "next 12 hours, as well as getting a vote point, you can spend your vote points",
+            "to unlock special rank backgrounds using the `{1}backgrounds` command.",
             "",
             "Have you already voted and didn't get your vote rewards?",
-            "Try run `%s check`"
-        )), generateCommandTrigger(context.getMessage()));
+            "Try run `{1}vote check`"
+        )), CommandHandler.getCommand(PlayCommand.class).getCategory().getPrefix(context.getMessage()), utilityPrefix);
 
         Carbon expire = avaire.getVoteManager().getExpireTime(context.getAuthor());
         if (expire != null && expire.isFuture()) {
