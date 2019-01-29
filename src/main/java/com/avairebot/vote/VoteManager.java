@@ -105,7 +105,7 @@ public class VoteManager {
 
     /**
      * Adds the given vote entity to the queue if it is not null, doesn't already exists
-     * in the queue, or if the user haven't already voted in the last 24 hours, if the
+     * in the queue, or if the user haven't already voted in the last 12 hours, if the
      * vote entity passes all the checks, a new consume duration time will be set for
      * the entity, allowing the {@link DrainVoteQueueTask drain vote queue task} to
      * determine when a vote entity is ready to be sent to the API.
@@ -131,30 +131,30 @@ public class VoteManager {
     }
 
     /**
-     * Checks if the given member has voted in the last 24 hours.
+     * Checks if the given member has voted in the last 12 hours.
      *
      * @param member The member instance that should be checked.
-     * @return <code>True</code> if the member has voted in the last 24 hours.
+     * @return <code>True</code> if the member has voted in the last 12 hours.
      */
     public boolean hasVoted(@Nullable Member member) {
         return member != null && hasVoted(member.getUser().getIdLong());
     }
 
     /**
-     * Checks if the given user has voted in the last 24 hours.
+     * Checks if the given user has voted in the last 12 hours.
      *
      * @param user The user instance that should be checked.
-     * @return <code>True</code> if the user has voted in the last 24 hours.
+     * @return <code>True</code> if the user has voted in the last 12 hours.
      */
     public boolean hasVoted(@Nullable User user) {
         return user != null && hasVoted(user.getIdLong());
     }
 
     /**
-     * Checks if the user with the given ID has voted in the last 24 hours.
+     * Checks if the user with the given ID has voted in the last 12 hours.
      *
      * @param userId The user ID that should be checked.
-     * @return <code>True</code> if the user has voted in the last 24 hours.
+     * @return <code>True</code> if the user has voted in the last 12 hours.
      */
     public boolean hasVoted(long userId) {
         return !isEnabled() || voteLog.containsKey(userId) && voteLog.get(userId).getCarbon().isFuture();
@@ -238,7 +238,7 @@ public class VoteManager {
 
         if (!voteLog.containsKey(userId)) {
             voteLog.put(userId, new VoteCacheEntity(
-                userId, Carbon.now().addHours(24)
+                userId, Carbon.now().addHours(12)
             ));
         }
 

@@ -60,7 +60,7 @@ public class VoteMessenger {
             .setDescription(String.format(
                 "Thanks for voting for [AvaIre](https://discordbots.org/bot/avaire)! It's really appreciated ❤"
                     + "\nYou now have **%s** vote points, rewards for vote points is coming soon! <a:lurk:425394751357845506>"
-                    + "\nYou now also have access to the `!volume` and `!default-volume` commands for the next 24 hours on servers you have permission to run them on.", points))
+                    + "\nYou now also have access to the `!volume` and `!default-volume` commands for the next 12 hours on servers you have permission to run them on.", points))
             .build();
     }
 
@@ -100,7 +100,7 @@ public class VoteMessenger {
             .setColor(Color.decode("#E91E63"))
             .setTitle("Vote for AvaIre on DBL", "https://discordbots.org/bot/avaire")
             .setDescription(String.format(
-                "You must vote to %s, voting is free and only takes a few seconds\nTo get started, head over to:\n\nhttps://discordbots.org/bot/avaire\n\nOnce you've voted you'll gain access to this, and other commands for the next 24 hours!",
+                "You must vote to %s, voting is free and only takes a few seconds\nTo get started, head over to:\n\nhttps://discordbots.org/bot/avaire\n\nOnce you've voted you'll gain access to this, and other commands for the next 12 hours!",
                 feature == null ? "use this command" : feature
             ))
             .build()

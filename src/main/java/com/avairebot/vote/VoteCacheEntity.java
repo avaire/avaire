@@ -123,11 +123,11 @@ public class VoteCacheEntity {
 
     /**
      * Sets the carbon instance used to determine when the vote cache entity has
-     * expired, by default this should be set to 24 hours into the future.
+     * expired, by default this should be set to 12 hours into the future.
      * <p>
      * <u>Example</u>
      * <pre><code>
-     *   Carbon.now().addHours(24);
+     *   Carbon.now().addHours(12);
      * </code></pre>
      *
      * @param carbon The carbon instance representing when the vote cache entity expires.

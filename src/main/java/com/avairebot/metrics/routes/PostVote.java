@@ -66,7 +66,7 @@ public class PostVote extends SparkRoute {
         }
 
         VoteCacheEntity voteEntity = metrics.getAvaire().getVoteManager().getVoteEntityWithFallback(userById);
-        voteEntity.setCarbon(Carbon.now().addHours(24));
+        voteEntity.setCarbon(Carbon.now().addHours(12));
         metrics.getAvaire().getVoteManager().registerVoteFor(userById);
 
         Metrics.dblVotes.labels(VoteMetricType.WEBHOOK.getName()).inc();
