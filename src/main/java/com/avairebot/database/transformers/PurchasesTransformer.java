@@ -63,16 +63,39 @@ public class PurchasesTransformer extends Transformer {
         }
     }
 
+    /**
+     * Gets the purchases for the player instance, where the key
+     * is the purchase type identifier, and the value is a set
+     * of purchase IDs.
+     *
+     * @return A map of purchases for the player.
+     */
     @Nonnull
     public Map<String, Set<PurchasesId>> getPurchases() {
         return purchases;
     }
 
+    /**
+     * Gets the purchases for the given purchase type.
+     *
+     * @param type The type of purchases that should be returned.
+     * @return Possible-null, a set of purchase IDs belonging to the given type, or
+     * {@code NULL} if no purchases with the given ID was found for the player.
+     */
     @Nullable
     public Set<PurchasesId> getPurchasesFromType(String type) {
         return purchases.getOrDefault(type, null);
     }
 
+    /**
+     * Gets the selected purchase type ID for the give type, if the player
+     * doesn't have any purchases of the given type, of if the player
+     * doesn't have a purchase of the given type selected, the
+     * method will return {@code NULL}.
+     *
+     * @param type The name of the purchase type.
+     * @return Possibly-null, the selected purchase type ID, or {@code NULL}.
+     */
     @Nullable
     public Integer getSelectedPurchasesForType(String type) {
         Set<PurchasesId> purchases = getPurchasesFromType(type);
@@ -89,7 +112,14 @@ public class PurchasesTransformer extends Transformer {
         return null;
     }
 
-    @SuppressWarnings("SuspiciousMethodCalls")
+    /**
+     * Checks if the player has a purchase of the given type and type ID.
+     *
+     * @param type The type that should be checked for.
+     * @param id   The ID that should belong to the type.
+     * @return {@code True} if the player has a purchase belonging to
+     * the given type with the given ID, {@code False} otherwise.
+     */
     public boolean hasPurchase(String type, int id) {
         if (!purchases.containsKey(type)) {
             return false;
@@ -114,10 +144,21 @@ public class PurchasesTransformer extends Transformer {
             this.selected = selected;
         }
 
+        /**
+         * The ID of the purchase, this is not the incrementing purchase
+         * ID in the database, but the static ID of the purchased item.
+         *
+         * @return The ID of the purchase.
+         */
         public int getId() {
             return id;
         }
 
+        /**
+         * Determines if the purchase is selected by the player or not.
+         *
+         * @return {@code True} if the purchase is selected, {@code False} otherwise.
+         */
         public boolean isSelected() {
             return selected;
         }

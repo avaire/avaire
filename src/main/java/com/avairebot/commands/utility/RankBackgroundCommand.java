@@ -65,7 +65,6 @@ public class RankBackgroundCommand extends Command {
         return "Rank Background Command";
     }
 
-
     @Override
     public String getDescription(CommandContext context) {
         String prefix = context.isGuildMessage() ? generateCommandPrefix(context.getMessage()) : DiscordConstants.DEFAULT_COMMAND_PREFIX;

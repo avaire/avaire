@@ -115,6 +115,13 @@ public enum RankBackgrounds implements PurchaseType {
         return null;
     }
 
+    /**
+     * Gets the rank background with the given ID, if no rank backgrounds were
+     * found with the given ID, {@code NULL} will be returned instead.
+     *
+     * @param backgroundId The ID of the rank background that should be returned.
+     * @return Possibly-null, the rank background with a matching ID, or {@code NULL}.
+     */
     @Nullable
     public static RankBackgrounds fromId(int backgroundId) {
         for (RankBackgrounds background : values()) {
