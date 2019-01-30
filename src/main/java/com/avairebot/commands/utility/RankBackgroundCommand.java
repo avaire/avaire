@@ -44,6 +44,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -158,7 +159,7 @@ public class RankBackgroundCommand extends Command {
     }
 
     private boolean handleList(CommandMessage context, String[] args) {
-        PlayerTransformer player = context.getPlayerTransformer();
+        PlayerTransformer player = getPlayerTransformer(context);
         if (player == null) {
             return sendErrorMessage(context, "errors.errorOccurredWhileLoading", "player transformer");
         }
@@ -256,7 +257,7 @@ public class RankBackgroundCommand extends Command {
             return sendErrorMessage(context, "errors.invalidProperty", "background name", "background");
         }
 
-        PlayerTransformer player = context.getPlayerTransformer();
+        PlayerTransformer player = getPlayerTransformer(context);
         if (player == null) {
             return sendErrorMessage(context, "errors.errorOccurredWhileLoading", "player transformer");
         }
@@ -316,7 +317,7 @@ public class RankBackgroundCommand extends Command {
             return sendErrorMessage(context, "errors.invalidProperty", "background name", "background");
         }
 
-        PlayerTransformer player = context.getPlayerTransformer();
+        PlayerTransformer player = getPlayerTransformer(context);
         if (player == null) {
             return sendErrorMessage(context, "errors.errorOccurredWhileLoading", "player transformer");
         }
@@ -349,7 +350,7 @@ public class RankBackgroundCommand extends Command {
     }
 
     private boolean handleDisable(CommandMessage context) {
-        PlayerTransformer player = context.getPlayerTransformer();
+        PlayerTransformer player = getPlayerTransformer(context);
         if (player == null) {
             return sendErrorMessage(context, "errors.errorOccurredWhileLoading", "player transformer");
         }
@@ -371,6 +372,18 @@ public class RankBackgroundCommand extends Command {
         }
 
         return true;
+    }
+
+    @Nullable
+    private PlayerTransformer getPlayerTransformer(CommandMessage context) {
+        // We're checking for the player transformer here, if it is not null we'll return it
+        // right away, otherwise we'll try and get it from the player controller directly,
+        // we do this because the player transformer is only loaded before the context
+        // message if the leveling feature is also enabled.
+        if (context.getPlayerTransformer() != null) {
+            return context.getPlayerTransformer();
+        }
+        return PlayerController.fetchPlayer(avaire, context.getMessage(), context.getAuthor());
     }
 
     private String[] prepareArguments(String[] args) {
