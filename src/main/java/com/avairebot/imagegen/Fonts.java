@@ -25,6 +25,7 @@ import com.avairebot.exceptions.FailedToLoadResourceException;
 
 import java.awt.*;
 import java.io.IOException;
+import java.util.Locale;
 
 public class Fonts {
 
@@ -49,15 +50,31 @@ public class Fonts {
      */
     public static final Font bold;
 
+    /**
+     * The Poppins Extra Bold font.
+     * <p>
+     * For more information see: https://fonts.google.com/specimen/Poppins
+     */
+    public static final Font extraBold;
+
     static {
-        regular = loadFont(Font.TRUETYPE_FONT, "fonts/Poppins-Regular.ttf");
-        medium = loadFont(Font.TRUETYPE_FONT, "fonts/Poppins-Medium.ttf");
-        bold = loadFont(Font.TRUETYPE_FONT, "fonts/Poppins-Bold.ttf");
+        boolean isWindows = System.getProperty("os.name", "generic")
+            .toLowerCase(Locale.ENGLISH)
+            .contains("win");
+
+        regular = loadFont("Poppins-Regular." + (isWindows ? "ttf" : "otf"));
+        medium = loadFont("Poppins-Medium." + (isWindows ? "ttf" : "otf"));
+        bold = loadFont("Poppins-Bold." + (isWindows ? "ttf" : "otf"));
+        extraBold = loadFont("Poppins-ExtraBold." + (isWindows ? "ttf" : "otf"));
     }
 
-    private static Font loadFont(int type, String resourceName) {
+    private static Font loadFont(String resourceName) {
         try {
-            return Font.createFont(type, Fonts.class.getClassLoader().getResourceAsStream(resourceName));
+            return Font.createFont(
+                Font.TRUETYPE_FONT,
+                Fonts.class.getClassLoader()
+                    .getResourceAsStream("fonts/" + resourceName)
+            );
         } catch (FontFormatException | IOException e) {
             throw new FailedToLoadResourceException(String.format("Failed to load the font resource %s",
                 resourceName

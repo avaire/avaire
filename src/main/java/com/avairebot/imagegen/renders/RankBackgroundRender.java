@@ -233,7 +233,7 @@ public class RankBackgroundRender extends Renderer {
     }
 
     private void createUserGraphics(Graphics2D graphics) {
-        graphics.setFont(Fonts.medium.deriveFont(Font.BOLD, 26F));
+        graphics.setFont(Fonts.bold.deriveFont(Font.PLAIN, 26F));
         graphics.setColor(background.getBackgroundColors().getMainTextColor());
 
         graphics.drawString(username, startingX + 5, startingY);
@@ -261,7 +261,7 @@ public class RankBackgroundRender extends Renderer {
         // Create the text that should be displayed in the middle of the XP bar
         graphics.setColor(background.getBackgroundColors().getExperienceTextColor());
 
-        Font smallText = Fonts.regular.deriveFont(Font.BOLD, 20F);
+        Font smallText = Fonts.medium.deriveFont(Font.PLAIN, 20F);
         graphics.setFont(smallText);
 
         FontMetrics fontMetrics = graphics.getFontMetrics(smallText);
@@ -276,7 +276,7 @@ public class RankBackgroundRender extends Renderer {
         graphics.drawString("LEVEL", 35, 140);
 
         FontMetrics infoTextGraphicsFontMetricsLarge = graphics.getFontMetrics();
-        graphics.setFont(Fonts.bold.deriveFont(Font.BOLD, 48));
+        graphics.setFont(Fonts.extraBold.deriveFont(Font.PLAIN, 48));
 
         FontMetrics infoTextGraphicsFontMetricsSmall = graphics.getFontMetrics();
         graphics.drawString(level, 35 + (
@@ -286,7 +286,7 @@ public class RankBackgroundRender extends Renderer {
         // Create Score Text
         graphics.setFont(Fonts.medium.deriveFont(Font.PLAIN, 28));
         graphics.drawString("RANK", 165, 140);
-        graphics.setFont(Fonts.bold.deriveFont(Font.BOLD, 48));
+        graphics.setFont(Fonts.extraBold.deriveFont(Font.PLAIN, 48));
         graphics.drawString(rank, 165 + (
             (infoTextGraphicsFontMetricsLarge.stringWidth("RANK") - infoTextGraphicsFontMetricsSmall.stringWidth(rank)) / 2
         ), 185);
