@@ -53,7 +53,7 @@ public class RepeatMusicQueueCommand extends Command {
     }
 
     @Override
-    public List<String> getUsageInstructions() {
+    public List<String> getUsageInstructions() { // TODO Rewrite usage instructions
         return Collections.singletonList("`:command` - Toggles queue looping on or off.");
     }
 
@@ -88,14 +88,26 @@ public class RepeatMusicQueueCommand extends Command {
         if (!musicManager.canPreformSpecialAction(this, context, "loop queue")) {
             return false;
         }
-
-        musicManager.setRepeatQueue(!musicManager.isRepeatQueue());
-
-        context.makeSuccess(context.i18n("success"))
-            .set("status", musicManager.isRepeatQueue()
-                ? context.i18n("enabled") : context.i18n("disabled"))
-            .queue(message -> message.delete().queueAfter(5, TimeUnit.MINUTES, null, RestActionUtil.ignore));
-
-        return true;
+        if (args[0].equals("single")) { // TODO Add functionality in TrackScheduler > onTrackEnd
+            musicManager.setRepeatQueue(1);
+            context.makeSuccess(context.i18n("success"))
+                .set("status", "SINGLE")
+                .queue(message -> message.delete().queueAfter(5, TimeUnit.MINUTES, null, RestActionUtil.ignore));
+            return true;
+        } else if (args[0].equals("all")) {
+            musicManager.setRepeatQueue(2);
+            context.makeSuccess(context.i18n("success"))
+                .set("status", "ALL")
+                .queue(message -> message.delete().queueAfter(5, TimeUnit.MINUTES, null, RestActionUtil.ignore));
+            return true;
+        } else if (args[0].equals("off")) {
+            musicManager.setRepeatQueue(0);
+            context.makeSuccess(context.i18n("success"))
+                .set("status", "OFF")
+                .queue(message -> message.delete().queueAfter(5, TimeUnit.MINUTES, null, RestActionUtil.ignore));
+            return true;
+        } else {
+            return sendErrorMessage(context, context.i18n("invalidArguments"));
+        }
     }
 }

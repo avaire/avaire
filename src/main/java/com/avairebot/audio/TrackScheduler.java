@@ -230,22 +230,29 @@ public class TrackScheduler extends AudioEventWrapper {
     @Override
     public void onTrackEnd(AudioPlayer player, AudioTrack track, AudioTrackEndReason endReason) {
         if (endReason.mayStartNext) {
-            if (manager.isRepeatQueue()) {
+            if (manager.getRepeatQueue() == 2) { // Repeat queue
                 if (audioTrackContainer == null) {
                     // This should never be null since the container is set when we queue a
                     // track, and this even should only be fired when an track has ended.
                     throw new IllegalStateException("Music track has ended while the audio track container is NULL");
                 }
                 queue.offer(new AudioTrackContainer(track.makeClone(), audioTrackContainer.getRequester()));
+            } else if (manager.getRepeatQueue() == 0) { // Repeat off
+                nextTrack();
             }
-            nextTrack();
         } else if (endReason.equals(AudioTrackEndReason.FINISHED) && queue.isEmpty()) {
             if (manager.getLastActiveMessage() != null) {
                 service.submit(() -> handleEndOfQueueWithLastActiveMessage(true));
             }
         }
+        if (manager.getRepeatQueue() == 1) { // Repeat single
+            // TODO "You could take the track object when the song ends,
+            // TODO ...clone it and add it to the front of the queue,
+            // TODO ...so when the next song is called, it will pull out the same track again"
+            track.makeClone();
+            nextTrack();
+        }
     }
-
     @Override
     public void handleEndOfQueue(@Nonnull CommandMessage context, boolean sendEndOfQueue) {
         MusicEndedEvent event = new MusicEndedEvent(
