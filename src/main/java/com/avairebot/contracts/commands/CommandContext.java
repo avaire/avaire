@@ -21,8 +21,10 @@
 
 package com.avairebot.contracts.commands;
 
+import com.avairebot.AvaIre;
 import com.avairebot.commands.CommandContainer;
 import com.avairebot.config.YamlConfiguration;
+import com.avairebot.database.controllers.PlayerController;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.database.transformers.PlayerTransformer;
 import com.avairebot.handlers.DatabaseEventHolder;
@@ -109,9 +111,10 @@ public interface CommandContext {
     GuildTransformer getGuildTransformer();
 
     /**
-     * Returns the {@link PlayerTransformer player transformer} instance linked to the current message,
-     * if the message was sent as a direct message, or an error occurred while loading the
-     * {@link PlayerTransformer transformer} from the database this will return null.
+     * Returns the {@link PlayerTransformer player transformer} instance linked to the current message, if
+     * the message was sent as a direct message, or the server the message was sent in has leveling
+     * disabled, or an error occurred while loading the {@link PlayerTransformer transformer}
+     * from the database this will return null.
      * <p>
      * This is just a shortcut for calling {@link #getDatabaseEventHolder()}{@link DatabaseEventHolder#getPlayer()}.
      *
@@ -119,6 +122,29 @@ public interface CommandContext {
      */
     @Nullable
     PlayerTransformer getPlayerTransformer();
+
+    /**
+     * Returns the {@link PlayerTransformer player transformer} instance linked to the current message, if
+     * the {@link PlayerTransformer player transformer} wasn't autoloaded because the server has leveling
+     * disabled, the method will attempt to load the player transformer directly from
+     * the {@link PlayerController player controller} instead.
+     * <p>
+     * This is just a shortcut for calling {@link #getDatabaseEventHolder()}{@link DatabaseEventHolder#getPlayer()},
+     * but if that returns null, then {@link PlayerController#fetchPlayer(AvaIre, Message)}
+     * will automatically be called instead.
+     *
+     * @param avaire The main AvaIre instance used to communicate with the rest of the application.
+     * @return Possibly-null, the {@link PlayerTransformer player transformer} for the author of
+     * command context for the current guild, or {@code NULL} if something went wrong.
+     */
+    @Nullable
+    default PlayerTransformer getPlayerTransformerWithForce(@Nonnull AvaIre avaire) {
+        PlayerTransformer playerTransformer = getPlayerTransformer();
+        if (playerTransformer != null) {
+            return playerTransformer;
+        }
+        return PlayerController.fetchPlayer(avaire, getMessage());
+    }
 
     /**
      * Returns the database event holder, when a message is received by Ava, the users {@link PlayerTransformer player inforatmion},
