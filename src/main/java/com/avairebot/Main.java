@@ -68,7 +68,7 @@ public class Main {
                 System.exit(ExitCodes.EXIT_CODE_NORMAL);
             }
 
-            new AvaIre(settings);
+            AvaIre.avaire = new AvaIre(settings);
         } catch (ParseException e) {
             System.out.println(e.getMessage());
             formatter.printHelp("", options);

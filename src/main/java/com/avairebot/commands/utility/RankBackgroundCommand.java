@@ -29,7 +29,7 @@ import com.avairebot.contracts.commands.Command;
 import com.avairebot.contracts.commands.CommandContext;
 import com.avairebot.contracts.commands.CommandGroup;
 import com.avairebot.contracts.commands.CommandGroups;
-import com.avairebot.database.controllers.PlayerController;
+import com.avairebot.database.controllers.PurchaseController;
 import com.avairebot.database.transformers.PlayerTransformer;
 import com.avairebot.imagegen.RankBackgrounds;
 import com.avairebot.imagegen.renders.RankBackgroundRender;
@@ -295,7 +295,7 @@ public class RankBackgroundCommand extends Command {
                 voteEntity.setVotePoints(votePoints - background.getCost());
             }
 
-            PlayerController.forgetCache(context.getAuthor().getIdLong());
+            PurchaseController.forgetCache(context.getAuthor().getIdLong());
         } catch (SQLException e) {
             log.error("Something went wrong while a use was trying to buy a background: {}", e.getMessage(), e);
 
@@ -335,7 +335,7 @@ public class RankBackgroundCommand extends Command {
                 .where("user_id", context.getAuthor().getIdLong())
                 .update(statement -> statement.set("selected_bg", background.getId()));
 
-            PlayerController.forgetCache(context.getAuthor().getIdLong());
+            PurchaseController.forgetCache(context.getAuthor().getIdLong());
 
             context.makeSuccess(context.i18n("successfullyChangedBackground"))
                 .set("name", background.getName())
@@ -361,7 +361,7 @@ public class RankBackgroundCommand extends Command {
                     .where("user_id", context.getAuthor().getIdLong())
                     .update(statement -> statement.set("selected_bg", null));
 
-                PlayerController.forgetCache(context.getAuthor().getIdLong());
+                PurchaseController.forgetCache(context.getAuthor().getIdLong());
             }
 
             context.makeSuccess(context.i18n("disabledBackgrounds"))

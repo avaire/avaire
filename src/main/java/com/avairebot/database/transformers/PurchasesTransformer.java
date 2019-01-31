@@ -134,6 +134,15 @@ public class PurchasesTransformer extends Transformer {
         return false;
     }
 
+    /**
+     * Checks if the purchase transformer has any purchases in it or not.
+     *
+     * @return {@code True} if there are purchases in the purchase transformer, {@code False} otherwise.
+     */
+    public boolean hasPurchases() {
+        return !purchases.isEmpty();
+    }
+
     public class PurchasesId {
 
         private final int id;

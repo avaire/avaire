@@ -116,6 +116,9 @@ public class AvaIre {
         .create();
 
     private static final Logger log = LoggerFactory.getLogger(AvaIre.class);
+
+    protected static AvaIre avaire;
+
     private static Environment applicationEnvironment;
     private final Settings settings;
     private final Configuration config;
@@ -129,10 +132,8 @@ public class AvaIre {
     private final ShardEntityCounter shardEntityCounter;
     private final EventEmitter eventEmitter;
     private final BotAdmin botAdmins;
-
     private Carbon shutdownTime = null;
     private int shutdownCode = ExitCodes.EXIT_CODE_RESTART;
-
     private ShardManager shardManager = null;
 
     public AvaIre(Settings settings) throws IOException, SQLException, InvalidApplicationEnvironmentException {
@@ -355,6 +356,10 @@ public class AvaIre {
 
     public static Environment getEnvironment() {
         return applicationEnvironment;
+    }
+
+    public static AvaIre getInstance() {
+        return avaire;
     }
 
     static String getVersionInfo(@Nullable Settings settings) {
