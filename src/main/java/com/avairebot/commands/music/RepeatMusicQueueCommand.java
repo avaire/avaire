@@ -79,6 +79,9 @@ public class RepeatMusicQueueCommand extends Command {
 
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
+        if (args.length == 0) {
+            return sendErrorMessage(context, context.i18n("invalidArguments"));
+        }
         GuildMusicManager musicManager = AudioHandler.getDefaultAudioHandler().getGuildAudioPlayer(context.getGuild());
 
         if (!musicManager.isReady() || musicManager.getPlayer().getPlayingTrack() == null) {
@@ -88,7 +91,7 @@ public class RepeatMusicQueueCommand extends Command {
         if (!musicManager.canPreformSpecialAction(this, context, "loop queue")) {
             return false;
         }
-        if (args[0].equals("single")) { // TODO Add functionality in TrackScheduler > onTrackEnd
+        if (args[0].equals("single")) {
             musicManager.setRepeatQueue(1);
             context.makeSuccess(context.i18n("success"))
                 .set("status", "SINGLE")
@@ -106,8 +109,7 @@ public class RepeatMusicQueueCommand extends Command {
                 .set("status", "OFF")
                 .queue(message -> message.delete().queueAfter(5, TimeUnit.MINUTES, null, RestActionUtil.ignore));
             return true;
-        } else {
-            return sendErrorMessage(context, context.i18n("invalidArguments"));
         }
+        return sendErrorMessage(context, context.i18n("invalidArguments"));
     }
 }

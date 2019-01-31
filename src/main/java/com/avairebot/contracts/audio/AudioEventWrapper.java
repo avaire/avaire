@@ -67,7 +67,7 @@ public abstract class AudioEventWrapper extends EvalAudioEventWrapper {
      * The music queue, the queue holds all the audio
      * tracks that has been requested by users.
      */
-    protected final BlockingQueue<AudioTrackContainer> queue;
+    protected final LinkedBlockingDeque<AudioTrackContainer> queue;
 
     /**
      * Creates a new audio event wrapper instance.
@@ -80,7 +80,7 @@ public abstract class AudioEventWrapper extends EvalAudioEventWrapper {
         this.manager = manager;
         this.player = player;
 
-        this.queue = new LinkedBlockingQueue<>();
+        this.queue = new LinkedBlockingDeque<>();
     }
 
     /**
