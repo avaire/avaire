@@ -332,6 +332,7 @@ public class RankBackgroundCommand extends Command {
 
         try {
             avaire.getDatabase().newQueryBuilder(Constants.VOTES_TABLE_NAME)
+                .where("user_id", context.getAuthor().getIdLong())
                 .update(statement -> statement.set("selected_bg", background.getId()));
 
             PlayerController.forgetCache(context.getAuthor().getIdLong());
@@ -357,6 +358,7 @@ public class RankBackgroundCommand extends Command {
         try {
             if (player.getPurchases().getSelectedPurchasesForType(RankBackgrounds.getDefaultBackground().getPurchaseType()) != null) {
                 avaire.getDatabase().newQueryBuilder(Constants.VOTES_TABLE_NAME)
+                    .where("user_id", context.getAuthor().getIdLong())
                     .update(statement -> statement.set("selected_bg", null));
 
                 PlayerController.forgetCache(context.getAuthor().getIdLong());
