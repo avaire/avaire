@@ -232,7 +232,6 @@ public class TrackScheduler extends AudioEventWrapper {
         if (endReason.mayStartNext) {
             if (manager.getRepeatQueue() == 1) { // Repeat single
                 queue.offerFirst(new AudioTrackContainer(track.makeClone(), audioTrackContainer.getRequester()));
-                nextTrack();
             } else if (manager.getRepeatQueue() == 2) { // Repeat queue
                 if (audioTrackContainer == null) {
                     // This should never be null since the container is set when we queue a
@@ -240,10 +239,8 @@ public class TrackScheduler extends AudioEventWrapper {
                     throw new IllegalStateException("Music track has ended while the audio track container is NULL");
                 }
                 queue.offer(new AudioTrackContainer(track.makeClone(), audioTrackContainer.getRequester()));
-                nextTrack();
-            } else if (manager.getRepeatQueue() == 0) { // Repeat off
-                nextTrack();
             }
+            nextTrack();
         } else if (endReason.equals(AudioTrackEndReason.FINISHED) && queue.isEmpty()) {
             if (manager.getLastActiveMessage() != null) {
                 service.submit(() -> handleEndOfQueueWithLastActiveMessage(true));
