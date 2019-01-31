@@ -171,7 +171,7 @@ public class RankCommand extends Command {
                 levelBar += ((i * 2.5) < percentage) ? "\u2592" : "\u2591";
             }
 
-            PlayerTransformer playerTransformer = context.getPlayerTransformer();
+            PlayerTransformer playerTransformer = PlayerController.fetchPlayer(avaire, context.getMessage(), author);
             if (playerTransformer != null) {
                 Integer selectedBackgroundId = playerTransformer.getPurchases()
                     .getSelectedPurchasesForType(
