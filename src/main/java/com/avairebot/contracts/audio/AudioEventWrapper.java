@@ -67,7 +67,7 @@ public abstract class AudioEventWrapper extends EvalAudioEventWrapper {
      * The music queue, the queue holds all the audio
      * tracks that has been requested by users.
      */
-    protected final LinkedBlockingDeque<AudioTrackContainer> queue;
+    protected final BlockingDeque<AudioTrackContainer> queue;
 
     /**
      * Creates a new audio event wrapper instance.
