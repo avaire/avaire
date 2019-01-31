@@ -71,7 +71,7 @@ public class RemoveSongFromQueueCommand extends Command {
 
     @Override
     public List<String> getTriggers() {
-        return Arrays.asList("removesong", "songremove");
+        return Arrays.asList("removesong", "songremove", "removesongs");
     }
 
     @Override
