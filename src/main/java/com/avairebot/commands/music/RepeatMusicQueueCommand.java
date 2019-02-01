@@ -91,24 +91,30 @@ public class RepeatMusicQueueCommand extends Command {
         if (!musicManager.canPreformSpecialAction(this, context, "loop queue")) {
             return false;
         }
-        if (args[0].equals("single")) {
-            musicManager.setRepeatQueue(1);
-            context.makeSuccess(context.i18n("success"))
-                .set("status", "SINGLE")
-                .queue(message -> message.delete().queueAfter(5, TimeUnit.MINUTES, null, RestActionUtil.ignore));
-            return true;
-        } else if (args[0].equals("all")) {
-            musicManager.setRepeatQueue(2);
-            context.makeSuccess(context.i18n("success"))
-                .set("status", "ALL")
-                .queue(message -> message.delete().queueAfter(5, TimeUnit.MINUTES, null, RestActionUtil.ignore));
-            return true;
-        } else if (args[0].equals("off")) {
-            musicManager.setRepeatQueue(0);
-            context.makeSuccess(context.i18n("success"))
-                .set("status", "OFF")
-                .queue(message -> message.delete().queueAfter(5, TimeUnit.MINUTES, null, RestActionUtil.ignore));
-            return true;
+        switch (args[0].toLowerCase()) {
+            case "single":
+            case "one":
+            case "s":
+                musicManager.setRepeatQueue(1);
+                context.makeSuccess(context.i18n("success"))
+                    .set("status", "SINGLE")
+                    .queue(message -> message.delete().queueAfter(5, TimeUnit.MINUTES, null, RestActionUtil.ignore));
+                return true;
+            case "all":
+            case "al":
+            case "a":
+                musicManager.setRepeatQueue(2);
+                context.makeSuccess(context.i18n("success"))
+                    .set("status", "ALL")
+                    .queue(message -> message.delete().queueAfter(5, TimeUnit.MINUTES, null, RestActionUtil.ignore));
+                return true;
+            case "off":
+            case "o":
+                musicManager.setRepeatQueue(0);
+                context.makeSuccess(context.i18n("success"))
+                    .set("status", "OFF")
+                    .queue(message -> message.delete().queueAfter(5, TimeUnit.MINUTES, null, RestActionUtil.ignore));
+                return true;
         }
         return sendErrorMessage(context, context.i18n("invalidArguments"));
     }
