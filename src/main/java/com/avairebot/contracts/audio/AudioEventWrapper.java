@@ -88,7 +88,7 @@ public abstract class AudioEventWrapper extends EvalAudioEventWrapper {
      *
      * @return The audio queue.
      */
-    public final BlockingQueue<AudioTrackContainer> getQueue() {
+    public final BlockingDeque<AudioTrackContainer> getQueue() {
         return queue;
     }
 
