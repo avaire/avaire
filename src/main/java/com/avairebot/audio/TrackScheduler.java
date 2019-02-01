@@ -230,9 +230,9 @@ public class TrackScheduler extends AudioEventWrapper {
     @Override
     public void onTrackEnd(AudioPlayer player, AudioTrack track, AudioTrackEndReason endReason) {
         if (endReason.mayStartNext) {
-            if (manager.getRepeatQueue() == 1) { // Repeat single
+            if (manager.getRepeatState().equals(GuildMusicManager.RepeatState.SINGLE)) { // Repeat single
                 queue.offerFirst(new AudioTrackContainer(track.makeClone(), audioTrackContainer.getRequester()));
-            } else if (manager.getRepeatQueue() == 2) { // Repeat queue
+            } else if (manager.getRepeatState().equals(GuildMusicManager.RepeatState.ALL)) { // Repeat all
                 if (audioTrackContainer == null) {
                     // This should never be null since the container is set when we queue a
                     // track, and this even should only be fired when an track has ended.
@@ -244,7 +244,7 @@ public class TrackScheduler extends AudioEventWrapper {
         } else if (endReason.equals(AudioTrackEndReason.FINISHED) && queue.isEmpty()) {
             if (manager.getLastActiveMessage() != null) {
                 service.submit(() -> handleEndOfQueueWithLastActiveMessage(true));
-            } else if (manager.getRepeatQueue() == 1) { // Repeat single
+            } else if (manager.getRepeatState().equals(GuildMusicManager.RepeatState.SINGLE)) { // Repeat single
                 queue.offerFirst(new AudioTrackContainer(track.makeClone(), audioTrackContainer.getRequester()));
                 nextTrack();
             }

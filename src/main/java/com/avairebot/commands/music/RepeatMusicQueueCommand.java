@@ -95,7 +95,8 @@ public class RepeatMusicQueueCommand extends Command {
             case "single":
             case "one":
             case "s":
-                musicManager.setRepeatQueue(1);
+            case "1":
+                musicManager.setRepeatState(GuildMusicManager.RepeatState.SINGLE);
                 context.makeSuccess(context.i18n("success"))
                     .set("status", "ONE")
                     .queue(message -> message.delete().queueAfter(5, TimeUnit.MINUTES, null, RestActionUtil.ignore));
@@ -103,14 +104,14 @@ public class RepeatMusicQueueCommand extends Command {
             case "all":
             case "al":
             case "a":
-                musicManager.setRepeatQueue(2);
+                musicManager.setRepeatState(GuildMusicManager.RepeatState.ALL);
                 context.makeSuccess(context.i18n("success"))
                     .set("status", "ALL")
                     .queue(message -> message.delete().queueAfter(5, TimeUnit.MINUTES, null, RestActionUtil.ignore));
                 return true;
             case "off":
             case "o":
-                musicManager.setRepeatQueue(0);
+                musicManager.setRepeatState(GuildMusicManager.RepeatState.OFF);
                 context.makeSuccess(context.i18n("success"))
                     .set("status", "OFF")
                     .queue(message -> message.delete().queueAfter(5, TimeUnit.MINUTES, null, RestActionUtil.ignore));
