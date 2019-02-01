@@ -97,7 +97,7 @@ public class RepeatMusicQueueCommand extends Command {
             case "s":
                 musicManager.setRepeatQueue(1);
                 context.makeSuccess(context.i18n("success"))
-                    .set("status", "SINGLE")
+                    .set("status", "ONE")
                     .queue(message -> message.delete().queueAfter(5, TimeUnit.MINUTES, null, RestActionUtil.ignore));
                 return true;
             case "all":
