@@ -27,8 +27,12 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import lavalink.client.player.IPlayer;
 import net.dv8tion.jda.core.entities.User;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class AudioTrackContainer extends Evalable {
 
@@ -36,6 +40,9 @@ public class AudioTrackContainer extends Evalable {
     private final User requester;
     private final List<Long> skips;
     private int playedTime;
+
+    @Nullable
+    private HashMap<String, Object> metadata;
 
     public AudioTrackContainer(AudioTrack audioTrack, User requester) {
         this.audioTrack = audioTrack;
@@ -79,5 +86,52 @@ public class AudioTrackContainer extends Evalable {
         }
 
         return NumberUtil.formatTime(getAudioTrack().getDuration() - player.getTrackPosition());
+    }
+
+    public void setMetadata(@Nonnull String key, @Nullable Object value) {
+        if (metadata == null) {
+            metadata = new HashMap<>();
+        }
+
+        if (value == null) {
+            metadata.remove(key);
+        } else {
+            metadata.put(key, value);
+        }
+    }
+
+    public void removeMetadata(@Nonnull String key) {
+        if (metadata != null) {
+            metadata.remove(key);
+        }
+    }
+
+    @Nullable
+    public HashMap<String, Object> getMetadata() {
+        return metadata;
+    }
+
+    public Object getMetadataFromKey(@Nonnull String key) {
+        if (metadata == null) {
+            return null;
+        }
+        return metadata.getOrDefault(key, null);
+    }
+
+    @Nullable
+    public boolean hasMetadataKey(@Nonnull String key) {
+        return metadata != null && metadata.containsKey(key);
+    }
+
+    public AudioTrackContainer makeClone() {
+        AudioTrackContainer container = new AudioTrackContainer(audioTrack.makeClone(), requester);
+
+        if (metadata != null) {
+            for (Map.Entry<String, Object> entry : metadata.entrySet()) {
+                container.setMetadata(entry.getKey(), entry.getValue());
+            }
+        }
+
+        return container;
     }
 }
