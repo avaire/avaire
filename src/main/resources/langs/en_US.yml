@@ -552,7 +552,6 @@ music:
     RepeatMusicQueueCommand:
         error: 'There is nothing to repeat, request music first with `{0}play`'
         success: 'Music queue looping has been turned `:status`.'
-        invalidArguments: 'You must provide a valid argument for this command!'
 
     ResumeCommand:
         error: 'Nothing to resume, request music first with `{0}play`'
