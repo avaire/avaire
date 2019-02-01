@@ -551,7 +551,9 @@ music:
 
     RepeatMusicQueueCommand:
         error: 'There is nothing to repeat, request music first with `{0}play`'
-        success: 'The player has been set to repeat `:status`.'
+        successOne: 'The player has been set to repeat the currently playing song.'
+        successAll: 'The player has been set to loop through the entire queue'
+        successOff: 'Music queue looping has been turned off'
 
     ResumeCommand:
         error: 'Nothing to resume, request music first with `{0}play`'
