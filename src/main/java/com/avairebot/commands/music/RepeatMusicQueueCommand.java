@@ -22,6 +22,7 @@
 package com.avairebot.commands.music;
 
 import com.avairebot.AvaIre;
+import com.avairebot.Constants;
 import com.avairebot.audio.AudioHandler;
 import com.avairebot.audio.GuildMusicManager;
 import com.avairebot.commands.CommandMessage;
@@ -119,6 +120,10 @@ public class RepeatMusicQueueCommand extends Command {
             case "s":
             case "1":
                 musicManager.setRepeatState(GuildMusicManager.RepeatState.SINGLE);
+                if (musicManager.getScheduler().getAudioTrackContainer() != null) {
+                    musicManager.getScheduler().getAudioTrackContainer()
+                        .setMetadata(Constants.AUDIO_HAS_SENT_NOW_PLAYING_METADATA, true);
+                }
                 context.makeSuccess(context.i18n("single"))
                     .queue(message -> message.delete().queueAfter(5, TimeUnit.MINUTES, null, RestActionUtil.ignore));
                 return true;

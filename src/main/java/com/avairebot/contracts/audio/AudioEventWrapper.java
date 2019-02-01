@@ -129,6 +129,11 @@ public abstract class AudioEventWrapper extends EvalAudioEventWrapper {
 
         manager.getAvaire().getEventEmitter().push(nowPlayingEvent);
 
+        final boolean repeatSingle = manager.getRepeatState().equals(GuildMusicManager.RepeatState.SINGLE);
+        if (repeatSingle && container.hasMetadataKey("has-sent-now-playing")) {
+            return;
+        }
+
         if (manager.getGuildTransformer().isMusicMessages()) {
             manager.getLastActiveMessage().makeSuccess(
                 manager.getLastActiveMessage().i18nRaw("music.internal.nowPlaying")
@@ -138,7 +143,11 @@ public abstract class AudioEventWrapper extends EvalAudioEventWrapper {
                 .set("duration", container.getFormattedDuration())
                 .set("requester", container.getRequester().getAsMention())
                 .set("volume", getVolume())
-                .queue();
+                .queue(ignoreSuccess -> {
+                    if (repeatSingle) {
+                        container.setMetadata("has-sent-now-playing", true);
+                    }
+                });
         }
     }
 
