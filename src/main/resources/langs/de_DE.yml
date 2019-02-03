@@ -387,6 +387,11 @@ fun:
         invalidValueGiven: 'Ungültigen `{0}` Wert angegeben. `{1}` muss eine Nummer sein!'
         rolledNumber: ':user hat eine **:number** zwischen einer Zahl von :min - :max gewürfelt.'
 
+    SayCommand:
+        userMissingPermissions: "You can't use the this command for the {0} channel, you must have the message write and message manage permissions for the channel to use the command for the channel."
+        botMissingPermissions: "The say command can't be used for the {0} channel, I need both the message write and message manage permissions for the channel to successfully run the command."
+        success: "Your message have been sent to the :name channel."
+
     UndertaleTextBoxCommand:
         noArgumentsGiven: "Fehlendes Argument. Du musst `list` angeben, um eine Liste von Charakteren einzusehen, von denen du was aussuchen kannst, um ein Bild zu generieren `character`, oder ein bereits verfügbares Bild `url` um dein Bild damit zu erstellen."
         failedToGenerateImage: "Beim Versuch das Bild zu generieren ist ein Fehler aufgetreten. Bist du dir sicher, dass du eine richtige URL oder einen richtigen Charakternamen ausgewählt hast?"
