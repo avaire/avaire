@@ -95,13 +95,22 @@ public class RepeatMusicQueueCommand extends Command {
         if (args.length == 0) {
             switch (musicManager.getRepeatState()) {
                 case SINGLE:
-                    context.makeInfo(context.i18n("single")).queue();
+                    context.makeInfo(context.i18n("single"))
+                        .setTitle(context.i18n("title"))
+                        .set("status", "states.single")
+                        .queue();
                     break;
                 case ALL:
-                    context.makeInfo(context.i18n("all")).queue();
+                    context.makeInfo(context.i18n("all"))
+                        .setTitle(context.i18n("title"))
+                        .set("status", "states.all")
+                        .queue();
                     break;
                 case OFF:
-                    context.makeInfo(context.i18n("loopOff")).queue();
+                    context.makeInfo(context.i18n("loopOff"))
+                        .setTitle(context.i18n("title"))
+                        .set("status", "states.off")
+                        .queue();
                     break;
             }
             return true;
