@@ -551,14 +551,15 @@ music:
 
     RepeatMusicQueueCommand:
         error: 'There is nothing to repeat, request music first with `{0}play`'
-        title: 'Current repeat mode: :status'
+        title: 'Current repeat mode: {0}'
+        footer: 'Use \"{0} <repeat-mode>\" to set the repeat mode.'
         states:
             single: 'Single'
             all: 'All'
-            off: 'Off'
+            loopoff: 'Off'
         single: 'The player has been set to repeat the currently playing song.'
         all: 'The player has been set to loop through the entire queue'
-        loopOff: 'Music queue looping is off'
+        loopoff: 'Music queue looping has been turned off'
 
     ResumeCommand:
         error: 'Nothing to resume, request music first with `{0}play`'

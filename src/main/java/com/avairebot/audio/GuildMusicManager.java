@@ -51,7 +51,7 @@ public class GuildMusicManager extends Evalable {
     private boolean hasPlayedSongBefore;
     private int defaultVolume;
     private CommandMessage lastActiveMessage = null;
-    private RepeatState repeatState = RepeatState.OFF;
+    private RepeatState repeatState = RepeatState.LOOPOFF;
 
     public GuildMusicManager(AvaIre avaire, Guild guild) {
         this.avaire = avaire;
@@ -165,6 +165,6 @@ public class GuildMusicManager extends Evalable {
     }
 
     public enum RepeatState {
-        OFF, SINGLE, ALL
+        LOOPOFF, SINGLE, ALL
     }
 }

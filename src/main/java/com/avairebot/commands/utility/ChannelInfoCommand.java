@@ -116,7 +116,7 @@ public class ChannelInfoCommand extends Command {
 
             placeholder
                 .setDescription(topic)
-                .addField(context.i18n("fields.nsfw"), textChannel.isNSFW() ? "ON" : "OFF", true);
+                .addField(context.i18n("fields.nsfw"), textChannel.isNSFW() ? "ON" : "LOOPOFF", true);
         }
 
         if (channel instanceof VoiceChannel) {

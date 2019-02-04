@@ -93,26 +93,10 @@ public class RepeatMusicQueueCommand extends Command {
         GuildMusicManager musicManager = AudioHandler.getDefaultAudioHandler().getGuildAudioPlayer(context.getGuild());
 
         if (args.length == 0) {
-            switch (musicManager.getRepeatState()) {
-                case SINGLE:
-                    context.makeInfo(context.i18n("single"))
-                        .setTitle(context.i18n("title"))
-                        .set("status", "states.single")
-                        .queue();
-                    break;
-                case ALL:
-                    context.makeInfo(context.i18n("all"))
-                        .setTitle(context.i18n("title"))
-                        .set("status", "states.all")
-                        .queue();
-                    break;
-                case OFF:
-                    context.makeInfo(context.i18n("loopOff"))
-                        .setTitle(context.i18n("title"))
-                        .set("status", "states.off")
-                        .queue();
-                    break;
-            }
+            context.makeInfo(context.i18n(musicManager.getRepeatState().toString().toLowerCase()))
+                .setTitle(context.i18n("title", context.i18n("states." + musicManager.getRepeatState().toString().toLowerCase())))
+                .setFooter(context.i18n("footer", generateCommandTrigger(context.getMessage())))
+                .queue();
             return true;
         }
 
@@ -145,7 +129,7 @@ public class RepeatMusicQueueCommand extends Command {
                 return true;
             case "off":
             case "o":
-                musicManager.setRepeatState(GuildMusicManager.RepeatState.OFF);
+                musicManager.setRepeatState(GuildMusicManager.RepeatState.LOOPOFF);
                 context.makeSuccess(context.i18n("loopOff"))
                     .queue(message -> message.delete().queueAfter(5, TimeUnit.MINUTES, null, RestActionUtil.ignore));
                 return true;

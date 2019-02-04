@@ -268,7 +268,7 @@ public class TrackScheduler extends AudioEventWrapper {
         LavalinkManager.LavalinkManagerHolder.lavalink.closeConnection(context.getGuild());
 
         GuildMusicManager manager = AudioHandler.getDefaultAudioHandler().getGuildAudioPlayer(context.getGuild());
-        manager.setRepeatState(GuildMusicManager.RepeatState.OFF);
+        manager.setRepeatState(GuildMusicManager.RepeatState.LOOPOFF);
         manager.getPlayer().removeListener(this);
 
         if (LavalinkManager.LavalinkManagerHolder.lavalink.isEnabled()) {
