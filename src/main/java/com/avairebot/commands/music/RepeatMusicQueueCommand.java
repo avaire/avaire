@@ -61,10 +61,10 @@ public class RepeatMusicQueueCommand extends Command {
     @Override
     public List<String> getExampleUsage() {
         return Arrays.asList(
-            "`:command` Displays current repeat mode",
-            "`:command off` Turns off repeat",
-            "`:command one` Loops the currently playing song",
-            "`:command all` Loops the entire queue"
+            "`:command` - Displays current repeat mode",
+            "`:command off` - Turns off repeat",
+            "`:command one` - Loops the currently playing song",
+            "`:command all` - Loops the entire queue"
         );
     }
 
@@ -93,10 +93,11 @@ public class RepeatMusicQueueCommand extends Command {
         GuildMusicManager musicManager = AudioHandler.getDefaultAudioHandler().getGuildAudioPlayer(context.getGuild());
 
         if (args.length == 0) {
-            context.makeInfo(context.i18n(musicManager.getRepeatState().toString().toLowerCase()))
-                .setTitle(context.i18n("title", context.i18n("states." + musicManager.getRepeatState().toString().toLowerCase())))
+            context.makeInfo(context.i18n(musicManager.getRepeatState().getName()))
+                .setTitle(context.i18n("title", context.i18n("states." + musicManager.getRepeatState().getName())))
                 .setFooter(context.i18n("footer", generateCommandTrigger(context.getMessage())))
                 .queue();
+
             return true;
         }
 
@@ -107,6 +108,7 @@ public class RepeatMusicQueueCommand extends Command {
         if (!musicManager.canPreformSpecialAction(this, context, "loop queue")) {
             return false;
         }
+
         switch (args[0].toLowerCase()) {
             case "single":
             case "one":
@@ -117,23 +119,26 @@ public class RepeatMusicQueueCommand extends Command {
                     musicManager.getScheduler().getAudioTrackContainer()
                         .setMetadata(Constants.AUDIO_HAS_SENT_NOW_PLAYING_METADATA, true);
                 }
-                context.makeSuccess(context.i18n("single"))
-                    .queue(message -> message.delete().queueAfter(5, TimeUnit.MINUTES, null, RestActionUtil.ignore));
-                return true;
+                break;
+
             case "all":
             case "al":
             case "a":
                 musicManager.setRepeatState(GuildMusicManager.RepeatState.ALL);
-                context.makeSuccess(context.i18n("all"))
-                    .queue(message -> message.delete().queueAfter(5, TimeUnit.MINUTES, null, RestActionUtil.ignore));
-                return true;
+                break;
+
             case "off":
             case "o":
                 musicManager.setRepeatState(GuildMusicManager.RepeatState.LOOPOFF);
-                context.makeSuccess(context.i18n("loopOff"))
-                    .queue(message -> message.delete().queueAfter(5, TimeUnit.MINUTES, null, RestActionUtil.ignore));
-                return true;
+                break;
+
+            default:
+                return sendErrorMessage(context, "errors.invalidProperty", "repeat-state");
         }
-        return sendErrorMessage(context, context.i18n("invalidArguments"));
+
+        context.makeSuccess(context.i18n(musicManager.getRepeatState().getName()))
+            .queue(message -> message.delete().queueAfter(5, TimeUnit.MINUTES, null, RestActionUtil.ignore));
+
+        return true;
     }
 }

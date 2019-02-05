@@ -105,12 +105,12 @@ public class GuildMusicManager extends Evalable {
         return repeatState;
     }
 
-    public void setRepeatState(RepeatState newRepeatState) {
+    public void setRepeatState(RepeatState repeatState) {
         if (repeatState.equals(RepeatState.SINGLE) && scheduler.getAudioTrackContainer() != null) {
             scheduler.getAudioTrackContainer().removeMetadata(Constants.AUDIO_HAS_SENT_NOW_PLAYING_METADATA);
             scheduler.getQueue().forEach(container -> container.removeMetadata(Constants.AUDIO_HAS_SENT_NOW_PLAYING_METADATA));
         }
-        this.repeatState = newRepeatState;
+        this.repeatState = repeatState;
     }
 
     public boolean hasPlayedSongBefore() {
@@ -165,6 +165,11 @@ public class GuildMusicManager extends Evalable {
     }
 
     public enum RepeatState {
-        LOOPOFF, SINGLE, ALL
+
+        LOOPOFF, SINGLE, ALL;
+
+        public String getName() {
+            return super.toString().toLowerCase();
+        }
     }
 }
