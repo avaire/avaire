@@ -552,7 +552,7 @@ music:
     RepeatMusicQueueCommand:
         error: 'There is nothing to repeat, request music first with `{0}play`'
         title: 'Current repeat mode: {0}'
-        footer: 'Use \"{0} <repeat-mode>\" to set the repeat mode.'
+        footer: 'Use "{0} <repeat-mode>" to set the repeat mode.'
         states:
             single: 'Single'
             all: 'All'
