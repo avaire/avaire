@@ -29,7 +29,7 @@ import com.avairebot.contracts.commands.Command;
 import com.avairebot.contracts.commands.CommandContext;
 import com.avairebot.contracts.commands.CommandGroup;
 import com.avairebot.contracts.commands.CommandGroups;
-import com.avairebot.database.controllers.PlayerController;
+import com.avairebot.database.controllers.PurchaseController;
 import com.avairebot.database.transformers.PlayerTransformer;
 import com.avairebot.imagegen.RankBackgrounds;
 import com.avairebot.imagegen.renders.RankBackgroundRender;
@@ -44,7 +44,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -159,7 +158,7 @@ public class RankBackgroundCommand extends Command {
     }
 
     private boolean handleList(CommandMessage context, String[] args) {
-        PlayerTransformer player = getPlayerTransformer(context);
+        PlayerTransformer player = context.getPlayerTransformerWithForce(avaire);
         if (player == null) {
             return sendErrorMessage(context, "errors.errorOccurredWhileLoading", "player transformer");
         }
@@ -257,7 +256,7 @@ public class RankBackgroundCommand extends Command {
             return sendErrorMessage(context, "errors.invalidProperty", "background name", "background");
         }
 
-        PlayerTransformer player = getPlayerTransformer(context);
+        PlayerTransformer player = context.getPlayerTransformerWithForce(avaire);
         if (player == null) {
             return sendErrorMessage(context, "errors.errorOccurredWhileLoading", "player transformer");
         }
@@ -296,7 +295,7 @@ public class RankBackgroundCommand extends Command {
                 voteEntity.setVotePoints(votePoints - background.getCost());
             }
 
-            PlayerController.forgetCache(context.getAuthor().getIdLong());
+            PurchaseController.forgetCache(context.getAuthor().getIdLong());
         } catch (SQLException e) {
             log.error("Something went wrong while a use was trying to buy a background: {}", e.getMessage(), e);
 
@@ -317,7 +316,7 @@ public class RankBackgroundCommand extends Command {
             return sendErrorMessage(context, "errors.invalidProperty", "background name", "background");
         }
 
-        PlayerTransformer player = getPlayerTransformer(context);
+        PlayerTransformer player = context.getPlayerTransformerWithForce(avaire);
         if (player == null) {
             return sendErrorMessage(context, "errors.errorOccurredWhileLoading", "player transformer");
         }
@@ -333,9 +332,10 @@ public class RankBackgroundCommand extends Command {
 
         try {
             avaire.getDatabase().newQueryBuilder(Constants.VOTES_TABLE_NAME)
+                .where("user_id", context.getAuthor().getIdLong())
                 .update(statement -> statement.set("selected_bg", background.getId()));
 
-            PlayerController.forgetCache(context.getAuthor().getIdLong());
+            PurchaseController.forgetCache(context.getAuthor().getIdLong());
 
             context.makeSuccess(context.i18n("successfullyChangedBackground"))
                 .set("name", background.getName())
@@ -350,7 +350,7 @@ public class RankBackgroundCommand extends Command {
     }
 
     private boolean handleDisable(CommandMessage context) {
-        PlayerTransformer player = getPlayerTransformer(context);
+        PlayerTransformer player = context.getPlayerTransformerWithForce(avaire);
         if (player == null) {
             return sendErrorMessage(context, "errors.errorOccurredWhileLoading", "player transformer");
         }
@@ -358,9 +358,10 @@ public class RankBackgroundCommand extends Command {
         try {
             if (player.getPurchases().getSelectedPurchasesForType(RankBackgrounds.getDefaultBackground().getPurchaseType()) != null) {
                 avaire.getDatabase().newQueryBuilder(Constants.VOTES_TABLE_NAME)
+                    .where("user_id", context.getAuthor().getIdLong())
                     .update(statement -> statement.set("selected_bg", null));
 
-                PlayerController.forgetCache(context.getAuthor().getIdLong());
+                PurchaseController.forgetCache(context.getAuthor().getIdLong());
             }
 
             context.makeSuccess(context.i18n("disabledBackgrounds"))
@@ -372,18 +373,6 @@ public class RankBackgroundCommand extends Command {
         }
 
         return true;
-    }
-
-    @Nullable
-    private PlayerTransformer getPlayerTransformer(CommandMessage context) {
-        // We're checking for the player transformer here, if it is not null we'll return it
-        // right away, otherwise we'll try and get it from the player controller directly,
-        // we do this because the player transformer is only loaded before the context
-        // message if the leveling feature is also enabled.
-        if (context.getPlayerTransformer() != null) {
-            return context.getPlayerTransformer();
-        }
-        return PlayerController.fetchPlayer(avaire, context.getMessage(), context.getAuthor());
     }
 
     private String[] prepareArguments(String[] args) {

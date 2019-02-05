@@ -171,7 +171,7 @@ public class RankCommand extends Command {
                 levelBar += ((i * 2.5) < percentage) ? "\u2592" : "\u2591";
             }
 
-            PlayerTransformer playerTransformer = context.getPlayerTransformer();
+            PlayerTransformer playerTransformer = PlayerController.fetchPlayer(avaire, context.getMessage(), author);
             if (playerTransformer != null) {
                 Integer selectedBackgroundId = playerTransformer.getPurchases()
                     .getSelectedPurchasesForType(
@@ -262,14 +262,14 @@ public class RankCommand extends Command {
             context.getGuildTransformer(), level
         );
 
-        RankBackgroundRender render = new RankBackgroundRender(context.getAuthor())
+        RankBackgroundRender render = new RankBackgroundRender(author)
             .setBackground(background)
             .setCurrentXpInLevel(NumberUtil.formatNicely(experience - xpForCurrentLevel))
             .setTotalXpInLevel(NumberUtil.formatNicely(nextLevelXp - xpForCurrentLevel))
             .setGlobalExperience(NumberUtil.formatNicely(properties.getTotal()))
             .setServerExperience(NumberUtil.formatNicely(experience - zeroExperience - 100))
             .setLevel(NumberUtil.formatNicely(level))
-            .setRank(properties.getScore())
+            .setRank(properties.getScore().equalsIgnoreCase("Unranked") ? "???" : properties.getScore())
             .setPercentage(percentage);
 
         String attachmentName = I18n.format(
