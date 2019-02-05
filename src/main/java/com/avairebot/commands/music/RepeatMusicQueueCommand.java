@@ -29,6 +29,7 @@ import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.contracts.commands.CommandGroup;
 import com.avairebot.contracts.commands.CommandGroups;
+import com.avairebot.utilities.ComparatorUtil;
 import com.avairebot.utilities.RestActionUtil;
 
 import javax.annotation.Nonnull;
@@ -127,13 +128,11 @@ public class RepeatMusicQueueCommand extends Command {
                 musicManager.setRepeatState(GuildMusicManager.RepeatState.ALL);
                 break;
 
-            case "off":
-            case "o":
-                musicManager.setRepeatState(GuildMusicManager.RepeatState.LOOPOFF);
-                break;
-
             default:
-                return sendErrorMessage(context, "errors.invalidProperty", "repeat-state");
+                if (!ComparatorUtil.isFuzzyFalse(args[0])) {
+                    return sendErrorMessage(context, "errors.invalidProperty", "repeat-state");
+                }
+                musicManager.setRepeatState(GuildMusicManager.RepeatState.LOOPOFF);
         }
 
         context.makeSuccess(context.i18n("message"))
