@@ -554,7 +554,7 @@ music:
         title: 'Current repeat mode: {0}'
         footer: 'Use "{0} <repeat-mode>" to set the repeat mode.'
         states:
-            single: 'Single'
+            single: 'One'
             all: 'All'
             loopoff: 'Off'
         single: 'The player has been set to repeat the currently playing song.'
