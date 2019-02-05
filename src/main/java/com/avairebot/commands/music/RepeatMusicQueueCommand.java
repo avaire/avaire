@@ -61,7 +61,7 @@ public class RepeatMusicQueueCommand extends Command {
     @Override
     public List<String> getExampleUsage() {
         return Arrays.asList(
-            "`:command Displays current repeat mode",
+            "`:command` Displays current repeat mode",
             "`:command off` Turns off repeat",
             "`:command one` Loops the currently playing song",
             "`:command all` Loops the entire queue"
