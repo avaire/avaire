@@ -22,6 +22,7 @@
 package com.avairebot.audio;
 
 import com.avairebot.contracts.debug.Evalable;
+import com.avairebot.contracts.metadata.HasMetadata;
 import com.avairebot.utilities.NumberUtil;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import lavalink.client.player.IPlayer;
@@ -34,7 +35,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class AudioTrackContainer extends Evalable {
+public class AudioTrackContainer extends Evalable implements HasMetadata<String, Object> {
 
     private final AudioTrack audioTrack;
     private final User requester;
@@ -88,6 +89,7 @@ public class AudioTrackContainer extends Evalable {
         return NumberUtil.formatTime(getAudioTrack().getDuration() - player.getTrackPosition());
     }
 
+    @Override
     public void setMetadata(@Nonnull String key, @Nullable Object value) {
         if (metadata == null) {
             metadata = new HashMap<>();
@@ -100,6 +102,7 @@ public class AudioTrackContainer extends Evalable {
         }
     }
 
+    @Override
     public void removeMetadata(@Nonnull String key) {
         if (metadata != null) {
             metadata.remove(key);
@@ -107,10 +110,13 @@ public class AudioTrackContainer extends Evalable {
     }
 
     @Nullable
+    @Override
     public HashMap<String, Object> getMetadata() {
         return metadata;
     }
 
+    @Nullable
+    @Override
     public Object getMetadataFromKey(@Nonnull String key) {
         if (metadata == null) {
             return null;
@@ -118,7 +124,7 @@ public class AudioTrackContainer extends Evalable {
         return metadata.getOrDefault(key, null);
     }
 
-    @Nullable
+    @Override
     public boolean hasMetadataKey(@Nonnull String key) {
         return metadata != null && metadata.containsKey(key);
     }
