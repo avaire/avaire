@@ -93,7 +93,7 @@ public class RepeatMusicQueueCommand extends Command {
         GuildMusicManager musicManager = AudioHandler.getDefaultAudioHandler().getGuildAudioPlayer(context.getGuild());
 
         if (args.length == 0) {
-            context.makeInfo(context.i18n(musicManager.getRepeatState().getName()))
+            context.makeInfo(context.i18n("notes." + musicManager.getRepeatState().getName()))
                 .setTitle(context.i18n("title", context.i18n("states." + musicManager.getRepeatState().getName())))
                 .setFooter(context.i18n("footer", generateCommandTrigger(context.getMessage())))
                 .queue();
@@ -136,7 +136,9 @@ public class RepeatMusicQueueCommand extends Command {
                 return sendErrorMessage(context, "errors.invalidProperty", "repeat-state");
         }
 
-        context.makeSuccess(context.i18n(musicManager.getRepeatState().getName()))
+        context.makeSuccess(context.i18n("message"))
+            .set("note", context.i18n("notes." + musicManager.getRepeatState().getName()))
+            .set("state", context.i18n("states." + musicManager.getRepeatState().getName()))
             .queue(message -> message.delete().queueAfter(5, TimeUnit.MINUTES, null, RestActionUtil.ignore));
 
         return true;
