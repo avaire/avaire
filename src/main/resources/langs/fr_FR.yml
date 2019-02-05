@@ -11,31 +11,31 @@ errors:
     errorOccurredWhileLoading: "Une erreur est survenue lors du chargement de {0}, réessayer, si le problème persiste reportez le à l'un de mes développeurs sur le [serveur de support AvaIre](https://discord.gg/gt2FWER)."
 
 levelupMessages:
-    - "GG :user, you just reached **Level :level**"
-    - "Eyy :user, you just leveled up! You're now **Level :level**"
-    - "🌟 You just reached **Level :level** :user! Congrats 🌟"
-    - "You're on 🔥 :user, you've just reached **Level :level**"
-    - "Congratulations :user 🎉 You just leveled up! You're now **Level :level**"
+    - "GG :user, tu as atteinds le niveau **Level :level**"
+    - "Eyy :user, tu viens d'augmenter de niveau! Vous êtes maintenant niveau **Level :level**"
+    - "🌟 Tu as atteinds le niveau **Level :level** :user! Félicitations 🌟"
+    - "Tu es en 🔥 :user, vous venez d'atteindre le niveau **Level :level**"
+    - "Félicitations :user 🎉 Tu viens d'augmenter de niveau! Tu es maintenant niveau **Level :level**"
 
 levelupRoleMessages:
-    - "GG :user, you just reached **Level :level**, you now have the **:role** role"
-    - "Eyy :user, you just leveled up! You're now **Level :level**, have the **:role** role, you earned it."
-    - "Congratulations :user 🎉 You just leveled up! You're now **Level :level**, you have also earned yourself the **:role** role"
+    - "GG :user, tu as atteinds le niveau **Level :level**, tu as maintenant le rôle **:role** role"
+    - "Eyy :user, tu as augmenté de niveau! Tu es maintenant niveau **Level :level**, tu as le rôle **:role**, tu l'as mérité."
+    - "Félicitations :user 🎉  Tu as augmenté de niveau! Tu es maintenant niveau **Level :level**, tu as aussi gagner toi même le rôle **:role** role"
 
 administration:
     common:
-        invalidRole: ":user Invalid role, I couldn't find any role called **:role**"
+        invalidRole: ":user Rôle invalide, Je ne trouve pas de rôle appelé :role"
 
     channelModule:
-        invalidColorGiven: "Invalid color value given, the color must be a valid HEX value.\nYou can try this [random color picker](https://www.webpagefx.com/web-design/random-color-picker/) to try and get a random HEX color."
-        message: "The `:type` module message has been set to:\n\n```:message```\n\nYou can test the message by using the command again and mentioning a user.\n`:command <user>`"
+        invalidColorGiven: "Couleur donnée invalide, la couleur doit être une valeur valide HEX.\nTu peux essayer le [random color picker](https://www.webpagefx.com/web-design/random-color-picker/)"
+        message: "Le :type message module a été réglé sur:\n\n```:message```\n\n Tu peux tester le message en réutilisant la commande et mentionner un utilisateur. \n:command <user>"
 
     AddLevelRoleCommand:
-        noSlotsLeft: "The server doesn't have any more level role slots, you can remove existing level roles to free up slots."
-        invalidLevel: "Invalid level requirement given, the level requirement must be a positive number."
-        alreadyLevelRole: ":user The **:role** is already a level role, you can't use the same role twice."
-        alreadyARoleAtLevel: "There is already a role assigned to level **:level**, only one role can be given per level."
-        success: "Role **:role** role has been added to the level-up role list.\nThe server has `:slots` more level role slots available."
+        noSlotsLeft: "Le serveur n'as plus de slots de rôle de niveaux, tu peux supprimer les rôles de niveau existant pour libérer des slots."
+        invalidLevel: "Le niveau demandé n'est pas valide, il doit être un nombre positif."
+        alreadyLevelRole: ":user The rôle :role est déja un rôle de niveau, tu ne peux pas utiliser le même rôle deux."
+        alreadyARoleAtLevel: "Il y a déja un rôle assigné au niveau :level, seulement un rôle peut être assigner à un niveau."
+        success: "Le rôle :role a été ajouté à la liste.\nLe server a :slots slots encore disponible."
 
     AddReactionRoleCommand:
         emoteDoestBelongToServer: "The emote does not belong to this server, you can only use emotes from this server as reaction emotes."
