@@ -40,7 +40,7 @@ administration:
     AddReactionRoleCommand:
         emoteDoestBelongToServer: "L'émote n'appartient pas à ce serveur, tu peux utiliser seulement les emotes de ce serveur comme emotes de réaction."
         messageHasNoSlots: "Le message n'a plus de slots de rôle de réaction disponibles, vous pouvez supprimer les rôles de réaction existants pour libérer des slots, ou supprimer les messages de rôle de réaction pour ajouter le rôle à un nouveau message."
-        serverHasNoSlots: " Tu ne peux pas créer de nouveaux messages de rôle de réaction, le serveur n'a plus d'emplacements de messages de réaction, tu peux supprimer des messages de rôle de réaction existants pour libérer des emplacements, ou ajouter ton rôle de réaction à un message de réaction s'il y a des emplacements disponibles sur le message pour plusieurs rôles".
+        serverHasNoSlots: "Tu ne peux pas créer de nouveaux messages de rôle de réaction, le serveur n'a plus d'emplacements de messages de réaction, tu peux supprimer des messages de rôle de réaction existants pour libérer des emplacements, ou ajouter ton rôle de réaction à un message de réaction s'il y a des emplacements disponibles sur le message pour plusieurs rôles".
         success: "Le rôle :rôle a été enregistré comme rôle de réaction pour le :emote emote.\nLe message n'a `:roleSlots` plus d'emplacements de rôle de réaction disponibles pour le message, et `:messageSlots' des emplacements réaction-message disponible."
 
 AddSelfAssignableRoleCommand:
@@ -59,23 +59,23 @@ AddSelfAssignableRoleCommand:
         invalidCommand: "Commande donnée invalide, je ne connais pas de commande appelée `{0}`"
         invalidAlias: "Alias donné invalide, `{0}` n'est pas enregistré comme un alias."
         created: "L'alias `:alias` a été associé à `:command`\nLe serveur a `:slots` plus de slots d' alias disponibles."
-        deleted: "The `:alias` alias has been deleted successfully."
+        deleted: "L'alias `:alias` a été bien supprimé."
 
     AutoAssignRoleCommand:
         higherInTheHierarchy:
-            user: ":user The **:role** role is positioned higher in the hierarchy than any role you have, you can't add roles with a higher ranking than you have."
-            bot: ":user The **:role** role is positioned higher in the hierarchy, I can't give/remove this role from users."
-        enabled: ":user **Auto assign role** on user join has been **enabled** and set to  **:role**"
-        disabledNow: ":user **Auto assign role** on user join is now **disabled**."
-        disabled: ":user **Auto assign role** on user join is currently **disabled**."
-        status: ":user The **auto assign role** is currently set to **:role**"
+            user: "Le rôle **:rôle** est positionné plus haut dans la hiérarchie que le(s) rôle(s) que tu as, tu ne peux pas ajouter des rôles avec un rang supérieur au tien."
+            bot: "Le rôle **:role** est positionné plus haut dans la hiérarchie, je ne peux pas donner/supprimer ce rôle des utilisateurs."
+        enabled: ":user **Auto assigner un rôle**  **enabled** and set to **:role**"
+        disabledNow: ":user **Auto assigner un rôle** on user join is now **disabled**."
+        disabled: ":utilisateur **Auto assigner un rôle** à l'inscription de l'utilisateur est actuellement **désactivé**."
+        status: "L' **auto assignation automatique du rôle** est actuellement réglé sur **:rôle**."
 
     BanCommand:
-        mustMentionUser: "You must mention the user you want to ban."
-        higherRole: "You can't ban people with a higher, or the same role as yourself."
-        userHaveHigherRole: "I can't ban {0}, they have a higher role than me, if you want be to be able to ban the user, please readjust my role position to above {0} highest role."
-        success: "**:target** was permanently banned by :user for \":reason\""
-        failedToBan: "Failed to ban **:target** due to an error: :error"
+        mustMentionUser: "Tu dois mentionner l'utilisateur que tu veux bannir."
+        higherRole: "Tu ne peux pas bannir les gens qui ont un rôle supérieur ou le même rôle que toi."
+        userHaveHigherRole: "Je ne peux pas bannir {0}, il/elle a un rôle plus élevé que moi, si tu veux pouvoir le/la bannir, réajuste mon rôle à un rôle supérieur {0}, je te prie."
+        success: "**:target** a été définitivement banni par :user pour \":reason\""
+        failedToBan: "Échec du bannissement **:target** dû à une erreur: :erreur"
 
     CategoriesCommand:
         title: "Command Category Status for #{0}"
