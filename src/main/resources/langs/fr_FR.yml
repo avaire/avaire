@@ -38,27 +38,27 @@ administration:
         success: "Le rôle :role a été ajouté à la liste.\nLe server a :slots slots encore disponible."
 
     AddReactionRoleCommand:
-        emoteDoestBelongToServer: "The emote does not belong to this server, you can only use emotes from this server as reaction emotes."
-        messageHasNoSlots: "The message doesn't have anymore reaction role slots available, you can remove existing reaction-roles to free up slots, or delete reaction role messages to add the role to a new reaction role message."
-        serverHasNoSlots: "Can't create new reaction role messages, the server doesn't have anymore reaction messages slots, you can deleting existing reaction role messages to free up slots, or add your reaction role to a reaction message if there are available slots on the message for more roles."
-        success: "The :role role has been registered as an reaction role for the :emote emote.\nThe message has `:roleSlots` more reaction-role slots available for the message, and `:messageSlots` reaction-message slots available."
+        emoteDoestBelongToServer: "L'émote n'appartient pas à ce serveur, tu peux utiliser seulement les emotes de ce serveur comme emotes de réaction."
+        messageHasNoSlots: "Le message n'a plus de slots de rôle de réaction disponibles, vous pouvez supprimer les rôles de réaction existants pour libérer des slots, ou supprimer les messages de rôle de réaction pour ajouter le rôle à un nouveau message."
+        serverHasNoSlots: " Tu ne peux pas créer de nouveaux messages de rôle de réaction, le serveur n'a plus d'emplacements de messages de réaction, tu peux supprimer des messages de rôle de réaction existants pour libérer des emplacements, ou ajouter ton rôle de réaction à un message de réaction s'il y a des emplacements disponibles sur le message pour plusieurs rôles".
+        success: "Le rôle :rôle a été enregistré comme rôle de réaction pour le :emote emote.\nLe message n'a `:roleSlots` plus d'emplacements de rôle de réaction disponibles pour le message, et `:messageSlots' des emplacements réaction-message disponible."
 
-    AddSelfAssignableRoleCommand:
-        noSlotsLeft: "The server doesn't have any more self-assignable role slots, you can remove existing self-assignable roles to free up slots."
-        success: "Role **:role** role has been added to the self-assignable list.\nThe server has `:slots` more self-assignable roles slots available."
-
+AddSelfAssignableRoleCommand:
+        noSlotsLeft: "Le serveur n'a plus d'emplacements de rôle auto-assignables, tu peux supprimer les rôles auto-assignables existants pour libérer des emplacements."
+        success: "Le rôle **:rôle** a été ajouté à la liste des rôles auto-assignables. Le serveur a `:slots' plus de slots de rôles auto-assignables disponibles."
+    
     AiCommand:
-        message: "The `Artificial Intelligence` module has been **:status** for the :channel channel."
-        status:
-            enabled: "Enabled"
-            disabled: "Disabled"
+        message: "Le module Artificial Intelligence` a été **:status** pour le :channel channel."
+       status:
+            activée: "Activé"
+            désactivé: "Désactivé"
 
     AliasCommand:
-        noSlotsLeft: "The server doesn't have any more alias slots, you can delete existing aliases to free up slots."
-        alreadyExists: "There is already a custom alias called `{0}`"
-        invalidCommand: "Invalid command given, I don't know of any command called `{0}`"
-        invalidAlias: "Invalid alias given, `{0}` is not registered as an alias."
-        created: "The `:alias` alias has been linked to `:command`\nThe server has `:slots` more aliases slots available."
+        noSlotsLeft: "Le serveur n'a plus de slots d'alias, vous pouvez supprimer des alias existants pour libérer des slots."
+        alreadyExists: "Il y a déjà un alias appelé `{0}`"
+        invalidCommand: "Commande donnée invalide, je ne connais pas de commande appelée `{0}`"
+        invalidAlias: "Alias donné invalide, `{0}` n'est pas enregistré comme un alias."
+        created: "L'alias `:alias` a été associé à `:command`\nLe serveur a `:slots` plus de slots d' alias disponibles."
         deleted: "The `:alias` alias has been deleted successfully."
 
     AutoAssignRoleCommand:
