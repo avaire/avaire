@@ -45,7 +45,7 @@ administration:
 
 AddSelfAssignableRoleCommand:
         noSlotsLeft: "Le serveur n'a plus d'emplacements de rôle auto-assignables, tu peux supprimer les rôles auto-assignables existants pour libérer des emplacements."
-        success: "Le rôle **:rôle** a été ajouté à la liste des rôles auto-assignables. Le serveur a `:slots' plus de slots de rôles auto-assignables disponibles."
+        success: "Le rôle **:role** a été ajouté à la liste des rôles auto-assignables. Le serveur a `:slots' plus de slots de rôles auto-assignables disponibles."
     
     AiCommand:
         message: "Le module Artificial Intelligence` a été **:status** pour le :channel channel."
@@ -63,19 +63,19 @@ AddSelfAssignableRoleCommand:
 
     AutoAssignRoleCommand:
         higherInTheHierarchy:
-            user: "Le rôle **:rôle** est positionné plus haut dans la hiérarchie que le(s) rôle(s) que tu as, tu ne peux pas ajouter des rôles avec un rang supérieur au tien."
+            user: "Le rôle **:role** est positionné plus haut dans la hiérarchie que le(s) rôle(s) que tu as, tu ne peux pas ajouter des rôles avec un rang supérieur au tien."
             bot: "Le rôle **:role** est positionné plus haut dans la hiérarchie, je ne peux pas donner/supprimer ce rôle des utilisateurs."
         enabled: ":user **Auto assigner un rôle**  **enabled** and set to **:role**"
         disabledNow: ":user **Auto assigner un rôle** on user join is now **disabled**."
         disabled: ":utilisateur **Auto assigner un rôle** à l'inscription de l'utilisateur est actuellement **désactivé**."
-        status: "L' **auto assignation automatique du rôle** est actuellement réglé sur **:rôle**."
+        status: "L' **auto assignation automatique du rôle** est actuellement réglé sur **:role**."
 
     BanCommand:
         mustMentionUser: "Tu dois mentionner l'utilisateur que tu veux bannir."
         higherRole: "Tu ne peux pas bannir les gens qui ont un rôle supérieur ou le même rôle que toi."
         userHaveHigherRole: "Je ne peux pas bannir {0}, il/elle a un rôle plus élevé que moi, si tu veux pouvoir le/la bannir, réajuste mon rôle à un rôle supérieur {0}, je te prie."
         success: "**:target** a été définitivement banni par :user pour \":reason\""
-        failedToBan: "Échec du bannissement **:target** dû à une erreur: :erreur"
+        failedToBan: "Échec du bannissement **:target** dû à une erreur: :error"
 
     CategoriesCommand:
         title: "Command Category Status for #{0}"
