@@ -22,6 +22,7 @@
 package com.avairebot.audio;
 
 import com.avairebot.AvaIre;
+import com.avairebot.Constants;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.contracts.debug.Evalable;
@@ -48,9 +49,9 @@ public class GuildMusicManager extends Evalable {
 
     private boolean hasSetVolume;
     private boolean hasPlayedSongBefore;
-    private boolean repeatQueue;
     private int defaultVolume;
     private CommandMessage lastActiveMessage = null;
+    private RepeatState repeatState = RepeatState.LOOPOFF;
 
     public GuildMusicManager(AvaIre avaire, Guild guild) {
         this.avaire = avaire;
@@ -100,12 +101,16 @@ public class GuildMusicManager extends Evalable {
         return scheduler;
     }
 
-    public boolean isRepeatQueue() {
-        return repeatQueue;
+    public RepeatState getRepeatState() {
+        return repeatState;
     }
 
-    public void setRepeatQueue(boolean repeatQueue) {
-        this.repeatQueue = repeatQueue;
+    public void setRepeatState(RepeatState repeatState) {
+        if (repeatState.equals(RepeatState.SINGLE) && scheduler.getAudioTrackContainer() != null) {
+            scheduler.getAudioTrackContainer().removeMetadata(Constants.AUDIO_HAS_SENT_NOW_PLAYING_METADATA);
+            scheduler.getQueue().forEach(container -> container.removeMetadata(Constants.AUDIO_HAS_SENT_NOW_PLAYING_METADATA));
+        }
+        this.repeatState = repeatState;
     }
 
     public boolean hasPlayedSongBefore() {
@@ -157,5 +162,14 @@ public class GuildMusicManager extends Evalable {
 
     AudioPlayerSendHandler getSendHandler() {
         return new AudioPlayerSendHandler((LavaplayerPlayerWrapper) player);
+    }
+
+    public enum RepeatState {
+
+        LOOPOFF, SINGLE, ALL;
+
+        public String getName() {
+            return super.toString().toLowerCase();
+        }
     }
 }

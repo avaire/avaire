@@ -555,10 +555,18 @@ music:
         successMultipleNote: "\nE altri **{0}** brani sono stati rimossi dalla coda."
 
     RepeatMusicQueueCommand:
-        error: 'Nulla da ripetere, richiedi prima musica con `{0}play`'
-        success: 'La ripetizione della coda musicale è stata impostata su `:status`.'
-        enabled: 'ON'
-        disabled: 'OFF'
+        error: 'There is nothing to repeat, request music first with `{0}play`'
+        title: 'Current repeat mode: {0}'
+        message: "The music player repeat status have been successfully changed to **:state**, this means:\n\n:note"
+        footer: 'Use "{0} <repeat-mode>" to set the repeat mode.'
+        states:
+            single: 'One'
+            all: 'All'
+            loopoff: 'Off'
+        notes:
+            single: 'The music player will repeat the song that is currently playing without going to the next song in the queue.\n**Note:** This also mutes "Now Playing" messages so the chat is not spammed with the same song over and over again.'
+            all: 'The music player will repeat every song in the queue, after a song finishes playing it will be re-added to the end of the queue automatically.'
+            loopoff: 'The music player will not loop, when a song finishes playing it will get removed from the queue and the next track will begin playing.'
 
     ResumeCommand:
         error: 'Nulla da riprendere, richiedi prima musica con `{0}play`'
