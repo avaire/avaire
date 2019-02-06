@@ -108,7 +108,7 @@ public class RankBackgroundCommand extends Command {
 
     @Override
     public List<String> getTriggers() {
-        return Arrays.asList("backgrounds", "rankbg", "levelbg");
+        return Arrays.asList("backgrounds", "rankbg", "levelbg", "bg");
     }
 
     @Override
