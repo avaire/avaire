@@ -126,12 +126,13 @@ CommandCategories:
         notSelfAssignablr:  ":role invalide de l'utilisateur, :rôle n'est pas un rôle auto-assignable."
         roleIsHigherInTheHierarchy: ":user , Le rôle est plus élevé dans la hiérarchie des rôles, je ne peux pas donner/supprimer le rôle :role à des personnes."
         message:  ":user Tu as maintenant le rôle :rôle!"
+
     IAmNotCommand:
         notSelfAssignable: ":role invalide de l'utilisateur, :rôle n'est pas un rôle auto-assignable."
         roleIsHigherInTheHierarchy: ":utilisateur Le rôle est plus élevé dans la hiérarchie des rôles, je ne peux pas donner/supprimer le rôle :role à des personnes."
         message : ":user Tu n'as plus le rôle :rôle!"
-KickCommand:
 
+    KickCommand:
         mustMentionUser: "Tu dois mentionner l'utilisateur que tu veux expulser."
         higherOrSameRole: "Tu ne peux pas expulser des gens avec un rôle plus élevé, ou ayant le même rôle que toi"
         cantKickUser: "I can't kick {0}, they have a higher role than me, if you want be to be able to kick the user, please readjust my role position to above {0} highest role."
