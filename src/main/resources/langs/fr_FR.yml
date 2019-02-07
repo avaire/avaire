@@ -49,7 +49,7 @@ AddSelfAssignableRoleCommand:
     
     AiCommand:
         message: "Le module Artificial Intelligence` a été **:status** pour le :channel channel."
-       status:
+        status:
             activée: "Activé"
             désactivé: "Désactivé"
 
@@ -77,16 +77,16 @@ AddSelfAssignableRoleCommand:
         success: "**:target** a été définitivement banni par :user pour \":reason\""
         failedToBan: "Échec du bannissement **:target** dû à une erreur: :error"
 
-    CategoriesCommand:
-        title: "Command Category Status for #{0}"
-        status: ":emoteEnabled Enabled   :emoteDisabledInChannel Disabled in Channel   :emoteDisabledGlobally Disabled Globally"
-
+CommandCategories:
+                title: "Statut de la catégorie pour #{0}"
+                status: "emoteEnabled Enabled :emoteDisabledInChannel Disabled in Channel :emoteDisabledGlobally DisabledGlobally Disabled"
+    
     ChangePrefixCommand:
-        missingArgument: "Missing argument `category`, you must specify the command category you want to change/reset the prefix for."
-        invalidCategory: "Invalid `category` given, there are no command categories that are called, or starts with `{0}`"
-        invalidPrefix: "Invalid command prefix given, `{0}` is not a valid command prefix, all prefixes must **NOT** contain spaces and be between 1 and 16 characters long."
+        missingArgument: "Caractère manquant `category`, vous devez spécifier la catégorie de commande pour laquelle vous voulez changer/réinitialiser le préfixe."
+        invalidCategory: "Catégorie `category` donnée invalide, il n'y a pas de catégories de commandes qui sont appelées, ou commence par `{0}``."
+        invalidPrefix: "Préfixe de commande donné invalide, `{0}` n'est pas un préfixe valide, tous les préfixes ne doivent **PAS** contenir d'espace et avoir entre 1 et 16 caractères."
         update:
-            global: "All commands in every command category now uses the `:prefix` prefix."
+            global: "Toutes les commandes de chaque catégorie utilisent maintenant le préfixe `:prefix`".
             category: "Toutes les commandes de la catégorie `:category` utilisent maintenant le préfixe `:prefix`."
         reset:
             global: "Toutes les commandes de chaque catégorie ont été réinitialisées pour utiliser le préfixe `:prefix`".
