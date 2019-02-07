@@ -123,52 +123,53 @@ CommandCategories:
             normal: "Envoyer des messages d'au revoir par des messages normaux."
 
     IAmCommand:
-        notSelfAssignablr:  ":role invalide de l'utilisateur, :rôle n'est pas un rôle auto-assignable."
+        notSelfAssignablr: ":role invalide de l'utilisateur, :role n'est pas un rôle auto-assignable."
         roleIsHigherInTheHierarchy: ":user , Le rôle est plus élevé dans la hiérarchie des rôles, je ne peux pas donner/supprimer le rôle :role à des personnes."
-        message:  ":user Tu as maintenant le rôle :rôle!"
+        message: ":user Tu as maintenant le rôle :role!"
 
     IAmNotCommand:
-        notSelfAssignable: ":role invalide de l'utilisateur, :rôle n'est pas un rôle auto-assignable."
+        notSelfAssignable: ":role invalide de l'utilisateur, :role n'est pas un rôle auto-assignable."
         roleIsHigherInTheHierarchy: ":utilisateur Le rôle est plus élevé dans la hiérarchie des rôles, je ne peux pas donner/supprimer le rôle :role à des personnes."
-        message : ":user Tu n'as plus le rôle :rôle!"
+        message: ":user Tu n'as plus le rôle :role!"
 
     KickCommand:
         mustMentionUser: "Tu dois mentionner l'utilisateur que tu veux expulser."
         higherOrSameRole: "Tu ne peux pas expulser des gens avec un rôle plus élevé, ou ayant le même rôle que toi"
-        cantKickUser: "I can't kick {0}, they have a higher role than me, if you want be to be able to kick the user, please readjust my role position to above {0} highest role."
+        cantKickUser: "Je ne peux pas expulser {0}, il/elle a un rôle plus élevé que moi, si vous voulez pouvoir expulser l'utilisateur, veuillez réajuster ma position de rôle au dessus de {0}."
         success: "**:target** was kicked by :user for \":reason\""
-        error: "Failed to kick **:target** due to an error: :error"
-
+        error: "Expulsion échouée **:target** dû à une erreur : :error"
+    
     LanguageCommand:
-        invalidLanguageCode: "Invalid language code given, `{0}` is not a valid language code, or it is not yet supported!"
-        changed: "The servers language has been successfully been updated to use the :name language!"
-        note: "AvaIre supports several user-contributed languages that you can select with this command. Translations may not be 100% accurate or complete.\nTo select a language use `{0} <code>`"
-
+        invalidLanguageCode:  "Code de langue invalide donné, `{0}` n'est pas un code de langue valide, ou il n'est pas encore supporté !"
+        changed: "La langue du serveur a été mise à jour avec succès pour utiliser la langue :name !"
+        note: "AvaIre supporte plusieurs langues fournies par l'utilisateur que tu peux sélectionner avec cette commande.  Les traductions peuvent ne pas être 100% exactes ou complètes. Pour sélectionner une langue, utilisez `{0}.  <code>`"
+    
     LevelAlertsCommand:
-        message: "`Levels up alerts` has been `:status` for the server.:note"
-        note: "\nAll level up messages will be logged into the <#{0}> channel."
-        status:
-            enabled: "Enabled"
-            disabled: "Disabled"
 
-    LevelCommand:
-        message: "`Levels & Experience` has been `:status` for the server.:note"
-        note: "\nLevel alerts are current `{0}`, you can toggle them on or off with `{1}levelalerts`"
+        message: "Les alertes de niveau supérieur" a été":status" pour le serveur. "Note"
+        note: "\nTous les messages de niveau supérieur seront enregistrés dans le canal <##{0}>."
         status:
-            enabled: "Enabled"
-            disabled: "Disabled"
-
+            enabled:  "Activé"
+            disabled:  "Désactivé"
+  
+     LevelCommand:
+        message:  "Niveaux & Expérience" a été `:status` pour le serveur.:note"
+        note: "\nLes alertes de niveau sont actuellement `{0}`, vous pouvez les activer ou les désactiver avec `{1}levelalerts`".
+        status:
+            enabled:  "Activé"
+            disabled: "Désactivé"
     LevelHierarchyCommand:
-        invalidTypeGiven: "Invalid type given, to toggle level hierarchy on or off, you must use either `on` or `off`."
-        message: "Level up hierarchy has been `:status` for the server."
-        statusMessage: "Level up hierarchy is currently `:status`, you can toggle it on or off with `:command`"
-        status:
-            enabled: "Enabled"
-            disabled: "Disabled"
 
+        invalidTypeGiven:  "Type invalide donné, pour activer ou désactiver la hiérarchie des niveaux, vous devez utiliser "on" ou "off"."
+        message:  "Le niveau supérieur de la hiérarchie a été `:status` pour ce serveur."
+        statusMessage:  "La hiérarchie de niveau supérieur est actuellement `:status`, vous pouvez l'activer ou la désactiver avec `:command`".
+        status:
+            enabled:  "Activé"
+            disabled:  "Désactivéé"
+    
     LevelModifierCommand:
-        invalidNumberGiven: "Invalid modifier given, the modifier much be a positive percentage between `0.01%` and `500%`"
-        resetToDefault: "The level modifier has been reset back to using the default **:modifier** modifier."
+        invalidNumberGiven:  "Modificateur donné invalide, le modificateur doit être un pourcentage positif entre `0,01%`et `500%`".
+        resetToDefault: "Le modificateur de niveau a été réinitialisé en utilisant le modificateur par défaut **:modifier**".
         changedTo: "The level and experience modifier have been change to **:modifier**."
         statusMessage: "The server is currently using a **:modifier** modifier for levels and experience.\n\n**Required XP to reach some levels**\n"
         level: "Level {0}"
