@@ -41,7 +41,7 @@ administration:
         emoteDoestBelongToServer: "Die emoticon is niet van deze server, je kan alleen emoticons van deze server gebruiken als reactie emoticons."
         messageHasNoSlots: "Het bericht heeft geen reactie plekken meer over, je kan bestaande reactio rollen verwijderen om meer ruimte vrij te maken, of verwijder reactie rol berichten om de rol toe te voegen aan meer reactie rol berichten."
         serverHasNoSlots: "Kan geen nieuw reactie rol bericht maken, de server heeft niet meer plek voor reactie rol berichten, je kan bestaande reactie rol berichten verwijderen voor meer ruimte, of voeg je reactie rol toe aan een reactie bericht als hier ruimte voor is."
-        success: "De :role rol is geregistreed als een reactie rol voor de :emote emote.\Het bericht heeft nog `:roleSlots` reactie rol plekken over voor dit bericht, en nog `:messageSlots` reactie berichten over."
+        success: "De :role rol is geregistreed als een reactie rol voor de :emote emote.\nHet bericht heeft nog `:roleSlots` reactie rol plekken over voor dit bericht, en nog `:messageSlots` reactie berichten over."
 
     AddSelfAssignableRoleCommand:
         noSlotsLeft: "De server heeft geen ruimte meer om zelf uitgeefbare rollen te maken, je kan een paar bestaande uitgeefbare rollen verwijderen voor meer ruimte."
@@ -386,6 +386,11 @@ fun:
         invalidValueGiven: 'Ongeldige `{0}` waarde gegeven, `{1}` moet een nummer zijn!'
         rolledNumber: ':user rolde **:number** van :min - :max'
 
+    SayCommand:
+        userMissingPermissions: "You can't use the this command for the {0} channel, you must have the message write and message manage permissions for the channel to use the command for the channel."
+        botMissingPermissions: "The say command can't be used for the {0} channel, I need both the message write and message manage permissions for the channel to successfully run the command."
+        success: "Your message have been sent to the :name channel."
+
     UndertaleTextBoxCommand:
         noArgumentsGiven: "Er mist een argument, je moet of een `list` geven om een lijst van karakters te kunnen zien waar je uit kan kiezen, of om een foto te genereren, `character` of een geldige foto `url` om de foto voor te maken."
         failedToGenerateImage: "Gefaald met het genereren van de foto, weet je zeker dat je een geldige foto url of geldig karakter gekozen hebt?"
@@ -393,7 +398,7 @@ fun:
 
 help:
     HelpCommand:
-        listOfCommands: ':page_with_curl: **Lijst met commando's**'
+        listOfCommands: ":page_with_curl: **Lijst met commando's**"
         commandNote: '**Typ `:help <command>` om de hulp te zien voor dat commando.**\Voorbeeld: `:help :command`'
         categoriesNote: ':information_source: Typ `:help <category>` om een lijst met commandos te zien van deze categorie.\nExample: `:help {0}` or `:help {1}`'
         categoriesTitle: ':scroll: Commando categorieën'
@@ -542,18 +547,26 @@ music:
         error: 'Argument `song id` mist, je moet de ID geven van het nummer die je wilt verwijderen uit de wachtrijk.'
         failedToRemoveSong: 'Er ging iets fout, gefaald met het verwijderen van nummer op plaats `:index`'
         tooHighNumberGiven: 'Er zijn maar `{0}` nummers in de wachtrij, probeer je nummer een beetje te verlagen.'
-        invalidRange: 'Ongeldige reeks gegeven, geef een reeks van ID's in een start tot eind format, bijvoorbeeld `3-6`.'
+        invalidRange: "Ongeldige reeks gegeven, geef een reeks van ID's in een start tot eind format, bijvoorbeeld `3-6`."
         mustBePositiveNumber: 'Het `song id` moet een positief nummer zijn.'
         nothingToRemove: 'Niks om te verwijderen, vraag eerst muziek aan met `{0}play`'
         success: ':song is succesvol verwijderd van de wachtrij.'
         successMultiple: 'Nummers van `:start` tot `:end` zijn succesvol verwijderd van de wachtrij.\n:tracks'
-        successMultipleNote: "\En **{0}** meer nummers zijn succesvol verwijderd van de wacthrij."
+        successMultipleNote: "\nEn **{0}** meer nummers zijn succesvol verwijderd van de wacthrij."
 
     RepeatMusicQueueCommand:
-        error: 'Er is niks om te herhalen, vraag eerst een nummer aan met `{0}play`'
-        success: 'Wacthrij herhaling is `:status` gezet.'
-        enabled: 'Aan'
-        disabled: 'Uit'
+        error: 'There is nothing to repeat, request music first with `{0}play`'
+        title: 'Current repeat mode: {0}'
+        message: "The music player repeat status have been successfully changed to **:state**, this means:\n\n:note"
+        footer: 'Use "{0} <repeat-mode>" to set the repeat mode.'
+        states:
+            single: 'One'
+            all: 'All'
+            loopoff: 'Off'
+        notes:
+            single: 'The music player will repeat the song that is currently playing without going to the next song in the queue.\n**Note:** This also mutes "Now Playing" messages so the chat is not spammed with the same song over and over again.'
+            all: 'The music player will repeat every song in the queue, after a song finishes playing it will be re-added to the end of the queue automatically.'
+            loopoff: 'The music player will not loop, when a song finishes playing it will get removed from the queue and the next track will begin playing.'
 
     ResumeCommand:
         error: 'Niks om te hervatten, vraag eerst een nummer aan met `{0}play`'
@@ -600,7 +613,7 @@ music:
     VoiceFixCommand:
         message: "**Omwisselen naar naar :swap regio:** {0}\n**Terug wisselen naar :original region:** {1}"
         starting: "Omwissel process beginnen...\n\n"
-        finished: "\n\Klaar! Muziek hoort nu weer te werken!"
+        finished: "\n\nKlaar! Muziek hoort nu weer te werken!"
         error: "Gefaald met het omwisselen van process, error: {0}"
 
     VolumeCommand:
@@ -713,6 +726,25 @@ utility:
             10000: 'dit is niet logisch :thinking: #BlameAlexis'
             other: 'scheld alexis uit voor me. :dizzy_face:'
 
+    RankBackgroundCommand:
+        canBeUnlocked: "Rank backgrounds can be unlocked using **[Vote Points](https://discordbots.org/bot/avaire)**,\nyou'll get **1 point** each time you vote for the bot."
+        listTitle: "Rank Backgrounds ({0})"
+        youHaveVotePoints: "You have {0} vote points."
+        exampleTitle: "{0} Example"
+        exampleFooter: "{0} costs {1} vote points"
+        alreadyOwnsBackground: "You already own the **:name** background!"
+        doesntHaveEnoughPoints: "You don't have enough vote points to buy this background, the background costs `{0}`, and you have `{1}` vote points."
+        boughtBackgroundSuccessfully: "Congratulation! You now own the **:name** background!\nYou can use the `:command` command to use the background."
+        youDontOwnThisBackground: "You don't own the **:name** background, however you can buy it for **:cost** Vote Points!"
+        successfullyChangedBackground: "You have successfully changed to use the **:name** background."
+        disabledBackgrounds: "Rank backgrounds have successfully been disabled, you are now using embedded messages for rank commands again."
+        buyNotes:
+            alreadyOwns: "**{0}**\n- _You already own this background._"
+            doesntOwns: "**{0}**\n - Costs {1} vote points."
+        failedToSendExampleMessage: "Something went wrong while trying to send the example image for the {0} background, error: {1}."
+        failedToBuyTheBackground: "Something went wrong while buying the background, error: {0}"
+        failedToSetBackground: "Failed to set the background due to a database error, try again later, if this error continues to appear, please contact one of my developers."
+
     RankCommand:
         botsCannotReceiveXp: "Bots kunnen geen exp ontvangen en kunnen dus geen ranking hebben, probeer het opnieuw met een gebruiker."
         unranked: 'Unranked'
@@ -770,7 +802,7 @@ utility:
             database: 'DB Queries uitgevoerd'
             messages: 'Berichten ontvangen'
             shard: 'Shard'
-            commands: 'Commando's uitgevoerd
+            commands: "Commando's uitgevoerd"
             memory: 'Geheugen gebruik'
             uptime: 'Uptime'
             members: 'Leden'
