@@ -114,27 +114,26 @@ CommandCategories:
     GoodbyeMessageCommand:
         moduleMustBeEnabled: "The `goodbye` module must be enabled to use this command, you can enable the `goodbye` module by using the `{0}` command."
         message: "The embed option for goodbye messages has been **:status**\n:note"
-        changedToDefault: "The `Goodbye` module message has been set back to the default."
+        changedToDefault: "Le message du moduleGoodbye` par défaut a été remis."
         status:
-            enabled: "enabled"
-            disabled: "disabled"
+            enabled:  "Activé"
+            disabled:  "Désactivé"
         note:
-            embed: "Goodbye messages will now be sent using embedded messages with the color: {0}"
-            normal: "Now sending goodbye messages through normal messages."
+            embed: "Les messages d'au revoir seront désormais envoyés en utilisant les messages avec la couleur : {0}"
+            normal: "Envoyer des messages d'au revoir par des messages normaux."
 
     IAmCommand:
-        notSelfAssignable: ":user Invalid role, **:role** is not a self-assignable role."
-        roleIsHigherInTheHierarchy: ":user The role is higher in the role hierarchy, I can't give/remove the **:role** role from anyone."
-        message: ":user You now have the **:role** role!"
-
+        notSelfAssignablr:  ":role invalide de l'utilisateur, :rôle n'est pas un rôle auto-assignable."
+        roleIsHigherInTheHierarchy: ":user , Le rôle est plus élevé dans la hiérarchie des rôles, je ne peux pas donner/supprimer le rôle :role à des personnes."
+        message:  ":user Tu as maintenant le rôle :rôle!"
     IAmNotCommand:
-        notSelfAssignable: ":user Invalid role, **:role** is not a self-assignable role."
-        roleIsHigherInTheHierarchy: ":user The role is higher in the role hierarchy, I can't give/remove the **:role** role from anyone."
-        message: ":user You no longer have the **:role** role!"
+        notSelfAssignable: ":role invalide de l'utilisateur, :rôle n'est pas un rôle auto-assignable."
+        roleIsHigherInTheHierarchy: ":utilisateur Le rôle est plus élevé dans la hiérarchie des rôles, je ne peux pas donner/supprimer le rôle :role à des personnes."
+        message : ":user Tu n'as plus le rôle :rôle!"
+KickCommand:
 
-    KickCommand:
-        mustMentionUser: "You must mention the user you want to kick."
-        higherOrSameRole: "You can't kick people with a higher, or the same role as yourself."
+        mustMentionUser: "Tu dois mentionner l'utilisateur que tu veux expulser."
+        higherOrSameRole: "Tu ne peux pas expulser des gens avec un rôle plus élevé, ou ayant le même rôle que toi"
         cantKickUser: "I can't kick {0}, they have a higher role than me, if you want be to be able to kick the user, please readjust my role position to above {0} highest role."
         success: "**:target** was kicked by :user for \":reason\""
         error: "Failed to kick **:target** due to an error: :error"
