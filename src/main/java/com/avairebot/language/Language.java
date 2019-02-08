@@ -39,7 +39,8 @@ public enum Language {
     NO_NB("no", "NB", "Norsk", "Norwegian"),
     EN_PT("en", "PT", "Pirate", "Pirate English", "arrr"),
     RU_RU("ru", "RU", "Russian", "Russian"),
-    IT_IT("it", "IT", "Italiano", "Italian");
+    IT_IT("it", "IT", "Italiano", "Italian"),
+    NL_NL("nl", "NL", "Nederlands", "Dutch");
 
     private final String code;
     private final String nativeName;
