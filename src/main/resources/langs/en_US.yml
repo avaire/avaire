@@ -35,7 +35,7 @@ administration:
         invalidLevel: "Invalid level requirement given, the level requirement must be a positive number."
         alreadyLevelRole: ":user The **:role** is already a level role, you can't use the same role twice."
         alreadyARoleAtLevel: "There is already a role assigned to level **:level**, only one role can be given per level."
-        success: "Role **:role** role has been added to the level-up role list.\nThe server has `:slots` more level role slots available."
+        success: "The **:role** role has been added to the level-up role list.\nThe server has `:slots` more level role slots available."
 
     AddReactionRoleCommand:
         emoteDoestBelongToServer: "The emote does not belong to this server, you can only use emotes from this server as reaction emotes."
@@ -45,7 +45,7 @@ administration:
 
     AddSelfAssignableRoleCommand:
         noSlotsLeft: "The server doesn't have any more self-assignable role slots, you can remove existing self-assignable roles to free up slots."
-        success: "Role **:role** role has been added to the self-assignable list.\nThe server has `:slots` more self-assignable roles slots available."
+        success: "The **:role** role has been added to the self-assignable list.\nThe server has `:slots` more self-assignable roles slots available."
 
     AiCommand:
         message: "The `Artificial Intelligence` module has been **:status** for the :channel channel."
@@ -73,7 +73,7 @@ administration:
     BanCommand:
         mustMentionUser: "You must mention the user you want to ban."
         higherRole: "You can't ban people with a higher, or the same role as yourself."
-        userHaveHigherRole: "I can't ban {0}, they have a higher role than me, if you want be to be able to ban the user, please readjust my role position to above {0} highest role."
+        userHaveHigherRole: "I can't ban {0}, they have a higher role than me, if you want me to be able to ban the user, please readjust my role position to above {0} highest role."
         success: "**:target** was permanently banned by :user for \":reason\""
         failedToBan: "Failed to ban **:target** due to an error: :error"
 
@@ -86,18 +86,18 @@ administration:
         invalidCategory: "Invalid `category` given, there are no command categories that are called, or starts with `{0}`"
         invalidPrefix: "Invalid command prefix given, `{0}` is not a valid command prefix, all prefixes must **NOT** contain spaces and be between 1 and 16 characters long."
         update:
-            global: "All commands in every command category now uses the `:prefix` prefix."
-            category: "All commands in the `:category` command category now uses the `:prefix` prefix."
+            global: "All commands in every command category now use the `:prefix` prefix."
+            category: "All commands in the `:category` command category now use the `:prefix` prefix."
         reset:
-            global: "All commands in every command category has been reset to use the `:prefix` prefix."
-            category: "All commands in the `:category` command category has been reset to use the `:prefix` prefix."
+            global: "All commands in every command category have been reset to use the `:prefix` prefix."
+            category: "All commands in the `:category` command category have been reset to use the `:prefix` prefix."
 
     ChannelLevelCommand:
         invalidChannel: "Invalid channel given, the channel must be a valid text channel."
         cantTalkInChannel: "I can't talk in the {0} channel, so no users will be rewarded any XP for talking in the channel, if you want me to give users XP, please change my permission level for the channel so I can send messages in the channel."
         noChannelsWithRewardsDisabled: "There are currently no channels with the level rewards disabled, you can add one by using the `{0} <channel>` command"
         failedToUpdate: "Failed to save the changes to the database, please try again, if the issue persists, please contact one of my developers."
-        listChannels: "All the channels mentioned below currently has their level rewards turned off, any channel not on this list is unaffected.\n\n:channels"
+        listChannels: "All the channels mentioned below currently have their level rewards turned off, any channel not on this list is unaffected.\n\n:channels"
         listChannelsTitle: "Channels with their Level Rewards disabled ({0})"
         success: "The XP rewards for the :channel channel has been **:status**!"
         status:
@@ -145,7 +145,7 @@ administration:
         note: "AvaIre supports several user-contributed languages that you can select with this command. Translations may not be 100% accurate or complete.\nTo select a language use `{0} <code>`"
 
     LevelAlertsCommand:
-        message: "`Levels up alerts` has been `:status` for the server.:note"
+        message: "`Level up alerts` has been `:status` for the server.:note"
         note: "\nAll level up messages will be logged into the <#{0}> channel."
         status:
             enabled: "Enabled"
@@ -167,9 +167,9 @@ administration:
             disabled: "Disabled"
 
     LevelModifierCommand:
-        invalidNumberGiven: "Invalid modifier given, the modifier much be a positive percentage between `0.01%` and `500%`"
+        invalidNumberGiven: "Invalid modifier given, the modifier must be a positive percentage between `0.01%` and `500%`"
         resetToDefault: "The level modifier has been reset back to using the default **:modifier** modifier."
-        changedTo: "The level and experience modifier have been change to **:modifier**."
+        changedTo: "The level and experience modifier has been change to **:modifier**."
         statusMessage: "The server is currently using a **:modifier** modifier for levels and experience.\n\n**Required XP to reach some levels**\n"
         level: "Level {0}"
 
@@ -241,10 +241,10 @@ administration:
         nothingToDeleteBy: ":x: Nothing to delete, I am unable to find any messages by :users in the last **:number** messages that was sent within the last 14 days."
 
     RemoveLevelRoleCommand:
-        noRolesCalled: ":user There are no role called **:role** on the level up table."
+        noRolesCalled: ":user There is no role called **:role** on the level up table."
         noRolesLinked: ":user There are no roles linked to level **:role** on the level up table."
         notALevelRole: ":user Invalid role, the `:name` role is not on the level up table."
-        message: "Role **:role** role has been removed from the level-up role list.\nThe server now have `:slots` level role slots available."
+        message: "The **:role** role has been removed from the level-up role list.\nThe server now have `:slots` level role slots available."
 
     RemoveReactionRoleCommand:
         noReactionRoles: "The server doesn't have any reaction roles right now, you can create one using\n`{0}arr <emote> <role>`"
@@ -258,7 +258,7 @@ administration:
         deletedEmote: "The :emote emote has been successfully removed from the reaction message.\nThe message has `:roleSlots` more reaction-role slots available for the message, and `:messageSlots` reaction-message slots available."
 
     RemoveSelfAssignableRoleCommand:
-        message: "Role **:role** role has been removed from the self-assignable list.\nThe server has `:slots` more self-assignable roles slots available."
+        message: "The **:role** role has been removed from the self-assignable list.\nThe server has `:slots` more self-assignable roles slots available."
 
     SlowmodeCommand:
         missingArgument: "Missing argument, you must either pass in the `seconds` value to enable slowmode for this or the mentioned channel, or `off` to disable it."
@@ -328,7 +328,7 @@ administration:
 fun:
     DiceCommand:
         missingDice: 'You must include the dice you want to roll.'
-        invalidDiceFormat: '`{0}` is not a valid dice formant.'
+        invalidDiceFormat: '`{0}` is not a valid dice format.'
         diceFormatMustBeGreaterThan: '`{0}` is not a valid dice format, the dice must be greater than 0 and less than 35'
         diceFormatMustBePositive: '`{0}` is not a valid dice format, the dice amount must be a valid positive number between 1 and 35'
         sidesFormatMustBeGreaterThan: '`{0}` is not a valid dice format, the sides must be greater than 0 and less than 128'
@@ -389,7 +389,7 @@ fun:
     SayCommand:
         userMissingPermissions: "You can't use the this command for the {0} channel, you must have the message write and message manage permissions for the channel to use the command for the channel."
         botMissingPermissions: "The say command can't be used for the {0} channel, I need both the message write and message manage permissions for the channel to successfully run the command."
-        success: "Your message have been sent to the :name channel."
+        success: "Your message has been sent to the :name channel."
 
     UndertaleTextBoxCommand:
         noArgumentsGiven: "Missing argument, you must either provide `list` to see a list of characters you can choose from, or to generate an image, `character` or a valid image `url` to build the image for."
@@ -476,7 +476,7 @@ music:
         nowPlayingIn: 'I am now playing music in **:channelName**'
 
     MusicChannelCommand:
-        updated: "The **:type** music channel has been successfully been :status"
+        updated: "The **:type** music channel has successfully been :status"
         field:
             title: "Music Channels"
             message: "**Text Channel:** :text\n**Voice Channel:** :voice"
@@ -531,7 +531,7 @@ music:
         swapSongInPlaylist: '[:selectedTitle](:selectedLink) have swapped position with [:replacedTitle](:replacedLink) in the `:playlist` playlist.'
         alreadyExists: 'The `:playlist` playlist already exists!'
         onlyNumbersInName: "The playlist can't only be numbers, you have to include some letters in the name!"
-        renamingPlaylistAlreadyExists: "Can't rename the `:oldplaylist` to `:playlist`, there are already a playlist called `:playlist`"
+        renamingPlaylistAlreadyExists: "Can't rename the `:oldplaylist` to `:playlist`, there is already a playlist called `:playlist`"
         playlistCreated: 'The `:playlist` playlist has been been created successfully!\nYou can start adding songs to it with `:command :playlist add <song>`'
         playlistDeleted: 'The `:name` playlist has been deleted successfully!'
         playlistRenamed: 'The `:oldplaylist` playlist has been renamed to `:playlist`!'
@@ -557,7 +557,7 @@ music:
     RepeatMusicQueueCommand:
         error: 'There is nothing to repeat, request music first with `{0}play`'
         title: 'Current repeat mode: {0}'
-        message: "The music player repeat status have been successfully changed to **:state**, this means:\n\n:note"
+        message: "The music player repeat status has been successfully changed to **:state**, this means:\n\n:note"
         footer: 'Use "{0} <repeat-mode>" to set the repeat mode.'
         states:
             single: 'One'
@@ -621,7 +621,7 @@ music:
         requireDJRole: 'The `DJ` role is required to change the volume!'
         invalidVolume: 'Invalid volume given, the volume must be a valid number between 1 and 100.'
         nowPlaying: ':musical_note: Music is playing at **:volume** volume'
-        setTo: ':musical_note: Volume set to **:volume** volume'
+        setTo: ':musical_note: Volume set to **:volume**'
 
     VoteSkipCommand:
         error: 'Nothing to skip, request music first with `{0}play`'
@@ -692,7 +692,7 @@ utility:
         yourRank: 'Your rank'
         loading:
             title: 'Loading global leaderboard'
-            message: 'Please wait a second while the global leaderboard is loaded.'
+            message: 'Please wait a second while the global leaderboard is being loaded.'
 
     InviteCommand:
         message: 'You can invite me to your server by [clicking here](:oauth) or use the link below:\n\n:oauth\n\n:note'
@@ -758,7 +758,7 @@ utility:
 
     RemindCommand:
         errors:
-            invalidMeHere: 'Invalid type given, you must declare where you want to be reminded by either using `here` to be reminded in the current channel, or `me` to be reminded in a direct message.'
+            invalidMeHere: 'Invalid type given, you must declare where you want to be reminded, by either using `here` to be reminded in the current channel, or `me` to be reminded in a direct message.'
             invalidTime: 'Invalid time given, the time must be greater than 60 seconds and less than 3 days.'
 
     ServerIdCommand:
@@ -785,7 +785,7 @@ utility:
         noArgs: 'AvaIre source code:'
         command: 'AvaIre source code for the **:command** command:'
         invalidCommand: 'Invalid command given, here is the full source code instead.'
-        externalCommand: "The command is registered via an external plugin, the author of the plugin haven't made the source of the command public, or they forgot to add a link to it, here is the full source code for the bot instead."
+        externalCommand: "The command is registered via an external plugin, the author of the plugin hasn't made the source of the command public, or they forgot to add a link to it, here is the full source code for the bot instead."
 
     StatsCommand:
         title: 'Official Bot Server Invite'
