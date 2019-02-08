@@ -202,7 +202,7 @@ administration:
         noHistory: "Geen modlog geschiedenis gevonden voor deze gebruiker."
         title: "{0}#{1} Geschiedenis ({2})"
         entry: "**{1}** | **#{0}** | **Moderator:** {2}\n**Datum:** {3}\n**Reden:** {4}"
-        noReasonGiven: "No reason was given."
+        noReasonGiven: "Er was geen reden gegeven."
 
     ModlogPardonCommand:
         modlogNotEnabled: "Geen modlog kanaal ingesteld, je moet een modlog kanaal instellen om dit commando te gebruiken."
@@ -230,7 +230,7 @@ administration:
         updated: "De NSFW status voor :textChannel is veranderd naar **:status**"
         status:
             enabled: "Geactiveerd"
-            disabled: "gedeactiveerd"
+            disabled: "Gedeactiveerd"
 
     PurgeCommand:
         messagesDeletedIn: "{0} berichten zijn verwijderd in het {1} kanaal."
@@ -387,9 +387,9 @@ fun:
         rolledNumber: ':user rolde **:number** van :min - :max'
 
     SayCommand:
-        userMissingPermissions: "You can't use the this command for the {0} channel, you must have the message write and message manage permissions for the channel to use the command for the channel."
-        botMissingPermissions: "The say command can't be used for the {0} channel, I need both the message write and message manage permissions for the channel to successfully run the command."
-        success: "Your message have been sent to the :name channel."
+        userMissingPermissions: "Je kan dit commando niet gebruiken voor het {0} kanaal, je moet de `message write` en `message manage` voor dit kanaal hebben om dit commando te kunnen gebruiken in dit kanaal."
+        botMissingPermissions: "Het `say` commando kan niet gebruikt worden voor het {0} kanaal, ik ben de `message write` en `message manage` rechten nodig om het commando hier uit te kunnen voeren."
+        success: "Je bericht is verstuurd naar het :name kanaal."
 
     UndertaleTextBoxCommand:
         noArgumentsGiven: "Er mist een argument, je moet of een `list` geven om een lijst van karakters te kunnen zien waar je uit kan kiezen, of om een foto te genereren, `character` of een geldige foto `url` om de foto voor te maken."
@@ -555,18 +555,18 @@ music:
         successMultipleNote: "\nEn **{0}** meer nummers zijn succesvol verwijderd van de wacthrij."
 
     RepeatMusicQueueCommand:
-        error: 'There is nothing to repeat, request music first with `{0}play`'
-        title: 'Current repeat mode: {0}'
-        message: "The music player repeat status have been successfully changed to **:state**, this means:\n\n:note"
-        footer: 'Use "{0} <repeat-mode>" to set the repeat mode.'
+        error: 'Er is niks om te herhalen, vraag eerst een nummer aan met `{0}play`'
+        title: 'Huidige herhaal mode: {0}'
+        message: "De muziek speler herhaal status is veranderd naar **:state**, dit betekent:\n\n:note"
+        footer: 'Gebruik "{0} <repeat-mode>" om een herhaal mode in te stellen.'
         states:
-            single: 'One'
-            all: 'All'
-            loopoff: 'Off'
+            single: 'Een'
+            all: 'Alles'
+            loopoff: 'Uit'
         notes:
-            single: 'The music player will repeat the song that is currently playing without going to the next song in the queue.\n**Note:** This also mutes "Now Playing" messages so the chat is not spammed with the same song over and over again.'
-            all: 'The music player will repeat every song in the queue, after a song finishes playing it will be re-added to the end of the queue automatically.'
-            loopoff: 'The music player will not loop, when a song finishes playing it will get removed from the queue and the next track will begin playing.'
+            single: 'De muziek speler zal het huidige nummer blijven herhalen en niet overslaan naar het volgende nummer in de wachtrij.\n**Note:** Dit mute ook de "Now Playing" berichten zodat je niet steeds hetzelfde bericht krijgt.'
+            all: 'De muziek speler zal nu de wachtrij blijven herhalen, zodra een nummer klaar is met afspelen zal deze meteen waar achter in de wachtrij geplaatst worden.'
+            loopoff: 'De muziek speler zal stoppen met herhalen, als een nummer eindigt wordt deze uit de wachtrij gehaald en het volgende nummer zal beginnen.'
 
     ResumeCommand:
         error: 'Niks om te hervatten, vraag eerst een nummer aan met `{0}play`'
@@ -724,26 +724,26 @@ utility:
             900: 'slecht. :sob: (helpme)'
             1600: '#BlameDiscord. :angry:'
             10000: 'dit is niet logisch :thinking: #BlameAlexis'
-            other: 'scheld alexis uit voor me. :dizzy_face:'
+            other: 'scheld Alexis uit voor me. :dizzy_face:'
 
     RankBackgroundCommand:
-        canBeUnlocked: "Rank backgrounds can be unlocked using **[Vote Points](https://discordbots.org/bot/avaire)**,\nyou'll get **1 point** each time you vote for the bot."
-        listTitle: "Rank Backgrounds ({0})"
-        youHaveVotePoints: "You have {0} vote points."
-        exampleTitle: "{0} Example"
-        exampleFooter: "{0} costs {1} vote points"
-        alreadyOwnsBackground: "You already own the **:name** background!"
-        doesntHaveEnoughPoints: "You don't have enough vote points to buy this background, the background costs `{0}`, and you have `{1}` vote points."
-        boughtBackgroundSuccessfully: "Congratulation! You now own the **:name** background!\nYou can use the `:command` command to use the background."
-        youDontOwnThisBackground: "You don't own the **:name** background, however you can buy it for **:cost** Vote Points!"
-        successfullyChangedBackground: "You have successfully changed to use the **:name** background."
-        disabledBackgrounds: "Rank backgrounds have successfully been disabled, you are now using embedded messages for rank commands again."
+        canBeUnlocked: "Rank achtergronden kunnen ontgrendeld worden met **[Vote Points](https://discordbots.org/bot/avaire)**,\nJe krijgt **1 punt** elke keer als je op de bot stempt."
+        listTitle: "Rank achtergronden ({0})"
+        youHaveVotePoints: "Je hebt {0} stem punten."
+        exampleTitle: "{0} Voorbeeld"
+        exampleFooter: "{0} kost {1} vote punten"
+        alreadyOwnsBackground: "Je hebt de **:name** achtergrond al!"
+        doesntHaveEnoughPoints: "Je hebt niet genoeg punten om deze achtergrond te kopen, de achtergrond kost `{0}`, en je hebt `{1}` stem punten."
+        boughtBackgroundSuccessfully: "Gefeliciteerd! Je hebt nu de **:name** achtergrond!\nJe kan het `:command` commando gebruiken om de achtergrond te selecteren."
+        youDontOwnThisBackground: "Je hebt de **:name** achtergrond niet, maar je kan deze kopen met **:cost** stem punten!"
+        successfullyChangedBackground: "Je hebt succesvol je achtergrond veranderd naar **:name**."
+        disabledBackgrounds: "Rank achtergronden zijn succesvol gedeactiveerd, je gerbuikt nu weer embedded berichten voor rank commando's."
         buyNotes:
-            alreadyOwns: "**{0}**\n- _You already own this background._"
-            doesntOwns: "**{0}**\n - Costs {1} vote points."
-        failedToSendExampleMessage: "Something went wrong while trying to send the example image for the {0} background, error: {1}."
-        failedToBuyTheBackground: "Something went wrong while buying the background, error: {0}"
-        failedToSetBackground: "Failed to set the background due to a database error, try again later, if this error continues to appear, please contact one of my developers."
+            alreadyOwns: "**{0}**\n- _Je hebt deze achtergrond al._"
+            doesntOwns: "**{0}**\n - Kost {1} stem punten."
+        failedToSendExampleMessage: "Er ging is fout met een voorbeeld laten zien van de {0} achtergrond, error: {1}."
+        failedToBuyTheBackground: "Er ging iets fout met het kopen van de achtergrond, error: {0}"
+        failedToSetBackground: "Gefaald met het instellen van de achtergrond door een database error, probeer het later opnieuw. Als dit probleem blijft, neem dan contact op met een developer."
 
     RankCommand:
         botsCannotReceiveXp: "Bots kunnen geen exp ontvangen en kunnen dus geen ranking hebben, probeer het opnieuw met een gebruiker."
