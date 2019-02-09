@@ -41,6 +41,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Collections;
@@ -122,12 +123,8 @@ public class AddReactionRoleCommand extends Command {
             return sendErrorMessage(context, "errors.missingArgument", "reaction emote");
         }
 
-        if (context.getMessage().getEmotes().isEmpty()) {
-            return sendErrorMessage(context, context.i18n("emoteDoestBelongToServer"));
-        }
-
-        Emote emote = context.getMessage().getEmotes().get(0);
-        if (emote.getGuild() == null || emote.getGuild().getIdLong() != context.getGuild().getIdLong()) {
+        Emote emote = getEmote(context, args);
+        if (emote == null || emote.getGuild() == null || emote.getGuild().getIdLong() != context.getGuild().getIdLong()) {
             return sendErrorMessage(context, context.i18n("emoteDoestBelongToServer"));
         }
 
@@ -199,6 +196,21 @@ public class AddReactionRoleCommand extends Command {
         });
 
         return true;
+    }
+
+    @Nullable
+    private Emote getEmote(CommandMessage context, String[] args) {
+        if (!context.getMessage().getEmotes().isEmpty()) {
+            return context.getMessage().getEmotes().get(0);
+        }
+
+        try {
+            long id = Long.parseLong(args[0].trim());
+
+            return context.getGuild().getEmoteById(id);
+        } catch (NumberFormatException e) {
+            return null;
+        }
     }
 
     @SuppressWarnings("UnusedReturnValue")
