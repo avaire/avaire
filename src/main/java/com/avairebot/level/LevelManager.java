@@ -82,13 +82,34 @@ public class LevelManager {
     private static final double M = 0.3715D;
 
     /**
+     * The hard cap for XP, if a user is at or above the number
+     * below, they should be reset back to the number of XP,
+     * and not be allowed to receive anymore XP.
+     */
+    private static final long hardCap = Long.MAX_VALUE - 89;
+
+    /**
+     * The max amount of randomized XP a user will
+     * receive when they send a message.
+     */
+    private static final int maxRandomExperience = 5;
+
+    /**
+     * The max amount of guaranteed XP a user will
+     * receive when they send a message.
+     */
+    private static final int maxGuaranteeExperience = 10;
+
+    /**
      * The quadratic equation `a` value.
      */
     private final int A = 5;
+
     /**
      * The quadratic equation `b` value.
      */
     private final int B = 50;
+
     /**
      * The quadratic equation `c` value.
      */
@@ -101,6 +122,15 @@ public class LevelManager {
      */
     public static double getDefaultModifier() {
         return M;
+    }
+
+    /**
+     * Gets the hard cap for XP.
+     *
+     * @return The hard cap for XP.
+     */
+    public static long getHardCap() {
+        return hardCap;
     }
 
     /**
@@ -242,7 +272,7 @@ public class LevelManager {
      * @param player  The player that should be given the experience.
      */
     public void giveExperience(@Nonnull Message message, @Nonnull User user, @Nonnull GuildTransformer guild, @Nonnull PlayerTransformer player) {
-        giveExperience(message, user, guild, player, (RandomUtil.getInteger(5) + 10));
+        giveExperience(message, user, guild, player, (RandomUtil.getInteger(maxRandomExperience) + maxGuaranteeExperience));
     }
 
     /**
@@ -262,10 +292,16 @@ public class LevelManager {
 
         player.incrementExperienceBy(amount);
 
+        boolean exclude = player.getExperience() >= getHardCap() - (maxRandomExperience + maxGuaranteeExperience) || player.getExperience() < -1;
+        if (exclude) {
+            player.setExperience(getHardCap());
+        }
+
         experienceQueue.add(new ExperienceEntity(
             user.getIdLong(),
             message.getGuild().getIdLong(),
-            amount
+            amount,
+            exclude
         ));
 
         if (getLevelFromExperience(guild, player.getExperience() + zxp) > lvl) {

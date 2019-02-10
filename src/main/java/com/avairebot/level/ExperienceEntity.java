@@ -25,12 +25,18 @@ public class ExperienceEntity {
 
     private final long userId;
     private final long guildId;
+    private final boolean excludeLocal;
     private int experience;
 
-    ExperienceEntity(long userId, long guildId, int experience) {
+    ExperienceEntity(long userId, long guildId, int experience, boolean excludeLocal) {
         this.userId = userId;
         this.guildId = guildId;
         this.experience = experience;
+        this.excludeLocal = excludeLocal;
+    }
+
+    ExperienceEntity(long userId, long guildId, int experience) {
+        this(userId, guildId, experience, false);
     }
 
     /**
@@ -69,6 +75,17 @@ public class ExperienceEntity {
      */
     public void setExperience(int experience) {
         this.experience = experience;
+    }
+
+    /**
+     * Determines if the local server based XP should be excluded from
+     * the update or not, if the user has reached the max amount of
+     * XP, there are no idea is giving them any more XP.
+     *
+     * @return Determins if the local server based XP should be excluded or not.
+     */
+    public boolean isExcludeLocal() {
+        return excludeLocal;
     }
 
     @Override
