@@ -106,7 +106,7 @@ public class RankCommand extends Command {
 
     @Override
     public List<String> getTriggers() {
-        return Arrays.asList("rank", "level", "xp");
+        return Arrays.asList("rank", "level");
     }
 
     @Override
