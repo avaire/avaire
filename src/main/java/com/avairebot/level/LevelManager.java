@@ -32,6 +32,7 @@ import com.avairebot.factories.MessageFactory;
 import com.avairebot.language.I18n;
 import com.avairebot.scheduler.ScheduleHandler;
 import com.avairebot.utilities.CacheUtil;
+import com.avairebot.utilities.NumberUtil;
 import com.avairebot.utilities.RandomUtil;
 import com.avairebot.utilities.RoleUtil;
 import com.google.common.cache.Cache;
@@ -314,7 +315,7 @@ public class LevelManager {
                     .setColor(MessageType.SUCCESS.getColor())
                     .setDescription(loadRandomLevelupMessage(guild, hasLevelupRole))
                     .set("user", message.getAuthor().getAsMention())
-                    .set("level", newLevel);
+                    .set("level", NumberUtil.formatNicely(newLevel));
 
                 if (hasLevelupRole) {
                     Role levelRole = message.getGuild().getRoleById(guild.getLevelRoles().get((int) newLevel));
