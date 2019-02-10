@@ -80,6 +80,7 @@ public class LevelModifierCommand extends Command {
     @Override
     public List<Class<? extends Command>> getRelations() {
         return Arrays.asList(
+            AdministrateExperienceCommand.class,
             LevelHierarchyCommand.class,
             LevelAlertsCommand.class,
             ChannelLevelCommand.class,

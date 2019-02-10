@@ -75,7 +75,8 @@ public class LevelHierarchyCommand extends Command {
             LevelModifierCommand.class,
             LevelAlertsCommand.class,
             ChannelLevelCommand.class,
-            LevelCommand.class
+            LevelCommand.class,
+            AdministrateExperienceCommand.class
         );
     }
 
