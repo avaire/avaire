@@ -55,7 +55,7 @@ public class PurchasesTransformer extends Transformer {
                 purchases.get(type).add(
                     new PurchasesId(
                         typeId,
-                        row.get("selected") != null
+                        row.getInt("selected", -1) == typeId
                     )
                 );
             }

@@ -24,6 +24,7 @@ package com.avairebot.database.controllers;
 import com.avairebot.AvaIre;
 import com.avairebot.Constants;
 import com.avairebot.database.transformers.PurchasesTransformer;
+import com.avairebot.language.I18n;
 import com.avairebot.utilities.CacheUtil;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
@@ -48,7 +49,7 @@ public class PurchaseController {
 
     private static final PurchasesTransformer emptyPurchases = new PurchasesTransformer(null);
     private static final String[] requiredPurchasesColumns = new String[]{
-        "`purchases`.`type`", "`purchases`.`type_id`", "`votes`.`selected_bg` as 'selected'"
+        "`type`", "`type_id`"
     };
 
     @Nullable
@@ -62,20 +63,37 @@ public class PurchaseController {
 
     @Nonnull
     @CheckReturnValue
-    public static PurchasesTransformer fetchPurchases(long userID) {
-        return (PurchasesTransformer) CacheUtil.getUncheckedUnwrapped(cache, userID, () -> {
-            log.debug("Purchase cache for {} was refreshed", userID);
+    @SuppressWarnings("ConstantConditions")
+    public static PurchasesTransformer fetchPurchases(long userId) {
+        return (PurchasesTransformer) CacheUtil.getUncheckedUnwrapped(cache, userId, () -> {
+            log.debug("Purchase cache for {} was refreshed", userId);
 
             try {
+                int index = 0;
+                String[] purchaseColumns = new String[requiredPurchasesColumns.length + 1];
+                for (String value : requiredPurchasesColumns) {
+                    purchaseColumns[index++] = value;
+                }
+
+                String selectQuery = AvaIre.getInstance().getDatabase()
+                    .newQueryBuilder(Constants.VOTES_TABLE_NAME)
+                    .select("selected_bg")
+                    .where("user_id", userId)
+                    .toSQL();
+
+                purchaseColumns[index] = I18n.format("({0}) as 'selected'",
+                    selectQuery.substring(0, selectQuery.length() - 1)
+                );
+
                 return new PurchasesTransformer(
-                    AvaIre.getInstance().getDatabase().newQueryBuilder(Constants.PURCHASES_TABLE_NAME)
-                        .selectRaw(String.join(", ", requiredPurchasesColumns))
-                        .leftJoin(Constants.VOTES_TABLE_NAME, "votes.selected_bg", "purchases.type_id")
-                        .where("purchases.user_id", userID)
+                    AvaIre.getInstance().getDatabase()
+                        .newQueryBuilder(Constants.PURCHASES_TABLE_NAME)
+                        .selectRaw(String.join(", ", purchaseColumns))
+                        .where("user_id", userId)
                         .get()
                 );
             } catch (SQLException e) {
-                log.error("Failed to get purchases for user {}, error: {}", userID, e.getMessage(), e);
+                log.error("Failed to get purchases for user {}, error: {}", userId, e.getMessage(), e);
 
                 return getEmptyPurchases();
             }
