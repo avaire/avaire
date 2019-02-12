@@ -9,7 +9,7 @@ errors:
     missingMusicQueue: 'Missing music `query`, you must include a link to the song that you want to listen to, or at least give me a song title!'
     cantMentionEveryone: "You don't have permissions to mention everyone."
     requireLevelFeatureToBeEnabled: 'This command requires the `Levels & Experience` feature to be enabled for the server, you can ask a server admin if they want to enable it with `{0}`'
-    errorOccurredWhileLoading: 'An error occurred while loading the {0}, please try again, if the problem continues please report this to one of my developers on the [AvaIre support server](https://discord.gg/gt2FWER).'
+    errorOccurredWhileLoading: 'An error occurred while loading the {0}, please try again. If the problem continues, please report this to one of my developers on the [AvaIre support server](https://discord.gg/gt2FWER).'
 
 levelupMessages:
     - "GG :user, you just reached **Level :level**"
@@ -83,7 +83,7 @@ administration:
     BanCommand:
         mustMentionUser: "You must mention the user that you want to ban."
         higherRole: "You can't ban people with a higher, or the same role as yourself."
-        userHaveHigherRole: "I can't ban {0}, they have a higher role than me, if you want me to be able to ban the user, please readjust my role position to above {0} highest role."
+        userHaveHigherRole: "I can't ban {0}, they have a higher role than me! If you want me to be able to ban the user, please readjust my role position to above {0} highest role."
         success: "**:target** was permanently banned by :user for \":reason\""
         failedToBan: "Failed to ban **:target** due to an error: :error"
 
@@ -106,7 +106,7 @@ administration:
         invalidChannel: "Invalid channel given, the channel must be a valid text channel."
         cantTalkInChannel: "I can't talk in the {0} channel, so no users will be rewarded any XP for talking in the channel, if you want me to give users XP, please change my permission level for the channel so I can send messages in the channel."
         noChannelsWithRewardsDisabled: "There are currently no channels with the level rewards disabled, you can add one by using the `{0} <channel>` command."
-        failedToUpdate: "Failed to save the changes to the database, please try again, if the issue persists, please contact one of my developers."
+        failedToUpdate: "Failed to save the changes to the database, please try again. If the issue persists, please contact one of my developers."
         listChannels: "All the channels mentioned below currently have their level rewards turned off, any channel not on this list is unaffected.\n\n:channels"
         listChannelsTitle: "Channels with their Level Rewards disabled ({0})"
         success: "The XP rewards for the :channel channel has been **:status**!"
@@ -155,14 +155,14 @@ administration:
         note: "AvaIre supports several user-contributed languages that you can select with this command. Translations may not be 100% accurate or complete.\nTo select a language use `{0} <code>`"
 
     LevelAlertsCommand:
-        message: "`Level up alerts` has been `:status` for the server.:note"
+        message: "`Level up alerts` have been `:status` for the server.:note"
         note: "\nAll level up messages will be logged into the <#{0}> channel."
         status:
             enabled: "Enabled"
             disabled: "Disabled"
 
     LevelCommand:
-        message: "`Levels & Experience` has been `:status` for the server.:note"
+        message: "`Levels & Experience` have been `:status` for the server.:note"
         note: "\nLevel alerts are currently `{0}`, you can toggle them on or off with `{1}levelalerts`"
         status:
             enabled: "Enabled"
@@ -184,7 +184,7 @@ administration:
         level: "Level {0}"
 
     ListAliasesCommand:
-        noAliases: "The server doesn't have any aliases right now, you can create one using the\n`{0}alias <alias> <command>` command"
+        noAliases: "The server doesn't have any aliases right now, you can create one by using the\n`{0}alias <alias> <command>` command"
         listAliases: "List of Aliases ({0})"
 
     ListLevelRolesCommand:
@@ -192,7 +192,7 @@ administration:
         listRoles: "List of Level Roles ({0})"
 
     ListReactionRoleCommand:
-        noReactionRoles: "The server doesn't have any reaction roles right now, you can create one using\n`{0}arr <emote> <role>`"
+        noReactionRoles: "The server doesn't have any reaction roles right now, you can create one by using\n`{0}arr <emote> <role>`"
         listReactionRoles: "List of Reaction Roles ({0})"
 
     ListSelfAssignableRolesCommand:
@@ -201,7 +201,7 @@ administration:
 
     ModlogCommand:
         mustMentionTextChannel: "Invalid channel argument given, you must mention a valid text channel"
-        cantSendEmbedMessages: "I can't send embed messages in the specified channel, please change my permission level for the {0} channel if you want to use it as a modlog channel."
+        cantSendEmbedMessages: "I can't send embedded messages in the specified channel, please change my permission level for the {0} channel if you want to use it as a modlog channel."
         enable: ":user **Server Modlogging** is now enabled and set to the :modlog channel."
         enabled: ":user **Server Modlogging** is currently enabled and set to the :modlog channel."
         disable: ":user **Server Modlogging** is now disabled for the server."
@@ -227,7 +227,7 @@ administration:
         invalidCaseId: "Invalid case ID given, the ID must be greater than 0 and less than {0}"
         couldntFindCaseWithId: "Couldn't find a modlog case with an ID of {0} where you were the moderator, are you sure that you're the moderator for the given modlog case?"
         couldntFindModlogChannel: "Couldn't find the modlog channel, was it removed?"
-        success: "The modlog case with an ID of **:id** was successfully edited and set to the reason of `:reason`"
+        success: "The modlog case with an ID of **:id** was successfully edited and the reason was set to `:reason`"
         modlogCaseWasPardoned: "The modlog case with an ID of `{0}` has been pardoned, you can't edit pardoned modlog cases."
         failedToEdit: "Failed to edit modlog message: {0}"
         failedToFindMessage: "Couldn't find the message for the given modlog case, was it deleted?"
@@ -243,21 +243,21 @@ administration:
             disabled: "Disabled"
 
     PurgeCommand:
-        messagesDeletedIn: "{0} messages has been deleted in the {1} channel."
-        messagesDeletedBy: "{0} messages sent by {1} has been deleted in the {2} channel."
-        success: ":white_check_mark: `:number` messages has been deleted!"
-        successBy: ":white_check_mark: `:number` messages has been deleted from :users"
+        messagesDeletedIn: "{0} messages have been deleted in the {1} channel."
+        messagesDeletedBy: "{0} messages sent by {1} have been deleted in the {2} channel."
+        success: ":white_check_mark: `:number` messages have been deleted!"
+        successBy: ":white_check_mark: `:number` messages have been deleted from :users"
         nothingToDelete: ":x: Nothing to delete, I am unable to delete messages older than 14 days."
-        nothingToDeleteBy: ":x: Nothing to delete, I am unable to find any messages by :users in the last **:number** messages that was sent within the last 14 days."
+        nothingToDeleteBy: ":x: Nothing to delete, I am unable to find any messages by :users in the last **:number** messages that were sent within the last 14 days."
 
     RemoveLevelRoleCommand:
-        noRolesCalled: ":user There is no role called **:role** on the level up table."
-        noRolesLinked: ":user There are no roles linked to level **:role** on the level up table."
-        notALevelRole: ":user Invalid role, the `:name` role is not on the level up table."
-        message: "The **:role** role has been removed from the level-up role list.\nThe server now have `:slots` level role slots available."
+        noRolesCalled: ":user There is no role called **:role** on the level-up table."
+        noRolesLinked: ":user There are no roles linked to level **:role** on the level-up table."
+        notALevelRole: ":user Invalid role, the `:name` role is not on the level-up table."
+        message: "The **:role** role has been removed from the level-up role list.\nThe server now has `:slots` level role slots available."
 
     RemoveReactionRoleCommand:
-        noReactionRoles: "The server doesn't have any reaction roles right now, you can create one using\n`{0}arr <emote> <role>`"
+        noReactionRoles: "The server doesn't have any reaction roles right now, you can create one by using\n`{0}arr <emote> <role>`"
         messageIdMustBeGreaterThanOne: "Invalid `message id` given, the `message id` must be at least 1 or greater."
         messageIdMustBeLowerThanRolesSize: "Invalid `message id` given, the `message id` cannot be higher than the amount of reaction roles the server currently has, which is `{0}` right now."
         failedToFetchMessage: "Something went wrong while trying to fetch the reaction role message with an ID of `{0}`, if this issue continues to happen, please report it to one of my developers."
@@ -298,7 +298,7 @@ administration:
 
     VoiceKickCommand:
         mustMentionUser: "You must mention the user that you want to kick."
-        sameOrHigherRole: "You can't kick people with a higher, or the same role as yourself."
+        sameOrHigherRole: "You can't kick people with a higher, or same role as yourself."
         notConnected: "You can't voice kick people who are not connected to a voice channel."
         message: "**:target** was kicked from **:voiceChannel** by :user for \":reason\""
 
@@ -311,7 +311,7 @@ administration:
 
     WarnCommand:
         requiresModlogIsEnabled: "This command requires a modlog channel to be set, a modlog channel can be set using the `{0}modlog` command."
-        mustMentionUse: "You must mention a user that you want warn."
+        mustMentionUse: "You must mention a user that you want to warn."
         warnBots: "You can't warn bots!"
         failedToLogWarning: "Failed to log warning to the set modlog channel, does the modlog channel still exists, can I still send messages in the channel?"
         message: ":target has been **warned** for \":reason\""
@@ -397,7 +397,7 @@ fun:
         rolledNumber: ':user rolled **:number** out of :min - :max'
 
     SayCommand:
-        userMissingPermissions: "You can't use the this command for the {0} channel, you must have the message write and message manage permissions for the channel to use the command for the channel."
+        userMissingPermissions: "You can't use the this command for the {0} channel, you must have the message write and message manage permissions for the channel to successfully run the command."
         botMissingPermissions: "The say command can't be used for the {0} channel, I need both the message write and message manage permissions for the channel to successfully run the command."
         success: "Your message has been sent to the :name channel."
 
@@ -413,8 +413,8 @@ help:
         categoriesNote: ':information_source: Type `:help <category>` to get a list of commands in that category.\nExample: `:help {0}` or `:help {1}`'
         categoriesTitle: ':scroll: Command Categories'
         invalidCategory: 'Invalid command category given, there are no categories called `:category`'
-        invalidCommand: 'Invalid command given, there are no command that has the trigger `:trigger`'
-        tryingToViewSystemCommands: "You don't have permissions to run any of the commands in the `System` category, system commands can affect all the servers the bot is currently running on, and thus are limited to bot administrators/developers."
+        invalidCommand: 'Invalid command given, there are no commands that have the trigger `:trigger`'
+        tryingToViewSystemCommands: "You don't have permissions to run any of the commands in the `System` category. System commands can affect all of the servers that the bot is currently running on, and thus are limited to bot administrators/developers."
         singularHiddenCategories: '_There is **{0}** hidden category for this channel._'
         multipleHiddenCategories: '_There are **{0}** hidden categories for this channel._'
         fields:
@@ -567,7 +567,7 @@ music:
     RepeatMusicQueueCommand:
         error: 'There is nothing to repeat, request music first with `{0}play`'
         title: 'Current repeat mode: {0}'
-        message: "The music player repeat status has been successfully changed to **:state**, this means:\n\n:note"
+        message: "The music player's repeat status has been successfully changed to **:state**, this means:\n\n:note"
         footer: 'Use "{0} <repeat-mode>" to set the repeat mode.'
         states:
             single: 'One'
@@ -586,7 +586,7 @@ music:
     SeekCommand:
         error: 'Nothing is playing right now, request something with `{0}play` first.'
         invalidTimeGiven: 'The `number` argument must be a valid time format that is at least 0 or more seconds long.'
-        seekingLive: 'You can not jump to a different time code for livestreams.'
+        seekingLive: 'You cannot jump to a different time code for livestreams.'
         seekingTooFar: '`{0}` is more than the length of the current song playing, if you want to skip to the next song use `{1}skip` instead.'
         seekTo: 'Seeking **:title** to `:time`'
 
@@ -598,7 +598,7 @@ music:
 
     ShuffleCommand:
         error: 'The queue is already empty, you can request something with\n`{0}play <song title | url>`'
-        success: '**:amount** songs has been shuffled in the queue.'
+        success: '**:amount** songs have been shuffled in the queue.'
 
     SkipCommand:
         error: 'Nothing to skip, request music first with `{0}play`'
@@ -744,9 +744,9 @@ utility:
         exampleFooter: "{0} costs {1} vote points"
         alreadyOwnsBackground: "You already own the **:name** background!"
         doesntHaveEnoughPoints: "You don't have enough vote points to buy this background, the background costs `{0}`, and you have `{1}` vote points."
-        boughtBackgroundSuccessfully: "Congratulation! You now own the **:name** background!\nYou can use the `:command` command to use the background."
+        boughtBackgroundSuccessfully: "Congratulations! You now own the **:name** background!\nYou can use the `:command` command to use the background."
         youDontOwnThisBackground: "You don't own the **:name** background, however you can buy it for **:cost** Vote Points!"
-        successfullyChangedBackground: "You have successfully changed to use the **:name** background."
+        successfullyChangedBackground: "You have successfully switched to use the **:name** background."
         disabledBackgrounds: "Rank backgrounds have successfully been disabled, you are now using embedded messages for rank commands again."
         buyNotes:
             alreadyOwns: "**{0}**\n- _You already own this background._"
