@@ -96,6 +96,11 @@ public class FakeCommandMessage implements CommandContext {
     }
 
     @Override
+    public boolean mentionsEveryone() {
+        return false;
+    }
+
+    @Override
     public boolean isGuildMessage() {
         return false;
     }

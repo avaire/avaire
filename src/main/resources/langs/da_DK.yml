@@ -7,6 +7,7 @@ errors:
     mustBeConnectedToVoice: 'Du skal være forbundet til en talekanal for at bruge denne kommando!'
     mustBeConnectedToSameChannel: 'Du skal være forbundet til den samme talekanal, jeg er i for at {0}!'
     missingMusicQueue: 'Mangler musik `forespørgsel`, skal du inkludere et link til sangen, du vil lytte til, eller i det mindste give mig en sangtitel!'
+    cantMentionEveryone: "You don't have permissions to mention everyone."
     requireLevelFeatureToBeEnabled: "Denne kommando kræver, at `Level og Experience' funktionen er aktiveret for serveren, du kan spørge en serveradministrator, hvis de vil aktivere den med `{0}`"
     errorOccurredWhileLoading: "Der opstod en fejl under indlæsningen af {0}. Prøv venligst igen. Hvis problemet fortsætter kan du rapportere dette til et af mine udviklere på [AvaIre support serveren](https://discord.gg/gt2FWER)."
 

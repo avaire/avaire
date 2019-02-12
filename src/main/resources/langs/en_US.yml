@@ -7,6 +7,7 @@ errors:
     mustBeConnectedToVoice: 'You must be connected to a voice channel to use this command!'
     mustBeConnectedToSameChannel: 'You must be connected to the same voice channel I am in to {0}!'
     missingMusicQueue: 'Missing music `query`, you must include a link to the song that you want to listen to, or at least give me a song title!'
+    cantMentionEveryone: "You don't have permissions to mention everyone."
     requireLevelFeatureToBeEnabled: 'This command requires the `Levels & Experience` feature to be enabled for the server, you can ask a server admin if they want to enable it with `{0}`'
     errorOccurredWhileLoading: 'An error occurred while loading the {0}, please try again, if the problem continues please report this to one of my developers on the [AvaIre support server](https://discord.gg/gt2FWER).'
 

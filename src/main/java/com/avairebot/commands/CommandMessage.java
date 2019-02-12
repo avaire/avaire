@@ -204,6 +204,13 @@ public class CommandMessage implements CommandContext {
     }
 
     @Override
+    public boolean mentionsEveryone() {
+        return message.mentionsEveryone()
+            || message.getContentRaw().contains("@everyone")
+            || message.getContentRaw().contains("@here");
+    }
+
+    @Override
     public boolean isGuildMessage() {
         return message.getChannelType().isGuild();
     }

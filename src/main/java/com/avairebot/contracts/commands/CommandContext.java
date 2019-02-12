@@ -191,6 +191,13 @@ public interface CommandContext {
     boolean isMentionableCommand();
 
     /**
+     * Indicates if this Message mentions everyone using @everyone or @here.
+     *
+     * @return True, if message is mentioning everyone.
+     */
+    boolean mentionsEveryone();
+
+    /**
      * Returns true if the message was sent in a guild.
      *
      * @return True if the message was sent in a guild.

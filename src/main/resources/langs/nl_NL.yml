@@ -7,6 +7,7 @@ errors:
     mustBeConnectedToVoice: 'Je moet verbonden zijn met een spraak kanaal om dit commando te kunnen gebruiken!' 
     mustBeConnectedToSameChannel: 'Je moet met het zelfde spraak kanaal verbonden zijn als mij {0}!'
     missingMusicQueue: 'Er mist een muziek `query`, je moet een link naar het nummer die je wilt luisteren leveren of tenminste een titel van een nummer!'
+    cantMentionEveryone: "You don't have permissions to mention everyone."
     requireLevelFeatureToBeEnabled: 'Om dit commando te kunnen gebruiken, moet je de `Levels en Experience` module aan hebben op de server, je kan een server admin vragen als ze dit aan willen zetten met `{0}`'
     errorOccurredWhileLoading: 'Er is een error voorgekomen onder het laden van {0}, A.U.B opnieuw proberen, als dit probleem niet weg gaat, laat het weten bij een van de developers in de [AvaIre support server](https://discord.gg/gt2FWER).'
 
