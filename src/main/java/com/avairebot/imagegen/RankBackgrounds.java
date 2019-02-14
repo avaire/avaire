@@ -42,7 +42,9 @@ public enum RankBackgrounds implements PurchaseType {
     PURPLE(2, 10, "Purple", null, PurpleColors.class),
     PIKACHU(10, 50, "Pikachu", "pikachu.jpg", PikachuColors.class),
     MOUNTAIN_RANGE(11, 50, "Mountain Range", "mountain-range.jpg", MountainRangeColors.class),
-    SAKURA(12, 50, "Sakura", "sakura.jpg", SakuraColors.class);
+    SAKURA(12, 50, "Sakura", "sakura.jpg", SakuraColors.class),
+    8Bit(15, 15, "8Bit Mountains", "409.png", EightBitMountainColors.class);
+
 
     private static final RankBackgrounds DEFAULT_BACKGROUND = RankBackgrounds.PURPLE;
     private static final EnumMap<RankBackgrounds, BackgroundRankColors> backgroundColors = new EnumMap<>(RankBackgrounds.class);
