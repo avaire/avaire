@@ -55,7 +55,7 @@ public class EightBitMountainColors extends BackgroundRankColors {
     @Nonnull
     @Override
     public Color getExperienceForegroundColor() {
-        return makeColor(156, 129, 159, 0);
+        return makeColor(156, 129, 159, 80);
     }
 
     @Nonnull
