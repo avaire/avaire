@@ -22,6 +22,8 @@
 package com.avairebot.contracts.commands;
 
 import com.avairebot.AvaIre;
+import com.avairebot.commands.CommandContainer;
+import com.avairebot.commands.CommandHandler;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.commands.CommandPriority;
 import com.avairebot.contracts.commands.interactions.Lottery;
@@ -69,7 +71,7 @@ public abstract class InteractionCommand extends Command {
     }
 
     @Override
-    public String getDescription(CommandContext context) {
+    public String getDescription(@Nullable CommandContext context) {
         return String.format(
             "Sends the **%s** interaction to the mentioned user.",
             getInteraction(context, true)
@@ -196,11 +198,24 @@ public abstract class InteractionCommand extends Command {
         });
     }
 
-    private String getInteraction(CommandContext context, boolean isDescription) {
+    private String getInteraction(@Nullable CommandContext context, boolean isDescription) {
         if (isDescription) {
             return getTriggers().get(0);
         }
-        return context.i18nRaw(context.getI18nCommandPrefix());
+
+        if (context != null) {
+            return context.i18nRaw(context.getI18nCommandPrefix());
+        }
+
+        CommandContainer container = CommandHandler.getCommand(this);
+        if (container == null) {
+            return "Unknown";
+        }
+
+        return I18n.getString(null,
+            container.getCategory().getName().toLowerCase() + "."
+                + container.getCommand().getClass().getSimpleName()
+        );
     }
 
     private String asKey(CommandContext context) {

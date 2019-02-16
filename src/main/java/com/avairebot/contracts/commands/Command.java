@@ -29,7 +29,6 @@ import com.avairebot.commands.CommandMessage;
 import com.avairebot.commands.CommandPriority;
 import com.avairebot.contracts.middleware.Middleware;
 import com.avairebot.contracts.reflection.Reflectionable;
-import com.avairebot.exceptions.MissingCommandDescriptionException;
 import com.avairebot.language.I18n;
 import com.avairebot.middleware.MiddlewareHandler;
 import com.avairebot.plugin.JavaPlugin;
@@ -38,6 +37,7 @@ import com.avairebot.utilities.StringReplacementUtil;
 import net.dv8tion.jda.core.entities.Message;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -112,7 +112,7 @@ public abstract class Command extends Reflectionable {
      *                JDA message event that invoked the command.
      * @return Never-null, the command description.
      */
-    public String getDescription(CommandContext context) {
+    public String getDescription(@Nullable CommandContext context) {
         return getDescription();
     }
 
@@ -123,7 +123,7 @@ public abstract class Command extends Reflectionable {
      * @return Never-null, the command description.
      */
     public String getDescription() {
-        throw new MissingCommandDescriptionException(this);
+        return getDescription(null);
     }
 
     /**

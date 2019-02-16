@@ -40,6 +40,7 @@ import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.TextChannel;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Collections;
@@ -58,8 +59,10 @@ public class ModlogReasonCommand extends Command {
     }
 
     @Override
-    public String getDescription(CommandContext context) {
-        String prefix = context.isGuildMessage() ? generateCommandPrefix(context.getMessage()) : DiscordConstants.DEFAULT_COMMAND_PREFIX;
+    public String getDescription(@Nullable CommandContext context) {
+        String prefix = context != null && context.isGuildMessage()
+            ? generateCommandPrefix(context.getMessage())
+            : DiscordConstants.DEFAULT_COMMAND_PREFIX;
 
         return String.format(
             "Sets the reason for an old modlog case, this command requires the server has a modlog channel set using the `%smodlog` command.\n%s",

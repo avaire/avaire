@@ -28,6 +28,7 @@ import com.avairebot.contracts.commands.CommandSource;
 import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.exceptions.InvalidCommandPrefixException;
+import com.avairebot.exceptions.MissingCommandDescriptionException;
 import com.avairebot.metrics.Metrics;
 import com.avairebot.middleware.MiddlewareHandler;
 import net.dv8tion.jda.core.entities.Message;
@@ -268,7 +269,14 @@ public class CommandHandler {
     public static void register(@Nonnull Command command) {
         Category category = CategoryHandler.fromCommand(command);
         Checks.notNull(category, String.format("%s :: %s", command.getName(), "Invalid command category, command category"));
-        Checks.notNull(command.getDescription(new FakeCommandMessage()), String.format("%s :: %s", command.getName(), "Command description"));
+
+        try {
+            Checks.notNull(command.getDescription(new FakeCommandMessage()), String.format("%s :: %s", command.getName(), "Command description"));
+            Checks.notNull(command.getDescription(null), String.format("%s :: %s", command.getName(), "Command description with null"));
+            Checks.notNull(command.getDescription(), String.format("%s :: %s", command.getName(), "Command description with no arguments"));
+        } catch (StackOverflowError e) {
+            throw new MissingCommandDescriptionException(command);
+        }
 
         for (String trigger : command.getTriggers()) {
             for (CommandContainer container : COMMANDS) {
@@ -312,5 +320,26 @@ public class CommandHandler {
      */
     public static Collection<CommandContainer> getCommands() {
         return COMMANDS;
+    }
+
+    private static boolean hasImplementedADescriptionMethod(Command command) {
+        try {
+            AvaIre.getLogger().info("{} called hasImplementedADescriptionMethod::withArgs", command.getClass().getTypeName());
+            //noinspection JavaReflectionMemberAccess
+            command.getClass().getMethod("getDescription", CommandMessage.class);
+
+            return true;
+        } catch (NoSuchMethodException ignored) {
+        }
+
+        try {
+            AvaIre.getLogger().info("{} called hasImplementedADescriptionMethod::noArgs", command.getClass().getTypeName());
+            command.getClass().getMethod("getDescription");
+
+            return true;
+        } catch (NoSuchMethodException ignored) {
+        }
+
+        return false;
     }
 }
