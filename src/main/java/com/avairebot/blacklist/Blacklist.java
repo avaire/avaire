@@ -96,7 +96,7 @@ public class Blacklist {
      * @return <code>True</code> if the user is on the blacklist, <code>False</code> otherwise.
      */
     public boolean isBlacklisted(@Nonnull User user) {
-        if (avaire.getBotAdmins().isAdmin(user.getId()).isAdmin()) {
+        if (avaire.getBotAdmins().getUserById(user.getIdLong(), true).isAdmin()) {
             return false;
         }
 
