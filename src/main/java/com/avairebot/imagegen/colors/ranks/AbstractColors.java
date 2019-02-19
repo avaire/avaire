@@ -26,24 +26,24 @@ import com.avairebot.contracts.imagegen.BackgroundRankColors;
 import javax.annotation.Nonnull;
 import java.awt.*;
 
-public class SakuraColors extends BackgroundRankColors {
+public class AbstractColors extends BackgroundRankColors {
 
-	@Nonnull
+    @Nonnull
     @Override
     public Color getBackgroundColor() {
         return makeColor(0, 0, 0, 0);
     }
-	
+
     @Nonnull
     @Override
     public Color getMainTextColor() {
-        return makeColor(25, 25, 25, 100);
+        return makeColor(255, 255, 255, 100);
     }
 
     @Nonnull
     @Override
     public Color getSecondaryTextColor() {
-        return makeColor(25, 25, 25, 100);
+        return makeColor(255, 255, 255, 100);
     }
 
     @Nonnull
@@ -55,7 +55,7 @@ public class SakuraColors extends BackgroundRankColors {
     @Nonnull
     @Override
     public Color getExperienceForegroundColor() {
-        return makeColor(255, 209, 209, 70);
+        return makeColor(25, 25, 25, 65);
     }
 
     @Nonnull
