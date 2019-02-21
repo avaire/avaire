@@ -68,8 +68,8 @@ administration:
     AiCommand:
         message: "Le module Artificial Intelligence` a été **:status** pour le :channel channel."
         status:
-            activée: "Activé"
-            désactivé: "Désactivé"
+            enabled: "Activé"
+            disabled: "Désactivé"
 
     AliasCommand:
         noSlotsLeft: "Le serveur n'a plus de slots d'alias, vous pouvez supprimer des alias existants pour libérer des slots."
@@ -95,7 +95,7 @@ administration:
         success: "**:target** a été définitivement banni par :user pour \":reason\""
         failedToBan: "Échec du bannissement **:target** dû à une erreur: :error"
 
-    CommandCategories:
+    CategoriesCommand:
         title: "Statut de la catégorie pour #{0}"
         status: "emoteEnabled Enabled :emoteDisabledInChannel Disabled in Channel :emoteDisabledGlobally DisabledGlobally Disabled"
     
@@ -141,7 +141,7 @@ administration:
             normal: "Envoyer des messages d'au revoir par des messages normaux."
 
     IAmCommand:
-        notSelfAssignablr: ":role invalide de l'utilisateur, :role n'est pas un rôle auto-assignable."
+        notSelfAssignable: ":role invalide de l'utilisateur, :role n'est pas un rôle auto-assignable."
         roleIsHigherInTheHierarchy: ":user , Le rôle est plus élevé dans la hiérarchie des rôles, je ne peux pas donner/supprimer le rôle :role à des personnes."
         message: ":user Tu as maintenant le rôle :role!"
 
