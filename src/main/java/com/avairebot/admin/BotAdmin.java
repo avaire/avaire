@@ -26,61 +26,119 @@ import com.avairebot.shared.DiscordConstants;
 import com.avairebot.utilities.RoleUtil;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Role;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.HashSet;
 import java.util.Set;
 
 public class BotAdmin {
 
-    private final Set<String> botAdmins;
+    private static final Logger log = LoggerFactory.getLogger(BotAdmin.class);
+    private static final AdminUser nullUser = new AdminUser(AdminType.USER);
+
+    private final Set<AdminUser> botAdmins;
     private final AvaIre avaire;
 
     public BotAdmin(AvaIre avaire, Set<String> botAdmins) {
         this.avaire = avaire;
-        this.botAdmins = botAdmins;
+        this.botAdmins = new HashSet<>();
+
+        for (String userId : botAdmins) {
+            try {
+                this.botAdmins.add(new AdminUser(
+                    Long.parseLong(userId), AdminType.BOT_ADMIN
+                ));
+            } catch (NumberFormatException e) {
+                log.warn("{} is an invalid bot ID, the ID have not been added to the bot admin whitelist.",
+                    userId
+                );
+            }
+        }
     }
 
     /**
-     * Checks if the given string exists in the {@link #botAdmins bot admins} set.
+     * Gets the admin user matching the given user ID, this method acts as
+     * a shortcut for calling {@link #getUserById(String, boolean)} with
+     * the boolean argument set to false.
      *
-     * @param string The string that should be checked if it exists in the bot admin set.
-     * @return <code>True</code> if the given string is not <code>NULL</code> and exists
-     * in the bot admins list, <code>False</code> otherwise.
+     * @param userId The ID of the user that should be returned.
+     * @return The bot admin user for the given user ID.
      */
-    public AdminType isAdmin(@Nullable String string) {
-        return isAdmin(string, false);
+    @Nonnull
+    public AdminUser getUserById(@Nullable String userId) {
+        return getUserById(userId, false);
     }
 
     /**
-     * Checks if the given string exists in the {@link #botAdmins bot admins} set, if the
-     * <code>checkRole</code> option is set to true, the string will also be tried to
-     * matched with a user ID, and checked to see if the user has the special
-     * {@link DiscordConstants#BOT_ADMIN_EXCEPTION_ROLE bot admin role}.
+     * Gets the admin user matching the given user ID, the {@code skipRoleCheck} argument
+     * will be used to determine if the bot admin role should be checked for or not.
      *
-     * @param string    The string that should be checked if it exists in the bot admin set.
-     * @param checkRole Determines if the role check should run as well.
-     * @return <code>True</code> if the given string is not <code>NULL</code> and either
-     * exists in the bot admins list, or if the given string is a user ID and the
-     * user has the special admin role, <code>False</code> otherwise.
+     * @param userId        The ID of the user that should be returned.
+     * @param skipRoleCheck Determines if the bot admin check should be preformed or not.
+     * @return The bot admin user for the given user ID.
      */
-    public AdminType isAdmin(@Nullable String string, boolean checkRole) {
-        if (string == null) {
-            return AdminType.USER;
-        }
-
-        if (botAdmins.contains(string)) {
-            return AdminType.BOT_ADMIN;
-        }
-
-        if (!checkRole) {
-            return AdminType.USER;
+    @Nonnull
+    public AdminUser getUserById(@Nullable String userId, boolean skipRoleCheck) {
+        if (userId == null) {
+            return nullUser;
         }
 
         try {
-            return isRoleAdmin(Long.parseLong(string));
+            return getUserById(Long.parseLong(userId), skipRoleCheck);
         } catch (NumberFormatException e) {
-            return AdminType.USER;
+            return nullUser;
         }
+    }
+
+    /**
+     * Gets the admin user matching the given user ID, this method acts as
+     * a shortcut for calling {@link #getUserById(long, boolean)} with
+     * the boolean argument set to false.
+     *
+     * @param userId The ID of the user that should be returned.
+     * @return The bot admin user for the given user ID.
+     */
+    @Nonnull
+    public AdminUser getUserById(long userId) {
+        return getUserById(userId, false);
+    }
+
+    /**
+     * Gets the admin user matching the given user ID, the {@code skipRoleCheck} argument
+     * will be used to determine if the bot admin role should be checked for or not.
+     *
+     * @param userId        The ID of the user that should be returned.
+     * @param skipRoleCheck Determines if the bot admin check should be preformed or not.
+     * @return The bot admin user for the given user ID.
+     */
+    @Nonnull
+    public AdminUser getUserById(long userId, boolean skipRoleCheck) {
+        AdminUser user = getUserFromBotAdminSet(userId);
+        if (user != null) {
+            return user;
+        }
+        return skipRoleCheck ?
+            nullUser : new AdminUser(userId, getRoleAdminType(userId));
+    }
+
+    /**
+     * Gets the user from the bot admins set with
+     * a matching user ID to the one given.
+     *
+     * @param userId The user ID to get te admin user for.
+     * @return Possibly-null, the user matching the given user id.
+     */
+    @Nullable
+    private AdminUser getUserFromBotAdminSet(long userId) {
+        for (AdminUser user : botAdmins) {
+            if (user.getUserId() == userId) {
+                return user;
+            }
+        }
+        return null;
     }
 
     /**
@@ -91,7 +149,7 @@ public class BotAdmin {
      * @return <code>True</code> if the user has the bot admin role on the AvaIre Central
      * support server, <code>False</code> otherwise.
      */
-    public AdminType isRoleAdmin(long userId) {
+    private AdminType getRoleAdminType(long userId) {
         Role role = avaire.getShardManager().getRoleById(DiscordConstants.BOT_ADMIN_EXCEPTION_ROLE);
         if (role == null) {
             return AdminType.USER;

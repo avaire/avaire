@@ -200,7 +200,7 @@ public class PlayCommand extends Command {
             return string;
         }
 
-        if (string.startsWith("local:") && avaire.getBotAdmins().isAdmin(requester.getId()).isAdmin()) {
+        if (string.startsWith("local:") && avaire.getBotAdmins().getUserById(requester.getIdLong()).isAdmin()) {
             return string.substring(6, string.length());
         }
 
