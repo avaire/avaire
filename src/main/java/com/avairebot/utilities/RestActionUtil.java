@@ -24,10 +24,20 @@ package com.avairebot.utilities;
 import net.dv8tion.jda.core.exceptions.ErrorResponseException;
 import net.dv8tion.jda.core.requests.ErrorResponse;
 import net.dv8tion.jda.core.requests.RestAction;
+import okhttp3.internal.http2.StreamResetException;
+import org.apache.http.ConnectionClosedException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.net.SocketTimeoutException;
 import java.util.function.Consumer;
 
 public class RestActionUtil {
+
+    /**
+     * The slf4j rest action utility logger instance.
+     */
+    public static final Logger log = LoggerFactory.getLogger(RestActionUtil.class);
 
     /**
      * This function does nothing other than work as a rest
@@ -51,6 +61,19 @@ public class RestActionUtil {
             }
         }
 
+        if (isOkHttpConnectionError(error)) {
+            log.warn("RestAction queue resulted in a {}: {}",
+                error.getClass().getSimpleName(), error.getMessage(), error
+            );
+            return; // Ignore OkHttp connection errors and simply warn the user instead
+        }
+
         RestAction.DEFAULT_FAILURE.accept(error);
     };
+
+    private static boolean isOkHttpConnectionError(Throwable error) {
+        return error instanceof StreamResetException
+            || error instanceof SocketTimeoutException
+            || error instanceof ConnectionClosedException;
+    }
 }
