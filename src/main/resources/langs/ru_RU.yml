@@ -7,6 +7,7 @@ errors:
     mustBeConnectedToVoice: 'Для использования этой команды необходимо подключиться к голосовому каналу!'
     mustBeConnectedToSameChannel: 'Вы должны быть подключены к тому же голосовому каналу, в котором я {0}!'
     missingMusicQueue: 'Отсутствует музыкальный `запрос`, Вы должны вставить ссылку на трек, которую хотите послушать, или, по крайней мере, дать мне название трека!'
+    cantMentionEveryone: "You don't have permissions to mention everyone."
     requireLevelFeatureToBeEnabled: 'Эта команда требует, чтобы функция `Уровни & Опыт` была включена для сервера. Вы можете попросить администратора сервера включить эту функциию'
     errorOccurredWhileLoading: 'Произошла ошибка при загрузке {0}, повторите попытку, если проблема не исчезнет, сообщите об этом одному из администраторов или на сервер поддержки бота.'
 
@@ -46,6 +47,15 @@ administration:
     AddSelfAssignableRoleCommand:
         noSlotsLeft: "The server doesn't have any more self-assignable role slots, you can remove existing self-assignable roles to free up slots."
         success: "Role **:role** role has been added to the self-assignable list.\nThe server has `:slots` more self-assignable roles slots available."
+
+    AdministrateExperienceCommand:
+        cantUseForBots: "You can't add, remove, or reset XP for bot accounts since they don't earn any, please select a normal user when using this command."
+        invalidAmountGiven: "The `amount` property must between 1 and {0} add or take XP from a user."
+        failedToSaveChanges: "Failed to save the changes to the database, please try again, if the error continues to happen, please contact support on the official [AvaIre support server](https://discord.gg/gt2FWER)."
+        success:
+            add: "**:amount** XP have been given to :target, they now have **:newAmount** XP."
+            take: "**:amount** XP have been taken from :target, they now have **:newAmount** XP."
+            reset: ":target has successfully had their XP reset."
 
     AiCommand:
         message: "The `Artificial Intelligence` module has been **:status** for the :channel channel."
@@ -556,10 +566,18 @@ music:
         successMultipleNote: "\nAnd **{0}** more songs were removed from the queue."
 
     RepeatMusicQueueCommand:
-        error: 'Нечего повторять, сначала попросите музыку `{0}play`'
-        success: 'Повтор музыкальной очереди завершен `:status`'
-        enabled: 'ВКЛЮЧЕН'
-        disabled: 'ОТКЛЮЧЕН'
+        error: 'There is nothing to repeat, request music first with `{0}play`'
+        title: 'Current repeat mode: {0}'
+        message: "The music player repeat status have been successfully changed to **:state**, this means:\n\n:note"
+        footer: 'Use "{0} <repeat-mode>" to set the repeat mode.'
+        states:
+            single: 'One'
+            all: 'All'
+            loopoff: 'Off'
+        notes:
+            single: 'The music player will repeat the song that is currently playing without going to the next song in the queue.\n**Note:** This also mutes "Now Playing" messages so the chat is not spammed with the same song over and over again.'
+            all: 'The music player will repeat every song in the queue, after a song finishes playing it will be re-added to the end of the queue automatically.'
+            loopoff: 'The music player will not loop, when a song finishes playing it will get removed from the queue and the next track will begin playing.'
 
     ResumeCommand:
         error: 'Нечего возобновлять, сначала попросите музыку `{0}play`'

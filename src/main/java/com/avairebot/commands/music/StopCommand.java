@@ -96,6 +96,7 @@ public class StopCommand extends Command {
         String guildId = context.getGuild().getId();
         int size = musicManager.getScheduler().getQueue().size();
 
+        musicManager.setRepeatState(GuildMusicManager.RepeatState.LOOPOFF);
         musicManager.getPlayer().stopTrack();
         musicManager.getScheduler().getQueue().clear();
 

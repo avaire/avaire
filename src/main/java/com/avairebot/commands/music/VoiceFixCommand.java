@@ -34,6 +34,7 @@ import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -52,8 +53,8 @@ public class VoiceFixCommand extends Command {
     }
 
     @Override
-    public String getDescription(CommandContext context) {
-        String prefix = context.isGuildMessage()
+    public String getDescription(@Nullable CommandContext context) {
+        String prefix = context != null && context.isGuildMessage()
             ? generateCommandPrefix(context.getMessage())
             : DiscordConstants.DEFAULT_COMMAND_PREFIX;
 

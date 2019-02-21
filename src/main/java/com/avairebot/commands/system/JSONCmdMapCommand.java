@@ -73,7 +73,7 @@ public class JSONCmdMapCommand extends SystemCommand {
                 JSONCommand command = new JSONCommand();
 
                 command.name = container.getCommand().getName();
-                command.description = container.getCommand().getDescription(context);
+                command.description = container.getCommand().getDescription(null);
                 command.usage = container.getCommand().getUsageInstructions();
                 command.example = container.getCommand().getExampleUsage();
                 command.triggers = container.getCommand().getTriggers();

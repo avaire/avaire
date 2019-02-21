@@ -89,6 +89,10 @@ public class SayCommand extends Command {
             return handleNormalCommand(context, args);
         }
 
+        if (context.mentionsEveryone() && !canMentionEveryone(context)) {
+            return sendErrorMessage(context, "errors.cantMentionEveryone");
+        }
+
         Channel channel = MentionableUtil.getChannel(context.getMessage(), args);
         if (channel == null || !(channel instanceof TextChannel)) {
             return handleNormalCommand(context, args);
@@ -126,5 +130,11 @@ public class SayCommand extends Command {
     private boolean hasRequiredPermissionsForChannel(Member member, TextChannel channel) {
         return member.hasPermission(channel, Permission.MESSAGE_WRITE)
             && member.hasPermission(channel, Permission.MESSAGE_MANAGE);
+    }
+
+    private boolean canMentionEveryone(CommandMessage context) {
+        return context.getMember().hasPermission(
+            context.getChannel(), Permission.MESSAGE_MENTION_EVERYONE
+        );
     }
 }

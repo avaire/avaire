@@ -24,8 +24,10 @@ package com.avairebot.database.transformers;
 import com.avairebot.contracts.database.transformers.Transformer;
 import com.avairebot.database.collection.DataRow;
 import com.avairebot.database.controllers.PurchaseController;
+import com.avairebot.level.LevelManager;
 
 import javax.annotation.Nonnull;
+import java.math.BigInteger;
 
 public class PlayerTransformer extends Transformer {
 
@@ -49,7 +51,13 @@ public class PlayerTransformer extends Transformer {
             usernameRaw = data.get("username").toString();
             discriminator = data.getString("discriminator");
             avatarId = data.getString("avatar");
-            experience = data.getLong("experience", 0);
+
+            BigInteger experience = new BigInteger(data.getString("experience", "100"));
+            if (experience.compareTo(new BigInteger(String.valueOf(LevelManager.getHardCap()))) >= 0) {
+                this.experience = LevelManager.getHardCap();
+            } else {
+                this.experience = experience.longValue();
+            }
         }
 
         reset();
@@ -95,7 +103,11 @@ public class PlayerTransformer extends Transformer {
         return experience;
     }
 
-    public void incrementExperienceBy(int amount) {
+    public void setExperience(long experience) {
+        this.experience = experience;
+    }
+
+    public void incrementExperienceBy(long amount) {
         experience = experience + amount;
     }
 

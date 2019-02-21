@@ -7,6 +7,7 @@ errors:
     mustBeConnectedToVoice: 'Devi essere connesso ad un canale vocale per utilizzare questo comando!'
     mustBeConnectedToSameChannel: 'Devi essere connesso nel mio stesso canale vocale. {0}!'
     missingMusicQueue: 'Link o titolo mancante nella `ricerca`, devi includere un link valido alla canzone che vuoi riprodurre, o almeno darmi un titolo da cercare!'
+    cantMentionEveryone: "You don't have permissions to mention everyone."
     requireLevelFeatureToBeEnabled: "Questo comando richiede che la funzionalità `Livelli ed Esperienza` sia abilitata per questo server, puoi chiedere ad un amministratore del server di abilitarla con `{0}`"
     errorOccurredWhileLoading: 'Errore caricando {0}, prova di nuovo, se il problema persiste segnalalo ad uno degli sviluppatori sul server [AvaIre support server](https://discord.gg/gt2FWER).'
 
@@ -46,6 +47,15 @@ administration:
     AddSelfAssignableRoleCommand:
         noSlotsLeft: "Il server non ha più slot per i ruoli auto-assegnabili, è possibile rimuovere i ruoli auto-assegnabili per liberare gli slot."
         success: "Il ruolo **:role** è stato aggiunto alla lista dei ruoli auto-assegnabili.\nIl server ha ancora `:slots` slot liberi per i ruoli auto-assegnabili."
+
+    AdministrateExperienceCommand:
+        cantUseForBots: "You can't add, remove, or reset XP for bot accounts since they don't earn any, please select a normal user when using this command."
+        invalidAmountGiven: "The `amount` property must between 1 and {0} add or take XP from a user."
+        failedToSaveChanges: "Failed to save the changes to the database, please try again, if the error continues to happen, please contact support on the official [AvaIre support server](https://discord.gg/gt2FWER)."
+        success:
+            add: "**:amount** XP have been given to :target, they now have **:newAmount** XP."
+            take: "**:amount** XP have been taken from :target, they now have **:newAmount** XP."
+            reset: ":target has successfully had their XP reset."
 
     AiCommand:
         message: "Il modulo `Intelligenza Artificiale` è stato **:status** per il canale :channel."
@@ -555,10 +565,18 @@ music:
         successMultipleNote: "\nE altri **{0}** brani sono stati rimossi dalla coda."
 
     RepeatMusicQueueCommand:
-        error: 'Nulla da ripetere, richiedi prima musica con `{0}play`'
-        success: 'La ripetizione della coda musicale è stata impostata su `:status`.'
-        enabled: 'ON'
-        disabled: 'OFF'
+        error: 'There is nothing to repeat, request music first with `{0}play`'
+        title: 'Current repeat mode: {0}'
+        message: "The music player repeat status have been successfully changed to **:state**, this means:\n\n:note"
+        footer: 'Use "{0} <repeat-mode>" to set the repeat mode.'
+        states:
+            single: 'One'
+            all: 'All'
+            loopoff: 'Off'
+        notes:
+            single: 'The music player will repeat the song that is currently playing without going to the next song in the queue.\n**Note:** This also mutes "Now Playing" messages so the chat is not spammed with the same song over and over again.'
+            all: 'The music player will repeat every song in the queue, after a song finishes playing it will be re-added to the end of the queue automatically.'
+            loopoff: 'The music player will not loop, when a song finishes playing it will get removed from the queue and the next track will begin playing.'
 
     ResumeCommand:
         error: 'Nulla da riprendere, richiedi prima musica con `{0}play`'

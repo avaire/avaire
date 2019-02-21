@@ -27,6 +27,9 @@ import com.avairebot.contracts.commands.Command;
 import com.avairebot.time.Carbon;
 import com.avairebot.utilities.NumberUtil;
 import com.avairebot.utilities.RestActionUtil;
+import net.dv8tion.jda.core.EmbedBuilder;
+import net.dv8tion.jda.core.MessageBuilder;
+import net.dv8tion.jda.core.entities.Message;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -105,13 +108,19 @@ public class RemindCommand extends Command {
             return sendErrorMessage(context, "errors.missingArgument", "message");
         }
 
-        String message = String.format("%s, %s you asked to be reminded about %s",
-            context.getAuthor().getAsMention(),
-            Carbon.now().subSeconds(time).diffForHumans(),
-            String.join(" ", Arrays.copyOfRange(args, 2, args.length))
-        );
-
-        handleReminderMessage(context, message, time, respondInDM);
+        handleReminderMessage(
+            context,
+            new MessageBuilder()
+                .setContent(String.format("%s, %s you asked to be reminded about:",
+                    context.getAuthor().getAsMention(),
+                    Carbon.now().subSeconds(time).diffForHumans()
+                ))
+                .setEmbed(new EmbedBuilder()
+                    .setDescription(String.join(" ", Arrays.copyOfRange(args, 2, args.length)))
+                    .build()
+                ).build(),
+            time,
+            respondInDM);
 
         context.makeInfo("Alright :user, in :time I'll remind you about :message")
             .set("time", Carbon.now().subSeconds(time).diffForHumans(true))
@@ -121,7 +130,7 @@ public class RemindCommand extends Command {
         return true;
     }
 
-    private void handleReminderMessage(CommandMessage context, String message, int time, boolean respondInDM) {
+    private void handleReminderMessage(CommandMessage context, Message message, int time, boolean respondInDM) {
         if (respondInDM) {
             context.getAuthor().openPrivateChannel().queue(privateChannel -> {
                 privateChannel.sendMessage(message).queueAfter(time, TimeUnit.SECONDS, null, RestActionUtil.ignore);

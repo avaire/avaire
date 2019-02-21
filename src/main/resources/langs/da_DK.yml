@@ -7,6 +7,7 @@ errors:
     mustBeConnectedToVoice: 'Du skal være forbundet til en talekanal for at bruge denne kommando!'
     mustBeConnectedToSameChannel: 'Du skal være forbundet til den samme talekanal, jeg er i for at {0}!'
     missingMusicQueue: 'Mangler musik `forespørgsel`, skal du inkludere et link til sangen, du vil lytte til, eller i det mindste give mig en sangtitel!'
+    cantMentionEveryone: "You don't have permissions to mention everyone."
     requireLevelFeatureToBeEnabled: "Denne kommando kræver, at `Level og Experience' funktionen er aktiveret for serveren, du kan spørge en serveradministrator, hvis de vil aktivere den med `{0}`"
     errorOccurredWhileLoading: "Der opstod en fejl under indlæsningen af {0}. Prøv venligst igen. Hvis problemet fortsætter kan du rapportere dette til et af mine udviklere på [AvaIre support serveren](https://discord.gg/gt2FWER)."
 
@@ -46,6 +47,15 @@ administration:
     AddSelfAssignableRoleCommand:
         noSlotsLeft: "Serveren har ikke flere selvtilladelige rolle pladser, du kan fjerne eksisterende selvtilladelige roller for at frigøre plads."
         success: "**:role** rollen er blevet tilføjet til selvtilladelige listen.\nServeren har `:slots` flere selvtilladelige roller pladser til rådighed."
+
+    AdministrateExperienceCommand:
+        cantUseForBots: "You can't add, remove, or reset XP for bot accounts since they don't earn any, please select a normal user when using this command."
+        invalidAmountGiven: "The `amount` property must between 1 and {0} add or take XP from a user."
+        failedToSaveChanges: "Failed to save the changes to the database, please try again, if the error continues to happen, please contact support on the official [AvaIre support server](https://discord.gg/gt2FWER)."
+        success:
+            add: "**:amount** XP have been given to :target, they now have **:newAmount** XP."
+            take: "**:amount** XP have been taken from :target, they now have **:newAmount** XP."
+            reset: ":target has successfully had their XP reset."
 
     AiCommand:
         message: "Modellen `Artificial Intelligence` er blivet **:status** for :channel kanalen."
@@ -555,10 +565,18 @@ music:
         successMultipleNote: "\nAnd **{0}** more songs were removed from the queue."
 
     RepeatMusicQueueCommand:
-        error: 'Der er ikke noget at gentage, start noget musik først med `{0}play`'
-        success: 'Musikkøens looping er blevet `:status`.'
-        enabled: 'aktiveret'
-        disabled: 'deaktiveret'
+        error: 'There is nothing to repeat, request music first with `{0}play`'
+        title: 'Current repeat mode: {0}'
+        message: "The music player repeat status have been successfully changed to **:state**, this means:\n\n:note"
+        footer: 'Use "{0} <repeat-mode>" to set the repeat mode.'
+        states:
+            single: 'One'
+            all: 'All'
+            loopoff: 'Off'
+        notes:
+            single: 'The music player will repeat the song that is currently playing without going to the next song in the queue.\n**Note:** This also mutes "Now Playing" messages so the chat is not spammed with the same song over and over again.'
+            all: 'The music player will repeat every song in the queue, after a song finishes playing it will be re-added to the end of the queue automatically.'
+            loopoff: 'The music player will not loop, when a song finishes playing it will get removed from the queue and the next track will begin playing.'
 
     ResumeCommand:
         error: 'Intet at genoptage, start noget musik først med `{0}play`'

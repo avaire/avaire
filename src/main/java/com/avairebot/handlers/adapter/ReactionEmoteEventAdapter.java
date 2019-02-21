@@ -27,6 +27,7 @@ import com.avairebot.contracts.handlers.EventAdapter;
 import com.avairebot.database.collection.Collection;
 import com.avairebot.database.collection.DataRow;
 import com.avairebot.database.controllers.ReactionController;
+import com.avairebot.database.query.QueryBuilder;
 import com.avairebot.database.transformers.ReactionTransformer;
 import com.avairebot.scheduler.tasks.DrainReactionRoleQueueTask;
 import com.avairebot.utilities.RoleUtil;
@@ -54,24 +55,36 @@ public class ReactionEmoteEventAdapter extends EventAdapter {
             return;
         }
 
+        boolean wasActionTaken = false;
         for (DataRow row : collection) {
             ReactionTransformer transformer = new ReactionTransformer(row);
 
             if (transformer.removeReaction(event.getEmote())) {
                 try {
-                    avaire.getDatabase().newQueryBuilder(Constants.REACTION_ROLES_TABLE_NAME)
+                    QueryBuilder query = avaire.getDatabase().newQueryBuilder(Constants.REACTION_ROLES_TABLE_NAME)
                         .useAsync(true)
                         .where("guild_id", transformer.getGuildId())
-                        .where("message_id", transformer.getMessageId())
-                        .update(statement -> {
+                        .where("message_id", transformer.getMessageId());
+
+                    if (transformer.getRoles().isEmpty()) {
+                        query.delete();
+                    } else {
+                        query.update(statement -> {
                             statement.set("roles", AvaIre.gson.toJson(transformer.getRoles()));
                         });
+                    }
+
+                    wasActionTaken = true;
                 } catch (SQLException ignored) {
                     // Since the query is running asynchronously the error will never
-                    // actually  be catched here since the database thread running
+                    // actually be catched here since the database thread running
                     // the query will log the error instead.
                 }
             }
+        }
+
+        if (wasActionTaken) {
+            ReactionController.forgetCache(event.getGuild().getIdLong());
         }
     }
 

@@ -44,6 +44,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -66,8 +67,10 @@ public class RankBackgroundCommand extends Command {
     }
 
     @Override
-    public String getDescription(CommandContext context) {
-        String prefix = context.isGuildMessage() ? generateCommandPrefix(context.getMessage()) : DiscordConstants.DEFAULT_COMMAND_PREFIX;
+    public String getDescription(@Nullable CommandContext context) {
+        String prefix = context != null && context.isGuildMessage()
+            ? generateCommandPrefix(context.getMessage())
+            : DiscordConstants.DEFAULT_COMMAND_PREFIX;
 
         return String.format(String.join("\n",
             "Rank backgrounds are used for the `%srank` command, when a user has a rank",
@@ -108,7 +111,7 @@ public class RankBackgroundCommand extends Command {
 
     @Override
     public List<String> getTriggers() {
-        return Arrays.asList("backgrounds", "rankbg", "levelbg");
+        return Arrays.asList("backgrounds", "rankbg", "levelbg", "bg");
     }
 
     @Override
@@ -191,7 +194,7 @@ public class RankBackgroundCommand extends Command {
         });
 
         message.add("-------------------------------");
-        message.add(paginator.generateFooter(generateCommandTrigger(context.getMessage()) + " "));
+        message.add(paginator.generateFooter(generateCommandTrigger(context.getMessage()) + " list"));
 
         context.makeInfo(String.join("\n", message))
             .setTitle(context.i18n("listTitle", paginator.getTotal()))

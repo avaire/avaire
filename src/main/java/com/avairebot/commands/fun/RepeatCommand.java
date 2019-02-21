@@ -24,6 +24,7 @@ package com.avairebot.commands.fun;
 import com.avairebot.AvaIre;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
+import net.dv8tion.jda.core.Permission;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -66,8 +67,19 @@ public class RepeatCommand extends Command {
             return sendErrorMessage(context, "errors.missingArgument", "message");
         }
 
+        if (context.mentionsEveryone() && !canMentionEveryone(context)) {
+            return sendErrorMessage(context, "errors.cantMentionEveryone");
+        }
+
         context.getMessageChannel().sendMessage(context.getContentRaw()).queue();
 
         return true;
+    }
+
+    private boolean canMentionEveryone(CommandMessage context) {
+        return !context.isGuildMessage()
+            || context.getMember().hasPermission(
+            context.getChannel(), Permission.MESSAGE_MENTION_EVERYONE
+        );
     }
 }

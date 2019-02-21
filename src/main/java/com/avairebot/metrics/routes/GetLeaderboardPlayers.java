@@ -31,12 +31,15 @@ import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.metrics.Metrics;
 import com.avairebot.utilities.CacheUtil;
 import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.Role;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import spark.Request;
 import spark.Response;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collections;
 
 public class GetLeaderboardPlayers extends SparkRoute {
 
@@ -60,8 +63,11 @@ public class GetLeaderboardPlayers extends SparkRoute {
             root.put("id", guild.getId());
             root.put("name", guild.getName());
             root.put("enabled", transformer.isLevels());
+            root.put("modifier", transformer.getLevelModifier());
 
             JSONArray users = new JSONArray();
+            JSONArray roles = new JSONArray();
+
             if (transformer.isLevels()) {
                 for (DataRow row : loadTop100(guildId.toString())) {
                     JSONObject user = new JSONObject();
@@ -74,8 +80,36 @@ public class GetLeaderboardPlayers extends SparkRoute {
 
                     users.put(user);
                 }
+
+                if (!transformer.getLevelRoles().isEmpty()) {
+                    ArrayList<Integer> keys = new ArrayList<>(
+                        transformer.getLevelRoles().keySet()
+                    );
+
+                    Collections.sort(keys);
+                    Collections.reverse(keys);
+
+                    for (int level : keys) {
+                        Role role = guild.getRoleById(
+                            transformer.getLevelRoles().get(level)
+                        );
+
+                        if (role == null) {
+                            continue;
+                        }
+
+                        JSONObject roleObj = new JSONObject();
+                        roleObj.put("level", level);
+                        roleObj.put("roleId", role.getId());
+                        roleObj.put("roleName", role.getName());
+                        roleObj.put("roleColor", Integer.toHexString(role.getColorRaw() & 0xffffff));
+                        roles.put(roleObj);
+                    }
+                }
             }
+
             root.put("leaderboard", users);
+            root.put("roles", roles);
 
             return root;
         } catch (NumberFormatException e) {

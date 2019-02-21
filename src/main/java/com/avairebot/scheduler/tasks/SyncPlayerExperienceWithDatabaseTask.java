@@ -58,10 +58,10 @@ public class SyncPlayerExperienceWithDatabaseTask implements Task {
 
             avaire.getDatabase().queryBatch(query, statement -> {
                 for (ExperienceEntity entity : experienceQueue) {
-                    statement.setInt(1, entity.getExperience());
+                    statement.setInt(1, entity.isExcludeLocal() ? 0 : entity.getExperience());
                     statement.setInt(2, entity.getExperience());
-                    statement.setString(3, "" + entity.getUserId());
-                    statement.setString(4, "" + entity.getGuildId());
+                    statement.setString(3, String.valueOf(entity.getUserId()));
+                    statement.setString(4, String.valueOf(entity.getGuildId()));
                     statement.addBatch();
                 }
             });

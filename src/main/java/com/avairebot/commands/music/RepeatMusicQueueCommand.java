@@ -22,6 +22,7 @@
 package com.avairebot.commands.music;
 
 import com.avairebot.AvaIre;
+import com.avairebot.Constants;
 import com.avairebot.audio.AudioHandler;
 import com.avairebot.audio.GuildMusicManager;
 import com.avairebot.commands.CommandMessage;
@@ -49,12 +50,22 @@ public class RepeatMusicQueueCommand extends Command {
 
     @Override
     public String getDescription() {
-        return "Repeats all the songs in the music queue.";
+        return "Repeats all the songs in the music queue or repeats the current song.";
     }
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`:command` - Toggles queue looping on or off.");
+        return Collections.singletonList("`:command <repeat-state>` - Toggles between repeating all, one, or off.");
+    }
+
+    @Override
+    public List<String> getExampleUsage() {
+        return Arrays.asList(
+            "`:command` - Displays current repeat mode",
+            "`:command off` - Turns off repeat",
+            "`:command one` - Loops the currently playing song",
+            "`:command all` - Loops the entire queue"
+        );
     }
 
     @Override
@@ -81,6 +92,15 @@ public class RepeatMusicQueueCommand extends Command {
     public boolean onCommand(CommandMessage context, String[] args) {
         GuildMusicManager musicManager = AudioHandler.getDefaultAudioHandler().getGuildAudioPlayer(context.getGuild());
 
+        if (args.length == 0) {
+            context.makeInfo(context.i18n("notes." + musicManager.getRepeatState().getName()))
+                .setTitle(context.i18n("title", context.i18n("states." + musicManager.getRepeatState().getName())))
+                .setFooter(context.i18n("footer", generateCommandTrigger(context.getMessage())))
+                .queue();
+
+            return true;
+        }
+
         if (!musicManager.isReady() || musicManager.getPlayer().getPlayingTrack() == null) {
             return sendErrorMessage(context, context.i18n("error", generateCommandPrefix(context.getMessage())));
         }
@@ -89,11 +109,37 @@ public class RepeatMusicQueueCommand extends Command {
             return false;
         }
 
-        musicManager.setRepeatQueue(!musicManager.isRepeatQueue());
+        switch (args[0].toLowerCase()) {
+            case "single":
+            case "one":
+            case "s":
+            case "1":
+                musicManager.setRepeatState(GuildMusicManager.RepeatState.SINGLE);
+                if (musicManager.getScheduler().getAudioTrackContainer() != null) {
+                    musicManager.getScheduler().getAudioTrackContainer()
+                        .setMetadata(Constants.AUDIO_HAS_SENT_NOW_PLAYING_METADATA, true);
+                }
+                break;
 
-        context.makeSuccess(context.i18n("success"))
-            .set("status", musicManager.isRepeatQueue()
-                ? context.i18n("enabled") : context.i18n("disabled"))
+            case "all":
+            case "al":
+            case "a":
+                musicManager.setRepeatState(GuildMusicManager.RepeatState.ALL);
+                break;
+
+            case "off":
+            case "of":
+            case "o":
+                musicManager.setRepeatState(GuildMusicManager.RepeatState.LOOPOFF);
+                break;
+
+            default:
+                return sendErrorMessage(context, "errors.invalidProperty", "repeat-state", "repeat state");
+        }
+
+        context.makeSuccess(context.i18n("message"))
+            .set("note", context.i18n("notes." + musicManager.getRepeatState().getName()))
+            .set("state", context.i18n("states." + musicManager.getRepeatState().getName()))
             .queue(message -> message.delete().queueAfter(5, TimeUnit.MINUTES, null, RestActionUtil.ignore));
 
         return true;
