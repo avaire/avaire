@@ -40,14 +40,13 @@ administration:
     AddReactionRoleCommand:
         emoteDoestBelongToServer: "L'émote n'appartient pas à ce serveur, tu peux utiliser seulement les emotes de ce serveur comme emotes de réaction."
         messageHasNoSlots: "Le message n'a plus de slots de rôle de réaction disponibles, vous pouvez supprimer les rôles de réaction existants pour libérer des slots, ou supprimer les messages de rôle de réaction pour ajouter le rôle à un nouveau message."
-        serverHasNoSlots: "Tu ne peux pas créer de nouveaux messages de rôle de réaction, le serveur n'a plus d'emplacements de messages de réaction, tu peux supprimer des messages de rôle de réaction existants pour libérer des emplacements, ou ajouter ton rôle de réaction à un message de réaction s'il y a des emplacements disponibles sur le message pour plusieurs rôles".
+        serverHasNoSlots: "Tu ne peux pas créer de nouveaux messages de rôle de réaction, le serveur n'a plus d'emplacements de messages de réaction, tu peux supprimer des messages de rôle de réaction existants pour libérer des emplacements, ou ajouter ton rôle de réaction à un message de réaction s'il y a des emplacements disponibles sur le message pour plusieurs rôles."
         success: "Le rôle :rôle a été enregistré comme rôle de réaction pour le :emote emote.\nLe message n'a `:roleSlots` plus d'emplacements de rôle de réaction disponibles pour le message, et `:messageSlots' des emplacements réaction-message disponible."
 
-AddSelfAssignableRoleCommand:
+    AddSelfAssignableRoleCommand:
         noSlotsLeft: "Le serveur n'a plus d'emplacements de rôle auto-assignables, tu peux supprimer les rôles auto-assignables existants pour libérer des emplacements."
         success: "Le rôle **:role** a été ajouté à la liste des rôles auto-assignables. Le serveur a `:slots' plus de slots de rôles auto-assignables disponibles."
-    
-    emoteDoestBelongToServer: "The emote does not belong to this server, you can only use emotes from this server as reaction emotes."
+        emoteDoestBelongToServer: "The emote does not belong to this server, you can only use emotes from this server as reaction emotes."
         messageHasNoSlots: "The message doesn't have anymore reaction role slots available, you can remove existing reaction-roles to free up slots, or delete reaction role messages to add the role to a new reaction role message."
         serverHasNoSlots: "Can't create new reaction role messages, the server doesn't have anymore reaction messages slots, you can deleting existing reaction role messages to free up slots, or add your reaction role to a reaction message if there are available slots on the message for more roles."
         success: "The :role role has been registered as an reaction role for the :emote emote.\nThe message has `:roleSlots` more reaction-role slots available for the message, and `:messageSlots` reaction-message slots available."
@@ -95,25 +94,25 @@ AddSelfAssignableRoleCommand:
         success: "**:target** a été définitivement banni par :user pour \":reason\""
         failedToBan: "Échec du bannissement **:target** dû à une erreur: :error"
 
-CommandCategories:
-                title: "Statut de la catégorie pour #{0}"
-                status: "emoteEnabled Enabled :emoteDisabledInChannel Disabled in Channel :emoteDisabledGlobally DisabledGlobally Disabled"
+    CommandCategories:
+        title: "Statut de la catégorie pour #{0}"
+        status: "emoteEnabled Enabled :emoteDisabledInChannel Disabled in Channel :emoteDisabledGlobally DisabledGlobally Disabled"
     
     ChangePrefixCommand:
         missingArgument: "Caractère manquant `category`, vous devez spécifier la catégorie de commande pour laquelle vous voulez changer/réinitialiser le préfixe."
         invalidCategory: "Catégorie `category` donnée invalide, il n'y a pas de catégories de commandes qui sont appelées, ou commence par `{0}``."
         invalidPrefix: "Préfixe de commande donné invalide, `{0}` n'est pas un préfixe valide, tous les préfixes ne doivent **PAS** contenir d'espace et avoir entre 1 et 16 caractères."
         update:
-            global: "Toutes les commandes de chaque catégorie utilisent maintenant le préfixe `:prefix`".
+            global: "Toutes les commandes de chaque catégorie utilisent maintenant le préfixe `:prefix`."
             category: "Toutes les commandes de la catégorie `:category` utilisent maintenant le préfixe `:prefix`."
         reset:
-            global: "Toutes les commandes de chaque catégorie ont été réinitialisées pour utiliser le préfixe `:prefix`".
+            global: "Toutes les commandes de chaque catégorie ont été réinitialisées pour utiliser le préfixe `:prefix`."
             category: "Toutes les commandes de la catégorie `:category` ont été réinitialisées pour utiliser le préfixe `:prefix`."
 
     ChannelLevelCommand:
         invalidChannel: "Channel donné invalide, le channel doit être un channel de texte valide."
         cantTalkInChannel: "Je ne peux pas parler dans le channel {0}, donc aucun utilisateur ne sera récompensé pour avoir parlé dans le channel, si vous voulez que je donne des XP aux utilisateurs, veuillez changer mon niveau de permission pour le channel et je pourrai envoyer des messages dans ce channel."
-        noChannelsWithRewardsDisabled: "Il n' y a actuellement aucun channel avec les récompenses de niveau désactivées, vous pouvez en ajouter un en utilisant le bouton `{0}. <channel>`commande".
+        noChannelsWithRewardsDisabled: "Il n' y a actuellement aucun channel avec les récompenses de niveau désactivées, vous pouvez en ajouter un en utilisant le bouton `{0}. <channel>`commande."
         failedToUpdate: "Si tu n'as pas réussi à sauvegarder les modifications apportées à la base de données, essaie à nouveau, si le problème persiste, contacte un de mes développeurs."
         listChannels: "Toutes les chaînes mentionnées ci-dessous ont actuellement leurs récompenses de niveau désactivées, toutes les chaînes qui ne sont pas sur cette liste ne sont pas affectées. \n\n:channels"
         listChannelsTitle: "Channels with their Level Rewards disabled ({0})"
@@ -134,8 +133,8 @@ CommandCategories:
         message: "The embed option for goodbye messages has been **:status**\n:note"
         changedToDefault: "Le message du moduleGoodbye` par défaut a été remis."
         status:
-            enabled:  "Activé"
-            disabled:  "Désactivé"
+            enabled: "Activé"
+            disabled: "Désactivé"
         note:
             embed: "Les messages d'au revoir seront désormais envoyés en utilisant les messages avec la couleur : {0}"
             normal: "Envoyer des messages d'au revoir par des messages normaux."
@@ -163,31 +162,30 @@ CommandCategories:
         note: "AvaIre supporte plusieurs langues fournies par l'utilisateur que tu peux sélectionner avec cette commande.  Les traductions peuvent ne pas être 100% exactes ou complètes. Pour sélectionner une langue, utilisez `{0}.  <code>`"
     
     LevelAlertsCommand:
-
-        message: "Les alertes de niveau supérieur" a été":status" pour le serveur. "Note"
+        message: "Les alertes de niveau supérieur a été :status pour le serveur.:note"
         note: "\nTous les messages de niveau supérieur seront enregistrés dans le canal <##{0}>."
         status:
-            enabled:  "Activé"
-            disabled:  "Désactivé"
-  
-     LevelCommand:
-        message:  "Niveaux & Expérience" a été `:status` pour le serveur.:note"
-        note: "\nLes alertes de niveau sont actuellement `{0}`, vous pouvez les activer ou les désactiver avec `{1}levelalerts`".
-        status:
-            enabled:  "Activé"
+            enabled: "Activé"
             disabled: "Désactivé"
-    LevelHierarchyCommand:
 
-        invalidTypeGiven:  "Type invalide donné, pour activer ou désactiver la hiérarchie des niveaux, vous devez utiliser "on" ou "off"."
-        message:  "Le niveau supérieur de la hiérarchie a été `:status` pour ce serveur."
-        statusMessage:  "La hiérarchie de niveau supérieur est actuellement `:status`, vous pouvez l'activer ou la désactiver avec `:command`".
+    LevelCommand:
+        message: "Niveaux & Expérience a été `:status` pour le serveur.:note"
+        note: "\nLes alertes de niveau sont actuellement `{0}`, vous pouvez les activer ou les désactiver avec `{1}levelalerts`."
         status:
-            enabled:  "Activé"
-            disabled:  "Désactivéé"
+            enabled: "Activé"
+            disabled: "Désactivé"
+
+    LevelHierarchyCommand:
+        invalidTypeGiven: "Type invalide donné, pour activer ou désactiver la hiérarchie des niveaux, vous devez utiliser \"on\" ou \"off\"."
+        message: "Le niveau supérieur de la hiérarchie a été `:status` pour ce serveur."
+        statusMessage: "La hiérarchie de niveau supérieur est actuellement `:status`, vous pouvez l'activer ou la désactiver avec `:command`."
+        status:
+            enabled: "Activé"
+            disabled: "Désactivéé"
     
     LevelModifierCommand:
-        invalidNumberGiven:  "Modificateur donné invalide, le modificateur doit être un pourcentage positif entre `0,01%`et `500%`".
-        resetToDefault: "Le modificateur de niveau a été réinitialisé en utilisant le modificateur par défaut **:modifier**".
+        invalidNumberGiven: "Modificateur donné invalide, le modificateur doit être un pourcentage positif entre `0,01%`et `500%`."
+        resetToDefault: "Le modificateur de niveau a été réinitialisé en utilisant le modificateur par défaut **:modifier**."
         changedTo: "The level and experience modifier have been change to **:modifier**."
         statusMessage: "The server is currently using a **:modifier** modifier for levels and experience.\n\n**Required XP to reach some levels**\n"
         level: "Level {0}"
@@ -396,7 +394,7 @@ fun:
 
 
     ReverseCommand:
-        palindrome: "Tu as inversé un palindrome, à quoi t'attendais tu ?"
+        palindrome: "Tu as inversé un palindrome, à quoi t'attendais tu?"
 
     RipCommand:
         hasPaidTheirRespects: "**{0}** a rendu hommage."
