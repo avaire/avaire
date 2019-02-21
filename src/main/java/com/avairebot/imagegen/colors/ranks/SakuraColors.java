@@ -28,6 +28,12 @@ import java.awt.*;
 
 public class SakuraColors extends BackgroundRankColors {
 
+	@Nonnull
+    @Override
+    public Color getBackgroundColor() {
+        return makeColor(0, 0, 0, 0);
+    }
+	
     @Nonnull
     @Override
     public Color getBackgroundColor() {
