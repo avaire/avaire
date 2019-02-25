@@ -13,7 +13,7 @@ errors:
 
 levelupMessages:
     - "GG :user, tu as atteinds le niveau **Level :level**"
-    - "Eyy :user, tu viens d'augmenter de niveau! Vous êtes maintenant niveau **Level :level**"
+    - "Eyy :user, tu viens d'augmenter de niveau! Tu es maintenant niveau **Level :level**"
     - "🌟 Tu as atteinds le niveau **Level :level** :user! Félicitations 🌟"
     - "Tu es en 🔥 :user, vous venez d'atteindre le niveau **Level :level**"
     - "Félicitations :user 🎉 Tu viens d'augmenter de niveau! Tu es maintenant niveau **Level :level**"
