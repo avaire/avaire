@@ -814,7 +814,7 @@ utility:
             memory: '{0}Mb / {1}Mb'
         fields:
             author: 'Fejlesztő'
-            botId: 'Bot ID'
+            website: 'Website'
             library: 'Könyvtár'
             database: 'Adatbázis Lekérdezések'
             messages: 'Üzenetek Fogadva'

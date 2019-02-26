@@ -808,7 +808,7 @@ utility:
             memory: '{0}Mb / {1}Mb'
         fields:
             author: 'Forfatter'
-            botId: 'Bot ID'
+            website: 'Website'
             library: 'Bibliotek'
             database: 'DB Queries kørt'
             messages: 'Beskeder modtaget'

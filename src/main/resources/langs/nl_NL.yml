@@ -807,7 +807,7 @@ utility:
             memory: '{0}Mb / {1}Mb'
         fields:
             author: 'Auteur'
-            botId: 'Bot ID'
+            website: 'Website'
             library: 'Bibliotkeek'
             database: 'DB Queries uitgevoerd'
             messages: 'Berichten ontvangen'

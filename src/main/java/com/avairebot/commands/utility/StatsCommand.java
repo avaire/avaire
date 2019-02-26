@@ -97,13 +97,13 @@ public class StatsCommand extends Command {
         }
 
         context.makeEmbeddedMessage(MessageType.INFO,
-            new MessageEmbed.Field(context.i18n("fields.author"), "Senither#0001", true),
-            new MessageEmbed.Field(context.i18n("fields.botId"), context.getJDA().getSelfUser().getId(), true),
+            new MessageEmbed.Field(context.i18n("fields.author"), "[Senither#0001](https://senither.com/)", true),
+            new MessageEmbed.Field(context.i18n("fields.website"), "[avairebot.com](https://avairebot.com/)", true),
             new MessageEmbed.Field(context.i18n("fields.library"), "[JDA](https://github.com/DV8FromTheWorld/JDA)", true),
             new MessageEmbed.Field(context.i18n("fields.database"), getDatabaseQueriesStats(context), true),
             new MessageEmbed.Field(context.i18n("fields.messages"), getMessagesReceivedStats(context), true),
+            new MessageEmbed.Field(context.i18n("fields.commands"), getCommandExecutedStats(context), true),
             new MessageEmbed.Field(context.i18n("fields.shard"), "" + context.getJDA().getShardInfo().getShardId(), true),
-            new MessageEmbed.Field(context.i18n("fields.commands"), NumberUtil.formatNicely(getTotalsFrom(Metrics.commandsReceived.collect())), true),
             new MessageEmbed.Field(context.i18n("fields.memory"), memoryUsage(context), true),
             new MessageEmbed.Field(context.i18n("fields.uptime"), applicationUptime(), true),
             new MessageEmbed.Field(context.i18n("fields.members"), NumberUtil.formatNicely(avaire.getShardEntityCounter().getUsers()), true),
@@ -150,6 +150,10 @@ public class StatsCommand extends Command {
 
     private String getMessagesReceivedStats(CommandMessage context) {
         return formatDynamicValue(context, (int) Metrics.jdaEvents.labels(MessageReceivedEvent.class.getSimpleName()).get());
+    }
+
+    private String getCommandExecutedStats(CommandMessage context) {
+        return formatDynamicValue(context, getTotalsFrom(Metrics.commandsReceived.collect()));
     }
 
     private String memoryUsage(CommandMessage context) {

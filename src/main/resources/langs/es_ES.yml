@@ -808,7 +808,7 @@ utility:
             memory: '{0}MB / {1}MB'
         fields:
             author: 'Autor'
-            botId: 'ID del bot'
+            website: 'Website'
             library: 'Biblioteca'
             database: 'Consultas DB en marcha'
             messages: 'Mensajes recibidos'

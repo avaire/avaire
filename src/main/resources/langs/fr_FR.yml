@@ -816,7 +816,7 @@ utility:
             memory: "{0}Mb / {1}Mb"
         fields:
             author: "Auteur"
-            botId: "Bot ID"
+            website: 'Website'
             library: "Librairie"
             database: "Requêtes BDD Executées"
             messages: "Messages Reçus"
