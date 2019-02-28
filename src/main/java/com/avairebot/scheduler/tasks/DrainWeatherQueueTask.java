@@ -130,7 +130,7 @@ public class DrainWeatherQueueTask implements Task {
                 ), true
             )
             .addField(
-                I18n.getString(textChannel.getGuild(), "utility.WeatherCommand.fields.country"),
+                I18n.getString(textChannel.getGuild(), "utility.WeatherCommand.fields.temperature"),
                 I18n.format("{0}°C | {1}°F",
                     NumberUtil.formatNicelyWithDecimals(service.getTemperature().getTemp()),
                     NumberUtil.formatNicelyWithDecimals((service.getTemperature().getTemp() * (9D / 5D)) + 32)
