@@ -304,6 +304,7 @@ public class RankCommand extends Command {
                 DataRow data = avaire.getDatabase().newQueryBuilder(Constants.PLAYER_EXPERIENCE_TABLE_NAME)
                     .selectRaw("sum(`experience`) - (count(`user_id`) * 100) as `total`")
                     .where("user_id", author.getId())
+                    .where("active", 1)
                     .get().first();
 
                 long total = data == null ? (player == null ? 0 : player.getExperience()) : data.getLong("total");
@@ -322,6 +323,7 @@ public class RankCommand extends Command {
                 .select("user_id as id")
                 .orderBy("experience", "desc")
                 .where("guild_id", context.getGuild().getId())
+                .where("active", 1)
                 .get()
         );
 

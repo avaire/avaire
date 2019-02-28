@@ -107,6 +107,16 @@ public class PlayerController {
                     updateUserData(user);
                 }
 
+                if (!transformer.isActive()) {
+                    avaire.getDatabase()
+                        .newQueryBuilder(Constants.PLAYER_EXPERIENCE_TABLE_NAME)
+                        .where("experiences.user_id", user.getId())
+                        .andWhere("experiences.guild_id", message.getGuild().getId())
+                        .update(statement -> {
+                            statement.set("active", true);
+                        });
+                }
+
                 return mergeWithExperienceEntity(avaire, transformer);
             } catch (Exception ex) {
                 AvaIre.getLogger().error(ex.getMessage(), ex);

@@ -201,6 +201,7 @@ public class GlobalLeaderboardCommand extends Command {
                 return avaire.getDatabase().query("SELECT " +
                     "`user_id`, `username`, `discriminator`, (sum(`global_experience`) - (count(`user_id`) * 100)) + 100 as `total` " +
                     "FROM `experiences` " +
+                    "WHERE `active` = 1 " +
                     "GROUP BY `user_id` " +
                     "ORDER BY `total` DESC " +
                     "LIMIT 100;"
@@ -218,7 +219,7 @@ public class GlobalLeaderboardCommand extends Command {
                 return avaire.getDatabase().query(String.format(
                     "SELECT COUNT(*) AS rank FROM (" +
                         "    SELECT `user_id` FROM `experiences` GROUP BY `user_id` HAVING SUM(`global_experience`) > (" +
-                        "        SELECT SUM(`global_experience`) FROM `experiences` WHERE `user_id` = '%s'" +
+                        "        SELECT SUM(`global_experience`) FROM `experiences` WHERE `user_id` = '%s' AND `active` = 1" +
                         "    )" +
                         ") t;",
                     context.getAuthor().getId()
@@ -236,6 +237,7 @@ public class GlobalLeaderboardCommand extends Command {
                 return avaire.getDatabase().newQueryBuilder(Constants.PLAYER_EXPERIENCE_TABLE_NAME)
                     .selectRaw("(sum(`global_experience`) - (count(`user_id`) * 100)) + 100 as `total`")
                     .where("user_id", context.getAuthor().getIdLong())
+                    .where("active", 1)
                     .get();
             } catch (SQLException e) {
                 log.error("Failed to fetch leaderboard data for user: " + context.getGuild().getId(), e);

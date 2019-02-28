@@ -193,6 +193,7 @@ public class LeaderboardCommand extends Command {
             try {
                 return avaire.getDatabase().newQueryBuilder(Constants.PLAYER_EXPERIENCE_TABLE_NAME)
                     .where("guild_id", context.getGuild().getId())
+                    .where("active", 1)
                     .orderBy("experience", "desc")
                     .take(100)
                     .get();
@@ -208,8 +209,8 @@ public class LeaderboardCommand extends Command {
             try {
                 return avaire.getDatabase().query(String.format(
                     "SELECT COUNT(*) AS rank FROM (" +
-                        "    SELECT `user_id` FROM `experiences` WHERE `guild_id` = '%s' GROUP BY `user_id` HAVING SUM(`experience`) > (" +
-                        "        SELECT SUM(`experience`) FROM `experiences` WHERE `user_id` = '%s' AND `guild_id` = '%s'" +
+                        "    SELECT `user_id` FROM `experiences` WHERE `guild_id` = '%s' AND `active` = 1 GROUP BY `user_id` HAVING SUM(`experience`) > (" +
+                        "        SELECT SUM(`experience`) FROM `experiences` WHERE `user_id` = '%s' AND `guild_id` = '%s' AND `active` = 1" +
                         "    )" +
                         ") t;",
                     context.getGuild().getId(), context.getAuthor().getId(), context.getGuild().getId()

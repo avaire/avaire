@@ -40,6 +40,8 @@ public class PlayerTransformer extends Transformer {
     private String avatarId;
     private long experience = 0;
 
+    private boolean active = false;
+
     public PlayerTransformer(long userId, long guildId, DataRow data) {
         super(data);
 
@@ -51,6 +53,7 @@ public class PlayerTransformer extends Transformer {
             usernameRaw = data.get("username").toString();
             discriminator = data.getString("discriminator");
             avatarId = data.getString("avatar");
+            active = data.getBoolean("active", false);
 
             BigInteger experience = new BigInteger(data.getString("experience", "100"));
             if (experience.compareTo(new BigInteger(String.valueOf(LevelManager.getHardCap()))) >= 0) {
@@ -61,6 +64,10 @@ public class PlayerTransformer extends Transformer {
         }
 
         reset();
+    }
+
+    public boolean isActive() {
+        return active;
     }
 
     public long getUserId() {
