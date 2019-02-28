@@ -1,0 +1,866 @@
+errors:
+    missingArgument: '缺少参数，需要`{0}`参数！'
+    invalidProperty: '提供的 `{0}` 无效，必须提供有效的 {1}.'
+    noChannelsWithNameOrId: '我没有找到名称或ID为 `{0}`的频道`'
+    noUsersWithNameOrId: '我找不到名或ID为 `{0}`的用户`'
+    mustBeConnectedToVoice: '您必须连接到语音频道才能使用此命令！'
+    mustBeConnectedToSameChannel: '您必须连接到我所在的同一语音频道 {0}!'
+    missingMusicQueue: '丢失的音乐`query`,您必须包含一个指向您要听的歌曲的链接，或者至少给我一个歌曲标题!'
+    cantMentionEveryone: "您没有权限提及所有人."
+    requireLevelFeatureToBeEnabled: '此命令要求为服务器启用 `级别和体验` 您可以询问服务器管理员是否要使用 `{0}`'
+    errorOccurredWhileLoading: '加载时出错 {0}, 请再试一次. 如果问题继续存在, 请将此情况报告给[Avaire支持服务器]上的一个开发人员。(https://discord.gg/gt2FWER). 如果你不懂如何操作，请联系我QQ1653573879来帮助操作'
+
+levelupMessages:
+    - "GG :user, 你成功的升为 **Level :level**"
+    - "Eyy :user, 你又升级了，你现在等级为 **Level :level**"
+    - "🌟 你现在成功到达了 **Level :level** :user! 恭喜 🌟"
+    - "You're on 🔥 :user, 你又到达了等级 **Level :level**"
+    - "Congratulations :user 🎉 你又升级了，你现在等级为 **Level :level**"
+
+levelupRoleMessages:
+    - "GG :user, 你现在到达了 **Level :level**, 你现在又 **:role** role 这些身份组"
+    - "Eyy :user, 你又升级了，你现在等级为 **Level :level**, 有了 **:role** role, 你成功获得了它."
+    - "Congratulations :user 🎉 你又升级了，你现在等级为 **Level :level**, 你自己现在获得了 **:role** role"
+
+administration:
+    common:
+        invalidRole: ":user 无效用户组&角色, 我不能找到 **:role**角色组"
+
+    channelModule:
+        invalidColorGiven: "无效的十六进制颜色数,颜色必须是有效的十六进制值.\n你可以尝试这个网站 [随机十六进制颜色生成网站](https://www.webpagefx.com/web-design/random-color-picker/) 尝试获得随机十六进制颜色."
+        message: "这个 `:type` 模块消息已设置为:\n\n```:message```\n\n您可以通过再次使用命令并提到用户来测试消息.\n`:command <user>`"
+
+    AddLevelRoleCommand:
+        noSlotsLeft: "服务器没有更多级别角色槽，可以删除现有级别角色以释放槽."
+        invalidLevel: "给定的级别要求无效，级别要求必须是正数."
+        alreadyLevelRole: ":user 这个 **:role** 已经是级别角色, 同一角色不能用两次."
+        alreadyARoleAtLevel: "已经为级别分配了一个角色 **:level**, 每个级别只能指定一个角色."
+        success: "这个 **:role** 角色已添加到升级角色列表中.\n这个服务器有 `:slots` 提供更多级别的角色槽."
+
+    AddReactionRoleCommand:
+        emoteDoestBelongToServer: "这个表情不属于此服务器，只能将此服务器中的表情用作反应表情."
+        messageHasNoSlots: "消息没有更多可用的反应角色槽，您可以删除现有的反应角色以释放槽，或者删除反应角色消息以将角色添加到新的反应角色消息中。."
+        serverHasNoSlots: "无法创建新的反应角色消息，服务器没有更多的反应消息槽，您可以删除现有的反应角色消息以释放槽，或者将您的反应角色添加到反应消息（如果消息上有更多角色的槽）."
+        success: "这个 :role 角色已注册为 :emote 表情.\n该消息已 `:roleSlots` 更多可用于消息的反应角色插槽, 和 `:messageSlots` 提供反应消息插槽."
+
+    AddSelfAssignableRoleCommand:
+        noSlotsLeft: "服务器不再有任何可自我分配的角色插槽，您可以删除现有的自我分配角色来释放插槽."
+        success: "这个 **:role** 角色已添加到自我分配列表中。.\n服务器具有 `:slots` 更多可自我分配的角色插槽可用."
+
+    AdministrateExperienceCommand:
+        cantUseForBots: "您不能为bot帐户添加、删除或重置XP，因为这些帐户不能赚取任何利润，请在使用此命令时选择一个普通用户."
+        invalidAmountGiven: "这个 `amount` 属性必须介于 1 和 {0} 添加或接受用户的经验."
+        failedToSaveChanges: "无法将更改保存到数据库，请重试，如果错误继续发生，请与官方[AvaIre支持服务器]上的支持人员联系(https://discord.gg/gt2FWER). 如果你不懂如何操作，请联系我QQ1653573879来帮助操作"
+        success:
+            add: "**:amount** 经验已经被赋予 :target, 他们现在有 **:newAmount** 经验."
+            take: "**:amount** 经验已从 :target, 他们现在有 **:newAmount** 经验."
+            reset: ":target 已成功重置其经验."
+
+    AiCommand:
+        message: "“人工智能”模块 **:status** 为 :channel 频道."
+        status:
+            enabled: "启用"
+            disabled: "关闭"
+
+    AliasCommand:
+        noSlotsLeft: "服务器不再有别名插槽，您可以删除现有别名以释放插槽."
+        alreadyExists: "已经有一个自定义别名为 `{0}`"
+        invalidCommand: "给出的命令无效，我不知道有任何命令调用 `{0}`"
+        invalidAlias: "给定的别名无效, `{0}` 未注册为别名。."
+        created: "这个 `:alias` 别名已链接到 `:command`\n服务器具有 `:slots` 更多别名插槽可用."
+        deleted: "这个 `:alias` 别名已成功删除."
+
+    AutoAssignRoleCommand:
+        higherInTheHierarchy:
+            user: ":user 这个 **:role** 角色在层次结构中的位置比您拥有的任何角色都高，您不能添加比您的排名更高的角色。."
+            bot: ":user 这个 **:role** 角色位于层次结构中的较高位置，我不能从用户中授予/删除此角色."
+        enabled: ":user **已在用户加入时自动分配角色* **enabled** 并设置为  **:role**"
+        disabledNow: ":user **用户加入时自动分配角色*现在为 **disabled**."
+        disabled: ":user **用户加入时的自动分配角色*当前为 **disabled**."
+        status: ":user *自动分配角色*当前设置为 **:role**"
+
+    BanCommand:
+        mustMentionUser: "您必须提及要禁止的用户."
+        higherRole: "你不能禁止拥有更高职位的人，或者和你一样的人。."
+        userHaveHigherRole: "我不能禁止 {0}, 他们的角色比我高! 如果你想让我禁止这个用户，请重新调整我的角色位置到上面。 {0} 最高角色."
+        success: "**:target** 被永久禁止:user \":reason\""
+        failedToBan: "未能禁止 **:target** 由于错误: :error"
+
+    CategoriesCommand:
+        title: "命令类别状态 #{0}"
+        status: ":emoteEnabled 启用   :emoteDisabledInChannel 在频道中禁用   :emoteDisabledGlobally 全局禁用"
+
+    ChangePrefixCommand:
+        missingArgument: "缺少参数 `category`,必须指定要更改/重置前缀的命令类别。."
+        invalidCategory: "无效的 `category` 规定的 , 没有调用的命令类别，也没有以下命令开头的命令类别 `{0}`"
+        invalidPrefix: "给定的命令前缀无效, `{0}` 不是有效的命令前缀, 所有前缀必须 **NOT** 包含空格，长度在1到16个字符之间."
+        update:
+            global: "现在，每个命令类别中的所有命令都使用 `:prefix` 前缀."
+            category: "中的所有命令 `:category` 命令类别现在使用 `:prefix` 前缀."
+        reset:
+            global: "每个命令类别中的所有命令都已重置为使用 `:prefix` 前缀."
+            category: "中的所有命令 `:category` 命令类别已重置为使用 `:prefix` 前缀."
+
+    ChannelLevelCommand:
+        invalidChannel: "给定的通道无效，该通道必须是有效的文本通道."
+        cantTalkInChannel: "我不能在 {0} 频道, 因此，用户不会因为在频道上讲话而获得任何xp的奖励,如果你想让我给用户XP, 请更改通道的权限级别，以便我可以在通道中发送消息."
+        noChannelsWithRewardsDisabled: "当前没有禁用级别奖励的频道,可以通过使用 `{0} <channel>` 指令."
+        failedToUpdate: "无法将更改保存到数据库, 请再试一次. 如果问题仍然存在, 请联系我的开发商."
+        listChannels: "下面提到的所有频道目前都关闭了它们的级别奖励, 任何不在此列表中的频道都不受影响.\n\n:channels"
+        listChannelsTitle: "禁用其级别奖励的通道 ({0})"
+        success: "的XP奖励 :channel 渠道已 **:status**!"
+        status:
+            enabled: "开启"
+            disabled: "关闭"
+
+    GoodbyeCommand:
+        note: "\n您可以使用 `{0} [message]`"
+        message: "这个 `Goodbye` 模块已被 **:status** 为 :channel 频道."
+        status:
+            enabled: "开启"
+            disabled: "关闭"
+
+    GoodbyeMessageCommand:
+        moduleMustBeEnabled: "这个 `goodbye` 模块必须启用才能使用此命令, 您可以启用 `goodbye`模块使用 `{0}` 指令."
+        message: "再见消息的嵌入选项是 **:status**\n:note"
+        changedToDefault: "这个 `Goodbye` 模块消息已设置为默认值."
+        status:
+            enabled: "开启"
+            disabled: "关闭"
+        note:
+            embed: "现在将使用嵌入的带有颜色的消息发送再见消息。: {0}"
+            normal: "现在通过普通消息发送再见消息."
+
+    IAmCommand:
+        notSelfAssignable: ":user 无效角色, **:role** 不是一个自我分配的角色."
+        roleIsHigherInTheHierarchy: ":user 角色层次结构中的角色较高，我不能给/移除 **:role** 任何人的角色."
+        message: ":user 你现在有了 **:role** 角色!"
+
+    IAmNotCommand:
+        notSelfAssignable: ":user 无效角色, **:role** 不是一个自我分配的角色."
+        roleIsHigherInTheHierarchy: ":user 角色层次结构中的角色较高，我不能给/移除 **:role** 任何人的角色."
+        message: ":user 你不再拥有 **:role** 角色!"
+
+    KickCommand:
+        mustMentionUser: "你必须提到你想踢的用户."
+        higherOrSameRole: "你不能用更高的职位或者和你一样的角色来踢人."
+        cantKickUser: "我不可以踢出 {0}, 他们的角色比我高, 如果你想要能够踢用户, 请把我的职位调整到上面 {0} 最高角色."
+        success: "**:target** 被踢 :user 为 \":reason\""
+        error: "踢不到 **:target** 由于错误: :error"
+
+    LanguageCommand:
+        invalidLanguageCode: "给出的语言代码无效, `{0}` 不是有效的语言代码, 或者还不支持!"
+        changed: "服务器的语言已成功更新，以使用 :name 语言!"
+        note: "AvaIre 支持多种用户提供的语言，您可以使用此命令进行选择。翻译可能不是100%准确或完整.\n选择语言使用 `{0} <code>`"
+
+    LevelAlertsCommand:
+        message: "`升级警报 `:status` 对于服务器.:note"
+        note: "\n所有级别上的消息都将登录到 <#{0}> 频道."
+        status:
+            enabled: "启用"
+            disabled: "关闭"
+
+    LevelCommand:
+        message: "`等级 & 经验` 已 `:status` 对于服务器.:note"
+        note: "\n级别警报当前 `{0}`, 可以打开或关闭它们。 `{1}levelalerts`"
+        status:
+            enabled: "启用"
+            disabled: "关闭"
+
+    LevelHierarchyCommand:
+        invalidTypeGiven: "给定的类型无效，若要打开或关闭级别层次结构，必须使用 `on` or `off`."
+        message: "级别上的层次结构已 `:status` 对于服务器."
+        statusMessage: "层次结构当前为“等级”层次结构 `:status`, 可以打开或关闭它。 `:command`"
+        status:
+            enabled: "启用"
+            disabled: "关闭"
+
+    LevelModifierCommand:
+        invalidNumberGiven: "给出的修饰符无效，则该修饰符必须是 `0.01%` 到 `500%`"
+        resetToDefault: "“级别”修改器已重置回使用默认设置。 **:modifier** modifier."
+        changedTo: "级别和体验修饰符已更改为 **:modifier**."
+        statusMessage: "服务器当前正在使用 **:modifier** 级别和经验的修饰符.\n\n**需要XP才能达到某些级别**\n"
+        level: "Level {0}"
+
+    ListAliasesCommand:
+        noAliases: "服务器现在没有任何别名，您可以使用\n`{0}alias <alias> <command>` command"
+        listAliases: "别名列表 ({0})"
+
+    ListLevelRolesCommand:
+        noLevelRoles: "当前没有级别角色，管理员可以使用 `:command` 指令"
+        listRoles: "级别角色列表 ({0})"
+
+    ListReactionRoleCommand:
+        noReactionRoles: "服务器现在没有任何反应角色，您可以使用\n`{0}arr <emote> <role>`"
+        listReactionRoles: "反应角色列表 ({0})"
+
+    ListSelfAssignableRolesCommand:
+        noSelfAssignableRoles: "此服务器当前没有可自我分配的角色。"
+        title: "这里有 {0} 自我分配角色"
+
+    ModlogCommand:
+        mustMentionTextChannel: "参数无效，则必须提及有效的文本通道。"
+        cantSendEmbedMessages: "我不能在指定的通道中发送嵌入的消息，请更改 {0} 通道(如果要将其用作modlog通道)."
+        enable: ":user **Server Modlogging** 现在已启用，并设置为 :modlog 频道."
+        enabled: ":user **Server Modlogging** 当前已启用并设置为 :modlog 频道."
+        disable: ":user **Server Modlogging** 现在对服务器禁用."
+        disabled: ":user **Server Modlogging** 当前已禁用."
+
+    ModlogHistoryCommand:
+        mustMentionUser: "你必须提到一个有效的 `user` 要显示以下项目的modlog历史记录的."
+        noHistory: "找不到此用户的modlog历史记录."
+        title: "{0}#{1} 历史 ({2})"
+        entry: "**{1}** | **#{0}** | **Moderator:** {2}\n**Date:** {3}\n**Reason:** {4}"
+        noReasonGiven: "没有给出任何理由."
+
+    ModlogPardonCommand:
+        modlogNotEnabled: "尚未设置modlog通道，必须设置modlog通道才能使用此命令."
+        invalidCaseId: "给定的案例ID无效，ID必须大于0且小于 {0}"
+        couldntFindCaseWithId: "找不到ID为 {0} 在您担任主持人的地方，您确定您是给定的modlog案例的主持人吗?"
+        caseAlreadyPardoned: "ID为 `{0}` 已经被赦免了."
+        notAPunishment: "ID为 `{0}` 没有被惩罚！"
+        message: "ID为 **:case** 已被成功赦免."
+
+    ModlogReasonCommand:
+        modlogNotEnabled: "尚未设置modlog通道，必须设置modlog通道才能使用此命令."
+        invalidCaseId: "给定的案例ID无效，ID必须大于0且小于 {0}"
+        couldntFindCaseWithId: "找不到ID为 {0} 在您担任主持人的地方，您确定您是给定的modlog案例的主持人吗?"
+        couldntFindModlogChannel: "找不到modlog频道，是不是被删除了？"
+        success: "ID为 **:id** 已成功编辑并将原因设置为 `:reason`"
+        modlogCaseWasPardoned: "ID为 `{0}` 已被赦免，您不能编辑赦免的modlog案例."
+        failedToEdit: "无法编辑modlog消息: {0}"
+        failedToFindMessage: "找不到给定modlog案例的消息，是否已删除？"
+
+    NSFWCommand:
+        invalidChannelOrStatus: "给定的通道或状态类型无效!"
+        notValidChannel: "`{0}` 不是有效的文本通道!"
+        notValidStatus: "`{0}` 不是有效的状态类型，则必须传递 `on` or `off`."
+        message: "这个 :textChannel 频道 当前具有NSFW **:status**!"
+        updated: "NSFW状态 :textChannel 已更改为 **:status**"
+        status:
+            enabled: "启用"
+            disabled: "关闭"
+
+    PurgeCommand:
+        messagesDeletedIn: "{0} 消息已在 {1} 频道删除."
+        messagesDeletedBy: "{0} 发送的消息 {1} 已在 {2} 频道."
+        success: ":white_check_mark: `:number` 信息已删除!"
+        successBy: ":white_check_mark: `:number` 消息已被 :users 删除"
+        nothingToDelete: ":x: 没有要删除的内容，我无法删除超过14天的邮件."
+        nothingToDeleteBy: ":x: 没有要删除的内容，我找不到任何消息 :users 在最后一次 **:number** 在过去14天内发送的消息."
+
+    RemoveLevelRoleCommand:
+        noRolesCalled: ":user 没有被调用的角色 **:role** 在高台上的桌子上."
+        noRolesLinked: ":user 没有角色链接到级别 **:role** 在高台上的桌子上."
+        notALevelRole: ":user 无效的角色， `:name` 角色不在Level-up表中."
+        message: "这个 **:role** 角色已从级别提升角色列表中删除.\n服务器现在有 `:slots` 可用级别角色插槽."
+
+    RemoveReactionRoleCommand:
+        noReactionRoles: "服务器现在没有任何反应角色，您可以使用\n`{0}arr <emote> <role>`"
+        messageIdMustBeGreaterThanOne: "给出的 `message id` 无效, 这个 `message id`必须至少为1或更高."
+        messageIdMustBeLowerThanRolesSize: "给出的 `message id` 无效, 这个 `message id` 不能高于服务器当前拥有的反应角色数量，即 `{0}` 现在."
+        failedToFetchMessage: "尝试获取ID为 `{0}`, 如果这个问题继续发生，请向我的一个开发人员报告。如果你不知道怎么办，请联系QQ:1653573879."
+        mustIncludeEmote: "您必须包括要从反应消息中删除的表情."
+        emoteDoestBelongToServer: "这个表情不属于这个服务器，你只能使用这个服务器上的表情作为反应动作。."
+        roleNotFoundOnMessage: "指定的反应消息没有附加到它的反应角色。 {0} 表情."
+        deletedMessage: "ID为 **#:id** 已成功删除!"
+        deletedEmote: "这个 :emote 表情已成功从反应消息中删除.\n该消息已 `:roleSlots` 更多可用于消息的反应角色插槽，以及 `:messageSlots` 可用的反应消息插槽."
+
+    RemoveSelfAssignableRoleCommand:
+        message: "这个 **:role** 角色已从自我分配列表中删除。.\n服务器具有 `:slots` 更多可自我分配的角色插槽可用."
+
+    SlowmodeCommand:
+        missingArgument: "参数丢失，则必须传入 `seconds` 值为此通道或所述通道启用慢速模式，或 `off` to disable it."
+        mustBeValidNumbers: "给定的慢模值无效，则必须在 **1** and **120**."
+        message: "Slowmode已被 **enabled** 为 :textChannel 频道.\n通道现在允许 **1** 每条消息 **:slowmode** 每用户秒数."
+        disabled: "成功 **disabled** 的慢速模式 :textChannel 频道."
+        invalidTextChannel: "`{0}` 不是有效的文本通道, 您必须以文本通道为目标来设置慢速模式。."
+        failedToUpdate: "未能更新 :textChannel 频道, error: :message"
+
+    ToggleCategoryCommand:
+        invalidCategory: "给定的类别无效, `{0}` 不是有效的类别"
+        missingArgumentType: "缺少参数 `channel/global`, 必须包括通道或指定命令应全局运行。."
+        invalidChannelOrGlobalString: "给定的通道或全局字符串无效, 你必须提到你想要影响的频道，或者写 `global` 同时影响所有频道."
+        cantEnabledCategory: "哎呀，您不能启用 **:category** 全局禁用命令类别.\n您可以使用以下命令为所有通道启用类别.\n`:command :category global on`"
+        update:
+            globally: "这个 `:category` 命令类别已被 `:status` 支持 **all channels**."
+            category: "这个 `:category` 命令类别已被 `:status` 在 :channel."
+        status:
+            enabled: "启用"
+            disabled: "关闭"
+
+    UnbanCommand:
+        success: ':target 已成功取消对服务器的禁止，因为 ":reason".'
+        failedToUnban: "未能取消禁止 :target 由于错误, message: :error"
+        noUserIsBanned: "没有ID为 `:id` 当前在服务器上被禁止。."
+        invalidUserIdGiven: " `user id` 无效, 这个 `user id` 必须是长度为18个或更多数字的数字字符串."
+
+    VoiceKickCommand:
+        mustMentionUser: "你必须提到你想踢的用户。."
+        sameOrHigherRole: "你不能用更高的，或者和你一样的角色来踢人。"
+        notConnected: "你不能用声音踢那些没有连接到语音频道的人."
+        message: "**:target** 被踢出 **:voiceChannel** 来自 :user 因为 \":reason\""
+
+    VoteOptCommand:
+        invalidArgument: "参数无效，则必须解析 `in` 或 `out` 选择加入或退出投票信息."
+        message: "您现在已选择-：获得投票消息的类型."
+        type:
+            in: "in"
+            out: "out"
+
+    WarnCommand:
+        requiresModlogIsEnabled: "此命令需要设置modlog通道，可以使用 `{0}modlog` 指令."
+        mustMentionUse: "您必须提到要警告的用户."
+        warnBots: "你不能警告机器人，你是不是无聊...!"
+        failedToLogWarning: "无法将警告记录到set modlog通道，modlog通道是否仍然存在，是否仍可以在通道中发送消息?"
+        message: ":target 已经 **warned** 因为 \":reason\""
+        failedToSendDM: "无法通过警告对用户进行DM，他们很可能已将其私有设置为禁用此服务器上的所有DM。."
+
+    WelcomeCommand:
+        note: "\n您可以使用 `{0} [message]`"
+        message: "这个 `Welcome` 模块已被 **:status** 因为 :channel channel.:note"
+        status:
+            enabled: "启用"
+            disabled: "关闭"
+
+    WelcomeMessageCommand:
+        moduleMustBeEnabled: "这个 `welcome` 模块必须启用才能使用此命令，则可以启用 `welcome` 模块使用 `{0}welcome` 命令."
+        message: "欢迎消息的嵌入选项为 **:status**\n:note"
+        changedToDefault: "这个 `Welcome` 模块消息已设置回缺陷."
+        status:
+            enabled: "启用"
+            disabled: "关闭"
+        note:
+            embed: "现在将使用嵌入的消息发送欢迎消息 color: {0}"
+            normal: "现在通过普通消息发送欢迎消息."
+
+fun:
+    DiceCommand:
+        missingDice: '你必须包括你想要掷的骰子.'
+        invalidDiceFormat: '`{0}` 不是有效的骰子格式.'
+        diceFormatMustBeGreaterThan: '`{0}` is not a valid dice format, the dice must be greater than 0 and less than 35'
+        diceFormatMustBePositive: '`{0}` 不是有效的骰子格式，则骰子数量必须是介于1和35之间的有效正数。'
+        sidesFormatMustBeGreaterThan: '`{0}` 不是有效的骰子格式，边必须大于0且小于128。'
+        sidesFormatMustBePositive: '`{0}` 不是有效的骰子格式，则边数必须是介于1和128之间的有效正数。'
+        moreThanFiveRollsWasGiven: '\n_More than **5** 掷骰子的人，只有前五个人 displayed_\n'
+        resultedIn: '**{0}** 导致 **{1}**  ({2})'
+
+    CoinflipCommand:
+        heads: "你有脑袋"
+        tails: "你有尾巴"
+
+    EightBallCommand:
+        mustIncludeQuestion: 'You must include a question for 8ball.'
+        answers:
+        - "这是肯定的"
+        - "确实如此"
+        - "毫无疑问"
+        - "是肯定的"
+        - "你可以相信它"
+        - "在我看来，是的。"
+        - "最有可能"
+        - "展望美好"
+        - "是"
+        - "有迹象表明是"
+        - "回答模糊，再试一次"
+        - "稍后再问"
+        - "最好现在不要告诉你"
+        - "现在无法预测"
+        - "集中精力再问一次"
+        - "别指望它"
+        - "我的回答是不"
+        - "我的线人说不"
+        - "前景不太好"
+        - "非常可疑"
+
+    MemeCommand:
+        missingArgument: '丢失 `action` 数字, 您必须包括要为其生成模因的模因类型或用户，或 `list` 显示所有可用的模因类型.'
+        invalidType: '给出的模因类型无效, `{0}` 不是有效的meme类型。!'
+        mustIncludeTopAndBottomText: '您必须包括 `top text` 和 `bottom text` 生成模因的参数.'
+        listItem: '`{0}` => `{1}`'
+
+    RandomCatCommand:
+        tooManyAttempts: "对cat api进行了太多的尝试，一分钟后再试一次，或者要求bot管理员在以下位置获取api密钥： [meow.senither.com](https://meow.senither.com/) 允许更多的请求."
+        notFound: "我找不到猫的照片D：再试一次，也许它们现在就会出现？"
+        somethingWentWrong: "发生了一些可怕的错误，请告诉机器人管理员，让他们可以调查这件事。."
+
+    ReverseCommand:
+        palindrome: '你倒了个回文字，你还指望什么？?'
+
+    RipCommand:
+        hasPaidTheirRespects: '**{0}** 已经表达了他们的敬意.'
+        todayAndOverall: '{0} 今天, {1} 整体'
+
+    RollCommand:
+        invalidValueGiven: '无效 `{0}` 给出的值, `{1}` 必须是数字!'
+        rolledNumber: ':user 滚动 **:number** 离开 :min - :max'
+
+    SayCommand:
+        userMissingPermissions: "不能将this命令用于 {0} 频道, 您必须具有通道的“消息写入”和“消息管理”权限，才能成功运行命令。."
+        botMissingPermissions: "Say命令不能用于 {0} 频道, 我需要通道的“消息写入”和“消息管理”权限才能成功运行命令。."
+        success: "您的信息已发送到 :name 频道."
+
+    UndertaleTextBoxCommand:
+        noArgumentsGiven: "缺少参数，则必须提供 `list` 若要查看可供选择的字符列表或生成图像，请执行以下操作： `character` 或有效图像 `url` 构建图像的步骤."
+        failedToGenerateImage: "无法生成图像，是否确定提供了正确的图像URL或字符名称？?"
+        title: "暗箱字符表"
+
+help:
+    HelpCommand:
+        listOfCommands: ':page_with_curl: **List of Commands**'
+        commandNote: '**Type `:help <command>` 若要查看该指定命令的帮助，请执行以下操作.**\nExample: `:help :command`'
+        categoriesNote: ':information_source: 输入 `:help <category>` 获取该类别中的命令列表.\nExample: `:help {0}` or `:help {1}`'
+        categoriesTitle: ':scroll: 命令类别'
+        invalidCategory: 'Invalid 命令类别，则没有调用 `:category`'
+        invalidCommand: 'Invalid 命令，则没有具有触发器的命令。 `:trigger`'
+        tryingToViewSystemCommands: "您没有权限运行 `System` 类别。系统命令可以影响bot当前运行的所有服务器，因此仅限于bot管理员/开发人员。."
+        singularHiddenCategories: '_There is **{0}** 此通道的隐藏类别._'
+        multipleHiddenCategories: '_There are **{0}** 此通道的隐藏类别._'
+        fields:
+            usage: '用法'
+            example: '例子'
+            aliases: '化名'
+            seeAlso: '海'
+            footer: '命令类别: '
+
+interaction:
+    BiteCommand: '**{0}** 咬 **{1}**'
+    BlushCommand: '**{0}** 脸红 **{1}**'
+    CuddleCommand: '**{0}** 搂住 **{1}**'
+    DivorceCommand: '**{0}** 离婚 **{1}**'
+    EatCommand: '**{0}** 吃点东西 **{1}**'
+    HelloCommand: '**{0}** 向你问好 **{1}**'
+    HighFiveCommand: '**{0}** 击掌 **{1}**'
+    HugCommand: '**{0}** 拥抱 **{1}**'
+    KillCommand: '**{0}** 想杀 **{1}**'
+    KissCommand: '**{0}** 亲吻 **{1}**'
+    MarryCommand: '**{0}** 想结婚 **{1}**'
+    MeowCommand: '**{0}** 喵叫 **{1}**'
+    PanCommand: '**{0}** 就按一下 **{1}** 用平底锅!'
+    PatCommand: '**{0}** 轻拍 **{1}**'
+    PokeCommand: '**{0}** 刺 **{1}**'
+    PoutCommand: '**{0}** 怒气冲冲 **{1}**'
+    PunchCommand: '**{0}** 猛击 **{1}**'
+    SenpaiCommand: '**{0}** 希望引起人们的注意 **{1}**'
+    ShrugCommand: '**{0}** 耸耸肩 **{1}**'
+    SlapCommand: '**{0}** 掌击 **{1}**'
+    TickleCommand: '**{0}** 呵痒 **{1}**'
+    TriggeredCommand: '**{0}** 是由 **{1}**'
+
+music:
+    internal:
+        songWasSkipped: '[:title](:url) 请求人 :author 被跳过.'
+        nowPlayingSong: '现在播放: [:title](:link)\n`:duration` 在 `:volume%` 卷 - 请求者 :requester'
+        nowPlayingPlaylist: '这个 **:playlistName** 播放列表已添加到队列中，使用 `:playlistSize` 小径!'
+        nowPlaying: '现在播放: [:title](:link)\n`:duration` 在 `:volume%` 卷 - 请求者 :requester'
+        queueHasEnded: '队列已结束，离开声音.'
+        endedDueToInactivity: "音乐因不活跃而结束."
+        endedDueToWebSocketClose: "音频web套接字被强行关闭，停止播放音乐。."
+        noMatchFound: '我在给定的查询中找不到任何东西: `{0}`'
+        trackLoadFailed: "我不能把它加到队列里: `{0}`"
+        musicChannel: "中只能使用音乐命令。 :channel 频道."
+        resumeMusic: "正在继续播放音乐，请稍等几秒钟，所有内容都将重新加载。."
+
+    ClearQueueCommand:
+        error: '没有什么要澄清的，请先用音乐 `{0}play`'
+        emptyQueue: '没有需要清除的内容，队列中现在没有等待的歌曲。.'
+        success: '我已经移走了 **:queueSize** 队列中的歌曲，队列现在是空的!'
+
+    DJLevelCommand:
+        title: "当前DJ级别: {0}"
+        footer: "使用 \"{0} types\" 查看可用DJ级别类型的完整列表."
+        types:
+            title: "DJ级别类型"
+            footer: "使用 \"{0} <type>\" 将服务器的DJ级别更改为给定类型."
+        invalidType: "`{0}` 不是有效的 `DJ Level` 类型，请使用以下选项之一:\n`{1}`"
+        changedTo: "这个 `DJ Level` 状态已更改为 **:type**.\n:info"
+        information:
+            all: "每个人都可以使用所有音乐命令，即使没有 `DJ` 月色."
+            none: "只有那些 `DJ` 角色可以使用音乐命令."
+            normal: "防止人们没有 `DJ` 角色，使用播放列表、音量控制和强制跳过等命令，但仍允许使用播放命令。."
+
+    MoveHereCommand:
+        error: '未连接到语音，请先使用 `{0}play`'
+        hasMusicChannel: "该服务器有一个音乐语音通道设置，如果你想让我移动到一个不同的声音通道，请让一个管理员在服务器上拖动 'n 将我放入另一个语音通道."
+        nowPlayingIn: '我现在在唱歌在 **:channelName** 频道'
+
+    MusicChannelCommand:
+        updated: "这个 **:type** 音乐频道已成功 :status"
+        field:
+            title: "音乐频道"
+            message: "**Text Channel:** :text\n**Voice Channel:** :voice"
+        status:
+            disabled: "关闭"
+            enabled: "设置去 **{0}**"
+        errors:
+            invalidType: "给定的音乐频道类型无效，类型必须是 `text` 或 `voice`"
+            notValidType: "`{0}` 不是有效的 {1} 频道, 您必须包括要用作音乐频道的有效语音频道。."
+
+    MusicMessagesCommand:
+        message: "Music messages are currently **:status**.\n\n**Info**\n:info"
+        updated: "音乐信息已成功地  **:status**."
+        error: "参数无效，状态必须为 `on` 或 `off` 更改音乐消息状态的步骤."
+        footer: "若要更改音乐消息，请使用 {0}"
+        status:
+            disabled: "关闭"
+            enabled: "启用"
+        info:
+            disabled: "当音乐消息被禁用时， `Now Playing` 消息将不再被发送，其他与音乐相关的命令将在一段时间后自动删除它们自己。."
+            enabled: "启用音乐消息时， `Now Playing` 消息将保持不变，即使在播放的歌曲发生变化后，一些相关消息也将保持不变.\n**Note:** 大多数音乐命令在一段时间后仍将自动删除。."
+
+    PauseCommand:
+        error: '没什么可暂停的，先来点音乐 `{0}play`'
+        alreadyPaused: '音乐已暂停，请使用 `!resume` 恢复音乐.'
+        paused: '音乐一直 `paused`'
+
+    PlayCommand:
+        addedSong: ':user 已添加 [:title](:url) 到队列. 这里有 `:queueSize` 首歌(s) 排在它前面.'
+        addedSongsFromPlaylist: ':user 已添加 :songs 来自世界各地的歌曲 [:title](:url) 队列的播放列表. 这里有 `:queueSize` 首歌(s) 排在它前面.'
+        session:
+            title: '结果 {0}'
+            footer: '选择一首歌曲 {0} <number>'
+
+    PlaylistCommand:
+        noPlaylists: '此服务器还没有任何音乐播放列表，您可以使用\n`:command` 开始'
+        noPlaylistWithName: '没有已调用的播放列表 `:playlist`, 您可以使用 the\n`:command` 指令'
+        invalidProperty: '无效 `property` 给出, 没有已调用的播放列表属性 `{0}`.\n你可以通过播放器学到更多 `{1}help {2}`'
+        invalidFormat: '格式无效，缺少 `:type` 资产!\n`:command`'
+        invalidIdGiven: '给定的ID无效，给定的号码也是 :type\n`:command`'
+        invalidIdNumberGiven: '给定的ID无效，ID必须是数字\n`:command`'
+        noMoreSongSlots: "这个 `:playlist` 播放列表中没有更多的歌曲插槽."
+        noMorePlaylistSlots: "服务器没有更多的播放列表插槽，您可以删除现有播放列表以释放插槽."
+        sameIdsGiven: "给出的两个ID是一样的，这首歌不会以那种方式移动到任何地方.\n`:command`"
+        failedToLoad: '加载失败: {0}'
+        failedToLoadPlaylist: '未能加载 :playlist, 也许稍后再试一次，或者向我的一个开发人员报告这一点。.'
+        failedToSavePlaylist: '试图保存播放列表时出错: {0}'
+        loadedPlaylist: '这个 **:name** 已加载播放列表并将其添加到队列中 **:amount** 歌.'
+        noMatches: '无匹配'
+        attemptingToAddLivestreamToPlaylist: "您不能将直播添加到播放列表中!"
+        userHasAddedSong: ':user 加入 [:name](:url) 到 `:playlist` 播放列表.\n这个 `:playlist` 播放列表 有 `:slots` 提供更多歌曲插槽.'
+        swapSongInPlaylist: '[:selectedTitle](:selectedLink) 已交换位置 [:replacedTitle](:replacedLink) 在 `:playlist` 播放列表.'
+        alreadyExists: '这个 `:playlist` 播放列表已存在!'
+        onlyNumbersInName: "播放列表名称不能只是数字，必须包括一些字母!"
+        renamingPlaylistAlreadyExists: "无法重命名`:oldplaylist` 到 `:playlist`, 已经有一个名为 `:playlist`"
+        playlistCreated: '这个 `:playlist` 已成功创建播放列表!\n您可以通过以下方式向其中添加歌曲 `:command :playlist add <song>`'
+        playlistDeleted: '这个 `:name` 播放列表已成功删除!'
+        playlistRenamed: '这个 `:oldplaylist` 播放列表已重命名为 `:playlist`!'
+        playlistIsEmpty: '此播放列表中没有歌曲，您可以使用\n`:command` command.'
+        playlistIsAlreadyEmpty: '这个 `:playlist` 播放列表已为空，没有要删除的内容.'
+        songHasBeenRemovedFromPlaylist: ':song 已成功从播放列表删除 `:playlist` '
+        playlistTitle: ':musical_note: 音乐播放列表 {0}'
+        playlistSize: '[ {0} 离开 {1} ]'
+        playlistLine: '{0}\n       播放列表有 **{1}** 歌(s)'
+        playlistSongLine: '`{0}` [{1}]({2}) [{3}]'
+
+    RemoveSongFromQueueCommand:
+        error: '缺少参数 `song id`, 必须包括要从队列中删除的歌曲的ID。.'
+        failedToRemoveSong: '出了点问题，没能删除索引处的歌曲 `:index`'
+        tooHighNumberGiven: '只有 `{0}` 排好队的歌，试着把你的号码调低一点。.'
+        invalidRange: '给定的范围无效，则以开始到结束的格式提供ID的范围，如 `3-6`.'
+        mustBePositiveNumber: '这 `song id` 必须是有效的正数.'
+        nothingToRemove: '没什么可删除的，请先用音乐 `{0}play`'
+        success: ':song 已成功从队列中删除.'
+        successMultiple: 'Songs 从 `:start` 到 `:end` 已成功从队列中删除.\n:tracks'
+        successMultipleNote: "\nAnd **{0}** 更多的歌曲被从队列中删除。."
+
+    RepeatMusicQueueCommand:
+        error: '没有什么可重复的，请先用音乐 `{0}play`'
+        title: '电流重复模式: {0}'
+        message: "音乐播放器的重复状态已成功更改为 **:state**, 这个意思:\n\n:note"
+        footer: '使用 "{0} <repeat-mode>" 设置重复模式的步骤.'
+        states:
+            single: '一'
+            all: '全部'
+            loopoff: '关闭'
+        notes:
+            single: '音乐播放器将重复当前播放的歌曲，而不转到队列中的下一首歌曲。.\n**Note:** 这也会使 "Now Playing" 消息，这样聊天就不会一遍又一遍地用同一首歌发送垃圾邮件。.'
+            all: '音乐播放器将重复播放队列中的每一首歌曲，在播放完一首歌曲后，它将自动重新添加到队列的末尾。.'
+            loopoff: '音乐播放器将不会循环播放，当一首歌曲播放完后，它将从队列中删除，下一首曲目将开始播放。.'
+
+    ResumeCommand:
+        error: '没什么可恢复的，先来点音乐 `{0}play`'
+        alreadyPlaying: '音乐已经在播放了，使用 `:prefixpause` 先暂停音乐.'
+        resume: '音乐一直 `resumed`'
+
+    SeekCommand:
+        error: '现在没什么可玩的，有什么要求吗？ `{0}play` 首先现在没什么可玩的，有什么要求吗？.'
+        invalidTimeGiven: '这个 `number` 参数必须是长度至少为0秒或更长的有效时间格式。.'
+        seekingLive: '您不能跳转到不同的直播时间代码。.'
+        seekingTooFar: '`{0}` 如果要跳到下一首歌曲，请使用超过当前歌曲播放时间的长度。 `{1}skip` 替代.'
+        seekTo: 'Seeking **:title** 到 `:time`'
+
+    SetDefaultVolumeCommand:
+        currentVolume: '服务器的默认卷当前设置为 `:volume%`'
+        changedVolume: '默认卷已设置为 `:volume%`'
+        failedToSave: '尝试保存默认卷时出错: {0}'
+        mustBeNumber: '这个 `volume` 必须是介于10和100之间的数字'
+
+    ShuffleCommand:
+        error: '队列已为空，您可以使用\n`{0}play <song title | url>`'
+        success: '**:amount** 排队的人把歌排得乱七八糟。.'
+
+    SkipCommand:
+        error: '没什么可跳过的，先来点音乐 `{0}play`'
+
+    SongCommand:
+        error: '没什么可展示的，先请求音乐 `{0}play`'
+        paused: '当前已暂停'
+        playing: '当前播放'
+        songsInQueue: '队列中的歌曲'
+        moreSongs: '你可以看见更多歌曲来自使用 {0} <page>'
+        noSongs: '队列里现在没有歌曲'
+        andXMoreSongs: '_And **{0}** 更多歌{1}!_'
+        formats:
+            line: '**{0}** [{1}]({2})'
+            song: '[{0}]({1})\n播放 `{2}` volume with `{3}` 歌曲的左边-请求者 <@{4}>'
+            stream: '[{0}]({1})\nPlaying at `{2}` 音量，流是 `{3}` - 请求者 <@{4}>'
+
+    StopCommand:
+        error: "现在没有什么在播放，你不能在什么都没有播放的时候停止音乐。."
+        success: '播放器已停止，并且 **:number** 歌曲已从队列中删除.'
+
+    VoiceFixCommand:
+        message: "**Swapping to :swap region:** {0}\n**换回 :original region:** {1}"
+        starting: "开始交换过程.\n\n"
+        finished: "\n\n搞定了！音乐现在应该又起作用了！"
+        error: "未能完成交换过程，错误: {0}"
+
+    VolumeCommand:
+        error: '没有正在播放的音乐，请先用 `{0}play`'
+        requireDJRole: '这个 `DJ` 角色更改卷是必需的!'
+        invalidVolume: '给出的卷无效，该卷必须是介于1和100之间的有效数字.'
+        nowPlaying: ':musical_note: 音乐正在播放 **:volume** volume'
+        setTo: ':musical_note: 卷设置为 **:volume**'
+
+    VoteSkipCommand:
+        error: '没什么可跳过的，先来点音乐 `{0}play`'
+        registered: '你的选票已经登记了！ `:votes` 需要更多的选票才能跳过这首歌.'
+        alreadyVoted: '你每首歌只能投一次“跳过”！ `:votes` 需要更多的选票才能跳过这首歌.'
+
+search:
+    DuckDuckGoCommand:
+        nsfwDisabled: "这个 `Duck Duck GO` 命令只能在NSFW通道中使用，因为搜索结果可能返回NSFW内容."
+        searchResults: '搜索结果: {0}'
+        noResults: '我找不到什么 `:query`'
+        seeAlso: '**亦见**'
+        nsfwStatus:
+            enabled: 'NSFW搜索已启用'
+            disabled: 'NSFW搜索已关闭'
+
+    GfycatCommand:
+        noResults: "我找不到任何与您的查询匹配的gif: `:query`"
+
+    UrbanDictionaryCommand:
+        noResults: ':user 我找不到什么 `:query`'
+        untitled: '没有标题的'
+        example: '例子'
+        results: ':percentage 像这样的人的百分比。 :up👍 :down👎'
+        nsfwDisabled: "这个 `Urban Dictionary` 命令只能在nsfw通道中使用，因为该命令的内容可能不适用于所有通道。."
+
+    XKCDCommand:
+        invalidArgument: "参数无效，则该参数必须是两个之间的有效数字。 `1` 到 `{0}`, 或者 `random` 为了得到一个随机漫画."
+        number: 'XKCD number #{0}'
+
+utility:
+    CalculateCommand:
+        boolean:
+            true: '开启'
+            false: '关闭'
+        eastereggs:
+            quickMaths: '	-	快速数学!'
+            binary: "世界上只有10种人，懂二进制的人和不懂二进制的人。."
+
+    ChannelIdCommand:
+        message: ':user :id: 的 :channel 频道是 `:targetChannel`'
+
+    ChannelInfoCommand:
+        fields:
+            id: '身份证'
+            position: '位置'
+            users: '用户'
+            category: '类别'
+            bitRate: 'BIT速率'
+            nsfw: 'NSFW'
+            createdAt: '创建在'
+        noTopic: '*No topic has been set for this channel*'
+        timeFormat: 'EEE, 天数 月份 年份 HH:mm'
+
+    ExpandUrlCommand:
+        noRedirect: ":url 不能重定向到任何地方."
+        redirects: '{0} 重定向至 {1}'
+        jumps: '**The link jumps through the following sites:**'
+
+    FeedbackCommand:
+        success: '已成功发送反馈 <:tickYes:319985232306765825>'
+        failedToSend: '无法发送反馈消息: :error'
+
+    GlobalLeaderboardCommand:
+        noData: '目前没有排名靠前的数据，请稍后再试。.'
+        line: '`:num` **:username** 等级 **:level** 和 **:experience** 经验.'
+        title: '全球体验排行榜'
+        yourRank: '你的排名'
+        loading:
+            title: '加载全球排行榜'
+            message: '正在加载全球排行榜，请稍候.'
+
+    InviteCommand:
+        message: '您可以通过以下方式邀请我访问您的服务器 [clicking here](:oauth) 或使用以下链接:\n\n:oauth\n\n:note'
+        note: '如果您想在其他人之前试用新开发的特性，也可以尝试 *__Cutting Edge__* 几乎每天都添加新功能的bot，您可以通过以下方式邀请该bot [clicking here](:edgeInvite) 或使用以下链接:\n\n:edgeInvite'
+
+    IPInfoCommand:
+        hostname: '主机名'
+        organisation: '组织'
+        country: '国家'
+
+    LeaderboardCommand:
+        noData: '目前没有排名靠前的数据，请稍后再试。.'
+        line: '`:num` **:username** 等级 **:level** 和 **:experience** 经验.'
+        title: '{0} 排行榜'
+        yourRank: '你的等级'
+
+    PingCommand:
+        message: "乒乓！费时 :ping ms (:rating) Websocket心跳 :heartbeat ms"
+        rating:
+            10: "比Sonic快！：SMILLY_CAT："
+            100: "太好了！"
+            200: "漂亮！：淡淡_微笑："
+            300: "体面”：“中性_面：”"
+            400: "平均…：困惑：”"
+            500: "稍微慢一点。：轻微皱起眉头："
+            600: "有点慢.：皱眉2："
+            700: "慢.：担心："
+            800: "太慢了。”：“失望：”"
+            900: "坏。：哭泣：(帮助我)"
+            1600: "#激烈的不和。愤怒："
+            10000: "这毫无意义：思考：#BlameAlexis"
+            other: "慢腾腾的af.：眩晕的脸："
+
+    RankBackgroundCommand:
+        canBeUnlocked: "级别背景可以使用 **[Vote Points](https://discordbots.org/bot/avaire)**,\nyou'll 到达 **1 point** 每次你投票给机器人."
+        listTitle: "等级背景 ({0})"
+        youHaveVotePoints: "你有 {0} 投票点数."
+        exampleTitle: "{0} 例子"
+        exampleFooter: "{0} 花费 {1} 投票点数"
+        alreadyOwnsBackground: "你已经拥有 **:name** 背景!"
+        doesntHaveEnoughPoints: "你没有足够的选票来买这个背景，背景成本 `{0}`, 和你有 `{1}` 投票点数."
+        boughtBackgroundSuccessfully: "祝贺你!!。您现在拥有 **:name** 背景!\n您可以使用 `:command` 命令使用背景."
+        youDontOwnThisBackground: "你不拥有 **:name** 背景，但你可以买到 **:cost** 投票点数!"
+        successfullyChangedBackground: "您已成功切换到使用 **:name** 背景"
+        disabledBackgrounds: "排名背景已成功禁用，您现在再次使用嵌入消息执行排名命令."
+        buyNotes:
+            alreadyOwns: "**{0}**\n- _你已经拥有了这个背景._"
+            doesntOwns: "**{0}**\n - 花费 {1} 投票点数."
+        failedToSendExampleMessage: "在尝试将示例图像发送给 {0} 背景, 错误: {1}."
+        failedToBuyTheBackground: "买背景的时候出了问题，错了: {0}"
+        failedToSetBackground: "由于数据库错误，无法设置背景，请稍后重试。如果此错误继续出现，请与我的开发人员联系。如果您不会联系，请联系QQ:1653573879又我帮您反馈或者请加入官方Discord的邀请链接进入服务器."
+
+    RankCommand:
+        botsCannotReceiveXp: "bot无法接收XP，因此无法对其进行排序，请尝试为用户添加标签."
+        unranked: '无排名的'
+        fields:
+            rank: '军衔'
+            level: '等级'
+            total: '{0} (Total: {1})'
+            experience: '经验'
+            experienceToNext: '下一级需要的经验'
+            youNeedMoreXpToLevelUp: '[{0}] {1}{2}\n\t\t\t\t\t\t\t\t\tYou need {3} 需要更多经验来升级.'
+
+    RemindCommand:
+        errors:
+            invalidMeHere: '类型指定无效，则必须声明要提醒您的位置，方法是使用 `here` 在当前频道中被提醒，或 `me` 在直接信息中被提醒.'
+            invalidTime: '给定的时间无效，时间必须大于60秒且小于3天。'
+
+    ServerIdCommand:
+        message: ':user :id: 此服务器的 `:guildid`'
+
+    ServerInfoCommand:
+        fields:
+            id: '身份证'
+            owner: '主人/拥有者'
+            textChannels: '测试频道'
+            voiceChannels: '声音频道'
+            members: '成员'
+            roles: '军衔'
+            region: '区域'
+            createdAt: '创建在'
+            emojis: '自定义表情符号 ({0})'
+        timeFormat: 'EEE, dd MMM yyyy HH:mm'
+
+    ShardCommand:
+        allShards: '所有碎片'
+        totalShards: '碎片总数'
+
+    SourceCommand:
+        noArgs: 'AvaIre源码:'
+        command: 'AvaIre 指令的源码 **:command** command:'
+        invalidCommand: '给出的命令无效，以下是完整的源代码.'
+        externalCommand: "该命令是通过一个外部插件注册的，插件的作者没有公开该命令的源代码，或者他们忘了向它添加一个链接，以下是bot的完整源代码."
+
+    StatsCommand:
+        title: '官方Bot Server邀请'
+        footer: '当前播放 {0} 服务器 {1} 队列中的歌曲.'
+        latestChanges: '最后的 changes:'
+        formats:
+            perMinute: '{0} ({1} per min)'
+            perSecond: '{0} ({1} per sec)'
+            memory: '{0}Mb / {1}Mb'
+        fields:
+            author: '作者'
+            website: '网站'
+            library: '库'
+            database: '运行数据库查询'
+            messages: '已收到消息'
+            shard: '碎片'
+            commands: '命令运行'
+            memory: '内存使用'
+            uptime: '正常运行时间'
+            members: '成员'
+            channels: '频道'
+            servers: '服务器'
+
+    UptimeCommand:
+        message: '我上网已经很久了 :time'
+        footer: '开启 {0} 在 {1}'
+        dateFormat: 'EEEEEEEE, dd MMM yyyy'
+        timeFormat: 'HH:mm:ss z'
+
+    UserAvatarCommand:
+        noUserFound: "我没有找到ID或者用户为 `{0}`"
+        title: "{0}#{1}'s Avatar"
+
+    UserIdCommand:
+        message: ':id: 用户的 **:target** 是 `:targetid`'
+
+    UserInfoCommand:
+        fields:
+            username: '用户名'
+            userId: '身份证'
+            joinedServer: '加入服务器'
+            joinedDiscord: '加入Discord'
+            roles: '角色 ({0})'
+            servers: '服务器'
+        inServers: '{0} 机器人知道'
+        noRoles: '*This user does not have any roles*'
+        timeFormat: 'EEE, dd MMM yyyy HH:mm'
+
+    VersionCommand:
+        current: '我现在 `:difference` :type 后面的版本!'
+        getLatest: '您可以在GitHub上获得我的最新版本： [avaire/avaire](https://github.com/avaire/avaire)'
+        usingLatest: "您使用的是最新版本的AvaIre!"
+        latestVersion: 'AvaIre的最新版本是 v{0}'
+        versions:
+            majorName: 'Major'
+            major: '主要版本更新是bot及其工作原理的全部返工，或者是对源代码的较小更改的大编译，强烈建议您在主要版本更改时进行更新，因为错误修复或更新将不支持较旧的版本。.'
+            minorName: 'Minor'
+            minor: '次要版本更新是现有代码库的新增功能和返工，建议您在较小版本更改时进行更新，以跟上新功能。.'
+            patchName: 'Patch'
+            patch: '修补程序版本更新是对错误的修复、对现有代码的重构以及不会影响代码库中其他内容的非常小的更改，建议您在修补程序版本更改时进行更新，以跟上错误修复和修补程序。.'
+
+    WeatherCommand:
+        noCityFound: "没有发现任何城市的名称叫 **:name**, 你确定你拼对了吗?"
+        fields:
+            weatherFor: "天气给予 {0}, {1}"
+            country: "国家"
+            temperature: "温度"
+            windDirection: "风向"
+            windSpeed: "风速"
