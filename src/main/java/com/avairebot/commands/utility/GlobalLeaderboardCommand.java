@@ -218,7 +218,7 @@ public class GlobalLeaderboardCommand extends Command {
             try {
                 return avaire.getDatabase().query(String.format(
                     "SELECT COUNT(*) AS rank FROM (" +
-                        "    SELECT `user_id` FROM `experiences` GROUP BY `user_id` HAVING SUM(`global_experience`) > (" +
+                        "    SELECT `user_id` FROM `experiences` WHERE `active` = 1 GROUP BY `user_id` HAVING SUM(`global_experience`) > (" +
                         "        SELECT SUM(`global_experience`) FROM `experiences` WHERE `user_id` = '%s' AND `active` = 1" +
                         "    )" +
                         ") t;",
