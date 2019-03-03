@@ -24,6 +24,7 @@ package com.avairebot.handlers.adapter;
 import com.avairebot.AppInfo;
 import com.avairebot.AvaIre;
 import com.avairebot.Constants;
+import com.avairebot.chat.PlaceholderMessage;
 import com.avairebot.commands.CommandContainer;
 import com.avairebot.commands.CommandHandler;
 import com.avairebot.commands.help.HelpCommand;
@@ -40,6 +41,7 @@ import com.avairebot.factories.MessageFactory;
 import com.avairebot.handlers.DatabaseEventHolder;
 import com.avairebot.language.I18n;
 import com.avairebot.middleware.MiddlewareStack;
+import com.avairebot.middleware.ThrottleMiddleware;
 import com.avairebot.shared.DiscordConstants;
 import com.avairebot.utilities.ArrayUtil;
 import com.avairebot.utilities.RestActionUtil;
@@ -72,6 +74,7 @@ public class MessageEventAdapter extends EventAdapter {
             .build()
     );
 
+    private static final Pattern urlRegex = Pattern.compile("(http(s?):)([/|.|\\w|\\s|-])*");
     private static final Logger log = LoggerFactory.getLogger(MessageEventAdapter.class);
     private static final Pattern userRegEX = Pattern.compile("<@(!|)+[0-9]{16,}+>", Pattern.CASE_INSENSITIVE);
     private static final String mentionMessage = String.join("\n", Arrays.asList(
@@ -142,9 +145,12 @@ public class MessageEventAdapter extends EventAdapter {
 
             if(IsMediaLocked(event,databaseEventHolder.getGuild()) && !hasMedia(event.getMessage()))
             {
-                MessageFactory.deleteMessage(event.getMessage());
-                MessageFactory.makeWarning(event.getMessage(),"You can only post media in this channel.")
-                    .queue(newMessage -> newMessage.delete().queueAfter(45, TimeUnit.SECONDS, null, RestActionUtil.ignore));
+                event.getMessage().delete().queue();
+
+                PlaceholderMessage message = MessageFactory.makeWarning(event.getMessage(),"You can only post media in this channel.");
+
+                message.queue(newMessage -> newMessage.delete().queueAfter(1,TimeUnit.SECONDS, null, RestActionUtil.ignore));
+
             }
 
             if (isSingleBotMention(event.getMessage().getContentRaw().trim())) {
@@ -164,7 +170,6 @@ public class MessageEventAdapter extends EventAdapter {
 
     private boolean hasMedia(Message message)
     {
-        final Pattern urlRegex = Pattern.compile("(http(s?):)([/|.|\\w|\\s|-])*");
         List<String> knownSoundExtensions = Arrays.asList("wav","mp3","ogg","midi");
         if (!message.getAttachments().isEmpty())
         {
@@ -180,15 +185,10 @@ public class MessageEventAdapter extends EventAdapter {
             }
             return true;
         }
-        else if(!urlRegex.matcher(message.getContentRaw()).find()  && message.getAttachments().isEmpty() )
+        else
         {
-            return false;
+            return urlRegex.matcher(message.getContentRaw()).find();
         }
-        else if(urlRegex.matcher(message.getContentRaw()).find())
-        {
-            return true;
-        }
-        else return urlRegex.matcher(message.getContentRaw()).find();
     }
 
     private void invokeMiddlewareStack(MiddlewareStack stack) {
@@ -268,8 +268,7 @@ public class MessageEventAdapter extends EventAdapter {
         hasReceivedInfoMessageInTheLastMinute.add(event.getAuthor().getIdLong());
 
         try {
-            ArrayList<String> strings = new ArrayList<>();
-            strings.addAll(Arrays.asList(
+            ArrayList<String> strings = new ArrayList<>(Arrays.asList(
                 "To invite me to your server, use this link:",
                 "*:oauth*",
                 "",

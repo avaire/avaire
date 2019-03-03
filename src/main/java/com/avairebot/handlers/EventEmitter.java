@@ -40,7 +40,7 @@ public class EventEmitter {
         Checks.notNull(event, "event instance");
         for (PluginLoader plugin : avaire.getPluginManager().getPlugins()) {
             for (ListenerAdapter listener : plugin.getEventListeners()) {
-                if (listener != null && listener instanceof EventListener) {
+                if (listener instanceof EventListener) {
                     ((EventListener) listener).onCustomEvent(event);
                 }
             }

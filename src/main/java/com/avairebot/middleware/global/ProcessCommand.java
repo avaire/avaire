@@ -49,14 +49,14 @@ public class ProcessCommand extends Middleware {
 
     private static final Logger log = LoggerFactory.getLogger(ProcessCommand.class);
 
-    private final static String commandOutput = ConsoleColor.format(
+    private static final String commandOutput = ConsoleColor.format(
         "%cyanExecuting Command \"%reset%command%%cyan\" in \"%reset%category%%cyan\" category in shard %reset%shard%:%reset"
             + "\n\t\t%cyanUser:\t %author%"
             + "\n\t\t%cyanServer:\t %server%"
             + "\n\t\t%cyanChannel: %channel%"
             + "\n\t\t%cyanMessage: %reset%message%");
 
-    private final static String propertyOutput = ConsoleColor.format(
+    private static final String propertyOutput = ConsoleColor.format(
         "%reset%s %cyan[%reset%s%cyan]"
     );
 
