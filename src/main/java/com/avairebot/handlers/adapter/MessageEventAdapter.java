@@ -44,6 +44,7 @@ import com.avairebot.shared.DiscordConstants;
 import com.avairebot.utilities.ArrayUtil;
 import com.avairebot.utilities.RestActionUtil;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
+import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
@@ -119,7 +120,8 @@ public class MessageEventAdapter extends EventAdapter {
                 return;
             }
 
-            if (isMentionableAction(event)) {
+            if (isMentionableAction(event))
+            {
                 container = CommandHandler.getLazyCommand(ArrayUtil.toArguments(event.getMessage().getContentRaw())[1]);
                 if (container != null && canExecuteCommand(event, container)) {
                     invokeMiddlewareStack(new MiddlewareStack(event.getMessage(), container, databaseEventHolder, true));
@@ -135,6 +137,14 @@ public class MessageEventAdapter extends EventAdapter {
                     }
                     return;
                 }
+
+            }
+
+            if(IsMediaLocked(event,databaseEventHolder.getGuild()) && !hasMedia(event.getMessage()))
+            {
+                MessageFactory.deleteMessage(event.getMessage());
+                MessageFactory.makeWarning(event.getMessage(),"You can only post media in this channel.")
+                    .queue(newMessage -> newMessage.delete().queueAfter(45, TimeUnit.SECONDS, null, RestActionUtil.ignore));
             }
 
             if (isSingleBotMention(event.getMessage().getContentRaw().trim())) {
@@ -150,6 +160,35 @@ public class MessageEventAdapter extends EventAdapter {
 
     private boolean isValidMessage(User author) {
         return !author.isBot() || author.getIdLong() == DiscordConstants.SENITHER_BOT_ID;
+    }
+
+    private boolean hasMedia(Message message)
+    {
+        final Pattern urlRegex = Pattern.compile("(http(s?):)([/|.|\\w|\\s|-])*");
+        List<String> knownSoundExtensions = Arrays.asList("wav","mp3","ogg","midi");
+        if (!message.getAttachments().isEmpty())
+        {
+            for (Message.Attachment attachment : message.getAttachments())
+            {
+                String fileName = attachment.getFileName();
+
+                String extension = fileName.substring(fileName.lastIndexOf('.') + 1);
+                if (!attachment.isImage() && !knownSoundExtensions.contains(extension))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+        else if(!urlRegex.matcher(message.getContentRaw()).find()  && message.getAttachments().isEmpty() )
+        {
+            return false;
+        }
+        else if(urlRegex.matcher(message.getContentRaw()).find())
+        {
+            return true;
+        }
+        else return urlRegex.matcher(message.getContentRaw()).find();
     }
 
     private void invokeMiddlewareStack(MiddlewareStack stack) {
@@ -188,6 +227,16 @@ public class MessageEventAdapter extends EventAdapter {
 
         ChannelTransformer channel = transformer.getChannel(event.getChannel().getId());
         return channel == null || channel.getAI().isEnabled();
+    }
+
+    private boolean IsMediaLocked(MessageReceivedEvent event, GuildTransformer transformer)
+    {
+        if (transformer == null) {
+            return false;
+        }
+
+        ChannelTransformer channel = transformer.getChannel(event.getChannel().getId());
+        return channel.getMediaOnlyModifier().isEnabled();
     }
 
     private void sendTagInformationMessage(MessageReceivedEvent event) {

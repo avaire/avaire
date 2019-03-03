@@ -199,6 +199,12 @@ administration:
         noSelfAssignableRoles: "Al momento non ci sono ruoli auto-assegnabili su questo server."
         title: "Ci sono {0} ruoli auto-assegnabili."
 
+    MediaLockCommand:
+        message: "The `MediaOnly Lock` module has been **:status** for the :channel channel."
+        status:
+            enabled: "Enabled"
+            disabled: "Disabled"
+
     ModlogCommand:
         mustMentionTextChannel: "Argomento canale non valido, è necessario menzionare un canale di testo valido"
         cantSendEmbedMessages: "Non riesco a inviare messaggi incorporati nel canale specificato, per favore cambia il mio livello di autorizzazione per il canale {0} se vuoi usarlo come canale modlog."

@@ -1,33 +1,15 @@
-/*
- * Copyright (c) 2018.
- *
- * This file is part of AvaIre.
- *
- * AvaIre is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * AvaIre is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with AvaIre.  If not, see <https://www.gnu.org/licenses/>.
- *
- *
- */
+package com.avairebot.database.migrate.migrations;
 
-package com.avairebot.contracts.database.migrations;
-
-import com.avairebot.contracts.reflection.Reflectional;
+import com.avairebot.Constants;
+import com.avairebot.contracts.database.migrations.Migration;
+import com.avairebot.database.migrate.Migrations;
 import com.avairebot.database.schema.Schema;
+import com.avairebot.time.Carbon;
 
 import java.sql.SQLException;
 
-public interface Migration extends Reflectional {
-
+public class AddMediaLockToGuildsTableMigration implements Migration
+{
     /**
      * Gets the time the migration was created at, this is used to order
      * migrations, making sure migrations are rolled out to the
@@ -36,13 +18,17 @@ public interface Migration extends Reflectional {
      * The time format can be any of the supported carbon time formats.
      *
      * @return the carbon time string
-     * @see com.avairebot.time.Carbon
+     * @see Carbon
      */
-    String created_at();
+    @Override
+    public String created_at()
+    {
+        return "2019-03-02 00:15:36";
+    }
 
     /**
      * Attempts to migrate the database, this is automatically executed from the
-     * {@link com.avairebot.database.migrate.Migrations#up() migrate up} method.
+     * {@link Migrations#up() migrate up} method.
      *
      * @param schema the database schematic instance
      * @return the result of the schematic instance call
@@ -52,12 +38,24 @@ public interface Migration extends Reflectional {
      *                      <code>ResultSet</code> object, the method is called on a
      *                      <code>PreparedStatement</code> or <code>CallableStatement</code>
      */
-    boolean up(Schema schema) throws SQLException;
+    @Override
+    public boolean up(Schema schema) throws SQLException
+    {
+        if (schema.hasColumn(Constants.GUILD_TABLE_NAME, "mediaonly")) {
+            return true;
+        }
+        schema.getDbm().queryUpdate(String.format(
+            "ALTER TABLE `%s` ADD `mediaonly` TINYINT(1) NOT NULL DEFAULT '0';",
+            Constants.GUILD_TABLE_NAME
+        ));
+
+        return true;
+    }
 
     /**
      * Attempts to rollback the migrations from the database, this is automatically executed from the
-     * {@link com.avairebot.database.migrate.Migrations#down() down()} and
-     * {@link com.avairebot.database.migrate.Migrations#rollback(int) rollback(int)} method.
+     * {@link Migrations#down() down()} and
+     * {@link Migrations#rollback(int) rollback(int)} method.
      *
      * @param schema the database schematic instance
      * @return the result of the schematic instance call
@@ -67,7 +65,18 @@ public interface Migration extends Reflectional {
      *                      <code>ResultSet</code> object, the method is called on a
      *                      <code>PreparedStatement</code> or <code>CallableStatement</code>
      */
-    default boolean down(Schema schema) throws SQLException {
-        return false;
+
+    @Override
+    public boolean down(Schema schema) throws SQLException {
+        if (!schema.hasColumn(Constants.GUILD_TABLE_NAME, "mediaonly") ){
+            return true;
+        }
+
+        schema.getDbm().queryUpdate(String.format(
+            "ALTER TABLE `%s` DROP `mediaonly`;",
+            Constants.GUILD_TABLE_NAME
+        ));
+
+        return true;
     }
 }

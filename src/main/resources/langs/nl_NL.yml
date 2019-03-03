@@ -199,6 +199,12 @@ administration:
         noSelfAssignableRoles: "Er zijn geen zelf uitgeefbare rollen voor deze server."
         title: "Er zijn {0} zelf uitgeefbare rollen"
 
+    MediaLockCommand:
+        message: "The `MediaOnly Lock` module has been **:status** for the :channel channel."
+        status:
+            enabled: "Enabled"
+            disabled: "Disabled"
+
     ModlogCommand:
         mustMentionTextChannel: "Ongeldig kanaal gegeven, je moet een geldig kanaal benoemen"
         cantSendEmbedMessages: "Ik kan geen embed berichten versturen in dit kanaal, verander A.U.B mijn rechten voor het {0} kanaal als je het als een modlog kanaal wil gebruiken."

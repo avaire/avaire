@@ -199,6 +199,12 @@ administration:
         noSelfAssignableRoles: "Der er i øjeblikket ingen selvoverdragelige roller til denne server."
         title: "Der er {0} selvoverdragelige roller"
 
+    MediaLockCommand:
+        message: "The `MediaOnly Lock` module has been **:status** for the :channel channel."
+        status:
+            enabled: "Enabled"
+            disabled: "Disabled"
+
     ModlogCommand:
         mustMentionTextChannel: "Ugyldigt kanal argument givet, du skal nævne en gyldig tekstkanal."
         cantSendEmbedMessages: "Jeg kan ikke sende indlejrede meddelelser i den angivne kanal. Du skal ændre mit tilladelsesniveau for {0} kanalen, hvis du vil bruge det som en modlogkanal."

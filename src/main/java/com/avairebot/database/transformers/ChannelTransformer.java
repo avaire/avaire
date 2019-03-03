@@ -36,6 +36,7 @@ public class ChannelTransformer extends Transformer {
     private final BooleanModule ai = new BooleanModule();
     private final MessageModule welcome = new MessageModule();
     private final MessageModule goodbye = new MessageModule();
+    private final MessageModule mediaonly = new MessageModule();
 
     public ChannelTransformer(DataRow data) {
         this(data, null);
@@ -51,6 +52,13 @@ public class ChannelTransformer extends Transformer {
                 DataRow aiData = new DataRow((LinkedTreeMap<String, Object>) data.get("ai"));
 
                 ai.setEnabled(aiData.getBoolean("enabled", true));
+            }
+            if(data.get("mediaonly",null) != null)
+            {
+                DataRow mediaData = new DataRow((LinkedTreeMap<String, Object>) data.get("mediaonly"));
+
+                mediaonly.setEnabled(mediaData.getBoolean("enabled", false));
+
             }
 
             if (data.get("welcome", null) != null) {
@@ -83,6 +91,11 @@ public class ChannelTransformer extends Transformer {
         return ai;
     }
 
+    public MessageModule getMediaOnlyModifier()
+    {
+        return mediaonly;
+    }
+
     public MessageModule getWelcome() {
         return welcome;
     }
@@ -91,13 +104,14 @@ public class ChannelTransformer extends Transformer {
         return goodbye;
     }
 
+
     public HashMap<String, Object> toMap() {
         HashMap<String, Object> objects = new HashMap<>();
 
         objects.put("ai", ai.toMap());
         objects.put("welcome", welcome.toMap());
         objects.put("goodbye", goodbye.toMap());
-
+        objects.put("mediaonly", mediaonly.toMap());
         return objects;
     }
 

@@ -199,6 +199,12 @@ administration:
         noSelfAssignableRoles: "There are currently no self-assignable roles for this server."
         title: "There are {0} self-assignable roles"
 
+    MediaLockCommand:
+        message: "The `MediaOnly Lock` module has been **:status** for the :channel channel."
+        status:
+            enabled: "Enabled"
+            disabled: "Disabled"
+
     ModlogCommand:
         mustMentionTextChannel: "Invalid channel argument given, you must mention a valid text channel"
         cantSendEmbedMessages: "I can't send embedded messages in the specified channel, please change my permission level for the {0} channel if you want to use it as a modlog channel."
@@ -374,6 +380,10 @@ fun:
             - 'Outlook not so good'
             - 'Very doubtful'
 
+
+
+
+
     MemeCommand:
         missingArgument: 'Missing `action` argument, you must include the meme type or user that you want to generate a meme for, or `list` to display all the memes types available.'
         invalidType: 'Invalid meme type given, `{0}` is not a valid meme type!'
@@ -405,6 +415,7 @@ fun:
         noArgumentsGiven: "Missing argument, you must either provide `list` to see a list of characters that you can choose from, or to generate an image, `character` or a valid image `url` to build the image for."
         failedToGenerateImage: "Failed to generate the the image, are you sure that you provided a correct image URL or character name?"
         title: "Undertale Character List"
+
 
 help:
     HelpCommand:

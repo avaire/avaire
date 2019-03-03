@@ -198,6 +198,12 @@ administration:
         noSelfAssignableRoles: "此服务器当前没有可自我分配的角色。"
         title: "这里有 {0} 自我分配角色"
 
+    MediaLockCommand:
+        message: "The `MediaOnly Lock` module has been **:status** for the :channel channel."
+        status:
+            enabled: "Enabled"
+            disabled: "Disabled"
+
     ModlogCommand:
         mustMentionTextChannel: "参数无效，则必须提及有效的文本通道。"
         cantSendEmbedMessages: "我不能在指定的通道中发送嵌入的消息，请更改 {0} 通道(如果要将其用作modlog通道)."

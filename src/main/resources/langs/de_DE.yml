@@ -199,6 +199,12 @@ administration:
         noSelfAssignableRoles: "Derzeit sind keine selbst-zuweisbaren Rollen festgelegt."
         title: "Es existieren {0} selbst-zuweisbare Rollen"
 
+    MediaLockCommand:
+        message: "The `MediaOnly Lock` module has been **:status** for the :channel channel."
+        status:
+            enabled: "Enabled"
+            disabled: "Disabled"
+
     ModlogCommand:
         mustMentionTextChannel: "Ungültiger Channel-Argument angegeben. Du musst einen gültigen Textchannel erwähnen."
         cantSendEmbedMessages: "Ich kann keine eingebetteten Nachrichten in dem angegeben Channel versenden. Prüfe die Berechtigungen für die Rollen für den {0}-Channel, wenn du es als Channel nutzt möchtest, um den Server zu protokollieren."

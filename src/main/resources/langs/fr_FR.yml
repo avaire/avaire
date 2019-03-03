@@ -50,12 +50,6 @@ administration:
         emoteDoestBelongToServer: "The emote does not belong to this server, you can only use emotes from this server as reaction emotes."
         messageHasNoSlots: "The message doesn't have anymore reaction role slots available, you can remove existing reaction-roles to free up slots, or delete reaction role messages to add the role to a new reaction role message."
         serverHasNoSlots: "Can't create new reaction role messages, the server doesn't have anymore reaction messages slots, you can deleting existing reaction role messages to free up slots, or add your reaction role to a reaction message if there are available slots on the message for more roles."
-        success: "The :role role has been registered as an reaction role for the :emote emote.\nThe message has `:roleSlots` more reaction-role slots available for the message, and `:messageSlots` reaction-message slots available."
-
-    AddSelfAssignableRoleCommand:
-        noSlotsLeft: "The server doesn't have any more self-assignable role slots, you can remove existing self-assignable roles to free up slots."
-        success: "Role **:role** role has been added to the self-assignable list.\nThe server has `:slots` more self-assignable roles slots available."
-
     AdministrateExperienceCommand:
         cantUseForBots: "You can't add, remove, or reset XP for bot accounts since they don't earn any, please select a normal user when using this command."
         invalidAmountGiven: "The `amount` property must between 1 and {0} add or take XP from a user."
@@ -206,6 +200,12 @@ administration:
     ListSelfAssignableRolesCommand:
         noSelfAssignableRoles: "There are currently no self-assignable roles for this server."
         title: "There are {0} self-assignable roles"
+
+    MediaLockCommand:
+        message: "The `MediaOnly Lock` module has been **:status** for the :channel channel."
+        status:
+             enabled: "Enabled"
+             disabled: "Disabled"
 
     ModlogCommand:
         mustMentionTextChannel: "Invalid channel argument given, you must mention a valid text channel"
