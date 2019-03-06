@@ -42,7 +42,7 @@ public class UpdateCommand extends ApplicationShutdownCommand {
 
     @Override
     public String getDescription() {
-        return "Schedule a time the bot should be automatically-updated, the bot will shutdown, update itself, and start back up again.\nThis requires [avaire/watchdog](https://github.com/avaire/watchdog) to work, or that the `--internal-restart` flag was used when starting the bot, without it the bot will just shutdown.";
+        return "Schedule a time the bot should be automatically-updated, the bot will shutdown, update itself, and start back up again.\nThis requires [avaire/watchdog](https://github.com/avaire/watchdog) to work, without it the bot will just shutdown.";
     }
 
     @Override

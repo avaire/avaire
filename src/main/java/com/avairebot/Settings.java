@@ -36,7 +36,6 @@ public class Settings {
     private final boolean useColors;
     private final boolean useDebugging;
     private final boolean useEnvOverride;
-    private final boolean internalRestart;
     private final boolean musicOnlyMode;
 
     private final List<String> jarArgs;
@@ -48,7 +47,6 @@ public class Settings {
         useColors = !cmd.hasOption("no-colors");
         useDebugging = cmd.hasOption("debug");
         useEnvOverride = cmd.hasOption("use-environment-variables");
-        internalRestart = cmd.hasOption("internal-restart");
         musicOnlyMode = cmd.hasOption("music");
 
         RuntimeMXBean runtimeMxBean = ManagementFactory.getRuntimeMXBean();
@@ -66,10 +64,6 @@ public class Settings {
 
     public boolean useDebugging() {
         return useDebugging;
-    }
-
-    public boolean useInternalRestart() {
-        return internalRestart;
     }
 
     public boolean useEnvOverride() {
