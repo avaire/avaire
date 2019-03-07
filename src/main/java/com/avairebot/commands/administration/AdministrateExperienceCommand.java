@@ -135,7 +135,7 @@ public class AdministrateExperienceCommand extends Command {
             return sendErrorMessage(context, "errors.invalidProperty", "action", "action");
         }
 
-        if (args.length == 0) {
+        if (args.length == 1) {
             return sendErrorMessage(context, "errors.missingArgument", "user");
         }
 
