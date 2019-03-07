@@ -50,11 +50,16 @@ administration:
     AdministrateExperienceCommand:
         cantUseForBots: "您不能为bot帐户添加、删除或重置XP，因为这些帐户不能赚取任何利润，请在使用此命令时选择一个普通用户."
         invalidAmountGiven: "这个 `amount` 属性必须介于 1 和 {0} 添加或接受用户的经验."
+        aboutToResetEverything: "You're about to reset the XP for everyone on the entire server, note that this action **CAN NOT** be reversed. If you're sure you wanna continue, run the command to completely reset the servers XP.\n\n```:command server-reset :token```\nThis command will only work for 60 seconds, after that time the token becomes invalid and the command have to be ran again to get a new token."
         failedToSaveChanges: "无法将更改保存到数据库，请重试，如果错误继续发生，请与官方[AvaIre支持服务器]上的支持人员联系(https://discord.gg/gt2FWER). 如果你不懂如何操作，请联系我QQ1653573879来帮助操作"
+        mustBeAnAdmin: "You must be a server admin to reset everyones XP."
+        invalidSecurityToken: "Invalid security token given, please provide the correct security token to reset all the servers XP."
+        warning: "Warning!"
         success:
             add: "**:amount** 经验已经被赋予 :target, 他们现在有 **:newAmount** 经验."
             take: "**:amount** 经验已从 :target, 他们现在有 **:newAmount** 经验."
             reset: ":target 已成功重置其经验."
+            everything: "Everyone on the entire server have now had their XP completely reset!"
 
     AiCommand:
         message: "“人工智能”模块 **:status** 为 :channel 频道."

@@ -49,13 +49,19 @@ administration:
         success: "Role **:role** role has been added to the self-assignable list.\nThe server has `:slots` more self-assignable roles slots available."
 
     AdministrateExperienceCommand:
+    AdministrateExperienceCommand:
         cantUseForBots: "You can't add, remove, or reset XP for bot accounts since they don't earn any, please select a normal user when using this command."
         invalidAmountGiven: "The `amount` property must between 1 and {0} add or take XP from a user."
+        aboutToResetEverything: "You're about to reset the XP for everyone on the entire server, note that this action **CAN NOT** be reversed. If you're sure you wanna continue, run the command to completely reset the servers XP.\n\n```:command server-reset :token```\nThis command will only work for 60 seconds, after that time the token becomes invalid and the command have to be ran again to get a new token."
         failedToSaveChanges: "Failed to save the changes to the database, please try again, if the error continues to happen, please contact support on the official [AvaIre support server](https://discord.gg/gt2FWER)."
+        mustBeAnAdmin: "You must be a server admin to reset everyones XP."
+        invalidSecurityToken: "Invalid security token given, please provide the correct security token to reset all the servers XP."
+        warning: "Warning!"
         success:
             add: "**:amount** XP have been given to :target, they now have **:newAmount** XP."
             take: "**:amount** XP have been taken from :target, they now have **:newAmount** XP."
             reset: ":target has successfully had their XP reset."
+            everything: "Everyone on the entire server have now had their XP completely reset!"
 
     AiCommand:
         message: "The `Artificial Intelligence` module has been **:status** for the :channel channel."
