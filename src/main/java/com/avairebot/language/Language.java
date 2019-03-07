@@ -37,7 +37,6 @@ public enum Language {
     FR_FR("fr", "FR", "French", "French"),
     HU_HU("hu", "HU", "Magyar", "Hungarian"),
     NO_NB("no", "NB", "Norsk", "Norwegian"),
-    EN_PT("en", "PT", "Pirate", "Pirate English", "arrr"),
     RU_RU("ru", "RU", "Pусский", "Russian"),
     IT_IT("it", "IT", "Italiano", "Italian"),
     NL_NL("nl", "NL", "Nederlands", "Dutch"),
