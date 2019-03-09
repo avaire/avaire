@@ -58,7 +58,7 @@ public final class Carbon {
      * this is the same as the {@link Carbon#now() static now()} method.
      */
     public Carbon() {
-        this.time = Calendar.getInstance();
+        this.time = Calendar.getInstance(Locale.ENGLISH);
 
         this.WEEK_START_AT = GLOBAL_WEEK_START_AT;
         this.WEEK_END_AT = GLOBAL_WEEK_END_AT;
@@ -66,7 +66,7 @@ public final class Carbon {
         this.timezone = time.getTimeZone();
 
         this.time.setFirstDayOfWeek(WEEK_START_AT.getId());
-        this.time.setTime(Calendar.getInstance().getTime());
+        this.time.setTime(Calendar.getInstance(Locale.ENGLISH).getTime());
     }
 
     /**
@@ -80,7 +80,7 @@ public final class Carbon {
      * @see java.text.SimpleDateFormat
      */
     public Carbon(String time) throws InvalidFormatException {
-        this.time = Calendar.getInstance();
+        this.time = Calendar.getInstance(Locale.ENGLISH);
 
         this.WEEK_START_AT = GLOBAL_WEEK_START_AT;
         this.WEEK_END_AT = GLOBAL_WEEK_END_AT;
@@ -113,7 +113,7 @@ public final class Carbon {
      * @see java.text.SimpleDateFormat
      */
     public Carbon(String time, String timezone) throws InvalidFormatException {
-        this.time = Calendar.getInstance();
+        this.time = Calendar.getInstance(Locale.ENGLISH);
 
         this.WEEK_START_AT = GLOBAL_WEEK_START_AT;
         this.WEEK_END_AT = GLOBAL_WEEK_END_AT;
@@ -140,7 +140,7 @@ public final class Carbon {
      * @param instance the carbon instance to copy
      */
     public Carbon(Carbon instance) {
-        this.time = Calendar.getInstance();
+        this.time = Calendar.getInstance(Locale.ENGLISH);
 
         this.WEEK_START_AT = instance.WEEK_START_AT;
         this.WEEK_END_AT = instance.WEEK_END_AT;
@@ -158,7 +158,7 @@ public final class Carbon {
      * @param date The date to use to create the carbon instance
      */
     private Carbon(Date date) {
-        this.time = Calendar.getInstance();
+        this.time = Calendar.getInstance(Locale.ENGLISH);
 
         this.WEEK_START_AT = GLOBAL_WEEK_START_AT;
         this.WEEK_END_AT = GLOBAL_WEEK_END_AT;
@@ -759,16 +759,6 @@ public final class Carbon {
 
     /**
      * Sets the month to the carbon instance.
-     *
-     * @param month the month to set
-     * @return the Carbon instance
-     */
-    public Carbon setMonth(Month month) {
-        return set(Calendar.MONTH, month.getId());
-    }
-
-    /**
-     * Sets the month to the carbon instance.
      * <p>
      * This is a calendar-specific value. The first month of the year in the
      * Gregorian and Julian calendars is <code>JANUARY</code> which is 0;
@@ -792,6 +782,16 @@ public final class Carbon {
      */
     public Carbon setMonth(int month) {
         return set(Calendar.MONTH, month - 1);
+    }
+
+    /**
+     * Sets the month to the carbon instance.
+     *
+     * @param month the month to set
+     * @return the Carbon instance
+     */
+    public Carbon setMonth(Month month) {
+        return set(Calendar.MONTH, month.getId());
     }
 
     /**
@@ -1481,7 +1481,7 @@ public final class Carbon {
      * or (2) <code>FALSE</code> if it's set to the present or future.
      */
     public boolean isPast() {
-        return Calendar.getInstance().getTimeInMillis() > time.getTimeInMillis();
+        return Calendar.getInstance(Locale.ENGLISH).getTimeInMillis() > time.getTimeInMillis();
     }
 
     /**
