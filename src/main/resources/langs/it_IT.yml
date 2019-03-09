@@ -60,7 +60,7 @@ administration:
             add: "**:amount** XP has been given to :target, they now have **:newAmount** XP."
             take: "**:amount** XP has been taken from :target, they now have **:newAmount** XP."
             reset: ":target has successfully had their XP reset."
-            everything: "Everyone on the entire server have now had their XP completely reset!"
+            everything: "Everyone on the entire server has now had their XP completely reset!"
 
     AiCommand:
         message: "Il modulo `Intelligenza Artificiale` è stato **:status** per il canale :channel."

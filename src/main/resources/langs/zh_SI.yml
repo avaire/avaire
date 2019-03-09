@@ -59,7 +59,7 @@ administration:
             add: "**:amount** 经验已经被赋予 :target, 他们现在有 **:newAmount** 经验."
             take: "**:amount** 经验已从 :target, 他们现在有 **:newAmount** 经验."
             reset: ":target 已成功重置其经验."
-            everything: "Everyone on the entire server have now had their XP completely reset!"
+            everything: "Everyone on the entire server has now had their XP completely reset!"
 
     AiCommand:
         message: "“人工智能”模块 **:status** 为 :channel 频道."
