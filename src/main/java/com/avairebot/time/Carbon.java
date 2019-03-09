@@ -493,7 +493,7 @@ public final class Carbon {
      *                                  string format is invalid.
      */
     public static Carbon createFromFormat(String format, String time) throws ParseException {
-        SimpleDateFormat sdf = new SimpleDateFormat(format);
+        SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.ENGLISH);
 
         Date date = sdf.parse(time);
 
@@ -514,7 +514,7 @@ public final class Carbon {
      *                                  string format is invalid.
      */
     public static Carbon createFromFormat(String format, String time, String timezone) throws ParseException {
-        SimpleDateFormat sdf = new SimpleDateFormat(format);
+        SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.ENGLISH);
 
         Date date = sdf.parse(time);
 
@@ -535,7 +535,7 @@ public final class Carbon {
      *                                  string format is invalid.
      */
     public static Carbon createFromFormat(String format, String time, TimeZone timezone) throws ParseException {
-        SimpleDateFormat sdf = new SimpleDateFormat(format);
+        SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.ENGLISH);
 
         Date date = sdf.parse(time);
 
@@ -2115,7 +2115,7 @@ public final class Carbon {
      * @return the formatted datetime string
      */
     public String format(String format) {
-        SimpleDateFormat sdf = new SimpleDateFormat(format);
+        SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.ENGLISH);
 
         if (timezone != null) {
             sdf.setTimeZone(timezone);
