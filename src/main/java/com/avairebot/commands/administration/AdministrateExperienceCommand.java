@@ -35,6 +35,10 @@ import com.avairebot.database.transformers.PlayerTransformer;
 import com.avairebot.level.LevelManager;
 import com.avairebot.utilities.MentionableUtil;
 import com.avairebot.utilities.NumberUtil;
+import com.avairebot.utilities.RandomUtil;
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
+import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,10 +50,22 @@ import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class AdministrateExperienceCommand extends Command {
 
+    public static final Cache<String, String> cache = CacheBuilder.newBuilder()
+        .recordStats()
+        .expireAfterWrite(60, TimeUnit.SECONDS)
+        .build();
+
     private static final Logger log = LoggerFactory.getLogger(AdministrateExperienceCommand.class);
+
+    private static final List<String> randomCharacters = Arrays.asList(
+        "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "a", "s", "d", "f", "g", "h", "j", "k", "l", "z", "x", "c", "v", "b", "n", "m",
+        "Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "A", "S", "D", "F", "G", "H", "J", "K", "L", "Z", "X", "C", "V", "B", "N", "M",
+        "0", "1", "2", "3", "4", "5", "6", "7", "9", "8", "!", "%", "&", "(", ")", "[", "]", "{", "}"
+    );
 
     public AdministrateExperienceCommand(AvaIre avaire) {
         super(avaire, false);
@@ -70,7 +86,8 @@ public class AdministrateExperienceCommand extends Command {
         return Arrays.asList(
             "`:command reset <user>` - Resets the users XP.",
             "`:command add <user> <amount>` - Adds the given amount of XP to the user.",
-            "`:command take <user> <amount>` - Takes the given amount of XP from the user."
+            "`:command take <user> <amount>` - Takes the given amount of XP from the user.",
+            "`:command server-reset` - Resets the XP for everyone on the entire server in one go."
         );
     }
 
@@ -79,7 +96,8 @@ public class AdministrateExperienceCommand extends Command {
         return Arrays.asList(
             "`:command reset @Senither`",
             "`:command add @Senither 9999`",
-            "`:command take @Senither 1337`"
+            "`:command take @Senither 1337`",
+            "`:command server-reset`"
         );
     }
 
@@ -135,7 +153,11 @@ public class AdministrateExperienceCommand extends Command {
             return sendErrorMessage(context, "errors.invalidProperty", "action", "action");
         }
 
-        if (args.length == 0) {
+        if (action.equals(Action.SERVER_RESET)) {
+            return handleServerReset(context, Arrays.copyOfRange(args, 1, args.length));
+        }
+
+        if (args.length == 1) {
             return sendErrorMessage(context, "errors.missingArgument", "user");
         }
 
@@ -256,6 +278,56 @@ public class AdministrateExperienceCommand extends Command {
         return true;
     }
 
+    private boolean handleServerReset(CommandMessage context, String[] args) {
+        if (!context.getMember().hasPermission(Permission.ADMINISTRATOR)) {
+            return sendErrorMessage(context, context.i18n("mustBeAnAdmin"));
+        }
+
+        String cacheKey = context.getGuild().getId() + ":" + context.getAuthor().getId();
+        String token = cache.getIfPresent(cacheKey);
+
+        if (token == null) {
+            StringBuilder tokenBuilder = new StringBuilder();
+            for (int i = 0; i < RandomUtil.getInteger(4) + 16; i++) {
+                tokenBuilder.append(RandomUtil.pickRandom(randomCharacters));
+            }
+            token = tokenBuilder.toString();
+
+            context.makeWarning(context.i18n("aboutToResetEverything"))
+                .setTitle(context.i18n("warning"))
+                .set("command", generateCommandTrigger(context.getMessage()))
+                .set("token", token)
+                .queue();
+
+            cache.put(cacheKey, token);
+
+            return false;
+        }
+
+        if (args.length == 0 || !args[0].equals(token)) {
+            return sendErrorMessage(context, context.i18n("invalidSecurityToken"));
+        }
+
+        try {
+            avaire.getDatabase().newQueryBuilder(Constants.PLAYER_EXPERIENCE_TABLE_NAME)
+                .where("guild_id", context.getGuild().getId())
+                .update(statement -> {
+                    statement.set("experience", 100);
+                });
+
+            PlayerController.forgetCacheForGuild(context.getGuild().getIdLong());
+
+            context.makeSuccess(context.i18n("success.everything"))
+                .queue();
+        } catch (SQLException e) {
+            log.error("Failed to reset server XP for {}, error: {}", context.getGuild().getId(), e.getMessage(), e);
+
+            return sendErrorMessage(context, context.i18n("failedToSaveChanges"));
+        }
+
+        return true;
+    }
+
     private boolean updatePlayerRecord(PlayerTransformer player) {
         try {
             avaire.getDatabase().newQueryBuilder(Constants.PLAYER_EXPERIENCE_TABLE_NAME)
@@ -276,7 +348,8 @@ public class AdministrateExperienceCommand extends Command {
 
         ADD("add", "give"),
         TAKE("take", "remove"),
-        RESET(false, "reset");
+        RESET(false, "reset"),
+        SERVER_RESET(false, "server-reset");
 
         private boolean amount;
         private List<String> triggers;

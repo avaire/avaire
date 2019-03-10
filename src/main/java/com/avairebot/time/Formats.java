@@ -24,6 +24,7 @@ package com.avairebot.time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public enum Formats {
 
@@ -115,7 +116,7 @@ public enum Formats {
      * @return the {@link java.text.SimpleDateFormat} format what was created.
      */
     public SimpleDateFormat make() {
-        return new SimpleDateFormat(string);
+        return new SimpleDateFormat(string, Locale.ENGLISH);
     }
 
     /**
