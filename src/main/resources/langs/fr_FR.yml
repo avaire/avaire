@@ -12,49 +12,41 @@ errors:
     errorOccurredWhileLoading: "Une erreur est survenue lors du chargement de {0}, réessayer, si le problème persiste reportez le à l'un de mes développeurs sur le [serveur de support AvaIre](https://discord.gg/gt2FWER)."
 
 levelupMessages:
-    - "GG :user, tu as atteinds le niveau **Level :level**"
-    - "Eyy :user, tu viens d'augmenter de niveau! Tu es maintenant niveau **Level :level**"
-    - "🌟 Tu as atteinds le niveau **Level :level** :user! Félicitations 🌟"
-    - "Tu es en 🔥 :user, vous venez d'atteindre le niveau **Level :level**"
-    - "Félicitations :user 🎉 Tu viens d'augmenter de niveau! Tu es maintenant niveau **Level :level**"
+    - "GG :user, tu as atteint le **Niveau :level**"
+    - "Hey :user, tu viens de monter en niveau! Tu es maintenant **Niveau :level**"
+    - "🌟 Tu as atteint le **Niveau :level** :user! Félicitations 🌟"
+    - "Tu es en 🔥 :user, tu viens d'atteindre le **Niveau :level**"
+    - "Félicitations :user 🎉 Tu viens de monter en niveau! Tu es maintenant **Niveau :level**"
 
 levelupRoleMessages:
-    - "GG :user, tu as atteinds le niveau **Level :level**, tu as maintenant le rôle **:role** role"
-    - "Eyy :user, tu as augmenté de niveau! Tu es maintenant niveau **Level :level**, tu as le rôle **:role**, tu l'as mérité."
-    - "Félicitations :user 🎉  Tu as augmenté de niveau! Tu es maintenant niveau **Level :level**, tu as aussi gagner toi même le rôle **:role** role"
+    - "GG :user, tu as atteint le **Niveau :level**, tu as maintenant le rôle **:role**"
+    - "Eyy :user, tu viens de monter en niveau! Tu es maintenant **Niveau :level**, tu as le rôle **:role**, tu l'as mérité."
+    - "Félicitations :user 🎉  Tu viens de monter en niveau! Tu es maintenant **Niveau :level**, tu as aussi gagné le rôle **:role**"
 
 administration:
     common:
         invalidRole: ":user Rôle invalide, Je ne trouve pas de rôle appelé :role"
 
     channelModule:
-        invalidColorGiven: "Couleur donnée invalide, la couleur doit être une valeur valide HEX.\nTu peux essayer le [random color picker](https://www.webpagefx.com/web-design/random-color-picker/)"
-        message: "Le :type message module a été réglé sur:\n\n```:message```\n\n Tu peux tester le message en réutilisant la commande et mentionner un utilisateur. \n:command <user>"
+        invalidColorGiven: "Couleur invalide, la couleur doit être une valeur HEX valide.\nTu peux essayer ce [sélecteur de couleur aléatoire](https://www.webpagefx.com/web-design/random-color-picker/)"
+        message: "Le module message `:type` a été défini avec:\n\n```:message```\n\nTu peux tester le message en réutilisant la commande et mentionner un utilisateur.\n`:command <user>`"
 
     AddLevelRoleCommand:
-        noSlotsLeft: "Le serveur n'as plus de slots de rôle de niveaux, tu peux supprimer les rôles de niveau existant pour libérer des slots."
-        invalidLevel: "Le niveau demandé n'est pas valide, il doit être un nombre positif."
-        alreadyLevelRole: ":user The rôle :role est déja un rôle de niveau, tu ne peux pas utiliser le même rôle deux."
-        alreadyARoleAtLevel: "Il y a déja un rôle assigné au niveau :level, seulement un rôle peut être assigner à un niveau."
-        success: "Le rôle :role a été ajouté à la liste.\nLe server a :slots slots encore disponible."
+        noSlotsLeft: "Le serveur n'as plus d'emplacements pour les rôles de niveaux, tu peux supprimer les rôles de niveau existant pour libérer des emplacements."
+        invalidLevel: "Le niveau demandé est invalide, il doit être un nombre positif."
+        alreadyLevelRole: ":user le **rôle :role** est déja un rôle de niveau, tu ne peux pas utiliser deux fois le même rôle."
+        alreadyARoleAtLevel: "Il existe déja un rôle assigné au niveau **:level**, un seul rôle peut être assigner à un niveau."
+        success: "Le rôle **:role** a été ajouté à la liste des rôles de montée en niveau.\nLe server a encore `:slots` emplacements disponible."
 
     AddReactionRoleCommand:
-        emoteDoestBelongToServer: "L'émote n'appartient pas à ce serveur, tu peux utiliser seulement les emotes de ce serveur comme emotes de réaction."
-        messageHasNoSlots: "Le message n'a plus de slots de rôle de réaction disponibles, vous pouvez supprimer les rôles de réaction existants pour libérer des slots, ou supprimer les messages de rôle de réaction pour ajouter le rôle à un nouveau message."
-        serverHasNoSlots: "Tu ne peux pas créer de nouveaux messages de rôle de réaction, le serveur n'a plus d'emplacements de messages de réaction, tu peux supprimer des messages de rôle de réaction existants pour libérer des emplacements, ou ajouter ton rôle de réaction à un message de réaction s'il y a des emplacements disponibles sur le message pour plusieurs rôles."
-        success: "Le rôle :rôle a été enregistré comme rôle de réaction pour le :emote emote.\nLe message n'a `:roleSlots` plus d'emplacements de rôle de réaction disponibles pour le message, et `:messageSlots' des emplacements réaction-message disponible."
+        emoteDoestBelongToServer: "L'émote n'appartient pas à ce serveur, tu peux seulement utiliser les émotes de ce serveur pour réagir."
+        messageHasNoSlots: "Ce message n'a plus d'emplacement disponible pour les réactions de rôle. Tu peux supprimer les réactions de rôle existantes pour libérer des emplacements, ou supprimer les messages associé au rôle de réaction pour y ajouter un nouveau message."
+        serverHasNoSlots: "Impossible de créer de nouveaux messages pour les rôles de réaction, le serveur n'a plus d'emplacement disponible pour les messages de réaction. Tu peux supprimer certains de ces messages pour libérer des emplacements, ou ajouter ton rôle de réaction à un autre message de réaction qui a des emplacements disponibles pour des rôles."
+        success: "Le rôle :role a été enregistré en tant que rôle de réaction pour l'émote :emote.\nLe message a encore `:roleSlots` emplacements de role de réaction disponibles et `:messageSlots` emplacements de réaction disponibles."
 
     AddSelfAssignableRoleCommand:
         noSlotsLeft: "Le serveur n'a plus d'emplacements de rôle auto-assignables, tu peux supprimer les rôles auto-assignables existants pour libérer des emplacements."
-        success: "Le rôle **:role** a été ajouté à la liste des rôles auto-assignables. Le serveur a `:slots' plus de slots de rôles auto-assignables disponibles."
-        emoteDoestBelongToServer: "The emote does not belong to this server, you can only use emotes from this server as reaction emotes."
-        messageHasNoSlots: "The message doesn't have anymore reaction role slots available, you can remove existing reaction-roles to free up slots, or delete reaction role messages to add the role to a new reaction role message."
-        serverHasNoSlots: "Can't create new reaction role messages, the server doesn't have anymore reaction messages slots, you can deleting existing reaction role messages to free up slots, or add your reaction role to a reaction message if there are available slots on the message for more roles."
-        success: "The :role role has been registered as an reaction role for the :emote emote.\nThe message has `:roleSlots` more reaction-role slots available for the message, and `:messageSlots` reaction-message slots available."
-
-    AddSelfAssignableRoleCommand:
-        noSlotsLeft: "The server doesn't have any more self-assignable role slots, you can remove existing self-assignable roles to free up slots."
-        success: "Role **:role** role has been added to the self-assignable list.\nThe server has `:slots` more self-assignable roles slots available."
+        success: "Le rôle **:role** a été ajouté à la liste des rôles auto-assignables. Le serveur a encore `:slots' emplacements de rôles auto-assignables disponibles."
 
     AdministrateExperienceCommand:
         cantUseForBots: "You can't add, remove, or reset XP for bot accounts since they don't earn any, please select a normal user when using this command."
@@ -71,105 +63,105 @@ administration:
             everything: "Everyone on the entire server has now had their XP completely reset!"
 
     AiCommand:
-        message: "Le module Artificial Intelligence` a été **:status** pour le :channel channel."
+        message: "Le module `Intelligence Artificielle` a été **:status** pour le canal :channel."
         status:
             enabled: "Activé"
             disabled: "Désactivé"
 
     AliasCommand:
-        noSlotsLeft: "Le serveur n'a plus de slots d'alias, vous pouvez supprimer des alias existants pour libérer des slots."
+        noSlotsLeft: "Le serveur n'a plus d'emplacements d'alias, vous pouvez supprimer des alias existants pour libérer des emplacements."
         alreadyExists: "Il y a déjà un alias appelé `{0}`"
         invalidCommand: "Commande donnée invalide, je ne connais pas de commande appelée `{0}`"
         invalidAlias: "Alias donné invalide, `{0}` n'est pas enregistré comme un alias."
-        created: "L'alias `:alias` a été associé à `:command`\nLe serveur a `:slots` plus de slots d' alias disponibles."
+        created: "L'alias `:alias` a été associé à `:command`\nLe serveur a `:slots` plus de emplacements d'alias disponibles."
         deleted: "L'alias `:alias` a été bien supprimé."
 
     AutoAssignRoleCommand:
         higherInTheHierarchy:
             user: "Le rôle **:role** est positionné plus haut dans la hiérarchie que le(s) rôle(s) que tu as, tu ne peux pas ajouter des rôles avec un rang supérieur au tien."
-            bot: "Le rôle **:role** est positionné plus haut dans la hiérarchie, je ne peux pas donner/supprimer ce rôle des utilisateurs."
-        enabled: ":user **Auto assigner un rôle**  **enabled** and set to **:role**"
-        disabledNow: ":user **Auto assigner un rôle** on user join is now **disabled**."
-        disabled: ":utilisateur **Auto assigner un rôle** à l'inscription de l'utilisateur est actuellement **désactivé**."
-        status: "L' **auto assignation automatique du rôle** est actuellement réglé sur **:role**."
+            bot: "Le rôle **:role** est positionné plus haut dans la hiérarchie, je ne peux pas donner/supprimer ce rôle aux utilisateurs."
+        enabled: ":user **assigner automatiquement un rôle** lorsqu'un utilisateur rejoint le serveur est mainenant ** activé** et donne le rôle **:role**"
+        disabledNow: ":user ** assigner automatiquement un rôle** lorsqu'un utilisateur rejoint le serveur est maintenant **désactivé**."
+        disabled: ":utilisateur * assigner automatiquement un rôle** à l'arrivée d'un nouvel utilisateur est actuellement **désactivé**."
+        status: "L'**assignation automatique de rôle** attribut actuellement le rôle **:role**."
 
     BanCommand:
         mustMentionUser: "Tu dois mentionner l'utilisateur que tu veux bannir."
-        higherRole: "Tu ne peux pas bannir les gens qui ont un rôle supérieur ou le même rôle que toi."
-        userHaveHigherRole: "Je ne peux pas bannir {0}, il/elle a un rôle plus élevé que moi, si tu veux pouvoir le/la bannir, réajuste mon rôle à un rôle supérieur {0}, je te prie."
+        higherRole: "Tu ne peux pas bannir les gens qui ont un rôle supérieur ou égal au tiens."
+        userHaveHigherRole: "Je ne peux pas bannir {0} a un rôle plus élevé que le mien, si tu veux pouvoir bannir {0}, il me faut un rôle supérieur au sien."
         success: "**:target** a été définitivement banni par :user pour \":reason\""
         failedToBan: "Échec du bannissement **:target** dû à une erreur: :error"
 
     CategoriesCommand:
         title: "Statut de la catégorie pour #{0}"
-        status: "emoteEnabled Enabled :emoteDisabledInChannel Disabled in Channel :emoteDisabledGlobally DisabledGlobally Disabled"
-    
+        status: ":emoteEnabled Actives   :emoteDisabledInChannel Inactives dans le Canal   :emoteDisabledGlobally Inactives Globalement"
+
     ChangePrefixCommand:
-        missingArgument: "Caractère manquant `category`, vous devez spécifier la catégorie de commande pour laquelle vous voulez changer/réinitialiser le préfixe."
-        invalidCategory: "Catégorie `category` donnée invalide, il n'y a pas de catégories de commandes qui sont appelées, ou commence par `{0}``."
-        invalidPrefix: "Préfixe de commande donné invalide, `{0}` n'est pas un préfixe valide, tous les préfixes ne doivent **PAS** contenir d'espace et avoir entre 1 et 16 caractères."
+        missingArgument: "Arguement de `catégorie` manquant, vous devez spécifier la catégorie de commande pour laquelle vous voulez changer/réinitialiser le préfixe."
+        invalidCategory: "`Catégorie` fournie invalide, il n'y a pas de catégorie de commandes appelée, ou commençant par `{0}`."
+        invalidPrefix: "Préfixe de commande fourni invalide, `{0}` n'est pas un préfixe valide, les préfixes doivent contenir entre 1 et 16 caractères **MAIS** ne doivent **PAS** contenir d'espace."
         update:
-            global: "Toutes les commandes de chaque catégorie utilisent maintenant le préfixe `:prefix`."
-            category: "Toutes les commandes de la catégorie `:category` utilisent maintenant le préfixe `:prefix`."
+            global: "Les commandes de toutes les catégories utilisent maintenant le préfixe `:prefix`."
+            category: "Les commandes de la catégorie `:category` utilisent maintenant le préfixe `:prefix`."
         reset:
-            global: "Toutes les commandes de chaque catégorie ont été réinitialisées pour utiliser le préfixe `:prefix`."
-            category: "Toutes les commandes de la catégorie `:category` ont été réinitialisées pour utiliser le préfixe `:prefix`."
+            global: "Les commandes de toutes les catégories ont été réinitialisées pour utiliser le préfixe `:prefix`."
+            category: "Les commandes de la catégorie `:category` ont été réinitialisées pour utiliser le préfixe `:prefix`."
 
     ChannelLevelCommand:
-        invalidChannel: "Channel donné invalide, le channel doit être un channel de texte valide."
-        cantTalkInChannel: "Je ne peux pas parler dans le channel {0}, donc aucun utilisateur ne sera récompensé pour avoir parlé dans le channel, si vous voulez que je donne des XP aux utilisateurs, veuillez changer mon niveau de permission pour le channel et je pourrai envoyer des messages dans ce channel."
-        noChannelsWithRewardsDisabled: "Il n' y a actuellement aucun channel avec les récompenses de niveau désactivées, vous pouvez en ajouter un en utilisant le bouton `{0}. <channel>`commande."
-        failedToUpdate: "Si tu n'as pas réussi à sauvegarder les modifications apportées à la base de données, essaie à nouveau, si le problème persiste, contacte un de mes développeurs."
-        listChannels: "Toutes les chaînes mentionnées ci-dessous ont actuellement leurs récompenses de niveau désactivées, toutes les chaînes qui ne sont pas sur cette liste ne sont pas affectées. \n\n:channels"
-        listChannelsTitle: "Channels with their Level Rewards disabled ({0})"
-        success: "The XP rewards for the :channel channel has been **:status**!"
+        invalidChannel: "Channel fourni invalide, le canal doit être un canal de texte valide."
+        cantTalkInChannel: "Je ne peux pas parler dans le canal {0}, donc aucun utilisateur ne sera récompensé pour avoir parlé dans ce canal, si tu veux que je puisse donner des XP aux utilisateurs, tu dois changer mon niveau de permission pour le canal et je pourrai y envoyer des messages."
+        noChannelsWithRewardsDisabled: "Il n' y a actuellement aucun canal avec les récompenses de niveau désactivées, vous pouvez en ajouter un en utilisant la commande `{0} <channel>`."
+        failedToUpdate: "Impossible de sauvegarder les modifications apportées à la base de données, essaie à nouveau, si le problème persiste, contacte l'un de mes développeurs."
+        listChannels: "Toutes les canaux mentionnées ci-dessous ont actuellement leurs récompenses de niveau désactivées, les autres canaux ne sont pas affectées. \n\n:channels"
+        listChannelsTitle: "Canaux avec leurs Récompenses de Niveau désactivées({0})"
+        success: "La récompense d'XP pour le canal :channel est à présent **:status**!"
         status:
-            enabled: "Enabled"
-            disabled: "Disabled"
+            enabled: "Activée"
+            disabled: "Désactivée"
 
     GoodbyeCommand:
-        note: "\nYou can customize the message by using `{0} [message]`"
-        message: "The `Goodbye` module has been **:status** for the :channel channel."
+        note: "\nTu peux personnaliser le message en utilisant `{0} [message]`"
+        message: "Le module `Goodbye` est à présent **:status** pour le canal :channel."
         status:
-            enabled: "Enabled"
-            disabled: "Disabled"
+            enabled: "Activé"
+            disabled: "Désactivé"
 
     GoodbyeMessageCommand:
-        moduleMustBeEnabled: "The `goodbye` module must be enabled to use this command, you can enable the `goodbye` module by using the `{0}` command."
-        message: "The embed option for goodbye messages has been **:status**\n:note"
-        changedToDefault: "Le message du moduleGoodbye` par défaut a été remis."
+        moduleMustBeEnabled: "Le module `goodbye` doit être actif pour utiliser cette commande, tu peux l'activer avec la commande `{0}`."
+        message: "L'option intégrée au message d'aurevoir a été **:status**\n:note"
+        changedToDefault: "Le message du module `Goodbye` par défaut a été remis."
         status:
             enabled: "Activé"
             disabled: "Désactivé"
         note:
-            embed: "Les messages d'au revoir seront désormais envoyés en utilisant les messages avec la couleur : {0}"
-            normal: "Envoyer des messages d'au revoir par des messages normaux."
+            embed: "Les messages d'aurevoir seront désormais envoyés en utilisant les messages avec la couleur : {0}"
+            normal: "Envoyer des messages d'aurevoir par des messages normaux."
 
     IAmCommand:
-        notSelfAssignable: ":role invalide de l'utilisateur, :role n'est pas un rôle auto-assignable."
-        roleIsHigherInTheHierarchy: ":user , Le rôle est plus élevé dans la hiérarchie des rôles, je ne peux pas donner/supprimer le rôle :role à des personnes."
+        notSelfAssignable: ":role rôle invalide, :role n'est pas un rôle auto-assignable."
+        roleIsHigherInTheHierarchy: ":user, Le rôle est plus élevé dans la hiérarchie des rôles, je ne peux pas donner/supprimer le rôle :role."
         message: ":user Tu as maintenant le rôle :role!"
 
     IAmNotCommand:
-        notSelfAssignable: ":role invalide de l'utilisateur, :role n'est pas un rôle auto-assignable."
-        roleIsHigherInTheHierarchy: ":utilisateur Le rôle est plus élevé dans la hiérarchie des rôles, je ne peux pas donner/supprimer le rôle :role à des personnes."
+        notSelfAssignable: ":role rôle invalide, :role n'est pas un rôle auto-assignable."
+        roleIsHigherInTheHierarchy: ":user Le rôle est plus élevé dans la hiérarchie des rôles, je ne peux pas donner/supprimer le rôle :role."
         message: ":user Tu n'as plus le rôle :role!"
 
     KickCommand:
         mustMentionUser: "Tu dois mentionner l'utilisateur que tu veux expulser."
-        higherOrSameRole: "Tu ne peux pas expulser des gens avec un rôle plus élevé, ou ayant le même rôle que toi"
-        cantKickUser: "Je ne peux pas expulser {0}, il/elle a un rôle plus élevé que moi, si vous voulez pouvoir expulser l'utilisateur, veuillez réajuster ma position de rôle au dessus de {0}."
-        success: "**:target** was kicked by :user for \":reason\""
+        higherOrSameRole: "Tu ne peux pas expulser les gens qui ont un rôle supérieur ou égal au tiens."
+        cantKickUser: "Je ne peux pas expulser {0} a un rôle plus élevé que le mien, si tu veux pouvoir expulser {0}, il me faut un rôle supérieur au sien."
+        success: "**:target** a été expulsé par :user pour \":reason\""
         error: "Expulsion échouée **:target** dû à une erreur : :error"
-    
+
     LanguageCommand:
         invalidLanguageCode:  "Code de langue invalide donné, `{0}` n'est pas un code de langue valide, ou il n'est pas encore supporté !"
         changed: "La langue du serveur a été mise à jour avec succès pour utiliser la langue :name !"
-        note: "AvaIre supporte plusieurs langues fournies par l'utilisateur que tu peux sélectionner avec cette commande.  Les traductions peuvent ne pas être 100% exactes ou complètes. Pour sélectionner une langue, utilisez `{0}.  <code>`"
-    
+        note: "AvaIre supporte plusieurs langues fournies par l'utilisateur que tu peux sélectionner avec cette commande. Les traductions peuvent ne pas être à 100% exactes ou complètes. Pour sélectionner une langue, utilisez `{0} <code>`"
+
     LevelAlertsCommand:
-        message: "Les alertes de niveau supérieur a été :status pour le serveur.:note"
-        note: "\nTous les messages de niveau supérieur seront enregistrés dans le canal <##{0}>."
+        message: "Les alertes de niveau supérieur ont été :status pour le serveur.:note"
+        note: "\nTous les messages de niveau supérieur seront enregistrés dans le canal <#{0}>."
         status:
             enabled: "Activé"
             disabled: "Désactivé"
@@ -182,19 +174,19 @@ administration:
             disabled: "Désactivé"
 
     LevelHierarchyCommand:
-        invalidTypeGiven: "Type invalide donné, pour activer ou désactiver la hiérarchie des niveaux, vous devez utiliser \"on\" ou \"off\"."
-        message: "Le niveau supérieur de la hiérarchie a été `:status` pour ce serveur."
-        statusMessage: "La hiérarchie de niveau supérieur est actuellement `:status`, vous pouvez l'activer ou la désactiver avec `:command`."
+        invalidTypeGiven: "Type fourni invalide, pour activer ou désactiver la hiérarchie des niveaux, vous devez utiliser \"on\" ou \"off\"."
+        message: "La hiérarchie de montée en niveau a été `:status` pour ce serveur."
+        statusMessage: "La hiérarchie de montée en niveau est actuellement `:status`, vous pouvez l'activer ou la désactiver avec `:command`."
         status:
             enabled: "Activé"
             disabled: "Désactivéé"
-    
+
     LevelModifierCommand:
-        invalidNumberGiven: "Modificateur donné invalide, le modificateur doit être un pourcentage positif entre `0,01%`et `500%`."
+        invalidNumberGiven: "Modificateur fourni invalide, le modificateur doit être un pourcentage positif entre `0,01%`et `500%`."
         resetToDefault: "Le modificateur de niveau a été réinitialisé en utilisant le modificateur par défaut **:modifier**."
-        changedTo: "The level and experience modifier have been change to **:modifier**."
-        statusMessage: "The server is currently using a **:modifier** modifier for levels and experience.\n\n**Required XP to reach some levels**\n"
-        level: "Level {0}"
+        changedTo: "Le modificateur de niveau et d'expérience est à présent **:modifier**."
+        statusMessage: "Le serveur utilise un modificateur **:modifier** pour les niveaux et l'expérience.\n\n**XP requis pour atteindre certains niveaux**\n"
+        level: "Niveau {0}"
 
     ListAliasesCommand:
         noAliases: "The server doesn't have any aliases right now, you can create one using the\n`{0}alias <alias> <command>` command"
