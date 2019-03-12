@@ -288,7 +288,7 @@ public class AdministrateExperienceCommand extends Command {
 
         if (token == null) {
             StringBuilder tokenBuilder = new StringBuilder();
-            for (int i = 0; i < RandomUtil.getInteger(4) + 16; i++) {
+            for (int i = 0; i < RandomUtil.getInteger(3) + 4; i++) {
                 tokenBuilder.append(RandomUtil.pickRandom(randomCharacters));
             }
             token = tokenBuilder.toString();
