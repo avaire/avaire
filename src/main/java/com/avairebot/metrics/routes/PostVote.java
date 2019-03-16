@@ -67,7 +67,7 @@ public class PostVote extends SparkRoute {
 
         VoteCacheEntity voteEntity = metrics.getAvaire().getVoteManager().getVoteEntityWithFallback(userById);
         voteEntity.setCarbon(Carbon.now().addHours(12));
-        metrics.getAvaire().getVoteManager().registerVoteFor(userById);
+        metrics.getAvaire().getVoteManager().registerVoteFor(userById, voteRequest.isWeekend ? 2 : 1);
 
         Metrics.dblVotes.labels(VoteMetricType.WEBHOOK.getName()).inc();
 
@@ -111,8 +111,10 @@ public class PostVote extends SparkRoute {
     }
 
     private class VoteRequest {
+
         private String bot;
         private String user;
         private String type;
+        private boolean isWeekend;
     }
 }
