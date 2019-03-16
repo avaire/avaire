@@ -61,12 +61,6 @@ public class AdministrateExperienceCommand extends Command {
 
     private static final Logger log = LoggerFactory.getLogger(AdministrateExperienceCommand.class);
 
-    private static final List<String> randomCharacters = Arrays.asList(
-        "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "a", "s", "d", "f", "g", "h", "j", "k", "l", "z", "x", "c", "v", "b", "n", "m",
-        "Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "A", "S", "D", "F", "G", "H", "J", "K", "L", "Z", "X", "C", "V", "B", "N", "M",
-        "0", "1", "2", "3", "4", "5", "6", "7", "9", "8", "!", "%", "&", "(", ")", "[", "]", "{", "}"
-    );
-
     public AdministrateExperienceCommand(AvaIre avaire) {
         super(avaire, false);
     }
@@ -287,11 +281,7 @@ public class AdministrateExperienceCommand extends Command {
         String token = cache.getIfPresent(cacheKey);
 
         if (token == null) {
-            StringBuilder tokenBuilder = new StringBuilder();
-            for (int i = 0; i < RandomUtil.getInteger(3) + 4; i++) {
-                tokenBuilder.append(RandomUtil.pickRandom(randomCharacters));
-            }
-            token = tokenBuilder.toString();
+            token = RandomUtil.generateString(RandomUtil.getInteger(3) + 4);
 
             context.makeWarning(context.i18n("aboutToResetEverything"))
                 .setTitle(context.i18n("warning"))
