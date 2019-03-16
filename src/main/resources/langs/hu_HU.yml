@@ -704,8 +704,11 @@ utility:
         jumps: '**A link ezeken az oldalakon ugrik tovább:**'
 
     FeedbackCommand:
+        confirmation: "You're about to send the following feedback:```:feedback```The feedback will be sent to the feedback channel in the :server server, are you sure you want to send it?\nUse `:command` in the next 60 seconds with no arguments to send the feedback."
         success: 'Visszajelzés sikeresen elküldve <:tickYes:319985232306765825>'
         failedToSend: 'Nem sikerült elküldeni a visszajelzést: :error'
+        invalidFeedbackChannel: "Invalid feedback channel defined, the text channel could not be found!"
+        mustBe32CharactersOrMore: "The feedback message must be at least 32 characters long."
 
     GlobalLeaderboardCommand:
         noData: 'Jelenleg nincs ranglista adat, próbáld később.'

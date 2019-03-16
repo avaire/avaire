@@ -29,6 +29,8 @@ import com.avairebot.contracts.commands.Command;
 import com.avairebot.database.collection.Collection;
 import com.avairebot.factories.MessageFactory;
 import com.avairebot.shared.DiscordConstants;
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.TextChannel;
@@ -37,8 +39,14 @@ import java.sql.SQLException;
 import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class FeedbackCommand extends Command {
+
+    public static final Cache<Long, String> cache = CacheBuilder.newBuilder()
+        .recordStats()
+        .expireAfterWrite(60, TimeUnit.SECONDS)
+        .build();
 
     public FeedbackCommand(AvaIre avaire) {
         super(avaire);
@@ -76,17 +84,40 @@ public class FeedbackCommand extends Command {
 
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
-        if (args.length == 0) {
-            return sendErrorMessage(context, "errors.missingArgument", "message");
-        }
-
         TextChannel feedbackChannel = avaire.getShardManager().getTextChannelById(DiscordConstants.FEEDBACK_CHANNEL_ID);
         if (feedbackChannel == null) {
-            return sendErrorMessage(context, "Invalid feedback channel defined, the text channel could not be found!");
+            return sendErrorMessage(context, context.i18n("invalidFeedbackChannel"));
         }
 
+        if (args.length == 0) {
+            String message = cache.getIfPresent(context.getAuthor().getIdLong());
+
+            if (message == null) {
+                return sendErrorMessage(context, "errors.missingArgument", "message");
+            }
+            return sendFeedback(context, feedbackChannel, message);
+        }
+
+        String message = String.join(" ", args);
+        if (message.length() < 32) {
+            return sendErrorMessage(context, context.i18n("mustBe32CharactersOrMore"));
+        }
+
+        context.makeInfo(context.i18n("confirmation"))
+            .setTitle("Last minute check!")
+            .set("feedback", message.replaceAll("```", "\\`\\`\\`"))
+            .set("command", generateCommandTrigger(context.getMessage()))
+            .set("server", feedbackChannel.getGuild().getName())
+            .queue();
+
+        cache.put(context.getAuthor().getIdLong(), message);
+
+        return false;
+    }
+
+    private boolean sendFeedback(CommandMessage context, TextChannel feedbackChannel, String message) {
         PlaceholderMessage placeholderMessage = MessageFactory.makeEmbeddedMessage(feedbackChannel)
-            .addField("Feedback", String.join(" ", args), false)
+            .addField("Feedback", message, false)
             .addField("Channel", buildChannel(context.getChannel()), false)
             .setFooter("Author ID: " + context.getAuthor().getId())
             .setTimestamp(Instant.now());
@@ -108,7 +139,7 @@ public class FeedbackCommand extends Command {
                 Collection collection = avaire.getDatabase().newQueryBuilder(Constants.FEEDBACK_TABLE_NAME).insert(statement -> {
                     statement.set("user_id", context.getAuthor().getIdLong());
                     statement.set("channel_id", context.isGuildMessage() ? context.getMessageChannel().getIdLong() : null);
-                    statement.set("message", String.join(" ", args), true);
+                    statement.set("message", message, true);
                 });
 
                 if (!collection.isEmpty()) {
