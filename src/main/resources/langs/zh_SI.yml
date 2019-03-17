@@ -696,8 +696,11 @@ utility:
         jumps: '**The link jumps through the following sites:**'
 
     FeedbackCommand:
+        confirmation: "You're about to send the following feedback:```:feedback```The feedback will be sent to the feedback channel in the :server server, are you sure you want to send it?\nUse `:command` in the next 60 seconds with no arguments to send the feedback."
         success: '已成功发送反馈 <:tickYes:319985232306765825>'
         failedToSend: '无法发送反馈消息: :error'
+        invalidFeedbackChannel: "Invalid feedback channel defined, the text channel could not be found!"
+        mustBe32CharactersOrMore: "The feedback message must be at least 32 characters long."
 
     GlobalLeaderboardCommand:
         noData: '目前没有排名靠前的数据，请稍后再试。.'

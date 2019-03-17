@@ -206,35 +206,40 @@ public class VoteManager {
      * Registers a new vote for the given member.
      *
      * @param member The member that the vote should be registered for.
+     * @param points The amount of points to reward the user.
      */
-    public void registerVoteFor(@Nullable Member member) {
+    public void registerVoteFor(@Nullable Member member, int points) {
         if (member == null) {
             return;
         }
-        registerVoteFor(member.getUser().getIdLong());
+        registerVoteFor(member.getUser().getIdLong(), points);
     }
 
     /**
      * Registers a new vote for the given user.
      *
-     * @param user The user that the vote should be registered for.
+     * @param user   The user that the vote should be registered for.
+     * @param points The amount of points to reward the user.
      */
-    public void registerVoteFor(@Nullable User user) {
+    public void registerVoteFor(@Nullable User user, int points) {
         if (user == null) {
             return;
         }
-        registerVoteFor(user.getIdLong());
+        registerVoteFor(user.getIdLong(), points);
     }
 
     /**
      * Registers a new vote for the given user ID.
      *
      * @param userId The user ID that the vote should be registered for.
+     * @param points The amount of points to reward the user.
      */
-    public void registerVoteFor(long userId) {
+    public void registerVoteFor(long userId, int points) {
         if (!isEnabled()) {
             return;
         }
+
+        points = Math.max(1, points);
 
         if (!voteLog.containsKey(userId)) {
             voteLog.put(userId, new VoteCacheEntity(
@@ -246,13 +251,14 @@ public class VoteManager {
             Collection collection = avaire.getDatabase().newQueryBuilder(Constants.VOTES_TABLE_NAME)
                 .where("user_id", userId).take(1).get();
 
+            int finalPoints = points;
             if (collection.isEmpty()) {
                 avaire.getDatabase().newQueryBuilder(Constants.VOTES_TABLE_NAME)
                     .insert(statement -> {
                         statement.set("user_id", userId);
                         statement.set("expires_in", voteLog.get(userId).getCarbon().toDayDateTimeString());
-                        statement.set("points", 1);
-                        statement.set("points_total", 1);
+                        statement.set("points", finalPoints);
+                        statement.set("points_total", finalPoints);
                     });
 
                 voteLog.get(userId).setVotePoints(1);
@@ -265,13 +271,13 @@ public class VoteManager {
                 .where("user_id", userId)
                 .update(statement -> {
                     statement.set("expires_in", voteLog.get(userId).getCarbon().toDayDateTimeString());
-                    statement.setRaw("points", "`points` + 1");
-                    statement.setRaw("points_total", "`points_total` + 1");
+                    statement.setRaw("points", "`points` + " + finalPoints);
+                    statement.setRaw("points_total", "`points_total` + " + finalPoints);
                 });
 
             VoteCacheEntity voteEntity = voteLog.get(userId);
 
-            voteEntity.setVotePoints(collection.first().getInt("points", 1) + 1);
+            voteEntity.setVotePoints(collection.first().getInt("points", 1) + finalPoints);
             voteEntity.setOptIn(collection.first().getBoolean("opt_in", true));
         } catch (SQLException e) {
             log.error("An SQLException was thrown while updating user vote information: ", e);
