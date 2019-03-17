@@ -155,6 +155,9 @@ public enum ModlogType {
         if (!notifyable) {
             return null;
         }
+        if (getName().equalsIgnoreCase("ban") || getName().equalsIgnoreCase("soft ban")) {
+            return getName().toLowerCase() + "ned";
+        }
         return getName().toLowerCase() + "ed";
     }
 
