@@ -136,7 +136,7 @@ public class MusicChannelCommand extends Command {
         }
 
         args = new String[]{String.join(" ", args)};
-        Channel channel = MentionableUtil.getChannel(context.getMessage(), args);
+        Channel channel = MentionableUtil.getChannel(context.getMessage(), args, 0, MentionableUtil.ChannelPriorityType.VOICE);
         if (channel == null || !(channel instanceof VoiceChannel)) {
             return sendErrorMessage(context, context.i18n("errors.notValidType", args[0], Type.VOICE.name().toLowerCase()));
         }
@@ -155,7 +155,7 @@ public class MusicChannelCommand extends Command {
         }
 
         args = new String[]{String.join(" ", args)};
-        Channel channel = MentionableUtil.getChannel(context.getMessage(), args);
+        Channel channel = MentionableUtil.getChannel(context.getMessage(), args, 0, MentionableUtil.ChannelPriorityType.TEXT);
         if (channel == null || !(channel instanceof TextChannel)) {
             return sendErrorMessage(context, context.i18n("errors.notValidType", args[0], Type.TEXT.name().toLowerCase()));
         }
