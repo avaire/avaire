@@ -28,6 +28,7 @@ import com.avairebot.commands.CommandMessage;
 import com.avairebot.commands.CommandPriority;
 import com.avairebot.contracts.commands.interactions.Lottery;
 import com.avairebot.language.I18n;
+import com.avairebot.metrics.Metrics;
 import com.avairebot.utilities.CacheUtil;
 import com.avairebot.utilities.MentionableUtil;
 import com.google.common.cache.Cache;
@@ -54,7 +55,7 @@ public abstract class InteractionCommand extends Command {
      * The Guava cache instance, used for caching the sent messages, and
      * helps determine if the response message should be sent or not.
      *
-     * @see com.avairebot.metrics.Metrics#setup(AvaIre) Metrics setup.
+     * @see Metrics#setup(AvaIre) Metrics setup.
      */
     public static final Cache<String, Lottery> cache = CacheBuilder.newBuilder()
         .recordStats()

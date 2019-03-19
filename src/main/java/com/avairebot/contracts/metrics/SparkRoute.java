@@ -21,28 +21,13 @@
 
 package com.avairebot.contracts.metrics;
 
-import com.avairebot.metrics.Metrics;
+import com.avairebot.AvaIre;
 import org.json.JSONObject;
+import spark.Request;
 import spark.Response;
 import spark.Route;
 
 public abstract class SparkRoute implements Route {
-
-    /**
-     * The metrics application instance, used to communicate with
-     * the rest of the application from within the route.
-     */
-    protected final Metrics metrics;
-
-    /**
-     * Creates a new spark route instance.
-     *
-     * @param metrics The metrics application instance, used to communicate
-     *                with the rest of the application.
-     */
-    public SparkRoute(Metrics metrics) {
-        this.metrics = metrics;
-    }
 
     /**
      * Builds the JSON response, generating a "status" key, along with a "message" key
@@ -62,5 +47,32 @@ public abstract class SparkRoute implements Route {
         root.put(code == 200 ? "message" : "reason", message);
 
         return root;
+    }
+
+    /**
+     * Checks if the incoming request has a valid Authorization header with a valid auth
+     * token, the token is validated by whatever is returned by
+     * the {@link #getAuthorizationToken()} method.
+     *
+     * @param request The spark request instance for the incoming request.
+     * @return {@code True} if the given request instance has a valid auth header, {@code False} otherwise.
+     */
+    protected boolean hasValidAuthorizationHeader(Request request) {
+        String authorization = request.headers("Authorization");
+
+        return authorization != null && authorization.equals(getAuthorizationToken());
+    }
+
+    /**
+     * Gets the authorization token that should be used
+     * to verify if a request is valid or not.
+     *
+     * @return The string representing the auth token.
+     */
+    @SuppressWarnings("WeakerAccess")
+    protected String getAuthorizationToken() {
+        return AvaIre.getInstance().getConfig().getString("web-servlet.authToken",
+            AvaIre.getInstance().getConfig().getString("metrics.authToken", "avaire-auth-token")
+        );
     }
 }

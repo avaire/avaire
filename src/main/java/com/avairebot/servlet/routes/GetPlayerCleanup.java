@@ -19,12 +19,12 @@
  *
  */
 
-package com.avairebot.metrics.routes;
+package com.avairebot.servlet.routes;
 
+import com.avairebot.AvaIre;
 import com.avairebot.Constants;
 import com.avairebot.contracts.metrics.SparkRoute;
 import com.avairebot.database.collection.DataRow;
-import com.avairebot.metrics.Metrics;
 import net.dv8tion.jda.core.entities.Guild;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -40,10 +40,6 @@ public class GetPlayerCleanup extends SparkRoute {
 
     private static final Logger log = LoggerFactory.getLogger(GetGuildCleanup.class);
 
-    public GetPlayerCleanup(Metrics metrics) {
-        super(metrics);
-    }
-
     @Override
     public Object handle(Request request, Response response) throws Exception {
         if (!hasValidAuthorizationHeader(request)) {
@@ -53,7 +49,7 @@ public class GetPlayerCleanup extends SparkRoute {
 
         Guild guild = null;
         HashMap<String, Set<String>> missingPlayers = new HashMap<>();
-        for (DataRow dataRow : metrics.getAvaire().getDatabase().newQueryBuilder(Constants.PLAYER_EXPERIENCE_TABLE_NAME)
+        for (DataRow dataRow : AvaIre.getInstance().getDatabase().newQueryBuilder(Constants.PLAYER_EXPERIENCE_TABLE_NAME)
             .select("user_id", "guild_id").orderBy("guild_id").get()) {
 
             if (!missingPlayers.containsKey(dataRow.getString("guild_id"))) {
@@ -62,7 +58,7 @@ public class GetPlayerCleanup extends SparkRoute {
 
             if (guild == null || !guild.getId().equalsIgnoreCase(dataRow.getString("guild_id"))) {
                 try {
-                    guild = metrics.getAvaire().getShardManager().getGuildById(dataRow.getString("guild_id"));
+                    guild = AvaIre.getInstance().getShardManager().getGuildById(dataRow.getString("guild_id"));
                 } catch (Exception ignored) {
                     addRowToMissingPlayers(missingPlayers, dataRow);
                 }
@@ -92,15 +88,5 @@ public class GetPlayerCleanup extends SparkRoute {
 
     private void addRowToMissingPlayers(HashMap<String, Set<String>> missingPlayers, DataRow dataRow) {
         missingPlayers.get(dataRow.getString("guild_id")).add(dataRow.getString("user_id"));
-    }
-
-    private boolean hasValidAuthorizationHeader(Request request) {
-        String authorization = request.headers("Authorization");
-
-        return authorization != null && authorization.equals(getAuthorizationToken());
-    }
-
-    private String getAuthorizationToken() {
-        return metrics.getAvaire().getConfig().getString("metrics.authToken", "avaire-auth-token");
     }
 }

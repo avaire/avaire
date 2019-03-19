@@ -27,6 +27,7 @@ import com.avairebot.database.collection.Collection;
 import com.avairebot.database.collection.DataRow;
 import com.avairebot.metrics.Metrics;
 import com.avairebot.scheduler.tasks.DrainVoteQueueTask;
+import com.avairebot.servlet.routes.PostVote;
 import com.avairebot.time.Carbon;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.User;
@@ -66,7 +67,10 @@ public class VoteManager {
         }
         Metrics.validVotes.set(0D);
 
-        this.syncWithDatabase();
+        if (isEnabled()) {
+            syncWithDatabase();
+            avaire.getServlet().registerPost("/vote", new PostVote());
+        }
     }
 
     /**

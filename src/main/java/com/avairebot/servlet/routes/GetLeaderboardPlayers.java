@@ -19,8 +19,9 @@
  *
  */
 
-package com.avairebot.metrics.routes;
+package com.avairebot.servlet.routes;
 
+import com.avairebot.AvaIre;
 import com.avairebot.Constants;
 import com.avairebot.commands.utility.LeaderboardCommand;
 import com.avairebot.contracts.metrics.SparkRoute;
@@ -28,7 +29,6 @@ import com.avairebot.database.collection.Collection;
 import com.avairebot.database.collection.DataRow;
 import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.transformers.GuildTransformer;
-import com.avairebot.metrics.Metrics;
 import com.avairebot.utilities.CacheUtil;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Role;
@@ -43,21 +43,17 @@ import java.util.Collections;
 
 public class GetLeaderboardPlayers extends SparkRoute {
 
-    public GetLeaderboardPlayers(Metrics metrics) {
-        super(metrics);
-    }
-
     @Override
     public Object handle(Request request, Response response) throws Exception {
         try {
             Long guildId = Long.parseLong(request.params("id"));
 
-            Guild guild = metrics.getAvaire().getShardManager().getGuildById(guildId);
+            Guild guild = AvaIre.getInstance().getShardManager().getGuildById(guildId);
             if (guild == null) {
                 return buildResponse(response, 404, "Invalid guild ID given, no guild found with the given id.");
             }
 
-            GuildTransformer transformer = GuildController.fetchGuild(metrics.getAvaire(), guild);
+            GuildTransformer transformer = GuildController.fetchGuild(AvaIre.getInstance(), guild);
 
             JSONObject root = new JSONObject();
             root.put("id", guild.getId());
@@ -122,7 +118,7 @@ public class GetLeaderboardPlayers extends SparkRoute {
     private Collection loadTop100(String guildId) {
         return (Collection) CacheUtil.getUncheckedUnwrapped(LeaderboardCommand.cache, guildId, () -> {
             try {
-                return metrics.getAvaire().getDatabase().newQueryBuilder(Constants.PLAYER_EXPERIENCE_TABLE_NAME)
+                return AvaIre.getInstance().getDatabase().newQueryBuilder(Constants.PLAYER_EXPERIENCE_TABLE_NAME)
                     .where("guild_id", guildId)
                     .orderBy("experience", "desc")
                     .take(100)

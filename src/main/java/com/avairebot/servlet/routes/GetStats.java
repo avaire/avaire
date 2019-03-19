@@ -19,10 +19,10 @@
  *
  */
 
-package com.avairebot.metrics.routes;
+package com.avairebot.servlet.routes;
 
+import com.avairebot.AvaIre;
 import com.avairebot.contracts.metrics.SparkRoute;
-import com.avairebot.metrics.Metrics;
 import net.dv8tion.jda.core.JDA;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -33,10 +33,6 @@ import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
 
 public class GetStats extends SparkRoute {
-
-    public GetStats(Metrics metrics) {
-        super(metrics);
-    }
 
     @Override
     public Object handle(Request request, Response response) throws Exception {
@@ -66,7 +62,7 @@ public class GetStats extends SparkRoute {
     private JSONArray buildShards() {
         JSONArray shards = new JSONArray();
 
-        for (JDA shard : metrics.getAvaire().getShardManager().getShards()) {
+        for (JDA shard : AvaIre.getInstance().getShardManager().getShards()) {
             JSONObject stats = new JSONObject();
             stats.put("id", shard.getShardInfo().getShardId())
                 .put("guilds", shard.getGuilds().size())
@@ -83,13 +79,13 @@ public class GetStats extends SparkRoute {
 
     private JSONObject buildGlobal() {
         JSONObject global = new JSONObject();
-        global.put("guilds", metrics.getAvaire().getShardEntityCounter().getGuilds());
-        global.put("users", metrics.getAvaire().getShardEntityCounter().getUsers());
+        global.put("guilds", AvaIre.getInstance().getShardEntityCounter().getGuilds());
+        global.put("users", AvaIre.getInstance().getShardEntityCounter().getUsers());
 
         JSONObject channels = new JSONObject();
-        channels.put("total", metrics.getAvaire().getShardEntityCounter().getChannels());
-        channels.put("text", metrics.getAvaire().getShardEntityCounter().getTextChannels());
-        channels.put("voice", metrics.getAvaire().getShardEntityCounter().getVoiceChannels());
+        channels.put("total", AvaIre.getInstance().getShardEntityCounter().getChannels());
+        channels.put("text", AvaIre.getInstance().getShardEntityCounter().getTextChannels());
+        channels.put("voice", AvaIre.getInstance().getShardEntityCounter().getVoiceChannels());
 
         global.put("channels", channels);
 

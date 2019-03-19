@@ -19,7 +19,7 @@
  *
  */
 
-package com.avairebot.metrics.routes;
+package com.avairebot.servlet.routes;
 
 import com.avairebot.AvaIre;
 import com.avairebot.contracts.metrics.SparkRoute;
@@ -36,10 +36,6 @@ import spark.Response;
 public class PostVote extends SparkRoute {
 
     private static final Logger log = LoggerFactory.getLogger(PostVote.class);
-
-    public PostVote(Metrics metrics) {
-        super(metrics);
-    }
 
     @Override
     public Object handle(Request request, Response response) throws Exception {
@@ -59,15 +55,15 @@ public class PostVote extends SparkRoute {
             return buildResponse(response, 400, "Bad request, invalid JSON data given to justify a upvote request.");
         }
 
-        User userById = metrics.getAvaire().getShardManager().getUserById(voteRequest.user);
+        User userById = AvaIre.getInstance().getShardManager().getUserById(voteRequest.user);
         if (userById == null || userById.isBot()) {
             log.warn("Invalid user ID given, the user is not on any server the bot is on.");
             return buildResponse(response, 404, "Invalid user ID given, the user is not on any server the bot is on.");
         }
 
-        VoteCacheEntity voteEntity = metrics.getAvaire().getVoteManager().getVoteEntityWithFallback(userById);
+        VoteCacheEntity voteEntity = AvaIre.getInstance().getVoteManager().getVoteEntityWithFallback(userById);
         voteEntity.setCarbon(Carbon.now().addHours(12));
-        metrics.getAvaire().getVoteManager().registerVoteFor(userById, voteRequest.isWeekend ? 2 : 1);
+        AvaIre.getInstance().getVoteManager().registerVoteFor(userById, voteRequest.isWeekend ? 2 : 1);
 
         Metrics.dblVotes.labels(VoteMetricType.WEBHOOK.getName()).inc();
 
@@ -79,7 +75,7 @@ public class PostVote extends SparkRoute {
             return buildResponse(response, 200, "Vote registered, thanks for voting!");
         }
 
-        metrics.getAvaire().getVoteManager().getMessenger().SendThanksForVotingMessageInDM(userById, voteEntity.getVotePoints());
+        AvaIre.getInstance().getVoteManager().getMessenger().SendThanksForVotingMessageInDM(userById, voteEntity.getVotePoints());
 
         return buildResponse(response, 200, "Vote registered, thanks for voting!");
     }
@@ -93,21 +89,11 @@ public class PostVote extends SparkRoute {
             return false;
         }
 
-        if (!request.bot.equals(metrics.getAvaire().getSelfUser().getId())) {
+        if (!request.bot.equals(AvaIre.getInstance().getSelfUser().getId())) {
             return false;
         }
 
         return request.type.equalsIgnoreCase("upvote");
-    }
-
-    private boolean hasValidAuthorizationHeader(Request request) {
-        String authorization = request.headers("Authorization");
-
-        return authorization != null && authorization.equals(getAuthorizationToken());
-    }
-
-    private String getAuthorizationToken() {
-        return metrics.getAvaire().getConfig().getString("metrics.authToken", "avaire-auth-token");
     }
 
     private class VoteRequest {
