@@ -21,7 +21,9 @@
 
 package com.avairebot.servlet.routes;
 
+import com.avairebot.AppInfo;
 import com.avairebot.AvaIre;
+import com.avairebot.GitInfo;
 import com.avairebot.contracts.metrics.SparkRoute;
 import net.dv8tion.jda.core.JDA;
 import org.json.JSONArray;
@@ -41,6 +43,14 @@ public class GetStats extends SparkRoute {
         root.put("application", buildApplication());
         root.put("shards", buildShards());
         root.put("global", buildGlobal());
+
+        try {
+            root.put("build", buildBuildInformation());
+        } catch (NullPointerException ignored) {
+            // The AppInfo configuration class will throw a NPE if the project is
+            // not built using Gradle with the gradle-git-properties plugin,
+            // which is only the case during development.
+        }
 
         return root;
     }
@@ -90,5 +100,24 @@ public class GetStats extends SparkRoute {
         global.put("channels", channels);
 
         return global;
+    }
+
+    private JSONObject buildBuildInformation() throws NullPointerException {
+        JSONObject build = new JSONObject();
+
+        JSONObject app = new JSONObject();
+        app.put("version", AppInfo.getAppInfo().version);
+        app.put("groupId", AppInfo.getAppInfo().groupId);
+        app.put("artifactId", AppInfo.getAppInfo().artifactId);
+
+        build.put("app", app);
+
+        JSONObject git = new JSONObject();
+        git.put("branch", GitInfo.getGitInfo().branch);
+        git.put("commitId", GitInfo.getGitInfo().commitId);
+        git.put("commitTime", GitInfo.getGitInfo().commitTime);
+        build.put("git", git);
+
+        return build;
     }
 }
