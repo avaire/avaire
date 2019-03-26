@@ -131,15 +131,40 @@
 	  "required": false,
 	  "value": ""
     },
-    "AVA_METRICS_ENABLED": {
-      "description": "This option determines if the web API should be enabled at all. If you want to turn this off, instead enable the worker dyno, instead of web dyno in the resources tab. Otherwise AvaIre won't stay up.",
-	  "required": true,
-	  "value": "true"
+    "AVA_WEB_SERVLET_METRICS": {
+      "description": "Ava uses Prometheus metrics for tracking a long list of different things within the application during runtime, the metrics are then displayed using Grafana to users on a web-dashboard using graphs.",
+    "required": false,
+    "value": "true"
     },
-    "AVA_METRICS_AUTHTOKEN": {
-      "description": "This is the auth token that should be given to validate incoming vote requests. All requests withoud the auth header will be ignored.",
-	  "required": true,
-	  "value": "avaire-auth-token"
+    "AVA_WEB_SERVLET_API_ROUTES_LEADERBOARD": {
+      "description": "Exposes a per-server leaderboard route for getting the 100 users on the given server ID, as well as some level role and XP settings information. Route: GET /leaderboard/:id",
+    "required": false,
+    "value": "true"
+    },
+    "AVA_WEB_SERVLET_API_ROUTES_PLAYERS": {
+      "description": "Exposes a player cleanup route which for getting a list of expired user XP records, any IDs returned from the route are IDs for users who are no long on the server the record is attached to. Route: GET /players/cleanup",
+    "required": false,
+    "value": "true"
+    },
+    "AVA_WEB_SERVLET_API_ROUTES_GUILDS": {
+      "description": "Gets various guild information about a server by their IDs; Cleanup routes can be used to get or delete expired and old records for guilds the bot is no longer on. Routes: POST  /guilds/cleanup, GET  /guilds/cleanup, GET  /guilds/:ids/exists, GET  /guilds/:ids",
+    "required": false,
+    "value": "true"
+    },
+    "AVA_WEB_SERVLET_API_ROUTES_STATS": {
+      "description": "Exposes a stats route which can be used to get some stats on individual shards, the machine the bot is running on, as well as uptime and global collected bot info. Route: GET /stats",
+    "required": false,
+    "value": "true"
+    },
+    "AVA_WEB_SERVLET_PORT": {
+      "description": "The port the API and metrics should be exposed to",
+    "required": false,
+    "value": "1256"
+    },
+    "AVA_WEB_SERVLET_AUTHTOKEN": {
+      "description": "This is the auth token that should be given to validate incoming vote requests. Any requests to the vote route that is either missing the auth header, or has a key that does not match the key will be ignored.",
+    "required": false,
+    "value": "avaire-auth-token"
     },
     "AVA_VOTE_LOCK_ENABLED": {
       "description": "This option determines if the vote-locking feature should be enabled at all, if set to true, any command or feature using the 'vote' middleware will be restricted to users who have voted for the bot within the last 24 hours. You can it to true or false.",
