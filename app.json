@@ -156,11 +156,6 @@
             "required": false,
             "value": "true"
         },
-        "AVA_WEB_SERVLET_PORT": {
-            "description": "The port the API and metrics should be exposed to",
-            "required": false,
-            "value": "1256"
-        },
         "AVA_WEB_SERVLET_AUTHTOKEN": {
             "description": "This is the auth token that should be given to validate incoming vote requests. Any requests to the vote route that is either missing the auth header, or has a key that does not match the key will be ignored.",
             "required": false,
