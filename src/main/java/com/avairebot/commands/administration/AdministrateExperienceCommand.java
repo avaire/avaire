@@ -303,6 +303,7 @@ public class AdministrateExperienceCommand extends Command {
                 .where("guild_id", context.getGuild().getId())
                 .update(statement -> {
                     statement.set("experience", 100);
+                    statement.set("active", 0);
                 });
 
             PlayerController.forgetCacheForGuild(context.getGuild().getIdLong());
