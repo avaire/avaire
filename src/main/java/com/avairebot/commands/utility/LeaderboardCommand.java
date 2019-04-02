@@ -134,6 +134,8 @@ public class LeaderboardCommand extends Command {
             paginator.setCurrentPage(NumberUtil.parseInt(args[0], 1));
         }
 
+        long zeroExperience = avaire.getLevelManager().getExperienceFromLevel(transformer, 0) - 100;
+
         paginator.forEach((index, key, val) -> {
             DataRow row = (DataRow) val;
 
@@ -148,8 +150,10 @@ public class LeaderboardCommand extends Command {
             messages.add(context.i18n("line")
                 .replace(":num", "" + (index + 1))
                 .replace(":username", username)
-                .replace(":level", NumberUtil.formatNicely(avaire.getLevelManager().getLevelFromExperience(transformer, experience)))
-                .replace(":experience", NumberUtil.formatNicely((experience - 100)))
+                .replace(":level", NumberUtil.formatNicely(
+                    avaire.getLevelManager().getLevelFromExperience(transformer, experience + zeroExperience)
+                ))
+                .replace(":experience", NumberUtil.formatNicely(experience - 100))
             );
         });
 
@@ -168,14 +172,13 @@ public class LeaderboardCommand extends Command {
                         .replace(":num", NumberUtil.formatNicely(rank))
                         .replace(":username", context.getAuthor().getName() + "#" + context.getAuthor().getDiscriminator())
                         .replace(":level", NumberUtil.formatNicely(avaire.getLevelManager().getLevelFromExperience(
-                            context.getGuildTransformer(), context.getPlayerTransformer().getExperience()
+                            context.getGuildTransformer(), context.getPlayerTransformer().getExperience() + zeroExperience
                         )))
                         .replace(":experience", NumberUtil.formatNicely(context.getPlayerTransformer().getExperience() - 100))
                         + "\n\n" + paginator.generateFooter(generateCommandTrigger(context.getMessage())),
                     false
                 );
             }
-
         }
 
         if (message.build().getFields().isEmpty()) {
