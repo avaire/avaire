@@ -183,7 +183,8 @@ public class LevelModifierCommand extends Command {
 
     private String getExperienceForLevel(GuildTransformer guildTransformer, int level) {
         return NumberUtil.formatNicely(
-            avaire.getLevelManager().getExperienceFromLevel(guildTransformer, level) - 100
+            avaire.getLevelManager().getExperienceFromLevel(guildTransformer, level)
+                - avaire.getLevelManager().getExperienceFromLevel(guildTransformer, 0)
         ) + " XP";
     }
 
