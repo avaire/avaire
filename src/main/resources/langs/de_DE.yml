@@ -185,7 +185,8 @@ administration:
     LevelModifierCommand:
         invalidNumberGiven: "Ungültige Eingabe. Der Wert muss einen positiven Prozentsatz zwischen `0.01%` und `500%` beinhalten."
         resetToDefault: "Der Level-Modifikator wurde zurückgesetzt und nutzt nun den **:modifier** Wert."
-        changedTo: "Der Level & Experience-Wert wurde zu **:modifier** geändert."
+        changedTo: "Der Level & Experience-Wert wurde zu **:modifier** geändert"
+        requiredIsNow: "\n\n**Required XP to reach some levels is now:**\n"
         statusMessage: "Der Server nutzt momentan einen **:modifier** Wert für Levels & Experience.\n\n**Benötigte XP um Levels zu erreichen.**\n"
         level: "Level {0}"
 

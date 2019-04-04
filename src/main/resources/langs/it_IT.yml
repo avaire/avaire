@@ -184,7 +184,8 @@ administration:
     LevelModifierCommand:
         invalidNumberGiven: "Modificatore non valido, il modificatore deve essere una percentuale positiva tra `0.01%` e `500%`"
         resetToDefault: "Il modificatore dei livelli è stato resettato al modificatore predefinito a **:modifier**."
-        changedTo: "Il modificatore per Livelli ed Esperienza è stato cambiato a **:modifier**."
+        changedTo: "Il modificatore per Livelli ed Esperienza è stato cambiato a **:modifier**"
+        requiredIsNow: "\n\n**Required XP to reach some levels is now:**\n"
         statusMessage: "Attualmente il server sta utilizzando il modificatore per Livelli ed Esperienza a **:modifier**.\n\n**Punti esperienza richiesti per raggiungere alcuni livelli**\n"
         level: "Livello {0}"
 

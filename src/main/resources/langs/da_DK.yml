@@ -185,7 +185,8 @@ administration:
     LevelModifierCommand:
         invalidNumberGiven: "Ugyldig værdi givet, værdien skal være en positiv procent imellem `0.01%` og `500%`"
         resetToDefault: "Level ændrings modulet er nulstillet, og bruger nu den standard **:modifier** værdi."
-        changedTo: "Level modifikatoren er blivet ændret til **:modifier**."
+        changedTo: "Level modifikatoren er blivet ændret til **:modifier**"
+        requiredIsNow: "\n\n**Required XP to reach some levels is now:**\n"
         statusMessage: "Serveren bruger lige pt **:modifier** modifikator for levels.\n\n**Nødvendig XP at nå nogle niveauer**\n"
         level: "Level {0}"
 

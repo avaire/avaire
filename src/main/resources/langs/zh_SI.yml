@@ -183,7 +183,8 @@ administration:
     LevelModifierCommand:
         invalidNumberGiven: "给出的修饰符无效，则该修饰符必须是 `0.01%` 到 `500%`"
         resetToDefault: "“级别”修改器已重置回使用默认设置。 **:modifier** modifier."
-        changedTo: "级别和体验修饰符已更改为 **:modifier**."
+        changedTo: "级别和体验修饰符已更改为 **:modifier**"
+        requiredIsNow: "\n\n**Required XP to reach some levels is now:**\n"
         statusMessage: "服务器当前正在使用 **:modifier** 级别和经验的修饰符.\n\n**需要XP才能达到某些级别**\n"
         level: "Level {0}"
 

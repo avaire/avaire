@@ -184,7 +184,8 @@ administration:
     LevelModifierCommand:
         invalidNumberGiven: "Invalid modifier given, the modifier must be a positive percentage between `0.01%` and `500%`"
         resetToDefault: "The level modifier has been reset back to using the default **:modifier** modifier."
-        changedTo: "The level and experience modifier has been change to **:modifier**."
+        changedTo: "The level and experience modifier has been change to **:modifier**"
+        requiredIsNow: "\n\n**Required XP to reach some levels is now:**\n"
         statusMessage: "The server is currently using a **:modifier** modifier for levels and experience.\n\n**Required XP to reach some levels**\n"
         level: "Level {0}"
 
