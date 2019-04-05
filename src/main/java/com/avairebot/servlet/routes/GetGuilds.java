@@ -19,20 +19,16 @@
  *
  */
 
-package com.avairebot.metrics.routes;
+package com.avairebot.servlet.routes;
 
+import com.avairebot.AvaIre;
 import com.avairebot.contracts.metrics.SparkRoute;
-import com.avairebot.metrics.Metrics;
 import net.dv8tion.jda.core.entities.Guild;
 import org.json.JSONObject;
 import spark.Request;
 import spark.Response;
 
 public class GetGuilds extends SparkRoute {
-
-    public GetGuilds(Metrics metrics) {
-        super(metrics);
-    }
 
     @Override
     public Object handle(Request request, Response response) throws Exception {
@@ -41,7 +37,7 @@ public class GetGuilds extends SparkRoute {
         JSONObject root = new JSONObject();
         for (String id : ids) {
             try {
-                Guild guildById = metrics.getAvaire().getShardManager().getGuildById(Long.parseLong(id));
+                Guild guildById = AvaIre.getInstance().getShardManager().getGuildById(Long.parseLong(id));
                 if (guildById == null) {
                     root.put(id, JSONObject.NULL);
                     continue;

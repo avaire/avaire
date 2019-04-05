@@ -44,14 +44,14 @@ public class EnvironmentMacros {
             log.warn("Failed to register the JAWSDB_URL environment variable macro, a macro with that name is already registered.");
         }
 
-        if (!registerMetricsPort()) {
+        if (!registerServletPort()) {
             log.warn("Failed to register the PORT environment variable macro, a macro with that name is already registered.");
         }
     }
 
-    private static boolean registerMetricsPort() {
+    private static boolean registerServletPort() {
         return EnvironmentOverride.registerMacro("PORT", (environmentValue, configuration) -> {
-            configuration.set("metrics.port", Integer.valueOf(environmentValue));
+            configuration.set("web-servlet.port", Integer.valueOf(environmentValue));
         });
     }
 

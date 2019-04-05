@@ -19,21 +19,35 @@
  *
  */
 
-package com.avairebot.metrics.routes;
+package com.avairebot.servlet.routes;
 
+import com.avairebot.AvaIre;
 import com.avairebot.contracts.metrics.SparkRoute;
-import com.avairebot.metrics.Metrics;
+import net.dv8tion.jda.core.entities.Guild;
+import org.json.JSONObject;
 import spark.Request;
 import spark.Response;
 
-public class GetNotFoundRoute extends SparkRoute {
-
-    public GetNotFoundRoute(Metrics metrics) {
-        super(metrics);
-    }
+public class GetGuildsExists extends SparkRoute {
 
     @Override
     public Object handle(Request request, Response response) throws Exception {
-        return "{\"status\": 404, \"reason\": \"Requested route does not exists.\"}";
+        String[] ids = request.params("ids").split(",");
+
+        JSONObject root = new JSONObject();
+        for (String id : ids) {
+            try {
+                Guild guildById = AvaIre.getInstance().getShardManager().getGuildById(Long.parseLong(id));
+                if (guildById == null) {
+                    root.put(id, false);
+                    continue;
+                }
+                root.put(id, true);
+            } catch (NumberFormatException e) {
+                root.put(id, false);
+            }
+        }
+
+        return root;
     }
 }

@@ -63,12 +63,13 @@ import com.avairebot.middleware.*;
 import com.avairebot.plugin.PluginLoader;
 import com.avairebot.plugin.PluginManager;
 import com.avairebot.scheduler.ScheduleHandler;
+import com.avairebot.servlet.WebServlet;
+import com.avairebot.servlet.routes.*;
 import com.avairebot.shard.ShardEntityCounter;
 import com.avairebot.shared.DiscordConstants;
 import com.avairebot.shared.ExitCodes;
 import com.avairebot.shared.SentryConstants;
 import com.avairebot.time.Carbon;
-import com.avairebot.utilities.JarUtil;
 import com.avairebot.vote.VoteManager;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -98,7 +99,6 @@ import javax.annotation.Nullable;
 import javax.security.auth.login.LoginException;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.net.URISyntaxException;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.concurrent.ScheduledFuture;
@@ -132,6 +132,7 @@ public class AvaIre {
     private final ShardEntityCounter shardEntityCounter;
     private final EventEmitter eventEmitter;
     private final BotAdmin botAdmins;
+    private final WebServlet servlet;
     private Carbon shutdownTime = null;
     private int shutdownCode = ExitCodes.EXIT_CODE_RESTART;
     private ShardManager shardManager = null;
@@ -291,6 +292,30 @@ public class AvaIre {
         blacklist = new Blacklist(this);
         blacklist.syncBlacklistWithDatabase();
 
+        log.info("Preparing and setting up web servlet");
+        servlet = new WebServlet(config.getInt("web-servlet.port",
+            config.getInt("metrics.port", WebServlet.defaultPort)
+        ));
+
+        if (getConfig().getBoolean("web-servlet.api-routes.leaderboard", true)) {
+            servlet.registerGet("/leaderboard/:id", new GetLeaderboardPlayers());
+        }
+
+        if (getConfig().getBoolean("web-servlet.api-routes.players", true)) {
+            servlet.registerGet("/players/cleanup", new GetPlayerCleanup());
+        }
+
+        if (getConfig().getBoolean("web-servlet.api-routes.guilds", true)) {
+            servlet.registerPost("/guilds/cleanup", new PostGuildCleanup());
+            servlet.registerGet("/guilds/cleanup", new GetGuildCleanup());
+            servlet.registerGet("/guilds/:ids/exists", new GetGuildsExists());
+            servlet.registerGet("/guilds/:ids", new GetGuilds());
+        }
+
+        if (getConfig().getBoolean("web-servlet.api-routes.stats", true)) {
+            servlet.registerGet("/stats", new GetStats());
+        }
+
         log.info("Preparing and setting up metrics");
         Metrics.setup(this);
 
@@ -449,6 +474,10 @@ public class AvaIre {
         return voteManager;
     }
 
+    public WebServlet getServlet() {
+        return servlet;
+    }
+
     public IntelligenceManager getIntelligenceManager() {
         return intelligenceManager;
     }
@@ -532,17 +561,6 @@ public class AvaIre {
             getDatabase().getConnection().close();
         } catch (SQLException ex) {
             getLogger().error("Failed to close database connection during shutdown: ", ex);
-        }
-
-        if (exitCode != ExitCodes.EXIT_CODE_NORMAL && settings.useInternalRestart()) {
-            try {
-                ProcessBuilder process = JarUtil.rebuildJarExecution(settings);
-                if (process != null) {
-                    process.start();
-                }
-            } catch (URISyntaxException | IOException e) {
-                log.error("Failed starting jar file: {}", e.getMessage(), e);
-            }
         }
 
         System.exit(exitCode);

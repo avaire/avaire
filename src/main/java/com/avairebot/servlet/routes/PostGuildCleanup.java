@@ -19,11 +19,11 @@
  *
  */
 
-package com.avairebot.metrics.routes;
+package com.avairebot.servlet.routes;
 
+import com.avairebot.AvaIre;
 import com.avairebot.Constants;
 import com.avairebot.contracts.metrics.SparkRoute;
-import com.avairebot.metrics.Metrics;
 import net.dv8tion.jda.core.entities.Guild;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -37,10 +37,6 @@ import java.util.Set;
 public class PostGuildCleanup extends SparkRoute {
 
     private static final Logger log = LoggerFactory.getLogger(PostGuildCleanup.class);
-
-    public PostGuildCleanup(Metrics metrics) {
-        super(metrics);
-    }
 
     @Override
     public Object handle(Request request, Response response) throws Exception {
@@ -56,7 +52,7 @@ public class PostGuildCleanup extends SparkRoute {
             try {
                 long idLong = Long.parseLong(id.toString());
 
-                Guild guild = metrics.getAvaire().getShardManager().getGuildById(idLong);
+                Guild guild = AvaIre.getInstance().getShardManager().getGuildById(idLong);
                 if (guild != null) {
                     continue;
                 }
@@ -73,7 +69,7 @@ public class PostGuildCleanup extends SparkRoute {
 
         log.debug("Starting \"Guild Cleanup\" route task with query: " + query);
 
-        metrics.getAvaire().getDatabase().queryBatch(query, statement -> {
+        AvaIre.getInstance().getDatabase().queryBatch(query, statement -> {
             for (Long id : idsToDelete) {
                 statement.setLong(1, id);
                 statement.addBatch();
@@ -83,15 +79,5 @@ public class PostGuildCleanup extends SparkRoute {
         log.debug("Finished \"Guild Cleanup\" route task, deleted {} records in the process", idsToDelete.size());
 
         return buildResponse(response, 200, String.format("Done, successfully deleted %s records", idsToDelete.size()));
-    }
-
-    private boolean hasValidAuthorizationHeader(Request request) {
-        String authorization = request.headers("Authorization");
-
-        return authorization != null && authorization.equals(getAuthorizationToken());
-    }
-
-    private String getAuthorizationToken() {
-        return metrics.getAvaire().getConfig().getString("metrics.authToken", "avaire-auth-token");
     }
 }

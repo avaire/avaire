@@ -19,27 +19,20 @@
  *
  */
 
-package com.avairebot.metrics.filters;
+package com.avairebot.servlet.filters;
 
-import com.avairebot.AvaIre;
+import com.avairebot.servlet.WebServlet;
 import spark.Filter;
 import spark.Request;
 import spark.Response;
 
-import static spark.Spark.halt;
-
-public class AreWeReadyYetFilter implements Filter {
-
-    private final AvaIre avaire;
-
-    public AreWeReadyYetFilter(AvaIre avaire) {
-        this.avaire = avaire;
-    }
+public class HttpFilter implements Filter {
 
     @Override
     public void handle(Request request, Response response) throws Exception {
-        if (avaire.getShardManager() == null) {
-            halt(503, "Application is still starting up, try again later.");
-        }
+        WebServlet.log.debug(request.requestMethod() + " " + request.pathInfo());
+
+        response.header("Access-Control-Allow-Origin", "*");
+        response.type("application/json");
     }
 }

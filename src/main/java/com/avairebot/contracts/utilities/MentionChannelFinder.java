@@ -19,19 +19,25 @@
  *
  */
 
-package com.avairebot.metrics;
+package com.avairebot.contracts.utilities;
 
-import io.prometheus.client.exporter.MetricsServlet;
+import net.dv8tion.jda.core.entities.Channel;
+import net.dv8tion.jda.core.entities.Message;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
-public class PrometheusMetricsServlet extends MetricsServlet {
+@FunctionalInterface
+public interface MentionChannelFinder {
 
-    public HttpServletResponse servletGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        doGet(req, resp);
-        return resp;
-    }
+    /**
+     * Tries to find the a channel using the given JDA message object and
+     * name, if no channel were found then {@code NULL} will be returned.
+     *
+     * @param message The JDA message object instance.
+     * @param name    The name of the channel to look for.
+     * @return Possibly-null, the first channel with the given name.
+     */
+    @Nullable
+    Channel find(@Nonnull Message message, @Nonnull String name);
 }

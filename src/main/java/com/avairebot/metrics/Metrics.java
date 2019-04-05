@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018.
+ * Copyright (c) 2019.
  *
  * This file is part of AvaIre.
  *
@@ -33,10 +33,7 @@ import com.avairebot.contracts.middleware.Middleware;
 import com.avairebot.database.controllers.*;
 import com.avairebot.handlers.adapter.JDAStateEventAdapter;
 import com.avairebot.level.LevelManager;
-import com.avairebot.metrics.filters.AreWeReadyYetFilter;
-import com.avairebot.metrics.filters.HttpFilter;
-import com.avairebot.metrics.handlers.SparkExceptionHandler;
-import com.avairebot.metrics.routes.*;
+import com.avairebot.metrics.routes.GetMetrics;
 import com.avairebot.middleware.ThrottleMiddleware;
 import com.avairebot.scheduler.jobs.LavalinkGarbageNodeCollectorJob;
 import io.prometheus.client.Counter;
@@ -49,7 +46,6 @@ import net.dv8tion.jda.core.events.Event;
 import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import spark.Spark;
 
 import java.lang.reflect.Modifier;
 import java.util.Set;
@@ -228,9 +224,6 @@ public class Metrics {
 
     public static final Logger log = LoggerFactory.getLogger(Metrics.class);
 
-    private static int port = 1256;
-
-    private static AvaIre avaire;
     private static boolean isSetup = false;
 
     public static void setup(AvaIre avaire) {
@@ -238,7 +231,6 @@ public class Metrics {
             throw new IllegalStateException("The metrics has already been setup!");
         }
 
-        Metrics.avaire = avaire;
         uptime.labels("static").set(System.currentTimeMillis());
 
         final LoggerContext factory = (LoggerContext) LoggerFactory.getILoggerFactory();
@@ -270,35 +262,17 @@ public class Metrics {
         cacheMetrics.addCache("blacklist-ratelimit", Ratelimit.cache);
         cacheMetrics.addCache("lavalink-destroy-cleanup", LavalinkGarbageNodeCollectorJob.cache);
 
-        if (!avaire.getConfig().getBoolean("metrics.enabled", true)) {
+        if (!avaire.getConfig().getBoolean("web-servlet.metrics",
+            avaire.getConfig().getBoolean("metrics.enabled", true)
+        )) {
             log.info("Metrics web API is disabled, skipping igniting Spark API");
-            Metrics.isSetup = true;
+            isSetup = true;
             return;
         }
 
-        port = avaire.getConfig().getInt("metrics.port", 1256);
+        avaire.getServlet().registerGet("/metrics", new GetMetrics());
 
-        log.info("Igniting Spark API on port: " + port);
-
-        Spark.port(port);
-
-        Spark.notFound(new GetNotFoundRoute(MetricsHolder.METRICS));
-        Spark.exception(Exception.class, new SparkExceptionHandler());
-
-        Spark.before(new HttpFilter());
-        Spark.before(new AreWeReadyYetFilter(avaire));
-
-        Spark.get("/leaderboard/:id", new GetLeaderboardPlayers(MetricsHolder.METRICS));
-        Spark.get("/players/cleanup", new GetPlayerCleanup(MetricsHolder.METRICS));
-        Spark.post("/guilds/cleanup", new PostGuildCleanup(MetricsHolder.METRICS));
-        Spark.get("/guilds/cleanup", new GetGuildCleanup(MetricsHolder.METRICS));
-        Spark.get("/guilds/:ids/exists", new GetGuildsExists(MetricsHolder.METRICS));
-        Spark.get("/guilds/:ids", new GetGuilds(MetricsHolder.METRICS));
-        Spark.get("/metrics", new GetMetrics(MetricsHolder.METRICS));
-        Spark.get("/stats", new GetStats(MetricsHolder.METRICS));
-        Spark.post("/vote", new PostVote(MetricsHolder.METRICS));
-
-        Metrics.isSetup = true;
+        isSetup = true;
     }
 
     private static void initializeEventMetrics() {
@@ -309,15 +283,7 @@ public class Metrics {
             if (type.isInterface() || Modifier.isAbstract(type.getModifiers())) {
                 continue;
             }
-            Metrics.jdaEvents.labels(type.getSimpleName()).inc(0D);
+            jdaEvents.labels(type.getSimpleName()).inc(0D);
         }
-    }
-
-    public AvaIre getAvaire() {
-        return avaire;
-    }
-
-    private static class MetricsHolder {
-        private static final Metrics METRICS = new Metrics();
     }
 }

@@ -49,7 +49,7 @@ public class PlaylistTransformer extends Transformer {
             guildId = data.getLong("guild_id");
             name = data.getString("name");
 
-            if (data.has("songs") && data.getString("songs").length() > 0) {
+            if (data.has("songs") && data.getString("songs", "").length() > 0) {
                 List<PlaylistSong> songs = AvaIre.gson.fromJson(data.getString("songs"), (new TypeToken<List<PlaylistSong>>() {
                 }.getType()));
 

@@ -19,10 +19,12 @@
  *
  */
 
-package com.avairebot.metrics.routes;
+package com.avairebot.servlet.routes;
 
+import com.avairebot.AppInfo;
+import com.avairebot.AvaIre;
+import com.avairebot.GitInfo;
 import com.avairebot.contracts.metrics.SparkRoute;
-import com.avairebot.metrics.Metrics;
 import net.dv8tion.jda.core.JDA;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -34,10 +36,6 @@ import java.lang.management.RuntimeMXBean;
 
 public class GetStats extends SparkRoute {
 
-    public GetStats(Metrics metrics) {
-        super(metrics);
-    }
-
     @Override
     public Object handle(Request request, Response response) throws Exception {
         JSONObject root = new JSONObject();
@@ -45,6 +43,14 @@ public class GetStats extends SparkRoute {
         root.put("application", buildApplication());
         root.put("shards", buildShards());
         root.put("global", buildGlobal());
+
+        try {
+            root.put("build", buildBuildInformation());
+        } catch (NullPointerException ignored) {
+            // The AppInfo configuration class will throw a NPE if the project is
+            // not built using Gradle with the gradle-git-properties plugin,
+            // which is only the case during development.
+        }
 
         return root;
     }
@@ -66,7 +72,7 @@ public class GetStats extends SparkRoute {
     private JSONArray buildShards() {
         JSONArray shards = new JSONArray();
 
-        for (JDA shard : metrics.getAvaire().getShardManager().getShards()) {
+        for (JDA shard : AvaIre.getInstance().getShardManager().getShards()) {
             JSONObject stats = new JSONObject();
             stats.put("id", shard.getShardInfo().getShardId())
                 .put("guilds", shard.getGuilds().size())
@@ -83,16 +89,35 @@ public class GetStats extends SparkRoute {
 
     private JSONObject buildGlobal() {
         JSONObject global = new JSONObject();
-        global.put("guilds", metrics.getAvaire().getShardEntityCounter().getGuilds());
-        global.put("users", metrics.getAvaire().getShardEntityCounter().getUsers());
+        global.put("guilds", AvaIre.getInstance().getShardEntityCounter().getGuilds());
+        global.put("users", AvaIre.getInstance().getShardEntityCounter().getUsers());
 
         JSONObject channels = new JSONObject();
-        channels.put("total", metrics.getAvaire().getShardEntityCounter().getChannels());
-        channels.put("text", metrics.getAvaire().getShardEntityCounter().getTextChannels());
-        channels.put("voice", metrics.getAvaire().getShardEntityCounter().getVoiceChannels());
+        channels.put("total", AvaIre.getInstance().getShardEntityCounter().getChannels());
+        channels.put("text", AvaIre.getInstance().getShardEntityCounter().getTextChannels());
+        channels.put("voice", AvaIre.getInstance().getShardEntityCounter().getVoiceChannels());
 
         global.put("channels", channels);
 
         return global;
+    }
+
+    private JSONObject buildBuildInformation() throws NullPointerException {
+        JSONObject build = new JSONObject();
+
+        JSONObject app = new JSONObject();
+        app.put("version", AppInfo.getAppInfo().version);
+        app.put("groupId", AppInfo.getAppInfo().groupId);
+        app.put("artifactId", AppInfo.getAppInfo().artifactId);
+
+        build.put("app", app);
+
+        JSONObject git = new JSONObject();
+        git.put("branch", GitInfo.getGitInfo().branch);
+        git.put("commitId", GitInfo.getGitInfo().commitId);
+        git.put("commitTime", GitInfo.getGitInfo().commitTime);
+        build.put("git", git);
+
+        return build;
     }
 }

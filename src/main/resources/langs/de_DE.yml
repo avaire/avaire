@@ -49,13 +49,19 @@ administration:
         success: "Die Rolle **:role** wurde zu der Liste der selbst setzbaren Rollen hinzugefügt.\n Der Server hat `:slots` weitere Rollenslots für Rollen, die du dir selbst setzen kannst."
 
     AdministrateExperienceCommand:
+    AdministrateExperienceCommand:
         cantUseForBots: "You can't add, remove, or reset XP for bot accounts since they don't earn any, please select a normal user when using this command."
-        invalidAmountGiven: "The `amount` property must between 1 and {0} add or take XP from a user."
+        invalidAmountGiven: "The `amount` property must be between 1 and {0} to add or take XP from a user."
+        aboutToResetEverything: "You're about to reset the XP for everyone on the entire server, note that this action **CAN NOT** be reversed. If you're sure you wanna continue, run the command to completely reset the servers XP.\n\n```:command server-reset :token```\nThis command will only work for 60 seconds, after that time the token becomes invalid and the command has to be ran again to get a new token."
         failedToSaveChanges: "Failed to save the changes to the database, please try again, if the error continues to happen, please contact support on the official [AvaIre support server](https://discord.gg/gt2FWER)."
+        mustBeAnAdmin: "You must be a server admin to reset everyones XP."
+        invalidSecurityToken: "Invalid security token given, please provide the correct security token to reset all the servers XP."
+        warning: "Warning!"
         success:
-            add: "**:amount** XP have been given to :target, they now have **:newAmount** XP."
-            take: "**:amount** XP have been taken from :target, they now have **:newAmount** XP."
+            add: "**:amount** XP has been given to :target, they now have **:newAmount** XP."
+            take: "**:amount** XP has been taken from :target, they now have **:newAmount** XP."
             reset: ":target has successfully had their XP reset."
+            everything: "Everyone on the entire server has now had their XP completely reset!"
 
     AiCommand:
         message: "Der `Künstliche Intelligenz` Modul wurde **:status** für folgenden Channel: :channel"
@@ -179,7 +185,8 @@ administration:
     LevelModifierCommand:
         invalidNumberGiven: "Ungültige Eingabe. Der Wert muss einen positiven Prozentsatz zwischen `0.01%` und `500%` beinhalten."
         resetToDefault: "Der Level-Modifikator wurde zurückgesetzt und nutzt nun den **:modifier** Wert."
-        changedTo: "Der Level & Experience-Wert wurde zu **:modifier** geändert."
+        changedTo: "Der Level & Experience-Wert wurde zu **:modifier** geändert"
+        requiredIsNow: "\n\n**Required XP to reach some levels is now:**\n"
         statusMessage: "Der Server nutzt momentan einen **:modifier** Wert für Levels & Experience.\n\n**Benötigte XP um Levels zu erreichen.**\n"
         level: "Level {0}"
 
@@ -700,8 +707,11 @@ utility:
         jumps: '**Der Link leitet durch folgende Seiten hin und her:**'
 
     FeedbackCommand:
+        confirmation: "You're about to send the following feedback:```:feedback```The feedback will be sent to the feedback channel in the :server server, are you sure you want to send it?\nUse `:command` in the next 60 seconds with no arguments to send the feedback."
         success: 'Feedback erfolgreich abgeschickt! <:tickYes:319985232306765825>'
         failedToSend: 'Es ist ein Fehler aufgetreten beim Versuch das Feedback abzuschicken: :error'
+        invalidFeedbackChannel: "Invalid feedback channel defined, the text channel could not be found!"
+        mustBe32CharactersOrMore: "The feedback message must be at least 32 characters long."
 
     GlobalLeaderboardCommand:
         noData: 'Derzeit existieren keine Daten von der Bestenliste. Versuche es später erneut.'

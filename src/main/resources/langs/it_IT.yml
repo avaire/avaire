@@ -50,12 +50,17 @@ administration:
 
     AdministrateExperienceCommand:
         cantUseForBots: "You can't add, remove, or reset XP for bot accounts since they don't earn any, please select a normal user when using this command."
-        invalidAmountGiven: "The `amount` property must between 1 and {0} add or take XP from a user."
+        invalidAmountGiven: "The `amount` property must be between 1 and {0} to add or take XP from a user."
+        aboutToResetEverything: "You're about to reset the XP for everyone on the entire server, note that this action **CAN NOT** be reversed. If you're sure you wanna continue, run the command to completely reset the servers XP.\n\n```:command server-reset :token```\nThis command will only work for 60 seconds, after that time the token becomes invalid and the command has to be ran again to get a new token."
         failedToSaveChanges: "Failed to save the changes to the database, please try again, if the error continues to happen, please contact support on the official [AvaIre support server](https://discord.gg/gt2FWER)."
+        mustBeAnAdmin: "You must be a server admin to reset everyones XP."
+        invalidSecurityToken: "Invalid security token given, please provide the correct security token to reset all the servers XP."
+        warning: "Warning!"
         success:
-            add: "**:amount** XP have been given to :target, they now have **:newAmount** XP."
-            take: "**:amount** XP have been taken from :target, they now have **:newAmount** XP."
+            add: "**:amount** XP has been given to :target, they now have **:newAmount** XP."
+            take: "**:amount** XP has been taken from :target, they now have **:newAmount** XP."
             reset: ":target has successfully had their XP reset."
+            everything: "Everyone on the entire server has now had their XP completely reset!"
 
     AiCommand:
         message: "Il modulo `Intelligenza Artificiale` è stato **:status** per il canale :channel."
@@ -179,7 +184,8 @@ administration:
     LevelModifierCommand:
         invalidNumberGiven: "Modificatore non valido, il modificatore deve essere una percentuale positiva tra `0.01%` e `500%`"
         resetToDefault: "Il modificatore dei livelli è stato resettato al modificatore predefinito a **:modifier**."
-        changedTo: "Il modificatore per Livelli ed Esperienza è stato cambiato a **:modifier**."
+        changedTo: "Il modificatore per Livelli ed Esperienza è stato cambiato a **:modifier**"
+        requiredIsNow: "\n\n**Required XP to reach some levels is now:**\n"
         statusMessage: "Attualmente il server sta utilizzando il modificatore per Livelli ed Esperienza a **:modifier**.\n\n**Punti esperienza richiesti per raggiungere alcuni livelli**\n"
         level: "Livello {0}"
 
@@ -698,8 +704,11 @@ utility:
         jumps: '**Il link salta tra i seguenti siti:**'
 
     FeedbackCommand:
+        confirmation: "You're about to send the following feedback:```:feedback```The feedback will be sent to the feedback channel in the :server server, are you sure you want to send it?\nUse `:command` in the next 60 seconds with no arguments to send the feedback."
         success: 'Inviato con successo il feedback <:tickYes:319985232306765825>'
         failedToSend: 'Invio del feedback fallito: :error'
+        invalidFeedbackChannel: "Invalid feedback channel defined, the text channel could not be found!"
+        mustBe32CharactersOrMore: "The feedback message must be at least 32 characters long."
 
     GlobalLeaderboardCommand:
         noData: 'Attualmente non ci sono dati nella Classifica, riprova più tardi.'

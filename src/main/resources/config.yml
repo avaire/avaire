@@ -367,34 +367,82 @@ botAccess:
 sentryDsn: ''
 
 #--------------------------------------------------------------------------
-# Prometheus Metrics & Spark API
+# Web Servlet - Prometheus Metrics & API
 #--------------------------------------------------------------------------
 #
-# Ava uses Prometheus metrics for tracking a long list of different things
-# within the application during runtime, the metrics are then displayed
-# using Grafana to users on a web-dashboard using graphs, below you'll
-# find options to enable/disable the metrics system entirely, and
-# change the port that the metrics are exposed to.
+# Ava uses an internal API to power outside applications by allowing the
+# apps to pull information about the bot directly from it, it also
+# collects and exposes internal metrics which can be helpful for
+# seeing what is happening inside the bot in real-time, all
+# this is powered by an internal web servlet.
 #
-# Along with the metrics, a stats API is also enabled, displaying stats
-# per-shard, and globally with guild, channel, and user data, as well
-# as the shard ID and the shard status.
-#
-# The metrics stats are exposed on ip:port/metrics, and the stats API
-# are exposed on ip:port/stats
-#
-# For setup guides, see:
-#
-#   https://prometheus.io/
-#   https://grafana.com/
+# The API are exposed on "ip:port", where the port is the web servlet port
+# defined below, note that only the routes that are enabled will actually
+# be exposed through the API, so you can fine tune what you want to
+# expose to the rest of the world.
 #
 
-metrics:
+web-servlet:
 
-  # This option determines if the web API should be enabled at all, if set to
-  # true, the port below will be used to expose the API and metrics stats.
+  # Ava uses Prometheus metrics for tracking a long list of different things
+  # within the application during runtime, the metrics are then displayed
+  # using Grafana to users on a web-dashboard using graphs.
   #
-  enabled: true
+  # For setup guides, see:
+  #
+  #   https://prometheus.io/
+  #   https://grafana.com/
+  #
+  metrics: true
+
+  # Ava exposes some API endpoints for interacting with the bot or pulling
+  # information about of the bot in real-time, below you'll find a list
+  # of different types of API endpoints which can be exposed in
+  # the internal API.
+  #
+  api-routes:
+
+    # Exposes a per-server leaderboard route for getting the 100 users on
+    # the given server ID, as well as some level role and XP settings
+    # information.
+    #
+    # Route:
+    #   GET  /leaderboard/:id
+    #
+    leaderboard: true
+
+    # Exposes a player cleanup route which for getting a list of expired user
+    # XP records, any IDs returned from the route are IDs for users who are
+    # no long on the server the record is attached to.
+    #
+    # Route:
+    #   GET  /players/cleanup
+    #
+    players: true
+
+    # Exposes multiple guild information routes, as well as cleanup routes,
+    # the information routes can be used to pull information about a
+    # specific server by their ID, or to check if the bot is on the
+    # server with the given ID, while the cleanup routes can be
+    # used to get or delete expired and old records for guilds
+    # the bot is no longer on.
+    #
+    # Routes:
+    #   POST /guilds/cleanup
+    #   GET  /guilds/cleanup
+    #   GET  /guilds/:ids/exists
+    #   GET  /guilds/:ids
+    #
+    guilds: true
+
+    # Exposes a stats route which can be used to get some stats on individual
+    # shards, the machine the bot is running on, as well as uptime and
+    # global collected bot info.
+    #
+    # Route:
+    #   GET  /stats
+    #
+    stats: true
 
   # The port the API and metrics should be exposed to, the port must not be used
   # by another application on the system, otherwise the API won't be able to
@@ -427,6 +475,10 @@ vote-lock:
   # This option determines if the vote-locking feature should be enabled at all,
   # if set to true, any command or feature using the "vote" middleware will be
   # restricted to users who have voted for the bot within the last 24 hours.
+  #
+  # Enabling this option exposes a "/vote" POST route in the web-servlet which
+  # can be used to handle vote request sent by DBL, making it easy and
+  # automatic to reward users when they vote.
   #
   enabled: false
 

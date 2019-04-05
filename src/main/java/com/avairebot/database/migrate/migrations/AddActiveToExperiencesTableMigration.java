@@ -32,7 +32,7 @@ public class AddActiveToExperiencesTableMigration implements Migration {
 
     @Override
     public String created_at() {
-        return "2019-02-28 00:12:36";
+        return "Thu, Feb 28, 2019 12:12 AM";
     }
 
     @Override
