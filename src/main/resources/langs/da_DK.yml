@@ -7,7 +7,7 @@ errors:
     mustBeConnectedToVoice: 'Du skal være forbundet til en talekanal for at bruge denne kommando!'
     mustBeConnectedToSameChannel: 'Du skal være forbundet til den samme talekanal, jeg er i for at {0}!'
     missingMusicQueue: 'Mangler musik `forespørgsel`, skal du inkludere et link til sangen, du vil lytte til, eller i det mindste give mig en sangtitel!'
-    cantMentionEveryone: "You don't have permissions to mention everyone."
+    cantMentionEveryone: "Du har ikke tilladelser til at nævne alle."
     requireLevelFeatureToBeEnabled: "Denne kommando kræver, at `Level og Experience' funktionen er aktiveret for serveren, du kan spørge en serveradministrator, hvis de vil aktivere den med `{0}`"
     errorOccurredWhileLoading: "Der opstod en fejl under indlæsningen af {0}. Prøv venligst igen. Hvis problemet fortsætter kan du rapportere dette til et af mine udviklere på [AvaIre support serveren](https://discord.gg/gt2FWER)."
 
@@ -19,9 +19,9 @@ levelupMessages:
     - "Tillykke :user 🎉 Du har lige levelet op! Du er nu **Level :level**"
 
 levelupRoleMessages:
-    - "GG :user, you just reached **Level :level**, you now have the **:role** role"
-    - "Eyy :user, you just leveled up! You're now **Level :level**, have the **:role** role, you earned it."
-    - "Congratulations :user 🎉 You just leveled up! You're now **Level :level**, you have also earned yourself the **:role** role"
+    - "GG :user, du er lige nået **Level :level**, du har nu fået **:role** rollen."
+    - "Eyy :user, du har lige leveled op! Du er nu **Level :level**, her, hav **:role** rollen, du fortjent det."
+    - "Tillykke :user 🎉 Du har lige leveled op! Du er nu **Level :level**, du har også tjent dig selv **:role** rollen."
 
 administration:
     common:
@@ -39,10 +39,10 @@ administration:
         success: "**:role** rollen er blevet tilføjet til level-up rollelisten.\nServeren har `:slots` flere level pladser tilgængelige."
 
     AddReactionRoleCommand:
-        emoteDoestBelongToServer: "The emote does not belong to this server, you can only use emotes from this server as reaction emotes."
-        messageHasNoSlots: "The message doesn't have anymore reaction role slots available, you can remove existing reaction-roles to free up slots, or delete reaction role messages to add the role to a new reaction role message."
-        serverHasNoSlots: "Can't create new reaction role messages, the server doesn't have anymore reaction messages slots, you can deleting existing reaction role messages to free up slots, or add your reaction role to a reaction message if there are available slots on the message for more roles."
-        success: "The :role role has been registered as an reaction role for the :emote emote.\nThe message has `:roleSlots` more reaction-role slots available for the message, and `:messageSlots` reaction-message slots available."
+        emoteDoestBelongToServer: "Emojien tilhører ikke denne server, du kan kun bruge emojis fra denne server som reaktion emojis."
+        messageHasNoSlots: "Beskeden har ikke flere reaktionsrolle spots der er tilgængelige. Du kan fjerne eksisterende reaktionsroller for at frigøre slots eller slette reaktionsrollemeddelelser for at tilføje rollen til en ny reaktionsrollebesked."
+        serverHasNoSlots: "Kan ikke oprette nye reaktionsrollemeddelelser, serveren har ikke længere reaktionsmeddelelses spots, du kan slette eksisterende reaktionsrollemeddelelser for at frigøre slots eller tilføje din reaktionsrolle til en reaktionsmeddelelse, hvis der er ledige slots på meddelelsen for flere roller."
+        success: ":role rollen er blevet registreret som en reaktionsrolle for :emote emoji.\nMeddelelsen har `:roleSlots` flere reaktions-rolle spots til rådighed for meddelelsen, og `:messageSlots` reaktionsmeddelelses-slots tilgængelige."
 
     AddSelfAssignableRoleCommand:
         noSlotsLeft: "Serveren har ikke flere selvtilladelige rolle pladser, du kan fjerne eksisterende selvtilladelige roller for at frigøre plads."
@@ -50,18 +50,18 @@ administration:
 
     AdministrateExperienceCommand:
     AdministrateExperienceCommand:
-        cantUseForBots: "You can't add, remove, or reset XP for bot accounts since they don't earn any, please select a normal user when using this command."
-        invalidAmountGiven: "The `amount` property must be between 1 and {0} to add or take XP from a user."
-        aboutToResetEverything: "You're about to reset the XP for everyone on the entire server, note that this action **CAN NOT** be reversed. If you're sure you wanna continue, run the command to completely reset the servers XP.\n\n```:command server-reset :token```\nThis command will only work for 60 seconds, after that time the token becomes invalid and the command has to be ran again to get a new token."
-        failedToSaveChanges: "Failed to save the changes to the database, please try again, if the error continues to happen, please contact support on the official [AvaIre support server](https://discord.gg/gt2FWER)."
-        mustBeAnAdmin: "You must be a server admin to reset everyones XP."
-        invalidSecurityToken: "Invalid security token given, please provide the correct security token to reset all the servers XP."
-        warning: "Warning!"
+        cantUseForBots: "Du kan ikke tilføje, fjerne, eller nulstille XP for en bot-konti, da de ikke kan få noget XP til at starte med. Vælg venligst en normal bruger, når du bruger denne kommando."
+        invalidAmountGiven: "Egenskaben `amount` skal være mellem 1 og {0} for at tilføje eller tage XP fra en bruger."
+        aboutToResetEverything: "Du er ved at nulstille XP for alle på hele serveren. Bemærk, at denne handling **KAN IKKE** laves om. Hvis du er sikker på, at du vil fortsætte, skal du køre kommandoen for at nulstille serverne XP helt.\n\n```:command server-reset :token```\nDenne kommando fungerer kun i 60 sekunder, efter den tid token bliver ugyldig og kommandoen skal køres igen for at få et nyt token."
+        failedToSaveChanges: "Kunne ikke gemme ændringerne i databasen. Prøv igen, hvis fejlen fortsætter med at ske, bedes du kontakte support på den officielle [AvaIre support server](https://discord.gg/gt2FWER)."
+        mustBeAnAdmin: "Du skal være en serveradministrator for at nulstille alles XP."
+        invalidSecurityToken: "Ugyldigt sikkerheds token givet, angiv venligst det korrekte sikkerheds token for at nulstille alle XP for all på serveren."
+        warning: "Advarsel!"
         success:
-            add: "**:amount** XP has been given to :target, they now have **:newAmount** XP."
-            take: "**:amount** XP has been taken from :target, they now have **:newAmount** XP."
-            reset: ":target has successfully had their XP reset."
-            everything: "Everyone on the entire server has now had their XP completely reset!"
+            add: "**:amount** XP er blevet givet til :target, de har nu **:newAmount** XP."
+            take: "**:amount** XP er blevet taget fra :target, de har nu **:newAmount** XP."
+            reset: ":target har succesfuldt haft deres XP-nulstilling."
+            everything: "Alle på hele serveren har nu fået deres XP nulstillet!"
 
     AiCommand:
         message: "Modellen `Artificial Intelligence` er blivet **:status** for :channel kanalen."
@@ -109,16 +109,16 @@ administration:
             category: "Alle kommandoer i all kommando kategorien `:category` er blivet nulstillet til at bruge `:prefix` prefixet."
 
     ChannelLevelCommand:
-        invalidChannel: "Invalid channel given, the channel must be a valid text channel."
-        cantTalkInChannel: "I can't talk in the {0} channel, so no users will be rewarded any XP for talking in the channel, if you want me to give users XP, please change my permission level for the channel so I can send messages in the channel."
-        noChannelsWithRewardsDisabled: "There are currently no channels with the level rewards disabled, you can add one by using the `{0} <channel>` command"
-        failedToUpdate: "Failed to save the changes to the database, please try again, if the issue persists, please contact one of my developers."
-        listChannels: "All the channels mentioned below currently has their level rewards turned off, any channel not on this list is unaffected.\n\n:channels"
-        listChannelsTitle: "Channels with their Level Rewards disabled ({0})"
-        success: "The XP rewards for the :channel channel has been **:status**!"
+        invalidChannel: "En ugyldig kanal er blivet givet, det skal være en gyldig tekstkanal."
+        cantTalkInChannel: "Jeg kan ikke tale i {0}-kanalen, så ingen brugere vil blive belønnet med noget XP til at tale i kanalen. Hvis du vil have mig til at give brugere XP, skal du ændre mit tilladelsesniveau for kanalen, så jeg kan sende beskeder i kanalen."
+        noChannelsWithRewardsDisabled: "Der er i øjeblikket ingen kanaler med XP belønningerne deaktiveret, du kan tilføje en ved hjælp af kommandoen `{0} <channel>`"
+        failedToUpdate: "Kan ikke gemme ændringerne i databasen. Prøv igen, hvis problemet fortsætter, kontakt venligst en af mine udviklere."
+        listChannels: "Alle de kanaler der er nævnt nedenfor, har i øjeblikket deres XP belønninger slukket. All kanaler som ikke er på denne liste, er upåvirket.\n\n:channels"
+        listChannelsTitle: "Kanaler med deres XP belønninger er deaktiveret ({0})"
+        success: "XP-belønningen for :channel er blivet **:status**!"
         status:
-            enabled: "Enabled"
-            disabled: "Disabled"
+            enabled: "aktiveret"
+            disabled: "deaktiveret"
 
     GoodbyeCommand:
         note: "\nDu kan tilpasse beskeden ved at bruge `{0} [besked]`"
@@ -199,8 +199,8 @@ administration:
         listRoles: "Liste over Niveau Roller ({0})"
 
     ListReactionRoleCommand:
-        noReactionRoles: "The server doesn't have any reaction roles right now, you can create one using\n`{0}arr <emote> <role>`"
-        listReactionRoles: "List of Reaction Roles ({0})"
+        noReactionRoles: "Serveren har ikke nogen reaktionsroller lige nu, du kan oprette en ved hjælp af\n`{0}arr <emote> <role>`"
+        listReactionRoles: "Liste over reaktionsroller ({0})"
 
     ListSelfAssignableRolesCommand:
         noSelfAssignableRoles: "Der er i øjeblikket ingen selvoverdragelige roller til denne server."
@@ -222,12 +222,12 @@ administration:
         noReasonGiven: "Ingen grund blev givet."
 
     ModlogPardonCommand:
-        modlogNotEnabled: "No modlog channel has been set, you must set a modlog channel to use this command."
-        invalidCaseId: "Invalid case id given, the ID must be greater than 0 and less than {0}"
-        couldntFindCaseWithId: "Couldn't find a modlog case with an ID of {0} where you were the moderator, are you sure you're the moderator for the given modlog case?"
-        caseAlreadyPardoned: "The modlog case ID with an ID of `{0}` is already pardoned."
-        notAPunishment: "The modlog case ID with an ID of `{0}` is not a punishment!"
-        message: "The modlog case with an ID of **:case** has been been pardoned successfully."
+        modlogNotEnabled: "Ingen modlogkanal er blevet sat op, du skal sette en modlogkanal op for at bruge denne kommando."
+        invalidCaseId: "Ugyldigt case id givet, IDet skal være større end 0 og mindre end {0}"
+        couldntFindCaseWithId: "Kunne ikke finde et modlog case med IDet {0} hvor du var moderatoren, er du sikker på at du er moderatoren for det givne modlog-case?"
+        caseAlreadyPardoned: "Modlog-case-id'et med et ID af `{0}` er allerede tilkaldt."
+        notAPunishment: "Modlog-case-id'et med et ID af `{0}` er ikke en straf!"
+        message: "Modlog-sagen med et ID af **:case** er blevet afskediget med succes."
 
     ModlogReasonCommand:
         modlogNotEnabled: "Ingen modlogkanal er blevet set op, du skal sette en modlogkanal op for at bruge denne kommando."
@@ -264,15 +264,15 @@ administration:
         message: "**:role** rollen er blevet fjernet fra level-up rolle liste.\nServeren har nu `:slots' niveau rolle pladser."
 
     RemoveReactionRoleCommand:
-            noReactionRoles: "The server doesn't have any reaction roles right now, you can create one using\n`{0}arr <emote> <role>`"
-            messageIdMustBeGreaterThanOne: "Invalid `message id` given, the `message id` must be at least 1 or greater."
-            messageIdMustBeLowerThanRolesSize: "Invalid `message id` given, the `message id` cannot be higher than the amount of reaction roles the server currently has, which is `{0}` right now."
-            failedToFetchMessage: "Something went wrong while trying to fetch the reaction role message with an ID of `{0}`, if this issue continues to happen, please report it to one of my developers."
-            mustIncludeEmote: "You must include the emote you want to remove from the reaction message."
-            emoteDoestBelongToServer: "The emote does not belong to this server, you can only use emotes from this server as reaction emotes."
-            roleNotFoundOnMessage: "The specified reaction message doesn't have a reaction role attached to it using the {0} emote."
-            deletedMessage: "The reaction role message with an ID of **#:id** has successfully been deleted!"
-            deletedEmote: "The :emote emote has been successfully removed from the reaction message.\nThe message has `:roleSlots` more reaction-role slots available for the message, and `:messageSlots` reaction-message slots available."
+            noReactionRoles: "Serveren har ikke nogen reaktionsroller lige nu, du kan oprette en ved at bruge\n`{0}arr <emote> <role>`"
+            messageIdMustBeGreaterThanOne: "Ugyldig `besked id` givet,` meddelelses id'en skal være mindst 1 eller større."
+            messageIdMustBeLowerThanRolesSize: "Ugyldig `besked id` givet, 'meddelelses id'en kan ikke være højere end mængden af reaktionsroller serveren aktuelt har, hvilket er `{0}` lige pt."
+            failedToFetchMessage: "Noget gik galt, da vi forsøgte at hente reaktionsrollemeddelelsen med et ID af `{0}`. Hvis dette problem fortsat sker, skal du rapportere det til en af mine udviklere."
+            mustIncludeEmote: "Du skal inkludere den emote du vil fjerne fra reaktionsmeddelelsen."
+            emoteDoestBelongToServer: "Emoten tilhører ikke denne server, du kan kun bruge emotes fra denne server som reaktion emotes."
+            roleNotFoundOnMessage: "Den angivne reaktionsmeddelelse har ikke en reaktionsrolle til knyttet den via {0} emoten."
+            deletedMessage: "Reaktionsmeddelelse med ID'et **#:id** er blivet slettet!"
+            deletedEmote: ":emote emoten er succesfuldt blivet fjernet fra reaktionsmeddelelsen.\nReaktionsmeddelelsen har nu `:roleSlots` reaktionsroller-slots tilgængelige, og `:messageSlots` reaktionsmeddelelses-slots tilgængelig."
 
     RemoveSelfAssignableRoleCommand:
         message: "**:role** rollen er blevet fjernet fra selvtilladelige listen.\nServeren har `:slots` flere selvtilladelige roller pladser til rådighed."
@@ -298,10 +298,10 @@ administration:
             disabled: "deaktiveret"
 
     UnbanCommand:
-        success: ':target has been successfully unbanned from the server because ":reason".'
-        failedToUnban: "Failed to unban :target due to an error, message: :error"
-        noUserIsBanned: "No user with an ID of `:id` is currently banned from the server."
-        invalidUserIdGiven: "Invalid `user id` was given, the `user id` must be a numeric string of 18 or more numbers long."
+        success: ':target er blevet unbanned fra serveren fordi ":reason".'
+        failedToUnban: "Kunne ikke unbanne :target på grund af det opstod en fejl: :error"
+        noUserIsBanned: "Der er ingen brugerer med ID'et `:id` der er bannet fra serveren i øjeblikket."
+        invalidUserIdGiven: "Ugyldig `bruger id` blev givet,` bruger id` skal være en numerisk streng på 18 eller flere tal lang."
 
     VoiceKickCommand:
         mustMentionUser: "Du skal nævne den bruger du ønsker at kicke."
@@ -404,14 +404,14 @@ fun:
         rolledNumber: ':user rullet **:number** ud af :min - :max'
 
     SayCommand:
-        userMissingPermissions: "You can't use the this command for the {0} channel, you must have the message write and message manage permissions for the channel to use the command for the channel."
-        botMissingPermissions: "The say command can't be used for the {0} channel, I need both the message write and message manage permissions for the channel to successfully run the command."
-        success: "Your message have been sent to the :name channel."
+        userMissingPermissions: "Du kan ikke bruge denne kommando for {0}-kanalen, du skal have beskedskrivnings- og meddelelsesstyringsrettighederne for kanalen til at bruge kommandoen til kanalen."
+        botMissingPermissions: "Say-kommandoen kan ikke bruges i {0}-kanalen. Jeg har brug for både meddelelsens skrive og meddelelsesstyringstilladelser for kanalen til at kunne køre kommandoen."
+        success: "Din besked er blevet sendt til :name."
 
     UndertaleTextBoxCommand:
-        noArgumentsGiven: "Missing argument, you must either provide `list` to see a list of characters you can choose from, or to generate an image, `character` or a valid image `url` to build the image for."
-        failedToGenerateImage: "Failed to generate the the image, are you sure you provided a correct image URL or character name?"
-        title: "Undertale Character List"
+        noArgumentsGiven: "Manglende argument, du skal enten give `list` for at se en liste over karaterer du kan vælge imellem, eller for at generere et billede, `character` eller et gyldigt billede `url` for at opbygge billedet."
+        failedToGenerateImage: "Kunne ikke generere billedet, er du sikker på, at du har angivet en korrekt billedwebadresse eller karater navn?"
+        title: "Undertale Karakter Liste"
 
 help:
     HelpCommand:
@@ -489,7 +489,7 @@ music:
 
     MoveHereCommand:
         error: 'Ikke tilsluttet en stemme kanal, start noget musik først med `{0}play`'
-        hasMusicChannel: "The server has a music voice channel setup, if you'd like me to move to a different voice channel, please get an admin on the server to drag 'n drop me into a different voice channel."
+        hasMusicChannel: "Serveren har en musik-kanal sat op, hvis du vil have mig til at flytte til en anden talekanal, skal du få en administrator på serveren for at trække mig til en anden talekanal."
         nowPlayingIn: 'Jeg spiller nu musik i **:channelName**'
 
     MusicChannelCommand:
@@ -532,7 +532,7 @@ music:
         noPlaylists: 'Denne server har ikke nogen musik playlist endnu, du kan oprette en med\n`:command` for at komme i gang'
         noPlaylistWithName: 'Der er ingen playlist kaldet `:playlist`, du kan oprette playlisten ved brug af kommandoen\n`:command`'
         invalidProperty: 'Ugyldigt `property` er givet, der er ingen playliste egenskaber kaldet `{0}`.\nDu kan lære mere ved at køre `{1}help {2}`'
-        invalidFormat: Ugyldigt format, mangler egenskapen `:type`!\n`:command`'
+        invalidFormat: "Ugyldigt format, mangler egenskapen `:type`!\n`:command`"
         invalidIdGiven: 'Ugyldigt id givet, det angivne tal er for :type\n`:command`'
         invalidIdNumberGiven: 'Ugyldigt id givet, det angivet ID skal værer et nummer\n`:command`'
         noMoreSongSlots: "`:playlist` playlisten har ikke flere sang slots tilbage."
@@ -572,18 +572,18 @@ music:
         successMultipleNote: "\nAnd **{0}** more songs were removed from the queue."
 
     RepeatMusicQueueCommand:
-        error: 'There is nothing to repeat, request music first with `{0}play`'
-        title: 'Current repeat mode: {0}'
-        message: "The music player repeat status have been successfully changed to **:state**, this means:\n\n:note"
-        footer: 'Use "{0} <repeat-mode>" to set the repeat mode.'
+        error: 'Der er ikke noget at gentage, anmode om musik først med `{0}play`'
+        title: 'Nuværende gentagelses mode: {0}'
+        message: "Repeat status for musikafspilleren er blevet ændret til **:state**, det betyder:\n\n:note"
+        footer: 'Brug "{0} <repeat-mode>" for at ændere musik gentagelses moden.'
         states:
-            single: 'One'
-            all: 'All'
-            loopoff: 'Off'
+            single: 'EN'
+            all: 'Alle'
+            loopoff: 'Fra'
         notes:
-            single: 'The music player will repeat the song that is currently playing without going to the next song in the queue.\n**Note:** This also mutes "Now Playing" messages so the chat is not spammed with the same song over and over again.'
-            all: 'The music player will repeat every song in the queue, after a song finishes playing it will be re-added to the end of the queue automatically.'
-            loopoff: 'The music player will not loop, when a song finishes playing it will get removed from the queue and the next track will begin playing.'
+            single: "Musikafspilleren gentager den sang der bliver afspilles nu uden at gå til den næste sang i køen.\n**Bemærk:** Dette dæmper også \"Nu afspilles\" meddelelser, så chatten ikke spammes med den samme sang igen og igen igen."
+            all: "Musikafspilleren gentager hver sang i køen, efter at en sang er færdig med at blive spillet vil den automatisk blivet tilføjet til slutningen af køen."
+            loopoff: "Musikafspilleren vil ikke gentage nogle sange, når en sang slutter med at spille, bliver den fjernet fra køen, og det næste spor begynder afspillet."
 
     ResumeCommand:
         error: 'Intet at genoptage, start noget musik først med `{0}play`'
@@ -647,13 +647,13 @@ music:
 
 search:
     DuckDuckGoCommand:
-        nsfwDisabled: "The `Duck Duck GO` command can only be used in NSFW channels, as the search results may return NSFW content."
+        nsfwDisabled: "`Duck Duck GO` Kommandoen kan kun bruges i NSFW-kanaler, da søgeresultaterne kan returnere NSFW-indhold."
         searchResults: 'Søgeresultat for: {0}'
         noResults: 'Jeg fandt ikke noget for `:query`'
         seeAlso: '**Se også**'
         nsfwStatus:
-            enabled: 'NSFW Search er aktiveret'
-            disabled: 'NSFW Search er deaktiveret'
+            enabled: 'NSFW Søgning er aktiveret'
+            disabled: 'NSFW Søgning er deaktiveret'
 
     GfycatCommand:
         noResults: "Jeg kunne ikke noget der matcher din forespørgsel: `:query`"
@@ -666,7 +666,7 @@ search:
         nsfwDisabled: "`Urban Dictionary` kommandoen kan kun bruges i NSFW-kanaler, da indholdet af kommandoen måske ikke er passende for alle."
 
     XKCDCommand:
-        invalidArgument: "Invalid argument given, the argument must be a valid number between `1` and `{0}`, or `random` to get a random comic."
+        invalidArgument: "Ugyldigt argument angivet, argumentet skal være et gyldigt tal mellem `1` og `{0}` eller `random` for at få en tilfældig tegneserie."
         number: 'XKCD nummer #{0}'
 
 utility:
@@ -699,16 +699,16 @@ utility:
         jumps: '**Linket hopper gennem følgende websteder:**'
 
     FeedbackCommand:
-        confirmation: "You're about to send the following feedback:```:feedback```The feedback will be sent to the feedback channel in the :server server, are you sure you want to send it?\nUse `:command` in the next 60 seconds with no arguments to send the feedback."
+        confirmation: "Du er ved at sende følgende feedback:```:feedback```Feedbacken vil blive sendt til feedback-kanalen i :server serveren, er du sikker på, at du vil sende den?\nBrug `:command` i de næste 60 sekunder uden argumenter for at sende feedbacken."
         success: 'Sendt succesfuldt feedback <:tickYes:319985232306765825>'
         failedToSend: 'Kunne ikke sende tilbagemelding: :error'
-        invalidFeedbackChannel: "Invalid feedback channel defined, the text channel could not be found!"
-        mustBe32CharactersOrMore: "The feedback message must be at least 32 characters long."
+        invalidFeedbackChannel: "Ugyldig feedback-kanel defineret, tekstkanalen kunne ikke findes!"
+        mustBe32CharactersOrMore: "Feedbackmeddelelsen skal være mindst 32 tegn lang."
 
     GlobalLeaderboardCommand:
         noData: 'Der er ingen leaderboard data lige nu, prøv igen senere.'
         line: '`:num` **:username** er level **:level** med **:experience** xp.'
-        title: 'Global Experience Leaderboard'
+        title: 'Globalt Experience Leaderboard'
         yourRank: 'Dit rang'
         loading:
             title: 'Loader det globale leaderboard'
@@ -716,7 +716,7 @@ utility:
 
     InviteCommand:
         message: 'Du kan invitere mig til din server ved at klikke [her](:oauth) eller bruge linket herunder:\n\n:oauth\n\n:note'
-        note: '**Note:**\nIf you would like try out newly developed features before everyone else, you could also try the **Cutting Edge** bot which gets new features added almost daily, you can invite that bot by [clicking here](:edgeInvite) or using the link below:\n\n:edgeInvite'
+        note: '**Note:**\nHvis du gerne vil prøve nye udviklede funktioner før alle andre, så kan du også prøve **Cutting Edge** botten, den får nye funktioner tilføjet næsten dagligt. Du kan invitere den ved at [klikke her](:edgeInvite) eller bruge link nedenfor:\n\n:edgeInvite'
 
     IPInfoCommand:
         hostname: 'Værtsnavn'
@@ -747,23 +747,23 @@ utility:
             other: 'langsom af. :dizzy_face:'
 
     RankBackgroundCommand:
-        canBeUnlocked: "Rank backgrounds can be unlocked using **[Vote Points](https://discordbots.org/bot/avaire)**,\nyou'll get **1 point** each time you vote for the bot."
-        listTitle: "Rank Backgrounds ({0})"
-        youHaveVotePoints: "You have {0} vote points."
-        exampleTitle: "{0} Example"
-        exampleFooter: "{0} costs {1} vote points"
-        alreadyOwnsBackground: "You already own the **:name** background!"
-        doesntHaveEnoughPoints: "You don't have enough vote points to buy this background, the background costs `{0}`, and you have `{1}` vote points."
-        boughtBackgroundSuccessfully: "Congratulation! You now own the **:name** background!\nYou can use the `:command` command to use the background."
-        youDontOwnThisBackground: "You don't own the **:name** background, however you can buy it for **:cost** Vote Points!"
-        successfullyChangedBackground: "You have successfully changed to use the **:name** background."
-        disabledBackgrounds: "Rank backgrounds have successfully been disabled, you are now using embedded messages for rank commands again."
+        canBeUnlocked: "Rang baggrunde kan låses op ved hjælp af **[Vote Points](https://discordbots.org/bot/avaire)**,\nDu får **1 point** hver gang du stemmer for botten, eller **2 points** hvis du voter i weekenderne."
+        listTitle: "Rank Baggrundsbilleder ({0})"
+        youHaveVotePoints: "Du har {0} vote points."
+        exampleTitle: "{0} Eksempel"
+        exampleFooter: "{0} koster {1} vote points"
+        alreadyOwnsBackground: "Du ejer allerede **:name** baggrunden!"
+        doesntHaveEnoughPoints: "Du har ikke nok points til at købe denne baggrund, baggrunden koster `{0}`, og du har `{1}` vote points."
+        boughtBackgroundSuccessfully: "Tillykke! Du ejer nu **:name** baggrunden!\nDu kan bruge kommandoen `:command` for at bruge baggrunden."
+        youDontOwnThisBackground: "Du ejer ikke **:name** baggrunden, men du kan købe den for **:cost** Vote Points!"
+        successfullyChangedBackground: "Du har ændret din baggrund til at bruge **:name** baggrunden."
+        disabledBackgrounds: "Rangebaggrunde er blevet deaktiveret, du bruger nu normale meddelelser for rangkommandoer igen."
         buyNotes:
-            alreadyOwns: "**{0}**\n- _You already own this background._"
-            doesntOwns: "**{0}**\n - Costs {1} vote points."
-        failedToSendExampleMessage: "Something went wrong while trying to send the example image for the {0} background, error: {1}."
-        failedToBuyTheBackground: "Something went wrong while buying the background, error: {0}"
-        failedToSetBackground: "Failed to set the background due to a database error, try again later, if this error continues to appear, please contact one of my developers."
+            alreadyOwns: "**{0}**\n- _Du ejer allerede denne baggrund._"
+            doesntOwns: "**{0}**\n - Koster {1} vote points."
+        failedToSendExampleMessage: "Noget gik galt da vi forsøgte at sende eksempelbilledet for {0} baggrunden, fejl: {1}."
+        failedToBuyTheBackground: "Noget gik galt mens du købte baggrunden, fejl: {0}"
+        failedToSetBackground: "Kunne ikke angive baggrunden på grund af en databasefejl, prøv igen senere, hvis denne fejl fortsat vises, skal du kontakte en af mine udviklere."
 
     RankCommand:
         botsCannotReceiveXp: "Bots kan ikke modtage xp og kan derfor ikke rangeres, prøv at tagge en bruger i stedet."
@@ -803,7 +803,6 @@ utility:
 
     SourceCommand:
         noArgs: 'Avaire kildekode:'
-        # 
         command: 'Avaire kildekoden for kommandoen **:command**:'
         invalidCommand: 'Ugyldig kommando givet, her er den fulde kildekode i stedet.'
         externalCommand: "Kommandoen er registreret via et eksternt plugin, forfatteren af plugin'en har ikke lavet kilden til kommandoen public, eller de glemte at tilføje et link til den, her er den fulde kildekode til boten i stedet."
@@ -869,10 +868,10 @@ utility:
             patch: 'Opdateringer af patchversioner er fejlrettelser, refactoring af eksisterende kode og meget små ændringer, der ikke påvirker andre ting i kodebase. Det anbefales at opdatere ændringer af patchversioner for at holde op med fejlrettelserne og patcherne.'
 
     WeatherCommand:
-        noCityFound: "No city was found with the name of **:name**, are you sure you spelt it correctly?"
+        noCityFound: "Der blev ikke fundet nogen by med navnet **:name**, er du sikker på at du stavet det korrekt?"
         fields:
-            weatherFor: "Weather for {0}, {1}"
-            country: "Country"
-            temperature: "Temperature"
-            windDirection: "Wind Direction"
-            windSpeed: "Wind Speed"
+            weatherFor: "Vejret for {0}, {1}"
+            country: "Land"
+            temperature: "Temperatur"
+            windDirection: "Vindretning"
+            windSpeed: "Vindhastighed"
