@@ -48,7 +48,7 @@
         },
         "AVA_DISCORD_OAUTH": {
             "description": "Replace <client_id> with the CLIENT ID.",
-            "required": true,
+            "required": false,
             "value": "https://discordapp.com/oauth2/authorize?&client_id=<client_id>&scope=bot&permissions=66186303"
         },
         "AVA_DATABASE_TYPE": {
@@ -102,7 +102,7 @@
             "value": "5"
         },
         "AVA_MUSIC_ACTIVITY_EMPTY_QUEUE_TIMEOUT": {
-            "description": "his is the time in minutes that the bot should wait before disconnecting if the queue is empty and nothing is added before the timer runs out.",
+            "description": "This is the time in minutes that the bot should wait before disconnecting if the queue is empty and nothing is added before the timer runs out.",
             "required": false,
             "value": "2"
         },
