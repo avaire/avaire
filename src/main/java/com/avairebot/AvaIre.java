@@ -37,6 +37,7 @@ import com.avairebot.chat.ConsoleColor;
 import com.avairebot.commands.CategoryHandler;
 import com.avairebot.commands.CommandHandler;
 import com.avairebot.commands.administration.ChangePrefixCommand;
+import com.avairebot.commands.utility.StatsCommand;
 import com.avairebot.commands.utility.UptimeCommand;
 import com.avairebot.config.Configuration;
 import com.avairebot.config.EnvironmentMacros;
@@ -231,6 +232,7 @@ public class AvaIre {
 
         log.info("Registering commands...");
         if (settings.isMusicOnlyMode()) {
+            CommandHandler.register(new StatsCommand(this));
             CommandHandler.register(new UptimeCommand(this));
             CommandHandler.register(new ChangePrefixCommand(this));
             autoloadPackage(Constants.PACKAGE_COMMAND_PATH + ".help", command -> CommandHandler.register((Command) command));
