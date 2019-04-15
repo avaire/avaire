@@ -145,10 +145,8 @@ public class MessageEventAdapter extends EventAdapter {
 
             if(IsMediaLocked(event,databaseEventHolder.getGuild()) && !hasMedia(event.getMessage()))
             {
-                event.getMessage().delete().queue();
-
+                MessageFactory.deleteMessage(event.getMessage(), 45);
                 PlaceholderMessage message = MessageFactory.makeWarning(event.getMessage(),"You can only post media in this channel.");
-
                 message.queue(newMessage -> newMessage.delete().queueAfter(1,TimeUnit.SECONDS, null, RestActionUtil.ignore));
 
             }

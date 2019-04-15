@@ -337,7 +337,7 @@ public class AdministrateExperienceCommand extends Command {
 
     enum Action {
 
-        ADD("add", "give"),
+        ADD("add", "give","boost"),
         TAKE("take", "remove"),
         RESET(false, "reset"),
         SERVER_RESET(false, "server-reset");

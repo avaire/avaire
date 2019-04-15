@@ -205,6 +205,10 @@ administration:
         noSelfAssignableRoles: "There are currently no self-assignable roles for this server."
         title: "There are {0} self-assignable roles"
 
+    MassRoleCommand:
+        roleIsHigherInTheHierarchy: ":user The role is higher in the role hierarchy, I can't give/remove the **:role** role from anyone."
+        message: "Everyone now has the **:role** role!"
+
     MediaLockCommand:
         message: "The `MediaOnly Lock` module has been **:status** for the :channel channel."
         status:

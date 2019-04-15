@@ -204,6 +204,10 @@ administration:
         noSelfAssignableRoles: "此服务器当前没有可自我分配的角色。"
         title: "这里有 {0} 自我分配角色"
 
+    MassRoleCommand:
+        roleIsHigherInTheHierarchy: ":user The role is higher in the role hierarchy, I can't give/remove the **:role** role from anyone."
+        message: "Everyone now has the **:role** role!"
+
     MediaLockCommand:
         message: "The `MediaOnly Lock` module has been **:status** for the :channel channel."
         status:
