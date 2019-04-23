@@ -809,7 +809,6 @@ utility:
     StatsCommand:
         title: 'Offisiel bot server invitasjon'
         footer: 'Spiller nå i {0} servere med {1} sanger i køen.'
-        latestChanges: 'Seneste endringer:'
         formats:
             perMinute: '{0} ({1} per min)'
             perSecond: '{0} ({1} per sek)'
@@ -858,6 +857,7 @@ utility:
         getLatest: 'Du kan hente den nyeste versjonen av meg her: [avaire/avaire](https://github.com/avaire/avaire)'
         usingLatest: "Du benytter den nyeste versjonen av AvaIre!"
         latestVersion: 'Den seneste versjonen av AvaIre er v{0}'
+        latestChanges: 'Seneste endringer:'
         versions:
             majorName: 'Større endringer'
             major: 'Store endringer er større endringer av kildekoden til botten, det er høyst anbefalt og oppdatere ved større endringer da elder versjoner ikke støttes for bug fikser eller oppdateringer.'

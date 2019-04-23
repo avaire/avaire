@@ -809,7 +809,6 @@ utility:
     StatsCommand:
         title: 'Officiale Bot Server Uitnodiging'
         footer: 'Op dit moment aan het spelen in {0} servers met {1} nummers in de wachtrij.'
-        latestChanges: 'Laatste veranderingen:'
         formats:
             perMinute: '{0} ({1} per min)'
             perSecond: '{0} ({1} per sec)'
@@ -858,6 +857,7 @@ utility:
         getLatest: 'Je kan de laatste versie van mij krijgen op github [avaire/avaire](https://github.com/avaire/avaire)'
         usingLatest: "Je gebruikt de laatste versie van AvaIre!"
         latestVersion: 'De laatste versie voor AvaIre is v{0}'
+        latestChanges: 'Laatste veranderingen:'
         versions:
             majorName: 'Major'
             major: 'Major versie updates zijn grote veranderingen voor de bot of een heleboel minor veranderingen, het is zwaar aangeraden dat je update, omdat patches en minor versie updates niet meer ondersteund worden.'

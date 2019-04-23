@@ -30,6 +30,7 @@ import com.avairebot.contracts.commands.Command;
 import com.avairebot.contracts.commands.CommandGroup;
 import com.avairebot.contracts.commands.CommandGroups;
 import com.avairebot.utilities.NumberUtil;
+import com.google.gson.internal.LinkedTreeMap;
 import org.jsoup.Jsoup;
 
 import javax.annotation.Nonnull;
@@ -114,12 +115,35 @@ public class VersionCommand extends Command {
             versionMessage = context.makeSuccess(context.i18n("usingLatest"));
         }
 
-        versionMessage
+        addAndFormatLatestCommits(context, versionMessage)
             .setTitle("v" + AppInfo.getAppInfo().version)
             .setFooter(context.i18n("latestVersion", latestVersion))
             .queue();
 
         return true;
+    }
+
+    @SuppressWarnings("unchecked")
+    private PlaceholderMessage addAndFormatLatestCommits(CommandMessage context, PlaceholderMessage message) {
+        if (avaire.getCache().getAdapter(CacheType.FILE).has("github.commits")) {
+            List<LinkedTreeMap<String, Object>> items = (List<LinkedTreeMap<String, Object>>) avaire.getCache()
+                .getAdapter(CacheType.FILE).get("github.commits");
+
+            StringBuilder commitChanges = new StringBuilder();
+            for (int i = 0; i < 5; i++) {
+                LinkedTreeMap<String, Object> item = items.get(i);
+                LinkedTreeMap<String, Object> commit = (LinkedTreeMap<String, Object>) item.get("commit");
+
+                commitChanges.append(String.format("[`%s`](%s) %s\n",
+                    item.get("sha").toString().substring(0, 7),
+                    item.get("html_url"),
+                    commit.get("message").toString().split("\n")[0].trim()
+                ));
+            }
+
+            message.addField(context.i18n("latestChanges"), commitChanges.toString(), false);
+        }
+        return message;
     }
 
     private SemanticVersion getLatestVersion() {

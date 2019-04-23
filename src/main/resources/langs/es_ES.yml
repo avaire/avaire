@@ -811,7 +811,6 @@ utility:
     StatsCommand:
         title: 'Invitación del bot al servidor oficial'
         footer: 'Se está reproduciendo en {0} servidores con {1} canciones en la cola.'
-        latestChanges: 'Últimos cambios:'
         formats:
             perMinute: '{0} ({1} por min.)'
             perSecond: '{0} ({1} por seg.)'
@@ -860,6 +859,7 @@ utility:
         getLatest: 'Puedes obtener mi última versión en github en [avaire/avaire](https://github.com/avaire/avaire)'
         usingLatest: "¡Tienes la última versión de AvaIre!"
         latestVersion: 'La última versión de AvaIre es v{0}'
+        latestChanges: 'Últimos cambios:'
         versions:
             majorName: 'Grande'
             major: 'Las actualizaciones grandes son restructuraciones totales del bot y su funcionamiento, compuesto por un conjunto de cambios considerados una actualización pequeña y modificaciones dle código fuente, es muy importante actualizar, ya que puede perderse la compatibilidad con una versión anterior.'

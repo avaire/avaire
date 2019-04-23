@@ -810,7 +810,6 @@ utility:
     StatsCommand:
         title: "Invitation Serveur Officel du Bot"
         footer: "Lis actuellement dans {0} serveurs avec {1} musiques dans la file."
-        latestChanges: "Derniers changements :"
         formats:
             perMinute: "{0} ({1} per min)"
             perSecond: "{0} ({1} per sec)"
@@ -859,6 +858,7 @@ utility:
         getLatest: "Tu peux obtenir ma dernière version sur github [avaire/avaire](https://github.com/avaire/avaire)"
         usingLatest: "Vous utilisez la dernière version de AvaIre!"
         latestVersion: "La dernière version de AvaIre est v{0}"
+        latestChanges: "Derniers changements :"
         versions:
             majorName: "Majeure"
             major: "Les mises à jour de version Majeure sont un remaniment complet du bot et de comment il fonctionne, ou il s'agit d'une large compilation de changements mineurs du code source, il est hautement recommandé de mettre à jour lors des changements de version majeurs, puisque les versions plus anciennes ne seront plus supportées pour les corrections de bugs et mises à jours."

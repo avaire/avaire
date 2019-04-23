@@ -809,7 +809,6 @@ utility:
     StatsCommand:
         title: 'Official Bot Server Invite'
         footer: 'Currently playing in {0} servers with {1} songs in the queue.'
-        latestChanges: 'Latest changes:'
         formats:
             perMinute: '{0} ({1} per min)'
             perSecond: '{0} ({1} per sec)'
@@ -858,6 +857,7 @@ utility:
         getLatest: 'You can get the latest version of me on github at [avaire/avaire](https://github.com/avaire/avaire)'
         usingLatest: "You're using the latest version of AvaIre!"
         latestVersion: 'The latest version of AvaIre is v{0}'
+        latestChanges: 'Latest changes:'
         versions:
             majorName: 'Major'
             major: 'Major version updates are total reworks of the bot and how it works or a large compilation of minor changes to the source code, it is highly recommended that you update on major version changes since older versions will not be supported for bug fixes or updates.'

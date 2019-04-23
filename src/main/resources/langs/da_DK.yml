@@ -810,7 +810,6 @@ utility:
     StatsCommand:
         title: 'Officielt Bot Server Invitere'
         footer: 'I øjeblikket spiller i {0} servere med {1} sange i køen.'
-        latestChanges: 'Seneste ændringer:'
         formats:
             perMinute: '{0} ({1} per min)'
             perSecond: '{0} ({1} per sek)'
@@ -859,6 +858,7 @@ utility:
         getLatest: 'Du kan få den nyeste version af mig på github på [avaire/avaire](https://github.com/avaire/avaire)'
         usingLatest: "Du bruger den nyeste version af AvaIre!"
         latestVersion: 'Den seneste version af AvaIre er v{0}'
+        latestChanges: 'Seneste ændringer:'
         versions:
             majorName: 'Major'
             major: "Major version opdateringer er de samlede reworks af boten og hvordan det virker eller en stor sammenstilling af mindre ændringer til kildekoden. Det anbefales stærkt at du opdaterer om Major version ændringer, da ældre versioner ikke understøttes for fejlrettelser eller opdateringer."

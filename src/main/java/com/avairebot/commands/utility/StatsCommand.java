@@ -24,7 +24,6 @@ package com.avairebot.commands.utility;
 import com.avairebot.AppInfo;
 import com.avairebot.AvaIre;
 import com.avairebot.audio.AudioHandler;
-import com.avairebot.cache.CacheType;
 import com.avairebot.chat.MessageType;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
@@ -33,7 +32,6 @@ import com.avairebot.contracts.commands.CommandGroups;
 import com.avairebot.language.I18n;
 import com.avairebot.metrics.Metrics;
 import com.avairebot.utilities.NumberUtil;
-import com.google.gson.internal.LinkedTreeMap;
 import io.prometheus.client.Collector;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
@@ -79,23 +77,6 @@ public class StatsCommand extends Command {
 
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
-        StringBuilder description = new StringBuilder("Created by [Senither#0001](https://senither.com/) using the [JDA](https://github.com/DV8FromTheWorld/JDA) framework!");
-        if (avaire.getCache().getAdapter(CacheType.FILE).has("github.commits")) {
-            description = new StringBuilder("**" + context.i18n("latestChanges") + "**\n");
-            List<LinkedTreeMap<String, Object>> items = (List<LinkedTreeMap<String, Object>>) avaire.getCache().getAdapter(CacheType.FILE).get("github.commits");
-
-            for (int i = 0; i < 3; i++) {
-                LinkedTreeMap<String, Object> item = items.get(i);
-                LinkedTreeMap<String, Object> commit = (LinkedTreeMap<String, Object>) item.get("commit");
-
-                description.append(String.format("[`%s`](%s) %s\n",
-                    item.get("sha").toString().substring(0, 7),
-                    item.get("html_url"),
-                    commit.get("message").toString().split("\n")[0].trim()
-                ));
-            }
-        }
-
         context.makeEmbeddedMessage(MessageType.INFO,
             new MessageEmbed.Field(context.i18n("fields.author"), "[Senither#0001](https://senither.com/)", true),
             new MessageEmbed.Field(context.i18n("fields.website"), "[avairebot.com](https://avairebot.com/)", true),
@@ -116,7 +97,6 @@ public class StatsCommand extends Command {
                 NumberUtil.formatNicely(AudioHandler.getDefaultAudioHandler().getTotalListenersSize()),
                 NumberUtil.formatNicely(AudioHandler.getDefaultAudioHandler().getTotalQueueSize())
             ))
-            .setDescription(description.toString())
             .queue();
 
         return true;

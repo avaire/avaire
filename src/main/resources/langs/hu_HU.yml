@@ -816,7 +816,6 @@ utility:
     StatsCommand:
         title: 'Hivatalos Bot Szerver'
         footer: 'Jelenleg {0} szerveren játszik, {1} zeneszámmal a lejátszási listában.'
-        latestChanges: 'Utolsó változtatások:'
         formats:
             perMinute: '{0} ({1} percenként)'
             perSecond: '{0} ({1} másodpercenként)'
@@ -865,6 +864,7 @@ utility:
         getLatest: 'Letöltheted a legfrissebb verziót githubról [avaire/avaire](https://github.com/avaire/avaire)'
         usingLatest: "A legfrissebb AvaIre verziót használod!"
         latestVersion: 'A legfrissebb AvaIre verzió: v{0}'
+        latestChanges: 'Utolsó változtatások:'
         versions:
             majorName: 'Fontos'
             major: 'A fontos frissítések teljes átdolgozását takarják a botnak és működésének, vagy sok kisebb változás egyben a forráskódban. Nagyon ajánlott, hogy lefrissítsd mivel a régebbi verzió nem lesz már támogatva hibák esetén.'

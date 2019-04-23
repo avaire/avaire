@@ -808,7 +808,6 @@ utility:
     StatsCommand:
         title: '官方Bot Server邀请'
         footer: '当前播放 {0} 服务器 {1} 队列中的歌曲.'
-        latestChanges: '最后的 changes:'
         formats:
             perMinute: '{0} ({1} per min)'
             perSecond: '{0} ({1} per sec)'
@@ -857,6 +856,7 @@ utility:
         getLatest: '您可以在GitHub上获得我的最新版本： [avaire/avaire](https://github.com/avaire/avaire)'
         usingLatest: "您使用的是最新版本的AvaIre!"
         latestVersion: 'AvaIre的最新版本是 v{0}'
+        latestChanges: '最后的 changes:'
         versions:
             majorName: 'Major'
             major: '主要版本更新是bot及其工作原理的全部返工，或者是对源代码的较小更改的大编译，强烈建议您在主要版本更改时进行更新，因为错误修复或更新将不支持较旧的版本。.'
