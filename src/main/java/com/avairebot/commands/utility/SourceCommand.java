@@ -25,6 +25,7 @@ import com.avairebot.AvaIre;
 import com.avairebot.commands.CommandContainer;
 import com.avairebot.commands.CommandHandler;
 import com.avairebot.commands.CommandMessage;
+import com.avairebot.commands.help.HelpCommand;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.contracts.commands.CommandGroup;
 import com.avairebot.contracts.commands.CommandGroups;
@@ -60,6 +61,12 @@ public class SourceCommand extends Command {
             "`:command <command>` - Returns the source code for the given command."
         );
     }
+
+    @Override
+    public List<Class<? extends Command>> getRelations() {
+        return Collections.singletonList(HelpCommand.class);
+    }
+
 
     @Override
     public List<String> getExampleUsage() {

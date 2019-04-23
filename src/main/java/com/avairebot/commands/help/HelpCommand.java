@@ -26,6 +26,7 @@ import com.avairebot.admin.AdminUser;
 import com.avairebot.chat.MessageType;
 import com.avairebot.chat.PlaceholderMessage;
 import com.avairebot.commands.*;
+import com.avairebot.commands.utility.SourceCommand;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.contracts.commands.CommandGroup;
 import com.avairebot.database.transformers.ChannelTransformer;
@@ -64,6 +65,11 @@ public class HelpCommand extends Command {
             "`:command <category>` - Shows a list of commands in the given category.",
             "`:command <command>` - Shows detailed information on how to use the given command."
         );
+    }
+
+    @Override
+    public List<Class<? extends Command>> getRelations() {
+        return Collections.singletonList(SourceCommand.class);
     }
 
     @Override
