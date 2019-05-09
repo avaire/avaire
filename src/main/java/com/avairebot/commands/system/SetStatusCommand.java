@@ -24,6 +24,7 @@ package com.avairebot.commands.system;
 import com.avairebot.AvaIre;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.commands.CommandPriority;
+import com.avairebot.contracts.commands.Command;
 import com.avairebot.contracts.commands.SystemCommand;
 import com.avairebot.scheduler.tasks.ChangeGameTask;
 import com.avairebot.utilities.ComparatorUtil;
@@ -60,6 +61,11 @@ public class SetStatusCommand extends SystemCommand {
     @Override
     public List<String> getExampleUsage() {
         return Collections.singletonList("`:command with some stuff`");
+    }
+
+    @Override
+    public List<Class<? extends Command>> getRelations() {
+        return Collections.singletonList(ResetStatusTypesCommand.class);
     }
 
     @Override

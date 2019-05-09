@@ -202,6 +202,39 @@ public class Migrations {
     }
 
     /**
+     * Reruns the given migration class by first rolling back the migration changes,
+     * and then re-running the up method to re-apply the migration.
+     *
+     * @param migration The migration that should be re-run.
+     * @return {@code True} if the migrations ran successfully.
+     * @throws SQLException if a database access error occurs,
+     *                      this method is called on a closed <code>Statement</code>, the given
+     *                      SQL statement produces anything other than a single
+     *                      <code>ResultSet</code> object, the method is called on a
+     *                      <code>PreparedStatement</code> or <code>CallableStatement</code>
+     */
+    public boolean rerun(Migration migration) throws SQLException {
+        MigrationContainer container = new MigrationContainer(migration);
+
+        for (MigrationContainer migrationContainer : migrations) {
+            if (migrationContainer.match(migration)) {
+                container.setBatch(migrationContainer.getBatch());
+                break;
+            }
+        }
+
+        migration.down(dbm.getSchema());
+        updateRemoteMigrationBatchValue(container, 0);
+        log.info("Rolled back \"{}\"", container.getName());
+
+        migration.up(dbm.getSchema());
+        updateRemoteMigrationBatchValue(container, 1);
+        log.info("Created \"{}\"", container.getName());
+
+        return true;
+    }
+
+    /**
      * Gets a ordered list of the migration containers.
      *
      * @param orderByAsc determines if the list should be ordered ascending or descendingly
