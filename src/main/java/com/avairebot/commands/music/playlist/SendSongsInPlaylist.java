@@ -67,7 +67,10 @@ public class SendSongsInPlaylist extends PlaylistSubCommand {
         });
 
         context.makeInfo(
-            String.join("\n", messages) + "\n\n" + paginator.generateFooter(command.generateCommandTrigger(context.getMessage()) + " " + playlist.getName())
+            String.join("\n", messages) + "\n\n" + paginator.generateFooter(
+                context.getGuild(),
+                command.generateCommandTrigger(context.getMessage()) + " " + playlist.getName()
+            )
         ).setTitle(":musical_note: " + playlist.getName()).queue();
 
         return true;

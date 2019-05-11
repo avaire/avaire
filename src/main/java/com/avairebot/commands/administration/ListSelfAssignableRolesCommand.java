@@ -105,7 +105,7 @@ public class ListSelfAssignableRolesCommand extends Command {
 
         List<String> messages = new ArrayList<>();
         paginator.forEach((index, key, val) -> messages.add(String.format("**%s**", val)));
-        messages.add("\n" + paginator.generateFooter(generateCommandTrigger(context.getMessage())));
+        messages.add("\n" + paginator.generateFooter(context.getGuild(), generateCommandTrigger(context.getMessage())));
 
         context.makeSuccess(String.join("\n", messages))
             .setTitle(context.i18n("title", paginator.getTotal()))

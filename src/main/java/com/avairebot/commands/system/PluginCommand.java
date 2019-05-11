@@ -121,7 +121,7 @@ public class PluginCommand extends SystemCommand {
                 messages.add("**" + loader.getName() + "**");
             });
 
-            messages.add("\n" + paginator.generateFooter(generateCommandTrigger(context.getMessage()) + " list installed"));
+            messages.add("\n" + paginator.generateFooter(context.getGuild(), generateCommandTrigger(context.getMessage()) + " list installed"));
 
             context.makeInfo(String.join("\n", messages))
                 .setTitle("Installed Plugins")
@@ -148,7 +148,7 @@ public class PluginCommand extends SystemCommand {
                 messages.add("**" + loader.getName() + "**");
             });
 
-            messages.add("\n" + paginator.generateFooter(generateCommandTrigger(context.getMessage()) + " list available"));
+            messages.add("\n" + paginator.generateFooter(context.getGuild(), generateCommandTrigger(context.getMessage()) + " list available"));
 
             context.makeInfo(String.join("\n", messages))
                 .setTitle("Available Plugins")

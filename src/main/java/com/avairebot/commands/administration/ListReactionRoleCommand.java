@@ -151,7 +151,7 @@ public class ListReactionRoleCommand extends Command {
         }
 
         paginator.forEach((_index, _key, val) -> messages.add((String) val));
-        messages.add("\n" + paginator.generateFooter(generateCommandTrigger(context.getMessage())));
+        messages.add("\n" + paginator.generateFooter(context.getGuild(), generateCommandTrigger(context.getMessage())));
 
         context.makeInfo(String.join("\n", messages))
             .setTitle(context.i18n("listReactionRoles",

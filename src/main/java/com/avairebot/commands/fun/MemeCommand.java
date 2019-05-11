@@ -125,7 +125,7 @@ public class MemeCommand extends Command {
 
         context.makeSuccess(String.format("%s\n\n%s",
             String.join("\n", memesMessages),
-            paginator.generateFooter(generateCommandTrigger(context.getMessage()) + " list")
+            paginator.generateFooter(context.getGuild(), generateCommandTrigger(context.getMessage()) + " list")
         )).setTitle("Memes").queue();
 
         // We're returning false here to prevent the Meme command from

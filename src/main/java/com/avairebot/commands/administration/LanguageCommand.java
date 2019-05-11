@@ -145,7 +145,7 @@ public class LanguageCommand extends Command {
         context.makeInfo(":note\n\n:languages\n\n:paginator")
             .set("note", context.i18n("note", generateCommandTrigger(context.message)))
             .set("languages", String.join("\n", messages))
-            .set("paginator", paginator.generateFooter(generateCommandTrigger(context.getMessage())))
+            .set("paginator", paginator.generateFooter(context.getGuild(), generateCommandTrigger(context.getMessage())))
             .queue();
 
         return false;

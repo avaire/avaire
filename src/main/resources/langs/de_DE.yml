@@ -23,6 +23,9 @@ levelupRoleMessages:
     - "Eyy :user, du bist soeben aufgestiegen! Du bist nun auf **Level :level**. Hier, die **:role** Rolle. Hast du dir verdient!"
     - "Glückwunsch, :user! 🎉 Du bist aufgestiegen! Du bist nun auf **Level :level**. Das heißt: Hier ein **:role** Rang. Nur für dich!"
 
+pagination:
+    simpleFooter: "Page **{0}** out of **{1}** pages.\n`{2} [page]`"
+
 administration:
     common:
         invalidRole: "Ungültige Rolle, :user! Ich konnte keine Role namens **:role** auffinden."

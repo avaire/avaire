@@ -22,6 +22,9 @@ levelupRoleMessages:
     - "Eyy :user, 你又升级了，你现在等级为 **Level :level**, 有了 **:role** role, 你成功获得了它."
     - "Congratulations :user 🎉 你又升级了，你现在等级为 **Level :level**, 你自己现在获得了 **:role** role"
 
+pagination:
+    simpleFooter: "Page **{0}** out of **{1}** pages.\n`{2} [page]`"
+
 administration:
     common:
         invalidRole: ":user 无效用户组&角色, 我不能找到 **:role**角色组"

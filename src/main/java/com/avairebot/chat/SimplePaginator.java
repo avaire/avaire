@@ -22,12 +22,16 @@
 package com.avairebot.chat;
 
 import com.avairebot.contracts.chat.Paginator;
+import com.avairebot.language.I18n;
+import net.dv8tion.jda.core.entities.Guild;
 
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 public class SimplePaginator extends Paginator {
+
+    private static final String defaultFooterNote = "Page **{0}** out of **{1}** pages.\n`{2} [page]`";
 
     public SimplePaginator(Map<?, ?> items, int perPage, int currentPage) {
         super(items, perPage, currentPage);
@@ -61,8 +65,15 @@ public class SimplePaginator extends Paginator {
         this(iterator, perPage, 1);
     }
 
-    public String generateFooter(String command) {
-        return String.format("Page **%s** out of **%s** pages.\n`%s [page]`",
+    public String generateFooter(Guild guild, String command) {
+        String message = I18n.getLocale(guild).getConfig().getString(
+            "pagination.simpleFooter", defaultFooterNote
+        );
+
+        return I18n.format(
+            message
+                .replace("\\n", "\n")
+                .replace("\\t", "\t"),
             getCurrentPage(),
             getPages(),
             command

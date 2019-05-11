@@ -23,6 +23,9 @@ levelupRoleMessages:
     - "Eyy :user, tu viens de monter en niveau! Tu es maintenant **Niveau :level**, tu as le rôle **:role**, tu l'as mérité."
     - "Félicitations :user 🎉  Tu viens de monter en niveau! Tu es maintenant **Niveau :level**, tu as aussi gagné le rôle **:role**"
 
+pagination:
+    simpleFooter: "Page **{0}** out of **{1}** pages.\n`{2} [page]`"
+
 administration:
     common:
         invalidRole: ":user Rôle invalide, Je ne trouve pas de rôle appelé :role"

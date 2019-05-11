@@ -175,14 +175,14 @@ public class LeaderboardCommand extends Command {
                             context.getGuildTransformer(), context.getPlayerTransformer().getExperience() + zeroExperience
                         )))
                         .replace(":experience", NumberUtil.formatNicely(context.getPlayerTransformer().getExperience() - 100))
-                        + "\n\n" + paginator.generateFooter(generateCommandTrigger(context.getMessage())),
+                        + "\n\n" + paginator.generateFooter(context.getGuild(), generateCommandTrigger(context.getMessage())),
                     false
                 );
             }
         }
 
         if (message.build().getFields().isEmpty()) {
-            messages.add("\n" + paginator.generateFooter(generateCommandTrigger(context.getMessage())));
+            messages.add("\n" + paginator.generateFooter(context.getGuild(), generateCommandTrigger(context.getMessage())));
             message.setDescription(String.join("\n", messages));
         }
 

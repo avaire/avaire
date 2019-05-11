@@ -66,7 +66,7 @@ public class SendPlaylists extends PlaylistSubCommand {
 
         context.makeInfo("\u2022 " +
             String.join("\n\u2022 ", messages) + "\n\n" +
-            paginator.generateFooter(command.generateCommandTrigger(context.getMessage()))
+            paginator.generateFooter(context.getGuild(), command.generateCommandTrigger(context.getMessage()))
         ).setTitle(context.i18n("playlistTitle", counter)).queue();
 
         return true;

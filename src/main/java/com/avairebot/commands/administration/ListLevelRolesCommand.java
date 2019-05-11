@@ -141,7 +141,7 @@ public class ListLevelRolesCommand extends Command {
             }
         });
 
-        messages.add("\n" + paginator.generateFooter(generateCommandTrigger(context.getMessage())));
+        messages.add("\n" + paginator.generateFooter(context.getGuild(), generateCommandTrigger(context.getMessage())));
 
         context.makeSuccess(String.join("\n", messages))
             .setTitle(context.i18n("listRoles", paginator.getTotal()))

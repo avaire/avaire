@@ -155,7 +155,7 @@ public class ShardCommand extends Command {
             .set("users", NumberUtil.formatNicely(avaire.getShardEntityCounter().getUsers()));
 
         paginator.forEach((index, key, val) -> message.addField((MessageEmbed.Field) val));
-        message.addField("", paginator.generateFooter(generateCommandTrigger(context.getMessage())), false);
+        message.addField("", paginator.generateFooter(context.getGuild(), generateCommandTrigger(context.getMessage())), false);
 
         SelfUser selfUser = avaire.getSelfUser();
         message.setAuthor(

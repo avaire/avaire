@@ -116,7 +116,7 @@ public class SongCommand extends Command {
 
             context.makeSuccess(String.format("%s\n\n%s",
                 String.join("\n", messages),
-                paginator.generateFooter(generateCommandTrigger(context.getMessage()))
+                paginator.generateFooter(context.getGuild(), generateCommandTrigger(context.getMessage()))
             )).setTitle(context.i18n("songsInQueue"))
                 .queue(message -> message.delete().queueAfter(3, TimeUnit.MINUTES, null, RestActionUtil.ignore));
 

@@ -194,7 +194,7 @@ public class RankBackgroundCommand extends Command {
         });
 
         message.add("-------------------------------");
-        message.add(paginator.generateFooter(generateCommandTrigger(context.getMessage()) + " list"));
+        message.add(paginator.generateFooter(context.getGuild(), generateCommandTrigger(context.getMessage()) + " list"));
 
         context.makeInfo(String.join("\n", message))
             .setTitle(context.i18n("listTitle", paginator.getTotal()))

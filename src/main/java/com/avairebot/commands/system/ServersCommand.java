@@ -184,6 +184,7 @@ public class ServersCommand extends SystemCommand {
         messages.add("```");
 
         messages.add("\n" + paginator.generateFooter(
+            context.getGuild(),
             generateCommandTrigger(context.getMessage()) + " list " + sortType.getTriggers().get(0)
         ));
 

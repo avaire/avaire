@@ -129,7 +129,7 @@ public class UndertaleTextBoxCommand extends Command {
         context.makeInfo(":characters\n\n:paginator")
             .setTitle(context.i18n("title"))
             .set("characters", String.join("\n", messages))
-            .set("paginator", paginator.generateFooter(generateCommandTrigger(context.getMessage())))
+            .set("paginator", paginator.generateFooter(context.getGuild(), generateCommandTrigger(context.getMessage())))
             .queue();
 
         return false;

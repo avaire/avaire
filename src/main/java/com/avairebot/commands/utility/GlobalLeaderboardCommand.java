@@ -174,7 +174,7 @@ public class GlobalLeaderboardCommand extends Command {
                             .replace(":username", context.getAuthor().getName() + "#" + context.getAuthor().getDiscriminator())
                             .replace(":level", NumberUtil.formatNicely(avaire.getLevelManager().getLevelFromExperience(experience)))
                             .replace(":experience", NumberUtil.formatNicely(experience - 100))
-                            + "\n\n" + paginator.generateFooter(generateCommandTrigger(context.getMessage())),
+                            + "\n\n" + paginator.generateFooter(context.getGuild(), generateCommandTrigger(context.getMessage())),
                         false
                     );
                 }
@@ -182,7 +182,7 @@ public class GlobalLeaderboardCommand extends Command {
         }
 
         if (message.build().getFields().isEmpty()) {
-            messages.add("\n" + paginator.generateFooter(generateCommandTrigger(context.getMessage())));
+            messages.add("\n" + paginator.generateFooter(context.getGuild(), generateCommandTrigger(context.getMessage())));
             message.setDescription(String.join("\n", messages));
         }
 

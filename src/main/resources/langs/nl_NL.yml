@@ -23,6 +23,9 @@ levelupRoleMessages:
     - "Eyy :user, je bent net een level omhoog gegaan! Je bent nu **Level :level**, hier heb je de **:role** rol, je verdient het."
     - "Gefeliciteerd :user 🎉 Je bent net een level omhoog gegaan! Je bent nu **Level :level**, ook heb je de **:role** rol verdient"
 
+pagination:
+    simpleFooter: "Page **{0}** out of **{1}** pages.\n`{2} [page]`"
+
 administration:
     common:
         invalidRole: ":user Ongeldige rol, ik kon geen rol vinden die **:role** heet"

@@ -113,7 +113,10 @@ public class BlacklistCommand extends SystemCommand {
         List<String> messages = new ArrayList<>();
         paginator.forEach((index, key, val) -> messages.add((String) val));
 
-        context.makeInfo(String.join("\n", messages) + "\n\n" + paginator.generateFooter(generateCommandTrigger(context.getMessage()) + " list"))
+        context.makeInfo(String.join("\n", messages) + "\n\n" + paginator.generateFooter(
+            context.getGuild(),
+            generateCommandTrigger(context.getMessage()) + " list")
+        )
             .setTitle("Blacklist Page #" + paginator.getCurrentPage())
             .queue();
 

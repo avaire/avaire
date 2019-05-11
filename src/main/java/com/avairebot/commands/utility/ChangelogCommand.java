@@ -163,7 +163,7 @@ public class ChangelogCommand extends Command {
         });
 
         context.makeInfo(String.join(", ", strings) + "\n\n" +
-            paginator.generateFooter(generateCommandTrigger(context.getMessage()) + " list")
+            paginator.generateFooter(context.getGuild(), generateCommandTrigger(context.getMessage()) + " list")
         ).setTitle(context.i18n("changelogVersions", paginator.getPages())).queue();
     }
 
