@@ -679,6 +679,15 @@ utility:
             quickMaths: '	-	¡Matemáticas rápidas!'
             binary: "¡Hay 10 tipos de personas en el mundo, los que entienden binario y los que no!"
 
+    ChangelogCommand:
+        invalidChangelogChannel: "Invalid changelog channel defined, the text channel could not be found!"
+        cantReadChangelogChannel: "I don't have permission to read the message history for the defined changelog channel, this is required in oder to read, load, and display the changelog messages."
+        invalidVersionGiven: "Invalid version given, `{0}` is not a valid version entry."
+        noChangelogMessages: "There are no changelog messages to display yet, try check back again later."
+        latestVersion: "Latest version: {0}"
+        lastFewVersions: "Last 10 Versions"
+        changelogVersions: "Changelog Versions ({0})"
+
     ChannelIdCommand:
         message: ':user :id: del canal :channel es `:targetChannel`'
 

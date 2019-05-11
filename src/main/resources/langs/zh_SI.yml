@@ -676,6 +676,15 @@ utility:
             quickMaths: '	-	快速数学!'
             binary: "世界上只有10种人，懂二进制的人和不懂二进制的人。."
 
+    ChangelogCommand:
+        invalidChangelogChannel: "Invalid changelog channel defined, the text channel could not be found!"
+        cantReadChangelogChannel: "I don't have permission to read the message history for the defined changelog channel, this is required in oder to read, load, and display the changelog messages."
+        invalidVersionGiven: "Invalid version given, `{0}` is not a valid version entry."
+        noChangelogMessages: "There are no changelog messages to display yet, try check back again later."
+        latestVersion: "Latest version: {0}"
+        lastFewVersions: "Last 10 Versions"
+        changelogVersions: "Changelog Versions ({0})"
+
     ChannelIdCommand:
         message: ':user :id: 的 :channel 频道是 `:targetChannel`'
 

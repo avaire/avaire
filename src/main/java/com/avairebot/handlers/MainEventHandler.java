@@ -66,6 +66,7 @@ public class MainEventHandler extends EventHandler {
     private final MessageEventAdapter messageEvent;
     private final GuildStateEventAdapter guildStateEvent;
     private final JDAStateEventAdapter jdaStateEventAdapter;
+    private final ChangelogEventAdapter changelogEventAdapter;
     private final ReactionEmoteEventAdapter reactionEmoteEventAdapter;
 
     /**
@@ -82,6 +83,7 @@ public class MainEventHandler extends EventHandler {
         this.messageEvent = new MessageEventAdapter(avaire);
         this.guildStateEvent = new GuildStateEventAdapter(avaire);
         this.jdaStateEventAdapter = new JDAStateEventAdapter(avaire);
+        this.changelogEventAdapter = new ChangelogEventAdapter(avaire);
         this.reactionEmoteEventAdapter = new ReactionEmoteEventAdapter(avaire);
     }
 
@@ -162,11 +164,19 @@ public class MainEventHandler extends EventHandler {
 
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
+        if (changelogEventAdapter.isChangelogMessage(event.getChannel())) {
+            changelogEventAdapter.onMessageReceived(event);
+        }
+
         messageEvent.onMessageReceived(event);
     }
 
     @Override
     public void onGuildMessageDelete(GuildMessageDeleteEvent event) {
+        if (changelogEventAdapter.isChangelogMessage(event.getChannel())) {
+            changelogEventAdapter.onMessageDelete(event);
+        }
+
         messageEvent.onMessageDelete(event.getChannel(), Collections.singletonList(event.getMessageId()));
     }
 
@@ -177,6 +187,10 @@ public class MainEventHandler extends EventHandler {
 
     @Override
     public void onMessageUpdate(MessageUpdateEvent event) {
+        if (changelogEventAdapter.isChangelogMessage(event.getChannel())) {
+            changelogEventAdapter.onMessageUpdate(event);
+        }
+
         messageEvent.onMessageUpdate(event);
     }
 
