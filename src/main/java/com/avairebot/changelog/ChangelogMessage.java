@@ -21,6 +21,7 @@
 
 package com.avairebot.changelog;
 
+import com.avairebot.time.Carbon;
 import net.dv8tion.jda.core.entities.Message;
 
 import java.util.Arrays;
@@ -35,6 +36,7 @@ public class ChangelogMessage {
     private final long messageId;
     private final String version;
     private final String message;
+    private final Carbon createdAt;
     private final int features;
 
     public ChangelogMessage(Message message) {
@@ -43,8 +45,8 @@ public class ChangelogMessage {
         String content = message.getContentRaw();
         String[] parts = content.split("\n");
 
+        this.createdAt = Carbon.createFromOffsetDateTime(message.getCreationTime());
         this.version = parts[0].toLowerCase().replaceAll("\\*", "");
-
 
         boolean hasMentions = mentionRegex.matcher(parts[parts.length - 1]).find();
 
@@ -73,6 +75,10 @@ public class ChangelogMessage {
 
     public String getMessage() {
         return message;
+    }
+
+    public Carbon getCreatedAt() {
+        return createdAt;
     }
 
     public int getFeatures() {

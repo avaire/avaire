@@ -141,7 +141,8 @@ public class ChangelogCommand extends Command {
         }
 
         PlaceholderMessage message = context.makeInfo(latestMessage.getMessage())
-            .setTitle(latestMessage.getVersion());
+            .setTitle(latestMessage.getVersion())
+            .setTimestamp(latestMessage.getCreatedAt().getTime().toInstant());
 
         if (!otherVersions.isEmpty()) {
             message.addField(context.i18n("lastFewVersions"), String.join(", ", otherVersions), false);
