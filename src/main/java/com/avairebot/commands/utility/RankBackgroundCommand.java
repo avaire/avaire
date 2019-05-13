@@ -169,7 +169,7 @@ public class RankBackgroundCommand extends Command {
         VoteCacheEntity voteEntity = avaire.getVoteManager().getVoteEntity(context.getAuthor());
         int votePoints = voteEntity == null ? 0 : voteEntity.getVotePoints();
 
-        SimplePaginator paginator = new SimplePaginator(
+        SimplePaginator<Integer> paginator = new SimplePaginator<>(
             RankBackgrounds.getNameToCost(), 5, 1
         );
 

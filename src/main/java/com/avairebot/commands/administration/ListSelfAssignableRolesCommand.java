@@ -98,7 +98,7 @@ public class ListSelfAssignableRolesCommand extends Command {
         }
 
         Collections.sort(items);
-        SimplePaginator paginator = new SimplePaginator(items, 10);
+        SimplePaginator<String> paginator = new SimplePaginator<>(items, 10);
         if (args.length > 0) {
             paginator.setCurrentPage(NumberUtil.parseInt(args[0], 1));
         }

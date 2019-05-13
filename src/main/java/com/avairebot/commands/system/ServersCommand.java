@@ -163,15 +163,13 @@ public class ServersCommand extends SystemCommand {
 
         sortType.sort(servers);
         List<String> messages = new ArrayList<>();
-        SimplePaginator paginator = new SimplePaginator(servers, 5);
+        SimplePaginator<Server> paginator = new SimplePaginator<>(servers, 5);
         if (args.length > 1) {
             paginator.setCurrentPage(NumberUtil.parseInt(args[1], 1));
         }
 
         messages.add("```");
-        paginator.forEach((index, key, val) -> {
-            Server server = (Server) val;
-
+        paginator.forEach((index, key, server) -> {
             messages.add(String.format("Rank #%s\n%s (ID: %s)\n\t%s Members with %s Users and %s bots.\n",
                 index + 1,
                 server.getName(),

@@ -118,13 +118,13 @@ public class UndertaleTextBoxCommand extends Command {
     }
 
     private boolean sendCharacterList(CommandMessage context, String[] args) {
-        SimplePaginator paginator = new SimplePaginator(Character.names, 10);
+        SimplePaginator<String> paginator = new SimplePaginator<>(Character.names, 10);
         if (args.length > 1) {
             paginator.setCurrentPage(NumberUtil.parseInt(args[1], 1));
         }
 
         List<String> messages = new ArrayList<>();
-        paginator.forEach((index, key, val) -> messages.add((String) val));
+        paginator.forEach((index, key, val) -> messages.add(val));
 
         context.makeInfo(":characters\n\n:paginator")
             .setTitle(context.i18n("title"))

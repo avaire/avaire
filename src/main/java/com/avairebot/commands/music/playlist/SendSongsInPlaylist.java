@@ -49,15 +49,13 @@ public class SendSongsInPlaylist extends PlaylistSubCommand {
             return false;
         }
 
-        SimplePaginator paginator = new SimplePaginator(playlist.getSongs(), 10);
+        SimplePaginator<PlaylistTransformer.PlaylistSong> paginator = new SimplePaginator<>(playlist.getSongs(), 10);
         if (args.length > 1) {
             paginator.setCurrentPage(NumberUtil.parseInt(args[1], 1));
         }
 
         List<String> messages = new ArrayList<>();
-        paginator.forEach((index, key, val) -> {
-            PlaylistTransformer.PlaylistSong song = (PlaylistTransformer.PlaylistSong) val;
-
+        paginator.forEach((index, key, song) -> {
             messages.add(context.i18n("playlistSongLine",
                 index + 1,
                 song.getTitle(),

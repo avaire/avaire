@@ -21,7 +21,7 @@
 
 package com.avairebot.contracts.chat;
 
-public interface PaginatorClosure {
+public interface PaginatorClosure<T> {
 
     /**
      * Pagination closure, this method is invoked for each entry in
@@ -32,5 +32,5 @@ public interface PaginatorClosure {
      * @param key   The key for the item.
      * @param val   The value of the item.
      */
-    void run(int index, Object key, Object val);
+    void run(int index, Object key, T val);
 }

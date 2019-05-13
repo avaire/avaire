@@ -152,16 +152,13 @@ public class ChangelogCommand extends Command {
     }
 
     private void displayListOfLogs(CommandMessage context, List<ChangelogMessage> messages, String[] args) {
-        SimplePaginator paginator = new SimplePaginator(messages, 50);
+        SimplePaginator<ChangelogMessage> paginator = new SimplePaginator<>(messages, 50);
         if (args.length > 0) {
             paginator.setCurrentPage(NumberUtil.parseInt(args[0], 1));
         }
 
         List<String> strings = new ArrayList<>();
-        paginator.forEach((index, key, val) -> {
-            ChangelogMessage message = (ChangelogMessage) val;
-            strings.add(message.getVersion());
-        });
+        paginator.forEach((index, key, message) -> strings.add(message.getVersion()));
 
         context.makeInfo(String.join(", ", strings) + "\n\n" +
             paginator.generateFooter(context.getGuild(), generateCommandTrigger(context.getMessage()) + " list")

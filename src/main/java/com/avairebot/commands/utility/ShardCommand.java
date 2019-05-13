@@ -142,7 +142,7 @@ public class ShardCommand extends Command {
             ), true));
         }
 
-        SimplePaginator paginator = new SimplePaginator(shards, 12);
+        SimplePaginator<MessageEmbed.Field> paginator = new SimplePaginator<>(shards, 12);
         if (args.length > 0) {
             paginator.setCurrentPage(NumberUtil.parseInt(args[0], 1));
         }
@@ -154,7 +154,7 @@ public class ShardCommand extends Command {
             .set("channels", NumberUtil.formatNicely(avaire.getShardEntityCounter().getChannels()))
             .set("users", NumberUtil.formatNicely(avaire.getShardEntityCounter().getUsers()));
 
-        paginator.forEach((index, key, val) -> message.addField((MessageEmbed.Field) val));
+        paginator.forEach((index, key, val) -> message.addField(val));
         message.addField("", paginator.generateFooter(context.getGuild(), generateCommandTrigger(context.getMessage())), false);
 
         SelfUser selfUser = avaire.getSelfUser();

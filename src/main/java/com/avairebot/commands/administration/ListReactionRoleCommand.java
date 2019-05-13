@@ -145,12 +145,12 @@ public class ListReactionRoleCommand extends Command {
         });
 
         List<String> messages = new ArrayList<>();
-        SimplePaginator paginator = new SimplePaginator(records, 5);
+        SimplePaginator<String> paginator = new SimplePaginator<>(records, 5);
         if (args.length > 0) {
             paginator.setCurrentPage(NumberUtil.parseInt(args[0], 1));
         }
 
-        paginator.forEach((_index, _key, val) -> messages.add((String) val));
+        paginator.forEach((_index, key, val) -> messages.add(val));
         messages.add("\n" + paginator.generateFooter(context.getGuild(), generateCommandTrigger(context.getMessage())));
 
         context.makeInfo(String.join("\n", messages))

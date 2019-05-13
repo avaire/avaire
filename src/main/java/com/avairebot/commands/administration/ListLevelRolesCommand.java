@@ -119,7 +119,7 @@ public class ListLevelRolesCommand extends Command {
 
         Collections.sort(keys);
 
-        SimplePaginator paginator = new SimplePaginator(keys, 10);
+        SimplePaginator<Integer> paginator = new SimplePaginator<>(keys, 10);
         if (args.length > 0) {
             paginator.setCurrentPage(NumberUtil.parseInt(args[0], 1));
         }

@@ -43,7 +43,7 @@ public class SendPlaylists extends PlaylistSubCommand {
 
     @Override
     public boolean onCommand(CommandMessage context, String[] args, GuildTransformer guild, Collection playlists) {
-        SimplePaginator paginator = new SimplePaginator(playlists.sort(
+        SimplePaginator<DataRow> paginator = new SimplePaginator<>(playlists.sort(
             Comparator.comparing(dataRow -> dataRow.getString("name"))
         ).getItems(), 5);
 
@@ -52,9 +52,7 @@ public class SendPlaylists extends PlaylistSubCommand {
         }
 
         List<String> messages = new ArrayList<>();
-        paginator.forEach((index, key, val) -> {
-            DataRow row = (DataRow) val;
-
+        paginator.forEach((index, key, row) -> {
             messages.add(context.i18n(
                 "playlistLine",
                 row.getString("name"),

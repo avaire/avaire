@@ -105,13 +105,13 @@ public class BlacklistCommand extends SystemCommand {
             ));
         });
 
-        SimplePaginator paginator = new SimplePaginator(records, 10, 1);
+        SimplePaginator<String> paginator = new SimplePaginator<>(records, 10, 1);
         if (args.length > 0) {
             paginator.setCurrentPage(NumberUtil.parseInt(args[0], 1));
         }
 
         List<String> messages = new ArrayList<>();
-        paginator.forEach((index, key, val) -> messages.add((String) val));
+        paginator.forEach((index, key, val) -> messages.add(val));
 
         context.makeInfo(String.join("\n", messages) + "\n\n" + paginator.generateFooter(
             context.getGuild(),

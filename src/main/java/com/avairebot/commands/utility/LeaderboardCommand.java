@@ -129,16 +129,14 @@ public class LeaderboardCommand extends Command {
         }
 
         List<String> messages = new ArrayList<>();
-        SimplePaginator paginator = new SimplePaginator(collection.getItems(), 10);
+        SimplePaginator<DataRow> paginator = new SimplePaginator<>(collection.getItems(), 10);
         if (args.length > 0) {
             paginator.setCurrentPage(NumberUtil.parseInt(args[0], 1));
         }
 
         long zeroExperience = avaire.getLevelManager().getExperienceFromLevel(transformer, 0) - 100;
 
-        paginator.forEach((index, key, val) -> {
-            DataRow row = (DataRow) val;
-
+        paginator.forEach((index, key, row) -> {
             Member member = context.getGuild().getMemberById(row.getLong("user_id"));
             String username = row.getString("username") + "#" + row.getString("discriminator");
             if (member != null) {

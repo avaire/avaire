@@ -99,14 +99,12 @@ public class SongCommand extends Command {
                 return sendSongWithSixSongs(context, musicManager);
             }
 
-            SimplePaginator paginator = new SimplePaginator(
+            SimplePaginator<AudioTrackContainer> paginator = new SimplePaginator<>(
                 musicManager.getScheduler().getQueue().iterator(), 10, NumberUtil.parseInt(args[0])
             );
 
             List<String> messages = new ArrayList<>();
-            paginator.forEach((index, key, val) -> {
-                AudioTrackContainer track = (AudioTrackContainer) val;
-
+            paginator.forEach((index, key, track) -> {
                 messages.add(context.i18n("formats.line",
                     NumberUtil.parseInt(key.toString()) + 1,
                     track.getAudioTrack().getInfo().title,

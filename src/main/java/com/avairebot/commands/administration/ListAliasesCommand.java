@@ -92,7 +92,7 @@ public class ListAliasesCommand extends Command {
             return sendErrorMessage(context, context.i18n("noAliases", generateCommandPrefix(context.getMessage())));
         }
 
-        SimplePaginator paginator = new SimplePaginator(transformer.getAliases(), 10);
+        SimplePaginator<String> paginator = new SimplePaginator<>(transformer.getAliases(), 10);
         if (args.length > 0) {
             paginator.setCurrentPage(NumberUtil.parseInt(args[0], 1));
         }

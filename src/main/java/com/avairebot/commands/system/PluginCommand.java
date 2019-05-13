@@ -110,14 +110,15 @@ public class PluginCommand extends SystemCommand {
             }
 
             List<String> messages = new ArrayList<>();
-            SimplePaginator paginator = new SimplePaginator(avaire.getPluginManager().getPlugins().iterator(), 5, 1);
+            SimplePaginator<PluginLoader> paginator = new SimplePaginator<>(
+                avaire.getPluginManager().getPlugins().iterator(), 5, 1
+            );
+
             if (args.length > 1) {
                 paginator.setCurrentPage(NumberUtil.parseInt(args[1], 1));
             }
 
-            paginator.forEach((index, key, val) -> {
-                PluginLoader loader = (PluginLoader) val;
-
+            paginator.forEach((index, key, loader) -> {
                 messages.add("**" + loader.getName() + "**");
             });
 
@@ -137,14 +138,12 @@ public class PluginCommand extends SystemCommand {
             }
 
             List<String> messages = new ArrayList<>();
-            SimplePaginator paginator = new SimplePaginator(pluginHolders, 5, 1);
+            SimplePaginator<PluginHolder> paginator = new SimplePaginator<>(pluginHolders, 5, 1);
             if (args.length > 1) {
                 paginator.setCurrentPage(NumberUtil.parseInt(args[1], 1));
             }
 
-            paginator.forEach((index, key, val) -> {
-                PluginHolder loader = (PluginHolder) val;
-
+            paginator.forEach((index, key, loader) -> {
                 messages.add("**" + loader.getName() + "**");
             });
 

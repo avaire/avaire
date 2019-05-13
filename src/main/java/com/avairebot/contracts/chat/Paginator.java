@@ -30,12 +30,12 @@ import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings("WeakerAccess")
-public abstract class Paginator implements Cloneable {
+public abstract class Paginator<T> implements Cloneable {
 
     /**
      * The items that should be paginated.
      */
-    protected final LinkedHashMap<Object, Object> items;
+    protected final LinkedHashMap<Object, T> items;
 
     /**
      * The amount of items to display per-page.
@@ -55,7 +55,7 @@ public abstract class Paginator implements Cloneable {
      * @param perPage     The amount of items to show per-page.
      * @param currentPage The current page that should be shown.
      */
-    public Paginator(@Nonnull Map<?, ?> items, int perPage, int currentPage) {
+    public Paginator(@Nonnull Map<?, T> items, int perPage, int currentPage) {
         this.items = new LinkedHashMap<>(items);
         this.perPage = perPage;
 
@@ -71,7 +71,7 @@ public abstract class Paginator implements Cloneable {
      * @param perPage     The amount of items to show per-page.
      * @param currentPage The current page that should be shown.
      */
-    public Paginator(@Nonnull Map<?, ?> items, int perPage, @Nonnull String currentPage) {
+    public Paginator(@Nonnull Map<?, T> items, int perPage, @Nonnull String currentPage) {
         this(items, perPage, NumberUtil.parseInt(currentPage, 1));
     }
 
@@ -85,8 +85,8 @@ public abstract class Paginator implements Cloneable {
      * @param perPage     The amount of items to show per-page.
      * @param currentPage The current page that should be shown.
      */
-    public Paginator(@Nonnull List<?> items, int perPage, int currentPage) {
-        LinkedHashMap<Object, Object> map = new LinkedHashMap<>();
+    public Paginator(@Nonnull List<T> items, int perPage, int currentPage) {
+        LinkedHashMap<Object, T> map = new LinkedHashMap<>();
         for (int i = 0; i < items.size(); i++) {
             map.put(i, items.get(i));
         }
@@ -109,7 +109,7 @@ public abstract class Paginator implements Cloneable {
      * @param perPage     The amount of items to show per-page.
      * @param currentPage The current page that should be shown.
      */
-    public Paginator(@Nonnull List<?> items, int perPage, @Nonnull String currentPage) {
+    public Paginator(@Nonnull List<T> items, int perPage, @Nonnull String currentPage) {
         this(items, perPage, NumberUtil.parseInt(currentPage, 1));
     }
 
@@ -122,9 +122,9 @@ public abstract class Paginator implements Cloneable {
      * @param perPage     The amount of items to show per-page.
      * @param currentPage The current page that should be shown.
      */
-    public Paginator(@Nonnull Iterator<?> iterator, int perPage, int currentPage) {
+    public Paginator(@Nonnull Iterator<T> iterator, int perPage, int currentPage) {
         int index = 0;
-        LinkedHashMap<Object, Object> items = new LinkedHashMap<>();
+        LinkedHashMap<Object, T> items = new LinkedHashMap<>();
         while (iterator.hasNext()) {
             items.put(index++, iterator.next());
         }
@@ -142,12 +142,12 @@ public abstract class Paginator implements Cloneable {
      *
      * @param closure The closure that should get the paginator item for the current page.
      */
-    public void forEach(@Nonnull PaginatorClosure closure) {
+    public void forEach(@Nonnull PaginatorClosure<? super T> closure) {
         int counter = 0;
         int start = perPage * (getCurrentPage() - 1);
         int end = start + getPerPage();
 
-        for (Map.Entry<Object, Object> item : items.entrySet()) {
+        for (Map.Entry<Object, T> item : items.entrySet()) {
             int current = counter;
             counter++;
 
@@ -168,7 +168,7 @@ public abstract class Paginator implements Cloneable {
      *
      * @return A map of items for the paginator.
      */
-    public final Map<Object, Object> getItems() {
+    public final Map<Object, T> getItems() {
         return items;
     }
 
