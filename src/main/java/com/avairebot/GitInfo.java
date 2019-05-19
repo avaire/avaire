@@ -35,7 +35,7 @@ public class GitInfo extends PropertyConfiguration {
     public final String commitUserEmail;
     public final String commitMessageFull;
     public final String commitMessageShort;
-    public final long commitTime;
+    public final String commitTime;
 
     private GitInfo() {
         loadProperty(getClass().getClassLoader(), "git.properties");
@@ -47,7 +47,7 @@ public class GitInfo extends PropertyConfiguration {
         this.commitUserEmail = String.valueOf(properties.getOrDefault("git.commit.user.email", ""));
         this.commitMessageFull = String.valueOf(properties.getOrDefault("git.commit.message.full", ""));
         this.commitMessageShort = String.valueOf(properties.getOrDefault("git.commit.message.short", ""));
-        this.commitTime = Long.parseLong(String.valueOf(properties.getOrDefault("git.commit.time", "0")));
+        this.commitTime = String.valueOf(properties.getOrDefault("git.commit.time", "Unknown"));
     }
 
     public static GitInfo getGitInfo() {
