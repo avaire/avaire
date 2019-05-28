@@ -128,11 +128,9 @@ public class SetStatusCommand extends SystemCommand {
     private Game parseGame(String[] args) {
         if (Game.isValidStreamingUrl(args[0])) {
             String url = args[0];
-            String streamStatus = String.join(" ", args).substring(url.length());
-
-            if (args.length == 1) {
-                streamStatus = "Streaming on Twitch.tv";
-            }
+            String streamStatus = args.length > 1
+                ? String.join(" ", Arrays.copyOfRange(args, 1, args.length))
+                : "on Twitch.tv!";
 
             return Game.streaming(streamStatus, url);
         }
@@ -157,7 +155,13 @@ public class SetStatusCommand extends SystemCommand {
 
                 case "stream":
                 case "streaming":
-                    return Game.streaming(status, "https://www.twitch.tv/senither");
+                    String streamUrl = "https://www.twitch.tv/senither";
+                    if (split.length > 1) {
+                        String[] parts = split[1].split(" ");
+                        streamUrl = "https://www.twitch.tv/" + parts[0];
+                        status = String.join(" ", Arrays.copyOfRange(parts, 1, parts.length));
+                    }
+                    return Game.streaming(status, streamUrl);
             }
         }
 
