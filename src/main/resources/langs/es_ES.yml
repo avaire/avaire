@@ -52,7 +52,6 @@ administration:
         success: "Role **:role** role has been added to the self-assignable list.\nThe server has `:slots` more self-assignable roles slots available."
 
     AdministrateExperienceCommand:
-    AdministrateExperienceCommand:
         cantUseForBots: "You can't add, remove, or reset XP for bot accounts since they don't earn any, please select a normal user when using this command."
         invalidAmountGiven: "The `amount` property must be between 1 and {0} to add or take XP from a user."
         aboutToResetEverything: "You're about to reset the XP for everyone on the entire server, note that this action **CAN NOT** be reversed. If you're sure you wanna continue, run the command to completely reset the servers XP.\n\n```:command server-reset :token```\nThis command will only work for 60 seconds, after that time the token becomes invalid and the command has to be ran again to get a new token."
@@ -850,6 +849,9 @@ utility:
     UserAvatarCommand:
             noUserFound: "I found no users with the name or ID of `{0}`"
             title: "{0}#{1}'s Avatar"
+
+    UserCountCommand:
+        message: "There are {0} members in this guild."
 
     UserIdCommand:
         message: ':id: del usuario **:target** es `:targetid`'

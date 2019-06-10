@@ -849,6 +849,9 @@ utility:
             noUserFound: "I found no users with the name or ID of `{0}`"
             title: "{0}#{1}'s Avatar"
 
+    UserCountCommand:
+        message: "There are {0} members in this guild."
+
     UserIdCommand:
         message: ':id: til brukeren **:target** er `:targetid`'
 
