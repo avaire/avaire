@@ -848,9 +848,6 @@ utility:
         noUserFound: "我没有找到ID或者用户为 `{0}`"
         title: "{0}#{1}'s Avatar"
 
-    UserCountCommand:
-        message: "There are {0} members in this guild."
-
     UserIdCommand:
         message: ':id: 用户的 **:target** 是 `:targetid`'
 

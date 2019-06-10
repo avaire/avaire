@@ -231,6 +231,14 @@ administration:
         notAPunishment: "The modlog case ID with an ID of `{0}` is not a punishment!"
         message: "The modlog case with an ID of **:case** has been been pardoned successfully."
 
+    ModlogPardonCommand:
+        modlogNotEnabled: "No modlog channel has been set, you must set a modlog channel to use this command."
+        invalidCaseId: "Invalid case id given, the ID must be greater than 0 and less than {0}"
+        couldntFindCaseWithId: "Couldn't find a modlog case with an ID of {0} where you were the moderator, are you sure you're the moderator for the given modlog case?"
+        caseAlreadyPardoned: "The modlog case ID with an ID of `{0}` is already pardoned."
+        notAPunishment: "The modlog case ID with an ID of `{0}` is not a punishment!"
+        message: "The modlog case with an ID of **:case** has been been pardoned successfully."
+
     ModlogReasonCommand:
         modlogNotEnabled: "No modlog channel has been set, you must set a modlog channel to use this command."
         invalidCaseId: "Invalid case id given, the ID must be greater than 0 and less than {0}"
@@ -847,9 +855,6 @@ utility:
     UserAvatarCommand:
             noUserFound: "I found no users with the name or ID of `{0}`"
             title: "{0}#{1}'s Avatar"
-
-    UserCountCommand:
-        message: "There are {0} members in this guild."
 
     UserIdCommand:
         message: ':id:-je **:target** felhasználónak: `:targetid`'
