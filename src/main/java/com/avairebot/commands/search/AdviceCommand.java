@@ -51,8 +51,7 @@ public class AdviceCommand extends Command
 
     @Override
     public List<String> getExampleUsage() {
-        return Collections.singletonList(
-            "`:command` - Gets a random piece of advice."
+        return Collections.singletonList("`:command`"
         );
     }
 

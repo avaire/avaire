@@ -386,6 +386,7 @@ fun:
 
     PunCommand:
         title: "Pun list"
+        noResults: ':user I found nothing for `:query`'
 
     MemeCommand:
         missingArgument: 'Falta el dato "action", debes incluir el tipo de meme o el usuario para el que quieres hacer un meme. Pon "list" para mostrar todos los tipos de meme disponibles.'

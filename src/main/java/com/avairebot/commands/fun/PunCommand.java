@@ -7,6 +7,7 @@ import com.avairebot.contracts.commands.Command;
 import com.avairebot.contracts.commands.CommandContext;
 import com.avairebot.factories.RequestFactory;
 import com.avairebot.requests.Response;
+import com.avairebot.requests.service.PunService;
 import com.avairebot.utilities.NumberUtil;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -47,14 +48,14 @@ public class PunCommand extends Command
     public List<String> getUsageInstructions() {
         return Arrays.asList(
             "`:command` - Gets a random pun",
-                "`:command` <query> <number> - retrieves a list of puns ");
+                "`:command` <query> <page> - retrieves a list of puns ");
     }
 
     @Override
     public List<String> getExampleUsage() {
         return Arrays.asList(
             "`:command` - Gets a random pun.",
-            "`:command` <query> <page> - retrieves a list of puns"
+            "`:command` <query> <page> - retrieves a list of puns "
         );
     }
 
@@ -99,14 +100,23 @@ public class PunCommand extends Command
                     sendPun(context, json);
                 });
         }
-        else if(args.length == 1 || args.length == 2)
+        else
         {
-            RequestFactory.makeGET(templateUrl + "search?term=" + args[0])
+            List<String> phrase = new ArrayList<>(Arrays.asList(args).subList(0, args.length - 1));
+            RequestFactory.makeGET(templateUrl + "/search")
                 .addHeader("Accept", "application/json")
+                .addParameter("term",String.join(" ", phrase))
                 .send((Consumer<Response>) response ->
                 {
-                    JSONObject json = new JSONObject(response.toString());
-                    sendPunList(context,args, json);
+                    PunService service = (PunService)response.toService(PunService.class);
+                    if (!service.hasData()) {
+                        context.makeWarning(context.i18n("noResults"))
+                            .set("query", String.join(" ", args))
+                            .queue();
+                        return;
+                    }
+
+                    sendPunList(context,args, service.getResults());
                 });
         }
 
@@ -119,28 +129,30 @@ public class PunCommand extends Command
             .queue();
     }
 
-    private boolean sendPunList(CommandMessage context, String[] args, JSONObject json)
+    private boolean sendPunList(CommandMessage context, String[] args, List<PunService.Pun> resultList)
     {
 
-        List<String> puns = new ArrayList<>();
-        JSONArray resultList = json.getJSONArray("results");
+        List<String> punsToSortThrough = new ArrayList<>();
 
-
-        for (int i = 0; i < resultList.length(); i++) {
-            puns.add(resultList.getJSONObject(i).getString("joke"));
+        for (PunService.Pun pun : resultList)
+        {
+            punsToSortThrough.add(pun.getJoke());
         }
 
-        SimplePaginator<String> paginator = new SimplePaginator<>(puns, 20);
+
+        SimplePaginator<String> paginator = new SimplePaginator<>(punsToSortThrough, 10);
         if (args.length > 1)
         {
-            paginator.setCurrentPage(NumberUtil.parseInt(args[1], 1));
+            paginator.setCurrentPage(NumberUtil.parseInt(args[args.length - 1], 1));
         }
 
+        List<String> sortedPuns = new ArrayList<>();
+        paginator.forEach((index, key, val) -> sortedPuns.add(val));
 
         context.makeInfo(":puns\n\n:paginator")
             .setTitle(context.i18n("title"))
-            .set("puns", String.join("\n", puns))
-            .set("paginator", paginator.generateFooter(context.getGuild(), generateCommandTrigger(context.getMessage())))
+            .set("puns", String.join("\n", sortedPuns))
+            .set("paginator", paginator.generateFooter(context.getGuild(), generateExampleUsage(context.getMessage())))
             .queue();
 
         return false;

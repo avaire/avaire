@@ -391,6 +391,7 @@ fun:
 
     PunCommand:
         title: "Pun list"
+        noResults: ':user I found nothing for `:query`'
 
     RandomCatCommand:
         tooManyAttempts: "Teveel aanvragen naar de Cat API, probeer opnieuw in een minuut, of vraag een bot administrator voor een api key op [meow.senither.com](https://meow.senither.com/) om meer aanvragen toe te staan."
