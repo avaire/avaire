@@ -395,6 +395,9 @@ fun:
         mustIncludeTopAndBottomText: 'Szükséges megadnod a `top text` és `bottom text` paramétereket, hogy meme-t generálj.'
         listItem: '`{0}` => `{1}`'
 
+    PunCommand:
+        title: "Pun list"
+
     RandomCatCommand:
         tooManyAttempts: "Too many attempts was made to the cat API, try again in a minute, or ask a bot administrator to get an API key at [meow.senither.com](https://meow.senither.com/) to allow for more requests."
         notFound: "I couldn't find any cat picture D: Try again, maybe they will show up now?"

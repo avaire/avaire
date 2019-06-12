@@ -389,6 +389,9 @@ fun:
         mustIncludeTopAndBottomText: 'Je moet de `top text` en `bottom text` arguments toevoegen om een meme te genereren.'
         listItem: '`{0}` => `{1}`'
 
+    PunCommand:
+        title: "Pun list"
+
     RandomCatCommand:
         tooManyAttempts: "Teveel aanvragen naar de Cat API, probeer opnieuw in een minuut, of vraag een bot administrator voor een api key op [meow.senither.com](https://meow.senither.com/) om meer aanvragen toe te staan."
         notFound: "Ik kon geen kat foto's vinden D: probeer opnieuw, mischien kan je ze nu wel zien?"
