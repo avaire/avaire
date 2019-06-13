@@ -604,7 +604,7 @@ music:
         currentVolume: "Le volume par défaut pour le serveur est actuellement fixé à `:volume%`"
         changedVolume: "Le volume par défaut a été fixé à `:volume%`"
         failedToSave: "Quelque chose s'est mal passé lors de l'enregistrement du volume par défaut: {0}"
-        mustBeNumber: "Le `volume` doit être un nombre entre 10 et 100"
+        mustBeNumber: "Le `volume` doit être un nombre entre 1 et 100"
 
     ShuffleCommand:
         error: "La file musicale est déjà vide, tu peux demander quelque chose avec\n`{0}play <titre | url>`"

@@ -603,7 +603,7 @@ music:
         currentVolume: 'The default volume for the server is currently set to `:volume%`'
         changedVolume: 'The default volume has been set to `:volume%`'
         failedToSave: 'Something went wrong while trying to save the default volume: {0}'
-        mustBeNumber: 'The `volume` must be a number between 10 and 100'
+        mustBeNumber: 'The `volume` must be a number between 1 and 100'
 
     ShuffleCommand:
         error: 'The queue is already empty, you can request something with\n`{0}play <song title | url>`'

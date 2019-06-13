@@ -606,7 +606,7 @@ music:
         currentVolume: 'Die Standard-Lautstärke für diesen Server ist derzeit auf `:volume%` gesetzt.'
         changedVolume: 'Die Standard-Lautstärke wurde auf `:volume%` gesetzt.'
         failedToSave: 'Es ist ein Fehler aufgetreten beim Versuch folgende Standard-Lautstärke zu speichern: {0}'
-        mustBeNumber: 'Die `Lautstärke` muss eine Nummer zwischen 10 und 100 sein.'
+        mustBeNumber: 'Die `Lautstärke` muss eine Nummer zwischen 1 und 100 sein.'
 
     ShuffleCommand:
         error: 'Die Warteschlange ist bereits leer. Anfragen von Musik ist vorausgesetzt. Tue dies bitte zuerst mit folgendem Befehl:\n`{0}play <Songtitel | URL>`'

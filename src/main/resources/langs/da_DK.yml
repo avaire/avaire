@@ -604,7 +604,7 @@ music:
         currentVolume: 'Standard volumenet for serveren er i øjeblikket sat til `:volume%`'
         changedVolume: 'Standardvolumenet er sat til `:volume%`'
         failedToSave: 'Noget gik galt, mens du forsøgte at gemme standardvolumenet: {0}'
-        mustBeNumber: 'Volumen skal være et tal mellem `10` og `100`'
+        mustBeNumber: 'Volumen skal være et tal mellem `1` og `100`'
 
     ShuffleCommand:
         error: 'Musikkøen er allerede tom, du kan starte noget musik med\n`{0}play <song title | url>`'

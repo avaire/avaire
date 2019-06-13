@@ -610,7 +610,7 @@ music:
         currentVolume: 'Az alapértelmezett hangerő a szerveren jelenleg `:volume%`-re van állítva'
         changedVolume: 'Az alapértelmezett hangerő átállítva `:volume%`-ra'
         failedToSave: 'Valami hiba történt az alapértelmezett hangerő {0}-re állítása során.'
-        mustBeNumber: 'A `hangerő`-nek 10 és 100 közt kell lennie'
+        mustBeNumber: 'A `hangerő`-nek 1 és 100 közt kell lennie'
 
     ShuffleCommand:
         error: 'A lejátszási lista már üres, kérhetsz valamit a\n`{0}play <szám cím | link>`-el'

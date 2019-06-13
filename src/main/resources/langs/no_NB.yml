@@ -603,7 +603,7 @@ music:
         currentVolume: 'Standard volumet for serveren er forøyeblikket `:volume%`'
         changedVolume: 'Standard volumet har blitt satt til `:volume%`'
         failedToSave: 'Noe gikk galt når jeg prøvde og oppdatere standard volumet: {0}'
-        mustBeNumber: '`Volumet` må være ett nummer mellom 10 og 100'
+        mustBeNumber: '`Volumet` må være ett nummer mellom 1 og 100'
 
     ShuffleCommand:
         error: 'Musikk køen er allerede tom, du kan etterspøre noe med\n`{0}play <sang tittel | url>`'

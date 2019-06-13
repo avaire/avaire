@@ -110,7 +110,7 @@ public class SetDefaultVolumeCommand extends Command {
         }
 
         int vol = NumberUtil.parseInt(args[0], 0);
-        if (vol < 10 || vol > 100) {
+        if (vol < 1 || vol > 100) {
             return sendErrorMessage(context, context.i18n("mustBeNumber"));
         }
 

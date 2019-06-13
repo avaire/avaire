@@ -603,7 +603,7 @@ music:
         currentVolume: 'Het standaard volume van de server is op dit moment `:volume%`'
         changedVolume: 'Het standaard volume is veranderd naar `:volume%`'
         failedToSave: 'Er is iets fout gegaan met het opslaan van het standaard volume: {0}'
-        mustBeNumber: 'Hey `volume` moet een nummer zijn tussen de 10 en 100'
+        mustBeNumber: 'Hey `volume` moet een nummer zijn tussen de 1 en 100'
 
     ShuffleCommand:
         error: 'De wachtrij is leeg, je kan een nummer aanvragen met\n`{0}play <song title | url>`'

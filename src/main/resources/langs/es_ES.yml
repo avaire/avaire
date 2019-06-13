@@ -605,7 +605,7 @@ music:
         currentVolume: 'El volumen por defecto del servidor es `:volume%`'
         changedVolume: 'El volumen por defecto del servidor se ha establecido en `:volume%`'
         failedToSave: 'Ha ocurrido algo al intentar guardar el volumen por defecto: {0}'
-        mustBeNumber: 'El `volumen` debe estar entre 10 y 100'
+        mustBeNumber: 'El `volumen` debe estar entre 1 y 100'
 
     ShuffleCommand:
         error: 'La cola de música está vacía, puedes solicitar algo con\n`{0}play <título de canción | URL>`'

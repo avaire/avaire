@@ -602,7 +602,7 @@ music:
         currentVolume: '服务器的默认卷当前设置为 `:volume%`'
         changedVolume: '默认卷已设置为 `:volume%`'
         failedToSave: '尝试保存默认卷时出错: {0}'
-        mustBeNumber: '这个 `volume` 必须是介于10和100之间的数字'
+        mustBeNumber: '这个 `volume` 必须是介于1和100之间的数字'
 
     ShuffleCommand:
         error: '队列已为空，您可以使用\n`{0}play <song title | url>`'

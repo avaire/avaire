@@ -603,7 +603,7 @@ music:
         currentVolume: 'Il volume predefinito per il server è attualmente impostato su `:volume%`'
         changedVolume: 'Il volume predefinito è stato impostato su `:volume%`'
         failedToSave: 'Qualcosa è andato storto durante il tentativo di salvare il volume predefinito: {0}'
-        mustBeNumber: 'Il `volume` deve essere un numero tra 10 e 100'
+        mustBeNumber: 'Il `volume` deve essere un numero tra 1 e 100'
 
     ShuffleCommand:
         error: 'La coda musicale è già vuota, puoi richiedere qualcosa con\n`{0}play <titolo canzone | link>`'
