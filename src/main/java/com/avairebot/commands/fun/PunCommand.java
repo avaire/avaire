@@ -152,7 +152,7 @@ public class PunCommand extends Command
         context.makeInfo(":puns\n\n:paginator")
             .setTitle(context.i18n("title"))
             .set("puns", String.join("\n", sortedPuns))
-            .set("paginator", paginator.generateFooter(context.getGuild(), generateExampleUsage(context.getMessage())))
+            .set("paginator", paginator.generateFooter(context.getGuild(), generateExampleUsage(context.getMessage())).replace("[page]'",""))
             .queue();
 
         return false;
