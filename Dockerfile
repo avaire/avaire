@@ -8,13 +8,12 @@ COPY . .
 
 RUN gradle build --stacktrace
 
-FROM openjdk:8-alpine AS runtime
+FROM openjdk:10-jdk-slim AS runtime
 
 WORKDIR /app
 
-COPY --from=build /app/build/resources/main/config.yml .
 COPY --from=build /app/build/libs/AvaIre.jar .
 
-VOLUME ["/app/plugins", "/app/storage", "/app/config.yml"]
+VOLUME ["/app/plugins", "/app/storage"]
 
 CMD ["java", "-jar", "AvaIre.jar"]
