@@ -6,11 +6,13 @@ import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.contracts.commands.CommandContext;
 import com.avairebot.factories.RequestFactory;
+import com.avairebot.language.I18n;
 import com.avairebot.requests.Response;
 import com.avairebot.requests.service.PunService;
 import com.avairebot.utilities.NumberUtil;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.jsoup.helper.StringUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,6 +28,8 @@ public class PunCommand extends Command
     {
         super(avaire);
     }
+
+
 
     /**
      * Gets the command name, this is used in help and error
@@ -55,7 +59,7 @@ public class PunCommand extends Command
     public List<String> getExampleUsage() {
         return Arrays.asList(
             "`:command` - Gets a random pun.",
-            "`:command` <query> <page> - retrieves a list of puns "
+            "`:command chicken 2` - Gets the second page of a search for chicken puns"
         );
     }
 
@@ -102,7 +106,15 @@ public class PunCommand extends Command
         }
         else
         {
-            List<String> phrase = new ArrayList<>(Arrays.asList(args).subList(0, args.length - 1));
+            List<String> phrase = new ArrayList<>();
+            if (StringUtil.isNumeric(args[args.length - 1]))
+            {
+                phrase.addAll(Arrays.asList(args).subList(0, args.length - 1));
+            }
+            else
+            {
+                phrase.addAll(Arrays.asList(args));
+            }
             RequestFactory.makeGET(templateUrl + "/search")
                 .addHeader("Accept", "application/json")
                 .addParameter("term",String.join(" ", phrase))
@@ -131,8 +143,18 @@ public class PunCommand extends Command
 
     private boolean sendPunList(CommandMessage context, String[] args, List<PunService.Pun> resultList)
     {
-
         List<String> punsToSortThrough = new ArrayList<>();
+
+        StringBuilder userPhraseWriter = new StringBuilder();
+
+        if(StringUtil.isNumeric(args[args.length -1]))
+        {
+            userPhraseWriter.append(String.join(" ", Arrays.asList(args).subList(0, args.length - 1)));
+        }
+        else
+        {
+            userPhraseWriter.append(String.join(" ", Arrays.asList(args)));
+        }
 
         for (PunService.Pun pun : resultList)
         {
@@ -144,6 +166,7 @@ public class PunCommand extends Command
         if (args.length > 1)
         {
             paginator.setCurrentPage(NumberUtil.parseInt(args[args.length - 1], 1));
+
         }
 
         List<String> sortedPuns = new ArrayList<>();
@@ -152,9 +175,13 @@ public class PunCommand extends Command
         context.makeInfo(":puns\n\n:paginator")
             .setTitle(context.i18n("title"))
             .set("puns", String.join("\n", sortedPuns))
-            .set("paginator", paginator.generateFooter(context.getGuild(), generateExampleUsage(context.getMessage())).replace("[page]'",""))
+            .set(
+                "paginator", paginator.generateFooter(
+                context.getGuild(),
+                generateCommandTrigger(context.getMessage()) + " " + userPhraseWriter.toString())
+            )
             .queue();
 
-        return false;
+        return true;
     }
 }
