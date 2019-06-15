@@ -652,6 +652,10 @@ music:
         alreadyVoted: 'Du kan kun stemme for og hoppeover en gang per sang! `:votes` flere stemmer trengs for og hoppe over sangen.'
 
 search:
+
+    AdviceCommand:
+        nsfwDisabled: "The `Advice` command can only be used in NSFW channels, as the search results may return NSFW content."
+
     DuckDuckGoCommand:
         nsfwDisabled: "The `Duck Duck GO` command can only be used in NSFW channels, as the search results may return NSFW content."
         searchResults: 'Søkeresultat med: {0}'

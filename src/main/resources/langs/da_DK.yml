@@ -652,6 +652,10 @@ music:
         alreadyVoted: 'Du kan kun stemme én gang pr. Sang! `:votes` flere stemmer er nødvendige for at springe sangen over.'
 
 search:
+
+    AdviceCommand:
+        nsfwDisabled: "`Advice` Kommandoen kan kun bruges i NSFW-kanaler, da søgeresultaterne kan returnere NSFW-indhold."
+
     DuckDuckGoCommand:
         nsfwDisabled: "`Duck Duck GO` Kommandoen kan kun bruges i NSFW-kanaler, da søgeresultaterne kan returnere NSFW-indhold."
         searchResults: 'Søgeresultat for: {0}'

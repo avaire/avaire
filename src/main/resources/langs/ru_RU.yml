@@ -653,6 +653,10 @@ music:
         alreadyVoted: 'Вы можете проголосовать только один раз за трек! `:votes` необходимо голосов, чтобы пропустить трек.'
 
 search:
+
+    AdviceCommand:
+        nsfwDisabled: "The `Advice` command can only be used in NSFW channels, as the search results may return NSFW content."
+
     DuckDuckGoCommand:
         nsfwDisabled: "The `Duck Duck GO` command can only be used in NSFW channels, as the search results may return NSFW content."
         searchResults: 'Результат поиска для: {0}'

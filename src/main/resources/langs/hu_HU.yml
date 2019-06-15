@@ -659,6 +659,9 @@ music:
         alreadyVoted: 'Csak egyszer szavazhatsz átugrásra számonként! `:votes` további szavazat szükséges, hogy át lehessen ugrani a számot.'
 
 search:
+    AdviceCommand:
+        nsfwDisabled: "The `Advice` command can only be used in NSFW channels, as the search results may return NSFW content. "
+
     DuckDuckGoCommand:
         nsfwDisabled: "The `Duck Duck GO` command can only be used in NSFW channels, as the search results may return NSFW content."
         searchResults: 'Keresési eredmény {0}-re'

@@ -655,6 +655,10 @@ music:
         alreadyVoted: 'Du kannst nur ein Mal per Song zum Überspringen abstimmen! `:votes` weitere Abstimmungen werden benötigt, um den Song überspringen zu können.'
 
 search:
+
+    AdviceCommand:
+        nsfwDisabled: "The `Advice` command can only be used in NSFW channels, as the search results may return NSFW content. "
+
     DuckDuckGoCommand:
         nsfwDisabled: "The `Duck Duck GO` command can only be used in NSFW channels, as the search results may return NSFW content."
         searchResults: 'Suchergebnisse für: {0}'

@@ -81,6 +81,10 @@ public class AdviceCommand extends Command
     @Override
     public boolean onCommand(CommandMessage context, String[] args)
     {
+        if (context.isGuildMessage() && !context.getChannel().isNSFW()) {
+            return sendErrorMessage(context, context.i18n("nsfwDisabled"));
+        }
+
         RequestFactory.makeGET("https://api.adviceslip.com/advice").send((Consumer<Response>) response -> {
             JSONObject json = new JSONObject(response.toString());
             sendAdvice(context, json);
