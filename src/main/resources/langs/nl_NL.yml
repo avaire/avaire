@@ -653,7 +653,8 @@ music:
 
 search:
 
-
+    AdviceCommand:
+        nsfwDisabled: "The` Advice` command can only be used in NSFW channels, because the search may show NSFW content. "
 
     DuckDuckGoCommand:
         nsfwDisabled: "Het `Duck Duck GO` commando kan alleen gebruikt worden in NSFW kanalen, omdat de resultaten NSFW beelden kan bevatten."
