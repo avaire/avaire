@@ -9,7 +9,7 @@ errors:
     missingMusicQueue: 'Mangler musik `forespørgsel`, skal du inkludere et link til sangen, du vil lytte til, eller i det mindste give mig en sangtitel!'
     cantMentionEveryone: "Du har ikke tilladelser til at nævne alle."
     requireLevelFeatureToBeEnabled: "Denne kommando kræver, at `Level og Experience' funktionen er aktiveret for serveren, du kan spørge en serveradministrator, hvis de vil aktivere den med `{0}`"
-    errorOccurredWhileLoading: "Der opstod en fejl under indlæsningen af {0}. Prøv venligst igen. Hvis problemet fortsætter kan du rapportere dette til et af mine udviklere på [AvaIre support serveren](https://discord.gg/gt2FWER)."
+    errorOccurredWhileLoading: "Der opstod en fejl under indlæsningen af {0}. Prøv venligst igen. Hvis problemet fortsætter kan du rapportere dette til et af mine udviklere på [AvaIre support serveren](https://avairebot.com/support)."
 
 levelupMessages:
     - "GG :user, du har lige nået **Level :level**"
@@ -56,7 +56,7 @@ administration:
         cantUseForBots: "Du kan ikke tilføje, fjerne, eller nulstille XP for en bot-konti, da de ikke kan få noget XP til at starte med. Vælg venligst en normal bruger, når du bruger denne kommando."
         invalidAmountGiven: "Egenskaben `amount` skal være mellem 1 og {0} for at tilføje eller tage XP fra en bruger."
         aboutToResetEverything: "Du er ved at nulstille XP for alle på hele serveren. Bemærk, at denne handling **KAN IKKE** laves om. Hvis du er sikker på, at du vil fortsætte, skal du køre kommandoen for at nulstille serverne XP helt.\n\n```:command server-reset :token```\nDenne kommando fungerer kun i 60 sekunder, efter den tid token bliver ugyldig og kommandoen skal køres igen for at få et nyt token."
-        failedToSaveChanges: "Kunne ikke gemme ændringerne i databasen. Prøv igen, hvis fejlen fortsætter med at ske, bedes du kontakte support på den officielle [AvaIre support server](https://discord.gg/gt2FWER)."
+        failedToSaveChanges: "Kunne ikke gemme ændringerne i databasen. Prøv igen, hvis fejlen fortsætter med at ske, bedes du kontakte support på den officielle [AvaIre support server](https://avairebot.com/support)."
         mustBeAnAdmin: "Du skal være en serveradministrator for at nulstille alles XP."
         invalidSecurityToken: "Ugyldigt sikkerheds token givet, angiv venligst det korrekte sikkerheds token for at nulstille alle XP for all på serveren."
         warning: "Advarsel!"

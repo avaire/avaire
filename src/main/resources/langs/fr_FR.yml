@@ -9,7 +9,7 @@ errors:
     missingMusicQueue: "Musique manquante `query`, tu dois inclure lien de la musique que tu souhaites écouter, ou au moins un titre de musique!"
     cantMentionEveryone: "You don't have permissions to mention everyone."
     requireLevelFeatureToBeEnabled: "Cette commande requiert que la fonctionnalité `Levels & Experience` soit active pour le serveur, tu peux demander à un admin serveur si ils veulent l'activer avec `{0}`"
-    errorOccurredWhileLoading: "Une erreur est survenue lors du chargement de {0}, réessayer, si le problème persiste reportez le à l'un de mes développeurs sur le [serveur de support AvaIre](https://discord.gg/gt2FWER)."
+    errorOccurredWhileLoading: "Une erreur est survenue lors du chargement de {0}, réessayer, si le problème persiste reportez le à l'un de mes développeurs sur le [serveur de support AvaIre](https://avairebot.com/support)."
 
 levelupMessages:
     - "GG :user, tu as atteint le **Niveau :level**"
@@ -55,7 +55,7 @@ administration:
         cantUseForBots: "You can't add, remove, or reset XP for bot accounts since they don't earn any, please select a normal user when using this command."
         invalidAmountGiven: "The `amount` property must be between 1 and {0} to add or take XP from a user."
         aboutToResetEverything: "You're about to reset the XP for everyone on the entire server, note that this action **CAN NOT** be reversed. If you're sure you wanna continue, run the command to completely reset the servers XP.\n\n```:command server-reset :token```\nThis command will only work for 60 seconds, after that time the token becomes invalid and the command has to be ran again to get a new token."
-        failedToSaveChanges: "Failed to save the changes to the database, please try again, if the error continues to happen, please contact support on the official [AvaIre support server](https://discord.gg/gt2FWER)."
+        failedToSaveChanges: "Failed to save the changes to the database, please try again, if the error continues to happen, please contact support on the official [AvaIre support server](https://avairebot.com/support)."
         mustBeAnAdmin: "You must be a server admin to reset everyones XP."
         invalidSecurityToken: "Invalid security token given, please provide the correct security token to reset all the servers XP."
         warning: "Warning!"

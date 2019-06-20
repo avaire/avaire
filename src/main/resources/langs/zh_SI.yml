@@ -8,7 +8,7 @@ errors:
     missingMusicQueue: '丢失的音乐`query`,您必须包含一个指向您要听的歌曲的链接，或者至少给我一个歌曲标题!'
     cantMentionEveryone: "您没有权限提及所有人."
     requireLevelFeatureToBeEnabled: '此命令要求为服务器启用 `级别和体验` 您可以询问服务器管理员是否要使用 `{0}`'
-    errorOccurredWhileLoading: '加载时出错 {0}, 请再试一次. 如果问题继续存在, 请将此情况报告给[Avaire支持服务器]上的一个开发人员。(https://discord.gg/gt2FWER). 如果你不懂如何操作，请联系我QQ1653573879来帮助操作'
+    errorOccurredWhileLoading: '加载时出错 {0}, 请再试一次. 如果问题继续存在, 请将此情况报告给[Avaire支持服务器]上的一个开发人员。(https://avairebot.com/support). 如果你不懂如何操作，请联系我QQ1653573879来帮助操作'
 
 levelupMessages:
     - "GG :user, 你成功的升为 **Level :level**"
@@ -54,7 +54,7 @@ administration:
         cantUseForBots: "您不能为bot帐户添加、删除或重置XP，因为这些帐户不能赚取任何利润，请在使用此命令时选择一个普通用户."
         invalidAmountGiven: "这个 `amount` 属性必须介于 1 和 {0} 添加或接受用户的经验."
         aboutToResetEverything: "You're about to reset the XP for everyone on the entire server, note that this action **CAN NOT** be reversed. If you're sure you wanna continue, run the command to completely reset the servers XP.\n\n```:command server-reset :token```\nThis command will only work for 60 seconds, after that time the token becomes invalid and the command has to be ran again to get a new token."
-        failedToSaveChanges: "无法将更改保存到数据库，请重试，如果错误继续发生，请与官方[AvaIre支持服务器]上的支持人员联系(https://discord.gg/gt2FWER). 如果你不懂如何操作，请联系我QQ1653573879来帮助操作"
+        failedToSaveChanges: "无法将更改保存到数据库，请重试，如果错误继续发生，请与官方[AvaIre支持服务器]上的支持人员联系(https://avairebot.com/support). 如果你不懂如何操作，请联系我QQ1653573879来帮助操作"
         mustBeAnAdmin: "You must be a server admin to reset everyones XP."
         invalidSecurityToken: "Invalid security token given, please provide the correct security token to reset all the servers XP."
         warning: "Warning!"

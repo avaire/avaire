@@ -9,7 +9,7 @@ errors:
     missingMusicQueue: 'Er mist een muziek `query`, je moet een link naar het nummer die je wilt luisteren leveren of tenminste een titel van een nummer!'
     cantMentionEveryone: "Je hebt geen toestemming om iedereen te pingen."
     requireLevelFeatureToBeEnabled: 'Om dit commando te kunnen gebruiken, moet je de `Levels en Experience` module aan hebben op de server, je kan een server admin vragen als ze dit aan willen zetten met `{0}`'
-    errorOccurredWhileLoading: 'Er is een error voorgekomen onder het laden van {0}, A.U.B opnieuw proberen, als dit probleem niet weg gaat, laat het weten bij een van de developers in de [AvaIre support server](https://discord.gg/gt2FWER).'
+    errorOccurredWhileLoading: 'Er is een error voorgekomen onder het laden van {0}, A.U.B opnieuw proberen, als dit probleem niet weg gaat, laat het weten bij een van de developers in de [AvaIre support server](https://avairebot.com/support).'
 
 levelupMessages:
     - "GG :user, je hebt **Level :level** berijkt"
@@ -55,7 +55,7 @@ administration:
         cantUseForBots: "Je kan geen exp toevoegen, aanpassen of verwijderen voor bot accounts, aangezien deze geen exp krijgen. Noem A.U.B een gewone gebruiker wanneer je dit commando gebruikt."
         invalidAmountGiven: "De `amount` waarde moet tussen de 0 en de {0} zijn om exp van een user af te pakken of om exp toe te voegen."
         aboutToResetEverything: "Je staat op het punt om alle EXP van iedereen op de server te resetten, **LET OP** dit kan **NIET** ongedaan worden. Als je zeker weet dat je wilt doorgaan, run het commando om alle exp van alle gebruikers te resetten.\n\n```:command server-reset :token```\nDit commando werkt alleen voor 60 seconden, na deze tijd wordt het token ongeldig en zal het commando opnieuw gebruikt moeten worden voor een nieuw token."
-        failedToSaveChanges: "Gefaald met het opslaan van de veranderingen naar de database, probeer A.U.B opnieuw, als deze error blijft gebeuren, neem dan contact op met support in de officiele [AvaIre support server](https://discord.gg/gt2FWER)."
+        failedToSaveChanges: "Gefaald met het opslaan van de veranderingen naar de database, probeer A.U.B opnieuw, als deze error blijft gebeuren, neem dan contact op met support in de officiele [AvaIre support server](https://avairebot.com/support)."
         mustBeAnAdmin: "Je moet een server admin zijn om iedereens EXP te resetten."
         invalidSecurityToken: "Ongeldig security token gegeven, geef A.U.B een geldig security token om de EXP van alle servers te resetten."
         warning: "Waarschuwing!"

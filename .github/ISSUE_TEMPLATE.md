@@ -1,5 +1,5 @@
 [version]: https://github.com/avaire/avaire/blob/master/build.gradle#L10
-[guild]: https://discord.gg/gt2FWER
+[guild]: https://avairebot.com/support
 [stack overflow]: https://stackoverflow.com/questions/tagged/java
 
 ## General Troubleshooting
@@ -21,7 +21,7 @@ Hey there! Before you report a bug or suggest a new feature,
 - [ ] Bug Report
 - [ ] Feature Request
 
-> For questions join the official AvaIre discord server: https://discord.gg/gt2FWER
+> For questions join the official AvaIre discord server: https://avairebot.com/support
 
 ### Description
 
