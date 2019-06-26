@@ -882,8 +882,8 @@ utility:
     WeatherCommand:
         noCityFound: "Города с названием **:name** не найдено. Вы уверены, что он существует?"
         fields:
-            weatherFor: "Weather for {0}, {1}"
-            country: "Country"
-            temperature: "Temperature"
-            windDirection: "Wind Direction"
-            windSpeed: "Wind Speed"
+            weatherFor: "Погода для {0}, {1}"
+            country: "Страна"
+            temperature: "Температура"
+            windDirection: "Направление ветра"
+            windSpeed: "Скорость ветра"
