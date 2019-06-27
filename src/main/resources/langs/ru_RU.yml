@@ -691,7 +691,7 @@ utility:
         changelogVersions: "Changelog Versions ({0})"
 
     ChannelIdCommand:
-        message: ':user :id: из :channel канала `:targetChannel`'
+        message: ':user, ID канала :channel: `:targetChannel`'
 
     ChannelInfoCommand:
         fields:
@@ -701,7 +701,7 @@ utility:
             category: 'Категория'
             bitRate: 'Битрейт'
             nsfw: 'NSFW'
-            createdAt: 'Создан в'
+            createdAt: 'Дата создания'
         noTopic: '*Для этого канала не задана тема*'
         timeFormat: 'EEE, dd MMM yyyy HH:mm'
 
@@ -847,8 +847,8 @@ utility:
         timeFormat: 'HH:mm:ss z'
 
     UserAvatarCommand:
-            noUserFound: "I found no users with the name or ID of `{0}`"
-            title: "{0}#{1}'s Avatar"
+            noUserFound: "Пользователя с ником/ID `{0}`"
+            title: "Аватар пользователя {0}#{1}"
 
     UserIdCommand:
         message: ':id: пользователя **:target** в `:targetid`'
@@ -867,9 +867,9 @@ utility:
 
     VersionCommand:
         current: 'Я в настоящее время `:difference` :type версии позади!'
-        getLatest: 'Вы можете получить последнюю версию меня на github на [avaire/avaire](https://github.com/avaire/avaire)'
+        getLatest: 'Вы можете скачать последнюю версию здесь: [avaire/avaire](https://github.com/avaire/avaire)'
         usingLatest: "Вы используете последнюю версию AvaIre!"
-        latestVersion: 'Последняя версия AvaIre v{0}'
+        latestVersion: 'Последняя версия AvaIre: v{0}'
         latestChanges: 'Последние изменения:'
         versions:
             majorName: 'Главный'
@@ -880,10 +880,10 @@ utility:
             patch: 'Patch обновления версий - исправления ошибок, реорганизация существующего кода и очень незначительные изменения, которые не влияют на другие вещи в базе кода, рекомендуется обновлять изменения патчей, чтобы не отставать от исправлений ошибок и исправлений.'
 
     WeatherCommand:
-        noCityFound: "No city was found with the name of **:name**, are you sure you spelt it correctly?"
+        noCityFound: "Города с названием **:name** не найдено. Вы уверены, что он существует?"
         fields:
-            weatherFor: "Weather for {0}, {1}"
-            country: "Country"
-            temperature: "Temperature"
-            windDirection: "Wind Direction"
-            windSpeed: "Wind Speed"
+            weatherFor: "Погода для {0}, {1}"
+            country: "Страна"
+            temperature: "Температура"
+            windDirection: "Направление ветра"
+            windSpeed: "Скорость ветра"
