@@ -652,9 +652,6 @@ music:
 
 search:
 
-    AdviceCommand:
-        nsfwDisabled: "这个 `Advice` 命令只能在NSFW通道中使用，因为搜索结果可能返回NSFW内容."
-
     DuckDuckGoCommand:
         nsfwDisabled: "这个 `Duck Duck GO` 命令只能在NSFW通道中使用，因为搜索结果可能返回NSFW内容."
         searchResults: '搜索结果: {0}'

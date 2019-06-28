@@ -10,11 +10,11 @@ public class PunService
 
     private int limit;
 
-    public int getNext_page() {
+    public int getNextPage() {
         return next_page;
     }
 
-    public int getPrevious_page() {
+    public int getPreviousPage() {
         return previous_page;
     }
 
@@ -22,7 +22,7 @@ public class PunService
 
     private int previous_page;
 
-    public int getCurrent_page() {
+    public int getCurrentPage() {
         return current_page;
     }
 
@@ -35,11 +35,11 @@ public class PunService
 
     private int status;
 
-    public int getTotal_jokes() {
+    public int getTotalJokes() {
         return total_jokes;
     }
 
-    public int getTotal_pages() {
+    public int getTotalPages() {
         return total_pages;
     }
 

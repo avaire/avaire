@@ -52,7 +52,7 @@ public class PunCommand extends Command
     public List<String> getUsageInstructions() {
         return Arrays.asList(
             "`:command` - Gets a random pun",
-                "`:command` <query> <page> - retrieves a list of puns ");
+                "`:command <query> [page]` - retrieves a list of puns ");
     }
 
     @Override
@@ -149,16 +149,16 @@ public class PunCommand extends Command
 
         if(StringUtil.isNumeric(args[args.length -1]))
         {
-            userPhraseWriter.append(String.join(" ", Arrays.asList(args).subList(0, args.length - 1)));
+            userPhraseWriter.append(String.join("\n \n", Arrays.asList(args).subList(0, args.length - 1)));
         }
         else
         {
-            userPhraseWriter.append(String.join(" ", Arrays.asList(args)));
+            userPhraseWriter.append(String.join("\n \n ", Arrays.asList(args)));
         }
 
         for (PunService.Pun pun : resultList)
         {
-            punsToSortThrough.add(pun.getJoke());
+            punsToSortThrough.add(pun.getJoke() + "\n");
         }
 
 

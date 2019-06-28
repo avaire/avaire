@@ -652,10 +652,6 @@ music:
         alreadyVoted: 'You can only vote skip once per song! `:votes` more votes needed to skip the song.'
 
 search:
-
-    AdviceCommand:
-        nsfwDisabled: "The `Advice` command can only be used in NSFW channels, as the search results may return NSFW content. "
-
     DuckDuckGoCommand:
         nsfwDisabled: "The `Duck Duck GO` command can only be used in NSFW channels, as the search results may return NSFW content."
         searchResults: 'Search result for: {0}'

@@ -653,8 +653,6 @@ music:
 
 search:
 
-
-
     DuckDuckGoCommand:
         nsfwDisabled: "Het `Duck Duck GO` commando kan alleen gebruikt worden in NSFW kanalen, omdat de resultaten NSFW beelden kan bevatten."
         searchResults: 'Zoek resultaat voor: {0}'

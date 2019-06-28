@@ -391,8 +391,8 @@ fun:
 
 
     PunCommand:
-     title: "Pun list"
-     noResults: ':user I found nothing for `:query`'
+        title: "Pun list"
+        noResults: ':user I found nothing for `:query`'
 
     RandomCatCommand:
         tooManyAttempts: "Too many attempts was made to the cat API, try again in a minute, or ask a bot administrator to get an API key at [meow.senither.com](https://meow.senither.com/) to allow for more requests."
@@ -654,9 +654,6 @@ music:
         alreadyVoted: "Tu ne peux voter qu'une fois pour passer une même musique! Il manque `:votes` pour passer la musique."
 
 search:
-    AdviceCommand:
-        nsfwDisabled: "The `Advice` command can only be used in NSFW channels, as the search results may return NSFW content. "
-
     DuckDuckGoCommand:
         nsfwDisabled: "The `Duck Duck GO` command can only be used in NSFW channels, as the search results may return NSFW content."
         searchResults: "Cherche un résultat pour: {0}"
