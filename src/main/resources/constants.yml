@@ -26,7 +26,7 @@
 feedback-channel: 324301839170273280
 
 # The changelog channel is the text channel used by the changelog command,
-# the command will read messages from the channel and then use those and
+# the command will read messages from the channel and then use those as
 # changelog messages, if the bot is bot can't read messages from
 # the channel, the changelog command will simply not work.
 #
