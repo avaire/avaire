@@ -22,7 +22,6 @@
 package com.avairebot.admin;
 
 import com.avairebot.AvaIre;
-import com.avairebot.shared.DiscordConstants;
 import com.avairebot.utilities.RoleUtil;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Role;
@@ -150,7 +149,10 @@ public class BotAdmin {
      * support server, <code>False</code> otherwise.
      */
     private AdminType getRoleAdminType(long userId) {
-        Role role = avaire.getShardManager().getRoleById(DiscordConstants.BOT_ADMIN_EXCEPTION_ROLE);
+        Role role = avaire.getShardManager().getRoleById(
+            avaire.getConstants().getBotAdminExceptionRoleId()
+        );
+
         if (role == null) {
             return AdminType.USER;
         }

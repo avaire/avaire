@@ -2,6 +2,7 @@ plugins/
 storage/
 docs/
 database\.sqlite
+/constants.yml
 /config.json
 /config.yml
 /commandMap\.json

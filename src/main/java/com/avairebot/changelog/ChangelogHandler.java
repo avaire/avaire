@@ -23,7 +23,6 @@ package com.avairebot.changelog;
 
 import com.avairebot.AvaIre;
 import com.avairebot.contracts.changelog.ChangelogLoader;
-import com.avairebot.shared.DiscordConstants;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageHistory;
 import net.dv8tion.jda.core.entities.TextChannel;
@@ -52,13 +51,16 @@ public class ChangelogHandler {
             )).values();
     }
 
-    public synchronized static void loadAndGetMessages(ChangelogLoader loader) {
+    public synchronized static void loadAndGetMessages(AvaIre avaire, ChangelogLoader loader) {
         if (!messages.isEmpty()) {
             loader.handle(sortAndFormatMessages(messages.values()));
             return;
         }
 
-        TextChannel changelogChannel = AvaIre.getInstance().getShardManager().getTextChannelById(DiscordConstants.CHANGELOG_CHANNEL_ID);
+        TextChannel changelogChannel = AvaIre.getInstance().getShardManager().getTextChannelById(
+            avaire.getConstants().getChangelogChannelId()
+        );
+
         if (changelogChannel == null) {
             loader.handle(sortAndFormatMessages(messages.values()));
             return;

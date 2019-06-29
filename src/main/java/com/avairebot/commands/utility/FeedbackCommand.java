@@ -28,7 +28,6 @@ import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.database.collection.Collection;
 import com.avairebot.factories.MessageFactory;
-import com.avairebot.shared.DiscordConstants;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import net.dv8tion.jda.core.entities.Guild;
@@ -84,7 +83,10 @@ public class FeedbackCommand extends Command {
 
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
-        TextChannel feedbackChannel = avaire.getShardManager().getTextChannelById(DiscordConstants.FEEDBACK_CHANNEL_ID);
+        TextChannel feedbackChannel = avaire.getShardManager().getTextChannelById(
+            avaire.getConstants().getFeedbackChannelId()
+        );
+
         if (feedbackChannel == null) {
             return sendErrorMessage(context, context.i18n("invalidFeedbackChannel"));
         }
