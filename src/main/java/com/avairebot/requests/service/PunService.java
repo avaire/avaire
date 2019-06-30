@@ -2,13 +2,21 @@ package com.avairebot.requests.service;
 
 import java.util.List;
 
-public class PunService
-{
+public class PunService {
+
     private List<Pun> results;
-
     private int page;
-
     private int limit;
+    private int next_page;
+    private int previous_page;
+    private int current_page;
+    private int status;
+    private int total_jokes;
+    private int total_pages;
+
+    public boolean hasData() {
+        return results != null && !results.isEmpty();
+    }
 
     public int getNextPage() {
         return next_page;
@@ -18,22 +26,13 @@ public class PunService
         return previous_page;
     }
 
-    private int next_page;
-
-    private int previous_page;
-
     public int getCurrentPage() {
         return current_page;
     }
 
-    private int current_page;
-
-
     public int getStatus() {
         return status;
     }
-
-    private int status;
 
     public int getTotalJokes() {
         return total_jokes;
@@ -43,17 +42,8 @@ public class PunService
         return total_pages;
     }
 
-    private int total_jokes;
-
-    private int total_pages;
-
-
     public List<Pun> getResults() {
         return results;
-    }
-
-    public boolean hasData() {
-        return results != null && !results.isEmpty();
     }
 
     public int getPage() {
@@ -64,12 +54,10 @@ public class PunService
         return limit;
     }
 
-    public class Pun
-    {
+    public class Pun {
+
         private String id;
-
         private String joke;
-
 
         public String getId() {
             return id;
