@@ -26,9 +26,9 @@ import java.awt.*;
 public enum MessageType {
 
     ERROR("#EF5350"),
-    WARNING("#FAA61A"),
-    SUCCESS("#43B581"),
-    INFO("#3A71C1");
+    WARNING("#DB5F07"),
+    SUCCESS("#9EAACA"),
+    INFO("#7187C0");
 
     private final String color;
 
