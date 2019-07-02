@@ -52,7 +52,6 @@ administration:
         success: "**:role** rollen er blevet tilføjet til selvtilladelige listen.\nServeren har `:slots` flere selvtilladelige roller pladser til rådighed."
 
     AdministrateExperienceCommand:
-    AdministrateExperienceCommand:
         cantUseForBots: "Du kan ikke tilføje, fjerne, eller nulstille XP for en bot-konti, da de ikke kan få noget XP til at starte med. Vælg venligst en normal bruger, når du bruger denne kommando."
         invalidAmountGiven: "Egenskaben `amount` skal være mellem 1 og {0} for at tilføje eller tage XP fra en bruger."
         aboutToResetEverything: "Du er ved at nulstille XP for alle på hele serveren. Bemærk, at denne handling **KAN IKKE** laves om. Hvis du er sikker på, at du vil fortsætte, skal du køre kommandoen for at nulstille serverne XP helt.\n\n```:command server-reset :token```\nDenne kommando fungerer kun i 60 sekunder, efter den tid token bliver ugyldig og kommandoen skal køres igen for at få et nyt token."
@@ -389,6 +388,12 @@ fun:
         invalidType: 'Ugyldig meme type givet, `{0}` er ikke en gyldig meme type!'
         mustIncludeTopAndBottomText: 'Du skal inkludere "top tekst" og "nederste tekst" argumenterne for at generere en meme.'
         listItem: '`{0}` => `{1}`'
+
+    PunCommand:
+        title: "Pun list"
+        noResults: ":user I found no puns, you can with a search or, or just try again later."
+        noResultsWithQuery: ":user I found nothing for `:query`"
+        query: "Search query: {0}"
 
     RandomCatCommand:
         tooManyAttempts: "Der blevet for mange forsøg på kat-API'et, prøv igen om et minut eller spørg en botadministrator om at få en API-nøgle på [meow.senither.com](https://meow.senither.com/) for at tillade flere commands per minut."

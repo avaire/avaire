@@ -306,9 +306,9 @@ administration:
         invalidUserIdGiven: "Ongeldige `user id` is gegeven, de `user id` moet een nummer van 18 karakters of langer zijn."
 
     VoiceKickCommand:
-        mustMentionUser: Je moet een gebruiker noemen die je wil kicken."
+        mustMentionUser: "Je moet een gebruiker noemen die je wil kicken."
         sameOrHigherRole: "Je kan geen mensen kicken met een hogere, of dezelfde rol als jezelf."
-        notConnected: Je kan iemand niet uit een spraak kanaal kicken als ze niet verbonden zijn met een spraak kanaal."
+        notConnected: "Je kan iemand niet uit een spraak kanaal kicken als ze niet verbonden zijn met een spraak kanaal."
         message: "**:target** is gekicked van **:voiceChannel** door :user voor \":reason\""
 
     VoteOptCommand:
@@ -388,6 +388,12 @@ fun:
         invalidType: 'Ongeldig meme type gegeven, `{0}` is geen geldig meme type!'
         mustIncludeTopAndBottomText: 'Je moet de `top text` en `bottom text` arguments toevoegen om een meme te genereren.'
         listItem: '`{0}` => `{1}`'
+
+    PunCommand:
+        title: "Pun list"
+        noResults: ":user I found no puns, you can with a search or, or just try again later."
+        noResultsWithQuery: ":user I found nothing for `:query`"
+        query: "Search query: {0}"
 
     RandomCatCommand:
         tooManyAttempts: "Teveel aanvragen naar de Cat API, probeer opnieuw in een minuut, of vraag een bot administrator voor een api key op [meow.senither.com](https://meow.senither.com/) om meer aanvragen toe te staan."
@@ -648,6 +654,7 @@ music:
         alreadyVoted: 'Je mag maar een keer stemmen om een nummer over te slaan per nummer! nog maar `:votes` stemmen nodig om het nummer over te slaan.'
 
 search:
+
     DuckDuckGoCommand:
         nsfwDisabled: "Het `Duck Duck GO` commando kan alleen gebruikt worden in NSFW kanalen, omdat de resultaten NSFW beelden kan bevatten."
         searchResults: 'Zoek resultaat voor: {0}'
