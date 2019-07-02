@@ -388,6 +388,12 @@ fun:
         mustIncludeTopAndBottomText: '您必须包括 `top text` 和 `bottom text` 生成模因的参数.'
         listItem: '`{0}` => `{1}`'
 
+    PunCommand:
+        title: "Pun list"
+        noResults: ":user I found no puns, you can with a search or, or just try again later."
+        noResultsWithQuery: ":user I found nothing for `:query`"
+        query: "Search query: {0}"
+
     RandomCatCommand:
         tooManyAttempts: "对cat api进行了太多的尝试，一分钟后再试一次，或者要求bot管理员在以下位置获取api密钥： [meow.senither.com](https://meow.senither.com/) 允许更多的请求."
         notFound: "我找不到猫的照片D：再试一次，也许它们现在就会出现？"

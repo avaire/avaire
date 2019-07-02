@@ -390,11 +390,16 @@ fun:
         mustIncludeTopAndBottomText: 'Du musst den `top text` und `bottom text` Argument angeben, um ein Meme generieren zu können.'
         listItem: '`{0}` => `{1}`'
 
+    PunCommand:
+        title: "Pun list"
+        noResults: ":user I found no puns, you can with a search or, or just try again later."
+        noResultsWithQuery: ":user I found nothing for `:query`"
+        query: "Search query: {0}"
+
     RandomCatCommand:
         tooManyAttempts: "Zu viele Versuche wurden zur Cat API getätigt. Warte eine Minute und versuche es erneut. Andernfalls, kontaktiere einen Bot-Administrator um die API [meow.senither.com](https://meow.senither.com/) zu erhalten, um mehr Anfragen zu ermöglichen."
         notFound: "Ich konnte kein Katzenbild finden! Versuch es doch erneut. Vielleicht siehst du jetzt eins."
         somethingWentWrong: "Etwas Unartiges ist passiert. Kontakiere einen Bot-Administrator, der sich das anschauen kann."
-
 
     ReverseCommand:
         palindrome: 'Du hast ein Palindrom umgekehrt, was hast du erwartet?'

@@ -389,6 +389,12 @@ fun:
         mustIncludeTopAndBottomText: 'È necessario includere gli elementi `top text` e `bottom text` per generare un meme.'
         listItem: '`{0}` => `{1}`'
 
+    PunCommand:
+        title: "Pun list"
+        noResults: ":user I found no puns, you can with a search or, or just try again later."
+        noResultsWithQuery: ":user I found nothing for `:query`"
+        query: "Search query: {0}"
+
     RandomCatCommand:
         tooManyAttempts: "Sono stati effettuati troppi tentativi sull'API `cat`, riprova tra un minuto o chiedi ad un amministratore del bot di ottenere una chiave API su [meow.senither.com](https://meow.senither.com/) per consentire più richieste."
         notFound: "Non sono riuscito a trovare nessuna immagine di gatti D: Prova di nuovo, forse si presenteranno ora?"
