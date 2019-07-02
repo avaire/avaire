@@ -653,7 +653,6 @@ music:
         alreadyVoted: '你每首歌只能投一次“跳过”！ `:votes` 需要更多的选票才能跳过这首歌.'
 
 search:
-
     DuckDuckGoCommand:
         nsfwDisabled: "这个 `Duck Duck GO` 命令只能在NSFW通道中使用，因为搜索结果可能返回NSFW内容."
         searchResults: '搜索结果: {0}'
