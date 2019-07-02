@@ -28,7 +28,6 @@ import com.avairebot.chat.PlaceholderMessage;
 import com.avairebot.chat.SimplePaginator;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
-import com.avairebot.shared.DiscordConstants;
 import com.avairebot.utilities.NumberUtil;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.TextChannel;
@@ -78,7 +77,10 @@ public class ChangelogCommand extends Command {
 
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
-        TextChannel changelogChannel = avaire.getShardManager().getTextChannelById(DiscordConstants.CHANGELOG_CHANNEL_ID);
+        TextChannel changelogChannel = avaire.getShardManager().getTextChannelById(
+            avaire.getConstants().getChangelogChannelId()
+        );
+
         if (changelogChannel == null) {
             return sendErrorMessage(context, context.i18n("invalidChangelogChannel"));
         }
@@ -91,7 +93,7 @@ public class ChangelogCommand extends Command {
             context.getChannel().sendTyping().queue();
         }
 
-        ChangelogHandler.loadAndGetMessages(messages -> {
+        ChangelogHandler.loadAndGetMessages(avaire, messages -> {
             if (args.length == 0) {
                 displayLatestLog(context, messages);
                 return;

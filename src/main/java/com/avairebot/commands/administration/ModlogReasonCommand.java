@@ -30,12 +30,14 @@ import com.avairebot.contracts.commands.CommandGroup;
 import com.avairebot.contracts.commands.CommandGroups;
 import com.avairebot.database.collection.Collection;
 import com.avairebot.database.collection.DataRow;
+import com.avairebot.database.query.QueryBuilder;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.factories.MessageFactory;
 import com.avairebot.shared.DiscordConstants;
 import com.avairebot.utilities.NumberUtil;
 import com.avairebot.utilities.RestActionUtil;
 import net.dv8tion.jda.core.EmbedBuilder;
+import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.TextChannel;
 
@@ -137,11 +139,15 @@ public class ModlogReasonCommand extends Command {
         final String reason = String.join(" ", Arrays.copyOfRange(args, 1, args.length));
 
         try {
-            Collection collection = avaire.getDatabase().newQueryBuilder(Constants.LOG_TABLE_NAME)
+            QueryBuilder query = avaire.getDatabase().newQueryBuilder(Constants.LOG_TABLE_NAME)
                 .where("guild_id", context.getGuild().getId())
-                .where("user_id", context.getAuthor().getId())
-                .where("modlogCase", caseId)
-                .get();
+                .where("modlogCase", caseId);
+
+            if (!context.getMember().hasPermission(Permission.ADMINISTRATOR)) {
+                query.where("user_id", context.getAuthor().getId());
+            }
+
+            Collection collection = query.get();
 
             if (collection.isEmpty()) {
                 return sendErrorMessage(context, context.i18n("couldntFindCaseWithId", caseId));
@@ -160,7 +166,6 @@ public class ModlogReasonCommand extends Command {
             avaire.getDatabase().newQueryBuilder(Constants.LOG_TABLE_NAME)
                 .useAsync(true)
                 .where("guild_id", context.getGuild().getId())
-                .where("user_id", context.getAuthor().getId())
                 .where("modlogCase", caseId)
                 .update(statement -> statement.set("reason", reason, true));
 
@@ -179,9 +184,7 @@ public class ModlogReasonCommand extends Command {
                 embeddedBuilder.setColor(embed.getColor());
                 embeddedBuilder.setTimestamp(embed.getTimestamp());
 
-                if (embed.getFooter() != null) {
-                    embeddedBuilder.setFooter(embed.getFooter().getText(), null);
-                }
+                embeddedBuilder.setFooter("Edited by " + context.getAuthor().getAsTag() + " (ID: " + context.getAuthor().getId() + ")", null);
 
                 for (MessageEmbed.Field field : embed.getFields()) {
                     if (!field.getName().equalsIgnoreCase("Reason")) {

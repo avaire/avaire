@@ -25,7 +25,6 @@ import com.avairebot.AvaIre;
 import com.avairebot.changelog.ChangelogHandler;
 import com.avairebot.changelog.ChangelogMessage;
 import com.avairebot.contracts.handlers.EventAdapter;
-import com.avairebot.shared.DiscordConstants;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
@@ -51,7 +50,7 @@ public class ChangelogEventAdapter extends EventAdapter {
     }
 
     public boolean isChangelogMessage(MessageChannel channel) {
-        return channel.getIdLong() == DiscordConstants.CHANGELOG_CHANNEL_ID;
+        return channel.getIdLong() == avaire.getConstants().getChangelogChannelId();
     }
 
     private void createChangelogMessage(long messageId, Message message) {

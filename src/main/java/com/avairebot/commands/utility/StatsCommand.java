@@ -91,8 +91,8 @@ public class StatsCommand extends Command {
             new MessageEmbed.Field(context.i18n("fields.channels"), NumberUtil.formatNicely(avaire.getShardEntityCounter().getChannels()), true),
             new MessageEmbed.Field(context.i18n("fields.servers"), NumberUtil.formatNicely(avaire.getShardEntityCounter().getGuilds()), true)
         )
-            .setTitle(context.i18n("title"), "https://discordapp.com/invite/gt2FWER")
-            .setAuthor("AvaIre v" + AppInfo.getAppInfo().version, "https://discordapp.com/invite/gt2FWER", avaire.getSelfUser().getEffectiveAvatarUrl())
+            .setTitle(context.i18n("title"), "https://avairebot.com/support")
+            .setAuthor("AvaIre v" + AppInfo.getAppInfo().version, "https://avairebot.com/support", avaire.getSelfUser().getEffectiveAvatarUrl())
             .setFooter(context.i18n("footer",
                 NumberUtil.formatNicely(AudioHandler.getDefaultAudioHandler().getTotalListenersSize()),
                 NumberUtil.formatNicely(AudioHandler.getDefaultAudioHandler().getTotalQueueSize())

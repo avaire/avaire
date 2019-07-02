@@ -67,7 +67,7 @@ public class VoiceFixCommand extends Command {
             "fix music 99%s of the time.\n\n",
             "If you're still experiencing voice issues you can try making the bot leave the voice",
             "channel by using a command like `%sstop`, and then running this command again.\n\n",
-            "Still having issues even after all that?\nYou can join the [support server](https://discord.gg/gt2FWER)",
+            "Still having issues even after all that?\nYou can join the [support server](https://avairebot.com/support)",
             "to get help from the AvaIre support team directly."
         ), "%", prefix);
     }

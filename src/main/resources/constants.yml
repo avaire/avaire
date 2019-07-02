@@ -1,0 +1,53 @@
+
+#--------------------------------------------------------------------------
+# AvaIre Discord Constants
+#--------------------------------------------------------------------------
+#
+# Below you'll find all the Discord constants IDs used within Ava for some
+# commands or special features, you can change the IDs below to
+# customize the bot more to your personal use.
+#
+# The configuration is written in a format known as YAML, you can learn
+# more about the format at https://learnxinyminutes.com/docs/yaml
+#
+# Need to validate if the config has no errors and will pass Avas config
+# management system? Try out https://codebeautify.org/yaml-validator
+#
+# Got any questions? Contact the development team on the official support
+# server for Ava at https://avairebot.com/support
+#
+
+# The feedback channel is the text channel used alongside the !feedback
+# command, any feedback messages the bot gets will be sent in the
+# channel matching the ID below, if the channel doesn't exist,
+# or the bot can't read & write to it, then the feedback
+# command will simply not work.
+#
+feedback-channel: 324301839170273280
+
+# The changelog channel is the text channel used by the changelog command,
+# the command will read messages from the channel and then use those as
+# changelog messages, if the bot is bot can't read messages from
+# the channel, the changelog command will simply not work.
+#
+changelog-channel: 570225187661021214
+
+# The activity log channel is used by Ava to log server activity, like
+# when the bot joins or leaves a server, if the channel doesn't exist,
+# or the bot can't read & write to it, then no activity log messages
+# will be sent.
+#
+activity-log-channel: 284114819278438401
+
+# The bot admin exception role is used within Ava to allow users with
+# the role matching the ID below to invoke certain system commands,
+# without giving them full bot access.
+#
+# The commands a user with the role is able to invoke is the following:
+#   - Feedback Response Command
+#   - System Server Lookup Command
+#   - Set Server Type Command
+#   - Set Bot Status Command
+#   - System Statistics Command
+#
+bot-admin-exception-role: 403265196040126464

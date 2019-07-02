@@ -60,8 +60,8 @@ AvaIre relies on the following projects:
 ---
 
 <p align="center">
-  <a href="https://discord.gg/gt2FWER"><img src="https://discordapp.com/api/guilds/284083636368834561/widget.png?style=banner2" alt="Discord server"></a>
-  <br>AvaIre support server: https://discord.gg/gt2FWER
+  <a href="https://avairebot.com/support"><img src="https://discordapp.com/api/guilds/284083636368834561/widget.png?style=banner2" alt="Discord server"></a>
+  <br>AvaIre support server: https://avairebot.com/support
 </p>
 
 ---

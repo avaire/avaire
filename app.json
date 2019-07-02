@@ -191,6 +191,26 @@
             "required": false,
             "value": ""
         },
+        "AVA_FEEDBACK_CHANNEL": {
+            "description": "The Feedback channel is the text channel used alongside the !feedback command, any feedback messages the bot gets will be sent in the channel matching the given ID, if the channel doesn't exist, or the bot can't read & write to it, then the feedback command will simply not work.",
+            "required": false,
+            "value": ""
+        },
+        "AVA_CHANGELOG_CHANNEL": {
+            "description": "The changelog channel is the text channel used by the changelog command, the command will read messages from the channel and then use those as changelog messages, if the bot is bot can't read messages from the channel, the changelog command will simply not work.",
+            "required": false,
+            "value": ""
+        },
+        "AVA_ACTIVITY_LOG_CHANNEL": {
+            "description": "The activity log channel is used by Ava to log server activity, like when the bot joins or leaves a server, if the channel doesn't exist, or the bot can't read & write to it, then no activity log messages will be sent.",
+            "required": false,
+            "value": ""
+        },
+        "AVA_BOT_ADMIN_EXCEPTION_ROLE": {
+            "description": "The bot admin exception role is used within Ava to allow users with the role matching the ID below to invoke certain system commands, without giving them full bot access.",
+            "required": false,
+            "value": ""
+        },
         "GITHUB_REPO": {
             "description": "Copy part of the link after `https://github.com/` (e.g `chaNcharge/avaire`) and paste it here, required for auto updates with Scheduler!",
             "required": false,

@@ -41,6 +41,7 @@ import com.avairebot.commands.utility.SourceCommand;
 import com.avairebot.commands.utility.StatsCommand;
 import com.avairebot.commands.utility.UptimeCommand;
 import com.avairebot.config.Configuration;
+import com.avairebot.config.ConstantsConfiguration;
 import com.avairebot.config.EnvironmentMacros;
 import com.avairebot.config.EnvironmentOverride;
 import com.avairebot.contracts.ai.Intent;
@@ -124,6 +125,7 @@ public class AvaIre {
     private static Environment applicationEnvironment;
     private final Settings settings;
     private final Configuration config;
+    private final ConstantsConfiguration constants;
     private final CacheManager cache;
     private final Blacklist blacklist;
     private final DatabaseManager database;
@@ -156,12 +158,14 @@ public class AvaIre {
         this.levelManager = new LevelManager();
 
         log.info("Loading configuration");
+        constants = new ConstantsConfiguration(this);
         config = new Configuration(this, null, "config.yml");
-        if (!config.exists()) {
-            getLogger().info("The {} configuration file is missing!", "config.yml");
+        if (!config.exists() || !constants.exists()) {
+            getLogger().info("The {} or {} configuration files is missing!", "config.yml", "constants.yml");
             getLogger().info("Creating file and terminating program...");
 
             config.saveDefaultConfig();
+            constants.saveDefaultConfig();
 
             System.exit(ExitCodes.EXIT_CODE_NORMAL);
         }
@@ -170,6 +174,7 @@ public class AvaIre {
             log.debug("Environment override is enabled, looking for environment variables and replacing the config equivalent values");
             EnvironmentMacros.registerDefaults();
             EnvironmentOverride.overrideWithPrefix("AVA", config);
+            EnvironmentOverride.overrideWithPrefix("AVA", constants);
         }
 
         botAdmins = new BotAdmin(this, Collections.unmodifiableSet(new HashSet<>(
@@ -452,6 +457,10 @@ public class AvaIre {
 
     public Configuration getConfig() {
         return config;
+    }
+
+    public ConstantsConfiguration getConstants() {
+        return constants;
     }
 
     public CacheManager getCache() {

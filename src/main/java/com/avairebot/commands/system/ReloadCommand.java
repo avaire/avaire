@@ -53,6 +53,7 @@ public class ReloadCommand extends SystemCommand {
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
         avaire.getConfig().reloadConfig();
+        avaire.getConstants().reloadConfig();
 
         for (PluginLoader loader : avaire.getPluginManager().getPlugins()) {
             loader.getClassLoader().getPlugin().reloadConfig();
