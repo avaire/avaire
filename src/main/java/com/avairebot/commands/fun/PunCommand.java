@@ -1,25 +1,22 @@
 package com.avairebot.commands.fun;
 
 import com.avairebot.AvaIre;
-import com.avairebot.chat.SimplePaginator;
+import com.avairebot.chat.PlaceholderMessage;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.factories.RequestFactory;
 import com.avairebot.requests.Response;
 import com.avairebot.requests.service.PunService;
-import com.avairebot.utilities.NumberUtil;
+import com.avairebot.utilities.RandomUtil;
+import net.dv8tion.jda.core.entities.User;
 import org.json.JSONObject;
-import org.jsoup.helper.StringUtil;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
 
 public class PunCommand extends Command {
-
-    private final String templateUrl = "https://icanhazdadjoke.com/";
 
     public PunCommand(AvaIre avaire) {
         super(avaire);
@@ -32,24 +29,23 @@ public class PunCommand extends Command {
 
     @Override
     public String getDescription() {
-        return "Gets a random pun or a list of puns based on a search query.";
+        return "Gets a random pun about a random subject, or about provide your own subject to get puns about that instead.\nAll puns are loaded from: [icanhazdadjoke.com](https://icanhazdadjoke.com/)";
     }
 
     @Override
     public List<String> getUsageInstructions() {
         return Arrays.asList(
             "`:command` - Gets a random pun",
-            "`:command <query> [page]` - retrieves a list of puns ");
+            "`:command <query>` - Gets a pun about the given query.");
     }
 
     @Override
     public List<String> getExampleUsage() {
         return Arrays.asList(
             "`:command` - Gets a random pun.",
-            "`:command chicken 2` - Gets the second page of a search for chicken puns"
+            "`:command chicken` - Gets a random pun about chickens."
         );
     }
-
 
     @Override
     public List<String> getTriggers() {
@@ -64,75 +60,61 @@ public class PunCommand extends Command {
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
         if (args.length == 0) {
-            RequestFactory.makeGET(templateUrl)
-                .addHeader("Accept", "application/json")
-                .send((Consumer<Response>) response -> {
-                    JSONObject json = new JSONObject(response.toString());
-                    sendPun(context, json);
-                });
-        } else {
-            List<String> phrase = new ArrayList<>();
-            if (StringUtil.isNumeric(args[args.length - 1])) {
-                phrase.addAll(Arrays.asList(args).subList(0, args.length - 1));
-            } else {
-                phrase.addAll(Arrays.asList(args));
-            }
-            RequestFactory.makeGET(templateUrl + "/search")
-                .addHeader("Accept", "application/json")
-                .addParameter("term", String.join(" ", phrase))
-                .send((Consumer<Response>) response -> {
-                    PunService service = (PunService) response.toService(PunService.class);
-                    if (!service.hasData()) {
-                        context.makeWarning(context.i18n("noResults"))
-                            .set("query", String.join(" ", args))
-                            .queue();
-                        return;
-                    }
-
-                    sendPunList(context, args, service.getResults());
-                });
+            return getAndSendSingleJoke(context);
         }
+
+        RequestFactory.makeGET("https://icanhazdadjoke.com/search")
+            .addHeader("Accept", "application/json")
+            .addParameter("term", String.join(" ", args))
+            .send((Consumer<Response>) response -> {
+                String query = String.join(" ", args).trim();
+                PunService service = (PunService) response.toService(PunService.class);
+
+                if (!service.hasData()) {
+                    context.makeWarning(context.i18n(
+                        "noResultsWithQuery"
+                    )).set("query", query).queue();
+                    return;
+                }
+
+                PunService.Pun pun = (PunService.Pun) RandomUtil.pickRandom(service.getResults());
+
+                sendPun(context, pun.getJoke(), query);
+            });
 
         return true;
     }
 
-    private void sendPun(CommandMessage context, JSONObject json) {
-        context.makeSuccess(json.getString("joke"))
-            .queue();
+    private boolean getAndSendSingleJoke(CommandMessage context) {
+        RequestFactory.makeGET("https://icanhazdadjoke.com/")
+            .addHeader("Accept", "application/json")
+            .send((Consumer<Response>) response -> {
+                JSONObject json = new JSONObject(response.toString());
+
+                if (!json.has("joke")) {
+                    context.makeWarning(context.i18n("noResults")).queue();
+                    return;
+                }
+
+                sendPun(context, json.getString("joke"), null);
+            });
+
+        return true;
     }
 
-    private void sendPunList(CommandMessage context, String[] args, List<PunService.Pun> resultList) {
-        List<String> punsToSortThrough = new ArrayList<>();
+    private void sendPun(CommandMessage context, String joke, String query) {
+        PlaceholderMessage message = context.makeSuccess(joke)
+            .requestedBy(context.getAuthor());
 
-        StringBuilder userPhraseWriter = new StringBuilder();
+        if (query != null) {
+            User user = context.getAuthor();
 
-        if (StringUtil.isNumeric(args[args.length - 1])) {
-            userPhraseWriter.append(String.join("\n \n", Arrays.asList(args).subList(0, args.length - 1)));
-        } else {
-            userPhraseWriter.append(String.join("\n \n ", Arrays.asList(args)));
+            message.setFooter(String.format("Requested by %s#%s | %s",
+                user.getName(), user.getDiscriminator(),
+                context.i18n("query", query)
+            ), user.getEffectiveAvatarUrl());
         }
 
-        for (PunService.Pun pun : resultList) {
-            punsToSortThrough.add(pun.getJoke() + "\n");
-        }
-
-        SimplePaginator<String> paginator = new SimplePaginator<>(punsToSortThrough, 10);
-        if (args.length > 1) {
-            paginator.setCurrentPage(NumberUtil.parseInt(args[args.length - 1], 1));
-
-        }
-
-        List<String> sortedPuns = new ArrayList<>();
-        paginator.forEach((index, key, val) -> sortedPuns.add(val));
-
-        context.makeInfo(":puns\n\n:paginator")
-            .setTitle(context.i18n("title"))
-            .set("puns", String.join("\n", sortedPuns))
-            .set(
-                "paginator", paginator.generateFooter(
-                    context.getGuild(),
-                    generateCommandTrigger(context.getMessage()) + " " + userPhraseWriter.toString())
-            )
-            .queue();
+        message.queue();
     }
 }

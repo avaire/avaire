@@ -390,7 +390,9 @@ fun:
 
     PunCommand:
         title: "Pun list"
-        noResults: ':user I found nothing for `:query`'
+        noResults: ":user I found no puns, you can with a search or, or just try again later."
+        noResultsWithQuery: ":user I found nothing for `:query`"
+        query: "Search query: {0}"
 
     RandomCatCommand:
         tooManyAttempts: "对cat api进行了太多的尝试，一分钟后再试一次，或者要求bot管理员在以下位置获取api密钥： [meow.senither.com](https://meow.senither.com/) 允许更多的请求."

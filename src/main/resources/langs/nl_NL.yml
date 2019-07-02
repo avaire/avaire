@@ -391,7 +391,9 @@ fun:
 
     PunCommand:
         title: "Pun list"
-        noResults: ':user I found nothing for `:query`'
+        noResults: ":user I found no puns, you can with a search or, or just try again later."
+        noResultsWithQuery: ":user I found nothing for `:query`"
+        query: "Search query: {0}"
 
     RandomCatCommand:
         tooManyAttempts: "Teveel aanvragen naar de Cat API, probeer opnieuw in een minuut, of vraag een bot administrator voor een api key op [meow.senither.com](https://meow.senither.com/) om meer aanvragen toe te staan."
