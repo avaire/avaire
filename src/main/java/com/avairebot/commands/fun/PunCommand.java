@@ -5,6 +5,7 @@ import com.avairebot.chat.PlaceholderMessage;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.factories.RequestFactory;
+import com.avairebot.requests.Request;
 import com.avairebot.requests.Response;
 import com.avairebot.requests.service.PunService;
 import com.avairebot.utilities.RandomUtil;
@@ -63,8 +64,7 @@ public class PunCommand extends Command {
             return getAndSendSingleJoke(context);
         }
 
-        RequestFactory.makeGET("https://icanhazdadjoke.com/search")
-            .addHeader("Accept", "application/json")
+        makeRequest(context, true)
             .addParameter("term", String.join(" ", args))
             .send((Consumer<Response>) response -> {
                 String query = String.join(" ", args).trim();
@@ -86,20 +86,26 @@ public class PunCommand extends Command {
     }
 
     private boolean getAndSendSingleJoke(CommandMessage context) {
-        RequestFactory.makeGET("https://icanhazdadjoke.com/")
-            .addHeader("Accept", "application/json")
-            .send((Consumer<Response>) response -> {
-                JSONObject json = new JSONObject(response.toString());
+        makeRequest(context, false).send((Consumer<Response>) response -> {
+            JSONObject json = new JSONObject(response.toString());
 
-                if (!json.has("joke")) {
-                    context.makeWarning(context.i18n("noResults")).queue();
-                    return;
-                }
+            if (!json.has("joke")) {
+                context.makeWarning(context.i18n("noResults")).queue();
+                return;
+            }
 
-                sendPun(context, json.getString("joke"), null);
-            });
+            sendPun(context, json.getString("joke"), null);
+        });
 
         return true;
+    }
+
+    private Request makeRequest(CommandMessage context, boolean withSearch) {
+        return RequestFactory.makeGET("https://icanhazdadjoke.com/" + (withSearch ? "search" : ""))
+            .addHeader("Accept", "application/json")
+            .addHeader("User-Agent", String.format("AvaIre Bot (ID:%s, GitHub:https://github.com/avaire/avaire)",
+                context.getJDA().getSelfUser().getId()
+            ));
     }
 
     private void sendPun(CommandMessage context, String joke, String query) {
