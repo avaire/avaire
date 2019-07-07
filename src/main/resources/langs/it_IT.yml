@@ -345,6 +345,13 @@ administration:
             normal: "I messaggi di benvenuto saranno inviati come messaggio normale."
 
 fun:
+    CoinflipCommand:
+        heads: "È uscito Testa"
+        tails: "È uscito Croce"
+
+    CSSHumorCommand:
+        notFound: "CSS joke not found"
+
     DiceCommand:
         missingDice: 'Dadi mancanti, devi includere i dadi che vuoi lanciare.'
         invalidDiceFormat: '`{0}` non è un formato di dadi valido.'
@@ -354,10 +361,6 @@ fun:
         sidesFormatMustBePositive: "`{0}` non è un formato di dadi valido, l'importo dei lati deve essere un numero positivo valido tra 1 e 128"
         moreThanFiveRollsWasGiven: '\n_Richiesti più di **5** lanci, saranno mostrati solamente i primi cinque_\n'
         resultedIn: '**{0}** risultato in **{1}**  ({2})'
-
-    CoinflipCommand:
-        heads: "È uscito Testa"
-        tails: "È uscito Croce"
 
     EightBallCommand:
         mustIncludeQuestion: 'Devi includere una domanda per 8ball.'

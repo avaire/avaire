@@ -346,6 +346,13 @@ administration:
             normal: "Now sending welcome messages through normal messages."
 
 fun:
+    CoinflipCommand:
+        heads: "You got Heads"
+        tails: "You got Tails"
+
+    CSSHumorCommand:
+       notFound: "CSS joke not found"
+
     DiceCommand:
         missingDice: 'Debes incluir el dado que quieres tirar.'
         invalidDiceFormat: '"{0}" no es un formato de dado válido.'
@@ -355,10 +362,6 @@ fun:
         sidesFormatMustBePositive: '"{0}" no es un formato de dado válido, los lados deben tener un valor positivo entre 1 y 128'
         moreThanFiveRollsWasGiven: '\n_Se han obtenido más de **5** tiradas, solo se mostrarán las 5 primras_\n'
         resultedIn: '**{0}** ha dado **{1}**  ({2})'
-
-    CoinflipCommand:
-        heads: "You got Heads"
-        tails: "You got Tails"
 
     EightBallCommand:
         mustIncludeQuestion: 'Tienes que preguntarle algo a la bola 8.'

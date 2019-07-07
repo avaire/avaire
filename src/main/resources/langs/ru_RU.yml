@@ -345,6 +345,13 @@ administration:
             normal: "Now sending welcome messages through normal messages."
 
 fun:
+    CoinflipCommand:
+        heads: "You got Heads"
+        tails: "You got Tails"
+
+    CSSHumorCommand:
+        notFound: "CSS joke not found"
+
     DiceCommand:
         missingDice: 'Вы должны включить игру в кости, если хотите бросить их.'
         invalidDiceFormat: '`{0}` не является действительным формантом для костей.'
@@ -354,10 +361,6 @@ fun:
         sidesFormatMustBePositive: '`{0}` не является допустимым форматом для кости. Сумма сторон должна быть действительным, положительным числом от 1 до 128.'
         moreThanFiveRollsWasGiven: '\n_Больше, чем **5** данных о костях не отоброжается. Сейчас отображаются только первые пять._\n'
         resultedIn: '**{0}** привело к **{1}**  ({2})'
-
-    CoinflipCommand:
-        heads: "You got Heads"
-        tails: "You got Tails"
 
     EightBallCommand:
         mustIncludeQuestion: 'Сообщение должено включать в себя вопрос для 8ball.'

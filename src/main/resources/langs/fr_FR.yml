@@ -345,6 +345,14 @@ administration:
             normal: "Now sending welcome messages through normal messages."
 
 fun:
+
+    CoinflipCommand:
+        heads: "You got Heads"
+        tails: "You got Tails"
+
+    CSSHumorCommand:
+        notFound: "CSS joke not found"
+
     DiceCommand:
         missingDice: "Tu dois inclure le dé que tu souhaites lancer."
         invalidDiceFormat: "`{0}` est un format de dé invalide."
@@ -354,10 +362,6 @@ fun:
         sidesFormatMustBePositive: "`{0}` est un format de dé invalide, le nombre de faces doit être un entier positif valide, compris entre 1 et 128"
         moreThanFiveRollsWasGiven: "\n_Plus de **5** lancés de dé, seuls les 5 premiers jets seront affichés_\n"
         resultedIn: "**{0}** a donné le résultat suivant **{1}**  ({2})"
-
-    CoinflipCommand:
-        heads: "You got Heads"
-        tails: "You got Tails"
 
     EightBallCommand:
         mustIncludeQuestion: "Tu dois inclure une question pour la 8ball."

@@ -353,6 +353,13 @@ administration:
             normal: "Now sending welcome messages through normal messages."
 
 fun:
+    CoinflipCommand:
+        heads: "You got Heads"
+        tails: "You got Tails"
+
+    CSSHumorCommand:
+        notFound: "CSS joke not found"
+
     DiceCommand:
         missingDice: 'Meg kell adnod a kockát amit dobni akarsz.'
         invalidDiceFormat: '`{0}` nem egy valós kocka formátum.'
@@ -362,10 +369,6 @@ fun:
         sidesFormatMustBePositive: '`{0}` nem egy valós kocka formátum, az oldalak összegének valós pozitív számnak kell lennie 1 és 128 között'
         moreThanFiveRollsWasGiven: '\n_Több mint **5** kocka dobás megadva, csak az első 5 lesz megjelenítve_\n'
         resultedIn: '**{0}** eredménye: **{1}**  ({2})'
-
-    CoinflipCommand:
-        heads: "You got Heads"
-        tails: "You got Tails"
 
     EightBallCommand:
         mustIncludeQuestion: 'Meg kell adnod egy kérdést a 8ball számára.'

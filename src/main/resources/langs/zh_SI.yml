@@ -344,6 +344,13 @@ administration:
             normal: "现在通过普通消息发送欢迎消息."
 
 fun:
+    CoinflipCommand:
+        heads: "你有脑袋"
+        tails: "你有尾巴"
+
+    CSSHumorCommand:
+        notFound: "CSS joke not found"
+
     DiceCommand:
         missingDice: '你必须包括你想要掷的骰子.'
         invalidDiceFormat: '`{0}` 不是有效的骰子格式.'
@@ -353,10 +360,6 @@ fun:
         sidesFormatMustBePositive: '`{0}` 不是有效的骰子格式，则边数必须是介于1和128之间的有效正数。'
         moreThanFiveRollsWasGiven: '\n_More than **5** 掷骰子的人，只有前五个人 displayed_\n'
         resultedIn: '**{0}** 导致 **{1}**  ({2})'
-
-    CoinflipCommand:
-        heads: "你有脑袋"
-        tails: "你有尾巴"
 
     EightBallCommand:
         mustIncludeQuestion: 'You must include a question for 8ball.'

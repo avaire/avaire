@@ -346,6 +346,15 @@ administration:
             normal: "Willkommensnachrichten werden nun als normale Nachricht verschickt."
 
 fun:
+
+
+    CoinflipCommand:
+        heads: "Kopf!"
+        tails: "Zahl!"
+
+    CSSHumorCommand:
+        notfound: "CSS joke not found"
+
     DiceCommand:
         missingDice: 'Du musst einen Würfel angeben, den du würfeln möchtest.'
         invalidDiceFormat: '`{0}` ist kein gültiges Würfelformat.'
@@ -355,10 +364,6 @@ fun:
         sidesFormatMustBePositive: '`{0}` ist kein gültiges Würfelformat. Die Seiten vom Würfel müssen eine positive Zahl zwischen 1 und 128 beinhalten.'
         moreThanFiveRollsWasGiven: '\n_Mehr als **5** Würfelwürfe angegeben. Nur die ersten 5 Ergebnisse werden angezeigt._\n'
         resultedIn: '**{0}** ergab folgendes Ergebnis: **{1}**  [{2}]'
-
-    CoinflipCommand:
-        heads: "Kopf!"
-        tails: "Zahl!"
 
     EightBallCommand:
         mustIncludeQuestion: 'Du musst eine Frage für 8ball hinzufügen.'

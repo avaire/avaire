@@ -345,6 +345,13 @@ administration:
             normal: "Welkom berichten worden nu gestuurd door normale berichten."
 
 fun:
+    CoinflipCommand:
+        heads: "Lande op Kop"
+        tails: "Lande op Munt"
+
+    CSSHumorCommand:
+        notFound: "CSS joke not found"
+
     DiceCommand:
         missingDice: 'Je moet wel een dobbelsteen meegeven die je wilt rollen.'
         invalidDiceFormat: '`{0}` is geen geldige dobbelsteen format.'
@@ -354,10 +361,6 @@ fun:
         sidesFormatMustBePositive: '`{0}` is geen geldige dobbelsteen format, het nummer op een zijkant moet een positief nummer zijn tussen de 0 en 128'
         moreThanFiveRollsWasGiven: '\n_Meer dan **5** keer gerold, alleen de eerste 5 worden laten zien_\n'
         resultedIn: '**{0}** resulteerde in **{1}**  ({2})'
-
-    CoinflipCommand:
-        heads: "Lande op Kop"
-        tails: "Lande op Munt"
 
     EightBallCommand:
         mustIncludeQuestion: 'Je moet wel een vraag geven voor 8ball.'
