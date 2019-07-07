@@ -37,6 +37,7 @@ public class Settings {
     private final boolean useDebugging;
     private final boolean useEnvOverride;
     private final boolean musicOnlyMode;
+    private final boolean generateJsonFileMode;
 
     private final List<String> jarArgs;
     private final List<String> runtimeArgs;
@@ -48,6 +49,7 @@ public class Settings {
         useDebugging = cmd.hasOption("debug");
         useEnvOverride = cmd.hasOption("use-environment-variables");
         musicOnlyMode = cmd.hasOption("music");
+        generateJsonFileMode = cmd.hasOption("generate-json-file");
 
         RuntimeMXBean runtimeMxBean = ManagementFactory.getRuntimeMXBean();
         this.runtimeArgs = runtimeMxBean.getInputArguments();
@@ -72,6 +74,10 @@ public class Settings {
 
     public boolean isMusicOnlyMode() {
         return musicOnlyMode;
+    }
+
+    public boolean isGenerateJsonFileMode() {
+        return generateJsonFileMode;
     }
 
     public List<String> getJarArgs() {

@@ -22,13 +22,16 @@
 package com.avairebot.commands.system;
 
 import com.avairebot.AvaIre;
-import com.avairebot.commands.*;
+import com.avairebot.commands.CategoryDataContext;
+import com.avairebot.commands.CommandHandler;
+import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.SystemCommand;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
 
 public class JSONCmdMapCommand extends SystemCommand {
 
@@ -58,50 +61,7 @@ public class JSONCmdMapCommand extends SystemCommand {
 
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
-        Map<String, Object> map = new LinkedHashMap<>();
-        for (Category category : CategoryHandler.getValues()) {
-            Map<String, Object> categoryMap = new LinkedHashMap<>();
-            Map<String, JSONCommand> categoryCommands = new LinkedHashMap<>();
-
-            for (CommandContainer container : CommandHandler.getCommands().stream()
-                .filter(container -> container.getCategory().equals(category))
-                .sorted(Comparator.comparing(container -> container.getCommand().getClass().getSimpleName()))
-                .collect(Collectors.toList())) {
-
-                context.setI18nCommandPrefix(container);
-
-                JSONCommand command = new JSONCommand();
-
-                command.name = container.getCommand().getName();
-                command.description = container.getCommand().getDescription(null);
-                command.usage = container.getCommand().getUsageInstructions();
-                command.example = container.getCommand().getExampleUsage();
-                command.triggers = container.getCommand().getTriggers();
-                command.middlewares = container.getCommand().getMiddleware();
-                command.priority = container.getCommand().getCommandPriority();
-
-                if (container.getCommand().getRelations() != null) {
-                    command.relationships = container.getCommand().getRelations().stream()
-                        .map(clazz -> {
-                            CommandContainer relatedCommand = CommandHandler.getCommand(clazz);
-                            if (relatedCommand == null) {
-                                return "Unknown::" + clazz.getSimpleName();
-                            }
-                            return relatedCommand.getCategory().getName() + "::" + clazz.getSimpleName();
-                        })
-                        .collect(Collectors.toList());
-                }
-
-                categoryCommands.put(container.getCommand().getClass().getSimpleName(), command);
-            }
-
-            if (!categoryCommands.isEmpty()) {
-                categoryMap.put("prefix", category.getPrefix());
-                categoryMap.put("commands", categoryCommands);
-
-                map.put(category.getName(), categoryMap);
-            }
-        }
+        LinkedHashMap<String, CategoryDataContext> map = CommandHandler.generateCommandMapFrom(context);
 
         try (FileWriter file = new FileWriter("commandMap.json")) {
             file.write(AvaIre.gson.toJson(map));
@@ -114,16 +74,5 @@ public class JSONCmdMapCommand extends SystemCommand {
         }
 
         return true;
-    }
-
-    private class JSONCommand {
-        String name;
-        String description;
-        List<String> usage;
-        List<String> example;
-        List<String> triggers;
-        List<String> middlewares;
-        List<String> relationships;
-        CommandPriority priority;
     }
 }
