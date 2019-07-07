@@ -4,6 +4,8 @@ import com.avairebot.AvaIre;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.contracts.commands.CommandContext;
+import com.avairebot.utilities.ColorUtil;
+import com.avairebot.utilities.RandomUtil;
 import com.avairebot.utilities.RoleUtil;
 import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.impl.RoleImpl;
@@ -50,7 +52,7 @@ public class SetRoleColorCommand extends Command
     @Override
     public List<String> getUsageInstructions() {
         return Arrays.asList(
-            "`:command <role> <color>` - Sets the role to the given color provided in hex",
+            "`:command <role> <color>` - Sets the role to the given color provided in hex.",
             "`:command <role> random` - Sets the role to a random color"
         );
     }
@@ -59,6 +61,7 @@ public class SetRoleColorCommand extends Command
     public List<String> getExampleUsage() {
         return Arrays.asList(
             "`:command dj #0000ff` - Sets the dj role blue.",
+            "`:command @dj #0000ff` - Sets the dj role blue.",
             "`:command dj random` - Sets the dj role to a random color."
         );
     }
@@ -106,16 +109,26 @@ public class SetRoleColorCommand extends Command
         }
         else
         {
-            try
+            if(args[1].equalsIgnoreCase("random"))
             {
-                Color color = Color.decode(args[1]);
+                Color color = RandomUtil.getRandomColor();
                 RoleImpl actualRole = (RoleImpl)role;
                 actualRole.getManager().setColor(color).queue();
             }
-            catch(NumberFormatException ex)
+            else
             {
-                return sendErrorMessage(context,context.i18n("invalidFormat"));
+                try
+                {
+                    Color color = ColorUtil.getColorFromString(args[1]);
+                    RoleImpl actualRole = (RoleImpl)role;
+                    actualRole.getManager().setColor(color).queue();
+                }
+                catch(Throwable ex)
+                {
+                    return sendErrorMessage(context,context.i18n("invalidFormat"));
+                }
             }
+
         }
 
         return true;

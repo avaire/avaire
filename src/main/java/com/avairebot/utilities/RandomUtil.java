@@ -79,7 +79,7 @@ public class RandomUtil {
      *
      * @return The random color
      */
-    public static Color randomColor()
+    public static Color getRandomColor()
     {
         float red = random.nextInt(255);
         float green = random.nextInt(255);

@@ -1,6 +1,7 @@
 package com.avairebot.utilities;
 
 import java.awt.*;
+import java.lang.reflect.Field;
 
 public class ColorUtil
 {
@@ -31,5 +32,40 @@ public class ColorUtil
      */
     public static Color makeColor(float red, float green, float blue) {
         return new Color(red / 255F, green / 255F, blue / 255F, 1F);
+    }
+
+    /**
+     * Converts a given string into a color.
+     *
+     * @param value : the string, either a name or a hex-string.
+     * @return the color.
+     */
+    public static Color getColorFromString(String value) throws Throwable
+    {
+        if (value == null)
+        {
+            return Color.black;
+        }
+        try
+        {
+            // get color by hex or octal value
+            return Color.decode(value);
+        }
+        catch (NumberFormatException nfe)
+        {
+            try
+            {
+                // if we can't decode lets try to get it by name
+                // try to get a color by name using reflection
+                final Field f = Color.class.getField(value);
+
+                return (Color) f.get(null);
+            }
+            catch(Exception ex)
+            {
+                throw new Throwable(ex);
+            }
+
+        }
     }
 }
