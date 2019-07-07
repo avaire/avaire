@@ -23,6 +23,7 @@ package com.avairebot.commands;
 
 import com.avairebot.AvaIre;
 import com.avairebot.Constants;
+import com.avairebot.commands.system.JSONCmdMapCommand;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.contracts.commands.CommandSource;
 import com.avairebot.database.controllers.GuildController;
@@ -35,7 +36,9 @@ import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.utils.Checks;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @SuppressWarnings("WeakerAccess")
 public class CommandHandler {
@@ -232,6 +235,52 @@ public class CommandHandler {
         }
 
         return getHighPriorityCommandFromCommands(commands);
+    }
+
+    /**
+     * Generates a linked hash map of all commands registered to the command handler,
+     * where the key is the name of the category the command is linked to, and the
+     * value is the category data context, the category context will contain
+     * the category prefix and the command data context.
+     * <p>
+     * <b>Note:</b> This method is used for generating the necessary data to produce the
+     * commandMap.json file(See {@link JSONCmdMapCommand JSON Command Map Command} for
+     * more info).
+     *
+     * @param context The command message context that should be used to to generate
+     *                the command data, or {@code NULL}.
+     * @return The generated command map containing details about all the registered commands.
+     */
+    public static LinkedHashMap<String, CategoryDataContext> generateCommandMapFrom(@Nullable CommandMessage context) {
+        if (context == null) {
+            context = new CommandMessage();
+        }
+
+        LinkedHashMap<String, CategoryDataContext> map = new LinkedHashMap<>();
+        for (Category category : CategoryHandler.getValues()) {
+            LinkedHashMap<String, CommandDataContext> categoryCommands = new LinkedHashMap<>();
+
+            for (CommandContainer container : CommandHandler.getCommands().stream()
+                .filter(container -> container.getCategory().equals(category))
+                .sorted(Comparator.comparing(container -> container.getCommand().getClass().getSimpleName()))
+                .collect(Collectors.toList())) {
+
+                context.setI18nCommandPrefix(container);
+
+                categoryCommands.put(
+                    container.getCommand().getClass().getSimpleName(),
+                    new CommandDataContext(container)
+                );
+            }
+
+            if (!categoryCommands.isEmpty()) {
+                map.put(category.getName(), new CategoryDataContext(
+                    category.getPrefix(), categoryCommands
+                ));
+            }
+        }
+
+        return map;
     }
 
     /**
