@@ -278,6 +278,10 @@ administration:
     RemoveSelfAssignableRoleCommand:
         message: "这个 **:role** 角色已从自我分配列表中删除。.\n服务器具有 `:slots` 更多可自我分配的角色插槽可用."
 
+    SetRoleColorCommand:
+        noRoleFound: "No role with that identifier found."
+        invalidFormat: "Argument type mismatch."
+
     SlowmodeCommand:
         missingArgument: "参数丢失，则必须传入 `seconds` 值为此通道或所述通道启用慢速模式，或 `off` to disable it."
         mustBeValidNumbers: "给定的慢模值无效，则必须在 **1** and **120**."
@@ -344,6 +348,13 @@ administration:
             normal: "现在通过普通消息发送欢迎消息."
 
 fun:
+    CoinflipCommand:
+        heads: "你有脑袋"
+        tails: "你有尾巴"
+
+    CSSHumorCommand:
+        notFound: "CSS joke not found"
+
     DiceCommand:
         missingDice: '你必须包括你想要掷的骰子.'
         invalidDiceFormat: '`{0}` 不是有效的骰子格式.'
@@ -353,10 +364,6 @@ fun:
         sidesFormatMustBePositive: '`{0}` 不是有效的骰子格式，则边数必须是介于1和128之间的有效正数。'
         moreThanFiveRollsWasGiven: '\n_More than **5** 掷骰子的人，只有前五个人 displayed_\n'
         resultedIn: '**{0}** 导致 **{1}**  ({2})'
-
-    CoinflipCommand:
-        heads: "你有脑袋"
-        tails: "你有尾巴"
 
     EightBallCommand:
         mustIncludeQuestion: 'You must include a question for 8ball.'

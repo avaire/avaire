@@ -279,6 +279,10 @@ administration:
     RemoveSelfAssignableRoleCommand:
         message: "The **:role** role has been removed from the self-assignable list.\nThe server has `:slots` more self-assignable roles slots available."
 
+    SetRoleColorCommand:
+        noRoleFound: "No role with that identifier found."
+        invalidFormat: "Argument type mismatch."
+
     SlowmodeCommand:
         missingArgument: "Missing argument, you must either pass in the `seconds` value to enable slowmode for this or the mentioned channel, or `off` to disable it."
         mustBeValidNumbers: "Invalid slowmode value given, you must provide a number between **1** and **120**."
@@ -345,6 +349,14 @@ administration:
             normal: "Now sending welcome messages through normal messages."
 
 fun:
+
+    CoinflipCommand:
+        heads: "You got Heads"
+        tails: "You got Tails"
+
+    CSSHumorCommand:
+        notFound: "CSS joke not found"
+
     DiceCommand:
         missingDice: 'You must include the dice that you want to roll.'
         invalidDiceFormat: '`{0}` is not a valid dice format.'
@@ -354,10 +366,6 @@ fun:
         sidesFormatMustBePositive: '`{0}` is not a valid dice format, the sides amount must be a valid positive number between 1 and 128'
         moreThanFiveRollsWasGiven: '\n_More than **5** dice rolls given, only the first five will be displayed_\n'
         resultedIn: '**{0}** resulted in **{1}**  ({2})'
-
-    CoinflipCommand:
-        heads: "You got Heads"
-        tails: "You got Tails"
 
     EightBallCommand:
         mustIncludeQuestion: 'You must include a question for 8ball.'

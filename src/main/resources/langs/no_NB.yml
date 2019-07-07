@@ -279,6 +279,10 @@ administration:
     RemoveSelfAssignableRoleCommand:
         message: "Role **:role** role has been removed from the self-assignable list.\nThe server has `:slots` more self-assignable roles slots available."
 
+    SetRoleColorCommand:
+        noRoleFound: "No role with that identifier found."
+        invalidFormat: "Argument type mismatch."
+
     SlowmodeCommand:
         missingArgument: "Missing argument, you must either pass in the `seconds` value to enable slowmode for this or the mentioned channel, or `off` to disable it."
         mustBeValidNumbers: "Invalid slowmode value given, you must provide a number between **1** and **120**."
@@ -345,6 +349,13 @@ administration:
             normal: "Now sending welcome messages through normal messages."
 
 fun:
+    CoinflipCommand:
+        heads: "You got Heads"
+        tails: "You got Tails"
+
+    CSSHumorCommand:
+        notFound: "CSS joke not found"
+
     DiceCommand:
         missingDice: 'Du må inkludere ett gyldig terning format.'
         invalidDiceFormat: '`{0}` er ikke ett gyldig terning format.'
@@ -354,10 +365,6 @@ fun:
         sidesFormatMustBePositive: '`{0}` er ikke ett gyldig terning format, sidene må være ett gyldig tall mellom 1 og 128'
         moreThanFiveRollsWasGiven: '\n_Mere enn **5** terning kast, bare de første fem vil bli vist_\n'
         resultedIn: '**{0}** resulterte i **{1}**  ({2})'
-
-    CoinflipCommand:
-        heads: "You got Heads"
-        tails: "You got Tails"
 
     EightBallCommand:
         mustIncludeQuestion: 'Du må inkludere ett spørsmål for 8ball.'

@@ -22,6 +22,7 @@
 package com.avairebot.imagegen.colors.ranks;
 
 import com.avairebot.contracts.imagegen.BackgroundRankColors;
+import com.avairebot.utilities.ColorUtil;
 
 import javax.annotation.Nonnull;
 import java.awt.*;
@@ -31,36 +32,36 @@ public class PurpleColors extends BackgroundRankColors {
     @Nonnull
     @Override
     public Color getBackgroundColor() {
-        return makeColor(55, 55, 70);
+        return ColorUtil.makeColor(55, 55, 70);
     }
 
     @Nonnull
     @Override
     public Color getMainTextColor() {
-        return makeColor(226, 226, 229, 85);
+        return ColorUtil.makeColor(226, 226, 229, 85);
     }
 
     @Nonnull
     @Override
     public Color getSecondaryTextColor() {
-        return makeColor(166, 166, 166, 85);
+        return ColorUtil.makeColor(166, 166, 166, 85);
     }
 
     @Nonnull
     @Override
     public Color getExperienceBackgroundColor() {
-        return makeColor(38, 39, 59, 60);
+        return ColorUtil.makeColor(38, 39, 59, 60);
     }
 
     @Nonnull
     @Override
     public Color getExperienceForegroundColor() {
-        return makeColor(104, 107, 170, 80);
+        return ColorUtil.makeColor(104, 107, 170, 80);
     }
 
     @Nonnull
     @Override
     public Color getExperienceSeparatorColor() {
-        return makeColor(140, 144, 226, 80);
+        return ColorUtil.makeColor(140, 144, 226, 80);
     }
 }

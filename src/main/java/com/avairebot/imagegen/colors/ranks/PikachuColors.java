@@ -22,6 +22,7 @@
 package com.avairebot.imagegen.colors.ranks;
 
 import com.avairebot.contracts.imagegen.BackgroundRankColors;
+import com.avairebot.utilities.ColorUtil;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -32,42 +33,42 @@ public class PikachuColors extends BackgroundRankColors {
     @Nullable
     @Override
     public Color getBackgroundCoverColor() {
-        return makeColor(0, 0, 0, 22);
+        return ColorUtil.makeColor(0, 0, 0, 22);
     }
 
     @Nonnull
     @Override
     public Color getMainTextColor() {
-        return makeColor(226, 226, 229, 85);
+        return ColorUtil.makeColor(226, 226, 229, 85);
     }
 
     @Nonnull
     @Override
     public Color getSecondaryTextColor() {
-        return makeColor(247, 217, 18, 90);
+        return ColorUtil.makeColor(247, 217, 18, 90);
     }
 
     @Nonnull
     @Override
     public Color getExperienceBackgroundColor() {
-        return makeColor(240, 235, 89, 45);
+        return ColorUtil.makeColor(240, 235, 89, 45);
     }
 
     @Nonnull
     @Override
     public Color getExperienceForegroundColor() {
-        return makeColor(247, 217, 18, 80);
+        return ColorUtil.makeColor(247, 217, 18, 80);
     }
 
     @Nonnull
     @Override
     public Color getExperienceSeparatorColor() {
-        return makeColor(247, 185, 18, 85);
+        return ColorUtil.makeColor(247, 185, 18, 85);
     }
 
     @Nonnull
     @Override
     public Color getExperienceTextColor() {
-        return makeColor(34, 34, 34, 80);
+        return ColorUtil.makeColor(34, 34, 34, 80);
     }
 }

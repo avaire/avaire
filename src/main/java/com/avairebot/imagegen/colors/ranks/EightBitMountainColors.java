@@ -22,6 +22,7 @@
 package com.avairebot.imagegen.colors.ranks;
 
 import com.avairebot.contracts.imagegen.BackgroundRankColors;
+import com.avairebot.utilities.ColorUtil;
 
 import javax.annotation.Nonnull;
 import java.awt.*;
@@ -31,36 +32,36 @@ public class EightBitMountainColors extends BackgroundRankColors {
     @Nonnull
     @Override
     public Color getBackgroundColor() {
-        return makeColor(55, 55, 70);
+        return ColorUtil.makeColor(55, 55, 70);
     }
 
     @Nonnull
     @Override
     public Color getMainTextColor() {
-        return makeColor(213, 209, 216, 85);
+        return ColorUtil.makeColor(213, 209, 216, 85);
     }
 
     @Nonnull
     @Override
     public Color getSecondaryTextColor() {
-        return makeColor(220, 191, 198, 85);
+        return ColorUtil.makeColor(220, 191, 198, 85);
     }
 
     @Nonnull
     @Override
     public Color getExperienceBackgroundColor() {
-        return makeColor(183, 90, 102, 75);
+        return ColorUtil.makeColor(183, 90, 102, 75);
     }
 
     @Nonnull
     @Override
     public Color getExperienceForegroundColor() {
-        return makeColor(156, 129, 159, 80);
+        return ColorUtil.makeColor(156, 129, 159, 80);
     }
 
     @Nonnull
     @Override
     public Color getExperienceSeparatorColor() {
-        return makeColor(83, 180, 201, 0);
+        return ColorUtil.makeColor(83, 180, 201, 0);
     }
 }

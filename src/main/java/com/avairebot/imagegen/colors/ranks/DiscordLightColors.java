@@ -22,6 +22,7 @@
 package com.avairebot.imagegen.colors.ranks;
 
 import com.avairebot.contracts.imagegen.BackgroundRankColors;
+import com.avairebot.utilities.ColorUtil;
 
 import javax.annotation.Nonnull;
 import java.awt.*;
@@ -31,42 +32,42 @@ public class DiscordLightColors extends BackgroundRankColors {
     @Nonnull
     @Override
     public Color getBackgroundColor() {
-        return makeColor(243, 243, 243);
+        return ColorUtil.makeColor(243, 243, 243);
     }
 
     @Nonnull
     @Override
     public Color getMainTextColor() {
-        return makeColor(47, 49, 54, 72);
+        return ColorUtil.makeColor(47, 49, 54, 72);
     }
 
     @Nonnull
     @Override
     public Color getSecondaryTextColor() {
-        return makeColor(116, 127, 141, 85);
+        return ColorUtil.makeColor(116, 127, 141, 85);
     }
 
     @Nonnull
     @Override
     public Color getExperienceBackgroundColor() {
-        return makeColor(116, 127, 141, 80);
+        return ColorUtil.makeColor(116, 127, 141, 80);
     }
 
     @Nonnull
     @Override
     public Color getExperienceForegroundColor() {
-        return makeColor(114, 137, 218, 80);
+        return ColorUtil.makeColor(114, 137, 218, 80);
     }
 
     @Nonnull
     @Override
     public Color getExperienceTextColor() {
-        return makeColor(243, 243, 243);
+        return ColorUtil.makeColor(243, 243, 243);
     }
 
     @Nonnull
     @Override
     public Color getExperienceSeparatorColor() {
-        return makeColor(109, 131, 208, 80);
+        return ColorUtil.makeColor(109, 131, 208, 80);
     }
 }

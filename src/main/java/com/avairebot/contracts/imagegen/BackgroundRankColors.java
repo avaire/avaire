@@ -21,11 +21,14 @@
 
 package com.avairebot.contracts.imagegen;
 
+import com.avairebot.utilities.ColorUtil;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.awt.*;
 
-public abstract class BackgroundRankColors implements BackgroundColors {
+public abstract class BackgroundRankColors
+{
 
     /**
      * The color that should be used for the background, this will only used if
@@ -36,7 +39,7 @@ public abstract class BackgroundRankColors implements BackgroundColors {
      */
     @Nonnull
     public Color getBackgroundColor() {
-        return makeColor(50, 54, 60);
+        return ColorUtil.makeColor(50, 54, 60);
     }
 
     /**
