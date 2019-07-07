@@ -34,6 +34,7 @@ import com.avairebot.blacklist.Blacklist;
 import com.avairebot.cache.CacheManager;
 import com.avairebot.cache.CacheType;
 import com.avairebot.chat.ConsoleColor;
+import com.avairebot.commands.CategoryDataContext;
 import com.avairebot.commands.CategoryHandler;
 import com.avairebot.commands.CommandHandler;
 import com.avairebot.commands.administration.ChangePrefixCommand;
@@ -100,6 +101,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nullable;
 import javax.security.auth.login.LoginException;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
@@ -162,12 +164,17 @@ public class AvaIre {
         config = new Configuration(this, null, "config.yml");
         if (!config.exists() || !constants.exists()) {
             getLogger().info("The {} or {} configuration files is missing!", "config.yml", "constants.yml");
-            getLogger().info("Creating file and terminating program...");
+            getLogger().info(settings.isGenerateJsonFileMode()
+                ? "Creating files and skipping terminating process due to command generation flag. "
+                : "Creating files and terminating program..."
+            );
 
             config.saveDefaultConfig();
             constants.saveDefaultConfig();
 
-            System.exit(ExitCodes.EXIT_CODE_NORMAL);
+            if (!settings.isGenerateJsonFileMode()) {
+                System.exit(ExitCodes.EXIT_CODE_NORMAL);
+            }
         }
 
         if (settings.useEnvOverride()) {
@@ -196,7 +203,7 @@ public class AvaIre {
             log.info("Enabling rest action context parsing and printing stack traces for optimal debugging");
         }
 
-        log.info("Registering and connecting to database");
+        log.info("Registering database, query builder, schema builder, and services");
         database = new DatabaseManager(this);
 
         log.info("Registering database table migrations");
@@ -294,7 +301,26 @@ public class AvaIre {
             System.exit(ExitCodes.EXIT_CODE_ERROR);
         }
 
-        log.info("Running database migrations");
+        if (settings.isGenerateJsonFileMode()) {
+            log.info("");
+            log.info("Preparations for generating the command file have finished!");
+            log.info("Generating file...");
+
+            LinkedHashMap<String, CategoryDataContext> map = CommandHandler.generateCommandMapFrom(null);
+
+            try (FileWriter file = new FileWriter("commandMap.json")) {
+                file.write(AvaIre.gson.toJson(map));
+
+                log.info("The `commandMap.json` file has been generated successfully!");
+            } catch (IOException e) {
+                log.error("Something went wrong while trying to save the command map: {}", e.getMessage(), e);
+                System.exit(ExitCodes.EXIT_CODE_ERROR);
+            }
+
+            System.exit(ExitCodes.EXIT_CODE_NORMAL);
+        }
+
+        log.info("Connecting to database & Running migrations");
         database.getMigrations().up();
 
         log.info("Preparing blacklist and syncing the list with the database");

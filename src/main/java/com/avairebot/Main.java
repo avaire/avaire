@@ -42,6 +42,7 @@ public class Main {
         options.addOption(new Option("env", "use-environment-variables", false, "Enables environment variables override for the config options, this allows for setting up environment variables like \"AVA_DISCORD_TOKEN\" to override the \"discord.token\" option in the config. Every option in the config can be overwritten with an environment variable called \"AVA_\" plus the path to the config option in all uppercase, and any special characters replaced with an underscore(_), for example \"database.type\" would be \"AVA_DATABASE_TYPE\".\nNote: None of the values are stored in the config permanently, removing the environment variable will make the bot use the config option again(after a restart)."));
         options.addOption(new Option("nocolor", "no-colors", false, "Disables colors for commands and AI actions in the terminal."));
         options.addOption(new Option("d", "debug", false, "Enables debugging mode, this will log extra information to the terminal."));
+        options.addOption(new Option("gsf", "generate-json-file", false, "Enters command generation mode, when this flag is enabled, the bot won't actually start, but will instead generate a \"commandMap.json\" file containing information about all the registered commands. This file is used for avairebot.com to generate the commands page."));
 
         CommandLineParser parser = new DefaultParser();
         HelpFormatter formatter = new HelpFormatter();

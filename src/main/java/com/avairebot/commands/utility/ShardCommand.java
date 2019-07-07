@@ -82,7 +82,7 @@ public class ShardCommand extends Command {
 
     @Override
     public CommandPriority getCommandPriority() {
-        if (avaire.getShardManager().getShards().size() < 2) {
+        if (avaire.areWeReadyYet() && avaire.getShardManager().getShards().size() < 2) {
             return CommandPriority.HIDDEN;
         }
         return super.getCommandPriority();

@@ -61,8 +61,18 @@ public class CommandMessage implements CommandContext {
     private YamlConfiguration i18n;
     private String i18nCommandPrefix;
 
+    public CommandMessage() {
+        this(null);
+    }
+
     public CommandMessage(CommandContext message) {
-        this(null, message.getDatabaseEventHolder(), message.getMessage(), false, new String[0]);
+        this(
+            null,
+            message == null ? null : message.getDatabaseEventHolder(),
+            message == null ? null : message.getMessage(),
+            false,
+            new String[0]
+        );
     }
 
     public CommandMessage(CommandContext message, DatabaseEventHolder databaseEventHolder) {
@@ -80,9 +90,9 @@ public class CommandMessage implements CommandContext {
 
         this.message = message;
 
-        this.guild = message.getGuild();
-        this.member = message.getMember();
-        this.channel = message.getTextChannel();
+        this.guild = message == null ? null : message.getGuild();
+        this.member = message == null ? null : message.getMember();
+        this.channel = message == null ? null : message.getTextChannel();
         this.databaseEventHolder = databaseEventHolder;
 
         this.mentionableCommand = mentionableCommand;
