@@ -279,8 +279,8 @@ administration:
         message: "这个 **:role** 角色已从自我分配列表中删除。.\n服务器具有 `:slots` 更多可自我分配的角色插槽可用."
 
     SetRoleColorCommand:
-        noRoleFound: "No role with that identifier found."
-        invalidFormat: "Argument type mismatch."
+       noRoleFound: "No role with the name {0} found."
+       invalidColor: "Invalid color {0}."
 
     SlowmodeCommand:
         missingArgument: "参数丢失，则必须传入 `seconds` 值为此通道或所述通道启用慢速模式，或 `off` to disable it."
@@ -850,6 +850,9 @@ utility:
             members: '成员'
             channels: '频道'
             servers: '服务器'
+
+    TemperatureConvertCommand:
+        invalidNumberFormat: "Given argument {0} is not a parsable number."
 
     UptimeCommand:
         message: '我上网已经很久了 :time'

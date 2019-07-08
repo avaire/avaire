@@ -105,7 +105,7 @@ public class SetRoleColorCommand extends Command
         Role role = RoleUtil.getRoleFromMentionsOrName(context.message,args[0]);
         if(role == null)
         {
-            return sendErrorMessage(context,context.i18n("noRoleFound"));
+            return sendErrorMessage(context,context.i18n("noRoleFound",args[0]));
         }
         else
         {
@@ -125,7 +125,7 @@ public class SetRoleColorCommand extends Command
                 }
                 catch(Throwable ex)
                 {
-                    return sendErrorMessage(context,context.i18n("invalidFormat"));
+                    return sendErrorMessage(context,context.i18n("invalidColor",args[1]));
                 }
             }
 

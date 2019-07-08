@@ -231,14 +231,6 @@ administration:
         notAPunishment: "The modlog case ID with an ID of `{0}` is not a punishment!"
         message: "The modlog case with an ID of **:case** has been been pardoned successfully."
 
-    ModlogPardonCommand:
-        modlogNotEnabled: "No modlog channel has been set, you must set a modlog channel to use this command."
-        invalidCaseId: "Invalid case id given, the ID must be greater than 0 and less than {0}"
-        couldntFindCaseWithId: "Couldn't find a modlog case with an ID of {0} where you were the moderator, are you sure you're the moderator for the given modlog case?"
-        caseAlreadyPardoned: "The modlog case ID with an ID of `{0}` is already pardoned."
-        notAPunishment: "The modlog case ID with an ID of `{0}` is not a punishment!"
-        message: "The modlog case with an ID of **:case** has been been pardoned successfully."
-
     ModlogReasonCommand:
         modlogNotEnabled: "No modlog channel has been set, you must set a modlog channel to use this command."
         invalidCaseId: "Invalid case id given, the ID must be greater than 0 and less than {0}"
@@ -288,8 +280,8 @@ administration:
         message: "Role **:role** role has been removed from the self-assignable list.\nThe server has `:slots` more self-assignable roles slots available."
 
     SetRoleColorCommand:
-        noRoleFound: "No role with that identifier found."
-        invalidFormat: "Argument type mismatch."
+        noRoleFound: "No role with the name {0} found."
+        invalidFormat: "Invalid color {0}."
 
     SlowmodeCommand:
         missingArgument: "Missing argument, you must either pass in the `seconds` value to enable slowmode for this or the mentioned channel, or `off` to disable it."
@@ -857,6 +849,9 @@ utility:
             members: 'Felhasználók'
             channels: 'Channelek'
             servers: 'Szerverek'
+
+    TemperatureConvertCommand:
+        invalidNumberFormat: "Given argument {0} is not a parsable number."
 
     UptimeCommand:
         message: 'Elérhető voltam :time ideje'

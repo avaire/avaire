@@ -280,8 +280,8 @@ administration:
         message: "The **:role** role has been removed from the self-assignable list.\nThe server has `:slots` more self-assignable roles slots available."
 
     SetRoleColorCommand:
-        noRoleFound: "No role with that identifier found."
-        invalidFormat: "Argument type mismatch."
+        noRoleFound: "No role with the name {0} found."
+        invalidColor: "Invalid color {0}."
 
     SlowmodeCommand:
         missingArgument: "Missing argument, you must either pass in the `seconds` value to enable slowmode for this or the mentioned channel, or `off` to disable it."
@@ -852,6 +852,10 @@ utility:
             members: 'Members'
             channels: 'Channels'
             servers: 'Servers'
+
+
+    TemperatureConvertCommand:
+        invalidNumberFormat: "Given argument {0} is not a parsable number."
 
     UptimeCommand:
         message: 'I have been online for :time'

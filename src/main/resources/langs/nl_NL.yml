@@ -280,8 +280,8 @@ administration:
         message: "De **:role** rol is verwijderd van de zelf toegeven lijst.\nDe server heeft nog `:slots` plekken voor zelf toe te geven rollen."
 
     SetRoleColorCommand:
-        noRoleFound: "No role with that identifier found."
-        invalidFormat: "Argument type mismatch."
+        noRoleFound: "No role with the name {0} found."
+        invalidFormat: "Invalid color {0}."
 
     SlowmodeCommand:
         missingArgument: "Er mist een argument, je moet of de `seconds` waarde geven voor dit of het genoemde kanaal, of `off` om het uit te schakelen."
@@ -852,6 +852,9 @@ utility:
             members: 'Leden'
             channels: 'Kanalen'
             servers: 'Servers'
+
+    TemperatureConvertCommand:
+        invalidNumberFormat: "Given argument {0} is not a parsable number."
 
     UptimeCommand:
         message: 'Ik ben online geweest voor :time'

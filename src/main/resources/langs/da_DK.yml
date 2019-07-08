@@ -280,8 +280,8 @@ administration:
         message: "**:role** rollen er blevet fjernet fra selvtilladelige listen.\nServeren har `:slots` flere selvtilladelige roller pladser til rådighed."
 
     SetRoleColorCommand:
-        noRoleFound: "No role with that identifier found."
-        invalidFormat: "Argument type mismatch."
+        noRoleFound: "No role with the name {0} found."
+        invalidColor: "Invalid color {0}."
 
     SlowmodeCommand:
         missingArgument: "Manglende argument, du skal enten passere en `sekunder'-værdien for at aktivere slowmode for denne eller den nævnte kanal, eller `off` for at deaktivere slowmode."
@@ -852,6 +852,9 @@ utility:
             members: 'Medlemmer'
             channels: 'Kanaler'
             servers: 'Servere'
+
+    TemperatureConvertCommand:
+        invalidNumberFormat: "Given argument {0} is not a parsable number."
 
     UptimeCommand:
         message: 'Jeg har været online i :time'
