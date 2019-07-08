@@ -1,5 +1,5 @@
 <p align="center">
-    <img src="https://avairebot.com/assets/img/banner-simple.png">
+    <img src="https://cdn.avairebot.com/image/simple-banner.png">
 </p>
 
 ## About AvaIre
@@ -18,7 +18,7 @@ AvaIre is a multipurpose Discord bot made for fun, written in Java 8, using the 
     - Change the languages Ava uses
     - Create custom aliases for existing commands
     - Change the prefix ava uses on a per-module basis
-- And more, check the [full command reference](https://avairebot.com/docs/master/commands) for all the commands!
+- And more, check the [full command reference](https://avairebot.com/commands) for all the commands!
 
 Visit our [website](https://avairebot.com/) for more information.
 
@@ -27,11 +27,11 @@ You can deploy in a simple way to Heroku using the button below.
 
 [![Deploy to Heroku](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
 
-Before deploying, read [the configuration guide](https://avairebot.com/docs/master/configuration/), aswell as [the guide](https://avairebot.com/docs/master/heroku-guide) regarding hosting with Heroku.
+Before deploying, read [the configuration guide](https://github.com/avaire/avaire/wiki/configuration), aswell as [the guide](https://github.com/avaire/avaire/wiki/heroku-guide) regarding hosting with Heroku.
 
 ## Contributing
 
-Thank you for considering contributing to AvaIre! The contribution guide can be found in the [AvaIre documentation](https://avairebot.com/docs/contributions).
+Thank you for considering contributing to AvaIre! The contribution guide can be found in the [AvaIre documentation](https://github.com/avaire/avaire/wiki/contribution-guide).
 
 ## License
 
@@ -62,10 +62,4 @@ AvaIre relies on the following projects:
 <p align="center">
   <a href="https://avairebot.com/support"><img src="https://discordapp.com/api/guilds/284083636368834561/widget.png?style=banner2" alt="Discord server"></a>
   <br>AvaIre support server: https://avairebot.com/support
-</p>
-
----
-
-<p align="center">
-    "Discord", "Discord App", and any associated logos are registered trademarks of Hammer & Chisel, inc.
 </p>
