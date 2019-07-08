@@ -26,7 +26,7 @@ public class TemperatureConvertCommand extends Command
 
     @Override
     public List<String> getExampleUsage() {
-        return Arrays.asList("`:command 50 c` - Converts the given temperature to Celsius. ", "`:command 40 f` - Converts the given temperature to Fahrenheit.");
+        return Arrays.asList("`:command 50 f` - Converts the given temperature to Fahrenheit. ", "`:command 40 c` - Converts the given temperature to Celsius.");
     }
 
     /**
@@ -89,16 +89,16 @@ public class TemperatureConvertCommand extends Command
         try
         {
             double temperature = Double.parseDouble(args[0]);
-            char tempMode = args[1].charAt(0);
-            if(tempMode == 'F')
+            char tempMode = args[1].toUpperCase().charAt(0);
+            if(tempMode == 'C')
             {
                 double fahrenheit = celsiusToFahrenheit(temperature);
-                context.makeInfo(NumberUtil.formatNicelyWithDecimals(fahrenheit) + "° F");
+                context.makeInfo(NumberUtil.formatNicelyWithDecimals(fahrenheit) + "° F").queue();
             }
-            else if(tempMode == 'C')
+            else if(tempMode == 'F')
             {
                 double celsius = fahrenheitToCelsius(temperature);
-                context.makeInfo(NumberUtil.formatNicelyWithDecimals(celsius) + "° C");
+                context.makeInfo(NumberUtil.formatNicelyWithDecimals(celsius) + "° C").queue();
             }
 
         }
