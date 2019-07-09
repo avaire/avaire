@@ -281,7 +281,7 @@ administration:
 
     SetRoleColorCommand:
         noRoleFound: "No role with the name {0} found."
-        invalidColor: "Color {0} not supported."
+        invalidColor: "The color {0} is not recognized, use the following hex format instead '#XXXXXX'" 
 
     SlowmodeCommand:
         missingArgument: "Er mist een argument, je moet of de `seconds` waarde geven voor dit of het genoemde kanaal, of `off` om het uit te schakelen."

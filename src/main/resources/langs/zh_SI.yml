@@ -280,7 +280,7 @@ administration:
 
     SetRoleColorCommand:
         noRoleFound: "No role with the name {0} found."
-        invalidColor: "Color {0} not supported."
+        invalidColor: "The color {0} is not recognized, use the following hex format instead '#XXXXXX'" 
 
     SlowmodeCommand:
         missingArgument: "参数丢失，则必须传入 `seconds` 值为此通道或所述通道启用慢速模式，或 `off` to disable it."
