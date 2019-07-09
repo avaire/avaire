@@ -26,7 +26,6 @@ import java.awt.*;
 import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * The type Random util.
@@ -72,20 +71,19 @@ public class RandomUtil {
         return random.nextInt(bound);
     }
 
-
     /**
      * Gets a sRGB color with a random
      * red, green, blue, and alpha component.
      *
      * @return The random color
      */
-    public static Color getRandomColor()
-    {
-        float red = random.nextInt(255);
-        float green = random.nextInt(255);
-        float blue = random.nextInt(255);
-        float alpha = random.nextInt(100);
-        return new Color(red / 255F, green / 255F, blue / 255F, alpha / 100F);
+    public static Color getRandomColor() {
+        return new Color(
+            random.nextInt(255) / 255F, // Red
+            random.nextInt(255) / 255F, // Green
+            random.nextInt(255) / 255F, // Blue
+            random.nextInt(100) / 100F  // Alpha
+        );
     }
 
     /**

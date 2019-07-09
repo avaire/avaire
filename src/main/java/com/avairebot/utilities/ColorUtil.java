@@ -1,10 +1,10 @@
 package com.avairebot.utilities;
 
+import javax.annotation.Nullable;
 import java.awt.*;
 import java.lang.reflect.Field;
 
-public class ColorUtil
-{
+public class ColorUtil {
 
     /**
      * Creates an sRGBA color with the specified red, green,
@@ -37,34 +37,28 @@ public class ColorUtil
     /**
      * Converts a given string into a color.
      *
-     * @param value : the string, either a name or a hex-string.
+     * @param value The string, either a name or a hex-string.
      * @return the color or null if an error occurs.
      */
-    public static Color getColorFromString(String value){
-        if (value == null)
-        {
+    @Nullable
+    public static Color getColorFromString(String value) {
+        if (value == null) {
             return null;
         }
-        try
-        {
+
+        try {
             // get color by hex or octal value
             return Color.decode(value);
-        }
-        catch (NumberFormatException nfe)
-        {
-            try
-            {
+        } catch (NumberFormatException nfe) {
+            try {
                 // if we can't decode lets try to get it by name
                 // try to get a color by name using reflection
                 final Field f = Color.class.getField(value);
 
                 return (Color) f.get(null);
-            }
-            catch(Exception ex)
-            {
+            } catch (Exception ex) {
                 return null;
             }
-
         }
     }
 }

@@ -30,7 +30,7 @@ import java.awt.*;
 /**
  * The type Background rank colors.
  */
-public abstract class BackgroundRankColors{
+public abstract class BackgroundRankColors {
 
     /**
      * The color that should be used for the background, this will only used if
@@ -48,7 +48,7 @@ public abstract class BackgroundRankColors{
     /**
      * Creates an sRGB color with the specified red, green,
      * and blue values with in the range (0 - 255).
-     *
+     * <p>
      * Uses the {@link com.avairebot.utilities.ColorUtil}
      * to produce the colors.
      *
@@ -57,8 +57,7 @@ public abstract class BackgroundRankColors{
      * @param blue  The blue component
      * @return The color with the given values.
      */
-    protected Color makeColor(float red, float green, float blue)
-    {
+    protected Color makeColor(float red, float green, float blue) {
         return ColorUtil.makeColor(red, green, blue);
     }
 
@@ -66,7 +65,7 @@ public abstract class BackgroundRankColors{
      * Creates an sRGBA color with the specified red, green,
      * blue, and alpha values with in the range (0 - 255).
      * The alpha should be in the rage of 0 and 100.
-     *
+     * <p>
      * Uses the {@link com.avairebot.utilities.ColorUtil} to
      * produce the colors.
      *
@@ -76,8 +75,7 @@ public abstract class BackgroundRankColors{
      * @param alpha The alpha component.
      * @return The color with the given values.
      */
-    protected Color makeColor(float red, float green, float blue, float alpha)
-    {
+    protected Color makeColor(float red, float green, float blue, float alpha) {
         return ColorUtil.makeColor(red, green, blue, alpha);
     }
 
