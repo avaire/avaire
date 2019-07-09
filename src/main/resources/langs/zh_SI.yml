@@ -278,6 +278,10 @@ administration:
     RemoveSelfAssignableRoleCommand:
         message: "这个 **:role** 角色已从自我分配列表中删除。.\n服务器具有 `:slots` 更多可自我分配的角色插槽可用."
 
+    SetRoleColorCommand:
+        noRoleFound: "No role with the name {0} found."
+        invalidColor: "Color {0} not supported."
+
     SlowmodeCommand:
         missingArgument: "参数丢失，则必须传入 `seconds` 值为此通道或所述通道启用慢速模式，或 `off` to disable it."
         mustBeValidNumbers: "给定的慢模值无效，则必须在 **1** and **120**."

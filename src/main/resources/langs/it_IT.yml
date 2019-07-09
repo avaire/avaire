@@ -279,6 +279,10 @@ administration:
     RemoveSelfAssignableRoleCommand:
         message: "Il ruolo **:role** è stato rimosso dalla lista dei ruoli auto-assegnabili.\nIl server ha ancora `:slots` slot disponibili per i ruoli auto-assegnabili."
 
+    SetRoleColorCommand:
+        noRoleFound: "No role with the name {0} found."
+        invalidColor: "Color {0} not supported."
+
     SlowmodeCommand:
         missingArgument: "Argomento mancante, devi inserire il valore `seconds` per abilitare slowmode per questo canale o per il canale menzionato, oppure `off` per disabilitarlo."
         mustBeValidNumbers: "Valore slowmode non valido, è necessario fornire un numero compreso tra **1** e **120**."

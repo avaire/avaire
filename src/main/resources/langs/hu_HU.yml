@@ -287,6 +287,10 @@ administration:
     RemoveSelfAssignableRoleCommand:
         message: "Role **:role** role has been removed from the self-assignable list.\nThe server has `:slots` more self-assignable roles slots available."
 
+    SetRoleColorCommand:
+        noRoleFound: "No role with the name {0} found."
+        invalidColor: "Color {0} not supported."
+
     SlowmodeCommand:
         missingArgument: "Missing argument, you must either pass in the `seconds` value to enable slowmode for this or the mentioned channel, or `off` to disable it."
         mustBeValidNumbers: "Invalid slowmode value given, you must provide a number between **1** and **120**."

@@ -279,6 +279,10 @@ administration:
     RemoveSelfAssignableRoleCommand:
         message: "**:role** rollen er blevet fjernet fra selvtilladelige listen.\nServeren har `:slots` flere selvtilladelige roller pladser til rådighed."
 
+    SetRoleColorCommand:
+        noRoleFound: "No role with the name {0} found."
+        invalidColor: "Color {0} not supported."
+
     SlowmodeCommand:
         missingArgument: "Manglende argument, du skal enten passere en `sekunder'-værdien for at aktivere slowmode for denne eller den nævnte kanal, eller `off` for at deaktivere slowmode."
         mustBeValidNumbers: "Ugyldig slowmode værdi angivet, du skal angive et tal imellem **1** og **120**."
