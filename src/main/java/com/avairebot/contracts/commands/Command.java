@@ -43,6 +43,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public abstract class Command extends Reflectionable {
@@ -51,6 +52,13 @@ public abstract class Command extends Reflectionable {
      * Determines if the command can be used in direct messages or not.
      */
     protected final boolean allowDM;
+
+    /**
+     * RegEx pattern used to compare error messages with language string formats.
+     */
+    private final Pattern languageStringRegex = Pattern.compile(
+        "[A-Za-z\\.]+"
+    );
 
     /**
      * Create the given command instance by calling {@link #Command(AvaIre)} with the avaire instance and allowDM set to true.
@@ -247,7 +255,7 @@ public abstract class Command extends Reflectionable {
      * @return false since the error message should only be used on failure.
      */
     public final boolean sendErrorMessage(CommandMessage context, String error, String... args) {
-        if (!error.contains(".") || error.contains(" ")) {
+        if (!isLanguageString(error)) {
             return sendErrorMessageAndDeleteMessage(
                 context, I18n.format(error, (Object[]) args), 150, TimeUnit.SECONDS
             );
@@ -271,7 +279,7 @@ public abstract class Command extends Reflectionable {
      * @return false since the error message should only be used on failure.
      */
     public final boolean sendErrorMessage(CommandMessage context, String error) {
-        if (!error.contains(".") || error.contains(" ")) {
+        if (!isLanguageString(error)) {
             return sendErrorMessageAndDeleteMessage(
                 context, error, 150, TimeUnit.SECONDS
             );
@@ -294,7 +302,7 @@ public abstract class Command extends Reflectionable {
      * @return false since the error message should only be used on failure.
      */
     public boolean sendErrorMessage(CommandMessage context, String error, long deleteIn, TimeUnit unit) {
-        if (error.contains(".") || !error.contains(" ")) {
+        if (isLanguageString(error)) {
             String i18nError = context.i18nRaw(error);
             if (i18nError != null) {
                 error = i18nError;
@@ -457,6 +465,11 @@ public abstract class Command extends Reflectionable {
         });
 
         return false;
+    }
+
+    private boolean isLanguageString(String string) {
+        return !string.contains(" ")
+            && languageStringRegex.matcher(string).matches();
     }
 
     @Override
