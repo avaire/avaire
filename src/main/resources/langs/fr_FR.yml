@@ -281,7 +281,11 @@ administration:
 
     SetRoleColorCommand:
         noRoleFound: "No role with the name {0} found."
-        invalidColor: "The color {0} is not recognized, use the following hex format instead '#XXXXXX'" 
+        invalidColor: "The color {0} is not recognized, use the following hex format instead '#XXXXXX'"
+        colorChangeComplete: "The {0} role has been successfully changed to {1}."
+        userMissingPermissions: "You can't use the this command for the {0} role, you must have greater or equal privileges as the role to successfully run the command."
+        botMissingPermissions: "The setrolecolor command can't be used for the {0} role, I need to have greater or equal privileges as the role to successfully run the command."
+
 
     SlowmodeCommand:
         missingArgument: "Missing argument, you must either pass in the `seconds` value to enable slowmode for this or the mentioned channel, or `off` to disable it."
