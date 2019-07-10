@@ -21,11 +21,16 @@
 
 package com.avairebot.contracts.imagegen;
 
+import com.avairebot.utilities.ColorUtil;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.awt.*;
 
-public abstract class BackgroundRankColors implements BackgroundColors {
+/**
+ * The type Background rank colors.
+ */
+public abstract class BackgroundRankColors {
 
     /**
      * The color that should be used for the background, this will only used if
@@ -37,6 +42,41 @@ public abstract class BackgroundRankColors implements BackgroundColors {
     @Nonnull
     public Color getBackgroundColor() {
         return makeColor(50, 54, 60);
+    }
+
+
+    /**
+     * Creates an sRGB color with the specified red, green,
+     * and blue values with in the range (0 - 255).
+     * <p>
+     * Uses the {@link com.avairebot.utilities.ColorUtil}
+     * to produce the colors.
+     *
+     * @param red   The red component.
+     * @param green The green component
+     * @param blue  The blue component
+     * @return The color with the given values.
+     */
+    protected Color makeColor(float red, float green, float blue) {
+        return ColorUtil.makeColor(red, green, blue);
+    }
+
+    /**
+     * Creates an sRGBA color with the specified red, green,
+     * blue, and alpha values with in the range (0 - 255).
+     * The alpha should be in the rage of 0 and 100.
+     * <p>
+     * Uses the {@link com.avairebot.utilities.ColorUtil} to
+     * produce the colors.
+     *
+     * @param red   The red component.
+     * @param green The green component.
+     * @param blue  The blue component.
+     * @param alpha The alpha component.
+     * @return The color with the given values.
+     */
+    protected Color makeColor(float red, float green, float blue, float alpha) {
+        return ColorUtil.makeColor(red, green, blue, alpha);
     }
 
     /**

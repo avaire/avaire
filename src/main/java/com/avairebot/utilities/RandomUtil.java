@@ -22,10 +22,14 @@
 package com.avairebot.utilities;
 
 import javax.annotation.Nonnull;
+import java.awt.*;
 import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * The type Random util.
+ */
 public class RandomUtil {
 
     /**
@@ -65,6 +69,21 @@ public class RandomUtil {
             return 0;
         }
         return random.nextInt(bound);
+    }
+
+    /**
+     * Gets a sRGB color with a random
+     * red, green, blue, and alpha component.
+     *
+     * @return The random color
+     */
+    public static Color getRandomColor() {
+        return new Color(
+            random.nextInt(255) / 255F, // Red
+            random.nextInt(255) / 255F, // Green
+            random.nextInt(255) / 255F, // Blue
+            random.nextInt(100) / 100F  // Alpha
+        );
     }
 
     /**
