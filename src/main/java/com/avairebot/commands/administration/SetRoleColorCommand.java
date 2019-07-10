@@ -75,11 +75,11 @@ public class SetRoleColorCommand extends Command {
         }
 
         if (!context.getMember().canInteract(role)) {
-            return sendErrorMessage(context, context.i18n("userMissingPermissions", args[0]));
+            return sendErrorMessage(context, context.i18n("userMissingPermissions", role.getAsMention()));
         }
 
         if (!context.getGuild().getSelfMember().canInteract(role)) {
-            return sendErrorMessage(context, context.i18n("botMissingPermissions", args[0]));
+            return sendErrorMessage(context, context.i18n("botMissingPermissions", role.getAsMention()));
         }
 
         Color color = !args[1].equalsIgnoreCase("random")
@@ -91,7 +91,10 @@ public class SetRoleColorCommand extends Command {
         }
 
         role.getManager().setColor(color).queue();
-        context.makeSuccess(context.i18n("colorChangeComplete", args[0], args[1])).queue();
+        context.makeSuccess(context.i18n("colorChangeComplete"))
+            .set("role", role.getAsMention())
+            .set("color", args[1])
+            .queue();
 
         return true;
     }
