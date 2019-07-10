@@ -54,7 +54,7 @@ public class SetRoleColorCommand extends Command {
     @Override
     public List<String> getMiddleware() {
         return Arrays.asList(
-            "require:user,general.manage_roles",
+            "require:all,general.manage_roles",
             "throttle:guild,1,5"
         );
     }
