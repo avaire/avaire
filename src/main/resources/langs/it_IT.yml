@@ -279,6 +279,13 @@ administration:
     RemoveSelfAssignableRoleCommand:
         message: "Il ruolo **:role** è stato rimosso dalla lista dei ruoli auto-assegnabili.\nIl server ha ancora `:slots` slot disponibili per i ruoli auto-assegnabili."
 
+    SetRoleColorCommand:
+        noRoleFound: "No role with the name \"{0}\" was found."
+        invalidColor: "The color \"{0}\" is not recognized, use the following HEX format instead \"#XXXXXX\""
+        userMissingPermissions: "You can't use the this command for the {0} role, you must have greater or equal privileges as the role to successfully run the command."
+        botMissingPermissions: "The Set Role Color command can't be used for the {0} role, I need to have greater or equal privileges as the role to successfully run the command."
+        colorChangeComplete: "The :role role has been successfully changed to **:color**."
+
     SlowmodeCommand:
         missingArgument: "Argomento mancante, devi inserire il valore `seconds` per abilitare slowmode per questo canale o per il canale menzionato, oppure `off` per disabilitarlo."
         mustBeValidNumbers: "Valore slowmode non valido, è necessario fornire un numero compreso tra **1** e **120**."
