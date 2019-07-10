@@ -6,11 +6,7 @@ import com.avairebot.contracts.commands.Command;
 import com.avairebot.utilities.ColorUtil;
 import com.avairebot.utilities.RandomUtil;
 import com.avairebot.utilities.RoleUtil;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Role;
-import net.dv8tion.jda.core.utils.PermissionUtil;
-import org.apache.commons.collections4.CollectionUtils;
 
 import java.awt.*;
 import java.util.Arrays;
@@ -78,37 +74,25 @@ public class SetRoleColorCommand extends Command {
             return sendErrorMessage(context, context.i18n("noRoleFound", args[0]));
         }
 
-        Member sender = context.getGuild().getMember(context.getAuthor());
-
-        if(!hasPermissions(sender,role))
-        {
-            return sendErrorMessage(context, context.i18n("userMissingPermissions",args[0]));
+        if (!context.getMember().canInteract(role)) {
+            return sendErrorMessage(context, context.i18n("userMissingPermissions", args[0]));
         }
 
-        if(!hasPermissions(context.getGuild().getSelfMember(),role))
-        {
-            return sendErrorMessage(context, context.i18n("botMissingPermissions",args[0]));
+        if (!context.getGuild().getSelfMember().canInteract(role)) {
+            return sendErrorMessage(context, context.i18n("botMissingPermissions", args[0]));
         }
 
-        if (args[1].equalsIgnoreCase("random")) {
-            Color color = RandomUtil.getRandomColor();
-            role.getManager().setColor(color).queue();
-        } else {
-            Color color = ColorUtil.getColorFromString(args[1].toUpperCase());
-            if (color != null) {
-                role.getManager().setColor(color).queue();
-            } else {
-                return sendErrorMessage(context, context.i18n("invalidColor", args[1]));
-            }
+        Color color = !args[1].equalsIgnoreCase("random")
+            ? ColorUtil.getColorFromString(args[1].toUpperCase())
+            : RandomUtil.getRandomColor();
+
+        if (color == null) {
+            return sendErrorMessage(context, context.i18n("invalidColor", args[1]));
         }
 
-        context.makeSuccess(context.i18n("colorChangeComplete", args[0],args[1])).queue();
+        role.getManager().setColor(color).queue();
+        context.makeSuccess(context.i18n("colorChangeComplete", args[0], args[1])).queue();
 
         return true;
-    }
-
-    private boolean hasPermissions(Member member, Role role)
-    {
-        return PermissionUtil.canInteract(member, role);
     }
 }
