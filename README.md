@@ -2,6 +2,24 @@
     <img src="https://cdn.avairebot.com/image/simple-banner.png">
 </p>
 
+<p align="center">
+    <a href="https://discordbots.org/bot/275270122082533378">
+        <img src="https://discordbots.org/api/widget/servers/275270122082533378.svg?noavatar=true" alt="AvaIre">
+    </a>
+    <a href="https://discordbots.org/bot/275270122082533378">
+        <img src="https://discordbots.org/api/widget/upvotes/275270122082533378.svg?noavatar=true" alt="AvaIre">
+    </a>
+    <a href="https://avairebot.com/">
+        <img src="https://cdn.avairebot.com/badge/avaire-version.svg" alt="AvaIre Version">
+    </a>
+    <a href="https://avairebot.com/support">
+        <img src="https://img.shields.io/discord/284083636368834561.svg" alt="Discord">
+    </a>
+    <a href="https://www.gnu.org/licenses/gpl-3.0.en.html">
+        <img src="https://img.shields.io/github/license/avaire/avaire.svg" alt="GitHub" >
+    </a>
+</p>
+
 ## About AvaIre
 
 AvaIre is a multipurpose Discord bot made for fun, written in Java 8, using the [JDA](https://github.com/DV8FromTheWorld/JDA) library.
