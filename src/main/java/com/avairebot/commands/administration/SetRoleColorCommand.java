@@ -31,7 +31,6 @@ import net.dv8tion.jda.core.entities.Role;
 
 import java.awt.*;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class SetRoleColorCommand extends Command {
@@ -47,7 +46,7 @@ public class SetRoleColorCommand extends Command {
 
     @Override
     public String getDescription() {
-        return "Takes in a role name, followed by a HEX value to set a role to a specific colour by simply knowing the HEX value. Additionally users can specify a random color.";
+        return "Takes in a role name, followed by a HEX value to set a role to a specific color by simply knowing the HEX value. Additionally users can specify a random color.";
     }
 
     @Override
@@ -69,7 +68,7 @@ public class SetRoleColorCommand extends Command {
 
     @Override
     public List<String> getTriggers() {
-        return Collections.singletonList("setrolecolor");
+        return Arrays.asList("setrolecolor", "setrolecolour");
     }
 
     @Override
