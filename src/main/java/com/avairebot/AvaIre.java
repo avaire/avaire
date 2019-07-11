@@ -631,6 +631,10 @@ public class AvaIre {
             .setDisabledCacheFlags(EnumSet.of(CacheFlag.GAME))
             .setShardsTotal(settings.getShardCount());
 
+        if (settings.getShards() != null) {
+            builder.setShards(settings.getShards());
+        }
+
         if (isNas()) {
             builder.setAudioSendFactory(new NativeAudioSendFactory(800));
         }
