@@ -23,7 +23,8 @@ package com.avairebot.imagegen.renders;
 
 import com.avairebot.contracts.imagegen.Renderer;
 import com.avairebot.imagegen.Fonts;
-import com.avairebot.imagegen.RankBackgrounds;
+import com.avairebot.imagegen.RankBackground;
+import com.avairebot.imagegen.RankBackgroundHandler;
 import net.dv8tion.jda.core.entities.User;
 
 import javax.annotation.Nonnull;
@@ -47,7 +48,7 @@ public class RankBackgroundRender extends Renderer {
     private final String avatarUrl;
 
     @Nonnull
-    private RankBackgrounds background;
+    private RankBackground background;
 
     private String rank = null;
     private String level = null;
@@ -79,19 +80,19 @@ public class RankBackgroundRender extends Renderer {
         this.username = username;
         this.discriminator = discriminator;
         this.avatarUrl = avatarUrl;
-        this.background = RankBackgrounds.getDefaultBackground();
+        this.background = RankBackgroundHandler.getDefaultBackground();
     }
 
     /**
      * Sets the background that should be used for the render, if <code>NULL</code> is given the
-     * {@link RankBackgrounds#DEFAULT_BACKGROUND default background} will be used instead.
+     * {@link RankBackgroundHandler#DEFAULT_BACKGROUND default background} will be used instead.
      *
      * @param background The background that should be used.
      * @return The rank background instance.
      */
-    public RankBackgroundRender setBackground(@Nullable RankBackgrounds background) {
+    public RankBackgroundRender setBackground(@Nullable RankBackground background) {
         this.background = background == null
-            ? RankBackgrounds.getDefaultBackground()
+            ? RankBackgroundHandler.getDefaultBackground()
             : background;
 
         return this;
