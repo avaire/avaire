@@ -31,8 +31,7 @@ import com.avairebot.contracts.commands.CommandGroup;
 import com.avairebot.contracts.commands.CommandGroups;
 import com.avairebot.database.controllers.PurchaseController;
 import com.avairebot.database.transformers.PlayerTransformer;
-import com.avairebot.imagegen.RankBackground;
-import com.avairebot.imagegen.RankBackgroundHandler;
+import com.avairebot.imagegen.RankBackgrounds;
 import com.avairebot.imagegen.renders.RankBackgroundRender;
 import com.avairebot.shared.DiscordConstants;
 import com.avairebot.utilities.ComparatorUtil;
@@ -171,7 +170,7 @@ public class RankBackgroundCommand extends Command {
         int votePoints = voteEntity == null ? 0 : voteEntity.getVotePoints();
 
         SimplePaginator<Integer> paginator = new SimplePaginator<>(
-            RankBackgroundHandler.getNameToCost(), 5, 1
+            RankBackgrounds.getNameToCost(), 5, 1
         );
 
         if (args.length > 0) {
@@ -182,11 +181,11 @@ public class RankBackgroundCommand extends Command {
         message.add(context.i18n("canBeUnlocked"));
         message.add("-------------------------------");
 
-        String purchaseType = RankBackgroundHandler.getDefaultBackground().getPurchaseType();
+        String purchaseType = RankBackgrounds.getDefaultBackground().getPurchaseType();
         paginator.forEach((index, name, cost) -> {
             //noinspection ConstantConditions
             boolean alreadyOwns = player.hasPurchases() && player.getPurchases().hasPurchase(
-                purchaseType, RankBackgroundHandler.fromName((String) name).getId()
+                purchaseType, RankBackgrounds.fromName((String) name).getId()
             );
 
             message.add(context.i18n(alreadyOwns ? "buyNotes.alreadyOwns" : "buyNotes.doesntOwns",
@@ -206,7 +205,7 @@ public class RankBackgroundCommand extends Command {
     }
 
     private boolean handleShow(CommandMessage context, String[] args) {
-        RankBackground background = RankBackgroundHandler.fromName(String.join(" ", args));
+        RankBackgrounds background = RankBackgrounds.fromName(String.join(" ", args));
         if (background == null) {
             return sendErrorMessage(context, "errors.invalidProperty", "background name", "background");
         }
@@ -255,7 +254,7 @@ public class RankBackgroundCommand extends Command {
     }
 
     private boolean handlePurchases(CommandMessage context, String[] args) {
-        RankBackground background = RankBackgroundHandler.fromName(String.join(" ", args));
+        RankBackgrounds background = RankBackgrounds.fromName(String.join(" ", args));
         if (background == null) {
             return sendErrorMessage(context, "errors.invalidProperty", "background name", "background");
         }
@@ -315,7 +314,7 @@ public class RankBackgroundCommand extends Command {
     }
 
     private boolean handleSelect(CommandMessage context, String[] args) {
-        RankBackground background = RankBackgroundHandler.fromName(String.join(" ", args));
+        RankBackgrounds background = RankBackgrounds.fromName(String.join(" ", args));
         if (background == null) {
             return sendErrorMessage(context, "errors.invalidProperty", "background name", "background");
         }
@@ -360,7 +359,7 @@ public class RankBackgroundCommand extends Command {
         }
 
         try {
-            if (player.getPurchases().getSelectedPurchasesForType(RankBackgroundHandler.getDefaultBackground().getPurchaseType()) != null) {
+            if (player.getPurchases().getSelectedPurchasesForType(RankBackgrounds.getDefaultBackground().getPurchaseType()) != null) {
                 avaire.getDatabase().newQueryBuilder(Constants.VOTES_TABLE_NAME)
                     .where("user_id", context.getAuthor().getIdLong())
                     .update(statement -> statement.set("selected_bg", null));
