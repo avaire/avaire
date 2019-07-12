@@ -36,7 +36,8 @@ import com.avairebot.database.controllers.PlayerController;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.database.transformers.PlayerTransformer;
 import com.avairebot.factories.MessageFactory;
-import com.avairebot.imagegen.RankBackgrounds;
+import com.avairebot.imagegen.RankBackground;
+import com.avairebot.imagegen.RankBackgroundHandler;
 import com.avairebot.imagegen.renders.RankBackgroundRender;
 import com.avairebot.language.I18n;
 import com.avairebot.utilities.CacheUtil;
@@ -175,7 +176,7 @@ public class RankCommand extends Command {
             if (playerTransformer != null) {
                 Integer selectedBackgroundId = playerTransformer.getPurchases()
                     .getSelectedPurchasesForType(
-                        RankBackgrounds.getDefaultBackground().getPurchaseType()
+                        RankBackgroundHandler.getDefaultBackground().getPurchaseType()
                     );
 
                 if (selectedBackgroundId != null) {
@@ -245,7 +246,7 @@ public class RankCommand extends Command {
         DatabaseProperties properties,
         int backgroundId
     ) {
-        RankBackgrounds background = RankBackgrounds.fromId(backgroundId);
+        RankBackground background = RankBackgroundHandler.fromId(backgroundId);
         if (background == null) {
             sendEmbeddedMessage(
                 context, author,

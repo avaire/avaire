@@ -26,13 +26,16 @@ import com.avairebot.contracts.imagegen.BackgroundRankColors;
 import javax.annotation.Nonnull;
 import java.awt.*;
 
-public class AbstractColors extends BackgroundRankColors {
+public class AbstractColors extends BackgroundRankColors
+{
 
     @Nonnull
     @Override
     public Color getBackgroundColor() {
+       //0,0,0,0
         return makeColor(0, 0, 0, 0);
     }
+
 
     @Nonnull
     @Override
