@@ -36,7 +36,8 @@ import com.avairebot.database.controllers.PlayerController;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.database.transformers.PlayerTransformer;
 import com.avairebot.factories.MessageFactory;
-import com.avairebot.imagegen.RankBackgrounds;
+import com.avairebot.imagegen.RankBackground;
+import com.avairebot.imagegen.RankBackgroundHandler;
 import com.avairebot.imagegen.renders.RankBackgroundRender;
 import com.avairebot.language.I18n;
 import com.avairebot.utilities.CacheUtil;
@@ -166,16 +167,17 @@ public class RankCommand extends Command {
             long nextLevelXp = avaire.getLevelManager().getExperienceFromLevel(guildTransformer, level + 1);
             double percentage = ((double) (experience - current) / (nextLevelXp - current)) * 100;
 
-            String levelBar = "";
+            StringBuilder levelBarBuilder = new StringBuilder();
             for (int i = 1; i <= 40; i++) {
-                levelBar += ((i * 2.5) < percentage) ? "\u2592" : "\u2591";
+                levelBarBuilder.append(((i * 2.5) < percentage) ? "\u2592" : "\u2591");
             }
+            String levelBar = levelBarBuilder.toString();
 
             PlayerTransformer playerTransformer = PlayerController.fetchPlayer(avaire, context.getMessage(), author);
             if (playerTransformer != null) {
                 Integer selectedBackgroundId = playerTransformer.getPurchases()
                     .getSelectedPurchasesForType(
-                        RankBackgrounds.getDefaultBackground().getPurchaseType()
+                        RankBackgroundHandler.getDefaultBackground().getPurchaseType()
                     );
 
                 if (selectedBackgroundId != null) {
@@ -245,7 +247,7 @@ public class RankCommand extends Command {
         DatabaseProperties properties,
         int backgroundId
     ) {
-        RankBackgrounds background = RankBackgrounds.fromId(backgroundId);
+        RankBackground background = RankBackgroundHandler.fromId(backgroundId);
         if (background == null) {
             sendEmbeddedMessage(
                 context, author,

@@ -43,7 +43,6 @@ public class RankBackgroundContainer
 
 
 
-
         this.background = new RankBackground(config.getInt("id"),config.getInt("cost"),config.getString("name"),
                                                 config.getString("backgroundImage"), getBackgroundColors());
 

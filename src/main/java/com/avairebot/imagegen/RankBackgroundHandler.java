@@ -51,8 +51,15 @@ public class RankBackgroundHandler
         RankBackgroundHandler.avaire = avaIre;
         Map<String, Integer> unsortedNamesToCost = new HashMap<>();
         backgrounds.add(DEFAULT_BACKGROUND);
+        unsortedNamesToCost.put(DEFAULT_BACKGROUND.getName(),DEFAULT_BACKGROUND.getCost());
+        //InputStream in = RankBackgroundHandler.class.getClassLoader().getResourceAsStream(("background_ranks/" + "DiscordDarkColors" + ".yml"));
+
+        RankBackgroundContainer rank = new RankBackgroundContainer("background_ranks/" + "DiscordDarkColors" + ".yml");
+        RankBackground darkTheme = rank.getRankBackground();
+        backgrounds.add(darkTheme);
 
 
+        unsortedNamesToCost.put(darkTheme.getName(),darkTheme.getCost());
         /*
         File dir = new File(".");
         File [] files = dir.listFiles((dir1, name) -> name.endsWith(".yml"));
