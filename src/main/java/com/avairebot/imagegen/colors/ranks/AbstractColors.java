@@ -32,7 +32,6 @@ public class AbstractColors extends BackgroundRankColors
     @Nonnull
     @Override
     public Color getBackgroundColor() {
-       //0,0,0,0
         return makeColor(0, 0, 0, 0);
     }
 

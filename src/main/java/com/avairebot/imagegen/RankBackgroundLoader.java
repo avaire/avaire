@@ -28,17 +28,17 @@ import javax.annotation.Nonnull;
 import java.awt.*;
 import java.io.InputStreamReader;
 
-public class RankBackgroundContainer
+public class RankBackgroundLoader
 {
     private final YamlConfiguration config;
     private RankBackground background;
 
-    public RankBackgroundContainer(@Nonnull String backgroundResource) {
+    public RankBackgroundLoader(@Nonnull String backgroundResource) {
         //this.background = background;
 
         config = YamlConfiguration.loadConfiguration(new InputStreamReader(
             //getClass().getClassLoader().getResourceAsStream(("background_ranks/" + background.getName() + ".yml"))
-            getClass().getClassLoader().getResourceAsStream(backgroundResource)));
+            getClass().getClassLoader().getResourceAsStream("background_ranks/" + backgroundResource)));
 
 
 
@@ -78,8 +78,15 @@ public class RankBackgroundContainer
         int red = config.getInt(heading + ".red");
         int green = config.getInt(heading + ".green");
         int blue = config.getInt(heading + ".blue");
-        int alpha = config.getInt(heading + ".alpha");
-        return ColorUtil.makeColor(red,green,blue,alpha);
+        if(config.contains((heading + ".alpha")))
+        {
+            int alpha = config.getInt(heading + ".alpha");
+            return ColorUtil.makeColor(red,green,blue,alpha);
+        }
+        else
+        {
+            return ColorUtil.makeColor(red,green,blue);
+        }
     }
 
     /**

@@ -8,7 +8,6 @@ colors:
         red: 47
         green: 49
         blue: 54
-        alpha: 100
     mainTextColor:
         red: 226
         green: 226

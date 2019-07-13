@@ -23,17 +23,13 @@ package com.avairebot.imagegen;
 
 import com.avairebot.AvaIre;
 import com.avairebot.contracts.imagegen.BackgroundRankColors;
-import com.avairebot.imagegen.colors.ranks.PurpleColors;
 import com.avairebot.shared.ExitCodes;
-import org.apache.commons.io.Charsets;
-import org.apache.commons.io.IOUtils;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.io.*;
-import java.lang.reflect.InvocationTargetException;
-import java.net.URISyntaxException;
-import java.net.URL;
+import java.io.IOException;
 import java.util.*;
 
 public class RankBackgroundHandler
@@ -52,43 +48,24 @@ public class RankBackgroundHandler
         Map<String, Integer> unsortedNamesToCost = new HashMap<>();
         backgrounds.add(DEFAULT_BACKGROUND);
         unsortedNamesToCost.put(DEFAULT_BACKGROUND.getName(),DEFAULT_BACKGROUND.getCost());
-        //InputStream in = RankBackgroundHandler.class.getClassLoader().getResourceAsStream(("background_ranks/" + "DiscordDarkColors" + ".yml"));
 
-        RankBackgroundContainer rank = new RankBackgroundContainer("background_ranks/" + "DiscordDarkColors" + ".yml");
-        RankBackground darkTheme = rank.getRankBackground();
-        backgrounds.add(darkTheme);
-
-
-        unsortedNamesToCost.put(darkTheme.getName(),darkTheme.getCost());
-        /*
-        File dir = new File(".");
-        File [] files = dir.listFiles((dir1, name) -> name.endsWith(".yml"));
-
-        for (File xmlfile : files) {
-            System.out.println(xmlfile);
-        }
-        */
-
-        /*
         try
         {
             for (RankBackground type : getResourceFiles("backgrounds_ranks")) {
-               // try {
                     unsortedNamesToCost.put(type.getName(), type.getCost());
+
                     BackgroundRankColors instance = type.getBackgroundColors();
                     backgroundColors.put(type, instance );
-                //} catch (InstantiationException | NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
-                 //   System.out.printf("Invalid cache type given: %s", e.getMessage());
-                //    System.exit(ExitCodes.EXIT_CODE_ERROR);
-                //}
+                    backgrounds.add(type);
             }
         }
         catch (IOException e)
         {
-            e.printStackTrace();
+            System.out.printf("Invalid cache type given: %s", e.getMessage());
+            System.exit(ExitCodes.EXIT_CODE_ERROR);
         }
 
-         */
+
 
         unsortedNamesToCost.entrySet().stream()
             .sorted(Map.Entry.comparingByValue())
@@ -97,54 +74,18 @@ public class RankBackgroundHandler
 
 
     private static List<RankBackground> getResourceFiles(String folder) throws IOException {
-        //List<String> filenames = new ArrayList<>();
         List<RankBackground> backgrounds = new ArrayList<>();
-
-            // List<String> files = IOUtils.readLines(RankBackgroundHandler.class.getClassLoader().getResourceAsStream(path), Charsets.UTF_8);
-
-            /*
-            while ((resource = br.readLine()) != null
-                    && resource.endsWith("yml")) {
-                    RankBackgroundContainer rank = new RankBackgroundContainer((resource));
-                    backgrounds.add(rank.getRankBackground());
-                //filenames.add(resource);
-             */
-            //File[] files = getFileFromURL(folder).listFiles();
-
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        URL url = classLoader.getResource(folder);
-        String path = url.getPath();
-        File[] files = new File(path).listFiles();
-        if (files != null)
+        PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver(classLoader);
+        Resource[] resolverResources = resolver.getResources("classpath:background_ranks/*.yml");
+        for (Resource resource: resolverResources)
         {
-            for (File file : files)
-            {
-                if(file.getName().endsWith("yml"))
-                {
-                    RankBackgroundContainer rank = new RankBackgroundContainer((file.getCanonicalPath()));
-                    backgrounds.add(rank.getRankBackground());
-                }
-            }
+            RankBackgroundLoader rank = new RankBackgroundLoader((resource.getFilename()));
+            backgrounds.add(rank.getRankBackground());
         }
 
         return backgrounds;
     }
-
-
-    /*
-    private static File getFileFromURL(String subFolder) {
-        URL url = RankBackgroundHandler.class.getClassLoader().getResource("/" + subFolder);
-        File file = null;
-        try {
-            file = new File(url.toURI());
-        } catch (URISyntaxException e) {
-            file = new File(url.getPath());
-        } finally {
-            return file;
-        }
-    }
-
-     */
 
     public static List<RankBackground> values()
     {
