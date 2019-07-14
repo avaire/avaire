@@ -77,7 +77,7 @@ public class RankBackgroundHandler
         List<RankBackground> backgrounds = new ArrayList<>();
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver(classLoader);
-        Resource[] resolverResources = resolver.getResources("classpath:background_ranks/*.yml");
+        Resource[] resolverResources = resolver.getResources("classpath:" + folder + "/*.yml");
         for (Resource resource: resolverResources)
         {
             RankBackgroundLoader rank = new RankBackgroundLoader((resource.getFilename()));
