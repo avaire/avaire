@@ -265,7 +265,7 @@ public class VoteManager {
                         statement.set("points_total", finalPoints);
                     });
 
-                voteLog.get(userId).setVotePoints(1);
+                voteLog.get(userId).setVotePoints(finalPoints);
 
                 return;
             }
