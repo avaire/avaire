@@ -63,7 +63,7 @@ public class RankBackgroundLoader
         Color experienceForegroundColor = loadColorFromYaml("colors.experienceForegroundColor");
         colors.setExperienceForegroundColor(experienceForegroundColor);
         Color experienceSeparatorColor = loadColorFromYaml("colors.experienceSeparatorColor");
-        colors.setExperienceForegroundColor(experienceSeparatorColor);
+        colors.setExperienceSeparatorColor(experienceSeparatorColor);
 
         if(config.contains("colors.backgroundCoverColor"))
         {

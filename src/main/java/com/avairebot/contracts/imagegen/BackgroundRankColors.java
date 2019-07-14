@@ -350,6 +350,17 @@ public class BackgroundRankColors{
         return experienceSeparatorColor;
     }
 
+
+    /**
+     * Sets experience foreground color.
+     *
+     * @param color the new color
+     */
+    public void setExperienceSeparatorColor(Color color)
+    {
+        experienceSeparatorColor = color;
+    }
+
     /**
      * The color that should be used on the experience bar, by default this will
      * be the same color as the {@link #getMainTextColor() main text color},
