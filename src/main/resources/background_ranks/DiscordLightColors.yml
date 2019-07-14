@@ -1,33 +1,32 @@
 id: 2
 cost: 20
-name: "Discord Dark Theme"
+name: "Discord Light Theme"
 backgroundImage: null
 
 colors:
     backgroundColor:
+        red: 243
+        green: 243
+        blue: 243
+    mainTextColor:
         red: 47
         green: 49
         blue: 54
-    mainTextColor:
-        red: 226
-        green: 226
-        blue: 229
-        alpha: 85
+        alpha: 72
     secondaryTextColor:
-        red: 166
-        green: 166
-        blue: 166
+        red: 116
+        green: 127
+        blue: 141
         alpha: 85
     experienceBackgroundColor:
-        red: 32
-        green: 34
-        blue: 37
-        alpha: 60
-    experienceForegroundColor:
-        red: 114
+        red: 116
         green: 137
         blue: 218
         alpha: 80
+    experienceForegroundColor:
+        red: 243
+        green: 243
+        blue: 218
     experienceSeperatorColor:
         red: 109
         green: 131
