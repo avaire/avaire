@@ -38,7 +38,7 @@ public class CreatePurchasesTableMigration implements Migration {
     public boolean up(Schema schema) throws SQLException {
         return schema.createIfNotExists(Constants.PURCHASES_TABLE_NAME, table -> {
             table.Increments("id");
-            table.Long("user_id");
+            table.Long("user_id").unsigned();
             table.String("type");
             table.Integer("type_id");
             table.Timestamps();

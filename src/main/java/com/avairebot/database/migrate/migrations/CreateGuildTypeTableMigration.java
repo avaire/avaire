@@ -45,6 +45,7 @@ public class CreateGuildTypeTableMigration implements Migration {
             return false;
         }
 
+        //noinspection unchecked
         return schema.getDbm().newQueryBuilder(Constants.GUILD_TYPES_TABLE_NAME).insert(
             createRecord("VIP", 10, 50, 50, 30, 30, 8, 8),
             createRecord("VIP+", 25, 100, 150, 60, 50, 15, 15)
