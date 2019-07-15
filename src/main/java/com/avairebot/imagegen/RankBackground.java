@@ -66,7 +66,7 @@ public class RankBackground implements PurchaseType {
      * @param name             the name
      * @param file             the file
      * @param instance         the instance
-     * @param loadedExternally the loaded externally
+     * @param loadedExternally whether or not it was loaded externally
      */
     RankBackground(int id, int cost, String name, String file, BackgroundRankColors instance, boolean loadedExternally) {
         this.id = id;
@@ -74,7 +74,7 @@ public class RankBackground implements PurchaseType {
         this.name = name;
         this.file = file;
         this.instance = instance;
-        this.loadedExternally = true;
+        this.loadedExternally = loadedExternally;
     }
 
     /**
