@@ -123,9 +123,7 @@ public class RankBackgroundHandler
                 }
                 catch(NullPointerException ex)
                 {
-                    System.out.println(file.toString());
                     ex.printStackTrace();
-
                 }
             }
         }
