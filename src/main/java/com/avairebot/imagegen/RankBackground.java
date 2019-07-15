@@ -24,7 +24,6 @@ package com.avairebot.imagegen;
 import com.avairebot.Constants;
 import com.avairebot.contracts.imagegen.BackgroundRankColors;
 import com.avairebot.contracts.shop.PurchaseType;
-import com.avairebot.imagegen.colors.ranks.*;
 import com.avairebot.shared.ExitCodes;
 
 import javax.annotation.Nonnull;
@@ -33,30 +32,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 public class RankBackground implements PurchaseType {
-
-
-    //public static final RankBackground PURPLE
-    //    = new RankBackground(2, 10, "Purple", null, new PurpleColors());
-    /*
-    public static RankBackground DISCORD_DARK
-        = new RankBackground(0, 20, "Discord Dark Theme", null, DiscordDarkColors.class);
-    public static RankBackground DISCORD_LIGHT =
-        new RankBackground(1, 20, "Discord Light Theme", null, DiscordLightColors.class);
-
-    public static RankBackground PIKACHU
-        = new RankBackground(10, 50, "Pikachu", "pikachu.jpg", PikachuColors.class);
-
-    public static RankBackground MOUNTAIN_RANGE
-        = new RankBackground(11, 50, "Mountain Range", "mountain-range.jpg", MountainRangeColors.class);
-    public static RankBackground SAKURA
-            = new RankBackground(12, 50, "Sakura", "sakura.jpg", SakuraColors.class);
-    public static RankBackground EightBit
-        = new RankBackground(13, 50, "8Bit Mountains", "EightBitMountains.png", EightBitMountainColors.class);
-    public static RankBackground ABSTRACT
-        = new RankBackground(14, 50, "Abstract", "abstract.jpg", AbstractColors.class);
-    */
-
-
 
     private final int id;
     private final int cost;

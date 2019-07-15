@@ -38,7 +38,9 @@ public class BackgroundRankColors{
 
     private Color backgroundCoverColor = null;
 
-    private Color mainTextColor = makeColor(226, 226, 229, 85);;
+    private Color mainTextColor = makeColor(226, 226, 229, 85);
+
+    private Color experienceTextColor = mainTextColor;
 
     private Color secondaryTextColor = makeColor(166, 166, 166, 85);
 
@@ -130,6 +132,26 @@ public class BackgroundRankColors{
     public void setBackgroundCoverColor(float red, float green, float blue)
     {
         backgroundCoverColor = makeColor(red, green, blue);
+    }
+
+    /**
+     * Sets background cover color.
+     *
+     * @param color  the color
+     */
+    public void setBackgroundCoverColor(Color color)
+    {
+        backgroundCoverColor = color;
+    }
+
+    /**
+     * Sets background cover color.
+     *
+     * @param color  the color
+     */
+    public void setExperienceTextColor(Color color)
+    {
+       experienceTextColor = color;
     }
 
     /**
@@ -371,8 +393,17 @@ public class BackgroundRankColors{
      * @return The color that should be used for the experience bar text.
      */
     @Nonnull
-    public Color getExperienceTextColor() {
-        return getMainTextColor();
+    public Color getExperienceTextColor()
+    {
+        if(!mainTextColor.equals(experienceTextColor))
+        {
+            return experienceTextColor;
+        }
+        else
+        {
+            return getMainTextColor();
+        }
+
     }
 
     /**

@@ -1,7 +1,7 @@
-id: 14
+id: 12
 cost: 50
-name: "Abstract"
-backgroundImage: "abstract.jpg"
+name: "Sakura"
+backgroundImage: "sakura.jpg"
 
 colors:
     backgroundColor:
@@ -10,14 +10,14 @@ colors:
         blue: 0
         alpha: 0
     mainTextColor:
-        red: 255
-        green: 255
-        blue: 255
+        red: 25
+        green: 25
+        blue: 25
         alpha: 100
     secondaryTextColor:
-        red: 255
-        green: 255
-        blue: 255
+        red: 25
+        green: 25
+        blue: 25
         alpha: 100
     experienceBackgroundColor:
         red: 0
@@ -25,13 +25,12 @@ colors:
         blue: 0
         alpha: 25
     experienceForegroundColor:
-        red: 25
-        green: 25
-        blue: 25
-        alpha: 65
+        red: 255
+        green: 209
+        blue: 209
+        alpha: 70
     experienceSeperatorColor:
         red: 255
         green: 255
         blue: 255
         alpha: 50
-

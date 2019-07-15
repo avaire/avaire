@@ -68,8 +68,14 @@ public class RankBackgroundLoader
         if(config.contains("colors.backgroundCoverColor"))
         {
             Color backgroundCoverColor = loadColorFromYaml("colors.backgroundCoverColor");
-            colors.setExperienceForegroundColor(backgroundCoverColor);
+            colors.setBackgroundCoverColor(backgroundCoverColor);
         }
+        if(config.contains("colors.experienceTextColor"))
+        {
+            Color backgroundCoverColor = loadColorFromYaml("colors.experienceTextColor");
+            colors.setExperienceTextColor(backgroundCoverColor);
+        }
+
         return colors;
     }
 

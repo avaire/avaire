@@ -1,13 +1,13 @@
-id: 0
-cost: 20
-name: "Discord Dark Theme"
-backgroundImage: null
+id: 11
+cost: 50
+name: "Mountain Range"
+backgroundImage: "mountain-range.jpg"
 
 colors:
     backgroundColor:
-        red: 47
-        green: 49
-        blue: 54
+        red: 55
+        green: 55
+        blue: 70
     mainTextColor:
         red: 226
         green: 226
@@ -19,18 +19,18 @@ colors:
         blue: 166
         alpha: 85
     experienceBackgroundColor:
-        red: 32
-        green: 34
-        blue: 37
+        red: 38
+        green: 39
+        blue: 59
         alpha: 60
     experienceForegroundColor:
-        red: 114
-        green: 137
-        blue: 218
+        red: 96
+        green: 132
+        blue: 186
         alpha: 80
     experienceSeperatorColor:
-        red: 109
-        green: 131
-        blue: 208
-        alpha: 80
+        red: 83
+        green: 180
+        blue: 201
+        alpha: 65
 

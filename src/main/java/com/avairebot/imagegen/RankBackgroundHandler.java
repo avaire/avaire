@@ -51,7 +51,7 @@ public class RankBackgroundHandler
 
         try
         {
-            for (RankBackground type : getResourceFiles("backgrounds_ranks")) {
+            for (RankBackground type : getResourceFiles("background_ranks")) {
                     unsortedNamesToCost.put(type.getName(), type.getCost());
 
                     BackgroundRankColors instance = type.getBackgroundColors();
