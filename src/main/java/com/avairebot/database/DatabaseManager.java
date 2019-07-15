@@ -31,6 +31,7 @@ import com.avairebot.database.exceptions.DatabaseException;
 import com.avairebot.database.migrate.Migrations;
 import com.avairebot.database.query.QueryBuilder;
 import com.avairebot.database.schema.Schema;
+import com.avairebot.database.seeder.SeederManager;
 import com.avairebot.metrics.Metrics;
 import com.mysql.jdbc.exceptions.MySQLTransactionRollbackException;
 import org.slf4j.Logger;
@@ -51,6 +52,7 @@ public class DatabaseManager {
     private final AvaIre avaire;
     private final Schema schema;
     private final Migrations migrations;
+    private final SeederManager seeder;
 
     private final AtomicInteger batchIncrementer;
     private final Set<Integer> runningBatchRequests;
@@ -62,6 +64,7 @@ public class DatabaseManager {
         this.avaire = avaire;
         this.schema = new Schema(this);
         this.migrations = new Migrations(this);
+        this.seeder = new SeederManager();
 
         this.batchIncrementer = new AtomicInteger(0);
         this.runningBatchRequests = new HashSet<>();
@@ -77,6 +80,10 @@ public class DatabaseManager {
 
     public Migrations getMigrations() {
         return migrations;
+    }
+
+    public SeederManager getSeeder() {
+        return seeder;
     }
 
     public Database getConnection() throws SQLException, DatabaseException {
