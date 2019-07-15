@@ -94,8 +94,8 @@ public class RankBackgroundLoader
         }
         if(config.contains("colors.experienceTextColor"))
         {
-            Color backgroundCoverColor = loadColorFromYaml("colors.experienceTextColor");
-            colors.setExperienceTextColor(backgroundCoverColor);
+            Color experienceTextColor = loadColorFromYaml("colors.experienceTextColor");
+            colors.setExperienceTextColor(experienceTextColor);
         }
 
         return colors;
