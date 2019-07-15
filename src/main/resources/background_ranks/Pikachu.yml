@@ -9,6 +9,11 @@ colors:
         green: 0
         blue: 0
         alpha: 22
+    backgroundCoverColor:
+        red: 0
+        green: 0
+        blue: 0
+        alpha: 22
     mainTextColor:
         red: 226
         green: 226
@@ -29,7 +34,7 @@ colors:
         green: 217
         blue: 18
         alpha: 80
-    experienceSeperatorColor:
+    experienceSeparatorColor:
         red: 247
         green: 185
         blue: 18
@@ -39,3 +44,4 @@ colors:
         green: 34
         blue: 34
         alpha: 80
+

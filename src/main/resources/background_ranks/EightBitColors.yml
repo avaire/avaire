@@ -28,7 +28,7 @@ colors:
         green: 129
         blue: 159
         alpha: 80
-    experienceSeperatorColor:
+    experienceSeparatorColor:
         red: 83
         green: 180
         blue: 201
