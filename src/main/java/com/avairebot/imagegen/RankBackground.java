@@ -24,13 +24,12 @@ package com.avairebot.imagegen;
 import com.avairebot.Constants;
 import com.avairebot.contracts.imagegen.BackgroundRankColors;
 import com.avairebot.contracts.shop.PurchaseType;
-import com.avairebot.shared.ExitCodes;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.lang.reflect.InvocationTargetException;
-import java.util.*;
 
+/**
+ * The type Rank background.
+ */
 public class RankBackground implements PurchaseType {
 
     private final int id;
@@ -38,18 +37,45 @@ public class RankBackground implements PurchaseType {
     private final String name;
     private final String file;
     private final BackgroundRankColors instance;
+    private final boolean loadedExternally;
 
 
+    /**
+     * Instantiates a new Rank background.
+     *
+     * @param id       the id
+     * @param cost     the cost
+     * @param name     the name
+     * @param file     the file
+     * @param instance the instance
+     */
     RankBackground(int id, int cost, String name, String file, BackgroundRankColors instance) {
         this.id = id;
         this.cost = cost;
         this.name = name;
         this.file = file;
         this.instance = instance;
+        loadedExternally = false;
     }
 
-
-
+    /**
+     * Instantiates a new Rank background.
+     *
+     * @param id               the id
+     * @param cost             the cost
+     * @param name             the name
+     * @param file             the file
+     * @param instance         the instance
+     * @param loadedExternally the loaded externally
+     */
+    RankBackground(int id, int cost, String name, String file, BackgroundRankColors instance, boolean loadedExternally) {
+        this.id = id;
+        this.cost = cost;
+        this.name = name;
+        this.file = file;
+        this.instance = instance;
+        this.loadedExternally = true;
+    }
 
     /**
      * Gets the ID for the image, can be used as a reference in the database.
@@ -79,10 +105,10 @@ public class RankBackground implements PurchaseType {
     }
 
     /**
-      * Gets the background color scheme for the current background image.
-      *
-      * @return The background color scheme for the current background image.
-    */
+     * Gets the background color scheme for the current background image.
+     *
+     * @return The background color scheme for the current background image.
+     */
     public BackgroundRankColors getBackgroundColors() {
         return instance;
     }
@@ -96,5 +122,15 @@ public class RankBackground implements PurchaseType {
     @Override
     public String getPurchaseType() {
         return Constants.RANK_BACKGROUND_PURCHASE_TYPE;
+    }
+
+
+    /**
+     * Returns if this background was loaded externally.
+     *
+     * @return whether or not this file way loaded externally.
+     */
+    public boolean isLoadedExternally() {
+        return loadedExternally;
     }
 }

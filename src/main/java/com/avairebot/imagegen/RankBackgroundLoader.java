@@ -26,16 +26,26 @@ import com.avairebot.utilities.ColorUtil;
 
 import javax.annotation.Nonnull;
 import java.awt.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
 
+/**
+ * The type Rank background loader.
+ */
 public class RankBackgroundLoader
 {
     private final YamlConfiguration config;
     private RankBackground background;
 
+    /**
+     * Instantiates a new Rank background loader
+     * that uses the Jar filesystem.
+     *
+     * @param backgroundResource the background resource
+     */
     public RankBackgroundLoader(@Nonnull String backgroundResource) {
-        //this.background = background;
-
         config = YamlConfiguration.loadConfiguration(new InputStreamReader(
             //getClass().getClassLoader().getResourceAsStream(("background_ranks/" + background.getName() + ".yml"))
             getClass().getClassLoader().getResourceAsStream("background_ranks/" + backgroundResource)));
@@ -45,8 +55,20 @@ public class RankBackgroundLoader
 
         this.background = new RankBackground(config.getInt("id"),config.getInt("cost"),config.getString("name"),
                                                 config.getString("backgroundImage"), getBackgroundColors());
+    }
 
+    /**
+     * Instantiates a new Rank background loader
+     * using the external file system.
+     *
+     * @param backgroundResource the background resource
+     * @throws FileNotFoundException if the file cannot be found
+     */
+    public RankBackgroundLoader(@Nonnull File backgroundResource) throws FileNotFoundException {
+        config = YamlConfiguration.loadConfiguration(new InputStreamReader(new FileInputStream(backgroundResource)));
 
+        this.background = new RankBackground(config.getInt("id"),config.getInt("cost"),config.getString("name"),
+            config.getString("backgroundImage"), getBackgroundColors(), true);
     }
 
     private BackgroundRankColors getBackgroundColors()

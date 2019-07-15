@@ -32,6 +32,7 @@ import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -217,11 +218,22 @@ public class RankBackgroundRender extends Renderer {
     }
 
     private BufferedImage loadAndBuildBackground() throws IOException {
-        if (background.getBackgroundFile() != null) {
-            return resize(
-                ImageIO.read(Renderer.class.getClassLoader().getResourceAsStream("backgrounds/" + background.getBackgroundFile())),
-                200, 600
-            );
+        if (background.getBackgroundFile() != null)
+        {
+            if(!background.isLoadedExternally())
+            {
+                return resize(
+                    ImageIO.read(Renderer.class.getClassLoader().getResourceAsStream("backgrounds/" + background.getBackgroundFile())),
+                    200, 600
+                );
+            }
+            else
+            {
+                return resize(
+                    ImageIO.read(new FileInputStream("backgrounds/" + background.getBackgroundFile())),
+                    200, 600
+                );
+            }
         }
 
         BufferedImage backgroundImage = new BufferedImage(600, 200, BufferedImage.TYPE_INT_ARGB);

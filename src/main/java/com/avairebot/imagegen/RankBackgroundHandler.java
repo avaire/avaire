@@ -21,33 +21,57 @@
 
 package com.avairebot.imagegen;
 
-import com.avairebot.AvaIre;
 import com.avairebot.contracts.imagegen.BackgroundRankColors;
 import com.avairebot.shared.ExitCodes;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
 public class RankBackgroundHandler
 {
-
-    private static AvaIre avaire;
+    private static final Logger log = LoggerFactory.getLogger(RankBackgroundHandler.class);
     public static final RankBackground DEFAULT_BACKGROUND = new RankBackground(2, 10, "Purple", null, new BackgroundRankColors());
     private static final LinkedHashMap<RankBackground, BackgroundRankColors> backgroundColors = new LinkedHashMap<>();
 
     private static final LinkedHashMap<String, Integer> namesToCost = new LinkedHashMap<>();
     private static final List<RankBackground> backgrounds = new ArrayList<>();
 
-    public static void start(AvaIre avaIre)
+    private final File backgroundRanksFolder;
+
+    public RankBackgroundHandler() {
+        this.backgroundRanksFolder = new File("background_ranks");
+
+        File backgroundsFolder = new File("backgrounds");
+
+        if (!backgroundRanksFolder.exists()) {
+            backgroundRanksFolder.mkdirs();
+        }
+
+        if(!backgroundsFolder.exists())
+        {
+            backgroundsFolder.mkdirs();
+        }
+
+
+    }
+
+
+
+
+    public void start()
     {
-        RankBackgroundHandler.avaire = avaIre;
         Map<String, Integer> unsortedNamesToCost = new HashMap<>();
         backgrounds.add(DEFAULT_BACKGROUND);
         unsortedNamesToCost.put(DEFAULT_BACKGROUND.getName(),DEFAULT_BACKGROUND.getCost());
+
+
 
         try
         {
@@ -73,19 +97,45 @@ public class RankBackgroundHandler
     }
 
 
-    private static List<RankBackground> getResourceFiles(String folder) throws IOException {
-        List<RankBackground> backgrounds = new ArrayList<>();
+    private List<RankBackground> getResourceFiles(String folder) throws IOException {
+        List<RankBackground> localBackgrounds = new ArrayList<>();
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver(classLoader);
         Resource[] resolverResources = resolver.getResources("classpath:" + folder + "/*.yml");
         for (Resource resource: resolverResources)
         {
             RankBackgroundLoader rank = new RankBackgroundLoader((resource.getFilename()));
-            backgrounds.add(rank.getRankBackground());
+            localBackgrounds.add(rank.getRankBackground());
         }
 
-        return backgrounds;
+        for (File file : backgroundRanksFolder.listFiles())
+        {
+            if (file.isDirectory() || file.isHidden()) continue;
+
+            if(file.getName().endsWith(".yml"))
+            {
+                try
+                {
+                    log.debug("Attempting to load background: " + file.toString());
+                    RankBackgroundLoader pluginLoader = new RankBackgroundLoader(file);
+
+                    localBackgrounds.add(pluginLoader.getRankBackground());
+                }
+                catch(NullPointerException ex)
+                {
+                    System.out.println(file.toString());
+                    ex.printStackTrace();
+
+                }
+            }
+        }
+
+
+        return localBackgrounds;
     }
+
+
+
 
     public static List<RankBackground> values()
     {
