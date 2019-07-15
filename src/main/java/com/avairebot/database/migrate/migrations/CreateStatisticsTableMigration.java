@@ -47,7 +47,7 @@ public class CreateStatisticsTableMigration implements Migration {
 
     private boolean createTable(Schema schema) throws SQLException {
         return schema.createIfNotExists(Constants.STATISTICS_TABLE_NAME, table -> {
-            table.Integer("respects").defaultValue(0);
+            table.Long("respects").unsigned().defaultValue(0);
             table.Timestamps();
         });
     }

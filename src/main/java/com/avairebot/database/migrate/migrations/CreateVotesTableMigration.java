@@ -38,7 +38,7 @@ public class CreateVotesTableMigration implements Migration {
     @Override
     public boolean up(Schema schema) throws SQLException {
         return schema.createIfNotExists(Constants.VOTES_TABLE_NAME, table -> {
-            table.String("user_id", 32);
+            table.Long("user_id").unsigned();
             table.String("expires_in", 128);
 
             table.setEngine(DatabaseEngine.InnoDB);

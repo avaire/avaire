@@ -19,34 +19,39 @@
  *
  */
 
-package com.avairebot.database.migrate.migrations;
+package com.avairebot.database.seeder.seeders;
 
+import com.avairebot.AvaIre;
 import com.avairebot.Constants;
-import com.avairebot.contracts.database.migrations.Migration;
-import com.avairebot.database.schema.Schema;
+import com.avairebot.contracts.database.seeder.Seeder;
+import com.avairebot.modlog.ModlogType;
 
 import java.sql.SQLException;
 
-public class CreatePurchasesTableMigration implements Migration {
+public class LogTypesTableSeeder extends Seeder {
 
-    @Override
-    public String created_at() {
-        return "Sat, Jan 19, 2019 12:16 PM";
+    public LogTypesTableSeeder(AvaIre avaire) {
+        super(avaire);
     }
 
     @Override
-    public boolean up(Schema schema) throws SQLException {
-        return schema.createIfNotExists(Constants.PURCHASES_TABLE_NAME, table -> {
-            table.Increments("id");
-            table.Long("user_id").unsigned();
-            table.String("type");
-            table.Integer("type_id");
-            table.Timestamps();
+    public String table() {
+        return Constants.LOG_TYPES_TABLE_NAME;
+    }
+
+    @Override
+    public void run() throws SQLException {
+        for (ModlogType type : ModlogType.values()) {
+            if (!tableHasValue("id", type.getId())) {
+                createRecord(type.getId(), type.getName());
+            }
+        }
+    }
+
+    private void createRecord(int id, String name) throws SQLException {
+        createQuery().insert(statement -> {
+            statement.set("id", id);
+            statement.set("name", name);
         });
-    }
-
-    @Override
-    public boolean down(Schema schema) throws SQLException {
-        return schema.dropIfExists(Constants.PURCHASES_TABLE_NAME);
     }
 }

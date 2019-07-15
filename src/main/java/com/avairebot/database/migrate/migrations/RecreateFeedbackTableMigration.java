@@ -40,8 +40,8 @@ public class RecreateFeedbackTableMigration implements Migration {
 
         return schema.create(Constants.FEEDBACK_TABLE_NAME, table -> {
             table.Increments("id");
-            table.String("user_id", 32);
-            table.String("channel_id", 32).nullable();
+            table.Long("user_id").unsigned();
+            table.Long("channel_id").unsigned().nullable();
             table.Text("message");
             table.Text("response").nullable();
             table.String("response_id", 32).nullable();
