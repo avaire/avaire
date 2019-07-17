@@ -23,6 +23,7 @@ package com.avairebot.imagegen;
 
 import com.avairebot.contracts.imagegen.BackgroundRankColors;
 import com.avairebot.shared.ExitCodes;
+import com.avairebot.utilities.ResourceLoaderUtil;
 import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -102,39 +103,17 @@ public class RankBackgroundHandler
     private List<RankBackground> getResourceFiles(String folder) throws URISyntaxException, IOException {
         List<RankBackground> localBackgrounds = new ArrayList<>();
 
-        //PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver(classLoader);
-        //Resource[] resolverResources = resolver.getResources("classpath:" + folder + "/*.yml");
-        //URL resources = classLoader.getResource(folder);
-        URL resources =  getClass()
-            .getClassLoader().getResource("backgrounds");
 
-            File directory = new File(resources.toURI());
-            if(directory.isDirectory())
-            {
-                for(File file : directory.listFiles())
-                {
-                    if(file.getName().endsWith(".yml"))
-                    {
-                        RankBackgroundLoader rank = new RankBackgroundLoader(file.getName());
-                        localBackgrounds.add(rank.getRankBackground());
-                    }
-                }
-            }
+        List<String> files = ResourceLoaderUtil.getFiles(RankBackgroundHandler.class,"backgrounds");
 
-        //resources.nextElement();
-        /*
-        if (resources.hasMoreElements())
+        for (String file: files)
         {
-            URL url = resources.nextElement();
-            //String[] filenames=fileMetaInf.list();
-
-            System.out.println(FilenameUtils.getName(url.getFile()));
-            RankBackgroundLoader rank = new RankBackgroundLoader((FilenameUtils.getName(url.getPath())));
-            localBackgrounds.add(rank.getRankBackground());
+            if(file.endsWith(".yml"))
+            {
+                RankBackgroundLoader rank = new RankBackgroundLoader(file);
+                localBackgrounds.add(rank.getRankBackground());
+            }
         }
-
-         */
-
 
         for (File file : backgroundsFolder.listFiles())
         {
@@ -155,7 +134,6 @@ public class RankBackgroundHandler
                 }
             }
         }
-
 
         return localBackgrounds;
     }
