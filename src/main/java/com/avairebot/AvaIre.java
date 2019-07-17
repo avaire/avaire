@@ -48,6 +48,7 @@ import com.avairebot.config.EnvironmentOverride;
 import com.avairebot.contracts.ai.Intent;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.contracts.database.migrations.Migration;
+import com.avairebot.contracts.database.seeder.Seeder;
 import com.avairebot.contracts.reflection.Reflectional;
 import com.avairebot.contracts.scheduler.Job;
 import com.avairebot.database.DatabaseManager;
@@ -212,6 +213,11 @@ public class AvaIre {
             database.getMigrations().register((Migration) migration);
         }, false);
 
+        log.info("Registering database table seeders");
+        autoloadPackage(Constants.PACKAGE_SEEDER_PATH, seeder -> {
+            database.getSeeder().register((Seeder) seeder);
+        }, true);
+
         log.info("Registering default middlewares");
         MiddlewareHandler.initialize(this);
         MiddlewareHandler.register("hasRole", new HasRoleMiddleware(this));
@@ -325,8 +331,9 @@ public class AvaIre {
             System.exit(ExitCodes.EXIT_CODE_NORMAL);
         }
 
-        log.info("Connecting to database & Running migrations");
+        log.info("Connecting to database & Running migrations & Seeders");
         database.getMigrations().up();
+        database.getSeeder().run();
 
         log.info("Preparing blacklist and syncing the list with the database");
         blacklist = new Blacklist(this);

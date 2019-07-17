@@ -41,7 +41,7 @@ public class CreateMusicPlaylistsTableMigration implements Migration {
 
         return schema.createIfNotExists(Constants.MUSIC_PLAYLIST_TABLE_NAME, table -> {
             table.Increments("id");
-            table.String("guild_id");
+            table.Long("guild_id").unsigned();
             table.String("name");
 
             if (isMySQL) {

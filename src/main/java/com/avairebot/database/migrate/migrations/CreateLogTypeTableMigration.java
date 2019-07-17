@@ -24,7 +24,6 @@ package com.avairebot.database.migrate.migrations;
 import com.avairebot.Constants;
 import com.avairebot.contracts.database.migrations.Migration;
 import com.avairebot.database.schema.Schema;
-import com.avairebot.modlog.ModlogType;
 
 import java.sql.SQLException;
 
@@ -37,23 +36,7 @@ public class CreateLogTypeTableMigration implements Migration {
 
     @Override
     public boolean up(Schema schema) throws SQLException {
-        if (!createTable(schema)) {
-            return false;
-        }
-
-        for (ModlogType type : ModlogType.values()) {
-            createRecord(schema, type);
-        }
-
-        return true;
-    }
-
-    private void createRecord(Schema schema, ModlogType type) throws SQLException {
-        schema.getDbm().newQueryBuilder(Constants.LOG_TYPES_TABLE_NAME)
-            .insert(statement -> {
-                statement.set("id", type.getId());
-                statement.set("name", type.getName());
-            });
+        return createTable(schema);
     }
 
     private boolean createTable(Schema schema) throws SQLException {

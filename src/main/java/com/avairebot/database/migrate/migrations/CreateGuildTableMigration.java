@@ -38,7 +38,7 @@ public class CreateGuildTableMigration implements Migration {
     @Override
     public boolean up(Schema schema) throws SQLException {
         return schema.createIfNotExists(Constants.GUILD_TABLE_NAME, table -> {
-            table.String("id", 32);
+            table.Long("id").unsigned();
             table.Integer("type", 2).defaultValue(0);
             table.String("owner", 32);
             table.Text("name");

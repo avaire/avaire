@@ -38,7 +38,7 @@ public class CreateBlacklistTableMigration implements Migration {
     public boolean up(Schema schema) throws SQLException {
         return schema.createIfNotExists(Constants.BLACKLIST_TABLE_NAME, table -> {
             table.Increments("id");
-            table.String("user_id").nullable();
+            table.Long("user_id").unsigned().nullable();
             table.String("reason").nullable();
             table.Timestamps();
         });

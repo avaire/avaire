@@ -39,10 +39,10 @@ public class CreateLogTableMigration implements Migration {
         return schema.createIfNotExists(Constants.LOG_TABLE_NAME, table -> {
             table.Integer("type", 2);
             table.Integer("modlogCase");
-            table.String("guild_id");
-            table.String("user_id");
-            table.String("target_id").nullable();
-            table.String("message_id").nullable();
+            table.Long("guild_id").unsigned();
+            table.Long("user_id").unsigned();
+            table.Long("target_id").unsigned().nullable();
+            table.Long("message_id").unsigned().nullable();
             table.Text("reason").nullable();
             table.Timestamps();
         });

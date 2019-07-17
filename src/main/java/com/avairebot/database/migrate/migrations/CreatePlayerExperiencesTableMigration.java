@@ -37,8 +37,8 @@ public class CreatePlayerExperiencesTableMigration implements Migration {
     @Override
     public boolean up(Schema schema) throws SQLException {
         return schema.createIfNotExists(Constants.PLAYER_EXPERIENCE_TABLE_NAME, table -> {
-            table.String("user_id").nullable();
-            table.String("guild_id").nullable();
+            table.Long("user_id").unsigned().nullable();
+            table.Long("guild_id").unsigned().nullable();
             table.Text("username").nullable();
             table.String("discriminator").nullable();
             table.String("avatar").nullable();

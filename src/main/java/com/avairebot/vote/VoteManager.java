@@ -27,6 +27,7 @@ import com.avairebot.database.collection.Collection;
 import com.avairebot.database.collection.DataRow;
 import com.avairebot.metrics.Metrics;
 import com.avairebot.scheduler.tasks.DrainVoteQueueTask;
+import com.avairebot.servlet.routes.GetVote;
 import com.avairebot.servlet.routes.PostVote;
 import com.avairebot.time.Carbon;
 import net.dv8tion.jda.core.entities.Member;
@@ -70,6 +71,7 @@ public class VoteManager {
         if (isEnabled()) {
             syncWithDatabase();
             avaire.getServlet().registerPost("/vote", new PostVote());
+            avaire.getServlet().registerGet("/votes/:ids", new GetVote());
         }
     }
 
@@ -265,7 +267,7 @@ public class VoteManager {
                         statement.set("points_total", finalPoints);
                     });
 
-                voteLog.get(userId).setVotePoints(1);
+                voteLog.get(userId).setVotePoints(finalPoints);
 
                 return;
             }

@@ -94,7 +94,7 @@ public class ReformatBlacklistTableMigration implements Migration {
         ));
 
         schema.getDbm().queryUpdate(String.format(
-            "ALTER TABLE `%s` ADD `user_id` VARCHAR NOT NULL;",
+            "ALTER TABLE `%s` ADD `user_id` BIGINT UNSIGNED NOT NULL;",
             Constants.BLACKLIST_TABLE_NAME
         ));
 
