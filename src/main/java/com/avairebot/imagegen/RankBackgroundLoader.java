@@ -47,8 +47,7 @@ public class RankBackgroundLoader
      */
     public RankBackgroundLoader(@Nonnull String backgroundResource) {
         config = YamlConfiguration.loadConfiguration(new InputStreamReader(
-            //getClass().getClassLoader().getResourceAsStream(("background_ranks/" + background.getName() + ".yml"))
-            getClass().getClassLoader().getResourceAsStream("background_ranks/" + backgroundResource)));
+            getClass().getClassLoader().getResourceAsStream("backgrounds/" + backgroundResource)));
 
 
 

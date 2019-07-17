@@ -23,16 +23,21 @@ package com.avairebot.imagegen;
 
 import com.avairebot.contracts.imagegen.BackgroundRankColors;
 import com.avairebot.shared.ExitCodes;
+import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.io.File;
 import java.io.IOException;
+import java.net.JarURLConnection;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.*;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
 public class RankBackgroundHandler
 {
@@ -42,17 +47,11 @@ public class RankBackgroundHandler
 
     private static final LinkedHashMap<String, Integer> namesToCost = new LinkedHashMap<>();
     private static final List<RankBackground> backgrounds = new ArrayList<>();
-
-    private final File backgroundRanksFolder;
+    private static File backgroundsFolder;
 
     public RankBackgroundHandler() {
-        this.backgroundRanksFolder = new File("background_ranks");
 
-        File backgroundsFolder = new File("backgrounds");
-
-        if (!backgroundRanksFolder.exists()) {
-            backgroundRanksFolder.mkdirs();
-        }
+         backgroundsFolder = new File("backgrounds");
 
         if(!backgroundsFolder.exists())
         {
@@ -75,7 +74,7 @@ public class RankBackgroundHandler
 
         try
         {
-            for (RankBackground type : getResourceFiles("background_ranks")) {
+            for (RankBackground type : getResourceFiles("backgrounds")) {
                     unsortedNamesToCost.put(type.getName(), type.getCost());
 
                     BackgroundRankColors instance = type.getBackgroundColors();
@@ -88,7 +87,10 @@ public class RankBackgroundHandler
             System.out.printf("Invalid cache type given: %s", e.getMessage());
             System.exit(ExitCodes.EXIT_CODE_ERROR);
         }
-
+        catch (URISyntaxException e)
+        {
+            e.printStackTrace();
+        }
 
 
         unsortedNamesToCost.entrySet().stream()
@@ -97,18 +99,44 @@ public class RankBackgroundHandler
     }
 
 
-    private List<RankBackground> getResourceFiles(String folder) throws IOException {
+    private List<RankBackground> getResourceFiles(String folder) throws URISyntaxException, IOException {
         List<RankBackground> localBackgrounds = new ArrayList<>();
-        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver(classLoader);
-        Resource[] resolverResources = resolver.getResources("classpath:" + folder + "/*.yml");
-        for (Resource resource: resolverResources)
+
+        //PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver(classLoader);
+        //Resource[] resolverResources = resolver.getResources("classpath:" + folder + "/*.yml");
+        //URL resources = classLoader.getResource(folder);
+        URL resources =  getClass()
+            .getClassLoader().getResource("backgrounds");
+
+            File directory = new File(resources.toURI());
+            if(directory.isDirectory())
+            {
+                for(File file : directory.listFiles())
+                {
+                    if(file.getName().endsWith(".yml"))
+                    {
+                        RankBackgroundLoader rank = new RankBackgroundLoader(file.getName());
+                        localBackgrounds.add(rank.getRankBackground());
+                    }
+                }
+            }
+
+        //resources.nextElement();
+        /*
+        if (resources.hasMoreElements())
         {
-            RankBackgroundLoader rank = new RankBackgroundLoader((resource.getFilename()));
+            URL url = resources.nextElement();
+            //String[] filenames=fileMetaInf.list();
+
+            System.out.println(FilenameUtils.getName(url.getFile()));
+            RankBackgroundLoader rank = new RankBackgroundLoader((FilenameUtils.getName(url.getPath())));
             localBackgrounds.add(rank.getRankBackground());
         }
 
-        for (File file : backgroundRanksFolder.listFiles())
+         */
+
+
+        for (File file : backgroundsFolder.listFiles())
         {
             if (file.isDirectory() || file.isHidden()) continue;
 
@@ -117,9 +145,9 @@ public class RankBackgroundHandler
                 try
                 {
                     log.debug("Attempting to load background: " + file.toString());
-                    RankBackgroundLoader pluginLoader = new RankBackgroundLoader(file);
+                    RankBackgroundLoader rankBackgroundLoader = new RankBackgroundLoader(file);
 
-                    localBackgrounds.add(pluginLoader.getRankBackground());
+                    localBackgrounds.add(rankBackgroundLoader.getRankBackground());
                 }
                 catch(NullPointerException ex)
                 {
