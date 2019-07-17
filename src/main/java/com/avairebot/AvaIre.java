@@ -279,7 +279,7 @@ public class AvaIre {
         I18n.start(this);
 
          log.info("Creating rank backgrounds");
-         RankBackgroundHandler rankBackgroundHandler = new RankBackgroundHandler();
+         RankBackgroundHandler rankBackgroundHandler = RankBackgroundHandler.getInstance();
          rankBackgroundHandler.start();
 
         log.info("Creating plugin manager and registering plugins...");

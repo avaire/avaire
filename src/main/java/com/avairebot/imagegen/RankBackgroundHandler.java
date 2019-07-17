@@ -46,6 +46,9 @@ import java.util.jar.JarFile;
 
 public class RankBackgroundHandler
 {
+
+    private static RankBackgroundHandler instance;
+
     private static final Logger log = LoggerFactory.getLogger(RankBackgroundHandler.class);
     public static final RankBackground DEFAULT_BACKGROUND = new RankBackground(2, 10, "Purple", null, new BackgroundRankColors());
     private static final LinkedHashMap<RankBackground, BackgroundRankColors> backgroundColors = new LinkedHashMap<>();
@@ -54,7 +57,7 @@ public class RankBackgroundHandler
     private static final List<RankBackground> backgrounds = new ArrayList<>();
     private static File backgroundsFolder;
 
-    public RankBackgroundHandler() {
+    private RankBackgroundHandler() {
 
          backgroundsFolder = new File("backgrounds");
 
@@ -64,6 +67,15 @@ public class RankBackgroundHandler
         }
         copyBackgroundsFromJarToFolder();
 
+    }
+
+    public static RankBackgroundHandler getInstance()
+    {
+        if(instance == null)
+        {
+            instance = new RankBackgroundHandler();
+        }
+        return instance;
     }
 
 
