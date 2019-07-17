@@ -20,13 +20,14 @@ colors:
         alpha: 85
     experienceBackgroundColor:
         red: 116
+        green: 127
+        blue: 141
+        alpha: 80
+    experienceForegroundColor:
+        red: 114
         green: 137
         blue: 218
         alpha: 80
-    experienceForegroundColor:
-        red: 243
-        green: 243
-        blue: 218
     experienceSeparatorColor:
         red: 109
         green: 131

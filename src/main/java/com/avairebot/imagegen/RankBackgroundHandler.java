@@ -24,18 +24,22 @@ package com.avairebot.imagegen;
 import com.avairebot.contracts.imagegen.BackgroundRankColors;
 import com.avairebot.shared.ExitCodes;
 import com.avairebot.utilities.ResourceLoaderUtil;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.net.JarURLConnection;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.*;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
@@ -58,12 +62,31 @@ public class RankBackgroundHandler
         {
             backgroundsFolder.mkdirs();
         }
-
+        copyBackgroundsFromJarToFolder();
 
     }
 
 
-
+    private void copyBackgroundsFromJarToFolder()
+    {
+        try
+        {
+            List<String> files = ResourceLoaderUtil.getFiles(RankBackgroundHandler.class,"backgrounds");
+            for (String file: files)
+            {
+                File actualFile = new File("backgrounds/"+ file);
+                InputStream inputStream = RankBackgroundHandler.class.getClassLoader().getResourceAsStream("backgrounds/" + file);
+                if(!actualFile.exists())
+                {
+                    Files.copy(inputStream, Paths.get("backgrounds/" + file), StandardCopyOption.REPLACE_EXISTING);
+                }
+            }
+        }
+        catch (IOException e)
+        {
+            System.exit(ExitCodes.EXIT_CODE_ERROR);
+        }
+    }
 
     public void start()
     {
@@ -88,10 +111,6 @@ public class RankBackgroundHandler
             System.out.printf("Invalid cache type given: %s", e.getMessage());
             System.exit(ExitCodes.EXIT_CODE_ERROR);
         }
-        catch (URISyntaxException e)
-        {
-            e.printStackTrace();
-        }
 
 
         unsortedNamesToCost.entrySet().stream()
@@ -100,20 +119,9 @@ public class RankBackgroundHandler
     }
 
 
-    private List<RankBackground> getResourceFiles(String folder) throws URISyntaxException, IOException {
+    private List<RankBackground> getResourceFiles(String folder) throws IOException {
         List<RankBackground> localBackgrounds = new ArrayList<>();
 
-
-        List<String> files = ResourceLoaderUtil.getFiles(RankBackgroundHandler.class,"backgrounds");
-
-        for (String file: files)
-        {
-            if(file.endsWith(".yml"))
-            {
-                RankBackgroundLoader rank = new RankBackgroundLoader(file);
-                localBackgrounds.add(rank.getRankBackground());
-            }
-        }
 
         for (File file : backgroundsFolder.listFiles())
         {
@@ -132,6 +140,22 @@ public class RankBackgroundHandler
                 {
                     ex.printStackTrace();
                 }
+            }
+        }
+
+        List<String> files = ResourceLoaderUtil.getFiles(RankBackgroundHandler.class,"backgrounds");
+
+        for (String file: files)
+        {
+            if(file.endsWith(".yml"))
+            {
+                RankBackgroundLoader rank = new RankBackgroundLoader(file);
+                RankBackground rankBackground = rank.getRankBackground();
+                if (!localBackgrounds.contains(rankBackground))
+                {
+                    localBackgrounds.add(rankBackground);
+                }
+
             }
         }
 

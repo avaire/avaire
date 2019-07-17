@@ -26,6 +26,7 @@ import com.avairebot.contracts.imagegen.BackgroundRankColors;
 import com.avairebot.contracts.shop.PurchaseType;
 
 import javax.annotation.Nonnull;
+import java.util.Objects;
 
 /**
  * The type Rank background.
@@ -132,5 +133,20 @@ public class RankBackground implements PurchaseType {
      */
     public boolean isLoadedExternally() {
         return loadedExternally;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof RankBackground)) return false;
+        RankBackground that = (RankBackground) o;
+        return getId() == that.getId() &&
+            getCost() == that.getCost() &&
+            getName().equals(that.getName());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getCost(), getName());
     }
 }

@@ -40,7 +40,7 @@ public class BackgroundRankColors{
 
     private Color mainTextColor = makeColor(226, 226, 229, 85);
 
-    private Color experienceTextColor = mainTextColor;
+    private Color experienceTextColor = null;
 
     private Color secondaryTextColor = makeColor(166, 166, 166, 85);
 
@@ -395,13 +395,13 @@ public class BackgroundRankColors{
     @Nonnull
     public Color getExperienceTextColor()
     {
-        if(!mainTextColor.equals(experienceTextColor))
+        if(experienceTextColor == null)
         {
-            return experienceTextColor;
+            return getMainTextColor();
         }
         else
         {
-            return getMainTextColor();
+            return experienceTextColor;
         }
 
     }
