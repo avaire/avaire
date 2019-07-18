@@ -140,13 +140,13 @@ public class RankBackground implements PurchaseType {
         if (this == o) return true;
         if (!(o instanceof RankBackground)) return false;
         RankBackground that = (RankBackground) o;
-        return getId() == that.getId() &&
-            getCost() == that.getCost() &&
+        return getId() == that.getId() ||
             getName().equals(that.getName());
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(getId(), getCost(), getName());
+    public int hashCode()
+    {
+        return Objects.hash(getId(), getName());
     }
 }

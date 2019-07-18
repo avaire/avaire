@@ -48,7 +48,7 @@ public class RankBackgroundRender extends Renderer {
     private final String discriminator;
     private final String avatarUrl;
 
-    @Nonnull
+
     private RankBackground background;
 
     private String rank = null;
@@ -81,20 +81,17 @@ public class RankBackgroundRender extends Renderer {
         this.username = username;
         this.discriminator = discriminator;
         this.avatarUrl = avatarUrl;
-        this.background = RankBackgroundHandler.getDefaultBackground();
+        this.background = null;
     }
 
     /**
-     * Sets the background that should be used for the render, if <code>NULL</code> is given the
-     * {@link RankBackgroundHandler#DEFAULT_BACKGROUND default background} will be used instead.
+     * Sets the background that should be used for the render.
      *
      * @param background The background that should be used.
      * @return The rank background instance.
      */
     public RankBackgroundRender setBackground(@Nullable RankBackground background) {
-        this.background = background == null
-            ? RankBackgroundHandler.getDefaultBackground()
-            : background;
+        this.background = background;
 
         return this;
     }
@@ -180,6 +177,7 @@ public class RankBackgroundRender extends Renderer {
     public boolean canRender() {
         return rank != null
             && level != null
+            && background != null
             && currentXpInLevel != null
             && totalXpInLevel != null
             && serverExperience != null

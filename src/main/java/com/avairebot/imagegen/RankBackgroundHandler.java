@@ -50,11 +50,11 @@ public class RankBackgroundHandler
     private static RankBackgroundHandler instance;
 
     private static final Logger log = LoggerFactory.getLogger(RankBackgroundHandler.class);
-    public static final RankBackground DEFAULT_BACKGROUND = new RankBackground(2, 10, "Purple", null, new BackgroundRankColors());
     private static final LinkedHashMap<RankBackground, BackgroundRankColors> backgroundColors = new LinkedHashMap<>();
 
     private static final LinkedHashMap<String, Integer> namesToCost = new LinkedHashMap<>();
     private static final List<RankBackground> backgrounds = new ArrayList<>();
+    private static final List<Integer> usedIds = new ArrayList<>();
     private static File backgroundsFolder;
 
     private RankBackgroundHandler() {
@@ -76,6 +76,33 @@ public class RankBackgroundHandler
             instance = new RankBackgroundHandler();
         }
         return instance;
+    }
+
+    public void start()
+    {
+        Map<String, Integer> unsortedNamesToCost = new HashMap<>();
+
+        try
+        {
+            for (RankBackground type : getResourceFiles("backgrounds")) {
+                unsortedNamesToCost.put(type.getName(), type.getCost());
+
+                BackgroundRankColors rankColors = type.getBackgroundColors();
+                usedIds.add(type.getId());
+                RankBackgroundHandler.backgroundColors.put(type, rankColors );
+                backgrounds.add(type);
+            }
+        }
+        catch (IOException e)
+        {
+            System.out.printf("Invalid cache type given: %s", e.getMessage());
+            System.exit(ExitCodes.EXIT_CODE_ERROR);
+        }
+
+
+        unsortedNamesToCost.entrySet().stream()
+            .sorted(Map.Entry.comparingByValue())
+            .forEach(entry -> namesToCost.put(entry.getKey(), entry.getValue()));
     }
 
 
@@ -100,37 +127,6 @@ public class RankBackgroundHandler
         }
     }
 
-    public void start()
-    {
-        Map<String, Integer> unsortedNamesToCost = new HashMap<>();
-        backgrounds.add(DEFAULT_BACKGROUND);
-        unsortedNamesToCost.put(DEFAULT_BACKGROUND.getName(),DEFAULT_BACKGROUND.getCost());
-
-
-
-        try
-        {
-            for (RankBackground type : getResourceFiles("backgrounds")) {
-                    unsortedNamesToCost.put(type.getName(), type.getCost());
-
-                    BackgroundRankColors instance = type.getBackgroundColors();
-                    backgroundColors.put(type, instance );
-                    backgrounds.add(type);
-            }
-        }
-        catch (IOException e)
-        {
-            System.out.printf("Invalid cache type given: %s", e.getMessage());
-            System.exit(ExitCodes.EXIT_CODE_ERROR);
-        }
-
-
-        unsortedNamesToCost.entrySet().stream()
-            .sorted(Map.Entry.comparingByValue())
-            .forEach(entry -> namesToCost.put(entry.getKey(), entry.getValue()));
-    }
-
-
     private List<RankBackground> getResourceFiles(String folder) throws IOException {
         List<RankBackground> localBackgrounds = new ArrayList<>();
 
@@ -145,8 +141,15 @@ public class RankBackgroundHandler
                 {
                     log.debug("Attempting to load background: " + file.toString());
                     RankBackgroundLoader rankBackgroundLoader = new RankBackgroundLoader(file);
-
-                    localBackgrounds.add(rankBackgroundLoader.getRankBackground());
+                    RankBackground background = rankBackgroundLoader.getRankBackground();
+                    if(isBackgroundRankValid(background))
+                    {
+                        localBackgrounds.add(background);
+                    }
+                    else
+                    {
+                        log.debug("Failed to load background: " + file.toString());
+                    }
                 }
                 catch(NullPointerException ex)
                 {
@@ -163,9 +166,14 @@ public class RankBackgroundHandler
             {
                 RankBackgroundLoader rank = new RankBackgroundLoader(file);
                 RankBackground rankBackground = rank.getRankBackground();
-                if (!localBackgrounds.contains(rankBackground))
+                if (!localBackgrounds.contains(rankBackground)
+                    && isBackgroundRankValid(rankBackground))
                 {
                     localBackgrounds.add(rankBackground);
+                }
+                else
+                {
+                    log.debug("Failed to load background: " + file);
                 }
 
             }
@@ -176,6 +184,23 @@ public class RankBackgroundHandler
 
 
 
+    private boolean isBackgroundRankValid(RankBackground background)
+    {
+        if(background.getCost() <= 0)
+        {
+            return false;
+        }
+        if(background.getName() == null ||
+            background.getName().isEmpty())
+        {
+            return false;
+        }
+        if(namesToCost.containsKey(background.getName()))
+        {
+            return false;
+        }
+        return !usedIds.contains(background.getId());
+    }
 
     public static List<RankBackground> values()
     {
@@ -189,15 +214,6 @@ public class RankBackgroundHandler
      */
     public static BackgroundRankColors getBackgroundColors(RankBackground rankBackground) {
         return backgroundColors.get(rankBackground);
-    }
-
-    /**
-     * Gets the default background that should be used for rank commands if none other is set.
-     *
-     * @return The background color scheme for the current background image.
-     */
-    public static RankBackground getDefaultBackground() {
-        return DEFAULT_BACKGROUND;
     }
 
     /**

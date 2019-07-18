@@ -66,9 +66,19 @@ public class RankBackgroundLoader
     public RankBackgroundLoader(@Nonnull File backgroundResource) throws FileNotFoundException {
         config = YamlConfiguration.loadConfiguration(new InputStreamReader(new FileInputStream(backgroundResource)));
 
-        this.background = new RankBackground(config.getInt("id"),config.getInt("cost"),config.getString("name"),
-            config.getString("backgroundImage"), getBackgroundColors(), true);
+        int id = config.getInt("id");
+
+        int cost = config.getInt("cost");
+
+        String name = config.getString("name");
+
+        String backgroundImage = config.getString("backgroundImage");
+
+        this.background = new RankBackground(id,cost,name,
+           backgroundImage , getBackgroundColors(), true);
     }
+
+
 
     private BackgroundRankColors getBackgroundColors()
     {
