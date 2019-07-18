@@ -182,7 +182,7 @@ public class RankBackgroundCommand extends Command {
         message.add(context.i18n("canBeUnlocked"));
         message.add("-------------------------------");
 
-        String purchaseType = RankBackgroundHandler.getDefaultBackground().getPurchaseType();
+        String purchaseType = RankBackgroundHandler.getRankPurchaseType();
         paginator.forEach((index, name, cost) -> {
             //noinspection ConstantConditions
             boolean alreadyOwns = player.hasPurchases() && player.getPurchases().hasPurchase(
@@ -360,7 +360,7 @@ public class RankBackgroundCommand extends Command {
         }
 
         try {
-            if (player.getPurchases().getSelectedPurchasesForType(RankBackgroundHandler.getDefaultBackground().getPurchaseType()) != null) {
+            if (player.getPurchases().getSelectedPurchasesForType(RankBackgroundHandler.getRankPurchaseType()) != null) {
                 avaire.getDatabase().newQueryBuilder(Constants.VOTES_TABLE_NAME)
                     .where("user_id", context.getAuthor().getIdLong())
                     .update(statement -> statement.set("selected_bg", null));

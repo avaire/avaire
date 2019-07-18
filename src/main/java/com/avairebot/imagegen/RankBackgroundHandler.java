@@ -22,6 +22,7 @@
 package com.avairebot.imagegen;
 
 import com.avairebot.contracts.imagegen.BackgroundRankColors;
+import com.avairebot.contracts.shop.PurchaseType;
 import com.avairebot.shared.ExitCodes;
 import com.avairebot.utilities.ResourceLoaderUtil;
 import org.apache.commons.io.FileUtils;
@@ -182,6 +183,11 @@ public class RankBackgroundHandler
         return localBackgrounds;
     }
 
+
+    public static String getRankPurchaseType()
+    {
+        return new RankBackground(2, 10, "Purple", null, new BackgroundRankColors()).getPurchaseType();
+    }
 
 
     private boolean isBackgroundRankValid(RankBackground background)
