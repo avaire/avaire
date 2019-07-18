@@ -21,6 +21,7 @@
 
 package com.avairebot.imagegen;
 
+import com.avairebot.Constants;
 import com.avairebot.contracts.imagegen.BackgroundRankColors;
 import com.avairebot.contracts.shop.PurchaseType;
 import com.avairebot.shared.ExitCodes;
@@ -186,7 +187,7 @@ public class RankBackgroundHandler
 
     public static String getRankPurchaseType()
     {
-        return new RankBackground(2, 10, "Purple", null, new BackgroundRankColors()).getPurchaseType();
+       return Constants.RANK_BACKGROUND_PURCHASE_TYPE;
     }
 
 
