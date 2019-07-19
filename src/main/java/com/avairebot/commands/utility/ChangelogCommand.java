@@ -139,7 +139,12 @@ public class ChangelogCommand extends Command {
             if (latestMessage.getMessageId() == changelogMessage.getMessageId()) {
                 continue;
             }
+
             otherVersions.add(changelogMessage.getVersion());
+
+            if (otherVersions.size() == 10) {
+                break;
+            }
         }
 
         PlaceholderMessage message = context.makeInfo(latestMessage.getMessage())
