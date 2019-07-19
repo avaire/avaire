@@ -247,6 +247,37 @@ public class MentionableUtil {
         return null;
     }
 
+    public static Role getRole(@Nonnull Message message, @Nonnull String[] args) {
+        if (!message.getMentionedRoles().isEmpty()) {
+            return message.getMentionedRoles().get(0);
+        }
+
+        if (args.length == 0) {
+            return null;
+        }
+
+        String potentialRoleId = args[0].trim();
+        if (NumberUtil.isNumeric(potentialRoleId)) {
+            Role role = message.getGuild().getRoleById(potentialRoleId);
+            if (role != null) {
+                return role;
+            }
+        }
+
+        StringBuilder roleName = new StringBuilder();
+        for (String part : args) {
+            roleName.append(part).append(" ");
+
+            List<Role> roles = message.getGuild().getRolesByName(roleName.toString().trim(), true);
+            if (roles.isEmpty()) {
+                continue;
+            }
+            return roles.get(0);
+        }
+
+        return null;
+    }
+
     /**
      * The channel priority type, used for specifying what type of channel
      * should be prioritised when looking for a channel by name.
