@@ -145,8 +145,7 @@ public class RankBackground implements PurchaseType {
     }
 
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         return Objects.hash(getId(), getName());
     }
 }

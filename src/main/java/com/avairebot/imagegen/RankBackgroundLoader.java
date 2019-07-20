@@ -34,8 +34,8 @@ import java.io.InputStreamReader;
 /**
  * The type Rank background loader.
  */
-public class RankBackgroundLoader
-{
+public class RankBackgroundLoader {
+    
     private final YamlConfiguration config;
     private RankBackground background;
 
@@ -49,11 +49,13 @@ public class RankBackgroundLoader
         config = YamlConfiguration.loadConfiguration(new InputStreamReader(
             getClass().getClassLoader().getResourceAsStream("backgrounds/" + backgroundResource)));
 
-
-
-
-        this.background = new RankBackground(config.getInt("id"),config.getInt("cost"),config.getString("name"),
-                                                config.getString("backgroundImage"), getBackgroundColors());
+        this.background = new RankBackground(
+            config.getInt("id"),
+            config.getInt("cost"),
+            config.getString("name"),
+            config.getString("backgroundImage"),
+            getBackgroundColors()
+        );
     }
 
     /**
@@ -67,21 +69,15 @@ public class RankBackgroundLoader
         config = YamlConfiguration.loadConfiguration(new InputStreamReader(new FileInputStream(backgroundResource)));
 
         int id = config.getInt("id");
-
         int cost = config.getInt("cost");
 
         String name = config.getString("name");
-
         String backgroundImage = config.getString("backgroundImage");
 
-        this.background = new RankBackground(id,cost,name,
-           backgroundImage , getBackgroundColors(), true);
+        this.background = new RankBackground(id, cost, name, backgroundImage, getBackgroundColors(), true);
     }
 
-
-
-    private BackgroundRankColors getBackgroundColors()
-    {
+    private BackgroundRankColors getBackgroundColors() {
         BackgroundRankColors colors = new BackgroundRankColors();
         Color backgroundColor = loadColorFromYaml("colors.backgroundColor");
         colors.setBackgroundColor(backgroundColor);
@@ -96,13 +92,11 @@ public class RankBackgroundLoader
         Color experienceSeparatorColor = loadColorFromYaml("colors.experienceSeparatorColor");
         colors.setExperienceSeparatorColor(experienceSeparatorColor);
 
-        if(config.contains("colors.backgroundCoverColor"))
-        {
+        if (config.contains("colors.backgroundCoverColor")) {
             Color backgroundCoverColor = loadColorFromYaml("colors.backgroundCoverColor");
             colors.setBackgroundCoverColor(backgroundCoverColor);
         }
-        if(config.contains("colors.experienceTextColor"))
-        {
+        if (config.contains("colors.experienceTextColor")) {
             Color experienceTextColor = loadColorFromYaml("colors.experienceTextColor");
             colors.setExperienceTextColor(experienceTextColor);
         }
@@ -110,19 +104,15 @@ public class RankBackgroundLoader
         return colors;
     }
 
-    private Color loadColorFromYaml(String heading)
-    {
+    private Color loadColorFromYaml(String heading) {
         int red = config.getInt(heading + ".red");
         int green = config.getInt(heading + ".green");
         int blue = config.getInt(heading + ".blue");
-        if(config.contains((heading + ".alpha")))
-        {
+        if (config.contains((heading + ".alpha"))) {
             int alpha = config.getInt(heading + ".alpha");
-            return ColorUtil.makeColor(red,green,blue,alpha);
-        }
-        else
-        {
-            return ColorUtil.makeColor(red,green,blue);
+            return ColorUtil.makeColor(red, green, blue, alpha);
+        } else {
+            return ColorUtil.makeColor(red, green, blue);
         }
     }
 
@@ -134,7 +124,6 @@ public class RankBackgroundLoader
     public RankBackground getRankBackground() {
         return background;
     }
-
 
     /**
      * Gets the language configuration, the config can be used to

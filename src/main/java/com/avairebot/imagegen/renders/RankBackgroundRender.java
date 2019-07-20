@@ -24,7 +24,6 @@ package com.avairebot.imagegen.renders;
 import com.avairebot.contracts.imagegen.Renderer;
 import com.avairebot.imagegen.Fonts;
 import com.avairebot.imagegen.RankBackground;
-import com.avairebot.imagegen.RankBackgroundHandler;
 import net.dv8tion.jda.core.entities.User;
 
 import javax.annotation.Nonnull;
@@ -47,7 +46,6 @@ public class RankBackgroundRender extends Renderer {
     private final String username;
     private final String discriminator;
     private final String avatarUrl;
-
 
     private RankBackground background;
 
@@ -216,17 +214,13 @@ public class RankBackgroundRender extends Renderer {
     }
 
     private BufferedImage loadAndBuildBackground() throws IOException {
-        if (background.getBackgroundFile() != null)
-        {
-            if(!background.isLoadedExternally())
-            {
+        if (background.getBackgroundFile() != null) {
+            if (!background.isLoadedExternally()) {
                 return resize(
                     ImageIO.read(Renderer.class.getClassLoader().getResourceAsStream("backgrounds/" + background.getBackgroundFile())),
                     200, 600
                 );
-            }
-            else
-            {
+            } else {
                 return resize(
                     ImageIO.read(new FileInputStream("backgrounds/" + background.getBackgroundFile())),
                     200, 600

@@ -98,7 +98,7 @@ dependencies {
     compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
     compile group: 'io.sentry', name: 'sentry-logback', version: '1.7.10'
     compile group: 'org.reflections', name: 'reflections', version: '0.9.11'
-    
+
     // Tests
     // Only needed to run tests in a version of IntelliJ IDEA that bundles older versions
     compile("org.junit.platform:junit-platform-launcher:1.1.0")

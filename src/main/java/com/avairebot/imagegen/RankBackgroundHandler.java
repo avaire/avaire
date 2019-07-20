@@ -23,194 +23,54 @@ package com.avairebot.imagegen;
 
 import com.avairebot.Constants;
 import com.avairebot.contracts.imagegen.BackgroundRankColors;
-import com.avairebot.contracts.shop.PurchaseType;
 import com.avairebot.shared.ExitCodes;
 import com.avairebot.utilities.ResourceLoaderUtil;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.io.*;
-import java.net.JarURLConnection;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.net.URLClassLoader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.*;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
 
-public class RankBackgroundHandler
-{
-
-    private static RankBackgroundHandler instance;
+public class RankBackgroundHandler {
 
     private static final Logger log = LoggerFactory.getLogger(RankBackgroundHandler.class);
     private static final LinkedHashMap<RankBackground, BackgroundRankColors> backgroundColors = new LinkedHashMap<>();
-
     private static final LinkedHashMap<String, Integer> namesToCost = new LinkedHashMap<>();
     private static final List<RankBackground> backgrounds = new ArrayList<>();
     private static final List<Integer> usedIds = new ArrayList<>();
+    private static RankBackgroundHandler instance;
     private static File backgroundsFolder;
 
     private RankBackgroundHandler() {
 
-         backgroundsFolder = new File("backgrounds");
+        backgroundsFolder = new File("backgrounds");
 
-        if(!backgroundsFolder.exists())
-        {
+        if (!backgroundsFolder.exists()) {
             backgroundsFolder.mkdirs();
         }
         copyBackgroundsFromJarToFolder();
 
     }
 
-    public static RankBackgroundHandler getInstance()
-    {
-        if(instance == null)
-        {
+    public static RankBackgroundHandler getInstance() {
+        if (instance == null) {
             instance = new RankBackgroundHandler();
         }
         return instance;
     }
 
-    public void start()
-    {
-        Map<String, Integer> unsortedNamesToCost = new HashMap<>();
-
-        try
-        {
-            for (RankBackground type : getResourceFiles("backgrounds")) {
-                unsortedNamesToCost.put(type.getName(), type.getCost());
-
-                BackgroundRankColors rankColors = type.getBackgroundColors();
-                usedIds.add(type.getId());
-                RankBackgroundHandler.backgroundColors.put(type, rankColors );
-                backgrounds.add(type);
-            }
-        }
-        catch (IOException e)
-        {
-            System.out.printf("Invalid cache type given: %s", e.getMessage());
-            System.exit(ExitCodes.EXIT_CODE_ERROR);
-        }
-
-
-        unsortedNamesToCost.entrySet().stream()
-            .sorted(Map.Entry.comparingByValue())
-            .forEach(entry -> namesToCost.put(entry.getKey(), entry.getValue()));
+    public static String getRankPurchaseType() {
+        return Constants.RANK_BACKGROUND_PURCHASE_TYPE;
     }
 
-
-    private void copyBackgroundsFromJarToFolder()
-    {
-        try
-        {
-            List<String> files = ResourceLoaderUtil.getFiles(RankBackgroundHandler.class,"backgrounds");
-            for (String file: files)
-            {
-                File actualFile = new File("backgrounds/"+ file);
-                InputStream inputStream = RankBackgroundHandler.class.getClassLoader().getResourceAsStream("backgrounds/" + file);
-                if(!actualFile.exists())
-                {
-                    Files.copy(inputStream, Paths.get("backgrounds/" + file), StandardCopyOption.REPLACE_EXISTING);
-                }
-            }
-        }
-        catch (IOException e)
-        {
-            System.exit(ExitCodes.EXIT_CODE_ERROR);
-        }
-    }
-
-    private List<RankBackground> getResourceFiles(String folder) throws IOException {
-        List<RankBackground> localBackgrounds = new ArrayList<>();
-
-
-        for (File file : backgroundsFolder.listFiles())
-        {
-            if (file.isDirectory() || file.isHidden()) continue;
-
-            if(file.getName().endsWith(".yml"))
-            {
-                try
-                {
-                    log.debug("Attempting to load background: " + file.toString());
-                    RankBackgroundLoader rankBackgroundLoader = new RankBackgroundLoader(file);
-                    RankBackground background = rankBackgroundLoader.getRankBackground();
-                    if(isBackgroundRankValid(background))
-                    {
-                        localBackgrounds.add(background);
-                    }
-                    else
-                    {
-                        log.debug("Failed to load background: " + file.toString());
-                    }
-                }
-                catch(NullPointerException ex)
-                {
-                    ex.printStackTrace();
-                }
-            }
-        }
-
-        List<String> files = ResourceLoaderUtil.getFiles(RankBackgroundHandler.class,"backgrounds");
-
-        for (String file: files)
-        {
-            if(file.endsWith(".yml"))
-            {
-                RankBackgroundLoader rank = new RankBackgroundLoader(file);
-                RankBackground rankBackground = rank.getRankBackground();
-                if (!localBackgrounds.contains(rankBackground)
-                    && isBackgroundRankValid(rankBackground))
-                {
-                    localBackgrounds.add(rankBackground);
-                }
-                else
-                {
-                    log.debug("Failed to load background: " + file);
-                }
-
-            }
-        }
-
-        return localBackgrounds;
-    }
-
-
-    public static String getRankPurchaseType()
-    {
-       return Constants.RANK_BACKGROUND_PURCHASE_TYPE;
-    }
-
-
-    private boolean isBackgroundRankValid(RankBackground background)
-    {
-        if(background.getCost() <= 0)
-        {
-            return false;
-        }
-        if(background.getName() == null ||
-            background.getName().isEmpty())
-        {
-            return false;
-        }
-        if(namesToCost.containsKey(background.getName()))
-        {
-            return false;
-        }
-        return !usedIds.contains(background.getId());
-    }
-
-    public static List<RankBackground> values()
-    {
+    public static List<RankBackground> values() {
         return backgrounds;
     }
 
@@ -265,6 +125,100 @@ public class RankBackgroundHandler
             }
         }
         return null;
+    }
+
+    public void start() {
+        Map<String, Integer> unsortedNamesToCost = new HashMap<>();
+
+        try {
+            for (RankBackground type : getResourceFiles("backgrounds")) {
+                unsortedNamesToCost.put(type.getName(), type.getCost());
+
+                BackgroundRankColors rankColors = type.getBackgroundColors();
+                usedIds.add(type.getId());
+                RankBackgroundHandler.backgroundColors.put(type, rankColors);
+                backgrounds.add(type);
+            }
+        } catch (IOException e) {
+            System.out.printf("Invalid cache type given: %s", e.getMessage());
+            System.exit(ExitCodes.EXIT_CODE_ERROR);
+        }
+
+
+        unsortedNamesToCost.entrySet().stream()
+            .sorted(Map.Entry.comparingByValue())
+            .forEach(entry -> namesToCost.put(entry.getKey(), entry.getValue()));
+    }
+
+    private void copyBackgroundsFromJarToFolder() {
+        try {
+            List<String> files = ResourceLoaderUtil.getFiles(RankBackgroundHandler.class, "backgrounds");
+            for (String file : files) {
+                File actualFile = new File("backgrounds/" + file);
+                InputStream inputStream = RankBackgroundHandler.class.getClassLoader().getResourceAsStream("backgrounds/" + file);
+                if (!actualFile.exists()) {
+                    Files.copy(inputStream, Paths.get("backgrounds/" + file), StandardCopyOption.REPLACE_EXISTING);
+                }
+            }
+        } catch (IOException e) {
+            System.exit(ExitCodes.EXIT_CODE_ERROR);
+        }
+    }
+
+    private List<RankBackground> getResourceFiles(String folder) throws IOException {
+        List<RankBackground> localBackgrounds = new ArrayList<>();
+
+
+        for (File file : backgroundsFolder.listFiles()) {
+            if (file.isDirectory() || file.isHidden()) continue;
+
+            if (file.getName().endsWith(".yml")) {
+                try {
+                    log.debug("Attempting to load background: " + file.toString());
+                    RankBackgroundLoader rankBackgroundLoader = new RankBackgroundLoader(file);
+                    RankBackground background = rankBackgroundLoader.getRankBackground();
+                    if (isBackgroundRankValid(background)) {
+                        localBackgrounds.add(background);
+                    } else {
+                        log.debug("Failed to load background: " + file.toString());
+                    }
+                } catch (NullPointerException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
+
+        List<String> files = ResourceLoaderUtil.getFiles(RankBackgroundHandler.class, "backgrounds");
+
+        for (String file : files) {
+            if (file.endsWith(".yml")) {
+                RankBackgroundLoader rank = new RankBackgroundLoader(file);
+                RankBackground rankBackground = rank.getRankBackground();
+                if (!localBackgrounds.contains(rankBackground)
+                    && isBackgroundRankValid(rankBackground)) {
+                    localBackgrounds.add(rankBackground);
+                } else {
+                    log.debug("Failed to load background: " + file);
+                }
+
+            }
+        }
+
+        return localBackgrounds;
+    }
+
+    private boolean isBackgroundRankValid(RankBackground background) {
+        if (background.getCost() <= 0) {
+            return false;
+        }
+        if (background.getName() == null ||
+            background.getName().isEmpty()) {
+            return false;
+        }
+        if (namesToCost.containsKey(background.getName())) {
+            return false;
+        }
+        return !usedIds.contains(background.getId());
     }
 
 }

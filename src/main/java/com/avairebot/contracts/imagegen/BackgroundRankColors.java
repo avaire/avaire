@@ -32,9 +32,10 @@ import java.awt.*;
  * The background rank colors used for making
  * the {@link com.avairebot.imagegen.RankBackground}
  */
-public class BackgroundRankColors{
+public class BackgroundRankColors {
 
-    private Color backgroundColor = makeColor(55, 55, 70);;
+    private Color backgroundColor = makeColor(55, 55, 70);
+    ;
 
     private Color backgroundCoverColor = null;
 
@@ -48,10 +49,9 @@ public class BackgroundRankColors{
 
     private Color experienceForegroundColor = makeColor(104, 107, 170, 80);
 
-    private Color experienceSeparatorColor =  makeColor(140, 144, 226, 80);
+    private Color experienceSeparatorColor = makeColor(140, 144, 226, 80);
 
-    public BackgroundRankColors()
-    {
+    public BackgroundRankColors() {
 
     }
 
@@ -67,6 +67,14 @@ public class BackgroundRankColors{
         return backgroundColor;
     }
 
+    /**
+     * Sets background color.
+     *
+     * @param color the new color
+     */
+    public void setBackgroundColor(Color color) {
+        backgroundColor = color;
+    }
 
     /**
      * Sets background color.
@@ -75,8 +83,7 @@ public class BackgroundRankColors{
      * @param green the green
      * @param blue  the blue
      */
-    public void setBackgroundColor(float red, float green, float blue)
-    {
+    public void setBackgroundColor(float red, float green, float blue) {
         backgroundColor = makeColor(red, green, blue);
     }
 
@@ -88,22 +95,9 @@ public class BackgroundRankColors{
      * @param blue  the blue
      * @param alpha the alpha
      */
-    public void setBackgroundColor(float red, float green, float blue, float alpha)
-    {
-        backgroundColor = makeColor(red, green, blue,alpha);
+    public void setBackgroundColor(float red, float green, float blue, float alpha) {
+        backgroundColor = makeColor(red, green, blue, alpha);
     }
-
-    /**
-     * Sets background color.
-     *
-     * @param color the new color
-     */
-    public void setBackgroundColor(Color color)
-    {
-        backgroundColor = color;
-    }
-
-
 
     /**
      * The color that should be used for the background cover, if one is set the cover
@@ -121,6 +115,14 @@ public class BackgroundRankColors{
         return backgroundCoverColor;
     }
 
+    /**
+     * Sets background cover color.
+     *
+     * @param color the color
+     */
+    public void setBackgroundCoverColor(Color color) {
+        backgroundCoverColor = color;
+    }
 
     /**
      * Sets background cover color.
@@ -129,29 +131,8 @@ public class BackgroundRankColors{
      * @param green the green
      * @param blue  the blue
      */
-    public void setBackgroundCoverColor(float red, float green, float blue)
-    {
+    public void setBackgroundCoverColor(float red, float green, float blue) {
         backgroundCoverColor = makeColor(red, green, blue);
-    }
-
-    /**
-     * Sets background cover color.
-     *
-     * @param color  the color
-     */
-    public void setBackgroundCoverColor(Color color)
-    {
-        backgroundCoverColor = color;
-    }
-
-    /**
-     * Sets background cover color.
-     *
-     * @param color  the color
-     */
-    public void setExperienceTextColor(Color color)
-    {
-       experienceTextColor = color;
     }
 
     /**
@@ -162,8 +143,7 @@ public class BackgroundRankColors{
      * @param blue  the blue
      * @param alpha the alpha
      */
-    public void setBackgroundCoverColor(float red, float green, float blue, float alpha)
-    {
+    public void setBackgroundCoverColor(float red, float green, float blue, float alpha) {
         backgroundCoverColor = makeColor(red, green, blue, alpha);
     }
 
@@ -174,9 +154,17 @@ public class BackgroundRankColors{
      * @return The color that should be used as the main text color.
      */
     @Nonnull
-    public Color getMainTextColor()
-    {
+    public Color getMainTextColor() {
         return mainTextColor;
+    }
+
+    /**
+     * Sets main text color.
+     *
+     * @param color the new color
+     */
+    public void setMainTextColor(Color color) {
+        mainTextColor = color;
     }
 
     /**
@@ -186,9 +174,8 @@ public class BackgroundRankColors{
      * @param green the green
      * @param blue  the blue
      */
-    public void setMainTextColor(float red, float green, float blue)
-    {
-        mainTextColor = makeColor(red,green,blue);
+    public void setMainTextColor(float red, float green, float blue) {
+        mainTextColor = makeColor(red, green, blue);
     }
 
     /**
@@ -199,21 +186,9 @@ public class BackgroundRankColors{
      * @param blue  the blue
      * @param blue  the alpha
      */
-    public void setMainTextColor(float red, float green, float blue, float alpha)
-    {
-        mainTextColor = makeColor(red,green,blue, alpha);
+    public void setMainTextColor(float red, float green, float blue, float alpha) {
+        mainTextColor = makeColor(red, green, blue, alpha);
     }
-
-    /**
-     * Sets main text color.
-     *
-     * @param color the new color
-     */
-    public void setMainTextColor(Color color)
-    {
-        mainTextColor = color;
-    }
-
 
     /**
      * The color that should be used as the secondary text color, this includes
@@ -222,21 +197,8 @@ public class BackgroundRankColors{
      * @return The color that should be used as the secondary text color.
      */
     @Nonnull
-    public Color getSecondaryTextColor()
-    {
+    public Color getSecondaryTextColor() {
         return secondaryTextColor;
-    }
-
-    /**
-     * Sets secondary text color.
-     *
-     * @param red   the red
-     * @param green the green
-     * @param blue  the blue
-     */
-    public void setSecondaryTextColor(float red, float green, float blue)
-    {
-        secondaryTextColor = makeColor(red,green,blue);
     }
 
     /**
@@ -244,8 +206,7 @@ public class BackgroundRankColors{
      *
      * @param color the new color
      */
-    public void setSecondaryTextColor(Color color)
-    {
+    public void setSecondaryTextColor(Color color) {
         secondaryTextColor = color;
     }
 
@@ -255,11 +216,21 @@ public class BackgroundRankColors{
      * @param red   the red
      * @param green the green
      * @param blue  the blue
+     */
+    public void setSecondaryTextColor(float red, float green, float blue) {
+        secondaryTextColor = makeColor(red, green, blue);
+    }
+
+    /**
+     * Sets secondary text color.
+     *
+     * @param red   the red
+     * @param green the green
+     * @param blue  the blue
      * @param blue  the alpha
      */
-    public void setSecondaryTextColor(float red, float green, float blue, float alpha)
-    {
-        secondaryTextColor = makeColor(red,green,blue, alpha);
+    public void setSecondaryTextColor(float red, float green, float blue, float alpha) {
+        secondaryTextColor = makeColor(red, green, blue, alpha);
     }
 
     /**
@@ -268,9 +239,17 @@ public class BackgroundRankColors{
      * @return The color that should be used as the experience bar background.
      */
     @Nonnull
-    public  Color getExperienceBackgroundColor()
-    {
+    public Color getExperienceBackgroundColor() {
         return experienceBackgroundColor;
+    }
+
+    /**
+     * Sets experience background color.
+     *
+     * @param color the new color
+     */
+    public void setExperienceBackgroundColor(Color color) {
+        experienceBackgroundColor = color;
     }
 
     /**
@@ -280,9 +259,8 @@ public class BackgroundRankColors{
      * @param green the green
      * @param blue  the blue
      */
-    public void setExperienceBackgroundColor(float red, float green, float blue)
-    {
-        experienceBackgroundColor = makeColor(red,green,blue);
+    public void setExperienceBackgroundColor(float red, float green, float blue) {
+        experienceBackgroundColor = makeColor(red, green, blue);
     }
 
     /**
@@ -293,21 +271,9 @@ public class BackgroundRankColors{
      * @param blue  the blue
      * @param blue  the alpha
      */
-    public void setExperienceBackgroundColor(float red, float green, float blue, float alpha)
-    {
-        experienceBackgroundColor = makeColor(red,green,blue, alpha);
+    public void setExperienceBackgroundColor(float red, float green, float blue, float alpha) {
+        experienceBackgroundColor = makeColor(red, green, blue, alpha);
     }
-
-    /**
-     * Sets experience background color.
-     *
-     * @param color the new color
-     */
-    public void setExperienceBackgroundColor(Color color)
-    {
-        experienceBackgroundColor  = color;
-    }
-
 
     /**
      * The color that should be used as the experience bar foreground.
@@ -315,9 +281,17 @@ public class BackgroundRankColors{
      * @return The color that should be used as the experience bar foreground.
      */
     @Nonnull
-    public Color getExperienceForegroundColor()
-    {
+    public Color getExperienceForegroundColor() {
         return experienceForegroundColor;
+    }
+
+    /**
+     * Sets experience foreground color.
+     *
+     * @param color the new color
+     */
+    public void setExperienceForegroundColor(Color color) {
+        experienceForegroundColor = color;
     }
 
     /**
@@ -327,11 +301,9 @@ public class BackgroundRankColors{
      * @param green the green
      * @param blue  the blue
      */
-    public void setExperienceForegroundColor(float red, float green, float blue)
-    {
-        experienceForegroundColor = makeColor(red,green,blue);
+    public void setExperienceForegroundColor(float red, float green, float blue) {
+        experienceForegroundColor = makeColor(red, green, blue);
     }
-
 
 
     /**
@@ -342,19 +314,8 @@ public class BackgroundRankColors{
      * @param blue  the blue
      * @param blue  the alpha
      */
-    public void setExperienceForegroundColor(float red, float green, float blue, float alpha)
-    {
-        experienceForegroundColor = makeColor(red,green,blue, alpha);
-    }
-
-    /**
-     * Sets experience foreground color.
-     *
-     * @param color the new color
-     */
-    public void setExperienceForegroundColor(Color color)
-    {
-        experienceForegroundColor  = color;
+    public void setExperienceForegroundColor(float red, float green, float blue, float alpha) {
+        experienceForegroundColor = makeColor(red, green, blue, alpha);
     }
 
     /**
@@ -367,19 +328,16 @@ public class BackgroundRankColors{
      * @return The color that should be used as the experience bar background.
      */
     @Nonnull
-    public Color getExperienceSeparatorColor()
-    {
+    public Color getExperienceSeparatorColor() {
         return experienceSeparatorColor;
     }
-
 
     /**
      * Sets experience foreground color.
      *
      * @param color the new color
      */
-    public void setExperienceSeparatorColor(Color color)
-    {
+    public void setExperienceSeparatorColor(Color color) {
         experienceSeparatorColor = color;
     }
 
@@ -393,17 +351,22 @@ public class BackgroundRankColors{
      * @return The color that should be used for the experience bar text.
      */
     @Nonnull
-    public Color getExperienceTextColor()
-    {
-        if(experienceTextColor == null)
-        {
+    public Color getExperienceTextColor() {
+        if (experienceTextColor == null) {
             return getMainTextColor();
-        }
-        else
-        {
+        } else {
             return experienceTextColor;
         }
 
+    }
+
+    /**
+     * Sets background cover color.
+     *
+     * @param color the color
+     */
+    public void setExperienceTextColor(Color color) {
+        experienceTextColor = color;
     }
 
     /**
@@ -418,8 +381,7 @@ public class BackgroundRankColors{
      * @param blue  The blue component
      * @return The color with the given values.
      */
-    protected Color makeColor(float red, float green, float blue)
-    {
+    protected Color makeColor(float red, float green, float blue) {
         return ColorUtil.makeColor(red, green, blue);
     }
 
@@ -437,8 +399,7 @@ public class BackgroundRankColors{
      * @param alpha The alpha component.
      * @return The color with the given values.
      */
-    protected Color makeColor(float red, float green, float blue, float alpha)
-    {
+    protected Color makeColor(float red, float green, float blue, float alpha) {
         return ColorUtil.makeColor(red, green, blue, alpha);
     }
 
