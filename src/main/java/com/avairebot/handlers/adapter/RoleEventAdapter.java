@@ -75,6 +75,7 @@ public class RoleEventAdapter extends EventAdapter {
 
         handleAutoroles(event, transformer);
         handleLevelRoles(event, transformer);
+        handleMusicDjRole(event, transformer);
         handleSelfAssignableRoles(event, transformer);
     }
 
@@ -89,24 +90,6 @@ public class RoleEventAdapter extends EventAdapter {
                 .useAsync(true)
                 .where("id", event.getGuild().getId())
                 .update(statement -> statement.set("autorole", null));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void handleSelfAssignableRoles(RoleDeleteEvent event, GuildTransformer transformer) {
-        if (transformer.getSelfAssignableRoles().isEmpty() || !transformer.getSelfAssignableRoles().containsKey(event.getRole().getId())) {
-            return;
-        }
-
-        try {
-            transformer.getSelfAssignableRoles().remove(event.getRole().getId());
-            avaire.getDatabase().newQueryBuilder(Constants.GUILD_TABLE_NAME)
-                .useAsync(true)
-                .where("id", event.getGuild().getId())
-                .update(statement -> {
-                    statement.set("claimable_roles", AvaIre.gson.toJson(transformer.getSelfAssignableRoles()), true);
-                });
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -136,6 +119,43 @@ public class RoleEventAdapter extends EventAdapter {
             e.printStackTrace();
         }
     }
+
+    private void handleMusicDjRole(RoleDeleteEvent event, GuildTransformer transformer) {
+        if (transformer.getDjRole() == null || !transformer.getDjRole().equals(event.getRole().getId())) {
+            return;
+        }
+
+        try {
+            transformer.setDjRole(null);
+            avaire.getDatabase().newQueryBuilder(Constants.GUILD_TABLE_NAME)
+                .useAsync(true)
+                .where("id", event.getGuild().getId())
+                .update(statement -> {
+                    statement.set("dj_role", null);
+                });
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void handleSelfAssignableRoles(RoleDeleteEvent event, GuildTransformer transformer) {
+        if (transformer.getSelfAssignableRoles().isEmpty() || !transformer.getSelfAssignableRoles().containsKey(event.getRole().getId())) {
+            return;
+        }
+
+        try {
+            transformer.getSelfAssignableRoles().remove(event.getRole().getId());
+            avaire.getDatabase().newQueryBuilder(Constants.GUILD_TABLE_NAME)
+                .useAsync(true)
+                .where("id", event.getGuild().getId())
+                .update(statement -> {
+                    statement.set("claimable_roles", AvaIre.gson.toJson(transformer.getSelfAssignableRoles()), true);
+                });
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public void updateRoleData(Guild guild) {
         try {

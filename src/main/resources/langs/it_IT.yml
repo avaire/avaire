@@ -502,6 +502,13 @@ music:
                 none: "Nessuno può utilizzare alcun comando musicale senza il ruolo `DJ`."
                 normal: "Impedisce agli utenti di utilizzare comandi come playlist, controllo del volume, e skip forzato senza il ruolo `DJ`, ma consentendo comunque di utilizzare il comando play senza avere il ruolo."
 
+    DjRoleCommand:
+        invalidRoleMentioned: "Invalid role mentioned, I found no roles called `{0}`"
+        noDjRoleSelected: "There are currently no custom DJ role setup for the server, however anyone who has a role called `DJ` will still be able to use DJ restricted music commands."
+        currentSelectedRole: "The :role role is used as the music DJ role.\nAnyone with the role will be able to use DJ restricted music commands."
+        resetDjRole: "The DJ role has successfully been reset, however anyone who has a role called `DJ` will still be able to use music commands that requires the DJ role to be used."
+        selectedRoleForMusic: "The :role role will now be used as the music DJ role!"
+
     MoveHereCommand:
         error: 'Non connesso al canale vocale, richiedi prima musica con `{0}play`'
         hasMusicChannel: "Il server ha un canale vocale impostato per la musica, se vuoi che passi ad un altro canale vocale, puoi chiedere ad un amministratore del server di spostarmi in un altro canale vocale."

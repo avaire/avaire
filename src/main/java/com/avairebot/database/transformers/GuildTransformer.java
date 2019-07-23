@@ -63,6 +63,7 @@ public class GuildTransformer extends Transformer {
     private String modlog = null;
     private String musicChannelText = null;
     private String musicChannelVoice = null;
+    private String djRole = null;
     private int modlogCase = 0;
     private int defaultVolume = 100;
     private double levelModifier = -1;
@@ -103,6 +104,7 @@ public class GuildTransformer extends Transformer {
             musicMessages = data.getBoolean("music_messages", true);
             modlogCase = data.getInt("modlog_case");
             djGuildLevel = DJGuildLevel.fromId(data.getInt("dj_level", DJGuildLevel.getNormal().getId()));
+            djRole = data.getString("dj_role");
             defaultVolume = data.getInt("default_volume", 100);
 
             // Sets the default volume to a value between 10 and 100.
@@ -344,6 +346,14 @@ public class GuildTransformer extends Transformer {
 
     public Map<String, Map<String, String>> getCategories() {
         return modules;
+    }
+
+    public String getDjRole() {
+        return djRole;
+    }
+
+    public void setDjRole(String djRole) {
+        this.djRole = djRole;
     }
 
     public DJGuildLevel getDJLevel() {

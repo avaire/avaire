@@ -501,6 +501,13 @@ music:
             none: "只有那些 `DJ` 角色可以使用音乐命令."
             normal: "防止人们没有 `DJ` 角色，使用播放列表、音量控制和强制跳过等命令，但仍允许使用播放命令。."
 
+    DjRoleCommand:
+        invalidRoleMentioned: "Invalid role mentioned, I found no roles called `{0}`"
+        noDjRoleSelected: "There are currently no custom DJ role setup for the server, however anyone who has a role called `DJ` will still be able to use DJ restricted music commands."
+        currentSelectedRole: "The :role role is used as the music DJ role.\nAnyone with the role will be able to use DJ restricted music commands."
+        resetDjRole: "The DJ role has successfully been reset, however anyone who has a role called `DJ` will still be able to use music commands that requires the DJ role to be used."
+        selectedRoleForMusic: "The :role role will now be used as the music DJ role!"
+
     MoveHereCommand:
         error: '未连接到语音，请先使用 `{0}play`'
         hasMusicChannel: "该服务器有一个音乐语音通道设置，如果你想让我移动到一个不同的声音通道，请让一个管理员在服务器上拖动 'n 将我放入另一个语音通道."

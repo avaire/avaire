@@ -32,6 +32,7 @@ import com.avairebot.contracts.middleware.Middleware;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.factories.MessageFactory;
 import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.core.entities.Role;
 
 import javax.annotation.Nonnull;
 import java.util.concurrent.TimeUnit;
@@ -68,7 +69,7 @@ public class RequireDJLevelMiddleware extends Middleware {
     @SuppressWarnings("ConstantConditions")
     private boolean sendErrorMessage(Message message, MiddlewareStack stack) {
         return runMessageCheck(message, () -> {
-            String djcheckMessage = "The `DJ` Discord role is required to run this command!";
+            String djcheckMessage = "The `:role` Discord role is required to run this command!";
 
             DJCheckMessage annotation = stack.getCommand().getClass().getAnnotation(DJCheckMessage.class);
             if (annotation != null && annotation.message().trim().length() > 0) {
@@ -79,15 +80,26 @@ public class RequireDJLevelMiddleware extends Middleware {
                 }
             }
 
+            String djRoleName = "DJ";
             GuildTransformer guildTransformer = stack.getDatabaseEventHolder().getGuild();
-            if (guildTransformer != null && guildTransformer.getSelfAssignableRoles().containsValue("dj")) {
-                djcheckMessage += "\nYou can use the `:iam DJ` command to get the role!";
+            if (guildTransformer != null) {
+                if (guildTransformer.getDjRole() != null) {
+                    Role role = message.getGuild().getRoleById(guildTransformer.getDjRole());
+                    if (role != null) {
+                        djRoleName = role.getName();
+                    }
+                }
+
+                if (guildTransformer.getSelfAssignableRoles().containsValue(djRoleName.toLowerCase())) {
+                    djcheckMessage += "\nYou can use the `:iam :role` command to get the role!";
+                }
             }
 
             CommandContainer command = CommandHandler.getCommand(IAmCommand.class);
             MessageFactory.makeError(message, djcheckMessage)
                 .set("iam", command.getCommand().generateCommandTrigger(message))
                 .set("prefix", stack.getCommand().generateCommandPrefix(message))
+                .set("role", djRoleName)
                 .queue(newMessage -> newMessage.delete().queueAfter(45, TimeUnit.SECONDS));
 
             return false;

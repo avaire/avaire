@@ -28,6 +28,7 @@ import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.permissions.Permissions;
 import com.avairebot.utilities.RestActionUtil;
+import com.avairebot.utilities.RoleUtil;
 import com.sedmelluq.discord.lavaplayer.player.AudioConfiguration;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
@@ -354,16 +355,23 @@ public class AudioHandler {
                 return true;
 
             case NONE:
-                return hasDJRole(message);
+                return hasDJRole(transformer, message);
 
             default:
-                return hasDJRole(message) || level.getLevel() < guildLevel.getLevel();
+                return hasDJRole(transformer, message) || level.getLevel() < guildLevel.getLevel();
         }
     }
 
-    private boolean hasDJRole(Message message) {
+    private boolean hasDJRole(GuildTransformer transformer, Message message) {
         if (message.getMember().hasPermission(Permissions.ADMINISTRATOR.getPermission())) {
             return true;
+        }
+
+        if (transformer.getDjRole() != null) {
+            Role role = message.getGuild().getRoleById(transformer.getDjRole());
+            if (role != null) {
+                return RoleUtil.hasRole(message.getMember(), role);
+            }
         }
 
         for (Role role : message.getMember().getRoles()) {
