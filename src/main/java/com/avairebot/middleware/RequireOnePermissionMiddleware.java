@@ -22,6 +22,7 @@
 package com.avairebot.middleware;
 
 import com.avairebot.AvaIre;
+import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.middleware.Middleware;
 import com.avairebot.factories.MessageFactory;
 import com.avairebot.middleware.permission.PermissionCheck;
@@ -44,7 +45,7 @@ public class RequireOnePermissionMiddleware extends Middleware {
     }
 
     @Override
-    public String buildHelpDescription(@Nonnull String[] arguments) {
+    public String buildHelpDescription(@Nonnull CommandMessage context, @Nonnull String[] arguments) {
         PermissionType type = PermissionType.fromName(arguments[0]);
         arguments = Arrays.copyOfRange(arguments, 1, arguments.length);
 

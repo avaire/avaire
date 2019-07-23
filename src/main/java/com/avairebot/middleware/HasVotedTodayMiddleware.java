@@ -22,6 +22,7 @@
 package com.avairebot.middleware;
 
 import com.avairebot.AvaIre;
+import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.middleware.Middleware;
 import com.avairebot.database.transformers.GuildTransformer;
 import net.dv8tion.jda.core.entities.Message;
@@ -35,7 +36,7 @@ public class HasVotedTodayMiddleware extends Middleware {
     }
 
     @Override
-    public String buildHelpDescription(@Nonnull String[] arguments) {
+    public String buildHelpDescription(@Nonnull CommandMessage context, @Nonnull String[] arguments) {
         if (!avaire.getConfig().getBoolean("vote-lock.enabled", true)) {
             return null;
         }
