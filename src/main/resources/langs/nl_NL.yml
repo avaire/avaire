@@ -502,6 +502,13 @@ music:
                 none: "Niemand kan ook maar 1 muziek commando afspelen zonder de `DJ` rol."
                 normal: "Voorkom het gebruik van commando's zoals playlist, volume control, en force skip zonder de `DJ` rol, maar mensen kunnen nog wel het play commando gebruiken."
 
+    DjRoleCommand:
+        invalidRoleMentioned: "Invalid role mentioned, I found no roles called `{0}`"
+        noDjRoleSelected: "There are currently no custom DJ role setup for the server, however anyone who has a role called `DJ` will still be able to use DJ restricted music commands."
+        currentSelectedRole: "The :role role is used as the music DJ role.\nAnyone with the role will be able to use DJ restricted music commands."
+        resetDjRole: "The DJ role has successfully been reset, however anyone who has a role called `DJ` will still be able to use music commands that requires the DJ role to be used."
+        selectedRoleForMusic: "The :role role will now be used as the music DJ role!"
+
     MoveHereCommand:
         error: 'Niet verbonden met een spraak kanaal, vraag eerst muziek aan met `{0}play`'
         hasMusicChannel: "De server heeft een muziek kanaal klaar gezet, als je mij graag in een ander spraak kanaal wilt hebben, vraag dan een administrator om mij naar een ander kanaal te slepen."
