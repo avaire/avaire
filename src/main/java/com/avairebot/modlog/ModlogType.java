@@ -79,7 +79,12 @@ public enum ModlogType {
     /**
      * Represents when a user is muted temporarily from a server.
      */
-    TEMP_MUTE(10, "Temp Mute", "\uD83D\uDD07", true, true, MessageType.WARNING.getColor());
+    TEMP_MUTE(10, "Temp Mute", "\uD83D\uDD07", true, true, MessageType.WARNING.getColor()),
+
+    /**
+     * Represents when a user is unmuted in a server.
+     */
+    UNMUTE(11, "Unmute", "\uD83D\uDD0A", true, false, MessageType.SUCCESS.getColor());
 
     final int id;
     final String name;
@@ -93,7 +98,7 @@ public enum ModlogType {
         this(id, name, emote, notifyable, true, color);
     }
 
-    ModlogType(int id, String name, String emote, boolean notifyable, boolean punishment, Color color) {
+    ModlogType(int id, String name, @Nullable String emote, boolean notifyable, boolean punishment, Color color) {
         this.id = id;
         this.name = name;
         this.emote = emote;
