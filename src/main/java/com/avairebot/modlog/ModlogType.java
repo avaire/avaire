@@ -74,7 +74,12 @@ public enum ModlogType {
     /**
      * Represents when a user is muted from a server.
      */
-    MUTE(9, "Mute", "\uD83D\uDD07", true, true, MessageType.WARNING.getColor());
+    MUTE(9, "Mute", "\uD83D\uDD07", true, true, MessageType.WARNING.getColor()),
+
+    /**
+     * Represents when a user is muted temporarily from a server.
+     */
+    TEMP_MUTE(10, "Temp Mute", "\uD83D\uDD07", true, true, MessageType.WARNING.getColor());
 
     final int id;
     final String name;

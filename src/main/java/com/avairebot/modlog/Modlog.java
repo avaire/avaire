@@ -142,6 +142,23 @@ public class Modlog {
                     .addField("Reason", formatReason(transformer, action.getMessage()), false);
                 break;
 
+            case MUTE:
+            case TEMP_MUTE:
+                //noinspection ConstantConditions
+                split = action.getMessage().split("\n");
+                builder
+                    .addField("User", action.getStringifiedTarget(), true)
+                    .addField("Moderator", action.getStringifiedModerator(), true);
+
+                if (split[0].length() > 0) {
+                    builder.addField("Expires At", split[0], true);
+                }
+
+                builder.addField("Reason", formatReason(transformer, String.join("\n",
+                    Arrays.copyOfRange(split, 1, split.length)
+                )), false);
+                break;
+
             case PURGE:
                 builder
                     .addField("Moderator", action.getStringifiedModerator(), true)
