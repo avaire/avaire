@@ -165,6 +165,7 @@ public class MuteCommand extends Command {
             try {
                 avaire.getDatabase().newQueryBuilder(Constants.MUTE_TABLE_NAME)
                     .insert(statement -> {
+                        statement.set("guild_id", context.getGuild().getId());
                         statement.set("modlog_id", caseId);
                         statement.set("expires_in", finalExpiresAt);
                     });

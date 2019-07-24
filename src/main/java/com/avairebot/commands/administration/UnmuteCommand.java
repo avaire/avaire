@@ -157,19 +157,21 @@ public class UnmuteCommand extends Command {
                     )
                     .where(Constants.LOG_TABLE_NAME + ".guild_id", context.getGuild().getId())
                     .andWhere(Constants.LOG_TABLE_NAME + ".target_id", user.getId())
+                    .andWhere(Constants.MUTE_TABLE_NAME + ".guild_id", context.getGuild().getId())
                     .andWhere(builder -> builder
                         .where(Constants.LOG_TABLE_NAME + ".type", ModlogType.MUTE.getId())
                         .orWhere(Constants.LOG_TABLE_NAME + ".type", ModlogType.TEMP_MUTE.getId())
                     ).get();
 
                 if (!collection.isEmpty()) {
-                    String query = String.format("DELETE FROM `%s` WHERE `modlog_id` = ?",
+                    String query = String.format("DELETE FROM `%s` WHERE `guild_id` = ? AND `modlog_id` = ?",
                         Constants.MUTE_TABLE_NAME
                     );
 
                     avaire.getDatabase().queryBatch(query, statement -> {
                         for (DataRow row : collection) {
-                            statement.setString(1, row.getString("id"));
+                            statement.setLong(1, context.getGuild().getIdLong());
+                            statement.setString(2, row.getString("id"));
                             statement.addBatch();
                         }
                     });
