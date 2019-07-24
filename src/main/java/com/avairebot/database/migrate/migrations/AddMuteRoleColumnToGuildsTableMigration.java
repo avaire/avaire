@@ -49,7 +49,7 @@ public class AddMuteRoleColumnToGuildsTableMigration implements Migration {
             ));
         } else {
             schema.getDbm().queryUpdate(String.format(
-                "ALTER TABLE `%s` ADD `modlog` VARCHAR(32) NULL DEFAULT NULL;",
+                "ALTER TABLE `%s` ADD `mute_role` VARCHAR(32) NULL DEFAULT NULL;",
                 Constants.GUILD_TABLE_NAME
             ));
         }
