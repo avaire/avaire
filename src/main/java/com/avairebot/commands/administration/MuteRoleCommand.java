@@ -144,16 +144,15 @@ public class MuteRoleCommand extends Command {
 
     private boolean setMutedRole(CommandMessage context, GuildTransformer guildTransformer, String[] args) {
         Role role = MentionableUtil.getRole(context.getMessage(), args);
-
         if (role == null) {
             return sendErrorMessage(context, "Invalid role given, the `{0}` role doesn't exists.", String.join(" ", args));
         }
 
-        context.makeInfo("Role found: :role")
-            .set("role", role.getAsMention())
-            .queue();
+        if (!context.getGuild().getSelfMember().canInteract(role)) {
+            return sendErrorMessage(context, "The {0} role is positioned higher than any role I have, so I can assign the role to anyone.", role.getAsMention());
+        }
 
-        return false;
+        return updateMutedRole(context, guildTransformer, role.getId());
     }
 
     private boolean createMutedRole(CommandMessage context, GuildTransformer guildTransformer) {
