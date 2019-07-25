@@ -502,6 +502,13 @@ music:
                 none: "Ingen kan køre nogen musikkommandoer uden 'DJ'-rollen."
                 normal: "Folk uden 'DJ'-rollen kan ikke bruge kommandoer som afspilningslister og volumenkontrol, men stadig tillader folk at bruge afspilningskommandoen uden rollen."
 
+    DjRoleCommand:
+        invalidRoleMentioned: "Invalid role mentioned, I found no roles called `{0}`"
+        noDjRoleSelected: "There are currently no custom DJ role setup for the server, however anyone who has a role called `DJ` will still be able to use DJ restricted music commands."
+        currentSelectedRole: "The :role role is used as the music DJ role.\nAnyone with the role will be able to use DJ restricted music commands."
+        resetDjRole: "The DJ role has successfully been reset, however anyone who has a role called `DJ` will still be able to use music commands that requires the DJ role to be used."
+        selectedRoleForMusic: "The :role role will now be used as the music DJ role!"
+
     MoveHereCommand:
         error: 'Ikke tilsluttet en stemme kanal, start noget musik først med `{0}play`'
         hasMusicChannel: "Serveren har en musik-kanal sat op, hvis du vil have mig til at flytte til en anden talekanal, skal du få en administrator på serveren for at trække mig til en anden talekanal."

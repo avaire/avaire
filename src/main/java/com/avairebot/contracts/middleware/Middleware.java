@@ -22,6 +22,7 @@
 package com.avairebot.contracts.middleware;
 
 import com.avairebot.AvaIre;
+import com.avairebot.commands.CommandMessage;
 import com.avairebot.metrics.Metrics;
 import com.avairebot.middleware.MiddlewareStack;
 import com.avairebot.plugin.JavaPlugin;
@@ -77,11 +78,12 @@ public abstract class Middleware {
      * for a command that uses the middleware, if null is returned the middleware will
      * be omitted from the help command.
      *
+     * @param context   The command context from when the method was called.
      * @param arguments The arguments that was given to the middleware for the current command.
      * @return Possibly-null, the description of the middleware, or null if no description should be displayed.
      */
     @Nullable
-    public String buildHelpDescription(@Nonnull String[] arguments) {
+    public String buildHelpDescription(@Nonnull CommandMessage context, @Nonnull String[] arguments) {
         return null;
     }
 

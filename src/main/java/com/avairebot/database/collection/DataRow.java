@@ -418,6 +418,9 @@ public class DataRow {
     public Carbon getTimestamp(String name, Carbon def) {
         try {
             String time = getString(name);
+            if (time == null) {
+                return null;
+            }
 
             return new Carbon(time);
         } catch (InvalidFormatException ex) {
