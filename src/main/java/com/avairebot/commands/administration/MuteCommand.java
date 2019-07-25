@@ -80,6 +80,14 @@ public class MuteCommand extends Command {
     }
 
     @Override
+    public List<Class<? extends Command>> getRelations() {
+        return Arrays.asList(
+            UnmuteCommand.class,
+            MuteRoleCommand.class
+        );
+    }
+
+    @Override
     public List<String> getTriggers() {
         return Collections.singletonList("mute");
     }
