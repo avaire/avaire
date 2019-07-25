@@ -22,7 +22,6 @@
 package com.avairebot.commands.administration;
 
 import com.avairebot.AvaIre;
-import com.avairebot.Constants;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.contracts.commands.CommandGroup;
@@ -31,6 +30,7 @@ import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.modlog.Modlog;
 import com.avairebot.modlog.ModlogAction;
 import com.avairebot.modlog.ModlogType;
+import com.avairebot.mute.MuteHandler;
 import com.avairebot.time.Carbon;
 import com.avairebot.utilities.MentionableUtil;
 import com.avairebot.utilities.NumberUtil;
@@ -163,12 +163,7 @@ public class MuteCommand extends Command {
             Modlog.notifyUser(user, context.getGuild(), modlogAction, caseId);
 
             try {
-                avaire.getDatabase().newQueryBuilder(Constants.MUTE_TABLE_NAME)
-                    .insert(statement -> {
-                        statement.set("guild_id", context.getGuild().getId());
-                        statement.set("modlog_id", caseId);
-                        statement.set("expires_in", finalExpiresAt);
-                    });
+                MuteHandler.registerMute(avaire, caseId, context.getGuild().getIdLong(), user.getIdLong(), finalExpiresAt);
 
                 context.makeSuccess(":target has been muted :time!")
                     .set("target", user.getAsMention())

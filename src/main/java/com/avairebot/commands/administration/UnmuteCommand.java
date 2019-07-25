@@ -22,17 +22,15 @@
 package com.avairebot.commands.administration;
 
 import com.avairebot.AvaIre;
-import com.avairebot.Constants;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.contracts.commands.CommandGroup;
 import com.avairebot.contracts.commands.CommandGroups;
-import com.avairebot.database.collection.Collection;
-import com.avairebot.database.collection.DataRow;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.modlog.Modlog;
 import com.avairebot.modlog.ModlogAction;
 import com.avairebot.modlog.ModlogType;
+import com.avairebot.mute.MuteHandler;
 import com.avairebot.utilities.MentionableUtil;
 import com.avairebot.utilities.RoleUtil;
 import net.dv8tion.jda.core.entities.Role;
@@ -146,36 +144,8 @@ public class UnmuteCommand extends Command {
             String caseId = Modlog.log(avaire, context, modlogAction);
             Modlog.notifyUser(user, context.getGuild(), modlogAction, caseId);
 
-
             try {
-                Collection collection = avaire.getDatabase().newQueryBuilder(Constants.MUTE_TABLE_NAME)
-                    .select(Constants.MUTE_TABLE_NAME + ".modlog_id as id")
-                    .innerJoin(
-                        Constants.LOG_TABLE_NAME,
-                        Constants.MUTE_TABLE_NAME + ".modlog_id",
-                        Constants.LOG_TABLE_NAME + ".modlogCase"
-                    )
-                    .where(Constants.LOG_TABLE_NAME + ".guild_id", context.getGuild().getId())
-                    .andWhere(Constants.LOG_TABLE_NAME + ".target_id", user.getId())
-                    .andWhere(Constants.MUTE_TABLE_NAME + ".guild_id", context.getGuild().getId())
-                    .andWhere(builder -> builder
-                        .where(Constants.LOG_TABLE_NAME + ".type", ModlogType.MUTE.getId())
-                        .orWhere(Constants.LOG_TABLE_NAME + ".type", ModlogType.TEMP_MUTE.getId())
-                    ).get();
-
-                if (!collection.isEmpty()) {
-                    String query = String.format("DELETE FROM `%s` WHERE `guild_id` = ? AND `modlog_id` = ?",
-                        Constants.MUTE_TABLE_NAME
-                    );
-
-                    avaire.getDatabase().queryBatch(query, statement -> {
-                        for (DataRow row : collection) {
-                            statement.setLong(1, context.getGuild().getIdLong());
-                            statement.setString(2, row.getString("id"));
-                            statement.addBatch();
-                        }
-                    });
-                }
+                MuteHandler.unregisterMute(avaire, context.getGuild().getIdLong(), user.getIdLong());
 
                 context.makeSuccess(":target has been unmuted!")
                     .set("target", user.getAsMention())

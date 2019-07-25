@@ -65,6 +65,7 @@ import com.avairebot.language.I18n;
 import com.avairebot.level.LevelManager;
 import com.avairebot.metrics.Metrics;
 import com.avairebot.middleware.*;
+import com.avairebot.mute.MuteHandler;
 import com.avairebot.plugin.PluginLoader;
 import com.avairebot.plugin.PluginManager;
 import com.avairebot.scheduler.ScheduleHandler;
@@ -390,6 +391,9 @@ public class AvaIre {
 
         log.info("Preparing vote manager");
         voteManager = new VoteManager(this);
+
+        log.info("Preparing mute manager");
+        MuteHandler.syncWithDatabase(this);
 
         log.info("Preparing Lavalink");
         AudioHandler.setAvaire(this);
