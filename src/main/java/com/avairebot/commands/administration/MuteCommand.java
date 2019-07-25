@@ -140,6 +140,10 @@ public class MuteCommand extends Command {
             expiresAt = parseTime(args[1]);
         }
 
+        if (expiresAt != null && expiresAt.copy().subSeconds(61).isPast()) {
+            return sendErrorMessage(context, "Invalid time given, the time must be at least one minute or more.");
+        }
+
         if (RoleUtil.hasRole(context.getGuild().getMember(user), muteRole)) {
             return sendErrorMessage(context, "{0} already appears to have the muted role, they may already have been muted!", user.getAsMention());
         }
