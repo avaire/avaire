@@ -60,13 +60,15 @@ public class DrainMuteQueueTask implements Task {
 
                 Carbon expires = container.getExpiresAt();
                 if (expires.copy().subMinutes(5).isPast()) {
-                    log.debug("Unmute task started for guildId:{}, userId:{}",
-                        container.getGuildId(), container.getUserId()
+                    long differenceInSeconds = expires.diffInSeconds();
+
+                    log.debug("Unmute task started for guildId:{}, userId:{}, time:{}",
+                        container.getGuildId(), container.getUserId(), differenceInSeconds
                     );
 
                     container.registerSchedule(ScheduleHandler.getScheduler().schedule(
                         () -> handleAutomaticUnmute(avaire, container),
-                        expires.diffInSeconds(),
+                        differenceInSeconds,
                         TimeUnit.SECONDS
                     ));
                 }
@@ -78,7 +80,9 @@ public class DrainMuteQueueTask implements Task {
         try {
             avaire.getMuteManger().unregisterMute(container.getGuildId(), container.getUserId());
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error("Failed to unregister mute for guildId:{}, userId:{}",
+                container.getGuildId(), container.getUserId(), e
+            );
         }
 
         Guild guild = avaire.getShardManager().getGuildById(container.getGuildId());
