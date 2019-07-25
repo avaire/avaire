@@ -35,7 +35,6 @@ public class AddMuteRoleColumnToGuildsTableMigration implements Migration {
         return "Wed, Jul 17, 2019 12:30 PM";
     }
 
-
     @Override
     public boolean up(Schema schema) throws SQLException {
         if (schema.hasColumn(Constants.GUILD_TABLE_NAME, "mute_role")) {
