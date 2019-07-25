@@ -23,9 +23,7 @@ package com.avairebot.commands.administration;
 
 import com.avairebot.AvaIre;
 import com.avairebot.commands.CommandMessage;
-import com.avairebot.contracts.commands.Command;
-import com.avairebot.contracts.commands.CommandGroup;
-import com.avairebot.contracts.commands.CommandGroups;
+import com.avairebot.contracts.commands.*;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.modlog.Modlog;
 import com.avairebot.modlog.ModlogAction;
@@ -38,6 +36,7 @@ import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.User;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Collections;
@@ -45,7 +44,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class MuteCommand extends Command {
+public class MuteCommand extends MuteableCommand {
 
     private final Pattern timeRegEx = Pattern.compile("([0-9]+[w|d|h|m|s])");
 
@@ -59,8 +58,11 @@ public class MuteCommand extends Command {
     }
 
     @Override
-    public String getDescription() {
-        return "--- Description coming soon ---";
+    public String getDescription(@Nullable CommandContext context) {
+        return String.format(
+            "Mutes the mentioned user by giving them the %s role, if a time is specified the user will automatically be unmuted again after the time has elapsed, this action will be reported to any channel that has modloging enabled.",
+            getMuteRoleNameFromContext(context)
+        );
     }
 
     @Override

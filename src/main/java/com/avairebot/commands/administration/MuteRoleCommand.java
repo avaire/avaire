@@ -52,7 +52,7 @@ public class MuteRoleCommand extends Command {
 
     @Override
     public String getDescription() {
-        return "--- Description coming soon ---";
+        return "Can be used to set, create, or reset the mute role used for mute related commands on the server, the mute role is what is assigned to users when they're muted, preventing them from talking or speaking in voice channels.";
     }
 
     @Override

@@ -23,9 +23,7 @@ package com.avairebot.commands.administration;
 
 import com.avairebot.AvaIre;
 import com.avairebot.commands.CommandMessage;
-import com.avairebot.contracts.commands.Command;
-import com.avairebot.contracts.commands.CommandGroup;
-import com.avairebot.contracts.commands.CommandGroups;
+import com.avairebot.contracts.commands.*;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.modlog.Modlog;
 import com.avairebot.modlog.ModlogAction;
@@ -36,12 +34,13 @@ import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.User;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class UnmuteCommand extends Command {
+public class UnmuteCommand extends MuteableCommand {
 
     public UnmuteCommand(AvaIre avaire) {
         super(avaire, false);
@@ -53,8 +52,11 @@ public class UnmuteCommand extends Command {
     }
 
     @Override
-    public String getDescription() {
-        return "--- Description coming soon ---";
+    public String getDescription(@Nullable CommandContext context) {
+        return String.format(
+            "Unmutes the mentioned user by removing the %s role from them, this action will be reported to any channel that has modloging enabled.",
+            getMuteRoleNameFromContext(context)
+        );
     }
 
     @Override
