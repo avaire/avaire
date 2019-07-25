@@ -37,18 +37,26 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
-public class MuteHandler {
+public class MuteManager {
 
-    private static final Logger log = LoggerFactory.getLogger(MuteHandler.class);
-    private static final HashMap<Long, HashSet<MuteContainer>> mutes = new HashMap<>();
+    private final Logger log = LoggerFactory.getLogger(MuteManager.class);
+    private final HashMap<Long, HashSet<MuteContainer>> mutes = new HashMap<>();
 
-    public static void registerMute(AvaIre avaire, String caseId, long guildId, long userId, @Nullable Carbon expiresAt) throws SQLException {
+    private final AvaIre avaire;
+
+    public MuteManager(AvaIre avaIre) {
+        this.avaire = avaIre;
+
+        syncWithDatabase();
+    }
+
+    public void registerMute(String caseId, long guildId, long userId, @Nullable Carbon expiresAt) throws SQLException {
         if (!mutes.containsKey(guildId)) {
             mutes.put(guildId, new HashSet<>());
         }
 
         if (isMuted(guildId, userId)) {
-            unregisterMute(avaire, guildId, userId);
+            unregisterMute(guildId, userId);
         }
 
         avaire.getDatabase().newQueryBuilder(Constants.MUTE_TABLE_NAME)
@@ -61,7 +69,7 @@ public class MuteHandler {
         mutes.get(guildId).add(new MuteContainer(guildId, userId, expiresAt));
     }
 
-    public static void unregisterMute(AvaIre avaire, long guildId, long userId) throws SQLException {
+    public void unregisterMute(long guildId, long userId) throws SQLException {
         if (!mutes.containsKey(guildId)) {
             return;
         }
@@ -79,11 +87,11 @@ public class MuteHandler {
         }
 
         if (removedEntities[0]) {
-            cleanupMutes(avaire, guildId, userId);
+            cleanupMutes(guildId, userId);
         }
     }
 
-    public static boolean isMuted(long guildId, long userId) {
+    public boolean isMuted(long guildId, long userId) {
         if (!mutes.containsKey(guildId)) {
             return false;
         }
@@ -96,7 +104,7 @@ public class MuteHandler {
         return false;
     }
 
-    public static int getTotalAmountOfMutes() {
+    public int getTotalAmountOfMutes() {
         int totalMutes = 0;
         for (Map.Entry<Long, HashSet<MuteContainer>> entry : mutes.entrySet()) {
             totalMutes += entry.getValue().size();
@@ -104,7 +112,7 @@ public class MuteHandler {
         return totalMutes;
     }
 
-    public static void syncWithDatabase(AvaIre avaire) {
+    public void syncWithDatabase() {
         log.info("Syncing mutes with the database...");
 
         String query = I18n.format("SELECT `{1}`.`guild_id`, `{1}`.`target_id`, `{0}`.`expires_in` FROM `{0}` INNER JOIN `{1}` ON `{0}`.`modlog_id` = `{1}`.`modlogCase` WHERE `{0}`.`modlog_id` = `{1}`.`modlogCase` AND `{0}`.`guild_id` = `{1}`.`guild_id`;",
@@ -135,7 +143,7 @@ public class MuteHandler {
         }
     }
 
-    private static void cleanupMutes(AvaIre avaire, long guildId, long userId) throws SQLException {
+    private void cleanupMutes(long guildId, long userId) throws SQLException {
         Collection collection = avaire.getDatabase().newQueryBuilder(Constants.MUTE_TABLE_NAME)
             .select(Constants.MUTE_TABLE_NAME + ".modlog_id as id")
             .innerJoin(

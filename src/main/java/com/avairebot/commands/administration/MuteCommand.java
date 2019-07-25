@@ -30,7 +30,6 @@ import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.modlog.Modlog;
 import com.avairebot.modlog.ModlogAction;
 import com.avairebot.modlog.ModlogType;
-import com.avairebot.mute.MuteHandler;
 import com.avairebot.time.Carbon;
 import com.avairebot.utilities.MentionableUtil;
 import com.avairebot.utilities.NumberUtil;
@@ -163,7 +162,7 @@ public class MuteCommand extends Command {
             Modlog.notifyUser(user, context.getGuild(), modlogAction, caseId);
 
             try {
-                MuteHandler.registerMute(avaire, caseId, context.getGuild().getIdLong(), user.getIdLong(), finalExpiresAt);
+                avaire.getMuteManger().registerMute(caseId, context.getGuild().getIdLong(), user.getIdLong(), finalExpiresAt);
 
                 context.makeSuccess(":target has been muted :time!")
                     .set("target", user.getAsMention())

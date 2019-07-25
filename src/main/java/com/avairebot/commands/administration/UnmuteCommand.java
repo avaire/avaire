@@ -30,7 +30,6 @@ import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.modlog.Modlog;
 import com.avairebot.modlog.ModlogAction;
 import com.avairebot.modlog.ModlogType;
-import com.avairebot.mute.MuteHandler;
 import com.avairebot.utilities.MentionableUtil;
 import com.avairebot.utilities.RoleUtil;
 import net.dv8tion.jda.core.entities.Role;
@@ -145,7 +144,7 @@ public class UnmuteCommand extends Command {
             Modlog.notifyUser(user, context.getGuild(), modlogAction, caseId);
 
             try {
-                MuteHandler.unregisterMute(avaire, context.getGuild().getIdLong(), user.getIdLong());
+                avaire.getMuteManger().unregisterMute(context.getGuild().getIdLong(), user.getIdLong());
 
                 context.makeSuccess(":target has been unmuted!")
                     .set("target", user.getAsMention())

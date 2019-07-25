@@ -65,7 +65,7 @@ import com.avairebot.language.I18n;
 import com.avairebot.level.LevelManager;
 import com.avairebot.metrics.Metrics;
 import com.avairebot.middleware.*;
-import com.avairebot.mute.MuteHandler;
+import com.avairebot.mute.MuteManager;
 import com.avairebot.plugin.PluginLoader;
 import com.avairebot.plugin.PluginManager;
 import com.avairebot.scheduler.ScheduleHandler;
@@ -137,6 +137,7 @@ public class AvaIre {
     private final IntelligenceManager intelligenceManager;
     private final PluginManager pluginManager;
     private final VoteManager voteManager;
+    private final MuteManager muteManger;
     private final ShardEntityCounter shardEntityCounter;
     private final EventEmitter eventEmitter;
     private final BotAdmin botAdmins;
@@ -393,7 +394,7 @@ public class AvaIre {
         voteManager = new VoteManager(this);
 
         log.info("Preparing mute manager");
-        MuteHandler.syncWithDatabase(this);
+        muteManger = new MuteManager(this);
 
         log.info("Preparing Lavalink");
         AudioHandler.setAvaire(this);
@@ -522,6 +523,10 @@ public class AvaIre {
 
     public VoteManager getVoteManager() {
         return voteManager;
+    }
+
+    public MuteManager getMuteManger() {
+        return muteManger;
     }
 
     public WebServlet getServlet() {
