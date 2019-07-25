@@ -94,6 +94,15 @@ public class MemberEventAdapter extends EventAdapter {
             }
         }
 
+        if (transformer.getMuteRole() != null) {
+            Role mutedRole = event.getGuild().getRoleById(transformer.getMuteRole());
+            if (canGiveRole(event, mutedRole) && avaire.getMuteManger().isMuted(event.getGuild().getIdLong(), event.getUser().getIdLong())) {
+                event.getGuild().getController().addRolesToMember(
+                    event.getMember(), mutedRole
+                ).queue();
+            }
+        }
+
         if (event.getUser().isBot()) {
             return;
         }
