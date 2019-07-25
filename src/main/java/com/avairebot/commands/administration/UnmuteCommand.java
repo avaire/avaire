@@ -150,7 +150,8 @@ public class UnmuteCommand extends Command {
                     .set("target", user.getAsMention())
                     .queue();
             } catch (SQLException e) {
-                e.printStackTrace();
+                AvaIre.getLogger().error(e.getMessage(), e);
+                context.makeError("Failed to save the guild settings: " + e.getMessage()).queue();
             }
         });
 

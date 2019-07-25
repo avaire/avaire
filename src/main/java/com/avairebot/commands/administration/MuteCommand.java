@@ -173,7 +173,8 @@ public class MuteCommand extends Command {
                     .set("time", finalExpiresAt == null ? "permanently" : "for " + finalExpiresAt.diffForHumans(true))
                     .queue();
             } catch (SQLException e) {
-                e.printStackTrace();
+                AvaIre.getLogger().error(e.getMessage(), e);
+                context.makeError("Failed to save the guild settings: " + e.getMessage()).queue();
             }
         });
 
