@@ -81,6 +81,10 @@ public class MuteManager {
                     return false;
                 }
 
+                if (next.getSchedule() != null) {
+                    next.cancelSchedule();
+                }
+
                 removedEntities[0] = true;
                 return true;
             });
@@ -110,6 +114,10 @@ public class MuteManager {
             totalMutes += entry.getValue().size();
         }
         return totalMutes;
+    }
+
+    public HashMap<Long, HashSet<MuteContainer>> getMutes() {
+        return mutes;
     }
 
     public void syncWithDatabase() {

@@ -24,18 +24,20 @@ package com.avairebot.mute;
 import com.avairebot.language.I18n;
 import com.avairebot.time.Carbon;
 
-import javax.annotation.Nullable;
+import java.util.concurrent.ScheduledFuture;
 
 public class MuteContainer {
 
     private final long guildId;
     private final long userId;
     private final Carbon expiresAt;
+    private ScheduledFuture<?> schedule;
 
     MuteContainer(long guildId, long userId, Carbon expiresAt) {
         this.guildId = guildId;
         this.userId = userId;
         this.expiresAt = expiresAt;
+        this.schedule = null;
     }
 
     public long getGuildId() {
@@ -46,9 +48,20 @@ public class MuteContainer {
         return userId;
     }
 
-    @Nullable
     public Carbon getExpiresAt() {
         return expiresAt;
+    }
+
+    public ScheduledFuture<?> getSchedule() {
+        return schedule;
+    }
+
+    public void registerSchedule(ScheduledFuture<?> schedule) {
+        this.schedule = schedule;
+    }
+
+    public boolean cancelSchedule() {
+        return schedule != null && schedule.cancel(true);
     }
 
     public boolean isPermanent() {
