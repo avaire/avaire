@@ -154,10 +154,6 @@ public class MuteCommand extends MuteableCommand {
             return sendErrorMessage(context, "Invalid time given, the time must be at least one minute or more.");
         }
 
-        if (RoleUtil.hasRole(context.getGuild().getMember(user), muteRole)) {
-            return sendErrorMessage(context, "{0} already appears to have the muted role, they may already have been muted!", user.getAsMention());
-        }
-
         String reason = generateMessage(Arrays.copyOfRange(args, expiresAt == null ? 1 : 2, args.length));
         ModlogType type = expiresAt == null ? ModlogType.MUTE : ModlogType.TEMP_MUTE;
 
