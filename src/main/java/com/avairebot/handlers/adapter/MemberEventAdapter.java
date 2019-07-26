@@ -94,6 +94,8 @@ public class MemberEventAdapter extends EventAdapter {
             }
         }
 
+        // Re-mutes the user if a valid mute role have been setup for the guild
+        // and the user is still registered as muted for the server.
         if (transformer.getMuteRole() != null) {
             Role mutedRole = event.getGuild().getRoleById(transformer.getMuteRole());
             if (canGiveRole(event, mutedRole) && avaire.getMuteManger().isMuted(event.getGuild().getIdLong(), event.getUser().getIdLong())) {

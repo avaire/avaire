@@ -44,12 +44,38 @@ public class MuteManager {
 
     private final AvaIre avaire;
 
-    public MuteManager(AvaIre avaIre) {
-        this.avaire = avaIre;
+    /**
+     * Creates the mute manager instance with the given AvaIre
+     * application instance, the mute manager will sync the
+     * mutes entities from the database into memory.
+     *
+     * @param avaire The main AvaIre instance.
+     */
+    public MuteManager(AvaIre avaire) {
+        this.avaire = avaire;
 
         syncWithDatabase();
     }
 
+    /**
+     * Registers a mute using the given case ID, guild ID, and user ID,
+     * if a null value is given for the expire date, the mute will be
+     * registered as a permanent mute, however if a valid carbon
+     * instance is given that is set in the future, the mute
+     * will automatically be reversed once the time is up.
+     * <p>
+     * If a mute record already exists for the given guild and user IDs,
+     * the record will be unmuted before the new mute is applied, this
+     * helps ensure that a user can only have one mute per guild.
+     *
+     * @param caseId    The ID of the modlog case that triggered the mute action.
+     * @param guildId   The ID of the guild the mute should be registered to.
+     * @param userId    The ID of the user that was muted.
+     * @param expiresAt The time the mute should be automatically unmuted, or {@code NULL} to make the mute permanent.
+     * @throws SQLException If the mute fails to be registered with the database, or
+     *                      existing mutes for the given guild and user IDs fails
+     *                      to be removed before the new mute is registered.
+     */
     public void registerMute(String caseId, long guildId, long userId, @Nullable Carbon expiresAt) throws SQLException {
         if (!mutes.containsKey(guildId)) {
             mutes.put(guildId, new HashSet<>());
@@ -69,6 +95,13 @@ public class MuteManager {
         mutes.get(guildId).add(new MuteContainer(guildId, userId, expiresAt));
     }
 
+    /**
+     * Unregisters a mute matching the given guild ID and user ID.
+     *
+     * @param guildId The ID of the guild the mute should've been registered to.
+     * @param userId  The ID of the user that should be unmuted.
+     * @throws SQLException If the unmute fails to delete the mute record from the database.
+     */
     public void unregisterMute(long guildId, long userId) throws SQLException {
         if (!mutes.containsKey(guildId)) {
             return;
@@ -95,6 +128,15 @@ public class MuteManager {
         }
     }
 
+    /**
+     * Checks if there are any mute record that exists
+     * using the given guild and user IDs.
+     *
+     * @param guildId The ID of the guild that should be checked.
+     * @param userId  The ID of the user that should be muted.
+     * @return {@code True} if a user with the given ID is muted on a server
+     * with the given guild ID, {@code False} otherwise.
+     */
     public boolean isMuted(long guildId, long userId) {
         if (!mutes.containsKey(guildId)) {
             return false;
@@ -108,6 +150,12 @@ public class MuteManager {
         return false;
     }
 
+    /**
+     * Gets the total amount of mutes currently stored in memory,
+     * this includes permanent and temporary mutes.
+     *
+     * @return The total amount of mutes stored.
+     */
     public int getTotalAmountOfMutes() {
         int totalMutes = 0;
         for (Map.Entry<Long, HashSet<MuteContainer>> entry : mutes.entrySet()) {
@@ -116,11 +164,18 @@ public class MuteManager {
         return totalMutes;
     }
 
+    /**
+     * Gets the map of mutes currently stored, where the key is the guild ID for
+     * the mutes, and the value is a set of mute containers, which holds
+     * the information about each individual mute.
+     *
+     * @return The complete map of mutes currently stored.
+     */
     public HashMap<Long, HashSet<MuteContainer>> getMutes() {
         return mutes;
     }
 
-    public void syncWithDatabase() {
+    private void syncWithDatabase() {
         log.info("Syncing mutes with the database...");
 
         String query = I18n.format("SELECT `{1}`.`guild_id`, `{1}`.`target_id`, `{0}`.`expires_in` FROM `{0}` INNER JOIN `{1}` ON `{0}`.`modlog_id` = `{1}`.`modlogCase` WHERE `{0}`.`modlog_id` = `{1}`.`modlogCase` AND `{0}`.`guild_id` = `{1}`.`guild_id`;",

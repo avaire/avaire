@@ -46,6 +46,10 @@ public class RoleUtil {
             return message.getMentionedRoles().get(0);
         }
 
+        if (roleName.length() == 0) {
+            return null;
+        }
+
         List<Role> roles = message.getGuild().getRolesByName(roleName, true);
         return roles.isEmpty() ? null : roles.get(0);
     }

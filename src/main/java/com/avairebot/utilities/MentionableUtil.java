@@ -247,13 +247,24 @@ public class MentionableUtil {
         return null;
     }
 
+    /**
+     * Gets the first role object matching in the given context and arguments, the
+     * method will try the following to get a role object out the other end.
+     * <ul>
+     * <li>Discord mentions (@Member)</li>
+     * <li>Name mentions (member)</li>
+     * <li>Role ID (333649597094166539)</li>
+     * </ul>
+     * <p>
+     * If none of the checks finds a valid role object, <code>null</code> will be returned instead.
+     *
+     * @param message The command message.
+     * @param args    The arguments parsed to the command.
+     * @return Possibly-null, or the first role matching the given arguments.
+     */
     public static Role getRole(@Nonnull Message message, @Nonnull String[] args) {
-        if (!message.getMentionedRoles().isEmpty()) {
-            return message.getMentionedRoles().get(0);
-        }
-
         if (args.length == 0) {
-            return null;
+            return RoleUtil.getRoleFromMentionsOrName(message, "");
         }
 
         String potentialRoleId = args[0].trim();
@@ -264,18 +275,7 @@ public class MentionableUtil {
             }
         }
 
-        StringBuilder roleName = new StringBuilder();
-        for (String part : args) {
-            roleName.append(part).append(" ");
-
-            List<Role> roles = message.getGuild().getRolesByName(roleName.toString().trim(), true);
-            if (roles.isEmpty()) {
-                continue;
-            }
-            return roles.get(0);
-        }
-
-        return null;
+        return RoleUtil.getRoleFromMentionsOrName(message, String.join(" ", args));
     }
 
     /**

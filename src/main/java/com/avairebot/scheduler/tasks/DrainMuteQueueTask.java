@@ -59,6 +59,7 @@ public class DrainMuteQueueTask implements Task {
                 }
 
                 Carbon expires = container.getExpiresAt();
+                //noinspection ConstantConditions
                 if (expires.copy().subMinutes(5).isPast()) {
                     long differenceInSeconds = expires.diffInSeconds();
 
@@ -66,7 +67,7 @@ public class DrainMuteQueueTask implements Task {
                         container.getGuildId(), container.getUserId(), differenceInSeconds
                     );
 
-                    container.registerSchedule(ScheduleHandler.getScheduler().schedule(
+                    container.setSchedule(ScheduleHandler.getScheduler().schedule(
                         () -> handleAutomaticUnmute(avaire, container),
                         differenceInSeconds,
                         TimeUnit.SECONDS
