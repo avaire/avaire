@@ -63,6 +63,7 @@ public class GuildTransformer extends Transformer {
     private String modlog = null;
     private String musicChannelText = null;
     private String musicChannelVoice = null;
+    private String muteRole = null;
     private String djRole = null;
     private int modlogCase = 0;
     private int defaultVolume = 100;
@@ -99,6 +100,7 @@ public class GuildTransformer extends Transformer {
             levelModifier = data.getDouble("level_modifier", -1);
             autorole = data.getString("autorole");
             modlog = data.getString("modlog");
+            muteRole = data.getString("mute_role");
             musicChannelText = data.getString("music_channel_text");
             musicChannelVoice = data.getString("music_channel_voice");
             musicMessages = data.getBoolean("music_messages", true);
@@ -326,6 +328,14 @@ public class GuildTransformer extends Transformer {
 
     public void setModlogCase(int modlogCase) {
         this.modlogCase = modlogCase;
+    }
+
+    public String getMuteRole() {
+        return muteRole;
+    }
+
+    public void setMuteRole(String muteRole) {
+        this.muteRole = muteRole;
     }
 
     public Map<String, String> getSelfAssignableRoles() {
