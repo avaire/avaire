@@ -110,7 +110,7 @@ public abstract class Middleware {
      * @param message  The JDA message that invoked the middleware stack.
      * @param callback The callback that should be invoked to send the message to the user.
      * @return The value returned by the callback, or the previous value returned by the callback if
-     * the user has received an error message in the last 2½ seconds.
+     *         the user has received an error message in the last 2½ seconds.
      */
     protected boolean runMessageCheck(@Nonnull Message message, @Nonnull Callable<Boolean> callback) {
         return (boolean) CacheUtil.getUncheckedUnwrapped(messageCache, message.getAuthor().getIdLong(), callback);
