@@ -31,7 +31,6 @@ import com.avairebot.modlog.ModlogType;
 import com.avairebot.time.Carbon;
 import com.avairebot.utilities.MentionableUtil;
 import com.avairebot.utilities.NumberUtil;
-import com.avairebot.utilities.RoleUtil;
 import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.User;
 
@@ -118,22 +117,22 @@ public class MuteCommand extends MuteableCommand {
 
         if (transformer.getModlog() == null) {
             String prefix = generateCommandPrefix(context.getMessage());
-            return sendErrorMessage(context, "This command requires a modlog channel to be set, a modlog channel can be set using the `{0}modlog` command.", prefix);
+            return sendErrorMessage(context, context.i18n("requiresModlogToBeSet", prefix));
         }
 
         if (transformer.getMuteRole() == null) {
             String prefix = generateCommandPrefix(context.getMessage());
-            return sendErrorMessage(context, "No mute role have been setup for the server, you can setup a mute role using the `{0}muterole` command.", prefix);
+            return sendErrorMessage(context, context.i18n("requireMuteRoleToBeSet", prefix));
         }
 
         Role muteRole = context.getGuild().getRoleById(transformer.getMuteRole());
         if (muteRole == null) {
             String prefix = generateCommandPrefix(context.getMessage());
-            return sendErrorMessage(context, "No mute role have been setup for the server, you can setup a mute role using the `{0}muterole` command.", prefix);
+            return sendErrorMessage(context, context.i18n("requireMuteRoleToBeSet", prefix));
         }
 
         if (!context.getGuild().getSelfMember().canInteract(muteRole)) {
-            return sendErrorMessage(context, "The {0} role used for mutes are positioned higher in the role hierarchy than any roles I have, so I can't automatically assign the role to other users, please fix this or use another role for mutes.", muteRole.getAsMention());
+            return sendErrorMessage(context, context.i18n("muteRoleIsPositionedHigher", muteRole.getAsMention()));
         }
 
         if (args.length == 0) {
@@ -142,7 +141,7 @@ public class MuteCommand extends MuteableCommand {
 
         User user = MentionableUtil.getUser(context, args);
         if (user == null) {
-            return sendErrorMessage(context, "Invalid user mentioned, you must mention a user on the server you want to mute to use this command.");
+            return sendErrorMessage(context, context.i18n("invalidUserMentioned"));
         }
 
         Carbon expiresAt = null;
@@ -151,7 +150,7 @@ public class MuteCommand extends MuteableCommand {
         }
 
         if (expiresAt != null && expiresAt.copy().subSeconds(61).isPast()) {
-            return sendErrorMessage(context, "Invalid time given, the time must be at least one minute or more.");
+            return sendErrorMessage(context, context.i18n("invalidTimeGiven"));
         }
 
         String reason = generateMessage(Arrays.copyOfRange(args, expiresAt == null ? 1 : 2, args.length));
@@ -174,9 +173,11 @@ public class MuteCommand extends MuteableCommand {
             try {
                 avaire.getMuteManger().registerMute(caseId, context.getGuild().getIdLong(), user.getIdLong(), finalExpiresAt);
 
-                context.makeSuccess(":target has been muted :time!")
+                context.makeSuccess(context.i18n("userHasBeenMuted"))
                     .set("target", user.getAsMention())
-                    .set("time", finalExpiresAt == null ? "permanently" : "for " + finalExpiresAt.diffForHumans(true))
+                    .set("time", finalExpiresAt == null
+                        ? context.i18n("time.permanently")
+                        : context.i18n("time.forFormat", finalExpiresAt.diffForHumans(true)))
                     .queue();
             } catch (SQLException e) {
                 AvaIre.getLogger().error(e.getMessage(), e);

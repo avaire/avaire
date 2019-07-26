@@ -111,22 +111,22 @@ public class UnmuteCommand extends MuteableCommand {
 
         if (transformer.getModlog() == null) {
             String prefix = generateCommandPrefix(context.getMessage());
-            return sendErrorMessage(context, "This command requires a modlog channel to be set, a modlog channel can be set using the `{0}modlog` command.", prefix);
+            return sendErrorMessage(context, context.i18n("requiresModlogToBeSet", prefix));
         }
 
         if (transformer.getMuteRole() == null) {
             String prefix = generateCommandPrefix(context.getMessage());
-            return sendErrorMessage(context, "No mute role have been setup for the server, you can setup a mute role using the `{0}muterole` command.", prefix);
+            return sendErrorMessage(context, context.i18n("requireMuteRoleToBeSet", prefix));
         }
 
         Role muteRole = context.getGuild().getRoleById(transformer.getMuteRole());
         if (muteRole == null) {
             String prefix = generateCommandPrefix(context.getMessage());
-            return sendErrorMessage(context, "No mute role have been setup for the server, you can setup a mute role using the `{0}muterole` command.", prefix);
+            return sendErrorMessage(context, context.i18n("requireMuteRoleToBeSet", prefix));
         }
 
         if (!context.getGuild().getSelfMember().canInteract(muteRole)) {
-            return sendErrorMessage(context, "The {0} role used for mutes are positioned higher in the role hierarchy than any roles I have, so I can't automatically assign the role to other users, please fix this or use another role for mutes.", muteRole.getAsMention());
+            return sendErrorMessage(context, context.i18n("muteRoleIsPositionedHigher", muteRole.getAsMention()));
         }
 
         if (args.length == 0) {
@@ -135,11 +135,11 @@ public class UnmuteCommand extends MuteableCommand {
 
         User user = MentionableUtil.getUser(context, args);
         if (user == null) {
-            return sendErrorMessage(context, "Invalid user mentioned, you must mention a user on the server you want to unmute to use this command.");
+            return sendErrorMessage(context, context.i18n("invalidUserMentioned"));
         }
 
         if (!RoleUtil.hasRole(context.getGuild().getMember(user), muteRole)) {
-            return sendErrorMessage(context, "{0} doesn't appear to have the mute role, they may already have been unmuted!", user.getAsMention());
+            return sendErrorMessage(context, context.i18n("userDoesntHaveMuteRole", user.getAsMention()));
         }
 
         String reason = generateMessage(Arrays.copyOfRange(args, 1, args.length));
@@ -156,7 +156,7 @@ public class UnmuteCommand extends MuteableCommand {
             try {
                 avaire.getMuteManger().unregisterMute(context.getGuild().getIdLong(), user.getIdLong());
 
-                context.makeSuccess(":target has been unmuted!")
+                context.makeSuccess(context.i18n("userHasBeenUnmuted"))
                     .set("target", user.getAsMention())
                     .queue();
             } catch (SQLException e) {

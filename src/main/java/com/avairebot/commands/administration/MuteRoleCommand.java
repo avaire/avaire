@@ -122,12 +122,13 @@ public class MuteRoleCommand extends Command {
             case "reset":
                 return resetRole(context, guildTransformer);
         }
-        return false;
+
+        return sendErrorMessage(context, "errors.missingArgument", "option");
     }
 
     private boolean sendMutedRole(CommandMessage context, GuildTransformer guildTransformer) {
         if (guildTransformer.getMuteRole() == null) {
-            context.makeInfo("There are currently no mute role set for the server, you can set the role you wanna use as the mute role using `:command set <role>`, or you can make the bot create a new muted role using `:command create-role`.")
+            context.makeInfo(context.i18n("noMuteRoleSet"))
                 .set("command", generateCommandTrigger(context.getMessage()))
                 .queue();
 
@@ -136,14 +137,14 @@ public class MuteRoleCommand extends Command {
 
         Role role = context.getGuild().getRoleById(guildTransformer.getMuteRole());
         if (role == null) {
-            context.makeInfo("There are currently no mute role set for the server, you can set the role you wanna use as the mute role using `:command set <role>`, or you can make the bot create a new muted role using `:command create-role`.")
+            context.makeInfo(context.i18n("noMuteRoleSet"))
                 .set("command", generateCommandTrigger(context.getMessage()))
                 .queue();
 
             return true;
         }
 
-        context.makeInfo("The server is using the :role role for mutes.")
+        context.makeInfo(context.i18n("usingRoleMessage"))
             .set("role", role.getAsMention())
             .queue();
 
@@ -153,11 +154,11 @@ public class MuteRoleCommand extends Command {
     private boolean setMutedRole(CommandMessage context, GuildTransformer guildTransformer, String[] args) {
         Role role = MentionableUtil.getRole(context.getMessage(), args);
         if (role == null) {
-            return sendErrorMessage(context, "Invalid role given, the `{0}` role doesn't exists.", String.join(" ", args));
+            return sendErrorMessage(context, context.i18n("roleDoesntExists", String.join(" ", args)));
         }
 
         if (!context.getGuild().getSelfMember().canInteract(role)) {
-            return sendErrorMessage(context, "The {0} role is positioned higher than any role I have, so I can assign the role to anyone.", role.getAsMention());
+            return sendErrorMessage(context, context.i18n("rolePositionedHigher", role.getAsMention()));
         }
 
         return updateMutedRole(context, guildTransformer, role.getId());
@@ -170,7 +171,7 @@ public class MuteRoleCommand extends Command {
         }
 
         if (!context.getGuild().getSelfMember().hasPermission(Permission.MANAGE_ROLES)) {
-            return sendErrorMessage(context, "I can't create the muted role because I don't have the \"Manage Roles\" permissions for the server.");
+            return sendErrorMessage(context, context.i18n("cantCreateRoleDueToPermissions"));
         }
 
         context.getGuild().getController().createRole()
@@ -197,9 +198,8 @@ public class MuteRoleCommand extends Command {
 
             guildTransformer.setMuteRole(value);
 
-            context.makeSuccess(value == null
-                ? "The muted role has been removed, the mute feature is now disabled until another muted role is assigned."
-                : "The <@&:roleId> role will now be used for muting users."
+            context.makeSuccess(
+                context.i18n(value == null ? "roleHasBeenRemoved" : "nowUsingRole")
             ).set("roleId", value).queue();
 
             return true;

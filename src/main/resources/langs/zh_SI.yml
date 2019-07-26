@@ -240,6 +240,26 @@ administration:
         failedToEdit: "无法编辑modlog消息: {0}"
         failedToFindMessage: "找不到给定modlog案例的消息，是否已删除？"
 
+    MuteCommand:
+        requiresModlogToBeSet: "This command requires a modlog channel to be set, a modlog channel can be set using the `{0}modlog` command."
+        requireMuteRoleToBeSet: "No mute role have been setup for the server, you can setup a mute role using the `{0}muterole` command."
+        muteRoleIsPositionedHigher: "The {0} role used for mutes are positioned higher in the role hierarchy than any roles I have, so I can't automatically assign the role to other users, please fix this or use another role for mutes."
+        invalidUserMentioned: "Invalid user mentioned, you must mention a user on the server you want to mute to use this command."
+        invalidTimeGiven: "Invalid time given, the time must be at least one minute or more."
+        userHasBeenMuted: ":target has been muted :time!"
+        time:
+            permanently: "permanently"
+            forFormat: "for {0}"
+
+    MuteRoleCommand:
+        roleDoesntExists: "Invalid role given, the `{0}` role doesn't exists."
+        rolePositionedHigher: "The {0} role is positioned higher than any role I have, so I can assign the role to anyone."
+        cantCreateRoleDueToPermissions: "I can't create the muted role because I don't have the \"Manage Roles\" permissions for the server."
+        noMuteRoleSet: "There are currently no mute role set for the server, you can set the role you wanna use as the mute role using `:command set <role>`, or you can make the bot create a new muted role using `:command create-role`."
+        usingRoleMessage: "The server is using the :role role for mutes."
+        roleHasBeenRemoved: "The muted role has been removed, the mute feature is now disabled until another muted role is assigned."
+        nowUsingRole: "The <@&:roleId> role will now be used for muting users."
+
     NSFWCommand:
         invalidChannelOrStatus: "给定的通道或状态类型无效!"
         notValidChannel: "`{0}` 不是有效的文本通道!"
@@ -310,6 +330,15 @@ administration:
         failedToUnban: "未能取消禁止 :target 由于错误, message: :error"
         noUserIsBanned: "没有ID为 `:id` 当前在服务器上被禁止。."
         invalidUserIdGiven: " `user id` 无效, 这个 `user id` 必须是长度为18个或更多数字的数字字符串."
+
+    UnmuteCommand:
+        requiresModlogToBeSet: "This command requires a modlog channel to be set, a modlog channel can be set using the `{0}modlog` command."
+        requireMuteRoleToBeSet: "No mute role have been setup for the server, you can setup a mute role using the `{0}muterole` command."
+        muteRoleIsPositionedHigher: "The {0} role used for mutes are positioned higher in the role hierarchy than any roles I have, so I can't automatically remove the role from other users, please fix this or use another role for mutes."
+        invalidUserMentioned: "Invalid user mentioned, you must mention a user on the server you want to unmute to use this command."
+        userDoesntHaveMuteRole: "{0} doesn't appear to have the mute role, they may already have been unmuted!"
+        userHasBeenUnmuted: ":target has been unmuted!"
+        userAutoUnmutedReason: "*Automatic unmute after the set time has elapsed*"
 
     VoiceKickCommand:
         mustMentionUser: "你必须提到你想踢的用户。."

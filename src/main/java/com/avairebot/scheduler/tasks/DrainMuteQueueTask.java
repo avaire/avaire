@@ -25,6 +25,7 @@ import com.avairebot.AvaIre;
 import com.avairebot.contracts.scheduler.Task;
 import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.transformers.GuildTransformer;
+import com.avairebot.language.I18n;
 import com.avairebot.modlog.Modlog;
 import com.avairebot.modlog.ModlogAction;
 import com.avairebot.modlog.ModlogType;
@@ -111,7 +112,7 @@ public class DrainMuteQueueTask implements Task {
         ).queue(aVoid -> {
             ModlogAction modlogAction = new ModlogAction(
                 ModlogType.UNMUTE, guild.getSelfMember().getUser(), member.getUser(),
-                "Automatic unmute after time expired"
+                I18n.getString(guild, "administration.UnmuteCommand.userAutoUnmutedReason")
             );
 
             String caseId = Modlog.log(avaire, guild, transformer, modlogAction);
