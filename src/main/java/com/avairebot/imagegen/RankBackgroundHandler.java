@@ -47,6 +47,7 @@ public class RankBackgroundHandler {
     private static final List<Integer> usedIds = new ArrayList<>();
     private static RankBackgroundHandler instance;
     private static File backgroundsFolder;
+    private static boolean backgroundsFolderAlreadyExists = false;
 
     private RankBackgroundHandler() {
 
@@ -54,6 +55,10 @@ public class RankBackgroundHandler {
 
         if (!backgroundsFolder.exists()) {
             backgroundsFolder.mkdirs();
+        }
+        else
+        {
+            backgroundsFolderAlreadyExists = true;
         }
         copyBackgroundsFromJarToFolder();
 
@@ -188,19 +193,28 @@ public class RankBackgroundHandler {
             }
         }
 
-        List<String> files = ResourceLoaderUtil.getFiles(RankBackgroundHandler.class, "backgrounds");
+        if(!backgroundsFolderAlreadyExists)
+        {
 
-        for (String file : files) {
-            if (file.endsWith(".yml")) {
-                RankBackgroundLoader rank = new RankBackgroundLoader(file);
-                RankBackground rankBackground = rank.getRankBackground();
-                if (!localBackgrounds.contains(rankBackground)
-                    && isBackgroundRankValid(rankBackground)) {
-                    localBackgrounds.add(rankBackground);
-                } else {
-                    log.debug("Failed to load background: " + file);
+            List<String> files = ResourceLoaderUtil.getFiles(RankBackgroundHandler.class, "backgrounds");
+
+            for (String file : files)
+            {
+                if (file.endsWith(".yml"))
+                {
+                    RankBackgroundLoader rank = new RankBackgroundLoader(file);
+                    RankBackground rankBackground = rank.getRankBackground();
+                    if (!localBackgrounds.contains(rankBackground)
+                        && isBackgroundRankValid(rankBackground))
+                    {
+                        localBackgrounds.add(rankBackground);
+                    }
+                    else
+                    {
+                        log.debug("Failed to load background: " + file);
+                    }
+
                 }
-
             }
         }
 
