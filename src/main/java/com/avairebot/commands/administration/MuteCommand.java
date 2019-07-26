@@ -97,7 +97,7 @@ public class MuteCommand extends MuteableCommand {
     @Override
     public List<String> getMiddleware() {
         return Arrays.asList(
-            "require:user,general.kick_members",
+            "require:user,text.manage_messages",
             "require:bot,general.manage_roles",
             "throttle:guild,1,4"
         );
