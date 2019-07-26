@@ -73,10 +73,27 @@ public class RoleEventAdapter extends EventAdapter {
             return;
         }
 
+        handleMuteRole(event, transformer);
         handleAutoroles(event, transformer);
         handleLevelRoles(event, transformer);
         handleMusicDjRole(event, transformer);
         handleSelfAssignableRoles(event, transformer);
+    }
+
+    private void handleMuteRole(RoleDeleteEvent event, GuildTransformer transformer) {
+        if (transformer.getMuteRole() == null || !event.getRole().getId().equals(transformer.getMuteRole())) {
+            return;
+        }
+
+        try {
+            transformer.setMuteRole(null);
+            avaire.getDatabase().newQueryBuilder(Constants.GUILD_TABLE_NAME)
+                .useAsync(true)
+                .where("id", event.getGuild().getId())
+                .update(statement -> statement.set("mute_role", null));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     private void handleAutoroles(RoleDeleteEvent event, GuildTransformer transformer) {
