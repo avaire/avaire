@@ -49,19 +49,14 @@ public class RankBackgroundHandler {
     private static boolean backgroundsFolderAlreadyExists = false;
 
     private RankBackgroundHandler() {
-
         backgroundsFolder = new File("backgrounds");
 
         if (!backgroundsFolder.exists()) {
             backgroundsFolder.mkdirs();
             copyBackgroundsFromJarToFolder();
-        }
-        else
-        {
+        } else {
             backgroundsFolderAlreadyExists = true;
         }
-
-
     }
 
     public static RankBackgroundHandler getInstance() {
@@ -149,7 +144,6 @@ public class RankBackgroundHandler {
             System.exit(ExitCodes.EXIT_CODE_ERROR);
         }
 
-
         unsortedNamesToCost.entrySet().stream()
             .sorted(Map.Entry.comparingByValue())
             .forEach(entry -> namesToCost.put(entry.getKey(), entry.getValue()));
@@ -173,7 +167,6 @@ public class RankBackgroundHandler {
     private List<RankBackground> getResourceFiles(String folder) throws IOException {
         List<RankBackground> localBackgrounds = new ArrayList<>();
 
-
         for (File file : backgroundsFolder.listFiles()) {
             if (file.isDirectory() || file.isHidden()) continue;
 
@@ -193,24 +186,18 @@ public class RankBackgroundHandler {
             }
         }
 
-        if(!backgroundsFolderAlreadyExists)
-        {
+        if (!backgroundsFolderAlreadyExists) {
 
             List<String> files = ResourceLoaderUtil.getFiles(RankBackgroundHandler.class, "backgrounds");
 
-            for (String file : files)
-            {
-                if (file.endsWith(".yml"))
-                {
+            for (String file : files) {
+                if (file.endsWith(".yml")) {
                     RankBackgroundLoader rank = new RankBackgroundLoader(file);
                     RankBackground rankBackground = rank.getRankBackground();
                     if (!localBackgrounds.contains(rankBackground)
-                        && isBackgroundRankValid(rankBackground))
-                    {
+                        && isBackgroundRankValid(rankBackground)) {
                         localBackgrounds.add(rankBackground);
-                    }
-                    else
-                    {
+                    } else {
                         log.debug("Failed to load background: " + file);
                     }
 
@@ -222,17 +209,10 @@ public class RankBackgroundHandler {
     }
 
     private boolean isBackgroundRankValid(RankBackground background) {
-        if (background.getCost() <= 0) {
-            return false;
-        }
-        if (background.getName() == null ||
-            background.getName().isEmpty()) {
-            return false;
-        }
-        if (namesToCost.containsKey(background.getName())) {
-            return false;
-        }
-        return !usedIds.contains(background.getId());
+        return background.getCost() > 0
+            && background.getName() != null
+            && !background.getName().isEmpty()
+            && !namesToCost.containsKey(background.getName())
+            && !usedIds.contains(background.getId());
     }
-
 }

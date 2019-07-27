@@ -34,7 +34,7 @@ import java.io.InputStreamReader;
  * The type Rank background loader.
  */
 public class RankBackgroundLoader {
-    
+
     private final YamlConfiguration config;
     private RankBackground background;
 
@@ -48,7 +48,7 @@ public class RankBackgroundLoader {
         config = YamlConfiguration.loadConfiguration(new InputStreamReader(
             getClass().getClassLoader().getResourceAsStream("backgrounds/" + backgroundResource)));
 
-        this.background = new RankBackground(
+        background = new RankBackground(
             config.getInt("id"),
             config.getInt("cost"),
             config.getString("name"),
@@ -73,7 +73,7 @@ public class RankBackgroundLoader {
         String name = config.getString("name");
         String backgroundImage = config.getString("backgroundImage");
 
-        this.background = new RankBackground(id, cost, name, backgroundImage, getBackgroundColors(), true);
+        background = new RankBackground(id, cost, name, backgroundImage, getBackgroundColors(), true);
     }
 
     private BackgroundRankColors getBackgroundColors() {
@@ -95,6 +95,7 @@ public class RankBackgroundLoader {
             Color backgroundCoverColor = loadColorFromYaml("colors.backgroundCoverColor");
             colors.setBackgroundCoverColor(backgroundCoverColor);
         }
+
         if (config.contains("colors.experienceTextColor")) {
             Color experienceTextColor = loadColorFromYaml("colors.experienceTextColor");
             colors.setExperienceTextColor(experienceTextColor);
@@ -107,12 +108,13 @@ public class RankBackgroundLoader {
         int red = config.getInt(heading + ".red");
         int green = config.getInt(heading + ".green");
         int blue = config.getInt(heading + ".blue");
-        if (config.contains((heading + ".alpha"))) {
-            int alpha = config.getInt(heading + ".alpha");
-            return ColorUtil.makeColor(red, green, blue, alpha);
-        } else {
+
+        if (!config.contains((heading + ".alpha"))) {
             return ColorUtil.makeColor(red, green, blue);
         }
+
+        int alpha = config.getInt(heading + ".alpha");
+        return ColorUtil.makeColor(red, green, blue, alpha);
     }
 
     /**

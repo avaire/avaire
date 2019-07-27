@@ -39,7 +39,6 @@ public class RankBackground implements PurchaseType {
     private final BackgroundRankColors instance;
     private final boolean loadedExternally;
 
-
     /**
      * Instantiates a new Rank background.
      *
@@ -124,7 +123,6 @@ public class RankBackground implements PurchaseType {
         return Constants.RANK_BACKGROUND_PURCHASE_TYPE;
     }
 
-
     /**
      * Returns if this background was loaded externally.
      *
@@ -135,12 +133,15 @@ public class RankBackground implements PurchaseType {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof RankBackground)) return false;
-        RankBackground that = (RankBackground) o;
-        return getId() == that.getId() ||
-            getName().equals(that.getName());
+    public boolean equals(Object obj) {
+        if (!(obj instanceof RankBackground)) {
+            return false;
+        }
+
+        RankBackground background = (RankBackground) obj;
+
+        return getId() == background.getId()
+            || getName().equals(background.getName());
     }
 
     @Override
