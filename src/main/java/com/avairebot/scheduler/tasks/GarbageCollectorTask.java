@@ -29,6 +29,7 @@ import com.avairebot.audio.LavalinkManager;
 import com.avairebot.blacklist.Ratelimit;
 import com.avairebot.cache.CacheType;
 import com.avairebot.cache.adapters.MemoryAdapter;
+import com.avairebot.commands.administration.MuteRoleCommand;
 import com.avairebot.contracts.commands.InteractionCommand;
 import com.avairebot.contracts.scheduler.Task;
 import com.avairebot.handlers.adapter.JDAStateEventAdapter;
@@ -150,6 +151,11 @@ public class GarbageCollectorTask implements Task {
         // autorole
         synchronized (JDAStateEventAdapter.cache) {
             JDAStateEventAdapter.cache.cleanUp();
+        }
+
+        // muterole
+        synchronized (MuteRoleCommand.cache) {
+            MuteRoleCommand.cache.cleanUp();
         }
 
         // lavalink-destroy-cleanup
