@@ -33,4 +33,9 @@ colors:
         green: 131
         blue: 208
         alpha: 80
+    experienceTextColor:
+        red: 243
+        green: 243
+        blue: 243
+
 

@@ -247,7 +247,7 @@ public class RankCommand extends Command {
         DatabaseProperties properties,
         int backgroundId
     ) {
-        RankBackground background = RankBackgroundHandler.fromId(backgroundId);
+        RankBackground background = RankBackgroundHandler.getInstance().fromId(backgroundId);
         if (background == null) {
             sendEmbeddedMessage(
                 context, author,

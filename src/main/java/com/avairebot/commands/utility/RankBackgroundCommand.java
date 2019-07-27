@@ -171,7 +171,7 @@ public class RankBackgroundCommand extends Command {
         int votePoints = voteEntity == null ? 0 : voteEntity.getVotePoints();
 
         SimplePaginator<Integer> paginator = new SimplePaginator<>(
-            RankBackgroundHandler.getNameToCost(), 5, 1
+            RankBackgroundHandler.getInstance().getNameToCost(), 5, 1
         );
 
         if (args.length > 0) {
@@ -186,7 +186,7 @@ public class RankBackgroundCommand extends Command {
         paginator.forEach((index, name, cost) -> {
             //noinspection ConstantConditions
             boolean alreadyOwns = player.hasPurchases() && player.getPurchases().hasPurchase(
-                purchaseType, RankBackgroundHandler.fromName((String) name).getId()
+                purchaseType, RankBackgroundHandler.getInstance().fromName((String) name).getId()
             );
 
             message.add(context.i18n(alreadyOwns ? "buyNotes.alreadyOwns" : "buyNotes.doesntOwns",
@@ -206,7 +206,7 @@ public class RankBackgroundCommand extends Command {
     }
 
     private boolean handleShow(CommandMessage context, String[] args) {
-        RankBackground background = RankBackgroundHandler.fromName(String.join(" ", args));
+        RankBackground background = RankBackgroundHandler.getInstance().fromName(String.join(" ", args));
         if (background == null) {
             return sendErrorMessage(context, "errors.invalidProperty", "background name", "background");
         }
@@ -255,7 +255,7 @@ public class RankBackgroundCommand extends Command {
     }
 
     private boolean handlePurchases(CommandMessage context, String[] args) {
-        RankBackground background = RankBackgroundHandler.fromName(String.join(" ", args));
+        RankBackground background = RankBackgroundHandler.getInstance().fromName(String.join(" ", args));
         if (background == null) {
             return sendErrorMessage(context, "errors.invalidProperty", "background name", "background");
         }
@@ -315,7 +315,7 @@ public class RankBackgroundCommand extends Command {
     }
 
     private boolean handleSelect(CommandMessage context, String[] args) {
-        RankBackground background = RankBackgroundHandler.fromName(String.join(" ", args));
+        RankBackground background = RankBackgroundHandler.getInstance().fromName(String.join(" ", args));
         if (background == null) {
             return sendErrorMessage(context, "errors.invalidProperty", "background name", "background");
         }

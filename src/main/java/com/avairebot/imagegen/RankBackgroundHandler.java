@@ -39,14 +39,14 @@ import java.util.*;
 
 public class RankBackgroundHandler {
 
-    private static final Logger log = LoggerFactory.getLogger(RankBackgroundHandler.class);
-    private static final LinkedHashMap<RankBackground, BackgroundRankColors> backgroundColors = new LinkedHashMap<>();
-    private static final LinkedHashMap<String, Integer> namesToCost = new LinkedHashMap<>();
-    private static final List<RankBackground> backgrounds = new ArrayList<>();
-    private static final List<Integer> usedIds = new ArrayList<>();
+    private final Logger log = LoggerFactory.getLogger(RankBackgroundHandler.class);
+    private final LinkedHashMap<RankBackground, BackgroundRankColors> backgroundColors = new LinkedHashMap<>();
+    private final LinkedHashMap<String, Integer> namesToCost = new LinkedHashMap<>();
+    private final List<RankBackground> backgrounds = new ArrayList<>();
+    private final List<Integer> usedIds = new ArrayList<>();
     private static RankBackgroundHandler instance;
-    private static File backgroundsFolder;
-    private static boolean backgroundsFolderAlreadyExists = false;
+    private File backgroundsFolder;
+    private boolean backgroundsFolderAlreadyExists = false;
 
     private RankBackgroundHandler() {
         backgroundsFolder = new File("backgrounds");
@@ -70,7 +70,7 @@ public class RankBackgroundHandler {
         return Constants.RANK_BACKGROUND_PURCHASE_TYPE;
     }
 
-    public static List<RankBackground> values() {
+    public List<RankBackground> values() {
         return backgrounds;
     }
 
@@ -79,7 +79,7 @@ public class RankBackgroundHandler {
      *
      * @return The background color scheme for the current background image.
      */
-    public static BackgroundRankColors getBackgroundColors(RankBackground rankBackground) {
+    public BackgroundRankColors getBackgroundColors(RankBackground rankBackground) {
         return backgroundColors.get(rankBackground);
     }
 
@@ -89,7 +89,7 @@ public class RankBackgroundHandler {
      *
      * @return A map of all the rank background names, with the cost of the background as the value.
      */
-    public static Map<String, Integer> getNameToCost() {
+    public Map<String, Integer> getNameToCost() {
         return namesToCost;
     }
 
@@ -101,7 +101,7 @@ public class RankBackgroundHandler {
      * @return Possibly {@code NULL}, or the background with a matching name.
      */
     @Nullable
-    public static RankBackground fromName(@Nonnull String name) {
+    public RankBackground fromName(@Nonnull String name) {
         for (RankBackground background : values()) {
             if (background.getName().equalsIgnoreCase(name)) {
                 return background;
@@ -118,7 +118,7 @@ public class RankBackgroundHandler {
      * @return Possibly-null, the rank background with a matching ID, or {@code NULL}.
      */
     @Nullable
-    public static RankBackground fromId(int backgroundId) {
+    public RankBackground fromId(int backgroundId) {
         for (RankBackground background : values()) {
             if (background.getId() == backgroundId) {
                 return background;
@@ -131,7 +131,7 @@ public class RankBackgroundHandler {
         Map<String, Integer> unsortedNamesToCost = new HashMap<>();
 
         try {
-            for (RankBackground type : getResourceFiles("backgrounds")) {
+            for (RankBackground type : getResourceFiles()) {
                 unsortedNamesToCost.put(type.getName(), type.getCost());
 
                 BackgroundRankColors rankColors = type.getBackgroundColors();
@@ -160,11 +160,12 @@ public class RankBackgroundHandler {
                 }
             }
         } catch (IOException e) {
+            e.printStackTrace();
             System.exit(ExitCodes.EXIT_CODE_ERROR);
         }
     }
 
-    private List<RankBackground> getResourceFiles(String folder) throws IOException {
+    private List<RankBackground> getResourceFiles() throws IOException {
         List<RankBackground> localBackgrounds = new ArrayList<>();
 
         for (File file : backgroundsFolder.listFiles()) {
@@ -172,13 +173,14 @@ public class RankBackgroundHandler {
 
             if (file.getName().endsWith(".yml")) {
                 try {
-                    log.debug("Attempting to load background: " + file.toString());
+                    log.debug("Attempting to load background from resource folder: " + file.toString());
                     RankBackgroundLoader rankBackgroundLoader = new RankBackgroundLoader(file);
                     RankBackground background = rankBackgroundLoader.getRankBackground();
                     if (isBackgroundRankValid(background)) {
                         localBackgrounds.add(background);
+                        log.debug("Loaded background from resource folder: " + file.toString());
                     } else {
-                        log.debug("Failed to load background: " + file.toString());
+                        log.debug("Background in resource folder invalid : " + file.toString());
                     }
                 } catch (NullPointerException ex) {
                     ex.printStackTrace();
@@ -194,11 +196,10 @@ public class RankBackgroundHandler {
                 if (file.endsWith(".yml")) {
                     RankBackgroundLoader rank = new RankBackgroundLoader(file);
                     RankBackground rankBackground = rank.getRankBackground();
-                    if (!localBackgrounds.contains(rankBackground)
-                        && isBackgroundRankValid(rankBackground)) {
+                    if (isBackgroundRankValid(rankBackground)) {
                         localBackgrounds.add(rankBackground);
                     } else {
-                        log.debug("Failed to load background: " + file);
+                        log.debug("Background invalid: " + file);
                     }
 
                 }
