@@ -136,7 +136,7 @@ public class RankBackgroundHandler {
 
                 BackgroundRankColors rankColors = type.getBackgroundColors();
                 usedIds.add(type.getId());
-                RankBackgroundHandler.backgroundColors.put(type, rankColors);
+                backgroundColors.put(type, rankColors);
                 backgrounds.add(type);
             }
         } catch (IOException e) {
