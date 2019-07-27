@@ -1,5 +1,6 @@
 plugins/
 storage/
+backgrounds/
 docs/
 database\.sqlite
 /constants.yml
@@ -38,4 +39,3 @@ AvaIre.jar
 
 # Image Generator Branch
 test-output\.png
-
