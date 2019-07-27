@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018.
+ * Copyright (c) 2019.
  *
  * This file is part of AvaIre.
  *
@@ -19,9 +19,8 @@
  *
  */
 
-package com.avairebot.contracts.imagegen;
+package com.avairebot.imagegen;
 
-import com.avairebot.imagegen.RankBackground;
 import com.avairebot.utilities.ColorUtil;
 
 import javax.annotation.Nonnull;

@@ -22,7 +22,6 @@
 package com.avairebot.imagegen;
 
 import com.avairebot.Constants;
-import com.avairebot.contracts.imagegen.BackgroundRankColors;
 import com.avairebot.shared.ExitCodes;
 import com.avairebot.utilities.ResourceLoaderUtil;
 import org.slf4j.Logger;

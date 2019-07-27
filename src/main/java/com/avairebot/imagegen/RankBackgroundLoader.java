@@ -21,7 +21,6 @@
 package com.avairebot.imagegen;
 
 import com.avairebot.config.YamlConfiguration;
-import com.avairebot.contracts.imagegen.BackgroundRankColors;
 import com.avairebot.utilities.ColorUtil;
 
 import javax.annotation.Nonnull;
