@@ -55,12 +55,13 @@ public class RankBackgroundHandler {
 
         if (!backgroundsFolder.exists()) {
             backgroundsFolder.mkdirs();
+            copyBackgroundsFromJarToFolder();
         }
         else
         {
             backgroundsFolderAlreadyExists = true;
         }
-        copyBackgroundsFromJarToFolder();
+
 
     }
 
