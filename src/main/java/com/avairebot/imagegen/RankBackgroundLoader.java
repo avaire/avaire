@@ -30,9 +30,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
 
-/**
- * The type Rank background loader.
- */
 public class RankBackgroundLoader {
 
     private final YamlConfiguration config;
@@ -53,7 +50,7 @@ public class RankBackgroundLoader {
             config.getInt("cost"),
             config.getString("name"),
             config.getString("backgroundImage"),
-            getBackgroundColors()
+            getColors()
         );
     }
 
@@ -73,10 +70,10 @@ public class RankBackgroundLoader {
         String name = config.getString("name");
         String backgroundImage = config.getString("backgroundImage");
 
-        background = new RankBackground(id, cost, name, backgroundImage, getBackgroundColors(), true);
+        background = new RankBackground(id, cost, name, backgroundImage, getColors(), true);
     }
 
-    private BackgroundRankColors getBackgroundColors() {
+    private BackgroundRankColors getColors() {
         BackgroundRankColors colors = new BackgroundRankColors();
         Color backgroundColor = loadColorFromYaml("colors.backgroundColor");
         colors.setBackgroundColor(backgroundColor);
@@ -118,8 +115,8 @@ public class RankBackgroundLoader {
     }
 
     /**
-     * Gets the rank background.
-     *
+     * Returns the rank background loaded by this
+     * container.
      * @return The background rank for this container
      */
     public RankBackground getRankBackground() {
@@ -127,10 +124,11 @@ public class RankBackgroundLoader {
     }
 
     /**
-     * Gets the language configuration, the config can be used to
-     * load strings, lists, and values directly off the language.
+     * Gets the Rank Background configuration, the config
+     * can be used to directly load the image information
+     * and id of the rank background.
      *
-     * @return The language configuration.
+     * @return The rank background configuration.
      */
     public YamlConfiguration getConfig() {
         return config;

@@ -59,6 +59,11 @@ public class RankBackgroundHandler {
         }
     }
 
+    /**
+     * Returns an instance of the rank background handler
+     * class.
+     * @return the instance
+     */
     public static RankBackgroundHandler getInstance() {
         if (instance == null) {
             instance = new RankBackgroundHandler();
@@ -66,21 +71,23 @@ public class RankBackgroundHandler {
         return instance;
     }
 
+    /**
+     * Returns the purchase type of rank background.
+     *
+     * @return the rank purchase type
+     */
     public static String getRankPurchaseType() {
         return Constants.RANK_BACKGROUND_PURCHASE_TYPE;
     }
 
+    /**
+     * Returns a list of all the
+     * rank backgrounds loaded by AvaIre.
+     *
+     * @return the list of all rank backgrounds.
+     */
     public List<RankBackground> values() {
         return backgrounds;
-    }
-
-    /**
-     * Gets the background color scheme for the current background image.
-     *
-     * @return The background color scheme for the current background image.
-     */
-    public BackgroundRankColors getBackgroundColors(RankBackground rankBackground) {
-        return backgroundColors.get(rankBackground);
     }
 
     /**
@@ -115,7 +122,7 @@ public class RankBackgroundHandler {
      * found with the given ID, {@code NULL} will be returned instead.
      *
      * @param backgroundId The ID of the rank background that should be returned.
-     * @return Possibly-null, the rank background with a matching ID, or {@code NULL}.
+     * @return Possibly -null, the rank background with a matching ID, or {@code NULL}.
      */
     @Nullable
     public RankBackground fromId(int backgroundId) {
@@ -127,6 +134,11 @@ public class RankBackgroundHandler {
         return null;
     }
 
+    /**
+     * Initializes the rank background containers,
+     * loading all the rank background information into memory, this method should
+     * only be called once during the startup of the bot.
+     */
     public void start() {
         Map<String, Integer> unsortedNamesToCost = new HashMap<>();
 
