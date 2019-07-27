@@ -81,7 +81,7 @@ public class Blacklist {
      *
      * @param message The message that should be checked.
      * @return <code>True</code> if either the user, or the entire
-     * server is blacklisted, <code>False</code> otherwise.
+     *         server is blacklisted, <code>False</code> otherwise.
      */
     public boolean isBlacklisted(@Nonnull Message message) {
         return isBlacklisted(message.getAuthor())

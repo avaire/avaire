@@ -86,8 +86,8 @@ public class I18n {
      * @param string The string that should be loaded from the language files.
      * @param args   The arguments that should be formatted for the given language string.
      * @return The language string from the given guilds selected language, or the default
-     * language if it doesn't exists in the guilds selected language, or
-     * <code>NULL</code> if it doesn't exist anywhere.
+     *         language if it doesn't exists in the guilds selected language, or
+     *         <code>NULL</code> if it doesn't exist anywhere.
      */
     @Nullable
     public static String getString(@Nonnull Guild guild, String string, Object... args) {
@@ -107,8 +107,8 @@ public class I18n {
      * @param guild  The JDA guild instance that should be used for loading the language.
      * @param string The string that should be loaded from the language files.
      * @return The language string from the given guilds selected language, or the default
-     * language if it doesn't exists in the guilds selected language, or
-     * <code>NULL</code> if it doesn't exist anywhere.
+     *         language if it doesn't exists in the guilds selected language, or
+     *         <code>NULL</code> if it doesn't exist anywhere.
      */
     @Nullable
     public static String getString(@Nullable Guild guild, String string) {
@@ -127,7 +127,7 @@ public class I18n {
      *
      * @param guild The JDA guild instance that the language should be loaded for.
      * @return The language the guild instance uses, or the default language if <code>NULL</code>
-     * is given or an invalid language is selected by the guild.
+     *         is given or an invalid language is selected by the guild.
      */
     @Nonnull
     public static YamlConfiguration get(@Nullable Guild guild) {
@@ -146,7 +146,7 @@ public class I18n {
      *
      * @param guild The JDA guild instance that the language container should be loaded for.
      * @return The language container the guild instance uses, or the default language
-     * container if the given guild doesn't have a valid language selected.
+     *         container if the given guild doesn't have a valid language selected.
      */
     @Nonnull
     public static LanguageContainer getLocale(@Nonnull Guild guild) {
@@ -173,7 +173,7 @@ public class I18n {
      *
      * @param transformer The guild transformer that the language container should be loaded from.
      * @return The language container the guild instance uses, or the default language
-     * container if the given guild doesn't have a valid language selected.
+     *         container if the given guild doesn't have a valid language selected.
      */
     @Nonnull
     public static LanguageContainer getLocale(@Nonnull GuildTransformer transformer) {
@@ -195,7 +195,7 @@ public class I18n {
      *
      * @param language The language type that should be loaded.
      * @return The language container for the given language, or the default language
-     * container if the given language is not registered.
+     *         container if the given language is not registered.
      */
     @Nonnull
     public static LanguageContainer getLocale(Language language) {
@@ -220,7 +220,7 @@ public class I18n {
      * @param message The message that should be formatted with the given arguments.
      * @param args    The arguments that should be replaced in the given message.
      * @return The formatted string, or the original string if the formatting process
-     * failed due to an invalid argument exception.
+     *         failed due to an invalid argument exception.
      */
     public static String format(@Nonnull String message, Object... args) {
         int num = 0;

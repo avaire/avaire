@@ -83,7 +83,7 @@ public class CheckPermissionUtil {
      *
      * @param permissions The permission value that should be checked.
      * @return <code>True</code> if the given raw permission value includes
-     * the embed permissions, <code>False</code> otherwise.
+     *         the embed permissions, <code>False</code> otherwise.
      */
     private static boolean checkForRawEmbedPermission(long permissions) {
         for (Permission permission : Permission.getPermissions(permissions)) {
@@ -129,7 +129,7 @@ public class CheckPermissionUtil {
          * Checks if the current type allows sending normal messages.
          *
          * @return <code>True</code> if the type allows sending normal
-         * messages, <code>False</code> otherwise.
+         *         messages, <code>False</code> otherwise.
          */
         public boolean canSendMessage() {
             return canSendMessage;
@@ -139,7 +139,7 @@ public class CheckPermissionUtil {
          * Checks if the current type allows sending embed messages.
          *
          * @return <code>True</code> if the type allows sending embed
-         * messages, <code>False</code> otherwise.
+         *         messages, <code>False</code> otherwise.
          */
         public boolean canSendEmbed() {
             return canSendEmbed;

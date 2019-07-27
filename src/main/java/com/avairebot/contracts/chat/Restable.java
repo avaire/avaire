@@ -118,7 +118,7 @@ public abstract class Restable {
      * @param delay The delay after which this computation should be executed, negative to execute immediately
      * @param unit  The {@link java.util.concurrent.TimeUnit TimeUnit} to convert the specified {@code delay}
      * @return {@link java.util.concurrent.ScheduledFuture ScheduledFuture}
-     * representing the delayed operation
+     *         representing the delayed operation
      * @throws java.lang.IllegalArgumentException If the provided TimeUnit is {@code null}
      */
     public Future<?> queueAfter(long delay, TimeUnit unit) {
@@ -147,7 +147,7 @@ public abstract class Restable {
      * @param success The success {@link java.util.function.Consumer Consumer} that should be called
      *                once the {@link #queue(java.util.function.Consumer)} operation completes successfully.
      * @return {@link java.util.concurrent.ScheduledFuture ScheduledFuture}
-     * representing the delayed operation
+     *         representing the delayed operation
      * @throws java.lang.IllegalArgumentException If the provided TimeUnit is {@code null}
      */
     public Future<?> queueAfter(long delay, TimeUnit unit, Consumer<Message> success) {
@@ -176,7 +176,7 @@ public abstract class Restable {
      * @param failure The failure {@link java.util.function.Consumer Consumer} that should be called
      *                in case of an error of the {@link #queue(java.util.function.Consumer, java.util.function.Consumer)} operation.
      * @return {@link java.util.concurrent.ScheduledFuture ScheduledFuture}
-     * representing the delayed operation
+     *         representing the delayed operation
      * @throws java.lang.IllegalArgumentException If the provided TimeUnit is {@code null}
      */
     public Future<?> queueAfter(long delay, TimeUnit unit, Consumer<Message> success, Consumer<Throwable> failure) {
@@ -203,7 +203,7 @@ public abstract class Restable {
      * @param executor The Non-null {@link java.util.concurrent.ScheduledExecutorService ScheduledExecutorService} that should be used
      *                 to schedule this operation
      * @return {@link java.util.concurrent.ScheduledFuture ScheduledFuture}
-     * representing the delayed operation
+     *         representing the delayed operation
      * @throws java.lang.IllegalArgumentException If the provided TimeUnit or ScheduledExecutorService is {@code null}
      */
     public Future<?> queueAfter(long delay, TimeUnit unit, ScheduledExecutorService executor) {
@@ -232,7 +232,7 @@ public abstract class Restable {
      * @param executor The Non-null {@link java.util.concurrent.ScheduledExecutorService ScheduledExecutorService} that should be used
      *                 to schedule this operation
      * @return {@link java.util.concurrent.ScheduledFuture ScheduledFuture}
-     * representing the delayed operation
+     *         representing the delayed operation
      * @throws java.lang.IllegalArgumentException If the provided TimeUnit or ScheduledExecutorService is {@code null}
      */
     public Future<?> queueAfter(long delay, TimeUnit unit, Consumer<Message> success, ScheduledExecutorService executor) {
@@ -260,7 +260,7 @@ public abstract class Restable {
      * @param executor The Non-null {@link ScheduledExecutorService ScheduledExecutorService} that should be used
      *                 to schedule this operation
      * @return {@link java.util.concurrent.ScheduledFuture ScheduledFuture}
-     * representing the delayed operation
+     *         representing the delayed operation
      * @throws java.lang.IllegalArgumentException If the provided TimeUnit or ScheduledExecutorService is {@code null}
      */
     public Future<?> queueAfter(long delay, TimeUnit unit, Consumer<Message> success, Consumer<Throwable> failure, ScheduledExecutorService executor) {

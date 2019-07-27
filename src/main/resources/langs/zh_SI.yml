@@ -252,13 +252,16 @@ administration:
             forFormat: "for {0}"
 
     MuteRoleCommand:
+        onCooldown: "You have recently use a command option that created and/or modified roles and channel permissions, you have to wait **:cooldown** before you can use this command again."
         roleDoesntExists: "Invalid role given, the `{0}` role doesn't exists."
         rolePositionedHigher: "The {0} role is positioned higher than any role I have, so I can assign the role to anyone."
         cantCreateRoleDueToPermissions: "I can't create the muted role because I don't have the \"Manage Roles\" permissions for the server."
         noMuteRoleSet: "There are currently no mute role set for the server, you can set the role you wanna use as the mute role using `:command set <role>`, or you can make the bot create a new muted role using `:command create-role`."
         usingRoleMessage: "The server is using the :role role for mutes."
         roleHasBeenRemoved: "The muted role has been removed, the mute feature is now disabled until another muted role is assigned."
-        nowUsingRole: "The <@&:roleId> role will now be used for muting users."
+        roleHasBeenCreated: "The :role role has been successfully created, and all the channel permissions to prevent users with the role from talking in channels have automatically been setup for the channels I have access to."
+        nowUsingRole: "The :role role will now be used for muting users."
+        nowUsingExistingRole: "A role called `Muted` already exists on the server, now using the :role role for mutes, if you want the bot to setup all the channel override permissions to prevent users with the role from talking in the channels, you can use the\n`:command setup-permissions` command."
 
     NSFWCommand:
         invalidChannelOrStatus: "给定的通道或状态类型无效!"

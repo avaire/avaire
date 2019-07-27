@@ -146,7 +146,7 @@ public class BotAdmin {
      *
      * @param userId The user ID that should be checked if they're a role admin.
      * @return <code>True</code> if the user has the bot admin role on the AvaIre Central
-     * support server, <code>False</code> otherwise.
+     *         support server, <code>False</code> otherwise.
      */
     private AdminType getRoleAdminType(long userId) {
         Role role = avaire.getShardManager().getRoleById(

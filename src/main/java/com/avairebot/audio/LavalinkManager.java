@@ -206,7 +206,7 @@ public class LavalinkManager {
      * @param link   The link that should be checked.
      * @param states The list of states that should be compared to the links state.
      * @return <code>True</code> if the links state matches any of the given
-     * states, <code>False</code> otherwise.
+     *         states, <code>False</code> otherwise.
      */
     @SuppressWarnings("WeakerAccess")
     public boolean isLinkInState(JdaLink link, Link.State... states) {
