@@ -34,26 +34,14 @@ import java.awt.*;
  */
 public class BackgroundRankColors {
 
-    private Color backgroundColor = makeColor(55, 55, 70);
-    ;
-
+    private Color backgroundColor = ColorUtil.makeColor(55, 55, 70);
     private Color backgroundCoverColor = null;
-
-    private Color mainTextColor = makeColor(226, 226, 229, 85);
-
+    private Color mainTextColor = ColorUtil.makeColor(226, 226, 229, 85);
     private Color experienceTextColor = null;
-
-    private Color secondaryTextColor = makeColor(166, 166, 166, 85);
-
-    private Color experienceBackgroundColor = makeColor(38, 39, 59, 60);
-
-    private Color experienceForegroundColor = makeColor(104, 107, 170, 80);
-
-    private Color experienceSeparatorColor = makeColor(140, 144, 226, 80);
-
-    public BackgroundRankColors() {
-
-    }
+    private Color secondaryTextColor = ColorUtil.makeColor(166, 166, 166, 85);
+    private Color experienceBackgroundColor = ColorUtil.makeColor(38, 39, 59, 60);
+    private Color experienceForegroundColor = ColorUtil.makeColor(104, 107, 170, 80);
+    private Color experienceSeparatorColor = ColorUtil.makeColor(140, 144, 226, 80);
 
     /**
      * The color that should be used for the background, this will only used if
@@ -84,7 +72,7 @@ public class BackgroundRankColors {
      * @param blue  the blue
      */
     public void setBackgroundColor(float red, float green, float blue) {
-        backgroundColor = makeColor(red, green, blue);
+        backgroundColor = ColorUtil.makeColor(red, green, blue);
     }
 
     /**
@@ -96,7 +84,7 @@ public class BackgroundRankColors {
      * @param alpha the alpha
      */
     public void setBackgroundColor(float red, float green, float blue, float alpha) {
-        backgroundColor = makeColor(red, green, blue, alpha);
+        backgroundColor = ColorUtil.makeColor(red, green, blue, alpha);
     }
 
     /**
@@ -132,7 +120,7 @@ public class BackgroundRankColors {
      * @param blue  the blue
      */
     public void setBackgroundCoverColor(float red, float green, float blue) {
-        backgroundCoverColor = makeColor(red, green, blue);
+        backgroundCoverColor = ColorUtil.makeColor(red, green, blue);
     }
 
     /**
@@ -144,7 +132,7 @@ public class BackgroundRankColors {
      * @param alpha the alpha
      */
     public void setBackgroundCoverColor(float red, float green, float blue, float alpha) {
-        backgroundCoverColor = makeColor(red, green, blue, alpha);
+        backgroundCoverColor = ColorUtil.makeColor(red, green, blue, alpha);
     }
 
     /**
@@ -175,7 +163,7 @@ public class BackgroundRankColors {
      * @param blue  the blue
      */
     public void setMainTextColor(float red, float green, float blue) {
-        mainTextColor = makeColor(red, green, blue);
+        mainTextColor = ColorUtil.makeColor(red, green, blue);
     }
 
     /**
@@ -184,10 +172,10 @@ public class BackgroundRankColors {
      * @param red   the red
      * @param green the green
      * @param blue  the blue
-     * @param blue  the alpha
+     * @param alpha the alpha
      */
     public void setMainTextColor(float red, float green, float blue, float alpha) {
-        mainTextColor = makeColor(red, green, blue, alpha);
+        mainTextColor = ColorUtil.makeColor(red, green, blue, alpha);
     }
 
     /**
@@ -218,7 +206,7 @@ public class BackgroundRankColors {
      * @param blue  the blue
      */
     public void setSecondaryTextColor(float red, float green, float blue) {
-        secondaryTextColor = makeColor(red, green, blue);
+        secondaryTextColor = ColorUtil.makeColor(red, green, blue);
     }
 
     /**
@@ -227,10 +215,10 @@ public class BackgroundRankColors {
      * @param red   the red
      * @param green the green
      * @param blue  the blue
-     * @param blue  the alpha
+     * @param alpha the alpha
      */
     public void setSecondaryTextColor(float red, float green, float blue, float alpha) {
-        secondaryTextColor = makeColor(red, green, blue, alpha);
+        secondaryTextColor = ColorUtil.makeColor(red, green, blue, alpha);
     }
 
     /**
@@ -260,7 +248,7 @@ public class BackgroundRankColors {
      * @param blue  the blue
      */
     public void setExperienceBackgroundColor(float red, float green, float blue) {
-        experienceBackgroundColor = makeColor(red, green, blue);
+        experienceBackgroundColor = ColorUtil.makeColor(red, green, blue);
     }
 
     /**
@@ -269,10 +257,10 @@ public class BackgroundRankColors {
      * @param red   the red
      * @param green the green
      * @param blue  the blue
-     * @param blue  the alpha
+     * @param alpha the alpha
      */
     public void setExperienceBackgroundColor(float red, float green, float blue, float alpha) {
-        experienceBackgroundColor = makeColor(red, green, blue, alpha);
+        experienceBackgroundColor = ColorUtil.makeColor(red, green, blue, alpha);
     }
 
     /**
@@ -302,7 +290,7 @@ public class BackgroundRankColors {
      * @param blue  the blue
      */
     public void setExperienceForegroundColor(float red, float green, float blue) {
-        experienceForegroundColor = makeColor(red, green, blue);
+        experienceForegroundColor = ColorUtil.makeColor(red, green, blue);
     }
 
 
@@ -312,10 +300,10 @@ public class BackgroundRankColors {
      * @param red   the red
      * @param green the green
      * @param blue  the blue
-     * @param blue  the alpha
+     * @param alpha the alpha
      */
     public void setExperienceForegroundColor(float red, float green, float blue, float alpha) {
-        experienceForegroundColor = makeColor(red, green, blue, alpha);
+        experienceForegroundColor = ColorUtil.makeColor(red, green, blue, alpha);
     }
 
     /**
@@ -368,39 +356,4 @@ public class BackgroundRankColors {
     public void setExperienceTextColor(Color color) {
         experienceTextColor = color;
     }
-
-    /**
-     * Creates an sRGB color with the specified red, green,
-     * and blue values with in the range (0 - 255).
-     * <p>
-     * Uses the {@link com.avairebot.utilities.ColorUtil}
-     * to produce the colors.
-     *
-     * @param red   The red component.
-     * @param green The green component
-     * @param blue  The blue component
-     * @return The color with the given values.
-     */
-    protected Color makeColor(float red, float green, float blue) {
-        return ColorUtil.makeColor(red, green, blue);
-    }
-
-    /**
-     * Creates an sRGBA color with the specified red, green,
-     * blue, and alpha values with in the range (0 - 255).
-     * The alpha should be in the rage of 0 and 100.
-     * <p>
-     * Uses the {@link com.avairebot.utilities.ColorUtil} to
-     * produce the colors.
-     *
-     * @param red   The red component.
-     * @param green The green component.
-     * @param blue  The blue component.
-     * @param alpha The alpha component.
-     * @return The color with the given values.
-     */
-    protected Color makeColor(float red, float green, float blue, float alpha) {
-        return ColorUtil.makeColor(red, green, blue, alpha);
-    }
-
 }
