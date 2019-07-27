@@ -1,6 +1,6 @@
 plugins/
 storage/
-backgrounds/
+/backgrounds/
 docs/
 database\.sqlite
 /constants.yml
