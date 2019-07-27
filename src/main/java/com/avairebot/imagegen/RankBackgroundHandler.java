@@ -133,9 +133,7 @@ public class RankBackgroundHandler {
         try {
             for (RankBackground type : getResourceFiles()) {
                 unsortedNamesToCost.put(type.getName(), type.getCost());
-
                 BackgroundRankColors rankColors = type.getBackgroundColors();
-                usedIds.add(type.getId());
                 backgroundColors.put(type, rankColors);
                 backgrounds.add(type);
             }
@@ -177,6 +175,7 @@ public class RankBackgroundHandler {
                     RankBackgroundLoader rankBackgroundLoader = new RankBackgroundLoader(file);
                     RankBackground background = rankBackgroundLoader.getRankBackground();
                     if (isBackgroundRankValid(background)) {
+                        usedIds.add(background.getId());
                         localBackgrounds.add(background);
                         log.debug("Loaded background from resource folder: " + file.toString());
                     } else {
@@ -197,6 +196,7 @@ public class RankBackgroundHandler {
                     RankBackgroundLoader rank = new RankBackgroundLoader(file);
                     RankBackground rankBackground = rank.getRankBackground();
                     if (isBackgroundRankValid(rankBackground)) {
+                        usedIds.add(rankBackground.getId());
                         localBackgrounds.add(rankBackground);
                     } else {
                         log.debug("Background invalid: " + file);
