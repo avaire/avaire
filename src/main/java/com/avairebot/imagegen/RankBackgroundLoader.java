@@ -37,9 +37,9 @@ public class RankBackgroundLoader {
 
     /**
      * Instantiates a new Rank background loader
-     * that uses the Jar filesystem.
+     * stored inside the AvaIre jar.
      *
-     * @param backgroundResource the background resource
+     * @param backgroundResource a path inside the backgrounds folder to the resource.
      */
     public RankBackgroundLoader(@Nonnull String backgroundResource) {
         config = YamlConfiguration.loadConfiguration(new InputStreamReader(
@@ -56,9 +56,10 @@ public class RankBackgroundLoader {
 
     /**
      * Instantiates a new Rank background loader
-     * using the external file system.
+     * that loads a resource from anywhere in the filesystem outside the jar,
+     * given the full path.
      *
-     * @param backgroundResource the background resource
+     * @param backgroundResource a path to the background resource in the filesystem
      * @throws FileNotFoundException if the file cannot be found
      */
     public RankBackgroundLoader(@Nonnull File backgroundResource) throws FileNotFoundException {

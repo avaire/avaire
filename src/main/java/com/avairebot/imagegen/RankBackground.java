@@ -27,52 +27,51 @@ import com.avairebot.contracts.shop.PurchaseType;
 import javax.annotation.Nonnull;
 import java.util.Objects;
 
-/**
- * The type Rank background.
- */
 public class RankBackground implements PurchaseType {
 
     private final int id;
     private final int cost;
     private final String name;
-    private final String file;
-    private final BackgroundRankColors instance;
+    private final String backgroundGraphicName;
+    private final BackgroundRankColors rankColors;
     private final boolean loadedExternally;
 
     /**
-     * Instantiates a new Rank background.
+     * Instantiates a new Rank background that was loaded
+     * from inside the AvaIre jar.
      *
-     * @param id       the id
-     * @param cost     the cost
-     * @param name     the name
-     * @param file     the file
-     * @param instance the instance
+     * @param id       the id of this rank background
+     * @param cost     the cost of the background using vote points
+     * @param name     the name of this background
+     * @param backgroundGraphicName   the graphic for the background.
+     * @param rankColors the color configuration for this background
      */
-    RankBackground(int id, int cost, String name, String file, BackgroundRankColors instance) {
+    RankBackground(int id, int cost, String name, String backgroundGraphicName, BackgroundRankColors rankColors) {
         this.id = id;
         this.cost = cost;
         this.name = name;
-        this.file = file;
-        this.instance = instance;
+        this.backgroundGraphicName = backgroundGraphicName;
+        this.rankColors = rankColors;
         loadedExternally = false;
     }
 
     /**
-     * Instantiates a new Rank background.
+     * Instantiates a new Rank background that was loaded
+     * from either inside the AvaIre jar or from the external file system
      *
-     * @param id               the id
-     * @param cost             the cost
-     * @param name             the name
-     * @param file             the file
-     * @param instance         the instance
-     * @param loadedExternally whether or not it was loaded externally
+     * @param id       the id of this rank background
+     * @param cost     the cost of the background using vote points
+     * @param name     the name of this background
+     * @param backgroundGraphicName   the graphic for the background.
+     * @param rankColors the color configuration for this background
+     * @param loadedExternally whether or not the background was loaded externally
      */
-    RankBackground(int id, int cost, String name, String file, BackgroundRankColors instance, boolean loadedExternally) {
+    RankBackground(int id, int cost, String name, String backgroundGraphicName, BackgroundRankColors rankColors, boolean loadedExternally) {
         this.id = id;
         this.cost = cost;
         this.name = name;
-        this.file = file;
-        this.instance = instance;
+        this.backgroundGraphicName = backgroundGraphicName;
+        this.rankColors = rankColors;
         this.loadedExternally = loadedExternally;
     }
 
@@ -100,7 +99,7 @@ public class RankBackground implements PurchaseType {
      * @return The background image file name.
      */
     public String getBackgroundFile() {
-        return file;
+        return backgroundGraphicName;
     }
 
     /**
@@ -109,7 +108,7 @@ public class RankBackground implements PurchaseType {
      * @return The background color scheme for the current background image.
      */
     public BackgroundRankColors getBackgroundColors() {
-        return instance;
+        return rankColors;
     }
 
     @Override
@@ -126,7 +125,7 @@ public class RankBackground implements PurchaseType {
     /**
      * Returns if this background was loaded externally.
      *
-     * @return whether or not this file way loaded externally.
+     * @return whether or not this file was loaded externally.
      */
     public boolean isLoadedExternally() {
         return loadedExternally;
