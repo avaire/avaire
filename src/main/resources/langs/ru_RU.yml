@@ -26,6 +26,41 @@ levelupRoleMessages:
 pagination:
     simpleFooter: "Page **{0}** out of **{1}** pages.\n`{2} [page]`"
 
+modlog-types:
+    kick:
+        name: "Kick"
+        action: "Kicked"
+    voiceKick:
+        name: "Voice Kick"
+        action: "Voice Kicked"
+    ban:
+        name: "Ban"
+        action: "Banned"
+    softBan:
+        name: "Soft Ban"
+        action: "Soft Banned"
+    unban:
+        name: "Unban"
+        action: "Unbanned"
+    purge:
+        name: "Purge"
+        action: "Purged"
+    warn:
+        name: "Warn"
+        action: "Warned"
+    pardon:
+        name: "Pardon"
+        action: "Pardoned"
+    mute:
+        name: "Mute"
+        action: "Muted"
+    tempMute:
+        name: "Temp Mute"
+        action: "Temp Muted"
+    unmute:
+        name: "Unmute"
+        action: "Unmuted"
+
 administration:
     common:
         invalidRole: ":user Invalid role, I couldn't find any role called **:role**"
@@ -54,15 +89,18 @@ administration:
     AdministrateExperienceCommand:
         cantUseForBots: "You can't add, remove, or reset XP for bot accounts since they don't earn any, please select a normal user when using this command."
         invalidAmountGiven: "The `amount` property must be between 1 and {0} to add or take XP from a user."
-        aboutToResetEverything: "You're about to reset the XP for everyone on the entire server, note that this action **CAN NOT** be reversed. If you're sure you wanna continue, run the command to completely reset the servers XP.\n\n```:command server-reset :token```\nThis command will only work for 60 seconds, after that time the token becomes invalid and the command has to be ran again to get a new token."
+        aboutToResetEverything: "You're about to reset the XP for everyone on the entire server. If you're sure you wanna continue, run the command to completely reset the servers XP.\n\n```:command server-reset :token```\nThis command will only work for 60 seconds, after that the token becomes invalid and the command has to be ran again to get a new token."
+        aboutToSyncEverything: "You're about to sync the XP with the global leaderboard, this will effectively revert any custom XP changes made on the entire server. If you're sure you wanna continue, run the command to completely sync the servers XP.\n\n```:command server-sync :token```\nThis command will only work for 60 seconds, after that the token becomes invalid and the command has to be ran again to get a new token."
         failedToSaveChanges: "Failed to save the changes to the database, please try again, if the error continues to happen, please contact support on the official [AvaIre support server](https://avairebot.com/support)."
-        mustBeAnAdmin: "You must be a server admin to reset everyones XP."
+        mustBeAnAdmin: "You must be a server admin to use this action."
         invalidSecurityToken: "Invalid security token given, please provide the correct security token to reset all the servers XP."
         warning: "Warning!"
         success:
             add: "**:amount** XP has been given to :target, they now have **:newAmount** XP."
             take: "**:amount** XP has been taken from :target, they now have **:newAmount** XP."
             reset: ":target has successfully had their XP reset."
+            sync: ":target has successfully had synchronized with the global leaderboard, they now have **:newAmount** XP."
+            syncEveryone: "Everyone on the entire server has been synced with the global leaderboard!"
             everything: "Everyone on the entire server has now had their XP completely reset!"
 
     AiCommand:

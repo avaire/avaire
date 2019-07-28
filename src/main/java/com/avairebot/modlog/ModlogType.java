@@ -22,6 +22,9 @@
 package com.avairebot.modlog;
 
 import com.avairebot.chat.MessageType;
+import com.avairebot.language.I18n;
+import com.google.common.base.CaseFormat;
+import net.dv8tion.jda.core.entities.Guild;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -32,75 +35,73 @@ public enum ModlogType {
     /**
      * Represents the action when a user is kicked from a server.
      */
-    KICK(1, "Kick", "\uD83D\uDC62", true, MessageType.WARNING.getColor()),
+    KICK(1, "\uD83D\uDC62", true, MessageType.WARNING.getColor()),
 
     /**
      * Represents the action when a user is kicked from a voice channel.
      */
-    VOICE_KICK(2, "Voice Kick", "\uD83D\uDC62", false, MessageType.WARNING.getColor()),
+    VOICE_KICK(2, "\uD83D\uDC62", false, MessageType.WARNING.getColor()),
 
     /**
      * Represents when a user is banned from a server without the
      * message they sent over the last 7 days are left alone.
      */
-    SOFT_BAN(3, "Soft Ban", "\uD83D\uDD28", true, MessageType.ERROR.getColor()),
+    SOFT_BAN(3, "\uD83D\uDD28", true, MessageType.ERROR.getColor()),
 
     /**
      * Represents when a user is banned from a server, including
      * deleting any message they have sent in the last 7 days.
      */
-    BAN(4, "Ban", "\uD83D\uDD28", true, MessageType.ERROR.getColor()),
+    BAN(4, "\uD83D\uDD28", true, MessageType.ERROR.getColor()),
 
     /**
      * Represents when multiple messages are deleted from a channel.
      */
-    PURGE(5, "Purge", null, false, MessageType.INFO.getColor()),
+    PURGE(5, null, false, MessageType.INFO.getColor()),
 
     /**
      * Represents when a user is warned through Avas warn system.
      */
-    WARN(6, "Warn", "\uD83D\uDCE2", true, MessageType.WARNING.getColor()),
+    WARN(6, "\uD83D\uDCE2", true, MessageType.WARNING.getColor()),
 
     /**
      * Represents when a user is unbanned from a server through Ava.
      */
-    UNBAN(7, "Unban", null, false, false, MessageType.SUCCESS.getColor()),
+    UNBAN(7, null, false, false, MessageType.SUCCESS.getColor()),
 
     /**
      * Represents when a user is pardoned for an old modlog case.
      */
-    PARDON(8, "Pardon", null, false, false, MessageType.SUCCESS.getColor()),
+    PARDON(8, null, false, false, MessageType.SUCCESS.getColor()),
 
     /**
      * Represents when a user is muted from a server.
      */
-    MUTE(9, "Mute", "\uD83D\uDD07", true, true, MessageType.WARNING.getColor()),
+    MUTE(9, "\uD83D\uDD07", true, true, MessageType.WARNING.getColor()),
 
     /**
      * Represents when a user is muted temporarily from a server.
      */
-    TEMP_MUTE(10, "Temp Mute", "\uD83D\uDD07", true, true, MessageType.WARNING.getColor()),
+    TEMP_MUTE(10, "\uD83D\uDD07", true, true, MessageType.WARNING.getColor()),
 
     /**
      * Represents when a user is unmuted in a server.
      */
-    UNMUTE(11, "Unmute", "\uD83D\uDD0A", true, false, MessageType.SUCCESS.getColor());
+    UNMUTE(11, "\uD83D\uDD0A", true, false, MessageType.SUCCESS.getColor());
 
     final int id;
-    final String name;
     @Nullable
     final String emote;
     final boolean notifyable;
     final boolean punishment;
     final Color color;
 
-    ModlogType(int id, String name, String emote, boolean notifyable, Color color) {
-        this(id, name, emote, notifyable, true, color);
+    ModlogType(int id, String emote, boolean notifyable, Color color) {
+        this(id, emote, notifyable, true, color);
     }
 
-    ModlogType(int id, String name, @Nullable String emote, boolean notifyable, boolean punishment, Color color) {
+    ModlogType(int id, @Nullable String emote, boolean notifyable, boolean punishment, Color color) {
         this.id = id;
-        this.name = name;
         this.emote = emote;
         this.notifyable = notifyable;
         this.punishment = punishment;
@@ -135,10 +136,32 @@ public enum ModlogType {
     /**
      * Gets the name of the current modlog type.
      *
+     * @param guild The guild that requested the modlog type name.
      * @return The name of the current modlog type.
      */
-    public String getName() {
-        return name;
+    @Nonnull
+    public String getName(Guild guild) {
+        String name = loadNameProperty(guild, "name");
+        if (name != null) {
+            return name;
+        }
+
+        return CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, name())
+            .replaceAll("(.)([A-Z])", "$1 $2");
+    }
+
+    /**
+     * Gets the notify name for the current modlog type.
+     *
+     * @param guild The guild that requested the modlog type name.
+     * @return The notify name for the current modlog type.
+     */
+    @Nullable
+    public String getNotifyName(Guild guild) {
+        if (!notifyable) {
+            return null;
+        }
+        return loadNameProperty(guild, "action");
     }
 
     /**
@@ -161,27 +184,18 @@ public enum ModlogType {
     }
 
     /**
-     * Gets the notify name for the current modlog type.
-     *
-     * @return The notify name for the current modlog type.
-     */
-    @Nullable
-    public String getNotifyName() {
-        if (!notifyable) {
-            return null;
-        }
-        if (getName().equalsIgnoreCase("ban") || getName().equalsIgnoreCase("soft ban")) {
-            return getName().toLowerCase() + "ned";
-        }
-        return getName().toLowerCase() + "ed";
-    }
-
-    /**
      * Checks if the current modlog type is a punishment or not.
      *
      * @return <code>True</code> if the modlog type is a punishment, <code>False</code> otherwise.
      */
     public boolean isPunishment() {
         return punishment;
+    }
+
+    private String loadNameProperty(Guild guild, String type) {
+        return I18n.getString(guild, String.format("modlog-types.%s.%s",
+            CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, name()),
+            type
+        ));
     }
 }

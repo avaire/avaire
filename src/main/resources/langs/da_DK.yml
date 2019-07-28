@@ -26,6 +26,41 @@ levelupRoleMessages:
 pagination:
     simpleFooter: "Page **{0}** out of **{1}** pages.\n`{2} [page]`"
 
+modlog-types:
+    kick:
+        name: "Kick"
+        action: "Kicked"
+    voiceKick:
+        name: "Voice Kick"
+        action: "Voice Kicked"
+    ban:
+        name: "Ban"
+        action: "Banned"
+    softBan:
+        name: "Soft Ban"
+        action: "Soft Banned"
+    unban:
+        name: "Unban"
+        action: "Unbanned"
+    purge:
+        name: "Purge"
+        action: "Purged"
+    warn:
+        name: "Warn"
+        action: "Warned"
+    pardon:
+        name: "Pardon"
+        action: "Pardoned"
+    mute:
+        name: "Mute"
+        action: "Muted"
+    tempMute:
+        name: "Temp Mute"
+        action: "Temp Muted"
+    unmute:
+        name: "Unmute"
+        action: "Unmuted"
+
 administration:
     common:
         invalidRole: ":user Ugyldig rolle, jeg kunne ikke finde nogen rolle kaldet **:role**"
@@ -54,15 +89,18 @@ administration:
     AdministrateExperienceCommand:
         cantUseForBots: "Du kan ikke tilføje, fjerne, eller nulstille XP for en bot-konti, da de ikke kan få noget XP til at starte med. Vælg venligst en normal bruger, når du bruger denne kommando."
         invalidAmountGiven: "Egenskaben `amount` skal være mellem 1 og {0} for at tilføje eller tage XP fra en bruger."
-        aboutToResetEverything: "Du er ved at nulstille XP for alle på hele serveren. Bemærk, at denne handling **KAN IKKE** laves om. Hvis du er sikker på, at du vil fortsætte, skal du køre kommandoen for at nulstille serverne XP helt.\n\n```:command server-reset :token```\nDenne kommando fungerer kun i 60 sekunder, efter den tid token bliver ugyldig og kommandoen skal køres igen for at få et nyt token."
-        failedToSaveChanges: "Kunne ikke gemme ændringerne i databasen. Prøv igen, hvis fejlen fortsætter med at ske, bedes du kontakte support på den officielle [AvaIre support server](https://avairebot.com/support)."
-        mustBeAnAdmin: "Du skal være en serveradministrator for at nulstille alles XP."
+        aboutToResetEverything: "You're about to reset the XP for everyone on the entire server. If you're sure you wanna continue, run the command to completely reset the servers XP.\n\n```:command server-reset :token```\nThis command will only work for 60 seconds, after that the token becomes invalid and the command has to be ran again to get a new token."
+        aboutToSyncEverything: "You're about to sync the XP with the global leaderboard, this will effectively revert any custom XP changes made on the entire server. If you're sure you wanna continue, run the command to completely sync the servers XP.\n\n```:command server-sync :token```\nThis command will only work for 60 seconds, after that the token becomes invalid and the command has to be ran again to get a new token."
+        failedToSaveChanges: "Failed to save the changes to the database, please try again, if the error continues to happen, please contact support on the official [AvaIre support server](https://avairebot.com/support)."
+        mustBeAnAdmin: "You must be a server admin to use this action."
         invalidSecurityToken: "Ugyldigt sikkerheds token givet, angiv venligst det korrekte sikkerheds token for at nulstille alle XP for all på serveren."
         warning: "Advarsel!"
         success:
             add: "**:amount** XP er blevet givet til :target, de har nu **:newAmount** XP."
             take: "**:amount** XP er blevet taget fra :target, de har nu **:newAmount** XP."
             reset: ":target har succesfuldt haft deres XP-nulstilling."
+            sync: ":target has successfully had synchronized with the global leaderboard, they now have **:newAmount** XP."
+            syncEveryone: "Everyone on the entire server has been synced with the global leaderboard!"
             everything: "Alle på hele serveren har nu fået deres XP nulstillet!"
 
     AiCommand:

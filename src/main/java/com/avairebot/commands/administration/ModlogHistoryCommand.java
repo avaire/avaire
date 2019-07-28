@@ -143,7 +143,7 @@ public class ModlogHistoryCommand extends Command {
 
                 records.add(context.i18n("entry",
                     modlogCaseId,
-                    type == null ? "Unknown" : type.getEmote() + " " + type.getName(),
+                    type == null ? "Unknown" : type.getEmote() + " " + type.getName(context.getGuild()),
                     formatUser(avaire.getShardManager().getUserById(row.getLong("user_id")), row),
                     time == null ? "Unknown" : time.format("EEE, MMM dd, yyyy h:mm aaa z"),
                     reason

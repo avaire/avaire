@@ -29,6 +29,7 @@ import com.avairebot.commands.utility.RankCommand;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.contracts.commands.CommandGroup;
 import com.avairebot.contracts.commands.CommandGroups;
+import com.avairebot.database.collection.Collection;
 import com.avairebot.database.controllers.PlayerController;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.database.transformers.PlayerTransformer;
@@ -79,8 +80,10 @@ public class AdministrateExperienceCommand extends Command {
     public List<String> getUsageInstructions() {
         return Arrays.asList(
             "`:command reset <user>` - Resets the users XP.",
+            "`:command sync <user> ` - Syncs the users XP with the global leaderboard.",
             "`:command add <user> <amount>` - Adds the given amount of XP to the user.",
             "`:command take <user> <amount>` - Takes the given amount of XP from the user.",
+            "`:command server-sync` - Syncs everyone on the server to the global leaderboard.",
             "`:command server-reset` - Resets the XP for everyone on the entire server in one go."
         );
     }
@@ -89,8 +92,10 @@ public class AdministrateExperienceCommand extends Command {
     public List<String> getExampleUsage() {
         return Arrays.asList(
             "`:command reset @Senither`",
+            "`:command sync @Senither`",
             "`:command add @Senither 9999`",
             "`:command take @Senither 1337`",
+            "`:command server-sync`",
             "`:command server-reset`"
         );
     }
@@ -149,6 +154,8 @@ public class AdministrateExperienceCommand extends Command {
 
         if (action.equals(Action.SERVER_RESET)) {
             return handleServerReset(context, Arrays.copyOfRange(args, 1, args.length));
+        } else if (action.equals(Action.SERVER_SYNC)) {
+            return handleServerSync(context, Arrays.copyOfRange(args, 1, args.length));
         }
 
         if (args.length == 1) {
@@ -206,6 +213,9 @@ public class AdministrateExperienceCommand extends Command {
 
             case RESET:
                 return handleReset(context, player, user);
+
+            case SYNC:
+                return handleSync(context, player, user);
         }
 
         return sendErrorMessage(context, "If you're seeing this message, something went horribly wrong.");
@@ -272,12 +282,90 @@ public class AdministrateExperienceCommand extends Command {
         return true;
     }
 
+    private boolean handleSync(CommandMessage context, PlayerTransformer player, User user) {
+        try {
+            Collection collection = avaire.getDatabase().newQueryBuilder(Constants.PLAYER_EXPERIENCE_TABLE_NAME)
+                .select("global_experience")
+                .where("user_id", user.getId())
+                .where("guild_id", context.getGuild().getId())
+                .get();
+
+            if (collection.isEmpty()) {
+                return sendErrorMessage(context, context.i18n("failedToSaveChanges"));
+            }
+
+            long currentXP = player.getExperience();
+
+            player.setExperience(collection.first().getLong("global_experience"));
+
+            if (!updatePlayerRecord(player)) {
+                player.setExperience(currentXP);
+                return sendErrorMessage(context, context.i18n("failedToSaveChanges"));
+            }
+
+            context.makeSuccess(context.i18n("success.sync"))
+                .set("newAmount", player.getExperience() - 100)
+                .set("target", user.getAsMention())
+                .queue();
+
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return sendErrorMessage(context, context.i18n("failedToSaveChanges"));
+        }
+    }
+
+    private boolean handleServerSync(CommandMessage context, String[] args) {
+        if (!context.getMember().hasPermission(Permission.ADMINISTRATOR)) {
+            return sendErrorMessage(context, context.i18n("mustBeAnAdmin"));
+        }
+        String cacheKey = "sync:" + context.getGuild().getId() + ":" + context.getAuthor().getId();
+        String token = cache.getIfPresent(cacheKey);
+
+        if (token == null) {
+            token = RandomUtil.generateString(RandomUtil.getInteger(3) + 4);
+
+            context.makeWarning(context.i18n("aboutToSyncEverything"))
+                .setTitle(context.i18n("warning"))
+                .set("command", generateCommandTrigger(context.getMessage()))
+                .set("token", token)
+                .queue();
+
+            cache.put(cacheKey, token);
+
+            return false;
+        }
+
+        if (args.length == 0 || !args[0].equals(token)) {
+            return sendErrorMessage(context, context.i18n("invalidSecurityToken"));
+        }
+
+        try {
+            avaire.getDatabase().newQueryBuilder(Constants.PLAYER_EXPERIENCE_TABLE_NAME)
+                .where("guild_id", context.getGuild().getId())
+                .update(statement -> {
+                    statement.setRaw("experience", "`global_experience`");
+                });
+
+            PlayerController.forgetCacheForGuild(context.getGuild().getIdLong());
+
+            context.makeSuccess(context.i18n("success.syncEveryone"))
+                .queue();
+        } catch (SQLException e) {
+            log.error("Failed to reset server XP for {}, error: {}", context.getGuild().getId(), e.getMessage(), e);
+
+            return sendErrorMessage(context, context.i18n("failedToSaveChanges"));
+        }
+
+        return true;
+    }
+
     private boolean handleServerReset(CommandMessage context, String[] args) {
         if (!context.getMember().hasPermission(Permission.ADMINISTRATOR)) {
             return sendErrorMessage(context, context.i18n("mustBeAnAdmin"));
         }
 
-        String cacheKey = context.getGuild().getId() + ":" + context.getAuthor().getId();
+        String cacheKey = "reset:" + context.getGuild().getId() + ":" + context.getAuthor().getId();
         String token = cache.getIfPresent(cacheKey);
 
         if (token == null) {
@@ -340,6 +428,8 @@ public class AdministrateExperienceCommand extends Command {
         ADD("add", "give"),
         TAKE("take", "remove"),
         RESET(false, "reset"),
+        SYNC(false, "sync"),
+        SERVER_SYNC(false, "server-sync"),
         SERVER_RESET(false, "server-reset");
 
         private boolean amount;
