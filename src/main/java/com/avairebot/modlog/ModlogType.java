@@ -172,8 +172,6 @@ public enum ModlogType {
         }
         if (getName().equalsIgnoreCase("ban") || getName().equalsIgnoreCase("soft ban")) {
             return getName().toLowerCase() + "ned";
-        } else if (getName().equalsIgnoreCase("mute") || getName().equalsIgnoreCase("unmute")) {
-            return getName().toLowerCase() + "d";
         }
         return getName().toLowerCase() + "ed";
     }
