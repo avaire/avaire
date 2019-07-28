@@ -246,7 +246,7 @@ public class MuteRoleCommand extends Command {
                     channel.putPermissionOverride(role).setDeny(
                         Permission.CREATE_INSTANT_INVITE.getRawValue() + (
                             channel.getType().equals(ChannelType.TEXT)
-                                ? Permission.ALL_TEXT_PERMISSIONS
+                                ? Permission.ALL_TEXT_PERMISSIONS - Permission.MESSAGE_READ.getRawValue()
                                 : Permission.ALL_VOICE_PERMISSIONS
                         )
                     ).queue();
@@ -310,6 +310,7 @@ public class MuteRoleCommand extends Command {
             switch (channel.getType()) {
                 case TEXT:
                     rawPermissions |= Permission.ALL_TEXT_PERMISSIONS;
+                    rawPermissions -= Permission.MESSAGE_READ.getRawValue();
                     break;
 
                 case VOICE:
