@@ -124,7 +124,7 @@ public class Modlog {
         EmbedBuilder builder = MessageFactory.createEmbeddedBuilder()
             .setTitle(I18n.format("{0} {1} | Case #{2}",
                 action.getType().getEmote(),
-                action.getType().getName(),
+                action.getType().getName(guild),
                 transformer.getModlogCase()
             ))
             .setColor(action.getType().getColor())
@@ -235,7 +235,7 @@ public class Modlog {
      * @param caseId The case ID that is attached to the modlog action.
      */
     public static void notifyUser(User user, Guild guild, ModlogAction action, @Nullable String caseId) {
-        String type = action.getType().getNotifyName();
+        String type = action.getType().getNotifyName(guild);
         if (type == null || user.isBot()) {
             return;
         }

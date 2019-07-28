@@ -26,6 +26,41 @@ levelupRoleMessages:
 pagination:
     simpleFooter: "Page **{0}** out of **{1}** pages.\n`{2} [page]`"
 
+modlog-types:
+    kick:
+        name: "Kick"
+        action: "Kicked"
+    voiceKick:
+        name: "Voice Kick"
+        action: "Voice Kicked"
+    ban:
+        name: "Ban"
+        action: "Banned"
+    softBan:
+        name: "Soft Ban"
+        action: "Soft Banned"
+    unban:
+        name: "Unban"
+        action: "Unbanned"
+    purge:
+        name: "Purge"
+        action: "Purged"
+    warn:
+        name: "Warn"
+        action: "Warned"
+    pardon:
+        name: "Pardon"
+        action: "Pardoned"
+    mute:
+        name: "Mute"
+        action: "Muted"
+    tempMute:
+        name: "Temp Mute"
+        action: "Temp Muted"
+    unmute:
+        name: "Unmute"
+        action: "Unmuted"
+
 administration:
     common:
         invalidRole: "Ungültige Rolle, :user! Ich konnte keine Role namens **:role** auffinden."

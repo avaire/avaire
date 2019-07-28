@@ -43,7 +43,7 @@ public class LogTypesTableSeeder extends Seeder {
     public void run() throws SQLException {
         for (ModlogType type : ModlogType.values()) {
             if (!tableHasValue("id", type.getId())) {
-                createRecord(type.getId(), type.getName());
+                createRecord(type.getId(), type.getName(null));
             }
         }
     }

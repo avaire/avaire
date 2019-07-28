@@ -53,6 +53,7 @@ public class I18n {
     public static void start(AvaIre avaire) {
         I18n.avaire = avaire;
 
+        languages.clear();
         languages.add(defaultLanguage);
         for (Language language : Language.values()) {
             if (defaultLanguage.getLanguage().equals(language)) {
