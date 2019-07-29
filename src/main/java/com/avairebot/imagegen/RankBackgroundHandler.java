@@ -62,7 +62,7 @@ public class RankBackgroundHandler {
     /**
      * Returns an instance of the rank background handler
      * class.
-     * @return the instance
+     * @return an instance of the handler
      */
     public static RankBackgroundHandler getInstance() {
         if (instance == null) {
@@ -183,15 +183,15 @@ public class RankBackgroundHandler {
 
             if (file.getName().endsWith(".yml")) {
                 try {
-                    log.debug("Attempting to load background from resource folder: " + file.toString());
+                    log.debug("Attempting to load background from file system: " + file.toString());
                     RankBackgroundLoader rankBackgroundLoader = new RankBackgroundLoader(file);
                     RankBackground background = rankBackgroundLoader.getRankBackground();
                     if (isBackgroundRankValid(background)) {
                         usedIds.add(background.getId());
                         localBackgrounds.add(background);
-                        log.debug("Loaded background from resource folder: " + file.toString());
+                        log.debug("Loaded background from file system: " + file.toString());
                     } else {
-                        log.debug("Background in resource folder invalid : " + file.toString());
+                        log.debug("Background invalid; refusing to load : " + file.toString());
                     }
                 } catch (NullPointerException ex) {
                     ex.printStackTrace();
@@ -207,11 +207,13 @@ public class RankBackgroundHandler {
                 if (file.endsWith(".yml")) {
                     RankBackgroundLoader rank = new RankBackgroundLoader(file);
                     RankBackground rankBackground = rank.getRankBackground();
+                    log.debug("Attempting to load background from resource folder: " + file);
                     if (isBackgroundRankValid(rankBackground)) {
                         usedIds.add(rankBackground.getId());
                         localBackgrounds.add(rankBackground);
+                        log.debug("Loaded background from resource folder: " + file);
                     } else {
-                        log.debug("Background invalid: " + file);
+                        log.debug("Background in resource folder invalid; refusing to load : " + file);
                     }
 
                 }
