@@ -44,6 +44,7 @@ public class RankBackgroundHandler {
     private final LinkedHashMap<String, Integer> namesToCost = new LinkedHashMap<>();
     private final List<RankBackground> backgrounds = new ArrayList<>();
     private final List<Integer> usedIds = new ArrayList<>();
+    private final List<String> usedNames = new ArrayList<>();
     private static RankBackgroundHandler instance;
     private File backgroundsFolder;
     private boolean backgroundsFolderAlreadyExists = false;
@@ -188,10 +189,11 @@ public class RankBackgroundHandler {
                     RankBackground background = rankBackgroundLoader.getRankBackground();
                     if (isBackgroundRankValid(background)) {
                         usedIds.add(background.getId());
+                        usedNames.add(background.getName()); 
                         localBackgrounds.add(background);
                         log.debug("Loaded background from file system: " + file.toString());
                     } else {
-                        log.debug("Background invalid; refusing to load : " + file.toString());
+                        log.debug("Background invalid from file system; refusing to load : " + file.toString());
                     }
                 } catch (NullPointerException ex) {
                     ex.printStackTrace();
@@ -210,10 +212,11 @@ public class RankBackgroundHandler {
                     log.debug("Attempting to load background from resource folder: " + file);
                     if (isBackgroundRankValid(rankBackground)) {
                         usedIds.add(rankBackground.getId());
+                        usedNames.add(rankBackground.getName());
                         localBackgrounds.add(rankBackground);
                         log.debug("Loaded background from resource folder: " + file);
                     } else {
-                        log.debug("Background in resource folder invalid; refusing to load : " + file);
+                        log.debug("Background from resource folder invalid; refusing to load : " + file);
                     }
 
                 }
@@ -227,7 +230,7 @@ public class RankBackgroundHandler {
         return background.getCost() > 0
             && background.getName() != null
             && !background.getName().isEmpty()
-            && !namesToCost.containsKey(background.getName())
+            && !usedNames.contains(background.getName())
             && !usedIds.contains(background.getId());
     }
 }
