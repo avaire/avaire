@@ -292,13 +292,18 @@ public class VoteManager {
 
     @Nullable
     public VoteCacheEntity getVoteEntity(@Nonnull User user) {
-        if (voteLog.containsKey(user.getIdLong())) {
-            return voteLog.get(user.getIdLong());
+        return getVoteEntity(user.getIdLong());
+    }
+
+    @Nullable
+    public VoteCacheEntity getVoteEntity(long userId) {
+        if (voteLog.containsKey(userId)) {
+            return voteLog.get(userId);
         }
 
         try {
             Collection collection = avaire.getDatabase().newQueryBuilder(Constants.VOTES_TABLE_NAME)
-                .where("user_id", user.getIdLong()).take(1).get();
+                .where("user_id", userId).take(1).get();
 
             if (collection.isEmpty()) {
                 return null;
@@ -330,16 +335,28 @@ public class VoteManager {
      */
     @Nonnull
     public VoteCacheEntity getVoteEntityWithFallback(User user) {
-        VoteCacheEntity voteEntity = getVoteEntity(user);
+        return getVoteEntityWithFallback(user.getIdLong());
+    }
+
+    /**
+     * Gets the vote entity for the given user ID, if no vote entity was found,
+     * a new vote entity will be created for the given user ID.
+     *
+     * @param userId The user ID that the vote cache entity should be retrieved for.
+     * @return The vote cache entity belonging to the given user ID.
+     */
+    @Nonnull
+    public VoteCacheEntity getVoteEntityWithFallback(long userId) {
+        VoteCacheEntity voteEntity = getVoteEntity(userId);
         if (voteEntity != null) {
             return voteEntity;
         }
 
         voteEntity = new VoteCacheEntity(
-            user.getIdLong(), 0, true, Carbon.now().subDay()
+            userId, 0, true, Carbon.now().subDay()
         );
 
-        voteLog.put(user.getIdLong(), voteEntity);
+        voteLog.put(userId, voteEntity);
 
         return voteEntity;
     }

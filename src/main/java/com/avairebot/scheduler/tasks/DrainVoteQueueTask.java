@@ -54,6 +54,11 @@ public class DrainVoteQueueTask implements Task {
             return;
         }
 
+        if (avaire.getConfig().getBoolean("vote-lock.sync-with-public-bot", false)) {
+            RequestFactory.makeGET("http://api.avairebot.com/v1/votes/" + entity.getUserId())
+                .send((Consumer<Response>) response -> acceptViaPublicSync(avaire, response, entity));
+        }
+
         String apiToken = avaire.getConfig().getString("vote-lock.vote-sync-token");
         if (apiToken == null || apiToken.trim().length() == 0) {
             return;
@@ -68,10 +73,44 @@ public class DrainVoteQueueTask implements Task {
         RequestFactory.makeGET("https://discordbots.org/api/bots/275270122082533378/check")
             .addParameter("userId", entity.getUserId())
             .addHeader("Authorization", avaire.getConfig().getString("vote-lock.vote-sync-token"))
-            .send((Consumer<Response>) response -> accept(avaire, response, entity));
+            .send((Consumer<Response>) response -> acceptViaDBL(avaire, response, entity));
     }
 
-    private void accept(AvaIre avaire, Response response, VoteEntity entity) {
+    private void acceptViaPublicSync(AvaIre avaire, Response response, VoteEntity entity) {
+        if (response.getResponse().code() != 200) {
+            return;
+        }
+
+        Object obj = response.toService(Map.class);
+        if (!(obj instanceof Map)) {
+            return;
+        }
+
+        Map<String, Boolean> data = (Map<String, Boolean>) obj;
+        if (data.isEmpty()) {
+            return;
+        }
+
+        Boolean result = data.getOrDefault(String.valueOf(entity.getUserId()), false);
+        if (result == null || !result) {
+            return;
+        }
+
+        Metrics.dblVotes.labels(VoteMetricType.COMMAND.getName()).inc();
+
+        Carbon expiresIn = new Carbon(response.getResponse().header("Date")).addHours(12);
+
+        log.info("Vote record for {} was found, registering vote that expires on {}", entity.getUserId(), expiresIn.toDateTimeString());
+
+        User user = avaire.getShardManager().getUserById(entity.getUserId());
+        if (user == null) {
+            return;
+        }
+
+        handleRegisteringVote(avaire, user, expiresIn, entity);
+    }
+
+    private void acceptViaDBL(AvaIre avaire, Response response, VoteEntity entity) {
         if (response.getResponse().code() != 200) {
             return;
         }
@@ -93,9 +132,9 @@ public class DrainVoteQueueTask implements Task {
             return;
         }
 
-        Carbon expiresIn = new Carbon(response.getResponse().header("Date")).addDay();
-
         Metrics.dblVotes.labels(VoteMetricType.COMMAND.getName()).inc();
+
+        Carbon expiresIn = new Carbon(response.getResponse().header("Date")).addHours(12);
 
         log.info("Vote record for {} was found, registering vote that expires on {}", entity.getUserId(), expiresIn.toDateTimeString());
 
@@ -104,6 +143,10 @@ public class DrainVoteQueueTask implements Task {
             return;
         }
 
+        handleRegisteringVote(avaire, user, expiresIn, entity);
+    }
+
+    private void handleRegisteringVote(AvaIre avaire, User user, Carbon expiresIn, VoteEntity entity) {
         VoteCacheEntity voteEntity = avaire.getVoteManager().getVoteEntityWithFallback(user);
         voteEntity.setCarbon(expiresIn);
 
