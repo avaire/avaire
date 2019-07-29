@@ -55,20 +55,28 @@ public class PostVote extends SparkRoute {
             return buildResponse(response, 400, "Bad request, invalid JSON data given to justify a upvote request.");
         }
 
-        User userById = AvaIre.getInstance().getShardManager().getUserById(voteRequest.user);
-        if (userById == null || userById.isBot()) {
-            log.warn("Invalid user ID given, the user is not on any server the bot is on.");
-            return buildResponse(response, 404, "Invalid user ID given, the user is not on any server the bot is on.");
-        }
+        AvaIre.getInstance().getVoteManager().registerVoteFor(
+            Long.valueOf(voteRequest.user),
+            voteRequest.isWeekend ? 2 : 1
+        );
 
-        VoteCacheEntity voteEntity = AvaIre.getInstance().getVoteManager().getVoteEntityWithFallback(userById);
+        VoteCacheEntity voteEntity = AvaIre.getInstance().getVoteManager()
+            .getVoteEntityWithFallback(Long.valueOf(voteRequest.user));
         voteEntity.setCarbon(Carbon.now().addHours(12));
-        AvaIre.getInstance().getVoteManager().registerVoteFor(userById, voteRequest.isWeekend ? 2 : 1);
 
         Metrics.dblVotes.labels(VoteMetricType.WEBHOOK.getName()).inc();
 
+        User userById = AvaIre.getInstance().getShardManager().getUserById(voteRequest.user);
+        if (userById == null || userById.isBot()) {
+            log.info("Vote has been registered by {} [No servers is shared with this user]",
+                voteRequest.user
+            );
+
+            return buildResponse(response, 200, "Vote registered, thanks for voting!");
+        }
+
         log.info("Vote has been registered by {} ({})",
-            userById.getName() + "#" + userById.getDiscriminator(), userById.getId()
+            userById.getAsTag(), userById.getId()
         );
 
         if (!voteEntity.isOptIn()) {
