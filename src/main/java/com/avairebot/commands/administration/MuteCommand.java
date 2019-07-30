@@ -31,6 +31,8 @@ import com.avairebot.modlog.ModlogType;
 import com.avairebot.time.Carbon;
 import com.avairebot.utilities.MentionableUtil;
 import com.avairebot.utilities.NumberUtil;
+import com.avairebot.utilities.RoleUtil;
+import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.User;
 
@@ -144,6 +146,10 @@ public class MuteCommand extends MuteableCommand {
             return sendErrorMessage(context, context.i18n("invalidUserMentioned"));
         }
 
+        if (userHasHigherRole(user, context.getMember())) {
+            return sendErrorMessage(context, context.i18n("higherOrSameRole"));
+        }
+
         Carbon expiresAt = null;
         if (args.length > 1) {
             expiresAt = parseTime(args[1]);
@@ -186,6 +192,11 @@ public class MuteCommand extends MuteableCommand {
         });
 
         return true;
+    }
+
+    private boolean userHasHigherRole(User user, Member author) {
+        Role role = RoleUtil.getHighestFrom(author.getGuild().getMember(user));
+        return role != null && RoleUtil.isRoleHierarchyHigher(author.getRoles(), role);
     }
 
     private Carbon parseTime(String string) {
