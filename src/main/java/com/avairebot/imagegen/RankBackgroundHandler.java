@@ -181,17 +181,8 @@ public class RankBackgroundHandler {
 
         try
         {
-            if(!filePath.toFile().exists())
-            {
-                Files.write(filePath,(newFile + System.lineSeparator()).getBytes(Charsets.UTF_8)
-                            ,StandardOpenOption.CREATE);
-            }
-            else
-            {
-                Files.write(filePath,(System.lineSeparator() + newFile + System.lineSeparator()).getBytes(Charsets.UTF_8)
-                    ,StandardOpenOption.APPEND);
-            }
-
+            Files.write(filePath,(newFile + System.lineSeparator()).getBytes(Charsets.UTF_8)
+                        ,StandardOpenOption.CREATE,StandardOpenOption.APPEND);
         }
         catch (IOException e)
         {
@@ -205,6 +196,11 @@ public class RankBackgroundHandler {
         {
             List<String> resourceFiles = ResourceLoaderUtil.getFiles(RankBackgroundHandler.class, "backgrounds");
             Path filePath = Paths.get("backgrounds/image-index");
+            if(!filePath.toFile().exists())
+            {
+                Files.createFile(filePath);
+                return; 
+            }
             List<String> oldFiles = Files.readAllLines(filePath, StandardCharsets.UTF_8);
             for (String file: resourceFiles)
             {
