@@ -44,7 +44,8 @@ public enum RankBackgrounds implements PurchaseType {
     MOUNTAIN_RANGE(11, 50, "Mountain Range", "mountain-range.jpg", MountainRangeColors.class),
     SAKURA(12, 50, "Sakura", "sakura.jpg", SakuraColors.class),
     EightBit(13, 50, "8Bit Mountains", "EightBitMountains.png", EightBitMountainColors.class),
-    ABSTRACT(14, 50, "Abstract", "abstract.jpg", AbstractColors.class);
+    ABSTRACT(14, 50, "Abstract", "abstract.jpg", AbstractColors.class),
+	GENGAR(15, 25, "Gengar", "Gengar.png", AbstractColors.class);
 
 
     private static final RankBackgrounds DEFAULT_BACKGROUND = RankBackgrounds.PURPLE;
