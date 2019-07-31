@@ -294,7 +294,7 @@ administration:
     MuteRoleCommand:
         onCooldown: "You have recently use a command option that created and/or modified roles and channel permissions, you have to wait **:cooldown** before you can use this command again."
         roleDoesntExists: "Invalid role given, the `{0}` role doesn't exists."
-        rolePositionedHigher: "The {0} role is positioned higher than any role I have, so I can assign the role to anyone."
+        rolePositionedHigher: "The {0} role is positioned higher than any role I have, so I can't assign the role to anyone."
         cantCreateRoleDueToPermissions: "I can't create the muted role because I don't have the \"Manage Roles\" permissions for the server."
         noMuteRoleSet: "There are currently no mute role set for the server, you can set the role you wanna use as the mute role using `:command set <role>`, or you can make the bot create a new muted role using `:command create-role`."
         usingRoleMessage: "The server is using the :role role for mutes."
