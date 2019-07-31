@@ -554,6 +554,8 @@ public class AvaIre {
             eventEmitter.push(new ApplicationShutdownEvent(shardManager.getShards().get(0), exitCode));
         }
 
+        long shutdownDelay = 1500L;
+
         getLogger().info("Shutting down bot instance gracefully with exit code " + exitCode);
 
         List<AudioState> audioStates = new ArrayList<>();
@@ -562,6 +564,7 @@ public class AvaIre {
                 manager.getLastActiveMessage().makeInfo(
                     "Bot is restarting, sorry for the inconvenience, we'll be right back!"
                 ).queue();
+                shutdownDelay += 100L;
             }
 
             try {
@@ -588,8 +591,14 @@ public class AvaIre {
 
                 if (player.getLink() != null && !state.equals(Link.State.DESTROYED) && !state.equals(Link.State.DESTROYING)) {
                     player.getLink().destroy();
+                    shutdownDelay += 100;
                 }
             }
+        }
+
+        if (LavalinkManager.LavalinkManagerHolder.lavalink.isEnabled()) {
+            shutdownDelay += LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink().getNodes().size() * 500L;
+            LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink().shutdown();
         }
 
         // Caches the audio state for the next three hours so we
@@ -597,7 +606,8 @@ public class AvaIre {
         cache.getAdapter(CacheType.FILE).put("audio.state", gson.toJson(audioStates), 60 * 60 * 3);
 
         try {
-            Thread.sleep(2500);
+            log.info("Shutting down processes, waiting {} milliseconds for processes to finish shutting down.", shutdownDelay);
+            Thread.sleep(shutdownDelay);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
