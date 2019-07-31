@@ -27,7 +27,7 @@ import com.avairebot.contracts.imagegen.BackgroundRankColors;
 import javax.annotation.Nonnull;
 import java.awt.*;
 
-public class GengarColors extends BackgroundRankColors {
+public class HaunterColors extends BackgroundRankColors {
 
     @Nonnull
     @Override
