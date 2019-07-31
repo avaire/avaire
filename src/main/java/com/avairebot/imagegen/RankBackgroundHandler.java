@@ -41,22 +41,20 @@ public class RankBackgroundHandler {
 
     private static RankBackgroundHandler instance;
     private final Logger log = LoggerFactory.getLogger(RankBackgroundHandler.class);
-    private final LinkedHashMap<RankBackground, BackgroundRankColors> backgroundColors = new LinkedHashMap<>();
     private final LinkedHashMap<String, Integer> namesToCost = new LinkedHashMap<>();
     private final List<RankBackground> backgrounds = new ArrayList<>();
     private final List<Integer> usedIds = new ArrayList<>();
     private final List<String> usedNames = new ArrayList<>();
+    private final boolean backgroundsFolderAlreadyExists;
     private File backgroundsFolder;
-    private boolean backgroundsFolderAlreadyExists = false;
 
     private RankBackgroundHandler() {
         backgroundsFolder = new File("backgrounds");
 
-        if (!backgroundsFolder.exists()) {
+        backgroundsFolderAlreadyExists = backgroundsFolder.exists();
+        if (!backgroundsFolderAlreadyExists) {
             backgroundsFolder.mkdirs();
             copyBackgroundsFromJarToFolder();
-        } else {
-            backgroundsFolderAlreadyExists = true;
         }
     }
 
@@ -147,8 +145,6 @@ public class RankBackgroundHandler {
         try {
             for (RankBackground type : getResourceFiles()) {
                 unsortedNamesToCost.put(type.getName(), type.getCost());
-                BackgroundRankColors rankColors = type.getBackgroundColors();
-                backgroundColors.put(type, rankColors);
                 backgrounds.add(type);
             }
         } catch (IOException e) {

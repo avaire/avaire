@@ -76,27 +76,19 @@ public class RankBackgroundLoader {
 
     private BackgroundRankColors getColors() {
         BackgroundRankColors colors = new BackgroundRankColors();
-        Color backgroundColor = loadColorFromYaml("colors.backgroundColor");
-        colors.setBackgroundColor(backgroundColor);
-        Color mainTextColor = loadColorFromYaml("colors.mainTextColor");
-        colors.setMainTextColor(mainTextColor);
-        Color secondaryTextColor = loadColorFromYaml("colors.secondaryTextColor");
-        colors.setSecondaryTextColor(secondaryTextColor);
-        Color experienceBackgroundColor = loadColorFromYaml("colors.experienceBackgroundColor");
-        colors.setExperienceBackgroundColor(experienceBackgroundColor);
-        Color experienceForegroundColor = loadColorFromYaml("colors.experienceForegroundColor");
-        colors.setExperienceForegroundColor(experienceForegroundColor);
-        Color experienceSeparatorColor = loadColorFromYaml("colors.experienceSeparatorColor");
-        colors.setExperienceSeparatorColor(experienceSeparatorColor);
+        colors.setBackgroundColor(loadColorFromYaml("colors.backgroundColor"));
+        colors.setMainTextColor(loadColorFromYaml("colors.mainTextColor"));
+        colors.setSecondaryTextColor(loadColorFromYaml("colors.secondaryTextColor"));
+        colors.setExperienceBackgroundColor(loadColorFromYaml("colors.experienceBackgroundColor"));
+        colors.setExperienceForegroundColor(loadColorFromYaml("colors.experienceForegroundColor"));
+        colors.setExperienceSeparatorColor(loadColorFromYaml("colors.experienceSeparatorColor"));
 
         if (config.contains("colors.backgroundCoverColor")) {
-            Color backgroundCoverColor = loadColorFromYaml("colors.backgroundCoverColor");
-            colors.setBackgroundCoverColor(backgroundCoverColor);
+            colors.setBackgroundCoverColor(loadColorFromYaml("colors.backgroundCoverColor"));
         }
 
         if (config.contains("colors.experienceTextColor")) {
-            Color experienceTextColor = loadColorFromYaml("colors.experienceTextColor");
-            colors.setExperienceTextColor(experienceTextColor);
+            colors.setExperienceTextColor(loadColorFromYaml("colors.experienceTextColor"));
         }
 
         return colors;
@@ -111,8 +103,9 @@ public class RankBackgroundLoader {
             return ColorUtil.makeColor(red, green, blue);
         }
 
-        int alpha = config.getInt(heading + ".alpha");
-        return ColorUtil.makeColor(red, green, blue, alpha);
+        return ColorUtil.makeColor(red, green, blue,
+            config.getInt(heading + ".alpha")
+        );
     }
 
     /**
