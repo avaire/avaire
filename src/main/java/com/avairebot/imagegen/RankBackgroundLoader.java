@@ -118,6 +118,7 @@ public class RankBackgroundLoader {
     /**
      * Returns the rank background loaded by this
      * container.
+     *
      * @return The background rank for this container
      */
     public RankBackground getRankBackground() {

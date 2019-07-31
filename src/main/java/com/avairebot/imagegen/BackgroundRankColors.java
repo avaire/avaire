@@ -341,10 +341,8 @@ public class BackgroundRankColors {
     public Color getExperienceTextColor() {
         if (experienceTextColor == null) {
             return getMainTextColor();
-        } else {
-            return experienceTextColor;
         }
-
+        return experienceTextColor;
     }
 
     /**

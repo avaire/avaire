@@ -39,13 +39,13 @@ import java.util.*;
 
 public class RankBackgroundHandler {
 
+    private static RankBackgroundHandler instance;
     private final Logger log = LoggerFactory.getLogger(RankBackgroundHandler.class);
     private final LinkedHashMap<RankBackground, BackgroundRankColors> backgroundColors = new LinkedHashMap<>();
     private final LinkedHashMap<String, Integer> namesToCost = new LinkedHashMap<>();
     private final List<RankBackground> backgrounds = new ArrayList<>();
     private final List<Integer> usedIds = new ArrayList<>();
     private final List<String> usedNames = new ArrayList<>();
-    private static RankBackgroundHandler instance;
     private File backgroundsFolder;
     private boolean backgroundsFolderAlreadyExists = false;
 
@@ -63,6 +63,7 @@ public class RankBackgroundHandler {
     /**
      * Returns an instance of the rank background handler
      * class.
+     *
      * @return an instance of the handler
      */
     public static RankBackgroundHandler getInstance() {
@@ -189,7 +190,7 @@ public class RankBackgroundHandler {
                     RankBackground background = rankBackgroundLoader.getRankBackground();
                     if (isBackgroundRankValid(background)) {
                         usedIds.add(background.getId());
-                        usedNames.add(background.getName()); 
+                        usedNames.add(background.getName());
                         localBackgrounds.add(background);
                         log.debug("Loaded background from file system: " + file.toString());
                     } else {
@@ -202,7 +203,6 @@ public class RankBackgroundHandler {
         }
 
         if (!backgroundsFolderAlreadyExists) {
-
             List<String> files = ResourceLoaderUtil.getFiles(RankBackgroundHandler.class, "backgrounds");
 
             for (String file : files) {
@@ -218,7 +218,6 @@ public class RankBackgroundHandler {
                     } else {
                         log.debug("Background from resource folder invalid; refusing to load : " + file);
                     }
-
                 }
             }
         }
