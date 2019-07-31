@@ -281,6 +281,7 @@ administration:
     MuteCommand:
         requiresModlogToBeSet: "This command requires a modlog channel to be set, a modlog channel can be set using the `{0}modlog` command."
         requireMuteRoleToBeSet: "No mute role have been setup for the server, you can setup a mute role using the `{0}muterole` command."
+        higherOrSameRole: "You can't mute people with a higher, or the same role as yourself."
         muteRoleIsPositionedHigher: "The {0} role used for mutes are positioned higher in the role hierarchy than any roles I have, so I can't automatically assign the role to other users, please fix this or use another role for mutes."
         invalidUserMentioned: "Invalid user mentioned, you must mention a user on the server you want to mute to use this command."
         invalidTimeGiven: "Invalid time given, the time must be at least one minute or more."
