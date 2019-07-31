@@ -59,7 +59,7 @@ public enum Language {
      *
      * @param string The string representation of the that should be returned.
      * @return Possibly-null, the language matching the given string, or <code>NULL</code>
-     * if no languages matched the given string.
+     *         if no languages matched the given string.
      */
     @Nullable
     public static Language parse(@Nonnull String string) {

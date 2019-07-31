@@ -233,7 +233,7 @@ public class MessageEventAdapter extends EventAdapter {
                 strings.add("\nYou can tag me in a message with <@:botId> to send me a message that I should process using my AI.");
             }
 
-            strings.add("\n**Full list of commands**\n*https://avairebot.com/docs/commands*");
+            strings.add("\n**Full list of commands**\n*https://avairebot.com/commands*");
             strings.add("\nAvaIre Support Server:\n*https://avairebot.com/support*");
 
             CommandContainer commandContainer = CommandHandler.getCommands().stream()

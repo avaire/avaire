@@ -40,6 +40,7 @@ import net.dv8tion.jda.core.exceptions.InsufficientPermissionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
+import org.slf4j.MDC.MDCCloseable;
 
 import javax.annotation.Nonnull;
 import java.util.Arrays;
@@ -92,67 +93,68 @@ public class ProcessCommand extends Middleware {
             .replace("%shard%", message.getJDA().getShardInfo().getShardString())
         );
 
-        Histogram.Timer timer = null;
+        String[] commandArguments = Arrays.copyOfRange(arguments, stack.isMentionableCommand() ? 2 : 1, arguments.length);
+        if (stack.getCommandContainer() instanceof AliasCommandContainer) {
+            AliasCommandContainer container = (AliasCommandContainer) stack.getCommandContainer();
 
-        try {
-            String[] commandArguments = Arrays.copyOfRange(arguments, stack.isMentionableCommand() ? 2 : 1, arguments.length);
-            if (stack.getCommandContainer() instanceof AliasCommandContainer) {
-                AliasCommandContainer container = (AliasCommandContainer) stack.getCommandContainer();
-
-                return runCommand(stack,
-                    new CommandMessage(
-                        stack.getCommandContainer(),
-                        stack.getDatabaseEventHolder(),
-                        message,
-                        stack.isMentionableCommand(),
-                        container.getAliasArguments()
-                    ),
-                    combineArguments(container.getAliasArguments(), commandArguments)
-                );
-            }
-
-            Metrics.commandsExecuted.labels(stack.getCommand().getClass().getSimpleName()).inc();
-
-            timer = Metrics.executionTime.labels(stack.getCommand().getClass().getSimpleName()).startTimer();
-
-            return runCommand(stack, new CommandMessage(
+            return runCommand(stack,
+                new CommandMessage(
                     stack.getCommandContainer(),
                     stack.getDatabaseEventHolder(),
                     message,
                     stack.isMentionableCommand(),
-                    new String[0]
+                    container.getAliasArguments()
                 ),
-                commandArguments
+                combineArguments(container.getAliasArguments(), commandArguments)
             );
-        } catch (Exception ex) {
-            Metrics.commandExceptions.labels(ex.getClass().getSimpleName()).inc();
-
-            if (ex instanceof InsufficientPermissionException) {
-                MessageFactory.makeError(message, "Error: " + ex.getMessage())
-                    .queue(newMessage -> newMessage.delete().queueAfter(30, TimeUnit.SECONDS, null, RestActionUtil.ignore));
-
-                return false;
-            } else if (ex instanceof FriendlyException) {
-                MessageFactory.makeError(message, "Error: " + ex.getMessage())
-                    .queue(newMessage -> newMessage.delete().queueAfter(30, TimeUnit.SECONDS, null, RestActionUtil.ignore));
-            }
-
-            MDC.putCloseable(SentryConstants.SENTRY_MDC_TAG_GUILD, message.getGuild() != null ? message.getGuild().getId() : "PRIVATE");
-            MDC.putCloseable(SentryConstants.SENTRY_MDC_TAG_SHARD, message.getJDA().getShardInfo().getShardString());
-            MDC.putCloseable(SentryConstants.SENTRY_MDC_TAG_CHANNEL, message.getChannel().getId());
-            MDC.putCloseable(SentryConstants.SENTRY_MDC_TAG_AUTHOR, message.getAuthor().getId());
-            MDC.putCloseable(SentryConstants.SENTRY_MDC_TAG_MESSAGE, message.getContentRaw());
-            log.error("An error occurred while running the " + stack.getCommand().getName(), ex);
-            return false;
-        } finally {
-            if (timer != null) {
-                timer.observeDuration();
-            }
         }
+
+        Metrics.commandsExecuted.labels(stack.getCommand().getClass().getSimpleName()).inc();
+
+        return runCommand(stack, new CommandMessage(
+                stack.getCommandContainer(),
+                stack.getDatabaseEventHolder(),
+                message,
+                stack.isMentionableCommand(),
+                new String[0]
+            ),
+            commandArguments
+        );
     }
 
-    private boolean runCommand(MiddlewareStack stack, CommandMessage message, String[] args) {
-        return stack.getCommand().onCommand(message, args);
+    private boolean runCommand(MiddlewareStack stack, CommandMessage context, String[] args) {
+        try (
+            MDCCloseable _guild = MDC.putCloseable(SentryConstants.SENTRY_MDC_TAG_GUILD, context.getGuild() != null ? context.getGuild().getId() : "PRIVATE");
+            MDCCloseable _shard = MDC.putCloseable(SentryConstants.SENTRY_MDC_TAG_SHARD, context.getJDA().getShardInfo().getShardString());
+            MDCCloseable _channel = MDC.putCloseable(SentryConstants.SENTRY_MDC_TAG_CHANNEL, context.getChannel().getId());
+            MDCCloseable _author = MDC.putCloseable(SentryConstants.SENTRY_MDC_TAG_AUTHOR, context.getAuthor().getId());
+            MDCCloseable _message = MDC.putCloseable(SentryConstants.SENTRY_MDC_TAG_MESSAGE, context.getMessage().getContentRaw())
+        ) {
+            Histogram.Timer timer = Metrics.executionTime.labels(stack.getCommand().getClass().getSimpleName()).startTimer();
+
+            try {
+                return stack.getCommand().onCommand(context, args);
+            } catch (Exception ex) {
+                Metrics.commandExceptions.labels(ex.getClass().getSimpleName()).inc();
+
+                if (ex instanceof InsufficientPermissionException) {
+                    MessageFactory.makeError(context.getMessage(), "Error: " + ex.getMessage())
+                        .queue(newMessage -> newMessage.delete().queueAfter(30, TimeUnit.SECONDS, null, RestActionUtil.ignore));
+
+                    return false;
+                } else if (ex instanceof FriendlyException) {
+                    MessageFactory.makeError(context.getMessage(), "Error: " + ex.getMessage())
+                        .queue(newMessage -> newMessage.delete().queueAfter(30, TimeUnit.SECONDS, null, RestActionUtil.ignore));
+                }
+
+                log.error("An error occurred while running the " + stack.getCommand().getName(), ex);
+                return false;
+            } finally {
+                if (timer != null) {
+                    timer.observeDuration();
+                }
+            }
+        }
     }
 
     private String generateUsername(Message message) {

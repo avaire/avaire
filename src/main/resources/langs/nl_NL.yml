@@ -26,6 +26,41 @@ levelupRoleMessages:
 pagination:
     simpleFooter: "Page **{0}** out of **{1}** pages.\n`{2} [page]`"
 
+modlog-types:
+    kick:
+        name: "Kick"
+        action: "Kicked"
+    voiceKick:
+        name: "Voice Kick"
+        action: "Voice Kicked"
+    ban:
+        name: "Ban"
+        action: "Banned"
+    softBan:
+        name: "Soft Ban"
+        action: "Soft Banned"
+    unban:
+        name: "Unban"
+        action: "Unbanned"
+    purge:
+        name: "Purge"
+        action: "Purged"
+    warn:
+        name: "Warn"
+        action: "Warned"
+    pardon:
+        name: "Pardon"
+        action: "Pardoned"
+    mute:
+        name: "Mute"
+        action: "Muted"
+    tempMute:
+        name: "Temp Mute"
+        action: "Temp Muted"
+    unmute:
+        name: "Unmute"
+        action: "Unmuted"
+
 administration:
     common:
         invalidRole: ":user Ongeldige rol, ik kon geen rol vinden die **:role** heet"
@@ -54,15 +89,18 @@ administration:
     AdministrateExperienceCommand:
         cantUseForBots: "Je kan geen exp toevoegen, aanpassen of verwijderen voor bot accounts, aangezien deze geen exp krijgen. Noem A.U.B een gewone gebruiker wanneer je dit commando gebruikt."
         invalidAmountGiven: "De `amount` waarde moet tussen de 0 en de {0} zijn om exp van een user af te pakken of om exp toe te voegen."
-        aboutToResetEverything: "Je staat op het punt om alle EXP van iedereen op de server te resetten, **LET OP** dit kan **NIET** ongedaan worden. Als je zeker weet dat je wilt doorgaan, run het commando om alle exp van alle gebruikers te resetten.\n\n```:command server-reset :token```\nDit commando werkt alleen voor 60 seconden, na deze tijd wordt het token ongeldig en zal het commando opnieuw gebruikt moeten worden voor een nieuw token."
-        failedToSaveChanges: "Gefaald met het opslaan van de veranderingen naar de database, probeer A.U.B opnieuw, als deze error blijft gebeuren, neem dan contact op met support in de officiele [AvaIre support server](https://avairebot.com/support)."
-        mustBeAnAdmin: "Je moet een server admin zijn om iedereens EXP te resetten."
+        aboutToResetEverything: "You're about to reset the XP for everyone on the entire server. If you're sure you wanna continue, run the command to completely reset the servers XP.\n\n```:command server-reset :token```\nThis command will only work for 60 seconds, after that the token becomes invalid and the command has to be ran again to get a new token."
+        aboutToSyncEverything: "You're about to sync the XP with the global leaderboard, this will effectively revert any custom XP changes made on the entire server. If you're sure you wanna continue, run the command to completely sync the servers XP.\n\n```:command server-sync :token```\nThis command will only work for 60 seconds, after that the token becomes invalid and the command has to be ran again to get a new token."
+        failedToSaveChanges: "Failed to save the changes to the database, please try again, if the error continues to happen, please contact support on the official [AvaIre support server](https://avairebot.com/support)."
+        mustBeAnAdmin: "You must be a server admin to use this action."
         invalidSecurityToken: "Ongeldig security token gegeven, geef A.U.B een geldig security token om de EXP van alle servers te resetten."
         warning: "Waarschuwing!"
         success:
             add: "**:amount** EXP gegeven aan :target, ze hebben nu **:newAmount** XP."
             take: "**:amount** XP weg genomen van :target, ze hebben nu **:newAmount** XP."
             reset: ":target zijn EXP is succesvol gereset."
+            sync: ":target has successfully had synchronized with the global leaderboard, they now have **:newAmount** XP."
+            syncEveryone: "Everyone on the entire server has been synced with the global leaderboard!"
             everything: "De EXP van iedereen op de server is compleet gereset!"
 
     AiCommand:
@@ -241,6 +279,30 @@ administration:
         failedToEdit: "Gefaald met het veranderen van het modlog bericht: {0}"
         failedToFindMessage: "Kon het bericht voor de modlog case niet vinden, is het verwijderd?"
 
+    MuteCommand:
+        requiresModlogToBeSet: "This command requires a modlog channel to be set, a modlog channel can be set using the `{0}modlog` command."
+        requireMuteRoleToBeSet: "No mute role have been setup for the server, you can setup a mute role using the `{0}muterole` command."
+        higherOrSameRole: "You can't mute people with a higher, or the same role as yourself."
+        muteRoleIsPositionedHigher: "The {0} role used for mutes are positioned higher in the role hierarchy than any roles I have, so I can't automatically assign the role to other users, please fix this or use another role for mutes."
+        invalidUserMentioned: "Invalid user mentioned, you must mention a user on the server you want to mute to use this command."
+        invalidTimeGiven: "Invalid time given, the time must be at least one minute or more."
+        userHasBeenMuted: ":target has been muted :time!"
+        time:
+            permanently: "permanently"
+            forFormat: "for {0}"
+
+    MuteRoleCommand:
+        onCooldown: "You have recently use a command option that created and/or modified roles and channel permissions, you have to wait **:cooldown** before you can use this command again."
+        roleDoesntExists: "Invalid role given, the `{0}` role doesn't exists."
+        rolePositionedHigher: "The {0} role is positioned higher than any role I have, so I can assign the role to anyone."
+        cantCreateRoleDueToPermissions: "I can't create the muted role because I don't have the \"Manage Roles\" permissions for the server."
+        noMuteRoleSet: "There are currently no mute role set for the server, you can set the role you wanna use as the mute role using `:command set <role>`, or you can make the bot create a new muted role using `:command create-role`."
+        usingRoleMessage: "The server is using the :role role for mutes."
+        roleHasBeenRemoved: "The muted role has been removed, the mute feature is now disabled until another muted role is assigned."
+        roleHasBeenCreated: "The :role role has been successfully created, and all the channel permissions to prevent users with the role from talking in channels have automatically been setup for the channels I have access to."
+        nowUsingRole: "The :role role will now be used for muting users."
+        nowUsingExistingRole: "A role called `Muted` already exists on the server, now using the :role role for mutes, if you want the bot to setup all the channel override permissions to prevent users with the role from talking in the channels, you can use the\n`:command setup-permissions` command."
+
     NSFWCommand:
         invalidChannelOrStatus: "Ongeldig kanaal of status type gegeven!"
         notValidChannel: "`{0}` is geen geldig tekst kanaal!"
@@ -311,6 +373,15 @@ administration:
         failedToUnban: "Gefaald met unbannen van :target door een error: :error"
         noUserIsBanned: "Geen gebruiker met het ID `:id` is momenteel gebanned van de server."
         invalidUserIdGiven: "Ongeldige `user id` is gegeven, de `user id` moet een nummer van 18 karakters of langer zijn."
+
+    UnmuteCommand:
+        requiresModlogToBeSet: "This command requires a modlog channel to be set, a modlog channel can be set using the `{0}modlog` command."
+        requireMuteRoleToBeSet: "No mute role have been setup for the server, you can setup a mute role using the `{0}muterole` command."
+        muteRoleIsPositionedHigher: "The {0} role used for mutes are positioned higher in the role hierarchy than any roles I have, so I can't automatically remove the role from other users, please fix this or use another role for mutes."
+        invalidUserMentioned: "Invalid user mentioned, you must mention a user on the server you want to unmute to use this command."
+        userDoesntHaveMuteRole: "{0} doesn't appear to have the mute role, they may already have been unmuted!"
+        userHasBeenUnmuted: ":target has been unmuted!"
+        userAutoUnmutedReason: "*Automatic unmute after the set time has elapsed*"
 
     VoiceKickCommand:
         mustMentionUser: "Je moet een gebruiker noemen die je wil kicken."
@@ -501,6 +572,13 @@ music:
                 all: "Iedereen kan elk muziek commando gebruiken, ook zonder de `DJ` rol."
                 none: "Niemand kan ook maar 1 muziek commando afspelen zonder de `DJ` rol."
                 normal: "Voorkom het gebruik van commando's zoals playlist, volume control, en force skip zonder de `DJ` rol, maar mensen kunnen nog wel het play commando gebruiken."
+
+    DjRoleCommand:
+        invalidRoleMentioned: "Invalid role mentioned, I found no roles called `{0}`"
+        noDjRoleSelected: "There are currently no custom DJ role setup for the server, however anyone who has a role called `DJ` will still be able to use DJ restricted music commands."
+        currentSelectedRole: "The :role role is used as the music DJ role.\nAnyone with the role will be able to use DJ restricted music commands."
+        resetDjRole: "The DJ role has successfully been reset, however anyone who has a role called `DJ` will still be able to use music commands that requires the DJ role to be used."
+        selectedRoleForMusic: "The :role role will now be used as the music DJ role!"
 
     MoveHereCommand:
         error: 'Niet verbonden met een spraak kanaal, vraag eerst muziek aan met `{0}play`'

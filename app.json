@@ -162,9 +162,14 @@
             "value": "avaire-auth-token"
         },
         "AVA_VOTE_LOCK_ENABLED": {
-            "description": "This option determines if the vote-locking feature should be enabled at all, if set to true, any command or feature using the 'vote' middleware will be restricted to users who have voted for the bot within the last 24 hours. You can it to true or false.",
+            "description": "This option determines if the vote-locking feature should be enabled at all, if set to true, any command or feature using the 'vote' middleware will be restricted to users who have voted for the bot within the last 12 hours. You can it to true or false.",
             "required": true,
             "value": "false"
+        },
+        "AVA_VOTE_LOCK_SYNC_WITH_PUBLIC_BOT": {
+            "description": "If this option is set to true, the vote check used within the !vote command will sync vote requests with the public bot(AvaIre) instead of DiscordBots, allowing self-hosters to support the official bot while still using the vote system.",
+            "required": true,
+            "value": "true"
         },
         "AVA_VOTE_LOCK_VOTE_SYNC_TOKEN": {
             "description": "This is the bot application API token for DBL(Discord Bot List), the API token is used to sync votes between the API and the bot during startup, so anyone who voted while the bot was offline will still get their rewards.",

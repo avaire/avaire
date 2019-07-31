@@ -350,8 +350,8 @@ public abstract class Command extends Reflectionable {
             }
 
             String help = split.length == 1 ?
-                reference.buildHelpDescription(new String[0]) :
-                reference.buildHelpDescription(split[1].split(","));
+                reference.buildHelpDescription(context, new String[0]) :
+                reference.buildHelpDescription(context, split[1].split(","));
 
             if (help == null) {
                 continue;

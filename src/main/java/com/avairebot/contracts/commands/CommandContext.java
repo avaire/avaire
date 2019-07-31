@@ -135,7 +135,7 @@ public interface CommandContext {
      *
      * @param avaire The main AvaIre instance used to communicate with the rest of the application.
      * @return Possibly-null, the {@link PlayerTransformer player transformer} for the author of
-     * command context for the current guild, or {@code NULL} if something went wrong.
+     *         command context for the current guild, or {@code NULL} if something went wrong.
      */
     @Nullable
     default PlayerTransformer getPlayerTransformerWithForce(@Nonnull AvaIre avaire) {

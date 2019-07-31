@@ -42,6 +42,7 @@ public class Constants {
     public static final String LOG_TYPES_TABLE_NAME = "log_types";
     public static final String REACTION_ROLES_TABLE_NAME = "reaction_roles";
     public static final String PURCHASES_TABLE_NAME = "purchases";
+    public static final String MUTE_TABLE_NAME = "mutes";
 
     // Package Specific Information
     public static final String PACKAGE_MIGRATION_PATH = "com.avairebot.database.migrate";

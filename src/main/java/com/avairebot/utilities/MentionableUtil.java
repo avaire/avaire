@@ -248,6 +248,37 @@ public class MentionableUtil {
     }
 
     /**
+     * Gets the first role object matching in the given context and arguments, the
+     * method will try the following to get a role object out the other end.
+     * <ul>
+     * <li>Discord mentions (@Member)</li>
+     * <li>Name mentions (member)</li>
+     * <li>Role ID (333649597094166539)</li>
+     * </ul>
+     * <p>
+     * If none of the checks finds a valid role object, <code>null</code> will be returned instead.
+     *
+     * @param message The command message.
+     * @param args    The arguments parsed to the command.
+     * @return Possibly-null, or the first role matching the given arguments.
+     */
+    public static Role getRole(@Nonnull Message message, @Nonnull String[] args) {
+        if (args.length == 0) {
+            return RoleUtil.getRoleFromMentionsOrName(message, "");
+        }
+
+        String potentialRoleId = args[0].trim();
+        if (NumberUtil.isNumeric(potentialRoleId)) {
+            Role role = message.getGuild().getRoleById(potentialRoleId);
+            if (role != null) {
+                return role;
+            }
+        }
+
+        return RoleUtil.getRoleFromMentionsOrName(message, String.join(" ", args));
+    }
+
+    /**
      * The channel priority type, used for specifying what type of channel
      * should be prioritised when looking for a channel by name.
      */

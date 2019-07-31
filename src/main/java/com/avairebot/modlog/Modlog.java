@@ -53,7 +53,7 @@ public class Modlog {
      * @param context The command context the modlog action is occurring in.
      * @param action  The action that should be logged to the modlog.
      * @return Possibly-null, the case ID if the modlog was logged successfully,
-     * otherwise <code>null</code> will be returned.
+     *         otherwise <code>null</code> will be returned.
      */
     @Nullable
     public static String log(AvaIre avaire, CommandMessage context, ModlogAction action) {
@@ -67,7 +67,7 @@ public class Modlog {
      * @param message The message that triggered the modlog action.
      * @param action  The action that should be logged to the modlog.
      * @return Possibly-null, the case ID if the modlog was logged successfully,
-     * otherwise <code>null</code> will be returned.
+     *         otherwise <code>null</code> will be returned.
      */
     @Nullable
     public static String log(AvaIre avaire, Message message, ModlogAction action) {
@@ -81,7 +81,7 @@ public class Modlog {
      * @param guild  The guild the modlog action should be logged in.
      * @param action The action that should be logged to the modlog.
      * @return Possibly-null, the case ID if the modlog was logged successfully,
-     * otherwise <code>null</code> will be returned.
+     *         otherwise <code>null</code> will be returned.
      */
     @Nullable
     public static String log(AvaIre avaire, Guild guild, ModlogAction action) {
@@ -101,7 +101,7 @@ public class Modlog {
      * @param transformer The guild transformer containing all the guild settings used in the modlog action.
      * @param action      The action that should be logged to the modlog.
      * @return Possibly-null, the case ID if the modlog was logged successfully,
-     * otherwise <code>null</code> will be returned.
+     *         otherwise <code>null</code> will be returned.
      */
     @Nullable
     public static String log(AvaIre avaire, Guild guild, GuildTransformer transformer, ModlogAction action) {
@@ -124,7 +124,7 @@ public class Modlog {
         EmbedBuilder builder = MessageFactory.createEmbeddedBuilder()
             .setTitle(I18n.format("{0} {1} | Case #{2}",
                 action.getType().getEmote(),
-                action.getType().getName(),
+                action.getType().getName(guild),
                 transformer.getModlogCase()
             ))
             .setColor(action.getType().getColor())
@@ -136,10 +136,28 @@ public class Modlog {
             case BAN:
             case SOFT_BAN:
             case UNBAN:
+            case UNMUTE:
                 builder
                     .addField("User", action.getStringifiedTarget(), true)
                     .addField("Moderator", action.getStringifiedModerator(), true)
                     .addField("Reason", formatReason(transformer, action.getMessage()), false);
+                break;
+
+            case MUTE:
+            case TEMP_MUTE:
+                //noinspection ConstantConditions
+                split = action.getMessage().split("\n");
+                builder
+                    .addField("User", action.getStringifiedTarget(), true)
+                    .addField("Moderator", action.getStringifiedModerator(), true);
+
+                if (split[0].length() > 0) {
+                    builder.addField("Expires At", split[0], true);
+                }
+
+                builder.addField("Reason", formatReason(transformer, String.join("\n",
+                    Arrays.copyOfRange(split, 1, split.length)
+                )), false);
                 break;
 
             case PURGE:
@@ -217,7 +235,7 @@ public class Modlog {
      * @param caseId The case ID that is attached to the modlog action.
      */
     public static void notifyUser(User user, Guild guild, ModlogAction action, @Nullable String caseId) {
-        String type = action.getType().getNotifyName();
+        String type = action.getType().getNotifyName(guild);
         if (type == null || user.isBot()) {
             return;
         }
