@@ -57,30 +57,30 @@ public class BackgroundRankColors {
     /**
      * Sets background color.
      *
-     * @param color the new color
+     * @param color The new background color.
      */
     public void setBackgroundColor(Color color) {
         backgroundColor = color;
     }
 
     /**
-     * Sets background color.
+     * Sets background color using the given RGB values.
      *
-     * @param red   the red
-     * @param green the green
-     * @param blue  the blue
+     * @param red   The red value for the background color.
+     * @param green The green value for the background color.
+     * @param blue  The blue value for the background color.
      */
     public void setBackgroundColor(float red, float green, float blue) {
         backgroundColor = ColorUtil.makeColor(red, green, blue);
     }
 
     /**
-     * Sets background color.
+     * Sets background color using the given RGBA values.
      *
-     * @param red   the red
-     * @param green the green
-     * @param blue  the blue
-     * @param alpha the alpha
+     * @param red   The red value for the background color.
+     * @param green The green value for the background color.
+     * @param blue  The blue value for the background color.
+     * @param alpha The alpha value for the background color.
      */
     public void setBackgroundColor(float red, float green, float blue, float alpha) {
         backgroundColor = ColorUtil.makeColor(red, green, blue, alpha);
@@ -104,31 +104,43 @@ public class BackgroundRankColors {
 
     /**
      * Sets background cover color.
+     * <p>
+     * <b>Note:</b> The cover color is a layer inside the rank background that covers most
+     * of the background size, allowing some content to pop out more, this value is
+     * generally set to an color with an alpha value to create some transparency.
      *
-     * @param color the color
+     * @param color The new background cover color.
      */
     public void setBackgroundCoverColor(Color color) {
         backgroundCoverColor = color;
     }
 
     /**
-     * Sets background cover color.
+     * Sets background cover color using the given RGB values.
+     * <p>
+     * <b>Note:</b> The cover color is a layer inside the rank background that covers most
+     * of the background size, allowing some content to pop out more, this value is
+     * generally set to an color with an alpha value to create some transparency.
      *
-     * @param red   the red
-     * @param green the green
-     * @param blue  the blue
+     * @param red   The red value for the background cover color.
+     * @param green The green value for the background cover color.
+     * @param blue  The blue value for the background cover color.
      */
     public void setBackgroundCoverColor(float red, float green, float blue) {
         backgroundCoverColor = ColorUtil.makeColor(red, green, blue);
     }
 
     /**
-     * Sets background color.
+     * Sets background cover color using the given RGBA values.
+     * <p>
+     * <b>Note:</b> The cover color is a layer inside the rank background that covers most
+     * of the background size, allowing some content to pop out more, this value is
+     * generally set to an color with an alpha value to create some transparency.
      *
-     * @param red   the red
-     * @param green the green
-     * @param blue  the blue
-     * @param alpha the alpha
+     * @param red   The red value for the background cover color.
+     * @param green The green value for the background cover color.
+     * @param blue  The blue value for the background cover color.
+     * @param alpha The alpha value for the background cover color.
      */
     public void setBackgroundCoverColor(float red, float green, float blue, float alpha) {
         backgroundCoverColor = ColorUtil.makeColor(red, green, blue, alpha);
@@ -146,32 +158,35 @@ public class BackgroundRankColors {
     }
 
     /**
-     * Sets main text color.
+     * Sets the main text color, this will be used for the username,
+     * level, rank, server XP, and global XP text.
      *
-     * @param color the new color
+     * @param color The new main color text color.
      */
     public void setMainTextColor(Color color) {
         mainTextColor = color;
     }
 
     /**
-     * Sets main text color.
+     * Sets the main text color using the given RGB values, this will be used
+     * for the username, level, rank, server XP, and global XP text.
      *
-     * @param red   the red
-     * @param green the green
-     * @param blue  the blue
+     * @param red   The red value for the main text color.
+     * @param green The green value for the main text color.
+     * @param blue  The blue value for the main text color.
      */
     public void setMainTextColor(float red, float green, float blue) {
         mainTextColor = ColorUtil.makeColor(red, green, blue);
     }
 
     /**
-     * Sets main text color.
+     * Sets the main text color using the given RGBA values, this will be used
+     * for the username, level, rank, server XP, and global XP text.
      *
-     * @param red   the red
-     * @param green the green
-     * @param blue  the blue
-     * @param alpha the alpha
+     * @param red   The red value for the main text color.
+     * @param green The green value for the main text color.
+     * @param blue  The blue value for the main text color.
+     * @param alpha The alpha value for the main text color.
      */
     public void setMainTextColor(float red, float green, float blue, float alpha) {
         mainTextColor = ColorUtil.makeColor(red, green, blue, alpha);
@@ -189,32 +204,35 @@ public class BackgroundRankColors {
     }
 
     /**
-     * Sets main text color.
+     * Sets the secondary text color, this will be used for a users
+     * discriminator, and the server and global XP values.
      *
-     * @param color the new color
+     * @param color The new secondary color text color.
      */
     public void setSecondaryTextColor(Color color) {
         secondaryTextColor = color;
     }
 
     /**
-     * Sets secondary text color.
+     * Sets the secondary text color using the given RGB values, this will be
+     * used for a users discriminator, and the server and global XP values.
      *
-     * @param red   the red
-     * @param green the green
-     * @param blue  the blue
+     * @param red   The red value for the secondary text color.
+     * @param green The green value for the secondary text color.
+     * @param blue  The blue value for the secondary text color.
      */
     public void setSecondaryTextColor(float red, float green, float blue) {
         secondaryTextColor = ColorUtil.makeColor(red, green, blue);
     }
 
     /**
-     * Sets secondary text color.
+     * Sets the secondary text color using the given RGBA values, this will be
+     * used for a users discriminator, and the server and global XP values.
      *
-     * @param red   the red
-     * @param green the green
-     * @param blue  the blue
-     * @param alpha the alpha
+     * @param red   The red value for the secondary text color.
+     * @param green The green value for the secondary text color.
+     * @param blue  The blue value for the secondary text color.
+     * @param alpha the alpha value for the secondary text color.
      */
     public void setSecondaryTextColor(float red, float green, float blue, float alpha) {
         secondaryTextColor = ColorUtil.makeColor(red, green, blue, alpha);
@@ -233,30 +251,30 @@ public class BackgroundRankColors {
     /**
      * Sets experience background color.
      *
-     * @param color the new color
+     * @param color The new experience background color.
      */
     public void setExperienceBackgroundColor(Color color) {
         experienceBackgroundColor = color;
     }
 
     /**
-     * Sets experience background color.
+     * Sets experience background color using the given RGB values.
      *
-     * @param red   the red
-     * @param green the green
-     * @param blue  the blue
+     * @param red   The red value for the experience background color.
+     * @param green The green value for the experience background color.
+     * @param blue  The blue value for the experience background color.
      */
     public void setExperienceBackgroundColor(float red, float green, float blue) {
         experienceBackgroundColor = ColorUtil.makeColor(red, green, blue);
     }
 
     /**
-     * Sets experience background color.
+     * Sets experience background color using the given RGBA values.
      *
-     * @param red   the red
-     * @param green the green
-     * @param blue  the blue
-     * @param alpha the alpha
+     * @param red   The red value for the experience background color.
+     * @param green The green value for the experience background color.
+     * @param blue  The blue value for the experience background color.
+     * @param alpha The alpha value for the experience background color.
      */
     public void setExperienceBackgroundColor(float red, float green, float blue, float alpha) {
         experienceBackgroundColor = ColorUtil.makeColor(red, green, blue, alpha);
@@ -275,18 +293,18 @@ public class BackgroundRankColors {
     /**
      * Sets experience foreground color.
      *
-     * @param color the new color
+     * @param color The new experience foreground color.
      */
     public void setExperienceForegroundColor(Color color) {
         experienceForegroundColor = color;
     }
 
     /**
-     * Sets experience foreground color.
+     * Sets experience foreground color using the given RGB values.
      *
-     * @param red   the red
-     * @param green the green
-     * @param blue  the blue
+     * @param red   The red value for the experience foreground color.
+     * @param green The green value for the experience foreground color.
+     * @param blue  The blue value for the experience foreground color.
      */
     public void setExperienceForegroundColor(float red, float green, float blue) {
         experienceForegroundColor = ColorUtil.makeColor(red, green, blue);
@@ -294,12 +312,12 @@ public class BackgroundRankColors {
 
 
     /**
-     * Sets experience foreground color.
+     * Sets experience foreground color using the given RGBA values.
      *
-     * @param red   the red
-     * @param green the green
-     * @param blue  the blue
-     * @param alpha the alpha
+     * @param red   The red value for the experience foreground color.
+     * @param green The green value for the experience foreground color.
+     * @param blue  The blue value for the experience foreground color.
+     * @param alpha The alpha value for the experience foreground color.
      */
     public void setExperienceForegroundColor(float red, float green, float blue, float alpha) {
         experienceForegroundColor = ColorUtil.makeColor(red, green, blue, alpha);
@@ -320,9 +338,12 @@ public class BackgroundRankColors {
     }
 
     /**
-     * Sets experience foreground color.
+     * Sets experience separator color, the separator is a five pixel width
+     * bar at the end of the "current xp bar", creating a clear separation
+     * between the amount of XP the user has, vs the remaining XP
+     * before the user levels up again.
      *
-     * @param color the new color
+     * @param color The new experience separator color.
      */
     public void setExperienceSeparatorColor(Color color) {
         experienceSeparatorColor = color;
@@ -346,9 +367,9 @@ public class BackgroundRankColors {
     }
 
     /**
-     * Sets background cover color.
+     * Sets the experience text color.
      *
-     * @param color the color
+     * @param color The experience text color.
      */
     public void setExperienceTextColor(Color color) {
         experienceTextColor = color;

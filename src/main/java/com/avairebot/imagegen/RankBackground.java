@@ -40,11 +40,11 @@ public class RankBackground implements PurchaseType {
      * Instantiates a new Rank background that was loaded
      * from inside the AvaIre jar.
      *
-     * @param id                    the id of this rank background
-     * @param cost                  the cost of the background using vote points
-     * @param name                  the name of this background
-     * @param backgroundGraphicName the graphic for the background.
-     * @param rankColors            the color configuration for this background
+     * @param id                    The id of this rank background
+     * @param cost                  The cost of the background using vote points
+     * @param name                  The name of this background
+     * @param backgroundGraphicName The graphic for the background.
+     * @param rankColors            The color configuration for this background
      */
     RankBackground(int id, int cost, String name, String backgroundGraphicName, BackgroundRankColors rankColors) {
         this.id = id;
@@ -59,12 +59,12 @@ public class RankBackground implements PurchaseType {
      * Instantiates a new Rank background that was loaded
      * from either inside the AvaIre jar or from the external file system
      *
-     * @param id                    the id of this rank background
-     * @param cost                  the cost of the background using vote points
-     * @param name                  the name of this background
-     * @param backgroundGraphicName the graphic for the background.
-     * @param rankColors            the color configuration for this background
-     * @param loadedExternally      whether or not the background was loaded externally
+     * @param id                    The id of this rank background
+     * @param cost                  The cost of the background using vote points
+     * @param name                  The name of this background
+     * @param backgroundGraphicName The graphic for the background.
+     * @param rankColors            The color configuration for this background
+     * @param loadedExternally      Whether or not the background was loaded externally
      */
     RankBackground(int id, int cost, String name, String backgroundGraphicName, BackgroundRankColors rankColors, boolean loadedExternally) {
         this.id = id;

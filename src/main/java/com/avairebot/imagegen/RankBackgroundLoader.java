@@ -36,14 +36,15 @@ public class RankBackgroundLoader {
     private RankBackground background;
 
     /**
-     * Instantiates a new Rank background loader
-     * stored inside the AvaIre jar.
+     * Instantiates a new Rank background loader using
+     * the given background resource name.
      *
-     * @param backgroundResource a path inside the backgrounds folder to the resource.
+     * @param backgroundResource The path inside the backgrounds directory pointing to the resource.
      */
     public RankBackgroundLoader(@Nonnull String backgroundResource) {
         config = YamlConfiguration.loadConfiguration(new InputStreamReader(
-            getClass().getClassLoader().getResourceAsStream("backgrounds/" + backgroundResource)));
+            getClass().getClassLoader().getResourceAsStream("backgrounds/" + backgroundResource)
+        ));
 
         background = new RankBackground(
             config.getInt("id"),
@@ -59,8 +60,8 @@ public class RankBackgroundLoader {
      * that loads a resource from anywhere in the filesystem outside the jar,
      * given the full path.
      *
-     * @param backgroundResource a path to the background resource in the filesystem
-     * @throws FileNotFoundException if the file cannot be found
+     * @param backgroundResource A path to the background resource in the filesystem.
+     * @throws FileNotFoundException If the file cannot be found.
      */
     public RankBackgroundLoader(@Nonnull File backgroundResource) throws FileNotFoundException {
         config = YamlConfiguration.loadConfiguration(new InputStreamReader(new FileInputStream(backgroundResource)));
@@ -109,8 +110,7 @@ public class RankBackgroundLoader {
     }
 
     /**
-     * Returns the rank background loaded by this
-     * container.
+     * Returns the rank background loaded by this container.
      *
      * @return The background rank for this container
      */

@@ -62,7 +62,7 @@ public class RankBackgroundHandler {
      * Returns an instance of the rank background handler
      * class.
      *
-     * @return an instance of the handler
+     * @return An instance of the handler
      */
     public static RankBackgroundHandler getInstance() {
         if (instance == null) {
@@ -74,7 +74,7 @@ public class RankBackgroundHandler {
     /**
      * Returns the purchase type of rank background.
      *
-     * @return the rank purchase type
+     * @return The rank purchase type
      */
     public static String getRankPurchaseType() {
         return Constants.RANK_BACKGROUND_PURCHASE_TYPE;
@@ -84,7 +84,7 @@ public class RankBackgroundHandler {
      * Returns a list of all the
      * rank backgrounds loaded by AvaIre.
      *
-     * @return the list of all rank backgrounds.
+     * @return The list of all rank backgrounds.
      */
     public List<RankBackground> values() {
         return backgrounds;
@@ -135,9 +135,9 @@ public class RankBackgroundHandler {
     }
 
     /**
-     * Initializes the rank background containers,
-     * loading all the rank background information into memory, this method should
-     * only be called once during the startup of the bot.
+     * Initializes the rank background containers, loading all the rank
+     * background information into memory, this method should only
+     * be called once during the startup of the bot.
      */
     public void start() {
         Map<String, Integer> unsortedNamesToCost = new HashMap<>();
