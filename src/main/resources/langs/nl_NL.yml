@@ -909,7 +909,7 @@ utility:
         noArgs: 'AvaIre source code:'
         command: 'AvaIre source code voor de **:command** command:'
         invalidCommand: 'Ongeldig commando gegeven, hier is alle source code.'
-        externalCommand: "Het command is registered via an external plugin, de auteur van deze plugin heeft de source code nog niet publiek gemaakt, of ze zijn vergeten een linkje toe te voegen, hier is alle source code voor de bot."
+        externalCommand: "Het commando is geregisteerd via een externe plugin, de auteur van deze plugin heeft de source code nog niet publiek gemaakt, of ze zijn vergeten een linkje toe te voegen, hier is alle source code voor de bot."
 
     StatsCommand:
         title: 'Officiale Bot Server Uitnodiging'
