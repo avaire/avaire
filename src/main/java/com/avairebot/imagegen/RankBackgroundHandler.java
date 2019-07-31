@@ -24,17 +24,16 @@ package com.avairebot.imagegen;
 import com.avairebot.Constants;
 import com.avairebot.shared.ExitCodes;
 import com.avairebot.utilities.ResourceLoaderUtil;
+import com.google.common.base.Charsets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
+import java.io.*;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.*;
 import java.util.*;
 
 public class RankBackgroundHandler {
@@ -56,6 +55,7 @@ public class RankBackgroundHandler {
             backgroundsFolder.mkdirs();
             copyBackgroundsFromJarToFolder();
         }
+        copyNewBackgroundsOver();
     }
 
     /**
@@ -165,11 +165,61 @@ public class RankBackgroundHandler {
                 InputStream inputStream = RankBackgroundHandler.class.getClassLoader().getResourceAsStream("backgrounds/" + file);
                 if (!actualFile.exists()) {
                     Files.copy(inputStream, Paths.get("backgrounds/" + file), StandardCopyOption.REPLACE_EXISTING);
+                    writeToIndex(file);
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
             System.exit(ExitCodes.EXIT_CODE_ERROR);
+        }
+    }
+
+    private void writeToIndex(String newFile)
+    {
+        Path filePath = Paths.get("backgrounds/image-index");
+
+
+        try
+        {
+            if(!filePath.toFile().exists())
+            {
+                Files.write(filePath,(newFile + System.lineSeparator()).getBytes(Charsets.UTF_8)
+                            ,StandardOpenOption.CREATE);
+            }
+            else
+            {
+                Files.write(filePath,(System.lineSeparator() + newFile + System.lineSeparator()).getBytes(Charsets.UTF_8)
+                    ,StandardOpenOption.APPEND);
+            }
+
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    private void copyNewBackgroundsOver()
+    {
+        try
+        {
+            List<String> resourceFiles = ResourceLoaderUtil.getFiles(RankBackgroundHandler.class, "backgrounds");
+            Path filePath = Paths.get("backgrounds/image-index");
+            List<String> oldFiles = Files.readAllLines(filePath, StandardCharsets.UTF_8);
+            for (String file: resourceFiles)
+            {
+                if(!oldFiles.contains(file))
+                {
+                    InputStream inputStream = RankBackgroundHandler.class.getClassLoader().getResourceAsStream("backgrounds/" + file);
+                    Files.copy(inputStream, Paths.get("backgrounds/" + file), StandardCopyOption.REPLACE_EXISTING);
+                    writeToIndex(file);
+                }
+            }
+
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
         }
     }
 
