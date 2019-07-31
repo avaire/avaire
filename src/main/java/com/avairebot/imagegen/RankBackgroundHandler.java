@@ -177,8 +177,6 @@ public class RankBackgroundHandler {
     private void writeToIndex(String newFile)
     {
         Path filePath = Paths.get("backgrounds/image-index");
-
-
         try
         {
             Files.write(filePath,(newFile + System.lineSeparator()).getBytes(Charsets.UTF_8)
@@ -199,7 +197,7 @@ public class RankBackgroundHandler {
             if(!filePath.toFile().exists())
             {
                 Files.createFile(filePath);
-                return; 
+                return;
             }
             List<String> oldFiles = Files.readAllLines(filePath, StandardCharsets.UTF_8);
             for (String file: resourceFiles)
