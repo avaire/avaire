@@ -294,6 +294,15 @@ public class RankCommand extends Command {
             ).queue();
         } catch (IOException e) {
             e.printStackTrace();
+
+            sendEmbeddedMessage(
+                context, author,
+                score, levelBar,
+                level, nextLevelXp,
+                experience, zeroExperience,
+                percentage,
+                properties
+            );
         }
     }
 
