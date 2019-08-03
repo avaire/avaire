@@ -166,9 +166,9 @@ public class LavalinkManager {
      */
     public void closeConnection(Guild guild) {
         if (isEnabled()) {
-            JdaLink link = lavalink.getLink(guild);
+            JdaLink link = lavalink.getExistingLink(guild);
 
-            if (!isLinkBeingDestroyed(link)) {
+            if (link != null && !isLinkBeingDestroyed(link)) {
                 link.disconnect();
             }
         } else {

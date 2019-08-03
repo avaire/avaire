@@ -553,6 +553,10 @@ public class AvaIre {
             eventEmitter.push(new ApplicationShutdownEvent(shardManager.getShards().get(0), exitCode));
         }
 
+        for (ScheduledFuture<?> scheduledFuture : ScheduleHandler.entrySet()) {
+            scheduledFuture.cancel(false);
+        }
+
         long shutdownDelay = 1500L;
 
         getLogger().info("Shutting down bot instance gracefully with exit code " + exitCode);
