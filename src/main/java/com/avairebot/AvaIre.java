@@ -26,6 +26,7 @@ import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.filter.ThresholdFilter;
 import com.avairebot.admin.BotAdmin;
 import com.avairebot.ai.IntelligenceManager;
+import com.avairebot.ai.dialogflow.DialogFlowService;
 import com.avairebot.audio.AudioHandler;
 import com.avairebot.audio.GuildMusicManager;
 import com.avairebot.audio.LavalinkManager;
@@ -45,11 +46,9 @@ import com.avairebot.config.Configuration;
 import com.avairebot.config.ConstantsConfiguration;
 import com.avairebot.config.EnvironmentMacros;
 import com.avairebot.config.EnvironmentOverride;
-import com.avairebot.contracts.ai.Intent;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.contracts.database.migrations.Migration;
 import com.avairebot.contracts.database.seeder.Seeder;
-import com.avairebot.contracts.reflection.Reflectional;
 import com.avairebot.contracts.scheduler.Job;
 import com.avairebot.database.DatabaseManager;
 import com.avairebot.database.serializer.PlaylistSongSerializer;
@@ -76,6 +75,7 @@ import com.avairebot.shared.DiscordConstants;
 import com.avairebot.shared.ExitCodes;
 import com.avairebot.shared.SentryConstants;
 import com.avairebot.time.Carbon;
+import com.avairebot.utilities.AutoloaderUtil;
 import com.avairebot.vote.VoteManager;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -105,11 +105,9 @@ import javax.annotation.Nullable;
 import javax.security.auth.login.LoginException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.concurrent.ScheduledFuture;
-import java.util.function.Consumer;
 
 public class AvaIre {
 
@@ -148,6 +146,7 @@ public class AvaIre {
 
     public AvaIre(Settings settings) throws IOException, SQLException, InvalidApplicationEnvironmentException {
         this.settings = settings;
+        AvaIre.avaire = this;
 
         System.out.println(getVersionInfo(settings));
 
@@ -195,6 +194,7 @@ public class AvaIre {
         if (applicationEnvironment == null) {
             throw new InvalidApplicationEnvironmentException(config.getString("environment", "production"));
         }
+
         log.info("Starting application in \"{}\" mode", applicationEnvironment.getName());
         if (applicationEnvironment.equals(Environment.DEVELOPMENT)) {
             RestAction.setPassContext(true);
@@ -210,12 +210,12 @@ public class AvaIre {
         database = new DatabaseManager(this);
 
         log.info("Registering database table migrations");
-        autoloadPackage(Constants.PACKAGE_MIGRATION_PATH, migration -> {
+        AutoloaderUtil.load(Constants.PACKAGE_MIGRATION_PATH, migration -> {
             database.getMigrations().register((Migration) migration);
         }, false);
 
         log.info("Registering database table seeders");
-        autoloadPackage(Constants.PACKAGE_SEEDER_PATH, seeder -> {
+        AutoloaderUtil.load(Constants.PACKAGE_SEEDER_PATH, seeder -> {
             database.getSeeder().register((Seeder) seeder);
         }, true);
 
@@ -257,24 +257,20 @@ public class AvaIre {
             CommandHandler.register(new UptimeCommand(this));
             CommandHandler.register(new SourceCommand(this));
             CommandHandler.register(new ChangePrefixCommand(this));
-            autoloadPackage(Constants.PACKAGE_COMMAND_PATH + ".help", command -> CommandHandler.register((Command) command));
-            autoloadPackage(Constants.PACKAGE_COMMAND_PATH + ".music", command -> CommandHandler.register((Command) command));
-            autoloadPackage(Constants.PACKAGE_COMMAND_PATH + ".system", command -> CommandHandler.register((Command) command));
+            AutoloaderUtil.load(Constants.PACKAGE_COMMAND_PATH + ".help", command -> CommandHandler.register((Command) command));
+            AutoloaderUtil.load(Constants.PACKAGE_COMMAND_PATH + ".music", command -> CommandHandler.register((Command) command));
+            AutoloaderUtil.load(Constants.PACKAGE_COMMAND_PATH + ".system", command -> CommandHandler.register((Command) command));
         } else {
-            autoloadPackage(Constants.PACKAGE_COMMAND_PATH, command -> CommandHandler.register((Command) command));
+            AutoloaderUtil.load(Constants.PACKAGE_COMMAND_PATH, command -> CommandHandler.register((Command) command));
         }
         log.info(String.format("\tRegistered %s commands successfully!", CommandHandler.getCommands().size()));
 
         log.info("Registering jobs...");
-        autoloadPackage(Constants.PACKAGE_JOB_PATH, job -> ScheduleHandler.registerJob((Job) job));
+        AutoloaderUtil.load(Constants.PACKAGE_JOB_PATH, job -> ScheduleHandler.registerJob((Job) job));
         log.info(String.format("\tRegistered %s jobs successfully!", ScheduleHandler.entrySet().size()));
 
+        log.info("Preparing Intelligence Manager");
         intelligenceManager = new IntelligenceManager(this);
-        if (intelligenceManager.isEnabled()) {
-            log.info("Registering intents...");
-            autoloadPackage(Constants.PACKAGE_INTENTS_PATH, intent -> intelligenceManager.registerIntent((Intent) intent));
-            log.info(String.format("\tRegistered %s intelligence intents successfully!", intelligenceManager.entrySet().size()));
-        }
 
         log.info("Preparing I18n");
         I18n.start(this);
@@ -326,6 +322,11 @@ public class AvaIre {
             }
 
             System.exit(ExitCodes.EXIT_CODE_NORMAL);
+        }
+
+        if (intelligenceManager.getService() == null) {
+            log.info("No default AI service has been registered, registering the DialogFlow service");
+            intelligenceManager.registerService(new DialogFlowService());
         }
 
         log.info("Connecting to database & Running migrations & Seeders");
@@ -554,6 +555,12 @@ public class AvaIre {
             eventEmitter.push(new ApplicationShutdownEvent(shardManager.getShards().get(0), exitCode));
         }
 
+        intelligenceManager.unregisterService();
+
+        for (ScheduledFuture<?> scheduledFuture : ScheduleHandler.entrySet()) {
+            scheduledFuture.cancel(false);
+        }
+
         long shutdownDelay = 1500L;
 
         getLogger().info("Shutting down bot instance gracefully with exit code " + exitCode);
@@ -705,34 +712,5 @@ public class AvaIre {
             root.addAppender(sentryAppender);
         }
         return sentryAppender;
-    }
-
-    private void autoloadPackage(String path, Consumer<Reflectional> callback) {
-        autoloadPackage(path, callback, true);
-    }
-
-    private void autoloadPackage(String path, Consumer<Reflectional> callback, boolean parseAvaIreInstance) {
-        Set<Class<? extends Reflectional>> types = new Reflections(path).getSubTypesOf(Reflectional.class);
-
-
-        Class[] arguments = new Class[1];
-        arguments[0] = AvaIre.class;
-
-        for (Class<? extends Reflectional> reflectionClass : types) {
-            if (reflectionClass.getPackage().getName().contains("contracts")) {
-                continue;
-            }
-
-            try {
-                if (parseAvaIreInstance) {
-                    //noinspection JavaReflectionMemberAccess
-                    callback.accept(reflectionClass.getDeclaredConstructor(arguments).newInstance(this));
-                } else {
-                    callback.accept(reflectionClass.getDeclaredConstructor().newInstance());
-                }
-            } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-                getLogger().error("Failed to create a new instance of package {}", reflectionClass.getName(), e);
-            }
-        }
     }
 }

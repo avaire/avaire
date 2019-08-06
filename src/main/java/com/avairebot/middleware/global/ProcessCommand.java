@@ -124,9 +124,9 @@ public class ProcessCommand extends Middleware {
 
     private boolean runCommand(MiddlewareStack stack, CommandMessage context, String[] args) {
         try (
-            MDCCloseable _guild = MDC.putCloseable(SentryConstants.SENTRY_MDC_TAG_GUILD, context.getGuild() != null ? context.getGuild().getId() : "PRIVATE");
+            MDCCloseable _guild = MDC.putCloseable(SentryConstants.SENTRY_MDC_TAG_GUILD, context.isGuildMessage() ? context.getGuild().getId() : "PRIVATE");
             MDCCloseable _shard = MDC.putCloseable(SentryConstants.SENTRY_MDC_TAG_SHARD, context.getJDA().getShardInfo().getShardString());
-            MDCCloseable _channel = MDC.putCloseable(SentryConstants.SENTRY_MDC_TAG_CHANNEL, context.getChannel().getId());
+            MDCCloseable _channel = MDC.putCloseable(SentryConstants.SENTRY_MDC_TAG_CHANNEL, context.isGuildMessage() ? context.getChannel().getId() : "PRIVATE");
             MDCCloseable _author = MDC.putCloseable(SentryConstants.SENTRY_MDC_TAG_AUTHOR, context.getAuthor().getId());
             MDCCloseable _message = MDC.putCloseable(SentryConstants.SENTRY_MDC_TAG_MESSAGE, context.getMessage().getContentRaw())
         ) {
