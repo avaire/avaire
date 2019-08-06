@@ -26,6 +26,7 @@ import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.filter.ThresholdFilter;
 import com.avairebot.admin.BotAdmin;
 import com.avairebot.ai.IntelligenceManager;
+import com.avairebot.ai.dialogflow.DialogFlowService;
 import com.avairebot.audio.AudioHandler;
 import com.avairebot.audio.GuildMusicManager;
 import com.avairebot.audio.LavalinkManager;
@@ -45,7 +46,6 @@ import com.avairebot.config.Configuration;
 import com.avairebot.config.ConstantsConfiguration;
 import com.avairebot.config.EnvironmentMacros;
 import com.avairebot.config.EnvironmentOverride;
-import com.avairebot.contracts.ai.Intent;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.contracts.database.migrations.Migration;
 import com.avairebot.contracts.database.seeder.Seeder;
@@ -194,6 +194,7 @@ public class AvaIre {
         if (applicationEnvironment == null) {
             throw new InvalidApplicationEnvironmentException(config.getString("environment", "production"));
         }
+
         log.info("Starting application in \"{}\" mode", applicationEnvironment.getName());
         if (applicationEnvironment.equals(Environment.DEVELOPMENT)) {
             RestAction.setPassContext(true);
@@ -268,12 +269,8 @@ public class AvaIre {
         AutoloaderUtil.load(Constants.PACKAGE_JOB_PATH, job -> ScheduleHandler.registerJob((Job) job));
         log.info(String.format("\tRegistered %s jobs successfully!", ScheduleHandler.entrySet().size()));
 
+        log.info("Preparing Intelligence Manager");
         intelligenceManager = new IntelligenceManager(this);
-        if (intelligenceManager.isEnabled()) {
-            log.info("Registering intents...");
-            AutoloaderUtil.load(Constants.PACKAGE_INTENTS_PATH, intent -> intelligenceManager.registerIntent((Intent) intent));
-            log.info(String.format("\tRegistered %s intelligence intents successfully!", intelligenceManager.entrySet().size()));
-        }
 
         log.info("Preparing I18n");
         I18n.start(this);
@@ -325,6 +322,11 @@ public class AvaIre {
             }
 
             System.exit(ExitCodes.EXIT_CODE_NORMAL);
+        }
+
+        if (intelligenceManager.getService() == null) {
+            log.info("No default AI service has been registered, registering the DialogFlow service");
+            intelligenceManager.registerService(new DialogFlowService());
         }
 
         log.info("Connecting to database & Running migrations & Seeders");
@@ -552,6 +554,8 @@ public class AvaIre {
         if (shardManager != null && !shardManager.getShards().isEmpty()) {
             eventEmitter.push(new ApplicationShutdownEvent(shardManager.getShards().get(0), exitCode));
         }
+
+        intelligenceManager.unregisterService();
 
         for (ScheduledFuture<?> scheduledFuture : ScheduleHandler.entrySet()) {
             scheduledFuture.cancel(false);
