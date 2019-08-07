@@ -22,11 +22,14 @@
 package com.avairebot.imagegen;
 
 import com.avairebot.Constants;
+import com.avairebot.config.YamlConfiguration;
 import com.avairebot.shared.ExitCodes;
 import com.avairebot.utilities.ResourceLoaderUtil;
 import com.google.common.base.Charsets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.yaml.snakeyaml.DumperOptions;
+import org.yaml.snakeyaml.Yaml;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -165,22 +168,26 @@ public class RankBackgroundHandler {
                 InputStream inputStream = RankBackgroundHandler.class.getClassLoader().getResourceAsStream("backgrounds/" + file);
                 if (!actualFile.exists()) {
                     Files.copy(inputStream, Paths.get("backgrounds/" + file), StandardCopyOption.REPLACE_EXISTING);
-                    writeToIndex(file);
                 }
             }
+            writeToIndex(files);
         } catch (IOException e) {
             e.printStackTrace();
             System.exit(ExitCodes.EXIT_CODE_ERROR);
         }
     }
 
-    private void writeToIndex(String newFile)
+    private void writeToIndex(List<String> files)
     {
-        Path filePath = Paths.get("backgrounds/image-index");
+        File indexFile = new File("background-index.yaml");
+
+        YamlConfiguration indexConfig = YamlConfiguration.loadConfiguration(indexFile);
+
+        indexConfig.set("background-index",files);
+
         try
         {
-            Files.write(filePath,(newFile + System.lineSeparator()).getBytes(Charsets.UTF_8)
-                        ,StandardOpenOption.CREATE,StandardOpenOption.APPEND);
+            indexConfig.save(indexFile);
         }
         catch (IOException e)
         {
@@ -188,28 +195,33 @@ public class RankBackgroundHandler {
         }
     }
 
+
     private void copyNewBackgroundsOver()
     {
         try
         {
             List<String> resourceFiles = ResourceLoaderUtil.getFiles(RankBackgroundHandler.class, "backgrounds");
-            Path filePath = Paths.get("backgrounds/image-index");
+            Path filePath = Paths.get("background-index.yaml");
             if(!filePath.toFile().exists())
             {
                 Files.createFile(filePath);
+                for (String file: resourceFiles)
+                {
+                    InputStream inputStream = RankBackgroundHandler.class.getClassLoader().getResourceAsStream("backgrounds/" + file);
+                    Files.copy(inputStream, Paths.get("backgrounds/" + file), StandardCopyOption.REPLACE_EXISTING);
+                }
                 return;
             }
-            List<String> oldFiles = Files.readAllLines(filePath, StandardCharsets.UTF_8);
+            YamlConfiguration oldFiles =  YamlConfiguration.loadConfiguration(filePath.toFile());
             for (String file: resourceFiles)
             {
                 if(!oldFiles.contains(file))
                 {
                     InputStream inputStream = RankBackgroundHandler.class.getClassLoader().getResourceAsStream("backgrounds/" + file);
                     Files.copy(inputStream, Paths.get("backgrounds/" + file), StandardCopyOption.REPLACE_EXISTING);
-                    writeToIndex(file);
                 }
             }
-
+            writeToIndex(resourceFiles);
         }
         catch (IOException e)
         {
