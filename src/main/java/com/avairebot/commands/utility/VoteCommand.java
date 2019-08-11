@@ -104,14 +104,14 @@ public class VoteCommand extends Command {
         }
 
         context.makeSuccess(String.join("\n", Arrays.asList(
-            "Enjoy using the bot? Consider voting for the bot to help it grow, it's free but means a lot to the team behind Ava ❤",
+            "Enjoy using the bot? Consider voting for the bot to help it grow, it's free but means a lot to the team behind Abbot ❤",
             "",
-            "https://discordbots.org/bot/avaire",
+            "https://discordbots.org/bot/abbot",
             "",
             ":note"
         )))
             .set("note", note)
-            .setTitle("Vote for AvaIre on DBL", "https://discordbots.org/bot/avaire")
+            .setTitle("Vote for AvaIre on DBL", "https://discordbots.org/bot/abbot")
             .setFooter("You have " + (voteEntity == null ? 0 : voteEntity.getVotePoints()) + " vote points")
             .queue();
 
