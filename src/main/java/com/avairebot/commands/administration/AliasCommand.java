@@ -63,7 +63,7 @@ public class AliasCommand extends Command {
 
     @Override
     public List<String> getExampleUsage() {
-        return Collections.singletonList("`:command !ava !repeat **Website:** https://avairebot.com/`");
+        return Collections.singletonList("`:command !ava !repeat **Website:** https://abbot.ml/`");
     }
 
     @Override
