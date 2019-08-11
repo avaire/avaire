@@ -55,7 +55,7 @@ public class PluginCommand extends SystemCommand {
 
     @Override
     public String getDescription() {
-        return "Can be used to list installed plugins, as well as available plugins that are officially recognized by the AvaIre development team, you can also display more information about a specific plugin by name.";
+        return "Can be used to list installed plugins, as well as available plugins that are officially recognized by the AbBot development team, you can also display more information about a specific plugin by name.";
     }
 
     @Override
