@@ -116,7 +116,7 @@ public class BotStatisticsCommand extends SystemCommand {
                 NumberUtil.formatNicely(avaire.getShardManager().getGuilds().size())
             ), true)
         )
-            .setAuthor("AbBot v" + AppInfo.getAppInfo().version, "https://abbot.ml/support", avaire.getSelfUser().getEffectiveAvatarUrl())
+            .setAuthor("kierangaming1#9859" + AppInfo.getAppInfo().version, "https://abbot.ml/support", avaire.getSelfUser().getEffectiveAvatarUrl())
             .setDescription("The bot has been online for " + formatUptimeNicely())
             .queue();
 
