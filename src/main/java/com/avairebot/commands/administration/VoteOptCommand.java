@@ -45,7 +45,7 @@ public class VoteOptCommand extends Command {
 
     @Override
     public String getDescription() {
-        return "Opt in or out of getting vote messages when you vote for Ava.";
+        return "Opt in or out of getting vote messages when you vote for Abbot.";
     }
 
     @Override
