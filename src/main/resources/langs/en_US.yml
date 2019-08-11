@@ -818,7 +818,7 @@ utility:
 
     InviteCommand:
         message: 'You can invite me to your server by [clicking here](:oauth) or using the link below:\n\n:oauth\n\n:note'
-        note: 'If you would like try out newly developed features before everyone else, you could also try the *__Cutting Edge__* bot which gets new features added almost daily, you can invite that bot by [clicking here](:edgeInvite) or using the link below:\n\n:edgeInvite'
+        note: 'Having fun?'
 
     IPInfoCommand:
         hostname: 'Hostname'
