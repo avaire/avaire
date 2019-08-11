@@ -55,7 +55,7 @@ public class HelpCommand extends Command {
 
     @Override
     public String getDescription() {
-        return "Tells you about what commands AvaIre has, what they do, and how you can use them.";
+        return "Tells you about what commands AbBot has, what they do, and how you can use them.";
     }
 
     @Override
