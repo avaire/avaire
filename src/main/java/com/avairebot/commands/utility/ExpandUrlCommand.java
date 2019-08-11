@@ -58,7 +58,7 @@ public class ExpandUrlCommand extends Command {
 
     @Override
     public List<String> getExampleUsage() {
-        return Collections.singletonList("`:command https://avairebot.com/support`");
+        return Collections.singletonList("`:command https://abbot.ml/support`");
     }
 
     @Override
