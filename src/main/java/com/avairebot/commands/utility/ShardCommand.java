@@ -160,7 +160,7 @@ public class ShardCommand extends Command {
         SelfUser selfUser = avaire.getSelfUser();
         message.setAuthor(
             "Shard Information",
-            "http://status.avairebot.com/",
+            "http://abbot.ml/",
             selfUser == null ? null : selfUser.getEffectiveAvatarUrl()
         ).queue();
 
