@@ -51,7 +51,7 @@ public class ChangePrefixCommand extends Command {
 
     @Override
     public String getDescription() {
-        return "Sets the prefix that should be used for all commands in a given category, if no prefix is provided the category prefix will be reset back to the default instead, each category in AvaIre can have a different prefix, or you can choose to change them all at the same time.";
+        return "Sets the prefix that should be used for all commands in a given category, if no prefix is provided the category prefix will be reset back to the default instead, each category in AbBot can have a different prefix, or you can choose to change them all at the same time.";
     }
 
     @Override
