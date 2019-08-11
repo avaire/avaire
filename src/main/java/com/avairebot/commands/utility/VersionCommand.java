@@ -51,7 +51,7 @@ public class VersionCommand extends Command {
 
     @Override
     public String getDescription() {
-        return "Displays the current version of Ava that is running. If the version is outdated the new version will be shown as well as what type of changes have been made.";
+        return "Displays the current version of Abbot that is running. If the version is outdated the new version will be shown as well as what type of changes have been made.";
     }
 
     @Override
@@ -81,7 +81,7 @@ public class VersionCommand extends Command {
     public boolean onCommand(CommandMessage context, String[] args) {
         SemanticVersion latestVersion = getLatestVersion();
         if (latestVersion == null) {
-            return sendErrorMessage(context, "Failed to fetch the latest version of AvaIre, try again later.");
+            return sendErrorMessage(context, "Failed to fetch the latest version of Abbot, try again later.");
         }
 
         String template = String.join("\n",
