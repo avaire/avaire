@@ -109,7 +109,7 @@ public class FeedbackResponseCommand extends SystemCommand {
         channel.sendMessage(response.buildEmbed()).queue(responseMessage -> {
             context.makeSuccess("Successfully sent response to the feedback with an ID of #:id :emote")
                 .set("id", feedback.getInt("id"))
-                .set("emote", "<:tickYes:319985232306765825>")
+                .set("emote", "<:Aprroved:610251163018854403>")
                 .queue();
 
             try {
