@@ -9,7 +9,7 @@ errors:
     missingMusicQueue: 'Missing music `query`, you must include a link to the song that you want to listen to, or at least give me a song title!'
     cantMentionEveryone: "You don't have permissions to mention everyone."
     requireLevelFeatureToBeEnabled: 'This command requires the `Levels & Experience` feature to be enabled for the server, you can ask a server admin if they want to enable it with `{0}`'
-    errorOccurredWhileLoading: 'An error occurred while loading the {0}, please try again. If the problem continues, please report this to one of my developers on the [AvaIre support server](https://avairebot.com/support).'
+    errorOccurredWhileLoading: 'An error occurred while loading the {0}, please try again. If the problem continues, please report this to one of my developers on the [AbBot support server](https://abbot.ml/support).'
 
 levelupMessages:
     - "GG :user, you just reached **Level :level**"
@@ -91,7 +91,7 @@ administration:
         invalidAmountGiven: "The `amount` property must be between 1 and {0} to add or take XP from a user."
         aboutToResetEverything: "You're about to reset the XP for everyone on the entire server. If you're sure you wanna continue, run the command to completely reset the servers XP.\n\n```:command server-reset :token```\nThis command will only work for 60 seconds, after that the token becomes invalid and the command has to be ran again to get a new token."
         aboutToSyncEverything: "You're about to sync the XP with the global leaderboard, this will effectively revert any custom XP changes made on the entire server. If you're sure you wanna continue, run the command to completely sync the servers XP.\n\n```:command server-sync :token```\nThis command will only work for 60 seconds, after that the token becomes invalid and the command has to be ran again to get a new token."
-        failedToSaveChanges: "Failed to save the changes to the database, please try again, if the error continues to happen, please contact support on the official [AvaIre support server](https://avairebot.com/support)."
+        failedToSaveChanges: "Failed to save the changes to the database, please try again, if the error continues to happen, please contact support on the official [AbBot support server](https://abbot.ml/support)."
         mustBeAnAdmin: "You must be a server admin to use this action."
         invalidSecurityToken: "Invalid security token given, please provide the correct security token to reset all the servers XP."
         warning: "Warning!"
@@ -198,7 +198,7 @@ administration:
     LanguageCommand:
         invalidLanguageCode: "Invalid language code given, `{0}` is not a valid language code, or it is not yet supported!"
         changed: "The server's language has been successfully been updated to use the :name language!"
-        note: "AvaIre supports several user-contributed languages that you can select with this command. Translations may not be 100% accurate or complete.\nTo select a language use `{0} <code>`"
+        note: "AbBot supports several user-contributed languages that you can select with this command. Translations may not be 100% accurate or complete.\nTo select a language use `{0} <code>`"
 
     LevelAlertsCommand:
         message: "`Level up alerts` have been `:status` for the server.:note"
@@ -849,7 +849,7 @@ utility:
             other: 'slow af. :dizzy_face:'
 
     RankBackgroundCommand:
-        canBeUnlocked: "Rank backgrounds can be unlocked using **[Vote Points](https://discordbots.org/bot/avaire)**,\nyou'll get **1 point** each time you vote for the bot."
+        canBeUnlocked: "Rank backgrounds can be unlocked using **[Vote Points](https://discordbots.org/bot/abbot)**,\nyou'll get **1 point** each time you vote for the bot."
         listTitle: "Rank Backgrounds ({0})"
         youHaveVotePoints: "You have {0} vote points."
         exampleTitle: "{0} Example"
@@ -904,8 +904,8 @@ utility:
         totalShards: 'Total Shards'
 
     SourceCommand:
-        noArgs: 'AvaIre source code:'
-        command: 'AvaIre source code for the **:command** command:'
+        noArgs: 'AbBot source code:'
+        command: 'AbBOt source code for the **:command** command:'
         invalidCommand: 'Invalid command given, here is the full source code instead.'
         externalCommand: "The command is registered via an external plugin, the author of the plugin hasn't made the source of the command public, or they forgot to add a link to it, here is the full source code for the bot instead."
 
@@ -957,9 +957,9 @@ utility:
 
     VersionCommand:
         current: 'I am currently `:difference` :type versions behind!'
-        getLatest: 'You can get the latest version of me on github at [avaire/avaire](https://github.com/avaire/avaire)'
-        usingLatest: "You're using the latest version of AvaIre!"
-        latestVersion: 'The latest version of AvaIre is v{0}'
+        getLatest: 'You can get the latest version of me on github at [piecord/avaire](https://github.com/piecord/avaire)'
+        usingLatest: "You're using the latest version of AbBot!"
+        latestVersion: 'The latest version of AbBot is v{0}'
         latestChanges: 'Latest changes:'
         versions:
             majorName: 'Major'
