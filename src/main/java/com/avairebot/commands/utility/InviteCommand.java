@@ -51,7 +51,7 @@ public class InviteCommand extends Command {
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`:command` - Gives you an invite link that can be used to invite AvaIre to servers.");
+        return Collections.singletonList("`:command` - Gives you an invite link that can be used to invite AbBot to servers.");
     }
 
     @Override
@@ -71,7 +71,7 @@ public class InviteCommand extends Command {
 
         context.makeInfo(context.i18n("message"))
             .set("oauth", avaire.getConfig().getString("discord.oauth"))
-            .set("note", note.set("edgeInvite", "https://avairebot.com/invite-cutting-edge").toString())
+            .set("note", note.set("Fun", "https://abbot.ml").toString())
             .queue();
         return true;
     }
