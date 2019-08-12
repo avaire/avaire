@@ -78,6 +78,7 @@ public class StatsCommand extends Command {
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
         context.makeEmbeddedMessage(MessageType.INFO,
+            new MessageEmbed.Field(context.i18n("fields.Origonal author"), "[Senither#0001](https://senither.com/)", true),
             new MessageEmbed.Field(context.i18n("fields.author"), "[kierangaming1#9859](https://abbot.ml/team)", true),
             new MessageEmbed.Field(context.i18n("fields.website"), "[abbot.ml](https://abbot.ml/)", true),
             new MessageEmbed.Field(context.i18n("fields.library"), "[JDA](https://github.com/DV8FromTheWorld/JDA)", true),
