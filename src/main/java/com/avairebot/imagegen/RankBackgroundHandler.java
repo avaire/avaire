@@ -62,8 +62,9 @@ public class RankBackgroundHandler {
     }
 
     /**
-     * Returns an instance of the rank background handler
-     * class.
+     * Returns an instance of the rank background handler,
+     * responsible for initializing and loading all the rank
+     * backgrounds. 
      *
      * @return An instance of the handler
      */
@@ -75,23 +76,17 @@ public class RankBackgroundHandler {
     }
 
     /**
-     * Returns the purchase type of rank background.
+     * Returns the purchase type for rank backgrounds, the type is used in the purchases table for
+     * tracking what the user bought by type, allowing the user to buy two
+     * different things with the same ID, but belonging to different
+     * purchases types.
      *
-     * @return The rank purchase type
+     * @return The purchase type used to represent rank backgrounds in the database.
      */
-    public static String getRankPurchaseType() {
+    public static String getPurchaseType() {
         return Constants.RANK_BACKGROUND_PURCHASE_TYPE;
     }
 
-    /**
-     * Returns a list of all the
-     * rank backgrounds loaded by AvaIre.
-     *
-     * @return The list of all rank backgrounds.
-     */
-    public List<RankBackground> values() {
-        return backgrounds;
-    }
 
     /**
      * Gets the names of all the rank backgrounds as the keys, with
@@ -112,7 +107,7 @@ public class RankBackgroundHandler {
      */
     @Nullable
     public RankBackground fromName(@Nonnull String name) {
-        for (RankBackground background : values()) {
+        for (RankBackground background : backgrounds) {
             if (background.getName().equalsIgnoreCase(name)) {
                 return background;
             }
@@ -129,7 +124,7 @@ public class RankBackgroundHandler {
      */
     @Nullable
     public RankBackground fromId(int backgroundId) {
-        for (RankBackground background : values()) {
+        for (RankBackground background : backgrounds) {
             if (background.getId() == backgroundId) {
                 return background;
             }

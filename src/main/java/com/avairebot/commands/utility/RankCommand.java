@@ -177,7 +177,7 @@ public class RankCommand extends Command {
             if (playerTransformer != null) {
                 Integer selectedBackgroundId = playerTransformer.getPurchases()
                     .getSelectedPurchasesForType(
-                        RankBackgroundHandler.getRankPurchaseType()
+                        RankBackgroundHandler.getPurchaseType()
                     );
 
                 if (selectedBackgroundId != null) {

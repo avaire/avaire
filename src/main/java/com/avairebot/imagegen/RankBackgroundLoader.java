@@ -30,6 +30,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
 
+
 public class RankBackgroundLoader {
 
     private final YamlConfiguration config;
@@ -37,7 +38,8 @@ public class RankBackgroundLoader {
 
     /**
      * Instantiates a new Rank background loader using
-     * the given background resource name.
+     * the given background resource name. Data is
+     * loaded from the classpath of the internal jar rather than on the file system.
      *
      * @param backgroundResource The path inside the backgrounds directory pointing to the resource.
      */
@@ -110,9 +112,11 @@ public class RankBackgroundLoader {
     }
 
     /**
-     * Returns the rank background loaded by this container.
+     * Returns the rank background information loaded by this container
+     * including the id, cost, name, background graphics, color scheme,
+     * and where this configuration was loaded from.
      *
-     * @return The background rank for this container
+     * @return The rank background information
      */
     public RankBackground getRankBackground() {
         return background;

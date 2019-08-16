@@ -55,9 +55,11 @@ public class BackgroundRankColors {
     }
 
     /**
-     * Sets background color.
-     *
-     * @param color The new background color.
+     * Sets the color that should be used for the background cover, if one is set the cover
+     * will be placed behind all the other resources with a few pixels width between
+     * the cover and the edge of the image itself, it works great if the text and
+     * the image resource has a similar colour scheme.
+     * <p>
      */
     public void setBackgroundColor(Color color) {
         backgroundColor = color;
@@ -367,9 +369,13 @@ public class BackgroundRankColors {
     }
 
     /**
-     * Sets the experience text color.
+     * Sets the color that should be used on the experience bar, by default this will
+     * be the same color as the {@link #getMainTextColor() main text color},
+     * however in some cases the main color and the XP bar background
+     * might be too similar in color, so this can be used to
+     * overwrite the XP bar text color.
      *
-     * @param color The experience text color.
+     * @return The color that should be used for the experience bar text.
      */
     public void setExperienceTextColor(Color color) {
         experienceTextColor = color;
