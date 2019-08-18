@@ -283,7 +283,7 @@ public class BackgroundRankColors {
     }
 
     /**
-     * The color that should be used as the experience bar foreground.
+     * The sRGB color that should be used as the experience bar foreground.
      *
      * @return The color that should be used as the experience bar foreground.
      */
@@ -293,9 +293,9 @@ public class BackgroundRankColors {
     }
 
     /**
-     * Sets experience foreground color.
+     * Sets the experience foreground color using a valid sRGB color.
      *
-     * @param color The new experience foreground color.
+     * @param color The new experience foreground color. .
      */
     public void setExperienceForegroundColor(Color color) {
         experienceForegroundColor = color;
@@ -369,7 +369,7 @@ public class BackgroundRankColors {
     }
 
     /**
-     * Sets the color that should be used on the experience bar, by default this will
+     * Sets the sRGB color that should be used on the experience bar, by default this will
      * be the same color as the {@link #getMainTextColor() main text color},
      * however in some cases the main color and the XP bar background
      * might be too similar in color, so this can be used to

@@ -25,18 +25,18 @@ import com.avairebot.Constants;
 import com.avairebot.config.YamlConfiguration;
 import com.avairebot.shared.ExitCodes;
 import com.avairebot.utilities.ResourceLoaderUtil;
-import com.google.common.base.Charsets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.yaml.snakeyaml.DumperOptions;
-import org.yaml.snakeyaml.Yaml;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.io.*;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.*;
 
 public class RankBackgroundHandler {
@@ -64,7 +64,7 @@ public class RankBackgroundHandler {
     /**
      * Returns an instance of the rank background handler,
      * responsible for initializing and loading all the rank
-     * backgrounds. 
+     * backgrounds.
      *
      * @return An instance of the handler
      */
@@ -155,6 +155,15 @@ public class RankBackgroundHandler {
             .forEach(entry -> namesToCost.put(entry.getKey(), entry.getValue()));
     }
 
+    /*
+     * Copies every file in the backgrounds resource if it does not already
+     * exist in the backgrounds folder of the current AvaIre instance.
+     * Then updates the background index at the root of the current running
+     * directory.
+     *
+     * If the file could not be copied or any possible errors occur,
+     * the bot will print the exception to the string and subsequently shut down.
+     */
     private void copyBackgroundsFromJarToFolder() {
         try {
             List<String> files = ResourceLoaderUtil.getFiles(RankBackgroundHandler.class, "backgrounds");
@@ -190,7 +199,16 @@ public class RankBackgroundHandler {
         }
     }
 
-
+    /*
+     * Compares the contents of the resources folder with the
+     * listed files in the background-index.yaml and if new backgrounds
+     * are found they get copied over and appended onto the background-index.yaml file.
+     *
+     * If for some reason the background-index
+     * does not exist, every file in the resources folder gets replaced and written
+     * onto the background-index.yaml file.
+     *
+     */
     private void copyNewBackgroundsOver()
     {
         try
@@ -205,6 +223,7 @@ public class RankBackgroundHandler {
                     InputStream inputStream = RankBackgroundHandler.class.getClassLoader().getResourceAsStream("backgrounds/" + file);
                     Files.copy(inputStream, Paths.get("backgrounds/" + file), StandardCopyOption.REPLACE_EXISTING);
                 }
+                writeToIndex(resourceFiles);
                 return;
             }
             YamlConfiguration oldFiles =  YamlConfiguration.loadConfiguration(filePath.toFile());
@@ -224,6 +243,18 @@ public class RankBackgroundHandler {
         }
     }
 
+
+    /*
+     * Scans the contents of the backgrounds folder in the current
+     * running directory and attempts to load each single one.
+     *
+     * Afterwards if the backgrounds folder in the current working directory
+     * did not already exist when the program began executing, it will
+     * load all the backgrounds prepackaged in the backgrounds/resource folder
+     * of the currently running jar.
+     *
+     * It then returns a list of every single background found and loaded.
+     */
     private List<RankBackground> getResourceFiles() throws IOException {
         List<RankBackground> localBackgrounds = new ArrayList<>();
 

@@ -84,6 +84,8 @@ public class RankBackgroundRender extends Renderer {
 
     /**
      * Sets the background that should be used for the render.
+     * if <code>NULL</code> is given the
+     * background will be unable to render.
      *
      * @param background The background that should be used.
      * @return The rank background instance.

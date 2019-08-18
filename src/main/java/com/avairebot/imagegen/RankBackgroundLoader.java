@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018.
+ * Copyright (c) 2019.
  *
  * This file is part of AvaIre.
  *
@@ -38,8 +38,8 @@ public class RankBackgroundLoader {
 
     /**
      * Instantiates a new Rank background loader using
-     * the given background resource name. Data is
-     * loaded from the classpath of the internal jar rather than on the file system.
+     * the given background resource name under the internal backgrounds
+     * folder of the running AvaIre jar.
      *
      * @param backgroundResource The path inside the backgrounds directory pointing to the resource.
      */
@@ -77,6 +77,20 @@ public class RankBackgroundLoader {
         background = new RankBackground(id, cost, name, backgroundImage, getColors(), true);
     }
 
+    /*
+     * Looks for and reads the following headings in the colors heading
+     * into a {@link com.avairebot.imagegen.BackgroundRankColors} instance.
+     * <ul>
+     * <li>backgroundColor</li>
+     * <li>secondaryTextColor</li>
+     * <li>experienceBackgroundColor</li>
+     * <li>experienceForegroundColor</li>
+     * <li>experienceSeparatorColor</li>
+     * </ul>
+     *
+     * If the optional backgroundCoverColor and experienceTextColor headings exist,
+     * then those values are read as well.
+     */
     private BackgroundRankColors getColors() {
         BackgroundRankColors colors = new BackgroundRankColors();
         colors.setBackgroundColor(loadColorFromYaml("colors.backgroundColor"));
@@ -97,6 +111,12 @@ public class RankBackgroundLoader {
         return colors;
     }
 
+    /*
+     * Scans the provided color heading and looks for
+     * red, green, and blue sub heading values with in the range (0 - 255).
+     * If the alpha heading exists, the alpha color is loaded and must be in the range of (0-100).
+     * Returns an sRGB color representing the color heading.
+     */
     private Color loadColorFromYaml(String heading) {
         int red = config.getInt(heading + ".red");
         int green = config.getInt(heading + ".green");
@@ -124,8 +144,8 @@ public class RankBackgroundLoader {
 
     /**
      * Gets the Rank Background configuration, the config
-     * can be used to directly load the image information
-     * and id of the rank background.
+     * can be used to directly query the id, cost, name, background graphics, color scheme,
+     * and where this configuration was loaded from.
      *
      * @return The rank background configuration.
      */
