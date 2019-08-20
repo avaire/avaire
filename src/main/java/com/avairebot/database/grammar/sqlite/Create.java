@@ -60,7 +60,7 @@ public class Create extends CreateGrammar {
             Field field = blueprint.getFields().get(name);
             FieldType type = field.getType();
 
-            String line = String.format("%s %s", formatField(name), type.getName());
+            String line = String.format("%s %s", formatField(name), getFieldTypeName(type));
 
             if (type.requireArguments()) {
                 if (type.getArguments() == 2) {
@@ -68,10 +68,6 @@ public class Create extends CreateGrammar {
                 } else {
                     line += String.format("(%s)", field.getLength());
                 }
-            }
-
-            if (field.isUnsigned()) {
-                line += " UNSIGNED";
             }
 
             String nullable = field.isNullable() ? " NULL" : " NOT NULL";
@@ -109,5 +105,32 @@ public class Create extends CreateGrammar {
         }
 
         addPart(fields.substring(0, fields.length() - 2));
+    }
+
+    private String getFieldTypeName(FieldType type) {
+        switch (type) {
+            case LONG:
+            case INTEGER:
+                return "INTEGER";
+
+            case STRING:
+            case LONGTEXT:
+            case SMALLTEXT:
+            case MEDIUMTEXT:
+                return "TEXT";
+
+            case DATE:
+            case BOOLEAN:
+            case DECIMAL:
+            case DATETIME:
+                return "NUMERIC";
+
+            case FLOAT:
+            case DOUBLE:
+                return "REAL";
+
+            default:
+                return type.getName();
+        }
     }
 }
