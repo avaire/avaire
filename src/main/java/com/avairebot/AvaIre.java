@@ -613,6 +613,14 @@ public class AvaIre {
         cache.getAdapter(CacheType.FILE).put("audio.state", gson.toJson(audioStates), 60 * 60 * 3);
 
         try {
+            if (shutdownDelay > 5000L) {
+                // If the shutdown delay is anymore than 5 seconds, we just set it to a
+                // fixed 5 seconds delay, this should help prevent the bot staying up
+                // for longer than it really should, even when there is a lot
+                // of things to shutdown.
+                shutdownDelay = 5000L;
+            }
+
             log.info("Shutting down processes, waiting {} milliseconds for processes to finish shutting down.", shutdownDelay);
             Thread.sleep(shutdownDelay);
         } catch (InterruptedException e) {
