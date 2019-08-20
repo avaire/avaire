@@ -30,8 +30,10 @@ import com.avairebot.contracts.commands.Command;
 import com.avairebot.contracts.commands.CommandGroup;
 import com.avairebot.contracts.commands.CommandGroups;
 import com.avairebot.database.transformers.GuildTransformer;
+import net.dv8tion.jda.core.entities.Message;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Collections;
@@ -62,8 +64,14 @@ public class AliasCommand extends Command {
     }
 
     @Override
-    public List<String> getExampleUsage() {
-        return Collections.singletonList("`:command !ava !repeat **Website:** https://avairebot.com/`");
+    public List<String> getExampleUsage(@Nullable Message message) {
+        //noinspection ConstantConditions
+        return Collections.singletonList(String.format(
+            "`:command !ava %srepeat **Website:** https://avairebot.com/`",
+            message == null
+                ? CommandHandler.getCommand(AliasCommand.class).getCategory().getPrefix()
+                : generateCommandPrefix(message)
+        ));
     }
 
     @Override
@@ -116,23 +124,22 @@ public class AliasCommand extends Command {
 
         String alias = args[0].toLowerCase();
         String[] split = String.join(" ", Arrays.copyOfRange(args, 1, args.length)).split(" ");
-        CommandContainer command = CommandHandler.getCommand(context.getMessage(), split[0]);
-        if (command == null) {
+        CommandContainer container = CommandHandler.getCommand(context.getMessage(), split[0]);
+        if (container == null) {
             return sendErrorMessage(context, context.i18n("invalidCommand", split[0]));
         }
 
-        String commandString = command.getDefaultPrefix()
-            + command.getCommand().getTriggers().get(0) + " "
+        String commandString = container.getCommand().getTriggers().get(0) + " "
             + String.join(" ", Arrays.copyOfRange(split, 1, split.length));
 
-        transformer.getAliases().put(alias, commandString);
+        transformer.getAliases().put(alias, container.getDefaultPrefix() + commandString);
 
         try {
             updateGuildAliases(context, transformer);
 
             context.makeSuccess(context.i18n("created"))
                 .set("alias", args[0])
-                .set("command", commandString)
+                .set("command", container.getCategory().getPrefix(context.getMessage()) + commandString)
                 .set("slots", transformer.getType().getLimits().getAliases() - transformer.getAliases().size())
                 .queue();
             return true;

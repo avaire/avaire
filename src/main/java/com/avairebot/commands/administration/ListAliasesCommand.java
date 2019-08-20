@@ -23,6 +23,8 @@ package com.avairebot.commands.administration;
 
 import com.avairebot.AvaIre;
 import com.avairebot.chat.SimplePaginator;
+import com.avairebot.commands.CommandContainer;
+import com.avairebot.commands.CommandHandler;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.contracts.commands.CommandGroup;
@@ -98,7 +100,16 @@ public class ListAliasesCommand extends Command {
         }
 
         List<String> messages = new ArrayList<>();
-        paginator.forEach((index, key, val) -> messages.add(String.format("`%s` => `%s`", key, val)));
+        paginator.forEach((index, key, val) -> {
+            String trigger = val.split(" ")[0];
+
+            CommandContainer container = CommandHandler.getRawCommand(trigger);
+            if (container != null) {
+                val = val.replaceFirst(trigger, container.getCommand().generateCommandTrigger(context.getMessage()));
+            }
+
+            messages.add(String.format("`%s` => `%s`", key, val));
+        });
         messages.add("\n" + paginator.generateFooter(context.getGuild(), generateCommandTrigger(context.getMessage())));
 
         context.makeSuccess(String.join("\n", messages))
