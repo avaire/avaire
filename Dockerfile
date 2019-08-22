@@ -1,5 +1,5 @@
 # docker run -d --name AvaIre --restart=unless-stopped -v /srv/avaire/config.yml:/opt/avaire/config.yml -v /srv/avaire/storage:/opt/avaire/storage -v /srv/avaire/plugins:/opt/avaire/plugins --net=host avaire:latest
-FROM gradle:jdk10 AS build
+FROM gradle:jdk12 AS build
 
 USER root
 
@@ -9,7 +9,7 @@ RUN chmod a+x buildpack-run.sh; \
 	./buildpack-run.sh; \
 	gradle build --stacktrace
 
-FROM anapsix/alpine-java AS runtime
+FROM openjdk:14-jdk-alpine AS runtime
 
 RUN mkdir -p /opt/avaire
 COPY --from=build /app/AvaIre.jar /opt/avaire/AvaIre.jar
@@ -21,7 +21,6 @@ RUN adduser --disabled-password --gecos '' avaire; \
 
 VOLUME [ "/opt/avaire/plugins" ]
 VOLUME [ "/opt/avaire/storage" ]
-VOLUME [ "/opt/avaire/config.yml" ]
 
 WORKDIR /opt/avaire
 
