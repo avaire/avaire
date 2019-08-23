@@ -38,10 +38,10 @@ public class RankBackgroundLoader {
 
     /**
      * Instantiates a new Rank background loader using
-     * the given background resource name under the internal backgrounds
+     * the given background resource name, under the internal backgrounds
      * folder of the running AvaIre jar.
      *
-     * @param backgroundResource The path inside the backgrounds directory pointing to the resource.
+     * @param backgroundResource, The path inside the backgrounds directory pointing to the resource.
      */
     public RankBackgroundLoader(@Nonnull String backgroundResource) {
         config = YamlConfiguration.loadConfiguration(new InputStreamReader(
