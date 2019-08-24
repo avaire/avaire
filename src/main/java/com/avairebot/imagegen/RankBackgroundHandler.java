@@ -146,7 +146,7 @@ public class RankBackgroundHandler {
                 backgrounds.add(type);
             }
         } catch (IOException e) {
-            System.out.printf("Invalid cache type given: %s", e.getMessage());
+            log.error(String.format("Invalid cache type given: %s", e.getMessage()));
             System.exit(ExitCodes.EXIT_CODE_ERROR);
         }
 
@@ -176,7 +176,7 @@ public class RankBackgroundHandler {
             }
             writeToIndex(files);
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
             System.exit(ExitCodes.EXIT_CODE_ERROR);
         }
     }
@@ -195,7 +195,7 @@ public class RankBackgroundHandler {
         }
         catch (IOException e)
         {
-            e.printStackTrace();
+            log.error(e.getMessage());
         }
     }
 
@@ -239,7 +239,7 @@ public class RankBackgroundHandler {
         }
         catch (IOException e)
         {
-            e.printStackTrace();
+            log.error(e.getMessage());
         }
     }
 
