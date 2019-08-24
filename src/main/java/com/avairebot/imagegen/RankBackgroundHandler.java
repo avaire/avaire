@@ -258,29 +258,8 @@ public class RankBackgroundHandler {
     private List<RankBackground> getResourceFiles() throws IOException {
         List<RankBackground> localBackgrounds = new ArrayList<>();
 
-        for (File file : backgroundsFolder.listFiles()) {
-            if (file.isDirectory() || file.isHidden()) continue;
-
-            if (file.getName().endsWith(".yml")) {
-                try {
-                    log.debug("Attempting to load background from file system: " + file.toString());
-                    RankBackgroundLoader rankBackgroundLoader = new RankBackgroundLoader(file);
-                    RankBackground background = rankBackgroundLoader.getRankBackground();
-                    if (isBackgroundRankValid(background)) {
-                        usedIds.add(background.getId());
-                        usedNames.add(background.getName());
-                        localBackgrounds.add(background);
-                        log.debug("Loaded background from file system: " + file.toString());
-                    } else {
-                        log.debug("Background invalid from file system; refusing to load : " + file.toString());
-                    }
-                } catch (NullPointerException ex) {
-                    ex.printStackTrace();
-                }
-            }
-        }
-
-        if (!backgroundsFolderAlreadyExists) {
+        if (!backgroundsFolderAlreadyExists)
+        {
             List<String> files = ResourceLoaderUtil.getFiles(RankBackgroundHandler.class, "backgrounds");
 
             for (String file : files) {
@@ -295,6 +274,30 @@ public class RankBackgroundHandler {
                         log.debug("Loaded background from resource folder: " + file);
                     } else {
                         log.debug("Background from resource folder invalid; refusing to load : " + file);
+                    }
+                }
+            }
+        }
+        else
+        {
+            for (File file : backgroundsFolder.listFiles()) {
+                if (file.isDirectory() || file.isHidden()) continue;
+
+                if (file.getName().endsWith(".yml")) {
+                    try {
+                        log.debug("Attempting to load background from file system: " + file.toString());
+                        RankBackgroundLoader rankBackgroundLoader = new RankBackgroundLoader(file);
+                        RankBackground background = rankBackgroundLoader.getRankBackground();
+                        if (isBackgroundRankValid(background)) {
+                            usedIds.add(background.getId());
+                            usedNames.add(background.getName());
+                            localBackgrounds.add(background);
+                            log.debug("Loaded background from file system: " + file.toString());
+                        } else {
+                            log.debug("Background invalid from file system; refusing to load : " + file.toString());
+                        }
+                    } catch (NullPointerException ex) {
+                        ex.printStackTrace();
                     }
                 }
             }
