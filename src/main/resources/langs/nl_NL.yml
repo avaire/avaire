@@ -283,7 +283,6 @@ administration:
         requiresModlogToBeSet: "Dit commando heeft een ingestelde modlog kanaal nodig , een modlog kanaal kan worden ingesteld door het `{0}modlog` commando."
         requireMuteRoleToBeSet: "Er is nog geen demp rol ingesteld op deze server, je kunt een demp rol instellen door het `{0}muterole` commando."
         higherOrSameRole: "Je kunt mensen met een hoger niveau, of gelijke niveau, niet dempen."
-		
         muteRoleIsPositionedHigher: "De {0} rol voor het dempen van gebruikers staat hoger in die hierarchie dan een van mijn rollen, ik kan hierdoor gebruikers niet automatisch deze rol toekennen, los dit op door een hogere rol te defineren voor de bot, or gebruik een andere rol om gebruikers te dempen."
         invalidUserMentioned: "Invalide gebruiker genoemd, je moet een gebruiker noemen op de server die je wilt dempen met dit commando."
         invalidTimeGiven: "De opgegeven tijd is fout, de tijd moet minstens een minuut of hoger zijn."
@@ -379,7 +378,7 @@ administration:
         requiresModlogToBeSet: "Dit commando heeft een ingestelde modlog kanaal nodig, je kunt een modlog kanaal instellen door het commando `{0}modlog` te gebruiken."
         requireMuteRoleToBeSet: "Er is geen demp rol ingesteld voor deze server, je kunt een demp rol instellen door het commando `{0}muterole` te gebruiken."
         muteRoleIsPositionedHigher: "De {0} rol dat gebruikt wordt om gebruikers te dempen, staat hoger in de hierarchie dan de rollen die ik heb, hierdoor kan ik niet de demp rol van andere gebruikers afnemen, los dit op door een andere rol te gebruiken voor te dempen."
-        invalidUserMentioned: "Invalide gebruiker genoemd, je moet een gebruiker noemen op de server die je wilt ontdempen voor dit commando.
+        invalidUserMentioned: "Invalide gebruiker genoemd, je moet een gebruiker noemen op de server die je wilt ontdempen voor dit commando."
         userDoesntHaveMuteRole: "{0} heeft geen demp rol, ze kunnen al de demp rol hebben!"
         userHasBeenUnmuted: ":target is ge-ondempt!"
         userAutoUnmutedReason: "*ondempt automatisch nadat de ingestelde tijd verlopen is.*"
