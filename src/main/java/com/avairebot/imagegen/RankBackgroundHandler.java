@@ -187,7 +187,7 @@ public class RankBackgroundHandler {
 
         YamlConfiguration indexConfig = YamlConfiguration.loadConfiguration(indexFile);
 
-        indexConfig.set("background-index",files);
+        indexConfig.set("index",files);
 
         try
         {
@@ -223,13 +223,14 @@ public class RankBackgroundHandler {
                     InputStream inputStream = RankBackgroundHandler.class.getClassLoader().getResourceAsStream("backgrounds/" + file);
                     Files.copy(inputStream, Paths.get("backgrounds/" + file), StandardCopyOption.REPLACE_EXISTING);
                 }
+                log.debug("Index not found. Copying over new files and recording them.");
                 writeToIndex(resourceFiles);
                 return;
             }
             YamlConfiguration oldFiles =  YamlConfiguration.loadConfiguration(filePath.toFile());
             for (String file: resourceFiles)
             {
-                if(!oldFiles.contains(file))
+                if(oldFiles.get("index",file) == null)
                 {
                     InputStream inputStream = RankBackgroundHandler.class.getClassLoader().getResourceAsStream("backgrounds/" + file);
                     Files.copy(inputStream, Paths.get("backgrounds/" + file), StandardCopyOption.REPLACE_EXISTING);
@@ -297,7 +298,7 @@ public class RankBackgroundHandler {
                             log.debug("Background invalid from file system; refusing to load : " + file.toString());
                         }
                     } catch (NullPointerException ex) {
-                        ex.printStackTrace();
+                        log.error(ex.getMessage());
                     }
                 }
             }
