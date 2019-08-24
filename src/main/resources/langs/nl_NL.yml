@@ -24,42 +24,42 @@ levelupRoleMessages:
     - "Gefeliciteerd :user 🎉 Je bent net een level omhoog gegaan! Je bent nu **Level :level**, ook heb je de **:role** rol verdient"
 
 pagination:
-    simpleFooter: "Page **{0}** out of **{1}** pages.\n`{2} [page]`"
+    simpleFooter: "Pagina **{0}** van de **{1}** pagina's.\n`{2} [page]`"
 
 modlog-types:
     kick:
-        name: "Kick"
-        action: "Kicked"
+        name: "Uitzet"
+        action: "Uitgezet"
     voiceKick:
-        name: "Voice Kick"
-        action: "Voice Kicked"
+        name: "Uit spraak kanaal gezet"
+        action: "Uit het spraak kanaal zetten"
     ban:
-        name: "Ban"
-        action: "Banned"
+        name: "Verban"
+        action: "Verbannen"
     softBan:
         name: "Soft Ban"
         action: "Soft Banned"
     unban:
-        name: "Unban"
-        action: "Unbanned"
+        name: "Verwelkom"
+        action: "Verwelkomen"
     purge:
-        name: "Purge"
-        action: "Purged"
+        name: "Verwijder"
+        action: "Verwijderen"
     warn:
-        name: "Warn"
-        action: "Warned"
+        name: "Waarschuwing"
+        action: "Waarschuwen"
     pardon:
         name: "Pardon"
         action: "Pardoned"
     mute:
-        name: "Mute"
-        action: "Muted"
+        name: "Demp"
+        action: "dempen"
     tempMute:
-        name: "Temp Mute"
-        action: "Temp Muted"
+        name: "Tijdelijke demp"
+        action: "Tijdelijke dempen"
     unmute:
-        name: "Unmute"
-        action: "Unmuted"
+        name: "Ontdemp"
+        action: "Ontdempen"
 
 administration:
     common:
@@ -89,19 +89,19 @@ administration:
     AdministrateExperienceCommand:
         cantUseForBots: "Je kan geen exp toevoegen, aanpassen of verwijderen voor bot accounts, aangezien deze geen exp krijgen. Noem A.U.B een gewone gebruiker wanneer je dit commando gebruikt."
         invalidAmountGiven: "De `amount` waarde moet tussen de 0 en de {0} zijn om exp van een user af te pakken of om exp toe te voegen."
-        aboutToResetEverything: "You're about to reset the XP for everyone on the entire server. If you're sure you wanna continue, run the command to completely reset the servers XP.\n\n```:command server-reset :token```\nThis command will only work for 60 seconds, after that the token becomes invalid and the command has to be ran again to get a new token."
-        aboutToSyncEverything: "You're about to sync the XP with the global leaderboard, this will effectively revert any custom XP changes made on the entire server. If you're sure you wanna continue, run the command to completely sync the servers XP.\n\n```:command server-sync :token```\nThis command will only work for 60 seconds, after that the token becomes invalid and the command has to be ran again to get a new token."
-        failedToSaveChanges: "Failed to save the changes to the database, please try again, if the error continues to happen, please contact support on the official [AvaIre support server](https://avairebot.com/support)."
-        mustBeAnAdmin: "You must be a server admin to use this action."
+        aboutToResetEverything: " Je staat op het punt om de XP van iedereen op de gehele server ongedaan te maken. Als je zeker bent van deze actie, typ het commando in om de XP van de server te resetten.\n\n```:command server-reset :token```\nDit commando werkt voor 60 seconden, na dit moment wordt het token ongeldig en moet je het commando opnieuw uitvoeren om een nieuw token te krijgen."
+        aboutToSyncEverything: "Je staat op het punt om de XP te synchroniseren met het wereldwijde scorebord, dit vervangt alle aangepast XP aanpassingen gemaakt op deze server. Als je zeker bent van deze actie, voer het commando uit om de XP te laten synchroniseren met het wereldwijde scorebord.\n\n```:command server-sync :token```\nDit commando werkt voor 60 seconden, daarna wordt het token invalide en moet je het commando nogmaals uitvoeren om een nieuw token te krijgen."
+        failedToSaveChanges: "Het opslaan naar de database is mislukt, probeer het opnieuw, of als het probleem zich blijft voordoen, zoek dan ondersteuning in [de officiele AvaIre server](https://avairebot.com/support)."
+        mustBeAnAdmin: "Je moet een server administrator zijn om dit te kunnen doen."
         invalidSecurityToken: "Ongeldig security token gegeven, geef A.U.B een geldig security token om de EXP van alle servers te resetten."
         warning: "Waarschuwing!"
         success:
             add: "**:amount** EXP gegeven aan :target, ze hebben nu **:newAmount** XP."
             take: "**:amount** XP weg genomen van :target, ze hebben nu **:newAmount** XP."
-            reset: ":target zijn EXP is succesvol gereset."
-            sync: ":target has successfully had synchronized with the global leaderboard, they now have **:newAmount** XP."
-            syncEveryone: "Everyone on the entire server has been synced with the global leaderboard!"
-            everything: "De EXP van iedereen op de server is compleet gereset!"
+            reset: ":target zijn XP is succesvol gereset."
+            sync: ":target heeft met success het wereldwijde scorebord gesynchroniseerd, en heeft nu **:newAmount** XP."
+            syncEveryone: "Iedereen op deze server is gesynchroniseerd met het wereldwijde scorebord!"
+            everything: "De XP van iedereen op de server is compleet gereset!"
 
     AiCommand:
         message: "De `Artificial Intelligence` module is veranderd naar **:status** voor het :channel kanaal."
@@ -121,17 +121,17 @@ administration:
         higherInTheHierarchy:
             user: ":user De **:role** rol heeft een hogere rangschikking dan jouw rollen, je kan geen rollen toevoegen die hoger zijn dan die van jou."
             bot: ":user De **:role** rol is hoger in de rangschikking, ik kan deze rol niet geven/verwijderen van een gebruiker."
-        enabled: ":user **Auto assign role** als een gebruiker joined is **geactiveerd** en gebruikt de **:role** rol"
-        disabledNow: ":user **Auto assign role** als een gebruiker joined is nu **disabled**."
-        disabled: ":user **Auto assign role** als een gebruiker joined is op dit moment **disabled**."
+        enabled: ":user **Auto assign role** als een gebruiker toetreed is **geactiveerd** en gebruikt de **:role** rol"
+        disabledNow: ":user **Auto assign role** als een gebruiker toetreed is nu **disabled**."
+        disabled: ":user **Auto assign role** als een gebruiker toetreed is op dit moment **disabled**."
         status: ":user De **auto assign role** is momenteel de **:role** rol"
 
     BanCommand:
         mustMentionUser: "Je moet de gebruiker vermelden die je wil bannen."
         higherRole: "Je kan mensen met dezelfe, of hogere rol dan jezelf niet bannen."
-        userHaveHigherRole: "Ik kan {0} niet bannen, hij/zij heeft een hogere rol dan mij, als je wil dat ik deze user kan bannen, verander dan mijn rol om hoger te zijn dan de {0} hoogste rol."
-        success: "**:target** is permanent gebanned door :user voor \":reason\""
-        failedToBan: "Gefaald te bannen **:target** door een error: :error"
+        userHaveHigherRole: "Ik kan {0} niet bannen, hij/zij heeft een hogere rol dan mij, als je wil dat ik deze gebruiker kan bannen, verander dan mijn rol om hoger te zijn dan de {0} hoogste rol."
+        success: "**:target** is permanent verbannen door :user voor \":reason\""
+        failedToBan: "Het verbannen van **:target** is mislukt door een error: :error"
 
     CategoriesCommand:
         title: "Commando Categorie Status voor #{0}"
@@ -151,11 +151,11 @@ administration:
     ChannelLevelCommand:
         invalidChannel: "Ongeldig kanaal gegeven, het kanaal moet een geldig tekst kanaal zijn."
         cantTalkInChannel: "Ik kan niet praten in het {0} kanaal, dus gebruikers zullen geen exp krijgen voor het praten in dat kanaal, als je wil dat ik users xp kan geven in dat kanaal, verander dan mijn rechten zodat ik berichten kan versturen in dat kanaal."
-        noChannelsWithRewardsDisabled: "Er zijn op dit moment geen kanalen met de level rewards uitgeschakeld, je kan er een toevoegen met het `{0} <channel>` commando"
+        noChannelsWithRewardsDisabled: "Er zijn op dit moment geen kanalen met de level beloningen uitgeschakeld, je kan er een toevoegen met het `{0} <channel>` commando"
         failedToUpdate: "Gefaald met het veranderen van de aanpassingen naar de database, probeer A.U.B opnieuw, als dit probleem blijft, kom A.U.B in contact met een van mijn developers."
-        listChannels: "Alle kanalen die hier beneden genoemd zijn hebben op dit moment level rewards uitgeschakeld, elk kanaal niet op de lijst zal niet aangetast worden.\n\n:kanalen"
-        listChannelsTitle: "Kanalen met level rewards uitgeschakeld ({0})"
-        success: "De exp rewards voor het :channel kanaal zijn **:status**!"
+        listChannels: "Alle kanalen die hier beneden genoemd zijn hebben op dit moment level beloningen uitgeschakeld, elk kanaal niet op de lijst zal niet aangetast worden.\n\n:kanalen"
+        listChannelsTitle: "Kanalen met level beloningen uitgeschakeld ({0})"
+        success: "De xp beloningen voor het :channel kanaal zijn **:status**!"
         status:
             enabled: "Geactiveerd"
             disabled: "Gedeactiveerd"
@@ -191,7 +191,7 @@ administration:
     KickCommand:
         mustMentionUser: "Je moet een gebruiker meegeven die je wilt kicken."
         higherOrSameRole: "Je kan geen mensen kicken die dezelfde of een hogere rol dan jou hebben."
-        cantKickUser: "I can de gebruiker {0} niet kicken, ze hebben een hogere rol dan mij. Als je deze gebruiker wilt kicken, verander dan mijn rol positie naar de {0} hoogste rol."
+        cantKickUser: "Ik kan de gebruiker {0} niet kicken, ze hebben een hogere rol dan mij. Als je deze gebruiker wilt kicken, verander dan mijn rol positie naar de {0} hoogste rol."
         success: "**:target** is gekicked door :user for \":reason\""
         error: "Gefaald om **:target** te kicken door een error: :error"
 
@@ -280,28 +280,28 @@ administration:
         failedToFindMessage: "Kon het bericht voor de modlog case niet vinden, is het verwijderd?"
 
     MuteCommand:
-        requiresModlogToBeSet: "This command requires a modlog channel to be set, a modlog channel can be set using the `{0}modlog` command."
-        requireMuteRoleToBeSet: "No mute role have been setup for the server, you can setup a mute role using the `{0}muterole` command."
-        higherOrSameRole: "You can't mute people with a higher, or the same role as yourself."
-        muteRoleIsPositionedHigher: "The {0} role used for mutes are positioned higher in the role hierarchy than any roles I have, so I can't automatically assign the role to other users, please fix this or use another role for mutes."
-        invalidUserMentioned: "Invalid user mentioned, you must mention a user on the server you want to mute to use this command."
-        invalidTimeGiven: "Invalid time given, the time must be at least one minute or more."
-        userHasBeenMuted: ":target has been muted :time!"
+        requiresModlogToBeSet: "Dit commando heeft een ingestelde modlog kanaal nodig , een modlog kanaal kan worden ingesteld door het `{0}modlog` commando."
+        requireMuteRoleToBeSet: "Er is nog geen demp rol ingesteld op deze server, je kunt een demp rol instellen door het `{0}muterole` commando."
+        higherOrSameRole: "Je kunt mensen met een hoger niveau, of gelijke niveau, niet dempen."
+        muteRoleIsPositionedHigher: "De {0} rol voor het dempen van gebruikers staat hoger in die hierarchie dan een van mijn rollen, ik kan hierdoor gebruikers niet automatisch deze rol toekennen, los dit op door een hogere rol te defineren voor de bot, or gebruik een andere rol om gebruikers te dempen."
+        invalidUserMentioned: "Invalide gebruiker genoemd, je moet een gebruiker noemen op de server die je wilt dempen met dit commando."
+        invalidTimeGiven: "De opgegeven tijd is fout, de tijd moet minstens een minuut of hoger zijn."
+        userHasBeenMuted: ":target is gedempt voor :time!"
         time:
-            permanently: "permanently"
-            forFormat: "for {0}"
+            permanently: "Permanent"
+            forFormat: "voor {0}"
 
     MuteRoleCommand:
-        onCooldown: "You have recently use a command option that created and/or modified roles and channel permissions, you have to wait **:cooldown** before you can use this command again."
-        roleDoesntExists: "Invalid role given, the `{0}` role doesn't exists."
-        rolePositionedHigher: "The {0} role is positioned higher than any role I have, so I can assign the role to anyone."
-        cantCreateRoleDueToPermissions: "I can't create the muted role because I don't have the \"Manage Roles\" permissions for the server."
-        noMuteRoleSet: "There are currently no mute role set for the server, you can set the role you wanna use as the mute role using `:command set <role>`, or you can make the bot create a new muted role using `:command create-role`."
-        usingRoleMessage: "The server is using the :role role for mutes."
-        roleHasBeenRemoved: "The muted role has been removed, the mute feature is now disabled until another muted role is assigned."
-        roleHasBeenCreated: "The :role role has been successfully created, and all the channel permissions to prevent users with the role from talking in channels have automatically been setup for the channels I have access to."
-        nowUsingRole: "The :role role will now be used for muting users."
-        nowUsingExistingRole: "A role called `Muted` already exists on the server, now using the :role role for mutes, if you want the bot to setup all the channel override permissions to prevent users with the role from talking in the channels, you can use the\n`:command setup-permissions` command."
+        onCooldown: "Je hebt recentelijk een commando optie gebruikt dat het recht van een rol/kanaal aanmaakt/aanpast, je moet **:cooldown** wachten totdat je dit commando weer kunt gebruiken."
+        roleDoesntExists: "Invalide rol opgegeven, de `{0}` rol bestaat niet."
+        rolePositionedHigher: "De {0} rol staat hoger dan de rollen die ik heb, hierdoor kan ik niet de rol aan iemand toekennen."
+        cantCreateRoleDueToPermissions: "Ik kan de demp rol niet aanmaken omdat ik niet het recht \"Manage Roles\" heb op deze server."
+        noMuteRoleSet: "Er zijn momenteel geen demp rollen op deze server ingesteld, je kunt een rol instellen als demp rol door `:command set <role>` te gebruiken, of je laat de bot zelf een demp rol maken door `:command create-role`."
+        usingRoleMessage: "De server gebruikt de :role rol voor te dempen."
+        roleHasBeenRemoved: "De demp rol is verwijdert, de demp functie is nu uitgeschakeld totdat er een nieuwe demp rol aangemaakt is."
+        roleHasBeenCreated: "De :role rol is succesvol aangemaakt, en alle kanalen waar ik toegang to heb, heb ik de rechten aangepast zodat gebruikers met deze rol niet meer kunnen praten."
+        nowUsingRole: "De :role rol wordt nu gebruikt om gebruikers te dempen."
+        nowUsingExistingRole: "Een rol genaamd `Muted` bestaat al op deze server, nu wordt de :role rol gebruikt om te dempen, als je wilt dat de bot de kanaal rechten aanpast om gebruikers met deze rol toegang to praten af te nemen, kun je het commando\n`:command setup-permissions` gebruiken."
 
     NSFWCommand:
         invalidChannelOrStatus: "Ongeldig kanaal of status type gegeven!"
@@ -342,11 +342,11 @@ administration:
         message: "De **:role** rol is verwijderd van de zelf toegeven lijst.\nDe server heeft nog `:slots` plekken voor zelf toe te geven rollen."
 
     SetRoleColorCommand:
-        noRoleFound: "No role with the name \"{0}\" was found."
-        invalidColor: "The color \"{0}\" is not recognized, use the following HEX format instead \"#XXXXXX\""
-        userMissingPermissions: "You can't use the this command for the {0} role, you must have greater or equal privileges as the role to successfully run the command."
-        botMissingPermissions: "The Set Role Color command can't be used for the {0} role, I need to have greater or equal privileges as the role to successfully run the command."
-        colorChangeComplete: "The :role role has been successfully changed to **:color**."
+        noRoleFound: "Geen rol gevonden met de naam \"{0}\"."
+        invalidColor: "De kleur \"{0}\" is niet herkend, gebruik de HEX notatie \"#XXXXXX\""
+        userMissingPermissions: "Je kunt niet dit commando voor de {0} rol gebruiken, je moet gelijk of meer rechten hebben dan de rol om dit commando succesvol te gebruiken."
+        botMissingPermissions: "De stel rol kleur in commando kan niet gebruikt worden op de {0} rol, ik heb meer of evenveel rechten nodig als die rol om het commando succesvol te gebruiken."
+        colorChangeComplete: "De :role rol is succesvol verandert naar **:color**."
 
     SlowmodeCommand:
         missingArgument: "Er mist een argument, je moet of de `seconds` waarde geven voor dit of het genoemde kanaal, of `off` om het uit te schakelen."
@@ -375,13 +375,13 @@ administration:
         invalidUserIdGiven: "Ongeldige `user id` is gegeven, de `user id` moet een nummer van 18 karakters of langer zijn."
 
     UnmuteCommand:
-        requiresModlogToBeSet: "This command requires a modlog channel to be set, a modlog channel can be set using the `{0}modlog` command."
-        requireMuteRoleToBeSet: "No mute role have been setup for the server, you can setup a mute role using the `{0}muterole` command."
-        muteRoleIsPositionedHigher: "The {0} role used for mutes are positioned higher in the role hierarchy than any roles I have, so I can't automatically remove the role from other users, please fix this or use another role for mutes."
-        invalidUserMentioned: "Invalid user mentioned, you must mention a user on the server you want to unmute to use this command."
-        userDoesntHaveMuteRole: "{0} doesn't appear to have the mute role, they may already have been unmuted!"
-        userHasBeenUnmuted: ":target has been unmuted!"
-        userAutoUnmutedReason: "*Automatic unmute after the set time has elapsed*"
+        requiresModlogToBeSet: "Dit commando heeft een ingestelde modlog kanaal nodig, je kunt een modlog kanaal instellen door het commando `{0}modlog` te gebruiken."
+        requireMuteRoleToBeSet: "Er is geen demp rol ingesteld voor deze server, je kunt een demp rol instellen door het commando `{0}muterole` te gebruiken."
+        muteRoleIsPositionedHigher: "De {0} rol dat gebruikt wordt om gebruikers te dempen, staat hoger in de hierarchie dan de rollen die ik heb, hierdoor kan ik niet de demp rol van andere gebruikers afnemen, los dit op door een andere rol te gebruiken voor te dempen."
+        invalidUserMentioned: "Invalide gebruiker genoemd, je moet een gebruiker noemen op de server die je wilt ontdempen voor dit commando."
+        userDoesntHaveMuteRole: "{0} heeft geen demp rol, ze kunnen al de demp rol hebben!"
+        userHasBeenUnmuted: ":target is ge-ondempt!"
+        userAutoUnmutedReason: "*ondempt automatisch nadat de ingestelde tijd verlopen is.*"
 
     VoiceKickCommand:
         mustMentionUser: "Je moet een gebruiker noemen die je wil kicken."
@@ -468,10 +468,10 @@ fun:
         listItem: '`{0}` => `{1}`'
 
     PunCommand:
-        title: "Pun list"
-        noResults: ":user I found no puns, you can with a search or, or just try again later."
-        noResultsWithQuery: ":user I found nothing for `:query`"
-        query: "Search query: {0}"
+        title: "Woordspeling lijst"
+        noResults: ":user Ik heb geen woordspelingen gevonden, je kunt met een zoek opdracht proberen, of probeer het laten nog eens."
+        noResultsWithQuery: ":user Ik heb niks gevonden op `:query`"
+        query: "Zoek vraag: {0}"
 
     RandomCatCommand:
         tooManyAttempts: "Teveel aanvragen naar de Cat API, probeer opnieuw in een minuut, of vraag een bot administrator voor een api key op [meow.senither.com](https://meow.senither.com/) om meer aanvragen toe te staan."
@@ -574,11 +574,11 @@ music:
                 normal: "Voorkom het gebruik van commando's zoals playlist, volume control, en force skip zonder de `DJ` rol, maar mensen kunnen nog wel het play commando gebruiken."
 
     DjRoleCommand:
-        invalidRoleMentioned: "Invalid role mentioned, I found no roles called `{0}`"
-        noDjRoleSelected: "There are currently no custom DJ role setup for the server, however anyone who has a role called `DJ` will still be able to use DJ restricted music commands."
-        currentSelectedRole: "The :role role is used as the music DJ role.\nAnyone with the role will be able to use DJ restricted music commands."
-        resetDjRole: "The DJ role has successfully been reset, however anyone who has a role called `DJ` will still be able to use music commands that requires the DJ role to be used."
-        selectedRoleForMusic: "The :role role will now be used as the music DJ role!"
+        invalidRoleMentioned: "Genoemde rol is invalide, Ik heb geen rollen gevonden genaamd: `{0}`"
+        noDjRoleSelected: "Er zijn momenteel geen aangepaste DJ rollen opgezet in deze server, maar iemand met de rol `DJ` kan nogsteeds DJ muziek commando's gebruiken."
+        currentSelectedRole: "The :role De rol DJ wordt gebruik voor de muziek DJ rol.\nIedereen met deze rol kan DJ muziek commando's gebruiken."
+        resetDjRole: "De DJ rol is met success gereset, maar iedereen met de rol `DJ` kan nogsteeds muziek commando's gebruiken die alleen de DJ rol mag gebruiken.."
+        selectedRoleForMusic: "De :role rol is vanaf nu de muziek DJ rol!"
 
     MoveHereCommand:
         error: 'Niet verbonden met een spraak kanaal, vraag eerst muziek aan met `{0}play`'
@@ -773,13 +773,13 @@ utility:
             binary: "Er zijn maar 10 soorten mensen in de wereld, de mensen die binair kennen en de mensen die geen binair kennen."
 
     ChangelogCommand:
-        invalidChangelogChannel: "Invalid changelog channel defined, the text channel could not be found!"
-        cantReadChangelogChannel: "I don't have permission to read the message history for the defined changelog channel, this is required in oder to read, load, and display the changelog messages."
-        invalidVersionGiven: "Invalid version given, `{0}` is not a valid version entry."
-        noChangelogMessages: "There are no changelog messages to display yet, try check back again later."
-        latestVersion: "Latest version: {0}"
-        lastFewVersions: "Last 10 Versions"
-        changelogVersions: "Changelog Versions ({0})"
+        invalidChangelogChannel: "Het opgegeven veranderingslogboek kanaal is invalide, het tekst kanaal kon niet worden gevonden!"
+        cantReadChangelogChannel: "Ik heb niet genoeg permissies om de historie van dat veranderingslogboek kanaal uit te lezen, dit is nodig om berichten van het veranderingslogboek te lezen, laden en te toonen."
+        invalidVersionGiven: "Incorecte versie opgegeven, `{0}` is geen valide versie."
+        noChangelogMessages: "Er zijn nog geen veranderingslogboek berichten om te tonen, probeer het later nog eens."
+        latestVersion: "Laatste version: {0}"
+        lastFewVersions: "Laatste 10 versies"
+        changelogVersions: "Veranderingslogboek versies ({0})"
 
     ChannelIdCommand:
         message: ':user :id: van het :channel kanaal is `:targetChannel`'
@@ -802,11 +802,11 @@ utility:
         jumps: '**De link sprint door de volgende websites:**'
 
     FeedbackCommand:
-        confirmation: "You're about to send the following feedback:```:feedback```The feedback will be sent to the feedback channel in the :server server, are you sure you want to send it?\nUse `:command` in the next 60 seconds with no arguments to send the feedback."
+        confirmation: "Je staat op het punt om het volgende als feedback op te sturen:```:feedback``` Deze feedback wordt naar het feedback kanaal gestuurd in de :server server, weet je zeker dat je dit wilt sturen?\nGebruik `:command` binnen 60 seconden zonder argumenten om het op te sturen."
         success: 'Feedback succesvol verstuurd <:tickYes:319985232306765825>'
         failedToSend: 'Gefaald om feedback bericht te versturen: :error'
-        invalidFeedbackChannel: "Invalid feedback channel defined, the text channel could not be found!"
-        mustBe32CharactersOrMore: "The feedback message must be at least 32 characters long."
+        invalidFeedbackChannel: "Het gekozen feedback kanaal is invalide, het tekst kanaal kon niet worden gvonden!"
+        mustBe32CharactersOrMore: "Feedback moet minstens 32 lettes lang zijn."
 
     GlobalLeaderboardCommand:
         noData: 'Er is geen leaderboard data op het moment, probeer later opnieuw.'
@@ -908,7 +908,7 @@ utility:
         noArgs: 'AvaIre source code:'
         command: 'AvaIre source code voor de **:command** command:'
         invalidCommand: 'Ongeldig commando gegeven, hier is alle source code.'
-        externalCommand: "The command is registered via an external plugin, de auteur van deze plugin heeft de source code nog niet publiek gemaakt, of ze zijn vergeten een linkje toe te voegen, hier is alle source code voor de bot."
+        externalCommand: "Het commando is geregisteerd via een externe plugin, de auteur van deze plugin heeft de source code nog niet publiek gemaakt, of ze zijn vergeten een linkje toe te voegen, hier is alle source code voor de bot."
 
     StatsCommand:
         title: 'Officiale Bot Server Uitnodiging'
