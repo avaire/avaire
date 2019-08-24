@@ -128,9 +128,8 @@ public class MessageEventAdapter extends EventAdapter {
 
                 if (avaire.getIntelligenceManager().isEnabled()) {
                     if (isAIEnabledForChannel(event, databaseEventHolder.getGuild())) {
-                        avaire.getIntelligenceManager().request(
-                            event.getMessage(), databaseEventHolder,
-                            event.getMessage().getContentStripped()
+                        avaire.getIntelligenceManager().handleRequest(
+                            event.getMessage(), databaseEventHolder
                         );
                     }
                     return;

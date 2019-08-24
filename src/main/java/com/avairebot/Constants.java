@@ -48,7 +48,7 @@ public class Constants {
     public static final String PACKAGE_MIGRATION_PATH = "com.avairebot.database.migrate";
     public static final String PACKAGE_SEEDER_PATH = "com.avairebot.database.seeder";
     public static final String PACKAGE_COMMAND_PATH = "com.avairebot.commands";
-    public static final String PACKAGE_INTENTS_PATH = "com.avairebot.ai.intents";
+    public static final String PACKAGE_INTENTS_PATH = "com.avairebot.ai.dialogflow.intents";
     public static final String PACKAGE_JOB_PATH = "com.avairebot.scheduler";
 
     // Emojis

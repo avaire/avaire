@@ -177,10 +177,10 @@ public class GuildStateEventAdapter extends EventAdapter {
 
             if (LavalinkManager.LavalinkManagerHolder.lavalink.isEnabled()) {
                 JdaLink link = LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink()
-                    .getLink(String.valueOf(guildId));
+                    .getExistingLink(String.valueOf(guildId));
 
 
-                if (!LavalinkManager.LavalinkManagerHolder.lavalink.isLinkBeingDestroyed(link)) {
+                if (link != null && !LavalinkManager.LavalinkManagerHolder.lavalink.isLinkBeingDestroyed(link)) {
                     link.destroy();
                 }
             }

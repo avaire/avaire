@@ -302,7 +302,7 @@ public class RankCommand extends Command {
                     ? context.getPlayerTransformer() : PlayerController.fetchPlayer(avaire, context.getMessage(), author);
 
                 DataRow data = avaire.getDatabase().newQueryBuilder(Constants.PLAYER_EXPERIENCE_TABLE_NAME)
-                    .selectRaw("sum(`experience`) - (count(`user_id`) * 100) as `total`")
+                    .selectRaw("sum(`global_experience`) - (count(`user_id`) * 100) as `total`")
                     .where("user_id", author.getId())
                     .where("active", 1)
                     .get().first();

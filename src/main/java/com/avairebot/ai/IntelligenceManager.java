@@ -21,166 +21,103 @@
 
 package com.avairebot.ai;
 
-import ai.api.AIConfiguration;
-import ai.api.AIDataService;
-import ai.api.AIServiceException;
-import ai.api.model.AIRequest;
-import ai.api.model.AIResponse;
 import com.avairebot.AvaIre;
-import com.avairebot.chat.ConsoleColor;
-import com.avairebot.commands.CommandMessage;
-import com.avairebot.contracts.ai.Intent;
-import com.avairebot.factories.MessageFactory;
+import com.avairebot.contracts.ai.IntelligenceService;
 import com.avairebot.handlers.DatabaseEventHolder;
 import com.avairebot.metrics.Metrics;
-import io.prometheus.client.Histogram;
 import net.dv8tion.jda.core.entities.Message;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import javax.annotation.Nonnull;
 
 public class IntelligenceManager {
 
-    private final static String actionOutput = ConsoleColor.format("%cyanExecuting Intelligence Action \"%reset%action%%cyan\" for:"
-        + "\n\t\t%cyanUser:\t %author%"
-        + "\n\t\t%cyanServer:\t %server%"
-        + "\n\t\t%cyanChannel: %channel%"
-        + "\n\t\t%cyanMessage: %reset%message%"
-        + "\n\t\t%cyanResponse: %reset%response%");
+    private final AvaIre avaire;
+    private IntelligenceService service;
 
-    private final static String propertyOutput = ConsoleColor.format(
-        "%reset%s %cyan[%reset%s%cyan]"
-    );
-
-    private final static Map<IntentAction, Intent> intents = new HashMap<>();
-
-    private final ExecutorService executor;
-
-    private boolean enabled = false;
-    private AIDataService service;
-
+    /**
+     * Creates a new intelligence manager instance using
+     * the given AvaIre application instance.
+     *
+     * @param avaire The main AvaIre application instance.
+     */
     public IntelligenceManager(AvaIre avaire) {
-        String dialogFlowClientToken = avaire.getConfig().getString("apiKeys.dialogflow", "invalid");
-        if (dialogFlowClientToken.length() != 32) {
-            executor = null;
+        this.avaire = avaire;
+
+        service = null;
+    }
+
+    /**
+     * Checks if the there is an AI service registered, and that
+     * the service is enabled and ready to serve requests.
+     *
+     * @return {@code True} if the registered AI service is ready to serve requests,
+     *         {@code False} otherwise.
+     */
+    public boolean isEnabled() {
+        return service != null && service.isEnabled();
+    }
+
+    /**
+     * Registers the given service, if a service is already register,
+     * the service will first be unregistered, and then the new
+     * service will be registered in its place.
+     * <p>
+     * A service can also be unregistered to disable the AI completely by calling
+     * the {@link #unregisterService() unregister serivce} method.
+     *
+     * @param service The AI service that should be used to handle AI requests.
+     */
+    public void registerService(@Nonnull IntelligenceService service) {
+        if (this.service != null) {
+            this.service.unregisterService(avaire);
+        }
+
+        service.registerService(avaire);
+
+        this.service = service;
+    }
+
+    /**
+     * Unregisters the AI service that is currently
+     * being used to serve AI requests.
+     */
+    public void unregisterService() {
+        if (service == null) {
             return;
         }
 
-
-        executor = Executors.newFixedThreadPool(2);
-        service = new AIDataService(new AIConfiguration(dialogFlowClientToken));
-        enabled = true;
+        service.unregisterService(avaire);
+        service = null;
     }
 
-    public boolean isEnabled() {
-        return enabled;
+    /**
+     * Gets the AI service that are currently registered,
+     * the service may not be enabled yet.
+     *
+     * @return Possibly-null, or the service that is registered.
+     */
+    public IntelligenceService getService() {
+        return service;
     }
 
-    public boolean registerIntent(Intent intent) {
-        if (!isEnabled()) {
-            return false;
-        }
-
-        Metrics.aiRequestsExecuted.labels(intent.getClass().getSimpleName()).inc(0D);
-
-        intents.put(new IntentAction(intent.getAction()), intent);
-        return true;
-    }
-
-    public void request(Message message, DatabaseEventHolder databaseEventHolder, String request) {
-        if (!isEnabled()) {
+    /**
+     * Sends an AI request message to the service using the give JDA
+     * message object instance, and the database event holders for
+     * the event that triggered the AI requests.
+     * <p>
+     * The database event holders will hold the guild and player
+     * database transformers for the current request.
+     *
+     * @param message             The JDA message instance that triggered the AI request.
+     * @param databaseEventHolder The database holder for the current guild and player transformers.
+     */
+    public void handleRequest(@Nonnull Message message, @Nonnull DatabaseEventHolder databaseEventHolder) {
+        if (service == null || !isEnabled()) {
             return;
         }
 
         Metrics.aiRequestsReceived.inc();
 
-        String[] split = request.split(" ");
-
-        executor.submit(() -> sendRequest(message, databaseEventHolder, String.join(" ",
-            Arrays.copyOfRange(split, 1, split.length)
-        ).trim()));
-    }
-
-    private void sendRequest(Message message, DatabaseEventHolder databaseEventHolder, String request) {
-        try {
-            AIResponse response = service.request(new AIRequest(request));
-
-            String action = response.getResult().getAction();
-            AvaIre.getLogger().info(actionOutput
-                .replace("%action%", action)
-                .replace("%author%", generateUsername(message))
-                .replace("%server%", generateServer(message))
-                .replace("%channel%", generateChannel(message))
-                .replace("%message%", message.getContentRaw())
-                .replace("%response%", response.getResult().getFulfillment().getSpeech())
-            );
-
-            if (response.getStatus().getCode() != 200) {
-                MessageFactory.makeError(message, response.getStatus().getErrorDetails()).queue();
-                return;
-            }
-
-            for (Map.Entry<IntentAction, Intent> entry : intents.entrySet()) {
-                if (entry.getKey().isWildcard() && action.startsWith(entry.getKey().getAction())) {
-                    invokeIntent(message, databaseEventHolder, response, entry.getValue());
-                    return;
-                }
-
-                if (entry.getKey().getAction().equals(action)) {
-                    invokeIntent(message, databaseEventHolder, response, entry.getValue());
-                    return;
-                }
-            }
-        } catch (AIServiceException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void invokeIntent(Message message, DatabaseEventHolder databaseEventHolder, AIResponse response, Intent intent) {
-        Metrics.aiRequestsExecuted.labels(intent.getClass().getSimpleName()).inc();
-        Histogram.Timer timer = Metrics.aiExecutionTime.labels(intent.getClass().getSimpleName()).startTimer();
-
-        intent.onIntent(new CommandMessage(
-            null, databaseEventHolder, message
-        ), response);
-
-        timer.observeDuration();
-    }
-
-    private String generateUsername(Message message) {
-        return String.format(propertyOutput,
-            message.getAuthor().getName() + "#" + message.getAuthor().getDiscriminator(),
-            message.getAuthor().getId()
-        );
-    }
-
-    private String generateServer(Message message) {
-        if (!message.getChannelType().isGuild()) {
-            return ConsoleColor.GREEN + "PRIVATE";
-        }
-
-        return String.format(propertyOutput,
-            message.getGuild().getName(),
-            message.getGuild().getId()
-        );
-    }
-
-    private CharSequence generateChannel(Message message) {
-        if (!message.getChannelType().isGuild()) {
-            return ConsoleColor.GREEN + "PRIVATE";
-        }
-
-        return String.format(propertyOutput,
-            message.getChannel().getName(),
-            message.getChannel().getId()
-        );
-    }
-
-    public Set<Map.Entry<IntentAction, Intent>> entrySet() {
-        return intents.entrySet();
+        service.onMessage(message, databaseEventHolder);
     }
 }

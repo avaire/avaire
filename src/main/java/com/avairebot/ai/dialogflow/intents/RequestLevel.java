@@ -19,7 +19,7 @@
  *
  */
 
-package com.avairebot.ai.intents;
+package com.avairebot.ai.dialogflow.intents;
 
 import ai.api.model.AIResponse;
 import com.avairebot.AvaIre;
@@ -31,6 +31,7 @@ import com.avairebot.contracts.ai.Intent;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.factories.MessageFactory;
 
+@SuppressWarnings("unused")
 public class RequestLevel extends Intent {
 
     public RequestLevel(AvaIre avaire) {
