@@ -340,6 +340,16 @@ administration:
     RemoveSelfAssignableRoleCommand:
         message: "这个 **:role** 角色已从自我分配列表中删除。.\n服务器具有 `:slots` 更多可自我分配的角色插槽可用."
 
+    RoleLevelCommand:
+        invalidRole: "Invalid role given, I found no role on the server called `{0}`"
+        noRolesWithRewardsDisabled: "There are currently no roles with the level rewards disabled, you can add one by using the `{0} <role>` command."
+        listRoles: "All the roles mentioned below currently have their level rewards turned off, this means that any user with one of those roles won't earn any XP in any channel they talk in, any role not on this list is unaffected.\n\n:roles"
+        listRolesTitle: "Roles with their Level Rewards disabled ({0})"
+        success: "The XP rewards for the :role role has been **:status**!"
+        status:
+            enabled: "Enabled"
+            disabled: "Disabled"
+
     SetRoleColorCommand:
         noRoleFound: "No role with the name \"{0}\" was found."
         invalidColor: "The color \"{0}\" is not recognized, use the following HEX format instead \"#XXXXXX\""

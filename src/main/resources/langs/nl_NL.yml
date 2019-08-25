@@ -341,6 +341,16 @@ administration:
     RemoveSelfAssignableRoleCommand:
         message: "De **:role** rol is verwijderd van de zelf toegeven lijst.\nDe server heeft nog `:slots` plekken voor zelf toe te geven rollen."
 
+    RoleLevelCommand:
+        invalidRole: "Invalid role given, I found no role on the server called `{0}`"
+        noRolesWithRewardsDisabled: "There are currently no roles with the level rewards disabled, you can add one by using the `{0} <role>` command."
+        listRoles: "All the roles mentioned below currently have their level rewards turned off, this means that any user with one of those roles won't earn any XP in any channel they talk in, any role not on this list is unaffected.\n\n:roles"
+        listRolesTitle: "Roles with their Level Rewards disabled ({0})"
+        success: "The XP rewards for the :role role has been **:status**!"
+        status:
+            enabled: "Enabled"
+            disabled: "Disabled"
+
     SetRoleColorCommand:
         noRoleFound: "Geen rol gevonden met de naam \"{0}\"."
         invalidColor: "De kleur \"{0}\" is niet herkend, gebruik de HEX notatie \"#XXXXXX\""

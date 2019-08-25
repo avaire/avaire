@@ -84,6 +84,7 @@ public class LevelModifierCommand extends Command {
             LevelHierarchyCommand.class,
             LevelAlertsCommand.class,
             ChannelLevelCommand.class,
+            RoleLevelCommand.class,
             LevelCommand.class,
             RankCommand.class
         );

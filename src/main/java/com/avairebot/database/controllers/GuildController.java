@@ -53,9 +53,9 @@ public class GuildController {
     private static final String[] requiredGuildColumns = new String[]{
         "guild_types.name as type_name", "guild_types.limits as type_limits", "guilds.id", "guilds.partner", "guilds.name", "guilds.icon",
         "guilds.local", "guilds.channels", "guilds.modules", "guilds.level_roles", "guilds.level_modifier", "guilds.claimable_roles",
-        "guilds.music_channel_text", "guilds.music_channel_voice", "guilds.music_messages", "guilds.level_exempt_channels",
-        "guilds.prefixes", "guilds.aliases", "guilds.modlog_case", "guilds.modlog", "guilds.mute_role", "guilds.autorole",
-        "guilds.level_channel", "guilds.level_alerts", "guilds.levels", "guilds.hierarchy",
+        "guilds.music_channel_text", "guilds.music_channel_voice", "guilds.music_messages", "guilds.prefixes", "guilds.aliases",
+        "guilds.level_exempt_channels", "guilds.level_exempt_roles", "guilds.modlog_case", "guilds.modlog", "guilds.mute_role",
+        "guilds.autorole", "guilds.level_channel", "guilds.level_alerts", "guilds.levels", "guilds.hierarchy",
         "guilds.default_volume", "guilds.dj_level", "guilds.dj_role"
     };
 
