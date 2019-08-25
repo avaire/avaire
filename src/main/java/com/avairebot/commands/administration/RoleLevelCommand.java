@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018.
+ * Copyright (c) 2019.
  *
  * This file is part of AvaIre.
  *
@@ -33,8 +33,7 @@ import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.utilities.ComparatorUtil;
 import com.avairebot.utilities.MentionableUtil;
 import com.avairebot.utilities.NumberUtil;
-import net.dv8tion.jda.core.entities.Channel;
-import net.dv8tion.jda.core.entities.TextChannel;
+import net.dv8tion.jda.core.entities.Role;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,45 +44,45 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class ChannelLevelCommand extends Command {
+public class RoleLevelCommand extends Command {
 
-    private static final Logger log = LoggerFactory.getLogger(ChannelLevelCommand.class);
+    private static final Logger log = LoggerFactory.getLogger(RoleLevelCommand.class);
 
-    public ChannelLevelCommand(AvaIre avaire) {
+    public RoleLevelCommand(AvaIre avaire) {
         super(avaire, false);
     }
 
     @Override
     public String getName() {
-        return "Channel Level Command";
+        return "Role Level Command";
     }
 
     @Override
     public String getDescription() {
-        return "Toggles XP rewards on or off for the mentioned channel, if no arguments is given the channels that currently has their channel rewards disabled will be displayed instead, the command can be used to prevent rewarding users experience in certain channels like #spam channels.\n**Note** this command requires that the leveling system is enabled for the server.";
+        return "Toggles XP rewards on or off for the mentioned roles, if no arguments is given the role that currently has their XP rewards disabled will be displayed instead, the command can be used to prevent rewarding users with certain roles experience.\n**Note** this command requires that the leveling system is enabled for the server.";
     }
 
     @Override
     public List<String> getUsageInstructions() {
         return Arrays.asList(
-            "`:command <channel> [status]` - Toggles the level feature on/off.",
-            "`:command` - Lists channels with their XP status disabled."
+            "`:command <role> [status]` - Toggles the level feature on/off.",
+            "`:command` - Lists roles with their XP status disabled."
         );
     }
 
     @Override
     public List<String> getExampleUsage() {
         return Arrays.asList(
-            "`:command #spam off` - Disables XP gains in the #spam channel.",
-            "`:command #sandbox` - Toggles the XP gains on/off for the #sandbox channel.",
-            "`:command` - Lists all the channels that currently has their XP status disabled."
+            "`:command @Muted off` - Disables people with the @Muted role from gaining XP.",
+            "`:command @Member` - Toggles the XP gains on/off for the Member role.",
+            "`:command` - Lists all the roles that currently has their XP status disabled."
         );
     }
 
     @Override
     public List<Class<? extends Command>> getRelations() {
         return Arrays.asList(
-            RoleLevelCommand.class,
+            ChannelLevelCommand.class,
             LevelCommand.class,
             LevelHierarchyCommand.class,
             LevelModifierCommand.class,
@@ -94,7 +93,7 @@ public class ChannelLevelCommand extends Command {
 
     @Override
     public List<String> getTriggers() {
-        return Arrays.asList("channellevel", "clvl");
+        return Arrays.asList("rolelevel", "rlvl");
     }
 
     @Override
@@ -112,10 +111,10 @@ public class ChannelLevelCommand extends Command {
     }
 
     @Override
-    @SuppressWarnings("ConstantConditions")
     public boolean onCommand(CommandMessage context, String[] args) {
         GuildTransformer guildTransformer = context.getGuildTransformer();
         if (guildTransformer == null || !guildTransformer.isLevels()) {
+            //noinspection ConstantConditions
             return sendErrorMessage(
                 context,
                 "errors.requireLevelFeatureToBeEnabled",
@@ -125,47 +124,39 @@ public class ChannelLevelCommand extends Command {
         }
 
         if (args.length == 0 || NumberUtil.parseInt(args[0], -1) > 0) {
-            return sendDisabledChannels(context, guildTransformer);
+            return sendDisabledRoles(context, guildTransformer);
         }
 
-        Channel channel = MentionableUtil.getChannel(context.getMessage(), args);
-        if (channel == null || !(channel instanceof TextChannel)) {
-            return sendErrorMessage(context, context.i18n("invalidChannel"));
-        }
-
-        TextChannel textChannel = (TextChannel) channel;
-
-        if (!textChannel.canTalk()) {
-            return sendErrorMessage(context, context.i18n("cantTalkInChannel",
-                textChannel.getAsMention()
-            ));
+        Role role = MentionableUtil.getRole(context.getMessage(), args);
+        if (role == null) {
+            return sendErrorMessage(context, context.i18n("invalidRole", args[0]));
         }
 
         if (args.length > 1) {
-            return handleToggleChannel(context, textChannel, ComparatorUtil.getFuzzyType(args[1]));
+            return handleToggleRole(context, role, ComparatorUtil.getFuzzyType(args[1]));
         }
-        return handleToggleChannel(context, textChannel, ComparatorUtil.ComparatorType.UNKNOWN);
+        return handleToggleRole(context, role, ComparatorUtil.ComparatorType.UNKNOWN);
     }
 
-    private boolean sendDisabledChannels(CommandMessage context, GuildTransformer guildTransformer) {
-        if (guildTransformer.getLevelExemptChannels().isEmpty()) {
-            return sendErrorMessage(context, context.i18n("noChannelsWithRewardsDisabled"),
+    private boolean sendDisabledRoles(CommandMessage context, GuildTransformer transformer) {
+        if (transformer.getLevelExemptRoles().isEmpty()) {
+            return sendErrorMessage(context, context.i18n("noRolesWithRewardsDisabled",
                 generateCommandTrigger(context.getMessage())
-            );
+            ));
         }
 
-        List<String> channels = new ArrayList<>();
-        for (Long channelId : guildTransformer.getLevelExemptChannels()) {
-            TextChannel textChannel = context.getGuild().getTextChannelById(channelId);
-            if (textChannel != null) {
-                channels.add(textChannel.getAsMention());
+        List<String> roles = new ArrayList<>();
+        for (Long roleId : transformer.getLevelExemptRoles()) {
+            Role role = context.getGuild().getRoleById(roleId);
+            if (role != null) {
+                roles.add(role.getAsMention());
             }
         }
 
-        context.makeInfo(context.i18n("listChannels"))
-            .set("channels", String.join(", ", channels))
-            .setTitle(context.i18n("listChannelsTitle",
-                guildTransformer.getLevelExemptChannels().size()
+        context.makeInfo(context.i18n("listRoles"))
+            .set("roles", String.join(", ", roles))
+            .setTitle(context.i18n("listRolesTitle",
+                transformer.getLevelExemptRoles().size()
             ))
             .queue();
 
@@ -173,50 +164,50 @@ public class ChannelLevelCommand extends Command {
     }
 
     @SuppressWarnings("ConstantConditions")
-    private boolean handleToggleChannel(CommandMessage context, TextChannel channel, ComparatorUtil.ComparatorType value) {
+    private boolean handleToggleRole(CommandMessage context, Role role, ComparatorUtil.ComparatorType value) {
         GuildTransformer guildTransformer = context.getGuildTransformer();
 
         switch (value) {
             case TRUE:
-                guildTransformer.getLevelExemptChannels().remove(channel.getIdLong());
+                guildTransformer.getLevelExemptRoles().remove(role.getIdLong());
                 break;
 
             case FALSE:
-                guildTransformer.getLevelExemptChannels().add(channel.getIdLong());
+                guildTransformer.getLevelExemptRoles().add(role.getIdLong());
                 break;
 
             case UNKNOWN:
-                if (guildTransformer.getLevelExemptChannels().contains(channel.getIdLong())) {
-                    guildTransformer.getLevelExemptChannels().remove(channel.getIdLong());
+                if (guildTransformer.getLevelExemptRoles().contains(role.getIdLong())) {
+                    guildTransformer.getLevelExemptRoles().remove(role.getIdLong());
                 } else {
-                    guildTransformer.getLevelExemptChannels().add(channel.getIdLong());
+                    guildTransformer.getLevelExemptRoles().add(role.getIdLong());
                 }
                 break;
         }
 
-        boolean isEnabled = !guildTransformer.getLevelExemptChannels().contains(channel.getIdLong());
+        boolean isEnabled = !guildTransformer.getLevelExemptRoles().contains(role.getIdLong());
 
         try {
             avaire.getDatabase().newQueryBuilder(Constants.GUILD_TABLE_NAME)
                 .where("id", context.getGuild().getId())
                 .update(statement -> {
-                    statement.set("level_exempt_channels", AvaIre.gson.toJson(
-                        guildTransformer.getLevelExemptChannels()
+                    statement.set("level_exempt_roles", AvaIre.gson.toJson(
+                        guildTransformer.getLevelExemptRoles()
                     ), true);
                 });
 
             context.makeSuccess(context.i18n("success"))
-                .set("channel", channel.getAsMention())
+                .set("role", role.getAsMention())
                 .set("status", context.i18n(isEnabled ? "status.enabled" : "status.disabled"))
                 .queue();
 
             return true;
         } catch (SQLException e) {
-            log.error("Failed to save the level exempt channels to the data for guild {}, error: {}",
+            log.error("Failed to save the level exempt roles to the database for guild {}, error: {}",
                 context.getGuild().getId(), e.getMessage(), e
             );
 
-            context.makeError(context.i18n("failedToUpdate")).queue();
+            context.makeError("Failed to save the changes to the database, please try again. If the issue persists, please contact one of my developers.").queue();
 
             return false;
         }

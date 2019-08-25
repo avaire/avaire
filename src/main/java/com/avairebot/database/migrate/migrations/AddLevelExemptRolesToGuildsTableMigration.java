@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018.
+ * Copyright (c) 2019.
  *
  * This file is part of AvaIre.
  *
@@ -28,27 +28,27 @@ import com.avairebot.database.schema.Schema;
 
 import java.sql.SQLException;
 
-public class AddLevelExemptChannelsToGuildsTableMigration implements Migration {
+public class AddLevelExemptRolesToGuildsTableMigration implements Migration {
 
     @Override
     public String created_at() {
-        return "Wed, Dec 12, 2018 7:13 PM";
+        return "Fri, Aug 02, 2019 1:21 PM";
     }
 
     @Override
     public boolean up(Schema schema) throws SQLException {
-        if (schema.hasColumn(Constants.GUILD_TABLE_NAME, "level_exempt_channels")) {
+        if (schema.hasColumn(Constants.GUILD_TABLE_NAME, "level_exempt_roles")) {
             return true;
         }
 
         if (schema.getDbm().getConnection() instanceof MySQL) {
             schema.getDbm().queryUpdate(String.format(
-                "ALTER TABLE `%s` ADD `level_exempt_channels` TEXT NULL DEFAULT NULL AFTER `level_roles`;",
+                "ALTER TABLE `%s` ADD `level_exempt_roles` TEXT NULL DEFAULT NULL AFTER `level_exempt_channels`;",
                 Constants.GUILD_TABLE_NAME
             ));
         } else {
             schema.getDbm().queryUpdate(String.format(
-                "ALTER TABLE `%s` ADD `level_exempt_channels` TEXT;",
+                "ALTER TABLE `%s` ADD `level_exempt_roles` TEXT;",
                 Constants.GUILD_TABLE_NAME
             ));
         }
@@ -58,12 +58,12 @@ public class AddLevelExemptChannelsToGuildsTableMigration implements Migration {
 
     @Override
     public boolean down(Schema schema) throws SQLException {
-        if (!schema.hasColumn(Constants.GUILD_TABLE_NAME, "level_exempt_channels")) {
+        if (!schema.hasColumn(Constants.GUILD_TABLE_NAME, "level_exempt_roles")) {
             return true;
         }
 
         schema.getDbm().queryUpdate(String.format(
-            "ALTER TABLE `%s` DROP `level_exempt_channels`;",
+            "ALTER TABLE `%s` DROP `level_exempt_roles`;",
             Constants.GUILD_TABLE_NAME
         ));
 

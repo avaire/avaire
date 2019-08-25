@@ -143,7 +143,7 @@ public abstract class Command extends Reflectionable {
      * @return Possibly-null, the command usage instructions.
      */
     public List<String> getUsageInstructions(@Nullable Message message) {
-        return null;
+        return getUsageInstructions();
     }
 
     /**
@@ -157,7 +157,7 @@ public abstract class Command extends Reflectionable {
      * @return Possibly-null, the command usage instructions.
      */
     public List<String> getUsageInstructions() {
-        return getUsageInstructions(null);
+        return null;
     }
 
     /**
@@ -170,7 +170,7 @@ public abstract class Command extends Reflectionable {
      * @return Possibly-null, an example of how to use the command.
      */
     public List<String> getExampleUsage(@Nullable Message message) {
-        return null;
+        return getExampleUsage();
     }
 
     /**
@@ -185,7 +185,7 @@ public abstract class Command extends Reflectionable {
      * @return Possibly-null, an example of how to use the command.
      */
     public List<String> getExampleUsage() {
-        return getExampleUsage(null);
+        return null;
     }
 
     /**
@@ -464,8 +464,8 @@ public abstract class Command extends Reflectionable {
      */
     public final boolean isSame(Command command) {
         return Objects.equals(command.getName(), getName())
-            && Objects.equals(command.getUsageInstructions(), getUsageInstructions())
-            && Objects.equals(command.getExampleUsage(), getExampleUsage())
+            && Objects.equals(command.getUsageInstructions(null), getUsageInstructions(null))
+            && Objects.equals(command.getExampleUsage(null), getExampleUsage(null))
             && Objects.equals(command.getTriggers(), getTriggers());
     }
 
