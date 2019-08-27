@@ -162,7 +162,7 @@ public class RankBackgroundHandler {
      * directory.
      *
      * If the file could not be copied or any possible errors occur,
-     * the bot will print the exception to the string and subsequently shut down.
+     * the bot log the exception and subsequently shut down. 
      */
     private void copyBackgroundsFromJarToFolder() {
         try {
