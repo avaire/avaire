@@ -242,13 +242,13 @@
             "value": "master"
         },
 		"WEBSITE_REPO_GIT": {
-            "description": "The name of the website upstream repo. If you want to use your own forked avaire website, change this to your situation.",
-            "required": false,
+            "description": "The name of the website upstream repo. If you want to use your own forked avaire website, change this to your situation. Required to compile AvaIre.jar.",
+            "required": true,
             "value": "avaire/website"
 			},
 		"AVAIRE_REPO_GIT": {
-            "description": "The name of the AvaIre upstream repo. If you want to use your own repo to set the .git, change this to your situation.",
-            "required": false,
+            "description": "The name of the AvaIre upstream repo. If you want to use your own repo to set the .git, change this to your situation. Required to compile the website.",
+            "required": true,
             "value": "avaire/avaire"
 			}
     },
