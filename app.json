@@ -18,7 +18,7 @@
     "website": "https://avairebot.com/",
     "repository": "https://github.com/avaire/avaire",
     "logo": "https://imgur.com/H8RCD5F.png",
-    "success_url": "/stats",
+    "success_url": "/",
     "addons": [
         {
             "plan": "jawsdb:kitefin"
@@ -240,7 +240,15 @@
             "description": "The branch of the upstream repo, leave this as is for AvaIre",
             "required": false,
             "value": "master"
-        }
+        },
+		"WEBSITE_REPO_GIT": {
+            "description": "The name of the website upstream repo. If you want to use your own forked avaire website, change this to your situation.",
+            "required": false,
+            "value": "avaire/website"
+		"AVAIRE_REPO_GIT": {
+            "description": "The name of the AvaIre upstream repo. If you want to use your own repo to set the .git, change this to your situation.",
+            "required": false,
+            "value": "avaire/avaire"
     },
     "formation": {
         "worker": {
