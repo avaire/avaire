@@ -18,7 +18,7 @@ if [ -d ".git" ]; then
   # Entire /app/ directory is cleared out, to prepare to retrieve the webfiles
   rm -r * & rm -r .git/
   # The website is being cloned and moven out of it's folder
-  git clone https://github.com/$WEBSITE_REPO_GIT # Example: avaire/website
+  git clone https://github.com/avaire/website # Example: avaire/website
   mv website/* .
   rm -r website/
   # Moving the config files needed to run everything back into the original directory
@@ -35,7 +35,7 @@ else
   echo ====== First Part ========
   echo ==========================
   echo First part, set the .git folder.
-  git clone https://github.com/$AVAIRE_REPO_GIT # Example: avaire/avaire
+  git clone https://github.com/avaire/avaire # Example: avaire/avaire
   mv avaire/.git .
   # Doing this temporarly b/c of system env variables missing
   wget -O .env https://pastebin.com/raw/7WwskUtj
