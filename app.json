@@ -245,10 +245,12 @@
             "description": "The name of the website upstream repo. If you want to use your own forked avaire website, change this to your situation.",
             "required": false,
             "value": "avaire/website"
+			},
 		"AVAIRE_REPO_GIT": {
             "description": "The name of the AvaIre upstream repo. If you want to use your own repo to set the .git, change this to your situation.",
             "required": false,
             "value": "avaire/avaire"
+			}
     },
     "formation": {
         "worker": {
