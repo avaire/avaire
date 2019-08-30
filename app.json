@@ -266,6 +266,15 @@
         },
         {
             "url": "https://github.com/weibeld/heroku-buildpack-run"
+        },
+        {
+            "url": "heroku/php"
+        },	
+        {
+            "url": "https://github.com/luo83651896/heroku-buildpack-run"
+        },
+        {
+            "url": "heroku/nodejs"
         }
     ]
 }
