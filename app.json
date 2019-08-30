@@ -131,6 +131,11 @@
             "required": false,
             "value": ""
         },
+		"AVA_WEB_SERVLET_PORT": {
+			"description": "overrides the PORT env variable. Leave as is inorder to access the API with proxy on /avairebotapi/.",
+			"required": false,
+			"value": "8080"
+		},
         "AVA_WEB_SERVLET_METRICS": {
             "description": "Ava uses Prometheus metrics for tracking a long list of different things within the application during runtime, the metrics are then displayed using Grafana to users on a web-dashboard using graphs.",
             "required": false,
@@ -254,13 +259,13 @@
     },
     "buildpacks": [
         {
-            "url": "https://github.com/weibeld/heroku-buildpack-run"
+            "url": "https://github.com/650health/heroku-buildpack-run"
         },
         {
             "url": "heroku/gradle"
         },
         {
-            "url": "https://github.com/650health/heroku-buildpack-run"
+            "url": "https://github.com/weibeld/heroku-buildpack-run"
         }
     ]
 }
