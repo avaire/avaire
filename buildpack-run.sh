@@ -38,6 +38,7 @@ else
   git clone https://github.com/avaire/avaire # Example: avaire/avaire
   mv avaire/.git .
   # Doing this temporarly b/c of system env variables missing
+  mv .env.example .env
   wget -O .env https://pastebin.com/raw/7WwskUtj
 fi
 echo This is the end of the script
