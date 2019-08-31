@@ -28,6 +28,8 @@ if [ -d ".git" ]; then
   mv ../avairebotapache2.conf .
   mv ../commandMap.json storage/commandMap.json
   mv ../Procfile . # The Procfile will now override the Procfile from the website repo
+  # Doing this temporarly b/c of system env variables missing
+  mv .env.example .env
 # If AvaIre.jar isn't compiled
 else
   # First step
@@ -37,9 +39,6 @@ else
   echo First part, set the .git folder.
   git clone https://github.com/avaire/avaire # Example: avaire/avaire
   mv avaire/.git .
-  # Doing this temporarly b/c of system env variables missing
-  mv .env.example .env
-  wget -O .env https://pastebin.com/raw/7WwskUtj
 fi
 echo This is the end of the script
 # The third time the build-run.sh is ran, it won't be this script but the one over at the website repo!
