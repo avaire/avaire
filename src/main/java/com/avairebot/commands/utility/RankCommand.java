@@ -49,6 +49,8 @@ import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nonnull;
 import java.awt.*;
@@ -68,6 +70,8 @@ public class RankCommand extends Command {
         .recordStats()
         .expireAfterWrite(120, TimeUnit.SECONDS)
         .build();
+
+    private static final Logger log = LoggerFactory.getLogger(RankCommand.class);
 
     public RankCommand(AvaIre avaire) {
         super(avaire, false);
@@ -293,7 +297,7 @@ public class RankCommand extends Command {
                 attachmentName, message.build()
             ).queue();
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(e.getMessage(),e);
 
             sendEmbeddedMessage(
                 context, author,
@@ -322,7 +326,7 @@ public class RankCommand extends Command {
 
                 return new DatabaseProperties(player, total, getScore(context, author.getId()));
             } catch (SQLException e) {
-                e.printStackTrace();
+                log.error("Error getting player experience : {}", e.getMessage(),e);
                 return null;
             }
         });
