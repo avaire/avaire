@@ -28,8 +28,6 @@ if [ -d ".git" ]; then
   mv ../avairebotapache2.conf .
   mv ../commandMap.json storage/commandMap.json
   mv ../Procfile . # The Procfile will now override the Procfile from the website repo
-  # Doing this temporarly b/c of system env variables missing
-  mv .env.example .env
 # If AvaIre.jar isn't compiled
 else
   # First step
