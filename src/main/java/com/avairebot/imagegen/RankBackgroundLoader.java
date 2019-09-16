@@ -118,11 +118,11 @@ public class RankBackgroundLoader {
      * Returns an sRGB color representing the color heading.
      */
     private Color loadColorFromYaml(String heading) {
-        int red = config.getInt(heading + ".red");
-        int green = config.getInt(heading + ".green");
-        int blue = config.getInt(heading + ".blue");
+        int red = config.getInt(heading + config.options().pathSeparator() + "red");
+        int green = config.getInt(heading + config.options().pathSeparator() + "green");
+        int blue = config.getInt(heading +  config.options().pathSeparator() +  "blue");
 
-        if (!config.contains((heading + ".alpha"))) {
+        if (!config.contains((heading + config.options().pathSeparator() +  "alpha"))) {
             return ColorUtil.makeColor(red, green, blue);
         }
 
