@@ -228,6 +228,14 @@ public class LevelManager {
             return;
         }
 
+        if (!guild.getLevelExemptRoles().isEmpty()) {
+            for (Role role : event.getMember().getRoles()) {
+                if (guild.getLevelExemptRoles().contains(role.getIdLong())) {
+                    return;
+                }
+            }
+        }
+
         CacheUtil.getUncheckedUnwrapped(cache, asKey(event), () -> {
             giveExperience(event.getMessage(), event.getMessage().getAuthor(), guild, player);
             return 0;
