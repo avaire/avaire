@@ -15,6 +15,7 @@ if [ -d ".git" ]; then
   mv avairebotapache2.conf ../avairebotapache2.conf
   mv commandMap.json ../commandMap.json
   mv Procfile ../Procfile
+  mv update.sh ../update.sh
   # Entire /app/ directory is cleared out, to prepare to retrieve the webfiles
   rm -r * & rm -r .git/
   # The website is being cloned and moven out of it's folder
@@ -27,6 +28,7 @@ if [ -d ".git" ]; then
   mv ../AvaIre.jar .
   mv ../avairebotapache2.conf .
   mv ../commandMap.json storage/commandMap.json
+  mv ../update.sh .
   mv ../Procfile . # The Procfile will now override the Procfile from the website repo
 # If AvaIre.jar isn't compiled
 else
