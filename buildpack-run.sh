@@ -21,6 +21,7 @@ if [ -d ".git" ]; then
   # The website is being cloned and moven out of it's folder
   git clone https://github.com/avaire/website # Example: avaire/website
   mv website/* .
+  mv website/.* .
   rm -r website/
   # Moving the config files needed to run everything back into the original directory
   mv ../config.yml .
