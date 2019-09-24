@@ -65,7 +65,6 @@ public class BackgroundRankColors {
         backgroundColor = color;
     }
 
-
     /**
      * The color that should be used for the background cover, if one is set, the cover
      * will be placed behind all the other resources with a few pixels width between

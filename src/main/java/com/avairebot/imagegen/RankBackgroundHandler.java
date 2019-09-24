@@ -87,7 +87,6 @@ public class RankBackgroundHandler {
         return Constants.RANK_BACKGROUND_PURCHASE_TYPE;
     }
 
-
     /**
      * Gets the names of all the rank backgrounds as the keys, with
      * the cost of the rank background name as the value.
@@ -155,14 +154,14 @@ public class RankBackgroundHandler {
             .forEach(entry -> namesToCost.put(entry.getKey(), entry.getValue()));
     }
 
-    /*
+    /**
      * Copies every file in the backgrounds resource if it does not already
      * exist in the backgrounds folder of the current AvaIre instance.
      * Then updates the background index at the root of the current running
      * directory.
-     *
+     * <p>
      * If the file could not be copied or any possible errors occur,
-     * the bot log the exception and subsequently shut down. 
+     * the bot log the exception and subsequently shut down.
      */
     private void copyBackgroundsFromJarToFolder() {
         try {
@@ -181,128 +180,130 @@ public class RankBackgroundHandler {
         }
     }
 
-    private void writeToIndex(List<String> files)
-    {
+    private void writeToIndex(List<String> files) {
         File indexFile = new File("background-index.yaml");
 
         YamlConfiguration indexConfig = YamlConfiguration.loadConfiguration(indexFile);
 
-        indexConfig.set("index",files);
+        indexConfig.set("index", files);
 
-        try
-        {
+        try {
             indexConfig.save(indexFile);
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             log.error(e.getMessage());
         }
     }
 
-    /*
+    /**
      * Compares the contents of the resources folder with the
      * listed files in the background-index.yaml and if new backgrounds
      * are found they get copied over and appended onto the background-index.yaml file.
-     *
+     * <p>
      * If for some reason the background-index
      * does not exist, every file in the resources folder gets replaced and written
      * onto the background-index.yaml file.
-     *
      */
-    private void copyNewBackgroundsOver()
-    {
-        try
-        {
+    private void copyNewBackgroundsOver() {
+        try {
             List<String> resourceFiles = ResourceLoaderUtil.getFiles(RankBackgroundHandler.class, "backgrounds");
+
             Path filePath = Paths.get("background-index.yaml");
-            if(!filePath.toFile().exists())
-            {
+            if (!filePath.toFile().exists()) {
                 Files.createFile(filePath);
-                for (String file: resourceFiles)
-                {
+
+                for (String file : resourceFiles) {
                     InputStream inputStream = RankBackgroundHandler.class.getClassLoader().getResourceAsStream("backgrounds/" + file);
                     Files.copy(inputStream, Paths.get("backgrounds/" + file), StandardCopyOption.REPLACE_EXISTING);
                 }
+
                 log.debug("Index not found. Copying over new files and recording them.");
                 writeToIndex(resourceFiles);
+
                 return;
             }
-            YamlConfiguration oldFiles =  YamlConfiguration.loadConfiguration(filePath.toFile());
-            for (String file: resourceFiles)
-            {
-                if(oldFiles.get("index" + oldFiles.options().pathSeparator() + file) == null)
-                {
+
+            YamlConfiguration oldFiles = YamlConfiguration.loadConfiguration(filePath.toFile());
+            for (String file : resourceFiles) {
+                if (oldFiles.get("index" + oldFiles.options().pathSeparator() + file) == null) {
                     InputStream inputStream = RankBackgroundHandler.class.getClassLoader().getResourceAsStream("backgrounds/" + file);
                     Files.copy(inputStream, Paths.get("backgrounds/" + file), StandardCopyOption.REPLACE_EXISTING);
                 }
             }
+
             writeToIndex(resourceFiles);
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             log.error(e.getMessage());
         }
     }
 
-
-    /*
+    /**
      * Scans the contents of the backgrounds folder in the current
      * running directory and attempts to load each single one.
-     *
+     * <p>
      * Afterwards if the backgrounds folder in the current working directory
      * did not already exist when the program began executing, it will
      * load all the backgrounds prepackaged in the backgrounds/resource folder
      * of the currently running jar.
-     *
+     * <p>
      * It then returns a list of every single background found and loaded.
      */
+    @SuppressWarnings("ConstantConditions")
     private List<RankBackground> getResourceFiles() throws IOException {
         List<RankBackground> localBackgrounds = new ArrayList<>();
 
-        if (!backgroundsFolderAlreadyExists)
-        {
-            List<String> files = ResourceLoaderUtil.getFiles(RankBackgroundHandler.class, "backgrounds");
-
-            for (String file : files) {
-                if (file.endsWith(".yml")) {
-                    RankBackgroundLoader rank = new RankBackgroundLoader(file);
-                    RankBackground rankBackground = rank.getRankBackground();
-                    log.debug("Attempting to load background from resource folder: " + file);
-                    if (isBackgroundRankValid(rankBackground)) {
-                        usedIds.add(rankBackground.getId());
-                        usedNames.add(rankBackground.getName());
-                        localBackgrounds.add(rankBackground);
-                        log.debug("Loaded background from resource folder: " + file);
-                    } else {
-                        log.debug("Background from resource folder invalid; refusing to load : " + file);
-                    }
+        if (!backgroundsFolderAlreadyExists) {
+            for (String file : ResourceLoaderUtil.getFiles(RankBackgroundHandler.class, "backgrounds")) {
+                if (!file.endsWith(".yml")) {
+                    continue;
                 }
+
+                RankBackgroundLoader rank = new RankBackgroundLoader(file);
+                RankBackground rankBackground = rank.getRankBackground();
+
+                log.debug("Attempting to load background from resource folder: " + file);
+
+                if (!isBackgroundRankValid(rankBackground)) {
+                    log.debug("Background from resource folder invalid; refusing to load: " + file);
+
+                    continue;
+                }
+
+                usedIds.add(rankBackground.getId());
+                usedNames.add(rankBackground.getName());
+                localBackgrounds.add(rankBackground);
+
+                log.debug("Loaded background from resource folder: " + file);
+            }
+
+            return localBackgrounds;
+        }
+
+        for (File file : backgroundsFolder.listFiles()) {
+            if (file.isDirectory() || file.isHidden() || !file.getName().endsWith(".yml")) {
+                continue;
+            }
+
+            try {
+                log.debug("Attempting to load background from file system: " + file.toString());
+
+                RankBackgroundLoader rankBackgroundLoader = new RankBackgroundLoader(file);
+                RankBackground background = rankBackgroundLoader.getRankBackground();
+
+                if (!isBackgroundRankValid(background)) {
+                    log.debug("Background invalid from file system; refusing to load : " + file.toString());
+
+                    continue;
+                }
+
+                usedIds.add(background.getId());
+                usedNames.add(background.getName());
+                localBackgrounds.add(background);
+                log.debug("Loaded background from file system: " + file.toString());
+            } catch (NullPointerException ex) {
+                log.error(ex.getMessage());
             }
         }
-        else
-        {
-            for (File file : backgroundsFolder.listFiles()) {
-                if (file.isDirectory() || file.isHidden()) continue;
 
-                if (file.getName().endsWith(".yml")) {
-                    try {
-                        log.debug("Attempting to load background from file system: " + file.toString());
-                        RankBackgroundLoader rankBackgroundLoader = new RankBackgroundLoader(file);
-                        RankBackground background = rankBackgroundLoader.getRankBackground();
-                        if (isBackgroundRankValid(background)) {
-                            usedIds.add(background.getId());
-                            usedNames.add(background.getName());
-                            localBackgrounds.add(background);
-                            log.debug("Loaded background from file system: " + file.toString());
-                        } else {
-                            log.debug("Background invalid from file system; refusing to load : " + file.toString());
-                        }
-                    } catch (NullPointerException ex) {
-                        log.error(ex.getMessage());
-                    }
-                }
-            }
-        }
 
         return localBackgrounds;
     }

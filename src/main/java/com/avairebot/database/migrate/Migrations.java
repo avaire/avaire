@@ -21,7 +21,6 @@
 
 package com.avairebot.database.migrate;
 
-
 import com.avairebot.contracts.database.migrations.Migration;
 import com.avairebot.database.DatabaseManager;
 import com.avairebot.database.collection.Collection;

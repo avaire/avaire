@@ -30,7 +30,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
 
-
 public class RankBackgroundLoader {
 
     private final YamlConfiguration config;
@@ -77,9 +76,10 @@ public class RankBackgroundLoader {
         background = new RankBackground(id, cost, name, backgroundImage, getColors(), true);
     }
 
-    /*
+    /**
      * Looks for and reads the following headings in the colors heading
      * into a {@link com.avairebot.imagegen.BackgroundRankColors} instance.
+     * <p>
      * <ul>
      * <li>backgroundColor</li>
      * <li>secondaryTextColor</li>
@@ -87,7 +87,7 @@ public class RankBackgroundLoader {
      * <li>experienceForegroundColor</li>
      * <li>experienceSeparatorColor</li>
      * </ul>
-     *
+     * <p>
      * If the optional backgroundCoverColor and experienceTextColor headings exist,
      * then those values are read as well.
      */
@@ -120,9 +120,9 @@ public class RankBackgroundLoader {
     private Color loadColorFromYaml(String heading) {
         int red = config.getInt(heading + config.options().pathSeparator() + "red");
         int green = config.getInt(heading + config.options().pathSeparator() + "green");
-        int blue = config.getInt(heading +  config.options().pathSeparator() +  "blue");
+        int blue = config.getInt(heading + config.options().pathSeparator() + "blue");
 
-        if (!config.contains((heading + config.options().pathSeparator() +  "alpha"))) {
+        if (!config.contains((heading + config.options().pathSeparator() + "alpha"))) {
             return ColorUtil.makeColor(red, green, blue);
         }
 

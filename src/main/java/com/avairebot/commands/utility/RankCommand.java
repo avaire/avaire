@@ -297,7 +297,7 @@ public class RankCommand extends Command {
                 attachmentName, message.build()
             ).queue();
         } catch (IOException e) {
-            log.error(e.getMessage(),e);
+            log.error(e.getMessage(), e);
 
             sendEmbeddedMessage(
                 context, author,
@@ -326,7 +326,7 @@ public class RankCommand extends Command {
 
                 return new DatabaseProperties(player, total, getScore(context, author.getId()));
             } catch (SQLException e) {
-                log.error("Error getting player experience : {}", e.getMessage(),e);
+                log.error("Error getting player experience : {}", e.getMessage(), e);
                 return null;
             }
         });
