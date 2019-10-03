@@ -224,7 +224,7 @@ public class RankBackgroundHandler {
 
             YamlConfiguration oldFiles = YamlConfiguration.loadConfiguration(filePath.toFile());
             for (String file : resourceFiles) {
-                if (oldFiles.get("index" + oldFiles.options().pathSeparator() + file) == null) {
+                if (oldFiles.contains("index" + oldFiles.options().pathSeparator() + file)) {
                     InputStream inputStream = RankBackgroundHandler.class.getClassLoader().getResourceAsStream("backgrounds/" + file);
                     Files.copy(inputStream, Paths.get("backgrounds/" + file), StandardCopyOption.REPLACE_EXISTING);
                 }
