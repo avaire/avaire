@@ -906,7 +906,7 @@ utility:
             roles: "Rôles"
             region: "Région"
             createdAt: "Créé à"
-            emojis: "Emojis personnalisé ({0})"
+            emotes: 'Custom Emotes'
         timeFormat: "EEE, dd MMM yyyy HH:mm"
 
     ShardCommand:

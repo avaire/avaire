@@ -907,7 +907,7 @@ utility:
             roles: 'Roller'
             region: 'Region'
             createdAt: 'Laget den'
-            emojis: 'Opplastede Emojis ({0})'
+            emotes: 'Custom Emotes'
         timeFormat: 'EEE, dd MMM yyyy HH:mm'
 
     ShardCommand:

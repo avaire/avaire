@@ -38,7 +38,6 @@ import java.awt.*;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class ServerInfoCommand extends Command {
 
@@ -90,19 +89,9 @@ public class ServerInfoCommand extends Command {
             new MessageEmbed.Field(context.i18n("fields.members"), NumberUtil.formatNicely(guild.getMembers().size()), true),
             new MessageEmbed.Field(context.i18n("fields.roles"), NumberUtil.formatNicely(guild.getRoles().size()), true),
             new MessageEmbed.Field(context.i18n("fields.region"), guild.getRegion().getName(), true),
+            new MessageEmbed.Field(context.i18n("fields.emotes"), NumberUtil.formatNicely(guild.getEmotes().size()), true),
             new MessageEmbed.Field(context.i18n("fields.createdAt"), time.format(context.i18n("timeFormat")) + "\n*About " + shortenDiffForHumans(time) + "*", true)
         ).setTitle(guild.getName()).setThumbnail(guild.getIconUrl());
-
-        if (!guild.getEmotes().isEmpty()) {
-            boolean hasMany = guild.getEmotes().size() > 17;
-            placeholderMessage.addField(new MessageEmbed.Field(
-                context.i18n("fields.emojis", guild.getEmotes().size()),
-                guild.getEmotes().stream()
-                    .map(emote -> emote.getName() + (hasMany ? "" : " " + emote.getAsMention()))
-                    .collect(Collectors.joining(", ")),
-                true
-            ));
-        }
 
         placeholderMessage.requestedBy(context.getMember()).queue();
         return true;

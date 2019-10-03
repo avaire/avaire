@@ -906,7 +906,7 @@ utility:
             roles: 'Roller'
             region: 'Område'
             createdAt: 'Oprettet på'
-            emojis: 'Brugerdefinerede Emojis ({0})'
+            emotes: 'Custom Emotes'
         timeFormat: 'EEE, dd MMM yyyy HH:mm'
 
     ShardCommand:

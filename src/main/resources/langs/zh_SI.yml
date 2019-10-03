@@ -905,7 +905,7 @@ utility:
             roles: '军衔'
             region: '区域'
             createdAt: '创建在'
-            emojis: '自定义表情符号 ({0})'
+            emotes: 'Custom Emotes'
         timeFormat: 'EEE, dd MMM yyyy HH:mm'
 
     ShardCommand:

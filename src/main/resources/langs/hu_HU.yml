@@ -912,7 +912,7 @@ utility:
             roles: 'Rangok'
             region: 'Régió'
             createdAt: 'Létrehozva ekkor'
-            emojis: 'Egyéni Emojik ({0})'
+            emotes: 'Custom Emotes'
         timeFormat: 'EEE, dd MMM yyyy HH:mm'
 
     ShardCommand:
