@@ -208,6 +208,7 @@ public class RankBackgroundHandler {
             List<String> resourceFiles = ResourceLoaderUtil.getFiles(RankBackgroundHandler.class, "backgrounds");
 
             Path filePath = Paths.get("background-index.yaml");
+
             if (!filePath.toFile().exists()) {
                 Files.createFile(filePath);
 
@@ -223,8 +224,10 @@ public class RankBackgroundHandler {
             }
 
             YamlConfiguration oldFiles = YamlConfiguration.loadConfiguration(filePath.toFile());
+
             for (String file : resourceFiles) {
-                if (oldFiles.contains("index" + oldFiles.options().pathSeparator() + file)) {
+                if (!oldFiles.getList("index").contains(file)) {
+
                     InputStream inputStream = RankBackgroundHandler.class.getClassLoader().getResourceAsStream("backgrounds/" + file);
                     Files.copy(inputStream, Paths.get("backgrounds/" + file), StandardCopyOption.REPLACE_EXISTING);
                 }
