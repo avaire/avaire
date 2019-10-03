@@ -904,6 +904,8 @@ utility:
             textChannels: 'Textchannels'
             voiceChannels: 'Voicechannels'
             members: 'Member'
+            users: 'Users'
+            bots: 'Bots'
             roles: 'Rollen'
             region: 'Regionen'
             createdAt: 'Erstellt am'

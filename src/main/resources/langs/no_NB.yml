@@ -904,6 +904,8 @@ utility:
             textChannels: 'Tekst kanaler'
             voiceChannels: 'Samtale kanaler'
             members: 'Medlemmer'
+            users: 'Users'
+            bots: 'Bots'
             roles: 'Roller'
             region: 'Region'
             createdAt: 'Laget den'

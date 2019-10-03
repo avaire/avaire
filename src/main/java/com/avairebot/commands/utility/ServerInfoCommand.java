@@ -81,6 +81,8 @@ public class ServerInfoCommand extends Command {
         Guild guild = context.getGuild();
         Carbon time = Carbon.createFromOffsetDateTime(guild.getCreationTime());
 
+        long bots = guild.getMembers().stream().filter(member -> member.getUser().isBot()).count();
+
         PlaceholderMessage placeholderMessage = context.makeEmbeddedMessage(getRoleColor(guild.getSelfMember().getRoles()),
             new MessageEmbed.Field(context.i18n("fields.id"), guild.getId(), true),
             new MessageEmbed.Field(context.i18n("fields.owner"), guild.getOwner().getUser().getName() + "#" + guild.getOwner().getUser().getDiscriminator(), true),
@@ -88,6 +90,8 @@ public class ServerInfoCommand extends Command {
             new MessageEmbed.Field(context.i18n("fields.voiceChannels"), NumberUtil.formatNicely(guild.getVoiceChannels().size()), true),
             new MessageEmbed.Field(context.i18n("fields.members"), NumberUtil.formatNicely(guild.getMembers().size()), true),
             new MessageEmbed.Field(context.i18n("fields.roles"), NumberUtil.formatNicely(guild.getRoles().size()), true),
+            new MessageEmbed.Field(context.i18n("fields.users"), NumberUtil.formatNicely(guild.getMembers().size() - bots), true),
+            new MessageEmbed.Field(context.i18n("fields.bots"), NumberUtil.formatNicely(bots), true),
             new MessageEmbed.Field(context.i18n("fields.region"), guild.getRegion().getName(), true),
             new MessageEmbed.Field(context.i18n("fields.emotes"), NumberUtil.formatNicely(guild.getEmotes().size()), true),
             new MessageEmbed.Field(context.i18n("fields.createdAt"), time.format(context.i18n("timeFormat")) + "\n*About " + shortenDiffForHumans(time) + "*", true)

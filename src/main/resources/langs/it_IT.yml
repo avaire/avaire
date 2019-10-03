@@ -903,6 +903,8 @@ utility:
             textChannels: 'Canali testuali'
             voiceChannels: 'Canali vocali'
             members: 'Membri'
+            users: 'Users'
+            bots: 'Bots'
             roles: 'Ruoli'
             region: 'Regione'
             createdAt: 'Creato il'

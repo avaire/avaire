@@ -902,6 +902,8 @@ utility:
             textChannels: '测试频道'
             voiceChannels: '声音频道'
             members: '成员'
+            users: 'Users'
+            bots: 'Bots'
             roles: '军衔'
             region: '区域'
             createdAt: '创建在'

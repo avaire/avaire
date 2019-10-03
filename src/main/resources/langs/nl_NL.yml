@@ -904,6 +904,8 @@ utility:
             textChannels: 'Tekst kanalen'
             voiceChannels: 'Spraak kanalen'
             members: 'Leden'
+            users: 'Users'
+            bots: 'Bots'
             roles: 'Rollen'
             region: 'Regio'
             createdAt: 'Gemaakt op'
