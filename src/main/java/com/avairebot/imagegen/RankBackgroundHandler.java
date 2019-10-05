@@ -215,7 +215,7 @@ public class RankBackgroundHandler {
             RankBackground background = rankBackgroundLoader.getRankBackground();
 
             if (!isBackgroundRankValid(background)) {
-                log.debug("Background invalid from file system; refusing to load: {}", file.toString());
+                log.warn("Background invalid from file system; refusing to load: {}", file.toString());
 
                 continue;
             }
