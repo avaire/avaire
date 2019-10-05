@@ -41,13 +41,15 @@ import java.util.*;
 
 public class RankBackgroundHandler {
 
-    private static RankBackgroundHandler instance;
     private final Logger log = LoggerFactory.getLogger(RankBackgroundHandler.class);
+
+    private static RankBackgroundHandler instance;
+
     private final LinkedHashMap<String, Integer> namesToCost = new LinkedHashMap<>();
     private final List<RankBackground> backgrounds = new ArrayList<>();
     private final List<Integer> usedIds = new ArrayList<>();
     private final List<String> usedNames = new ArrayList<>();
-    private File backgroundsFolder;
+    private final File backgroundsFolder;
 
     private RankBackgroundHandler() {
         backgroundsFolder = new File("backgrounds");
@@ -73,10 +75,10 @@ public class RankBackgroundHandler {
     }
 
     /**
-     * Returns the purchase type for rank backgrounds, the type is used in the purchases table for
-     * tracking what the user bought by type, allowing the user to buy two
-     * different things with the same ID, but belonging to different
-     * purchases types.
+     * Returns the purchase type for rank backgrounds, the type is used in the
+     * purchases table for tracking what the user bought by type, allowing
+     * the user to buy two different things with the same ID, but
+     * belonging to different purchases types.
      *
      * @return The purchase type used to represent rank backgrounds in the database.
      */
@@ -142,7 +144,7 @@ public class RankBackgroundHandler {
                 backgrounds.add(type);
             }
         } catch (IOException e) {
-            log.error(String.format("Invalid cache type given: %s", e.getMessage()));
+            log.error("Invalid cache type given: {}", e.getMessage(), e);
             System.exit(ExitCodes.EXIT_CODE_ERROR);
         }
 
@@ -160,20 +162,20 @@ public class RankBackgroundHandler {
         try {
             config.save(indexFile);
         } catch (IOException e) {
-            log.error(e.getMessage());
+            log.error("Failed to write resource files to background index: {}", e.getMessage(), e);
         }
     }
 
     /**
-     * Compares the contents of the resources folder with the
-     * listed files in the background-index.yaml and if new backgrounds
-     * are found they get copied over and appended onto the background-index.yaml file.
+     * Compares the contents of the resources folder with the listed files
+     * in the background-index.yaml and if new backgrounds are found they
+     * get copied over and appended onto the background-index.yaml file.
      * <p>
-     * If for some reason the background-index
-     * does not exist, every file in the resources folder gets replaced and written
-     * onto the background-index.yaml file.
+     * If for some reason the background-index does not exist, every file
+     * in the resources folder gets replaced and written onto
+     * the background-index.yaml file.
      */
-    private void copyNewBackgroundsOver() {
+    private void copyBackgrounds() {
         try {
             Path indexPath = Paths.get("background-index.yaml");
             if (!indexPath.toFile().exists()) {
@@ -192,7 +194,7 @@ public class RankBackgroundHandler {
 
             writeToIndex(resourceFiles);
         } catch (IOException e) {
-            log.error(e.getMessage());
+            log.error("Failed to copy over rank backgrounds files: {}", e.getMessage(), e);
         }
     }
 
@@ -201,8 +203,8 @@ public class RankBackgroundHandler {
      * running directory and attempts to load each single one.
      * <p>
      * Afterwards if the backgrounds folder in the current working directory
-     * did not already exist when the program began executing, it will
-     * load all the backgrounds prepackaged in the backgrounds/resource folder
+     * did not already exist when the program began executing, it will load
+     * all the backgrounds prepackaged in the backgrounds/resource folder
      * of the currently running jar.
      * <p>
      * It then returns a list of every single background found and loaded.
@@ -216,27 +218,22 @@ public class RankBackgroundHandler {
                 continue;
             }
 
-            try {
-                log.debug("Attempting to load background from file system: " + file.toString());
+            log.debug("Attempting to load background from file system: {}", file.toString());
 
-                RankBackgroundLoader rankBackgroundLoader = new RankBackgroundLoader(file);
-                RankBackground background = rankBackgroundLoader.getRankBackground();
+            RankBackgroundLoader rankBackgroundLoader = new RankBackgroundLoader(file);
+            RankBackground background = rankBackgroundLoader.getRankBackground();
 
-                if (!isBackgroundRankValid(background)) {
-                    log.debug("Background invalid from file system; refusing to load : " + file.toString());
+            if (!isBackgroundRankValid(background)) {
+                log.debug("Background invalid from file system; refusing to load: {}", file.toString());
 
-                    continue;
-                }
-
-                usedIds.add(background.getId());
-                usedNames.add(background.getName());
-                localBackgrounds.add(background);
-                log.debug("Loaded background from file system: " + file.toString());
-            } catch (NullPointerException ex) {
-                log.error(ex.getMessage());
+                continue;
             }
-        }
 
+            usedIds.add(background.getId());
+            usedNames.add(background.getName());
+            localBackgrounds.add(background);
+            log.debug("Loaded background from file system: " + file.toString());
+        }
 
         return localBackgrounds;
     }
