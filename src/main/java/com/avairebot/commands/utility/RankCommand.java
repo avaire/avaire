@@ -297,7 +297,7 @@ public class RankCommand extends Command {
                 attachmentName, message.build()
             ).queue();
         } catch (IOException e) {
-            log.error(e.getMessage(), e);
+            log.error("Failed to generate the rank background: {}", e.getMessage(), e);
 
             sendEmbeddedMessage(
                 context, author,

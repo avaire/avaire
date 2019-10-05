@@ -34,11 +34,10 @@ public class RankBackground implements PurchaseType {
     private final String name;
     private final String backgroundGraphicName;
     private final BackgroundRankColors rankColors;
-    private final boolean loadedExternally;
 
     /**
      * Instantiates a new Rank background that was loaded
-     * from inside the AvaIre jar.
+     * from either inside the AvaIre jar or from the external file system
      *
      * @param id                    The id of this rank background
      * @param cost                  The cost of the background using vote points
@@ -52,27 +51,6 @@ public class RankBackground implements PurchaseType {
         this.name = name;
         this.backgroundGraphicName = backgroundGraphicName;
         this.rankColors = rankColors;
-        loadedExternally = false;
-    }
-
-    /**
-     * Instantiates a new Rank background that was loaded
-     * from either inside the AvaIre jar or from the external file system
-     *
-     * @param id                    The id of this rank background
-     * @param cost                  The cost of the background using vote points
-     * @param name                  The name of this background
-     * @param backgroundGraphicName The graphic for the background.
-     * @param rankColors            The color configuration for this background
-     * @param loadedExternally      Whether or not the background was loaded externally
-     */
-    RankBackground(int id, int cost, String name, String backgroundGraphicName, BackgroundRankColors rankColors, boolean loadedExternally) {
-        this.id = id;
-        this.cost = cost;
-        this.name = name;
-        this.backgroundGraphicName = backgroundGraphicName;
-        this.rankColors = rankColors;
-        this.loadedExternally = loadedExternally;
     }
 
     /**
@@ -120,15 +98,6 @@ public class RankBackground implements PurchaseType {
     @Override
     public String getPurchaseType() {
         return Constants.RANK_BACKGROUND_PURCHASE_TYPE;
-    }
-
-    /**
-     * Returns if this background was loaded externally.
-     *
-     * @return whether or not this file was loaded externally.
-     */
-    public boolean isLoadedExternally() {
-        return loadedExternally;
     }
 
     @Override

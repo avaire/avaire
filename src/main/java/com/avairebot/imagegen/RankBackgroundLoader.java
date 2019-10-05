@@ -36,35 +36,14 @@ public class RankBackgroundLoader {
     private RankBackground background;
 
     /**
-     * Instantiates a new Rank background loader using
-     * the given background resource name, under the internal backgrounds
-     * folder of the running AvaIre jar.
-     *
-     * @param backgroundResource, The path inside the backgrounds directory pointing to the resource.
-     */
-    public RankBackgroundLoader(@Nonnull String backgroundResource) {
-        config = YamlConfiguration.loadConfiguration(new InputStreamReader(
-            getClass().getClassLoader().getResourceAsStream("backgrounds/" + backgroundResource)
-        ));
-
-        background = new RankBackground(
-            config.getInt("id"),
-            config.getInt("cost"),
-            config.getString("name"),
-            config.getString("backgroundImage"),
-            getColors()
-        );
-    }
-
-    /**
-     * Instantiates a new Rank background loader
-     * that loads a resource from anywhere in the filesystem outside the jar,
+     * Instantiates a new Rank background loader that loads a resource
+     * from anywhere in the filesystem outside the jar,
      * given the full path.
      *
      * @param backgroundResource A path to the background resource in the filesystem.
      * @throws FileNotFoundException If the file cannot be found.
      */
-    public RankBackgroundLoader(@Nonnull File backgroundResource) throws FileNotFoundException {
+    RankBackgroundLoader(@Nonnull File backgroundResource) throws FileNotFoundException {
         config = YamlConfiguration.loadConfiguration(new InputStreamReader(new FileInputStream(backgroundResource)));
 
         int id = config.getInt("id");
@@ -73,7 +52,7 @@ public class RankBackgroundLoader {
         String name = config.getString("name");
         String backgroundImage = config.getString("backgroundImage");
 
-        background = new RankBackground(id, cost, name, backgroundImage, getColors(), true);
+        background = new RankBackground(id, cost, name, backgroundImage, getColors());
     }
 
     /**

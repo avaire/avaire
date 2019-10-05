@@ -31,6 +31,7 @@ import java.awt.*;
  * The background rank colors used for making
  * the {@link com.avairebot.imagegen.RankBackground}
  */
+@SuppressWarnings("WeakerAccess")
 public class BackgroundRankColors {
 
     private Color backgroundColor = ColorUtil.makeColor(55, 55, 70);
