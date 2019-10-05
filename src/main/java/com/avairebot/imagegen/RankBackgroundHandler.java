@@ -47,18 +47,15 @@ public class RankBackgroundHandler {
     private final List<RankBackground> backgrounds = new ArrayList<>();
     private final List<Integer> usedIds = new ArrayList<>();
     private final List<String> usedNames = new ArrayList<>();
-    private final boolean backgroundsFolderAlreadyExists;
     private File backgroundsFolder;
 
     private RankBackgroundHandler() {
         backgroundsFolder = new File("backgrounds");
 
-        backgroundsFolderAlreadyExists = backgroundsFolder.exists();
-        if (!backgroundsFolderAlreadyExists) {
+        if (!backgroundsFolder.exists()) {
             backgroundsFolder.mkdirs();
-            copyBackgroundsFromJarToFolder();
         }
-        copyNewBackgroundsOver();
+        copyBackgrounds();
     }
 
     /**
@@ -154,41 +151,14 @@ public class RankBackgroundHandler {
             .forEach(entry -> namesToCost.put(entry.getKey(), entry.getValue()));
     }
 
-    /**
-     * Copies every file in the backgrounds resource if it does not already
-     * exist in the backgrounds folder of the current AvaIre instance.
-     * Then updates the background index at the root of the current running
-     * directory.
-     * <p>
-     * If the file could not be copied or any possible errors occur,
-     * the bot log the exception and subsequently shut down.
-     */
-    private void copyBackgroundsFromJarToFolder() {
-        try {
-            List<String> files = ResourceLoaderUtil.getFiles(RankBackgroundHandler.class, "backgrounds");
-            for (String file : files) {
-                File actualFile = new File("backgrounds/" + file);
-                InputStream inputStream = RankBackgroundHandler.class.getClassLoader().getResourceAsStream("backgrounds/" + file);
-                if (!actualFile.exists()) {
-                    Files.copy(inputStream, Paths.get("backgrounds/" + file), StandardCopyOption.REPLACE_EXISTING);
-                }
-            }
-            writeToIndex(files);
-        } catch (IOException e) {
-            log.error(e.getMessage());
-            System.exit(ExitCodes.EXIT_CODE_ERROR);
-        }
-    }
-
     private void writeToIndex(List<String> files) {
         File indexFile = new File("background-index.yaml");
 
-        YamlConfiguration indexConfig = YamlConfiguration.loadConfiguration(indexFile);
-
-        indexConfig.set("index", files);
+        YamlConfiguration config = YamlConfiguration.loadConfiguration(indexFile);
+        config.set("index", files);
 
         try {
-            indexConfig.save(indexFile);
+            config.save(indexFile);
         } catch (IOException e) {
             log.error(e.getMessage());
         }
@@ -205,29 +175,16 @@ public class RankBackgroundHandler {
      */
     private void copyNewBackgroundsOver() {
         try {
-            List<String> resourceFiles = ResourceLoaderUtil.getFiles(RankBackgroundHandler.class, "backgrounds");
-
-            Path filePath = Paths.get("background-index.yaml");
-
-            if (!filePath.toFile().exists()) {
-                Files.createFile(filePath);
-
-                for (String file : resourceFiles) {
-                    InputStream inputStream = RankBackgroundHandler.class.getClassLoader().getResourceAsStream("backgrounds/" + file);
-                    Files.copy(inputStream, Paths.get("backgrounds/" + file), StandardCopyOption.REPLACE_EXISTING);
-                }
-
-                log.debug("Index not found. Copying over new files and recording them.");
-                writeToIndex(resourceFiles);
-
-                return;
+            Path indexPath = Paths.get("background-index.yaml");
+            if (!indexPath.toFile().exists()) {
+                Files.createFile(indexPath);
             }
 
-            YamlConfiguration oldFiles = YamlConfiguration.loadConfiguration(filePath.toFile());
+            YamlConfiguration index = YamlConfiguration.loadConfiguration(indexPath.toFile());
 
+            List<String> resourceFiles = ResourceLoaderUtil.getFiles(RankBackgroundHandler.class, "backgrounds");
             for (String file : resourceFiles) {
-                if (!oldFiles.getList("index").contains(file)) {
-
+                if (!index.getList("index", Collections.EMPTY_LIST).contains(file)) {
                     InputStream inputStream = RankBackgroundHandler.class.getClassLoader().getResourceAsStream("backgrounds/" + file);
                     Files.copy(inputStream, Paths.get("backgrounds/" + file), StandardCopyOption.REPLACE_EXISTING);
                 }
@@ -253,33 +210,6 @@ public class RankBackgroundHandler {
     @SuppressWarnings("ConstantConditions")
     private List<RankBackground> getResourceFiles() throws IOException {
         List<RankBackground> localBackgrounds = new ArrayList<>();
-
-        if (!backgroundsFolderAlreadyExists) {
-            for (String file : ResourceLoaderUtil.getFiles(RankBackgroundHandler.class, "backgrounds")) {
-                if (!file.endsWith(".yml")) {
-                    continue;
-                }
-
-                RankBackgroundLoader rank = new RankBackgroundLoader(file);
-                RankBackground rankBackground = rank.getRankBackground();
-
-                log.debug("Attempting to load background from resource folder: " + file);
-
-                if (!isBackgroundRankValid(rankBackground)) {
-                    log.debug("Background from resource folder invalid; refusing to load: " + file);
-
-                    continue;
-                }
-
-                usedIds.add(rankBackground.getId());
-                usedNames.add(rankBackground.getName());
-                localBackgrounds.add(rankBackground);
-
-                log.debug("Loaded background from resource folder: " + file);
-            }
-
-            return localBackgrounds;
-        }
 
         for (File file : backgroundsFolder.listFiles()) {
             if (file.isDirectory() || file.isHidden() || !file.getName().endsWith(".yml")) {
