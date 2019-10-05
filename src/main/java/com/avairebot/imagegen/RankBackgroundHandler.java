@@ -34,29 +34,27 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.*;
 
 public class RankBackgroundHandler {
 
-    private final Logger log = LoggerFactory.getLogger(RankBackgroundHandler.class);
-
     private static RankBackgroundHandler instance;
-
+    private final Logger log = LoggerFactory.getLogger(RankBackgroundHandler.class);
     private final LinkedHashMap<String, Integer> namesToCost = new LinkedHashMap<>();
     private final List<RankBackground> backgrounds = new ArrayList<>();
     private final List<Integer> usedIds = new ArrayList<>();
     private final List<String> usedNames = new ArrayList<>();
-    private final File backgroundsFolder;
+    private final File backgroundsDirectory;
 
     private RankBackgroundHandler() {
-        backgroundsFolder = new File("backgrounds");
+        backgroundsDirectory = new File("backgrounds");
 
-        if (!backgroundsFolder.exists()) {
-            backgroundsFolder.mkdirs();
+        if (!backgroundsDirectory.exists()) {
+            backgroundsDirectory.mkdirs();
         }
+
         copyBackgrounds();
     }
 
@@ -153,19 +151,6 @@ public class RankBackgroundHandler {
             .forEach(entry -> namesToCost.put(entry.getKey(), entry.getValue()));
     }
 
-    private void writeToIndex(List<String> files) {
-        File indexFile = new File("background-index.yaml");
-
-        YamlConfiguration config = YamlConfiguration.loadConfiguration(indexFile);
-        config.set("index", files);
-
-        try {
-            config.save(indexFile);
-        } catch (IOException e) {
-            log.error("Failed to write resource files to background index: {}", e.getMessage(), e);
-        }
-    }
-
     /**
      * Compares the contents of the resources folder with the listed files
      * in the background-index.yaml and if new backgrounds are found they
@@ -177,12 +162,12 @@ public class RankBackgroundHandler {
      */
     private void copyBackgrounds() {
         try {
-            Path indexPath = Paths.get("background-index.yaml");
-            if (!indexPath.toFile().exists()) {
-                Files.createFile(indexPath);
+            File indexFile = new File(backgroundsDirectory, "background-index.yml");
+            if (!indexFile.exists()) {
+                indexFile.createNewFile();
             }
 
-            YamlConfiguration index = YamlConfiguration.loadConfiguration(indexPath.toFile());
+            YamlConfiguration index = YamlConfiguration.loadConfiguration(indexFile);
 
             List<String> resourceFiles = ResourceLoaderUtil.getFiles(RankBackgroundHandler.class, "backgrounds");
             for (String file : resourceFiles) {
@@ -192,7 +177,13 @@ public class RankBackgroundHandler {
                 }
             }
 
-            writeToIndex(resourceFiles);
+            index.set("index", resourceFiles);
+
+            try {
+                index.save(indexFile);
+            } catch (IOException e) {
+                log.error("Failed to write resource files to background index: {}", e.getMessage(), e);
+            }
         } catch (IOException e) {
             log.error("Failed to copy over rank backgrounds files: {}", e.getMessage(), e);
         }
@@ -213,8 +204,8 @@ public class RankBackgroundHandler {
     private List<RankBackground> getResourceFiles() throws IOException {
         List<RankBackground> localBackgrounds = new ArrayList<>();
 
-        for (File file : backgroundsFolder.listFiles()) {
-            if (file.isDirectory() || file.isHidden() || !file.getName().endsWith(".yml")) {
+        for (File file : backgroundsDirectory.listFiles()) {
+            if (!isValidBackgroundsFile(file)) {
                 continue;
             }
 
@@ -236,6 +227,13 @@ public class RankBackgroundHandler {
         }
 
         return localBackgrounds;
+    }
+
+    private boolean isValidBackgroundsFile(File file) {
+        return !file.isDirectory()
+            && !file.isHidden()
+            && file.getName().endsWith(".yml")
+            && !file.getName().equals("background-index.yml");
     }
 
     private boolean isBackgroundRankValid(RankBackground background) {
