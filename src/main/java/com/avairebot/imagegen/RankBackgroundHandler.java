@@ -42,6 +42,7 @@ public class RankBackgroundHandler {
 
     private static RankBackgroundHandler instance;
     private final Logger log = LoggerFactory.getLogger(RankBackgroundHandler.class);
+
     private final LinkedHashMap<String, Integer> namesToCost = new LinkedHashMap<>();
     private final List<RankBackground> backgrounds = new ArrayList<>();
     private final List<Integer> usedIds = new ArrayList<>();
