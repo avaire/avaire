@@ -215,8 +215,9 @@ public class RankBackgroundHandler {
             RankBackgroundLoader rankBackgroundLoader = new RankBackgroundLoader(file);
             RankBackground background = rankBackgroundLoader.getRankBackground();
 
-            if (!isBackgroundRankValid(background)) {
-                log.warn("Background invalid from file system; refusing to load: {}", file.toString());
+            BackgroundValidation validation = validateRankBackgroundRank(background);
+            if (!validation.passed) {
+                log.warn("The \"{}\" rank background failed the {} validation check, refusing to load", file.getName(), validation.name());
 
                 continue;
             }
@@ -237,11 +238,42 @@ public class RankBackgroundHandler {
             && !file.getName().equals("background-index.yml");
     }
 
-    private boolean isBackgroundRankValid(RankBackground background) {
-        return background.getCost() > 0
-            && background.getName() != null
-            && !background.getName().isEmpty()
-            && !usedNames.contains(background.getName())
-            && !usedIds.contains(background.getId());
+    private BackgroundValidation validateRankBackgroundRank(RankBackground background) {
+        if (background.getCost() <= 0) {
+            return BackgroundValidation.INVALID_COST;
+        }
+
+        if (background.getName() == null || background.getName().isEmpty()) {
+            return BackgroundValidation.INVALID_NAME;
+        }
+
+        if (usedNames.contains(background.getName())) {
+            return BackgroundValidation.NAME_ALREADY_USED;
+        }
+
+        if (usedIds.contains(background.getId())) {
+            return BackgroundValidation.ID_ALREADY_USED;
+        }
+
+        return BackgroundValidation.PASSED;
+    }
+
+    enum BackgroundValidation {
+
+        INVALID_COST,
+        INVALID_NAME,
+        NAME_ALREADY_USED,
+        ID_ALREADY_USED,
+        PASSED(true);
+
+        private final boolean passed;
+
+        BackgroundValidation() {
+            this(false);
+        }
+
+        BackgroundValidation(boolean passed) {
+            this.passed = passed;
+        }
     }
 }
