@@ -21,9 +21,6 @@
     "success_url": "/",
     "addons": [
         {
-            "plan": "jawsdb:kitefin"
-        },
-        {
             "plan": "scheduler:standard"
         }
     ],
