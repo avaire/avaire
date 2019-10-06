@@ -19,11 +19,6 @@
     "repository": "https://github.com/avaire/avaire",
     "logo": "https://imgur.com/H8RCD5F.png",
     "success_url": "/",
-    "addons": [
-        {
-            "plan": "scheduler:standard"
-        }
-    ],
     "env": {
         "GRADLE_TASK": {
             "description": "Tells Heroku how to compile AvaIre. Leave it as it, unless you know what your doing.",
