@@ -60,6 +60,7 @@ import com.avairebot.handlers.EventEmitter;
 import com.avairebot.handlers.GenericEventHandler;
 import com.avairebot.handlers.MainEventHandler;
 import com.avairebot.handlers.events.ApplicationShutdownEvent;
+import com.avairebot.imagegen.RankBackgroundHandler;
 import com.avairebot.language.I18n;
 import com.avairebot.level.LevelManager;
 import com.avairebot.metrics.Metrics;
@@ -274,6 +275,9 @@ public class AvaIre {
 
         log.info("Preparing I18n");
         I18n.start(this);
+
+        log.info("Creating rank backgrounds");
+        RankBackgroundHandler.getInstance().start();
 
         log.info("Creating plugin manager and registering plugins...");
         pluginManager = new PluginManager();

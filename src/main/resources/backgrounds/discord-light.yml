@@ -1,0 +1,41 @@
+id: 1
+cost: 20
+name: "Discord Light Theme"
+backgroundImage: null
+
+colors:
+    backgroundColor:
+        red: 243
+        green: 243
+        blue: 243
+    mainTextColor:
+        red: 47
+        green: 49
+        blue: 54
+        alpha: 72
+    secondaryTextColor:
+        red: 116
+        green: 127
+        blue: 141
+        alpha: 85
+    experienceBackgroundColor:
+        red: 116
+        green: 127
+        blue: 141
+        alpha: 80
+    experienceForegroundColor:
+        red: 114
+        green: 137
+        blue: 218
+        alpha: 80
+    experienceSeparatorColor:
+        red: 109
+        green: 131
+        blue: 208
+        alpha: 80
+    experienceTextColor:
+        red: 243
+        green: 243
+        blue: 243
+
+

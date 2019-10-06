@@ -36,7 +36,8 @@ import com.avairebot.database.controllers.PlayerController;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.database.transformers.PlayerTransformer;
 import com.avairebot.factories.MessageFactory;
-import com.avairebot.imagegen.RankBackgrounds;
+import com.avairebot.imagegen.RankBackground;
+import com.avairebot.imagegen.RankBackgroundHandler;
 import com.avairebot.imagegen.renders.RankBackgroundRender;
 import com.avairebot.language.I18n;
 import com.avairebot.utilities.CacheUtil;
@@ -48,6 +49,8 @@ import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nonnull;
 import java.awt.*;
@@ -67,6 +70,8 @@ public class RankCommand extends Command {
         .recordStats()
         .expireAfterWrite(120, TimeUnit.SECONDS)
         .build();
+
+    private static final Logger log = LoggerFactory.getLogger(RankCommand.class);
 
     public RankCommand(AvaIre avaire) {
         super(avaire, false);
@@ -166,16 +171,17 @@ public class RankCommand extends Command {
             long nextLevelXp = avaire.getLevelManager().getExperienceFromLevel(guildTransformer, level + 1);
             double percentage = ((double) (experience - current) / (nextLevelXp - current)) * 100;
 
-            String levelBar = "";
+            StringBuilder levelBarBuilder = new StringBuilder();
             for (int i = 1; i <= 40; i++) {
-                levelBar += ((i * 2.5) < percentage) ? "\u2592" : "\u2591";
+                levelBarBuilder.append(((i * 2.5) < percentage) ? "\u2592" : "\u2591");
             }
+            String levelBar = levelBarBuilder.toString();
 
             PlayerTransformer playerTransformer = PlayerController.fetchPlayer(avaire, context.getMessage(), author);
             if (playerTransformer != null) {
                 Integer selectedBackgroundId = playerTransformer.getPurchases()
                     .getSelectedPurchasesForType(
-                        RankBackgrounds.getDefaultBackground().getPurchaseType()
+                        RankBackgroundHandler.getPurchaseType()
                     );
 
                 if (selectedBackgroundId != null) {
@@ -245,7 +251,7 @@ public class RankCommand extends Command {
         DatabaseProperties properties,
         int backgroundId
     ) {
-        RankBackgrounds background = RankBackgrounds.fromId(backgroundId);
+        RankBackground background = RankBackgroundHandler.getInstance().fromId(backgroundId);
         if (background == null) {
             sendEmbeddedMessage(
                 context, author,
@@ -291,7 +297,16 @@ public class RankCommand extends Command {
                 attachmentName, message.build()
             ).queue();
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("Failed to generate the rank background: {}", e.getMessage(), e);
+
+            sendEmbeddedMessage(
+                context, author,
+                score, levelBar,
+                level, nextLevelXp,
+                experience, zeroExperience,
+                percentage,
+                properties
+            );
         }
     }
 
@@ -311,7 +326,7 @@ public class RankCommand extends Command {
 
                 return new DatabaseProperties(player, total, getScore(context, author.getId()));
             } catch (SQLException e) {
-                e.printStackTrace();
+                log.error("Error getting player experience : {}", e.getMessage(), e);
                 return null;
             }
         });

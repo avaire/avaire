@@ -1,0 +1,36 @@
+id: 12
+cost: 50
+name: "Sakura"
+backgroundImage: "sakura.jpg"
+
+colors:
+    backgroundColor:
+        red: 0
+        green: 0
+        blue: 0
+        alpha: 0
+    mainTextColor:
+        red: 25
+        green: 25
+        blue: 25
+        alpha: 100
+    secondaryTextColor:
+        red: 25
+        green: 25
+        blue: 25
+        alpha: 100
+    experienceBackgroundColor:
+        red: 0
+        green: 0
+        blue: 0
+        alpha: 25
+    experienceForegroundColor:
+        red: 255
+        green: 209
+        blue: 209
+        alpha: 70
+    experienceSeparatorColor:
+        red: 255
+        green: 255
+        blue: 255
+        alpha: 50

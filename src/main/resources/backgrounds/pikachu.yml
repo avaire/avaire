@@ -1,0 +1,47 @@
+id: 10
+cost: 50
+name: "Pikachu"
+backgroundImage: "pikachu.jpg"
+
+colors:
+    backgroundColor:
+        red: 0
+        green: 0
+        blue: 0
+        alpha: 22
+    backgroundCoverColor:
+        red: 0
+        green: 0
+        blue: 0
+        alpha: 22
+    mainTextColor:
+        red: 226
+        green: 226
+        blue: 229
+        alpha: 85
+    secondaryTextColor:
+        red: 247
+        green: 217
+        blue: 18
+        alpha: 90
+    experienceBackgroundColor:
+        red: 240
+        green: 235
+        blue: 89
+        alpha: 45
+    experienceForegroundColor:
+        red: 247
+        green: 217
+        blue: 18
+        alpha: 80
+    experienceSeparatorColor:
+        red: 247
+        green: 185
+        blue: 18
+        alpha: 85
+    experienceTextColor:
+        red: 34
+        green: 34
+        blue: 34
+        alpha: 80
+
