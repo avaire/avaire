@@ -139,6 +139,21 @@ public abstract class Command extends Reflectionable {
      * is set to null the {@link #generateUsageInstructions(Message)} method will just
      * return the command trigger in code syntax quotes.
      *
+     * @param message The JDA message instanced used to invoke the command.
+     * @return Possibly-null, the command usage instructions.
+     */
+    public List<String> getUsageInstructions(@Nullable Message message) {
+        return getUsageInstructions();
+    }
+
+    /**
+     * Gets the command usage instructions for the given command, if the usage instructions
+     * is set to null the {@link #generateUsageInstructions(Message)} method will just
+     * return the command trigger in code syntax quotes.
+     * <p>
+     * If this method is not overwritten the {@link #getUsageInstructions(Message)}
+     * method will be called instead.
+     *
      * @return Possibly-null, the command usage instructions.
      */
     public List<String> getUsageInstructions() {
@@ -150,6 +165,22 @@ public abstract class Command extends Reflectionable {
      * using the command by example, if the example usage is set to null the
      * {@link #generateExampleUsage(Message)} method will just return the
      * command trigger in code syntax quotes.
+     *
+     * @param message The JDA message instanced used to invoke the command.
+     * @return Possibly-null, an example of how to use the command.
+     */
+    public List<String> getExampleUsage(@Nullable Message message) {
+        return getExampleUsage();
+    }
+
+    /**
+     * Get the example usage for the given command, this is used to help users with
+     * using the command by example, if the example usage is set to null the
+     * {@link #generateExampleUsage(Message)} method will just return the
+     * command trigger in code syntax quotes.
+     * <p>
+     * If this method is not overwritten the {@link #getExampleUsage(Message)}
+     * method will be called instead.
      *
      * @return Possibly-null, an example of how to use the command.
      */
@@ -364,7 +395,7 @@ public abstract class Command extends Reflectionable {
     }
 
     /**
-     * Generates the command usage instructions, if the {@link #getUsageInstructions()} is null
+     * Generates the command usage instructions, if the {@link #getUsageInstructions(Message)} is null
      * then the command trigger will just be returned instead inside of markdown code syntax,
      * if the usage instructions are not null, each item in the array will become a new line.
      *
@@ -372,9 +403,11 @@ public abstract class Command extends Reflectionable {
      * @return The usage instructions for the current command.
      */
     public final String generateUsageInstructions(Message message) {
+        List<String> usageInstructions = getUsageInstructions(message);
+
         return formatCommandGeneratorString(message,
-            getUsageInstructions() == null ? "`:command`" :
-                getUsageInstructions().stream()
+            usageInstructions == null ? "`:command`" :
+                usageInstructions.stream()
                     .collect(Collectors.joining("\n"))
         );
     }
@@ -387,12 +420,14 @@ public abstract class Command extends Reflectionable {
      * @return The example usage for the current command.
      */
     public final String generateExampleUsage(Message message) {
-        if (getExampleUsage() == null) {
+        List<String> exampleUsage = getExampleUsage(message);
+
+        if (exampleUsage == null) {
             return formatCommandGeneratorString(message, "`:command`");
         }
 
         return formatCommandGeneratorString(message,
-            getExampleUsage().isEmpty() ? "`:command`" : String.join("\n", getExampleUsage())
+            exampleUsage.isEmpty() ? "`:command`" : String.join("\n", exampleUsage)
         );
     }
 
@@ -429,8 +464,8 @@ public abstract class Command extends Reflectionable {
      */
     public final boolean isSame(Command command) {
         return Objects.equals(command.getName(), getName())
-            && Objects.equals(command.getUsageInstructions(), getUsageInstructions())
-            && Objects.equals(command.getExampleUsage(), getExampleUsage())
+            && Objects.equals(command.getUsageInstructions(null), getUsageInstructions(null))
+            && Objects.equals(command.getExampleUsage(null), getExampleUsage(null))
             && Objects.equals(command.getTriggers(), getTriggers());
     }
 

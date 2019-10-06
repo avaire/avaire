@@ -19,7 +19,7 @@
  *
  */
 
-package com.avairebot.ai.intents;
+package com.avairebot.ai.dialogflow.intents;
 
 import ai.api.model.AIResponse;
 import com.avairebot.AvaIre;
@@ -37,6 +37,7 @@ import org.jsoup.Jsoup;
 import java.io.IOException;
 import java.util.*;
 
+@SuppressWarnings("unused")
 public class RequestSong extends Intent {
 
     private static final Map<String, List<String>> categories = new HashMap<>();

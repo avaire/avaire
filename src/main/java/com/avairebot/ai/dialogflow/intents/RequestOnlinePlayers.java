@@ -19,43 +19,44 @@
  *
  */
 
-package com.avairebot.ai.intents;
+package com.avairebot.ai.dialogflow.intents;
 
 import ai.api.model.AIResponse;
 import com.avairebot.AvaIre;
-import com.avairebot.commands.Category;
-import com.avairebot.commands.CategoryHandler;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.ai.Intent;
+import net.dv8tion.jda.core.OnlineStatus;
+import net.dv8tion.jda.core.entities.Member;
 
-import java.util.ArrayList;
-import java.util.List;
+@SuppressWarnings("unused")
+public class RequestOnlinePlayers extends Intent {
 
-public class RequestCommandPrefix extends Intent {
-
-    public RequestCommandPrefix(AvaIre avaire) {
+    public RequestOnlinePlayers(AvaIre avaire) {
         super(avaire);
     }
 
     @Override
     public String getAction() {
-        return "command.prefix";
+        return "request.online-players";
     }
 
     @Override
     public void onIntent(CommandMessage context, AIResponse response) {
-        List<String> prefixes = new ArrayList<>();
-        for (Category category : CategoryHandler.getValues()) {
-            if (category.isGlobal()) continue;
-
-            prefixes.add(
-                String.format("`%s` %s", category.getPrefix(context.getMessage()), category.getName())
-            );
+        if (!context.getMessage().getChannelType().isGuild()) {
+            context.makeWarning("Right now it's just me and you online ;)").queue();
+            return;
         }
 
-        context.makeSuccess(
-            "Here is all my prefixes for this server.\n\n" +
-                String.join("\n", prefixes)
-        ).queue();
+        int online = 0;
+        for (Member member : context.getGuild().getMembers()) {
+            if (!member.getOnlineStatus().equals(OnlineStatus.OFFLINE)) {
+                online++;
+            }
+        }
+
+        context.makeInfo("There are **:online** people online out of **:total** people on the server.")
+            .set("online", online)
+            .set("total", context.getGuild().getMembers().size())
+            .queue();
     }
 }

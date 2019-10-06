@@ -294,7 +294,7 @@ administration:
     MuteRoleCommand:
         onCooldown: "You have recently use a command option that created and/or modified roles and channel permissions, you have to wait **:cooldown** before you can use this command again."
         roleDoesntExists: "Invalid role given, the `{0}` role doesn't exists."
-        rolePositionedHigher: "The {0} role is positioned higher than any role I have, so I can assign the role to anyone."
+        rolePositionedHigher: "The {0} role is positioned higher than any role I have, so I can't assign the role to anyone."
         cantCreateRoleDueToPermissions: "I can't create the muted role because I don't have the \"Manage Roles\" permissions for the server."
         noMuteRoleSet: "There are currently no mute role set for the server, you can set the role you wanna use as the mute role using `:command set <role>`, or you can make the bot create a new muted role using `:command create-role`."
         usingRoleMessage: "The server is using the :role role for mutes."
@@ -340,6 +340,16 @@ administration:
 
     RemoveSelfAssignableRoleCommand:
         message: "The **:role** role has been removed from the self-assignable list.\nThe server has `:slots` more self-assignable roles slots available."
+
+    RoleLevelCommand:
+        invalidRole: "Invalid role given, I found no role on the server called `{0}`"
+        noRolesWithRewardsDisabled: "There are currently no roles with the level rewards disabled, you can add one by using the `{0} <role>` command."
+        listRoles: "All the roles mentioned below currently have their level rewards turned off, this means that any user with one of those roles won't earn any XP in any channel they talk in, any role not on this list is unaffected.\n\n:roles"
+        listRolesTitle: "Roles with their Level Rewards disabled ({0})"
+        success: "The XP rewards for the :role role has been **:status**!"
+        status:
+            enabled: "Enabled"
+            disabled: "Disabled"
 
     SetRoleColorCommand:
         noRoleFound: "No role with the name \"{0}\" was found."
@@ -893,10 +903,12 @@ utility:
             textChannels: 'Text Channels'
             voiceChannels: 'Voice Channels'
             members: 'Members'
+            users: 'Users'
+            bots: 'Bots'
             roles: 'Roles'
             region: 'Region'
             createdAt: 'Created At'
-            emojis: 'Custom Emojis ({0})'
+            emotes: 'Custom Emotes'
         timeFormat: 'EEE, dd MMM yyyy HH:mm'
 
     ShardCommand:

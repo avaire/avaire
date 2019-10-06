@@ -24,6 +24,8 @@ package com.avairebot.database.schema;
 import com.avairebot.contracts.database.schema.DatabaseClosure;
 import com.avairebot.database.DatabaseManager;
 import com.avairebot.metrics.Metrics;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
@@ -33,6 +35,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Schema {
+
+    private static final Logger log = LoggerFactory.getLogger(Schema.class);
 
     /**
      * The DBM main instance.
@@ -105,6 +109,8 @@ public class Schema {
         String query = dbm.getConnection().create(dbm, blueprint, options);
         Statement stmt = dbm.getConnection().prepare(query);
 
+        log.debug("Schema create was called with: {}", query);
+
         if (stmt instanceof PreparedStatement) {
             return !((PreparedStatement) stmt).execute();
         }
@@ -134,6 +140,8 @@ public class Schema {
         options.put("ignoreExistingTable", false);
         String query = dbm.getConnection().create(dbm, blueprint, options);
         Statement stmt = dbm.getConnection().prepare(query);
+
+        log.debug("Schema createIfNotExists was called with: {}", query);
 
         if (stmt instanceof PreparedStatement) {
             return !((PreparedStatement) stmt).execute();
@@ -169,6 +177,8 @@ public class Schema {
      *                      <code>PreparedStatement</code> or <code>CallableStatement</code>
      */
     public boolean drop(String table) throws SQLException {
+        log.debug("Schema drop was called for table: {}", table);
+
         return alterQuery(format("DROP TABLE `%s`;", table));
     }
 
@@ -184,6 +194,8 @@ public class Schema {
      *                      <code>PreparedStatement</code> or <code>CallableStatement</code>
      */
     public boolean dropIfExists(String table) throws SQLException {
+        log.debug("Schema dropIfExists was called for table: {}", table);
+
         return alterQuery(format("DROP TABLE IF EXISTS `%s`;", table));
     }
 
@@ -203,6 +215,8 @@ public class Schema {
      *                      <code>PreparedStatement</code> or <code>CallableStatement</code>
      */
     public boolean rename(String from, String to) throws SQLException {
+        log.debug("Schema rename was called with: [from={}, to={}]", from, to);
+
         return alterQuery(format("ALTER TABLE `%s` RENAME `%s`;", from, to));
     }
 

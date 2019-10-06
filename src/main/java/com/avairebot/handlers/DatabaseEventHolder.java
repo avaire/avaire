@@ -24,6 +24,8 @@ package com.avairebot.handlers;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.database.transformers.PlayerTransformer;
 
+import javax.annotation.Nullable;
+
 public class DatabaseEventHolder {
 
     private final GuildTransformer guild;
@@ -38,6 +40,7 @@ public class DatabaseEventHolder {
         return guild;
     }
 
+    @Nullable
     public PlayerTransformer getPlayer() {
         return player;
     }

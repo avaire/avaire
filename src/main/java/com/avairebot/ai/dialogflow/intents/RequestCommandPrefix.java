@@ -19,36 +19,44 @@
  *
  */
 
-package com.avairebot.ai.intents;
+package com.avairebot.ai.dialogflow.intents;
 
 import ai.api.model.AIResponse;
 import com.avairebot.AvaIre;
-import com.avairebot.commands.CommandHandler;
+import com.avairebot.commands.Category;
+import com.avairebot.commands.CategoryHandler;
 import com.avairebot.commands.CommandMessage;
-import com.avairebot.commands.help.HelpCommand;
 import com.avairebot.contracts.ai.Intent;
-import com.avairebot.utilities.StringReplacementUtil;
 
-public class Unknown extends Intent {
+import java.util.ArrayList;
+import java.util.List;
 
-    public Unknown(AvaIre avaire) {
+@SuppressWarnings("unused")
+public class RequestCommandPrefix extends Intent {
+
+    public RequestCommandPrefix(AvaIre avaire) {
         super(avaire);
     }
 
     @Override
     public String getAction() {
-        return "input.unknown";
+        return "command.prefix";
     }
 
     @Override
-    @SuppressWarnings("ConstantConditions")
     public void onIntent(CommandMessage context, AIResponse response) {
-        context.makeWarning(
-            StringReplacementUtil.replaceAll(
-                response.getResult().getFulfillment().getSpeech(),
-                "!help", CommandHandler.getCommand(HelpCommand.class)
-                    .getCommand().generateCommandTrigger(context.getMessage())
-            )
+        List<String> prefixes = new ArrayList<>();
+        for (Category category : CategoryHandler.getValues()) {
+            if (category.isGlobal()) continue;
+
+            prefixes.add(
+                String.format("`%s` %s", category.getPrefix(context.getMessage()), category.getName())
+            );
+        }
+
+        context.makeSuccess(
+            "Here is all my prefixes for this server.\n\n" +
+                String.join("\n", prefixes)
         ).queue();
     }
 }

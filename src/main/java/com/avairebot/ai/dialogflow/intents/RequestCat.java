@@ -19,35 +19,35 @@
  *
  */
 
-package com.avairebot.ai.intents;
+package com.avairebot.ai.dialogflow.intents;
 
 import ai.api.model.AIResponse;
 import com.avairebot.AvaIre;
+import com.avairebot.commands.CommandContainer;
+import com.avairebot.commands.CommandHandler;
 import com.avairebot.commands.CommandMessage;
+import com.avairebot.commands.fun.RandomCatCommand;
 import com.avairebot.contracts.ai.Intent;
-import com.avairebot.utilities.StringReplacementUtil;
 
-public class SmallTalk extends Intent {
+@SuppressWarnings("unused")
+public class RequestCat extends Intent {
 
-    public SmallTalk(AvaIre avaire) {
+    public RequestCat(AvaIre avaire) {
         super(avaire);
     }
 
     @Override
     public String getAction() {
-        return "smalltalk.*";
+        return "request.cat";
     }
 
     @Override
+    @SuppressWarnings("ConstantConditions")
     public void onIntent(CommandMessage context, AIResponse response) {
-        String nickname = context.getAuthor().getName();
-        if (context.getMessage().getChannelType().isGuild()) {
-            nickname = context.getMember().getEffectiveName();
-        }
+        CommandContainer container = CommandHandler.getCommand(RandomCatCommand.class);
 
-        context.makeInfo(StringReplacementUtil.replaceAll(
-            response.getResult().getFulfillment().getSpeech(),
-            "%nick%", nickname
-        )).queue();
+        container.getCommand().onCommand(
+            new CommandMessage(container, context.getDatabaseEventHolder(), context.getMessage()), new String[0]
+        );
     }
 }

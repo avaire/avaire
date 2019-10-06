@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018.
+ * Copyright (c) 2019.
  *
  * This file is part of AvaIre.
  *
@@ -19,23 +19,23 @@
  *
  */
 
-package com.avairebot.ai;
+package com.avairebot.ai.dialogflow;
 
-public class IntentAction {
+class IntentAction {
 
     private final String action;
     private final boolean wildcard;
 
-    public IntentAction(String action) {
+    IntentAction(String action) {
         this.wildcard = action.contains(".*");
         this.action = wildcard ? action.substring(0, action.length() - 1) : action;
     }
 
-    public String getAction() {
+    String getAction() {
         return action;
     }
 
-    public boolean isWildcard() {
+    boolean isWildcard() {
         return wildcard;
     }
 }

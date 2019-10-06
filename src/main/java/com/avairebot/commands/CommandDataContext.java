@@ -72,8 +72,8 @@ public class CommandDataContext {
     CommandDataContext(CommandContainer container) {
         this.name = container.getCommand().getName();
         this.description = container.getCommand().getDescription(null);
-        this.usage = container.getCommand().getUsageInstructions();
-        this.example = container.getCommand().getExampleUsage();
+        this.usage = container.getCommand().getUsageInstructions(null);
+        this.example = container.getCommand().getExampleUsage(null);
         this.triggers = container.getCommand().getTriggers();
         this.middlewares = container.getCommand().getMiddleware();
         this.priority = container.getCommand().getCommandPriority();

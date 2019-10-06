@@ -36,6 +36,7 @@ import com.avairebot.handlers.adapter.JDAStateEventAdapter;
 import com.avairebot.handlers.adapter.MessageEventAdapter;
 import com.avairebot.scheduler.jobs.LavalinkGarbageNodeCollectorJob;
 import lavalink.client.io.Link;
+import lavalink.client.io.jda.JdaLink;
 import net.dv8tion.jda.core.managers.AudioManager;
 
 import java.util.Map;
@@ -110,9 +111,11 @@ public class GarbageCollectorTask implements Task {
         // If Lavalink is enabled we'll use the Lavalink link state
         // for the current guild instead of the audio manager.
         if (LavalinkManager.LavalinkManagerHolder.lavalink.isEnabled()) {
-            if (isConnected(LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink().getLink(
+            JdaLink link = LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink().getExistingLink(
                 next.getValue().getLastActiveMessage().getGuild()
-            ).getState())) {
+            );
+
+            if (link != null && isConnected(link.getState())) {
                 return false;
             }
         } else {
