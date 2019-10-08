@@ -23,11 +23,14 @@ package com.avairebot.audio.cache;
 
 import com.avairebot.audio.AudioTrackContainer;
 import com.avairebot.contracts.debug.Evalable;
+import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+
+import java.io.Serializable;
 
 @SuppressWarnings("unused")
-public class AudioCache extends Evalable {
+public class AudioCache extends Evalable implements Serializable {
 
-    private String trackUrl;
+    private byte[] track;
     private long requestedBy;
     private long position;
 
@@ -35,25 +38,25 @@ public class AudioCache extends Evalable {
      * Create the audio cache instance using the given track
      * url, user request ID, and the track position.
      *
-     * @param trackUrl    The url to the track.
+     * @param audioTrack  The LavaPlayer AudioTrack object instance.
      * @param requestedBy The ID of the user that requested the track.
      * @param position    The track position in milliseconds.
      */
-    AudioCache(String trackUrl, long requestedBy, long position) {
-        this.trackUrl = trackUrl;
+    AudioCache(AudioTrack audioTrack, long requestedBy, long position) {
         this.requestedBy = requestedBy;
         this.position = position;
+        this.track = AudioTrackSerializer.encodeTrack(audioTrack);
     }
 
     /**
      * Create the audio cache instance using the given
      * track url, and the user request ID.
      *
-     * @param trackUrl    The url to the track.
+     * @param audioTrack  The LavaPlayer AudioTrack object instance.
      * @param requestedBy The ID of the user that requested the track.
      */
-    AudioCache(String trackUrl, long requestedBy) {
-        this(trackUrl, requestedBy, -1);
+    AudioCache(AudioTrack audioTrack, long requestedBy) {
+        this(audioTrack, requestedBy, -1);
     }
 
     /**
@@ -64,19 +67,19 @@ public class AudioCache extends Evalable {
      */
     AudioCache(AudioTrackContainer container) {
         this(
-            container.getAudioTrack().getInfo().uri,
+            container.getAudioTrack(),
             container.getRequester().getIdLong(),
             container.getAudioTrack().getPosition()
         );
     }
 
     /**
-     * The URL of the track.
+     * The encoded version of the audio track.
      *
      * @return The URL of the track.
      */
-    public String getTrackUrl() {
-        return trackUrl;
+    public byte[] getTrack() {
+        return track;
     }
 
     /**
