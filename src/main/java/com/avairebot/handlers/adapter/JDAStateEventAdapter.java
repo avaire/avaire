@@ -159,6 +159,10 @@ public class JDAStateEventAdapter extends EventAdapter {
                         continue;
                     }
 
+                    // TODO: Get rid of the track request handler.
+                    // This can be done so we instead cache all the relevant information when creating
+                    // the music state cache, so we can directly re-create the entire queue without
+                    // having to request the information for each track.
                     TrackRequestHandler.sendRequest(musicManager, member, audioCache.getTrackUrl());
                 }
             });

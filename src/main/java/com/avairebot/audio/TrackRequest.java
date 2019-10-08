@@ -21,16 +21,15 @@
 
 package com.avairebot.audio;
 
+import com.avairebot.audio.exceptions.SearchingException;
+import com.avairebot.audio.exceptions.TrackLoadFailedException;
 import com.avairebot.audio.seracher.SearchProvider;
+import com.avairebot.audio.seracher.SearchTrackResultHandler;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.async.Future;
 import com.avairebot.exceptions.NoMatchFoundException;
-import com.avairebot.exceptions.TrackLoadFailedException;
-import com.avairebot.metrics.Metrics;
-import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
-import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 
 import java.util.function.Consumer;
 
@@ -53,72 +52,47 @@ public class TrackRequest extends Future {
         handle(success, failure, null);
     }
 
+    @SuppressWarnings({"unchecked", "ResultOfMethodCallIgnored"})
     public void handle(final Consumer success, final Consumer<Throwable> failure, final Consumer<AudioSession> sessionConsumer) {
-        Metrics.searchRequests.inc();
+        try {
+            AudioPlaylist playlist = new SearchTrackResultHandler(trackContext).searchSync();
 
-        AudioHandler.getDefaultAudioHandler().getPlayerManager().loadItem(trackContext.getFormattedQuery(), new AudioLoadResultHandler() {
-            @Override
-            public void trackLoaded(AudioTrack track) {
-                if (track == null) {
-                    noMatches();
-                    return;
-                }
-
-                Metrics.tracksLoaded.inc();
-
-                success.accept(new TrackResponse(musicManager, track, trackContext));
-
-                AudioHandler.getDefaultAudioHandler().play(context, musicManager, track);
-            }
-
-            @Override
-            public void playlistLoaded(AudioPlaylist playlist) {
-                if (playlist.getTracks().isEmpty()) {
-                    noMatches();
-                    return;
-                }
-
-                Metrics.tracksLoaded.inc(playlist.getTracks().size());
-
-                if (trackContext.getProvider().equals(SearchProvider.YOUTUBE) || trackContext.getProvider().equals(SearchProvider.SOUNDCLOUD)) {
-                    if (sessionConsumer == null) {
-                        trackLoaded(playlist.getTracks().get(0));
-                        return;
-                    }
-
-                    sessionConsumer.accept(AudioHandler.getDefaultAudioHandler().createAudioSession(context, playlist));
-                    return;
-                }
-
-                if (playlist.getTracks().isEmpty()) {
-                    noMatches();
-                    return;
-                }
-
-                success.accept(new TrackResponse(musicManager, playlist, trackContext));
-                AudioHandler.getDefaultAudioHandler().play(context, musicManager, playlist);
-            }
-
-            @Override
-            public void noMatches() {
-                Metrics.trackLoadsFailed.inc();
-
+            if (playlist.getTracks() == null || playlist.getTracks().isEmpty()) {
                 failure.accept(new NoMatchFoundException(
                     context.i18nRaw("music.internal.noMatchFound", trackContext.getQuery()),
                     trackContext
                 ));
-            }
+            } else if (sessionConsumer != null && isSearchableContext(trackContext)) {
+                sessionConsumer.accept(AudioHandler.getDefaultAudioHandler().createAudioSession(context, playlist));
+            } else {
+                success.accept(new TrackResponse(musicManager, playlist, trackContext));
 
-            @Override
-            public void loadFailed(FriendlyException exception) {
-                Metrics.trackLoadsFailed.inc();
-
-                failure.accept(new TrackLoadFailedException(
-                    context.i18nRaw("music.internal.trackLoadFailed", exception.getMessage()),
-                    exception.getMessage(),
-                    exception
-                ));
+                if (playlist.getTracks().size() > 1) {
+                    AudioHandler.getDefaultAudioHandler().play(
+                        context, musicManager, playlist
+                    );
+                } else {
+                    AudioHandler.getDefaultAudioHandler().play(
+                        context, musicManager, playlist.getTracks().get(0)
+                    );
+                }
             }
-        });
+        } catch (TrackLoadFailedException exception) {
+            failure.accept(new FriendlyException(
+                context.i18nRaw("music.internal.trackLoadFailed", exception.getMessage()),
+                FriendlyException.Severity.COMMON,
+                exception
+            ));
+        } catch (SearchingException e) {
+            failure.accept(new NoMatchFoundException(
+                context.i18nRaw("music.internal.noMatchFound", trackContext.getQuery()),
+                trackContext
+            ));
+        }
+    }
+
+    private boolean isSearchableContext(TrackRequestContext trackContext) {
+        return trackContext.getProvider().equals(SearchProvider.YOUTUBE)
+            || trackContext.getProvider().equals(SearchProvider.SOUNDCLOUD);
     }
 }

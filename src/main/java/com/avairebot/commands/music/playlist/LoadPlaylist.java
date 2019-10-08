@@ -23,15 +23,15 @@ package com.avairebot.commands.music.playlist;
 
 import com.avairebot.AvaIre;
 import com.avairebot.audio.AudioHandler;
+import com.avairebot.audio.TrackRequestContext;
 import com.avairebot.audio.VoiceConnectStatus;
+import com.avairebot.audio.exceptions.SearchingException;
+import com.avairebot.audio.seracher.SearchTrackResultHandler;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.commands.music.PlaylistCommand;
 import com.avairebot.contracts.commands.playlist.PlaylistSubCommand;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.database.transformers.PlaylistTransformer;
-import com.avairebot.metrics.Metrics;
-import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
-import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 
@@ -92,47 +92,20 @@ public class LoadPlaylist extends PlaylistSubCommand {
     }
 
     private void loadSong(PlaylistTransformer.PlaylistSong song, final List<AudioTrack> tracks, Consumer<List<AudioTrack>> success) {
-        Metrics.searchRequests.inc();
+        TrackRequestContext requestContext = AudioHandler.getDefaultAudioHandler()
+            .createTrackRequestContext(null, song.getLink().split(" "));
 
-        AudioHandler.getDefaultAudioHandler().getPlayerManager().loadItem(song.getLink(), new AudioLoadResultHandler() {
-            @Override
-            public void trackLoaded(AudioTrack track) {
-                if (track == null) {
-                    noMatches();
-                    return;
-                }
-
-                Metrics.tracksLoaded.inc();
-
-                tracks.add(track);
-
-                if (success != null) {
-                    success.accept(tracks);
-                }
+        try {
+            AudioPlaylist playlist = new SearchTrackResultHandler(requestContext).searchSync();
+            if (playlist.getTracks() != null && !playlist.getTracks().isEmpty()) {
+                tracks.add(playlist.getTracks().get(0));
             }
+        } catch (SearchingException e) {
+            AvaIre.getLogger().error("Searching exception were thrown while loading a playlist: {}", e.getMessage(), e);
+        }
 
-            @Override
-            public void playlistLoaded(AudioPlaylist playlist) {
-                trackLoaded(playlist.getTracks().get(0));
-            }
-
-            @Override
-            public void noMatches() {
-                Metrics.trackLoadsFailed.inc();
-
-                if (success != null) {
-                    success.accept(tracks);
-                }
-            }
-
-            @Override
-            public void loadFailed(FriendlyException exception) {
-                Metrics.trackLoadsFailed.inc();
-
-                if (success != null) {
-                    success.accept(tracks);
-                }
-            }
-        });
+        if (success != null) {
+            success.accept(tracks);
+        }
     }
 }

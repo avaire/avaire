@@ -23,7 +23,6 @@ package com.avairebot.commands.music;
 
 import com.avairebot.AvaIre;
 import com.avairebot.audio.*;
-import com.avairebot.audio.seracher.SearchProvider;
 import com.avairebot.commands.CommandHandler;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
@@ -35,11 +34,8 @@ import com.avairebot.utilities.RestActionUtil;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import net.dv8tion.jda.core.Permission;
-import net.dv8tion.jda.core.entities.User;
 
 import javax.annotation.Nonnull;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -123,7 +119,7 @@ public class PlayCommand extends Command {
             return loadSongFromSession(context, args);
         }
 
-        AudioHandler.getDefaultAudioHandler().loadAndPlay(context, createTrackRequestContext(context.getAuthor(), args)).handle(
+        AudioHandler.getDefaultAudioHandler().loadAndPlay(context, AudioHandler.getDefaultAudioHandler().createTrackRequestContext(context.getAuthor(), args)).handle(
             musicSuccess(context, shouldLeaveMessage),
             musicFailure(context),
             musicSession(context, args)
@@ -188,26 +184,6 @@ public class PlayCommand extends Command {
                     message.delete().queueAfter(30, TimeUnit.SECONDS, null, RestActionUtil.ignore);
                 }
             });
-    }
-
-    private TrackRequestContext createTrackRequestContext(User requester, String[] args) {
-        String string = String.join(" ", args);
-
-        if (string.startsWith("scsearch:")) {
-            return new TrackRequestContext(string.substring(9, string.length()).trim(), SearchProvider.SOUNDCLOUD);
-        }
-
-        if (string.startsWith("local:") && avaire.getBotAdmins().getUserById(requester.getIdLong()).isAdmin()) {
-            return new TrackRequestContext(string.substring(6, string.length()).trim(), SearchProvider.LOCAL);
-        }
-
-        try {
-            new URL(string);
-
-            return new TrackRequestContext(string.trim(), SearchProvider.URL);
-        } catch (MalformedURLException ex) {
-            return new TrackRequestContext(string.trim(), SearchProvider.YOUTUBE);
-        }
     }
 
     private Consumer<TrackResponse> musicSuccess(final CommandMessage context, final boolean finalShouldLeaveMessage) {

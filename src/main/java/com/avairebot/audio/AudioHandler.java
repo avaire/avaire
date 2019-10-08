@@ -22,6 +22,7 @@
 package com.avairebot.audio;
 
 import com.avairebot.AvaIre;
+import com.avairebot.audio.seracher.SearchProvider;
 import com.avairebot.audio.source.PlaylistImportSourceManager;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.database.controllers.GuildController;
@@ -52,6 +53,9 @@ import org.apache.http.client.config.RequestConfig;
 
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -165,6 +169,30 @@ public class AudioHandler {
             musicManager.getScheduler().queue(playlist, context.getAuthor());
         }
         return voiceConnectStatus;
+    }
+
+    @CheckReturnValue
+    public TrackRequestContext createTrackRequestContext(@Nullable User requester, String[] args) {
+        String string = String.join(" ", args);
+
+        if (string.startsWith("scsearch:")) {
+            return new TrackRequestContext(string.substring(9, string.length()).trim(), SearchProvider.SOUNDCLOUD);
+        }
+
+        if (string.startsWith("local:")) {
+            string = string.substring(6, string.length()).trim();
+            if (requester != null && avaire.getBotAdmins().getUserById(requester.getIdLong()).isAdmin()) {
+                return new TrackRequestContext(string.substring(6, string.length()).trim(), SearchProvider.LOCAL);
+            }
+        }
+
+        try {
+            new URL(string);
+
+            return new TrackRequestContext(string.trim(), SearchProvider.URL);
+        } catch (MalformedURLException ex) {
+            return new TrackRequestContext(string.trim(), SearchProvider.YOUTUBE);
+        }
     }
 
     @CheckReturnValue
