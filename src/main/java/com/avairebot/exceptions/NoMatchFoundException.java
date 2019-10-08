@@ -21,11 +21,12 @@
 
 package com.avairebot.exceptions;
 
+import com.avairebot.audio.TrackRequestContext;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 
 public class NoMatchFoundException extends FriendlyException {
 
-    public NoMatchFoundException(String message, String trackUrl) {
-        super(String.format(message, trackUrl), Severity.COMMON, null);
+    public NoMatchFoundException(String message, TrackRequestContext requestContext) {
+        super(String.format(message, requestContext.getQuery()), Severity.COMMON, null);
     }
 }

@@ -94,7 +94,7 @@ public class LoadPlaylist extends PlaylistSubCommand {
     private void loadSong(PlaylistTransformer.PlaylistSong song, final List<AudioTrack> tracks, Consumer<List<AudioTrack>> success) {
         Metrics.searchRequests.inc();
 
-        AudioHandler.getDefaultAudioHandler().getPlayerManager().loadItemOrdered(AudioHandler.getDefaultAudioHandler().musicManagers, song.getLink(), new AudioLoadResultHandler() {
+        AudioHandler.getDefaultAudioHandler().getPlayerManager().loadItem(song.getLink(), new AudioLoadResultHandler() {
             @Override
             public void trackLoaded(AudioTrack track) {
                 if (track == null) {

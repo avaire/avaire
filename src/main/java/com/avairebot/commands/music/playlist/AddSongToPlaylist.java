@@ -83,7 +83,7 @@ public class AddSongToPlaylist extends PlaylistSubCommand {
     private void loadSong(CommandMessage context, String query, GuildTransformer guild, PlaylistTransformer playlist) {
         Metrics.searchRequests.inc();
 
-        AudioHandler.getDefaultAudioHandler().getPlayerManager().loadItemOrdered(AudioHandler.getDefaultAudioHandler().musicManagers, query, new AudioLoadResultHandler() {
+        AudioHandler.getDefaultAudioHandler().getPlayerManager().loadItem(query, new AudioLoadResultHandler() {
             @Override
             public void trackLoaded(AudioTrack track) {
                 if (track == null) {

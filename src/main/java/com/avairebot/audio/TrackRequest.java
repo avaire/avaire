@@ -21,6 +21,7 @@
 
 package com.avairebot.audio;
 
+import com.avairebot.audio.seracher.SearchProvider;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.async.Future;
 import com.avairebot.exceptions.NoMatchFoundException;
@@ -37,12 +38,12 @@ public class TrackRequest extends Future {
 
     private final GuildMusicManager musicManager;
     private final CommandMessage context;
-    private final String trackUrl;
+    private final TrackRequestContext trackContext;
 
-    TrackRequest(GuildMusicManager musicManager, CommandMessage context, String trackUrl) {
+    TrackRequest(GuildMusicManager musicManager, CommandMessage context, TrackRequestContext trackContext) {
         this.musicManager = musicManager;
         this.context = context;
-        this.trackUrl = trackUrl;
+        this.trackContext = trackContext;
 
         musicManager.setLastActiveMessage(context);
     }
@@ -55,7 +56,7 @@ public class TrackRequest extends Future {
     public void handle(final Consumer success, final Consumer<Throwable> failure, final Consumer<AudioSession> sessionConsumer) {
         Metrics.searchRequests.inc();
 
-        AudioHandler.getDefaultAudioHandler().getPlayerManager().loadItemOrdered(musicManager, trackUrl, new AudioLoadResultHandler() {
+        AudioHandler.getDefaultAudioHandler().getPlayerManager().loadItem(trackContext.getFormattedQuery(), new AudioLoadResultHandler() {
             @Override
             public void trackLoaded(AudioTrack track) {
                 if (track == null) {
@@ -65,7 +66,7 @@ public class TrackRequest extends Future {
 
                 Metrics.tracksLoaded.inc();
 
-                success.accept(new TrackResponse(musicManager, track, trackUrl));
+                success.accept(new TrackResponse(musicManager, track, trackContext));
 
                 AudioHandler.getDefaultAudioHandler().play(context, musicManager, track);
             }
@@ -79,7 +80,7 @@ public class TrackRequest extends Future {
 
                 Metrics.tracksLoaded.inc(playlist.getTracks().size());
 
-                if (trackUrl.startsWith("ytsearch:") || trackUrl.startsWith("scsearch:")) {
+                if (trackContext.getProvider().equals(SearchProvider.YOUTUBE) || trackContext.getProvider().equals(SearchProvider.SOUNDCLOUD)) {
                     if (sessionConsumer == null) {
                         trackLoaded(playlist.getTracks().get(0));
                         return;
@@ -94,7 +95,7 @@ public class TrackRequest extends Future {
                     return;
                 }
 
-                success.accept(new TrackResponse(musicManager, playlist, trackUrl));
+                success.accept(new TrackResponse(musicManager, playlist, trackContext));
                 AudioHandler.getDefaultAudioHandler().play(context, musicManager, playlist);
             }
 
@@ -103,8 +104,8 @@ public class TrackRequest extends Future {
                 Metrics.trackLoadsFailed.inc();
 
                 failure.accept(new NoMatchFoundException(
-                    context.i18nRaw("music.internal.noMatchFound", trackUrl),
-                    trackUrl
+                    context.i18nRaw("music.internal.noMatchFound", trackContext.getQuery()),
+                    trackContext
                 ));
             }
 

@@ -45,7 +45,7 @@ public class TrackRequestHandler {
     public static void sendRequest(GuildMusicManager musicManager, Member member, String trackUrl) {
         Metrics.searchRequests.inc();
 
-        AudioHandler.getDefaultAudioHandler().getPlayerManager().loadItemOrdered(musicManager, trackUrl, new AudioLoadResultHandler() {
+        AudioHandler.getDefaultAudioHandler().getPlayerManager().loadItem(trackUrl, new AudioLoadResultHandler() {
 
             @Override
             public void trackLoaded(AudioTrack track) {

@@ -131,8 +131,8 @@ public class AudioHandler {
     }
 
     @CheckReturnValue
-    public TrackRequest loadAndPlay(CommandMessage context, @Nonnull String trackUrl) {
-        return new TrackRequest(getGuildAudioPlayer(context.getGuild()), context, trackUrl);
+    public TrackRequest loadAndPlay(CommandMessage context, @Nonnull TrackRequestContext trackContext) {
+        return new TrackRequest(getGuildAudioPlayer(context.getGuild()), context, trackContext);
     }
 
     public void skipTrack(CommandMessage context) {

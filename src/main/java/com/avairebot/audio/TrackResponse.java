@@ -28,12 +28,12 @@ public class TrackResponse {
 
     private final GuildMusicManager musicManager;
     private final AudioItem audioItem;
-    private final String trackUrl;
+    private final TrackRequestContext trackContext;
 
-    public TrackResponse(GuildMusicManager musicManager, AudioItem audioItem, String trackUrl) {
+    public TrackResponse(GuildMusicManager musicManager, AudioItem audioItem, TrackRequestContext trackContext) {
         this.musicManager = musicManager;
         this.audioItem = audioItem;
-        this.trackUrl = trackUrl;
+        this.trackContext = trackContext;
     }
 
     public GuildMusicManager getMusicManager() {
@@ -44,8 +44,8 @@ public class TrackResponse {
         return audioItem;
     }
 
-    public String getTrackUrl() {
-        return trackUrl;
+    public TrackRequestContext getTrackContext() {
+        return trackContext;
     }
 
     public boolean isPlaylist() {
