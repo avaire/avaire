@@ -61,10 +61,10 @@ public class SearchTrackResultHandler implements AudioLoadResultHandler {
     public AudioPlaylist searchSync(long timeoutMillis) throws SearchingException {
         Metrics.searchRequests.inc();
 
-        log.debug("Searching using the {} provider for \"{}\"", trackContext.getProvider(), trackContext.getQuery());
+        log.debug("Searching using the {} provider for \"{}\"", trackContext.getProvider(), trackContext.getFormattedQuery());
 
         try {
-            AudioHandler.getDefaultAudioHandler().getPlayerManager().loadItem(trackContext.getFormattedQuery(), this)
+            AudioHandler.getDefaultAudioHandler().getPlayerManager().loadItem(trackContext.getFullQueryString(), this)
                 .get(timeoutMillis, TimeUnit.MILLISECONDS);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();

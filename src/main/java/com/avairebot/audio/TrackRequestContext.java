@@ -25,8 +25,11 @@ import com.avairebot.audio.seracher.SearchProvider;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 
 import javax.annotation.Nonnull;
+import java.util.regex.Pattern;
 
 public class TrackRequestContext {
+
+    private static final Pattern punctuationRegex = Pattern.compile("[.,/#!$%^&*;:{}=\\-_`~()\"\']");
 
     private final String query;
     private SearchProvider provider;
@@ -41,11 +44,16 @@ public class TrackRequestContext {
         provider = SearchProvider.fromTrack(track);
     }
 
-    public String getFormattedQuery() {
+    public String getFullQueryString() {
         if (provider.getPrefix() == null) {
-            return query;
+            return getFormattedQuery();
         }
-        return provider.getPrefix() + query;
+
+        return provider.getPrefix() + getFormattedQuery();
+    }
+
+    public String getFormattedQuery() {
+        return punctuationRegex.matcher(query).replaceAll("");
     }
 
     public String getQuery() {
@@ -56,12 +64,8 @@ public class TrackRequestContext {
         return provider;
     }
 
-    public void setProvider(SearchProvider provider) {
-        this.provider = provider;
-    }
-
     @Override
     public String toString() {
-        return getFormattedQuery();
+        return getFullQueryString();
     }
 }
