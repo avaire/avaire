@@ -109,7 +109,7 @@ public class SearchTrackResultHandler implements AudioLoadResultHandler {
 
         Metrics.tracksLoaded.inc();
 
-        this.playlist = new BasicAudioPlaylist("Search results for: " + trackContext.getQuery(), Collections.singletonList(
+        this.playlist = new BasicAudioPlaylist(track.getInfo().title, Collections.singletonList(
             track
         ), null, true);
     }
