@@ -224,6 +224,10 @@ public class AudioHandler {
         }
 
         if (LavalinkManager.LavalinkManagerHolder.lavalink.isEnabled()) {
+            if (!LavalinkManager.LavalinkManagerHolder.lavalink.hasConnectedNodes()) {
+                return VoiceConnectStatus.NO_AVAILABLE_NODES;
+            }
+
             VoiceConnectStatus voiceConnectStatus = canConnectToChannel(message, channel);
             if (voiceConnectStatus != null) {
                 return voiceConnectStatus;
@@ -253,6 +257,12 @@ public class AudioHandler {
 
     @CheckReturnValue
     public VoiceConnectStatus connectToVoiceChannel(Message message, VoiceChannel channel, AudioManager audioManager) {
+        if (LavalinkManager.LavalinkManagerHolder.lavalink.isEnabled()) {
+            if (!LavalinkManager.LavalinkManagerHolder.lavalink.hasConnectedNodes()) {
+                return VoiceConnectStatus.NO_AVAILABLE_NODES;
+            }
+        }
+
         VoiceConnectStatus voiceConnectStatus = canConnectToChannel(message, channel);
         if (voiceConnectStatus != null) {
             return voiceConnectStatus;

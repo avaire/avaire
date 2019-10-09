@@ -24,6 +24,7 @@ package com.avairebot.audio;
 import com.avairebot.AvaIre;
 import com.avairebot.scheduler.ScheduleHandler;
 import com.avairebot.shared.DiscordConstants;
+import lavalink.client.io.LavalinkSocket;
 import lavalink.client.io.Link;
 import lavalink.client.io.jda.JdaLavalink;
 import lavalink.client.io.jda.JdaLink;
@@ -212,6 +213,26 @@ public class LavalinkManager {
     public boolean isLinkInState(JdaLink link, Link.State... states) {
         for (Link.State state : states) {
             if (state != null && state.equals(link.getState())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Checks if Lavalink has at least one connected
+     * node which can be used to stream music.
+     *
+     * @return {@code True} if at least one node is available
+     *         for streaming music, {@code False} otherwise.
+     */
+    public boolean hasConnectedNodes() {
+        if (lavalink.getNodes().isEmpty()) {
+            return false;
+        }
+
+        for (LavalinkSocket socket : lavalink.getNodes()) {
+            if (socket.isOpen()) {
                 return true;
             }
         }
