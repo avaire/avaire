@@ -26,10 +26,14 @@ import com.avairebot.contracts.ai.IntelligenceService;
 import com.avairebot.handlers.DatabaseEventHolder;
 import com.avairebot.metrics.Metrics;
 import net.dv8tion.jda.core.entities.Message;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nonnull;
 
 public class IntelligenceManager {
+
+    private static final Logger log = LoggerFactory.getLogger(IntelligenceService.class);
 
     private final AvaIre avaire;
     private IntelligenceService service;
@@ -69,7 +73,13 @@ public class IntelligenceManager {
      */
     public void registerService(@Nonnull IntelligenceService service) {
         if (this.service != null) {
-            this.service.unregisterService(avaire);
+            try {
+                this.service.unregisterService(avaire);
+            } catch (Exception e) {
+                log.warn("The {} AI service threw an exception while being unregistered: {}",
+                    this.service.getClass().getSimpleName(), e.getMessage(), e
+                );
+            }
         }
 
         service.registerService(avaire);
@@ -86,7 +96,14 @@ public class IntelligenceManager {
             return;
         }
 
-        service.unregisterService(avaire);
+        try {
+            service.unregisterService(avaire);
+        } catch (Exception e) {
+            log.warn("The {} AI service threw an exception while being unregistered: {}",
+                this.service.getClass().getSimpleName(), e.getMessage(), e
+            );
+        }
+
         service = null;
     }
 
