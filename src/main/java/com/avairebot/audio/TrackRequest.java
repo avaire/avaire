@@ -21,6 +21,7 @@
 
 package com.avairebot.audio;
 
+import com.avairebot.audio.exceptions.InvalidSearchProviderException;
 import com.avairebot.audio.exceptions.SearchingException;
 import com.avairebot.audio.exceptions.TrackLoadFailedException;
 import com.avairebot.audio.seracher.SearchProvider;
@@ -77,11 +78,11 @@ public class TrackRequest extends Future {
                     );
                 }
             }
-        } catch (TrackLoadFailedException exception) {
+        } catch (InvalidSearchProviderException | TrackLoadFailedException e) {
             failure.accept(new FriendlyException(
-                context.i18nRaw("music.internal.trackLoadFailed", exception.getMessage()),
+                context.i18nRaw("music.internal.trackLoadFailed", e.getMessage()),
                 FriendlyException.Severity.COMMON,
-                exception
+                e
             ));
         } catch (SearchingException e) {
             failure.accept(new NoMatchFoundException(

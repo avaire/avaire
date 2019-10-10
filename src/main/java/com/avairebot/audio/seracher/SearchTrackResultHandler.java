@@ -24,6 +24,7 @@ package com.avairebot.audio.seracher;
 import com.avairebot.audio.AudioHandler;
 import com.avairebot.audio.TrackRequestContext;
 import com.avairebot.audio.exceptions.Http503Exception;
+import com.avairebot.audio.exceptions.InvalidSearchProviderException;
 import com.avairebot.audio.exceptions.SearchingException;
 import com.avairebot.audio.exceptions.TrackLoadFailedException;
 import com.avairebot.metrics.Metrics;
@@ -60,6 +61,8 @@ public class SearchTrackResultHandler implements AudioLoadResultHandler {
 
     public AudioPlaylist searchSync(long timeoutMillis) throws SearchingException {
         Metrics.searchRequests.inc();
+
+        this.validateSearchProviderIsActive();
 
         log.debug("Searching using the {} provider for \"{}\"", trackContext.getProvider(), trackContext.getFormattedQuery());
 
@@ -98,6 +101,35 @@ public class SearchTrackResultHandler implements AudioLoadResultHandler {
         }
 
         return playlist;
+    }
+
+    private void validateSearchProviderIsActive() throws InvalidSearchProviderException {
+        if (!SearchProvider.YOUTUBE.isActive() && isRequestingYouTubeWithDirectLink()) {
+            throw new InvalidSearchProviderException(String.format(
+                "The %s search provider is disabled, you can't request music via direct links until it is re-enabled.",
+                SearchProvider.YOUTUBE
+            ));
+        }
+
+        if (trackContext.getProvider().isActive()) {
+            return;
+        }
+
+        if (trackContext.getProvider().equals(SearchProvider.YOUTUBE) && SearchProvider.SOUNDCLOUD.isActive()) {
+            trackContext.setProvider(SearchProvider.SOUNDCLOUD);
+        } else if (trackContext.getProvider().equals(SearchProvider.SOUNDCLOUD) && SearchProvider.YOUTUBE.isActive()) {
+            trackContext.setProvider(SearchProvider.YOUTUBE);
+        } else {
+            throw new InvalidSearchProviderException(String.format(
+                "The %s search provider is disabled, and no valid fail-over providers could be found.",
+                trackContext.getProvider()
+            ));
+        }
+    }
+
+    private boolean isRequestingYouTubeWithDirectLink() {
+        return trackContext.getProvider().equals(SearchProvider.URL)
+            && SearchProvider.YOUTUBE.matchesDomain(trackContext.getQuery());
     }
 
     @Override

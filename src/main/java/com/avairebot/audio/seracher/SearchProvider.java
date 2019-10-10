@@ -21,11 +21,12 @@
 
 package com.avairebot.audio.seracher;
 
+import com.avairebot.contracts.toggle.Feature;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 
-public enum SearchProvider {
+public enum SearchProvider implements Feature {
 
-    YOUTUBE("ytsearch:", "youtube.com"),
+    YOUTUBE("ytsearch:", "youtube.com", "youtu.be"),
     SOUNDCLOUD("scsearch:", "soundcloud.com"),
     LOCAL,
     URL;
@@ -33,21 +34,21 @@ public enum SearchProvider {
     private static final SearchProvider DEFAULT_PROVIDER = URL;
 
     private final String prefix;
-    private final String url;
+    private final String[] domains;
 
     SearchProvider() {
-        this(null, null);
+        this(null);
     }
 
-    SearchProvider(String prefix, String url) {
+    SearchProvider(String prefix, String... domains) {
         this.prefix = prefix;
-        this.url = url;
+        this.domains = domains;
     }
 
     public static SearchProvider fromTrack(AudioTrack track) {
         String trackUrl = track.getInfo().uri;
         for (SearchProvider provider : SearchProvider.values()) {
-            if (provider.getUrl() != null && trackUrl.contains(provider.getUrl())) {
+            if (provider.getDomains() != null && provider.matchesDomain(trackUrl)) {
                 return provider;
             }
         }
@@ -58,12 +59,26 @@ public enum SearchProvider {
         return prefix;
     }
 
-    public String getUrl() {
-        return url;
+    public String[] getDomains() {
+        return domains;
+    }
+
+    public boolean matchesDomain(String string) {
+        if (string == null) {
+            return false;
+        }
+
+        for (String domain : getDomains()) {
+            if (string.toLowerCase().contains(domain)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public boolean isSearchable() {
         return getPrefix() != null
-            && getUrl() != null;
+            && getDomains() != null;
     }
 }
