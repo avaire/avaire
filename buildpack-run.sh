@@ -1,3 +1,4 @@
+#!/bin/bash
 if [ -d ".git" ]; then # After compile remove .git (as it will be replaced) and delete everything else with exception after $. Get website except wrong Procfile for this build
   rm -r .git/ & rm -rf $(find * -name "*" ! -name "AvaIre.jar" ! -name "avairebotapache2.conf" ! -name "Procfile" ! -name "update.sh")
   git clone https://github.com/avaire/website && rm website/Procfile && mv website/{.[!.],}* . && rm -r website/ # Example: avaire/website
