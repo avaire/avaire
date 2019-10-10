@@ -53,6 +53,9 @@ public class TrackRequestContext {
     }
 
     public String getFormattedQuery() {
+        if (!provider.isSearchable()) {
+            return query;
+        }
         return punctuationRegex.matcher(query).replaceAll("");
     }
 

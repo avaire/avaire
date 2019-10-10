@@ -61,4 +61,9 @@ public enum SearchProvider {
     public String getUrl() {
         return url;
     }
+
+    public boolean isSearchable() {
+        return getPrefix() != null
+            && getUrl() != null;
+    }
 }
