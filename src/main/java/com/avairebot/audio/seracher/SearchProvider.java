@@ -24,6 +24,8 @@ package com.avairebot.audio.seracher;
 import com.avairebot.contracts.toggle.Feature;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 
+import javax.annotation.Nullable;
+
 public enum SearchProvider implements Feature {
 
     YOUTUBE("ytsearch:", "youtube.com", "youtu.be"),
@@ -47,12 +49,22 @@ public enum SearchProvider implements Feature {
 
     public static SearchProvider fromTrack(AudioTrack track) {
         String trackUrl = track.getInfo().uri;
-        for (SearchProvider provider : SearchProvider.values()) {
+        for (SearchProvider provider : values()) {
             if (provider.getDomains() != null && provider.matchesDomain(trackUrl)) {
                 return provider;
             }
         }
         return DEFAULT_PROVIDER;
+    }
+
+    @Nullable
+    public static SearchProvider fromName(String name) {
+        for (SearchProvider provider : values()) {
+            if (provider.name().equalsIgnoreCase(name)) {
+                return provider;
+            }
+        }
+        return null;
     }
 
     public String getPrefix() {
