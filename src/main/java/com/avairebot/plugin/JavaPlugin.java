@@ -263,6 +263,8 @@ public abstract class JavaPlugin {
     public final void saveDefaultConfig() {
         if (getConfig() != null) {
             getConfig().saveDefaultConfig();
+
+            reloadConfig();
         }
     }
 
