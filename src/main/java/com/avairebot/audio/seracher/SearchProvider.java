@@ -28,21 +28,23 @@ import javax.annotation.Nullable;
 
 public enum SearchProvider implements Feature {
 
-    YOUTUBE("ytsearch:", "youtube.com", "youtu.be"),
-    SOUNDCLOUD("scsearch:", "soundcloud.com"),
-    LOCAL,
-    URL;
+    YOUTUBE(1, "ytsearch:", "youtube.com", "youtu.be"),
+    SOUNDCLOUD(2, "scsearch:", "soundcloud.com"),
+    LOCAL(3),
+    URL(4);
 
     private static final SearchProvider DEFAULT_PROVIDER = URL;
 
+    private final int id;
     private final String prefix;
     private final String[] domains;
 
-    SearchProvider() {
-        this(null);
+    SearchProvider(int id) {
+        this(id, null);
     }
 
-    SearchProvider(String prefix, String... domains) {
+    SearchProvider(int id, String prefix, String... domains) {
+        this.id = id;
         this.prefix = prefix;
         this.domains = domains;
     }
@@ -65,6 +67,10 @@ public enum SearchProvider implements Feature {
             }
         }
         return null;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getPrefix() {

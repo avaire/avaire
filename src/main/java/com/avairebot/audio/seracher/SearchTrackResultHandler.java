@@ -27,6 +27,8 @@ import com.avairebot.audio.exceptions.Http503Exception;
 import com.avairebot.audio.exceptions.InvalidSearchProviderException;
 import com.avairebot.audio.exceptions.SearchingException;
 import com.avairebot.audio.exceptions.TrackLoadFailedException;
+import com.avairebot.database.controllers.SearchController;
+import com.avairebot.database.transformers.SearchResultTransformer;
 import com.avairebot.metrics.Metrics;
 import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
@@ -36,6 +38,7 @@ import com.sedmelluq.discord.lavaplayer.track.BasicAudioPlaylist;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -47,6 +50,7 @@ public class SearchTrackResultHandler implements AudioLoadResultHandler {
     private static final long defaultTimeout = 3000L;
 
     private final TrackRequestContext trackContext;
+    private boolean skipCache = false;
 
     private Exception exception;
     private AudioPlaylist playlist;
@@ -65,6 +69,14 @@ public class SearchTrackResultHandler implements AudioLoadResultHandler {
         this.validateSearchProviderIsActive();
 
         log.debug("Searching using the {} provider for \"{}\"", trackContext.getProvider(), trackContext.getFormattedQuery());
+
+        if (!skipCache) {
+            AudioPlaylist playlist = loadContextFromCache();
+            if (playlist != null) {
+                log.debug("Loaded search result from the cache");
+                return playlist;
+            }
+        }
 
         try {
             AudioHandler.getDefaultAudioHandler().getPlayerManager().loadItem(trackContext.getFullQueryString(), this)
@@ -100,7 +112,17 @@ public class SearchTrackResultHandler implements AudioLoadResultHandler {
             ));
         }
 
+        if (!skipCache) {
+            SearchController.cacheSearchResult(trackContext, playlist);
+        }
+
         return playlist;
+    }
+
+    public SearchTrackResultHandler skipCache(boolean skipCache) {
+        this.skipCache = skipCache;
+
+        return this;
     }
 
     private void validateSearchProviderIsActive() throws InvalidSearchProviderException {
@@ -130,6 +152,15 @@ public class SearchTrackResultHandler implements AudioLoadResultHandler {
     private boolean isRequestingYouTubeWithDirectLink() {
         return trackContext.getProvider().equals(SearchProvider.URL)
             && SearchProvider.YOUTUBE.matchesDomain(trackContext.getQuery());
+    }
+
+    @Nullable
+    private AudioPlaylist loadContextFromCache() {
+        SearchResultTransformer searchResult = SearchController.fetchSearchResult(trackContext);
+        if (searchResult == null) {
+            return null;
+        }
+        return searchResult.getAudioPlaylist();
     }
 
     @Override
