@@ -30,8 +30,11 @@ import com.avairebot.database.transformers.SearchResultTransformer;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
+import org.apache.commons.lang3.StringUtils;
 
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 public class SearchController {
@@ -43,12 +46,9 @@ public class SearchController {
 
     public static SearchResultTransformer fetchSearchResult(TrackRequestContext context) {
         try {
-            Collection result = AvaIre.getInstance().getDatabase().newQueryBuilder(Constants.MUSIC_SEARCH_CACHE_TABLE_NAME)
-                .where("provider", context.getProvider().getId())
-                .where("query", context.getProvider().isSearchable()
-                    ? context.getQuery().toLowerCase().trim()
-                    : context.getQuery()
-                ).get();
+            Collection result = AvaIre.getInstance().getDatabase().query(
+                createSearchQueryFromContext(context)
+            );
 
             if (result.isEmpty()) {
                 return null;
@@ -75,6 +75,29 @@ public class SearchController {
                 });
         } catch (SQLException e) {
             // This will never be thrown since we're using an Async query.
+        }
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    private static String createSearchQueryFromContext(TrackRequestContext context) throws SQLException {
+        String base = AvaIre.getInstance().getDatabase().newQueryBuilder(Constants.MUSIC_SEARCH_CACHE_TABLE_NAME)
+            .where("provider", context.getProvider().getId())
+            .toSQL();
+
+        String query = StringUtils.chop(base) +
+            " AND `query` = ?;";
+
+        try (PreparedStatement statement = AvaIre.getInstance().getDatabase().getConnection().getConnection().prepareStatement(query)) {
+            statement.setString(1, context.getProvider().isSearchable()
+                ? context.getQuery().toLowerCase().trim()
+                : context.getQuery()
+            );
+
+            String[] parts = statement.toString().split(" ");
+
+            return String.join(" ", Arrays.copyOfRange(
+                parts, 1, parts.length
+            ));
         }
     }
 }
