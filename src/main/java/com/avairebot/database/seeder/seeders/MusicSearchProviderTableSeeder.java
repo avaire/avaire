@@ -42,10 +42,12 @@ public class MusicSearchProviderTableSeeder extends Seeder {
     @Override
     public void run() throws SQLException {
         for (SearchProvider provider : SearchProvider.values()) {
-            createQuery().insert(statement -> {
-                statement.set("id", provider.getId());
-                statement.set("name", provider);
-            });
+            if (!tableHasValue("id", provider.getId())) {
+                createQuery().insert(statement -> {
+                    statement.set("id", provider.getId());
+                    statement.set("name", provider);
+                });
+            }
         }
     }
 }
