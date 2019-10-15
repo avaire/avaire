@@ -23,6 +23,7 @@ package com.avairebot.database.migrate.migrations;
 
 import com.avairebot.Constants;
 import com.avairebot.contracts.database.migrations.Migration;
+import com.avairebot.database.schema.DefaultSQLAction;
 import com.avairebot.database.schema.Schema;
 
 import java.sql.SQLException;
@@ -40,7 +41,7 @@ public class CreateMusicSearchCacheTableMigration implements Migration {
             table.Integer("provider");
             table.String("query");
             table.LongText("result").nullable();
-            table.Timestamps();
+            table.DateTime("created_at").defaultValue(new DefaultSQLAction("CURRENT_TIMESTAMP"));
         });
     }
 

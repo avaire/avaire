@@ -26,6 +26,7 @@ import com.avairebot.Constants;
 import com.avairebot.audio.TrackRequestContext;
 import com.avairebot.database.collection.Collection;
 import com.avairebot.database.transformers.SearchResultTransformer;
+import com.avairebot.time.Carbon;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
@@ -35,6 +36,7 @@ import org.slf4j.LoggerFactory;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
@@ -49,6 +51,10 @@ public class SearchController {
     private static final Logger log = LoggerFactory.getLogger(SearchController.class);
 
     public static SearchResultTransformer fetchSearchResult(TrackRequestContext context) {
+        return fetchSearchResult(context, TimeUnit.HOURS.toMillis(48));
+    }
+
+    public static SearchResultTransformer fetchSearchResult(TrackRequestContext context, long maxCacheAgeInMilis) {
         SearchResultTransformer cacheResult = cache.getIfPresent(context.getFullQueryString());
         if (cacheResult != null) {
             log.debug("Search request for {} with the {} provider was loaded from in-memory cache.",
@@ -60,7 +66,7 @@ public class SearchController {
 
         try {
             Collection result = AvaIre.getInstance().getDatabase().query(
-                createSearchQueryFromContext(context)
+                createSearchQueryFromContext(context, maxCacheAgeInMilis)
             );
 
             if (result.isEmpty()) {
@@ -93,6 +99,7 @@ public class SearchController {
                         : context.getQuery()
                     );
                     statement.set("result", new SearchResultTransformer.SerializableAudioPlaylist(playlist).toString(), true);
+                    statement.set("created_at", Carbon.now());
                 });
         } catch (SQLException e) {
             // This will never be thrown since we're using an Async query.
@@ -100,19 +107,23 @@ public class SearchController {
     }
 
     @SuppressWarnings("ConstantConditions")
-    private static String createSearchQueryFromContext(TrackRequestContext context) throws SQLException {
+    private static String createSearchQueryFromContext(TrackRequestContext context, long maxCacheAgeInMilis) throws SQLException {
         String base = AvaIre.getInstance().getDatabase().newQueryBuilder(Constants.MUSIC_SEARCH_CACHE_TABLE_NAME)
             .where("provider", context.getProvider().getId())
             .toSQL();
 
         String query = StringUtils.chop(base) +
-            " AND `query` = ?;";
+            " AND `query` = ? AND `created_at` > ?;";
 
         try (PreparedStatement statement = AvaIre.getInstance().getDatabase().getConnection().getConnection().prepareStatement(query)) {
             statement.setString(1, context.getProvider().isSearchable()
                 ? context.getQuery().toLowerCase().trim()
                 : context.getQuery()
             );
+
+            statement.setTimestamp(2, new Timestamp(
+                (Carbon.now().getTimestamp() * 1000L) - maxCacheAgeInMilis
+            ));
 
             String[] parts = statement.toString().split(" ");
 
