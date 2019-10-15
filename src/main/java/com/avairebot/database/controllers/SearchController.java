@@ -25,12 +25,13 @@ import com.avairebot.AvaIre;
 import com.avairebot.Constants;
 import com.avairebot.audio.TrackRequestContext;
 import com.avairebot.database.collection.Collection;
-import com.avairebot.database.transformers.PurchasesTransformer;
 import com.avairebot.database.transformers.SearchResultTransformer;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -39,12 +40,24 @@ import java.util.concurrent.TimeUnit;
 
 public class SearchController {
 
-    public static final Cache<Long, PurchasesTransformer> cache = CacheBuilder.newBuilder()
+    public static final Cache<String, SearchResultTransformer> cache = CacheBuilder.newBuilder()
         .recordStats()
+        .maximumSize(500)
         .expireAfterAccess(30, TimeUnit.MINUTES)
         .build();
 
+    private static final Logger log = LoggerFactory.getLogger(SearchController.class);
+
     public static SearchResultTransformer fetchSearchResult(TrackRequestContext context) {
+        SearchResultTransformer cacheResult = cache.getIfPresent(context.getFullQueryString());
+        if (cacheResult != null) {
+            log.debug("Search request for {} with the {} provider was loaded from in-memory cache.",
+                context.getQuery(), context.getProvider()
+            );
+
+            return cacheResult;
+        }
+
         try {
             Collection result = AvaIre.getInstance().getDatabase().query(
                 createSearchQueryFromContext(context)
@@ -54,7 +67,15 @@ public class SearchController {
                 return null;
             }
 
-            return new SearchResultTransformer(result.first());
+            SearchResultTransformer resultTransformer = new SearchResultTransformer(result.first());
+
+            cache.put(context.getFullQueryString(), resultTransformer);
+
+            log.debug("Search request for {} with the {} provider was loaded from database cache.",
+                context.getQuery(), context.getProvider()
+            );
+
+            return resultTransformer;
         } catch (SQLException e) {
             e.printStackTrace();
             return null;

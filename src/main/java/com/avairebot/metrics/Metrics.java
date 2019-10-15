@@ -263,6 +263,7 @@ public class Metrics {
         cacheMetrics.addCache("interaction-lottery", InteractionCommand.cache);
         cacheMetrics.addCache("blacklist-ratelimit", Ratelimit.cache);
         cacheMetrics.addCache("lavalink-destroy-cleanup", LavalinkGarbageNodeCollectorJob.cache);
+        cacheMetrics.addCache("music-search-results", SearchController.cache);
 
         if (!avaire.getConfig().getBoolean("web-servlet.metrics",
             avaire.getConfig().getBoolean("metrics.enabled", true)

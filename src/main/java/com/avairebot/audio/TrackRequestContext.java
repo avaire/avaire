@@ -57,7 +57,8 @@ public class TrackRequestContext {
             return query;
         }
         return punctuationRegex.matcher(query)
-            .replaceAll("");
+            .replaceAll("")
+            .toLowerCase();
     }
 
     public String getQuery() {
