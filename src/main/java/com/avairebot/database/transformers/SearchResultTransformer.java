@@ -41,7 +41,7 @@ public class SearchResultTransformer extends Transformer {
         super(data);
 
         if (hasData()) {
-            provider = SearchProvider.fromName(data.getString("provider"));
+            provider = SearchProvider.fromId(data.getInt("provider", -1));
             query = data.getString("query");
             serializableAudioPlaylist = AvaIre.gson.fromJson(
                 data.getString("result"), new TypeToken<SerializableAudioPlaylist>() {

@@ -69,6 +69,15 @@ public enum SearchProvider implements Feature {
         return null;
     }
 
+    public static SearchProvider fromId(int id) {
+        for (SearchProvider provider : values()) {
+            if (provider.getId() == id) {
+                return provider;
+            }
+        }
+        return null;
+    }
+
     public int getId() {
         return id;
     }
