@@ -239,7 +239,7 @@ public class I18n {
             );
         } catch (IllegalArgumentException ex) {
             log.error(
-                "An exception was through while formatting \"{}\", error: {}",
+                "An exception was thrown while formatting \"{}\", error: {}",
                 message, ex.getMessage(), ex
             );
             return message;
