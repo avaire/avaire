@@ -24,8 +24,10 @@ package com.avairebot.database.controllers;
 import com.avairebot.AvaIre;
 import com.avairebot.Constants;
 import com.avairebot.audio.TrackRequestContext;
+import com.avairebot.contracts.database.Database;
 import com.avairebot.database.collection.Collection;
 import com.avairebot.database.transformers.SearchResultTransformer;
+import com.avairebot.scheduler.ScheduleHandler;
 import com.avairebot.time.Carbon;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
@@ -65,13 +67,25 @@ public class SearchController {
         }
 
         try {
+            String searchQueryFromContext = createSearchQueryFromContext(context, maxCacheAgeInMilis);
+            log.debug("Query: {}", searchQueryFromContext);
             Collection result = AvaIre.getInstance().getDatabase().query(
-                createSearchQueryFromContext(context, maxCacheAgeInMilis)
+                searchQueryFromContext
             );
 
             if (result.isEmpty()) {
                 return null;
             }
+
+            ScheduleHandler.getScheduler().submit(() -> {
+                try {
+                    AvaIre.getInstance().getDatabase().queryUpdate(
+                        createUpdateLookupQueryFromContext(context)
+                    );
+                } catch (SQLException e) {
+                    log.error("Something went wrong while trying to update the last lookup date for a music cache record: {}", e.getMessage(), e);
+                }
+            });
 
             SearchResultTransformer resultTransformer = new SearchResultTransformer(result.first());
 
@@ -83,7 +97,7 @@ public class SearchController {
 
             return resultTransformer;
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error("Failed to fetch search result from database cache: {}", e.getMessage(), e);
             return null;
         }
     }
@@ -106,24 +120,55 @@ public class SearchController {
         }
     }
 
+    private static String createUpdateLookupQueryFromContext(TrackRequestContext context) throws SQLException {
+        String base = AvaIre.getInstance().getDatabase().newQueryBuilder(Constants.MUSIC_SEARCH_CACHE_TABLE_NAME)
+            .toSQL(Database.QueryType.UPDATE);
+
+        String query = StringUtils.chop(base) +
+            " `last_lookup_at` = ? WHERE `provider` = ? AND `query` = ?;";
+
+        try (PreparedStatement statement = AvaIre.getInstance().getDatabase().getConnection().getConnection().prepareStatement(query)) {
+            statement.setTimestamp(1, new Timestamp(
+                Carbon.now().getTimestamp() * 1000L
+            ));
+            statement.setLong(2, context.getProvider().getId());
+            statement.setString(3, context.getProvider().isSearchable()
+                ? context.getQuery().toLowerCase().trim()
+                : context.getQuery()
+            );
+
+            String[] parts = statement.toString().split(" ");
+
+            return String.join(" ", Arrays.copyOfRange(
+                parts, 1, parts.length
+            ));
+        }
+    }
+
     @SuppressWarnings("ConstantConditions")
     private static String createSearchQueryFromContext(TrackRequestContext context, long maxCacheAgeInMilis) throws SQLException {
         String base = AvaIre.getInstance().getDatabase().newQueryBuilder(Constants.MUSIC_SEARCH_CACHE_TABLE_NAME)
             .where("provider", context.getProvider().getId())
             .toSQL();
 
-        String query = StringUtils.chop(base) +
-            " AND `query` = ? AND `created_at` > ?;";
+        StringBuilder query = new StringBuilder(StringUtils.chop(base))
+            .append(" AND `query` = ?");
 
-        try (PreparedStatement statement = AvaIre.getInstance().getDatabase().getConnection().getConnection().prepareStatement(query)) {
+        if (maxCacheAgeInMilis > 0) {
+            query.append(" AND `last_lookup_at` > ?");
+        }
+
+        try (PreparedStatement statement = AvaIre.getInstance().getDatabase().getConnection().getConnection().prepareStatement(query.toString())) {
             statement.setString(1, context.getProvider().isSearchable()
                 ? context.getQuery().toLowerCase().trim()
                 : context.getQuery()
             );
 
-            statement.setTimestamp(2, new Timestamp(
-                (Carbon.now().getTimestamp() * 1000L) - maxCacheAgeInMilis
-            ));
+            if (maxCacheAgeInMilis > 0) {
+                statement.setTimestamp(2, new Timestamp(
+                    (Carbon.now().getTimestamp() * 1000L) - maxCacheAgeInMilis
+                ));
+            }
 
             String[] parts = statement.toString().split(" ");
 

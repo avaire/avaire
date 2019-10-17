@@ -41,6 +41,7 @@ public class CreateMusicSearchCacheTableMigration implements Migration {
             table.Integer("provider");
             table.String("query");
             table.LongText("result").nullable();
+            table.DateTime("last_lookup_at").defaultValue(new DefaultSQLAction("CURRENT_TIMESTAMP"));
             table.DateTime("created_at").defaultValue(new DefaultSQLAction("CURRENT_TIMESTAMP"));
         });
     }
