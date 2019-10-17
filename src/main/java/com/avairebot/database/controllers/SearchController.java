@@ -103,7 +103,20 @@ public class SearchController {
     }
 
     public static void cacheSearchResult(TrackRequestContext context, AudioPlaylist playlist) {
+        cache.put(context.getFullQueryString(), new SearchResultTransformer(context, playlist));
+
         try {
+            String query = createSearchQueryFromContext(context, -1);
+            String[] parts = query.split("`query` = ");
+
+            Collection result = AvaIre.getInstance().getDatabase().query(query);
+            if (!result.isEmpty()) {
+                AvaIre.getInstance().getDatabase().newQueryBuilder(Constants.MUSIC_SEARCH_CACHE_TABLE_NAME)
+                    .where("provider", context.getProvider().getId())
+                    .where("query", parts[parts.length - 1].substring(1, parts[parts.length - 1].length() - 1))
+                    .delete();
+            }
+
             AvaIre.getInstance().getDatabase().newQueryBuilder(Constants.MUSIC_SEARCH_CACHE_TABLE_NAME)
                 .useAsync(true)
                 .insert(statement -> {

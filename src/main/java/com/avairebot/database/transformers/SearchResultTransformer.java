@@ -22,6 +22,7 @@
 package com.avairebot.database.transformers;
 
 import com.avairebot.AvaIre;
+import com.avairebot.audio.TrackRequestContext;
 import com.avairebot.audio.cache.AudioTrackSerializer;
 import com.avairebot.audio.seracher.SearchProvider;
 import com.avairebot.contracts.database.transformers.Transformer;
@@ -52,6 +53,14 @@ public class SearchResultTransformer extends Transformer {
                 throw new InvalidStateException("The serializable audio playlist is null, this should not happen for cached results");
             }
         }
+    }
+
+    public SearchResultTransformer(TrackRequestContext context, AudioPlaylist playlist) {
+        super(null);
+
+        this.provider = context.getProvider();
+        this.query = context.getQuery();
+        this.serializableAudioPlaylist = new SerializableAudioPlaylist(playlist);
     }
 
     public SearchProvider getProvider() {
