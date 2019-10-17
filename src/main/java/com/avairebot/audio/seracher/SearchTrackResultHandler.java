@@ -73,7 +73,8 @@ public class SearchTrackResultHandler implements AudioLoadResultHandler {
         if (!skipCache) {
             AudioPlaylist playlist = loadContextFromCache();
             if (playlist != null) {
-                log.debug("Loaded search result from the cache");
+                Metrics.searchHits.labels("cache").inc();
+
                 return playlist;
             }
         }
@@ -86,13 +87,15 @@ public class SearchTrackResultHandler implements AudioLoadResultHandler {
         } catch (ExecutionException e) {
             exception = e;
         } catch (TimeoutException e) {
-            throw new SearchingException(String.format(
+            exception = new SearchingException(String.format(
                 "Searching provider %s for \"%s\" timed out after %sms",
                 trackContext.getProvider().name(), trackContext.getQuery(), timeoutMillis
             ));
         }
 
         if (exception != null) {
+            Metrics.searchHits.labels("exception").inc();
+
             if (exception instanceof FriendlyException && exception.getCause() != null) {
                 String messageOfCause = exception.getCause().getMessage();
                 if (messageOfCause.contains("java.io.IOException: Invalid status code for search response: 503")) {
@@ -100,13 +103,19 @@ public class SearchTrackResultHandler implements AudioLoadResultHandler {
                 }
             }
 
-            throw new SearchingException(String.format(
-                "Failed to search provider %s for query %s with exception %s.",
-                trackContext.getProvider(), trackContext.getQuery(), exception.getMessage()
-            ), exception);
+            if (!(exception instanceof SearchingException)) {
+                exception = new SearchingException(String.format(
+                    "The %s search provider failed to query for %s with exception %s",
+                    trackContext.getProvider(), trackContext.getQuery(), exception.getMessage()
+                ), exception);
+            }
+
+            throw (SearchingException) exception;
         }
 
         if (playlist == null) {
+            Metrics.searchHits.labels("exception").inc();
+
             throw new SearchingException(String.format("Result from provider %s for query %s is unexpectedly null",
                 trackContext.getProvider(), trackContext.getQuery()
             ));
@@ -115,6 +124,10 @@ public class SearchTrackResultHandler implements AudioLoadResultHandler {
         if (!skipCache) {
             SearchController.cacheSearchResult(trackContext, playlist);
         }
+
+        Metrics.searchHits.labels(playlist.getTracks().isEmpty()
+            ? "empty" : "lavaplayer-" + trackContext.getProvider().name().toLowerCase()
+        ).inc();
 
         return playlist;
     }

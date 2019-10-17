@@ -113,9 +113,15 @@ public class Metrics {
 
     // Music
 
-    public static final Counter searchRequests = Counter.build() //search requests issued by users
+    public static final Counter searchRequests = Counter.build() // Search requests issued by users
         .name("avaire_music_search_requests_total")
         .help("Total search requests")
+        .register();
+
+    public static final Counter searchHits = Counter.build()
+        .name("avaire_music_search_hits")
+        .help("Total search hits")
+        .labelNames("type")
         .register();
 
     public static final Counter tracksLoaded = Counter.build()
