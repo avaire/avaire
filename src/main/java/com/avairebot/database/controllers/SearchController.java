@@ -67,10 +67,8 @@ public class SearchController {
         }
 
         try {
-            String searchQueryFromContext = createSearchQueryFromContext(context, maxCacheAgeInMilis);
-            log.debug("Query: {}", searchQueryFromContext);
             Collection result = AvaIre.getInstance().getDatabase().query(
-                searchQueryFromContext
+                createSearchQueryFromContext(context, maxCacheAgeInMilis)
             );
 
             if (result.isEmpty()) {
