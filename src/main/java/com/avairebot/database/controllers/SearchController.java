@@ -24,14 +24,18 @@ package com.avairebot.database.controllers;
 import com.avairebot.AvaIre;
 import com.avairebot.Constants;
 import com.avairebot.audio.TrackRequestContext;
+import com.avairebot.audio.seracher.SearchProvider;
 import com.avairebot.contracts.database.Database;
 import com.avairebot.database.collection.Collection;
 import com.avairebot.database.transformers.SearchResultTransformer;
+import com.avairebot.language.I18n;
 import com.avairebot.scheduler.ScheduleHandler;
 import com.avairebot.time.Carbon;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
+import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+import com.sedmelluq.discord.lavaplayer.track.BasicAudioPlaylist;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,6 +44,8 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Arrays;
+import java.util.Base64;
+import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 
 public class SearchController {
@@ -119,28 +125,72 @@ public class SearchController {
         cache.put(context.getFullQueryString(), new SearchResultTransformer(context, playlist));
 
         try {
-            String query = createSearchQueryFromContext(context, -1);
-            String[] parts = query.split("`query` = ");
+            final Carbon time = Carbon.now();
+            final String insertBatchQuery = I18n.format(
+                "INSERT INTO `{0}` (`provider`, `query`, `result`, `created_at`) " +
+                    "SELECT * FROM (SELECT ?, ?, ?, ?) AS tmp " +
+                    "WHERE NOT EXISTS (" +
+                    " SELECT `provider`, `query` FROM `{0}` WHERE `provider` = ? AND `query` = ?" +
+                    ") LIMIT 1;",
+                Constants.MUSIC_SEARCH_CACHE_TABLE_NAME
+            );
 
-            Collection result = AvaIre.getInstance().getDatabase().query(query);
-            if (!result.isEmpty()) {
-                AvaIre.getInstance().getDatabase().newQueryBuilder(Constants.MUSIC_SEARCH_CACHE_TABLE_NAME)
-                    .where("provider", context.getProvider().getId())
-                    .where("query", parts[parts.length - 1].substring(1, parts[parts.length - 1].length() - 1))
-                    .delete();
+            try (PreparedStatement statement = AvaIre.getInstance().getDatabase().getConnection().getConnection().prepareStatement(insertBatchQuery)) {
+                String serializedAudioPlaylist = new SearchResultTransformer.SerializableAudioPlaylist(playlist).toString();
+
+                // Sets the search provider
+                statement.setInt(1, context.getProvider().getId());
+                statement.setInt(5, context.getProvider().getId());
+                // Sets the search query
+                statement.setString(2, context.getQuery());
+                statement.setString(6, context.getQuery());
+
+                statement.setString(3, "base64:" + new String(
+                    Base64.getEncoder().encode(serializedAudioPlaylist.getBytes())
+                ));
+                statement.setString(4, time.toString());
+
+                AvaIre.getInstance().getDatabase().queryUpdate(
+                    statement.toString().split(": ")[1]
+                );
             }
 
-            AvaIre.getInstance().getDatabase().newQueryBuilder(Constants.MUSIC_SEARCH_CACHE_TABLE_NAME)
-                .useAsync(true)
-                .insert(statement -> {
-                    statement.set("provider", context.getProvider().getId());
-                    statement.set("query", context.getProvider().isSearchable()
-                        ? context.getQuery().toLowerCase().trim()
-                        : context.getQuery()
-                    );
-                    statement.set("result", new SearchResultTransformer.SerializableAudioPlaylist(playlist).toString(), true);
-                    statement.set("created_at", Carbon.now());
-                });
+            if (!context.getProvider().isSearchable()) {
+                return;
+            }
+
+            ScheduleHandler.getScheduler().submit(() -> {
+                try {
+                    AvaIre.getInstance().getDatabase().queryBatch(insertBatchQuery, (PreparedStatement statement) -> {
+                        for (AudioTrack track : playlist.getTracks()) {
+                            BasicAudioPlaylist audioPlaylist = new BasicAudioPlaylist(
+                                track.getInfo().title,
+                                Collections.singletonList(track),
+                                null,
+                                false
+                            );
+
+                            String serializedAudioPlaylist = new SearchResultTransformer.SerializableAudioPlaylist(audioPlaylist).toString();
+
+                            // Sets the search provider
+                            statement.setInt(1, SearchProvider.URL.getId());
+                            statement.setInt(5, SearchProvider.URL.getId());
+                            // Sets the search query
+                            statement.setString(2, track.getInfo().uri);
+                            statement.setString(6, track.getInfo().uri);
+
+                            statement.setString(3, "base64:" + new String(
+                                Base64.getEncoder().encode(serializedAudioPlaylist.getBytes())
+                            ));
+                            statement.setString(4, time.toString());
+
+                            statement.addBatch();
+                        }
+                    });
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            });
         } catch (SQLException e) {
             // This will never be thrown since we're using an Async query.
         }
