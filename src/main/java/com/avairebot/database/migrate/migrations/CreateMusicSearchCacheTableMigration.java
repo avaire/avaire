@@ -23,6 +23,7 @@ package com.avairebot.database.migrate.migrations;
 
 import com.avairebot.Constants;
 import com.avairebot.contracts.database.migrations.Migration;
+import com.avairebot.database.connections.MySQL;
 import com.avairebot.database.schema.DefaultSQLAction;
 import com.avairebot.database.schema.Schema;
 
@@ -37,13 +38,22 @@ public class CreateMusicSearchCacheTableMigration implements Migration {
 
     @Override
     public boolean up(Schema schema) throws SQLException {
-        return schema.createIfNotExists(Constants.MUSIC_SEARCH_CACHE_TABLE_NAME, table -> {
+        final boolean created = schema.createIfNotExists(Constants.MUSIC_SEARCH_CACHE_TABLE_NAME, table -> {
             table.Integer("provider");
             table.String("query");
             table.LongText("result").nullable();
             table.DateTime("last_lookup_at").defaultValue(new DefaultSQLAction("CURRENT_TIMESTAMP"));
             table.DateTime("created_at").defaultValue(new DefaultSQLAction("CURRENT_TIMESTAMP"));
         });
+
+        if (created && schema.getDbm().getConnection() instanceof MySQL) {
+            schema.alterQuery(String.format(
+                "ALTER TABLE `%s` ADD PRIMARY KEY(`provider`, `query`);",
+                Constants.MUSIC_SEARCH_CACHE_TABLE_NAME
+            ));
+        }
+
+        return created;
     }
 
     @Override

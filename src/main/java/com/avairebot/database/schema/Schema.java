@@ -255,7 +255,9 @@ public class Schema {
      *                      <code>ResultSet</code> object, the method is called on a
      *                      <code>PreparedStatement</code> or <code>CallableStatement</code>
      */
-    private boolean alterQuery(String query) throws SQLException {
+    public boolean alterQuery(String query) throws SQLException {
+        log.debug("alertQuery(String query) was called with the following SQL query.\nSQL: " + query);
+
         Statement stmt = dbm.getConnection().getConnection().createStatement();
 
         return !stmt.execute(query);
