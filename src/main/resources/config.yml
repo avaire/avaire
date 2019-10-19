@@ -338,6 +338,71 @@ audio-quality:
     encoding: 10
 
 #--------------------------------------------------------------------------
+# Audio Cache and Storage
+#--------------------------------------------------------------------------
+#
+# Audio caching and storage is used by Ava when requesting music from
+# different providers(YouTube, Soundcloud, etc), allowing the bot
+# save and re-use responses for different queries.
+#
+# The system allows the bot is able to serve users faster if the same song
+# is requested twice, as-well as lowing the number of times needed to
+# send requests to YouTube, Soundcloud, Twitch, etc.
+#
+
+audio-cache:
+
+    # The maximum cache size value is used to determine the maximum amount of
+    # audio playlists that is allowed to be stored in the memory cache for
+    # audio requests.
+    #
+    # The higher the value the more tracks is able to be stored in the cache,
+    # however more tracks stored in-memory also means the bot will require
+    # more RAM to store all the information.
+    #
+    # Note: The in-memory cache will only store data for 30 minutes at a time
+    # unless it's requested a lot, in which case the cached time is reset
+    # until it's not requested anymore.
+    #
+    # The cache isn't necessarily full at any time either, so even if the max
+    # cache size is high, it doesn't mean every slot in the cache is always
+    # used if there isn't enough requested tracks to store in the cache.
+    #
+    maximum-cache-size: 1000
+
+    # The default max cache age is used when querying for search results and
+    # no specific cache age scope is set for the request, some audio cache
+    # lookups may specify their own max cache age, however if non is
+    # defined, the default max cache age will be used instead.
+    #
+    # The cache age is used with looking for search results in the database
+    # cache, if entries are found matching our query but the entries are
+    # older than the max age, it will be excluded from the results.
+    #
+    # The default max cache age is set in seconds, by default it is set to 86,400
+    # which is 24 hours, the number can be raised to increase the lookup range,
+    # or lower it to narrow the search range down, however the number has to
+    # be more than 60 seconds, so the cache is at most 1 minute old.
+    #
+    default-max-cache-age: 86400
+
+    # The max persistence age is the maximum amount of time an audio search result
+    # is allowed to be stored in the database cache before it is counted as
+    # invalid, and is deleted completely from the database.
+    #
+    # Once a track is deleted from the database cache it will no-longer exist in
+    # any cache and will have to be re-requested via a lookup with
+    # the "!play" command to be re-stored in the database.
+    #
+    # The max persistence age is set in seconds, by default it is set to 172,800
+    # which is 48 hours, the number can be raised to store tracks for a longer
+    # period of time, or lowered in order to not store tracks for long
+    # periods of time, however the number has to be greater than
+    # the default max age set above.
+    #
+    max-persistence-age: 172800
+
+#--------------------------------------------------------------------------
 # Bot Access (Bot Administrators)
 #--------------------------------------------------------------------------
 #

@@ -41,9 +41,14 @@ public class DeleteExpiredMusicCacheEntitiesJob extends Job {
 
     @Override
     public void run() {
+        final Carbon time = Carbon.now().subSeconds(Math.max(
+            Math.max(avaire.getConfig().getInt("audio-cache.default-max-cache-age", 86400), 60),
+            avaire.getConfig().getInt("audio-cache.max-persistence-age", 172800)
+        ));
+
         try {
             AvaIre.getInstance().getDatabase().newQueryBuilder(Constants.MUSIC_SEARCH_CACHE_TABLE_NAME)
-                .where("created_at", "<", Carbon.now().subDays(2))
+                .where("created_at", "<", time)
                 .delete();
         } catch (SQLException e) {
             log.error("Failed to clear old database records, message: {}", e.getMessage(), e);

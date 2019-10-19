@@ -44,16 +44,31 @@ import java.util.concurrent.TimeUnit;
 
 public class SearchController {
 
-    public static final Cache<String, SearchResultTransformer> cache = CacheBuilder.newBuilder()
-        .recordStats()
-        .maximumSize(500)
-        .expireAfterAccess(30, TimeUnit.MINUTES)
-        .build();
+    public static final Cache<String, SearchResultTransformer> cache;
+    private static final long defaultMaxCacheAge;
 
     private static final Logger log = LoggerFactory.getLogger(SearchController.class);
 
+    static {
+        defaultMaxCacheAge = TimeUnit.SECONDS.toMillis(
+            Math.max(
+                60,
+                AvaIre.getInstance().getConfig()
+                    .getLong("audio-cache.default-max-cache-age", TimeUnit.HOURS.toSeconds(48))
+            )
+        );
+
+        cache = CacheBuilder.newBuilder()
+            .recordStats()
+            .maximumSize(AvaIre.getInstance().getConfig()
+                .getInt("audio-cache.maximum-cache-size", 1000)
+            )
+            .expireAfterAccess(30, TimeUnit.MINUTES)
+            .build();
+    }
+
     public static SearchResultTransformer fetchSearchResult(TrackRequestContext context) {
-        return fetchSearchResult(context, TimeUnit.HOURS.toMillis(48));
+        return fetchSearchResult(context, defaultMaxCacheAge);
     }
 
     public static SearchResultTransformer fetchSearchResult(TrackRequestContext context, long maxCacheAgeInMilis) {
