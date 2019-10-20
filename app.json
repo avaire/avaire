@@ -127,12 +127,12 @@
             "value": "88739639380172800"
         },
         "AVA_AUDIO_CACHE_MAXIMUM_CACHE_SIZE": {
-            "description": "Defines how big the Maximum cache size will be for the search",
+            "description": "Defines how large the maximum cache size will be for the search",
             "required": true,
             "value": "1000"
         },
         "AVA_AUDIO_CACHE_DEFAULT_MAX_CACHE_AGE": {
-            "description": "Defines the max default cache age, before being excluded",
+            "description": "Defines how old the maximum cache age will be, before being excluded",
             "required": true,
             "value": "86400"
         },
