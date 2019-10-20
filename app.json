@@ -137,7 +137,7 @@
             "value": "86400"
         },
         "AVA_AUDIO_CACHE_MAX_PERSISTENCE_AGE": {
-            "description": "Defines how long a cached search query will be kept.",
+            "description": "Defines how long a cached search query will be kept",
             "required": true,
             "value": "172800"
         },
