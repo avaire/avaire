@@ -113,9 +113,15 @@ public class Metrics {
 
     // Music
 
-    public static final Counter searchRequests = Counter.build() //search requests issued by users
+    public static final Counter searchRequests = Counter.build() // Search requests issued by users
         .name("avaire_music_search_requests_total")
         .help("Total search requests")
+        .register();
+
+    public static final Counter searchHits = Counter.build()
+        .name("avaire_music_search_hits")
+        .help("Total search hits")
+        .labelNames("type")
         .register();
 
     public static final Counter tracksLoaded = Counter.build()
@@ -263,6 +269,7 @@ public class Metrics {
         cacheMetrics.addCache("interaction-lottery", InteractionCommand.cache);
         cacheMetrics.addCache("blacklist-ratelimit", Ratelimit.cache);
         cacheMetrics.addCache("lavalink-destroy-cleanup", LavalinkGarbageNodeCollectorJob.cache);
+        cacheMetrics.addCache("music-search-results", SearchController.cache);
 
         if (!avaire.getConfig().getBoolean("web-servlet.metrics",
             avaire.getConfig().getBoolean("metrics.enabled", true)
