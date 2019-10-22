@@ -27,10 +27,10 @@ import com.avairebot.audio.cache.AudioTrackSerializer;
 import com.avairebot.audio.seracher.SearchProvider;
 import com.avairebot.contracts.database.transformers.Transformer;
 import com.avairebot.database.collection.DataRow;
+import com.avairebot.exceptions.InvalidStateException;
 import com.google.gson.reflect.TypeToken;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.BasicAudioPlaylist;
-import sun.plugin.dom.exception.InvalidStateException;
 
 public class SearchResultTransformer extends Transformer {
 
