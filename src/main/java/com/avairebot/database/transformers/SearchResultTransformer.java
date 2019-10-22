@@ -38,6 +38,12 @@ public class SearchResultTransformer extends Transformer {
     private String query;
     private SerializableAudioPlaylist serializableAudioPlaylist;
 
+    /**
+     * Creates a new search result transformer for
+     * the given data row result.
+     *
+     * @param data The data row returned from a database query.
+     */
     public SearchResultTransformer(DataRow data) {
         super(data);
 
@@ -55,6 +61,15 @@ public class SearchResultTransformer extends Transformer {
         }
     }
 
+    /**
+     * Creates a new search result transformer for the given
+     * track request context and audio playlist.
+     *
+     * @param context  The track request context that should be used
+     *                 in the search result transformer.
+     * @param playlist The Audio Playlist that should be used in
+     *                 the search result transformer.
+     */
     public SearchResultTransformer(TrackRequestContext context, AudioPlaylist playlist) {
         super(null);
 
@@ -63,18 +78,42 @@ public class SearchResultTransformer extends Transformer {
         this.serializableAudioPlaylist = new SerializableAudioPlaylist(playlist);
     }
 
+    /**
+     * Gets the search provider used as a cache key for the search result.
+     *
+     * @return The search provider used as a cache key for the search result.
+     */
     public SearchProvider getProvider() {
         return provider;
     }
 
+    /**
+     * Gets the search query used as a cache key for the search result.
+     *
+     * @return The search query used as a cache key for the search result.
+     */
     public String getQuery() {
         return query;
     }
 
+    /**
+     * Gets the serializable audio playlist instance, this will contain all
+     * the audio tracks contained in the result as a byte array,
+     * as-well-as some information about the playlist like
+     * it's name and search status.
+     *
+     * @return The serializable audio playlist instance.
+     */
     public SerializableAudioPlaylist getSerializableAudioPlaylist() {
         return serializableAudioPlaylist;
     }
 
+    /**
+     * Gets the audio playlist instance, this will create a completely new audio playlist
+     * instance from the {@link #getSerializableAudioPlaylist() serialized playlist}.
+     *
+     * @return The audio playlist instance stored in the cache.
+     */
     public AudioPlaylist getAudioPlaylist() {
         return new BasicAudioPlaylist(
             serializableAudioPlaylist.name,

@@ -38,6 +38,7 @@ import com.sedmelluq.discord.lavaplayer.track.BasicAudioPlaylist;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.concurrent.ExecutionException;
@@ -55,14 +56,54 @@ public class SearchTrackResultHandler implements AudioLoadResultHandler {
     private Exception exception;
     private AudioPlaylist playlist;
 
+    /**
+     * Creates a new search track result handler for the given track context.
+     *
+     * @param trackContext The track request context that should be used for the search.
+     */
     public SearchTrackResultHandler(TrackRequestContext trackContext) {
         this.trackContext = trackContext;
     }
 
+    /**
+     * Search for an audio playlist using the set track request context,
+     * with a 3000 millisecond timeout in the current thread.
+     * <p>
+     * The search will automatically use the audio cache unless specified otherwise,
+     * and only use search providers that are globally enabled.
+     *
+     * @return The playlist returned from the search request, if no result were found but no
+     *         exception were thrown, an empty audio playlist will be returned instead,
+     *         with no selected track, and an empty track list.
+     * @throws SearchingException If an invalid search request is made, or something goes wrong while
+     *                            searching for audio playlists using the given request context.
+     *                            Things like searching for direct links for a search provider
+     *                            that is disabled, or an exception is thrown while making
+     *                            the search, causing the search to fail.
+     */
+    @Nonnull
     public AudioPlaylist searchSync() throws SearchingException {
         return searchSync(defaultTimeout);
     }
 
+    /**
+     * Search for an audio playlist using the set track request context in the current thread.
+     * <p>
+     * The search will automatically use the audio cache unless specified otherwise,
+     * and only use search providers that are globally enabled.
+     *
+     * @param timeoutMillis The amount of time to wait before the search request times
+     *                      out in milliseconds.
+     * @return The playlist returned from the search request, if no result were found but no
+     *         exception were thrown, an empty audio playlist will be returned instead,
+     *         with no selected track, and an empty track list.
+     * @throws SearchingException If an invalid search request is made, or something goes wrong while
+     *                            searching for audio playlists using the given request context.
+     *                            Things like searching for direct links for a search provider
+     *                            that is disabled, or an exception is thrown while making
+     *                            the search, causing the search to fail.
+     */
+    @Nonnull
     public AudioPlaylist searchSync(long timeoutMillis) throws SearchingException {
         Metrics.searchRequests.inc();
 
@@ -132,6 +173,12 @@ public class SearchTrackResultHandler implements AudioLoadResultHandler {
         return playlist;
     }
 
+    /**
+     * Sets whether the cache should be used in the request or not.
+     *
+     * @param skipCache The value that should determine if the cache is used or not.
+     * @return An instance of the current search result handler.
+     */
     public SearchTrackResultHandler skipCache(boolean skipCache) {
         this.skipCache = skipCache;
 

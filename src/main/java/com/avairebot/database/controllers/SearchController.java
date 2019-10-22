@@ -40,6 +40,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.Nullable;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -73,10 +74,33 @@ public class SearchController {
             .build();
     }
 
+    /**
+     * Fetches the search result transformer from the cache, if it doesn't exist in the
+     * cache it will be loaded into the cache and then returned afterwords.
+     *
+     * @param context The track request context that should be used for the cache lookup.
+     * @return The result of the given request context, or {@code NULL}.
+     */
+    @Nullable
     public static SearchResultTransformer fetchSearchResult(TrackRequestContext context) {
         return fetchSearchResult(context, defaultMaxCacheAge);
     }
 
+    /**
+     * Fetchs the search result transformer from the cache that falls within the max cache age
+     * limit, if it doesn't exist in the cache it will be loaded from the database and save
+     * into the cache, and then returned afterwords.
+     * <p>
+     * The max cache age limit is set in milliseconds, only tracks that have been saved in
+     * the database cache for less than the given max cache age will be returned as
+     * valid results, unless the entry already exists in the in-memory cache,
+     * in which case it will just be returned as a result directly.
+     *
+     * @param context            The track request context that is used for the cache lookup.
+     * @param maxCacheAgeInMilis The max age for cached items to be determined as valid results.
+     * @return
+     */
+    @Nullable
     public static SearchResultTransformer fetchSearchResult(TrackRequestContext context, long maxCacheAgeInMilis) {
         SearchResultTransformer cacheResult = cache.getIfPresent(context.getFullQueryString());
         if (cacheResult != null) {
@@ -121,6 +145,12 @@ public class SearchController {
         }
     }
 
+    /**
+     * Caches the given audio playlist under the given track context.
+     *
+     * @param context  The context the cache key should be created by.
+     * @param playlist The audio playlist that should be saved in the cache.
+     */
     public static void cacheSearchResult(TrackRequestContext context, AudioPlaylist playlist) {
         cache.put(context.getFullQueryString(), new SearchResultTransformer(context, playlist));
 
