@@ -22,10 +22,7 @@
 package com.avairebot.commands.music;
 
 import com.avairebot.AvaIre;
-import com.avairebot.audio.AudioHandler;
-import com.avairebot.audio.AudioSession;
-import com.avairebot.audio.TrackResponse;
-import com.avairebot.audio.VoiceConnectStatus;
+import com.avairebot.audio.*;
 import com.avairebot.commands.CommandHandler;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
@@ -37,11 +34,8 @@ import com.avairebot.utilities.RestActionUtil;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import net.dv8tion.jda.core.Permission;
-import net.dv8tion.jda.core.entities.User;
 
 import javax.annotation.Nonnull;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -103,7 +97,6 @@ public class PlayCommand extends Command {
         return Collections.singletonList(CommandGroups.MUSIC_START_PLAYING);
     }
 
-
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
         if (args.length == 0) {
@@ -126,7 +119,7 @@ public class PlayCommand extends Command {
             return loadSongFromSession(context, args);
         }
 
-        AudioHandler.getDefaultAudioHandler().loadAndPlay(context, buildTrackRequestString(context.getAuthor(), args)).handle(
+        AudioHandler.getDefaultAudioHandler().loadAndPlay(context, AudioHandler.getDefaultAudioHandler().createTrackRequestContext(context.getAuthor(), args)).handle(
             musicSuccess(context, shouldLeaveMessage),
             musicFailure(context),
             musicSession(context, args)
@@ -147,7 +140,7 @@ public class PlayCommand extends Command {
         musicSuccess(context, false).accept(
             new TrackResponse(AudioHandler.getDefaultAudioHandler().getGuildAudioPlayer(context.getGuild()),
                 track,
-                track.getInfo().uri
+                new TrackRequestContext(track)
             )
         );
         AudioHandler.getDefaultAudioHandler().play(context, AudioHandler.getDefaultAudioHandler().getGuildAudioPlayer(context.getGuild()), track);
@@ -166,7 +159,7 @@ public class PlayCommand extends Command {
         context.makeSuccess(context.i18n("addedSongsFromPlaylist"))
             .set("songs", NumberUtil.formatNicely(playlist.getTracks().size()))
             .set("title", playlist.getName())
-            .set("url", response.getTrackUrl())
+            .set("url", response.getTrackContext())
             .set("queueSize", NumberUtil.formatNicely(
                 AudioHandler.getDefaultAudioHandler().getQueueSize(response.getMusicManager())
             ))
@@ -191,26 +184,6 @@ public class PlayCommand extends Command {
                     message.delete().queueAfter(30, TimeUnit.SECONDS, null, RestActionUtil.ignore);
                 }
             });
-    }
-
-    private String buildTrackRequestString(User requester, String[] args) {
-        String string = String.join(" ", args);
-
-        if (string.startsWith("scsearch:")) {
-            return string;
-        }
-
-        if (string.startsWith("local:") && avaire.getBotAdmins().getUserById(requester.getIdLong()).isAdmin()) {
-            return string.substring(6, string.length());
-        }
-
-        try {
-            new URL(string);
-
-            return string;
-        } catch (MalformedURLException ex) {
-            return "ytsearch:" + string;
-        }
     }
 
     private Consumer<TrackResponse> musicSuccess(final CommandMessage context, final boolean finalShouldLeaveMessage) {

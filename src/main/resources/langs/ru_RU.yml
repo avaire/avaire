@@ -904,10 +904,12 @@ utility:
             textChannels: 'Текстовые каналы'
             voiceChannels: 'Голосовые каналы'
             members: 'Члены'
+            users: 'Users'
+            bots: 'Bots'
             roles: 'Роли'
             region: 'Регион'
             createdAt: 'Создан'
-            emojis: 'Пользовательские Emojis ({0})'
+            emotes: 'Custom Emotes'
         timeFormat: 'EEE, dd MMM yyyy HH:mm'
 
     ShardCommand:

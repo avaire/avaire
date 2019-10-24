@@ -904,10 +904,12 @@ utility:
             textChannels: 'Tekst kanalen'
             voiceChannels: 'Spraak kanalen'
             members: 'Leden'
+            users: 'Gebruikers'
+            bots: 'Bots'
             roles: 'Rollen'
             region: 'Regio'
             createdAt: 'Gemaakt op'
-            emojis: 'Zelfgemaatke emoticons ({0})'
+            emotes: 'Aangepaste Emotes'
         timeFormat: 'EEE, dd MMM yyyy HH:mm'
 
     ShardCommand:

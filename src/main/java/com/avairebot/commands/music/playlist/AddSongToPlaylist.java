@@ -24,21 +24,19 @@ package com.avairebot.commands.music.playlist;
 import com.avairebot.AvaIre;
 import com.avairebot.Constants;
 import com.avairebot.audio.AudioHandler;
+import com.avairebot.audio.TrackRequestContext;
+import com.avairebot.audio.exceptions.SearchingException;
+import com.avairebot.audio.seracher.SearchTrackResultHandler;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.commands.music.PlaylistCommand;
 import com.avairebot.contracts.commands.playlist.PlaylistSubCommand;
 import com.avairebot.database.controllers.PlaylistController;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.database.transformers.PlaylistTransformer;
-import com.avairebot.metrics.Metrics;
 import com.avairebot.utilities.NumberUtil;
-import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
-import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.sql.SQLException;
 import java.util.Arrays;
 
@@ -69,50 +67,26 @@ public class AddSongToPlaylist extends PlaylistSubCommand {
             return false;
         }
 
-        try {
-            new URL(query);
-        } catch (MalformedURLException ex) {
-            query = "ytsearch:" + query;
-        }
+        TrackRequestContext trackContext = AudioHandler.getDefaultAudioHandler().createTrackRequestContext(
+            context.getAuthor(), query.split(" ")
+        );
 
-        String finalQuery = query;
-        context.getChannel().sendTyping().queue(v -> loadSong(context, finalQuery, guild, playlist));
+        context.getChannel().sendTyping().queue(v -> loadSong(context, trackContext, guild, playlist));
         return true;
     }
 
-    private void loadSong(CommandMessage context, String query, GuildTransformer guild, PlaylistTransformer playlist) {
-        Metrics.searchRequests.inc();
+    private void loadSong(CommandMessage context, TrackRequestContext trackContext, GuildTransformer guild, PlaylistTransformer playlist) {
+        try {
+            AudioPlaylist result = new SearchTrackResultHandler(trackContext).searchSync();
 
-        AudioHandler.getDefaultAudioHandler().getPlayerManager().loadItemOrdered(AudioHandler.getDefaultAudioHandler().musicManagers, query, new AudioLoadResultHandler() {
-            @Override
-            public void trackLoaded(AudioTrack track) {
-                if (track == null) {
-                    noMatches();
-                    return;
-                }
-
-                Metrics.tracksLoaded.inc();
-
-                handleTrackLoadedEvent(context, guild, playlist, track);
-            }
-
-            @Override
-            public void playlistLoaded(AudioPlaylist playlist) {
-                trackLoaded(playlist.getTracks().get(0));
-            }
-
-            @Override
-            public void noMatches() {
-                Metrics.trackLoadsFailed.inc();
+            if (result.getTracks() == null || result.getTracks().isEmpty()) {
                 context.makeWarning(context.i18n("noMatches")).queue();
+            } else {
+                handleTrackLoadedEvent(context, guild, playlist, result.getTracks().get(0));
             }
-
-            @Override
-            public void loadFailed(FriendlyException e) {
-                Metrics.trackLoadsFailed.inc();
-                context.makeWarning(context.i18n("failedToLoad", e.getMessage())).queue();
-            }
-        });
+        } catch (SearchingException e) {
+            context.makeWarning(context.i18n("failedToLoad", e.getMessage())).queue();
+        }
     }
 
     private void handleTrackLoadedEvent(CommandMessage context, GuildTransformer guild, PlaylistTransformer playlist, AudioTrack track) {

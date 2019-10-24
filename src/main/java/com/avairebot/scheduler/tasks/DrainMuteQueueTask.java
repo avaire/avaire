@@ -62,7 +62,10 @@ public class DrainMuteQueueTask implements Task {
                 Carbon expires = container.getExpiresAt();
                 //noinspection ConstantConditions
                 if (expires.copy().subMinutes(5).isPast()) {
-                    long differenceInSeconds = expires.diffInSeconds();
+                    long differenceInSeconds = expires.getTimestamp() - getCurrentTimestamp();
+                    if (differenceInSeconds < 1) {
+                        differenceInSeconds = 1;
+                    }
 
                     log.debug("Unmute task started for guildId:{}, userId:{}, time:{}",
                         container.getGuildId(), container.getUserId(), differenceInSeconds
@@ -78,7 +81,64 @@ public class DrainMuteQueueTask implements Task {
         }
     }
 
+    private long getCurrentTimestamp() {
+        return System.currentTimeMillis() / 1000L;
+    }
+
     private void handleAutomaticUnmute(AvaIre avaire, MuteContainer container) {
+        try {
+            Guild guild = avaire.getShardManager().getGuildById(container.getGuildId());
+            if (guild == null) {
+                if (avaire.areWeReadyYet()) {
+                    unregisterDatabaseRecord(avaire, container);
+                }
+
+                container.cancelSchedule();
+                return;
+            }
+
+            unregisterDatabaseRecord(avaire, container);
+
+            Member member = guild.getMemberById(container.getUserId());
+            if (member == null) {
+                return;
+            }
+
+            GuildTransformer transformer = GuildController.fetchGuild(avaire, guild);
+            if (transformer == null) {
+                return;
+            }
+
+            Role muteRole = guild.getRoleById(transformer.getMuteRole());
+            if (muteRole == null) {
+                return;
+            }
+
+            guild.getController().removeSingleRoleFromMember(
+                member, muteRole
+            ).queueAfter(1, TimeUnit.SECONDS, aVoid -> {
+                log.debug("Successfully removed the {} role from {} on the {} server.",
+                    muteRole.getName(), member.getUser().getAsTag(), guild.getName()
+                );
+
+                ModlogAction modlogAction = new ModlogAction(
+                    ModlogType.UNMUTE, guild.getSelfMember().getUser(), member.getUser(),
+                    I18n.getString(guild, "administration.UnmuteCommand.userAutoUnmutedReason")
+                );
+
+                String caseId = Modlog.log(avaire, guild, transformer, modlogAction);
+                Modlog.notifyUser(member.getUser(), guild, modlogAction, caseId);
+            }, throwable -> {
+                log.debug("Failed to remove role from {} on the {} guild, error: {}",
+                    container.getUserId(), container.getGuildId(), throwable.getMessage(), throwable
+                );
+            });
+        } catch (Exception e) {
+            log.error("Something went wrong in the auto unmute: {}", e.getMessage(), e);
+        }
+    }
+
+    private void unregisterDatabaseRecord(AvaIre avaire, MuteContainer container) {
         try {
             avaire.getMuteManger().unregisterMute(container.getGuildId(), container.getUserId());
         } catch (SQLException e) {
@@ -86,37 +146,5 @@ public class DrainMuteQueueTask implements Task {
                 container.getGuildId(), container.getUserId(), e
             );
         }
-
-        Guild guild = avaire.getShardManager().getGuildById(container.getGuildId());
-        if (guild == null) {
-            return;
-        }
-
-        Member member = guild.getMemberById(container.getUserId());
-        if (member == null) {
-            return;
-        }
-
-        GuildTransformer transformer = GuildController.fetchGuild(avaire, guild);
-        if (transformer == null) {
-            return;
-        }
-
-        Role muteRole = guild.getRoleById(transformer.getMuteRole());
-        if (muteRole == null) {
-            return;
-        }
-
-        guild.getController().removeSingleRoleFromMember(
-            member, muteRole
-        ).queue(aVoid -> {
-            ModlogAction modlogAction = new ModlogAction(
-                ModlogType.UNMUTE, guild.getSelfMember().getUser(), member.getUser(),
-                I18n.getString(guild, "administration.UnmuteCommand.userAutoUnmutedReason")
-            );
-
-            String caseId = Modlog.log(avaire, guild, transformer, modlogAction);
-            Modlog.notifyUser(member.getUser(), guild, modlogAction, caseId);
-        });
     }
 }

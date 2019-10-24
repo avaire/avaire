@@ -127,6 +127,8 @@ public class ServersCommand extends SystemCommand {
 
             Carbon time = Carbon.createFromOffsetDateTime(guild.getCreationTime());
 
+            long bots = guild.getMembers().stream().filter(member -> member.getUser().isBot()).count();
+
             context.makeInfo(guild.getId())
                 .setTitle(guild.getName())
                 .setThumbnail(guild.getIconUrl())
@@ -136,6 +138,8 @@ public class ServersCommand extends SystemCommand {
                 .addField("Voice Channels", NumberUtil.formatNicely(guild.getVoiceChannels().size()), true)
                 .addField("Members", NumberUtil.formatNicely(guild.getMembers().size()), true)
                 .addField("Roles", NumberUtil.formatNicely(guild.getRoles().size()), true)
+                .addField("Users", NumberUtil.formatNicely(guild.getMembers().size() - bots), true)
+                .addField("Bots", NumberUtil.formatNicely(bots), true)
                 .addField("Region", guild.getRegion().getName(), true)
                 .addField("Created At", time.toDayDateTimeString() + "\n*About " + time.diffForHumans() + "*", true)
                 .queue();

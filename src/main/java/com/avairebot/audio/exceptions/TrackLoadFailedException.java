@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018.
+ * Copyright (c) 2019.
  *
  * This file is part of AvaIre.
  *
@@ -19,13 +19,11 @@
  *
  */
 
-package com.avairebot.exceptions;
+package com.avairebot.audio.exceptions;
 
-import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
+public class TrackLoadFailedException extends SearchingException {
 
-public class TrackLoadFailedException extends FriendlyException {
-
-    public TrackLoadFailedException(String message, String reason, Throwable cause) {
-        super(String.format(message, reason), Severity.COMMON, cause);
+    public TrackLoadFailedException(Exception exception) {
+        super(exception.getMessage(), exception);
     }
 }

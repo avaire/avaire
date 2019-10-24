@@ -28,7 +28,7 @@ import com.avairebot.audio.GuildMusicManager;
 import com.avairebot.audio.VoiceConnectStatus;
 import com.avairebot.audio.cache.AudioCache;
 import com.avairebot.audio.cache.AudioState;
-import com.avairebot.audio.cache.TrackRequestHandler;
+import com.avairebot.audio.cache.AudioTrackSerializer;
 import com.avairebot.cache.CacheType;
 import com.avairebot.chat.MessageType;
 import com.avairebot.commands.CommandHandler;
@@ -45,6 +45,7 @@ import com.avairebot.utilities.RoleUtil;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.gson.reflect.TypeToken;
+import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.*;
@@ -141,17 +142,9 @@ public class JDAStateEventAdapter extends EventAdapter {
                     message, false, new String[0]
                 ));
 
-                int trackCounter = 0;
                 for (AudioCache audioCache : audioStateTacks) {
                     if (audioCache == null) {
                         continue;
-                    }
-
-                    // Limits the track request loop to 100 tracks, some servers likes
-                    // to add 1,000+ tracks to the queue, we don't want to spam
-                    // YouTube or SoundClouds API as soon as we start up.
-                    if (trackCounter++ > 100) {
-                        break;
                     }
 
                     Member member = message.getGuild().getMemberById(audioCache.getRequestedBy());
@@ -159,14 +152,22 @@ public class JDAStateEventAdapter extends EventAdapter {
                         continue;
                     }
 
-                    TrackRequestHandler.sendRequest(musicManager, member, audioCache.getTrackUrl());
+                    AudioTrack track = AudioTrackSerializer.decodeTrack(audioCache.getTrack());
+                    if (track == null) {
+                        continue;
+                    }
+
+                    musicManager.getScheduler().queue(track, member.getUser());
                 }
             });
 
-            AudioCache track = state.getPlayingTrack();
+            AudioTrack track = AudioTrackSerializer.decodeTrack(state.getPlayingTrack() != null
+                ? state.getPlayingTrack().getTrack()
+                : null
+            );
 
             log.debug("{} stopped playing {} with {} songs in the queue",
-                guild.getId(), track == null ? "Unknown Track" : track.getTrackUrl(), state.getQueue().size()
+                guild.getId(), track == null ? "Unknown Track" : track.getInfo().uri, state.getQueue().size()
             );
         }
 

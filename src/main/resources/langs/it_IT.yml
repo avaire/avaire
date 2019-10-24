@@ -903,10 +903,12 @@ utility:
             textChannels: 'Canali testuali'
             voiceChannels: 'Canali vocali'
             members: 'Membri'
+            users: 'Users'
+            bots: 'Bots'
             roles: 'Ruoli'
             region: 'Regione'
             createdAt: 'Creato il'
-            emojis: 'Emoji personalizzate ({0})'
+            emotes: 'Custom Emotes'
         timeFormat: 'EEE, dd MMM yyyy HH:mm'
 
     ShardCommand:

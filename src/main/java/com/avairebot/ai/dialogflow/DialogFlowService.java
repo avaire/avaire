@@ -96,7 +96,9 @@ public class DialogFlowService implements IntelligenceService {
 
     @Override
     public void unregisterService(AvaIre avaire) {
-        executor.shutdownNow();
+        if (executor != null) {
+            executor.shutdownNow();
+        }
         service = null;
     }
 

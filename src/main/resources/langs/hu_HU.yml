@@ -909,10 +909,12 @@ utility:
             textChannels: 'Szöveges Channelek'
             voiceChannels: 'Hang Channelek'
             members: 'Felhasználók'
+            users: 'Users'
+            bots: 'Bots'
             roles: 'Rangok'
             region: 'Régió'
             createdAt: 'Létrehozva ekkor'
-            emojis: 'Egyéni Emojik ({0})'
+            emotes: 'Custom Emotes'
         timeFormat: 'EEE, dd MMM yyyy HH:mm'
 
     ShardCommand:

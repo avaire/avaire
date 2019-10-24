@@ -1,0 +1,37 @@
+id: 14
+cost: 50
+name: "Abstract"
+backgroundImage: "abstract.jpg"
+
+colors:
+    backgroundColor:
+        red: 0
+        green: 0
+        blue: 0
+        alpha: 0
+    mainTextColor:
+        red: 255
+        green: 255
+        blue: 255
+        alpha: 100
+    secondaryTextColor:
+        red: 255
+        green: 255
+        blue: 255
+        alpha: 100
+    experienceBackgroundColor:
+        red: 0
+        green: 0
+        blue: 0
+        alpha: 25
+    experienceForegroundColor:
+        red: 25
+        green: 25
+        blue: 25
+        alpha: 65
+    experienceSeparatorColor:
+        red: 255
+        green: 255
+        blue: 255
+        alpha: 50
+

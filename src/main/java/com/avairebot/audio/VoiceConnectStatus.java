@@ -39,7 +39,11 @@ public enum VoiceConnectStatus {
     /**
      * The bot doesn't have permissions to connect to the users current voice channel.
      */
-    MISSING_PERMISSIONS(false, "Unable to connect to the voice channel you're in due to missing permissions!");
+    MISSING_PERMISSIONS(false, "Unable to connect to the voice channel you're in due to missing permissions!"),
+    /**
+     * Lavalink is used with the bot, but there are no available music nodes to stream to(No connected nodes or no nodes added).
+     */
+    NO_AVAILABLE_NODES(false, "There are currently no available music nodes to stream to, try again later.");
 
     private final boolean success;
     private final String errorMessage;
