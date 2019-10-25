@@ -12,6 +12,9 @@
     <a href="https://avairebot.com/">
         <img src="https://cdn.avairebot.com/badge/avaire-version.svg" alt="AvaIre Version">
     </a>
+    <a href="https://avairebot.com/">
+        <img src="https://cdn.avairebot.com/badge/avaire-corvage.svg" alt="AvaIre Code Corvage">
+    </a>
     <a href="https://avairebot.com/support">
         <img src="https://img.shields.io/discord/284083636368834561.svg" alt="Discord">
     </a>
