@@ -942,6 +942,10 @@ utility:
             channels: 'Canali'
             servers: 'Servers'
 
+    TemperatureConvertCommand:
+        invalidConvertFormat: "{0} is not a recognized conversion mode. Valid conversion modes are {1}"
+        invalidNumberFormat: "{0} could not be parsed as a number."
+
     UptimeCommand:
         message: 'Sono online da :time'
         footer: 'Inizio {0} alle {1}'
