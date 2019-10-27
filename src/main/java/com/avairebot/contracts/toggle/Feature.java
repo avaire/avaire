@@ -21,19 +21,9 @@
 
 package com.avairebot.contracts.toggle;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
+import com.avairebot.config.FeatureToggleContextHandler;
 
 public interface Feature {
-
-    /**
-     * The disabled feature holder, this holds the full enum class name
-     * as the key, and a set of strings which is the name of the enum
-     * instances that are disabled for that enum type.
-     */
-    HashMap<String, Set<String>> disabledFeature = new HashMap<>();
 
     /**
      * The name of the feature.
@@ -55,30 +45,20 @@ public interface Feature {
      *         {@code False} otherwise.
      */
     default boolean isActive() {
-        return !disabledFeature.getOrDefault(
-            this.getClass().getTypeName(),
-            Collections.emptySet()
-        ).contains(name());
+        return FeatureToggleContextHandler.isActive(getClass(), name());
     }
 
     /**
      * Enables the current instance.
      */
     default void enable() {
-        disabledFeature.getOrDefault(
-            this.getClass().getTypeName(),
-            Collections.emptySet()
-        ).remove(name());
+        FeatureToggleContextHandler.enable(getClass(), name());
     }
 
     /**
      * Disables the current instance.
      */
     default void disable() {
-        String typeName = this.getClass().getTypeName();
-        if (!disabledFeature.containsKey(typeName)) {
-            disabledFeature.put(typeName, new HashSet<>());
-        }
-        disabledFeature.get(typeName).add(name());
+        FeatureToggleContextHandler.disable(getClass(), name());
     }
 }
