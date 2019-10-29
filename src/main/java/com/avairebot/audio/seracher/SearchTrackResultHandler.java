@@ -32,6 +32,7 @@ import com.avairebot.database.transformers.SearchResultTransformer;
 import com.avairebot.metrics.Metrics;
 import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
+import com.sedmelluq.discord.lavaplayer.tools.RateLimitException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.BasicAudioPlaylist;
@@ -41,14 +42,15 @@ import org.slf4j.LoggerFactory;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Collections;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 public class SearchTrackResultHandler implements AudioLoadResultHandler {
 
     private static final Logger log = LoggerFactory.getLogger(SearchTrackResultHandler.class);
+    private static final long defaultYouTubeCooldown = TimeUnit.MINUTES.toMillis(10);
     private static final long defaultTimeout = 3000L;
+    private static long youtubeCooldownUntil = 0;
 
     private final TrackRequestContext trackContext;
     private boolean skipCache = false;
@@ -120,18 +122,26 @@ public class SearchTrackResultHandler implements AudioLoadResultHandler {
             }
         }
 
+        if (isRequestingYouTubeWhileOnCooldown()) {
+            throw new TrackLoadFailedException(new SearchingException(
+                "The YouTube rate limit have been reached, please try again in a few minutes."
+            ));
+        }
+
         try {
-            AudioHandler.getDefaultAudioHandler().getPlayerManager().loadItem(trackContext.getFullQueryString(), this)
+            AudioHandler.getDefaultAudioHandler()
+                .getPlayerManager()
+                .loadItem(trackContext.getFullQueryString(), this)
                 .get(timeoutMillis, TimeUnit.MILLISECONDS);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-        } catch (ExecutionException e) {
-            exception = e;
         } catch (TimeoutException e) {
             exception = new SearchingException(String.format(
                 "Searching provider %s for \"%s\" timed out after %sms",
                 trackContext.getProvider().name(), trackContext.getQuery(), timeoutMillis
             ));
+        } catch (Exception e) {
+            exception = e;
         }
 
         if (exception != null) {
@@ -140,8 +150,19 @@ public class SearchTrackResultHandler implements AudioLoadResultHandler {
             if (exception instanceof FriendlyException && exception.getCause() != null) {
                 String messageOfCause = exception.getCause().getMessage();
                 if (messageOfCause.contains("java.io.IOException: Invalid status code for search response: 503")) {
-                    throw new Http503Exception("Lavaplayer search returned a 503", exception);
+                    exception = new Http503Exception("Lavaplayer search returned a 503", exception);
+                } else if (messageOfCause.contains("YouTube rate limit reached")) {
+                    exception = new RateLimitException(messageOfCause, exception);
                 }
+            }
+
+            if (isRateLimitingException() && isRequestingYouTube()) {
+                log.warn("Got a {} exception from YouTube, stopping requests to the service for {} minutes",
+                    exception.getClass().getName(),
+                    TimeUnit.MILLISECONDS.toMinutes(defaultYouTubeCooldown)
+                );
+
+                youtubeCooldownUntil = System.currentTimeMillis() + defaultYouTubeCooldown;
             }
 
             if (!(exception instanceof SearchingException)) {
@@ -185,6 +206,14 @@ public class SearchTrackResultHandler implements AudioLoadResultHandler {
         return this;
     }
 
+    /**
+     * Validates the search provider used for the search context is active, if
+     * the search provider is inactive then the search should not happen,
+     * and will instead throw an exception to fail.
+     *
+     * @throws InvalidSearchProviderException Will be thrown if the context search
+     *                                        provider is disabled.
+     */
     private void validateSearchProviderIsActive() throws InvalidSearchProviderException {
         if (!SearchProvider.YOUTUBE.isActive() && isRequestingYouTubeWithDirectLink()) {
             throw new InvalidSearchProviderException(String.format(
@@ -209,11 +238,64 @@ public class SearchTrackResultHandler implements AudioLoadResultHandler {
         }
     }
 
+    /**
+     * Checks if the currently set exception is related
+     * to being rate limited by YouTube.
+     *
+     * @return {@code True} if the set exception is related to being
+     *         rate limited by YouTube, {@code False} otherwise.
+     */
+    private boolean isRateLimitingException() {
+        return exception instanceof Http503Exception
+            || exception instanceof RateLimitException;
+
+    }
+
+    /**
+     * Checks if the search request is directed at YouTube by checking
+     * if the search provider is using the URL provider with a direct
+     * YouTube link, or if the search provider is YouTube directly.
+     *
+     * @return {@code True} if the search is directed at YouTube.
+     */
+    private boolean isRequestingYouTube() {
+        return isRequestingYouTubeWithDirectLink()
+            || trackContext.getProvider().equals(SearchProvider.YOUTUBE);
+    }
+
+    /**
+     * Checks if the search request is directed at YouTube and if we're
+     * still on a cooldown due to being rate limited.
+     *
+     * @return {@code True} if the request is directed at YouTube and
+     *         YouTube is currently rate limiting the bot.
+     */
+    private boolean isRequestingYouTubeWhileOnCooldown() {
+        return isRequestingYouTube() && System.currentTimeMillis() < youtubeCooldownUntil;
+    }
+
+    /**
+     * Checks if the search request is going to YouTube using
+     * a direct URL link instead of a search query.
+     *
+     * @return {@code True} if the search request is using a direct YouTube
+     *         link, and not a YouTube search query.
+     */
     private boolean isRequestingYouTubeWithDirectLink() {
         return trackContext.getProvider().equals(SearchProvider.URL)
             && SearchProvider.YOUTUBE.matchesDomain(trackContext.getQuery());
     }
 
+    /**
+     * Loads the audio playlist cache context from the cache if it exists,
+     * this will first check the in-memory cache for the results, and if
+     * they don't exist there, it will use the database cache, if the
+     * request context is not stored in either, null will be
+     * returned instead.
+     *
+     * @return The AudioPlaylist instance matching the current track context
+     *         from the cache if it exists, or {@code NULL}.
+     */
     @Nullable
     private AudioPlaylist loadContextFromCache() {
         SearchResultTransformer searchResult = SearchController.fetchSearchResult(trackContext);
