@@ -31,6 +31,12 @@ public class PluginHolderTranslator implements Translator {
 
     private final PluginHolder holder;
 
+    /**
+     * Creates a new plugin translator holder instance
+     * using the given plugin holder.
+     *
+     * @param holder The plugin holder instance.
+     */
     public PluginHolderTranslator(PluginHolder holder) {
         this.holder = holder;
     }

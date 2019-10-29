@@ -187,6 +187,10 @@ public class PluginLoader {
         return new URL("jar:" + file.toURI().toString() + "!/" + resourceName);
     }
 
+    /**
+     *
+     * @return
+     */
     public PluginClassLoader getClassLoader() {
         return classLoader;
     }

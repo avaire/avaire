@@ -33,6 +33,16 @@ public class PluginLoaderTranslator implements Translator {
     private final PluginLoader loader;
     private PluginHolder holder = null;
 
+    /**
+     * Creates the new plugin loader translator instance, this is
+     * used to act as a mediator between the JSON data loaded
+     * from the plugins list from github, and the actual
+     * plugin data of the plugin that is installed.
+     *
+     * @param loader  The plugin loader for the installed plugin.
+     * @param plugins The list of plugins that should be matched
+     *                against the loaded plugin.
+     */
     public PluginLoaderTranslator(PluginLoader loader, List<PluginHolder> plugins) {
         this.loader = loader;
 
