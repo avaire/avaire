@@ -63,7 +63,7 @@ public class TemperatureConvertCommand extends Command {
 
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
-        if (args.length == 0) {
+        if (args.length == 0 || args[0].length() == 1) {
             return sendErrorMessage(context, "errors.missingArgument", "temperature");
         }
 
@@ -77,13 +77,31 @@ public class TemperatureConvertCommand extends Command {
 
             switch (temperatureConversion) {
                 case 'C':
-                    double fahrenheit = celsiusToFahrenheit(temperature);
-                    context.makeInfo(NumberUtil.formatNicelyWithDecimals(fahrenheit) + "° F").queue();
+                    context.makeInfo(context.i18n("message"))
+                        .set("input", NumberUtil.formatNicelyWithDecimals(temperature) + "° C")
+                        .set("one", NumberUtil.formatNicelyWithDecimals(celsiusToFahrenheit(temperature)) + "° F")
+                        .set("two", NumberUtil.formatNicelyWithDecimals(celsiusToKelvin(temperature)) + "° K")
+                        .queue();
                     break;
 
                 case 'F':
-                    double celsius = fahrenheitToCelsius(temperature);
-                    context.makeInfo(NumberUtil.formatNicelyWithDecimals(celsius) + "° C").queue();
+                    double fahrenheitToCelsius = fahrenheitToCelsius(temperature);
+
+                    context.makeInfo(context.i18n("message"))
+                        .set("input", NumberUtil.formatNicelyWithDecimals(temperature) + "° F")
+                        .set("one", NumberUtil.formatNicelyWithDecimals(fahrenheitToCelsius) + "° C")
+                        .set("two", NumberUtil.formatNicelyWithDecimals(celsiusToKelvin(fahrenheitToCelsius)) + "° K")
+                        .queue();
+                    break;
+
+                case 'K':
+                    double kelvinToCelsius = kelvinToCelsius(temperature);
+
+                    context.makeInfo(context.i18n("message"))
+                        .set("input", NumberUtil.formatNicelyWithDecimals(temperature) + "° K")
+                        .set("one", NumberUtil.formatNicelyWithDecimals(kelvinToCelsius) + "° C")
+                        .set("two", NumberUtil.formatNicelyWithDecimals(celsiusToFahrenheit(kelvinToCelsius)) + "° F")
+                        .queue();
                     break;
 
                 default:
@@ -100,6 +118,14 @@ public class TemperatureConvertCommand extends Command {
         return true;
     }
 
+    private double celsiusToKelvin(double celsius) {
+        return celsius + 273.15D;
+    }
+
+    private double kelvinToCelsius(double kelvin) {
+        return kelvin - 273.15D;
+    }
+
     private double celsiusToFahrenheit(double celsius) {
         return ((celsius * 9) / 5) + 32;
     }
@@ -110,8 +136,9 @@ public class TemperatureConvertCommand extends Command {
 
     private List<String> getValidConvertModes() {
         return Arrays.asList(
-            "f : Fahrenheit to Celsius",
-            "c : Celsius to Fahrenheit"
+            " - F : Fahrenheit to Celsius & Kelvin",
+            " - C : Celsius to Fahrenheit & Kelvin",
+            " - K : Kelvin to Celsius and Fahrenheit"
         );
     }
 }
