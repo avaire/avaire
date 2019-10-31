@@ -30,12 +30,48 @@ import javax.annotation.Nullable;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @SuppressWarnings("WeakerAccess")
 public class AudioTrackSerializer {
 
     /**
-     * Encodes the given audio track into a byte array which an be
+     * Encodes the given audio tracks in a multi-dimensional byte array
+     * which can be used to re-create the list of the original
+     * audio tracks later on.
+     *
+     * @param tracks The list of LavaPlayer AudioTrack object instances.
+     * @return The encoded byte values of the given audio tracks, or {@code null} if something went wrong.
+     */
+    @Nullable
+    public static byte[][] encodeTracks(List<AudioTrack> tracks) {
+        if (tracks == null || tracks.isEmpty()) {
+            return null;
+        }
+
+        int skipped = 0;
+        byte[][] encoded = new byte[tracks.size()][];
+        for (int i = 0; i < tracks.size(); i++) {
+            encoded[i] = encodeTrack(tracks.get(i));
+            if (encoded[i] == null) {
+                skipped++;
+            }
+        }
+
+        byte[][] result = new byte[tracks.size() - skipped][];
+        int i = 0;
+        for (byte[] encodedTrack : encoded) {
+            if (encodedTrack != null) {
+                result[i++] = encodedTrack;
+            }
+        }
+
+        return result;
+    }
+
+    /**
+     * Encodes the given audio track into a byte array which can be
      * used to re-create the original audio track later.
      *
      * @param audioTrack The LavaPlayer AudioTrack object instance.
@@ -55,6 +91,31 @@ public class AudioTrackSerializer {
         } catch (IOException ignored) {
             return null;
         }
+    }
+
+    /**
+     * Decodes the given multi-dimensional byte array into a list of LavaPlayer
+     * AudioTrack instances, creating the original audio track objects.
+     *
+     * @param input The byte arrays which should be decoded into the AudioTrack instances.
+     * @return The decoded LavaPlayer AudioTrack object instances, or {@code null} if
+     *         the given by arrays does not match a audio track.
+     */
+    @Nullable
+    public static List<AudioTrack> decodeTracks(byte[][] input) {
+        if (input == null) {
+            return null;
+        }
+
+        List<AudioTrack> audioTracks = new ArrayList<>();
+        for (byte[] trackArray : input) {
+            AudioTrack track = decodeTrack(trackArray);
+            if (track != null) {
+                audioTracks.add(track);
+            }
+        }
+
+        return audioTracks;
     }
 
     /**

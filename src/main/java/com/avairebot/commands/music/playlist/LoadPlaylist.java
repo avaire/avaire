@@ -25,6 +25,7 @@ import com.avairebot.AvaIre;
 import com.avairebot.audio.AudioHandler;
 import com.avairebot.audio.TrackRequestContext;
 import com.avairebot.audio.VoiceConnectStatus;
+import com.avairebot.audio.exceptions.InvalidSearchProviderException;
 import com.avairebot.audio.exceptions.SearchingException;
 import com.avairebot.audio.seracher.SearchTrackResultHandler;
 import com.avairebot.commands.CommandMessage;
@@ -100,6 +101,9 @@ public class LoadPlaylist extends PlaylistSubCommand {
             if (playlist.getTracks() != null && !playlist.getTracks().isEmpty()) {
                 tracks.add(playlist.getTracks().get(0));
             }
+        } catch (InvalidSearchProviderException ignored) {
+            // We can just ignore this since we can't load the song due to the
+            // music provider that it's using is disabled at the moment.
         } catch (SearchingException e) {
             AvaIre.getLogger().error("Searching exception were thrown while loading a playlist: {}", e.getMessage(), e);
         }

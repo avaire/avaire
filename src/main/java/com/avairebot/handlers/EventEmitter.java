@@ -32,10 +32,24 @@ public class EventEmitter {
 
     private final AvaIre avaire;
 
+    /**
+     * Creates a new event emitter instance using
+     * the given AvaIre application instance.
+     *
+     * @param avaire The AvaIre instance that the event
+     *               emitter should be created for.
+     */
     public EventEmitter(AvaIre avaire) {
         this.avaire = avaire;
     }
 
+    /**
+     * Pushes the given event to all loaded plugins with at least
+     * one event listener, forwarding the custom events through
+     * each plugin one by one.
+     *
+     * @param event The event that should be pushed to all the loaded plugins.
+     */
     public void push(Event event) {
         Checks.notNull(event, "event instance");
         for (PluginLoader plugin : avaire.getPluginManager().getPlugins()) {

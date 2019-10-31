@@ -42,10 +42,7 @@ import com.avairebot.commands.administration.ChangePrefixCommand;
 import com.avairebot.commands.utility.SourceCommand;
 import com.avairebot.commands.utility.StatsCommand;
 import com.avairebot.commands.utility.UptimeCommand;
-import com.avairebot.config.Configuration;
-import com.avairebot.config.ConstantsConfiguration;
-import com.avairebot.config.EnvironmentMacros;
-import com.avairebot.config.EnvironmentOverride;
+import com.avairebot.config.*;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.contracts.database.migrations.Migration;
 import com.avairebot.contracts.database.seeder.Seeder;
@@ -560,6 +557,8 @@ public class AvaIre {
         }
 
         intelligenceManager.unregisterService();
+
+        FeatureToggleContextHandler.saveToStorage();
 
         for (ScheduledFuture<?> scheduledFuture : ScheduleHandler.entrySet()) {
             scheduledFuture.cancel(false);

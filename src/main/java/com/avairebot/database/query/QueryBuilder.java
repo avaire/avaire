@@ -728,6 +728,17 @@ public final class QueryBuilder {
      *         or (2) <code>NULL</code> if an error occurred.
      */
     public String toSQL() {
+        return toSQL(type);
+    }
+
+    /**
+     * Creates the grammar instance and builds the SQL query using the given query type, if an
+     * error occurs while building the query <code>NULL</code> will be returned instead.
+     *
+     * @return either (1) the generated SQL query
+     *         or (2) <code>NULL</code> if an error occurred.
+     */
+    public String toSQL(QueryType type) {
         try {
             switch (type) {
                 case SELECT:

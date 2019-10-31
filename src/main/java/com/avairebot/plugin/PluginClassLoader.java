@@ -28,8 +28,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class PluginClassLoader extends URLClassLoader {
 
@@ -39,8 +37,22 @@ public class PluginClassLoader extends URLClassLoader {
     private final File dataFolder;
     private final File file;
 
-    private final ConcurrentHashMap classes = new ConcurrentHashMap();
-
+    /**
+     * Creates a new plugin class loader instance, this will attempt to load
+     * the main plugin class from the plugin loader instance.
+     *
+     * @param loader     The plugin loader instance that the class should be loaded from.
+     * @param parent     The AvaIre class loader instances, or a parent class loader
+     *                   that can be used for delegation.
+     * @param dataFolder The data folder the plugin exists in that the class should be loaded from.
+     * @param file       The file of the plugin in the plugins directory.
+     * @throws InvalidPluginException This is thrown if the plugin is not valid, like the main class
+     *                                not extending the JavaPlugin class, or not being able to
+     *                                create a new instance of the plugin class if the class
+     *                                doesn't follow the plugin contract.
+     * @throws MalformedURLException  This is thrown if the plugin loader URI generated to load the
+     *                                plugin class is not valid or could not be parsed.
+     */
     PluginClassLoader(PluginLoader loader, ClassLoader parent, File dataFolder, File file) throws InvalidPluginException, MalformedURLException {
         super(new URL[]{file.toURI().toURL()}, parent);
 
@@ -73,23 +85,39 @@ public class PluginClassLoader extends URLClassLoader {
         }
     }
 
+    /**
+     * Gets the plugins main class instance.
+     *
+     * @return The main class instance for the plugin.
+     */
     public JavaPlugin getPlugin() {
         return plugin;
     }
 
+    /**
+     * Gets the plugin loader used to load the plugin.
+     *
+     * @return The plugin loader used to load the plugin.
+     */
     public PluginLoader getLoader() {
         return loader;
     }
 
+    /**
+     * Gets the data folder that the plugin jar file is located in.
+     *
+     * @return The directory the plugin jar file is located in.
+     */
     public File getDataFolder() {
         return dataFolder;
     }
 
+    /**
+     * Gets the plugin jar file instance.
+     *
+     * @return The plugin jar file instance.
+     */
     public File getFile() {
         return file;
-    }
-
-    public Map<String, Class<?>> getClasses() {
-        return classes;
     }
 }

@@ -426,6 +426,10 @@ public class DatabaseManager {
     }
 
     private void runQueryBatch(String query, BatchQueryFunction<PreparedStatement> queryFunction, int batchId, int retriesLeft) throws SQLException {
+        log.debug("Running batch query with the following values:\n - Query: {}\n - Batch ID: {}\n - Retries Left: {}",
+            query, batchId, retriesLeft
+        );
+
         Connection connection = getConnection().getConnection();
 
         if (!runningBatchRequests.contains(batchId)) {

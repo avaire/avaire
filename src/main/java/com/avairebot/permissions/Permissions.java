@@ -62,11 +62,25 @@ public enum Permissions {
     private final String node;
     private final Permission permission;
 
+    /**
+     * Creates a new permissions instance using the given
+     * node and JDA permission instance.
+     *
+     * @param node       The stringified permission node representing the permission.
+     * @param permission The JDA permission instance used for the permission.
+     */
     Permissions(String node, Permission permission) {
         this.node = node;
         this.permission = permission;
     }
 
+    /**
+     * Gets the permission instance that matches the
+     * given stringified permission node.
+     *
+     * @param node The node that should be matched against the permissions.
+     * @return The permission that matched with the given stringified permission node.
+     */
     public static Permissions fromNode(String node) {
         for (Permissions permission : values()) {
             if (permission.getNode().equalsIgnoreCase(node)) {
@@ -76,10 +90,21 @@ public enum Permissions {
         return null;
     }
 
+    /**
+     * Gets the string node used to represent
+     * the permission in middlewares.
+     *
+     * @return The stringified representation of the permission.
+     */
     public String getNode() {
         return node;
     }
 
+    /**
+     * Gets the JDA permission instance.
+     *
+     * @return The JDA permission instance.
+     */
     public Permission getPermission() {
         return permission;
     }

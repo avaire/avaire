@@ -126,6 +126,21 @@
             "required": false,
             "value": "88739639380172800"
         },
+        "AVA_AUDIO_CACHE_MAXIMUM_CACHE_SIZE": {
+            "description": "Defines how large the maximum cache size will be for the in-memory music search results cache.",
+            "required": true,
+            "value": "1000"
+        },
+        "AVA_AUDIO_CACHE_DEFAULT_MAX_CACHE_AGE": {
+            "description": "Defines how old the maximum cache can be before being excluded from search track searches, this value is defined in seconds.",
+            "required": true,
+            "value": "86400"
+        },
+        "AVA_AUDIO_CACHE_MAX_PERSISTENCE_AGE": {
+            "description": "Defines how long a cached search query will be kept in the cache, this value is in seconds.",
+            "required": true,
+            "value": "172800"
+        },
         "AVA_SENTRYDSN": {
             "description": "If you want to use Sentry for error loging. You can get the DSN url from: https://sentry.io/welcome/. You can leave this blank.",
             "required": false,

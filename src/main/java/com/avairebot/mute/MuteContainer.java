@@ -21,7 +21,6 @@
 
 package com.avairebot.mute;
 
-import com.avairebot.language.I18n;
 import com.avairebot.time.Carbon;
 
 import javax.annotation.Nonnull;
@@ -44,7 +43,7 @@ public class MuteContainer {
      * @param expiresAt The date and time the mute should expire,
      *                  or {@code NULL} for permanent mutes.
      */
-    MuteContainer(long guildId, long userId, @Nullable Carbon expiresAt) {
+    public MuteContainer(long guildId, long userId, @Nullable Carbon expiresAt) {
         this.guildId = guildId;
         this.userId = userId;
         this.expiresAt = expiresAt;
@@ -110,7 +109,8 @@ public class MuteContainer {
      */
     public void cancelSchedule() {
         if (schedule != null) {
-            schedule.cancel(true);
+            schedule.cancel(false);
+            schedule = null;
         }
     }
 
@@ -155,7 +155,7 @@ public class MuteContainer {
 
     @Override
     public String toString() {
-        return I18n.format("MuteContainer={guildId={0}, userId={1}, expiresAt={2}}",
+        return String.format("MuteContainer={guildId=%s, userId=%s, expiresAt=%s}",
             getGuildId(), getUserId(), getExpiresAt()
         );
     }
