@@ -64,16 +64,18 @@ public class TemperatureConvertCommand extends Command {
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
         if (args.length == 0) {
-            return sendErrorMessage(context, "errors.missingArgument", "temperature", "tempOutputFormat");
-        } else if (args.length == 1) {
-            return sendErrorMessage(context, "errors.missingArgument", "tempOutputFormat");
+            return sendErrorMessage(context, "errors.missingArgument", "temperature");
         }
 
-        try {
-            double temperature = Double.parseDouble(args[0]);
-            char tempMode = args[1].toUpperCase().charAt(0);
+        final String message = String.join(" ", args).trim();
 
-            switch (tempMode) {
+        try {
+            char temperatureConversion = message.toUpperCase().charAt(message.length() - 1);
+            double temperature = Double.parseDouble(
+                message.substring(0, message.length() - 1)
+            );
+
+            switch (temperatureConversion) {
                 case 'C':
                     double fahrenheit = celsiusToFahrenheit(temperature);
                     context.makeInfo(NumberUtil.formatNicelyWithDecimals(fahrenheit) + "° F").queue();
@@ -85,10 +87,14 @@ public class TemperatureConvertCommand extends Command {
                     break;
 
                 default:
-                    return sendErrorMessage(context, context.i18n("invalidConvertFormat", args[1], String.join("\n ,", getValidConvertModes())));
+                    return sendErrorMessage(
+                        context,
+                        context.i18n("invalidConvertFormat", temperatureConversion, String.join("\n", getValidConvertModes())));
             }
         } catch (NumberFormatException ex) {
-            return sendErrorMessage(context, context.i18n("invalidNumberFormat", args[0]));
+            return sendErrorMessage(context, context.i18n("invalidNumberFormat", message.substring(
+                0, message.length() - 1)
+            ));
         }
 
         return true;
