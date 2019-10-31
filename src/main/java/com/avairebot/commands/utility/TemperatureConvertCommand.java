@@ -43,22 +43,22 @@ public class TemperatureConvertCommand extends Command {
 
     @Override
     public String getDescription() {
-        return "Converts the given temperature to Celsius or vice-versa";
+        return "Converts the given temperature to Celsius, Fahrenheit, and/or Kelvin.";
     }
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`:command <temperature> <tempOutputFormat>` - Converts the given temperature to a different format.");
+        return Collections.singletonList("`:command <temperature>` - Converts the temperature to a different format.");
     }
 
     @Override
     public List<String> getExampleUsage() {
-        return Arrays.asList("`:command 50 f` - Converts the given temperature to Celsius. ", "`:command 40 c` - Converts the given temperature to Fahrenheit.");
+        return Collections.singletonList("`:command 50c` - Converts from celsius to fahrenheit and kelvin. ");
     }
 
     @Override
     public List<String> getTriggers() {
-        return Collections.singletonList("tempconvert");
+        return Arrays.asList("tempconvert", "temperature", "temp");
     }
 
     @Override
