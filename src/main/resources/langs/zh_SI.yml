@@ -941,6 +941,11 @@ utility:
             channels: '频道'
             servers: '服务器'
 
+    TemperatureConvertCommand:
+        invalidConvertFormat: "`{0}` is not a recognized conversion mode. Valid conversion modes are:\n{1}"
+        invalidNumberFormat: "`{0}` could not be parsed as a number."
+        message: ":input is equal to :one and :two"
+
     UptimeCommand:
         message: '我上网已经很久了 :time'
         footer: '开启 {0} 在 {1}'

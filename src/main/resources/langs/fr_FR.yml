@@ -942,6 +942,11 @@ utility:
             channels: "Canaux"
             servers: "Serveurs"
 
+    TemperatureConvertCommand:
+        invalidConvertFormat: "`{0}` is not a recognized conversion mode. Valid conversion modes are:\n{1}"
+        invalidNumberFormat: "`{0}` could not be parsed as a number."
+        message: ":input is equal to :one and :two"
+
     UptimeCommand:
         message: "Je suis en ligne depuis :time"
         footer: "Démarré {0} à {1}"
