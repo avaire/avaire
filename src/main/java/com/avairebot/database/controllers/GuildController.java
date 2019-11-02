@@ -162,7 +162,8 @@ public class GuildController {
 
             return transformer;
         } catch (Exception ex) {
-            AvaIre.getLogger().error(ex.getMessage(), ex);
+            log.error("Failed to fetch guild transformer from the database, error: {}", ex.getMessage(), ex);
+
             return null;
         }
     }

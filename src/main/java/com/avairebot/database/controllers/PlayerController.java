@@ -119,7 +119,8 @@ public class PlayerController {
 
                 return mergeWithExperienceEntity(avaire, transformer);
             } catch (Exception ex) {
-                AvaIre.getLogger().error(ex.getMessage(), ex);
+                log.error("Failed to fetch player transformer from the database, error: {}", ex.getMessage(), ex);
+
                 return null;
             }
         });

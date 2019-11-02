@@ -188,8 +188,9 @@ public class PluginLoader {
     }
 
     /**
+     * Gets the plugin class loader instance used for loading the plugin.
      *
-     * @return
+     * @return Plugin class loader instance
      */
     public PluginClassLoader getClassLoader() {
         return classLoader;

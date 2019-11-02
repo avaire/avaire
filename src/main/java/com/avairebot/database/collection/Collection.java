@@ -25,6 +25,7 @@ import com.avairebot.AvaIre;
 import com.avairebot.contracts.database.collection.CollectionEach;
 import com.avairebot.utilities.RandomUtil;
 import com.google.gson.Gson;
+import org.apache.commons.collections4.ListUtils;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -38,6 +39,14 @@ import java.util.*;
 @SuppressWarnings({"WeakerAccess", "unused"})
 public class Collection implements Cloneable, Iterable<DataRow> {
 
+    /**
+     * The empty collection (immutable).
+     */
+    public static final Collection EMPTY_COLLECTION = new Collection(
+        new HashMap<>(),
+        ListUtils.unmodifiableList(new ArrayList<>())
+    );
+
     private final HashMap<String, String> keys;
     private final List<DataRow> items;
 
@@ -47,6 +56,18 @@ public class Collection implements Cloneable, Iterable<DataRow> {
     public Collection() {
         this.keys = new HashMap<>();
         this.items = new ArrayList<>();
+    }
+
+    /**
+     * Creates a new collection with the given
+     * keys and items instances.
+     *
+     * @param keys  The keys map that should be used for the collection.
+     * @param items The list of items that should be stored in teh collection.
+     */
+    private Collection(HashMap<String, String> keys, List<DataRow> items) {
+        this.keys = keys;
+        this.items = items;
     }
 
     /**

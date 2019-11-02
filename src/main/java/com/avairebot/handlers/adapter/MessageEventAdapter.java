@@ -271,7 +271,7 @@ public class MessageEventAdapter extends EventAdapter {
 
     public void onMessageDelete(TextChannel channel, List<String> messageIds) {
         Collection reactions = ReactionController.fetchReactions(avaire, channel.getGuild());
-        if (reactions == null) {
+        if (reactions == null || reactions.isEmpty()) {
             return;
         }
 
