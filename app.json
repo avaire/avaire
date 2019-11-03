@@ -19,9 +19,12 @@
     "repository": "https://github.com/avaire/avaire",
     "logo": "https://imgur.com/H8RCD5F.png",
     "success_url": "/",
+    "scripts": {
+      "postdeploy": "java -jar AvaIre.jar & sleep 30s && exit 0"
+    },
     "addons": [
         {
-            "plan": "jawsdb:kitefin"
+            "plan": "jawsdb-maria:kitefin"
         },
         {
             "plan": "scheduler:standard"
