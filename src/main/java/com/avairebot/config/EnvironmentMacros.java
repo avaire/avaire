@@ -40,7 +40,7 @@ public class EnvironmentMacros {
      * Registers the default environment override macros.
      */
     public static void registerDefaults() {
-        if (!registerJAWSDB_URL()) {
+        if (!registerJAWSDB_MARIA_URL()) {
             log.warn("Failed to register the JAWSDB_URL environment variable macro, a macro with that name is already registered.");
         }
 
@@ -55,8 +55,8 @@ public class EnvironmentMacros {
         });
     }
 
-    private static boolean registerJAWSDB_URL() {
-        return EnvironmentOverride.registerMacro("JAWSDB_URL", (environmentValue, configuration) -> {
+    private static boolean registerJAWSDB_MARIA_URL() {
+        return EnvironmentOverride.registerMacro("JAWSDB_MARIA_URL", (environmentValue, configuration) -> {
             if (!configuration.isSet("database.type")) {
                 return;
             }
