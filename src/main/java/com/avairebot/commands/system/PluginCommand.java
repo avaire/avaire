@@ -22,7 +22,6 @@
 package com.avairebot.commands.system;
 
 import com.avairebot.AvaIre;
-import com.avairebot.cache.CacheType;
 import com.avairebot.chat.SimplePaginator;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.SystemCommand;
@@ -32,12 +31,7 @@ import com.avairebot.plugin.PluginLoader;
 import com.avairebot.plugin.translators.PluginHolderTranslator;
 import com.avairebot.plugin.translators.PluginLoaderTranslator;
 import com.avairebot.utilities.NumberUtil;
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.jsoup.Connection;
-import org.jsoup.Jsoup;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -132,13 +126,13 @@ public class PluginCommand extends SystemCommand {
         }
 
         if (args[0].equalsIgnoreCase("available") || args[0].equalsIgnoreCase("a")) {
-            List<PluginHolder> pluginHolders = fetchPluginsFromGithub();
-            if (pluginHolders == null) {
+            List<PluginHolder> officialPluginsList = avaire.getPluginManager().getOfficialPluginsList();
+            if (officialPluginsList == null) {
                 return sendErrorMessage(context, "Failed to load plugins for the plugins list, try again later.");
             }
 
             List<String> messages = new ArrayList<>();
-            SimplePaginator<PluginHolder> paginator = new SimplePaginator<>(pluginHolders, 5, 1);
+            SimplePaginator<PluginHolder> paginator = new SimplePaginator<>(officialPluginsList, 5, 1);
             if (args.length > 1) {
                 paginator.setCurrentPage(NumberUtil.parseInt(args[1], 1));
             }
@@ -183,14 +177,14 @@ public class PluginCommand extends SystemCommand {
     }
 
     private Translator getPluginByName(String name) {
-        List<PluginHolder> pluginHolders = fetchPluginsFromGithub();
+        List<PluginHolder> pluginHolders = avaire.getPluginManager().getOfficialPluginsList();
         if (pluginHolders == null) {
             return null;
         }
 
         for (PluginLoader pluginLoader : avaire.getPluginManager().getPlugins()) {
             if (pluginLoader.getName().equalsIgnoreCase(name)) {
-                return new PluginLoaderTranslator(pluginLoader, fetchPluginsFromGithub());
+                return new PluginLoaderTranslator(pluginLoader, avaire.getPluginManager().getOfficialPluginsList());
             }
         }
 
@@ -200,33 +194,6 @@ public class PluginCommand extends SystemCommand {
             }
         }
 
-        return null;
-    }
-
-    @SuppressWarnings("unchecked")
-    private List<PluginHolder> fetchPluginsFromGithub() {
-        Object plugins = avaire.getCache().getAdapter(CacheType.MEMORY).remember("plugins", 10800, () -> {
-            try {
-                Connection.Response execute = Jsoup.connect("https://raw.githubusercontent.com/avaire/plugins/master/plugins.json")
-                    .ignoreContentType(true).execute();
-
-                JSONObject obj = new JSONObject(execute.body());
-                JSONArray data = obj.getJSONArray("data");
-
-                List<PluginHolder> pluginList = new ArrayList<>();
-                for (Object aData : data) {
-                    pluginList.add(new PluginHolder((JSONObject) aData));
-                }
-                return pluginList;
-            } catch (IOException e) {
-                AvaIre.getLogger().error("Failed to fetch plugins from github: " + e.getMessage(), e);
-                return null;
-            }
-        });
-
-        if (plugins instanceof List) {
-            return (List<PluginHolder>) plugins;
-        }
         return null;
     }
 }

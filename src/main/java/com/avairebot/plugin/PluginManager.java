@@ -21,14 +21,22 @@
 
 package com.avairebot.plugin;
 
+import com.avairebot.AvaIre;
+import com.avairebot.cache.CacheType;
 import com.avairebot.exceptions.InvalidPluginException;
 import com.avairebot.exceptions.InvalidPluginsPathException;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.jsoup.Connection;
+import org.jsoup.Jsoup;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class PluginManager {
@@ -86,5 +94,35 @@ public class PluginManager {
      */
     public Set<PluginLoader> getPlugins() {
         return plugins;
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<PluginHolder> getOfficialPluginsList() {
+        Object plugins = AvaIre.getInstance().getCache().getAdapter(CacheType.MEMORY).remember("plugins", 10800, () -> {
+            try {
+                Connection.Response execute = Jsoup.connect("https://raw.githubusercontent.com/avaire/plugins/master/plugins.json")
+                    .ignoreContentType(true)
+                    .execute();
+
+                JSONObject obj = new JSONObject(execute.body());
+                JSONArray data = obj.getJSONArray("data");
+
+                List<PluginHolder> pluginList = new ArrayList<>();
+                for (Object aData : data) {
+                    pluginList.add(new PluginHolder((JSONObject) aData));
+                }
+
+                return pluginList;
+            } catch (IOException e) {
+                log.error("Failed to fetch plugins from github: " + e.getMessage(), e);
+
+                return null;
+            }
+        });
+
+        if (!(plugins instanceof List)) {
+            return null;
+        }
+        return (List<PluginHolder>) plugins;
     }
 }
