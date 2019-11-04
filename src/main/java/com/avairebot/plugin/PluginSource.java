@@ -21,20 +21,25 @@
 
 package com.avairebot.plugin;
 
+import com.avairebot.contracts.plugin.PluginSourceManager;
+import com.avairebot.plugin.sources.GitHubSourceManager;
+
 import java.util.regex.Matcher;
 
 public enum PluginSource {
 
-    GITHUB("GitHub", "https://github.com/:name", "https://api.github.com/repos/:name/releases");
+    GITHUB("GitHub", "https://github.com/:name", "https://api.github.com/repos/:name/releases", new GitHubSourceManager());
 
     private final String name;
     private final String sourceUrl;
     private final String releasesUrl;
+    private final PluginSourceManager sourceManager;
 
-    PluginSource(String name, String sourceUrl, String releasesUrl) {
+    PluginSource(String name, String sourceUrl, String releasesUrl, PluginSourceManager sourceManager) {
         this.name = name;
         this.sourceUrl = sourceUrl;
         this.releasesUrl = releasesUrl;
+        this.sourceManager = sourceManager;
     }
 
     /**
@@ -88,6 +93,16 @@ public enum PluginSource {
      */
     public String getReleasesUrl(String name) {
         return buildUrl(releasesUrl, name);
+    }
+
+    /**
+     * Gets the plugin source manager which is used to manage
+     * sources for the current plugin source.
+     *
+     * @return The plugin source manager for the current source manager.
+     */
+    public PluginSourceManager getSourceManager() {
+        return sourceManager;
     }
 
     /**
