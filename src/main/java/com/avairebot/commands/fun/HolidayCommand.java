@@ -126,7 +126,7 @@ public class HolidayCommand extends Command
         int dayOfMonth = date.getDayOfMonth();
         int monthOfYear = date.getMonthValue();
         String holidayApiClientToken = avaire.getConfig().getString("apiKeys.holidayapi", "invalid");
-        if (holidayApiClientToken.equals("invalid") || holidayApiClientToken.length() != 32)
+        if (holidayApiClientToken.equals("invalid") || holidayApiClientToken.length() < 32)
         {
             return false;
         }
