@@ -22,10 +22,16 @@
 package com.avairebot.commands.system.plugin;
 
 import com.avairebot.AvaIre;
+import com.avairebot.chat.PlaceholderMessage;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.commands.system.PluginCommand;
 import com.avairebot.contracts.commands.plugin.PluginSubCommand;
+import com.avairebot.contracts.plugin.PluginRelease;
+import com.avairebot.contracts.plugin.PluginSourceManager;
 import com.avairebot.contracts.plugin.Translator;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ShowPlugin extends PluginSubCommand {
 
@@ -50,15 +56,31 @@ public class ShowPlugin extends PluginSubCommand {
             return command.sendErrorMessage(context, "Couldn't find any plugin called `{0}`, are you sure it exists?", args[0]);
         }
 
-        context.makeInfo(plugin.getDescription())
+        PlaceholderMessage message = context.makeInfo(plugin.getDescription())
             .setTitle(plugin.getName())
             .addField("Source URL:", String.format("[%s](%s)",
                 plugin.getRepository().getRepository(),
                 plugin.getRepository().getSource().getSourceUrl(plugin.getRepository().getRepository())
             ), false)
             .addField("Created by", String.join("\n", plugin.getAuthors()), true)
-            .addField("Installed", plugin.isInstalled() ? "Yes" : "No", true)
-            .queue();
+            .addField("Installed", plugin.isInstalled() ? "Yes" : "No", true);
+
+        List<String> versions = new ArrayList<>();
+        PluginSourceManager sourceManager = plugin.getRepository().getSource().getSourceManager();
+        for (PluginRelease release : sourceManager.getPluginReleases(plugin.getRepository())) {
+            versions.add("`" + release.getTag() + "`");
+            if (versions.size() >= 30) {
+                break;
+            }
+        }
+
+        if (versions.isEmpty()) {
+            message.addField("Available Versions:", "*There are currently no publicly available versions*", false);
+        } else {
+            message.addField("Available Versions:", String.join(", ", versions), false);
+        }
+
+        message.queue();
 
         return true;
     }
