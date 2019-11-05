@@ -581,7 +581,7 @@ apiKeys:
     # their website, then going to the "API Keys" tab and creating a new key.
     # Get a key at: https://holidayapi.com/
     #
-    holidayapi: '6614d334-b98e-4305-bbc1-d2caa40aa2e0'
+    holidayapi: ''
   # Google API key, this is used for music requests to YouTube and the
   # Shorten API for shortening links, note the play command will still
   # work with youtube links without an API key.

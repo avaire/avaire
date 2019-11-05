@@ -46,7 +46,6 @@ public class HolidayCommand extends Command
 {
 
     private static Cache<String, List<HolidayService.Holiday>> holidayMap = CacheBuilder.newBuilder()
-        .concurrencyLevel(4) // read docs for more details
         .expireAfterWrite(1, TimeUnit.DAYS)
         .build();
 
@@ -127,7 +126,7 @@ public class HolidayCommand extends Command
         int dayOfMonth = date.getDayOfMonth();
         int monthOfYear = date.getMonthValue();
         String holidayApiClientToken = avaire.getConfig().getString("apiKeys.holidayapi", "invalid");
-        if (holidayApiClientToken == null || holidayApiClientToken.length() == 32)
+        if (holidayApiClientToken.equals("invalid") || holidayApiClientToken.length() != 32)
         {
 
             return false;
@@ -180,6 +179,8 @@ public class HolidayCommand extends Command
 
         return true;
     }
+
+
 
 
     private void sendHolidayStatus(CommandMessage context,List<HolidayService.Holiday> holidays)
