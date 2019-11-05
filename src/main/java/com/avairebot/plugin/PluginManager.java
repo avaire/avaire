@@ -74,16 +74,26 @@ public class PluginManager {
 
         //noinspection ConstantConditions
         for (File file : pluginsFolder.listFiles()) {
-            if (file.isDirectory() || file.isHidden()) continue;
+            loadPlugin(file);
+        }
+    }
 
-            try {
-                log.debug("Attempting to load plugin: " + file.toString());
-                PluginLoader pluginLoader = new PluginLoader(file, pluginsFolder);
+    public PluginLoader loadPlugin(File file) throws InvalidPluginsPathException, InvalidPluginException {
+        if (file.isDirectory() || file.isHidden()) {
+            return null;
+        }
 
-                plugins.add(pluginLoader);
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
+        try {
+            log.debug("Attempting to load plugin: " + file.toString());
+            PluginLoader pluginLoader = new PluginLoader(file, pluginsFolder);
+
+            plugins.add(pluginLoader);
+
+            return pluginLoader;
+        } catch (IOException e) {
+            log.error("Failed to load the {} plugin, error: {}", file.getName(), e.getMessage(), e);
+
+            return null;
         }
     }
 
@@ -94,6 +104,10 @@ public class PluginManager {
      */
     public Set<PluginLoader> getPlugins() {
         return plugins;
+    }
+
+    public File getPluginsFolder() {
+        return pluginsFolder;
     }
 
     @SuppressWarnings("unchecked")

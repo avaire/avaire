@@ -23,6 +23,7 @@ package com.avairebot.commands.system;
 
 import com.avairebot.AvaIre;
 import com.avairebot.commands.CommandMessage;
+import com.avairebot.commands.system.plugin.InstallPlugin;
 import com.avairebot.commands.system.plugin.ListPlugins;
 import com.avairebot.commands.system.plugin.ShowPlugin;
 import com.avairebot.contracts.commands.SystemCommand;
@@ -32,12 +33,14 @@ import java.util.List;
 
 public class PluginCommand extends SystemCommand {
 
+    private final InstallPlugin installPlugin;
     private final ListPlugins listPlugins;
     private final ShowPlugin showPlugin;
 
     public PluginCommand(AvaIre avaire) {
         super(avaire);
 
+        installPlugin = new InstallPlugin(avaire, this);
         listPlugins = new ListPlugins(avaire, this);
         showPlugin = new ShowPlugin(avaire, this);
     }
@@ -78,6 +81,10 @@ public class PluginCommand extends SystemCommand {
         }
 
         switch (args[0].toLowerCase()) {
+            case "i":
+            case "install":
+                return installPlugin.onCommand(context, Arrays.copyOfRange(args, 1, args.length));
+
             case "l":
             case "list":
                 return listPlugins.onCommand(context, Arrays.copyOfRange(args, 1, args.length));
