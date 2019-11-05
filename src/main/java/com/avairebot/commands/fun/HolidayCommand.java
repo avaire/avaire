@@ -128,7 +128,6 @@ public class HolidayCommand extends Command
         String holidayApiClientToken = avaire.getConfig().getString("apiKeys.holidayapi", "invalid");
         if (holidayApiClientToken.equals("invalid") || holidayApiClientToken.length() != 32)
         {
-
             return false;
         }
 
@@ -145,42 +144,44 @@ public class HolidayCommand extends Command
         }
         else
         {
-            request.send((Consumer<Response>) response ->
-            {
-                int statusCode = response.getResponse().code();
-
-                if (statusCode == 429) {
-                    context.makeWarning(context.i18n("tooManyAttempts"))
-                        .queue(message -> message.delete().queueAfter(45, TimeUnit.SECONDS, null, RestActionUtil.ignore));
-
-                    return;
-                }
-
-                if (statusCode == 404) {
-                    context.makeWarning(context.i18n("notFound"))
-                        .queue(message -> message.delete().queueAfter(45, TimeUnit.SECONDS, null, RestActionUtil.ignore));
-
-                    return;
-                }
-
-                if (statusCode == 200)
-                {
-                    HolidayService service = (HolidayService) response.toService(HolidayService.class);
-                    List<HolidayService.Holiday> holidays = service.getHolidays();
-                    holidayMap.put(key,holidays);
-                    sendHolidayStatus(context,holidays);
-                    return;
-                }
-
-                context.makeError(context.i18n("somethingWentWrong")).queue();
-            });
+            sendRequest(context, request, key);
         }
 
 
         return true;
     }
 
+    private void sendRequest(CommandMessage context, Request request, String key) {
+        request.send((Consumer<Response>) response ->
+        {
+            int statusCode = response.getResponse().code();
 
+            if (statusCode == 429) {
+                context.makeWarning(context.i18n("tooManyAttempts"))
+                    .queue(message -> message.delete().queueAfter(45, TimeUnit.SECONDS, null, RestActionUtil.ignore));
+
+                return;
+            }
+
+            if (statusCode == 404) {
+                context.makeWarning(context.i18n("notFound"))
+                    .queue(message -> message.delete().queueAfter(45, TimeUnit.SECONDS, null, RestActionUtil.ignore));
+
+                return;
+            }
+
+            if (statusCode == 200)
+            {
+                HolidayService service = (HolidayService) response.toService(HolidayService.class);
+                List<HolidayService.Holiday> holidays = service.getHolidays();
+                holidayMap.put(key,holidays);
+                sendHolidayStatus(context,holidays);
+                return;
+            }
+
+            context.makeError(context.i18n("somethingWentWrong")).queue();
+        });
+    }
 
 
     private void sendHolidayStatus(CommandMessage context,List<HolidayService.Holiday> holidays)
