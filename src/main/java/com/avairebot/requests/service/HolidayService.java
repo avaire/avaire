@@ -27,17 +27,12 @@ public class HolidayService
 {
     private List<Holiday> holidays;
 
-    private int status;
-
     private String error;
 
     public List<Holiday> getHolidays() {
         return holidays;
     }
 
-    public int getStatus() {
-        return status;
-    }
 
     public String getError() {
         return error;
@@ -50,8 +45,6 @@ public class HolidayService
 
         private String date;
 
-        private String observed;
-
         private boolean isPublic;
 
         public boolean isPublic()
@@ -61,10 +54,6 @@ public class HolidayService
 
         public void setPublic(boolean aPublic) {
             isPublic = aPublic;
-        }
-
-        public String getObserved() {
-            return observed;
         }
 
         public String getDate() {
