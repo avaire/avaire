@@ -23,7 +23,9 @@ package com.avairebot.plugin;
 
 import com.avairebot.AppInfo;
 import com.avairebot.AvaIre;
+import com.avairebot.commands.CommandHandler;
 import com.avairebot.config.YamlConfiguration;
+import com.avairebot.contracts.commands.Command;
 import com.avairebot.exceptions.InvalidPluginException;
 import com.avairebot.utilities.NumberUtil;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
@@ -141,6 +143,10 @@ public class PluginLoader {
     public void unregisterPlugin(AvaIre avaire) {
         classLoader.getPlugin().onDisable();
         classLoader.getPlugin().getEventListeners().clear();
+
+        for (Class<? extends Command> commandClass : classLoader.getPlugin().getCommands()) {
+            CommandHandler.unregister(commandClass);
+        }
     }
 
     /**

@@ -361,6 +361,22 @@ public class CommandHandler {
         COMMANDS.add(new CommandContainer(command, category, commandUri));
     }
 
+    public static boolean unregister(@Nonnull Class<? extends Command> commandClass) {
+        synchronized (COMMANDS) {
+            Iterator<CommandContainer> iterator = COMMANDS.iterator();
+
+            while (iterator.hasNext()) {
+                CommandContainer container = iterator.next();
+                if (container.getCommand().getClass().getTypeName().equals(commandClass.getTypeName())) {
+                    iterator.remove();
+
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     /**
      * Gets a collection of all the commands
      * registered into the command handler.

@@ -51,6 +51,7 @@ import java.util.Set;
 public abstract class JavaPlugin {
 
     private final Set<ListenerAdapter> eventListeners = new HashSet<>();
+    private final Set<Class<? extends Command>> commands = new HashSet<>();
 
     private Logger log = LoggerFactory.getLogger(JavaPlugin.class);
 
@@ -80,6 +81,10 @@ public abstract class JavaPlugin {
         return eventListeners;
     }
 
+    public Set<Class<? extends Command>> getCommands() {
+        return commands;
+    }
+
     /**
      * Registers a middleware with the given name, middlewares can be used through
      * the {@link Command#getMiddleware() getMiddleware()} method, middleware
@@ -101,6 +106,7 @@ public abstract class JavaPlugin {
      * @param command The command that should be registered into the command handler.
      */
     public final void registerCommand(Command command) {
+        commands.add(command.getClass());
         CommandHandler.register(command);
     }
 
