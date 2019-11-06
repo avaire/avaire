@@ -138,6 +138,11 @@ public class PluginLoader {
         classLoader.getPlugin().onEnable();
     }
 
+    public void unregisterPlugin(AvaIre avaire) {
+        classLoader.getPlugin().onDisable();
+        classLoader.getPlugin().getEventListeners().clear();
+    }
+
     /**
      * Gets a set of the event listeners that has been registered by the plugin.
      *

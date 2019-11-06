@@ -54,8 +54,8 @@ import com.avairebot.exceptions.InvalidApplicationEnvironmentException;
 import com.avairebot.exceptions.InvalidPluginException;
 import com.avairebot.exceptions.InvalidPluginsPathException;
 import com.avairebot.handlers.EventEmitter;
-import com.avairebot.handlers.GenericEventHandler;
 import com.avairebot.handlers.MainEventHandler;
+import com.avairebot.handlers.PluginEventHandler;
 import com.avairebot.handlers.events.ApplicationShutdownEvent;
 import com.avairebot.imagegen.RankBackgroundHandler;
 import com.avairebot.language.I18n;
@@ -91,7 +91,6 @@ import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDAInfo;
 import net.dv8tion.jda.core.entities.Game;
 import net.dv8tion.jda.core.entities.SelfUser;
-import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import net.dv8tion.jda.core.requests.RestAction;
 import net.dv8tion.jda.core.utils.SessionControllerAdapter;
 import net.dv8tion.jda.core.utils.cache.CacheFlag;
@@ -685,16 +684,10 @@ public class AvaIre {
 
         builder
             .addEventListeners(new MainEventHandler(this))
-            .addEventListeners(new GenericEventHandler(this));
+            .addEventListeners(new PluginEventHandler(this));
 
         if (LavalinkManager.LavalinkManagerHolder.lavalink.isEnabled()) {
             builder.addEventListeners(LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink());
-        }
-
-        for (PluginLoader plugin : getPluginManager().getPlugins()) {
-            for (ListenerAdapter listener : plugin.getEventListeners()) {
-                builder.addEventListeners(listener);
-            }
         }
 
         return builder.build();

@@ -23,22 +23,27 @@ package com.avairebot.handlers;
 
 import com.avairebot.AvaIre;
 import com.avairebot.contracts.handlers.EventHandler;
-import com.avairebot.metrics.Metrics;
+import com.avairebot.plugin.PluginLoader;
 import net.dv8tion.jda.core.events.Event;
+import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
-public class GenericEventHandler extends EventHandler {
+public class PluginEventHandler extends EventHandler {
 
     /**
      * Instantiates the event handler and sets the avaire class instance.
      *
      * @param avaire The AvaIre application class instance.
      */
-    public GenericEventHandler(AvaIre avaire) {
+    public PluginEventHandler(AvaIre avaire) {
         super(avaire);
     }
 
     @Override
     public void onGenericEvent(Event event) {
-        Metrics.jdaEvents.labels(event.getClass().getSimpleName()).inc();
+        for (PluginLoader plugin : avaire.getPluginManager().getPlugins()) {
+            for (ListenerAdapter listener : plugin.getEventListeners()) {
+                listener.onEvent(event);
+            }
+        }
     }
 }

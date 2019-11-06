@@ -23,6 +23,7 @@ package com.avairebot.plugin;
 
 import com.avairebot.AvaIre;
 import com.avairebot.cache.CacheType;
+import com.avairebot.contracts.plugin.Translator;
 import com.avairebot.exceptions.InvalidPluginException;
 import com.avairebot.exceptions.InvalidPluginsPathException;
 import org.json.JSONArray;
@@ -34,10 +35,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class PluginManager {
 
@@ -108,6 +106,25 @@ public class PluginManager {
 
     public File getPluginsFolder() {
         return pluginsFolder;
+    }
+
+    public boolean unloadPlugin(Translator plugin) {
+        Iterator<PluginLoader> iterator = plugins.iterator();
+
+        while (iterator.hasNext()) {
+            PluginLoader next = iterator.next();
+
+            if (!next.getName().equalsIgnoreCase(plugin.getName())) {
+                continue;
+            }
+
+            next.unregisterPlugin(AvaIre.getInstance());
+            iterator.remove();
+
+            return true;
+        }
+
+        return false;
     }
 
     @SuppressWarnings("unchecked")
