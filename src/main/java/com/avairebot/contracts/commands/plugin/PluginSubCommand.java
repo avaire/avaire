@@ -24,7 +24,7 @@ package com.avairebot.contracts.commands.plugin;
 import com.avairebot.AvaIre;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.commands.system.PluginCommand;
-import com.avairebot.contracts.plugin.Translator;
+import com.avairebot.contracts.plugin.Plugin;
 import com.avairebot.plugin.PluginHolder;
 import com.avairebot.plugin.PluginLoader;
 import com.avairebot.plugin.translators.PluginHolderTranslator;
@@ -74,7 +74,7 @@ public abstract class PluginSubCommand {
      * @return The plugin translator instance for the matching plugin with
      *         the given name, or {@code NULL} if there were no match.
      */
-    protected final Translator getPluginByName(String name) {
+    protected final Plugin getPluginByName(String name) {
         List<PluginHolder> pluginHolders = avaire.getPluginManager().getOfficialPluginsList();
         if (pluginHolders == null) {
             return null;

@@ -28,7 +28,7 @@ import com.avairebot.commands.system.PluginCommand;
 import com.avairebot.contracts.commands.plugin.PluginSubCommand;
 import com.avairebot.contracts.plugin.PluginRelease;
 import com.avairebot.contracts.plugin.PluginSourceManager;
-import com.avairebot.contracts.plugin.Translator;
+import com.avairebot.contracts.plugin.Plugin;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +51,7 @@ public class ShowPlugin extends PluginSubCommand {
             return command.sendErrorMessage(context, "You must include the name of the plugin you'd like to see information about!");
         }
 
-        Translator plugin = getPluginByName(args[0]);
+        Plugin plugin = getPluginByName(args[0]);
         if (plugin == null) {
             return command.sendErrorMessage(context, "Couldn't find any plugin called `{0}`, are you sure it exists?", args[0]);
         }

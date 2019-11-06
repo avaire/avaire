@@ -21,14 +21,14 @@
 
 package com.avairebot.plugin.translators;
 
-import com.avairebot.contracts.plugin.Translator;
+import com.avairebot.contracts.plugin.Plugin;
 import com.avairebot.plugin.PluginHolder;
 import com.avairebot.plugin.PluginLoader;
 import com.avairebot.plugin.PluginRepository;
 
 import java.util.List;
 
-public class PluginLoaderTranslator implements Translator {
+public class PluginLoaderTranslator implements Plugin {
 
     private final PluginLoader loader;
     private PluginHolder holder = null;

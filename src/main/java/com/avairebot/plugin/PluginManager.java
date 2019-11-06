@@ -23,7 +23,7 @@ package com.avairebot.plugin;
 
 import com.avairebot.AvaIre;
 import com.avairebot.cache.CacheType;
-import com.avairebot.contracts.plugin.Translator;
+import com.avairebot.contracts.plugin.Plugin;
 import com.avairebot.exceptions.InvalidPluginException;
 import com.avairebot.exceptions.InvalidPluginsPathException;
 import org.json.JSONArray;
@@ -108,7 +108,7 @@ public class PluginManager {
         return pluginsFolder;
     }
 
-    public boolean unloadPlugin(Translator plugin) {
+    public boolean unloadPlugin(Plugin plugin) {
         Iterator<PluginLoader> iterator = plugins.iterator();
 
         while (iterator.hasNext()) {

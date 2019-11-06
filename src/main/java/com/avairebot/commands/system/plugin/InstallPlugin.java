@@ -27,7 +27,7 @@ import com.avairebot.commands.system.PluginCommand;
 import com.avairebot.contracts.commands.plugin.PluginSubCommand;
 import com.avairebot.contracts.plugin.PluginRelease;
 import com.avairebot.contracts.plugin.PluginSourceManager;
-import com.avairebot.contracts.plugin.Translator;
+import com.avairebot.contracts.plugin.Plugin;
 import com.avairebot.exceptions.InvalidPluginException;
 import com.avairebot.exceptions.InvalidPluginsPathException;
 import com.avairebot.plugin.PluginAsset;
@@ -57,7 +57,7 @@ public class InstallPlugin extends PluginSubCommand {
             return command.sendErrorMessage(context, "You must include the name of the plugin you'd like to install!");
         }
 
-        Translator plugin = getPluginByName(args[0]);
+        Plugin plugin = getPluginByName(args[0]);
         if (plugin == null) {
             return command.sendErrorMessage(context, "Couldn't find any plugin called `{0}`, are you sure it exists?", args[0]);
         }
@@ -110,7 +110,7 @@ public class InstallPlugin extends PluginSubCommand {
         return true;
     }
 
-    private PluginRelease getVersionOfPlugin(Translator plugin, String version) {
+    private PluginRelease getVersionOfPlugin(Plugin plugin, String version) {
         PluginSourceManager sourceManager = plugin.getRepository().getSource().getSourceManager();
 
         if (version.equalsIgnoreCase("latest")) {
