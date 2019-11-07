@@ -22,14 +22,18 @@
 package com.avairebot.contracts.commands.plugin;
 
 import com.avairebot.AvaIre;
+import com.avairebot.Constants;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.commands.system.PluginCommand;
 import com.avairebot.contracts.plugin.Plugin;
+import com.avairebot.contracts.plugin.PluginRelease;
+import com.avairebot.plugin.PluginAsset;
 import com.avairebot.plugin.PluginHolder;
 import com.avairebot.plugin.PluginLoader;
 import com.avairebot.plugin.translators.PluginHolderTranslator;
 import com.avairebot.plugin.translators.PluginLoaderTranslator;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public abstract class PluginSubCommand {
@@ -93,5 +97,32 @@ public abstract class PluginSubCommand {
         }
 
         return null;
+    }
+
+    protected final void createPluginIndex(Plugin plugin, PluginRelease release, PluginAsset asset) {
+        try {
+            avaire.getDatabase().newQueryBuilder(Constants.INSTALLED_PLUGINS_TABLE_NAME)
+                .insert(statement -> {
+                    statement.set("name", plugin.getName());
+                    statement.set("version", release.getTag());
+                    statement.set("source", plugin.getRepository().getSource().getName());
+                    statement.set("repository", plugin.getRepository().getRepository());
+                    statement.set("download_url", asset.getDownloadableUrl());
+                });
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    protected final void deletePluginIndex(Plugin plugin) {
+        try {
+            avaire.getDatabase().newQueryBuilder(Constants.INSTALLED_PLUGINS_TABLE_NAME)
+                .where("name", plugin.getName())
+                .where("source", plugin.getRepository().getSource().getName())
+                .where("repository", plugin.getRepository().getRepository())
+                .delete();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

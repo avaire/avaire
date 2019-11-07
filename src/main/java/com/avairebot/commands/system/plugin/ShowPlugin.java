@@ -26,9 +26,9 @@ import com.avairebot.chat.PlaceholderMessage;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.commands.system.PluginCommand;
 import com.avairebot.contracts.commands.plugin.PluginSubCommand;
+import com.avairebot.contracts.plugin.Plugin;
 import com.avairebot.contracts.plugin.PluginRelease;
 import com.avairebot.contracts.plugin.PluginSourceManager;
-import com.avairebot.contracts.plugin.Plugin;
 
 import java.util.ArrayList;
 import java.util.List;

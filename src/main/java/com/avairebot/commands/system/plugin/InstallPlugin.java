@@ -25,9 +25,9 @@ import com.avairebot.AvaIre;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.commands.system.PluginCommand;
 import com.avairebot.contracts.commands.plugin.PluginSubCommand;
+import com.avairebot.contracts.plugin.Plugin;
 import com.avairebot.contracts.plugin.PluginRelease;
 import com.avairebot.contracts.plugin.PluginSourceManager;
-import com.avairebot.contracts.plugin.Plugin;
 import com.avairebot.exceptions.InvalidPluginException;
 import com.avairebot.exceptions.InvalidPluginsPathException;
 import com.avairebot.plugin.PluginAsset;
@@ -96,6 +96,8 @@ public class InstallPlugin extends PluginSubCommand {
             PluginLoader pluginLoader = avaire.getPluginManager().loadPlugin(pluginFile);
 
             pluginLoader.invokePlugin(avaire);
+
+            createPluginIndex(plugin, version, downloadAsset);
 
             context.makeSuccess("The **:name** plugin have successfully been installed with the **:version** version!\nYou can now use the features from the plugin.")
                 .set("name", plugin.getName())
