@@ -26,6 +26,7 @@ import com.avairebot.commands.CommandMessage;
 import com.avairebot.commands.system.plugin.InstallPlugin;
 import com.avairebot.commands.system.plugin.ListPlugins;
 import com.avairebot.commands.system.plugin.ShowPlugin;
+import com.avairebot.commands.system.plugin.UninstallPlugin;
 import com.avairebot.contracts.commands.SystemCommand;
 
 import java.util.Arrays;
@@ -33,6 +34,7 @@ import java.util.List;
 
 public class PluginCommand extends SystemCommand {
 
+    private final UninstallPlugin uninstallPlugin;
     private final InstallPlugin installPlugin;
     private final ListPlugins listPlugins;
     private final ShowPlugin showPlugin;
@@ -40,6 +42,7 @@ public class PluginCommand extends SystemCommand {
     public PluginCommand(AvaIre avaire) {
         super(avaire);
 
+        uninstallPlugin = new UninstallPlugin(avaire, this);
         installPlugin = new InstallPlugin(avaire, this);
         listPlugins = new ListPlugins(avaire, this);
         showPlugin = new ShowPlugin(avaire, this);
@@ -81,6 +84,10 @@ public class PluginCommand extends SystemCommand {
         }
 
         switch (args[0].toLowerCase()) {
+            case "u":
+            case "uninstall":
+                return uninstallPlugin.onCommand(context, Arrays.copyOfRange(args, 1, args.length));
+
             case "i":
             case "install":
                 return installPlugin.onCommand(context, Arrays.copyOfRange(args, 1, args.length));

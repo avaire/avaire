@@ -65,15 +65,27 @@ public class PluginManager {
      *                                     the bot doesn't have read access to the directory.
      * @throws InvalidPluginException      This is thrown if the plugin is not valid in some way.
      */
-    public void loadPlugins() throws InvalidPluginsPathException, InvalidPluginException {
+    public void loadPlugins(AvaIre avaire) throws InvalidPluginsPathException, InvalidPluginException {
         if (!pluginsFolder.isDirectory() || pluginsFolder.listFiles() == null) {
             throw new InvalidPluginsPathException("Invalid plugins path exception, the plugins path is not a directory.");
         }
 
+        List<String> pluginsToDelete = new ArrayList<>();
+        Object deletedPlugins = avaire.getCache().getAdapter(CacheType.FILE).get("deleted-plugins");
+        if (deletedPlugins instanceof List) {
+            pluginsToDelete.addAll((List<String>) deletedPlugins);
+        }
+
         //noinspection ConstantConditions
         for (File file : pluginsFolder.listFiles()) {
+            if (pluginsToDelete.contains(file.toString())) {
+                file.delete();
+                continue;
+            }
             loadPlugin(file);
         }
+
+        avaire.getCache().getAdapter(CacheType.FILE).forget("deleted-plugins");
     }
 
     public PluginLoader loadPlugin(File file) throws InvalidPluginsPathException, InvalidPluginException {

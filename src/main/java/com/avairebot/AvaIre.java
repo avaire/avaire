@@ -279,7 +279,7 @@ public class AvaIre {
         pluginManager = new PluginManager();
 
         try {
-            pluginManager.loadPlugins();
+            pluginManager.loadPlugins(this);
 
             if (pluginManager.getPlugins().isEmpty()) {
                 log.info("\tNo plugins was found");
