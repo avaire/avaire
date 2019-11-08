@@ -19,17 +19,26 @@
  *
  */
 
-package com.avairebot.contracts.plugin;
+package com.avairebot.plugin;
 
-import java.util.List;
+import com.avairebot.contracts.plugin.PluginAsset;
+import org.json.JSONObject;
 
-public interface PluginRelease {
+public class GithubPluginAsset implements PluginAsset {
 
-    String getName();
+    private final String name;
+    private final String downloadableUrl;
 
-    String getTag();
+    public GithubPluginAsset(JSONObject object) {
+        name = object.getString("name");
+        downloadableUrl = object.getString("browser_download_url");
+    }
 
-    String getUrl();
+    public String getName() {
+        return name;
+    }
 
-    List<PluginAsset> getAssets();
+    public String getDownloadableUrl() {
+        return downloadableUrl;
+    }
 }

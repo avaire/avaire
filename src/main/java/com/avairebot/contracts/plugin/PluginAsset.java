@@ -19,25 +19,11 @@
  *
  */
 
-package com.avairebot.plugin;
+package com.avairebot.contracts.plugin;
 
-import org.json.JSONObject;
+public interface PluginAsset {
 
-public class PluginAsset {
+    String getName();
 
-    private final String name;
-    private final String downloadableUrl;
-
-    public PluginAsset(JSONObject object) {
-        name = object.getString("name");
-        downloadableUrl = object.getString("browser_download_url");
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getDownloadableUrl() {
-        return downloadableUrl;
-    }
+    String getDownloadableUrl();
 }

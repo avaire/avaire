@@ -21,8 +21,9 @@
 
 package com.avairebot.plugin.releases;
 
+import com.avairebot.contracts.plugin.PluginAsset;
 import com.avairebot.contracts.plugin.PluginRelease;
-import com.avairebot.plugin.PluginAsset;
+import com.avairebot.plugin.GithubPluginAsset;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -42,7 +43,7 @@ public class GithubRelease implements PluginRelease {
 
         assets = new ArrayList<>();
         for (Object o : obj.getJSONArray("assets")) {
-            assets.add(new PluginAsset((JSONObject) o));
+            assets.add(new GithubPluginAsset((JSONObject) o));
         }
     }
 
