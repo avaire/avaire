@@ -105,7 +105,7 @@ public class DrainMuteQueueTask implements Task {
             }
 
             GuildTransformer transformer = GuildController.fetchGuild(avaire, guild);
-            if (transformer == null) {
+            if (transformer == null || transformer.getMuteRole() == null) {
                 return;
             }
 

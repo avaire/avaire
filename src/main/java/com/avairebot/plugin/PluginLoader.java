@@ -187,6 +187,11 @@ public class PluginLoader {
         return new URL("jar:" + file.toURI().toString() + "!/" + resourceName);
     }
 
+    /**
+     * Gets the plugin class loader instance used for loading the plugin.
+     *
+     * @return Plugin class loader instance
+     */
     public PluginClassLoader getClassLoader() {
         return classLoader;
     }

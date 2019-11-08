@@ -30,6 +30,8 @@ import com.avairebot.utilities.CacheUtil;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import net.dv8tion.jda.core.entities.Message;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.CheckReturnValue;
 import java.util.List;
@@ -41,6 +43,8 @@ public class PlaylistController {
         .recordStats()
         .expireAfterAccess(5, TimeUnit.MINUTES)
         .build();
+
+    private static final Logger log = LoggerFactory.getLogger(PlaylistController.class);
 
     @CheckReturnValue
     public static Collection fetchPlaylists(AvaIre avaire, Message message) {
@@ -54,8 +58,9 @@ public class PlaylistController {
                     .selectAll().where("guild_id", message.getGuild().getId())
                     .get();
             } catch (Exception e) {
-                AvaIre.getLogger().error("Failed to fetch playlists for server " + message.getGuild().getId(), e);
-                return null;
+                log.error("Failed to fetch playlists for server " + message.getGuild().getId(), e);
+
+                return Collection.EMPTY_COLLECTION;
             }
         });
     }
@@ -63,7 +68,7 @@ public class PlaylistController {
     @CheckReturnValue
     public static PlaylistTransformer fetchPlaylistFromName(AvaIre avaire, Message message, String name) {
         Collection playlists = fetchPlaylists(avaire, message);
-        if (playlists == null) {
+        if (playlists == null || playlists.isEmpty()) {
             return null;
         }
 

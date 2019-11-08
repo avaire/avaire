@@ -125,7 +125,7 @@ public class GlobalLeaderboardCommand extends Command {
 
     private boolean handleCommand(@Nonnull CommandMessage context, @Nonnull String[] args, @Nullable Message loadingMessage) {
         Collection collection = loadTop100From();
-        if (collection == null) {
+        if (collection == null || collection.isEmpty()) {
             if (loadingMessage != null) {
                 loadingMessage.delete().queue(null, RestActionUtil.ignore);
             }
@@ -206,7 +206,8 @@ public class GlobalLeaderboardCommand extends Command {
                 );
             } catch (SQLException e) {
                 log.error("Failed to fetch global leaderboard data", e);
-                return null;
+
+                return Collection.EMPTY_COLLECTION;
             }
         });
     }
@@ -224,7 +225,8 @@ public class GlobalLeaderboardCommand extends Command {
                 ));
             } catch (SQLException e) {
                 log.error("Failed to fetch leaderboard data for user: " + context.getGuild().getId(), e);
-                return null;
+
+                return Collection.EMPTY_COLLECTION;
             }
         });
     }
@@ -239,7 +241,8 @@ public class GlobalLeaderboardCommand extends Command {
                     .get();
             } catch (SQLException e) {
                 log.error("Failed to fetch leaderboard data for user: " + context.getGuild().getId(), e);
-                return null;
+
+                return Collection.EMPTY_COLLECTION;
             }
         });
     }

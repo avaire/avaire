@@ -94,7 +94,8 @@ public class ReactionController {
                     .get();
             } catch (Exception ex) {
                 log.error(ex.getMessage(), ex);
-                return null;
+
+                return Collection.EMPTY_COLLECTION;
             }
         });
     }

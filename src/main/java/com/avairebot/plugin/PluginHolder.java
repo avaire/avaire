@@ -33,6 +33,14 @@ public class PluginHolder {
     private final List<String> authors;
     private final PluginRepository repository;
 
+    /**
+     * Creates a new plugin holder instance for the given JSON object
+     * instance, the constructor will attempt to load the plugin
+     * name, description, authors, and repo source.
+     *
+     * @param jsonObject The JSOn object instance the plugin holder
+     *                   instance should be created from.
+     */
     public PluginHolder(JSONObject jsonObject) {
         this.name = jsonObject.getString("name");
         this.description = jsonObject.getString("description");
@@ -50,18 +58,39 @@ public class PluginHolder {
         }
     }
 
+    /**
+     * Gets the name of the plugin.
+     *
+     * @return The name of the plugin.
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Gets the plugin description.
+     *
+     * @return The description of the plugin.
+     */
     public String getDescription() {
         return description;
     }
 
+    /**
+     * Gets a list of the authors that created the plugin.
+     *
+     * @return The list of authors that created the plugin.
+     */
     public List<String> getAuthors() {
         return authors;
     }
 
+    /**
+     * Gets the plugin source repository, this is defined as a source(GitHub,
+     * BitBucket, GitLab, etc) and the repository it-self.
+     *
+     * @return The plugin source repository.
+     */
     public PluginRepository getRepository() {
         return repository;
     }

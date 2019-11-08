@@ -943,6 +943,11 @@ utility:
             channels: 'Kanaler'
             servers: 'Servere'
 
+    TemperatureConvertCommand:
+        invalidConvertFormat: "`{0}` is not a recognized conversion mode. Valid conversion modes are:\n{1}"
+        invalidNumberFormat: "`{0}` could not be parsed as a number."
+        message: ":input is equal to :one and :two"
+
     UptimeCommand:
         message: 'Jeg har vert tilkoblet i :time'
         footer: 'Startet {0} på {1}'

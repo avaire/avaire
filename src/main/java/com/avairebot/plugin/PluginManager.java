@@ -39,6 +39,11 @@ public class PluginManager {
 
     private final Set<PluginLoader> plugins = new HashSet<>();
 
+    /**
+     * Creates a new plugin manager instances, this will create
+     * the plugins directory that all the plugins should be
+     * loaded from if it doesn't already exists.
+     */
     public PluginManager() {
         this.pluginsFolder = new File("plugins");
 
@@ -47,6 +52,13 @@ public class PluginManager {
         }
     }
 
+    /**
+     * Loads all the plugins in the plugins directory.
+     *
+     * @throws InvalidPluginsPathException This is thrown if the plugins directory doesn't exist, or
+     *                                     the bot doesn't have read access to the directory.
+     * @throws InvalidPluginException      This is thrown if the plugin is not valid in some way.
+     */
     public void loadPlugins() throws InvalidPluginsPathException, InvalidPluginException {
         if (!pluginsFolder.isDirectory() || pluginsFolder.listFiles() == null) {
             throw new InvalidPluginsPathException("Invalid plugins path exception, the plugins path is not a directory.");
@@ -67,6 +79,11 @@ public class PluginManager {
         }
     }
 
+    /**
+     * Gets a set of loaded plugins.
+     *
+     * @return A set of loaded plugins.
+     */
     public Set<PluginLoader> getPlugins() {
         return plugins;
     }

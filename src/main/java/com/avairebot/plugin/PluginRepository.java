@@ -28,15 +28,31 @@ public class PluginRepository {
     private final String repository;
     private final PluginSource source;
 
-    public PluginRepository(JSONObject jsonObject) {
+    /**
+     * Creates a new plugin repository from the given JSON object instance,
+     * this will pull the repository and source from the JSON instance.
+     *
+     * @param jsonObject The JSON instance that the plugin repository should be created from.
+     */
+    PluginRepository(JSONObject jsonObject) {
         this.repository = jsonObject.getString("repository");
         this.source = PluginSource.fromName(jsonObject.getString("source"));
     }
 
+    /**
+     * Gets the plugin repository name.
+     *
+     * @return The plugin repository name.
+     */
     public String getRepository() {
         return repository;
     }
 
+    /**
+     * Gets the plugin repository source type.
+     *
+     * @return The plugin repository source type instance.
+     */
     public PluginSource getSource() {
         return source;
     }

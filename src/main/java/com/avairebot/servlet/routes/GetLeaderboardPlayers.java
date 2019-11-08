@@ -124,7 +124,7 @@ public class GetLeaderboardPlayers extends SparkRoute {
                     .take(100)
                     .get();
             } catch (SQLException e) {
-                return null;
+                return Collection.EMPTY_COLLECTION;
             }
         });
     }
