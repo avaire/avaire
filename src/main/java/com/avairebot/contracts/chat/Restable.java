@@ -43,6 +43,8 @@ public abstract class Restable {
      */
     protected final MessageChannel channel;
 
+    protected CheckPermissionUtil.PermissionCheckType channelPermissionType;
+
     /**
      * Creates a new restable instance for the given message channel, allowing
      * for easy access to JDAs queue system for Rest messages, if no channel
@@ -71,8 +73,11 @@ public abstract class Restable {
      * <br>
      * <p><b>This method is asynchronous</b>
      */
-    public void queue() {
-        sendMessage().ifPresent(action -> action.queue(null, RestActionUtil.handleMessageCreate));
+    public final void queue() {
+        sendMessage().ifPresent(action -> action.queue(
+            message -> handleSuccessConsumer(message, null),
+            error -> handleFailureConsumer(error, null)
+        ));
     }
 
     /**
@@ -84,8 +89,11 @@ public abstract class Restable {
      * @param success The success callback that will be called at a convenient time
      *                for the API. (can be null)
      */
-    public void queue(Consumer<Message> success) {
-        sendMessage().ifPresent(action -> action.queue(success, RestActionUtil.handleMessageCreate));
+    public final void queue(Consumer<Message> success) {
+        sendMessage().ifPresent(action -> action.queue(
+            message -> handleSuccessConsumer(message, success),
+            error -> handleFailureConsumer(error, null)
+        ));
     }
 
     /**
@@ -98,8 +106,11 @@ public abstract class Restable {
      * @param failure The failure callback that will be called if the Request
      *                encounters an exception at its execution point.
      */
-    public void queue(Consumer<Message> success, Consumer<Throwable> failure) {
-        sendMessage().ifPresent(action -> action.queue(success, failure == null ? RestActionUtil.handleMessageCreate : failure));
+    public final void queue(Consumer<Message> success, Consumer<Throwable> failure) {
+        sendMessage().ifPresent(action -> action.queue(
+            message -> handleSuccessConsumer(message, success),
+            error -> handleFailureConsumer(error, failure)
+        ));
     }
 
     /**
@@ -121,10 +132,15 @@ public abstract class Restable {
      *         representing the delayed operation
      * @throws java.lang.IllegalArgumentException If the provided TimeUnit is {@code null}
      */
-    public Future<?> queueAfter(long delay, TimeUnit unit) {
+    public final Future<?> queueAfter(long delay, TimeUnit unit) {
         Optional<MessageAction> messageAction = sendMessage();
         if (messageAction.isPresent()) {
-            return messageAction.get().queueAfter(delay, unit);
+            return messageAction.get().queueAfter(
+                delay,
+                unit,
+                message -> handleSuccessConsumer(message, null),
+                error -> handleFailureConsumer(error, null)
+            );
         }
         return CompletableFuture.completedFuture(null);
     }
@@ -150,10 +166,15 @@ public abstract class Restable {
      *         representing the delayed operation
      * @throws java.lang.IllegalArgumentException If the provided TimeUnit is {@code null}
      */
-    public Future<?> queueAfter(long delay, TimeUnit unit, Consumer<Message> success) {
+    public final Future<?> queueAfter(long delay, TimeUnit unit, Consumer<Message> success) {
         Optional<MessageAction> messageAction = sendMessage();
         if (messageAction.isPresent()) {
-            return messageAction.get().queueAfter(delay, unit, success, RestActionUtil.handleMessageCreate);
+            return messageAction.get().queueAfter(
+                delay,
+                unit,
+                message -> handleSuccessConsumer(message, success),
+                error -> handleFailureConsumer(error, null)
+            );
         }
         return CompletableFuture.completedFuture(null);
     }
@@ -179,10 +200,15 @@ public abstract class Restable {
      *         representing the delayed operation
      * @throws java.lang.IllegalArgumentException If the provided TimeUnit is {@code null}
      */
-    public Future<?> queueAfter(long delay, TimeUnit unit, Consumer<Message> success, Consumer<Throwable> failure) {
+    public final Future<?> queueAfter(long delay, TimeUnit unit, Consumer<Message> success, Consumer<Throwable> failure) {
         Optional<MessageAction> messageAction = sendMessage();
         if (messageAction.isPresent()) {
-            return messageAction.get().queueAfter(delay, unit, success, failure == null ? RestActionUtil.handleMessageCreate : failure);
+            return messageAction.get().queueAfter(
+                delay,
+                unit,
+                message -> handleSuccessConsumer(message, success),
+                error -> handleFailureConsumer(error, failure)
+            );
         }
         return CompletableFuture.completedFuture(null);
     }
@@ -206,10 +232,16 @@ public abstract class Restable {
      *         representing the delayed operation
      * @throws java.lang.IllegalArgumentException If the provided TimeUnit or ScheduledExecutorService is {@code null}
      */
-    public Future<?> queueAfter(long delay, TimeUnit unit, ScheduledExecutorService executor) {
+    public final Future<?> queueAfter(long delay, TimeUnit unit, ScheduledExecutorService executor) {
         Optional<MessageAction> messageAction = sendMessage();
         if (messageAction.isPresent()) {
-            return messageAction.get().queueAfter(delay, unit, null, RestActionUtil.handleMessageCreate, executor);
+            return messageAction.get().queueAfter(
+                delay,
+                unit,
+                message -> handleSuccessConsumer(message, null),
+                error -> handleFailureConsumer(error, null),
+                executor
+            );
         }
         return CompletableFuture.completedFuture(null);
     }
@@ -235,10 +267,16 @@ public abstract class Restable {
      *         representing the delayed operation
      * @throws java.lang.IllegalArgumentException If the provided TimeUnit or ScheduledExecutorService is {@code null}
      */
-    public Future<?> queueAfter(long delay, TimeUnit unit, Consumer<Message> success, ScheduledExecutorService executor) {
+    public final Future<?> queueAfter(long delay, TimeUnit unit, Consumer<Message> success, ScheduledExecutorService executor) {
         Optional<MessageAction> messageAction = sendMessage();
         if (messageAction.isPresent()) {
-            return messageAction.get().queueAfter(delay, unit, success, RestActionUtil.handleMessageCreate, executor);
+            return messageAction.get().queueAfter(
+                delay,
+                unit,
+                message -> handleSuccessConsumer(message, success),
+                error -> handleFailureConsumer(error, null),
+                executor
+            );
         }
         return CompletableFuture.completedFuture(null);
     }
@@ -263,23 +301,37 @@ public abstract class Restable {
      *         representing the delayed operation
      * @throws java.lang.IllegalArgumentException If the provided TimeUnit or ScheduledExecutorService is {@code null}
      */
-    public Future<?> queueAfter(long delay, TimeUnit unit, Consumer<Message> success, Consumer<Throwable> failure, ScheduledExecutorService executor) {
+    public final Future<?> queueAfter(long delay, TimeUnit unit, Consumer<Message> success, Consumer<Throwable> failure, ScheduledExecutorService executor) {
         Optional<MessageAction> messageAction = sendMessage();
         if (messageAction.isPresent()) {
-            if (failure == null) {
-                failure = RestActionUtil.handleMessageCreate;
-            }
-            return messageAction.get().queueAfter(delay, unit, success, failure, executor);
+            return messageAction.get().queueAfter(
+                delay,
+                unit,
+                message -> handleSuccessConsumer(message, success),
+                error -> handleFailureConsumer(error, failure),
+                executor
+            );
         }
         return CompletableFuture.completedFuture(null);
     }
 
-    private Optional<MessageAction> sendMessage() {
+    protected Consumer<Message> handleSuccessConsumer(Message message, Consumer<Message> success) {
+        return success;
+    }
+
+    protected Consumer<? super Throwable> handleFailureConsumer(Throwable error, Consumer<? super Throwable> failure) {
+        if (failure == null) {
+            return RestActionUtil.handleMessageCreate;
+        }
+        return failure;
+    }
+
+    protected final Optional<MessageAction> sendMessage() {
         if (channel == null) {
             throw new RuntimeException("Message channel is NULL, can't queue message if the channel is not set!");
         }
 
-        CheckPermissionUtil.PermissionCheckType type = CheckPermissionUtil.canSendMessages(channel);
+        CheckPermissionUtil.PermissionCheckType type = getChannelPermissionType();
         if (type.canSendEmbed()) {
             return Optional.of(channel.sendMessage(buildEmbed()));
         }
@@ -294,5 +346,15 @@ public abstract class Restable {
         }
 
         return Optional.empty();
+    }
+
+    protected final CheckPermissionUtil.PermissionCheckType getChannelPermissionType() {
+        if (channelPermissionType == null) {
+            channelPermissionType = channel == null
+                ? CheckPermissionUtil.PermissionCheckType.NONE
+                : CheckPermissionUtil.canSendMessages(channel);
+        }
+
+        return channelPermissionType;
     }
 }
