@@ -28,13 +28,8 @@ import com.avairebot.commands.system.PluginCommand;
 import com.avairebot.contracts.plugin.Plugin;
 import com.avairebot.contracts.plugin.PluginAsset;
 import com.avairebot.contracts.plugin.PluginRelease;
-import com.avairebot.plugin.PluginHolder;
-import com.avairebot.plugin.PluginLoader;
-import com.avairebot.plugin.translators.PluginHolderTranslator;
-import com.avairebot.plugin.translators.PluginLoaderTranslator;
 
 import java.sql.SQLException;
-import java.util.List;
 
 public abstract class PluginSubCommand {
 
@@ -70,34 +65,6 @@ public abstract class PluginSubCommand {
      * @return {@code True} on success, {@code False} on failure.
      */
     public abstract boolean onCommand(CommandMessage context, String[] args);
-
-    /**
-     * Gets the plugin translator for the plugin with the given name.
-     *
-     * @param name The name of the plugin that should be returned.
-     * @return The plugin translator instance for the matching plugin with
-     *         the given name, or {@code NULL} if there were no match.
-     */
-    protected final Plugin getPluginByName(String name) {
-        List<PluginHolder> pluginHolders = avaire.getPluginManager().getOfficialPluginsList();
-        if (pluginHolders == null) {
-            return null;
-        }
-
-        for (PluginLoader pluginLoader : avaire.getPluginManager().getPlugins()) {
-            if (pluginLoader.getName().equalsIgnoreCase(name)) {
-                return new PluginLoaderTranslator(pluginLoader, avaire.getPluginManager().getOfficialPluginsList());
-            }
-        }
-
-        for (PluginHolder holder : pluginHolders) {
-            if (holder.getName().equalsIgnoreCase(name)) {
-                return new PluginHolderTranslator(holder);
-            }
-        }
-
-        return null;
-    }
 
     protected final void createPluginIndex(Plugin plugin, PluginRelease release, PluginAsset asset) throws SQLException {
         avaire.getDatabase().newQueryBuilder(Constants.INSTALLED_PLUGINS_TABLE_NAME)

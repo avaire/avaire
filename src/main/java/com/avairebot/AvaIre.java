@@ -276,7 +276,7 @@ public class AvaIre {
         RankBackgroundHandler.getInstance().start();
 
         log.info("Creating plugin manager and registering plugins...");
-        pluginManager = new PluginManager();
+        pluginManager = new PluginManager(this);
 
         try {
             pluginManager.loadPlugins(this);
@@ -332,6 +332,11 @@ public class AvaIre {
         log.info("Connecting to database & Running migrations & Seeders");
         database.getMigrations().up();
         database.getSeeder().run();
+
+        if (settings.usePluginsIndex()) {
+            log.info("Loads plugins from the plugin index");
+            pluginManager.loadPluginsFromIndex(avaire);
+        }
 
         log.info("Preparing blacklist and syncing the list with the database");
         blacklist = new Blacklist(this);

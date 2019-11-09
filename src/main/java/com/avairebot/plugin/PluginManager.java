@@ -22,10 +22,14 @@
 package com.avairebot.plugin;
 
 import com.avairebot.AvaIre;
+import com.avairebot.Constants;
 import com.avairebot.cache.CacheType;
 import com.avairebot.contracts.plugin.Plugin;
+import com.avairebot.database.collection.DataRow;
 import com.avairebot.exceptions.InvalidPluginException;
 import com.avairebot.exceptions.InvalidPluginsPathException;
+import com.avairebot.plugin.translators.PluginHolderTranslator;
+import com.avairebot.plugin.translators.PluginLoaderTranslator;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.jsoup.Connection;
@@ -33,8 +37,12 @@ import org.jsoup.Jsoup;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URL;
+import java.sql.SQLException;
 import java.util.*;
 
 public class PluginManager {
@@ -43,6 +51,12 @@ public class PluginManager {
 
     private final File pluginsFolder;
 
+    /**
+     * The AvaIre class instance, this is used to access
+     * and interact with the rest of the application.
+     */
+    private final AvaIre avaire;
+
     private final Set<PluginLoader> plugins = new HashSet<>();
 
     /**
@@ -50,7 +64,9 @@ public class PluginManager {
      * the plugins directory that all the plugins should be
      * loaded from if it doesn't already exists.
      */
-    public PluginManager() {
+    public PluginManager(AvaIre avaire) {
+        this.avaire = avaire;
+
         this.pluginsFolder = new File("plugins");
 
         if (!pluginsFolder.exists()) {
@@ -86,6 +102,70 @@ public class PluginManager {
         }
 
         avaire.getCache().getAdapter(CacheType.FILE).forget("deleted-plugins");
+    }
+
+
+    public void loadPluginsFromIndex(AvaIre avaire) {
+        boolean shouldMigrate = false;
+
+        try {
+            for (DataRow row : avaire.getDatabase().newQueryBuilder(Constants.INSTALLED_PLUGINS_TABLE_NAME).get()) {
+                Plugin plugin = getPluginByName(row.getString("name"));
+                if (plugin == null) {
+                    log.warn("Found no suitable plugin by name for {} from the plugin index!", row.getString("name"));
+                    continue;
+                }
+
+                if (plugin.isInstalled()) {
+                    log.debug("{} from the plugin index is already installed, skipping index.", plugin.getName());
+                    continue;
+                }
+
+                String downloadUrl = row.getString("download_url");
+                log.info("Re-downloading {} {} from {} using download resource {}",
+                    plugin.getName(), row.getString("version"), row.getString("repository"), downloadUrl
+                );
+
+                final File pluginFile = new File(
+                    avaire.getPluginManager().getPluginsFolder(),
+                    plugin.getName() + ".jar"
+                );
+
+                try (BufferedInputStream in = new BufferedInputStream(new URL(downloadUrl).openStream());
+                     FileOutputStream fileOutputStream = new FileOutputStream(pluginFile)) {
+
+                    byte dataBuffer[] = new byte[1024];
+                    int bytesRead;
+
+                    while ((bytesRead = in.read(dataBuffer, 0, 1024)) != -1) {
+                        fileOutputStream.write(dataBuffer, 0, bytesRead);
+                    }
+                } catch (IOException e) {
+                    log.error("Failed to download the {} resource, error: {}", plugin.getName(), e.getMessage(), e);
+                    continue;
+                }
+
+                try {
+                    avaire.getPluginManager()
+                        .loadPlugin(pluginFile)
+                        .invokePlugin(avaire);
+                } catch (InvalidPluginsPathException | InvalidPluginException e) {
+                    log.error("Failed to invoke the {} plugin, error: {}", plugin.getName(), e.getMessage(), e);
+                }
+
+                shouldMigrate = true;
+            }
+        } catch (SQLException e) {
+            log.error("Failed to fetch plugin index from the database, error: {}", e.getMessage(), e);
+        }
+
+        if (shouldMigrate) {
+            try {
+                avaire.getDatabase().getMigrations().up();
+            } catch (SQLException e) {
+                log.error("Failed to migrate the database after enabling plugins, error: {}", e.getMessage(), e);
+            }
+        }
     }
 
     public PluginLoader loadPlugin(File file) throws InvalidPluginsPathException, InvalidPluginException {
@@ -167,5 +247,33 @@ public class PluginManager {
             return null;
         }
         return (List<PluginHolder>) plugins;
+    }
+
+    /**
+     * Gets the plugin instance for the plugin with the given name.
+     *
+     * @param name The name of the plugin that should be returned.
+     * @return The plugin translator instance for the matching plugin with
+     *         the given name, or {@code NULL} if there were no match.
+     */
+    public final Plugin getPluginByName(String name) {
+        List<PluginHolder> pluginHolders = avaire.getPluginManager().getOfficialPluginsList();
+        if (pluginHolders == null) {
+            return null;
+        }
+
+        for (PluginLoader pluginLoader : avaire.getPluginManager().getPlugins()) {
+            if (pluginLoader.getName().equalsIgnoreCase(name)) {
+                return new PluginLoaderTranslator(pluginLoader, avaire.getPluginManager().getOfficialPluginsList());
+            }
+        }
+
+        for (PluginHolder holder : pluginHolders) {
+            if (holder.getName().equalsIgnoreCase(name)) {
+                return new PluginHolderTranslator(holder);
+            }
+        }
+
+        return null;
     }
 }

@@ -51,7 +51,7 @@ public class ShowPlugin extends PluginSubCommand {
             return command.sendErrorMessage(context, "You must include the name of the plugin you'd like to see information about!");
         }
 
-        Plugin plugin = getPluginByName(args[0]);
+        Plugin plugin = avaire.getPluginManager().getPluginByName(args[0]);
         if (plugin == null) {
             return command.sendErrorMessage(context, "Couldn't find any plugin called `{0}`, are you sure it exists?", args[0]);
         }
