@@ -21,11 +21,15 @@
 
 package com.avairebot.contracts.chat;
 
+import com.sedmelluq.discord.lavaplayer.tools.ExceptionTools;
+import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
+
 public class ProgressStep {
 
     private final String message;
     private final String failureMessage;
     private final ProgressClosure closure;
+    private FriendlyException exception;
 
     private boolean completed = false;
     private ProgressStepStatus status = ProgressStepStatus.WAITING;
@@ -36,16 +40,20 @@ public class ProgressStep {
         this.failureMessage = failureMessage;
     }
 
-    public boolean run() {
+    public boolean run() throws FriendlyException {
+        completed = true;
+
         try {
             status = closure.run()
                 ? ProgressStepStatus.SUCCESS
                 : ProgressStepStatus.FAILURE;
         } catch (Exception e) {
             status = ProgressStepStatus.FAILURE;
-        }
 
-        completed = true;
+            throw ExceptionTools.wrapUnfriendlyExceptions(
+                e.getMessage(), FriendlyException.Severity.COMMON, e
+            );
+        }
 
         return status.getValue();
     }
@@ -60,6 +68,14 @@ public class ProgressStep {
 
     public String getFailureMessage() {
         return failureMessage;
+    }
+
+    public FriendlyException getException() {
+        return exception;
+    }
+
+    public void setException(FriendlyException exception) {
+        this.exception = exception;
     }
 
     public ProgressStepStatus getStatus() {

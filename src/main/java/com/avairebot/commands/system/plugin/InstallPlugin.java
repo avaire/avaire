@@ -100,7 +100,7 @@ public class InstallPlugin extends PluginSubCommand {
                 );
 
                 return downloadPluginAsset(progressContext.pluginAsset, progressContext.pluginFile);
-            }, "Failed to download the plugin, try check the console for errors.")
+            }, "Failed to download the plugin, failed with error: `:error`")
             .addStep("Registering plugin with Ava", () -> {
                 avaire.getPluginManager()
                     .loadPlugin(progressContext.pluginFile)
@@ -109,14 +109,14 @@ public class InstallPlugin extends PluginSubCommand {
                 avaire.getDatabase().getMigrations().up();
 
                 return true;
-            }, "Failed to register the plugin with Ava, try and check the console for more information.")
+            }, "Failed to register the plugin with Ava, failed with error: `:error`")
             .addStep("Creating plugin index record", () -> {
                 createPluginIndex(plugin, version, progressContext.pluginAsset);
 
                 return true;
             })
             .addStep("Finished!", () -> true)
-            .queue(null, error -> AvaIre.getLogger().error("Error: {}", error.getMessage(), error));
+            .queue();
 
         return true;
     }

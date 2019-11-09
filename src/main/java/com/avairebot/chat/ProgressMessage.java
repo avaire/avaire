@@ -25,6 +25,7 @@ import com.avairebot.contracts.chat.ProgressClosure;
 import com.avairebot.contracts.chat.ProgressStep;
 import com.avairebot.contracts.chat.ProgressStepStatus;
 import com.avairebot.contracts.chat.Restable;
+import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
@@ -120,6 +121,15 @@ public class ProgressMessage extends Restable {
         for (ProgressStep step : steps) {
             if (step.isCompleted() && !step.getStatus().getValue()) {
                 failureMessage = step.getFailureMessage();
+                if (failureMessage == null && step.getException() != null) {
+                    finishMessage = step.getException().getMessage();
+                }
+
+                failureMessage = new PlaceholderMessage(null, failureMessage)
+                    .set("error", step.getException() == null
+                        ? "Unknown error"
+                        : step.getException().getMessage()
+                    ).toString();
             }
 
             if (!step.isCompleted()) {
@@ -158,17 +168,26 @@ public class ProgressMessage extends Restable {
                 continue;
             }
 
-            boolean result = step.run();
+            boolean result;
+
+            try {
+                result = step.run();
+            } catch (FriendlyException e) {
+                result = false;
+                step.setException(e);
+            }
 
             MessageAction messageAction = getChannelPermissionType().canSendEmbed()
                 ? message.editMessage(buildEmbed())
                 : message.editMessage(toString());
 
+            boolean finalResult = result;
             messageAction.queue(editMessage -> {
-                if (result) {
+                if (finalResult) {
                     handleSuccessConsumer(editMessage, success);
                 }
             });
+
             break;
         }
         return super.handleSuccessConsumer(message, success);
