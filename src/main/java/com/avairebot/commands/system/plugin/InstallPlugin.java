@@ -106,6 +106,8 @@ public class InstallPlugin extends PluginSubCommand {
                     .loadPlugin(progressContext.pluginFile)
                     .invokePlugin(avaire);
 
+                avaire.getDatabase().getMigrations().up();
+
                 return true;
             }, "Failed to register the plugin with Ava, try and check the console for more information.")
             .addStep("Creating plugin index record", () -> {
