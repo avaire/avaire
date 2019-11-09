@@ -113,8 +113,10 @@ public class ProgressMessage extends Restable {
                 .append("\n");
         }
 
+        boolean isCurrentTask = true;
         boolean isCompleted = true;
         String failureMessage = null;
+
         for (ProgressStep step : steps) {
             if (step.isCompleted() && !step.getStatus().getValue()) {
                 failureMessage = step.getFailureMessage();
@@ -124,7 +126,13 @@ public class ProgressMessage extends Restable {
                 isCompleted = false;
             }
 
-            builder.append(emtoes.get(step.getStatus()))
+            String emote = emtoes.get(step.getStatus());
+            if (isCurrentTask && failureMessage == null && !step.isCompleted()) {
+                isCurrentTask = false;
+                emote = "\uD83D\uDD04";
+            }
+
+            builder.append(emote)
                 .append(" ")
                 .append(step.getMessage())
                 .append("\n");

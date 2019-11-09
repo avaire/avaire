@@ -21,13 +21,11 @@
 
 package com.avairebot.contracts.chat;
 
-import com.avairebot.Constants;
-
 public enum ProgressStepStatus {
 
-    SUCCESS(Constants.EMOTE_ONLINE, true),
-    FAILURE(Constants.EMOTE_DND, false),
-    WAITING(Constants.EMOTE_AWAY);
+    SUCCESS("\u2611", true),
+    FAILURE("\u274c", false),
+    WAITING("\u27a1");
 
     private final String defaultEmote;
     private final boolean value;
