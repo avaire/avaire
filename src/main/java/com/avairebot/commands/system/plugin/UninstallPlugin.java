@@ -29,6 +29,7 @@ import com.avairebot.contracts.commands.plugin.PluginSubCommand;
 import com.avairebot.contracts.plugin.Plugin;
 import com.avairebot.plugin.PluginLoader;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -75,7 +76,12 @@ public class UninstallPlugin extends PluginSubCommand {
         }
 
         avaire.getPluginManager().unloadPlugin(plugin);
-        deletePluginIndex(plugin);
+
+        try {
+            deletePluginIndex(plugin);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
         context.makeSuccess("The **:name** plugin have successfully been uninstalled, however the bot may need to restart before all the features associated with the :name plugin is removed.")
             .set("name", plugin.getName())

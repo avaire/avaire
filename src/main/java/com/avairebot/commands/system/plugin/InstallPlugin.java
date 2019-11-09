@@ -22,6 +22,7 @@
 package com.avairebot.commands.system.plugin;
 
 import com.avairebot.AvaIre;
+import com.avairebot.chat.ProgressMessage;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.commands.system.PluginCommand;
 import com.avairebot.contracts.commands.plugin.PluginSubCommand;
@@ -29,9 +30,7 @@ import com.avairebot.contracts.plugin.Plugin;
 import com.avairebot.contracts.plugin.PluginAsset;
 import com.avairebot.contracts.plugin.PluginRelease;
 import com.avairebot.contracts.plugin.PluginSourceManager;
-import com.avairebot.exceptions.InvalidPluginException;
-import com.avairebot.exceptions.InvalidPluginsPathException;
-import com.avairebot.plugin.PluginLoader;
+import com.avairebot.language.I18n;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -75,39 +74,47 @@ public class InstallPlugin extends PluginSubCommand {
             return command.sendErrorMessage(context, "Invalid version selected, `{0}` is not valid version for the `{1}` plugin.", args[1], plugin.getName());
         }
 
-        PluginAsset downloadAsset = null;
-        for (PluginAsset pluginAsset : version.getAssets()) {
-            if (pluginAsset.getName().endsWith(".jar")) {
-                downloadAsset = pluginAsset;
-                break;
-            }
-        }
+        final InstallProgressContext progressContext = new InstallProgressContext();
+        new ProgressMessage(context.getMessageChannel())
+            .setTitle("Installing " + plugin.getName() + " (" + version.getTag() + ")")
+            .setFinishMessage(I18n.format(
+                "The **{0}** plugin have successfully been installed with the **{1}** version!\nYou can now use the features from the plugin.",
+                plugin.getName(), version.getTag()
+            ))
+            .addStep("Finding downloadable asset", () -> {
+                for (PluginAsset pluginAsset : version.getAssets()) {
+                    if (pluginAsset.getName().endsWith(".jar")) {
+                        progressContext.pluginAsset = pluginAsset;
+                        break;
+                    }
+                }
+                return progressContext.pluginAsset != null;
+            }, I18n.format(
+                "The `{0}` version for the `{1}` plugin has no downloadable JAR file assets, unable to download and install the plugin version, please report this to the original plugin author so they can fix it.",
+                plugin.getName(), version.getTag()
+            ))
+            .addStep("Downloading JAR file", () -> {
+                progressContext.pluginFile = new File(
+                    avaire.getPluginManager().getPluginsFolder(),
+                    progressContext.pluginAsset.getName()
+                );
 
-        if (downloadAsset == null) {
-            return command.sendErrorMessage(context, "The `{0}` version for the `{1}` plugin has no downloadable JAR file assets, unable to download and install the plugin version, please report this to the original plugin author so they can fix it.");
-        }
+                return downloadPluginAsset(progressContext.pluginAsset, progressContext.pluginFile);
+            }, "Failed to download the plugin, try check the console for errors.")
+            .addStep("Registering plugin with Ava", () -> {
+                avaire.getPluginManager()
+                    .loadPlugin(progressContext.pluginFile)
+                    .invokePlugin(avaire);
 
-        File pluginFile = new File(avaire.getPluginManager().getPluginsFolder(), downloadAsset.getName());
-        if (!downloadPluginAsset(downloadAsset, pluginFile)) {
-            return command.sendErrorMessage(context, "Failed to download the plugin, try check the console for errors.");
-        }
+                return true;
+            }, "Failed to register the plugin with Ava, try and check the console for more information.")
+            .addStep("Creating plugin index record", () -> {
+                createPluginIndex(plugin, version, progressContext.pluginAsset);
 
-        try {
-            PluginLoader pluginLoader = avaire.getPluginManager().loadPlugin(pluginFile);
-
-            pluginLoader.invokePlugin(avaire);
-
-            createPluginIndex(plugin, version, downloadAsset);
-
-            context.makeSuccess("The **:name** plugin have successfully been installed with the **:version** version!\nYou can now use the features from the plugin.")
-                .set("name", plugin.getName())
-                .set("version", version.getTag())
-                .queue();
-        } catch (InvalidPluginsPathException | InvalidPluginException e) {
-            pluginFile.delete();
-
-            return command.sendErrorMessage(context, "Failed to load the plugin, the plugin failed with the follow error: {0}", e.getMessage());
-        }
+                return true;
+            })
+            .addStep("Finished!", () -> true)
+            .queue(null, error -> AvaIre.getLogger().error("Error: {}", error.getMessage(), error));
 
         return true;
     }
@@ -143,5 +150,10 @@ public class InstallPlugin extends PluginSubCommand {
         } catch (IOException e) {
             return false;
         }
+    }
+
+    class InstallProgressContext {
+        PluginAsset pluginAsset = null;
+        File pluginFile = null;
     }
 }

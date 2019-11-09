@@ -99,30 +99,22 @@ public abstract class PluginSubCommand {
         return null;
     }
 
-    protected final void createPluginIndex(Plugin plugin, PluginRelease release, PluginAsset asset) {
-        try {
-            avaire.getDatabase().newQueryBuilder(Constants.INSTALLED_PLUGINS_TABLE_NAME)
-                .insert(statement -> {
-                    statement.set("name", plugin.getName());
-                    statement.set("version", release.getTag());
-                    statement.set("source", plugin.getRepository().getSource().getName());
-                    statement.set("repository", plugin.getRepository().getRepository());
-                    statement.set("download_url", asset.getDownloadableUrl());
-                });
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    protected final void createPluginIndex(Plugin plugin, PluginRelease release, PluginAsset asset) throws SQLException {
+        avaire.getDatabase().newQueryBuilder(Constants.INSTALLED_PLUGINS_TABLE_NAME)
+            .insert(statement -> {
+                statement.set("name", plugin.getName());
+                statement.set("version", release.getTag());
+                statement.set("source", plugin.getRepository().getSource().getName());
+                statement.set("repository", plugin.getRepository().getRepository());
+                statement.set("download_url", asset.getDownloadableUrl());
+            });
     }
 
-    protected final void deletePluginIndex(Plugin plugin) {
-        try {
-            avaire.getDatabase().newQueryBuilder(Constants.INSTALLED_PLUGINS_TABLE_NAME)
-                .where("name", plugin.getName())
-                .where("source", plugin.getRepository().getSource().getName())
-                .where("repository", plugin.getRepository().getRepository())
-                .delete();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    protected final void deletePluginIndex(Plugin plugin) throws SQLException {
+        avaire.getDatabase().newQueryBuilder(Constants.INSTALLED_PLUGINS_TABLE_NAME)
+            .where("name", plugin.getName())
+            .where("source", plugin.getRepository().getSource().getName())
+            .where("repository", plugin.getRepository().getRepository())
+            .delete();
     }
 }

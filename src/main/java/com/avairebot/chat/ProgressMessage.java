@@ -43,6 +43,7 @@ public class ProgressMessage extends Restable {
     private final EnumMap<ProgressStepStatus, String> emtoes = new EnumMap<>(ProgressStepStatus.class);
     private String message;
     private EmbedBuilder builder;
+    private String finishMessage;
 
     public ProgressMessage(MessageChannel channel, String message) {
         super(channel);
@@ -57,6 +58,11 @@ public class ProgressMessage extends Restable {
 
     public ProgressMessage(MessageChannel channel) {
         this(channel, null);
+    }
+
+    public ProgressMessage setFinishMessage(String finishMessage) {
+        this.finishMessage = finishMessage;
+        return this;
     }
 
     public ProgressMessage setTitle(String title, String url) {
@@ -107,10 +113,15 @@ public class ProgressMessage extends Restable {
                 .append("\n");
         }
 
+        boolean isCompleted = true;
         String failureMessage = null;
         for (ProgressStep step : steps) {
             if (step.isCompleted() && !step.getStatus().getValue()) {
                 failureMessage = step.getFailureMessage();
+            }
+
+            if (!step.isCompleted()) {
+                isCompleted = false;
             }
 
             builder.append(emtoes.get(step.getStatus()))
@@ -123,6 +134,10 @@ public class ProgressMessage extends Restable {
             builder.append("\n")
                 .append("\uD83D\uDCE2 ")
                 .append(failureMessage);
+        } else if (isCompleted && finishMessage != null) {
+            builder.append("\n")
+                .append("\uD83D\uDCE3 ")
+                .append(finishMessage);
         }
 
         return builder.toString().trim();
