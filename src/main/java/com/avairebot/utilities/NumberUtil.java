@@ -22,6 +22,7 @@
 package com.avairebot.utilities;
 
 import javax.annotation.Nonnull;
+import java.math.BigInteger;
 import java.text.DecimalFormat;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -215,6 +216,17 @@ public class NumberUtil {
         return niceFormat.format(value);
     }
 
+    /**
+     * Formats the number into a more human-readable format by adding commas to indicate thousands.
+     * <p>
+     * Example: <code>9242352</code> will get turned into <code>9,242,352</code>
+     *
+     * @param value The big integer value that should be formatted.
+     * @return The formatted value.
+     */
+    public static String formatNicely(BigInteger value) {
+        return niceFormat.format(value);
+    }
 
     /**
      * Formats the number into a more human-readable format by adding commas to indicate thousands.
