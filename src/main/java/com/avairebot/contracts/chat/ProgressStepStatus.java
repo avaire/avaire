@@ -25,7 +25,8 @@ public enum ProgressStepStatus {
 
     SUCCESS("\u2611", true),
     FAILURE("\u274c", false),
-    WAITING("\u27a1");
+    WAITING("\u27a1"),
+    RUNNING("\uD83D\uDD04");
 
     private final String defaultEmote;
     private final boolean value;

@@ -139,7 +139,7 @@ public class ProgressMessage extends Restable {
             String emote = emtoes.get(step.getStatus());
             if (isCurrentTask && failureMessage == null && !step.isCompleted()) {
                 isCurrentTask = false;
-                emote = "\uD83D\uDD04";
+                emote = emtoes.get(ProgressStepStatus.RUNNING);
             }
 
             builder.append(emote)
