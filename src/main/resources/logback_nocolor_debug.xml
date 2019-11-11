@@ -114,6 +114,9 @@
         <appender-ref ref="JDA"/>
     </logger>
 
+    <!-- Mutes all logging output from the YouTube Rotator package unless it's at a warn level or above -->
+    <logger name="com.sedmelluq.lava.extensions.youtuberotator" level="WARN"/>
+
     <root level="INFO">
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="FILE"/>
