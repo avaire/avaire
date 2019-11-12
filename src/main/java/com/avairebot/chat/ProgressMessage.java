@@ -33,6 +33,7 @@ import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.requests.restaction.MessageAction;
 
 import javax.annotation.Nonnull;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
@@ -42,15 +43,23 @@ public class ProgressMessage extends Restable {
 
     private final List<ProgressStep> steps = new ArrayList<>();
     private final EnumMap<ProgressStepStatus, String> emtoes = new EnumMap<>(ProgressStepStatus.class);
-    private String message;
-    private EmbedBuilder builder;
+
+    private final String message;
+    private final EmbedBuilder builder;
+
     private String finishMessage;
+
+    private Color successColor;
+    private Color failureColor;
 
     public ProgressMessage(MessageChannel channel, String message) {
         super(channel);
 
         this.message = message;
         this.builder = new EmbedBuilder();
+
+        this.successColor = MessageType.SUCCESS.getColor();
+        this.failureColor = MessageType.ERROR.getColor();
 
         for (ProgressStepStatus status : ProgressStepStatus.values()) {
             emtoes.put(status, status.getDefaultEmote());
@@ -89,6 +98,14 @@ public class ProgressMessage extends Restable {
         return this;
     }
 
+    public void setSuccessColor(Color successColor) {
+        this.successColor = successColor;
+    }
+
+    public void setFailureColor(Color failureColor) {
+        this.failureColor = failureColor;
+    }
+
     public ProgressMessage addStep(String message, ProgressClosure closure) {
         return addStep(message, closure, null);
     }
@@ -100,6 +117,20 @@ public class ProgressMessage extends Restable {
 
     @Override
     public MessageEmbed buildEmbed() {
+        Color embedColor = successColor;
+        for (ProgressStep step : steps) {
+            if (step.isCompleted() && !step.getStatus().getValue()) {
+                embedColor = failureColor;
+                break;
+            }
+
+            if (!step.isCompleted()) {
+                embedColor = null;
+                break;
+            }
+        }
+
+        builder.setColor(embedColor);
         builder.setDescription(toString());
 
         return builder.build();
