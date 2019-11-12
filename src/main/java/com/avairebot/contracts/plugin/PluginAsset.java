@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018.
+ * Copyright (c) 2019.
  *
  * This file is part of AvaIre.
  *
@@ -19,26 +19,21 @@
  *
  */
 
-package com.avairebot.handlers;
+package com.avairebot.contracts.plugin;
 
-import com.avairebot.AvaIre;
-import com.avairebot.contracts.handlers.EventHandler;
-import com.avairebot.metrics.Metrics;
-import net.dv8tion.jda.core.events.Event;
-
-public class GenericEventHandler extends EventHandler {
+public interface PluginAsset {
 
     /**
-     * Instantiates the event handler and sets the avaire class instance.
+     * Gets the name of the plugin asset.
      *
-     * @param avaire The AvaIre application class instance.
+     * @return The name of the plugin asset.
      */
-    public GenericEventHandler(AvaIre avaire) {
-        super(avaire);
-    }
+    String getName();
 
-    @Override
-    public void onGenericEvent(Event event) {
-        Metrics.jdaEvents.labels(event.getClass().getSimpleName()).inc();
-    }
+    /**
+     * Generates a URL that can be used to download the plugin asset.
+     *
+     * @return A URL that can be used to download the plugin asset.
+     */
+    String getDownloadableUrl();
 }

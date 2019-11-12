@@ -37,6 +37,7 @@ public class Settings {
     private final int[] shards;
     private final boolean useColors;
     private final boolean useDebugging;
+    private final boolean usePluginsIndex;
     private final boolean useEnvOverride;
     private final boolean musicOnlyMode;
     private final boolean generateJsonFileMode;
@@ -49,6 +50,7 @@ public class Settings {
         shards = parseShardIds(cmd);
         useColors = !cmd.hasOption("no-colors");
         useDebugging = cmd.hasOption("debug");
+        usePluginsIndex = cmd.hasOption("use-plugin-index");
         useEnvOverride = cmd.hasOption("use-environment-variables");
         musicOnlyMode = cmd.hasOption("music");
         generateJsonFileMode = cmd.hasOption("generate-json-file");
@@ -73,6 +75,10 @@ public class Settings {
 
     public boolean useDebugging() {
         return useDebugging;
+    }
+
+    public boolean usePluginsIndex() {
+        return usePluginsIndex;
     }
 
     public boolean useEnvOverride() {

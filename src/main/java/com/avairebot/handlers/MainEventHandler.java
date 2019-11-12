@@ -25,6 +25,8 @@ import com.avairebot.AvaIre;
 import com.avairebot.contracts.handlers.EventHandler;
 import com.avairebot.database.controllers.PlayerController;
 import com.avairebot.handlers.adapter.*;
+import com.avairebot.metrics.Metrics;
+import net.dv8tion.jda.core.events.Event;
 import net.dv8tion.jda.core.events.ReadyEvent;
 import net.dv8tion.jda.core.events.ReconnectedEvent;
 import net.dv8tion.jda.core.events.ResumedEvent;
@@ -85,6 +87,11 @@ public class MainEventHandler extends EventHandler {
         this.jdaStateEventAdapter = new JDAStateEventAdapter(avaire);
         this.changelogEventAdapter = new ChangelogEventAdapter(avaire);
         this.reactionEmoteEventAdapter = new ReactionEmoteEventAdapter(avaire);
+    }
+
+    @Override
+    public void onGenericEvent(Event event) {
+        Metrics.jdaEvents.labels(event.getClass().getSimpleName()).inc();
     }
 
     @Override
