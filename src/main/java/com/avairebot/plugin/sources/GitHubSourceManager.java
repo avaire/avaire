@@ -21,6 +21,7 @@
 
 package com.avairebot.plugin.sources;
 
+import com.avairebot.contracts.plugin.PluginAsset;
 import com.avairebot.contracts.plugin.PluginRelease;
 import com.avairebot.contracts.plugin.PluginSourceManager;
 import com.avairebot.plugin.PluginRepository;
@@ -53,7 +54,12 @@ public class GitHubSourceManager implements PluginSourceManager {
             return null;
         }
 
-        return "";
+        for (PluginAsset asset : releases.get(0).getAssets()) {
+            if (asset.getName().endsWith(".jar")) {
+                return asset.getDownloadableUrl();
+            }
+        }
+        return null;
     }
 
     @Override
