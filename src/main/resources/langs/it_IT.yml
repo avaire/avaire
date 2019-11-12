@@ -892,6 +892,7 @@ utility:
         errors:
             invalidMeHere: 'Valore non valido, devi dichiarare dove vuoi essere ricordato usando `here` per essere ricordato nel canale corrente, oppure `me` per essere ricordato in un messaggio diretto.'
             invalidTime: 'Tempo non valido, il tempo deve essere superiore a 60 secondi e inferiore a 3 giorni.'
+            failedToStoreInfo: "Failed to store reminder."
 
     ServerIdCommand:
         message: ':user :id: di questo server è `:guildid`'

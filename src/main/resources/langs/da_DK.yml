@@ -892,6 +892,7 @@ utility:
         errors:
             invalidMeHere: 'Ugyldig type angivet, du skal erklære hvor du vil blive påmindet ved enten at bruge `here` for at blive påmindet i denne kanal, eller `me` skal mindes om beskeden i en direkte besked.'
             invalidTime: 'Ugyldig tid angivet, klokkeslættet skal være større end 60 sekunder og mindre end 3 dage.'
+            failedToStoreInfo: "Failed to store reminder."
 
     ServerIdCommand:
         message: ':user :id: for serveren er `:guildid`'

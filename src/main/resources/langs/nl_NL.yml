@@ -893,6 +893,7 @@ utility:
         errors:
             invalidMeHere: 'Ongeldig type gegeven, je moet aangeven waar je herinnerd wilt worden, door of `here` te gebruiker om in dit kanaal herinnerd te worden, of `me` om herinnerd te worden in een direct bericht.'
             invalidTime: 'Ongeldige tijd gegeven, de tijd moet meer dan 60 seconden zijn en minder dan 3 dagen.'
+            failedToStoreInfo: "Failed to store reminder."
 
     ServerIdCommand:
         message: ':user :id: van deze server is `:guildid`'

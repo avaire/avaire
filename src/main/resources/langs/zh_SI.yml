@@ -891,6 +891,7 @@ utility:
         errors:
             invalidMeHere: '类型指定无效，则必须声明要提醒您的位置，方法是使用 `here` 在当前频道中被提醒，或 `me` 在直接信息中被提醒.'
             invalidTime: '给定的时间无效，时间必须大于60秒且小于3天。'
+            failedToStoreInfo: "Failed to store reminder."
 
     ServerIdCommand:
         message: ':user :id: 此服务器的 `:guildid`'

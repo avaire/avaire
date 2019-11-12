@@ -22,21 +22,23 @@
 package com.avairebot.commands.utility;
 
 import com.avairebot.AvaIre;
+import com.avairebot.Constants;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.time.Carbon;
 import com.avairebot.utilities.NumberUtil;
-import com.avairebot.utilities.RestActionUtil;
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.MessageBuilder;
-import net.dv8tion.jda.core.entities.Message;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.sql.SQLException;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 public class RemindCommand extends Command {
+
+    private static final Logger log = LoggerFactory.getLogger(RemindCommand.class);
 
     public RemindCommand(AvaIre avaire) {
         super(avaire);
@@ -110,15 +112,7 @@ public class RemindCommand extends Command {
 
         handleReminderMessage(
             context,
-            new MessageBuilder()
-                .setContent(String.format("%s, %s you asked to be reminded about:",
-                    context.getAuthor().getAsMention(),
-                    Carbon.now().subSeconds(time).diffForHumans()
-                ))
-                .setEmbed(new EmbedBuilder()
-                    .setDescription(String.join(" ", Arrays.copyOfRange(args, 2, args.length)))
-                    .build()
-                ).build(),
+            String.join(" ", Arrays.copyOfRange(args, 2, args.length)),
             time,
             respondInDM);
 
@@ -130,43 +124,71 @@ public class RemindCommand extends Command {
         return true;
     }
 
-    private void handleReminderMessage(CommandMessage context, Message message, int time, boolean respondInDM) {
-        if (respondInDM) {
-            context.getAuthor().openPrivateChannel().queue(privateChannel -> {
-                privateChannel.sendMessage(message).queueAfter(time, TimeUnit.SECONDS, null, RestActionUtil.ignore);
-            }, throwable -> {
-                context.getMessageChannel().sendMessage(message).queueAfter(time, TimeUnit.SECONDS, null, RestActionUtil.ignore);
-            });
-        } else {
-            context.getMessageChannel().sendMessage(message).queueAfter(time, TimeUnit.SECONDS, null, throwable -> {
-                context.getAuthor().openPrivateChannel().queue(privateChannel -> {
-                    privateChannel.sendMessage(message).queueAfter(time, TimeUnit.SECONDS, null, RestActionUtil.ignore);
-                });
-            });
-        }
-    }
-
     public int parse(String input) {
         int result = 0;
-        String number = "";
-        String unit = "";
-        for (int i = 0; i < input.length(); i++) {
+        StringBuilder number = new StringBuilder();
+        StringBuilder unit = new StringBuilder();
+        for (int i = 0; i < input.length(); i++)
+        {
             char c = input.charAt(i);
-            if (c >= '0' && c <= '9') {
-                if (!unit.isEmpty() && !number.isEmpty()) {
-                    result += convert(NumberUtil.parseInt(number, 0), unit);
-                    number = "";
-                    unit = "";
+            if (c >= '0' && c <= '9')
+            {
+                if ((unit.length() > 0) && (number.length() > 0))
+                {
+                    result += convert(NumberUtil.parseInt(number.toString(), 0), unit.toString());
+                    number = new StringBuilder();
+                    unit = new StringBuilder();
                 }
-                number += c;
-            } else if (Character.isLetter(c) && !number.isEmpty()) {
-                unit += c;
+                number.append(c);
+            }
+            else if (Character.isLetter(c) && (number.length() > 0))
+            {
+                unit.append(c);
             }
         }
-        if (!unit.isEmpty() && !number.isEmpty()) {
-            result += convert(NumberUtil.parseInt(number, 0), unit);
+        if ((unit.length() > 0) && (number.length() > 0))
+        {
+            result += convert(NumberUtil.parseInt(number.toString(), 0), unit.toString());
         }
         return result;
+    }
+
+    private void handleReminderMessage(CommandMessage context, String message, int time, boolean respondInDM) {
+        String encodedString = Base64.getEncoder().encodeToString(message.getBytes());
+        try
+        {
+            if (respondInDM)
+            {
+
+                avaire.getDatabase().newQueryBuilder(Constants.REMINDERS_TABLE_NAME)
+                    .insert(statement -> {
+                        statement.set("user_id", context.getAuthor().getIdLong());
+                        statement.set("message", encodedString);
+                        statement.set("channel_id", null);
+                        statement.set("stored_at", Carbon.now());
+                        statement.set("expires_at", Carbon.now().addSeconds(time));
+                    });
+
+            }
+            else
+            {
+
+                avaire.getDatabase().newQueryBuilder(Constants.REMINDERS_TABLE_NAME)
+                    .insert(statement -> {
+                        statement.set("user_id", context.getAuthor().getIdLong());
+                        statement.set("message", encodedString);
+                        statement.set("channel_id", context.getMessageChannel().getId());
+                        statement.set("stored_at", Carbon.now());
+                        statement.set("expires_at", Carbon.now().addSeconds(time));
+                    });
+
+            }
+        } catch (SQLException e)
+        {
+            log.error("Something went wrong while a use was trying to store a reminder: {}", e.getMessage(), e);
+
+            sendErrorMessage(context, context.i18n("errors.failedToStoreInfo", e.getMessage()));
+        }
     }
 
     private int convert(int value, String unit) {
@@ -179,7 +201,8 @@ public class RemindCommand extends Command {
                 return value * 60;
             case "s":
                 return value;
+            default:
+                return 0;
         }
-        return 0;
     }
 }

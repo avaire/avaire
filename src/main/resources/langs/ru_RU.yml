@@ -893,6 +893,7 @@ utility:
         errors:
             invalidMeHere: 'Недопустимый тип данных, вы должны объявить, где вам нужно напомнить, либо используя `here`, чтобы напомнить в текущем канале, либо `me`, чтобы напомнить в прямом сообщении.'
             invalidTime: 'Недействительное время, время должно быть больше 60 секунд и менее 3 дней.'
+            failedToStoreInfo: "Failed to store reminder."
 
     ServerIdCommand:
         message: ':user :id: этого сервера `:guildid`'
