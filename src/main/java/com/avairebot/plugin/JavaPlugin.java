@@ -260,7 +260,7 @@ public abstract class JavaPlugin {
                     "config.yml"
                 );
             } catch (IOException e) {
-                e.printStackTrace();
+                log.error("Failed to get the plugin config: {}", e.getMessage(), e);
             }
         }
         return config;

@@ -28,12 +28,16 @@ import com.avairebot.commands.system.PluginCommand;
 import com.avairebot.contracts.commands.plugin.PluginSubCommand;
 import com.avairebot.contracts.plugin.Plugin;
 import com.avairebot.plugin.PluginLoader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class UninstallPlugin extends PluginSubCommand {
+
+    private static final Logger log = LoggerFactory.getLogger(UninstallPlugin.class);
 
     /**
      * Creates a new plugin sub command instance.
@@ -79,8 +83,8 @@ public class UninstallPlugin extends PluginSubCommand {
 
         try {
             deletePluginIndex(plugin);
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (NullPointerException | SQLException e) {
+            log.error("Failed to delete plugin index from the database, error: {}", e.getMessage(), e);
         }
 
         context.makeSuccess("The **:name** plugin have successfully been uninstalled, however the bot may need to restart before all the features associated with the :name plugin is removed.")
