@@ -153,7 +153,7 @@ public class ProgressMessage extends Restable {
             if (step.isCompleted() && !step.getStatus().getValue()) {
                 failureMessage = step.getFailureMessage();
                 if (failureMessage == null && step.getException() != null) {
-                    finishMessage = step.getException().getMessage();
+                    failureMessage = step.getException().getMessage();
                 }
 
                 failureMessage = new PlaceholderMessage(null, failureMessage)
