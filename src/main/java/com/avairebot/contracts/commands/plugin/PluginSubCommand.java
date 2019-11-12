@@ -66,6 +66,19 @@ public abstract class PluginSubCommand {
      */
     public abstract boolean onCommand(CommandMessage context, String[] args);
 
+    /**
+     * Creates a new plugin index using the given plugin, release, and asset,
+     * this will create a new record in the database with the related
+     * information for the given plugin release and the assets
+     * associated with the downloaded file, allowing the bot
+     * to re-install the same version of the plugin later
+     * if it becomes necessary.
+     *
+     * @param plugin  The plugin that the index should be created for.
+     * @param release The plugin release that the index should be created with.
+     * @param asset   The asset that should be associated with the index.
+     * @throws SQLException Thrown if the database failed to write the record to the database.
+     */
     protected final void createPluginIndex(Plugin plugin, PluginRelease release, PluginAsset asset) throws SQLException {
         avaire.getDatabase().newQueryBuilder(Constants.INSTALLED_PLUGINS_TABLE_NAME)
             .insert(statement -> {
@@ -77,6 +90,13 @@ public abstract class PluginSubCommand {
             });
     }
 
+    /**
+     * Deletes all plugin indexes related to the given plugin,
+     * removing them from the plugin index altogether.
+     *
+     * @param plugin The plugin that should be removed from the plugin index.
+     * @throws SQLException Thrown if the database failed to delete the record from the database.
+     */
     protected final void deletePluginIndex(Plugin plugin) throws SQLException {
         avaire.getDatabase().newQueryBuilder(Constants.INSTALLED_PLUGINS_TABLE_NAME)
             .where("name", plugin.getName())

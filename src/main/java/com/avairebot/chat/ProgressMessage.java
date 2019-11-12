@@ -31,6 +31,7 @@ import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.requests.restaction.MessageAction;
+import net.dv8tion.jda.core.utils.Checks;
 
 import javax.annotation.Nonnull;
 import java.awt.*;
@@ -52,6 +53,14 @@ public class ProgressMessage extends Restable {
     private Color successColor;
     private Color failureColor;
 
+    /**
+     * Creates a new progress message instance for the given channel with the given
+     * message, the message will be displayed at the top of the embed progress
+     * message, and will be visible the whole time the message is processed.
+     *
+     * @param channel The channel the message should be sent in.
+     * @param message The message that should be included in the progress message.
+     */
     public ProgressMessage(MessageChannel channel, String message) {
         super(channel);
 
@@ -66,50 +75,146 @@ public class ProgressMessage extends Restable {
         }
     }
 
+    /**
+     * Creates a new progress message instance for the
+     * given channel with no primary message.
+     *
+     * @param channel The channel the message should be sent in.
+     */
     public ProgressMessage(MessageChannel channel) {
         this(channel, null);
     }
 
+    /**
+     * Sets a finished message that should be displayed after all
+     * the tasks have been completed successfully.
+     *
+     * @param finishMessage The finish message that should be displayed after
+     *                      all the tasks have been processed successfully.
+     * @return The current {@code ProgressMessage} instance.
+     */
     public ProgressMessage setFinishMessage(String finishMessage) {
         this.finishMessage = finishMessage;
         return this;
     }
 
+    /**
+     * Sets the title of the embed message that is generated for the process message,
+     * with the URL redirect that should be used by the title for redirects.
+     *
+     * @param title The title that should be set to the embed message.
+     * @param url   The URL that the title should redirect to when clicked.
+     * @return The current {@code ProgressMessage} instance.
+     */
     public ProgressMessage setTitle(String title, String url) {
         builder.setTitle(trimString(title, MessageEmbed.TITLE_MAX_LENGTH), url);
         return this;
     }
 
+    /**
+     * Sets the title of the embed message that is generated for the process message.
+     *
+     * @param title The title that should be set to the embed message.
+     * @return The current {@code ProgressMessage} instance.
+     */
     public ProgressMessage setTitle(String title) {
         return setTitle(title, null);
     }
 
+    /**
+     * Sets the footer of the embed message that is generated for
+     * the process message, with the given footer icon.
+     *
+     * @param text    The footer that should be set to the embed message.
+     * @param iconUrl The footer icon that should be set in to the embed message.
+     * @return The current {@code ProgressMessage} instance.
+     */
     public ProgressMessage setFooter(String text, String iconUrl) {
         builder.setFooter(trimString(text, MessageEmbed.TITLE_MAX_LENGTH), iconUrl);
         return this;
     }
 
+    /**
+     * Sets the footer of the embed message that is generated for the process message.
+     *
+     * @param text The footer that should be set to the embed message.
+     * @return The current {@code ProgressMessage} instance.
+     */
     public ProgressMessage setFooter(String text) {
         return setFooter(text, null);
     }
 
-    public ProgressMessage setBuildStepEmote(@Nonnull ProgressStepStatus status, String emote) {
+    /**
+     * Sets the build emote that will be used for the given progress build step.
+     *
+     * @param status The build step status that should have its emote replaced.
+     * @param emote  The emote that should be used for the
+     * @return The current {@code ProgressMessage} instance.
+     */
+    public ProgressMessage setBuildStepEmote(@Nonnull ProgressStepStatus status, @Nonnull String emote) {
+        Checks.notNull(status, "Progress step status");
+        Checks.notNull(emote, "Emote");
+
         emtoes.put(status, emote);
         return this;
     }
 
-    public void setSuccessColor(Color successColor) {
-        this.successColor = successColor;
+    /**
+     * Sets the color of the embed message if the
+     * progress message finishes successfully.
+     *
+     * @param color The color that should be set if the progress
+     *              message finishes successfully.
+     * @return The current {@code ProgressMessage} instance.
+     */
+    public ProgressMessage setSuccessColor(Color color) {
+        this.successColor = color;
+        return this;
     }
 
-    public void setFailureColor(Color failureColor) {
-        this.failureColor = failureColor;
+    /**
+     * Sets the color of the embed message if the
+     * progress message finishes with a failure.
+     *
+     * @param color The color that should be set if the progress
+     *              message finishes with a failure.
+     * @return The current {@code ProgressMessage} instance.
+     */
+    public ProgressMessage setFailureColor(Color color) {
+        this.failureColor = color;
+        return this;
     }
 
+    /**
+     * Adds a build step that should be processed when the message is queued,
+     * the progress message steps are processed in sequential order. In the
+     * event that the step fails with an exception, or returns false,
+     * the exception error message will be sent and the step chain
+     * will be stopped.
+     *
+     * @param message The message that describes the build step.
+     * @param closure The closure that should be invoked to handle the progress build step.
+     * @return The current {@code ProgressMessage} instance.
+     */
     public ProgressMessage addStep(String message, ProgressClosure closure) {
         return addStep(message, closure, null);
     }
 
+    /**
+     * Adds a build step that should be processed when the message is queued,
+     * the progress message steps are processed in sequential order. In the
+     * event that the step fails with an exception, or returns false,
+     * the given failure message will be sent and the step chain
+     * will be stopped.
+     * <p>
+     * The failure message can include ":error" somewhere to include
+     * the exception message that made the build step fail.
+     *
+     * @param message        The message that describes the build step.
+     * @param closure        The closure that should be invoked to handle the progress build step.
+     * @param failureMessage The message that should be displayed if the build step fails.
+     * @return The current {@code ProgressMessage} instance.
+     */
     public ProgressMessage addStep(String message, ProgressClosure closure, String failureMessage) {
         steps.add(new ProgressStep(message, closure, failureMessage));
         return this;
@@ -138,6 +243,10 @@ public class ProgressMessage extends Restable {
 
     @Override
     public String toString() {
+        if (steps.isEmpty()) {
+            throw new IllegalStateException("Can't generate progress message without any build steps!");
+        }
+
         StringBuilder builder = new StringBuilder();
 
         if (message != null) {

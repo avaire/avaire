@@ -23,5 +23,14 @@ package com.avairebot.contracts.chat;
 
 public interface ProgressClosure {
 
+    /**
+     * Runs the progress build step, the progress closures are linked
+     * together to form a chain, if any link in the chain returns
+     * false or throws an exception the chain will be broken,
+     * causing the entire process to be stopped.
+     *
+     * @return {@code True} if the progress closure ran successfully, {@code False} otherwise.
+     * @throws Exception Thrown if something in the method went wrong.
+     */
     boolean run() throws Exception;
 }

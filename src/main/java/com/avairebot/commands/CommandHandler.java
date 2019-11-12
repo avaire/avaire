@@ -361,6 +361,13 @@ public class CommandHandler {
         COMMANDS.add(new CommandContainer(command, category, commandUri));
     }
 
+    /**
+     * Unregisters the given command class from the command register.
+     *
+     * @param commandClass The command class that should be unregistered.
+     * @return {@code True} if the command was unregistered successfully,
+     *         {@code False} if the command is not registered.
+     */
     public static boolean unregister(@Nonnull Class<? extends Command> commandClass) {
         synchronized (COMMANDS) {
             Iterator<CommandContainer> iterator = COMMANDS.iterator();

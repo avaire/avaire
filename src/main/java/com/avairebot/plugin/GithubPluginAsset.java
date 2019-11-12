@@ -34,10 +34,12 @@ public class GithubPluginAsset implements PluginAsset {
         downloadableUrl = object.getString("browser_download_url");
     }
 
+    @Override
     public String getName() {
         return name;
     }
 
+    @Override
     public String getDownloadableUrl() {
         return downloadableUrl;
     }

@@ -81,6 +81,11 @@ public abstract class JavaPlugin {
         return eventListeners;
     }
 
+    /**
+     * Gets a set of registered commands that is associated with the plugin.
+     *
+     * @return A set of registered commands.
+     */
     public Set<Class<? extends Command>> getCommands() {
         return commands;
     }

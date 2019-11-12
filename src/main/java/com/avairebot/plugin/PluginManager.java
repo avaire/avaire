@@ -104,7 +104,14 @@ public class PluginManager {
         avaire.getCache().getAdapter(CacheType.FILE).forget("deleted-plugins");
     }
 
-
+    /**
+     * Loads all the plugins from the plugin index, this will fetch all the
+     * plugins registered with the plugin index, then check if the plugin
+     * is already installed, if it's not install it will re-download
+     * the indexed version and enable the plugin.
+     *
+     * @param avaire The AvaIre application class instance.
+     */
     public void loadPluginsFromIndex(AvaIre avaire) {
         boolean shouldMigrate = false;
 
@@ -168,6 +175,16 @@ public class PluginManager {
         }
     }
 
+    /**
+     * Attempts to load the plugin from disk using the given file.
+     *
+     * @param file The file that should be attempted to be loaded as a plugin.
+     * @return The plugin loader associated with the loaded plugin,
+     *         or {@code NULL} if an exception were thrown.
+     * @throws InvalidPluginsPathException This is thrown if the plugins directory doesn't exist, or
+     *                                     the bot doesn't have read access to the directory.
+     * @throws InvalidPluginException      This is thrown if the plugin is not valid in some way.
+     */
     public PluginLoader loadPlugin(File file) throws InvalidPluginsPathException, InvalidPluginException {
         if (file.isDirectory() || file.isHidden()) {
             return null;
@@ -196,10 +213,22 @@ public class PluginManager {
         return plugins;
     }
 
+    /**
+     * Gets the plugin data folder, this is the directory that the plugins personal
+     * config and any data related to the plugin will be stored in.
+     *
+     * @return The plugin data folder.
+     */
     public File getPluginsFolder() {
         return pluginsFolder;
     }
 
+    /**
+     * Unloads the given plugin, removing it from the plugin registrar, disabling it in the process.
+     *
+     * @param plugin The plugin that should be unloaded.
+     * @return {@code True} if the plugin was unloaded successfully.
+     */
     public boolean unloadPlugin(Plugin plugin) {
         Iterator<PluginLoader> iterator = plugins.iterator();
 
@@ -219,6 +248,13 @@ public class PluginManager {
         return false;
     }
 
+    /**
+     * Gets a list of the plugin holders for the official plugins, this
+     * represents the list of plugins registered on the plugins.json
+     * file on the public avaire/plugin GitHub repository.
+     *
+     * @return A list of official plugins approved behind the team of Ava.
+     */
     @SuppressWarnings("unchecked")
     public List<PluginHolder> getOfficialPluginsList() {
         Object plugins = AvaIre.getInstance().getCache().getAdapter(CacheType.MEMORY).remember("plugins", 10800, () -> {

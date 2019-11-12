@@ -315,10 +315,24 @@ public abstract class Restable {
         return CompletableFuture.completedFuture(null);
     }
 
+    /**
+     * Handles the default success for queued REST requests to Discords API.
+     *
+     * @param message The JDA message objected that is returned by the REST request.
+     * @param success The success consumer from the parent call of the queued message.
+     * @return The JDA message consumer.
+     */
     protected Consumer<Message> handleSuccessConsumer(Message message, Consumer<Message> success) {
         return success;
     }
 
+    /**
+     * Handles the default failure for queued REST requests to Discords API.
+     *
+     * @param error   The error that were thrown to make the request fail.
+     * @param failure The failure consumer from the parent call to the queued message.
+     * @return The throwable consumer representing the error that made the REST request fail.
+     */
     protected Consumer<? super Throwable> handleFailureConsumer(Throwable error, Consumer<? super Throwable> failure) {
         if (failure == null) {
             return RestActionUtil.handleMessageCreate;
@@ -326,6 +340,12 @@ public abstract class Restable {
         return failure;
     }
 
+    /**
+     * Handles sending the message to Discords REST API.
+     *
+     * @return An optional message action with the REST call that is best
+     *         suited for the bots current permission in the set channel.
+     */
     protected final Optional<MessageAction> sendMessage() {
         if (channel == null) {
             throw new RuntimeException("Message channel is NULL, can't queue message if the channel is not set!");
@@ -348,6 +368,13 @@ public abstract class Restable {
         return Optional.empty();
     }
 
+    /**
+     * Gets the channel permissions for the for in the channel that is set for
+     * the Restable call, this will help determine if the bot is able to send
+     * embed message, normal messages, or not able to send messages at all.
+     *
+     * @return The permission check types set for the channel used in the Restable call.
+     */
     protected final CheckPermissionUtil.PermissionCheckType getChannelPermissionType() {
         if (channelPermissionType == null) {
             channelPermissionType = channel == null

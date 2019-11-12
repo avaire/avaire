@@ -69,7 +69,7 @@ public class InstallPlugin extends PluginSubCommand {
             return command.sendErrorMessage(context, "You must include the version of the `{0}` plugin you wish to install, or use `latest` to install the latest version of the plugin.", plugin.getName());
         }
 
-        PluginRelease version = getVersionOfPlugin(plugin, args[1]);
+        PluginRelease version = getReleaseFromPluginVersion(plugin, args[1]);
         if (version == null) {
             return command.sendErrorMessage(context, "Invalid version selected, `{0}` is not valid version for the `{1}` plugin.", args[1], plugin.getName());
         }
@@ -121,7 +121,14 @@ public class InstallPlugin extends PluginSubCommand {
         return true;
     }
 
-    private PluginRelease getVersionOfPlugin(Plugin plugin, String version) {
+    /**
+     * Gets the plugin release instance from the given plugin instance plugin version.
+     *
+     * @param plugin  The plugin the release should be fetched for.
+     * @param version The version of the plugin that release should match with.
+     * @return The matching Plugin Release, or {@code NULL}.
+     */
+    private PluginRelease getReleaseFromPluginVersion(Plugin plugin, String version) {
         PluginSourceManager sourceManager = plugin.getRepository().getSource().getSourceManager();
 
         if (version.equalsIgnoreCase("latest")) {
@@ -137,6 +144,13 @@ public class InstallPlugin extends PluginSubCommand {
         return null;
     }
 
+    /**
+     * Downloads the given plugin asset and saves it to the given output file.
+     *
+     * @param pluginAsset The plugin asset that should be downloaded.
+     * @param output      The output file where the downloaded file should be stored.
+     * @return {@code True} if the file was downloaded successfully, {@code False} otherwise.
+     */
     private boolean downloadPluginAsset(PluginAsset pluginAsset, File output) {
         try (BufferedInputStream in = new BufferedInputStream(new URL(pluginAsset.getDownloadableUrl()).openStream());
              FileOutputStream fileOutputStream = new FileOutputStream(output)) {

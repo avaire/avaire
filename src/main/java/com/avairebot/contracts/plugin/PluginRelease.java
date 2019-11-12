@@ -25,11 +25,31 @@ import java.util.List;
 
 public interface PluginRelease {
 
+    /**
+     * Gets the name of the plugin release from the git release instance.
+     *
+     * @return The name of the plugin release from the git release instance.
+     */
     String getName();
 
+    /**
+     * Gets the tag associated with the git release.
+     *
+     * @return The tag associated with the git release.
+     */
     String getTag();
 
+    /**
+     * Gets the URL to the git release.
+     *
+     * @return The URL to the git release.
+     */
     String getUrl();
 
+    /**
+     * Gets a list of assets associated with the git release.
+     *
+     * @return A list of assets/files associated with the git release.
+     */
     List<PluginAsset> getAssets();
 }

@@ -23,7 +23,17 @@ package com.avairebot.contracts.plugin;
 
 public interface PluginAsset {
 
+    /**
+     * Gets the name of the plugin asset.
+     *
+     * @return The name of the plugin asset.
+     */
     String getName();
 
+    /**
+     * Generates a URL that can be used to download the plugin asset.
+     *
+     * @return A URL that can be used to download the plugin asset.
+     */
     String getDownloadableUrl();
 }

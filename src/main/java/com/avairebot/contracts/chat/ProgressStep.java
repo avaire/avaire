@@ -34,12 +34,27 @@ public class ProgressStep {
     private boolean completed = false;
     private ProgressStepStatus status = ProgressStepStatus.WAITING;
 
+    /**
+     * Creates a new progress step instance using the given
+     * message, closure, and failure fallback message.
+     *
+     * @param message        The message that should be used for the progress step.
+     * @param closure        The closure that should handle the progress step task.
+     * @param failureMessage The failure message that should be displayed in the event
+     *                       the closure fails or throws an exception.
+     */
     public ProgressStep(String message, ProgressClosure closure, String failureMessage) {
         this.message = message;
         this.closure = closure;
         this.failureMessage = failureMessage;
     }
 
+    /**
+     * Runs the progress step task, invoking the {@link #closure closure}.
+     *
+     * @return {@code True} if the progress closure ran successfully, {@code False} otherwise.
+     * @throws FriendlyException Thrown if progress closure threw an exception.
+     */
     public boolean run() throws FriendlyException {
         completed = true;
 
@@ -58,26 +73,58 @@ public class ProgressStep {
         return status.getValue();
     }
 
+    /**
+     * Checks if the progress step have already been invoked.
+     *
+     * @return {@code True} if the task have already ran.
+     */
     public boolean isCompleted() {
         return completed;
     }
 
+    /**
+     * Gets the message associated with the progress step task.
+     *
+     * @return The message describing the progress step task.
+     */
     public String getMessage() {
         return message;
     }
 
+    /**
+     * Gets the failure message, the message is only shown in the
+     * event the {@link #closure} fails to run successfully.
+     *
+     * @return The failure message.
+     */
     public String getFailureMessage() {
         return failureMessage;
     }
 
+    /**
+     * Gets the exception that the progress step task failed with.
+     *
+     * @return The exception the progress step task failed with, or {@code NULL}
+     *         if the task haven't yet been run, or didn't fail when it did run.
+     */
     public FriendlyException getException() {
         return exception;
     }
 
+    /**
+     * Sets the exception that the progress step task failed with.
+     *
+     * @param exception The exception that the progress step task have failed with.
+     */
     public void setException(FriendlyException exception) {
         this.exception = exception;
     }
 
+    /**
+     * Gets the progress step status for the current step task.
+     *
+     * @return The progress step status for the current task.
+     */
     public ProgressStepStatus getStatus() {
         return status;
     }

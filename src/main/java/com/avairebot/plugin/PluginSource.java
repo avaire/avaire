@@ -35,6 +35,15 @@ public enum PluginSource {
     private final String releasesUrl;
     private final PluginSourceManager sourceManager;
 
+    /**
+     * Creates a new plugin source using the given name, source
+     * and release URL, and plugin source manager.
+     *
+     * @param name          The name of the plugin source.
+     * @param sourceUrl     The URL endpoint for plugin sources.
+     * @param releasesUrl   The URL endpoint for plugin releases.
+     * @param sourceManager The source manager that should be used to handle the plugin sources.
+     */
     PluginSource(String name, String sourceUrl, String releasesUrl, PluginSourceManager sourceManager) {
         this.name = name;
         this.sourceUrl = sourceUrl;
@@ -75,7 +84,7 @@ public enum PluginSource {
      * Example: "avaire/avaire", "senither/meow-api/", etc.
      *
      * @param name The project name that should be formatted into the source URL.
-     * @return
+     * @return The complete source URL endpoint for the plugin source.
      */
     public String getSourceUrl(String name) {
         return buildUrl(sourceUrl, name);
@@ -89,7 +98,7 @@ public enum PluginSource {
      * Example: "avaire/avaire", "senither/meow-api/", etc.
      *
      * @param name The project name that should be formatted into the release URL.
-     * @return
+     * @return The complete release URL endpoint for the plugin source.
      */
     public String getReleasesUrl(String name) {
         return buildUrl(releasesUrl, name);

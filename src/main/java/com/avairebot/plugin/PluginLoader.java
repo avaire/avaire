@@ -140,6 +140,13 @@ public class PluginLoader {
         classLoader.getPlugin().onEnable();
     }
 
+    /**
+     * Unregisters the plugin, this will systematically shutdown the plugin by
+     * calling the {@link JavaPlugin#onDisable() onDisable()} method, and
+     * unregister all events and commands associated with the plugin.
+     *
+     * @param avaire The AvaIre class instance.
+     */
     public void unregisterPlugin(AvaIre avaire) {
         classLoader.getPlugin().onDisable();
         classLoader.getPlugin().getEventListeners().clear();

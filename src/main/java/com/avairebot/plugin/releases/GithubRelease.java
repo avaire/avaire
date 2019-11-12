@@ -36,6 +36,11 @@ public class GithubRelease implements PluginRelease {
     private final String url;
     private final List<PluginAsset> assets;
 
+    /**
+     * Creates a new Github Release instance using the given JSON object.
+     *
+     * @param obj The JSON object that should be used to construct the release instance.
+     */
     public GithubRelease(JSONObject obj) {
         name = obj.getString("name");
         tag = obj.getString("tag_name");
