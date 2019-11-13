@@ -320,10 +320,12 @@ public abstract class Restable {
      *
      * @param message The JDA message objected that is returned by the REST request.
      * @param success The success consumer from the parent call of the queued message.
-     * @return The JDA message consumer.
      */
-    protected Consumer<Message> handleSuccessConsumer(Message message, Consumer<Message> success) {
-        return success;
+    protected void handleSuccessConsumer(Message message, Consumer<Message> success) {
+        if (success == null) {
+            return;
+        }
+        success.accept(message);
     }
 
     /**
@@ -331,13 +333,12 @@ public abstract class Restable {
      *
      * @param error   The error that were thrown to make the request fail.
      * @param failure The failure consumer from the parent call to the queued message.
-     * @return The throwable consumer representing the error that made the REST request fail.
      */
-    protected Consumer<? super Throwable> handleFailureConsumer(Throwable error, Consumer<? super Throwable> failure) {
+    protected void handleFailureConsumer(Throwable error, Consumer<? super Throwable> failure) {
         if (failure == null) {
-            return RestActionUtil.handleMessageCreate;
+            failure = RestActionUtil.handleMessageCreate;
         }
-        return failure;
+        failure.accept(error);
     }
 
     /**

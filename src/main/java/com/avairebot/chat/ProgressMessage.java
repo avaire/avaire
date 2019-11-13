@@ -302,7 +302,7 @@ public class ProgressMessage extends Restable {
     }
 
     @Override
-    protected Consumer<Message> handleSuccessConsumer(Message message, Consumer<Message> success) {
+    protected void handleSuccessConsumer(Message message, Consumer<Message> success) {
         for (ProgressStep step : steps) {
             if (step.isCompleted()) {
                 continue;
@@ -330,7 +330,7 @@ public class ProgressMessage extends Restable {
 
             break;
         }
-        return super.handleSuccessConsumer(message, success);
+        super.handleSuccessConsumer(message, success);
     }
 
     private String trimString(String string, int length) {
