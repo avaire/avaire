@@ -34,7 +34,7 @@ import com.sedmelluq.discord.lavaplayer.source.soundcloud.SoundCloudAudioSourceM
 import com.sedmelluq.discord.lavaplayer.source.twitch.TwitchStreamAudioSourceManager;
 import com.sedmelluq.discord.lavaplayer.source.vimeo.VimeoAudioSourceManager;
 import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioSourceManager;
-import com.sedmelluq.lava.extensions.youtuberotator.YoutubeIpRotator;
+import com.sedmelluq.lava.extensions.youtuberotator.YoutubeIpRotatorSetup;
 import com.sedmelluq.lava.extensions.youtuberotator.planner.*;
 import com.sedmelluq.lava.extensions.youtuberotator.tools.ip.IpBlock;
 import com.sedmelluq.lava.extensions.youtuberotator.tools.ip.Ipv4Block;
@@ -88,7 +88,9 @@ public class AudioPlayerManagerConfiguration implements Supplier<AudioPlayerMana
             .build());
 
         if (routePlanner != null) {
-            YoutubeIpRotator.setup(youtubeAudioSourceManager, routePlanner);
+            new YoutubeIpRotatorSetup(routePlanner)
+                .forSource(youtubeAudioSourceManager)
+                .setup();
         }
 
         audioPlayerManager.registerSourceManager(youtubeAudioSourceManager);
