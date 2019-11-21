@@ -23,6 +23,7 @@ package com.avairebot.commands.fun;
 
 import com.avairebot.AvaIre;
 import com.avairebot.commands.CommandMessage;
+import com.avairebot.commands.CommandPriority;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.factories.RequestFactory;
 import com.avairebot.requests.Request;
@@ -77,17 +78,27 @@ public class HolidayCommand extends Command {
     }
 
     @Override
+    public CommandPriority getCommandPriority() {
+        if (getValidAPIToken() == null) {
+            return CommandPriority.HIDDEN;
+        }
+
+        return super.getCommandPriority();
+    }
+
+    @Override
     public boolean onCommand(CommandMessage context, String[] args) {
+        if (getValidAPIToken() == null) {
+            return false;
+        }
+
         Request request = RequestFactory.makeGET("https://holidayapi.com/v1/holidays");
         LocalDate date = LocalDate.now();
         int dayOfMonth = date.getDayOfMonth();
         int monthOfYear = date.getMonthValue();
-        String holidayApiClientToken = avaire.getConfig().getString("apiKeys.holidayapi", "invalid");
-        if (holidayApiClientToken.equals("invalid") || holidayApiClientToken.length() < 32) {
-            return false;
-        }
 
-        request.addParameter("key", holidayApiClientToken);
+
+        request.addParameter("key", getValidAPIToken());
         request.addParameter("year", date.getYear() - 1);
         request.addParameter("day", dayOfMonth);
         request.addParameter("month", monthOfYear);
@@ -142,5 +153,14 @@ public class HolidayCommand extends Command {
             context.makeEmbeddedMessage(ColorUtil.getColorFromString("0x2A2C31"), context.i18n("todayHoliday", holidays.get(0).getName()))
                 .queue();
         }
+    }
+
+    private String getValidAPIToken() {
+        String holidayApiClientToken = avaire.getConfig().getString("apiKeys.holidayapi", "invalid");
+        if (holidayApiClientToken.equals("invalid") || holidayApiClientToken.length() != 36) {
+            return null;
+        }
+
+        return holidayApiClientToken;
     }
 }
