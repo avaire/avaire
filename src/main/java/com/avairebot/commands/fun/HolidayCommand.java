@@ -56,6 +56,11 @@ public class HolidayCommand extends Command {
     }
 
     @Override
+    public String getDescription() {
+        return "Retrieves whether or not today is a holiday.";
+    }
+
+    @Override
     public List<String> getUsageInstructions() {
         return Collections.singletonList(
             "`:command` - Gets the current holidays for today's date and posts the current holiday information."
@@ -65,11 +70,6 @@ public class HolidayCommand extends Command {
     @Override
     public List<String> getTriggers() {
         return Collections.singletonList("holiday");
-    }
-
-    @Override
-    public String getDescription() {
-        return "Retrieves whether or not today is a holiday.";
     }
 
     @Override
