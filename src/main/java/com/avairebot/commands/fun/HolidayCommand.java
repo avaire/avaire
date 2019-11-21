@@ -74,7 +74,7 @@ public class HolidayCommand extends Command {
 
     @Override
     public List<String> getMiddleware() {
-        return Collections.singletonList("throttle:user,1,2");
+        return Collections.singletonList("throttle:channel,1,3");
     }
 
     @Override
