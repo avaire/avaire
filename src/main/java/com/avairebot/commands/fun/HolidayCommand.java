@@ -42,7 +42,7 @@ import java.util.function.Consumer;
 
 public class HolidayCommand extends Command {
 
-    private static Cache<String, List<HolidayService.Holiday>> holidayMap = CacheBuilder.newBuilder()
+    private static Cache<String, List<HolidayService.Holiday>> cache = CacheBuilder.newBuilder()
         .expireAfterWrite(1, TimeUnit.DAYS)
         .build();
 
@@ -92,67 +92,67 @@ public class HolidayCommand extends Command {
             return false;
         }
 
-        Request request = RequestFactory.makeGET("https://holidayapi.com/v1/holidays");
         LocalDate date = LocalDate.now();
-        int dayOfMonth = date.getDayOfMonth();
-        int monthOfYear = date.getMonthValue();
+        String key = date.getMonthValue() + "/" + date.getDayOfMonth();
 
+        return cache.getIfPresent(key) != null
+            ? sendHolidayStatus(context, cache.getIfPresent(key))
+            : sendRequest(context, date, key);
+    }
+
+    private boolean sendRequest(CommandMessage context, LocalDate date, String key) {
+        Request request = RequestFactory.makeGET("https://holidayapi.com/v1/holidays");
 
         request.addParameter("key", getValidAPIToken());
         request.addParameter("year", date.getYear() - 1);
-        request.addParameter("day", dayOfMonth);
-        request.addParameter("month", monthOfYear);
+        request.addParameter("day", date.getDayOfMonth());
+        request.addParameter("month", date.getMonthValue());
         request.addParameter("country", "US");
-        String key = monthOfYear + "/" + dayOfMonth;
-        if (holidayMap.getIfPresent(key) != null) {
-            List<HolidayService.Holiday> holidays = holidayMap.getIfPresent(key);
-            sendHolidayStatus(context, holidays);
-        } else {
-            sendRequest(context, request, key);
-        }
+
+        request.send((Consumer<Response>) response -> {
+            switch (response.getResponse().code()) {
+                case 429:
+                    context.makeWarning(context.i18n("tooManyAttempts"))
+                        .queue(message -> message.delete().queueAfter(45, TimeUnit.SECONDS, null, RestActionUtil.ignore));
+                    break;
+
+                case 404:
+                    context.makeWarning(context.i18n("notFound"))
+                        .queue(message -> message.delete().queueAfter(45, TimeUnit.SECONDS, null, RestActionUtil.ignore));
+                    break;
+
+                case 200:
+                    HolidayService service = (HolidayService) response.toService(HolidayService.class);
+                    List<HolidayService.Holiday> holidays = service.getHolidays();
+
+                    cache.put(key, holidays);
+                    sendHolidayStatus(context, holidays);
+                    break;
+
+                default:
+                    context.makeError(context.i18n("somethingWentWrong")).queue();
+            }
+        });
 
         return true;
     }
 
-    private void sendRequest(CommandMessage context, Request request, String key) {
-        request.send((Consumer<Response>) response ->
-        {
-            int statusCode = response.getResponse().code();
-
-            if (statusCode == 429) {
-                context.makeWarning(context.i18n("tooManyAttempts"))
-                    .queue(message -> message.delete().queueAfter(45, TimeUnit.SECONDS, null, RestActionUtil.ignore));
-
-                return;
-            }
-
-            if (statusCode == 404) {
-                context.makeWarning(context.i18n("notFound"))
-                    .queue(message -> message.delete().queueAfter(45, TimeUnit.SECONDS, null, RestActionUtil.ignore));
-
-                return;
-            }
-
-            if (statusCode == 200) {
-                HolidayService service = (HolidayService) response.toService(HolidayService.class);
-                List<HolidayService.Holiday> holidays = service.getHolidays();
-                holidayMap.put(key, holidays);
-                sendHolidayStatus(context, holidays);
-                return;
-            }
-
-            context.makeError(context.i18n("somethingWentWrong")).queue();
-        });
-    }
-
-    private void sendHolidayStatus(CommandMessage context, List<HolidayService.Holiday> holidays) {
+    private boolean sendHolidayStatus(CommandMessage context, List<HolidayService.Holiday> holidays) {
         if (holidays == null || holidays.isEmpty()) {
-            context.makeEmbeddedMessage(ColorUtil.getColorFromString("0x2A2C31"), context.i18n("noHolidaysToday"))
-                .queue();
-        } else {
-            context.makeEmbeddedMessage(ColorUtil.getColorFromString("0x2A2C31"), context.i18n("todayHoliday", holidays.get(0).getName()))
-                .queue();
+            context.makeEmbeddedMessage(
+                ColorUtil.getColorFromString("0x2A2C31"),
+                context.i18n("noHolidaysToday")
+            ).queue();
+
+            return true;
         }
+
+        context.makeEmbeddedMessage(
+            ColorUtil.getColorFromString("0x2A2C31"),
+            context.i18n("todayHoliday", holidays.get(0).getName())
+        ).queue();
+
+        return true;
     }
 
     private String getValidAPIToken() {
