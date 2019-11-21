@@ -23,32 +23,27 @@ package com.avairebot.requests.service;
 
 import java.util.List;
 
-public class HolidayService
-{
+public class HolidayService {
+    
     private List<Holiday> holidays;
-
     private String error;
 
     public List<Holiday> getHolidays() {
         return holidays;
     }
 
-
     public String getError() {
         return error;
     }
 
+    public class Holiday {
 
-    public class Holiday
-    {
         private String name;
-
         private String date;
 
         private boolean isPublic;
 
-        public boolean isPublic()
-        {
+        public boolean isPublic() {
             return isPublic;
         }
 
@@ -64,5 +59,4 @@ public class HolidayService
             return name;
         }
     }
-
 }
