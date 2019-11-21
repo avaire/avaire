@@ -113,6 +113,16 @@ public class SearchTrackResultHandler implements AudioLoadResultHandler {
 
         log.debug("Searching using the {} provider for \"{}\"", trackContext.getProvider(), trackContext.getFormattedQuery());
 
+        if (isRequestingYouTubeWhileOnCooldown()) {
+            if (isRequestingYouTubeWithDirectLink()) {
+                throw new TrackLoadFailedException(new SearchingException(
+                    "The YouTube rate limit have been reached, please try again in a few minutes."
+                ));
+            }
+
+            trackContext.setProvider(SearchProvider.SOUNDCLOUD);
+        }
+
         if (!skipCache) {
             AudioPlaylist playlist = loadContextFromCache();
             if (playlist != null) {
@@ -120,12 +130,6 @@ public class SearchTrackResultHandler implements AudioLoadResultHandler {
 
                 return playlist;
             }
-        }
-
-        if (isRequestingYouTubeWhileOnCooldown()) {
-            throw new TrackLoadFailedException(new SearchingException(
-                "The YouTube rate limit have been reached, please try again in a few minutes."
-            ));
         }
 
         try {
@@ -147,12 +151,14 @@ public class SearchTrackResultHandler implements AudioLoadResultHandler {
         if (exception != null) {
             Metrics.searchHits.labels("exception").inc();
 
-            if (exception instanceof FriendlyException && exception.getCause() != null) {
+            if (exception.getCause() != null) {
                 String messageOfCause = exception.getCause().getMessage();
                 if (messageOfCause.contains("java.io.IOException: Invalid status code for search response: 503")) {
                     exception = new Http503Exception("Lavaplayer search returned a 503", exception);
-                } else if (messageOfCause.contains("YouTube rate limit reached")) {
-                    exception = new RateLimitException(messageOfCause, exception);
+                } else if (messageOfCause.contains("Loading information for a YouTube track failed.")) {
+                    if (exception.getCause().getCause() != null && exception.getCause().getCause().getMessage().contains("YouTube rate limit reached")) {
+                        exception = new RateLimitException(messageOfCause, exception);
+                    }
                 }
             }
 

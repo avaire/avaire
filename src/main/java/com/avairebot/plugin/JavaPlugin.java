@@ -51,6 +51,7 @@ import java.util.Set;
 public abstract class JavaPlugin {
 
     private final Set<ListenerAdapter> eventListeners = new HashSet<>();
+    private final Set<Class<? extends Command>> commands = new HashSet<>();
 
     private Logger log = LoggerFactory.getLogger(JavaPlugin.class);
 
@@ -81,6 +82,15 @@ public abstract class JavaPlugin {
     }
 
     /**
+     * Gets a set of registered commands that is associated with the plugin.
+     *
+     * @return A set of registered commands.
+     */
+    public Set<Class<? extends Command>> getCommands() {
+        return commands;
+    }
+
+    /**
      * Registers a middleware with the given name, middlewares can be used through
      * the {@link Command#getMiddleware() getMiddleware()} method, middleware
      * names will ignore letter casing and there can't be two middlewares
@@ -101,6 +111,7 @@ public abstract class JavaPlugin {
      * @param command The command that should be registered into the command handler.
      */
     public final void registerCommand(Command command) {
+        commands.add(command.getClass());
         CommandHandler.register(command);
     }
 
@@ -249,7 +260,7 @@ public abstract class JavaPlugin {
                     "config.yml"
                 );
             } catch (IOException e) {
-                e.printStackTrace();
+                log.error("Failed to get the plugin config: {}", e.getMessage(), e);
             }
         }
         return config;

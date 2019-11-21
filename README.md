@@ -3,11 +3,8 @@
 </p>
 
 <p align="center">
-    <a href="https://discordbots.org/bot/275270122082533378">
-        <img src="https://discordbots.org/api/widget/servers/275270122082533378.svg?noavatar=true" alt="AvaIre">
-    </a>
-    <a href="https://discordbots.org/bot/275270122082533378">
-        <img src="https://discordbots.org/api/widget/upvotes/275270122082533378.svg?noavatar=true" alt="AvaIre">
+    <a href="https://ci.avairebot.com/">
+        <img alt="TeamCity Simple Build Status" src="https://img.shields.io/teamcity/build/s/Avaire_Build?server=http%3A%2F%2Fci.avairebot.com%2F">
     </a>
     <a href="https://avairebot.com/">
         <img src="https://cdn.avairebot.com/badge/avaire-version.svg" alt="AvaIre Version">
@@ -20,6 +17,15 @@
     </a>
     <a href="https://www.gnu.org/licenses/gpl-3.0.en.html">
         <img src="https://img.shields.io/github/license/avaire/avaire.svg" alt="GitHub" >
+    </a>
+</p>
+
+<p align="center">
+    <a href="https://discordbots.org/bot/275270122082533378">
+        <img src="https://discordbots.org/api/widget/servers/275270122082533378.svg?noavatar=true" alt="AvaIre">
+    </a>
+    <a href="https://discordbots.org/bot/275270122082533378">
+        <img src="https://discordbots.org/api/widget/upvotes/275270122082533378.svg?noavatar=true" alt="AvaIre">
     </a>
 </p>
 
