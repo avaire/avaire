@@ -205,7 +205,7 @@
             "value": ""
         },
         "AVA_APIKEYS_DIAGFLOW": {
-            "description": "DialogFlow is the service used by Ava for her artificial intelligence. The AI will be disabled withoud the API key. You can registar for an API key on their website as well as creating your own custom AI agent. If you want, you can use the same AI agent as Ava uses at: https://github.com/avaire/agent.",
+            "description": "DialogFlow is the service used by Ava for her artificial intelligence. The AI will be disabled without the API key. You can register for an API key on their website as well as creating your own custom AI agent. If you want, you can use the same AI agent as Ava uses at: https://github.com/avaire/agent.",
             "required": false,
             "value": ""
         },
@@ -215,12 +215,17 @@
             "value": ""
         },
         "AVA_APIKEYS_OPENWEATHERMAP": {
-            "description": "Open Weather Map is a free service that provides lots of ways to get weather and wind data based on a location. Withoud the API key the command will disable itself. You can get an API key at: https://home.openweathermap.org/api_keys.",
+            "description": "Open Weather Map is a free service that provides lots of ways to get weather and wind data based on a location. Without the API key the command will disable itself. You can get an API key at: https://home.openweathermap.org/api_keys.",
             "required": false,
             "value": ""
         },
         "AVA_FEEDBACK_CHANNEL": {
             "description": "The Feedback channel is the text channel used alongside the !feedback command, any feedback messages the bot gets will be sent in the channel matching the given ID, if the channel doesn't exist, or the bot can't read & write to it, then the feedback command will simply not work.",
+            "required": false,
+            "value": ""
+        },
+        "AVA_APIKEYS_HOLIDAYAPI": {
+            "description": "Holiday API is a service that provides information on current holidays. Without an API key, the command will disable itself. You can get an API key at: https://holidayapi.com/signup.",
             "required": false,
             "value": ""
         },

@@ -471,6 +471,13 @@ fun:
             - 'Algo me da mala espina'
             - 'Lo dudo mucho'
 
+    HolidayCommand:
+        tooManyAttempts: "The Holiday API was hit too many times which shouldn't have been possible. D:"
+        notFound: "The Holiday API command could not retrieve any data for this request."
+        somethingWentWrong: "Something went wrong. Perhaps contact a bot administrator for help."
+        noHolidaysToday: "No holidays today...Get back to work!"
+        todayHoliday: "Today is {0}"
+
     MemeCommand:
         missingArgument: 'Falta el dato "action", debes incluir el tipo de meme o el usuario para el que quieres hacer un meme. Pon "list" para mostrar todos los tipos de meme disponibles.'
         invalidType: '¡El tipo de meme no es válido, "{0}" no existe!'

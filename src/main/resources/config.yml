@@ -574,6 +574,15 @@ vote-lock:
 
 apiKeys:
 
+  # Holiday API key, this is used for the holiday command
+  # in order to retrieve current holiday information.
+  #
+  # You can get a free API key that allows 1000 requests per-month by signing up on
+  # their website, then going to the "API Keys" tab and creating a new key.
+  # Get a key at: https://holidayapi.com/
+  #
+  holidayapi: ''
+
   # Google API key, this is used for music requests to YouTube and the
   # Shorten API for shortening links, note the play command will still
   # work with youtube links without an API key.

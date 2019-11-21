@@ -471,6 +471,13 @@ fun:
             - 'Livssyn ikke så bra'
             - 'Veldig tvilsomt'
 
+    HolidayCommand:
+        tooManyAttempts: "The Holiday API was hit too many times which shouldn't have been possible. D:"
+        notFound: "The Holiday API command could not retrieve any data for this request."
+        somethingWentWrong: "Something went wrong. Perhaps contact a bot administrator for help."
+        noHolidaysToday: "No holidays today...Get back to work!"
+        todayHoliday: "Today is {0}"
+
     MemeCommand:
         missingArgument: 'Manglende `action` argument, du må inkludere meme typen eller bruker du ønsker og generere en meme for, eller `list` for og liste alle tiljengelige typer.'
         invalidType: 'Ugyldig meme type gitt, `{0}` er ikke en gyldig meme type!'

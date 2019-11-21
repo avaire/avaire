@@ -269,14 +269,6 @@ administration:
         notAPunishment: "The modlog case ID with an ID of `{0}` is not a punishment!"
         message: "The modlog case with an ID of **:case** has been been pardoned successfully."
 
-    ModlogPardonCommand:
-        modlogNotEnabled: "No modlog channel has been set, you must set a modlog channel to use this command."
-        invalidCaseId: "Invalid case id given, the ID must be greater than 0 and less than {0}"
-        couldntFindCaseWithId: "Couldn't find a modlog case with an ID of {0} where you were the moderator, are you sure you're the moderator for the given modlog case?"
-        caseAlreadyPardoned: "The modlog case ID with an ID of `{0}` is already pardoned."
-        notAPunishment: "The modlog case ID with an ID of `{0}` is not a punishment!"
-        message: "The modlog case with an ID of **:case** has been been pardoned successfully."
-
     ModlogReasonCommand:
         modlogNotEnabled: "No modlog channel has been set, you must set a modlog channel to use this command."
         invalidCaseId: "Invalid case id given, the ID must be greater than 0 and less than {0}"
@@ -476,6 +468,13 @@ fun:
             - 'A válaszom nem'
             - 'A kilátás nem olyan jó'
             - 'Nagyon kétséges'
+
+    HolidayCommand:
+        tooManyAttempts: "The Holiday API was hit too many times which shouldn't have been possible. D:"
+        notFound: "The Holiday API command could not retrieve any data for this request."
+        somethingWentWrong: "Something went wrong. Perhaps contact a bot administrator for help."
+        noHolidaysToday: "No holidays today...Get back to work!"
+        todayHoliday: "Today is {0}"
 
     MemeCommand:
         missingArgument: 'Hiányzó `akció` paraméter, meg kell adnod a meme típusát esetleg felhasználót akinek generálni akarsz, vagy `list`, hogy megnézd az összes elérhető meme típust.'
