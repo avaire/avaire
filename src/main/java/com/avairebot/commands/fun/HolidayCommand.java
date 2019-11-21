@@ -52,12 +52,12 @@ public class HolidayCommand extends Command {
 
     @Override
     public String getName() {
-        return "HolidayCommand";
+        return "Holiday Command";
     }
 
     @Override
     public String getDescription() {
-        return "Retrieves whether or not today is a holiday.";
+        return "Retrieves whether or not today is a holiday, and if there is a holiday today, what it is what information about it.";
     }
 
     @Override
