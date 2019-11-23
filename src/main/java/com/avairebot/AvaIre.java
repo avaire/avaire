@@ -692,6 +692,7 @@ public class AvaIre {
 
         if (LavalinkManager.LavalinkManagerHolder.lavalink.isEnabled()) {
             builder.addEventListeners(LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink());
+            builder.setVoiceDispatchInterceptor(LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink().getVoiceInterceptor());
         }
 
         return builder.build();
