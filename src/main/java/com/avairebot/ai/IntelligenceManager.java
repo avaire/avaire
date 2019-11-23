@@ -25,7 +25,7 @@ import com.avairebot.AvaIre;
 import com.avairebot.contracts.ai.IntelligenceService;
 import com.avairebot.handlers.DatabaseEventHolder;
 import com.avairebot.metrics.Metrics;
-import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.api.entities.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

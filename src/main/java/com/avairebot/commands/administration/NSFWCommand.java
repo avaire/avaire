@@ -26,8 +26,8 @@ import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.utilities.ComparatorUtil;
 import com.avairebot.utilities.MentionableUtil;
-import net.dv8tion.jda.core.entities.Channel;
-import net.dv8tion.jda.core.entities.TextChannel;
+import net.dv8tion.jda.api.entities.GuildChannel;
+import net.dv8tion.jda.api.entities.TextChannel;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -97,7 +97,7 @@ public class NSFWCommand extends Command {
                     return updateChannelStatus(context, context.getChannel(), false);
 
                 case UNKNOWN:
-                    Channel channel = MentionableUtil.getChannel(context.getMessage(), args);
+                    GuildChannel channel = MentionableUtil.getChannel(context.getMessage(), args);
 
                     if (channel != null && (channel instanceof TextChannel)) {
                         return sendChannelStatus(context, (TextChannel) channel);
@@ -106,7 +106,7 @@ public class NSFWCommand extends Command {
             }
         }
 
-        Channel channel = MentionableUtil.getChannel(context.getMessage(), args);
+        GuildChannel channel = MentionableUtil.getChannel(context.getMessage(), args);
         if (channel == null || !(channel instanceof TextChannel)) {
             return sendErrorMessage(context, context.i18n("notValidChannel", args[0]));
         }

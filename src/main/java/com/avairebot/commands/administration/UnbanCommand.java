@@ -32,7 +32,7 @@ import com.avairebot.modlog.ModlogAction;
 import com.avairebot.modlog.ModlogType;
 import com.avairebot.utilities.NumberUtil;
 import com.avairebot.utilities.RestActionUtil;
-import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.api.entities.Guild;
 
 import javax.annotation.Nonnull;
 import java.util.Arrays;
@@ -106,7 +106,7 @@ public class UnbanCommand extends Command {
         }
 
         try {
-            context.getGuild().getBanById(Long.parseLong(args[0])).queue(ban -> {
+            context.getGuild().retrieveBanById(Long.parseLong(args[0])).queue(ban -> {
                 handleBan(context, ban, Arrays.copyOfRange(args, 1, args.length));
             }, error -> {
                 context.makeWarning(context.i18n("noUserIsBanned"))
@@ -125,7 +125,7 @@ public class UnbanCommand extends Command {
             ? "No reason was given."
             : String.join(" ", args);
 
-        context.getGuild().getController().unban(ban.getUser()).queue(aVoid -> {
+        context.getGuild().unban(ban.getUser()).queue(aVoid -> {
             ModlogAction modlogAction = new ModlogAction(
                 ModlogType.UNBAN, context.getAuthor(), ban.getUser(), reason
             );

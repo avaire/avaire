@@ -34,7 +34,7 @@ import com.avairebot.middleware.MiddlewareHandler;
 import com.avairebot.plugin.JavaPlugin;
 import com.avairebot.utilities.RestActionUtil;
 import com.avairebot.utilities.StringReplacementUtil;
-import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.api.entities.Message;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

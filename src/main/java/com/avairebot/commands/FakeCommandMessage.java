@@ -26,7 +26,7 @@ import com.avairebot.contracts.commands.CommandContext;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.database.transformers.PlayerTransformer;
 import com.avairebot.handlers.DatabaseEventHolder;
-import net.dv8tion.jda.core.entities.*;
+import net.dv8tion.jda.api.entities.*;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

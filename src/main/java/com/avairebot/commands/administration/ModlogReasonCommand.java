@@ -36,10 +36,10 @@ import com.avairebot.factories.MessageFactory;
 import com.avairebot.shared.DiscordConstants;
 import com.avairebot.utilities.NumberUtil;
 import com.avairebot.utilities.RestActionUtil;
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.Permission;
-import net.dv8tion.jda.core.entities.MessageEmbed;
-import net.dv8tion.jda.core.entities.TextChannel;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.entities.TextChannel;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -169,7 +169,7 @@ public class ModlogReasonCommand extends Command {
                 .where("modlogCase", caseId)
                 .update(statement -> statement.set("reason", reason, true));
 
-            channel.getMessageById(first.getString("message_id")).queue(message -> {
+            channel.retrieveMessageById(first.getString("message_id")).queue(message -> {
                 if (message.getEmbeds().isEmpty()) {
                     // What? This code should never be hit...
                     return;

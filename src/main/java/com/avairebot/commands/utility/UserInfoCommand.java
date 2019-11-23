@@ -30,10 +30,10 @@ import com.avairebot.contracts.commands.CommandGroups;
 import com.avairebot.time.Carbon;
 import com.avairebot.utilities.MentionableUtil;
 import com.avairebot.utilities.NumberUtil;
-import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.MessageEmbed;
-import net.dv8tion.jda.core.entities.Role;
-import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.entities.Role;
+import net.dv8tion.jda.api.entities.User;
 
 import javax.annotation.Nonnull;
 import java.awt.*;
@@ -99,8 +99,8 @@ public class UserInfoCommand extends Command {
             member = context.getGuild().getMember(user);
         }
 
-        Carbon joinedDate = Carbon.createFromOffsetDateTime(member.getJoinDate());
-        Carbon createdDate = Carbon.createFromOffsetDateTime(member.getUser().getCreationTime());
+        Carbon joinedDate = Carbon.createFromOffsetDateTime(member.getTimeJoined());
+        Carbon createdDate = Carbon.createFromOffsetDateTime(member.getUser().getTimeCreated());
 
         PlaceholderMessage placeholderMessage = context.makeEmbeddedMessage(getRoleColor(member.getRoles()),
             new MessageEmbed.Field(

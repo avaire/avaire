@@ -30,8 +30,8 @@ import com.avairebot.scheduler.tasks.DrainVoteQueueTask;
 import com.avairebot.servlet.routes.GetVote;
 import com.avairebot.servlet.routes.PostVote;
 import com.avairebot.time.Carbon;
-import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

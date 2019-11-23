@@ -33,10 +33,9 @@ import com.avairebot.modlog.ModlogType;
 import com.avairebot.utilities.MentionableUtil;
 import com.avairebot.utilities.RestActionUtil;
 import com.avairebot.utilities.RoleUtil;
-import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.Role;
-import net.dv8tion.jda.core.entities.User;
-import net.dv8tion.jda.core.entities.VoiceChannel;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Role;
+import net.dv8tion.jda.api.entities.User;
 
 import javax.annotation.Nonnull;
 import java.util.Arrays;
@@ -120,8 +119,9 @@ public class VoiceKickCommand extends Command {
         String originalVoiceChannelName = user.getVoiceState().getChannel().getName();
         String originalVoiceChannelId = user.getVoiceState().getChannel().getId();
 
-        context.getGuild().getController().createVoiceChannel("kick-" + user.getUser().getId()).queue(channel ->
-            context.getGuild().getController().moveVoiceMember(user, (VoiceChannel) channel)
+        // TODO: Change the logic to use the internal method for kicking users from voice channels, instead of creating channels to delete it again.
+        context.getGuild().createVoiceChannel("kick-" + user.getUser().getId()).queue(channel ->
+            context.getGuild().moveVoiceMember(user, channel)
                 .queue(empty -> channel.delete().queue((Consumer<Void>) aVoid -> {
                         Modlog.log(avaire, context, new ModlogAction(
                                 ModlogType.VOICE_KICK,

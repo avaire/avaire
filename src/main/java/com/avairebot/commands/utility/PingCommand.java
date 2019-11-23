@@ -56,12 +56,9 @@ public class PingCommand extends Command {
 
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
-        long start = System.currentTimeMillis();
-        context.getMessage().getChannel().sendTyping().queue(v -> {
-            long ping = System.currentTimeMillis() - start;
-
+        context.getJDA().getRestPing().queue(ping -> {
             context.makeInfo(context.i18n("message"))
-                .set("heartbeat", context.getJDA().getPing())
+                .set("heartbeat", context.getJDA().getGatewayPing())
                 .set("rating", ratePing(context, ping))
                 .set("ping", ping)
                 .queue();

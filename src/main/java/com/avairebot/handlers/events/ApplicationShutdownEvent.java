@@ -22,8 +22,8 @@
 package com.avairebot.handlers.events;
 
 import com.avairebot.shared.ExitCodes;
-import net.dv8tion.jda.core.JDA;
-import net.dv8tion.jda.core.events.Event;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.events.Event;
 
 import javax.annotation.Nonnull;
 
