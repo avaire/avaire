@@ -36,12 +36,12 @@ import com.avairebot.utilities.RoleUtil;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.entities.VoiceChannel;
 
 import javax.annotation.Nonnull;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.function.Consumer;
 
 @CacheFingerprint(name = "kick-command")
 public class VoiceKickCommand extends Command {
@@ -107,37 +107,30 @@ public class VoiceKickCommand extends Command {
         }
 
         final Member member = context.getGuild().getMember(user);
-        if (!member.getVoiceState().inVoiceChannel()) {
+        if (member == null || member.getVoiceState() == null || !member.getVoiceState().inVoiceChannel()) {
             return sendErrorMessage(context, context.i18n("notConnected"));
         }
 
-        return kickUser(context, member, args);
+        return kickUser(context, member, member.getVoiceState().getChannel(), args);
     }
 
-    private boolean kickUser(CommandMessage context, Member user, String[] args) {
-        String reason = generateMessage(args);
-        String originalVoiceChannelName = user.getVoiceState().getChannel().getName();
-        String originalVoiceChannelId = user.getVoiceState().getChannel().getId();
+    private boolean kickUser(CommandMessage context, Member user, VoiceChannel channel, String[] args) {
+        final String reason = generateMessage(args);
 
-        // TODO: Change the logic to use the internal method for kicking users from voice channels, instead of creating channels to delete it again.
-        context.getGuild().createVoiceChannel("kick-" + user.getUser().getId()).queue(channel ->
-            context.getGuild().moveVoiceMember(user, channel)
-                .queue(empty -> channel.delete().queue((Consumer<Void>) aVoid -> {
-                        Modlog.log(avaire, context, new ModlogAction(
-                                ModlogType.VOICE_KICK,
-                                context.getAuthor(), user.getUser(),
-                                originalVoiceChannelName + " (ID: " + originalVoiceChannelId + ")\n" + reason
-                            )
-                        );
-
-                        context.makeSuccess(context.i18n("message"))
-                            .set("target", user.getUser().getName() + "#" + user.getUser().getDiscriminator())
-                            .set("voiceChannel", originalVoiceChannelName)
-                            .set("reason", reason)
-                            .queue(ignoreMessage -> context.delete().queue(null, RestActionUtil.ignore));
-                    }, RestActionUtil.ignore)
+        context.getGuild().kickVoiceMember(user).queue(aVoid -> {
+            Modlog.log(avaire, context, new ModlogAction(
+                    ModlogType.VOICE_KICK,
+                    context.getAuthor(), user.getUser(),
+                    channel.getName() + " (ID: " + channel.getId() + ")\n" + reason
                 )
-        );
+            );
+
+            context.makeSuccess(context.i18n("message"))
+                .set("target", user.getUser().getName() + "#" + user.getUser().getDiscriminator())
+                .set("voiceChannel", channel.getName())
+                .set("reason", reason)
+                .queue(ignoreMessage -> context.delete().queue(null, RestActionUtil.ignore));
+        });
         return true;
     }
 
