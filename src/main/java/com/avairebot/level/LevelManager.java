@@ -30,7 +30,6 @@ import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.database.transformers.PlayerTransformer;
 import com.avairebot.factories.MessageFactory;
 import com.avairebot.language.I18n;
-import com.avairebot.scheduler.ScheduleHandler;
 import com.avairebot.utilities.CacheUtil;
 import com.avairebot.utilities.NumberUtil;
 import com.avairebot.utilities.RandomUtil;
@@ -343,55 +342,26 @@ public class LevelManager {
                     return;
                 }
 
-                List<Role> roles = getRoleRewards(message, guild, newLevel);
-                if (roles.isEmpty()) {
+                List<Role> rolesToAdd = getRoleRewards(message, guild, newLevel);
+                if (rolesToAdd.isEmpty()) {
                     return;
                 }
 
                 Role highestRole = RoleUtil.getHighestFrom(message.getGuild().getSelfMember());
-                if (highestRole == null || !RoleUtil.isRoleHierarchyHigher(roles, highestRole)) {
+                if (highestRole == null || !RoleUtil.isRoleHierarchyHigher(rolesToAdd, highestRole)) {
                     return;
                 }
 
-                // TODO: Rewrite the logic to support the new modify member roles methods so we only need to preform one API call instead of two to first add and then remove roles.
-                message.getGuild().modifyMemberRoles(message.getMember(), roles, null).queue(aVoid -> {
-                    if (!guild.isLevelHierarchy()) {
-                        return;
-                    }
+                List<Role> rolesToRemove = null;
+                if (guild.isLevelHierarchy()) {
+                    Role highestAddRole = rolesToAdd.get(rolesToAdd.size() - 1);
+                    rolesToAdd.remove(rolesToAdd.size() - 1);
 
+                    rolesToRemove = new ArrayList<>(rolesToAdd);
+                    rolesToAdd = Collections.singletonList(highestAddRole);
+                }
 
-                    List<Integer> levelKeys = new ArrayList<>(guild.getLevelRoles().keySet());
-                    Collections.sort(levelKeys);
-                    Collections.reverse(levelKeys);
-
-                    List<Role> rolesToRemove = new ArrayList<>(roles);
-
-                    for (int roleLevel : levelKeys) {
-                        String roleId = guild.getLevelRoles().get(roleLevel);
-                        if (roleId == null) {
-                            // This should never be hit... Ever, better to be safe than sorry tho.
-                            continue;
-                        }
-
-                        Role roleToRemove = null;
-                        for (Role role : rolesToRemove) {
-                            if (role.getId().equals(roleId)) {
-                                roleToRemove = role;
-                            }
-                        }
-
-                        if (roleToRemove != null) {
-                            rolesToRemove.remove(roleToRemove);
-                            break;
-                        }
-                    }
-
-                    if (!rolesToRemove.isEmpty()) {
-                        ScheduleHandler.getScheduler().schedule(() -> {
-                            message.getGuild().modifyMemberRoles(message.getMember(), null, rolesToRemove).queue();
-                        }, 500, TimeUnit.MILLISECONDS);
-                    }
-                });
+                message.getGuild().modifyMemberRoles(message.getMember(), rolesToAdd, rolesToRemove).queue();
             }
         }
     }
