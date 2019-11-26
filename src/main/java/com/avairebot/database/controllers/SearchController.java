@@ -31,6 +31,7 @@ import com.avairebot.database.transformers.SearchResultTransformer;
 import com.avairebot.language.I18n;
 import com.avairebot.scheduler.ScheduleHandler;
 import com.avairebot.time.Carbon;
+import com.avairebot.utilities.NumberUtil;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
@@ -238,7 +239,7 @@ public class SearchController {
 
         updateQuery
             .append(" `last_lookup_at` = ")
-            .append(Carbon.now().getTimestamp() * 1000L);
+            .append(prepareStringForQuery(Carbon.now().toDateTimeString()));
 
         updateQuery
             .append(" WHERE `provider` = ")
@@ -277,6 +278,9 @@ public class SearchController {
     }
 
     private static String prepareStringForQuery(String str) {
+        if (NumberUtil.isNumeric(str)) {
+            return str;
+        }
         return I18n.format("'{0}'", str.replaceAll("'", "\\\\'"));
     }
 }
