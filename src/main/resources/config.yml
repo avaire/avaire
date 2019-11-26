@@ -403,6 +403,7 @@ audio-cache:
     max-persistence-age: 172800
 
 audio-ratelimit:
+    enabled: false
     ip-blocks:
         - '127.0.0.1/31'
         - '127.0.0.3/32'

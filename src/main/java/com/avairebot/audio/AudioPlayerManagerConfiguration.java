@@ -70,7 +70,9 @@ public class AudioPlayerManagerConfiguration implements Supplier<AudioPlayerMana
         log.debug("Creating new audio player manager instance");
 
         this.registerAudioSources(
-            buildRoutePlanner()
+            avaire.getConfig().getBoolean("audio-ratelimit.ip-blocks", false)
+                ? buildRoutePlanner()
+                : null
         );
     }
 
