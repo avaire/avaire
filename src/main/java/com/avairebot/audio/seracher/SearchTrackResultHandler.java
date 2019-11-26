@@ -32,10 +32,10 @@ import com.avairebot.database.transformers.SearchResultTransformer;
 import com.avairebot.metrics.Metrics;
 import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
-import com.sedmelluq.discord.lavaplayer.tools.RateLimitException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.BasicAudioPlaylist;
+import com.sedmelluq.lava.extensions.youtuberotator.tools.RateLimitException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

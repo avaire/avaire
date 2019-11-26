@@ -403,6 +403,69 @@ audio-cache:
     max-persistence-age: 172800
 
 #--------------------------------------------------------------------------
+# Audio Ratelimit (Advanced Music Settings)
+#--------------------------------------------------------------------------
+#
+# The audio ratelimiting feature can be used to help circumvent YouTubes
+# request restrictions on larger bots which might send a lot of
+# requests to YouTube for music every second/minute.
+#
+# The system uses a list of IP blocks to generate IPs that should be used for
+# outgoing requests, this means each request can have an unique IP attached
+# to it, or IPs being rotated when it gets banned, the selected strategy
+# will determine what IP is chosen, and whether IPs are re-used or not.
+#
+# This feature requires the server administrator to setup a link to the different
+# subnets they wish the bot to be able to bind with for requests, if the subnets
+# are not configured correctly with the machine, the bot won't be able to bind
+# correctly with the subnet. Thus, this feature should only be enabled if you
+# know what you're doing, music from YouTube will still work with this
+# feature disabled for smaller bots.
+#
+audio-ratelimit:
+
+    # Determines if the audio ratelimiting IP blocks should be used
+    # for outgoing audio requests.
+    #
+    enabled: false
+
+    # A list of IPs or subnets that should be used for audio related requests,
+    # the system will only support one type of IP at a time, so all the IPs
+    # in the block must be either IPv4 or IPv6 addresses, and not both
+    # in the same list.
+    #
+    ip-blocks:
+        - '127.0.0.1/31'
+        - '127.0.0.3/32'
+
+    # A list of IP addresses that should be excluded from being used to make
+    # audio requests, any IP will be ignored for requests and should
+    # never be ratelimited.
+    #
+    exclude-ips:
+        - '127.0.0.2'
+
+    # The ratelimit strategy determines how the bot should send requests to YouTube
+    # to prevent being ratelimited. Different strategies will use up the available
+    # IPs in various of different ways, the following strategies is available.
+    #
+    # LoadBalance
+    #     - Uses a random IP address for each outgoing request.
+    # NanoSwitch
+    #     - Requires a /64 IPv6 subnet, picks an address using a nano offset.
+    # RotateOnBan
+    #     - Rotates to a new IP each time the current address gets ratelimited.
+    # RotatingNanoSwitch
+    #     - Uses a combination of NanoSwitch and RotateOnBan.
+    #
+    strategy: 'NanoSwitch'
+
+    # Determines if a 429 error response code for search requests
+    # should mark an IP address as failing.
+    #
+    search-triggers-fail: true
+
+#--------------------------------------------------------------------------
 # Bot Access (Bot Administrators)
 #--------------------------------------------------------------------------
 #

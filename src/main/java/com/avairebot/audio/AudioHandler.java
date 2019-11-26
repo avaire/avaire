@@ -23,7 +23,6 @@ package com.avairebot.audio;
 
 import com.avairebot.AvaIre;
 import com.avairebot.audio.seracher.SearchProvider;
-import com.avairebot.audio.source.PlaylistImportSourceManager;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.transformers.GuildTransformer;
@@ -32,24 +31,13 @@ import com.avairebot.utilities.RestActionUtil;
 import com.avairebot.utilities.RoleUtil;
 import com.sedmelluq.discord.lavaplayer.player.AudioConfiguration;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
-import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
-import com.sedmelluq.discord.lavaplayer.source.bandcamp.BandcampAudioSourceManager;
-import com.sedmelluq.discord.lavaplayer.source.beam.BeamAudioSourceManager;
-import com.sedmelluq.discord.lavaplayer.source.http.HttpAudioSourceManager;
-import com.sedmelluq.discord.lavaplayer.source.local.LocalAudioSourceManager;
-import com.sedmelluq.discord.lavaplayer.source.soundcloud.SoundCloudAudioSourceManager;
-import com.sedmelluq.discord.lavaplayer.source.twitch.TwitchStreamAudioSourceManager;
-import com.sedmelluq.discord.lavaplayer.source.vimeo.VimeoAudioSourceManager;
-import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioSourceManager;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import lavalink.client.io.Link;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.*;
 import net.dv8tion.jda.core.managers.AudioManager;
-import org.apache.http.client.config.CookieSpecs;
-import org.apache.http.client.config.RequestConfig;
 
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nonnull;
@@ -88,7 +76,7 @@ public class AudioHandler {
 
     public AudioPlayerManager getPlayerManager() {
         if (playerManager == null) {
-            playerManager = registerSourceManagers(new DefaultAudioPlayerManager());
+            playerManager = new AudioPlayerManagerConfiguration(avaire).get();
 
             playerManager.getConfiguration().setResamplingQuality(
                 AudioConfiguration.ResamplingQuality.valueOf(
@@ -112,26 +100,6 @@ public class AudioHandler {
         }
 
         return playerManager;
-    }
-
-    public AudioPlayerManager registerSourceManagers(AudioPlayerManager manager) {
-        manager.registerSourceManager(new PlaylistImportSourceManager());
-
-        YoutubeAudioSourceManager youtubeAudioSourceManager = new YoutubeAudioSourceManager();
-        youtubeAudioSourceManager.configureRequests(config -> RequestConfig.copy(config)
-            .setCookieSpec(CookieSpecs.IGNORE_COOKIES)
-            .build());
-
-        manager.registerSourceManager(youtubeAudioSourceManager);
-        manager.registerSourceManager(new SoundCloudAudioSourceManager());
-        manager.registerSourceManager(new TwitchStreamAudioSourceManager());
-        manager.registerSourceManager(new BandcampAudioSourceManager());
-        manager.registerSourceManager(new VimeoAudioSourceManager());
-        manager.registerSourceManager(new BeamAudioSourceManager());
-        manager.registerSourceManager(new LocalAudioSourceManager());
-        manager.registerSourceManager(new HttpAudioSourceManager());
-
-        return manager;
     }
 
     @CheckReturnValue

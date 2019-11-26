@@ -25,7 +25,8 @@
 
 package com.avairebot.audio.source;
 
-import com.avairebot.audio.AudioHandler;
+import com.avairebot.AvaIre;
+import com.avairebot.audio.AudioPlayerManagerConfiguration;
 import com.avairebot.audio.queue.PlaylistInfo;
 import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
@@ -51,8 +52,7 @@ public class PlaylistImportSourceManager implements AudioSourceManager {
 
     private static final org.slf4j.Logger log = LoggerFactory.getLogger(PlaylistImportSourceManager.class);
 
-    private static final AudioPlayerManager privateManager = AudioHandler
-        .getDefaultAudioHandler().registerSourceManagers(new DefaultAudioPlayerManager());
+    private static final AudioPlayerManager privateManager = new AudioPlayerManagerConfiguration(AvaIre.getInstance()).get();
 
     @Override
     public String getSourceName() {
