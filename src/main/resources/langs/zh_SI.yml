@@ -470,6 +470,13 @@ fun:
         - "前景不太好"
         - "非常可疑"
 
+    HolidayCommand:
+        tooManyAttempts: "The Holiday API was hit too many times which shouldn't have been possible. D:"
+        notFound: "The Holiday API command could not retrieve any data for this request."
+        somethingWentWrong: "Something went wrong. Perhaps contact a bot administrator for help."
+        noHolidaysToday: "No holidays today...Get back to work!"
+        todayHoliday: "Today is {0}"
+
     MemeCommand:
         missingArgument: '丢失 `action` 数字, 您必须包括要为其生成模因的模因类型或用户，或 `list` 显示所有可用的模因类型.'
         invalidType: '给出的模因类型无效, `{0}` 不是有效的meme类型。!'

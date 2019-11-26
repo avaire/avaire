@@ -43,8 +43,6 @@ import org.slf4j.LoggerFactory;
 import javax.annotation.Nullable;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.Arrays;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.concurrent.TimeUnit;
@@ -154,101 +152,106 @@ public class SearchController {
     public static void cacheSearchResult(TrackRequestContext context, AudioPlaylist playlist) {
         cache.put(context.getFullQueryString(), new SearchResultTransformer(context, playlist));
 
+        final Carbon time = Carbon.now();
+
         try {
-            final Carbon time = Carbon.now();
-            final String insertBatchQuery = I18n.format(
+            // Creates the insert query using the proper formats
+            // and prepared values replaced into the query.
+            final String query = I18n.format(
                 "INSERT INTO `{0}` (`provider`, `query`, `result`, `created_at`) " +
-                    "SELECT * FROM (SELECT ?, ?, ?, ?) AS tmp " +
+                    "SELECT * FROM (SELECT {1}, {2}, {3}, {4}) AS tmp " +
                     "WHERE NOT EXISTS (" +
-                    " SELECT `provider`, `query` FROM `{0}` WHERE `provider` = ? AND `query` = ?" +
+                    " SELECT `provider`, `query` FROM `{0}` WHERE `provider` = {1} AND `query` = {2}" +
                     ") LIMIT 1;",
-                Constants.MUSIC_SEARCH_CACHE_TABLE_NAME
+                Constants.MUSIC_SEARCH_CACHE_TABLE_NAME,
+                context.getProvider().getId(),
+                prepareStringForQuery(context.getQuery()),
+                prepareStringForQuery("base64:" + new String(
+                    Base64.getEncoder().encode(
+                        new SearchResultTransformer.SerializableAudioPlaylist(playlist)
+                            .toString().getBytes()
+                    )
+                )),
+                prepareStringForQuery(time.toString())
             );
 
-            try (PreparedStatement statement = AvaIre.getInstance().getDatabase().getConnection().getConnection().prepareStatement(insertBatchQuery)) {
-                String serializedAudioPlaylist = new SearchResultTransformer.SerializableAudioPlaylist(playlist).toString();
+            AvaIre.getInstance().getDatabase().queryUpdate(query);
+        } catch (SQLException e) {
+            log.error("Failed to create audio track record for query \"{}\" using provider {}, error: {}",
+                context.getQuery(), context.getProvider().name(), e.getMessage(), e
+            );
+        }
 
-                // Sets the search provider
-                statement.setInt(1, context.getProvider().getId());
-                statement.setInt(5, context.getProvider().getId());
-                // Sets the search query
-                statement.setString(2, context.getQuery());
-                statement.setString(6, context.getQuery());
+        if (!context.getProvider().isSearchable()) {
+            return;
+        }
 
-                statement.setString(3, "base64:" + new String(
-                    Base64.getEncoder().encode(serializedAudioPlaylist.getBytes())
-                ));
-                statement.setString(4, time.toString());
+        ScheduleHandler.getScheduler().submit(() -> {
+            try {
+                AvaIre.getInstance().getDatabase().queryBatch(I18n.format(
+                    "INSERT INTO `{0}` (`provider`, `query`, `result`, `created_at`) " +
+                        "SELECT * FROM (SELECT ?, ?, ?, ?) AS tmp " +
+                        "WHERE NOT EXISTS (" +
+                        " SELECT `provider`, `query` FROM `{0}` WHERE `provider` = ? AND `query` = ?" +
+                        ") LIMIT 1;",
+                    Constants.MUSIC_SEARCH_CACHE_TABLE_NAME
+                ), (PreparedStatement statement) -> {
+                    for (AudioTrack track : playlist.getTracks()) {
+                        BasicAudioPlaylist audioPlaylist = new BasicAudioPlaylist(
+                            track.getInfo().title,
+                            Collections.singletonList(track),
+                            null,
+                            false
+                        );
 
-                AvaIre.getInstance().getDatabase().queryUpdate(
-                    statement.toString().split(": ")[1]
+                        String serializedAudioPlaylist = new SearchResultTransformer.SerializableAudioPlaylist(audioPlaylist).toString();
+
+                        // Sets the search provider
+                        statement.setInt(1, SearchProvider.URL.getId());
+                        statement.setInt(5, SearchProvider.URL.getId());
+                        // Sets the search query
+                        statement.setString(2, track.getInfo().uri);
+                        statement.setString(6, track.getInfo().uri);
+
+                        statement.setString(3, "base64:" + new String(
+                            Base64.getEncoder().encode(serializedAudioPlaylist.getBytes())
+                        ));
+                        statement.setString(4, time.toString());
+
+                        statement.addBatch();
+                    }
+                });
+            } catch (SQLException e) {
+                log.error("Failed to batch create {} audio tracks for query \"{}\" using provider {}, error: {}",
+                    playlist.getTracks().size(), context.getQuery(), context.getProvider().name(), e.getMessage(), e
                 );
             }
-
-            if (!context.getProvider().isSearchable()) {
-                return;
-            }
-
-            ScheduleHandler.getScheduler().submit(() -> {
-                try {
-                    AvaIre.getInstance().getDatabase().queryBatch(insertBatchQuery, (PreparedStatement statement) -> {
-                        for (AudioTrack track : playlist.getTracks()) {
-                            BasicAudioPlaylist audioPlaylist = new BasicAudioPlaylist(
-                                track.getInfo().title,
-                                Collections.singletonList(track),
-                                null,
-                                false
-                            );
-
-                            String serializedAudioPlaylist = new SearchResultTransformer.SerializableAudioPlaylist(audioPlaylist).toString();
-
-                            // Sets the search provider
-                            statement.setInt(1, SearchProvider.URL.getId());
-                            statement.setInt(5, SearchProvider.URL.getId());
-                            // Sets the search query
-                            statement.setString(2, track.getInfo().uri);
-                            statement.setString(6, track.getInfo().uri);
-
-                            statement.setString(3, "base64:" + new String(
-                                Base64.getEncoder().encode(serializedAudioPlaylist.getBytes())
-                            ));
-                            statement.setString(4, time.toString());
-
-                            statement.addBatch();
-                        }
-                    });
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            });
-        } catch (SQLException e) {
-            // This will never be thrown since we're using an Async query.
-        }
+        });
     }
 
+    @SuppressWarnings("StringBufferReplaceableByString")
     private static String createUpdateLookupQueryFromContext(TrackRequestContext context) throws SQLException {
-        String base = AvaIre.getInstance().getDatabase().newQueryBuilder(Constants.MUSIC_SEARCH_CACHE_TABLE_NAME)
-            .toSQL(Database.QueryType.UPDATE);
+        StringBuilder updateQuery = new StringBuilder(StringUtils.chop(
+            AvaIre.getInstance().getDatabase().newQueryBuilder(Constants.MUSIC_SEARCH_CACHE_TABLE_NAME)
+                .toSQL(Database.QueryType.UPDATE)
+        ));
 
-        String query = StringUtils.chop(base) +
-            " `last_lookup_at` = ? WHERE `provider` = ? AND `query` = ?;";
+        updateQuery
+            .append(" `last_lookup_at` = ")
+            .append(Carbon.now().getTimestamp() * 1000L);
 
-        try (PreparedStatement statement = AvaIre.getInstance().getDatabase().getConnection().getConnection().prepareStatement(query)) {
-            statement.setTimestamp(1, new Timestamp(
-                Carbon.now().getTimestamp() * 1000L
-            ));
-            statement.setLong(2, context.getProvider().getId());
-            statement.setString(3, context.getProvider().isSearchable()
+        updateQuery
+            .append(" WHERE `provider` = ")
+            .append(context.getProvider().getId());
+
+        updateQuery
+            .append(" AND `query` = ")
+            .append(prepareStringForQuery(context.getProvider().isSearchable()
                 ? context.getQuery().toLowerCase().trim()
                 : context.getQuery()
-            );
-
-            String[] parts = statement.toString().split(" ");
-
-            return String.join(" ", Arrays.copyOfRange(
-                parts, 1, parts.length
             ));
-        }
+
+        return updateQuery.toString();
     }
 
     @SuppressWarnings("ConstantConditions")
@@ -258,29 +261,22 @@ public class SearchController {
             .toSQL();
 
         StringBuilder query = new StringBuilder(StringUtils.chop(base))
-            .append(" AND `query` = ?");
-
-        if (maxCacheAgeInMilis > 0) {
-            query.append(" AND `last_lookup_at` > ?");
-        }
-
-        try (PreparedStatement statement = AvaIre.getInstance().getDatabase().getConnection().getConnection().prepareStatement(query.toString())) {
-            statement.setString(1, context.getProvider().isSearchable()
+            .append(" AND `query` = ")
+            .append(prepareStringForQuery(context.getProvider().isSearchable()
                 ? context.getQuery().toLowerCase().trim()
                 : context.getQuery()
-            );
-
-            if (maxCacheAgeInMilis > 0) {
-                statement.setTimestamp(2, new Timestamp(
-                    (Carbon.now().getTimestamp() * 1000L) - maxCacheAgeInMilis
-                ));
-            }
-
-            String[] parts = statement.toString().split(" ");
-
-            return String.join(" ", Arrays.copyOfRange(
-                parts, 1, parts.length
             ));
+
+        if (maxCacheAgeInMilis > 0) {
+            query
+                .append(" AND `last_lookup_at` > ")
+                .append((Carbon.now().getTimestamp() * 1000L) - maxCacheAgeInMilis);
         }
+
+        return query.toString();
+    }
+
+    private static String prepareStringForQuery(String str) {
+        return I18n.format("'{0}'", str.replaceAll("'", "\\\\'"));
     }
 }

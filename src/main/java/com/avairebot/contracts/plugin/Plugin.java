@@ -25,7 +25,7 @@ import com.avairebot.plugin.PluginRepository;
 
 import java.util.List;
 
-public interface Translator {
+public interface Plugin {
 
     /**
      * Gets the name of the plugin.

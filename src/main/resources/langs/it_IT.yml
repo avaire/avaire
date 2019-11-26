@@ -471,6 +471,13 @@ fun:
             - 'Le prospettive non sono buone'
             - 'Molto incerto'
 
+    HolidayCommand:
+        tooManyAttempts: "The Holiday API was hit too many times which shouldn't have been possible. D:"
+        notFound: "The Holiday API command could not retrieve any data for this request."
+        somethingWentWrong: "Something went wrong. Perhaps contact a bot administrator for help."
+        noHolidaysToday: "No holidays today...Get back to work!"
+        todayHoliday: "Today is {0}"
+
     MemeCommand:
         missingArgument: "Argomento mancante `action`, è necessario includere il tipo di meme o l'utente per il quale si desidera generare un meme, o `list` per visualizzare tutti i tipi di meme disponibili."
         invalidType: 'Tipo di meme non valido, `{0}` non è un tipo di meme valido!'

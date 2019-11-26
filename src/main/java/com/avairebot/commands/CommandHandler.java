@@ -362,6 +362,29 @@ public class CommandHandler {
     }
 
     /**
+     * Unregisters the given command class from the command register.
+     *
+     * @param commandClass The command class that should be unregistered.
+     * @return {@code True} if the command was unregistered successfully,
+     *         {@code False} if the command is not registered.
+     */
+    public static boolean unregister(@Nonnull Class<? extends Command> commandClass) {
+        synchronized (COMMANDS) {
+            Iterator<CommandContainer> iterator = COMMANDS.iterator();
+
+            while (iterator.hasNext()) {
+                CommandContainer container = iterator.next();
+                if (container.getCommand().getClass().getTypeName().equals(commandClass.getTypeName())) {
+                    iterator.remove();
+
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
      * Gets a collection of all the commands
      * registered into the command handler.
      *
