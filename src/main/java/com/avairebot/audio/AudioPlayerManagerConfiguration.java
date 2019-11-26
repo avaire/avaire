@@ -59,10 +59,23 @@ public class AudioPlayerManagerConfiguration implements Supplier<AudioPlayerMana
     private final AvaIre avaire;
     private final AudioPlayerManager audioPlayerManager;
 
+    /**
+     * Creates a new audio player manager configuration instance
+     * with a default audio player manager.
+     *
+     * @param avaire The main AvaIre application instance.
+     */
     public AudioPlayerManagerConfiguration(AvaIre avaire) {
         this(avaire, new DefaultAudioPlayerManager());
     }
 
+    /**
+     * Creates a new audio player manager configuration instance
+     * using the given audio player manager instance.
+     *
+     * @param avaire             The main AvaIre application instance.
+     * @param audioPlayerManager The audio player manager that should be configured.
+     */
     public AudioPlayerManagerConfiguration(AvaIre avaire, AudioPlayerManager audioPlayerManager) {
         this.avaire = avaire;
         this.audioPlayerManager = audioPlayerManager;
@@ -81,6 +94,12 @@ public class AudioPlayerManagerConfiguration implements Supplier<AudioPlayerMana
         return audioPlayerManager;
     }
 
+    /**
+     * Registers the audio sources that the audio player manager should support.
+     *
+     * @param routePlanner The route planner that should be used for YouTube
+     *                     related music requests, or {@code NULL}
+     */
     private void registerAudioSources(AbstractRoutePlanner routePlanner) {
         audioPlayerManager.registerSourceManager(new PlaylistImportSourceManager());
 
@@ -105,6 +124,13 @@ public class AudioPlayerManagerConfiguration implements Supplier<AudioPlayerMana
         audioPlayerManager.registerSourceManager(new HttpAudioSourceManager());
     }
 
+    /**
+     * Builds the router planner that should be used for YouTube related requests.
+     *
+     * @return The selected router planner strategy instance, or {@code NULL}
+     *         if no valid IP subnets have been provided, or an invalid
+     *         strategy was given.
+     */
     private AbstractRoutePlanner buildRoutePlanner() {
         List<IpBlock> ipBlocks = new ArrayList<>();
 
@@ -123,6 +149,9 @@ public class AudioPlayerManagerConfiguration implements Supplier<AudioPlayerMana
             return null;
         }
 
+        // Creates the predicate IP filter for IP addresses within the selected
+        // subnets that should not be used, this completely excludes the IPs
+        // from being used for audio requests.
         List<InetAddress> excludedAddresses = getExcludedAddresses();
         Predicate<InetAddress> filter = inetAddress -> {
             return !excludedAddresses.contains(inetAddress);
@@ -156,6 +185,12 @@ public class AudioPlayerManagerConfiguration implements Supplier<AudioPlayerMana
         }
     }
 
+    /**
+     * Gets the excluded IP addresses that should ignored from
+     * the subnets when getting an IP for a request.
+     *
+     * @return The list of IP addresses to ignore/exclude for searches.
+     */
     private List<InetAddress> getExcludedAddresses() {
         List<InetAddress> excludedAddresses = new ArrayList<>();
 
@@ -170,7 +205,12 @@ public class AudioPlayerManagerConfiguration implements Supplier<AudioPlayerMana
         return excludedAddresses;
     }
 
+    /**
+     * Gets the rate limit strategy that should be used as the router planner.
+     *
+     * @return The selected rate limit strategy.
+     */
     private String getRatelimitStrategy() {
-        return avaire.getConfig().getString("audio-ratelimit.strategy").trim();
+        return avaire.getConfig().getString("audio-ratelimit.strategy", "unknown").trim();
     }
 }
