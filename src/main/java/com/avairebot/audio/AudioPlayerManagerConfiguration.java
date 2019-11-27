@@ -104,14 +104,15 @@ public class AudioPlayerManagerConfiguration implements Supplier<AudioPlayerMana
         audioPlayerManager.registerSourceManager(new PlaylistImportSourceManager());
 
         YoutubeAudioSourceManager youtubeAudioSourceManager = new YoutubeAudioSourceManager();
-        youtubeAudioSourceManager.configureRequests(config -> RequestConfig.copy(config)
-            .setCookieSpec(CookieSpecs.IGNORE_COOKIES)
-            .build());
 
         if (routePlanner != null) {
             new YoutubeIpRotatorSetup(routePlanner)
                 .forSource(youtubeAudioSourceManager)
                 .setup();
+        } else {
+            youtubeAudioSourceManager.configureRequests(config -> RequestConfig.copy(config)
+                .setCookieSpec(CookieSpecs.IGNORE_COOKIES)
+                .build());
         }
 
         audioPlayerManager.registerSourceManager(youtubeAudioSourceManager);
