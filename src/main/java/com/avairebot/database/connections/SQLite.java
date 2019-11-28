@@ -29,6 +29,7 @@ import com.avairebot.database.exceptions.DatabaseException;
 import com.avairebot.database.grammar.sqlite.*;
 import com.avairebot.database.query.QueryBuilder;
 import com.avairebot.database.schema.Blueprint;
+import com.avairebot.language.I18n;
 import com.avairebot.metrics.Metrics;
 
 import javax.annotation.Nonnull;
@@ -101,6 +102,11 @@ public class SQLite extends FilenameDatabase {
     @Override
     protected void queryValidation(StatementInterface paramStatement) throws SQLException {
         // This does nothing for SQLite
+    }
+
+    @Override
+    public String prepareDataValueString(String str) {
+        return I18n.format("'{0}'", str.replaceAll("'", "''"));
     }
 
     @Override
