@@ -56,6 +56,11 @@ public class FakeMySQLConnection extends FilenameDatabase {
     }
 
     @Override
+    public String prepareDataValueString(String str) {
+        return null;
+    }
+
+    @Override
     public boolean open() throws SQLException {
         return false;
     }
