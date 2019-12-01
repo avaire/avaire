@@ -31,7 +31,6 @@ import com.avairebot.database.transformers.SearchResultTransformer;
 import com.avairebot.language.I18n;
 import com.avairebot.scheduler.ScheduleHandler;
 import com.avairebot.time.Carbon;
-import com.avairebot.utilities.NumberUtil;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
@@ -165,7 +164,7 @@ public class SearchController {
                     " SELECT `provider`, `query` FROM `{0}` WHERE `provider` = {1} AND `query` = {2}" +
                     ") LIMIT 1;",
                 Constants.MUSIC_SEARCH_CACHE_TABLE_NAME,
-                context.getProvider().getId(),
+                prepareStringForQuery(String.valueOf(context.getProvider().getId())),
                 prepareStringForQuery(context.getQuery()),
                 prepareStringForQuery("base64:" + new String(
                     Base64.getEncoder().encode(
@@ -243,7 +242,7 @@ public class SearchController {
 
         updateQuery
             .append(" WHERE `provider` = ")
-            .append(context.getProvider().getId());
+            .append(prepareStringForQuery(String.valueOf(context.getProvider().getId())));
 
         updateQuery
             .append(" AND `query` = ")
@@ -277,10 +276,7 @@ public class SearchController {
         return query.toString();
     }
 
-    private static String prepareStringForQuery(String str) {
-        if (NumberUtil.isNumeric(str)) {
-            return str;
-        }
-        return I18n.format("'{0}'", str.replaceAll("'", "\\\\'"));
+    private static String prepareStringForQuery(String str) throws SQLException {
+        return AvaIre.getInstance().getDatabase().getConnection().prepareDataValueString(str);
     }
 }

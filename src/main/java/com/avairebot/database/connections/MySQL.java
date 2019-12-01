@@ -28,6 +28,8 @@ import com.avairebot.database.DatabaseManager;
 import com.avairebot.database.grammar.mysql.*;
 import com.avairebot.database.query.QueryBuilder;
 import com.avairebot.database.schema.Blueprint;
+import com.avairebot.language.I18n;
+import com.avairebot.utilities.NumberUtil;
 
 import javax.annotation.Nonnull;
 import java.sql.*;
@@ -127,6 +129,14 @@ public class MySQL extends HostnameDatabase {
                 AvaIre.getLogger().error("Please use the prepare() method to prepare a query.", exception);
                 throw exception;
         }
+    }
+
+    @Override
+    public String prepareDataValueString(String str) {
+        if (NumberUtil.isNumeric(str)) {
+            return str;
+        }
+        return I18n.format("'{0}'", str.replaceAll("'", "\\\\\'"));
     }
 
     @Override

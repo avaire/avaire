@@ -135,7 +135,7 @@ public class GoodbyeMessageCommand extends ChannelModuleCommand {
             }
         }
 
-        channelTransformer.getGoodbye().setMessage(args.length == 0 ? null : String.join(" ", args));
+        channelTransformer.getGoodbye().setMessage(args.length == 0 ? null : context.getContentRaw());
 
         return updateDatabase(context, guildTransformer, () -> {
             if (channelTransformer.getGoodbye().getMessage() == null) {

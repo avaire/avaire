@@ -24,7 +24,7 @@ package com.avairebot.requests.service;
 import java.util.List;
 
 public class HolidayService {
-    
+
     private List<Holiday> holidays;
     private String error;
 

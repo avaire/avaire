@@ -114,6 +114,16 @@ public abstract class Database implements DatabaseConnection, Grammarable {
     protected abstract void queryValidation(StatementInterface paramStatement) throws SQLException;
 
     /**
+     * Prepares the given string value to be used as a value for queries,
+     * this is useful for formatting a string so it's safe for queries
+     * when prepared statements might not be an option.
+     *
+     * @param str The string that should be prepared.
+     * @return The fully formatted queryable string.
+     */
+    public abstract String prepareDataValueString(String str);
+
+    /**
      * Attempts to close the database connection.
      *
      * @return either (1) <code>TRUE</code> if the database connection was closed successfully
