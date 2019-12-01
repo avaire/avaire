@@ -30,9 +30,9 @@ import com.avairebot.utilities.MentionableUtil;
 import com.avairebot.utilities.NumberUtil;
 import com.avairebot.utilities.RestActionUtil;
 import com.avairebot.utilities.RoleUtil;
-import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.Role;
-import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Role;
+import net.dv8tion.jda.api.entities.User;
 
 import java.util.Arrays;
 
@@ -94,7 +94,7 @@ public abstract class BanableCommand extends Command {
     private boolean banUserById(AvaIre avaire, Command command, CommandMessage context, long userId, String[] args, boolean soft) {
         String reason = generateReason(args);
 
-        context.getGuild().getController().ban(String.valueOf(userId), soft ? 0 : 7, String.format("%s - %s#%s (%s)",
+        context.getGuild().ban(String.valueOf(userId), soft ? 0 : 7, String.format("%s - %s#%s (%s)",
             reason,
             context.getAuthor().getName(),
             context.getAuthor().getDiscriminator(),
@@ -146,7 +146,7 @@ public abstract class BanableCommand extends Command {
 
         Modlog.notifyUser(user, context.getGuild(), modlogAction, caseId);
 
-        context.getGuild().getController().ban(user, soft ? 0 : 7, String.format("%s - %s#%s (%s)",
+        context.getGuild().ban(user, soft ? 0 : 7, String.format("%s - %s#%s (%s)",
             reason,
             context.getAuthor().getName(),
             context.getAuthor().getDiscriminator(),

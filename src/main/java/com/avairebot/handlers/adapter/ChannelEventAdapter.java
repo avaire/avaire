@@ -28,9 +28,9 @@ import com.avairebot.database.collection.Collection;
 import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.controllers.ReactionController;
 import com.avairebot.database.transformers.GuildTransformer;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.events.channel.text.TextChannelDeleteEvent;
-import net.dv8tion.jda.core.events.channel.voice.VoiceChannelDeleteEvent;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.events.channel.text.TextChannelDeleteEvent;
+import net.dv8tion.jda.api.events.channel.voice.VoiceChannelDeleteEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

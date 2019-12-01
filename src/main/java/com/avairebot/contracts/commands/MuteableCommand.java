@@ -23,7 +23,7 @@ package com.avairebot.contracts.commands;
 
 import com.avairebot.AvaIre;
 import com.avairebot.database.transformers.GuildTransformer;
-import net.dv8tion.jda.core.entities.Role;
+import net.dv8tion.jda.api.entities.Role;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

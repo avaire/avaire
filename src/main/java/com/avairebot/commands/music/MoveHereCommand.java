@@ -28,7 +28,7 @@ import com.avairebot.audio.VoiceConnectStatus;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.utilities.RestActionUtil;
-import net.dv8tion.jda.core.entities.VoiceChannel;
+import net.dv8tion.jda.api.entities.VoiceChannel;
 
 import java.util.Arrays;
 import java.util.Collections;

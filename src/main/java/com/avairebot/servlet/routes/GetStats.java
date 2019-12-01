@@ -25,7 +25,7 @@ import com.avairebot.AppInfo;
 import com.avairebot.AvaIre;
 import com.avairebot.GitInfo;
 import com.avairebot.contracts.metrics.SparkRoute;
-import net.dv8tion.jda.core.JDA;
+import net.dv8tion.jda.api.JDA;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import spark.Request;
@@ -79,7 +79,7 @@ public class GetStats extends SparkRoute {
                 .put("users", shard.getUsers().size())
                 .put("status", shard.getStatus())
                 .put("channels", (shard.getTextChannels().size() + shard.getVoiceChannels().size()))
-                .put("latency", shard.getPing());
+                .put("latency", shard.getGatewayPing());
 
             shards.put(stats);
         }

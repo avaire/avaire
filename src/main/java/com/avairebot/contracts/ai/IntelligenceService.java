@@ -23,7 +23,7 @@ package com.avairebot.contracts.ai;
 
 import com.avairebot.AvaIre;
 import com.avairebot.handlers.DatabaseEventHolder;
-import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.api.entities.Message;
 
 public interface IntelligenceService {
 

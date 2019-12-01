@@ -26,7 +26,7 @@ import com.avairebot.Constants;
 import com.avairebot.contracts.scheduler.Job;
 import com.avairebot.database.collection.Collection;
 import com.avairebot.database.collection.DataRow;
-import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.api.entities.Guild;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -31,8 +31,8 @@ import lavalink.client.io.jda.JdaLink;
 import lavalink.client.io.metrics.LavalinkCollector;
 import lavalink.client.player.IPlayer;
 import lavalink.client.player.LavaplayerPlayerWrapper;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.VoiceChannel;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.VoiceChannel;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

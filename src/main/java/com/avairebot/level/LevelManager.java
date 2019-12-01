@@ -30,19 +30,18 @@ import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.database.transformers.PlayerTransformer;
 import com.avairebot.factories.MessageFactory;
 import com.avairebot.language.I18n;
-import com.avairebot.scheduler.ScheduleHandler;
 import com.avairebot.utilities.CacheUtil;
 import com.avairebot.utilities.NumberUtil;
 import com.avairebot.utilities.RandomUtil;
 import com.avairebot.utilities.RoleUtil;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import net.dv8tion.jda.core.Permission;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.Role;
-import net.dv8tion.jda.core.entities.TextChannel;
-import net.dv8tion.jda.core.entities.User;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.Role;
+import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -343,54 +342,26 @@ public class LevelManager {
                     return;
                 }
 
-                List<Role> roles = getRoleRewards(message, guild, newLevel);
-                if (roles.isEmpty()) {
+                List<Role> rolesToAdd = getRoleRewards(message, guild, newLevel);
+                if (rolesToAdd.isEmpty()) {
                     return;
                 }
 
                 Role highestRole = RoleUtil.getHighestFrom(message.getGuild().getSelfMember());
-                if (highestRole == null || !RoleUtil.isRoleHierarchyHigher(roles, highestRole)) {
+                if (highestRole == null || !RoleUtil.isRoleHierarchyHigher(rolesToAdd, highestRole)) {
                     return;
                 }
 
-                message.getGuild().getController().addRolesToMember(message.getMember(), roles).queue(aVoid -> {
-                    if (!guild.isLevelHierarchy()) {
-                        return;
-                    }
+                List<Role> rolesToRemove = null;
+                if (guild.isLevelHierarchy()) {
+                    Role highestAddRole = rolesToAdd.get(rolesToAdd.size() - 1);
+                    rolesToAdd.remove(rolesToAdd.size() - 1);
 
+                    rolesToRemove = new ArrayList<>(rolesToAdd);
+                    rolesToAdd = Collections.singletonList(highestAddRole);
+                }
 
-                    List<Integer> levelKeys = new ArrayList<>(guild.getLevelRoles().keySet());
-                    Collections.sort(levelKeys);
-                    Collections.reverse(levelKeys);
-
-                    List<Role> rolesToRemove = new ArrayList<>(roles);
-
-                    for (int roleLevel : levelKeys) {
-                        String roleId = guild.getLevelRoles().get(roleLevel);
-                        if (roleId == null) {
-                            // This should never be hit... Ever, better to be safe than sorry tho.
-                            continue;
-                        }
-
-                        Role roleToRemove = null;
-                        for (Role role : rolesToRemove) {
-                            if (role.getId().equals(roleId)) {
-                                roleToRemove = role;
-                            }
-                        }
-
-                        if (roleToRemove != null) {
-                            rolesToRemove.remove(roleToRemove);
-                            break;
-                        }
-                    }
-
-                    if (!rolesToRemove.isEmpty()) {
-                        ScheduleHandler.getScheduler().schedule(() -> {
-                            message.getGuild().getController().removeRolesFromMember(message.getMember(), rolesToRemove).queue();
-                        }, 500, TimeUnit.MILLISECONDS);
-                    }
-                });
+                message.getGuild().modifyMemberRoles(message.getMember(), rolesToAdd, rolesToRemove).queue();
             }
         }
     }

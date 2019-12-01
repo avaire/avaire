@@ -30,8 +30,8 @@ import com.avairebot.middleware.permission.PermissionCommon;
 import com.avairebot.middleware.permission.PermissionType;
 import com.avairebot.permissions.Permissions;
 import com.avairebot.utilities.RestActionUtil;
-import net.dv8tion.jda.core.Permission;
-import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.Message;
 
 import javax.annotation.Nonnull;
 import java.util.Arrays;

@@ -31,9 +31,9 @@ import com.avairebot.utilities.ComparatorUtil;
 import com.avairebot.utilities.MentionableUtil;
 import com.avairebot.utilities.NumberUtil;
 import com.avairebot.utilities.RestActionUtil;
-import net.dv8tion.jda.core.entities.Channel;
-import net.dv8tion.jda.core.entities.ChannelType;
-import net.dv8tion.jda.core.entities.TextChannel;
+import net.dv8tion.jda.api.entities.ChannelType;
+import net.dv8tion.jda.api.entities.GuildChannel;
+import net.dv8tion.jda.api.entities.TextChannel;
 
 import javax.annotation.Nonnull;
 import java.util.Arrays;
@@ -104,7 +104,7 @@ public class SlowmodeCommand extends Command {
             return sendErrorMessage(context, context.i18n("missingArgument"));
         }
 
-        Channel channel = MentionableUtil.getChannel(context.getMessage(), args);
+        GuildChannel channel = MentionableUtil.getChannel(context.getMessage(), args);
         if (channel == null) {
             return handleSlowmode(context, context.getChannel(), args);
         }

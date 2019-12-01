@@ -25,7 +25,7 @@ import com.avairebot.AvaIre;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.SystemCommand;
 import com.avairebot.utilities.NumberUtil;
-import net.dv8tion.jda.core.entities.ChannelType;
+import net.dv8tion.jda.api.entities.ChannelType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

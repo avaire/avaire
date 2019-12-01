@@ -24,8 +24,10 @@ package com.avairebot.handlers;
 import com.avairebot.AvaIre;
 import com.avairebot.contracts.handlers.EventHandler;
 import com.avairebot.plugin.PluginLoader;
-import net.dv8tion.jda.core.events.Event;
-import net.dv8tion.jda.core.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.events.GenericEvent;
+import net.dv8tion.jda.api.hooks.ListenerAdapter;
+
+import javax.annotation.Nonnull;
 
 public class PluginEventHandler extends EventHandler {
 
@@ -39,7 +41,7 @@ public class PluginEventHandler extends EventHandler {
     }
 
     @Override
-    public void onGenericEvent(Event event) {
+    public void onGenericEvent(@Nonnull GenericEvent event) {
         for (PluginLoader plugin : avaire.getPluginManager().getPlugins()) {
             for (ListenerAdapter listener : plugin.getEventListeners()) {
                 listener.onEvent(event);

@@ -33,8 +33,8 @@ import com.avairebot.contracts.middleware.Middleware;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.factories.MessageFactory;
 import com.avairebot.language.I18n;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.Role;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.Role;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

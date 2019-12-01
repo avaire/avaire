@@ -34,9 +34,9 @@ import com.avairebot.database.transformers.GuildTypeTransformer;
 import com.avairebot.database.transformers.ReactionTransformer;
 import com.avairebot.utilities.RestActionUtil;
 import com.avairebot.utilities.RoleUtil;
-import net.dv8tion.jda.core.entities.Emote;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.Role;
+import net.dv8tion.jda.api.entities.Emote;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.Role;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

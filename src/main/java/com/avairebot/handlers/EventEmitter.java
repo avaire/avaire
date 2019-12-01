@@ -24,9 +24,9 @@ package com.avairebot.handlers;
 import com.avairebot.AvaIre;
 import com.avairebot.contracts.handlers.EventListener;
 import com.avairebot.plugin.PluginLoader;
-import net.dv8tion.jda.core.events.Event;
-import net.dv8tion.jda.core.hooks.ListenerAdapter;
-import net.dv8tion.jda.core.utils.Checks;
+import net.dv8tion.jda.api.events.Event;
+import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.internal.utils.Checks;
 
 public class EventEmitter {
 

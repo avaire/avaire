@@ -29,10 +29,10 @@ import com.avairebot.contracts.scheduler.Task;
 import com.avairebot.language.I18n;
 import lavalink.client.io.LavalinkSocket;
 import lavalink.client.io.jda.JdaLink;
-import net.dv8tion.jda.core.JDA;
-import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.VoiceChannel;
-import net.dv8tion.jda.core.managers.AudioManager;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.VoiceChannel;
+import net.dv8tion.jda.api.managers.AudioManager;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;

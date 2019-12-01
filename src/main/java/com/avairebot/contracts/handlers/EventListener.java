@@ -25,11 +25,11 @@ import com.avairebot.handlers.events.ApplicationShutdownEvent;
 import com.avairebot.handlers.events.ModlogActionEvent;
 import com.avairebot.handlers.events.MusicEndedEvent;
 import com.avairebot.handlers.events.NowPlayingEvent;
-import net.dv8tion.jda.core.events.Event;
-import net.dv8tion.jda.core.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.events.Event;
+import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 @SuppressWarnings({"WeakerAccess", "unused"})
-public abstract class EventListener extends ListenerAdapter implements net.dv8tion.jda.core.hooks.EventListener {
+public abstract class EventListener extends ListenerAdapter implements net.dv8tion.jda.api.hooks.EventListener {
 
     /**
      * The modlog actionable event will be called when a modlog action is

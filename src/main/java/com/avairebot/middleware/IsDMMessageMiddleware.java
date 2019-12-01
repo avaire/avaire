@@ -24,7 +24,7 @@ package com.avairebot.middleware;
 import com.avairebot.AvaIre;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.middleware.Middleware;
-import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.api.entities.Message;
 
 import javax.annotation.Nonnull;
 

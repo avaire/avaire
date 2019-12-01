@@ -23,7 +23,7 @@ package com.avairebot.servlet.routes;
 
 import com.avairebot.AvaIre;
 import com.avairebot.contracts.metrics.SparkRoute;
-import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.api.entities.Guild;
 import org.json.JSONObject;
 import spark.Request;
 import spark.Response;

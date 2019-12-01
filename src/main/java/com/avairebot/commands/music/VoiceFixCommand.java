@@ -29,9 +29,9 @@ import com.avairebot.contracts.commands.CommandGroup;
 import com.avairebot.contracts.commands.CommandGroups;
 import com.avairebot.shared.DiscordConstants;
 import com.avairebot.utilities.RandomUtil;
-import net.dv8tion.jda.core.Region;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.MessageEmbed;
+import net.dv8tion.jda.api.Region;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

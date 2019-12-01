@@ -25,8 +25,8 @@ import ai.api.model.AIResponse;
 import com.avairebot.AvaIre;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.ai.Intent;
-import net.dv8tion.jda.core.OnlineStatus;
-import net.dv8tion.jda.core.entities.Member;
+import net.dv8tion.jda.api.OnlineStatus;
+import net.dv8tion.jda.api.entities.Member;
 
 @SuppressWarnings("unused")
 public class RequestOnlinePlayers extends Intent {
