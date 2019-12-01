@@ -64,7 +64,7 @@ public class ResetStatusTypesCommand extends SystemCommand {
     @Override
     public List<String> getUsageInstructions() {
         return Collections.singletonList(
-            "`:command <game>` - Resets the server status types."
+            "`:command <status>` - Resets the server status types."
         );
     }
 
