@@ -116,7 +116,7 @@ public class AudioPlayerManagerConfiguration implements Supplier<AudioPlayerMana
         }
 
         audioPlayerManager.registerSourceManager(youtubeAudioSourceManager);
-        audioPlayerManager.registerSourceManager(new SoundCloudAudioSourceManager());
+        audioPlayerManager.registerSourceManager(SoundCloudAudioSourceManager.createDefault());
         audioPlayerManager.registerSourceManager(new TwitchStreamAudioSourceManager());
         audioPlayerManager.registerSourceManager(new BandcampAudioSourceManager());
         audioPlayerManager.registerSourceManager(new VimeoAudioSourceManager());
