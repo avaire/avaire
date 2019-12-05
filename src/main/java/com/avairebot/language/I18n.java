@@ -132,9 +132,6 @@ public class I18n {
      */
     @Nonnull
     public static YamlConfiguration get(@Nullable Guild guild) {
-        if (guild == null) {
-            return defaultLanguage.getConfig();
-        }
         return getLocale(guild).getConfig();
     }
 
@@ -150,7 +147,11 @@ public class I18n {
      *         container if the given guild doesn't have a valid language selected.
      */
     @Nonnull
-    public static LanguageContainer getLocale(@Nonnull Guild guild) {
+    public static LanguageContainer getLocale(@Nullable Guild guild) {
+        if (guild == null) {
+            return defaultLanguage;
+        }
+
         try {
             GuildTransformer transformer = GuildController.fetchGuild(avaire, guild);
 
