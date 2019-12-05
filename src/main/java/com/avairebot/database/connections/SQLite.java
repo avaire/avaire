@@ -106,7 +106,14 @@ public class SQLite extends FilenameDatabase {
 
     @Override
     public String prepareDataValueString(String str) {
-        return I18n.format("'{0}'", str.replaceAll("'", "''"));
+        return I18n.format("'{0}'", str
+            .replaceAll("\\\\", "\\\\\\\\\\\\")
+            .replaceAll("\\n", "\\\\\\\\n")
+            .replaceAll("\\r", "\\\\\\\\r")
+            .replaceAll("\\t", "\\\\\\\\t")
+            .replaceAll("\\00", "\\\\\\\\00")
+            .replaceAll("'", "''")
+        );
     }
 
     @Override
