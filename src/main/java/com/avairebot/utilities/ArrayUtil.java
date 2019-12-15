@@ -42,7 +42,7 @@ public class ArrayUtil {
     public static String[] toArguments(@Nonnull String string) {
         List<String> arguments = new ArrayList<>();
 
-        Matcher matcher = argumentsRegEX.matcher(string);
+        Matcher matcher = argumentsRegEX.matcher(string.replaceAll("\"\"", "\" \""));
         while (matcher.find()) {
             arguments.add(matcher.group(0)
                 .replaceAll("\"", "")
