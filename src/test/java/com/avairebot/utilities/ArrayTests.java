@@ -46,8 +46,9 @@ public class ArrayTests extends BaseTest {
 
     @Test
     public void testStringIsSplitWithEmptyStartPhrase() {
-        //Two in total; one empty set and one whole phrase
+        // Two in total; one empty set and one whole phrase
         String message = "\"\" \"lorem ipsum\"";
+        
         assertEquals(2, ArrayUtil.toArguments(message).length);
     }
 }
