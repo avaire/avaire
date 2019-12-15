@@ -170,7 +170,10 @@ public class MemeCommand extends Command {
     }
 
     private String formatMemeArgument(String string) {
-        return string.trim()
+        if (string.trim().length() == 0) {
+            return "_";
+        }
+        return string.trim().toLowerCase()
             .replaceAll("_", "__")
             .replaceAll("-", "--")
             .replaceAll(" ", "_")
