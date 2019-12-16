@@ -511,6 +511,12 @@ fun:
         botMissingPermissions: "Say-kommandoen kan ikke bruges i {0}-kanalen. Jeg har brug for både meddelelsens skrive og meddelelsesstyringstilladelser for kanalen til at kunne køre kommandoen."
         success: "Din besked er blevet sendt til :name."
 
+    SlotMachineCommand:
+        rolled: ":user rolled the slots...\n"
+        won: "and won! \uD83C\uDF89"
+        almostWon: "and almost won"
+        lost: "and lost..."
+
     UndertaleTextBoxCommand:
         noArgumentsGiven: "Manglende argument, du skal enten give `list` for at se en liste over karaterer du kan vælge imellem, eller for at generere et billede, `character` eller et gyldigt billede `url` for at opbygge billedet."
         failedToGenerateImage: "Kunne ikke generere billedet, er du sikker på, at du har angivet en korrekt billedwebadresse eller karater navn?"

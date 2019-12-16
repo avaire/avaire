@@ -510,6 +510,12 @@ fun:
         botMissingPermissions: "Say命令不能用于 {0} 频道, 我需要通道的“消息写入”和“消息管理”权限才能成功运行命令。."
         success: "您的信息已发送到 :name 频道."
 
+    SlotsCommand:
+        rolled: ":user rolled the slots...\n"
+        won: "and won! \uD83C\uDF89"
+        almostWon: "and almost won"
+        lost: "and lost..."
+
     UndertaleTextBoxCommand:
         noArgumentsGiven: "缺少参数，则必须提供 `list` 若要查看可供选择的字符列表或生成图像，请执行以下操作： `character` 或有效图像 `url` 构建图像的步骤."
         failedToGenerateImage: "无法生成图像，是否确定提供了正确的图像URL或字符名称？?"

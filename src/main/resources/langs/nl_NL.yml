@@ -511,6 +511,12 @@ fun:
         botMissingPermissions: "Het `say` commando kan niet gebruikt worden voor het {0} kanaal, ik ben de `message write` en `message manage` rechten nodig om het commando hier uit te kunnen voeren."
         success: "Je bericht is verstuurd naar het :name kanaal."
 
+    SlotsCommand:
+        rolled: ":user rolled the slots...\n"
+        won: "and won! \uD83C\uDF89"
+        almostWon: "and almost won"
+        lost: "and lost..."
+
     UndertaleTextBoxCommand:
         noArgumentsGiven: "Er mist een argument, je moet of een `list` geven om een lijst van karakters te kunnen zien waar je uit kan kiezen, of om een foto te genereren, `character` of een geldige foto `url` om de foto voor te maken."
         failedToGenerateImage: "Gefaald met het genereren van de foto, weet je zeker dat je een geldige foto url of geldig karakter gekozen hebt?"

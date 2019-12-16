@@ -510,6 +510,12 @@ fun:
         botMissingPermissions: "The say command can't be used for the {0} channel, I need both the message write and message manage permissions for the channel to successfully run the command."
         success: "Your message have been sent to the :name channel."
 
+    SlotsCommand:
+        rolled: ":user rolled the slots...\n"
+        won: "and won! \uD83C\uDF89"
+        almostWon: "and almost won"
+        lost: "and lost..."
+
     UndertaleTextBoxCommand:
         noArgumentsGiven: "Missing argument, you must either provide `list` to see a list of characters you can choose from, or to generate an image, `character` or a valid image `url` to build the image for."
         failedToGenerateImage: "Failed to generate the the image, are you sure you provided a correct image URL or character name?"
