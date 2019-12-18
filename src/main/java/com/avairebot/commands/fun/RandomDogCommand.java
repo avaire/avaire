@@ -56,7 +56,7 @@ public class RandomDogCommand extends Command {
 
     @Override
     public List<Class<? extends Command>> getRelations() {
-        return Collections.singletonList(RandomCatCommand.class);
+        return Arrays.asList(RandomCatCommand.class, RandomBirdCommand.class);
     }
 
     @Override
