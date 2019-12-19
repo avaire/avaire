@@ -813,6 +813,9 @@ utility:
         noTopic: '*Er bestaad geen onderwerp voor dit kanaal*'
         timeFormat: 'EEE, dd MMM yyyy HH:mm'
 
+    ColorCommand:
+        errorParsingColor: ":color is not a recognized color."
+
     ExpandUrlCommand:
         noRedirect: ":url gaat nergens naar toe."
         redirects: '{0} gaat naar {1}'

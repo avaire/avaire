@@ -811,6 +811,9 @@ utility:
         noTopic: '*No topic has been set for this channel*'
         timeFormat: 'EEE, 天数 月份 年份 HH:mm'
 
+    ColorCommand:
+        errorParsingColor: ":color is not a recognized color."
+
     ExpandUrlCommand:
         noRedirect: ":url 不能重定向到任何地方."
         redirects: '{0} 重定向至 {1}'

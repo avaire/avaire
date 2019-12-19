@@ -814,6 +814,9 @@ utility:
         noTopic: '*Es wurde keine Beschreibung für diesen Channel gesetzt*'
         timeFormat: 'EEEEEEEE, dd. MMMMM yyyy HH:mm'
 
+    ColorCommand:
+        errorParsingColor: ":color is not a recognized color."
+
     ExpandUrlCommand:
         noRedirect: ":url wird nirgendwo weitergeleitet."
         redirects: '{0} leitet an folgende Seite weiter: {1}'

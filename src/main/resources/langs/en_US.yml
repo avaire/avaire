@@ -812,6 +812,9 @@ utility:
         noTopic: '*No topic has been set for this channel*'
         timeFormat: 'EEE, dd MMM yyyy HH:mm'
 
+    ColorCommand:
+        errorParsingColor: ":color is not a recognized color."
+
     ExpandUrlCommand:
         noRedirect: ":url doesn't redirect anywhere."
         redirects: '{0} redirects to {1}'

@@ -812,6 +812,9 @@ utility:
         noTopic: '*Der er ikke angivet noget emne for denne kanal*'
         timeFormat: 'EEE, dd MMM yyyy HH:mm'
 
+    ColorCommand:
+        errorParsingColor: ":color is not a recognized color."
+
     ExpandUrlCommand:
         noRedirect: ":url redirecter ikke nogle steder hen."
         redirects: '{0} redirecter til {1}'
