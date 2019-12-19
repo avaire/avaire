@@ -101,15 +101,19 @@ public class ColorCommand extends Command {
         }
         byte[] bytes = baos.toByteArray();
 
+        String colorInHex = String.format("#%02X%02X%02X%02X", color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha());
+        String colorInRGB = "rgba:(" + color.getRed() + "," + color.getGreen() + "," + color.getBlue() + "," + color.getAlpha() + ")";
         MessageBuilder messageBuilder = new MessageBuilder();
         EmbedBuilder embedBuilder = context.makeEmbeddedMessage()
             .setImage("attachment://" + getClass().getSimpleName() + "-" + hex + ".png")
-            .setDescription(hex)
+            .setDescription("**HEX:** " + colorInHex +
+                " **RGB:**" + " " + colorInRGB)
             .requestedBy(context)
             .build();
         messageBuilder.setEmbed(embedBuilder.build());
 
-        context.getMessageChannel().sendFile(bytes, getClass().getSimpleName() + "-" + hex + ".png").queue();
+        messageBuilder.sendTo(context.getMessageChannel()).addFile(bytes, getClass().getSimpleName() + "-" + hex + ".png").queue();
+        // context.getMessageChannel().sendFile(bytes, getClass().getSimpleName() + "-" + hex + ".png").queue();
         return true;
     }
 

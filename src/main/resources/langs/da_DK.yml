@@ -814,6 +814,7 @@ utility:
 
     ColorCommand:
         errorParsingColor: ":color is not a recognized color."
+        somethingWentWrong: "Something went wrong with generating the image. Please try again later."
 
     ExpandUrlCommand:
         noRedirect: ":url redirecter ikke nogle steder hen."
