@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018.
+ * Copyright (c) 2019.
  *
  * This file is part of AvaIre.
  *
@@ -26,42 +26,42 @@ import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.factories.RequestFactory;
 import com.avairebot.requests.Response;
-import com.avairebot.requests.service.RandomDogService;
+import com.avairebot.requests.service.RandomBirdService;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class RandomDogCommand extends Command {
+public class RandomBirdCommand extends Command {
 
-    public RandomDogCommand(AvaIre avaire) {
+    public RandomBirdCommand(AvaIre avaire) {
         super(avaire);
     }
 
     @Override
     public String getName() {
-        return "Random Dog Command";
+        return "Random Bird Command";
     }
 
     @Override
     public String getDescription() {
-        return "I will scour the internet to find a random dog picture for you.";
+        return "I will scour the internet to find a random bird picture for you.";
     }
 
     @Override
     public List<String> getUsageInstructions() {
-        return Collections.singletonList("`:command` - Gets a random picture of a dog and sends it in the channel.");
+        return Collections.singletonList("`:command` - Gets a random picture of a bird and sends it in the channel.");
     }
 
     @Override
     public List<Class<? extends Command>> getRelations() {
-        return Arrays.asList(RandomCatCommand.class, RandomBirdCommand.class);
+        return Arrays.asList(RandomDogCommand.class, RandomCatCommand.class);
     }
 
     @Override
     public List<String> getTriggers() {
-        return Arrays.asList("randomdog", "dog");
+        return Arrays.asList("randombird", "bird", "birb", "randombirb");
     }
 
     @Override
@@ -71,12 +71,13 @@ public class RandomDogCommand extends Command {
 
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
-        RequestFactory.makeGET("https://dog.ceo/api/breeds/image/random")
-            .send((Consumer<Response>) response -> {
-                RandomDogService service = (RandomDogService) response.toService(RandomDogService.class);
+        RequestFactory.makeGET("http://random.birb.pw/tweet.json/").send((Consumer<Response>) response -> {
+            RandomBirdService service = (RandomBirdService) response.toService(RandomBirdService.class);
 
-                context.makeEmbeddedMessage().setImage(service.getMessage()).queue();
-            });
+            context.makeEmbeddedMessage()
+                .setImage("http://random.birb.pw/img/" + service.getFile())
+                .queue();
+        });
         return true;
     }
 }
