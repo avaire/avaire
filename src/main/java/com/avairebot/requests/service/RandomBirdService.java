@@ -25,7 +25,6 @@ public class RandomBirdService {
 
     private String file;
 
-
     public String getFile() {
         return file;
     }

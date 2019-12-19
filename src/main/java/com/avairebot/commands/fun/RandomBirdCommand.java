@@ -24,7 +24,6 @@ package com.avairebot.commands.fun;
 import com.avairebot.AvaIre;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
-import com.avairebot.contracts.commands.CommandContext;
 import com.avairebot.factories.RequestFactory;
 import com.avairebot.requests.Response;
 import com.avairebot.requests.service.RandomBirdService;
@@ -40,12 +39,6 @@ public class RandomBirdCommand extends Command {
         super(avaire);
     }
 
-    /**
-     * Gets the command name, this is used in help and error
-     * messages as the title as well as log messages.
-     *
-     * @return Never-null, the command name.
-     */
     @Override
     public String getName() {
         return "Random Bird Command";
@@ -66,13 +59,6 @@ public class RandomBirdCommand extends Command {
         return Arrays.asList(RandomDogCommand.class, RandomCatCommand.class);
     }
 
-    /**
-     * Gets am immutable list of command triggers that can be used to invoke the current
-     * command, the first index in the list will be used when the `:command` placeholder
-     * is used in {@link #getDescription(CommandContext)} or {@link #getUsageInstructions()} methods.
-     *
-     * @return An immutable list of command triggers that should invoked the command.
-     */
     @Override
     public List<String> getTriggers() {
         return Arrays.asList("randombird", "bird", "birb", "randombirb");
@@ -83,27 +69,15 @@ public class RandomBirdCommand extends Command {
         return Collections.singletonList("throttle:user,2,5");
     }
 
-    /**
-     * The command executor, this method is invoked by the command handler
-     * and the middleware stack when a user sends a message matching the
-     * commands prefix and one of its command triggers.
-     *
-     * @param context The command message context generated using the
-     *                JDA message event that invoked the command.
-     * @param args    The arguments given to the command, if no arguments was given the array will just be empty.
-     * @return true on success, false on failure.
-     */
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
-        RequestFactory.makeGET("http://random.birb.pw/tweet.json/")
-            .send((Consumer<Response>) response -> {
-                RandomBirdService service = (RandomBirdService) response.toService(RandomBirdService.class);
+        RequestFactory.makeGET("http://random.birb.pw/tweet.json/").send((Consumer<Response>) response -> {
+            RandomBirdService service = (RandomBirdService) response.toService(RandomBirdService.class);
 
-                context.makeEmbeddedMessage().setImage("http://random.birb.pw/img/" + service.getFile()).queue();
-
-            });
+            context.makeEmbeddedMessage()
+                .setImage("http://random.birb.pw/img/" + service.getFile())
+                .queue();
+        });
         return true;
     }
-
-
 }
