@@ -510,7 +510,7 @@ fun:
         botMissingPermissions: "Say命令不能用于 {0} 频道, 我需要通道的“消息写入”和“消息管理”权限才能成功运行命令。."
         success: "您的信息已发送到 :name 频道."
 
-    SlotsCommand:
+    SlotCommand:
         rolled: ":user rolled the slots...\n"
         won: "and won! \uD83C\uDF89"
         almostWon: "and almost won"

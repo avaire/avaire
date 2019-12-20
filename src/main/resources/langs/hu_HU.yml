@@ -509,7 +509,7 @@ fun:
         botMissingPermissions: "The say command can't be used for the {0} channel, I need both the message write and message manage permissions for the channel to successfully run the command."
         success: "Your message have been sent to the :name channel."
 
-    SlotsCommand:
+    SlotCommand:
         rolled: ":user rolled the slots...\n"
         won: "and won! \uD83C\uDF89"
         almostWon: "and almost won"

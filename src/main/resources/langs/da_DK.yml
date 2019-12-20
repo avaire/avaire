@@ -511,7 +511,7 @@ fun:
         botMissingPermissions: "Say-kommandoen kan ikke bruges i {0}-kanalen. Jeg har brug for både meddelelsens skrive og meddelelsesstyringstilladelser for kanalen til at kunne køre kommandoen."
         success: "Din besked er blevet sendt til :name."
 
-    SlotMachineCommand:
+    SlotCommand:
         rolled: ":user rolled the slots...\n"
         won: "and won! \uD83C\uDF89"
         almostWon: "and almost won"

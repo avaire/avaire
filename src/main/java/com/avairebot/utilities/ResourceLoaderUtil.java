@@ -50,34 +50,6 @@ public class ResourceLoaderUtil {
     }
 
     /**
-     * Retrieves the url of a given resource; by first checking the local directory
-     * resources; next it checks the internal jar resources
-     *
-     * @param clazz     The clazz instance that should be used to load the resources.
-     * @param fileLocation The relative location and the name of the file trying to be accessed.
-     * @return A list of file and directory names that exists within the given resource URL.
-     * @throws IOException If no file was found using the given URL, or the
-     *                     given URL is not formatted strictly according to
-     *                     to RFC2396 and cannot be converted to a URI.
-     */
-    @Nonnull
-    public static URL getFileUrl(@Nonnull Class<?> clazz, @Nonnull String fileLocation) throws IOException
-    {
-        if(new File(fileLocation).exists())
-        {
-            return new URL(fileLocation);
-        }
-
-        URL urlJar = clazz.getResource(fileLocation);
-        if(urlJar != null)
-        {
-            return urlJar;
-        }
-
-        throw new IOException("No valid resource URL could be found.");
-    }
-
-    /**
      * Loads the names of all the files under the given resource URL, directories can also
      * be included by enabling it using the {@code withSubDirectories} parameter.
      *

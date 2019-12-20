@@ -36,14 +36,12 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class SlotMachineCommand extends Command
-{
+public class SlotCommand extends Command {
     private int defaultColumnCount = 3;
 
     private int defaultRowCount = 3;
@@ -54,8 +52,7 @@ public class SlotMachineCommand extends Command
 
     private int rowCount = 3;
 
-    public SlotMachineCommand(AvaIre avaire)
-    {
+    public SlotCommand(AvaIre avaire) {
         super(avaire);
     }
 
@@ -72,7 +69,7 @@ public class SlotMachineCommand extends Command
      */
     @Override
     public String getName() {
-        return "Slot Machine Command";
+        return "Slot Command";
     }
 
     /**
@@ -83,10 +80,14 @@ public class SlotMachineCommand extends Command
      * @return An immutable list of command triggers that should invoked the command.
      */
     @Override
-    public List<String> getTriggers()
-    {
-        return Arrays.asList("slots","bet");
+    public List<String> getTriggers() {
+        return Arrays.asList("slots", "bet");
     }
+
+    public boolean hasGraphics() throws IOException {
+        return !ResourceLoaderUtil.getFiles(SlotCommand.class, "/command_pictures/slots", true).isEmpty();
+    }
+
     /**
      * The command executor, this method is invoked by the command handler
      * and the middleware stack when a user sends a message matching the
@@ -102,9 +103,9 @@ public class SlotMachineCommand extends Command
     {
         try
         {
-            if(args[0].equals("graphical") && (Boolean)avaire.getConfig().get("commandOptions.allowResourcePack",false))
+            if (args.length > 0 && args[0].equals("graphical") && hasGraphics())
             {
-                if(!context.getChannel().isNSFW() && context.isGuildMessage())
+                if (!context.getChannel().isNSFW() && context.isGuildMessage())
                 {
                     return sendErrorMessage(context, context.i18n("nsfwDisabled"));
                 }
@@ -114,46 +115,41 @@ public class SlotMachineCommand extends Command
             {
                 sendEmoteBased(context, args);
             }
-        }
-        catch(Exception ex)
+        } catch (IOException ex)
         {
-            sendErrorMessage(context, context.i18n("nsfwDisabled"));
-            sendEmoteBased(context,args);
+            sendEmoteBased(context, args);
         }
         return true;
     }
 
-    private void sendPictureBased(CommandMessage context,String[] args) throws IOException
-    {
+    private void sendPictureBased(CommandMessage context, String[] args) throws IOException {
         int betAmount = 0;
-        if(args.length == 2 && NumberUtil.isNumeric(args[1]))
+        if (args.length == 2 && NumberUtil.isNumeric(args[1]))
         {
-            betAmount = NumberUtil.getBetween(NumberUtil.parseInt(args[1]),0,Integer.MAX_VALUE);
+            betAmount = NumberUtil.getBetween(NumberUtil.parseInt(args[1]), 0, Integer.MAX_VALUE);
         }
 
         List<String> slots = new ArrayList<>();
-        BufferedImage background = ImageIO.read(ResourceLoaderUtil.getFileUrl(SlotMachineCommand.class,"command_pictures/slots/bg.png"));
-        List<String> emojiFiles = ResourceLoaderUtil.getFiles(SlotMachineCommand.class, "command_pictures/slots/emoji");
+        BufferedImage background = ImageIO.read(SlotCommand.class.getClassLoader().getResourceAsStream("command_pictures/slots/bg.png"));
+        List<String> emojiFiles = ResourceLoaderUtil.getFiles(SlotCommand.class, "command_pictures/slots/emoji");
 
 
-        for(int column = 0; column < defaultColumnCount; column++)
+        for (int column = 0; column < defaultColumnCount; column++)
         {
             String emote = (String) RandomUtil.pickRandom(emojiFiles);
             slots.add(emote);
-            BufferedImage emoteImage = ImageIO.read(ResourceLoaderUtil.getFileUrl(SlotMachineCommand.class,"command_pictures/slots/emoji/" + emote));
+            BufferedImage emoteImage = ImageIO.read(SlotCommand.class.getClassLoader().getResourceAsStream("command_pictures/slots/emoji/" + emote));
             ImageUtil.drawOnTopOfOtherImage(background, emoteImage, 100, 95 + 142 * column, 330);
         }
 
-        int won = (int)calculateReturn(slots, betAmount);
-
-        int printWon = won;
+        int printWon = (int) calculateReturn(slots, betAmount);
         int n = 0;
 
         do
         {
             int digit = printWon % 10;
             printWon = printWon / 10;
-            BufferedImage image=  ImageIO.read(ResourceLoaderUtil.getFileUrl(SlotMachineCommand.class,"command_pictures/slots/numbers/" + digit +".png"));
+            BufferedImage image = ImageIO.read(SlotCommand.class.getClassLoader().getResourceAsStream("command_pictures/slots/numbers/" + digit + ".png"));
             ImageUtil.drawOnTopOfOtherImage(background, image, 100, 230 - n * 16, 462);
             n++;
         } while ((printWon / 10) != 0);
@@ -165,7 +161,7 @@ public class SlotMachineCommand extends Command
         {
             int digit = (printBet % 10);
             printBet = printBet / 10;
-            BufferedImage image=  ImageIO.read(ResourceLoaderUtil.getFileUrl(SlotMachineCommand.class,"command_pictures/slots/numbers/" + digit +".png"));
+            BufferedImage image = ImageIO.read(SlotCommand.class.getClassLoader().getResourceAsStream("command_pictures/slots/numbers/" + digit + ".png"));
             ImageUtil.drawOnTopOfOtherImage(background, image, 100, 395 - n * 16, 462);
             n++;
         }while ((printBet / 10) != 0);

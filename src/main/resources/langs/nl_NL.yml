@@ -511,7 +511,7 @@ fun:
         botMissingPermissions: "Het `say` commando kan niet gebruikt worden voor het {0} kanaal, ik ben de `message write` en `message manage` rechten nodig om het commando hier uit te kunnen voeren."
         success: "Je bericht is verstuurd naar het :name kanaal."
 
-    SlotsCommand:
+    SlotCommand:
         rolled: ":user rolled the slots...\n"
         won: "and won! \uD83C\uDF89"
         almostWon: "and almost won"
