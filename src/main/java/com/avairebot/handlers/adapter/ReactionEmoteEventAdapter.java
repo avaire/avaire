@@ -31,6 +31,7 @@ import com.avairebot.database.query.QueryBuilder;
 import com.avairebot.database.transformers.ReactionTransformer;
 import com.avairebot.scheduler.tasks.DrainReactionRoleQueueTask;
 import com.avairebot.utilities.RoleUtil;
+import com.vdurmont.emoji.EmojiManager;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Role;
@@ -90,20 +91,43 @@ public class ReactionEmoteEventAdapter extends EventAdapter {
 
     @SuppressWarnings("ConstantConditions")
     public void onMessageReactionAdd(MessageReactionAddEvent event) {
-        ReactionTransformer transformer = getReactionTransformerFromMessageIdAndCheckPermissions(
-            event.getGuild(), event.getMessageId(), event.getReactionEmote().getEmote().getIdLong()
-        );
+        ReactionTransformer transformer;
 
-        if (transformer == null) {
+        if (event.getReactionEmote().isEmote())
+        {
+            transformer = getReactionTransformerFromMessageIdAndCheckPermissions(
+                event.getGuild(), event.getMessageId(), event.getReactionEmote().getEmote().getId()
+            );
+        }
+        else
+        {
+            transformer = getReactionTransformerFromMessageIdAndCheckPermissions(
+                event.getGuild(), event.getMessageId(), event.getReactionEmote().getName()
+            );
+        }
+
+        if (transformer == null)
+        {
             return;
         }
 
-        Role role = event.getGuild().getRoleById(transformer.getRoleIdFromEmote(event.getReactionEmote().getEmote()));
-        if (role == null) {
+        Role role;
+        if (!event.getReactionEmote().isEmote())
+        {
+            role = event.getGuild().getRoleById(transformer.getRoleIdFromEmoji(EmojiManager.getByUnicode(event.getReactionEmote().getName())));
+        }
+        else
+        {
+            role = event.getGuild().getRoleById(transformer.getRoleIdFromEmote(event.getReactionEmote().getEmote()));
+        }
+
+        if (role == null)
+        {
             return;
         }
 
-        if (RoleUtil.hasRole(event.getMember(), role) || !event.getGuild().getSelfMember().canInteract(role)) {
+        if (RoleUtil.hasRole(event.getMember(), role) || !event.getGuild().getSelfMember().canInteract(role))
+        {
             return;
         }
 
@@ -117,20 +141,43 @@ public class ReactionEmoteEventAdapter extends EventAdapter {
 
     @SuppressWarnings("ConstantConditions")
     public void onMessageReactionRemove(MessageReactionRemoveEvent event) {
-        ReactionTransformer transformer = getReactionTransformerFromMessageIdAndCheckPermissions(
-            event.getGuild(), event.getMessageId(), event.getReactionEmote().getEmote().getIdLong()
-        );
+        ReactionTransformer transformer;
 
-        if (transformer == null) {
+        if (event.getReactionEmote().isEmote())
+        {
+            transformer = getReactionTransformerFromMessageIdAndCheckPermissions(
+                event.getGuild(), event.getMessageId(), event.getReactionEmote().getEmote().getId()
+            );
+        }
+        else
+        {
+            transformer = getReactionTransformerFromMessageIdAndCheckPermissions(
+                event.getGuild(), event.getMessageId(), event.getReactionEmote().getName()
+            );
+        }
+
+        if (transformer == null)
+        {
             return;
         }
 
-        Role role = event.getGuild().getRoleById(transformer.getRoleIdFromEmote(event.getReactionEmote().getEmote()));
-        if (role == null) {
+        Role role;
+        if (!event.getReactionEmote().isEmote())
+        {
+            role = event.getGuild().getRoleById(transformer.getRoleIdFromEmoji(EmojiManager.getByUnicode(event.getReactionEmote().getName())));
+        }
+        else
+        {
+            role = event.getGuild().getRoleById(transformer.getRoleIdFromEmote(event.getReactionEmote().getEmote()));
+        }
+
+        if (role == null)
+        {
             return;
         }
 
-        if (!RoleUtil.hasRole(event.getMember(), role) || !event.getGuild().getSelfMember().canInteract(role)) {
+        if (!RoleUtil.hasRole(event.getMember(), role) || !event.getGuild().getSelfMember().canInteract(role))
+        {
             return;
         }
 
@@ -142,18 +189,22 @@ public class ReactionEmoteEventAdapter extends EventAdapter {
         ));
     }
 
-    private ReactionTransformer getReactionTransformerFromMessageIdAndCheckPermissions(@Nonnull Guild guild, @Nonnull String messageId, long emoteId) {
-        if (!hasPermission(guild)) {
+    private ReactionTransformer getReactionTransformerFromMessageIdAndCheckPermissions(@Nonnull Guild guild, @Nonnull String messageId, String emoteId) {
+        if (!hasPermission(guild))
+        {
             return null;
         }
 
         Collection collection = ReactionController.fetchReactions(avaire, guild);
-        if (collection == null || collection.isEmpty()) {
+        if (collection == null || collection.isEmpty())
+        {
             return null;
         }
 
         ReactionTransformer transformer = getReactionTransformerFromId(collection, messageId);
-        if (transformer == null || !transformer.getRoles().containsKey(emoteId)) {
+
+        if (transformer == null || !transformer.getRoles().containsKey(emoteId))
+        {
             return null;
         }
         return transformer;

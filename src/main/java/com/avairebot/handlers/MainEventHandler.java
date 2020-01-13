@@ -26,6 +26,7 @@ import com.avairebot.contracts.handlers.EventHandler;
 import com.avairebot.database.controllers.PlayerController;
 import com.avairebot.handlers.adapter.*;
 import com.avairebot.metrics.Metrics;
+import com.vdurmont.emoji.EmojiManager;
 import net.dv8tion.jda.core.events.Event;
 import net.dv8tion.jda.core.events.ReadyEvent;
 import net.dv8tion.jda.core.events.ReconnectedEvent;
@@ -263,7 +264,8 @@ public class MainEventHandler extends EventHandler {
 
     @Override
     public void onMessageReactionRemove(MessageReactionRemoveEvent event) {
-        if (isValidMessageReactionEvent(event)) {
+        if (isValidMessageReactionEvent(event))
+        {
             reactionEmoteEventAdapter.onMessageReactionRemove(event);
         }
     }
@@ -271,6 +273,6 @@ public class MainEventHandler extends EventHandler {
     private boolean isValidMessageReactionEvent(GenericMessageReactionEvent event) {
         return !event.getUser().isBot()
             && event.getGuild() != null
-            && event.getReactionEmote().getEmote() != null;
+            && (event.getReactionEmote().getEmote() != null || EmojiManager.isEmoji(event.getReactionEmote().getName()));
     }
 }

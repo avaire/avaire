@@ -25,6 +25,7 @@ import com.avairebot.AvaIre;
 import com.avairebot.contracts.database.transformers.Transformer;
 import com.avairebot.database.collection.DataRow;
 import com.google.gson.reflect.TypeToken;
+import com.vdurmont.emoji.Emoji;
 import net.dv8tion.jda.core.entities.Emote;
 import net.dv8tion.jda.core.entities.Role;
 
@@ -35,7 +36,7 @@ import java.util.Map;
 
 public class ReactionTransformer extends Transformer {
 
-    private final Map<Long, Long> roles = new HashMap<>();
+    private final Map<String, Long> roles = new HashMap<>();
 
     private long guildId = -1;
     private long channelId = -1;
@@ -55,13 +56,15 @@ public class ReactionTransformer extends Transformer {
             channelId = row.getLong("channel_id");
             messageId = row.getLong("message_id");
 
-            if (data.getString("roles", null) != null) {
-                HashMap<Long, Long> dbRoles = AvaIre.gson.fromJson(
+            if (data.getString("roles", null) != null)
+            {
+                HashMap<String, Long> dbRoles = AvaIre.gson.fromJson(
                     data.getString("roles"),
-                    new TypeToken<HashMap<Long, Long>>() {
+                    new TypeToken<HashMap<String, Long>>() {
                     }.getType());
 
-                for (Map.Entry<Long, Long> item : dbRoles.entrySet()) {
+                for (Map.Entry<String, Long> item : dbRoles.entrySet())
+                {
                     roles.put(item.getKey(), item.getValue());
                 }
             }
@@ -78,10 +81,28 @@ public class ReactionTransformer extends Transformer {
      */
     @Nullable
     public Long getRoleIdFromEmote(@Nonnull Emote emote) {
-        if (!roles.containsKey(emote.getIdLong())) {
+        if (!roles.containsKey(emote.getId()))
+        {
             return null;
         }
-        return roles.get(emote.getIdLong());
+        return roles.get(emote.getId());
+    }
+
+    /**
+     * Gets the role ID that is attached to the given emote, if
+     * no role is linked with the given emote then
+     * {@code NULL} will be returned instead.
+     *
+     * @param unicodeEmote The unicode expression that should be used to get the role id
+     * @return Possibly-null, the ID of the role that is linked/attached to the given unicode emote.
+     */
+    @Nullable
+    public Long getRoleIdFromEmoji(@Nonnull Emoji unicodeEmote) {
+        if (!roles.containsKey(unicodeEmote.getUnicode()))
+        {
+            return null;
+        }
+        return roles.get(unicodeEmote.getUnicode());
     }
 
     /**
@@ -93,7 +114,19 @@ public class ReactionTransformer extends Transformer {
      * @param role  The role that should be linked to the given emote.
      */
     public void addReaction(@Nonnull Emote emote, @Nonnull Role role) {
-        roles.put(emote.getIdLong(), role.getIdLong());
+        roles.put(emote.getId(), role.getIdLong());
+    }
+
+    /**
+     * Adds the reaction to the current reaction message, linking the
+     * given emoji and role so when a user reactions to the message
+     * with the given emote, they will be giving the role.
+     *
+     * @param emoji The emote that should be added to the reaction message.
+     * @param role  The role that should be linked to the given emote.
+     */
+    public void addReaction(@Nonnull Emoji emoji, @Nonnull Role role) {
+        roles.put(emoji.getUnicode(), role.getIdLong());
     }
 
     /**
@@ -103,8 +136,9 @@ public class ReactionTransformer extends Transformer {
      * @return {@code True} if the emote was removed from the message, or {@code False} if it wasn't added in the first place.
      */
     public boolean removeReaction(@Nonnull Emote emote) {
-        if (roles.containsKey(emote.getIdLong())) {
-            roles.remove(emote.getIdLong());
+        if (roles.containsKey(emote.getId()))
+        {
+            roles.remove(emote.getId());
             return true;
         }
         return false;
@@ -116,7 +150,7 @@ public class ReactionTransformer extends Transformer {
      *
      * @return A map of the roles attached to the reaction message.
      */
-    public Map<Long, Long> getRoles() {
+    public Map<String, Long> getRoles() {
         return roles;
     }
 

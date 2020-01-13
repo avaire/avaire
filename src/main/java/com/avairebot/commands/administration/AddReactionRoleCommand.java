@@ -34,6 +34,8 @@ import com.avairebot.database.transformers.GuildTypeTransformer;
 import com.avairebot.database.transformers.ReactionTransformer;
 import com.avairebot.utilities.RestActionUtil;
 import com.avairebot.utilities.RoleUtil;
+import com.vdurmont.emoji.Emoji;
+import com.vdurmont.emoji.EmojiManager;
 import net.dv8tion.jda.core.entities.Emote;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.Role;
@@ -123,11 +125,6 @@ public class AddReactionRoleCommand extends Command {
             return sendErrorMessage(context, "errors.missingArgument", "reaction emote");
         }
 
-        Emote emote = getEmote(context, args);
-        if (emote == null || emote.getGuild() == null || emote.getGuild().getIdLong() != context.getGuild().getIdLong()) {
-            return sendErrorMessage(context, context.i18n("emoteDoestBelongToServer"));
-        }
-
         if (args.length == 1) {
             return sendErrorMessage(context, "errors.missingArgument", "reaction role");
         }
@@ -139,16 +136,39 @@ public class AddReactionRoleCommand extends Command {
             ))
         );
 
-        if (role == null) {
+        if (role == null)
+        {
             return sendErrorMessage(context, "errors.invalidProperty", "reaction role", "role");
         }
 
-        if (!RoleUtil.canInteractWithRole(context.getMessage(), role)) {
+        if (!RoleUtil.canInteractWithRole(context.getMessage(), role))
+        {
             return false;
         }
 
+
+        if (EmojiManager.isEmoji(args[0]))
+        {
+            Emoji emoji = EmojiManager.getByUnicode(args[0]);
+            addUnicodeEmojiToRole(context, guildTransformer, emoji, role);
+        }
+        else
+        {
+            Emote emote = getEmote(context, args);
+            if (emote == null || emote.getGuild() == null || emote.getGuild().getIdLong() != context.getGuild().getIdLong())
+            {
+                return sendErrorMessage(context, context.i18n("emoteDoestBelongToServer"));
+            }
+
+            addDiscordEmoteToRole(context, guildTransformer, emote, role);
+        }
+        return true;
+    }
+
+    private void addDiscordEmoteToRole(CommandMessage context, GuildTransformer guildTransformer, Emote emote, Role role) {
         context.getChannel().getHistory().retrievePast(2).queue(messages -> {
-            if (messages.size() != 2) {
+            if (messages.size() != 2)
+            {
                 return;
             }
 
@@ -156,16 +176,19 @@ public class AddReactionRoleCommand extends Command {
 
             Message message = messages.get(1);
             ReactionTransformer reactionTransformer = ReactionController.fetchReactionFromMessage(avaire, message);
-            if (reactionTransformer == null) {
+            if (reactionTransformer == null)
+            {
                 createNewReactionRoleMessage(context, guildTransformer, emote, role, message);
                 return;
             }
 
-            if (reactionTransformer.getRoles().size() >= guildTransformer.getType().getLimits().getReactionRoles().getRolesPerMessage()) {
+            if (reactionTransformer.getRoles().size() >= guildTransformer.getType().getLimits().getReactionRoles().getRolesPerMessage())
+            {
                 context.makeWarning(context.i18n("messageHasNoSlots"))
                     .queue(noSlotsMessage -> noSlotsMessage.delete().queueAfter(15, TimeUnit.SECONDS, null, RestActionUtil.ignore));
                 return;
             }
+
 
             reactionTransformer.addReaction(emote, role);
 
@@ -189,13 +212,68 @@ public class AddReactionRoleCommand extends Command {
                     .queue(successMessage -> successMessage.delete().queueAfter(15, TimeUnit.SECONDS, null, RestActionUtil.ignore));
 
                 ReactionController.forgetCache(context.getGuild().getIdLong());
-            } catch (SQLException e) {
+            } catch (SQLException e)
+            {
                 log.error("Failed to save the reaction role to the database: {}", e.getMessage(), e);
                 sendErrorMessage(context, "Failed to save the reaction role to the database, {0}", e.getMessage());
             }
         });
+    }
 
-        return true;
+    private void addUnicodeEmojiToRole(CommandMessage context, GuildTransformer guildTransformer, Emoji emoji, Role role) {
+        context.getChannel().getHistory().retrievePast(2).queue(messages -> {
+            if (messages.size() != 2)
+            {
+                return;
+            }
+
+            context.delete().queue(null, RestActionUtil.ignore);
+
+            Message message = messages.get(1);
+            ReactionTransformer reactionTransformer = ReactionController.fetchReactionFromMessage(avaire, message);
+            if (reactionTransformer == null)
+            {
+                createNewReactionRoleMessage(context, guildTransformer, emoji, role, message);
+                return;
+            }
+
+            if (reactionTransformer.getRoles().size() >= guildTransformer.getType().getLimits().getReactionRoles().getRolesPerMessage())
+            {
+                context.makeWarning(context.i18n("messageHasNoSlots"))
+                    .queue(noSlotsMessage -> noSlotsMessage.delete().queueAfter(15, TimeUnit.SECONDS, null, RestActionUtil.ignore));
+                return;
+            }
+
+
+            reactionTransformer.addReaction(emoji, role);
+
+            try
+            {
+                avaire.getDatabase().newQueryBuilder(Constants.REACTION_ROLES_TABLE_NAME)
+                    .where("guild_id", reactionTransformer.getGuildId())
+                    .where("channel_id", reactionTransformer.getChannelId())
+                    .where("message_id", reactionTransformer.getMessageId())
+                    .update(statement -> {
+                        statement.set("roles", AvaIre.gson.toJson(reactionTransformer.getRoles()));
+                    });
+
+                GuildTypeTransformer.GuildTypeLimits.GuildReactionRoles reactionLimits = guildTransformer.getType().getLimits().getReactionRoles();
+
+                message.addReaction(emoji.getUnicode()).queue();
+                context.makeSuccess(context.i18n("success"))
+                    .set("role", role.getAsMention())
+                    .set("emote", emoji.getUnicode())
+                    .set("roleSlots", reactionLimits.getRolesPerMessage() - reactionTransformer.getRoles().size())
+                    .set("messageSlots", reactionLimits.getMessages() - ReactionController.fetchReactions(avaire, context.getGuild()).size())
+                    .queue(successMessage -> successMessage.delete().queueAfter(15, TimeUnit.SECONDS, null, RestActionUtil.ignore));
+
+                ReactionController.forgetCache(context.getGuild().getIdLong());
+            } catch (SQLException e)
+            {
+                log.error("Failed to save the reaction role to the database: {}", e.getMessage(), e);
+                sendErrorMessage(context, "Failed to save the reaction role to the database, {0}", e.getMessage());
+            }
+        });
     }
 
     @Nullable
@@ -260,7 +338,69 @@ public class AddReactionRoleCommand extends Command {
                     .queue(successMessage -> successMessage.delete().queueAfter(15, TimeUnit.SECONDS, null, RestActionUtil.ignore));
 
                 ReactionController.forgetCache(context.getGuild().getIdLong());
-            } catch (SQLException e) {
+            } catch (SQLException e)
+            {
+                log.error("Failed to save the reaction role to the database: {}", e.getMessage(), e);
+                sendErrorMessage(context, "Failed to save the reaction role to the database, {0}", e.getMessage());
+            }
+        });
+
+        return true;
+    }
+
+    @SuppressWarnings("UnusedReturnValue")
+    private boolean createNewReactionRoleMessage(CommandMessage context, GuildTransformer transformer, Emoji emoji, Role role, Message message) {
+        Collection collection = ReactionController.fetchReactions(avaire, context.getGuild());
+        if (collection == null)
+        {
+            return sendErrorMessage(context, "errors.errorOccurredWhileLoading",
+                "reaction roles"
+            );
+        }
+
+        if (collection.size() >= transformer.getType().getLimits().getReactionRoles().getMessages())
+        {
+            context.makeWarning(context.i18n("serverHasNoSlots"))
+                .queue(noSlotsMessage -> noSlotsMessage.delete().queueAfter(15, TimeUnit.SECONDS, null, RestActionUtil.ignore));
+            return false;
+        }
+
+        message.addReaction(emoji.getUnicode()).queue(aVoid -> {
+            ReactionTransformer reactionTransformer = new ReactionTransformer(null);
+            reactionTransformer.addReaction(emoji, role);
+
+            try
+            {
+                String messageContent = message.getContentStripped();
+                if (messageContent.isEmpty() && !message.getEmbeds().isEmpty())
+                {
+                    messageContent = message.getEmbeds().get(0).getDescription();
+                }
+
+                String finalMessageContent = messageContent;
+                avaire.getDatabase().newQueryBuilder(Constants.REACTION_ROLES_TABLE_NAME)
+                    .insert(statement -> {
+                        statement.set("guild_id", message.getGuild().getId());
+                        statement.set("channel_id", message.getChannel().getId());
+                        statement.set("message_id", message.getId());
+                        statement.set("roles", AvaIre.gson.toJson(reactionTransformer.getRoles()));
+                        statement.set("snippet", finalMessageContent.substring(
+                            0, Math.min(finalMessageContent.length(), 64)
+                        ), true);
+                    });
+
+                GuildTypeTransformer.GuildTypeLimits.GuildReactionRoles reactionLimits = transformer.getType().getLimits().getReactionRoles();
+
+                context.makeSuccess(context.i18n("success"))
+                    .set("role", role.getAsMention())
+                    .set("emote", emoji.getUnicode())
+                    .set("roleSlots", reactionLimits.getRolesPerMessage() - reactionTransformer.getRoles().size())
+                    .set("messageSlots", reactionLimits.getMessages() - (collection.size() + 1))
+                    .queue(successMessage -> successMessage.delete().queueAfter(15, TimeUnit.SECONDS, null, RestActionUtil.ignore));
+
+                ReactionController.forgetCache(context.getGuild().getIdLong());
+            } catch (SQLException e)
+            {
                 log.error("Failed to save the reaction role to the database: {}", e.getMessage(), e);
                 sendErrorMessage(context, "Failed to save the reaction role to the database, {0}", e.getMessage());
             }
