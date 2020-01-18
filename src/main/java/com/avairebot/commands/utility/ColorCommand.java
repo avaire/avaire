@@ -94,7 +94,7 @@ public class ColorCommand extends Command {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         try
         {
-            ImageIO.write(bufferedImage, "jpg", baos);
+            ImageIO.write(bufferedImage, "png", baos);
         } catch (IOException e)
         {
             return sendErrorMessage(context, "somethingWentWrong");
@@ -112,7 +112,7 @@ public class ColorCommand extends Command {
             .build();
         messageBuilder.setEmbed(embedBuilder.build());
 
-        messageBuilder.sendTo(context.getMessageChannel()).addFile(bytes, getClass().getSimpleName() + "-" + hex + ".png").queue();
+        context.getChannel().sendFile(bytes, getClass().getSimpleName() + "-" + hex + ".png", messageBuilder.build()).queue();
         // context.getMessageChannel().sendFile(bytes, getClass().getSimpleName() + "-" + hex + ".png").queue();
         return true;
     }
@@ -121,12 +121,11 @@ public class ColorCommand extends Command {
     private BufferedImage createRectangle(Color color) {
         BufferedImage bufferedImage = new BufferedImage(128, 128, BufferedImage.TYPE_INT_ARGB);
 
-        Graphics2D graphics = bufferedImage.createGraphics();
-
-        graphics.setPaint(color);
+        Graphics graphics = bufferedImage.getGraphics();
+        graphics.setColor(color);
 
         graphics.fillRect(0, 0, bufferedImage.getWidth(), bufferedImage.getHeight());
-
+        graphics.dispose();
 
         return bufferedImage;
 
