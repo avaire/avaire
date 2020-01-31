@@ -545,6 +545,7 @@ interaction:
     HugCommand: '**{0}** klemmer **{1}**'
     KillCommand: '**{0}** ønsker og drepe **{1}**'
     KissCommand: '**{0}** nusser **{1}**'
+    LaughCommand: '**{0}** laughs at **{1}**'
     MarryCommand: '**{0}** wants to marry **{1}**'
     MeowCommand: '**{0}** mjauer til **{1}**'
     PanCommand: '**{0}** slo **{1}** med en stekepanne!'

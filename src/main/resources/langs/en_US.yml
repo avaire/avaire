@@ -545,6 +545,7 @@ interaction:
     HugCommand: '**{0}** hugs **{1}**'
     KillCommand: '**{0}** wants to kill **{1}**'
     KissCommand: '**{0}** kisses **{1}**'
+    LaughCommand: '**{0}** laughs at **{1}**'
     MarryCommand: '**{0}** wants to marry **{1}**'
     MeowCommand: '**{0}** meows at **{1}**'
     PanCommand: '**{0}** just hit **{1}** with a pan!'

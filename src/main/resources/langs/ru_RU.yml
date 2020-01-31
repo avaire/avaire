@@ -544,6 +544,7 @@ interaction:
     HugCommand: '**{0}** обнимашки c **{1}**'
     KillCommand: '**{0}** хочет убить **{1}**'
     KissCommand: '**{0}** чмокнул **{1}**'
+    LaughCommand: '**{0}** laughs at **{1}**'
     MarryCommand: '**{0}** wants to marry **{1}**'
     MeowCommand: '**{0}** мяукает **{1}**'
     PanCommand: '**{0}** ударил **{1}** сковородкой! :cooking:'

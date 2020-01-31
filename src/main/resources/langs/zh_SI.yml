@@ -544,6 +544,7 @@ interaction:
     HugCommand: '**{0}** 拥抱 **{1}**'
     KillCommand: '**{0}** 想杀 **{1}**'
     KissCommand: '**{0}** 亲吻 **{1}**'
+    LaughCommand: '**{0}** laughs at **{1}**'
     MarryCommand: '**{0}** 想结婚 **{1}**'
     MeowCommand: '**{0}** 喵叫 **{1}**'
     PanCommand: '**{0}** 就按一下 **{1}** 用平底锅!'

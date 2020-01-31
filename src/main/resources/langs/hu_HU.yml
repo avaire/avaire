@@ -543,6 +543,7 @@ interaction:
     HugCommand: '**{0}** ölelni **{1}**'
     KillCommand: '**{0}** meg akarja ölni **{1}**'
     KissCommand: '**{0}** megcsókolja **{1}**'
+    LaughCommand: '**{0}** laughs at **{1}**'
     MarryCommand: '**{0}** wants to marry **{1}**'
     MeowCommand: '**{0}** nyávog valakire **{1}**'
     PanCommand: '**{0}** éppen megütötte **{1}** egy serpenyővel!'
