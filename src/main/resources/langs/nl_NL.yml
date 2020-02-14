@@ -226,7 +226,7 @@ administration:
         invalidNumberGiven: "Ongeldige modifier gegeven, de modifier moet een positief percentage hebben tussen de `0.01%` en `500%`"
         resetToDefault: "De level modifier is terug gezet naar de standaard **:modifier** modifier."
         changedTo: "De level and experienceis veranderd naar **:modifier**"
-        requiredIsNow: "\n\n**Required XP to reach some levels is now:**\n"
+        requiredIsNow: "\n\n**Het benodige aantal XP voor het volgende level is nu:**\n"
         statusMessage: "De server gebruikt momenteel een **:modifier** modifier voor levels and experience.\n\n**Benodigde EXP om sommige levels te berijken**\n"
         level: "Level {0}"
 
@@ -342,14 +342,14 @@ administration:
         message: "De **:role** rol is verwijderd van de zelf toegeven lijst.\nDe server heeft nog `:slots` plekken voor zelf toe te geven rollen."
 
     RoleLevelCommand:
-        invalidRole: "Invalid role given, I found no role on the server called `{0}`"
-        noRolesWithRewardsDisabled: "There are currently no roles with the level rewards disabled, you can add one by using the `{0} <role>` command."
-        listRoles: "All the roles mentioned below currently have their level rewards turned off, this means that any user with one of those roles won't earn any XP in any channel they talk in, any role not on this list is unaffected.\n\n:roles"
-        listRolesTitle: "Roles with their Level Rewards disabled ({0})"
-        success: "The XP rewards for the :role role has been **:status**!"
+        invalidRole: "Ongeldige rol gegeven, ik kan geen rol vinden met de naam: `{0}`"
+        noRolesWithRewardsDisabled: "Er zijn nu geen rollen met \"Level Rewards\" uitgezet. Je kan er een toevoegen met het `{0} <role>` commando."
+        listRoles: "Alle rollen hier beneden hebben geen \"Level Rewards\", dit betekend dat je geen XP kan verdienen als je een van deze rollen hebt gekregen, rollen die niet op deze lijst staan kan je wel nog XP mee verdienen.\n\n:roles"
+        listRolesTitle: "Rollen met \"Level Rewards\" uitzezet ({0})"
+        success: "De \"Level Rewards\" voor de rol :role is **:status**!"
         status:
-            enabled: "Enabled"
-            disabled: "Disabled"
+            enabled: "Ingeschakeld"
+            disabled: "Uitgeschakeld"
 
     SetRoleColorCommand:
         noRoleFound: "Geen rol gevonden met de naam \"{0}\"."
@@ -472,11 +472,11 @@ fun:
             - 'Onwaarschijnlijk'
 
     HolidayCommand:
-        tooManyAttempts: "The Holiday API was hit too many times which shouldn't have been possible. D:"
-        notFound: "The Holiday API command could not retrieve any data for this request."
-        somethingWentWrong: "Something went wrong. Perhaps contact a bot administrator for help."
-        noHolidaysToday: "No holidays today...Get back to work!"
-        todayHoliday: "Today is {0}"
+        tooManyAttempts: "De Vakantie API heeft teveel aanvragen gekregen wat niet mogenlijk zou moeten zijn. D:"
+        notFound: "De Vakantie API kon geen informatie verkrijgen voor deze aanvraag."
+        somethingWentWrong: "Er is iets mis gegaan, contacteer de bot administrator voor meer assistentie."
+        noHolidaysToday: "Geen vakanties vandaag...Ga terug naar je werk!"
+        todayHoliday: "Vandaag is het {0}"
 
     MemeCommand:
         missingArgument: 'Er mist de `action` argument, je moet het type meme meegeven voor het type meme dat je wilt genereren, of `list` om alle meme types te laten zien.'
@@ -541,19 +541,19 @@ interaction:
     DivorceCommand: '**{0}** scheid met **{1}**'
     EatCommand: '**{0}** is aan het eten met **{1}**'
     HelloCommand: '**{0}** zegt hallo tegen **{1}**'
-    HighFiveCommand: '**{0}** high fives **{1}**'
+    HighFiveCommand: '**{0}** geeft **{1}** een high five'
     HugCommand: '**{0}** knuffeld **{1}**'
     KillCommand: '**{0}** wil **{1}** vermoorden'
     KissCommand: '**{0}** kusjes **{1}**'
-    LaughCommand: '**{0}** laughs at **{1}**'
+    LaughCommand: '**{0}** lacht naar **{1}**'
     MarryCommand: '**{0}** wil trouwen met **{1}**'
     MeowCommand: '**{0}** meows naar **{1}**'
     PanCommand: '**{0}** heeft zojuist **{1}** geslagen met een pan!'
-    PatCommand: '**{0}** pats **{1}**'
+    PatCommand: '**{0}** aait **{1}**'
     PokeCommand: '**{0}** prikt **{1}**'
-    PoutCommand: '**{0}** pouts at **{1}**'
-    PunchCommand: '**{0}** stompt **{1}**'
-    SenpaiCommand: '**{0}** wants to be noticed by **{1}**'
+    PoutCommand: '**{0}** streelt **{1}**'
+    PunchCommand: '**{0}** slaat **{1}**'
+    SenpaiCommand: '**{0}** wil gezien worden door **{1}**'
     ShrugCommand: '**{0}** trekt schouders op naar **{1}**'
     SlapCommand: '**{0}** slaat **{1}**'
     TickleCommand: '**{0}** kieteld **{1}**'
@@ -857,7 +857,7 @@ utility:
             100: 'geweldig! :smiley:'
             200: 'netjes! :slight_smile:'
             300: 'fatsoenlijk. :neutral_face:'
-            400: 'average... :confused:'
+            400: 'gemiddeld... :confused:'
             500: 'beetje sloom. :slight_frown:'
             600: 'best sloom.. :frowning2:'
             700: 'sloom.. :worried:'
@@ -888,7 +888,7 @@ utility:
 
     RankCommand:
         botsCannotReceiveXp: "Bots kunnen geen exp ontvangen en kunnen dus geen ranking hebben, probeer het opnieuw met een gebruiker."
-        unranked: 'Unranked'
+        unranked: 'Geen rank'
         fields:
             rank: 'Rank'
             level: 'Level'
@@ -952,9 +952,9 @@ utility:
             servers: 'Servers'
 
     TemperatureConvertCommand:
-        invalidConvertFormat: "`{0}` is not a recognized conversion mode. Valid conversion modes are:\n{1}"
-        invalidNumberFormat: "`{0}` could not be parsed as a number."
-        message: ":input is equal to :one and :two"
+        invalidConvertFormat: "`{0}` is niet gezien als een conversie modus. Geldige modussen zijn:\n{1}"
+        invalidNumberFormat: "`{0}` kon niet worden gezien als een nummer."
+        message: ":input is gelijk aan :one en :two"
 
     UptimeCommand:
         message: 'Ik ben online geweest voor :time'
