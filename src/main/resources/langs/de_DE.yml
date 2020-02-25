@@ -541,6 +541,7 @@ interaction:
     CuddleCommand: '**{0}** knuddelt **{1}**'
     DivorceCommand: '**{0}** scheidet **{1}**'
     EatCommand: '**{0}** isst etwas mit **{1}**'
+    HandHoldCommand: '**{0}** holds hands with **{1}**'
     HelloCommand: '**{0}** sagt Hallo zu **{1}**'
     HighFiveCommand: '**{0}** gibt ein High Five zu **{1}**'
     HugCommand: '**{0}** umarmt **{1}**'
