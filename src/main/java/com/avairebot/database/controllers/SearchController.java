@@ -24,7 +24,7 @@ package com.avairebot.database.controllers;
 import com.avairebot.AvaIre;
 import com.avairebot.Constants;
 import com.avairebot.audio.TrackRequestContext;
-import com.avairebot.audio.seracher.SearchProvider;
+import com.avairebot.audio.searcher.SearchProvider;
 import com.avairebot.contracts.database.Database;
 import com.avairebot.database.collection.Collection;
 import com.avairebot.database.transformers.SearchResultTransformer;
