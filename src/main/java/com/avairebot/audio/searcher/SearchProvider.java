@@ -19,7 +19,7 @@
  *
  */
 
-package com.avairebot.audio.seracher;
+package com.avairebot.audio.searcher;
 
 import com.avairebot.contracts.toggle.Feature;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
