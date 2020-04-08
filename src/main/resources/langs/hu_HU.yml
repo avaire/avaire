@@ -538,6 +538,7 @@ interaction:
     CuddleCommand: '**{0}** megöleli **{1}**'
     DivorceCommand: '**{0}** elválasztja **{1}**'
     EatCommand: '**{0}** megeszi **{1}**'
+    HandHoldCommand: '**{0}** holds hands with **{1}**'
     HelloCommand: '**{0}** köszön **{1}**'
     HighFiveCommand: '**{0}** pacsi **{1}**'
     HugCommand: '**{0}** ölelni **{1}**'

@@ -539,6 +539,7 @@ interaction:
     CuddleCommand: '**{0}** обнимашки c **{1}**'
     DivorceCommand: '**{0}** :tongue: развел **{1}**'
     EatCommand: '**{0}** ест всякую фигню с **{1}**'
+    HandHoldCommand: '**{0}** holds hands with **{1}**'
     HelloCommand: '**{0}** приветствует **{1}**'
     HighFiveCommand: '**{0}** дал :raised_hand: **{1}**'
     HugCommand: '**{0}** обнимашки c **{1}**'

@@ -539,6 +539,7 @@ interaction:
     CuddleCommand: '**{0}** 搂住 **{1}**'
     DivorceCommand: '**{0}** 离婚 **{1}**'
     EatCommand: '**{0}** 吃点东西 **{1}**'
+    HandHoldCommand: '**{0}** holds hands with **{1}**'
     HelloCommand: '**{0}** 向你问好 **{1}**'
     HighFiveCommand: '**{0}** 击掌 **{1}**'
     HugCommand: '**{0}** 拥抱 **{1}**'

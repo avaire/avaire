@@ -540,6 +540,7 @@ interaction:
     CuddleCommand: '**{0}** koser **{1}**'
     DivorceCommand: '**{0}** skillsmisser **{1}**'
     EatCommand: '**{0}** spiser mat med **{1}**'
+    HandHoldCommand: '**{0}** holds hands with **{1}**'
     HelloCommand: '**{0}** sier hei til **{1}**'
     HighFiveCommand: '**{0}** high fiver **{1}**'
     HugCommand: '**{0}** klemmer **{1}**'
