@@ -27,7 +27,7 @@ import com.avairebot.audio.TrackRequestContext;
 import com.avairebot.audio.VoiceConnectStatus;
 import com.avairebot.audio.exceptions.InvalidSearchProviderException;
 import com.avairebot.audio.exceptions.SearchingException;
-import com.avairebot.audio.seracher.SearchTrackResultHandler;
+import com.avairebot.audio.searcher.SearchTrackResultHandler;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.commands.music.PlaylistCommand;
 import com.avairebot.contracts.commands.playlist.PlaylistSubCommand;

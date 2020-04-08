@@ -24,7 +24,7 @@ package com.avairebot.database.transformers;
 import com.avairebot.AvaIre;
 import com.avairebot.audio.TrackRequestContext;
 import com.avairebot.audio.cache.AudioTrackSerializer;
-import com.avairebot.audio.seracher.SearchProvider;
+import com.avairebot.audio.searcher.SearchProvider;
 import com.avairebot.contracts.database.transformers.Transformer;
 import com.avairebot.database.collection.DataRow;
 import com.avairebot.exceptions.InvalidStateException;

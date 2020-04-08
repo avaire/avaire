@@ -23,7 +23,7 @@ package com.avairebot.commands.system;
 
 import com.avairebot.AvaIre;
 import com.avairebot.Constants;
-import com.avairebot.audio.seracher.SearchProvider;
+import com.avairebot.audio.searcher.SearchProvider;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.SystemCommand;
 import com.avairebot.utilities.ComparatorUtil;

@@ -226,8 +226,8 @@ public class PlayCommand extends Command {
 
                 AudioTrack track = tracks.get(i);
 
-                songs.add(String.format("`%s` [%s](%s)",
-                    (i + 1), track.getInfo().title, track.getInfo().uri
+                songs.add(String.format("`%s` [%s](%s) [%s]",
+                    (i + 1), track.getInfo().title, track.getInfo().uri, NumberUtil.formatTime(track.getDuration())
                 ));
             }
 
