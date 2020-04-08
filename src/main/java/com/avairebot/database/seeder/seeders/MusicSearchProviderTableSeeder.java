@@ -23,7 +23,7 @@ package com.avairebot.database.seeder.seeders;
 
 import com.avairebot.AvaIre;
 import com.avairebot.Constants;
-import com.avairebot.audio.seracher.SearchProvider;
+import com.avairebot.audio.searcher.SearchProvider;
 import com.avairebot.contracts.database.seeder.Seeder;
 
 import java.sql.SQLException;
