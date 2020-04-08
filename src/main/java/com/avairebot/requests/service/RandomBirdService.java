@@ -26,6 +26,6 @@ public class RandomBirdService {
     private String link;
 
     public String getLink() {
-        return  link;
+        return link;
     }
 }
