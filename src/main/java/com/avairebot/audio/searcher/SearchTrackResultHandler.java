@@ -19,7 +19,7 @@
  *
  */
 
-package com.avairebot.audio.seracher;
+package com.avairebot.audio.searcher;
 
 import com.avairebot.audio.AudioHandler;
 import com.avairebot.audio.TrackRequestContext;

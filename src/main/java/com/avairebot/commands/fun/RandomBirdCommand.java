@@ -71,11 +71,11 @@ public class RandomBirdCommand extends Command {
 
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
-        RequestFactory.makeGET("http://random.birb.pw/tweet.json/").send((Consumer<Response>) response -> {
+        RequestFactory.makeGET("https://some-random-api.ml/img/birb").send((Consumer<Response>) response -> {
             RandomBirdService service = (RandomBirdService) response.toService(RandomBirdService.class);
 
             context.makeEmbeddedMessage()
-                .setImage("http://random.birb.pw/img/" + service.getFile())
+                .setImage(service.getLink())
                 .queue();
         });
         return true;

@@ -22,7 +22,7 @@
 package com.avairebot.audio;
 
 import com.avairebot.AvaIre;
-import com.avairebot.audio.seracher.SearchProvider;
+import com.avairebot.audio.searcher.SearchProvider;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.transformers.GuildTransformer;
