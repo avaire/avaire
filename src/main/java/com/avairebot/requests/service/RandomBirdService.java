@@ -23,9 +23,9 @@ package com.avairebot.requests.service;
 
 public class RandomBirdService {
 
-    private String file;
+    private String link;
 
-    public String getFile() {
-        return file;
+    public String getLink() {
+        return link;
     }
 }
