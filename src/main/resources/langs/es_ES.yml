@@ -898,6 +898,7 @@ utility:
             youNeedMoreXpToLevelUp: '[{0}] {1}{2}\n\t\t\t\t\t\t\t\t\tNecesitas {3} más de EXP para subir de nivel.'
 
     RemindCommand:
+        title : "reminders"
         errors:
             invalidMeHere: 'Tipo no válido. Debes declarar donde debes ser recordado usando `here` en el canal actual o `me` para que se te recuerde a ti directamente a través de un mensaje personal.'
             invalidTime: 'Tiempo no válido. El tiempo debe ser superior a 60 segundos e inferior a 3 días.'

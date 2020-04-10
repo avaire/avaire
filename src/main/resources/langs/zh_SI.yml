@@ -896,6 +896,7 @@ utility:
             youNeedMoreXpToLevelUp: '[{0}] {1}{2}\n\t\t\t\t\t\t\t\t\tYou need {3} 需要更多经验来升级.'
 
     RemindCommand:
+        title : "reminders"
         errors:
             invalidMeHere: '类型指定无效，则必须声明要提醒您的位置，方法是使用 `here` 在当前频道中被提醒，或 `me` 在直接信息中被提醒.'
             invalidTime: '给定的时间无效，时间必须大于60秒且小于3天。'

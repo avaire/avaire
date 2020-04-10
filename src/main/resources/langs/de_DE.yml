@@ -899,6 +899,7 @@ utility:
             youNeedMoreXpToLevelUp: '[{0}] {1}{2}\n\t\t\t\t\t\t\tDu benötigst {3} weitere XP für einen Level Up.'
 
     RemindCommand:
+        title : "reminders"
         errors:
             invalidMeHere: 'Ungültigen Typ angegeben. Du musst angeben, wo du erinnert werden möchtest. Nutze `here`, um diesen Channel zu nutzen. Falls du eine Direktnachricht bevorzugst, so nutze `me`.'
             invalidTime: 'Ungültige Zeit angegeben. Die Zeit muss länger als 60 Sekunden und weniger als 3 Tage betragen.'

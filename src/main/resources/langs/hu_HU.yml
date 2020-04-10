@@ -895,6 +895,7 @@ utility:
             youNeedMoreXpToLevelUp: '[{0}] {1}{2}\n\t\t\t\t\t\t\t\t\tSzükséged van {3} tapasztalatra a szintlépéshez.'
 
     RemindCommand:
+        title : "reminders"
         errors:
             invalidMeHere: 'Érvénytelen típus megadva, megkell adnod, hogy hol legyél emlékeztetve vagy `here`-el hogy a jelenlegi szobában, vagy `me`-el, hogy privát üzenetben.'
             invalidTime: 'Érvénytelen idő megadva, az értéknek többnek kell lennie mint 60 másodperc és kevesebbnek mint 3 days.'

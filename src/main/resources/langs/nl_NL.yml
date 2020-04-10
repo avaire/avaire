@@ -898,6 +898,7 @@ utility:
             youNeedMoreXpToLevelUp: '[{0}] {1}{2}\n\t\t\t\t\t\t\t\t\tJe bent nog {3} meer xp nodig om een level omhoog je gaan.'
 
     RemindCommand:
+        title : "reminders"
         errors:
             invalidMeHere: 'Ongeldig type gegeven, je moet aangeven waar je herinnerd wilt worden, door of `here` te gebruiker om in dit kanaal herinnerd te worden, of `me` om herinnerd te worden in een direct bericht.'
             invalidTime: 'Ongeldige tijd gegeven, de tijd moet meer dan 60 seconden zijn en minder dan 3 dagen.'
