@@ -899,9 +899,11 @@ utility:
 
     RemindCommand:
         title : "reminders"
+        deletedReminder: "Successfully deleted reminder with an id of {0}."
         errors:
             invalidMeHere: 'Tipo no válido. Debes declarar donde debes ser recordado usando `here` en el canal actual o `me` para que se te recuerde a ti directamente a través de un mensaje personal.'
             invalidTime: 'Tiempo no válido. El tiempo debe ser superior a 60 segundos e inferior a 3 días.'
+            notFound: "No reminder found with an id {0} registered to you."
 
     ServerIdCommand:
         message: ':user :id: de este servidor es `:guildid`'

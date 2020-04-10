@@ -898,9 +898,11 @@ utility:
 
     RemindCommand:
         title : "reminders"
+        deletedReminder: "Successfully deleted reminder with an id of {0}."
         errors:
             invalidMeHere: 'Недопустимый тип данных, вы должны объявить, где вам нужно напомнить, либо используя `here`, чтобы напомнить в текущем канале, либо `me`, чтобы напомнить в прямом сообщении.'
             invalidTime: 'Недействительное время, время должно быть больше 60 секунд и менее 3 дней.'
+            notFound: "No reminder found with an id {0} registered to you."
 
     ServerIdCommand:
         message: ':user :id: этого сервера `:guildid`'

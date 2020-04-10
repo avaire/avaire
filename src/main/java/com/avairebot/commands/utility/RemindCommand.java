@@ -154,15 +154,23 @@ public class RemindCommand extends Command {
         }
         if(!reminderExists)
         {
-            return sendErrorMessage(context,"No reminder found with " + id);
+            return sendErrorMessage(context,context.i18n("errors.notFound",id));
         }
         try
         {
-            avaire.getDatabase().newQueryBuilder(Constants.REMINDERS_TABLE_NAME)
+            int deleted = avaire.getDatabase().newQueryBuilder(Constants.REMINDERS_TABLE_NAME)
                 .where("id",id)
                 .andWhere("user_id",context.getAuthor().getIdLong())
                 .delete();
-            RemindersController.cache.invalidate(context.getAuthor().getIdLong());
+            if(deleted == 1)
+            {
+                RemindersController.cache.invalidate(context.getAuthor().getIdLong());
+                context.makeSuccess(context.i18n("deletedReminder",id));
+            }
+            else
+            {
+                return sendErrorMessage(context,context.i18n("errors.notFound",id));
+            }
             return true;
         }
         catch (SQLException e)

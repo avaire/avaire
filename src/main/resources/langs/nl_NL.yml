@@ -899,9 +899,11 @@ utility:
 
     RemindCommand:
         title : "reminders"
+        deletedReminder: "Successfully deleted reminder with an id of {0}."
         errors:
             invalidMeHere: 'Ongeldig type gegeven, je moet aangeven waar je herinnerd wilt worden, door of `here` te gebruiker om in dit kanaal herinnerd te worden, of `me` om herinnerd te worden in een direct bericht.'
             invalidTime: 'Ongeldige tijd gegeven, de tijd moet meer dan 60 seconden zijn en minder dan 3 dagen.'
+            notFound: "No reminder found with an id {0} registered to you."
 
     ServerIdCommand:
         message: ':user :id: van deze server is `:guildid`'

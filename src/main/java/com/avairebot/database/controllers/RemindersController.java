@@ -6,13 +6,11 @@ import com.avairebot.database.transformers.RemindersTransformer;
 import com.avairebot.utilities.CacheUtil;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import net.dv8tion.jda.core.entities.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.sql.SQLException;
 import java.util.concurrent.TimeUnit;
 
@@ -21,21 +19,10 @@ public class RemindersController
 
     public static final Cache<Long, RemindersTransformer> cache = CacheBuilder.newBuilder()
         .recordStats()
-        .expireAfterAccess(3, TimeUnit.MINUTES)
+        .expireAfterAccess(90, TimeUnit.MINUTES)
         .build();
 
     private static final Logger log = LoggerFactory.getLogger(RemindersController.class);
-
-
-
-    @Nullable
-    @CheckReturnValue
-    public static RemindersTransformer fetchPendingReminders(User user) {
-        if (user == null || !user.isBot()) {
-            return null;
-        }
-        return fetchPendingReminders(user.getIdLong());
-    }
 
     @Nonnull
     @CheckReturnValue
