@@ -46,14 +46,15 @@ public class Constants {
     public static final String MUSIC_SEARCH_PROVIDERS_TABLE_NAME = "music_search_providers";
     public static final String MUSIC_SEARCH_CACHE_TABLE_NAME = "music_search_cache";
     public static final String INSTALLED_PLUGINS_TABLE_NAME = "installed_plugins";
-
+    public static final String REMINDERS_TABLE_NAME = "reminders";
+    
     // Package Specific Information
     public static final String PACKAGE_MIGRATION_PATH = "com.avairebot.database.migrate";
     public static final String PACKAGE_SEEDER_PATH = "com.avairebot.database.seeder";
     public static final String PACKAGE_COMMAND_PATH = "com.avairebot.commands";
     public static final String PACKAGE_INTENTS_PATH = "com.avairebot.ai.dialogflow.intents";
     public static final String PACKAGE_JOB_PATH = "com.avairebot.scheduler";
-    public static final String REMINDERS_TABLE_NAME = "reminders";
+
 
     // Emojis
     public static final String EMOTE_ONLINE = "<:online:324986081378435072>";
