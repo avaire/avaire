@@ -78,8 +78,8 @@ public class StatsCommand extends Command {
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
         context.makeEmbeddedMessage(MessageType.INFO,
-            new MessageEmbed.Field(context.i18n("fields.author"), "[Senither#0001](https://senither.com/)", true),
-            new MessageEmbed.Field(context.i18n("fields.website"), "[avairebot.com](https://avairebot.com/)", true),
+            new MessageEmbed.Field(context.i18n("fields.author"), "[Snow.#1726](https://sn0w.xyz/)", true),
+            new MessageEmbed.Field(context.i18n("fields.website"), "[Support](https://discord.gg/jJSkd3g)", true),
             new MessageEmbed.Field(context.i18n("fields.library"), "[JDA](https://github.com/DV8FromTheWorld/JDA)", true),
             new MessageEmbed.Field(context.i18n("fields.database"), getDatabaseQueriesStats(context), true),
             new MessageEmbed.Field(context.i18n("fields.messages"), getMessagesReceivedStats(context), true),
@@ -91,8 +91,8 @@ public class StatsCommand extends Command {
             new MessageEmbed.Field(context.i18n("fields.channels"), NumberUtil.formatNicely(avaire.getShardEntityCounter().getChannels()), true),
             new MessageEmbed.Field(context.i18n("fields.servers"), NumberUtil.formatNicely(avaire.getShardEntityCounter().getGuilds()), true)
         )
-            .setTitle(context.i18n("title"), "https://avairebot.com/support")
-            .setAuthor("AvaIre v" + AppInfo.getAppInfo().version, "https://avairebot.com/support", avaire.getSelfUser().getEffectiveAvatarUrl())
+            .setTitle(context.i18n("title"), "https://discord.gg/jJSkd3g")
+            .setAuthor("AvaIre v" + AppInfo.getAppInfo().version, "https://discord.gg/jJSkd3g", avaire.getSelfUser().getEffectiveAvatarUrl())
             .setFooter(context.i18n("footer",
                 NumberUtil.formatNicely(AudioHandler.getDefaultAudioHandler().getTotalListenersSize()),
                 NumberUtil.formatNicely(AudioHandler.getDefaultAudioHandler().getTotalQueueSize())
