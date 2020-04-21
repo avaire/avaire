@@ -26,7 +26,6 @@ import com.avairebot.admin.AdminUser;
 import com.avairebot.chat.MessageType;
 import com.avairebot.chat.PlaceholderMessage;
 import com.avairebot.commands.*;
-import com.avairebot.commands.utility.SourceCommand;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.contracts.commands.CommandGroup;
 import com.avairebot.database.transformers.ChannelTransformer;
