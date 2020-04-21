@@ -67,11 +67,6 @@ public class HelpCommand extends Command {
     }
 
     @Override
-    public List<Class<? extends Command>> getRelations() {
-        return Collections.singletonList(SourceCommand.class);
-    }
-
-    @Override
     public List<String> getExampleUsage() {
         return Arrays.asList(
             "`:command play`,",
