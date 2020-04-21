@@ -51,13 +51,13 @@ public class VoteCommand extends Command {
 
     @Override
     public String getDescription() {
-        return "Enjoy using the bot? Consider voting for the bot to help it grow, it's free but means a lot to the team behind Ava <3";
+        return "Enjoy using the bot? Consider voting for the bot to help it grow, it's free but means a lot to the team behind Snows Bot <3";
     }
 
     @Override
     public List<String> getUsageInstructions() {
         return Arrays.asList(
-            "`:command check` - Checks if you have voted for Ava in the last 12 hours.",
+            "`:command check` - Checks if you have voted for Snows Bot in the last 12 hours.",
             "`:command` - Displays the invite link to Ava, or tells you when your vote expires."
         );
     }
@@ -104,14 +104,14 @@ public class VoteCommand extends Command {
         }
 
         context.makeSuccess(String.join("\n", Arrays.asList(
-            "Enjoy using the bot? Consider voting for the bot to help it grow, it's free but means a lot to the team behind Ava ❤",
+            "Enjoy using the bot? Consider voting for the bot to help it grow, it's free but means a lot to the team behind Snows Bot ❤",
             "",
-            "https://discordbots.org/bot/avaire",
+            "https://discordbots.org/",
             "",
             ":note"
         )))
             .set("note", note)
-            .setTitle("Vote for AvaIre on DBL", "https://discordbots.org/bot/avaire")
+            .setTitle("Vote for Snows Bot on DBL", "https://discordbots.org/")
             .setFooter("You have " + (voteEntity == null ? 0 : voteEntity.getVotePoints()) + " vote points")
             .queue();
 
