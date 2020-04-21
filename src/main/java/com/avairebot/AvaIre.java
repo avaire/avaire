@@ -39,7 +39,6 @@ import com.avairebot.commands.CategoryDataContext;
 import com.avairebot.commands.CategoryHandler;
 import com.avairebot.commands.CommandHandler;
 import com.avairebot.commands.administration.ChangePrefixCommand;
-import com.avairebot.commands.utility.SourceCommand;
 import com.avairebot.commands.utility.StatsCommand;
 import com.avairebot.commands.utility.UptimeCommand;
 import com.avairebot.config.*;
