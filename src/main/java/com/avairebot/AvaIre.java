@@ -251,7 +251,6 @@ public class AvaIre {
         if (settings.isMusicOnlyMode()) {
             CommandHandler.register(new StatsCommand(this));
             CommandHandler.register(new UptimeCommand(this));
-            CommandHandler.register(new SourceCommand(this));
             CommandHandler.register(new ChangePrefixCommand(this));
             AutoloaderUtil.load(Constants.PACKAGE_COMMAND_PATH + ".help", command -> CommandHandler.register((Command) command));
             AutoloaderUtil.load(Constants.PACKAGE_COMMAND_PATH + ".music", command -> CommandHandler.register((Command) command));
