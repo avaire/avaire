@@ -4,7 +4,7 @@
 
 <p align="center">
     <a href="https://ci.avairebot.com/">
-        <img alt="TeamCity Simple Build Status" src="https://img.shields.io/teamcity/build/s/Avaire_Build?server=http%3A%2F%2Fci.avairebot.com%2F">
+        <img alt="TeamCitys Simple Build Status" src="https://img.shields.io/teamcity/build/s/Avaire_Build?server=http%3A%2F%2Fci.avairebot.com%2F">
     </a>
     <a href="https://avairebot.com/">
         <img src="https://cdn.avairebot.com/badge/avaire-version.svg" alt="AvaIre Version">
