@@ -71,7 +71,7 @@ public class InviteCommand extends Command {
 
         context.makeInfo(context.i18n("message"))
             .set("oauth", avaire.getConfig().getString("discord.oauth"))
-            .set("note", note.set("edgeInvite", "https://avairebot.com/invite-cutting-edge").toString())
+            .set("note", note.set("edgeInvite", "https://discordapp.com/oauth2/authorize?&client_id=701968771849388063&scope=bot&permissions=66186303").toString())
             .queue();
         return true;
     }
