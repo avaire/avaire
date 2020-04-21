@@ -77,7 +77,7 @@ public class RankBackgroundCommand extends Command {
             "Rank backgrounds are used for the `%srank` command, when a user has a rank",
             "background selected, their rank and experience will be displayed using a generated",
             "image instead, the background image can be changed at any time.",
-            "You can buy backgrounds using [vote points](https://discordbots.org/bot/avaire), use `%svote` for more info."
+            "You can **NOT** buy backgrounds using [vote points](https://sn0w.xyz/)right now but you will be able to someday."
         ), prefix, prefix);
     }
 
