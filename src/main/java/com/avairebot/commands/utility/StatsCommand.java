@@ -92,7 +92,7 @@ public class StatsCommand extends Command {
             new MessageEmbed.Field(context.i18n("fields.servers"), NumberUtil.formatNicely(avaire.getShardEntityCounter().getGuilds()), true)
         )
             .setTitle(context.i18n("title"), "https://discord.gg/jJSkd3g")
-            .setAuthor("AvaIre v" + AppInfo.getAppInfo().version, "https://discord.gg/jJSkd3g", avaire.getSelfUser().getEffectiveAvatarUrl())
+            .setAuthor("Snows Bot v" + AppInfo.getAppInfo().version, "https://discord.gg/jJSkd3g", avaire.getSelfUser().getEffectiveAvatarUrl())
             .setFooter(context.i18n("footer",
                 NumberUtil.formatNicely(AudioHandler.getDefaultAudioHandler().getTotalListenersSize()),
                 NumberUtil.formatNicely(AudioHandler.getDefaultAudioHandler().getTotalQueueSize())
