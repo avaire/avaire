@@ -99,7 +99,7 @@ public class ListAllServersCommand extends Command {
     public boolean onCommand(CommandMessage context, String[] args) {
         Collection collection = avaire.GetGuilds();
 		for (String guild : collection) {
-			members = guild.getMembers();
+			Integer members = guild.getMembers();
 			if (members < 4) {
              sendErrorMessage(guild.getName(),"test");
 			 //log.info("Name: {0} and ID:", guildgetName());
