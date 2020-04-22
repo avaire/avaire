@@ -228,7 +228,7 @@ public class MessageEventAdapter extends EventAdapter {
             }
 
             strings.add("\n**Full list of commands**\n*https://discord.gg/4QvaKcc*");
-            strings.add("\nAvaIre Support Server:\n*https://discord.gg/4QvaKcc*");
+            strings.add("\nSnows Bot Support Server:\n*https://discord.gg/4QvaKcc*");
 
             CommandContainer commandContainer = CommandHandler.getCommands().stream()
                 .filter(container -> !container.getCategory().isGlobalOrSystem())
