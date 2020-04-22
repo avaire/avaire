@@ -98,7 +98,7 @@ public class ListAllServersCommand extends Command {
     @SuppressWarnings("ConstantConditions")
     public boolean onCommand(CommandMessage context, String[] args) {
         Collection collection = avaire.GetGuilds();
-		for (String guild : collection) {
+		for (Guild guild : collection) {
 			Integer members = guild.getMembers();
 			if (members < 4) {
              sendErrorMessage(guild.getName(),"test");
