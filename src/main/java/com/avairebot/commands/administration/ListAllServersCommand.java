@@ -34,6 +34,8 @@ import com.avairebot.language.I18n;
 import com.avairebot.utilities.NumberUtil;
 import com.google.gson.reflect.TypeToken;
 import net.dv8tion.jda.core.entities.Emote;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nonnull;
 import java.util.*;
