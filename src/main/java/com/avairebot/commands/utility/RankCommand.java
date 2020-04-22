@@ -224,8 +224,8 @@ public class RankCommand extends Command {
         DatabaseProperties properties
     ) {
         MessageFactory.makeEmbeddedMessage(context.getChannel(), Color.decode("#E91E63"))
-            .setAuthor(author.getName(), "https://avairebot.com/leaderboard/" + context.getGuild().getId(), author.getEffectiveAvatarUrl())
-            .setFooter("https://avairebot.com/leaderboard/" + context.getGuild().getId())
+            .setAuthor(author.getName(), "http://sn0w.xyz/" + context.getGuild().getId(), author.getEffectiveAvatarUrl())
+            .setFooter("http://sn0w.xyz/" + context.getGuild().getId())
             .addField(context.i18n("fields.rank"), score, true)
             .addField(context.i18n("fields.level"), NumberUtil.formatNicely(level), true)
             .addField(context.i18n("fields.experience"), (experience - zeroExperience - 100 < 0 ? "0" : context.i18n("fields.total",
