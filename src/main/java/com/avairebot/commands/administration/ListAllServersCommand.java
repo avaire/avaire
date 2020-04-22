@@ -40,7 +40,16 @@ import org.slf4j.LoggerFactory;
 import javax.annotation.Nonnull;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
-import JDA.*;
+
+import net.dv8tion.jda.bot.sharding.DefaultShardManagerBuilder;
+import net.dv8tion.jda.bot.sharding.ShardManager;
+import net.dv8tion.jda.core.JDA;
+import net.dv8tion.jda.core.JDAInfo;
+import net.dv8tion.jda.core.entities.Game;
+import net.dv8tion.jda.core.entities.SelfUser;
+import net.dv8tion.jda.core.requests.RestAction;
+import net.dv8tion.jda.core.utils.SessionControllerAdapter;
+import net.dv8tion.jda.core.utils.cache.CacheFlag;
 
 public class ListAllServersCommand extends Command {
 
