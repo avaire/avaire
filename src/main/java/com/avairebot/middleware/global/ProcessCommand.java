@@ -74,7 +74,7 @@ public class ProcessCommand extends Middleware {
             }
 
             return runMessageCheck(message, () -> {
-                message.getTextChannel().sendMessage("I don't have the `Embed Links` permission, the permission is required for all of my commands to work.\nhttps://avairebot.com/missing-embed-permissions.png\nThis error can sometimes occur when the `everyone` role has it disabled and no other roles enables it.\nThis message will be automatically deleted in 30 seconds.")
+                message.getTextChannel().sendMessage("I don't have the `Embed Links` permission, the permission is required for all of my commands to work.\nhttp://sn0w.xyz/\nThis error can sometimes occur when the `everyone` role has it disabled and no other roles enables it.\nThis message will be automatically deleted in 30 seconds.")
                     .queue(newMessage -> newMessage.delete().queueAfter(30, TimeUnit.SECONDS, null, RestActionUtil.ignore));
 
                 return false;
