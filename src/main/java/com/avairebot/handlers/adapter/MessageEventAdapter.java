@@ -77,13 +77,8 @@ public class MessageEventAdapter extends EventAdapter {
         "Hi there! I'm **%s**, a multipurpose Discord bot built for fun by %s!",
         "You can see what commands I have by using the `%s` command.",
         "",
-        "I am currently running **AvaIre v%s**",
-        "",
-        "You can find all of my source code on github:",
-        "https://github.com/avaire/avaire",
-        "",
-        "If you like me please vote for AvaIre to help me grow:",
-        "https://discordbots.org/bot/avaire/vote"
+        "I am currently running **Snow's Bot v%s**",
+        ""
     ));
 
     /**
@@ -232,8 +227,8 @@ public class MessageEventAdapter extends EventAdapter {
                 strings.add("\nYou can tag me in a message with <@:botId> to send me a message that I should process using my AI.");
             }
 
-            strings.add("\n**Full list of commands**\n*https://avairebot.com/commands*");
-            strings.add("\nAvaIre Support Server:\n*https://avairebot.com/support*");
+            strings.add("\n**Full list of commands**\n*https://discord.gg/4QvaKcc*");
+            strings.add("\nAvaIre Support Server:\n*https://discord.gg/4QvaKcc*");
 
             CommandContainer commandContainer = CommandHandler.getCommands().stream()
                 .filter(container -> !container.getCategory().isGlobalOrSystem())
