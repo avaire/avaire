@@ -139,7 +139,7 @@ public class Ratelimit {
         user.openPrivateChannel().queue(channel -> {
             channel.sendMessage(MessageFactory.createEmbeddedBuilder()
                 .setColor(Color.decode("#A5306B"))
-                .setTitle("Whoa there!", "https://avairebot.com/")
+                .setTitle("Whoa there!", "http://sn0w.xyz/")
                 .setFooter("Expires", null)
                 .setTimestamp(expires.getTime().toInstant())
                 .setDescription("Looks like you're using commands a bit too fast, I've banned you "
@@ -164,7 +164,7 @@ public class Ratelimit {
     public void sendBlacklistMessage(MessageChannel channel, Carbon expires) {
         channel.sendMessage(MessageFactory.createEmbeddedBuilder()
             .setColor(Color.decode("#A5306B"))
-            .setTitle("Whoa there!", "https://avairebot.com/")
+            .setTitle("Whoa there!", "http://sn0w.xyz/")
             .setFooter("Expires", null)
             .setTimestamp(expires.getTime().toInstant())
             .setDescription("Looks like people on the server are using commands a bit too fast, "
