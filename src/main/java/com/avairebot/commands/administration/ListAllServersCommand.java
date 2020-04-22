@@ -101,7 +101,7 @@ public class ListAllServersCommand extends Command {
 			members = guild.getMembers();
 			if (members < 4) {
              sendErrorMessage(guild.name, guild.id,"test");
-			 //log.info("Name: {0} and ID: {1}", guild.name, guild.id);
+			 //log.info("Name: {0} and ID:", guildgetName());
 			}
          }
         return false;
