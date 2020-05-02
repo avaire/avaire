@@ -243,6 +243,7 @@ public class AvaIre {
         CategoryHandler.addCategory(this, "Interaction", defaultPrefix);
         CategoryHandler.addCategory(this, "Music", defaultPrefix);
         CategoryHandler.addCategory(this, "Search", defaultPrefix);
+        CategoryHandler.addCategory(this, "Economy", defaultPrefix);
         CategoryHandler.addCategory(this, "Utility", defaultPrefix);
         CategoryHandler.addCategory(this, "System", getConfig().getString(
             "system-prefix", DiscordConstants.DEFAULT_SYSTEM_PREFIX

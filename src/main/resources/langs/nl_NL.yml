@@ -431,7 +431,11 @@ administration:
         note:
             embed: "Welkom berichten worden nu gestuurd in een embedded bericht met de kleur: {0}"
             normal: "Welkom berichten worden nu gestuurd door normale berichten."
-
+economy:
+    BaltopCommand:
+        title: "Balance leaderboard for guild {0}"
+        yourRank: "Your rank"
+        line: '`:num` **:username** **:balance**.'
 fun:
     DiceCommand:
         missingDice: 'Je moet wel een dobbelsteen meegeven die je wilt rollen.'

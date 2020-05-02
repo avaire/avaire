@@ -430,7 +430,11 @@ administration:
         note:
             embed: "现在将使用嵌入的消息发送欢迎消息 color: {0}"
             normal: "现在通过普通消息发送欢迎消息."
-
+economy:
+    BaltopCommand:
+        title: "Balance leaderboard for guild {0}"
+        yourRank: "Your rank"
+        line: '`:num` **:username** **:balance**.'
 fun:
     DiceCommand:
         missingDice: '你必须包括你想要掷的骰子.'

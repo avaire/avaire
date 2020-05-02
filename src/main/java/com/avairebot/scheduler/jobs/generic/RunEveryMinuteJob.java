@@ -33,6 +33,7 @@ public class RunEveryMinuteJob extends Job {
     private final DrainMuteQueueTask drainMuteQueueTask = new DrainMuteQueueTask();
     private final GarbageCollectorTask garbageCollectorTask = new GarbageCollectorTask();
     private final SyncBlacklistMetricsTask syncBlacklistMetricsTask = new SyncBlacklistMetricsTask();
+    private final ResetDailyClaims resetDailyClaimsTask = new ResetDailyClaims();
     private final ResetRespectStatisticsTask resetRespectStatisticsTask = new ResetRespectStatisticsTask();
     private final DeleteExpiredBlacklistEntitiesTask deleteExpiredBlacklistEntitiesTask = new DeleteExpiredBlacklistEntitiesTask();
     private final UpdateWebsocketHeartbeatMetricsTask updateWebsocketHeartbeatMetricsTask = new UpdateWebsocketHeartbeatMetricsTask();
@@ -56,7 +57,8 @@ public class RunEveryMinuteJob extends Job {
             updateWebsocketHeartbeatMetricsTask,
             syncValidVoteRequestsWithMetricsTask,
             syncPlayerExperienceWithDatabaseTask,
-            syncPlayerUpdateReferencesWithDatabaseTask
+            syncPlayerUpdateReferencesWithDatabaseTask,
+            resetDailyClaimsTask
         );
     }
 }

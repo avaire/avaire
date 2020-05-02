@@ -431,6 +431,11 @@ administration:
         note:
             embed: "Velkommen meddelelser vil nu blive sendt med indlejrede meddelelser og HEX-farven: {0}"
             normal: "Nu sender velkommen beskeder via normale meddelelser."
+economy:
+    BaltopCommand:
+        title: "Balance leaderboard for guild {0}"
+        yourRank: "Your rank"
+        line: '`:num` **:username** **:balance**.'
 
 fun:
     DiceCommand:

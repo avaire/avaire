@@ -431,7 +431,11 @@ administration:
         note:
             embed: "Welcome messages will now be sent using embedded messages with the color: {0}"
             normal: "Now sending welcome messages through normal messages."
-
+economy:
+    BaltopCommand:
+        title: "Balance leaderboard for guild {0}"
+        yourRank: "Your rank"
+        line: '`:num` **:username** **:balance**.'
 fun:
     DiceCommand:
         missingDice: "Tu dois inclure le dé que tu souhaites lancer."

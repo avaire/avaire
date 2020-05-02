@@ -431,7 +431,11 @@ administration:
         note:
             embed: "Willkommensnachrichten werden nun eingebettet mit folgender Farbe verschickt: {0}"
             normal: "Willkommensnachrichten werden nun als normale Nachricht verschickt."
-
+economy:
+    BaltopCommand:
+        title: "Balance leaderboard for guild {0}"
+        yourRank: "Your rank"
+        line: '`:num` **:username** **:balance**.'
 fun:
     DiceCommand:
         missingDice: 'Du musst einen Würfel angeben, den du würfeln möchtest.'
