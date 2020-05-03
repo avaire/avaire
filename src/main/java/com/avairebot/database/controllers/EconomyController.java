@@ -100,9 +100,12 @@ public class EconomyController
                     avaire.getDatabase()
                         .newQueryBuilder(Constants.ECONOMY_TABLE_NAME)
                         .select("economy.user_id","economy.guild_id","economy.balance","economy.dailyClaims",
-                                 "economy.username","economy.discriminator","economy.avatar")
+                            "experiences.username","experiences.discriminator","experiences.avatar")
                         .where("economy.user_id", user)
                         .andWhere("economy.guild_id", message.getGuild().getId())
+                        .innerJoin(
+                            Constants.PLAYER_EXPERIENCE_TABLE_NAME, Constants.ECONOMY_TABLE_NAME + "." + "user_id",
+                            Constants.PLAYER_EXPERIENCE_TABLE_NAME + "." + "user_id")
                         .get().first()
                 );
 
@@ -120,11 +123,10 @@ public class EconomyController
                     return transformer;
                 }
 
-
                 if (!transformer.isActive())
                 {
                     avaire.getDatabase()
-                        .newQueryBuilder(Constants.ECONOMY_TABLE_NAME)
+                        .newQueryBuilder(Constants.PLAYER_EXPERIENCE_TABLE_NAME)
                         .where("user_id", user)
                         .andWhere("guild_id", message.getGuild().getId())
                         .update(statement -> {
