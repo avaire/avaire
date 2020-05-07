@@ -85,7 +85,7 @@ public class SlotCommand extends Command {
     }
 
     public boolean hasGraphics() throws IOException {
-        return !ResourceLoaderUtil.getFiles(SlotCommand.class, "/command_pictures/slots", true).isEmpty();
+        return !ResourceLoaderUtil.getFiles(SlotCommand.class, "command_pictures/slots", true).isEmpty();
     }
 
     /**
