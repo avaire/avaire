@@ -309,7 +309,7 @@ public class SlotCommand extends Command {
 
         for(int i = 0; i < emotes.size(); i++)
         {
-            for(int w = 0; w < emotes.size() - i; w++)
+            for(int w = 0; w < emotes.size(); w++)
             {
                 if(!emotes.get(i).equals(emotes.get(w)))
                 {
@@ -325,7 +325,7 @@ public class SlotCommand extends Command {
     {
         for(int i = 0; i < emotes.size(); i++)
         {
-            for(int w = i + 1; w < emotes.size() - i; w++)
+            for(int w = i + 1; w < emotes.size(); w++)
             {
                 if(emotes.get(i).equals(emotes.get(w)))
                 {
