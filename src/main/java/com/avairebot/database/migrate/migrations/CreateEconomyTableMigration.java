@@ -64,7 +64,7 @@ public class CreateEconomyTableMigration implements Migration
             table.Long("guild_id").unsigned();
             table.Long("user_id").unsigned();
             table.Long("user_id").unsigned();
-            table.Integer("dailyClaims").defaultValue(0);
+            table.Integer("timesClaimed").defaultValue(0);
             table.Boolean("active").defaultValue(true);
             table.Long("balance").defaultValue(100);
             table.Timestamps();
