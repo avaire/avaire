@@ -83,6 +83,24 @@ public class EconomyController
     }
 
 
+    public static void updateBalance(AvaIre avaire, long guidId, long userId, long balance)
+    {
+        try
+        {
+            avaire.getDatabase().newQueryBuilder(Constants.ECONOMY_TABLE_NAME)
+                .where("guild_id",guidId)
+                .andWhere("user_id",userId)
+                .update(statement ->
+                {
+                    statement.set("balance",balance);
+                });
+        } catch (SQLException ex)
+        {
+            ex.printStackTrace();
+            AvaIre.getLogger().error(ex.getMessage(), ex);
+        }
+    }
+
     @CheckReturnValue
     public static EconomyTransformer fetchEconomy( AvaIre avaire, Message message, long user) {
         if (!message.getChannelType().isGuild())

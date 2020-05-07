@@ -20,8 +20,10 @@
  */
 package com.avairebot.database.transformers;
 
+import com.avairebot.AvaIre;
 import com.avairebot.contracts.database.transformers.Transformer;
 import com.avairebot.database.collection.DataRow;
+import com.avairebot.database.controllers.EconomyController;
 import com.avairebot.level.LevelManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -93,6 +95,13 @@ public class EconomyTransformer extends Transformer
     public void incrementBalanceBy(long amount)
     {
         this.balance += amount;
+        EconomyController.updateBalance(AvaIre.getInstance(),guildId,userId,balance);
+    }
+
+    public void decrementBalanceBy(long amount)
+    {
+        this.balance -= amount;
+        EconomyController.updateBalance(AvaIre.getInstance(),guildId,userId,balance);
     }
 
     public boolean isActive() {
