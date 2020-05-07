@@ -72,7 +72,7 @@ public class EconomyController
             avaire.getDatabase().newQueryBuilder(Constants.ECONOMY_TABLE_NAME)
                 .update(statement ->
                 {
-                    statement.set("dailyClaims",0);
+                    statement.set("timesClaimed",0);
                 });
         }
         catch (SQLException ex)
