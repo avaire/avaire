@@ -152,7 +152,7 @@ public class SlotCommand extends Command {
             BufferedImage image = ImageIO.read(SlotCommand.class.getClassLoader().getResourceAsStream("command_pictures/slots/numbers/" + digit + ".png"));
             ImageUtil.drawOnTopOfOtherImage(background, image, 100, 230 - n * 16, 462);
             n++;
-        } while ((printWon / 10) != 0);
+        } while ((printWon) != 0);
 
         n = 0;
         int printBet = betAmount;
@@ -164,7 +164,7 @@ public class SlotCommand extends Command {
             BufferedImage image = ImageIO.read(SlotCommand.class.getClassLoader().getResourceAsStream("command_pictures/slots/numbers/" + digit + ".png"));
             ImageUtil.drawOnTopOfOtherImage(background, image, 100, 395 - n * 16, 462);
             n++;
-        }while ((printBet / 10) != 0);
+        }while ((printBet) != 0);
 
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
