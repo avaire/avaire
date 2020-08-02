@@ -163,525 +163,260 @@ database:
   #
   verifyServerCertificate: true
 
-#--------------------------------------------------------------------------
-# Default Command Prefix
-#--------------------------------------------------------------------------
-#
-# All internal commands registered with Ava will be linked to a command
-# category, each category has a default prefix which are used for all
-# commands linked to that category, below you can set the default
-# prefix used by all the official AvaIre command categories.
-#
-# Note: Plugins that adds commands and categories to the Ava registry doesn't
-# necessarily have to follow the default prefix set below, check in with the
-# developer for the plugin about the command prefix if one is used, or just
-# change the prefix for the category using the "Change Prefix" command.
-#
-
-default-prefix: '!'
-
-# The system commands can only be used by bot administrators, bot
-# administrators are users who have their user ID in the
-# "botAccess" field in the config.
-#
-system-prefix: ';'
-
-#--------------------------------------------------------------------------
-# Bot Status
-#--------------------------------------------------------------------------
-#
-# Once every minute, Ava will change her "playing" status to something on
-# the list below, you can define what type of status it is by prefixing
-# the status with one of the options below.
-#
-#   "watching:something" This produces "Watching something"
-#   "listening:some cool music" This produces "Listening to some cool music"
-#   "streaming:video games" This produces "Streaming video games"
-#
-# If no prefix is given the playing status type will be used instead.
-#
-
-playing:
-  - '!help'
-  - 'watching:avairebot.com'
-  - 'listening:%users% users'
-  - 'playing:in %guilds% servers'
-
-#--------------------------------------------------------------------------
-# Music Lavalink Nodes (Advanced Music Settings)
-#--------------------------------------------------------------------------
-#
-# Lavalink is used internally in Ava to delegate sending and encoding jobs,
-# using Lavalink makes it easy to provided good quality music to everyone
-# around the world at the same time by spreading the needed resources
-# for streaming music out to external encoding nodes.
-#
-# Lavalink is NOT a requirement to use the music features in Ava, it's
-# simply an alternative way to deliver the end result to the user,
-# for more information about Lavalink checkout:
-#
-# https://github.com/Frederikam/Lavalink
-#
-
-lavalink:
-
-  # This determines if Ava should use Lavalink for encoding and sending the
-  # audio instead of doing it internally, if Lavalink is enabled and no
-  # valid nodes has been provided, none of the music will work.
+  #--------------------------------------------------------------------------
+  # Default Command Prefix
+  #--------------------------------------------------------------------------
   #
-  enabled: false
-
-  # This is your Lavalink encoding nodes, each node must have a valid name
-  # that the node is identified by, a valid web-socket host and port,
-  # and a valid password for the given Lavalink node.
+  # All internal commands registered with Ava will be linked to a command
+  # category, each category has a default prefix which are used for all
+  # commands linked to that category, below you can set the default
+  # prefix used by all the official AvaIre command categories.
   #
-  # If a encoding node is closed, all music that is streamed through the node
-  # will stop and the load-balancer built into Lavalink will begin to
-  # spread the load out to the remaining working nodes.
+  # Note: Plugins that adds commands and categories to the Ava registry doesn't
+  # necessarily have to follow the default prefix set below, check in with the
+  # developer for the plugin about the command prefix if one is used, or just
+  # change the prefix for the category using the "Change Prefix" command.
   #
-  nodes:
-    - name : "local"
-      host : "ws://localhost:5555"
-      pass : "youshallnotpass"
-    - name : "remote1"
-      host : "ws://192.168.1.20:5556"
-      pass : "youshallnotpass"
-    - name : "remote2"
-      host : "ws://lavalink.example.com:5557"
-      pass : "youshallnotpass"
 
-#--------------------------------------------------------------------------
-# Music Activity Settings
-#--------------------------------------------------------------------------
-#
-# Music Activity is a tracking system built into Ava that disconnects the
-# bot from voice channels if no one is listening to music anyway, this
-# can help free up memory and bandwidth that wasn't being used to
-# serve users anyway.
-#
-# The music activity tracks a few things:
-#
-#   1. When no one is listening to the music, like when the bot is muted,
-#   everyone is deafened, or no one is in the voice channel with the bot.
-#
-#   2. If the queue is empty, when you request a song by name the queue
-#   will be empty until the user selects the song they want to be
-#   played, this applies here, if the last song in the queue is
-#   playing it will disconnect once the song is done anyway.
-#
-#   3. If the music is paused, this should be self-explanatory, if you
-#   pause the music the bot it will disconnect after awhile unless
-#   it is unpaused(resumed).
-#
+  default-prefix: '!'
 
-music-activity:
-
-  # This determines if the music activity tracker should be enabled or not,
-  # if set to false all the values below will never be used and the bot
-  # will stay connect to voice channels regardless of time, until the
-  # queue is either empty of it is forced to leave by a user.
+  # The system commands can only be used by bot administrators, bot
+  # administrators are users who have their user ID in the
+  # "botAccess" field in the config.
   #
-  enabled: true
+  system-prefix: ';'
 
-  # This is the time in minutes that the bot should wait before disconnecting
-  # if no one is listening to the bot.
+  #--------------------------------------------------------------------------
+  # Bot Status
+  #--------------------------------------------------------------------------
   #
-  # Note: Other bots does not count as valid listeners.
+  # Once every minute, Ava will change her "playing" status to something on
+  # the list below, you can define what type of status it is by prefixing
+  # the status with one of the options below.
   #
-  missing-listeners: 5
-
-  # This is the time in minutes that the bot should wait before disconnecting
-  # if the queue is empty and nothing is added before the timer runs out.
+  #   "watching:something" This produces "Watching something"
+  #   "listening:some cool music" This produces "Listening to some cool music"
+  #   "streaming:video games" This produces "Streaming video games"
   #
-  empty-queue-timeout: 2
-
-  # This is the time in minutes that the bot should wait before disconnecting
-  # if the music is paused.
+  # If no prefix is given the playing status type will be used instead.
   #
-  paused-music-timeout: 10
 
-#--------------------------------------------------------------------------
-# Audio Encoding and Resampling Quality
-#--------------------------------------------------------------------------
-#
-# Audio encoding and audio resampling is a way to control the quality of
-# audio the bot will deliver for music related commands.
-#
-# Lower encoding and resampling will use less memory and CPU, but will also
-# produce worse audio quality in the end, while higher encoding and
-# resampling will use more memory and CPU but will in turn produce
-# more clear and "crisp" audio.
-#
+  playing:
+      - '!help'
+      - 'watching:avairebot.com'
+      - 'listening:%users% users'
+      - 'playing:in %guilds% servers'
 
-audio-quality:
-
-    # Audio resampling is tasked with sending the data from the server the bot
-    # is hosted on to the Discord servers so people can listen to the music.
-    #
-    # Higher resampling rates gives a higher chance that the audio reaches
-    # Discord servers so people can hear the audio by sending each frame
-    # multiple times, higher resampling uses more CPU since it has to
-    # send each frame multiple times.
-    #
-    # The supported resampling qualities are:
-    #     "high", "medium", and "low"
-    #
-    resampling: 'medium'
-
-    # Audio encoding is tasked with encoding the audio track so it is playable by
-    # Discord, higher values will produce a higher quality encoded track, which
-    # in turn uses more CPU, while lower values will produce a worse quality
-    # audio track but ues less CPU to do so.
-    #
-    # The encoding value must be a number between 0 and 10.
-    #
-    encoding: 10
-
-#--------------------------------------------------------------------------
-# Audio Cache and Storage
-#--------------------------------------------------------------------------
-#
-# Audio caching and storage is used by Ava when requesting music from
-# different providers(YouTube, Soundcloud, etc), allowing the bot
-# save and re-use responses for different queries.
-#
-# The system allows the bot is able to serve users faster if the same song
-# is requested twice, as-well as lowing the number of times needed to
-# send requests to YouTube, Soundcloud, Twitch, etc.
-#
-
-audio-cache:
-
-    # The maximum cache size value is used to determine the maximum amount of
-    # audio playlists that is allowed to be stored in the memory cache for
-    # audio requests.
-    #
-    # The higher the value the more tracks is able to be stored in the cache,
-    # however more tracks stored in-memory also means the bot will require
-    # more RAM to store all the information.
-    #
-    # Note: The in-memory cache will only store data for 30 minutes at a time
-    # unless it's requested a lot, in which case the cached time is reset
-    # until it's not requested anymore.
-    #
-    # The cache isn't necessarily full at any time either, so even if the max
-    # cache size is high, it doesn't mean every slot in the cache is always
-    # used if there isn't enough requested tracks to store in the cache.
-    #
-    maximum-cache-size: 1000
-
-    # The default max cache age is used when querying for search results and
-    # no specific cache age scope is set for the request, some audio cache
-    # lookups may specify their own max cache age, however if non is
-    # defined, the default max cache age will be used instead.
-    #
-    # The cache age is used with looking for search results in the database
-    # cache, if entries are found matching our query but the entries are
-    # older than the max age, it will be excluded from the results.
-    #
-    # The default max cache age is set in seconds, by default it is set to 86,400
-    # which is 24 hours, the number can be raised to increase the lookup range,
-    # or lower it to narrow the search range down, however the number has to
-    # be more than 60 seconds, so the cache is at most 1 minute old.
-    #
-    default-max-cache-age: 86400
-
-    # The max persistence age is the maximum amount of time an audio search result
-    # is allowed to be stored in the database cache before it is counted as
-    # invalid, and is deleted completely from the database.
-    #
-    # Once a track is deleted from the database cache it will no-longer exist in
-    # any cache and will have to be re-requested via a lookup with
-    # the "!play" command to be re-stored in the database.
-    #
-    # The max persistence age is set in seconds, by default it is set to 172,800
-    # which is 48 hours, the number can be raised to store tracks for a longer
-    # period of time, or lowered in order to not store tracks for long
-    # periods of time, however the number has to be greater than
-    # the default max age set above.
-    #
-    max-persistence-age: 172800
-
-#--------------------------------------------------------------------------
-# Audio Ratelimit (Advanced Music Settings)
-#--------------------------------------------------------------------------
-#
-# The audio ratelimiting feature can be used to help circumvent YouTubes
-# request restrictions on larger bots which might send a lot of
-# requests to YouTube for music every second/minute.
-#
-# The system uses a list of IP blocks to generate IPs that should be used for
-# outgoing requests, this means each request can have an unique IP attached
-# to it, or IPs being rotated when it gets banned, the selected strategy
-# will determine what IP is chosen, and whether IPs are re-used or not.
-#
-# This feature requires the server administrator to setup a link to the different
-# subnets they wish the bot to be able to bind with for requests, if the subnets
-# are not configured correctly with the machine, the bot won't be able to bind
-# correctly with the subnet. Thus, this feature should only be enabled if you
-# know what you're doing, music from YouTube will still work with this
-# feature disabled for smaller bots.
-#
-audio-ratelimit:
-
-    # Determines if the audio ratelimiting IP blocks should be used
-    # for outgoing audio requests.
-    #
-    enabled: false
-
-    # A list of IPs or subnets that should be used for audio related requests,
-    # the system will only support one type of IP at a time, so all the IPs
-    # in the block must be either IPv4 or IPv6 addresses, and not both
-    # in the same list.
-    #
-    ip-blocks:
-        - '127.0.0.1/31'
-        - '127.0.0.3/32'
-
-    # A list of IP addresses that should be excluded from being used to make
-    # audio requests, any IP will be ignored for requests and should
-    # never be ratelimited.
-    #
-    exclude-ips:
-        - '127.0.0.2'
-
-    # The ratelimit strategy determines how the bot should send requests to YouTube
-    # to prevent being ratelimited. Different strategies will use up the available
-    # IPs in various of different ways, the following strategies is available.
-    #
-    # LoadBalance
-    #     - Uses a random IP address for each outgoing request.
-    # NanoSwitch
-    #     - Requires a /64 IPv6 subnet, picks an address using a nano offset.
-    # RotateOnBan
-    #     - Rotates to a new IP each time the current address gets ratelimited.
-    # RotatingNanoSwitch
-    #     - Uses a combination of NanoSwitch and RotateOnBan.
-    #
-    strategy: 'NanoSwitch'
-
-    # Determines if a 429 error response code for search requests
-    # should mark an IP address as failing.
-    #
-    search-triggers-fail: true
-
-#--------------------------------------------------------------------------
-# Bot Access (Bot Administrators)
-#--------------------------------------------------------------------------
-#
-# The list below should contain a list of user IDs of people you want to be
-# able to access all system commands for Ava, things like restarting,
-# system information, code evaluation, etc.
-#
-# You can find your user ID by using the !userid command in Ava.
-#
-
-botAccess:
-  - '88739639380172800'
-
-#--------------------------------------------------------------------------
-# Sentry.io Error Logging
-#--------------------------------------------------------------------------
-#
-# Sentry.io is an open source error tracking service, it can provide a lot
-# of helpful information to developers on what is going wrong, and where
-# in real-time, Sentry.io uses a DSN url for establishing a link
-# between the bot and their service, you can enter your DSN
-# url below if yo want to enable Sentry.io error logging.
-#
-# To learn more, checkout: https://sentry.io/welcome/
-#
-
-sentryDsn: ''
-
-#--------------------------------------------------------------------------
-# Web Servlet - Prometheus Metrics & API
-#--------------------------------------------------------------------------
-#
-# Ava uses an internal API to power outside applications by allowing the
-# apps to pull information about the bot directly from it, it also
-# collects and exposes internal metrics which can be helpful for
-# seeing what is happening inside the bot in real-time, all
-# this is powered by an internal web servlet.
-#
-# The API are exposed on "ip:port", where the port is the web servlet port
-# defined below, note that only the routes that are enabled will actually
-# be exposed through the API, so you can fine tune what you want to
-# expose to the rest of the world.
-#
-
-web-servlet:
-
-  # Ava uses Prometheus metrics for tracking a long list of different things
-  # within the application during runtime, the metrics are then displayed
-  # using Grafana to users on a web-dashboard using graphs.
+  #--------------------------------------------------------------------------
+  # Bot Access (Bot Administrators)
+  #--------------------------------------------------------------------------
   #
-  # For setup guides, see:
+  # The list below should contain a list of user IDs of people you want to be
+  # able to access all system commands for Ava, things like restarting,
+  # system information, code evaluation, etc.
   #
-  #   https://prometheus.io/
-  #   https://grafana.com/
+  # You can find your user ID by using the !userid command in Ava.
   #
-  metrics: true
 
-  # Ava exposes some API endpoints for interacting with the bot or pulling
-  # information about of the bot in real-time, below you'll find a list
-  # of different types of API endpoints which can be exposed in
-  # the internal API.
-  #
-  api-routes:
+  botAccess:
+      - '88739639380172800'
 
-    # Exposes a per-server leaderboard route for getting the 100 users on
-    # the given server ID, as well as some level role and XP settings
-    # information.
-    #
-    # Route:
-    #   GET  /leaderboard/:id
-    #
-    leaderboard: true
-
-    # Exposes a player cleanup route which for getting a list of expired user
-    # XP records, any IDs returned from the route are IDs for users who are
-    # no long on the server the record is attached to.
-    #
-    # Route:
-    #   GET  /players/cleanup
-    #
-    players: true
-
-    # Exposes multiple guild information routes, as well as cleanup routes,
-    # the information routes can be used to pull information about a
-    # specific server by their ID, or to check if the bot is on the
-    # server with the given ID, while the cleanup routes can be
-    # used to get or delete expired and old records for guilds
-    # the bot is no longer on.
-    #
-    # Routes:
-    #   POST /guilds/cleanup
-    #   GET  /guilds/cleanup
-    #   GET  /guilds/:ids/exists
-    #   GET  /guilds/:ids
-    #
-    guilds: true
-
-    # Exposes a stats route which can be used to get some stats on individual
-    # shards, the machine the bot is running on, as well as uptime and
-    # global collected bot info.
-    #
-    # Route:
-    #   GET  /stats
-    #
-    stats: true
-
-  # The port the API and metrics should be exposed to, the port must not be used
-  # by another application on the system, otherwise the API won't be able to
-  # start up correctly.
+  #--------------------------------------------------------------------------
+  # Sentry.io Error Logging
+  #--------------------------------------------------------------------------
   #
-  port: 1256
+  # Sentry.io is an open source error tracking service, it can provide a lot
+  # of helpful information to developers on what is going wrong, and where
+  # in real-time, Sentry.io uses a DSN url for establishing a link
+  # between the bot and their service, you can enter your DSN
+  # url below if yo want to enable Sentry.io error logging.
+  #
+  # To learn more, checkout: https://sentry.io/welcome/
+  #
 
-  # This is the auth token that should be given to validate incoming vote requests,
-  # any requests to the vote route that is either missing the auth header, or
-  # has a key that does not match the key below will be ignored.
-  #
-  authToken: 'avaire-auth-token'
+  sentryDsn: ''
 
-#--------------------------------------------------------------------------
-# Vote Locking
-#--------------------------------------------------------------------------
-#
-# Vote locking will limit some features so only users who have voted for the
-# bot will be able to use them, voting resets every 12 hours.
-#
-# When using the vote-lock feature, make sure the vote webhook has been setup
-# correctly with the auth token, you can find the auth token setting in the
-# metrics above. without a valid token setup the votes will not be synced
-# in real-time, which can cause a lot of lag between the user voting,
-# and them being allowed to use vote locked features.
-#
+  #--------------------------------------------------------------------------
+  # Web Servlet - Prometheus Metrics & API
+  #--------------------------------------------------------------------------
+  #
+  # Ava uses an internal API to power outside applications by allowing the
+  # apps to pull information about the bot directly from it, it also
+  # collects and exposes internal metrics which can be helpful for
+  # seeing what is happening inside the bot in real-time, all
+  # this is powered by an internal web servlet.
+  #
+  # The API are exposed on "ip:port", where the port is the web servlet port
+  # defined below, note that only the routes that are enabled will actually
+  # be exposed through the API, so you can fine tune what you want to
+  # expose to the rest of the world.
+  #
 
-vote-lock:
+  web-servlet:
 
-  # This option determines if the vote-locking feature should be enabled at all,
-  # if set to true, any command or feature using the "vote" middleware will be
-  # restricted to users who have voted for the bot within the last 12 hours.
-  #
-  # Enabling this option exposes a "/vote" POST route in the web-servlet which
-  # can be used to handle vote request sent by DBL, making it easy and
-  # automatic to reward users when they vote.
-  #
-  enabled: false
+      # Ava uses Prometheus metrics for tracking a long list of different things
+      # within the application during runtime, the metrics are then displayed
+      # using Grafana to users on a web-dashboard using graphs.
+      #
+      # For setup guides, see:
+      #
+      #   https://prometheus.io/
+      #   https://grafana.com/
+      #
+      metrics: true
 
-  # This option determines where the vote check requests generated using the "!vote check"
-  # command should be sent, if this option is set to false all requests will use the
-  # "vote-sync-token" below to try and sync the requests with DBLs public API,
-  # however if the option is set to true, the "vote-sync-token" will not be
-  # used, and requests will instead be redirected to Avas public API to
-  # try and sync votes made for the public bot.
-  sync-with-public-bot: false
+      # Ava exposes some API endpoints for interacting with the bot or pulling
+      # information about of the bot in real-time, below you'll find a list
+      # of different types of API endpoints which can be exposed in
+      # the internal API.
+      #
+      api-routes:
 
-  # This is the bot application API token for DBL(Discord Bot List), the API token
-  # is used to sync votes between the API and the bot during startup, so anyone
-  # who voted while the bot was offline will still get their rewards.
-  #
-  # You can get your DBL API key at: https://discordbots.org/api/docs#mybots
-  #
-  vote-sync-token: 'ReplaceThisWithYourAPITokenForDBL'
+          # Exposes a per-server leaderboard route for getting the 100 users on
+          # the given server ID, as well as some level role and XP settings
+          # information.
+          #
+          # Route:
+          #   GET  /leaderboard/:id
+          #
+          leaderboard: true
 
-#--------------------------------------------------------------------------
-# API Keys (These are all optional)
-#--------------------------------------------------------------------------
-#
-# API keys are access tokens for different services used by Ava to provided
-# additional functionality, all the API key fields are optional, however
-# some services may be disabled if they're left out.
-#
+          # Exposes a player cleanup route which for getting a list of expired user
+          # XP records, any IDs returned from the route are IDs for users who are
+          # no long on the server the record is attached to.
+          #
+          # Route:
+          #   GET  /players/cleanup
+          #
+          players: true
 
-apiKeys:
+          # Exposes multiple guild information routes, as well as cleanup routes,
+          # the information routes can be used to pull information about a
+          # specific server by their ID, or to check if the bot is on the
+          # server with the given ID, while the cleanup routes can be
+          # used to get or delete expired and old records for guilds
+          # the bot is no longer on.
+          #
+          # Routes:
+          #   POST /guilds/cleanup
+          #   GET  /guilds/cleanup
+          #   GET  /guilds/:ids/exists
+          #   GET  /guilds/:ids
+          #
+          guilds: true
 
-  # Holiday API key, this is used for the holiday command
-  # in order to retrieve current holiday information.
-  #
-  # You can get a free API key that allows 1000 requests per-month by signing up on
-  # their website, then going to the "API Keys" tab and creating a new key.
-  # Get a key at: https://holidayapi.com/
-  #
-  holidayapi: ''
+          # Exposes a stats route which can be used to get some stats on individual
+          # shards, the machine the bot is running on, as well as uptime and
+          # global collected bot info.
+          #
+          # Route:
+          #   GET  /stats
+          #
+          stats: true
 
-  # Google API key, this is used for music requests to YouTube and the
-  # Shorten API for shortening links, note the play command will still
-  # work with youtube links without an API key.
-  #
-  # Get a key at: https://developers.google.com/youtube/registering_an_application
-  #
-  google: ''
+      # The port the API and metrics should be exposed to, the port must not be used
+      # by another application on the system, otherwise the API won't be able to
+      # start up correctly.
+      #
+      port: 1256
 
-  # DialogFlow is the service used by Ava for her artificial intelligence,
-  # the AI will be disabled without the API key, you can register for
-  # an API key on their website as well as creating your own custom
-  # AI agent, if you want to use the same AI agent Ava uses you
-  # can find it on github at: https://github.com/avaire/agent
-  #
-  # Get a key at: https://dialogflow.com/docs/reference/agent
-  #
-  dialogflow: ''
+      # This is the auth token that should be given to validate incoming vote requests,
+      # any requests to the vote route that is either missing the auth header, or
+      # has a key that does not match the key below will be ignored.
+      #
+      authToken: 'avaire-auth-token'
 
-  # Meow API is a simple services that provides lots of cat pictures, the service
-  # was custom built for Ava since the old cat picture services was having some
-  # issues. The API can be used without a key, although it will only allow
-  # 10 requests per minute, if your needs are higher then that, you can
-  # request for an API key.
+  #--------------------------------------------------------------------------
+  # Vote Locking
+  #--------------------------------------------------------------------------
   #
-  # Get a key at: https://meow.senither.com/
+  # Vote locking will limit some features so only users who have voted for the
+  # bot will be able to use them, voting resets every 12 hours.
   #
-  meowApi: ''
+  # When using the vote-lock feature, make sure the vote webhook has been setup
+  # correctly with the auth token, you can find the auth token setting in the
+  # metrics above. without a valid token setup the votes will not be synced
+  # in real-time, which can cause a lot of lag between the user voting,
+  # and them being allowed to use vote locked features.
+  #
 
-  # Open Weather Map is a free service that provides lots of ways to get weather
-  # and wind data based on a location, Ava uses it for the weather command, if
-  # no valid API key is given, the command will disable itself.
+  vote-lock:
+
+      # This option determines if the vote-locking feature should be enabled at all,
+      # if set to true, any command or feature using the "vote" middleware will be
+      # restricted to users who have voted for the bot within the last 12 hours.
+      #
+      # Enabling this option exposes a "/vote" POST route in the web-servlet which
+      # can be used to handle vote request sent by DBL, making it easy and
+      # automatic to reward users when they vote.
+      #
+      enabled: false
+
+      # This option determines where the vote check requests generated using the "!vote check"
+      # command should be sent, if this option is set to false all requests will use the
+      # "vote-sync-token" below to try and sync the requests with DBLs public API,
+      # however if the option is set to true, the "vote-sync-token" will not be
+      # used, and requests will instead be redirected to Avas public API to
+      # try and sync votes made for the public bot.
+      sync-with-public-bot: false
+
+      # This is the bot application API token for DBL(Discord Bot List), the API token
+      # is used to sync votes between the API and the bot during startup, so anyone
+      # who voted while the bot was offline will still get their rewards.
+      #
+      # You can get your DBL API key at: https://discordbots.org/api/docs#mybots
+      #
+      vote-sync-token: 'ReplaceThisWithYourAPITokenForDBL'
+
+  #--------------------------------------------------------------------------
+  # API Keys (These are all optional)
+  #--------------------------------------------------------------------------
   #
-  # You can get a free API key that allows 60 requests per-minute by singing up on
-  # their website, then going to the "API Keys" tab and creating a new key, keep
-  # in mind that it may take a few hours for the API key to fully activate.
+  # API keys are access tokens for different services used by Ava to provided
+  # additional functionality, all the API key fields are optional, however
+  # some services may be disabled if they're left out.
   #
-  # Get a key at: https://home.openweathermap.org/api_keys
-  #
-  openWeatherMap: ''
+
+  apiKeys:
+
+      # Holiday API key, this is used for the holiday command
+      # in order to retrieve current holiday information.
+      #
+      # You can get a free API key that allows 1000 requests per-month by signing up on
+      # their website, then going to the "API Keys" tab and creating a new key.
+      # Get a key at: https://holidayapi.com/
+      #
+      holidayapi: ''
+
+
+      # DialogFlow is the service used by Ava for her artificial intelligence,
+      # the AI will be disabled without the API key, you can register for
+      # an API key on their website as well as creating your own custom
+      # AI agent, if you want to use the same AI agent Ava uses you
+      # can find it on github at: https://github.com/avaire/agent
+      #
+      # Get a key at: https://dialogflow.com/docs/reference/agent
+      #
+      dialogflow: ''
+
+      # Meow API is a simple services that provides lots of cat pictures, the service
+      # was custom built for Ava since the old cat picture services was having some
+      # issues. The API can be used without a key, although it will only allow
+      # 10 requests per minute, if your needs are higher then that, you can
+      # request for an API key.
+      #
+      # Get a key at: https://meow.senither.com/
+      #
+      meowApi: ''
+
+      # Open Weather Map is a free service that provides lots of ways to get weather
+      # and wind data based on a location, Ava uses it for the weather command, if
+      # no valid API key is given, the command will disable itself.
+      #
+      # You can get a free API key that allows 60 requests per-minute by singing up on
+      # their website, then going to the "API Keys" tab and creating a new key, keep
+      # in mind that it may take a few hours for the API key to fully activate.
+      #
+      # Get a key at: https://home.openweathermap.org/api_keys
+      #
+      openWeatherMap: ''
