@@ -30,7 +30,7 @@ import com.avairebot.requests.Request;
 import com.avairebot.requests.Response;
 import com.avairebot.requests.service.PunService;
 import com.avairebot.utilities.RandomUtil;
-import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.api.entities.User;
 import org.json.JSONObject;
 
 import java.util.Arrays;

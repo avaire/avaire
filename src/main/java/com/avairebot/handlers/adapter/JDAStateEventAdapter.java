@@ -23,17 +23,11 @@ package com.avairebot.handlers.adapter;
 
 import com.avairebot.AvaIre;
 import com.avairebot.Constants;
-import com.avairebot.audio.AudioHandler;
-import com.avairebot.audio.GuildMusicManager;
-import com.avairebot.audio.VoiceConnectStatus;
-import com.avairebot.audio.cache.AudioCache;
-import com.avairebot.audio.cache.AudioState;
-import com.avairebot.audio.cache.AudioTrackSerializer;
 import com.avairebot.cache.CacheType;
 import com.avairebot.chat.MessageType;
 import com.avairebot.commands.CommandHandler;
 import com.avairebot.commands.CommandMessage;
-import com.avairebot.commands.music.PlayCommand;
+
 import com.avairebot.contracts.handlers.EventAdapter;
 import com.avairebot.database.collection.DataRow;
 import com.avairebot.database.controllers.GuildController;
@@ -44,17 +38,15 @@ import com.avairebot.time.Carbon;
 import com.avairebot.utilities.RoleUtil;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import com.google.gson.reflect.TypeToken;
-import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
-import net.dv8tion.jda.core.JDA;
-import net.dv8tion.jda.core.Permission;
-import net.dv8tion.jda.core.entities.*;
+
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class JDAStateEventAdapter extends EventAdapter {
@@ -77,117 +69,8 @@ public class JDAStateEventAdapter extends EventAdapter {
 
     public void onConnectToShard(JDA jda) {
         handleAutoroleTask(jda);
-        handleReconnectMusic(jda);
     }
 
-    private void handleReconnectMusic(JDA jda) {
-        log.debug("Connection to shard {} has been established, running reconnect music job to reconnect music to channels that were connected during shutdown",
-            jda.getShardInfo().getShardId()
-        );
-
-        int connectedChannels = 0;
-        for (AudioState state : getAudioStates()) {
-            if (state == null) {
-                continue;
-            }
-
-            Guild guild = jda.getGuildById(state.getGuildId());
-            if (guild == null) {
-                continue;
-            }
-
-            VoiceChannel voiceChannel = guild.getVoiceChannelById(state.getVoiceChannelId());
-            if (voiceChannel == null) {
-                continue;
-            }
-
-            long usersInVoiceChannel = voiceChannel.getMembers().stream()
-                .filter(member -> !member.getUser().isBot()).count();
-
-            if (usersInVoiceChannel == 0) {
-                continue;
-            }
-
-            TextChannel textChannel = guild.getTextChannelById(state.getMessageChannelId());
-            if (textChannel == null) {
-                continue;
-            }
-
-            connectedChannels++;
-            textChannel.sendMessage(MessageFactory.createEmbeddedBuilder()
-                .setDescription(I18n.getString(guild, "music.internal.resumeMusic"))
-                .build()).queue(message -> {
-
-                VoiceConnectStatus voiceConnectStatus = AudioHandler.getDefaultAudioHandler().connectToVoiceChannel(
-                    message, voiceChannel, guild.getAudioManager()
-                );
-
-                if (!voiceConnectStatus.isSuccess()) {
-                    message.editMessage(MessageFactory.createEmbeddedBuilder()
-                        .setColor(MessageType.WARNING.getColor())
-                        .setDescription(voiceConnectStatus.getErrorMessage())
-                        .build()
-                    ).queue();
-                    return;
-                }
-
-                List<AudioCache> audioStateTacks = new ArrayList<>();
-                audioStateTacks.add(state.getPlayingTrack());
-                audioStateTacks.addAll(state.getQueue());
-
-                GuildMusicManager musicManager = AudioHandler.getDefaultAudioHandler().getGuildAudioPlayer(guild);
-                musicManager.setLastActiveMessage(new CommandMessage(
-                    CommandHandler.getCommand(PlayCommand.class),
-                    new DatabaseEventHolder(GuildController.fetchGuild(avaire, guild), null),
-                    message, false, new String[0]
-                ));
-
-                for (AudioCache audioCache : audioStateTacks) {
-                    if (audioCache == null) {
-                        continue;
-                    }
-
-                    Member member = message.getGuild().getMemberById(audioCache.getRequestedBy());
-                    if (member == null) {
-                        continue;
-                    }
-
-                    AudioTrack track = AudioTrackSerializer.decodeTrack(audioCache.getTrack());
-                    if (track == null) {
-                        continue;
-                    }
-
-                    musicManager.getScheduler().queue(track, member.getUser());
-                }
-            });
-
-            AudioTrack track = AudioTrackSerializer.decodeTrack(state.getPlayingTrack() != null
-                ? state.getPlayingTrack().getTrack()
-                : null
-            );
-
-            log.debug("{} stopped playing {} with {} songs in the queue",
-                guild.getId(), track == null ? "Unknown Track" : track.getInfo().uri, state.getQueue().size()
-            );
-        }
-
-        log.debug("Shard {} successfully reconnected {} music channels",
-            jda.getShardInfo().getShardId(), connectedChannels
-        );
-    }
-
-    private List<AudioState> getAudioStates() {
-        Object rawAudioState = avaire.getCache().getAdapter(CacheType.FILE).get("audio.state");
-        if (rawAudioState == null) {
-            return new ArrayList<>();
-        }
-
-        return AvaIre.gson.fromJson(
-            String.valueOf(rawAudioState),
-            new TypeToken<List<AudioState>>() {
-            }.getType()
-        );
-    }
 
     private void handleAutoroleTask(JDA jda) {
         log.debug("Connection to shard {} has been established, running autorole job to sync autoroles missed due to downtime",
@@ -217,10 +100,10 @@ public class JDAStateEventAdapter extends EventAdapter {
             }
 
             for (Member member : guild.getMembers()) {
-                if (member.getJoinDate().toEpochSecond() > thirtyMinutesAgo) {
+                if (member.getTimeJoined().toEpochSecond() > thirtyMinutesAgo) {
                     if (!RoleUtil.hasRole(member, autorole)) {
                         updatedUsers++;
-                        guild.getController().addSingleRoleToMember(member, autorole)
+                        guild.addRoleToMember(member, autorole)
                             .queue();
                     }
                 }

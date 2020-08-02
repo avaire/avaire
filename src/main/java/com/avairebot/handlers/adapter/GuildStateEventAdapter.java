@@ -23,25 +23,21 @@ package com.avairebot.handlers.adapter;
 
 import com.avairebot.AvaIre;
 import com.avairebot.Constants;
-import com.avairebot.audio.AudioHandler;
-import com.avairebot.audio.GuildMusicManager;
-import com.avairebot.audio.LavalinkManager;
+
 import com.avairebot.chat.ConsoleColor;
 import com.avairebot.contracts.handlers.EventAdapter;
 import com.avairebot.metrics.Metrics;
 import com.avairebot.scheduler.ScheduleHandler;
-import com.avairebot.scheduler.tasks.MusicActivityTask;
 import com.avairebot.utilities.NumberUtil;
 import com.avairebot.utilities.RestActionUtil;
-import lavalink.client.io.jda.JdaLink;
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.TextChannel;
-import net.dv8tion.jda.core.entities.User;
-import net.dv8tion.jda.core.events.guild.GuildJoinEvent;
-import net.dv8tion.jda.core.events.guild.GuildLeaveEvent;
-import net.dv8tion.jda.core.events.guild.update.GuildUpdateNameEvent;
-import net.dv8tion.jda.core.events.guild.update.GuildUpdateRegionEvent;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.events.guild.GuildJoinEvent;
+import net.dv8tion.jda.api.events.guild.GuildLeaveEvent;
+import net.dv8tion.jda.api.events.guild.update.GuildUpdateNameEvent;
+import net.dv8tion.jda.api.events.guild.update.GuildUpdateRegionEvent;
 
 import java.awt.*;
 import java.sql.SQLException;
@@ -121,7 +117,6 @@ public class GuildStateEventAdapter extends EventAdapter {
 
     public void onGuildLeave(GuildLeaveEvent event) {
         handleSendGuildLeaveWebhook(event.getGuild());
-        handleAudioConnectionOnGuildLeave(event.getGuild());
     }
 
     private void handleSendGuildLeaveWebhook(Guild guild) {
@@ -153,37 +148,5 @@ public class GuildStateEventAdapter extends EventAdapter {
                 ), false)
                 .build()
         ).queue(null, RestActionUtil.ignore);
-    }
-
-    private void handleAudioConnectionOnGuildLeave(Guild guild) {
-        long guildId = guild.getIdLong();
-
-        ScheduleHandler.getScheduler().submit(() -> {
-            GuildMusicManager musicManager = AudioHandler.getDefaultAudioHandler()
-                .musicManagers.remove(guildId);
-
-            if (musicManager == null) {
-                return;
-            }
-
-            musicManager.getPlayer().stopTrack();
-            musicManager.getScheduler().getQueue().clear();
-
-            MusicActivityTask.missingListener.remove(guildId);
-            MusicActivityTask.playerPaused.remove(guildId);
-            MusicActivityTask.emptyQueue.remove(guildId);
-
-            musicManager.getScheduler().nextTrack(false);
-
-            if (LavalinkManager.LavalinkManagerHolder.lavalink.isEnabled()) {
-                JdaLink link = LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink()
-                    .getExistingLink(String.valueOf(guildId));
-
-
-                if (link != null && !LavalinkManager.LavalinkManagerHolder.lavalink.isLinkBeingDestroyed(link)) {
-                    link.destroy();
-                }
-            }
-        });
     }
 }

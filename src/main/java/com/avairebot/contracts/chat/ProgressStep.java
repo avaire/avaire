@@ -21,8 +21,8 @@
 
 package com.avairebot.contracts.chat;
 
-import com.sedmelluq.discord.lavaplayer.tools.ExceptionTools;
-import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
+import com.avairebot.exceptions.FriendlyException;
+import com.avairebot.exceptions.ExceptionTools;
 
 public class ProgressStep {
 

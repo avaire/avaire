@@ -28,9 +28,9 @@ import com.avairebot.database.collection.Collection;
 import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.controllers.ReactionController;
 import com.avairebot.database.transformers.GuildTransformer;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.events.channel.text.TextChannelDeleteEvent;
-import net.dv8tion.jda.core.events.channel.voice.VoiceChannelDeleteEvent;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.events.channel.text.TextChannelDeleteEvent;
+import net.dv8tion.jda.api.events.channel.voice.VoiceChannelDeleteEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -68,9 +68,6 @@ public class ChannelEventAdapter extends EventAdapter {
             setDatabaseColumnToNull(event.getGuild().getId(), "level_channel");
         }
 
-        if (transformer.getMusicChannelText() != null && transformer.getMusicChannelText().equals(event.getChannel().getId())) {
-            setDatabaseColumnToNull(event.getGuild().getId(), "music_channel_text");
-        }
     }
 
     private void handleTextChannelDeleteReactionsRoles(TextChannelDeleteEvent event) {
@@ -102,9 +99,6 @@ public class ChannelEventAdapter extends EventAdapter {
             return;
         }
 
-        if (transformer.getMusicChannelVoice() != null && transformer.getMusicChannelVoice().equals(event.getChannel().getId())) {
-            setDatabaseColumnToNull(event.getGuild().getId(), "music_channel_voice");
-        }
     }
 
     public void updateChannelData(Guild guild) {

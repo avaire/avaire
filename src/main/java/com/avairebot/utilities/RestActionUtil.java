@@ -21,14 +21,14 @@
 
 package com.avairebot.utilities;
 
-import net.dv8tion.jda.core.exceptions.ErrorResponseException;
-import net.dv8tion.jda.core.requests.ErrorResponse;
-import net.dv8tion.jda.core.requests.RestAction;
+import net.dv8tion.jda.api.exceptions.ErrorResponseException;
+import net.dv8tion.jda.api.requests.ErrorResponse;
+import net.dv8tion.jda.api.requests.RestAction;
 import okhttp3.internal.http2.StreamResetException;
-import org.apache.http.ConnectionClosedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.net.ConnectException;
 import java.net.SocketTimeoutException;
 import java.util.function.Consumer;
 
@@ -68,12 +68,13 @@ public class RestActionUtil {
             return; // Ignore OkHttp connection errors and simply warn the user instead
         }
 
-        RestAction.DEFAULT_FAILURE.accept(error);
+        RestAction.getDefaultFailure().accept(error);
+
     };
 
     private static boolean isOkHttpConnectionError(Throwable error) {
         return error instanceof StreamResetException
             || error instanceof SocketTimeoutException
-            || error instanceof ConnectionClosedException;
+            || error instanceof ConnectException;
     }
 }

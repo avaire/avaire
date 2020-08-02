@@ -23,10 +23,10 @@ package com.avairebot.contracts.chat;
 
 import com.avairebot.utilities.CheckPermissionUtil;
 import com.avairebot.utilities.RestActionUtil;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.MessageChannel;
-import net.dv8tion.jda.core.entities.MessageEmbed;
-import net.dv8tion.jda.core.requests.restaction.MessageAction;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.requests.restaction.MessageAction;
 
 import javax.annotation.Nullable;
 import java.util.Optional;
@@ -68,8 +68,8 @@ public abstract class Restable {
     /**
      * Submits a Request for execution.
      * <br>Using the default callback functions:
-     * {@link net.dv8tion.jda.core.requests.RestAction#DEFAULT_SUCCESS DEFAULT_SUCCESS} and
-     * {@link net.dv8tion.jda.core.requests.RestAction#DEFAULT_FAILURE DEFAULT_FAILURE}
+     * {@link net.dv8tion.jda.api.requests.RestAction#DEFAULT_SUCCESS DEFAULT_SUCCESS} and
+     * {@link net.dv8tion.jda.api.requests.RestAction#DEFAULT_FAILURE DEFAULT_FAILURE}
      * <br>
      * <p><b>This method is asynchronous</b>
      */
@@ -123,7 +123,7 @@ public abstract class Restable {
      * the success consumer for {@link #queue(java.util.function.Consumer)}!
      * <br>
      * <p>The global JDA {@link java.util.concurrent.ScheduledExecutorService ScheduledExecutorService} is used for this operation.
-     * <br>You can change the core pool size for this Executor through {@link net.dv8tion.jda.core.JDABuilder#setCorePoolSize(int) JDABuilder.setCorePoolSize(int)}
+     * <br>You can change the core pool size for this Executor through {@link net.dv8tion.jda.api.JDABuilder#setCorePoolSize(int) JDABuilder.setCorePoolSize(int)}
      * or provide your own Executor with {@link #queueAfter(long, java.util.concurrent.TimeUnit, java.util.concurrent.ScheduledExecutorService)}
      *
      * @param delay The delay after which this computation should be executed, negative to execute immediately
@@ -155,7 +155,7 @@ public abstract class Restable {
      * the failure consumer for {@link #queue(java.util.function.Consumer, java.util.function.Consumer)}!
      * <br>
      * <p>The global JDA {@link java.util.concurrent.ScheduledExecutorService ScheduledExecutorService} is used for this operation.
-     * <br>You can change the core pool size for this Executor through {@link net.dv8tion.jda.core.JDABuilder#setCorePoolSize(int) JDABuilder.setCorePoolSize(int)}
+     * <br>You can change the core pool size for this Executor through {@link net.dv8tion.jda.api.JDABuilder#setCorePoolSize(int) JDABuilder.setCorePoolSize(int)}
      * or provide your own Executor with {@link #queueAfter(long, java.util.concurrent.TimeUnit, java.util.function.Consumer, java.util.concurrent.ScheduledExecutorService)}
      *
      * @param delay   The delay after which this computation should be executed, negative to execute immediately
@@ -186,7 +186,7 @@ public abstract class Restable {
      * {@link java.util.concurrent.ScheduledFuture ScheduledFuture} representing the task.
      * <br>
      * <p>The global JDA {@link java.util.concurrent.ScheduledExecutorService ScheduledExecutorService} is used for this operation.
-     * <br>You can change the core pool size for this Executor through {@link net.dv8tion.jda.core.JDABuilder#setCorePoolSize(int) JDABuilder.setCorePoolSize(int)}
+     * <br>You can change the core pool size for this Executor through {@link net.dv8tion.jda.api.JDABuilder#setCorePoolSize(int) JDABuilder.setCorePoolSize(int)}
      * or provide your own Executor with
      * {@link #queueAfter(long, java.util.concurrent.TimeUnit, java.util.function.Consumer, java.util.function.Consumer, java.util.concurrent.ScheduledExecutorService)}
      *

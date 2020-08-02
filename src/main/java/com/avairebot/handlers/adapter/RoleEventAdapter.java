@@ -26,9 +26,9 @@ import com.avairebot.Constants;
 import com.avairebot.contracts.handlers.EventAdapter;
 import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.transformers.GuildTransformer;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.events.role.RoleDeleteEvent;
-import net.dv8tion.jda.core.events.role.update.RoleUpdateNameEvent;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.events.role.RoleDeleteEvent;
+import net.dv8tion.jda.api.events.role.update.RoleUpdateNameEvent;
 
 import java.sql.SQLException;
 import java.util.Map;
@@ -76,7 +76,6 @@ public class RoleEventAdapter extends EventAdapter {
         handleMuteRole(event, transformer);
         handleAutoroles(event, transformer);
         handleLevelRoles(event, transformer);
-        handleMusicDjRole(event, transformer);
         handleSelfAssignableRoles(event, transformer);
     }
 
@@ -137,23 +136,6 @@ public class RoleEventAdapter extends EventAdapter {
         }
     }
 
-    private void handleMusicDjRole(RoleDeleteEvent event, GuildTransformer transformer) {
-        if (transformer.getDjRole() == null || !transformer.getDjRole().equals(event.getRole().getId())) {
-            return;
-        }
-
-        try {
-            transformer.setDjRole(null);
-            avaire.getDatabase().newQueryBuilder(Constants.GUILD_TABLE_NAME)
-                .useAsync(true)
-                .where("id", event.getGuild().getId())
-                .update(statement -> {
-                    statement.set("dj_role", null);
-                });
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 
     private void handleSelfAssignableRoles(RoleDeleteEvent event, GuildTransformer transformer) {
         if (transformer.getSelfAssignableRoles().isEmpty() || !transformer.getSelfAssignableRoles().containsKey(event.getRole().getId())) {

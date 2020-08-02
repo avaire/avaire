@@ -135,7 +135,7 @@ administration:
 
     CategoriesCommand:
         title: "Command Category Status for #{0}"
-        status: ":emoteEnabled Enabled   :emoteDisabledInChannel Disabled in Channel   :emoteDisabledGlobally Disabled Globally"
+        status: ":emoteEnabled Enabled   :emoteDisabledInChannel Disabled in GuildChannel   :emoteDisabledGlobally Disabled Globally"
 
     ChangePrefixCommand:
         missingArgument: "Missing argument `category`, you must specify the command category you want to change/reset the prefix for."

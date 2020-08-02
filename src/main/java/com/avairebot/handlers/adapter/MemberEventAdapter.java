@@ -29,11 +29,12 @@ import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.factories.MessageFactory;
 import com.avairebot.permissions.Permissions;
 import com.avairebot.utilities.StringReplacementUtil;
-import net.dv8tion.jda.core.Permission;
-import net.dv8tion.jda.core.entities.Role;
-import net.dv8tion.jda.core.entities.TextChannel;
-import net.dv8tion.jda.core.events.guild.member.GuildMemberJoinEvent;
-import net.dv8tion.jda.core.events.guild.member.GuildMemberLeaveEvent;
+import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.Role;
+import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
+import net.dv8tion.jda.api.events.guild.member.GuildMemberLeaveEvent;
+import net.dv8tion.jda.api.events.guild.member.GuildMemberRemoveEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -99,7 +100,7 @@ public class MemberEventAdapter extends EventAdapter {
         if (transformer.getMuteRole() != null) {
             Role mutedRole = event.getGuild().getRoleById(transformer.getMuteRole());
             if (canGiveRole(event, mutedRole) && avaire.getMuteManger().isMuted(event.getGuild().getIdLong(), event.getUser().getIdLong())) {
-                event.getGuild().getController().addRolesToMember(
+                event.getGuild().modifyMemberRoles(
                     event.getMember(), mutedRole
                 ).queue();
             }
@@ -112,14 +113,14 @@ public class MemberEventAdapter extends EventAdapter {
         if (transformer.getAutorole() != null) {
             Role role = event.getGuild().getRoleById(transformer.getAutorole());
             if (canGiveRole(event, role)) {
-                event.getGuild().getController().addSingleRoleToMember(
+                event.getGuild().addRoleToMember(
                     event.getMember(), role
                 ).queue();
             }
         }
     }
 
-    public void onGuildMemberLeave(GuildMemberLeaveEvent event) {
+    public void onGuildMemberLeave(GuildMemberRemoveEvent event) {
         GuildTransformer transformer = GuildController.fetchGuild(avaire, event.getGuild());
         if (transformer == null) {
             log.warn("Failed to get a valid guild transformer during member leave! User:{}, Guild:{}",

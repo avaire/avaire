@@ -35,7 +35,7 @@ import com.avairebot.modlog.ModlogType;
 import com.avairebot.time.Carbon;
 import com.avairebot.utilities.MentionableUtil;
 import com.avairebot.utilities.NumberUtil;
-import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.api.entities.User;
 
 import javax.annotation.Nonnull;
 import java.sql.SQLException;

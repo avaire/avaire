@@ -23,10 +23,7 @@ package com.avairebot.commands.system;
 
 import com.avairebot.AppInfo;
 import com.avairebot.AvaIre;
-import com.avairebot.audio.AudioHandler;
-import com.avairebot.audio.AudioTrackContainer;
-import com.avairebot.audio.GuildMusicManager;
-import com.avairebot.audio.LavalinkManager;
+
 import com.avairebot.chat.MessageType;
 import com.avairebot.commands.CommandHandler;
 import com.avairebot.commands.CommandMessage;
@@ -36,12 +33,10 @@ import com.avairebot.contracts.commands.SystemCommand;
 import com.avairebot.language.I18n;
 import com.avairebot.metrics.Metrics;
 import com.avairebot.utilities.NumberUtil;
-import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
-import lavalink.client.io.Link;
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.entities.MessageEmbed;
-import net.dv8tion.jda.core.entities.User;
-import net.dv8tion.jda.core.entities.VoiceChannel;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.entities.User;
+
 
 import java.lang.management.ManagementFactory;
 import java.util.Arrays;
@@ -82,15 +77,6 @@ public class BotStatisticsCommand extends SystemCommand {
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
         context.makeEmbeddedMessage(MessageType.INFO,
-            new MessageEmbed.Field("Lavalink Stats (Cached)", buildLavalinkStats(), true),
-            new MessageEmbed.Field("Audio Stats", I18n.format("**{0}** Servers listening\n**{1}** Users listening",
-                NumberUtil.formatNicely(AudioHandler.getDefaultAudioHandler().getTotalListenersSize()),
-                NumberUtil.formatNicely(getAudioListeners())
-            ), true),
-            new MessageEmbed.Field("Queue Stats", I18n.format("**{0}** Songs in the queue\n**{1}** seconds in queue",
-                NumberUtil.formatNicely(AudioHandler.getDefaultAudioHandler().getTotalQueueSize()),
-                NumberUtil.formatNicely(getQueueLengthInSeconds())
-            ), true),
             new MessageEmbed.Field("Database Stats", I18n.format("**{0}** Selects\n**{1}** Inserts",
                 NumberUtil.formatNicely(Metrics.databaseQueries.labels("SELECT").get()),
                 NumberUtil.formatNicely(Metrics.databaseQueries.labels("INSERT").get())
@@ -101,7 +87,7 @@ public class BotStatisticsCommand extends SystemCommand {
             ), true),
             new MessageEmbed.Field("Discord Shards", I18n.format("**{0}** Shards\n**{1} ms** Average Ping",
                 avaire.getShardManager().getShards().size(),
-                NumberUtil.formatNicely(avaire.getShardManager().getAveragePing())
+                NumberUtil.formatNicely(avaire.getShardManager().getAverageGatewayPing())
             ), true),
             new MessageEmbed.Field("Member Stats", I18n.format("**{0}** Unique Users\n**{1}** Unique Bots",
                 NumberUtil.formatNicely(avaire.getShardManager().getUsers().stream().filter(user -> !user.isBot()).count()),
@@ -123,105 +109,9 @@ public class BotStatisticsCommand extends SystemCommand {
         return false;
     }
 
-    private String buildLavalinkStats() {
-        if (!LavalinkManager.LavalinkManagerHolder.lavalink.isEnabled()) {
-            return "*Lavalink is disabled*";
-        }
-
-        int playing;
-        int total;
-
-        synchronized (LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink().getNodes()) {
-            playing = LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink().getNodes().stream().mapToInt(node -> {
-                if (node.getStats() == null) {
-                    return 0;
-                }
-                return node.getStats().getPlayingPlayers();
-            }).sum();
-
-            total = LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink().getNodes().stream().mapToInt(node -> {
-                if (node.getStats() == null) {
-                    return 0;
-                }
-                return node.getStats().getPlayers();
-            }).sum();
-        }
-
-        return I18n.format("**{0}** Playing Players\n**{1}** Total Players",
-            NumberUtil.formatNicely(playing),
-            NumberUtil.formatNicely(total)
-        );
-    }
-
     @SuppressWarnings("ConstantConditions")
     private String formatUptimeNicely() {
         return ((UptimeCommand) CommandHandler.getCommand(UptimeCommand.class).getCommand())
             .formatUptimeNicely((int) ManagementFactory.getRuntimeMXBean().getUptime() / 1000);
-    }
-
-    private long getQueueLengthInSeconds() {
-        synchronized (AudioHandler.getDefaultAudioHandler().musicManagers.values()) {
-            return AudioHandler.getDefaultAudioHandler().musicManagers.values().stream()
-                .mapToLong(this::convertMusicMangerToSeconds)
-                .sum();
-        }
-    }
-
-    private int getAudioListeners() {
-        int listeners = 0;
-        if (LavalinkManager.LavalinkManagerHolder.lavalink.isEnabled()) {
-            synchronized (LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink().getLinks()) {
-                for (Link link : LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink().getLinks()) {
-                    if (link.getChannel() != null) {
-                        VoiceChannel voiceChannel = avaire.getShardManager().getVoiceChannelById(link.getChannel());
-                        if (voiceChannel != null) {
-                            listeners += voiceChannel.getMembers().size();
-                        }
-                    }
-                }
-            }
-
-            return listeners;
-        }
-
-        synchronized (AudioHandler.getDefaultAudioHandler().musicManagers.values()) {
-            for (GuildMusicManager manager : AudioHandler.getDefaultAudioHandler().musicManagers.values()) {
-                if (manager.getLastActiveMessage() == null) {
-                    continue;
-                }
-
-                VoiceChannel connectedChannel = LavalinkManager.LavalinkManagerHolder.lavalink
-                    .getConnectedChannel(manager.getLastActiveMessage().getGuild());
-                if (connectedChannel != null) {
-                    listeners += connectedChannel.getMembers().size();
-                }
-            }
-        }
-
-        return listeners;
-    }
-
-    private long parseAudioTrackDuration(AudioTrack track) {
-        if (track == null || track.getInfo().isStream) {
-            return 0L;
-        }
-        return track.getDuration();
-    }
-
-    private long convertMusicMangerToSeconds(GuildMusicManager musicManager) {
-        long seconds = 0;
-        for (AudioTrackContainer container : musicManager.getScheduler().getQueue()) {
-            seconds += parseAudioTrackDuration(container.getAudioTrack()) / 1000L;
-        }
-
-        if (musicManager.getPlayer() == null) {
-            return seconds;
-        }
-
-        if (musicManager.getPlayer().getPlayingTrack() != null && !musicManager.getPlayer().getPlayingTrack().getInfo().isStream) {
-            seconds += (musicManager.getPlayer().getPlayingTrack().getDuration() - musicManager.getPlayer().getTrackPosition()) / 1000L;
-        }
-
-        return seconds;
     }
 }

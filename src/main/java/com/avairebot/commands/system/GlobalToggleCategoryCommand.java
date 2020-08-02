@@ -52,14 +52,14 @@ public class GlobalToggleCategoryCommand extends SystemCommand {
     @Override
     public List<String> getUsageInstructions() {
         return Collections.singletonList(
-            "`:command <category> <status> [message]` - Toggels the given command category on or off globally."
+            "`:command <category> <status> [message]` - Toggle the given command category on or off globally."
         );
     }
 
     @Override
     public List<String> getExampleUsage() {
         return Collections.singletonList(
-            "`:command music off Stuff is broke yo` - Disables the music module globally with the given message."
+            "`:command administration off Stuff is broke yo` - Disables the administration module globally with the given message."
         );
     }
 

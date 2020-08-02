@@ -27,10 +27,6 @@ import ch.qos.logback.classic.filter.ThresholdFilter;
 import com.avairebot.admin.BotAdmin;
 import com.avairebot.ai.IntelligenceManager;
 import com.avairebot.ai.dialogflow.DialogFlowService;
-import com.avairebot.audio.AudioHandler;
-import com.avairebot.audio.GuildMusicManager;
-import com.avairebot.audio.LavalinkManager;
-import com.avairebot.audio.cache.AudioState;
 import com.avairebot.blacklist.Blacklist;
 import com.avairebot.cache.CacheManager;
 import com.avairebot.cache.CacheType;
@@ -77,23 +73,20 @@ import com.avairebot.utilities.AutoloaderUtil;
 import com.avairebot.vote.VoteManager;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.sedmelluq.discord.lavaplayer.jdaudp.NativeAudioSendFactory;
-import com.sedmelluq.discord.lavaplayer.player.AudioConfiguration;
-import com.sedmelluq.discord.lavaplayer.tools.PlayerLibrary;
+
 import io.sentry.Sentry;
 import io.sentry.SentryClient;
 import io.sentry.logback.SentryAppender;
-import lavalink.client.io.Link;
-import lavalink.client.player.LavalinkPlayer;
-import net.dv8tion.jda.bot.sharding.DefaultShardManagerBuilder;
-import net.dv8tion.jda.bot.sharding.ShardManager;
-import net.dv8tion.jda.core.JDA;
-import net.dv8tion.jda.core.JDAInfo;
-import net.dv8tion.jda.core.entities.Game;
-import net.dv8tion.jda.core.entities.SelfUser;
-import net.dv8tion.jda.core.requests.RestAction;
-import net.dv8tion.jda.core.utils.SessionControllerAdapter;
-import net.dv8tion.jda.core.utils.cache.CacheFlag;
+
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.JDAInfo;
+import net.dv8tion.jda.api.entities.Activity;
+import net.dv8tion.jda.api.entities.SelfUser;
+import net.dv8tion.jda.api.requests.RestAction;
+import net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder;
+import net.dv8tion.jda.api.sharding.ShardManager;
+import net.dv8tion.jda.api.utils.SessionControllerAdapter;
+import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -224,9 +217,7 @@ public class AvaIre {
         MiddlewareHandler.register("isBotAdmin", new IsBotAdminMiddleware(this));
         MiddlewareHandler.register("require", new RequirePermissionMiddleware(this));
         MiddlewareHandler.register("requireOne", new RequireOnePermissionMiddleware(this));
-        MiddlewareHandler.register("hasDJLevel", new RequireDJLevelMiddleware(this));
         MiddlewareHandler.register("throttle", new ThrottleMiddleware(this));
-        MiddlewareHandler.register("musicChannel", new IsMusicChannelMiddleware(this));
         MiddlewareHandler.register("isDMMessage", new IsDMMessageMiddleware(this));
 
         String defaultPrefix = getConfig().getString("default-prefix", DiscordConstants.DEFAULT_COMMAND_PREFIX);
@@ -248,18 +239,8 @@ public class AvaIre {
             "system-prefix", DiscordConstants.DEFAULT_SYSTEM_PREFIX
         ));
 
-        log.info("Registering commands...");
-        if (settings.isMusicOnlyMode()) {
-            CommandHandler.register(new StatsCommand(this));
-            CommandHandler.register(new UptimeCommand(this));
-            CommandHandler.register(new SourceCommand(this));
-            CommandHandler.register(new ChangePrefixCommand(this));
-            AutoloaderUtil.load(Constants.PACKAGE_COMMAND_PATH + ".help", command -> CommandHandler.register((Command) command));
-            AutoloaderUtil.load(Constants.PACKAGE_COMMAND_PATH + ".music", command -> CommandHandler.register((Command) command));
-            AutoloaderUtil.load(Constants.PACKAGE_COMMAND_PATH + ".system", command -> CommandHandler.register((Command) command));
-        } else {
-            AutoloaderUtil.load(Constants.PACKAGE_COMMAND_PATH, command -> CommandHandler.register((Command) command));
-        }
+        AutoloaderUtil.load(Constants.PACKAGE_COMMAND_PATH, command -> CommandHandler.register((Command) command));
+
         log.info(String.format("\tRegistered %s commands successfully!", CommandHandler.getCommands().size()));
 
         log.info("Registering jobs...");
@@ -402,20 +383,6 @@ public class AvaIre {
         log.info("Preparing mute manager");
         muteManger = new MuteManager(this);
 
-        log.info("Preparing Lavalink");
-        AudioHandler.setAvaire(this);
-        LavalinkManager.LavalinkManagerHolder.lavalink.start(this);
-
-        try {
-            AudioConfiguration.ResamplingQuality.valueOf(
-                getConfig().getString("audio-quality.resampling", "medium").toUpperCase()
-            );
-        } catch (IllegalArgumentException ignored) {
-            log.warn("Invalid audio resampling quality given, \"{}\" is not a valid quality name, using medium quality instead.",
-                getConfig().getString("audio-quality.resampling", "medium")
-            );
-            config.set("audio-quality.resampling", "medium");
-        }
 
         log.info("Creating bot instance and connecting to Discord network");
 
@@ -453,8 +420,6 @@ public class AvaIre {
             + "\n\tVersion:          " + AppInfo.getAppInfo().version
             + "\n\tJVM:              " + System.getProperty("java.version")
             + "\n\tJDA:              " + JDAInfo.VERSION
-            + "\n\tLavaplayer:       " + PlayerLibrary.VERSION
-            + "\n\tMusic Only Mode:  " + (settings == null ? "No" : (settings.isMusicOnlyMode() ? "Yes" : "No"))
             + "\n"
         );
     }
@@ -572,53 +537,6 @@ public class AvaIre {
 
         getLogger().info("Shutting down bot instance gracefully with exit code " + exitCode);
 
-        List<AudioState> audioStates = new ArrayList<>();
-        for (GuildMusicManager manager : AudioHandler.getDefaultAudioHandler().musicManagers.values()) {
-            if (manager.getLastActiveMessage() != null) {
-                manager.getLastActiveMessage().makeInfo(
-                    "Bot is restarting, sorry for the inconvenience, we'll be right back!"
-                ).queue();
-                shutdownDelay += 100L;
-            }
-
-            try {
-                //noinspection SynchronizationOnLocalVariableOrMethodParameter
-                synchronized (manager) {
-                    if (manager.getGuild() != null) {
-                        audioStates.add(new AudioState(manager, manager.getGuild()));
-                    }
-                }
-            } catch (Exception e) {
-                log.warn("Failed to create the audio state cache for the guild with an ID of: {}", manager.getGuildId(), e);
-            }
-
-            manager.getScheduler().getQueue().clear();
-
-            if (manager.getLastActiveMessage() != null) {
-                LavalinkManager.LavalinkManagerHolder.lavalink.closeConnection(manager.getLastActiveMessage().getGuild());
-            }
-
-            if (manager.getPlayer() instanceof LavalinkPlayer) {
-                LavalinkPlayer player = (LavalinkPlayer) manager.getPlayer();
-
-                Link.State state = player.getLink().getState();
-
-                if (player.getLink() != null && !state.equals(Link.State.DESTROYED) && !state.equals(Link.State.DESTROYING)) {
-                    player.getLink().destroy();
-                    shutdownDelay += 100;
-                }
-            }
-        }
-
-        if (LavalinkManager.LavalinkManagerHolder.lavalink.isEnabled()) {
-            shutdownDelay += LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink().getNodes().size() * 500L;
-            LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink().shutdown();
-        }
-
-        // Caches the audio state for the next three hours so we
-        // can resume the music once the bot boots back up.
-        cache.getAdapter(CacheType.FILE).put("audio.state", gson.toJson(audioStates), 60 * 60 * 3);
-
         try {
             if (shutdownDelay > 5000L) {
                 // If the shutdown delay is anymore than 5 seconds, we just set it to a
@@ -667,41 +585,27 @@ public class AvaIre {
     }
 
     private ShardManager buildShardManager() throws LoginException {
-        DefaultShardManagerBuilder builder = new DefaultShardManagerBuilder()
+        DefaultShardManagerBuilder builder = DefaultShardManagerBuilder.createDefault(getConfig().getString("discord.token"))
             .setSessionController(new SessionControllerAdapter())
-            .setToken(getConfig().getString("discord.token"))
-            .setGame(Game.watching("my code start up..."))
+            .setActivity(Activity.watching("my code start up..."))
             .setBulkDeleteSplittingEnabled(false)
             .setEnableShutdownHook(false)
             .setAutoReconnect(true)
-            .setAudioEnabled(true)
             .setContextEnabled(true)
-            .setDisabledCacheFlags(EnumSet.of(CacheFlag.GAME))
             .setShardsTotal(settings.getShardCount());
 
         if (settings.getShards() != null) {
             builder.setShards(settings.getShards());
         }
 
-        if (isNas()) {
-            builder.setAudioSendFactory(new NativeAudioSendFactory(800));
-        }
-
         builder
             .addEventListeners(new MainEventHandler(this))
             .addEventListeners(new PluginEventHandler(this));
 
-        if (LavalinkManager.LavalinkManagerHolder.lavalink.isEnabled()) {
-            builder.addEventListeners(LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink());
-        }
 
         return builder.build();
     }
 
-    private boolean isNas() {
-        return !System.getProperty("os.arch").equalsIgnoreCase("arm")
-            && !System.getProperty("os.arch").equalsIgnoreCase("arm-linux");
-    }
 
     private synchronized SentryAppender getSentryLogbackAppender() {
         LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();

@@ -33,10 +33,10 @@ import com.avairebot.utilities.CacheUtil;
 import com.avairebot.utilities.MentionableUtil;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.MessageBuilder;
-import net.dv8tion.jda.core.Permission;
-import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.MessageBuilder;
+import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.User;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -173,7 +173,7 @@ public abstract class InteractionCommand extends Command {
         try {
             InputStream stream = new URL(interactionImages.get(imageIndex)).openStream();
 
-            context.getChannel().sendFile(stream, getClass().getSimpleName() + "-" + imageIndex + ".gif", messageBuilder.build()).queue();
+            context.getChannel().sendMessage(messageBuilder.build()).addFile(stream, getClass().getSimpleName() + "-" + imageIndex + ".gif").queue();
         } catch (IOException e) {
             e.printStackTrace();
         }

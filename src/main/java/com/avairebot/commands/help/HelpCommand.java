@@ -34,8 +34,8 @@ import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.factories.MessageFactory;
 import com.avairebot.language.I18n;
 import com.avairebot.utilities.StringReplacementUtil;
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.entities.MessageEmbed;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 
 import javax.annotation.Nonnull;
 import java.util.*;
@@ -59,7 +59,7 @@ public class HelpCommand extends Command {
     }
 
     @Override
-    public List<String> getUsageInstructions() {
+    public List <String> getUsageInstructions() {
         return Arrays.asList(
             "`:command` - Shows a list of command categories.",
             "`:command <category>` - Shows a list of commands in the given category.",
@@ -68,12 +68,12 @@ public class HelpCommand extends Command {
     }
 
     @Override
-    public List<Class<? extends Command>> getRelations() {
+    public List <Class <? extends Command>> getRelations() {
         return Collections.singletonList(SourceCommand.class);
     }
 
     @Override
-    public List<String> getExampleUsage() {
+    public List <String> getExampleUsage() {
         return Arrays.asList(
             "`:command play`,",
             "`:command help`",
@@ -82,17 +82,14 @@ public class HelpCommand extends Command {
     }
 
     @Override
-    public List<String> getTriggers() {
+    public List <String> getTriggers() {
         return Collections.singletonList("help");
     }
 
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
         if (args.length == 0) {
-            if (!avaire.getSettings().isMusicOnlyMode()) {
-                return showCategories(context);
-            }
-            return showCategoryCommands(context, CategoryHandler.fromLazyName("music"), "music");
+            return showCategories(context);
         }
 
         CommandContainer command = getCommand(context, args[0]);
@@ -138,7 +135,7 @@ public class HelpCommand extends Command {
         // Gets a random command from the command category, this is used
         // in the command note to show a random command as the
         // example for how to use the command.
-        Optional<CommandContainer> randomCommandFromCategory = CommandHandler.getCommands().stream()
+        Optional <CommandContainer> randomCommandFromCategory = CommandHandler.getCommands().stream()
             .filter(commandContainer -> commandContainer.getCategory().equals(category))
             .collect(Collectors.collectingAndThen(Collectors.toList(), collected -> {
                 Collections.shuffle(collected);
@@ -151,13 +148,13 @@ public class HelpCommand extends Command {
 
         // Filters down the commands to just the ones belonging to the command category,
         // and adding them to the commands map by their command group.
-        Map<CommandGroup, List<CommandContainer>> commands = new HashMap<>();
+        Map <CommandGroup, List <CommandContainer>> commands = new HashMap <>();
         CommandHandler.getCommands().stream()
             .filter(container -> filterCommandContainer(container, category, adminUser))
             .forEach(container -> {
                 for (CommandGroup group : container.getCommand().getGroups()) {
                     if (!commands.containsKey(group)) {
-                        commands.put(group, new ArrayList<>());
+                        commands.put(group, new ArrayList <>());
                     }
                     commands.get(group).add(container);
                 }
@@ -165,7 +162,7 @@ public class HelpCommand extends Command {
 
         // Creates the message embedded fields with their title,
         // value, and dynamically set inline value.
-        List<MessageEmbed.Field> fields = new ArrayList<>();
+        List <MessageEmbed.Field> fields = new ArrayList <>();
         commands.forEach((key, value) -> {
             String stringifiedCommands = mapCommandContainers(context, value);
             if (stringifiedCommands.endsWith("-")) {
@@ -264,7 +261,7 @@ public class HelpCommand extends Command {
     private String getCategories(CommandMessage context) {
         AdminUser adminUser = avaire.getBotAdmins().getUserById(context.getAuthor().getIdLong());
 
-        List<Category> categories = CategoryHandler.getValues().stream()
+        List <Category> categories = CategoryHandler.getValues().stream()
             .filter(category -> !category.isGlobal())
             .filter(Category::hasCommands)
             .collect(Collectors.toList());
@@ -284,7 +281,7 @@ public class HelpCommand extends Command {
         }
 
         long before = categories.size();
-        List<Category> filteredCategories = categories.stream()
+        List <Category> filteredCategories = categories.stream()
             .filter(channel::isCategoryEnabled)
             .collect(Collectors.toList());
 
@@ -302,11 +299,11 @@ public class HelpCommand extends Command {
             ) : "\n\n");
     }
 
-    private String formatCategoriesStream(Stream<Category> stream, AdminUser adminUser) {
+    private String formatCategoriesStream(Stream <Category> stream, AdminUser adminUser) {
         return formatCategoriesStream(stream, adminUser, "\n\n");
     }
 
-    private String formatCategoriesStream(Stream<Category> stream, AdminUser adminUser, String suffix) {
+    private String formatCategoriesStream(Stream <Category> stream, AdminUser adminUser, String suffix) {
         return stream
             .map(Category::getName)
             .sorted()
@@ -330,9 +327,9 @@ public class HelpCommand extends Command {
     }
 
     @Nonnull
-    private String mapCommandContainers(CommandMessage context, List<CommandContainer> containers) {
+    private String mapCommandContainers(CommandMessage context, List <CommandContainer> containers) {
         boolean canBreak = true;
-        List<String> lines = new ArrayList<>();
+        List <String> lines = new ArrayList <>();
         StringBuilder message = new StringBuilder("```css\n");
 
         for (CommandContainer container : containers) {

@@ -2,7 +2,7 @@
 errors:
     missingArgument: 'Fehlendes Argument. Das `{0}` Argument wird vorausgesetzt.'
     invalidProperty: 'Ungültige `{0}` angegeben. Eine gültige {1} wird vorausgesetzt.'
-    noChannelsWithNameOrId: 'Ich habe keine Channel unter dem Namen oder der ID `{0}` auffinden können.'
+    noChannelsWithNameOrId: 'Ich habe keine GuildChannel unter dem Namen oder der ID `{0}` auffinden können.'
     noUsersWithNameOrId: 'Ich habe keine User unter dem Namen oder der ID `{0}` auffinden können.'
     mustBeConnectedToVoice: 'Du musst mit einem Voicechannel verbunden sein, um diesen Befehl ausführen zu können!'
     mustBeConnectedToSameChannel: 'Du musst im selben Voicechannel verbunden sein, um folgenden Befehl ausführen zu können: {0}!'
@@ -135,7 +135,7 @@ administration:
 
     CategoriesCommand:
         title: "Befehls-Kategoriestatus für #{0}"
-        status: ":emoteEnabled Aktiviert   :emoteDisabledInChannel Im Channel deaktiviert   :emoteDisabledGlobally Global deaktiviert"
+        status: ":emoteEnabled Aktiviert   :emoteDisabledInChannel Im GuildChannel deaktiviert   :emoteDisabledGlobally Global deaktiviert"
 
     ChangePrefixCommand:
         missingArgument: "Fehlendes `Kategorie`-Argument. Du musst die Befehls-Kategorie angegeben, für die du den Prefix ändern oder zurücksetzen möchtest."
@@ -248,9 +248,9 @@ administration:
 
     ModlogCommand:
         mustMentionTextChannel: "Ungültiger Channel-Argument angegeben. Du musst einen gültigen Textchannel erwähnen."
-        cantSendEmbedMessages: "Ich kann keine eingebetteten Nachrichten in dem angegeben Channel versenden. Prüfe die Berechtigungen für die Rollen für den {0}-Channel, wenn du es als Channel nutzt möchtest, um den Server zu protokollieren."
-        enable: ":user **Server Modlogging** ist nun aktiviert und für den :modlog Channel gesetzt."
-        enabled: ":user **Server Modlogging** ist derzeit aktiviert und für den :modlog Channel gesetzt."
+        cantSendEmbedMessages: "Ich kann keine eingebetteten Nachrichten in dem angegeben GuildChannel versenden. Prüfe die Berechtigungen für die Rollen für den {0}-Channel, wenn du es als GuildChannel nutzt möchtest, um den Server zu protokollieren."
+        enable: ":user **Server Modlogging** ist nun aktiviert und für den :modlog GuildChannel gesetzt."
+        enabled: ":user **Server Modlogging** ist derzeit aktiviert und für den :modlog GuildChannel gesetzt."
         disable: ":user **Server Modlogging** ist nun für den Server deaktiviert."
         disabled: ":user **Server Modlogging** ist derzeit deaktiviert."
 
@@ -304,18 +304,18 @@ administration:
         nowUsingExistingRole: "A role called `Muted` already exists on the server, now using the :role role for mutes, if you want the bot to setup all the channel override permissions to prevent users with the role from talking in the channels, you can use the\n`:command setup-permissions` command."
 
     NSFWCommand:
-        invalidChannelOrStatus: "Ungültiger Channel oder Status-Typ angegeben."
+        invalidChannelOrStatus: "Ungültiger GuildChannel oder Status-Typ angegeben."
         notValidChannel: "`{0}` ist kein gültiger Textchannel."
         notValidStatus: "`{0}` ist kein gültiger Status-Typ. Entscheide darüber, ob du in ein- oder ausschalten willst indem du jeweils eines dieser Input's nutzt: `on` oder `off`"
-        message: "Der :textChannel Channel ist derzeit für NSFW **:status**!"
-        updated: "Der NSFW Status für den :textChannel Channel wurde **:status**."
+        message: "Der :textChannel GuildChannel ist derzeit für NSFW **:status**!"
+        updated: "Der NSFW Status für den :textChannel GuildChannel wurde **:status**."
         status:
             enabled: "aktiviert"
             disabled: "deaktiviert"
 
     PurgeCommand:
-        messagesDeletedIn: "{0} Nachrichten wurden aus dem {1} Channel entfernt."
-        messagesDeletedBy: "{0} Nachrichten, die von {1} versendet wurden, wurden aus dem {2} Channel entfernt."
+        messagesDeletedIn: "{0} Nachrichten wurden aus dem {1} GuildChannel entfernt."
+        messagesDeletedBy: "{0} Nachrichten, die von {1} versendet wurden, wurden aus dem {2} GuildChannel entfernt."
         success: ":white_check_mark: `:number` Nachtichten wurden erfolgreich entfernt."
         successBy: ":white_check_mark: `:number` Nachrichten von :users wurden erfolgreich entfernt."
         nothingToDelete: ":x: Nicht's zum Entfernen vorhanden. Ich bin nicht dazu in der Lage Nachrichten die älter als 14 Tage sind zu entfernen. #BlameDiscord"
@@ -361,19 +361,19 @@ administration:
     SlowmodeCommand:
         missingArgument: "Fehlendes Argument. Du musst den Wert in `Sekunden` angegeben. Um diesen zu entfernen, so schreibe `off` hinter dem Befehl."
         mustBeValidNumbers: "Ungültiger Slowmode-Wert angegeben. Du musst eine Zahl zwischen **1** und **120** angeben."
-        message: "Der Slowmode wurde für den :textChannel Channel **aktiviert**.\nDer Channel erlaubt nun **:slowmode** Nachrichten jede Sekunde pro User."
-        disabled: "Der Slowmode wurden erfolgreich für den :textChannel Channel deaktiviert."
+        message: "Der Slowmode wurde für den :textChannel GuildChannel **aktiviert**.\nDer GuildChannel erlaubt nun **:slowmode** Nachrichten jede Sekunde pro User."
+        disabled: "Der Slowmode wurden erfolgreich für den :textChannel GuildChannel deaktiviert."
         invalidTextChannel: "`{0}` ist kein gültiger Textchannel. Du musst einen Textchannel angeben, um einen Slowmode einzurichten."
         failedToUpdate: "Das Aktualisieren des :textChannel Channels ist fehlgeschlagen. Fehlermeldung: :message"
 
     ToggleCategoryCommand:
         invalidCategory: "Ungültige Kategorie angegeben. `{0}` ist keine gültige Kategorie."
-        missingArgumentType: "Fehlendes `channel/global` Argument. Du musst den Channel angeben oder angeben ob dieser Befehl global ausgeführt werden soll."
-        invalidChannelOrGlobalString: "Ungültiger Channel oder Global-Inputwert angegeben. Du musst den dazugehörigen Channel angeben, oder `global` schreiben um alle Channels gleichzeitig auszuwählen und den Befehl für alle Channels auszuführen."
+        missingArgumentType: "Fehlendes `channel/global` Argument. Du musst den GuildChannel angeben oder angeben ob dieser Befehl global ausgeführt werden soll."
+        invalidChannelOrGlobalString: "Ungültiger GuildChannel oder Global-Inputwert angegeben. Du musst den dazugehörigen GuildChannel angeben, oder `global` schreiben um alle Channels gleichzeitig auszuwählen und den Befehl für alle Channels auszuführen."
         cantEnabledCategory: "Whoops, du kannst die **:category**-Befehls-Kategorie nicht aktivieren, wenn es global deaktiviert ist.\nDu kannst den Befehl unten nutzen, um die Kategorie wieder für alle Channels zu aktivieren.\n`:command :category global on`"
         update:
             globally: "Die `:category` Befehls-Kategorie wurde für **alle Channels** `:status`."
-            category: "Die `:category` Befehls-Kategorie wurde für den :channel Channel `:status`"
+            category: "Die `:category` Befehls-Kategorie wurde für den :channel GuildChannel `:status`"
         status:
             enabled: "aktiviert"
             disabled: "deaktiviert"
@@ -416,7 +416,7 @@ administration:
 
     WelcomeCommand:
         note: "\nDu kannst die Nachricht selbst festlegen, indem du folgenden Befehl nutzt: `{0} [Nachricht]`"
-        message: "Der `Welcome`-Modul wurde für den :channel Channel **:status**.\n:note"
+        message: "Der `Welcome`-Modul wurde für den :channel GuildChannel **:status**.\n:note"
         status:
             enabled: "aktiviert"
             disabled: "deaktiviert"
@@ -572,7 +572,7 @@ music:
         endedDueToWebSocketClose: "Der Audio Websocket wurde erzwungen geschlossen. Die Musik wurde gestoppt."
         noMatchFound: "Ich habe nicht's mit der folgenden Eingabe gefunden: `{0}`"
         trackLoadFailed: "Ich war nicht in der Lage folgenden Titel in die Warteschlange zu setzen: `{0}`"
-        musicChannel: "Du kannst Musik-Befehle nur im :channel Channel nutzen."
+        musicChannel: "Du kannst Musik-Befehle nur im :channel GuildChannel nutzen."
         resumeMusic: "Musik wird fortgesetzt. Bitte warte einige Sekunden bis alles wieder für dich geladen ist."
 
     ClearQueueCommand:
@@ -802,7 +802,7 @@ utility:
         changelogVersions: "Changelog Versions ({0})"
 
     ChannelIdCommand:
-        message: ':user Die :id: von dem :channel Channel lautet `:targetChannel`.'
+        message: ':user Die :id: von dem :channel GuildChannel lautet `:targetChannel`.'
 
     ChannelInfoCommand:
         fields:
@@ -813,7 +813,7 @@ utility:
             bitRate: 'Bitrate'
             nsfw: 'NSFW'
             createdAt: 'Erstellt am'
-        noTopic: '*Es wurde keine Beschreibung für diesen Channel gesetzt*'
+        noTopic: '*Es wurde keine Beschreibung für diesen GuildChannel gesetzt*'
         timeFormat: 'EEEEEEEE, dd. MMMMM yyyy HH:mm'
 
     ExpandUrlCommand:
@@ -901,7 +901,7 @@ utility:
 
     RemindCommand:
         errors:
-            invalidMeHere: 'Ungültigen Typ angegeben. Du musst angeben, wo du erinnert werden möchtest. Nutze `here`, um diesen Channel zu nutzen. Falls du eine Direktnachricht bevorzugst, so nutze `me`.'
+            invalidMeHere: 'Ungültigen Typ angegeben. Du musst angeben, wo du erinnert werden möchtest. Nutze `here`, um diesen GuildChannel zu nutzen. Falls du eine Direktnachricht bevorzugst, so nutze `me`.'
             invalidTime: 'Ungültige Zeit angegeben. Die Zeit muss länger als 60 Sekunden und weniger als 3 Tage betragen.'
 
     ServerIdCommand:

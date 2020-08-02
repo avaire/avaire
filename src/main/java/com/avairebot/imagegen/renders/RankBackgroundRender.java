@@ -24,7 +24,7 @@ package com.avairebot.imagegen.renders;
 import com.avairebot.contracts.imagegen.Renderer;
 import com.avairebot.imagegen.Fonts;
 import com.avairebot.imagegen.RankBackground;
-import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.api.entities.User;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

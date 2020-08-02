@@ -70,9 +70,6 @@ public abstract class Evalable {
                 return ((Evalable) value).toEvalableString();
             }
 
-            if (value instanceof EvalAudioEventWrapper) {
-                return ((EvalAudioEventWrapper) value).toEvalableString();
-            }
 
             return value;
         } catch (IllegalAccessException e) {

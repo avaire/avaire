@@ -27,8 +27,8 @@ import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.language.I18n;
 import com.avairebot.utilities.NumberUtil;
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.MessageBuilder;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.MessageBuilder;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -116,7 +116,7 @@ public class UndertaleTextBoxCommand extends Command {
             messageBuilder.setEmbed(embedBuilder.build());
 
             InputStream stream = getImageInputStream(args);
-            context.getMessageChannel().sendFile(stream, getClass().getSimpleName() + "-" + args[0] + ".png", messageBuilder.build()).queue();
+            context.getMessageChannel().sendMessage(messageBuilder.build()).addFile(stream, getClass().getSimpleName() + "-" + args[0] + ".png").queue();
 
             return true;
         } catch (IOException e) {

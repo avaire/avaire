@@ -24,7 +24,7 @@ package com.avairebot.commands.utility;
 import com.avairebot.AvaIre;
 import com.avairebot.commands.CommandHandler;
 import com.avairebot.commands.CommandMessage;
-import com.avairebot.commands.music.PlayCommand;
+
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.contracts.commands.CommandGroup;
 import com.avairebot.contracts.commands.CommandGroups;
@@ -86,17 +86,13 @@ public class VoteCommand extends Command {
             return checkUser(context, voteEntity);
         }
 
-        String utilityPrefix = generateCommandPrefix(context.getMessage());
-
         //noinspection ConstantConditions
         String note = I18n.format(String.join("\n", Arrays.asList(
-            "You'll gain access to the `{0}volume` and `{0}default-volume` commands for the",
-            "next 12 hours, as well as getting a vote point, you can spend your vote points",
-            "to unlock special rank backgrounds using the `{1}backgrounds` command.",
+            "You'll gain a vote point, you can spend your vote points on ranked backgrounds!",
             "",
             "Have you already voted and didn't get your vote rewards?",
             "Try run `{1}vote check`"
-        )), CommandHandler.getCommand(PlayCommand.class).getCategory().getPrefix(context.getMessage()), utilityPrefix);
+        )));
 
         Carbon expire = avaire.getVoteManager().getExpireTime(context.getAuthor());
         if (expire != null && expire.isFuture()) {

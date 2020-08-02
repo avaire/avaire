@@ -21,7 +21,7 @@
 
 package com.avairebot.utilities;
 
-import net.dv8tion.jda.core.entities.*;
+import net.dv8tion.jda.api.entities.*;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -141,7 +141,7 @@ public class StringReplacementUtil {
      * @param string  The original string that should be parsed.
      * @return The parsed string after all the channel placeholders was parsed.
      */
-    public static String parseChannel(@Nonnull Channel channel, @Nonnull String string) {
+    public static String parseChannel(@Nonnull GuildChannel channel, @Nonnull String string) {
         string = string.replaceAll("%channel%", "<#" + channel.getId() + ">");
         string = string.replaceAll("%channelname%", Matcher.quoteReplacement(channel.getName()));
         string = string.replaceAll("%channelid%", channel.getId());

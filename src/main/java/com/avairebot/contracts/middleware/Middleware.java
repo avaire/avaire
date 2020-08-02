@@ -29,7 +29,7 @@ import com.avairebot.plugin.JavaPlugin;
 import com.avairebot.utilities.CacheUtil;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.api.entities.Message;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

@@ -30,10 +30,11 @@ import com.avairebot.database.transformers.PlayerTransformer;
 import com.avairebot.factories.MessageFactory;
 import com.avairebot.handlers.DatabaseEventHolder;
 import com.avairebot.language.I18n;
-import net.dv8tion.jda.core.JDA;
-import net.dv8tion.jda.core.Permission;
-import net.dv8tion.jda.core.entities.*;
-import net.dv8tion.jda.core.requests.restaction.AuditableRestAction;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.requests.restaction.AuditableRestAction;
+import net.dv8tion.jda.internal.requests.DeferredRestAction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -107,7 +108,7 @@ public class CommandMessage implements CommandContext {
     }
 
     public AuditableRestAction<Void> delete() {
-        return canDelete() ? message.delete() : new AuditableRestAction.EmptyRestAction<>(getJDA());
+        return canDelete() ? message.delete() : new DeferredRestAction<>(getJDA(), null);
     }
 
     public JDA getJDA() {

@@ -30,7 +30,7 @@ import com.avairebot.contracts.commands.SystemCommand;
 import com.avairebot.contracts.commands.sort.ServerComparable;
 import com.avairebot.time.Carbon;
 import com.avairebot.utilities.NumberUtil;
-import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.api.entities.Guild;
 
 import java.util.*;
 
@@ -125,7 +125,7 @@ public class ServersCommand extends SystemCommand {
                 return sendErrorMessage(context, "No guilds found with an ID of `{0}`", args[0]);
             }
 
-            Carbon time = Carbon.createFromOffsetDateTime(guild.getCreationTime());
+            Carbon time = Carbon.createFromOffsetDateTime(guild.getTimeCreated());
 
             long bots = guild.getMembers().stream().filter(member -> member.getUser().isBot()).count();
 

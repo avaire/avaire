@@ -36,14 +36,13 @@ import com.avairebot.handlers.adapter.JDAStateEventAdapter;
 import com.avairebot.level.LevelManager;
 import com.avairebot.metrics.routes.GetMetrics;
 import com.avairebot.middleware.ThrottleMiddleware;
-import com.avairebot.scheduler.jobs.LavalinkGarbageNodeCollectorJob;
 import io.prometheus.client.Counter;
 import io.prometheus.client.Gauge;
 import io.prometheus.client.Histogram;
 import io.prometheus.client.guava.cache.CacheMetricsCollector;
 import io.prometheus.client.hotspot.DefaultExports;
 import io.prometheus.client.logback.InstrumentedAppender;
-import net.dv8tion.jda.core.events.Event;
+import net.dv8tion.jda.api.events.Event;
 import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -109,34 +108,6 @@ public class Metrics {
         .name("avaire_shard_websocket_heartbeat")
         .help("Websocket heartbeat in milliseconds for each shard")
         .labelNames("shard")
-        .register();
-
-    // Music
-
-    public static final Counter searchRequests = Counter.build() // Search requests issued by users
-        .name("avaire_music_search_requests_total")
-        .help("Total search requests")
-        .register();
-
-    public static final Counter searchHits = Counter.build()
-        .name("avaire_music_search_hits")
-        .help("Total search hits")
-        .labelNames("type")
-        .register();
-
-    public static final Counter tracksLoaded = Counter.build()
-        .name("avaire_music_tracks_loaded_total")
-        .help("Total tracks loaded by the audio loader")
-        .register();
-
-    public static final Counter trackLoadsFailed = Counter.build()
-        .name("avaire_music_track_loads_failed_total")
-        .help("Total failed track loads by the audio loader")
-        .register();
-
-    public static final Gauge musicPlaying = Gauge.build()
-        .name("avaire_guild_music_playing_total")
-        .help("Total number of guilds listening to music")
         .register();
 
     // Commands
@@ -268,8 +239,6 @@ public class Metrics {
         cacheMetrics.addCache("global-leaderboard", GlobalLeaderboardCommand.cache);
         cacheMetrics.addCache("interaction-lottery", InteractionCommand.cache);
         cacheMetrics.addCache("blacklist-ratelimit", Ratelimit.cache);
-        cacheMetrics.addCache("lavalink-destroy-cleanup", LavalinkGarbageNodeCollectorJob.cache);
-        cacheMetrics.addCache("music-search-results", SearchController.cache);
 
         if (!avaire.getConfig().getBoolean("web-servlet.metrics",
             avaire.getConfig().getBoolean("metrics.enabled", true)
@@ -285,7 +254,7 @@ public class Metrics {
     }
 
     private static void initializeEventMetrics() {
-        Set<Class<? extends Event>> types = new Reflections("net.dv8tion.jda.core.events")
+        Set<Class<? extends Event>> types = new Reflections("net.dv8tion.jda.api.events")
             .getSubTypesOf(Event.class);
 
         for (Class<? extends Event> type : types) {

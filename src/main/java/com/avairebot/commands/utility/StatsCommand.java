@@ -23,7 +23,6 @@ package com.avairebot.commands.utility;
 
 import com.avairebot.AppInfo;
 import com.avairebot.AvaIre;
-import com.avairebot.audio.AudioHandler;
 import com.avairebot.chat.MessageType;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
@@ -33,8 +32,8 @@ import com.avairebot.language.I18n;
 import com.avairebot.metrics.Metrics;
 import com.avairebot.utilities.NumberUtil;
 import io.prometheus.client.Collector;
-import net.dv8tion.jda.core.entities.MessageEmbed;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import javax.annotation.Nonnull;
 import java.lang.management.ManagementFactory;
@@ -93,10 +92,6 @@ public class StatsCommand extends Command {
         )
             .setTitle(context.i18n("title"), "https://avairebot.com/support")
             .setAuthor("AvaIre v" + AppInfo.getAppInfo().version, "https://avairebot.com/support", avaire.getSelfUser().getEffectiveAvatarUrl())
-            .setFooter(context.i18n("footer",
-                NumberUtil.formatNicely(AudioHandler.getDefaultAudioHandler().getTotalListenersSize()),
-                NumberUtil.formatNicely(AudioHandler.getDefaultAudioHandler().getTotalQueueSize())
-            ))
             .queue();
 
         return true;

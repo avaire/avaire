@@ -22,14 +22,13 @@
 package com.avairebot.database.transformers;
 
 import com.avairebot.AvaIre;
-import com.avairebot.audio.DJGuildLevel;
 import com.avairebot.contracts.database.transformers.Transformer;
 import com.avairebot.database.collection.DataRow;
 import com.avairebot.utilities.NumberUtil;
 import com.google.gson.internal.LinkedTreeMap;
 import com.google.gson.reflect.TypeToken;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.TextChannel;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.TextChannel;
 
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nonnull;
@@ -58,18 +57,12 @@ public class GuildTransformer extends Transformer {
     private boolean levels = false;
     private boolean levelAlerts = false;
     private boolean levelHierarchy = false;
-    private boolean musicMessages = true;
     private String levelChannel = null;
     private String autorole = null;
     private String modlog = null;
-    private String musicChannelText = null;
-    private String musicChannelVoice = null;
     private String muteRole = null;
-    private String djRole = null;
     private int modlogCase = 0;
-    private int defaultVolume = 100;
     private double levelModifier = -1;
-    private DJGuildLevel djGuildLevel = null;
 
     public GuildTransformer(Guild guild) {
         super(null);
@@ -102,16 +95,7 @@ public class GuildTransformer extends Transformer {
             autorole = data.getString("autorole");
             modlog = data.getString("modlog");
             muteRole = data.getString("mute_role");
-            musicChannelText = data.getString("music_channel_text");
-            musicChannelVoice = data.getString("music_channel_voice");
-            musicMessages = data.getBoolean("music_messages", true);
             modlogCase = data.getInt("modlog_case");
-            djGuildLevel = DJGuildLevel.fromId(data.getInt("dj_level", DJGuildLevel.getNormal().getId()));
-            djRole = data.getString("dj_role");
-            defaultVolume = data.getInt("default_volume", 100);
-
-            // Sets the default volume to a value between 10 and 100.
-            defaultVolume = NumberUtil.getBetween(defaultVolume, 10, 100);
 
             // Sets the discord partner value if the guild isn't already a Discord partner.
             if (!partner) {
@@ -312,30 +296,6 @@ public class GuildTransformer extends Transformer {
         this.autorole = autorole;
     }
 
-    public String getMusicChannelText() {
-        return musicChannelText;
-    }
-
-    public void setMusicChannelText(String musicChannelText) {
-        this.musicChannelText = musicChannelText;
-    }
-
-    public String getMusicChannelVoice() {
-        return musicChannelVoice;
-    }
-
-    public void setMusicChannelVoice(String musicChannelVoice) {
-        this.musicChannelVoice = musicChannelVoice;
-    }
-
-    public boolean isMusicMessages() {
-        return musicMessages;
-    }
-
-    public void setMusicMessages(boolean musicMessages) {
-        this.musicMessages = musicMessages;
-    }
-
     public String getModlog() {
         return modlog;
     }
@@ -380,33 +340,6 @@ public class GuildTransformer extends Transformer {
         return modules;
     }
 
-    public String getDjRole() {
-        return djRole;
-    }
-
-    public void setDjRole(String djRole) {
-        this.djRole = djRole;
-    }
-
-    public DJGuildLevel getDJLevel() {
-        if (djGuildLevel == null) {
-            djGuildLevel = DJGuildLevel.getNormal();
-        }
-        return djGuildLevel;
-    }
-
-    public void setDJLevel(DJGuildLevel djGuildLevel) {
-        this.djGuildLevel = djGuildLevel;
-    }
-
-    public int getDefaultVolume() {
-        return defaultVolume;
-    }
-
-    public void setDefaultVolume(int defaultVolume) {
-        this.defaultVolume = defaultVolume;
-    }
-
     public boolean isPartner() {
         return partner;
     }
@@ -433,7 +366,7 @@ public class GuildTransformer extends Transformer {
 
     public boolean createChannelTransformer(@Nonnull String guildId, @Nonnull String channelId) {
         if (!Objects.equals(guildId, getId())) {
-            throw new RuntimeException(String.format("The given channel belongs to a different guild. Channel ID: %s Channel Guild ID: %s | Guild ID: %s",
+            throw new RuntimeException(String.format("The given channel belongs to a different guild. GuildChannel ID: %s GuildChannel Guild ID: %s | Guild ID: %s",
                 channelId, guildId, getId()
             ));
         }

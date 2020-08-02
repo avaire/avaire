@@ -33,9 +33,9 @@ import com.avairebot.modlog.ModlogType;
 import com.avairebot.utilities.MentionableUtil;
 import com.avairebot.utilities.RestActionUtil;
 import com.avairebot.utilities.RoleUtil;
-import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.Role;
-import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Role;
+import net.dv8tion.jda.api.entities.User;
 
 import javax.annotation.Nonnull;
 import java.util.Arrays;
@@ -125,7 +125,7 @@ public class KickCommand extends Command {
 
         Modlog.notifyUser(user.getUser(), context.getGuild(), modlogAction, caseId);
 
-        context.getGuild().getController().kick(user, String.format("%s - %s#%s (%s)",
+        context.getGuild().kick(user, String.format("%s - %s#%s (%s)",
             reason,
             context.getAuthor().getName(),
             context.getAuthor().getDiscriminator(),

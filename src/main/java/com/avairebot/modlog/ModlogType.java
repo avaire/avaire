@@ -24,7 +24,7 @@ package com.avairebot.modlog;
 import com.avairebot.chat.MessageType;
 import com.avairebot.language.I18n;
 import com.google.common.base.CaseFormat;
-import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.api.entities.Guild;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

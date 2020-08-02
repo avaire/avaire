@@ -26,38 +26,37 @@ import com.avairebot.contracts.handlers.EventHandler;
 import com.avairebot.database.controllers.PlayerController;
 import com.avairebot.handlers.adapter.*;
 import com.avairebot.metrics.Metrics;
-import net.dv8tion.jda.core.events.Event;
-import net.dv8tion.jda.core.events.ReadyEvent;
-import net.dv8tion.jda.core.events.ReconnectedEvent;
-import net.dv8tion.jda.core.events.ResumedEvent;
-import net.dv8tion.jda.core.events.channel.text.TextChannelCreateEvent;
-import net.dv8tion.jda.core.events.channel.text.TextChannelDeleteEvent;
-import net.dv8tion.jda.core.events.channel.text.update.TextChannelUpdateNameEvent;
-import net.dv8tion.jda.core.events.channel.text.update.TextChannelUpdatePositionEvent;
-import net.dv8tion.jda.core.events.channel.voice.VoiceChannelDeleteEvent;
-import net.dv8tion.jda.core.events.emote.EmoteRemovedEvent;
-import net.dv8tion.jda.core.events.guild.GuildJoinEvent;
-import net.dv8tion.jda.core.events.guild.GuildLeaveEvent;
-import net.dv8tion.jda.core.events.guild.member.GuildMemberJoinEvent;
-import net.dv8tion.jda.core.events.guild.member.GuildMemberLeaveEvent;
-import net.dv8tion.jda.core.events.guild.update.GuildUpdateNameEvent;
-import net.dv8tion.jda.core.events.guild.update.GuildUpdateRegionEvent;
-import net.dv8tion.jda.core.events.message.MessageBulkDeleteEvent;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
-import net.dv8tion.jda.core.events.message.MessageUpdateEvent;
-import net.dv8tion.jda.core.events.message.guild.GuildMessageDeleteEvent;
-import net.dv8tion.jda.core.events.message.react.GenericMessageReactionEvent;
-import net.dv8tion.jda.core.events.message.react.MessageReactionAddEvent;
-import net.dv8tion.jda.core.events.message.react.MessageReactionRemoveEvent;
-import net.dv8tion.jda.core.events.role.RoleCreateEvent;
-import net.dv8tion.jda.core.events.role.RoleDeleteEvent;
-import net.dv8tion.jda.core.events.role.update.RoleUpdateNameEvent;
-import net.dv8tion.jda.core.events.role.update.RoleUpdatePermissionsEvent;
-import net.dv8tion.jda.core.events.role.update.RoleUpdatePositionEvent;
-import net.dv8tion.jda.core.events.user.update.UserUpdateAvatarEvent;
-import net.dv8tion.jda.core.events.user.update.UserUpdateDiscriminatorEvent;
-import net.dv8tion.jda.core.events.user.update.UserUpdateNameEvent;
+import net.dv8tion.jda.api.events.*;
+import net.dv8tion.jda.api.events.channel.text.TextChannelCreateEvent;
+import net.dv8tion.jda.api.events.channel.text.TextChannelDeleteEvent;
+import net.dv8tion.jda.api.events.channel.text.update.TextChannelUpdateNameEvent;
+import net.dv8tion.jda.api.events.channel.text.update.TextChannelUpdatePositionEvent;
+import net.dv8tion.jda.api.events.channel.voice.VoiceChannelDeleteEvent;
+import net.dv8tion.jda.api.events.emote.EmoteRemovedEvent;
+import net.dv8tion.jda.api.events.guild.GuildJoinEvent;
+import net.dv8tion.jda.api.events.guild.GuildLeaveEvent;
+import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
+import net.dv8tion.jda.api.events.guild.member.GuildMemberLeaveEvent;
+import net.dv8tion.jda.api.events.guild.member.GuildMemberRemoveEvent;
+import net.dv8tion.jda.api.events.guild.update.GuildUpdateNameEvent;
+import net.dv8tion.jda.api.events.guild.update.GuildUpdateRegionEvent;
+import net.dv8tion.jda.api.events.message.MessageBulkDeleteEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.MessageUpdateEvent;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageDeleteEvent;
+import net.dv8tion.jda.api.events.message.react.GenericMessageReactionEvent;
+import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
+import net.dv8tion.jda.api.events.message.react.MessageReactionRemoveEvent;
+import net.dv8tion.jda.api.events.role.RoleCreateEvent;
+import net.dv8tion.jda.api.events.role.RoleDeleteEvent;
+import net.dv8tion.jda.api.events.role.update.RoleUpdateNameEvent;
+import net.dv8tion.jda.api.events.role.update.RoleUpdatePermissionsEvent;
+import net.dv8tion.jda.api.events.role.update.RoleUpdatePositionEvent;
+import net.dv8tion.jda.api.events.user.update.UserUpdateAvatarEvent;
+import net.dv8tion.jda.api.events.user.update.UserUpdateDiscriminatorEvent;
+import net.dv8tion.jda.api.events.user.update.UserUpdateNameEvent;
 
+import javax.annotation.Nonnull;
 import java.util.Collections;
 
 public class MainEventHandler extends EventHandler {
@@ -90,7 +89,7 @@ public class MainEventHandler extends EventHandler {
     }
 
     @Override
-    public void onGenericEvent(Event event) {
+    public void onGenericEvent(@Nonnull GenericEvent event) {
         Metrics.jdaEvents.labels(event.getClass().getSimpleName()).inc();
     }
 
@@ -157,16 +156,12 @@ public class MainEventHandler extends EventHandler {
 
     @Override
     public void onGuildMemberJoin(GuildMemberJoinEvent event) {
-        if (!avaire.getSettings().isMusicOnlyMode()) {
-            memberEvent.onGuildMemberJoin(event);
-        }
+        memberEvent.onGuildMemberJoin(event);
     }
 
     @Override
-    public void onGuildMemberLeave(GuildMemberLeaveEvent event) {
-        if (!avaire.getSettings().isMusicOnlyMode()) {
-            memberEvent.onGuildMemberLeave(event);
-        }
+    public void onGuildMemberRemove(GuildMemberRemoveEvent event) {
+        memberEvent.onGuildMemberLeave(event);
     }
 
     @Override
@@ -230,23 +225,17 @@ public class MainEventHandler extends EventHandler {
 
     @Override
     public void onUserUpdateDiscriminator(UserUpdateDiscriminatorEvent event) {
-        if (!avaire.getSettings().isMusicOnlyMode()) {
-            PlayerController.updateUserData(event.getUser());
-        }
+        PlayerController.updateUserData(event.getUser());
     }
 
     @Override
     public void onUserUpdateAvatar(UserUpdateAvatarEvent event) {
-        if (!avaire.getSettings().isMusicOnlyMode()) {
-            PlayerController.updateUserData(event.getUser());
-        }
+        PlayerController.updateUserData(event.getUser());
     }
 
     @Override
     public void onUserUpdateName(UserUpdateNameEvent event) {
-        if (!avaire.getSettings().isMusicOnlyMode()) {
-            PlayerController.updateUserData(event.getUser());
-        }
+        PlayerController.updateUserData(event.getUser());
     }
 
     @Override

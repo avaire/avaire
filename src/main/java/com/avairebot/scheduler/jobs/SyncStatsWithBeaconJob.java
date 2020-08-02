@@ -24,8 +24,8 @@ package com.avairebot.scheduler.jobs;
 import com.avairebot.AppInfo;
 import com.avairebot.AvaIre;
 import com.avairebot.contracts.scheduler.Job;
-import net.dv8tion.jda.core.JDA;
-import net.dv8tion.jda.core.entities.SelfUser;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.entities.SelfUser;
 import okhttp3.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -83,7 +83,7 @@ public class SyncStatsWithBeaconJob extends Job {
             JSONObject shardObj = new JSONObject();
 
             shardObj.put("id", shard.getShardInfo().getShardId());
-            shardObj.put("latency", shard.getPing());
+            shardObj.put("latency", shard.getGatewayPing());
             shardObj.put("users", shard.getUsers().size());
             shardObj.put("channels", getTotalChannels(shard));
             shardObj.put("guilds", shard.getGuilds().size());

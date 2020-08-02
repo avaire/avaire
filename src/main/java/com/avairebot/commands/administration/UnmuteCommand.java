@@ -30,8 +30,8 @@ import com.avairebot.modlog.ModlogAction;
 import com.avairebot.modlog.ModlogType;
 import com.avairebot.utilities.MentionableUtil;
 import com.avairebot.utilities.RoleUtil;
-import net.dv8tion.jda.core.entities.Role;
-import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.api.entities.Role;
+import net.dv8tion.jda.api.entities.User;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -143,7 +143,7 @@ public class UnmuteCommand extends MuteableCommand {
         }
 
         String reason = generateMessage(Arrays.copyOfRange(args, 1, args.length));
-        context.getGuild().getController().removeSingleRoleFromMember(
+        context.getGuild().removeRoleFromMember(
             context.getGuild().getMember(user), muteRole
         ).reason(reason).queue(aVoid -> {
             ModlogAction modlogAction = new ModlogAction(

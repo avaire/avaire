@@ -29,7 +29,7 @@ import com.avairebot.contracts.commands.*;
 import com.avairebot.database.transformers.ChannelTransformer;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.utilities.MentionableUtil;
-import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.api.entities.User;
 
 import javax.annotation.Nonnull;
 import java.awt.*;

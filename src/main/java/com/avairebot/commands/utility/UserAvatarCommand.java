@@ -28,7 +28,7 @@ import com.avairebot.contracts.commands.CommandGroup;
 import com.avairebot.contracts.commands.CommandGroups;
 import com.avairebot.factories.MessageFactory;
 import com.avairebot.utilities.MentionableUtil;
-import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.api.entities.User;
 
 import javax.annotation.Nonnull;
 import java.util.Arrays;
