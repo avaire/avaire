@@ -27,8 +27,8 @@ import com.avairebot.commands.CommandPriority;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.factories.RequestFactory;
 import com.avairebot.requests.Response;
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.MessageBuilder;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.MessageBuilder;
 import okhttp3.ResponseBody;
 
 import java.util.Arrays;
@@ -82,15 +82,15 @@ public class MonikaCommand extends Command {
                     return;
                 }
 
-                context.getChannel().sendFile(body.byteStream(),
-                    "just-monika.jpg",
+                context.getChannel().sendMessage(
                     new MessageBuilder().setEmbed(
                         new EmbedBuilder()
                             .setImage("attachment://just-monika.jpg")
                             .setDescription("Just Monika")
                             .setFooter("Just Monika", null)
                             .build()
-                    ).build()
+                    ).build()).addFile(body.byteStream(),
+                    "just-monika.jpg"
                 ).queue();
             });
 

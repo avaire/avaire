@@ -29,8 +29,8 @@ import com.avairebot.contracts.commands.CommandGroups;
 import com.avairebot.factories.MessageFactory;
 import com.avairebot.factories.RequestFactory;
 import com.avairebot.requests.Response;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.MessageEmbed;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 import org.json.JSONObject;
 
 import javax.annotation.Nonnull;

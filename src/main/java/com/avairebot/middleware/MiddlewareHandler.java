@@ -24,7 +24,7 @@ package com.avairebot.middleware;
 import com.avairebot.AvaIre;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.contracts.middleware.Middleware;
-import net.dv8tion.jda.core.utils.Checks;
+import net.dv8tion.jda.internal.utils.Checks;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

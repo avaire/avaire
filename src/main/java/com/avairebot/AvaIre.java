@@ -85,15 +85,17 @@ import io.sentry.SentryClient;
 import io.sentry.logback.SentryAppender;
 import lavalink.client.io.Link;
 import lavalink.client.player.LavalinkPlayer;
-import net.dv8tion.jda.bot.sharding.DefaultShardManagerBuilder;
-import net.dv8tion.jda.bot.sharding.ShardManager;
-import net.dv8tion.jda.core.JDA;
-import net.dv8tion.jda.core.JDAInfo;
-import net.dv8tion.jda.core.entities.Game;
-import net.dv8tion.jda.core.entities.SelfUser;
-import net.dv8tion.jda.core.requests.RestAction;
-import net.dv8tion.jda.core.utils.SessionControllerAdapter;
-import net.dv8tion.jda.core.utils.cache.CacheFlag;
+
+import net.dv8tion.jda.api.requests.GatewayIntent;
+import net.dv8tion.jda.api.sharding.ShardManager;
+import net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.JDAInfo;
+import net.dv8tion.jda.api.entities.Activity;
+import net.dv8tion.jda.api.entities.SelfUser;
+import net.dv8tion.jda.api.requests.RestAction;
+import net.dv8tion.jda.api.utils.SessionControllerAdapter;
+import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -667,16 +669,15 @@ public class AvaIre {
     }
 
     private ShardManager buildShardManager() throws LoginException {
-        DefaultShardManagerBuilder builder = new DefaultShardManagerBuilder()
+        DefaultShardManagerBuilder builder = DefaultShardManagerBuilder.createDefault(getConfig().getString("discord.token"))
             .setSessionController(new SessionControllerAdapter())
-            .setToken(getConfig().getString("discord.token"))
-            .setGame(Game.watching("my code start up..."))
+            .setActivity(Activity.watching("my code start up..."))
             .setBulkDeleteSplittingEnabled(false)
             .setEnableShutdownHook(false)
             .setAutoReconnect(true)
-            .setAudioEnabled(true)
             .setContextEnabled(true)
-            .setDisabledCacheFlags(EnumSet.of(CacheFlag.GAME))
+            //.setDisabledCacheFlags(CacheFlag.ACTIVITY) # Removed due to deprecation of method.
+            .setDisabledIntents(GatewayIntent.GUILD_PRESENCES) // Changed to intent in favor of the cache deprecation.
             .setShardsTotal(settings.getShardCount());
 
         if (settings.getShards() != null) {

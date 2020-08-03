@@ -33,10 +33,10 @@ import com.avairebot.modlog.ModlogType;
 import com.avairebot.utilities.MentionableUtil;
 import com.avairebot.utilities.RestActionUtil;
 import com.avairebot.utilities.RoleUtil;
-import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.Role;
-import net.dv8tion.jda.core.entities.User;
-import net.dv8tion.jda.core.entities.VoiceChannel;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Role;
+import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.entities.VoiceChannel;
 
 import javax.annotation.Nonnull;
 import java.util.Arrays;
@@ -62,27 +62,27 @@ public class VoiceKickCommand extends Command {
     }
 
     @Override
-    public List<String> getUsageInstructions() {
+    public List <String> getUsageInstructions() {
         return Collections.singletonList("`:command <user> [reason]` - Kicks the mentioned user with the given reason.");
     }
 
     @Override
-    public List<String> getExampleUsage() {
+    public List <String> getExampleUsage() {
         return Collections.singletonList("`:command @Senither Yelling at people`");
     }
 
     @Override
-    public List<Class<? extends Command>> getRelations() {
+    public List <Class <? extends Command>> getRelations() {
         return Collections.singletonList(KickCommand.class);
     }
 
     @Override
-    public List<String> getTriggers() {
+    public List <String> getTriggers() {
         return Arrays.asList("voicekick", "vkick");
     }
 
     @Override
-    public List<String> getMiddleware() {
+    public List <String> getMiddleware() {
         return Arrays.asList(
             "require:user,general.kick_members",
             "require:bot,general.manage_channels,voice.move_members",
@@ -92,7 +92,7 @@ public class VoiceKickCommand extends Command {
 
     @Nonnull
     @Override
-    public List<CommandGroup> getGroups() {
+    public List <CommandGroup> getGroups() {
         return Collections.singletonList(CommandGroups.MODERATION);
     }
 
@@ -117,27 +117,23 @@ public class VoiceKickCommand extends Command {
 
     private boolean kickUser(CommandMessage context, Member user, String[] args) {
         String reason = generateMessage(args);
-        String originalVoiceChannelName = user.getVoiceState().getChannel().getName();
-        String originalVoiceChannelId = user.getVoiceState().getChannel().getId();
+        String voiceChannelName = user.getVoiceState().getChannel().getName();
+        String voiceChannelId = user.getVoiceState().getChannel().getId();
 
-        context.getGuild().getController().createVoiceChannel("kick-" + user.getUser().getId()).queue(channel ->
-            context.getGuild().getController().moveVoiceMember(user, (VoiceChannel) channel)
-                .queue(empty -> channel.delete().queue((Consumer<Void>) aVoid -> {
-                        Modlog.log(avaire, context, new ModlogAction(
-                                ModlogType.VOICE_KICK,
-                                context.getAuthor(), user.getUser(),
-                                originalVoiceChannelName + " (ID: " + originalVoiceChannelId + ")\n" + reason
-                            )
-                        );
 
-                        context.makeSuccess(context.i18n("message"))
-                            .set("target", user.getUser().getName() + "#" + user.getUser().getDiscriminator())
-                            .set("voiceChannel", originalVoiceChannelName)
-                            .set("reason", reason)
-                            .queue(ignoreMessage -> context.delete().queue(null, RestActionUtil.ignore));
-                    }, RestActionUtil.ignore)
-                )
-        );
+        context.getGuild().kickVoiceMember(user)
+            .queue(empty ->
+                Modlog.log(avaire, context, new ModlogAction(
+                    ModlogType.VOICE_KICK,
+                    context.getAuthor(), user.getUser(),
+                    voiceChannelName + " (ID: " + voiceChannelId + ")\n" + reason
+                )));
+
+        context.makeSuccess(context.i18n("message"))
+            .set("target", user.getUser().getName() + "#" + user.getUser().getDiscriminator())
+            .set("voiceChannel", voiceChannelName)
+            .set("reason", reason)
+            .queue(ignoreMessage -> context.delete().queue(null, RestActionUtil.ignore));
         return true;
     }
 

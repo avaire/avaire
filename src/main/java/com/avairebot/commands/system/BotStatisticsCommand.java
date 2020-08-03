@@ -38,10 +38,10 @@ import com.avairebot.metrics.Metrics;
 import com.avairebot.utilities.NumberUtil;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import lavalink.client.io.Link;
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.entities.MessageEmbed;
-import net.dv8tion.jda.core.entities.User;
-import net.dv8tion.jda.core.entities.VoiceChannel;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.entities.VoiceChannel;
 
 import java.lang.management.ManagementFactory;
 import java.util.Arrays;
@@ -101,7 +101,7 @@ public class BotStatisticsCommand extends SystemCommand {
             ), true),
             new MessageEmbed.Field("Discord Shards", I18n.format("**{0}** Shards\n**{1} ms** Average Ping",
                 avaire.getShardManager().getShards().size(),
-                NumberUtil.formatNicely(avaire.getShardManager().getAveragePing())
+                NumberUtil.formatNicely(avaire.getShardManager().getAverageGatewayPing())
             ), true),
             new MessageEmbed.Field("Member Stats", I18n.format("**{0}** Unique Users\n**{1}** Unique Bots",
                 NumberUtil.formatNicely(avaire.getShardManager().getUsers().stream().filter(user -> !user.isBot()).count()),

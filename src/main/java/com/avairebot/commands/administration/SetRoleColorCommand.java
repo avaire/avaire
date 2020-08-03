@@ -27,7 +27,7 @@ import com.avairebot.contracts.commands.Command;
 import com.avairebot.utilities.ColorUtil;
 import com.avairebot.utilities.RandomUtil;
 import com.avairebot.utilities.RoleUtil;
-import net.dv8tion.jda.core.entities.Role;
+import net.dv8tion.jda.api.entities.Role;
 
 import java.awt.*;
 import java.util.Arrays;

@@ -231,10 +231,12 @@ public class SearchController {
 
     @SuppressWarnings("StringBufferReplaceableByString")
     private static String createUpdateLookupQueryFromContext(TrackRequestContext context) throws SQLException {
-        StringBuilder updateQuery = new StringBuilder(StringUtils.chop(
+        String a = StringUtils.chop(
             AvaIre.getInstance().getDatabase().newQueryBuilder(Constants.MUSIC_SEARCH_CACHE_TABLE_NAME)
                 .toSQL(Database.QueryType.UPDATE)
-        ));
+        );
+
+        StringBuilder updateQuery = new StringBuilder(a);
 
         updateQuery
             .append(" `last_lookup_at` = ")

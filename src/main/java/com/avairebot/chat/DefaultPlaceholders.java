@@ -22,7 +22,7 @@
 package com.avairebot.chat;
 
 import com.avairebot.utilities.StringReplacementUtil;
-import net.dv8tion.jda.core.entities.*;
+import net.dv8tion.jda.api.entities.*;
 
 class DefaultPlaceholders {
 

@@ -28,7 +28,7 @@ import com.avairebot.contracts.commands.Command;
 import com.avairebot.contracts.commands.SystemCommand;
 import com.avairebot.scheduler.tasks.ChangeGameTask;
 import com.avairebot.utilities.ComparatorUtil;
-import net.dv8tion.jda.core.entities.Game;
+import net.dv8tion.jda.api.entities.Activity;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -90,7 +90,7 @@ public class SetStatusCommand extends SystemCommand {
 
         if (ComparatorUtil.isFuzzyFalse(String.join(" ", args))) {
             ChangeGameTask.hasCustomStatus = true;
-            avaire.getShardManager().setGame(null);
+            avaire.getShardManager().setActivity(null);
 
             context.makeSuccess("The status message has been **disabled**")
                 .queue();
@@ -98,8 +98,8 @@ public class SetStatusCommand extends SystemCommand {
             return true;
         }
 
-        Game game = parseGame(args);
-        avaire.getShardManager().setGame(game);
+        Activity game = parseGame(args);
+        avaire.getShardManager().setActivity(game);
 
         context.makeSuccess("Changed status to **:type :status**")
             .set("type", getTypeAsString(game.getType()))
@@ -109,7 +109,7 @@ public class SetStatusCommand extends SystemCommand {
         return true;
     }
 
-    private String getTypeAsString(Game.GameType type) {
+    private String getTypeAsString(Activity.ActivityType type) {
         switch (type) {
             case STREAMING:
                 return "Streaming";
@@ -125,14 +125,14 @@ public class SetStatusCommand extends SystemCommand {
         }
     }
 
-    private Game parseGame(String[] args) {
-        if (Game.isValidStreamingUrl(args[0])) {
+    private Activity parseGame(String[] args) {
+        if (Activity.isValidStreamingUrl(args[0])) {
             String url = args[0];
             String streamStatus = args.length > 1
                 ? String.join(" ", Arrays.copyOfRange(args, 1, args.length))
                 : "on Twitch.tv!";
 
-            return Game.streaming(streamStatus, url);
+            return Activity.streaming(streamStatus, url);
         }
 
         String status = String.join(" ", args);
@@ -143,15 +143,15 @@ public class SetStatusCommand extends SystemCommand {
             switch (split[0].toLowerCase()) {
                 case "listen":
                 case "listening":
-                    return Game.listening(status);
+                    return Activity.listening(status);
 
                 case "watch":
                 case "watching":
-                    return Game.watching(status);
+                    return Activity.watching(status);
 
                 case "play":
                 case "playing":
-                    return Game.playing(status);
+                    return Activity.playing(status);
 
                 case "stream":
                 case "streaming":
@@ -161,10 +161,10 @@ public class SetStatusCommand extends SystemCommand {
                         streamUrl = "https://www.twitch.tv/" + parts[0];
                         status = String.join(" ", Arrays.copyOfRange(parts, 1, parts.length));
                     }
-                    return Game.streaming(status, streamUrl);
+                    return Activity.streaming(status, streamUrl);
             }
         }
 
-        return Game.playing(status);
+        return Activity.playing(status);
     }
 }

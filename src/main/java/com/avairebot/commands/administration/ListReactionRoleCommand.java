@@ -33,7 +33,7 @@ import com.avairebot.database.controllers.ReactionController;
 import com.avairebot.language.I18n;
 import com.avairebot.utilities.NumberUtil;
 import com.google.gson.reflect.TypeToken;
-import net.dv8tion.jda.core.entities.Emote;
+import net.dv8tion.jda.api.entities.Emote;
 
 import javax.annotation.Nonnull;
 import java.util.*;

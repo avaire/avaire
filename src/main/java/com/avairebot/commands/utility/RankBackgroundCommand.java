@@ -39,8 +39,8 @@ import com.avairebot.utilities.ComparatorUtil;
 import com.avairebot.utilities.NumberUtil;
 import com.avairebot.utilities.RandomUtil;
 import com.avairebot.vote.VoteCacheEntity;
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.MessageBuilder;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.MessageBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -240,9 +240,9 @@ public class RankBackgroundCommand extends Command {
 
         try {
             //noinspection ConstantConditions
-            context.getMessageChannel().sendFile(
+            context.getMessageChannel().sendMessage(message.build()).addFile(
                 new ByteArrayInputStream(render.renderToBytes()),
-                "rank-background.png", message.build()
+                "rank-background.png"
             ).queue();
         } catch (IOException e) {
             log.error("Failed to render background image: {}", e.getMessage(), e);

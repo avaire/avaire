@@ -24,7 +24,7 @@ package com.avairebot.scheduler.tasks;
 import com.avairebot.AvaIre;
 import com.avairebot.contracts.scheduler.Task;
 import com.avairebot.metrics.Metrics;
-import net.dv8tion.jda.core.JDA;
+import net.dv8tion.jda.api.JDA;
 
 public class UpdateWebsocketHeartbeatMetricsTask implements Task {
 
@@ -36,7 +36,7 @@ public class UpdateWebsocketHeartbeatMetricsTask implements Task {
 
         for (JDA shard : avaire.getShardManager().getShards()) {
             Metrics.websocketHeartbeat.labels("Shard " + shard.getShardInfo().getShardId())
-                .set(shard.getPing());
+                .set(shard.getGatewayPing());
         }
     }
 }

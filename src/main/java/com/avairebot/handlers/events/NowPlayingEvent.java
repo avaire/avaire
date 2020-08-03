@@ -22,9 +22,9 @@
 package com.avairebot.handlers.events;
 
 import com.avairebot.audio.AudioTrackContainer;
-import net.dv8tion.jda.core.JDA;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.events.Event;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.events.Event;
 
 @SuppressWarnings("unused")
 public class NowPlayingEvent extends Event {

@@ -35,15 +35,16 @@ import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import lavalink.client.io.Link;
-import net.dv8tion.jda.core.Permission;
-import net.dv8tion.jda.core.entities.*;
-import net.dv8tion.jda.core.managers.AudioManager;
+import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.managers.AudioManager;
 
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -207,7 +208,6 @@ public class AudioHandler {
         }
 
         AudioManager audioManager = message.getGuild().getAudioManager();
-        if (!audioManager.isAttemptingToConnect()) {
             if (audioManager.isConnected()) {
                 if (channel.getIdLong() == audioManager.getConnectedChannel().getIdLong()) {
                     return VoiceConnectStatus.CONNECTED;
@@ -219,8 +219,6 @@ public class AudioHandler {
                 return VoiceConnectStatus.CONNECTED;
             }
             return connectToVoiceChannel(message, channel, audioManager);
-        }
-        return VoiceConnectStatus.CONNECTED;
     }
 
     @CheckReturnValue
@@ -245,7 +243,7 @@ public class AudioHandler {
     }
 
     private VoiceConnectStatus canConnectToChannel(Message message, VoiceChannel channel) {
-        List<Permission> permissions = message.getGuild().getMember(message.getJDA().getSelfUser()).getPermissions(channel);
+        EnumSet <Permission> permissions = message.getGuild().getMember(message.getJDA().getSelfUser()).getPermissions(channel);
         if (!permissions.contains(Permission.VOICE_CONNECT)) {
             return VoiceConnectStatus.MISSING_PERMISSIONS;
         }

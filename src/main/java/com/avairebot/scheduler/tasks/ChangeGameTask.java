@@ -24,8 +24,8 @@ package com.avairebot.scheduler.tasks;
 import com.avairebot.AvaIre;
 import com.avairebot.contracts.scheduler.Task;
 import com.avairebot.utilities.NumberUtil;
-import net.dv8tion.jda.core.JDA;
-import net.dv8tion.jda.core.entities.Game;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.entities.Activity;
 
 import java.util.Arrays;
 
@@ -49,18 +49,18 @@ public class ChangeGameTask implements Task {
 
         if (playing.trim().length() != 0) {
             for (JDA shard : avaire.getShardManager().getShards()) {
-                shard.getPresence().setGame(getGameFromType(avaire, playing, shard));
+                shard.getPresence().setActivity(getGameFromType(avaire, playing, shard));
             }
         } else {
-            avaire.getShardManager().setGame(null);
+            avaire.getShardManager().setActivity(null);
         }
 
         index++;
     }
 
-    private Game getGameFromType(AvaIre avaire, String status, JDA shard) {
+    private Activity getGameFromType(AvaIre avaire, String status, JDA shard) {
         if (!status.contains(":")) {
-            return Game.playing(formatGame(avaire, status, shard));
+            return Activity.playing(formatGame(avaire, status, shard));
         }
 
         String[] split = status.split(":");
@@ -68,18 +68,18 @@ public class ChangeGameTask implements Task {
         switch (split[0].toLowerCase()) {
             case "listen":
             case "listening":
-                return Game.listening(formatGame(avaire, status, shard));
+                return Activity.listening(formatGame(avaire, status, shard));
 
             case "watch":
             case "watching":
-                return Game.watching(formatGame(avaire, status, shard));
+                return Activity.watching(formatGame(avaire, status, shard));
 
             case "stream":
             case "streaming":
-                return Game.streaming(formatGame(avaire, status, shard), "https://www.twitch.tv/senither");
+                return Activity.streaming(formatGame(avaire, status, shard), "https://www.twitch.tv/senither");
 
             default:
-                return Game.playing(formatGame(avaire, status, shard));
+                return Activity.playing(formatGame(avaire, status, shard));
         }
     }
 

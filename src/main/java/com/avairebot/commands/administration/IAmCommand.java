@@ -30,8 +30,8 @@ import com.avairebot.contracts.commands.CommandGroups;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.factories.MessageFactory;
 import com.avairebot.utilities.RoleUtil;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.Role;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.Role;
 
 import javax.annotation.Nonnull;
 import java.util.Collections;
@@ -110,7 +110,7 @@ public class IAmCommand extends Command {
         }
 
         if (!RoleUtil.hasRole(context.getMember(), role)) {
-            context.getGuild().getController().addSingleRoleToMember(context.getMember(), role).queue();
+            context.getGuild().addRoleToMember(context.getMember(), role).queue();
         }
 
         context.makeSuccess(context.i18n("message"))

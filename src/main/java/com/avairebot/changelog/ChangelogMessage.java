@@ -22,7 +22,7 @@
 package com.avairebot.changelog;
 
 import com.avairebot.time.Carbon;
-import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.api.entities.Message;
 
 import java.util.Arrays;
 import java.util.regex.Pattern;
@@ -45,7 +45,7 @@ public class ChangelogMessage {
         String content = message.getContentRaw();
         String[] parts = content.split("\n");
 
-        this.createdAt = Carbon.createFromOffsetDateTime(message.getCreationTime());
+        this.createdAt = Carbon.createFromOffsetDateTime(message.getTimeCreated());
         this.version = parts[0].toLowerCase().replaceAll("\\*", "");
 
         boolean hasMentions = mentionRegex.matcher(parts[parts.length - 1]).find();
