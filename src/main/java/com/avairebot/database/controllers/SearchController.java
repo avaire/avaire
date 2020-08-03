@@ -45,7 +45,6 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Base64;
 import java.util.Collections;
-import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 public class SearchController {
@@ -232,10 +231,10 @@ public class SearchController {
 
     @SuppressWarnings("StringBufferReplaceableByString")
     private static String createUpdateLookupQueryFromContext(TrackRequestContext context) throws SQLException {
-        StringBuilder updateQuery = new StringBuilder(Objects.requireNonNull(StringUtils.chop(
+        StringBuilder updateQuery = new StringBuilder(StringUtils.chop(
             AvaIre.getInstance().getDatabase().newQueryBuilder(Constants.MUSIC_SEARCH_CACHE_TABLE_NAME)
                 .toSQL(Database.QueryType.UPDATE)
-        )));
+        ));
 
         updateQuery
             .append(" `last_lookup_at` = ")
