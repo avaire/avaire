@@ -94,6 +94,7 @@ import net.dv8tion.jda.api.JDAInfo;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.SelfUser;
 import net.dv8tion.jda.api.requests.RestAction;
+import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import net.dv8tion.jda.api.utils.SessionControllerAdapter;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import org.reflections.Reflections;
@@ -669,15 +670,16 @@ public class AvaIre {
     }
 
     private ShardManager buildShardManager() throws LoginException {
-        DefaultShardManagerBuilder builder = DefaultShardManagerBuilder.createDefault(getConfig().getString("discord.token"))
+        DefaultShardManagerBuilder builder = DefaultShardManagerBuilder.create(getConfig().getString("discord.token"), EnumSet.allOf(GatewayIntent.class))
             .setSessionController(new SessionControllerAdapter())
             .setActivity(Activity.watching("my code start up..."))
             .setBulkDeleteSplittingEnabled(false)
+            .setMemberCachePolicy(MemberCachePolicy.ALL)
             .setEnableShutdownHook(false)
+            .disableCache(CacheFlag.ACTIVITY)
             .setAutoReconnect(true)
             .setContextEnabled(true)
-            //.setDisabledCacheFlags(CacheFlag.ACTIVITY) # Removed due to deprecation of method.
-            .setDisabledIntents(GatewayIntent.GUILD_PRESENCES) // Changed to intent in favor of the cache deprecation.
+            .setDisabledIntents(GatewayIntent.DIRECT_MESSAGE_TYPING, GatewayIntent.GUILD_MESSAGE_TYPING) // Changed to intent in favor of the cache deprecation.
             .setShardsTotal(settings.getShardCount());
 
         if (settings.getShards() != null) {
