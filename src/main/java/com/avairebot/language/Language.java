@@ -40,7 +40,8 @@ public enum Language {
     RU_RU("ru", "RU", "Pусский", "Russian"),
     IT_IT("it", "IT", "Italiano", "Italian"),
     NL_NL("nl", "NL", "Nederlands", "Dutch"),
-    ZH_SI("zh", "SI", "中文", "Chinese", "Chinese Simplified", "Zhōngwén");
+    ZH_SI("zh", "SI", "中文", "Chinese", "Chinese Simplified", "Zhōngwén"),
+    JA_JP("ja", "JP", "日本人", "Japanese");
 
     private final String code;
     private final String nativeName;

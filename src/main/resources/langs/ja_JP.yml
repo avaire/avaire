@@ -1,0 +1,1005 @@
+
+errors:
+    missingArgument: '引数がありません。 `{0}` 引数が必要です！'
+    invalidProperty: '指定された `{0}` は無効です。 有効な {1} を指定する必要があります。'
+    noChannelsWithNameOrId: '名前またはIDが `{0}` のチャンネルが見つかりませんでした。'
+    noUsersWithNameOrId: '名前またはIDが `{0}` のユーザーは見つかりませんでした。'
+    mustBeConnectedToVoice: 'このコマンドを使用するには、ボイスチャンネルに接続している必要があります！'
+    mustBeConnectedToSameChannel: '私が接続しているのと同じ {0} のボイスチャンネルに接続している必要があります！!'
+    missingMusicQueue: '音楽の `キュー` がない場合は、聴きたい曲へのリンクを含めるか、少なくとも曲のタイトルを教えてください。'
+    cantMentionEveryone: "全員宛にメンションする権限がありません。"
+    requireLevelFeatureToBeEnabled: 'このコマンドを実行するには、サーバーで「レベルとエクスペリエンス」機能を有効にする必要があります。サーバー管理者に `{0}` で有効にするかどうかを尋ねることができます。'
+    errorOccurredWhileLoading: '{0} の読み込み中にエラーが発生しました。もう一度お試しください。 問題が解決しない場合は、[AvaIreサポートサーバー (英語)](https://avairebot.com/support)の開発者に報告してください。'
+
+levelupMessages:
+    - "GG :userさん、 あなたは **レベル :level** になりました！"
+    - "Eyy :userさん、 レベルアップしました！ あなたは現在 **レベル :level** です。"
+    - "🌟 :user が **レベル :level** に上がりました！ おめでとうございます！ 🌟"
+    - ":user は燃えています🔥 あなたは **レベル :level** になりました！"
+    - "おめでとう :user さん 🎉 レベルアップしました！ あなたは現在 **レベル :level** です。"
+
+levelupRoleMessages:
+    - "GG :userさん、 あなたは **レベル :level**になりました。 **:role** ロールが割り当てられました。"
+    - "Eyy :userさん、 レベルアップしました！ あなたは現在 **レベル :level** です。 **:role** ロールを獲得しました。"
+    - "おめでとう :user さん 🎉 レベルアップしました！ あなたは現在 **レベル :level** です。 また **:role** ロールも獲得しました！"
+
+pagination:
+    simpleFooter: "**{0}** ページ中 **{1}** ページ。\n`{2} [page]`"
+
+modlog-types:
+    kick:
+        name: "キック"
+        action: "Kicked"
+    voiceKick:
+        name: "ボイス キック"
+        action: "Voice Kicked"
+    ban:
+        name: "Ban"
+        action: "Banned"
+    softBan:
+        name: "Soft Ban"
+        action: "Soft Banned"
+    unban:
+        name: "BAN解除"
+        action: "Unbanned"
+    purge:
+        name: "削除"
+        action: "Purged"
+    warn:
+        name: "警告"
+        action: "Warned"
+    pardon:
+        name: "解除"
+        action: "Pardoned"
+    mute:
+        name: "ミュート"
+        action: "Muted"
+    tempMute:
+        name: "期限ミュート"
+        action: "Temp Muted"
+    unmute:
+        name: "ミュート解除"
+        action: "Unmuted"
+
+administration:
+    common:
+        invalidRole: ":user 無効なロールです。  **:role** というロールは見つかりませんでした。"
+
+    channelModule:
+        invalidColorGiven: "無効な色の値が指定されました。色は有効なHEX値である必要があります。\nこの[random color picker](https://www.webpagefx.com/web-design/random-color-picker/)を試して、 ランダムな16進数の色を手に入れてください。"
+        message: "`:type` モジュールのメッセージは次のように設定されています:\n\n```:message``` \n\nコマンドを再度使用してユーザーに言及することでメッセージをテストできます。\n`:command <user>`"
+
+    AddLevelRoleCommand:
+        noSlotsLeft: "サーバーにはこれ以上レベルのロールスロットがありません。既存のレベルのロールを削除してスロットを解放できます."
+        invalidLevel: "指定されたレベル要件は無効です。レベル要件は正の数でなければなりません。"
+        alreadyLevelRole: ":user **:role**はすでにレベルのロールであり、同じロールを2回使用することはできません。"
+        alreadyARoleAtLevel: "レベル **:level** に割り当てられたロールが既にあります。レベルごとに1つのロールのみを与えることができます。"
+        success: "**:role**ロールがレベルアップロールリストに追加されました。\nサーバーは、残りレベルロールスロットが `:slots`使用可能です。"
+
+    AddReactionRoleCommand:
+        emoteDoestBelongToServer: "エモートはこのサーバーに属していません。このサーバーからのエモートはリアクションエモートとしてのみ使用できます。"
+        messageHasNoSlots: "メッセージに使用可能なリアクションロールスロットがありません。既存のリアクションロールを削除してスロットを解放するか、リアクションロールメッセージを削除して新しいリアクションロールメッセージにロールを追加できます。"
+        serverHasNoSlots: "新しいリアクションロールメッセージを作成できません。サーバーにリアクションメッセージスロットがありません。既存のリアクションロールメッセージを削除してスロットを解放するか、メッセージに使用可能なスロットがある場合はリアクションメッセージにリアクションロールを追加できます。"
+        success: ":role ロールが :emote エモートのリアクションロールとして登録されました。\nメッセージには、メッセージ用に使用できる `:roleSlots` リアクションロールスロットと、使用可能な `:messageSlots` リアクションメッセージスロットがあります。"
+
+    AddSelfAssignableRoleCommand:
+        noSlotsLeft: "サーバーには自己割り当て可能なロールスロットがありません。既存の自己割り当て可能なロールを削除して、スロットを解放できます。"
+        success: "**role** ロールが自己割り当て可能なリストに追加されました。\nサーバーには現在、自己割り当て可能なロールスロットが `:slots` スロットあります。"
+
+    AdministrateExperienceCommand:
+        cantUseForBots: "ボットアカウントは経験値の獲得が出来ないため、XPを追加、削除、リセットすることはできません。このコマンドを使用する場合は、通常のユーザーを選択してください。"
+        invalidAmountGiven: "ユーザーからXPを追加または取得するには、 `amount`プロパティが1から{0}の間でなければなりません。"
+        aboutToResetEverything: "サーバー全体の全員のXPをリセットしようとしています。 続行する場合は、以下のコマンドを実行してサーバーXPを完全にリセットしてください。\n\n```:command server-reset :token```\nこのコマンドは、トークンの取得後 **60秒間** しか機能しません。 新しいトークンを取得するには、コマンドが無効になった後、コマンドを再度実行する必要があります。"
+        aboutToSyncEverything: "XPをグローバルリーダーボードと同期しようとしています。これにより、サーバー全体で行われたカスタムXPの変更が事実上元に戻ります。 続行する場合は、以下のコマンドを実行してサーバーXPを完全に同期してください。\n\n```:command server-sync :token``` \nこのコマンドは、トークンの取得後 **60秒間** しか機能しません。 新しいトークンを取得するには、コマンドが無効になった後、コマンドを再度実行する必要があります。"
+        failedToSaveChanges: "データベースへの変更を保存できませんでした。もう一度お試しください。エラーが引き続き発生する場合は、公式の [AvaIreサポートサーバー (英語)](https://avairebot.com/support)のサポートにお問い合わせください。"
+        mustBeAnAdmin: "このアクションをするには、サーバー管理者の権限を持っている必要があります。"
+        invalidSecurityToken: "無効なセキュリティトークンが指定されました。すべてのサーバーXPをリセットするための正しいセキュリティトークンを指定してください。"
+        warning: "Warning!"
+        success:
+            add: "**:amount** XP を :target に付与しました。 現在 **:newAmount** XP を所持しています。"
+            take: "**:amount** XP を :target から剥奪しました。 現在 **:newAmount** XP を所持しています。"
+            reset: ":target のXPを正常にリセットしました。"
+            sync: ":target をグローバルリーダーボードと同期しました。 現在 **:newAmount** XP を所持しています。"
+            syncEveryone: "サーバーの全てのユーザーがグローバルリーダーボードと同期されました！"
+            everything: "サーバーの全てのユーザーのXPをリセットしました！"
+
+    AiCommand:
+        message: "`Artificial Intelligence` モジュールは :channel チャンネルで **:status** になりました。"
+        status:
+            enabled: "有効"
+            disabled: "無効"
+
+    AliasCommand:
+        noSlotsLeft: "サーバーにはエイリアススロットがありません。既存のエイリアスを削除してスロットを解放できます。"
+        alreadyExists: "`{0}` というカスタムエイリアスはすでに存在します"
+        invalidCommand: "指定されたコマンドは無効です。`{0}` というコマンドは存在しません。"
+        invalidAlias: "指定されたエイリアスは無効です。`{0}` はエイリアスとして登録されていません。"
+        created: "`:alias` エイリアスが `:command` にリンクされました。\nサーバーには残り `:slots` の使用可能なエイリアススロットがあります。"
+        deleted: "`:alias` エイリアスは正常に削除されました。"
+
+    AutoAssignRoleCommand:
+        higherInTheHierarchy:
+            user: ":user **:role** ロールは、私が割り当てられているどのロールよりも階層の上位に配置されています。自分よりも高いランクのロールを追加することはできません。"
+            bot: ":user **:role** ロールは階層の上位に配置されているため、このロールをユーザーに付与/削除することはできません。"
+        enabled: ":user ユーザー参加時の **ロールの自動割り当て** が **有効化** され、 **:role** に設定されました。"
+        disabledNow: ":user ユーザー参加時の **ロールの自動割り当て** が **無効** になりました。"
+        disabled: ":user ユーザー参加時の **ロールの自動割り当て** は現在 **無効** になっています。"
+        status: ":user **ロールの自動割り当て** は現在 **:role** に設定されています。"
+
+    BanCommand:
+        mustMentionUser: "BANを行いたいユーザーをメンションする必要があります。"
+        higherRole: "自分と同じかそれ以上のロールを持つ人をBANすることはできません。"
+        userHaveHigherRole: "{0} をBANすることはできません。ユーザーは私よりも高いロールを持っています。 ユーザーをBANできるようにするには、ロールの位置を {0} の所持しているロールより上に調整してください。"
+        success: "**:target** を :user がBANしました。 理由: \":reason\""
+        failedToBan: "**:target** をBANできませんでした。 エラー: :error"
+
+    CategoriesCommand:
+        title: "#{0} のコマンドカテゴリのステータス"
+        status: ":emoteEnabled 有効   :emoteDisabledInChannel 無効になっているチャンネル   :emoteDisabledGlobally サーバー全体で無効"
+
+    ChangePrefixCommand:
+        missingArgument: "引数 `category` がありません。 プレフィックスを変更またはリセットするコマンドカテゴリを指定する必要があります。"
+        invalidCategory: "指定された `category` は無効です。 呼び出される、または `{0}` で始まるコマンドカテゴリはありません"
+        invalidPrefix: "無効なコマンドプレフィックスが指定されました。`{0}` は有効なコマンドプレフィックスではありません。すべてのプレフィックスにはスペースを含めず、長さを1〜16文字にする必要があります。"
+        update:
+            global: "すべてのコマンドカテゴリのコマンドで、 `:prefix` プレフィックスが使用されるようになりました。"
+            category: "`:category` コマンドカテゴリのすべてのコマンドは、`:prefix` プレフィックスを使用するようになりました。"
+        reset:
+            global: "すべてのコマンドカテゴリのコマンドは、 `:prefix` プレフィックスを使用するようにリセットされました。"
+            category: "`:category` コマンドカテゴリのすべてのコマンドは、`:prefix` プレフィックスを使用するようにリセットされました。"
+
+    ChannelLevelCommand:
+        invalidChannel: "指定されたチャンネルは無効です。チャンネルは有効なテキストチャンネルである必要があります。"
+        cantTalkInChannel: "{0} チャンネルでは発言できないため、チャンネルで会話をしてもXPを獲得できません。 ユーザーがXPを獲得できるようにしたい場合は、チャンネルの権限を変更して、ボットがメッセージを送信できるようにしてください。"
+        noChannelsWithRewardsDisabled: "現在、レベル報酬が無効になっているチャンネルはありません。 `{0} <チャンネル>` コマンドを使用して追加できます。"
+        failedToUpdate: "変更をデータベースに保存できませんでした。時間をおいてもう一度お試しください。 問題が解決しない場合は、開発者に連絡してください。"
+        listChannels: "下記のすべてのチャンネルは現在、レベル報酬が無効になっています。このリストにないチャンネルは影響を受けません。\n\n:channels"
+        listChannelsTitle: "レベル報酬が無効になっているチャンネル ({0})"
+        success: ":channel チャンネルのレベル報酬は **:status** になりました！"
+        status:
+            enabled: "有効"
+            disabled: "無効"
+
+    GoodbyeCommand:
+        note: "\n`{0} [message]` を使用してメッセージをカスタマイズできます"
+        message: "`Goodbye` モジュールは :channel チャンネルで **:status** になりました。"
+        status:
+            enabled: "有効"
+            disabled: "無効"
+
+    GoodbyeMessageCommand:
+        moduleMustBeEnabled: "このコマンドを使用するには、 `goodbye` モジュールを有効にする必要があります。`{0}` コマンドを使用して、 `goodbye` モジュールを有効にできます。"
+        message: "goodbye メッセージの埋め込みオプションが **:status** になりました。\n:note"
+        changedToDefault: "`Goodbye` モジュールのメッセージがデフォルトに戻りました。"
+        status:
+            enabled: "有効"
+            disabled: "無効"
+        note:
+            embed: "Goodbye メッセージは以下の色の埋め込みメッセージを使用して送信されます。 色: {0}"
+            normal: "通常のメッセージで goodbye メッセージを送信します。"
+
+    IAmCommand:
+        notSelfAssignable: ":user 無効なロールです。 **:role** は自己割り当て可能なロールではありません。"
+        roleIsHigherInTheHierarchy: ":user ロールはロール階層で上位にあり、**:role** ロールをどのユーザーからも付与/削除できません。"
+        message: ":user あなたは **:role** を取得しました！"
+
+    IAmNotCommand:
+        notSelfAssignable: ":user 無効なロールです。 **:role** は自己割り当て可能なロールではありません。"
+        roleIsHigherInTheHierarchy: ":user ロールはロール階層で上位にあり、**:role** ロールをどのユーザーからも付与/削除できません。"
+        message: ":user **:role** を削除しました。"
+
+    KickCommand:
+        mustMentionUser: "キックを行いたいユーザーをメンションする必要があります。"
+        higherOrSameRole: "自分より高い、または同じロールを持つ人をキックすることはできません。"
+        cantKickUser: "{0} をキックすることはできません。ユーザーは私よりも高いロールを持っています。 ユーザーをキックできるようにするには、ロールの位置を {0} の所持しているロールより上に調整してください。"
+        success: "**:target** は :user にキックされました。 理由: \":reason\""
+        error: "**:target** をキックできませんでした。 エラー: :error"
+
+    LanguageCommand:
+        invalidLanguageCode: "指定された言語コードが無効です。`{0}` は有効な言語コードではないか、まだサポートされていません！"
+        changed: "サーバーの言語は、:name を使用するように正常に更新されました！"
+        note: "AvaIreは、このコマンドで選択できるユーザー提供の言語をいくつかサポートしています。 翻訳は100％正確または完全ではない場合があります。\n言語を選択するには `{0} <code>` を使用してください。"
+
+    LevelAlertsCommand:
+        message: "`レベルアップアラート` はサーバーで `:status` になっています。:note"
+        note: "\n全てのレベルアップメッセージは <#{0}> チャンネルに送信されます。"
+        status:
+            enabled: "有効"
+            disabled: "無効"
+
+    LevelCommand:
+        message: "`レベルとエクスペリエンス` はサーバーで `:status` になっています。:note"
+        note: "\nレベルアラートは現在 `{0}` です。`{1}levelalerts` でオン/オフを切り替えることができます"
+        status:
+            enabled: "有効"
+            disabled: "無効"
+
+    LevelHierarchyCommand:
+        invalidTypeGiven: "指定されたタイプが無効です。レベルアップ階層をオンまたはオフに切り替えるには、 `on` または `off` を使用する必要があります。"
+        message: "サーバーのレベルアップ階層は `:status` になっています。"
+        statusMessage: "レベルアップ階層は現在 `:status` です。`:command` でオンまたはオフに切り替えることができます。"
+        status:
+            enabled: "有効"
+            disabled: "無効"
+
+    LevelModifierCommand:
+        invalidNumberGiven: "指定された経験値量の変更は無効です。変更は `0.01%` - `500%` の正のパーセンテージである必要があります。"
+        resetToDefault: "経験値量の変更はデフォルトの **:modifier** を使用するようにリセットされました。"
+        changedTo: "レベルと経験値の変更は **:modifier** に変更されました。"
+        requiredIsNow: "\n\n**一部のレベルに到達するために必要なXPは次のとおりです:**\n"
+        statusMessage: "サーバーは現在、レベルと経験値のために **:modifier** の変更を使用しています。\n\n**一部のレベルに到達するために必要なXP**\n"
+        level: "レベル {0}"
+
+    ListAliasesCommand:
+        noAliases: "サーバーには現在エイリアスがありません。\n`{0}alias <alias> <command>` コマンドを使用して作成できます。"
+        listAliases: "エイリアスのリスト ({0})"
+
+    ListLevelRolesCommand:
+        noLevelRoles: "現在、レベルロールはありません。管理者は `:command` コマンドを使用してレベルアップテーブルにロールを追加できます。"
+        listRoles: "レベルロールのリスト ({0})"
+
+    ListReactionRoleCommand:
+        noReactionRoles: "現在、サーバーにはリアクションロールがありません。 \n`{0}arr <emote> <role>` コマンドを使用して作成できます。"
+        listReactionRoles: "リアクションロールのリスト ({0})"
+
+    ListSelfAssignableRolesCommand:
+        noSelfAssignableRoles: "現在、このサーバーには自己割り当て可能なロールはありません。"
+        title: "{0} 個の自己割り当て可能なロールがあります"
+
+    ModlogCommand:
+        mustMentionTextChannel: "指定されたチャンネル引数が無効です。有効なテキストチャンネルを指定する必要があります。"
+        cantSendEmbedMessages: "指定されたチャンネルで埋め込みメッセージを送信できません。modlogチャンネルとして使用する場合は、{0} チャンネルの権限レベルを変更してください。"
+        enable: ":user **Server Modlogging** が有効になり、 :modlog チャンネルに設定されました。."
+        enabled: ":user **Server Modlogging** は現在有効になっており、 :modlog チャンネルに設定されています。"
+        disable: ":user **Server Modlogging** がサーバーで無効になりました。"
+        disabled: ":user **Server Modlogging** は現在無効になっています。"
+
+    ModlogHistoryCommand:
+        mustMentionUser: "modlog の履歴を表示したい有効な `ユーザー` を指定する必要があります。"
+        noHistory: "このユーザーのmodlog履歴は見つかりませんでした。"
+        title: "{0}#{1} の履歴 ({2})"
+        entry: "**{1}** | **#{0}** | **モデレーター:** {2}\n**日付:** {3}\n**理由:** {4}"
+        noReasonGiven: "理由がありません。"
+
+    ModlogPardonCommand:
+        modlogNotEnabled: "modlogチャンネルが設定されていません。このコマンドを使用するには、modlogチャンネルを設定する必要があります。"
+        invalidCaseId: "指定されたケースIDは無効です。IDは 0 より大きく {0} 未満である必要があります"
+        couldntFindCaseWithId: "モデレーター {0} のIDのmodlogケースが見つかりませんでした。 与えられたmodlogケースのモデレーターであることを確認してください。"
+        caseAlreadyPardoned: "ID `{0}` のmodlogケースIDはすでに許されています。"
+        notAPunishment: "ID `{0}` のmodlogケースIDは処罰ではありません！"
+        message: "ID **:case** のmodlogケースの処罰は許されました。"
+
+    ModlogReasonCommand:
+        modlogNotEnabled: "modlogチャンネルが設定されていません。このコマンドを使用するには、modlogチャンネルを設定する必要があります。"
+        invalidCaseId: "指定されたケースIDは無効です。IDは 0 より大きく {0} 未満である必要があります"
+        couldntFindCaseWithId: "モデレーター {0} のIDのmodlogケースが見つかりませんでした。 与えられたmodlogケースのモデレーターであることを確認してください。"
+        couldntFindModlogChannel: "modlogチャンネルが見つかりませんでした。削除されましたか？"
+        success: "ID **:id ** のmodlogケースは正常に編集され、理由は `:reason` に設定されました。"
+        modlogCaseWasPardoned: "ID `{0}` のmodlogケースは許されました。許されたmodlogケースを編集することはできません。"
+        failedToEdit: "modlogメッセージの編集に失敗しました: {0}"
+        failedToFindMessage: "指定されたmodlogケースのメッセージが見つかりませんでした。削除されましたか？"
+
+    MuteCommand:
+        requiresModlogToBeSet: "このコマンドを使用するには、modlogチャンネルを設定する必要があります。 modlogチャンネルは、 `{0}modlog` コマンドを使用して設定できます。"
+        requireMuteRoleToBeSet: "サーバーにミュートロールが設定されていません。 `{0}muterole` コマンドを使用してミュートロールを設定できます。"
+        higherOrSameRole: "自分より高い、または同じロールを持つユーザーをミュートすることはできません。"
+        muteRoleIsPositionedHigher: "ミュートに使用される {0} のロールは、ボットが持っているどのロールよりもロール階層の上位にあるため、他のユーザーに自動的にロールを割り当てることはできません。修正するか、ミュートに別のロールを使用してください。"
+        invalidUserMentioned: "無効なユーザーをメンションしました。このコマンドを使用するには、ミュートするサーバー上のユーザーをメンションする必要があります。"
+        invalidTimeGiven: "指定された時間は無効です。時間は少なくとも1分以上である必要があります。"
+        userHasBeenMuted: ":target を :time の期間ミュートしました。"
+        time:
+            permanently: "無期限"
+            forFormat: "{0}"
+
+    MuteRoleCommand:
+        onCooldown: "最近、権限を作成または変更したコマンドオプションを使用しています。 このコマンドを再び使用するには、**:cooldown** 待機する必要があります。"
+        roleDoesntExists: "指定されたロールは無効です。`{0}` ロールは存在しません。"
+        rolePositionedHigher: "{0} のロールは自分が持っているどのロールよりも上位にあるため、どのユーザーにも割り当てることはできません。"
+        cantCreateRoleDueToPermissions: "サーバーの \"ロールの管理\" 権限がないため、ミュートされたロールを作成できません。"
+        noMuteRoleSet: "サーバーには現在ミュートロールセットがありません。`:command set <ロール>` を使用してミュートロールとして使用するロールを設定するか、`:command create-role` を使用してボットに新しいミュートロールを作成させることができます。"
+        usingRoleMessage: "サーバーはミュートに :role ロールを使用しています。"
+        roleHasBeenRemoved: "ミュートロールは削除されました。 ミュート機能は、別のミュートロールが割り当てられるまで無効になります。"
+        roleHasBeenCreated: ":role ロールが正常に作成され、そのロールを持つユーザーがチャンネルで会話できないようにするためのすべての権限が、アクセス権を持つチャンネルに対して自動的に設定されました。"
+        nowUsingRole: ":role ロールがユーザーのミュートに使用されます。"
+        nowUsingExistingRole: "`Muted` ロールがサーバーに既に存在しています。 ミュートには :role ロールを使用します。 ボットにすべてのチャンネル上書き権限を設定して、ロールを持つユーザーがチャンネルで会話できないようにする場合は、\n`:command setup-permissions` を使用してください。"
+
+    NSFWCommand:
+        invalidChannelOrStatus: "無効なチャンネルまたはステータスタイプが指定されました！"
+        notValidChannel: "`{0}` は有効なテキストチャンネルではありません！"
+        notValidStatus: "`{0}` は有効なステータスタイプではありません。`on` または `off` を指定する必要があります。"
+        message: ":textChannel チャンネルのNSFWは現在 **:status** に設定されています！"
+        updated: ":textChannel のNSFWステータスが **:status** に設定されました。"
+        status:
+            enabled: "有効"
+            disabled: "無効"
+
+    PurgeCommand:
+        messagesDeletedIn: "{1} チャンネル の {0} 件のメッセージが正常に削除されました。"
+        messagesDeletedBy: "{1} から送信された {0} 件のメッセージが {2} チャンネルで削除されました。"
+        success: ":white_check_mark: `:number` 件のメッセージを削除しました！"
+        successBy: ":white_check_mark: `:number` 件のメッセージが :users に削除されました。"
+        nothingToDelete: ":x: 削除可能なメッセージはありません。 14日以上経過したメッセージは削除できません。"
+        nothingToDeleteBy: ":x: 削除可能なメッセージはありません。 過去14日以内に送信された **:numbers** 件のメッセージに :user からのメッセージが見つかりません。"
+
+    RemoveLevelRoleCommand:
+        noRolesCalled: ":user レベルアップテーブルに **:role** というロールはありません。"
+        noRolesLinked: ":user レベルアップテーブルにレベル **:role** にリンクされているロールはありません。"
+        notALevelRole: ":user 無効なロールです。`:name` ロールはレベルアップテーブルにありません。"
+        message: "**:role** ロールがレベルアップロールリストから削除されました。\nサーバーは現在 `:slots` 個のレベルロールスロットが使用可能です。"
+
+    RemoveReactionRoleCommand:
+        noReactionRoles: "現在、サーバーにはリアクションロールがありません。\n`{0}arr <絵文字> <ロール>` を使用して作成できます。"
+        messageIdMustBeGreaterThanOne: "指定された `メッセージID` は無効です。`メッセージID` は少なくとも1以上である必要があります。"
+        messageIdMustBeLowerThanRolesSize: "指定された `メッセージID` が無効です。`メッセージID` は、サーバーが現在持っているリアクションロールの数、 `{0}` を超えることはできません。"
+        failedToFetchMessage: "IDが `{0}` のリアクションロールメッセージの取得で問題が発生しました。この問題が引き続き発生する場合は、開発者に報告してください。"
+        mustIncludeEmote: "リアクションメッセージから削除する絵文字を含める必要があります。"
+        emoteDoestBelongToServer: "指定した絵文字はこのサーバーに存在しません。サーバーに存在する絵文字のみリアクション絵文字として使用できます。"
+        roleNotFoundOnMessage: "The specified reaction message doesn't have a reaction role attached to it using the {0} emote."
+        deletedMessage: "ID **#:id** のリアクションロールメッセージは正常に削除されました！"
+        deletedEmote: ":emote 絵文字がリアクションメッセージから正常に削除されました。\nメッセージに `:roleSlots` より多くのリアクションロールスロットがあります。 また、 `:messageSlots` 個のリアクションメッセージスロットが使用可能です。"
+
+    RemoveSelfAssignableRoleCommand:
+        message: "**:role** ロールは、自己割り当て可能ロールリストから削除されました。\nこのサーバーでは `:slots` 個の自己割り当て可能なロールスロットが使用可能です。"
+
+    RoleLevelCommand:
+        invalidRole: "指定されたロールが無効です。サーバーに `{0}` `というロールはありません"
+        noRolesWithRewardsDisabled: "現在、レベル報酬が無効になっているロールはありません。`{0}<ロール>` コマンドを使用してロールを追加できます。"
+        listRoles: "下記のすべてのロールのレベル報酬は現在無効になっています。つまり、これらのロールの1つを持つユーザーは、話しているどのチャンネルでもXPを獲得できません。このリストにない役割は影響を受けません。\n\n:roles"
+        listRolesTitle: "レベル報酬が無効になっているロール ({0})"
+        success: ":role ロールのレベル報酬は **:status** になりました！"
+        status:
+            enabled: "有効"
+            disabled: "無効"
+
+    SetRoleColorCommand:
+        noRoleFound: "\"{0}\" という名前のロールは見つかりませんでした。"
+        invalidColor: "色 \"{0}\" は認識できません。 代わりに \"#XXXXXX\ のようなHEX形式を使用してください。"
+        userMissingPermissions: "このコマンドを {0} のロールに使用することはできません。コマンドを正常に実行するには、ロールと同等以上の権限が必要です。"
+        botMissingPermissions: "Set Role Colorコマンドは {0} ロールには使用できません。コマンドを正常に実行するには、ロールと同等以上の権限が必要です。"
+        colorChangeComplete: ":role ロールは正常に **:color ** に変更されました。"
+
+    SlowmodeCommand:
+        missingArgument: "引数がない場合、このチャンネルまたはメンションされたチャンネルのスローモードを有効にするには `seconds` 値を指定するか、無効にするには `off` を指定する必要があります。"
+        mustBeValidNumbers: "指定されたスローモード値が無効です。**1** から **120** までの数値を指定する必要があります。"
+        message: ":textChannel チャンネルでスローモードが **有効化** されました。\nチャンネルは、ユーザーごとに**:slowmode** 秒ごとに **1** メッセージを許可するように設定されました。"
+        disabled: ":textChannel チャンネルのスローモードを正常に **無効化** しました。"
+        invalidTextChannel: "`{0}` は有効なテキストチャンネルではありません。スローモードを設定するには、テキストチャンネルをにする必要があります。"
+        failedToUpdate: ":textChannel チャンネルの更新に失敗しました。 エラー: :message"
+
+    ToggleCategoryCommand:
+        invalidCategory: "指定されたカテゴリは無効です。 `{0}` は有効なカテゴリではありません。"
+        missingArgumentType: "引数 `channel/global` がありません。チャンネルを含めるか、コマンドをグローバルに実行するように指定する必要があります。"
+        invalidChannelOrGlobalString: "指定されたチャンネルまたはグローバル文字列が無効です。チャンネルをメンションするか、すべてのチャンネルに同時に影響を与える `global` を記述する必要があります。"
+        cantEnabledCategory: "**:category** コマンドカテゴリはグローバルに無効になっているため、有効にできません。\n以下のコマンドを使用して、すべてのチャンネルでカテゴリを有効にできます。\n`:command :category global on`"
+        update:
+            globally: "**:category` コマンドカテゴリは、**すべてのチャンネル** で `:status` になりました。"
+            category: "`:category` コマンドカテゴリは、:channel で `:status` になりました。"
+        status:
+            enabled: "有効"
+            disabled: "無効"
+
+    UnbanCommand:
+        success: ':target のサーバーBANを正常に解除しました。 理由: ":reason"'
+        failedToUnban: "エラーが発生したため、:target のBANを解除できませんでした。 エラーメッセージ: :error"
+        noUserIsBanned: "IDが `:id` のユーザーはサーバーからBANされていません。"
+        invalidUserIdGiven: "無効な `ユーザーID` が指定されました。 `ユーザーID` は、18文字以上の数値の文字列である必要があります。"
+
+    UnmuteCommand:
+        requiresModlogToBeSet: "このコマンドを使用するには、modlogチャンネルを設定する必要があります。 modlogチャンネルは、 `{0}modlog` コマンドを使用して設定できます。"
+        requireMuteRoleToBeSet: "サーバーにミュートロールが設定されていません。`{0}muterole` コマンドを使用してミュートロールを設定できます。"
+        muteRoleIsPositionedHigher: "ミュートに使用される {0} のロールは、自分が持っているどのロールよりもロール階層の上位にあるため、他のユーザーから自動的に削除することはできません。これを修正するか、ミュートに別のロールを使用してください。"
+        invalidUserMentioned: "無効なユーザーをメンションしました。このコマンドを使用するには、ミュートを解除するサーバー上のユーザーをメンションする必要があります。"
+        userDoesntHaveMuteRole: "{0} にはミュートロールがありません。ミュートがすでに解除されている可能性があります。"
+        userHasBeenUnmuted: ":target のミュートが解除されました！"
+        userAutoUnmutedReason: "*設定した時間が経過したため、自動的にミュートが解除されました*"
+
+    VoiceKickCommand:
+        mustMentionUser: "キックを行いたいユーザーをメンションする必要があります。"
+        sameOrHigherRole: "自分よりも高い、または同じロールを持つユーザーをキックすることはできません。"
+        notConnected: "ボイスチャンネルに接続していないユーザーをボイスキックすることはできません。"
+        message: "**:target** を :user が **:voiceChannel** からキックしました。 理由: \":reason\""
+
+    VoteOptCommand:
+        invalidArgument: "引数が無効です。投票メッセージをオプトインまたはオプトアウトするには、 `in`または`out`を設定する必要があります。"
+        message: "投票メッセージを取得する opt-:type が設定されました。"
+        type:
+            in: "in"
+            out: "out"
+
+    WarnCommand:
+        requiresModlogIsEnabled: "このコマンドを使用するには、modlogチャンネルを設定する必要があります。 modlogチャンネルは、 `{0}modlog` コマンドを使用して設定できます。"
+        mustMentionUse: "警告を行いたいユーザーをメンションする必要があります。"
+        warnBots: "ボットに警告することはできません！"
+        failedToLogWarning: "modlogチャンネルへの警告ログの送信に失敗しました。設定されたmodlogチャンネルは存在しますか？また、チャンネルでメッセージを送信する権限はありますか？"
+        message: ":target を **警告** しました。 理由: \":reason\""
+        failedToSendDM: "警告メッセージをユーザーへ送信できませんでした。 おそらく、このサーバーまたはボットからすべてのDMを拒否するようプライバシー設定が行われています。"
+
+    WelcomeCommand:
+        note: "\n`{0} [message]`を使用してメッセージをカスタマイズできます"
+        message: "`Welcome` モジュールは :channel で **:status** になりました。:note"
+        status:
+            enabled: "有効"
+            disabled: "無効"
+
+    WelcomeMessageCommand:
+        moduleMustBeEnabled: "このコマンドを使用するには、 `welcome` モジュールを有効にする必要があります。`{0}welcome` コマンドを使用して、`welcome` モジュールを有効にできます。"
+        message: "welcome メッセージの埋め込みオプションが **:status** に設定されました。\n:note"
+        changedToDefault: "`Welcome` モジュールのメッセージがデフォルトに設定されました。"
+        status:
+            enabled: "有効"
+            disabled: "無効"
+        note:
+            embed: "Welcome メッセージは以下の色の埋め込みメッセージを使用して送信されます。 色: {0}"
+            normal: "通常のメッセージで welcome メッセージを送信します。"
+
+fun:
+    DiceCommand:
+        missingDice: 'ロールしたいサイコロを含める必要があります。'
+        invalidDiceFormat: '`{0}` は有効なサイコロ形式ではありません。'
+        diceFormatMustBeGreaterThan: '`{0}` は有効なサイコロ形式ではありません。\nサイコロは0より大きく35未満でなければなりません。'
+        diceFormatMustBePositive: '`{0}` は有効なサイコロ形式ではありません。\nサイコロの数は1から35までの有効な正の数でなければなりません。'
+        sidesFormatMustBeGreaterThan: '`{0}` は有効なサイコロ形式ではありません。側面は0より大きく128未満でなければなりません。'
+        sidesFormatMustBePositive: '`{0}`は有効なサイコロ形式ではありません。側面の数は1から128の間の有効な正の数でなければなりません。'
+        moreThanFiveRollsWasGiven: '\n_**5** 個を超えるサイコロの目は、最初の5つだけが表示されます_\n'
+        resultedIn: '**{0}** の結果は **{1}**  ({2}) です。'
+
+    CoinflipCommand:
+        heads: "あなたは頭を手に入れました"
+        tails: "あなたは尻尾を手に入れました"
+
+    EightBallCommand:
+        mustIncludeQuestion: '8ballへの質問を含める必要があります。'
+        answers:
+            - 'It is certain'
+            - 'It is decidedly so'
+            - 'Without a doubt'
+            - 'Yes definitely'
+            - 'You may rely on it'
+            - 'As I see it, yes'
+            - 'Most likely'
+            - 'Outlook good'
+            - 'Yes'
+            - 'Signs point to yes'
+            - 'Reply hazy, try again'
+            - 'Ask again later'
+            - 'Better not tell you now'
+            - 'Cannot predict now'
+            - 'Concentrate and ask again'
+            - "Don't count on it"
+            - 'My reply is no'
+            - 'My sources say no'
+            - 'Outlook not so good'
+            - 'Very doubtful'
+
+    HolidayCommand:
+        tooManyAttempts: "Holiday APIへの試行回数が多すぎます。 D:"
+        notFound: "Holiday APIコマンドは、リクエストのデータを取得できませんでした。"
+        somethingWentWrong: "問題が発生しました。 ボット管理者にお問い合わせください。"
+        noHolidaysToday: "今日は休日ではありません... お仕事に戻りましょう！"
+        todayHoliday: "今日は {0} です"
+
+    MemeCommand:
+        missingArgument: '`action` 引数がありません。ミームを生成するミームタイプまたはユーザーを含める必要があります。 または `list` を使用して、使用可能なすべてのミームタイプを表示します。'
+        invalidType: '指定されたミームタイプは無効です。 `{0}` は有効なミームタイプではありません！'
+        mustIncludeTopAndBottomText: 'ミームを生成するには、 `top text` および `bottom text` 引数を含める必要があります。'
+        listItem: '`{0}` => `{1}`'
+
+    PunCommand:
+        title: "ダジャレ リスト"
+        noResults: ":user ダジャレは見つかりませんでした。 検索を使用するか、後でもう一度お試しください。"
+        noResultsWithQuery: ":user `:query` で何も見つかりませんでした。"
+        query: "検索クエリ: {0}"
+
+    RandomCatCommand:
+        tooManyAttempts: "cat APIへの試行回数が多すぎます。 1分後にもう一度試すか、ボット管理者に [meow.senither.com](https://meow.senither.com/) でAPIキーを取得してさらに多くのリクエストを許可するよう依頼してください。"
+        notFound: "猫の写真が見つかりませんでした D: もう一度試してください。 おそらく見れるはずです。"
+        somethingWentWrong: "何か問題が発生しました。 ボット管理者に確認するよう伝えてください。"
+
+    ReverseCommand:
+        palindrome: '文字を逆転しました。 何か期待していましたか？'
+
+    RipCommand:
+        hasPaidTheirRespects: '**{0}** は敬意を払いました。'
+        todayAndOverall: '本日 {0} 回 合計 {1} 回'
+
+    RollCommand:
+        invalidValueGiven: '指定された `{0}` は無効です。 `{1}` は数値でなければなりません！'
+        rolledNumber: ':user :min - :max のうち **:number** をロールしました。'
+
+    SayCommand:
+        userMissingPermissions: "このコマンドを {0} チャンネルに使用することはできません。コマンドを正常に実行するには、実行者にチャンネルへメッセージを送信する権限とメッセージの管理権限が必要です。"
+        botMissingPermissions: "このコマンドを {0} チャンネルに使用することはできません。コマンドを正常に実行するには、ボットにチャンネルへメッセージを送信する権限とメッセージの管理権限が必要です。"
+        success: ":name チャンネルにメッセージが送信されました。"
+
+    UndertaleTextBoxCommand:
+        noArgumentsGiven: "引数がありません。選択可能な文字のリストを表示するために `list` を指定するか、画像を作成するための `character` または有効な画像 `url` を生成する必要があります。"
+        failedToGenerateImage: "画像の生成に失敗しました。正しい画像のURLまたはキャラクター名を指定しましたか？"
+        title: "Undertale キャラクターリスト"
+
+help:
+    HelpCommand:
+        listOfCommands: ':page_with_curl: **コマンドリスト**'
+        commandNote: '**`:help <command>` と入力して指定したコマンドのヘルプを表示します。 **\n例: `:help :command`'
+        categoriesNote: ':information_source: `:help <category>`と入力して、そのカテゴリのコマンドのリストを取得します。\n例: `:help {0}` または `:help {1}`'
+        categoriesTitle: ':scroll: コマンドカテゴリ'
+        invalidCategory: '指定されたコマンドカテゴリが無効です。 `:category` という名前のカテゴリはありません`'
+        invalidCommand: '指定されたコマンドは無効です。トリガー `:trigger` を持つコマンドはありません'
+        tryingToViewSystemCommands: "システムカテゴリのコマンドを実行する権限がありません。 システムコマンドは、ボットが現在実行されているすべてのサーバーに影響を与える可能性があるため、ボット管理者/開発者に限定されます。"
+        singularHiddenCategories: '_このチャンネルには **{0}** 個の非表示カテゴリがあります。_'
+        multipleHiddenCategories: '_このチャンネルには **{0}** 個の非表示カテゴリがあります。_'
+        fields:
+            usage: '使用方法'
+            example: '例'
+            aliases: 'エイリアス'
+            seeAlso: 'こちらもご覧ください'
+            footer: 'コマンドカテゴリ: '
+
+interaction:
+    BiteCommand: '**{0}** bites **{1}**'
+    BlushCommand: '**{0}** blushes at **{1}**'
+    CuddleCommand: '**{0}** cuddles **{1}**'
+    DivorceCommand: '**{0}** divorces **{1}**'
+    EatCommand: '**{0}** eats some food with **{1}**'
+    HandHoldCommand: '**{0}** holds hands with **{1}**'
+    HelloCommand: '**{0}** says hello to **{1}**'
+    HighFiveCommand: '**{0}** high fives **{1}**'
+    HugCommand: '**{0}** hugs **{1}**'
+    KillCommand: '**{0}** wants to kill **{1}**'
+    KissCommand: '**{0}** kisses **{1}**'
+    LaughCommand: '**{0}** laughs at **{1}**'
+    MarryCommand: '**{0}** wants to marry **{1}**'
+    MeowCommand: '**{0}** meows at **{1}**'
+    PanCommand: '**{0}** just hit **{1}** with a pan!'
+    PatCommand: '**{0}** pats **{1}**'
+    PokeCommand: '**{0}** pokes **{1}**'
+    PoutCommand: '**{0}** pouts at **{1}**'
+    PunchCommand: '**{0}** punches **{1}**'
+    SenpaiCommand: '**{0}** wants to be noticed by **{1}**'
+    ShrugCommand: '**{0}** shrugs at **{1}**'
+    SlapCommand: '**{0}** slaps **{1}**'
+    TickleCommand: '**{0}** tickles **{1}**'
+    TriggeredCommand: '**{0}** is triggered by **{1}**'
+
+music:
+    internal:
+        songWasSkipped: '[:title](:url) :author によってスキップされました'
+        nowPlayingSong: '現在再生中: [:title](:link)\n長さ: `:duration` - ボリューム: `:volume%` - :requester が追加しました。'
+        nowPlayingPlaylist: '**:playlistName** の再生リストが追加されました。 キューに `:playlistSize` の音楽が追加されました！'
+        nowPlaying: '現在再生中: [:title](:link)\n長さ: `:duration` - ボリューム: `:volume%` - :requester が追加しました。'
+        queueHasEnded: 'キューの中の音楽が無くなりました。\nボイスチャンネルから退出します。'
+        endedDueToInactivity: "音楽がリクエストされないため、ボイスチャンネルから退出しました。"
+        endedDueToWebSocketClose: "オーディオWebソケットが強制的に閉じられ、音楽が停止しました。"
+        noMatchFound: '指定された `{0}` を読み込めませんでした。'
+        trackLoadFailed: "`{0}` を読み込めませんでした。"
+        musicChannel: "musicコマンドは :channel のチャンネルでのみ使用できます。"
+        resumeMusic: "音楽を再生します。 音楽が聴こえるようになるまで数秒かかる場合があります。"
+
+    ClearQueueCommand:
+        error: 'クリアするものはありません。 最初に `{0}play` で音楽をリクエストしてください。'
+        emptyQueue: '消去するものはありません。現在キューに保留中の曲はありません。'
+        success: 'キューから **:queueSize** の音楽を削除しました。 キューにはなにもありません！'
+
+    DJLevelCommand:
+        title: "現在の DJ レベル: {0}"
+        footer: "使用可能なDJレベルタイプのリストを表示するには \"{0} types\" コマンドを使用してください。"
+        types:
+            title: "DJ レベルタイプ"
+            footer: "\"{0} <type>\" を使用して、DJレベルを指定したタイプに変更します。"
+        invalidType: "`{0}` は有効な `DJ Level` タイプではありません。 次のいずれかのタイプを使用してください。:\n`{1}`"
+        changedTo: "`DJ Level` ステータスを **:type** に変更しました。\n:info"
+        information:
+            all: "`DJ` のロールがなくても、誰でもすべての音楽コマンドを使用できます。"
+            none: "音楽コマンドを使用できるのは、 `DJ` ロールを持つユーザーのみです。"
+            normal: "`DJ` のロールを持たない人がプレイリスト、音量調節、強制スキップなどのコマンドを使用できないようにしますが、playコマンドの使用は許可します。"
+
+    DjRoleCommand:
+        invalidRoleMentioned: "無効なロールを指定しました。 `{0}` という名前のロールは見つかりませんでした。"
+        noDjRoleSelected: "現在、サーバー用のカスタムDJロールは設定されていませんが、`DJ` と呼ばれるロールを持つユーザーは、引き続きDJのみの音楽コマンドを使用できます。"
+        currentSelectedRole: ":role はDJロールとして使用します。\nこのロールを持つユーザーは、DJのみの音楽コマンドを使用できます。"
+        resetDjRole: "DJロールは正常にリセットされましたが、 `DJ` と呼ばれるロールを持つユーザーは、DJロールのみの音楽コマンドを引き続き使用できます。"
+        selectedRoleForMusic: ":role ロールをDJロールとして使用します！"
+
+    MoveHereCommand:
+        error: 'ボイスチャンネルに接続されていません。まず `{0}play` で音楽をリクエストしてください'
+        hasMusicChannel: "サーバーには音楽ボイスチャンネルが設定されています。別のボイスチャンネルに移動する場合は、サーバーの管理者に連絡して、別のボイスチャンネルにドラッグアンドドロップしてください。"
+        nowPlayingIn: '**:channelName** で音楽を再生しています。'
+
+    MusicChannelCommand:
+        updated: "**:type** 音楽チャンネルは :status に正常に変更されました。"
+        field:
+            title: "音楽チャンネル"
+            message: "**Text Channel:** :text\n**Voice Channel:** :voice"
+        status:
+            disabled: "無効"
+            enabled: "**{0}**"
+        errors:
+            invalidType: "指定された音楽チャンネルのタイプは無効です。タイプは `text` または `voice` のいずれかである必要があります。"
+            notValidType: "`{0}` は有効な {1} チャンネルではありません。 音楽チャンネルとして使用する有効なボイスチャンネルを含める必要があります。"
+
+    MusicMessagesCommand:
+        message: "音楽メッセージは現在 **:status** です。\n\n**情報**\n:info"
+        updated: "音楽メッセージは正常に **:status** に変更されました。"
+        error: "無効な引数が指定されています。音楽メッセージのステータスを変更するには、ステータスが `on` または `off` である必要があります。"
+        footer: "音楽メッセージを変更するには、{0} を使用してください"
+        status:
+            disabled: "無効"
+            enabled: "有効"
+        info:
+            disabled: "音楽メッセージが無効になると、`Now Playing`メッセージは送信されなくなり、他の音楽関連のコマンドはしばらくすると自動的に削除されます。"
+            enabled: "音楽メッセージが有効になっていると、`Now Playing`メッセージが残り、再生される曲が変更された後でも、関連メッセージが残ります.\n**メモ:** ほとんどの音楽コマンドは、しばらくすると自動的に削除されます。"
+
+    PauseCommand:
+        error: '一時停止はできません。最初に {0}play で音楽をリクエストしてください。'
+        alreadyPaused: '音楽は既にポーズ中です。 `{0}resume` を使用して再生できます。'
+        paused: '音楽を停止しました！'
+
+    PlayCommand:
+        addedSong: ':userが [:title](:url)をキューに追加しました。 キューの前に `:queueSize` の音楽があります。'
+        addedSongsFromPlaylist: ':userが [:title](:url)\nプレイリストからキューに :songs曲 を追加しました。 キューの前に `:queueSize`の音楽があります。'
+        session:
+            title: '{0} の結果'
+            footer: '{0}<番号> の曲を選択してください'
+
+    PlaylistCommand:
+        noPlaylists: 'このサーバーにはまだプレイリストがありません。\n`:command` で作成できます'
+        noPlaylistWithName: '`:playlist` という名前のプレイリストはありません。\n`:command` コマンドを使用してプレイリストを作成できます'
+        invalidProperty: '指定された `property` が無効です。 `{0}` という名前のプレイリストプロパティはありません。\n`{1}`help {2}`を実行して詳細を確認できます'
+        invalidFormat: '無効な形式です。 `:type`プロパティがありません！\n`:command`'
+        invalidIdGiven: '指定されたIDが無効です。指定された番号が大きすぎます。 :type\n`:command`'
+        invalidIdNumberGiven: '指定されたIDは無効です。IDは数字である必要があります。\n`:command`'
+        noMoreSongSlots: "`:playlist` プレイリストにはこれ以上曲スロットがありません。"
+        noMorePlaylistSlots: "サーバーにはこれ以上プレイリストスロットがありません。既存のプレイリストを削除してスロットを解放できます。"
+        sameIdsGiven: "The two IDs given are the same, the song won't be moved anywhere that way.\n`:command`"
+        failedToLoad: '{0} を読み込めませんでした。'
+        failedToLoadPlaylist: ':playlistを読み込めませんでした。後でもう一度試すか、開発者に報告してください。'
+        failedToSavePlaylist: '再生リストの保存中に問題が発生しました: {0}'
+        loadedPlaylist: '**:name**プレイリストが読み込まれ、**:amount**曲がキューに追加されました。'
+        noMatches: '一致するものが見つかりません'
+        attemptingToAddLivestreamToPlaylist: "ライブストリームをプレイリストに追加することはできません！"
+        userHasAddedSong: ':userが[:name](:url)を `:playlist`プレイリストに追加しました。\n`:playlist`プレイリストには、`:slots`の利用可能な曲スロットがあります。'
+        swapSongInPlaylist: '[:selectedTitle](:selectedLink)は、 `:playlist`プレイリストの[:replacedTitle](:replacedLink)と位置を入れ替えました。'
+        alreadyExists: '`:playlist`プレイリストはすでに存在します！'
+        onlyNumbersInName: "プレイリスト名には数字だけでなく、文字も含める必要があります。"
+        renamingPlaylistAlreadyExists: "`:oldplaylist`を`:playlist`に名前変更できません。`:playlist`という名前のプレイリストがすでに存在します"
+        playlistCreated: '`:playlist`プレイリストが正常に作成されました！\n`:command :playlist add <song> `を使用して曲を追加できます'
+        playlistDeleted: '`:name`プレイリストは正常に削除されました！'
+        playlistRenamed: '`:oldplaylist`プレイリストは`:playlist`に名前が変更されました！'
+        playlistIsEmpty: 'このプレイリストには曲がありません。\n`:command`コマンドを使用して曲を追加できます。'
+        playlistIsAlreadyEmpty: '`:playlist`プレイリストは既に空です。削除するものはありません。'
+        songHasBeenRemovedFromPlaylist: ':songが `:playlist`プレイリストから削除されました'
+        playlistTitle: ':musical_note: 音楽プレイリスト {0}'
+        playlistSize: '[{1} 中 {0}]'
+        playlistLine: '{0} \nプレイリストには **{1}** 曲があります'
+        playlistSongLine: '`{0}` [{1}]({2}) [{3}]'
+
+    RemoveSongFromQueueCommand:
+        error: '引数 `song id` がありません。キューから削除する曲のIDを含める必要があります。'
+        failedToRemoveSong: '問題が発生し、インデックス `:index` の曲を削除できませんでした'
+        tooHighNumberGiven: 'キューには `{0}` 曲しかありません。数値を少し下げてみてください。'
+        invalidRange: '指定された範囲が無効です。IDの範囲を `3-6` のような開始から終了までの形式で指定してください。'
+        mustBePositiveNumber: '`song id`は有効な正の数でなければなりません。'
+        nothingToRemove: '削除するものはありません。最初に `{0}play` で音楽をリクエストしてください'
+        success: ':song はキューから正常に削除されました。'
+        successMultiple: '`:start` から `:end` までの曲がキューから正常に削除されました。\n:tracks'
+        successMultipleNote: "\nそして、 **{0}** より多くの曲がキューから削除されました。"
+
+    RepeatMusicQueueCommand:
+        error: 'リピートする必要はありません。まず `{0}play` で音楽をリクエストしてください'
+        title: '現在のリピートモード: {0}'
+        message: "音楽プレーヤーのリピートステータスが正常に **:state** に変更されました。 \n\n:note"
+        footer: '"{0} <リピートモード>" を使用して、リピートモードを設定します。'
+        states:
+            single: 'シングル'
+            all: '全て'
+            loopoff: 'オフ'
+        notes:
+            single: '音楽プレーヤーは、キュー内の次の曲に移動せずに、現在再生中の曲を繰り返します。\n**注:**これにより、`現在再生中` のメッセージがミュートされるため、同じ曲で何度もスパムされません。'
+            all: '音楽プレーヤーは、キュー内のすべての曲を繰り返し、曲の再生が終了すると、自動的にキューの最後に追加されます。'
+            loopoff: '音楽プレーヤーはループしません。曲の再生が完了すると、キューから削除され、次のトラックの再生が始まります。'
+
+    ResumeCommand:
+        error: '再開するものはありません。最初に `{0}play` で音楽をリクエストしてください。'
+        alreadyPlaying: '音楽は既に再生されています。音楽を一時停止するには、 `:prefixpause` を使用してください。'
+        resume: '音楽が `再開` されました'
+
+    SeekCommand:
+        error: '現在何も再生されていません。最初に `{0}play` でリクエストしてください。'
+        invalidTimeGiven: '`number`引数は、少なくとも0秒以上の長さの有効な時間形式である必要があります。'
+        seekingLive: 'ライブストリームの別のタイムコードにジャンプすることはできません。'
+        seekingTooFar: '`{0}` は現在再生中の曲の長さを超えています。次の曲にスキップしたい場合は、代わりに `{1}skip` を使用してください。'
+        seekTo: '**:title** を `:time` にシークしました。'
+
+    SetDefaultVolumeCommand:
+        currentVolume: 'サーバーのデフォルトのボリュームは現在 `:volume%` に設定されています。'
+        changedVolume: 'デフォルトの音量を `:volume%` に設定しました。'
+        failedToSave: 'デフォルトボリュームの保存中に問題が発生しました: {0}'
+        mustBeNumber: '`ボリューム` は1から100までの数値でなければなりません'
+
+    ShuffleCommand:
+        error: 'キューは既に空です。\n`{0}play <曲の名前 | url> `'
+        success: '**:amount**曲がシャッフルされました。'
+
+    SkipCommand:
+        error: 'スキップするものはありません。最初に `{0}play` で音楽をリクエストしてください'
+
+    SongCommand:
+        error: '表示するものはありません。最初に `{0}play` で音楽をリクエストしてください'
+        paused: '現在一時停止中'
+        playing: '現在再生中'
+        songsInQueue: 'キューに入っている曲'
+        moreSongs: '{0} <ページ> を使用すると、さらに多くの曲を表示できます'
+        noSongs: '現在、キューに他の曲はありません'
+        andXMoreSongs: '_また、 **{0}** 以上の曲があります！_'
+        formats:
+            line: '**{0}** [{1}]({2})'
+            song: '[{0}]({1})\n`{2}` ボリュームで再生中 - 曲の残り時間は `{3}` です。 - <@{4}> がリクエストしました'
+            stream: '[{0}]({1})\n`{2}` ボリュームで再生中 - ストリームは `{3}` です。 - <@{4}> がリクエストしました'
+
+    StopCommand:
+        error: "現在何も再生されていません。何も再生されていないときに音楽を停止することはできません。"
+        success: 'プレーヤーが停止し、**:number**曲 がキューから削除されました。'
+
+    VoiceFixCommand:
+        message: "**:swap region へ移動しました:** {0}\n**:original region へ戻しました:** {1}"
+        starting: "移動処理を開始しています...\n\n"
+        finished: "\n\n完了しました！ 音楽が機能するようになりました！"
+        error: "移動処理を完了できませんでした。 エラー: {0}"
+
+    VolumeCommand:
+        error: '何も再生されていません。`{0}play` コマンドを使用し、音楽をリクエストしてください'
+        requireDJRole: 'ボリュームを変更するには `DJ` ロールが必要です！'
+        invalidVolume: '指定されたボリュームは無効です。ボリュームは `1-100` の有効な数値である必要があります。'
+        nowPlaying: ':musical_note: ボリューム **:volume** で音楽を再生しています。'
+        setTo: ':musical_note: ボリュームを **:volume** に変更しました。'
+
+    VoteSkipCommand:
+        error: 'スキップするものはありません。最初に `{0}play` で音楽をリクエストしてください'
+        registered: '投票が行われました！ `:votes` 曲をスキップするには、さらに投票が必要です。'
+        alreadyVoted: 'スキップ投票を行えるのは曲ごとに1回のみです。 `:votes` 曲をスキップするには、さらに投票が必要です。'
+
+search:
+    DuckDuckGoCommand:
+        nsfwDisabled: "検索結果がNSFWコンテンツを返す可能性があるため、 `Duck Duck GO` コマンドはNSFWチャンネルでのみ使用できます。"
+        searchResults: '検索結果: {0}'
+        noResults: '`:query` で何も見つかりませんでした。'
+        seeAlso: '**こちらもご覧ください**'
+        nsfwStatus:
+            enabled: 'NSFW検索が有効になっています'
+            disabled: 'NSFW 検索が無効になっています'
+
+    GfycatCommand:
+        noResults: "クエリに一致するGIFが見つかりませんでした: `:query`"
+
+    UrbanDictionaryCommand:
+        noResults: ':user `:query` で何も見つかりませんでした。'
+        untitled: '無題'
+        example: '例'
+        results: ':percentage パーセントの人が気に入っています。 :up👍 :down👎'
+        nsfwDisabled: "コマンドの内容がすべての人に適切ではない可能性があるため、 `Urban Dictionary` コマンドはNSFWチャンネルでのみ使用できます。"
+
+    XKCDCommand:
+        invalidArgument: "指定された引数は無効です。引数は `1` から `{0}` までの有効な数値である必要があります。 ランダムコミックを取得するには `random` である必要があります。"
+        number: 'XKCD ナンバー #{0}'
+
+utility:
+    CalculateCommand:
+        boolean:
+            true: 'オン'
+            false: 'オフ'
+        eastereggs:
+            quickMaths: '	-	簡単な問題！'
+            binary: "バイナリを理解している人と理解していない人のタイプは、世界に10タイプ存在します。"
+
+    ChangelogCommand:
+        invalidChangelogChannel: "無効なchangelogチャンネルが設定されています。テキストチャンネルが見つかりませんでした！"
+        cantReadChangelogChannel: "設定れたchangelogチャンネルのメッセージ履歴を読み取る権限がありません。これは、changelogメッセージを読み取り、読み込み、表示するために必要です。"
+        invalidVersionGiven: "指定されたバージョンは無効です。`{0}` は有効なバージョンエントリではありません。"
+        noChangelogMessages: "表示するchangelogメッセージはまだありません。しばらくしてからもう一度確認してください。"
+        latestVersion: "最新のバージョン: {0}"
+        lastFewVersions: "最新の 10 バージョン"
+        changelogVersions: "Changelog バージョン ({0})"
+
+    ChannelIdCommand:
+        message: ':user :channel チャンネルの IDは `:targetChannel` です'
+
+    ChannelInfoCommand:
+        fields:
+            id: 'ID'
+            position: '位置'
+            users: 'ユーザー数'
+            category: 'カテゴリ'
+            bitRate: 'ビットレート'
+            nsfw: 'NSFW'
+            createdAt: '作成日'
+        noTopic: '*このチャンネルにはトピックが設定されていません*'
+        timeFormat: 'yyyy MMM dd EEE HH:mm'
+
+    ExpandUrlCommand:
+        noRedirect: ":url はどこにもリダイレクトされません。"
+        redirects: '{0} は {1} にリダイレクトします。'
+        jumps: '**リンクは次のサイトにジャンプします:**'
+
+    FeedbackCommand:
+        confirmation: "次のフィードバックを送信しようとしています: ```:feedback``` フィードバックは :server サーバーのフィードバックチャンネルに送信されます。送信してもよろしいですか？\nフィードバックを送信するには、引数なしで60秒以内に `:command` を使用してください。"
+        success: 'フィードバックを送信しました <:tickYes:319985232306765825>'
+        failedToSend: 'フィードバックメッセージを送信できませんでした: :error'
+        invalidFeedbackChannel: "無効なフィードバックチャネルが設定されています。テキストチャンネルが見つかりませんでした！"
+        mustBe32CharactersOrMore: "フィードバックメッセージは32文字以上にする必要があります。"
+
+    GlobalLeaderboardCommand:
+        noData: '現在、リーダーボードデータはありません。しばらくしてからもう一度お試しください。'
+        line: '`:num` **:username** のレベルは **:level** で **:experience** xp を持っています。'
+        title: 'グローバルエクスペリエンスリーダーボード'
+        yourRank: 'あなたのランク'
+        loading:
+            title: 'グローバルリーダーボードを読み込んでいます'
+            message: 'グローバルリーダーボードを読み込んでいます。しばらくお待ちください。'
+
+    InviteCommand:
+        message: '[ここをクリック](:oauth) または以下のリンクを使用して、私をサーバーに招待できます。\n\n:oauth\n\n:note'
+        note: '誰よりも先に新しく開発された機能を試してみたい場合は、新機能をほぼ毎日追加する *__Cutting Edge__* ボットを試すことができます。[ここをクリック](:edgeInvite)または以下のリンクを使用して、そのボットを招待できます: \n\n :edgeInvite'
+
+    IPInfoCommand:
+        hostname: 'ホスト名'
+        organisation: '組織'
+        country: '国'
+
+    LeaderboardCommand:
+        noData: '現在、リーダーボードデータはありません。しばらくしてからもう一度お試しください。'
+        line: '`:num` **:username** のレベルは **:level** で **:experience** xp 所持しています。'
+        title: '{0} リーダーボード'
+        yourRank: 'あなたのランク'
+
+    PingCommand:
+        message: 'Pong! 所要時間 :ping ms (:rating) Websocket heartbeat :heartbeat ms'
+        rating:
+            10: 'ソニックよりも速いです！ :smiley_cat:'
+            100: '素晴らしい！ :smiley:'
+            200: 'いいね！ :slight_smile:'
+            300: 'あまり良くないです。 :neutral_face:'
+            400: '平均以下です... :confused:'
+            500: '少し遅いです。 :slight_frown:'
+            600: 'そこそこ遅いです... :frowning2:'
+            700: '遅いですね... :worried:'
+            800: 'ものすごく遅いです。 :disappointed:'
+            900: 'かなりひどいです。 :sob: (helpme)'
+            1600: '#BlameDiscord. :angry:'
+            10000: 'これはもう意味がないですね。 :thinking: #BlameAlexis'
+            other: 'めっちゃ遅い！ :dizzy_face:'
+
+    RankBackgroundCommand:
+        canBeUnlocked: "ランクの背景は **[投票ポイント](https://discordbots.org/bot/avaire)** を使用してアンロックできます。\nボットに投票するたびに **1ポイント** を獲得できます。"
+        listTitle: "ランク背景 ({0})"
+        youHaveVotePoints: "あなたは {0} 投票ポイントを所持しています。"
+        exampleTitle: "例 {0}"
+        exampleFooter: "{0} のコストは {1} 投票ポイントです。"
+        alreadyOwnsBackground: "**:name** の背景を既に所有しています。"
+        doesntHaveEnoughPoints: "この背景を購入するのに十分な投票ポイントがありません。背景には `{0}` コストが必要で、 `{1}` の投票ポイントを所持しています。"
+        boughtBackgroundSuccessfully: "おめでとうございます！ **:name**の背景を入手しました！\n`:command` コマンドを使用して背景を使用できます。"
+        youDontOwnThisBackground: "**:name** の背景を所有していませんが、**:cost** ポイントの投票ポイントで購入できます！"
+        successfullyChangedBackground: "**name** の背景を使用するように変更しました。"
+        disabledBackgrounds: "ランク背景が正常に無効になりました。ランクコマンドに埋め込まれたメッセージを再び使用しています。"
+        buyNotes:
+            alreadyOwns: "**{0}**\n- _あなたはすでにこの背景を所有しています。_"
+            doesntOwns: "**{0}**\n - コストは {1} 投票ポイントです。"
+        failedToSendExampleMessage: "{0} 背景のサンプル画像の送信中に問題が発生しました。 エラー: {1}"
+        failedToBuyTheBackground: "背景の購入中に問題が発生しました。 エラー: {0}"
+        failedToSetBackground: "データベースエラーのため、背景を設定できませんでした。しばらくしてからもう一度お試しください。 このエラーが引き続き発生する場合は、開発者に連絡してください。"
+
+    RankCommand:
+        botsCannotReceiveXp: "ボットは経験値を受け取ることができないためランク付けできません。代わりに、ユーザーにタグを付けてみてください。"
+        unranked: 'ランク無し'
+        fields:
+            rank: 'ランク'
+            level: 'レベル'
+            total: '{0} (Total: {1})'
+            experience: '経験値'
+            experienceToNext: '次のレベルに必要な経験値'
+            youNeedMoreXpToLevelUp: '[{0}] {1}{2}\n\t\t\t\t\t\t\t\t\tレベルアップするには {3} XPが必要です。'
+
+    RemindCommand:
+        errors:
+            invalidMeHere: '無効なタイプが指定されています。現在のチャンネルで通知されるように `here` を使用するか、ダイレクトメッセージで通知されるように `me` を使用して、通知する場所を指定する必要があります。'
+            invalidTime: '指定された時間は無効です。時間は60秒より長く、3日未満である必要があります。'
+
+    ServerIdCommand:
+        message: ':user このサーバーのIDは `:guildid` です。'
+
+    ServerInfoCommand:
+        fields:
+            id: 'ID'
+            owner: 'オーナー'
+            textChannels: 'テキストチャンネル'
+            voiceChannels: 'ボイスチャンネル'
+            members: 'メンバー'
+            users: 'ユーザー'
+            bots: 'ボット'
+            roles: 'ロール'
+            region: '地域'
+            createdAt: '作成日'
+            emotes: 'カスタム絵文字'
+        timeFormat: 'yyyy MMM dd EEE HH:mm'
+
+    ShardCommand:
+        allShards: 'すべてのシャード'
+        totalShards: '合計シャード'
+
+    SourceCommand:
+        noArgs: 'AvaIreソースコード:'
+        command: 'AvaIre ソースコードのコマンドは **:command** コマンドです:'
+        invalidCommand: '指定されたコマンドは無効です。代わりに完全なソースコードを表示します。'
+        externalCommand: "コマンドが外部プラグインを介して登録されている、プラグインの作成者がコマンドのソースを公開していない、またはリンクを追加するのを忘れているため、代わりにボットの完全なソースコードを表示します。"
+
+    StatsCommand:
+        title: '公式ボットサーバーへの招待 (英語)'
+        footer: '現在 {0} サーバーで再生中で {1} 個の音楽がキューにあります'
+        formats:
+            perMinute: '{0} ({1} 分)'
+            perSecond: '{0} ({1} 秒)'
+            memory: '{0}Mb / {1}Mb'
+        fields:
+            author: '作成者'
+            website: 'ウェブサイト'
+            library: 'ライブラリ'
+            database: '実行されたデータベースクエリ'
+            messages: '受信したメッセージ'
+            shard: 'シャード'
+            commands: '実行されたコマンド'
+            memory: 'メモリ使用量'
+            uptime: '稼働時間'
+            members: 'メンバー数'
+            channels: 'チャンネル数'
+            servers: 'サーバー数'
+
+    TemperatureConvertCommand:
+        invalidConvertFormat: "`{0}` は認識されている変換モードではありません。 有効な変換モードは次のとおりです:\n{1}"
+        invalidNumberFormat: "`{0}` は数値として解析できませんでした。"
+        message: ":input は :one および :two と等しいです。"
+
+    UptimeCommand:
+        message: '私は :time の期間オンラインです'
+        footer: '{0} {1} に起動されました'
+        dateFormat: 'yyyy MMM dd EEEEEEEE,'
+        timeFormat: 'HH:mm:ss z'
+
+    UserAvatarCommand:
+        noUserFound: "名前またはIDが `{0}` のユーザーは見つかりませんでした。"
+        title: "{0}#{1}' のアバター"
+
+    UserIdCommand:
+        message: '**:target** のIDは `:targetid` です。'
+
+    UserInfoCommand:
+        fields:
+            username: 'ユーザーネーム'
+            userId: 'ユーザーID'
+            joinedServer: 'サーバー参加日'
+            joinedDiscord: 'アカウント作成日'
+            roles: 'ロール ({0})'
+            servers: 'サーバー'
+        inServers: 'ボットが参加しているサーバーに {0} サーバー参加しています'
+        noRoles: '*このユーザーにはロールがありません*'
+        timeFormat: 'yyyy MMM dd EEE HH:mm'
+
+    VersionCommand:
+        current: '現在 `:difference` :type バージョン以下です！'
+        getLatest: '[avaire/avaire](https://github.com/avaire/avaire) のgithubでボットの最新バージョンを入手できます。'
+        usingLatest: "AvaIreの最新バージョンを使用しています！"
+        latestVersion: 'AvaIreの最新バージョンは v{0} です'
+        latestChanges: '最新の変更:'
+        versions:
+            majorName: 'メジャー'
+            major: 'メジャーバージョンの更新はボットの完全なリワークとボットの仕組み、またはソースコードへのマイナーな変更の大規模なコンパイルです。古いバージョンはバグ修正または更新でサポートされないため、メジャーバージョンの変更で更新することを強くお勧めします。'
+            minorName: 'マイナー'
+            minor: 'マイナーバージョンの更新は、既存のコードベースの新しい追加、機能、およびリワークです。マイナーバージョンの変更で更新して、新しい機能に対応することをお勧めします。'
+            patchName: 'パッチ'
+            patch: 'パッチバージョンの更新は、バグ修正、既存のコードのリファクタリング、コードベースの他の要素に影響を及ぼさない非常に小さな変更です。バグ修正とパッチに対応するために、パッチバージョンの変更で更新することをお勧めします。'
+
+    WeatherCommand:
+        noCityFound: "**:name** という名前の都市は見つかりませんでした。スペルは正しいですか？"
+        fields:
+            weatherFor: "{0}　の天気 {1}"
+            country: "国"
+            temperature: "温度"
+            windDirection: "風向き"
+            windSpeed: "風速"
