@@ -58,6 +58,10 @@ public class IsCategoryEnabled extends Middleware {
         disabledCategories.put(category.getName(), reason);
     }
 
+    public static HashMap<String, String> getDisabledCategories() {
+        return disabledCategories;
+    }
+
     @Override
     @SuppressWarnings("ConstantConditions")
     public boolean handle(@Nonnull Message message, @Nonnull MiddlewareStack stack, String... args) {

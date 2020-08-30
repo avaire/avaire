@@ -35,6 +35,7 @@ import com.avairebot.blacklist.Blacklist;
 import com.avairebot.cache.CacheManager;
 import com.avairebot.cache.CacheType;
 import com.avairebot.chat.ConsoleColor;
+import com.avairebot.commands.Category;
 import com.avairebot.commands.CategoryDataContext;
 import com.avairebot.commands.CategoryHandler;
 import com.avairebot.commands.CommandHandler;
@@ -62,6 +63,7 @@ import com.avairebot.language.I18n;
 import com.avairebot.level.LevelManager;
 import com.avairebot.metrics.Metrics;
 import com.avairebot.middleware.*;
+import com.avairebot.middleware.global.IsCategoryEnabled;
 import com.avairebot.mute.MuteManager;
 import com.avairebot.plugin.PluginLoader;
 import com.avairebot.plugin.PluginManager;
@@ -77,6 +79,7 @@ import com.avairebot.utilities.AutoloaderUtil;
 import com.avairebot.vote.VoteManager;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.internal.LinkedTreeMap;
 import com.sedmelluq.discord.lavaplayer.jdaudp.NativeAudioSendFactory;
 import com.sedmelluq.discord.lavaplayer.player.AudioConfiguration;
 import com.sedmelluq.discord.lavaplayer.tools.PlayerLibrary;
@@ -263,6 +266,19 @@ public class AvaIre {
             AutoloaderUtil.load(Constants.PACKAGE_COMMAND_PATH, command -> CommandHandler.register((Command) command));
         }
         log.info(String.format("\tRegistered %s commands successfully!", CommandHandler.getCommands().size()));
+
+        log.info("Loading command category states");
+        Object commandCategoryStates = cache.getAdapter(CacheType.FILE).get("command-category.toggle");
+        if (commandCategoryStates != null) {
+            //noinspection SingleStatementInBlock,unchecked,unchecked
+            ((LinkedTreeMap<String, String>) commandCategoryStates).forEach((key, value) -> {
+                Category category = CategoryHandler.fromLazyName(key);
+                if (category != null) {
+                    IsCategoryEnabled.disableCategory(category, value);
+                    log.debug("{} has been disabled for \"{}\"", key, value);
+                }
+            });
+        }
 
         log.info("Registering jobs...");
         AutoloaderUtil.load(Constants.PACKAGE_JOB_PATH, job -> ScheduleHandler.registerJob((Job) job));
