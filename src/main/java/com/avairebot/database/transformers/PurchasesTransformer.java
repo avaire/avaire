@@ -80,7 +80,7 @@ public class PurchasesTransformer extends Transformer {
      *
      * @param type The type of purchases that should be returned.
      * @return Possible-null, a set of purchase IDs belonging to the given type, or
-     *         {@code NULL} if no purchases with the given ID was found for the player.
+     * {@code NULL} if no purchases with the given ID was found for the player.
      */
     @Nullable
     public Set<PurchasesId> getPurchasesFromType(String type) {
@@ -118,7 +118,7 @@ public class PurchasesTransformer extends Transformer {
      * @param type The type that should be checked for.
      * @param id   The ID that should belong to the type.
      * @return {@code True} if the player has a purchase belonging to
-     *         the given type with the given ID, {@code False} otherwise.
+     * the given type with the given ID, {@code False} otherwise.
      */
     public boolean hasPurchase(String type, int id) {
         if (!purchases.containsKey(type)) {

@@ -31,8 +31,8 @@ import com.avairebot.language.I18n;
 import com.avairebot.requests.Response;
 import com.avairebot.requests.service.WeatherService;
 import com.avairebot.utilities.NumberUtil;
-import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.TextChannel;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.TextChannel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

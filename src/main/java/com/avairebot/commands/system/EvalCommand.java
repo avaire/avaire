@@ -25,7 +25,7 @@ import com.avairebot.AvaIre;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.SystemCommand;
 import com.avairebot.utilities.NumberUtil;
-import net.dv8tion.jda.core.entities.ChannelType;
+import net.dv8tion.jda.api.entities.ChannelType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -57,12 +57,12 @@ public class EvalCommand extends SystemCommand {
                 "java.io," +
                 "java.lang," +
                 "java.util," +
-                "Packages.net.dv8tion.jda.core," +
-                "Packages.net.dv8tion.jda.core.entities," +
-                "Packages.net.dv8tion.jda.core.entities.impl," +
-                "Packages.net.dv8tion.jda.core.managers," +
-                "Packages.net.dv8tion.jda.core.managers.impl," +
-                "Packages.net.dv8tion.jda.core.utils," +
+                "Packages.net.dv8tion.jda.api," +
+                "Packages.net.dv8tion.jda.api.entities," +
+                "Packages.net.dv8tion.jda.api.entities.impl," +
+                "Packages.net.dv8tion.jda.api.managers," +
+                "Packages.net.dv8tion.jda.api.managers.impl," +
+                "Packages.net.dv8tion.jda.api.utils," +
                 "Packages.com.avairebot.database.controllers," +
                 "Packages.com.avairebot.permissions," +
                 "Packages.com.avairebot.utilities," +

@@ -39,7 +39,7 @@ import com.avairebot.utilities.CacheUtil;
 import com.avairebot.utilities.NumberUtil;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import net.dv8tion.jda.core.entities.Member;
+import net.dv8tion.jda.api.entities.Member;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

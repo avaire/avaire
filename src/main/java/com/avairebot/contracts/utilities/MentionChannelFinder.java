@@ -21,8 +21,8 @@
 
 package com.avairebot.contracts.utilities;
 
-import net.dv8tion.jda.core.entities.Channel;
-import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.api.entities.GuildChannel;
+import net.dv8tion.jda.api.entities.Message;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -39,5 +39,5 @@ public interface MentionChannelFinder {
      * @return Possibly-null, the first channel with the given name.
      */
     @Nullable
-    Channel find(@Nonnull Message message, @Nonnull String name);
+    GuildChannel find(@Nonnull Message message, @Nonnull String name);
 }

@@ -75,8 +75,8 @@ public class SearchTrackResultHandler implements AudioLoadResultHandler {
      * and only use search providers that are globally enabled.
      *
      * @return The playlist returned from the search request, if no result were found but no
-     *         exception were thrown, an empty audio playlist will be returned instead,
-     *         with no selected track, and an empty track list.
+     * exception were thrown, an empty audio playlist will be returned instead,
+     * with no selected track, and an empty track list.
      * @throws SearchingException If an invalid search request is made, or something goes wrong while
      *                            searching for audio playlists using the given request context.
      *                            Things like searching for direct links for a search provider
@@ -97,8 +97,8 @@ public class SearchTrackResultHandler implements AudioLoadResultHandler {
      * @param timeoutMillis The amount of time to wait before the search request times
      *                      out in milliseconds.
      * @return The playlist returned from the search request, if no result were found but no
-     *         exception were thrown, an empty audio playlist will be returned instead,
-     *         with no selected track, and an empty track list.
+     * exception were thrown, an empty audio playlist will be returned instead,
+     * with no selected track, and an empty track list.
      * @throws SearchingException If an invalid search request is made, or something goes wrong while
      *                            searching for audio playlists using the given request context.
      *                            Things like searching for direct links for a search provider
@@ -249,7 +249,7 @@ public class SearchTrackResultHandler implements AudioLoadResultHandler {
      * to being rate limited by YouTube.
      *
      * @return {@code True} if the set exception is related to being
-     *         rate limited by YouTube, {@code False} otherwise.
+     * rate limited by YouTube, {@code False} otherwise.
      */
     private boolean isRateLimitingException() {
         return exception instanceof Http503Exception
@@ -274,7 +274,7 @@ public class SearchTrackResultHandler implements AudioLoadResultHandler {
      * still on a cooldown due to being rate limited.
      *
      * @return {@code True} if the request is directed at YouTube and
-     *         YouTube is currently rate limiting the bot.
+     * YouTube is currently rate limiting the bot.
      */
     private boolean isRequestingYouTubeWhileOnCooldown() {
         return isRequestingYouTube() && System.currentTimeMillis() < youtubeCooldownUntil;
@@ -285,7 +285,7 @@ public class SearchTrackResultHandler implements AudioLoadResultHandler {
      * a direct URL link instead of a search query.
      *
      * @return {@code True} if the search request is using a direct YouTube
-     *         link, and not a YouTube search query.
+     * link, and not a YouTube search query.
      */
     private boolean isRequestingYouTubeWithDirectLink() {
         return trackContext.getProvider().equals(SearchProvider.URL)
@@ -300,7 +300,7 @@ public class SearchTrackResultHandler implements AudioLoadResultHandler {
      * returned instead.
      *
      * @return The AudioPlaylist instance matching the current track context
-     *         from the cache if it exists, or {@code NULL}.
+     * from the cache if it exists, or {@code NULL}.
      */
     @Nullable
     private AudioPlaylist loadContextFromCache() {

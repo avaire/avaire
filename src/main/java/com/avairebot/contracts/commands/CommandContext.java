@@ -28,7 +28,7 @@ import com.avairebot.database.controllers.PlayerController;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.database.transformers.PlayerTransformer;
 import com.avairebot.handlers.DatabaseEventHolder;
-import net.dv8tion.jda.core.entities.*;
+import net.dv8tion.jda.api.entities.*;
 
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nonnull;
@@ -38,26 +38,26 @@ import java.util.List;
 public interface CommandContext {
 
     /**
-     * Returns the {@link net.dv8tion.jda.core.entities.Guild Guild} that this message was sent in.
-     * <br>This is just a shortcut to {@link net.dv8tion.jda.core.entities.TextChannel#getGuild() getChannel().getGuild()}.
+     * Returns the {@link net.dv8tion.jda.api.entities.Guild Guild} that this message was sent in.
+     * <br>This is just a shortcut to {@link net.dv8tion.jda.api.entities.TextChannel#getGuild() getChannel().getGuild()}.
      * <br><b>This is only valid if the Message was actually sent in a TextChannel.</b> This will return {@code null}
      * if it was not sent from a TextChannel.
      * <br>You can check the type of channel this message was sent from using {@link #getMessage() getMessage().getChannelType()}.
      *
      * @return The Guild this message was sent in, or {@code null} if it was not sent from a TextChannel.
-     * @throws java.lang.UnsupportedOperationException If this is not a Received Message from {@link net.dv8tion.jda.core.entities.MessageType#DEFAULT MessageType.DEFAULT}
+     * @throws java.lang.UnsupportedOperationException If this is not a Received Message from {@link net.dv8tion.jda.api.entities.MessageType#DEFAULT MessageType.DEFAULT}
      */
     Guild getGuild();
 
     /**
-     * Returns the author of this Message as a {@link net.dv8tion.jda.core.entities.Member member}.
-     * <br>This is just a shortcut to {@link #getGuild()}{@link net.dv8tion.jda.core.entities.Guild#getMember(User) .getMember(getAuthor())}.
+     * Returns the author of this Message as a {@link net.dv8tion.jda.api.entities.Member member}.
+     * <br>This is just a shortcut to {@link #getGuild()}{@link net.dv8tion.jda.api.entities.Guild#getMember(User) .getMember(getAuthor())}.
      * <br><b>This is only valid if the Message was actually sent in a TextChannel.</b> This will return {@code null}
      * if it was not sent from a TextChannel.
      * <br>You can check the type of channel this message was sent from using {@link #getMessage() getMessage().getChannelType()}.
      *
      * @return Message author, or {@code null} if the message was not sent from a TextChannel.
-     * @throws java.lang.UnsupportedOperationException If this is not a Received Message from {@link net.dv8tion.jda.core.entities.MessageType#DEFAULT MessageType.DEFAULT}
+     * @throws java.lang.UnsupportedOperationException If this is not a Received Message from {@link net.dv8tion.jda.api.entities.MessageType#DEFAULT MessageType.DEFAULT}
      */
     Member getMember();
 
@@ -65,36 +65,36 @@ public interface CommandContext {
      * The author of this Message.
      *
      * @return Message author
-     * @throws java.lang.UnsupportedOperationException If this is not a Received Message from {@link net.dv8tion.jda.core.entities.MessageType#DEFAULT MessageType.DEFAULT}
+     * @throws java.lang.UnsupportedOperationException If this is not a Received Message from {@link net.dv8tion.jda.api.entities.MessageType#DEFAULT MessageType.DEFAULT}
      */
     User getAuthor();
 
     /**
-     * Returns the {@link net.dv8tion.jda.core.entities.TextChannel TextChannel} that this message was sent in.
+     * Returns the {@link net.dv8tion.jda.api.entities.TextChannel TextChannel} that this message was sent in.
      * <br><b>This is only valid if the Message was actually sent in a TextChannel.</b> This will return {@code null}
      * if it was not sent from a TextChannel.
      * <br>You can check the type of channel this message was sent from using {@link #getMessage() getMessage().getChannelType()}.
      * <br>
-     * <p>Use {@link #getMessageChannel()} for an ambiguous {@link net.dv8tion.jda.core.entities.MessageChannel MessageChannel}
-     * if you do not need functionality specific to {@link net.dv8tion.jda.core.entities.TextChannel TextChannel}.
+     * <p>Use {@link #getMessageChannel()} for an ambiguous {@link net.dv8tion.jda.api.entities.MessageChannel MessageChannel}
+     * if you do not need functionality specific to {@link net.dv8tion.jda.api.entities.TextChannel TextChannel}.
      *
      * @return The TextChannel this message was sent in, or {@code null} if it was not sent from a TextChannel.
-     * @throws java.lang.UnsupportedOperationException If this is not a Received Message from {@link net.dv8tion.jda.core.entities.MessageType#DEFAULT MessageType.DEFAULT}
+     * @throws java.lang.UnsupportedOperationException If this is not a Received Message from {@link net.dv8tion.jda.api.entities.MessageType#DEFAULT MessageType.DEFAULT}
      */
     TextChannel getChannel();
 
     /**
-     * Returns the {@link net.dv8tion.jda.core.entities.MessageChannel MessageChannel} that this message was sent in.
+     * Returns the {@link net.dv8tion.jda.api.entities.MessageChannel MessageChannel} that this message was sent in.
      *
      * @return The MessageChannel of this Message
-     * @throws java.lang.UnsupportedOperationException If this is not a Received Message from {@link net.dv8tion.jda.core.entities.MessageType#DEFAULT MessageType.DEFAULT}
+     * @throws java.lang.UnsupportedOperationException If this is not a Received Message from {@link net.dv8tion.jda.api.entities.MessageType#DEFAULT MessageType.DEFAULT}
      */
     MessageChannel getMessageChannel();
 
     /**
-     * The received {@link net.dv8tion.jda.core.entities.Message Message} object.
+     * The received {@link net.dv8tion.jda.api.entities.Message Message} object.
      *
-     * @return The received {@link net.dv8tion.jda.core.entities.Message Message} object.
+     * @return The received {@link net.dv8tion.jda.api.entities.Message Message} object.
      */
     Message getMessage();
 
@@ -135,7 +135,7 @@ public interface CommandContext {
      *
      * @param avaire The main AvaIre instance used to communicate with the rest of the application.
      * @return Possibly-null, the {@link PlayerTransformer player transformer} for the author of
-     *         command context for the current guild, or {@code NULL} if something went wrong.
+     * command context for the current guild, or {@code NULL} if something went wrong.
      */
     @Nullable
     default PlayerTransformer getPlayerTransformerWithForce(@Nonnull AvaIre avaire) {
@@ -160,24 +160,24 @@ public interface CommandContext {
     DatabaseEventHolder getDatabaseEventHolder();
 
     /**
-     * An immutable list of all mentioned {@link net.dv8tion.jda.core.entities.User Users}.
+     * An immutable list of all mentioned {@link net.dv8tion.jda.api.entities.User Users}.
      * <br>If no user was mentioned, this list is empty, if the bot was mentioned as part of
      * invoking the command, the {@link #isMentionableCommand() isMentionableCommand()}
      * should be true, and the bot will be stripped from the mentioned users list.
      *
      * @return immutable list of mentioned users
-     * @throws java.lang.UnsupportedOperationException If this is not a Received Message from {@link net.dv8tion.jda.core.entities.MessageType#DEFAULT MessageType.DEFAULT}
+     * @throws java.lang.UnsupportedOperationException If this is not a Received Message from {@link net.dv8tion.jda.api.entities.MessageType#DEFAULT MessageType.DEFAULT}
      */
     List<User> getMentionedUsers();
 
     /**
-     * A immutable list of all mentioned {@link net.dv8tion.jda.core.entities.TextChannel TextChannels}.
+     * A immutable list of all mentioned {@link net.dv8tion.jda.api.entities.TextChannel TextChannels}.
      * <br>If none were mentioned, this list is empty.
      * <br>
-     * <p><b>This may include TextChannels from other {@link net.dv8tion.jda.core.entities.Guild Guilds}</b>
+     * <p><b>This may include TextChannels from other {@link net.dv8tion.jda.api.entities.Guild Guilds}</b>
      *
      * @return immutable list of mentioned TextChannels
-     * @throws java.lang.UnsupportedOperationException If this is not a Received Message from {@link net.dv8tion.jda.core.entities.MessageType#DEFAULT MessageType.DEFAULT}
+     * @throws java.lang.UnsupportedOperationException If this is not a Received Message from {@link net.dv8tion.jda.api.entities.MessageType#DEFAULT MessageType.DEFAULT}
      */
     List<TextChannel> getMentionedChannels();
 
@@ -210,9 +210,9 @@ public interface CommandContext {
      * This is an overload of {@link TextChannel#canTalk(Member)} with the SelfMember, if
      * the command was invoked in a DM, it will always return true.
      * <p>
-     * Checks for both {@link net.dv8tion.jda.core.Permission#MESSAGE_READ Permission.MESSAGE_READ},
-     * {@link net.dv8tion.jda.core.Permission#MESSAGE_WRITE Permission.MESSAGE_WRITE}, and
-     * {@link net.dv8tion.jda.core.Permission#MESSAGE_EMBED_LINKS Permission#MESSAGE_EMBED_LINKS}.
+     * Checks for both {@link net.dv8tion.jda.api.Permission#MESSAGE_READ Permission.MESSAGE_READ},
+     * {@link net.dv8tion.jda.api.Permission#MESSAGE_WRITE Permission.MESSAGE_WRITE}, and
+     * {@link net.dv8tion.jda.api.Permission#MESSAGE_EMBED_LINKS Permission#MESSAGE_EMBED_LINKS}.
      *
      * @return True, if we are able to read and send messages in this channel.
      */

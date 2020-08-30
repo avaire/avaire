@@ -24,9 +24,9 @@ package com.avairebot.scheduler.tasks;
 import com.avairebot.AvaIre;
 import com.avairebot.contracts.scheduler.Task;
 import com.avairebot.utilities.RoleUtil;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.Role;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Role;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.DelayQueue;
@@ -96,14 +96,14 @@ public class DrainReactionRoleQueueTask implements Task {
                 if (RoleUtil.hasRole(member, role)) {
                     return;
                 }
-                guild.getController().addRolesToMember(member, role).queue();
+                guild.addRoleToMember(member, role).queue();
                 break;
 
             case REMOVE:
                 if (!RoleUtil.hasRole(member, role)) {
                     return;
                 }
-                guild.getController().removeRolesFromMember(member, role).queue();
+                guild.removeRoleFromMember(member, role).queue();
                 break;
         }
     }

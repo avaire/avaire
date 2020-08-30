@@ -32,9 +32,9 @@ import com.avairebot.modlog.ModlogType;
 import com.avairebot.mute.MuteContainer;
 import com.avairebot.scheduler.ScheduleHandler;
 import com.avairebot.time.Carbon;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.Role;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Role;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -114,7 +114,7 @@ public class DrainMuteQueueTask implements Task {
                 return;
             }
 
-            guild.getController().removeSingleRoleFromMember(
+            guild.removeRoleFromMember(
                 member, muteRole
             ).queueAfter(1, TimeUnit.SECONDS, aVoid -> {
                 log.debug("Successfully removed the {} role from {} on the {} server.",

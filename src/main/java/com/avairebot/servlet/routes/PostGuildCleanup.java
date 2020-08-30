@@ -24,7 +24,7 @@ package com.avairebot.servlet.routes;
 import com.avairebot.AvaIre;
 import com.avairebot.Constants;
 import com.avairebot.contracts.metrics.SparkRoute;
-import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.api.entities.Guild;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

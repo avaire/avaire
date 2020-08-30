@@ -23,8 +23,8 @@ package com.avairebot.admin;
 
 import com.avairebot.AvaIre;
 import com.avairebot.utilities.RoleUtil;
-import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.Role;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Role;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -146,7 +146,7 @@ public class BotAdmin {
      *
      * @param userId The user ID that should be checked if they're a role admin.
      * @return <code>True</code> if the user has the bot admin role on the AvaIre Central
-     *         support server, <code>False</code> otherwise.
+     * support server, <code>False</code> otherwise.
      */
     private AdminType getRoleAdminType(long userId) {
         Role role = avaire.getShardManager().getRoleById(

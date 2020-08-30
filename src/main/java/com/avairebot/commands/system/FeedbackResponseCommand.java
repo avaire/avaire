@@ -29,8 +29,8 @@ import com.avairebot.commands.CommandPriority;
 import com.avairebot.contracts.commands.SystemCommand;
 import com.avairebot.database.collection.DataRow;
 import com.avairebot.utilities.NumberUtil;
-import net.dv8tion.jda.core.entities.TextChannel;
-import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.User;
 
 import java.sql.SQLException;
 import java.util.Arrays;

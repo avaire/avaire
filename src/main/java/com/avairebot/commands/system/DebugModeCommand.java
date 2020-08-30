@@ -25,7 +25,7 @@ import com.avairebot.AvaIre;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.SystemCommand;
 import com.avairebot.utilities.ComparatorUtil;
-import net.dv8tion.jda.core.requests.RestAction;
+import net.dv8tion.jda.api.requests.RestAction;
 
 import java.util.Collections;
 import java.util.List;

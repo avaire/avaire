@@ -28,9 +28,9 @@ import com.avairebot.contracts.commands.Command;
 import com.avairebot.contracts.commands.CommandGroup;
 import com.avairebot.contracts.commands.CommandGroups;
 import com.avairebot.utilities.MentionableUtil;
-import net.dv8tion.jda.core.entities.Channel;
-import net.dv8tion.jda.core.entities.TextChannel;
-import net.dv8tion.jda.core.entities.VoiceChannel;
+import net.dv8tion.jda.api.entities.GuildChannel;
+import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.VoiceChannel;
 
 import javax.annotation.Nonnull;
 import java.sql.SQLException;
@@ -47,7 +47,7 @@ public class MusicChannelCommand extends Command {
 
     @Override
     public String getName() {
-        return "Music Channel Command";
+        return "Music GuildChannel Command";
     }
 
     @Override
@@ -136,7 +136,7 @@ public class MusicChannelCommand extends Command {
         }
 
         args = new String[]{String.join(" ", args)};
-        Channel channel = MentionableUtil.getChannel(context.getMessage(), args, 0, MentionableUtil.ChannelPriorityType.VOICE);
+        GuildChannel channel = MentionableUtil.getChannel(context.getMessage(), args, 0, MentionableUtil.ChannelPriorityType.VOICE);
         if (channel == null || !(channel instanceof VoiceChannel)) {
             return sendErrorMessage(context, context.i18n("errors.notValidType", args[0], Type.VOICE.name().toLowerCase()));
         }
@@ -155,7 +155,7 @@ public class MusicChannelCommand extends Command {
         }
 
         args = new String[]{String.join(" ", args)};
-        Channel channel = MentionableUtil.getChannel(context.getMessage(), args, 0, MentionableUtil.ChannelPriorityType.TEXT);
+        GuildChannel channel = MentionableUtil.getChannel(context.getMessage(), args, 0, MentionableUtil.ChannelPriorityType.TEXT);
         if (channel == null || !(channel instanceof TextChannel)) {
             return sendErrorMessage(context, context.i18n("errors.notValidType", args[0], Type.TEXT.name().toLowerCase()));
         }
@@ -166,7 +166,7 @@ public class MusicChannelCommand extends Command {
         return true;
     }
 
-    private void updateDatabase(CommandMessage context, Type type, Channel value) {
+    private void updateDatabase(CommandMessage context, Type type, GuildChannel value) {
         try {
             avaire.getDatabase().newQueryBuilder(Constants.GUILD_TABLE_NAME)
                 .useAsync(true)

@@ -24,9 +24,9 @@ package com.avairebot.scheduler.tasks;
 import com.avairebot.AvaIre;
 import com.avairebot.contracts.scheduler.Task;
 import com.avairebot.metrics.Metrics;
-import net.dv8tion.jda.core.JDA;
-import net.dv8tion.jda.core.Region;
-import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.Region;
+import net.dv8tion.jda.api.entities.Guild;
 
 import java.lang.management.ManagementFactory;
 

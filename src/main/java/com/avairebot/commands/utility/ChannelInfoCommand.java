@@ -31,9 +31,9 @@ import com.avairebot.contracts.commands.CommandGroups;
 import com.avairebot.factories.MessageFactory;
 import com.avairebot.time.Carbon;
 import com.avairebot.utilities.MentionableUtil;
-import net.dv8tion.jda.core.entities.Channel;
-import net.dv8tion.jda.core.entities.TextChannel;
-import net.dv8tion.jda.core.entities.VoiceChannel;
+import net.dv8tion.jda.api.entities.GuildChannel;
+import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.VoiceChannel;
 
 import javax.annotation.Nonnull;
 import java.util.Arrays;
@@ -87,7 +87,7 @@ public class ChannelInfoCommand extends Command {
 
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
-        Channel channel = context.getChannel();
+        GuildChannel channel = context.getChannel();
         if (args.length > 0) {
             channel = MentionableUtil.getChannel(context.getMessage(), args);
 
@@ -96,7 +96,7 @@ public class ChannelInfoCommand extends Command {
             }
         }
 
-        Carbon time = Carbon.createFromOffsetDateTime(channel.getCreationTime());
+        Carbon time = Carbon.createFromOffsetDateTime(channel.getTimeCreated());
 
         PlaceholderMessage placeholder = MessageFactory.makeEmbeddedMessage(context.getChannel())
             .setColor(MessageType.INFO.getColor())
@@ -140,7 +140,7 @@ public class ChannelInfoCommand extends Command {
         return true;
     }
 
-    private String getCategoryFor(Channel channel) {
+    private String getCategoryFor(GuildChannel channel) {
         if (channel.getParent() == null) {
             return "*No Category*";
         }

@@ -105,7 +105,7 @@ public class ProgressStep {
      * Gets the exception that the progress step task failed with.
      *
      * @return The exception the progress step task failed with, or {@code NULL}
-     *         if the task haven't yet been run, or didn't fail when it did run.
+     * if the task haven't yet been run, or didn't fail when it did run.
      */
     public FriendlyException getException() {
         return exception;

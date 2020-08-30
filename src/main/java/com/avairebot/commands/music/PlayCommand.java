@@ -33,7 +33,7 @@ import com.avairebot.utilities.NumberUtil;
 import com.avairebot.utilities.RestActionUtil;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
-import net.dv8tion.jda.core.Permission;
+import net.dv8tion.jda.api.Permission;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;

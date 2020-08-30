@@ -28,8 +28,8 @@ import com.avairebot.database.collection.DataRow;
 import com.avairebot.utilities.NumberUtil;
 import com.google.gson.internal.LinkedTreeMap;
 import com.google.gson.reflect.TypeToken;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.TextChannel;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.TextChannel;
 
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nonnull;

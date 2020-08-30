@@ -31,9 +31,9 @@ import com.avairebot.contracts.commands.CommandGroups;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.utilities.ComparatorUtil;
 import com.avairebot.utilities.MentionableUtil;
-import net.dv8tion.jda.core.Permission;
-import net.dv8tion.jda.core.entities.Channel;
-import net.dv8tion.jda.core.entities.TextChannel;
+import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.GuildChannel;
+import net.dv8tion.jda.api.entities.TextChannel;
 
 import javax.annotation.Nonnull;
 import java.sql.SQLException;
@@ -118,7 +118,7 @@ public class ModlogCommand extends Command {
             return disableModlog(context, transformer);
         }
 
-        Channel channel = MentionableUtil.getChannel(context.getMessage(), args);
+        GuildChannel channel = MentionableUtil.getChannel(context.getMessage(), args);
         if (channel == null || !(channel instanceof TextChannel)) {
             return sendErrorMessage(context, context.i18n("mustMentionTextChannel"));
         }

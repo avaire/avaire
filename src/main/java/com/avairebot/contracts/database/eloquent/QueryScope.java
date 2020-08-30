@@ -36,7 +36,7 @@ public @interface QueryScope {
      * through the {@link Model#with(String...)} method.
      *
      * @return {@code True} if the method is accessible for the
-     *         {@link Model#with(String...)} method, {@code False} otherwise.
+     * {@link Model#with(String...)} method, {@code False} otherwise.
      */
     boolean accessible() default true;
 }

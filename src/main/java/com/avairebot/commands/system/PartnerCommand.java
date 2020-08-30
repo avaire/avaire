@@ -29,7 +29,7 @@ import com.avairebot.database.collection.Collection;
 import com.avairebot.database.controllers.GuildController;
 import com.avairebot.utilities.ComparatorUtil;
 import com.avairebot.utilities.NumberUtil;
-import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.api.entities.Guild;
 
 import java.sql.SQLException;
 import java.util.Arrays;

@@ -32,11 +32,11 @@ import com.avairebot.time.Carbon;
 import com.avairebot.utilities.MentionableUtil;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import net.dv8tion.jda.core.Permission;
-import net.dv8tion.jda.core.entities.Channel;
-import net.dv8tion.jda.core.entities.ChannelType;
-import net.dv8tion.jda.core.entities.PermissionOverride;
-import net.dv8tion.jda.core.entities.Role;
+import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.ChannelType;
+import net.dv8tion.jda.api.entities.GuildChannel;
+import net.dv8tion.jda.api.entities.PermissionOverride;
+import net.dv8tion.jda.api.entities.Role;
 
 import javax.annotation.Nonnull;
 import java.awt.*;
@@ -228,7 +228,7 @@ public class MuteRoleCommand extends Command {
             return sendErrorMessage(context, context.i18n("cantCreateRoleDueToPermissions"));
         }
 
-        context.getGuild().getController().createRole()
+        context.getGuild().createRole()
             .setName("Muted")
             .setColor(Color.decode("#e91b6a"))
             .setPermissions(
@@ -238,7 +238,7 @@ public class MuteRoleCommand extends Command {
             .queue(role -> {
                 cache.put(context.getGuild().getIdLong(), System.currentTimeMillis());
 
-                for (Channel channel : context.getGuild().getChannels()) {
+                for (GuildChannel channel : context.getGuild().getChannels()) {
                     if (!context.getGuild().getSelfMember().hasPermission(channel, Permission.MANAGE_CHANNEL)) {
                         continue;
                     }
@@ -296,7 +296,7 @@ public class MuteRoleCommand extends Command {
         int channelsModified = 0;
         int channelsNotModified = 0;
 
-        for (Channel channel : context.getGuild().getChannels()) {
+        for (GuildChannel channel : context.getGuild().getChannels()) {
             if (channel.getType().equals(ChannelType.CATEGORY)) {
                 continue;
             }

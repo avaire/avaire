@@ -23,9 +23,9 @@ package com.avairebot.changelog;
 
 import com.avairebot.AvaIre;
 import com.avairebot.contracts.changelog.ChangelogLoader;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.MessageHistory;
-import net.dv8tion.jda.core.entities.TextChannel;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageHistory;
+import net.dv8tion.jda.api.entities.TextChannel;
 
 import java.util.*;
 import java.util.stream.Collectors;

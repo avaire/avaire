@@ -46,9 +46,9 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
-import net.dv8tion.jda.core.JDA;
-import net.dv8tion.jda.core.Permission;
-import net.dv8tion.jda.core.entities.*;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -217,10 +217,10 @@ public class JDAStateEventAdapter extends EventAdapter {
             }
 
             for (Member member : guild.getMembers()) {
-                if (member.getJoinDate().toEpochSecond() > thirtyMinutesAgo) {
+                if (member.getTimeJoined().toEpochSecond() > thirtyMinutesAgo) {
                     if (!RoleUtil.hasRole(member, autorole)) {
                         updatedUsers++;
-                        guild.getController().addSingleRoleToMember(member, autorole)
+                        guild.addRoleToMember(member, autorole)
                             .queue();
                     }
                 }

@@ -96,7 +96,7 @@ public abstract class Database implements DatabaseConnection, Grammarable {
      * called by the open method if it's necessary.
      *
      * @return either (1) <code>TRUE</code> if the initialization didn't throw any errors or exceptions
-     *         or (2) <code>FALSE</code> if something happened during the initialization
+     * or (2) <code>FALSE</code> if something happened during the initialization
      */
     protected abstract boolean initialize();
 
@@ -127,7 +127,7 @@ public abstract class Database implements DatabaseConnection, Grammarable {
      * Attempts to close the database connection.
      *
      * @return either (1) <code>TRUE</code> if the database connection was closed successfully
-     *         or (2) <code>FALSE</code> if the connection is already close, or an exception was thrown
+     * or (2) <code>FALSE</code> if the connection is already close, or an exception was thrown
      * @throws SQLException if a database access error occurs,
      *                      this method is called on a closed <code>Statement</code>, the given
      *                      SQL statement produces anything other than a single
@@ -176,7 +176,7 @@ public abstract class Database implements DatabaseConnection, Grammarable {
      * Checks to see if the database connection is still valid.
      *
      * @return either (1) <code>TRUE</code> if the database connection is open and valid
-     *         or (2) <code>FALSE</code> if the database connection is closed
+     * or (2) <code>FALSE</code> if the database connection is closed
      */
     public final boolean isOpen() {
         return isOpen(2);
@@ -187,7 +187,7 @@ public abstract class Database implements DatabaseConnection, Grammarable {
      *
      * @param seconds The amount of time to wait for the connection for.
      * @return either (1) <code>TRUE</code> if the database connection is open and valid
-     *         or (2) <code>FALSE</code> if the database connection is closed
+     * or (2) <code>FALSE</code> if the database connection is closed
      */
     public final synchronized boolean isOpen(int seconds) {
         if (connection != null) {
@@ -222,7 +222,7 @@ public abstract class Database implements DatabaseConnection, Grammarable {
      *
      * @param query The query to run.
      * @return the current result as a <code>ResultSet</code> object or
-     *         <code>null</code> if the result is an update count or there are no more results
+     * <code>null</code> if the result is an update count or there are no more results
      * @throws SQLException if a database access error occurs or this method is called on a
      *                      closed <code>Statement</code>
      */
@@ -248,7 +248,7 @@ public abstract class Database implements DatabaseConnection, Grammarable {
      *
      * @param query The query to run.
      * @return the current result as a <code>ResultSet</code> object or
-     *         <code>null</code> if the result is an update count or there are no more results
+     * <code>null</code> if the result is an update count or there are no more results
      * @throws SQLException if a database access error occurs or this method is called on a
      *                      closed <code>Statement</code>
      */
@@ -263,7 +263,7 @@ public abstract class Database implements DatabaseConnection, Grammarable {
      *
      * @param query The prepared statement to run.
      * @return the current result as a <code>ResultSet</code> object or
-     *         <code>null</code> if the result is an update count or there are no more results
+     * <code>null</code> if the result is an update count or there are no more results
      * @throws SQLException if a database access error occurs or this method is called on a
      *                      closed <code>Statement</code>
      */
@@ -283,7 +283,7 @@ public abstract class Database implements DatabaseConnection, Grammarable {
      * @param query     The prepared statement to run.
      * @param statement The query statement.
      * @return the current result as a <code>ResultSet</code> object or
-     *         <code>null</code> if the result is an update count or there are no more results
+     * <code>null</code> if the result is an update count or there are no more results
      * @throws SQLException if a database access error occurs or this method is called on a
      *                      closed <code>Statement</code>
      */

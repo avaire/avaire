@@ -26,7 +26,7 @@ import com.avairebot.contracts.metadata.HasMetadata;
 import com.avairebot.utilities.NumberUtil;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import lavalink.client.player.IPlayer;
-import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.api.entities.User;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
