@@ -669,7 +669,10 @@ public class AvaIre {
     }
 
     private ShardManager buildShardManager() throws LoginException {
-        DefaultShardManagerBuilder builder = DefaultShardManagerBuilder.create(getConfig().getString("discord.token"), EnumSet.allOf(GatewayIntent.class))
+        DefaultShardManagerBuilder builder = DefaultShardManagerBuilder.create(
+            getConfig().getString("discord.token"),
+            EnumSet.allOf(GatewayIntent.class)
+        )
             .setSessionController(new SessionControllerAdapter())
             .setActivity(Activity.watching("my code start up..."))
             .setBulkDeleteSplittingEnabled(false)
@@ -678,7 +681,10 @@ public class AvaIre {
             .disableCache(CacheFlag.ACTIVITY)
             .setAutoReconnect(true)
             .setContextEnabled(true)
-            .setDisabledIntents(GatewayIntent.DIRECT_MESSAGE_TYPING, GatewayIntent.GUILD_MESSAGE_TYPING) // Changed to intent in favor of the cache deprecation.
+            .setDisabledIntents(
+                GatewayIntent.DIRECT_MESSAGE_TYPING,
+                GatewayIntent.GUILD_MESSAGE_TYPING
+            )
             .setShardsTotal(settings.getShardCount());
 
         if (settings.getShards() != null) {

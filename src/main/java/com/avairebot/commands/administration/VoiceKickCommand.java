@@ -118,7 +118,6 @@ public class VoiceKickCommand extends Command {
         String voiceChannelName = user.getVoiceState().getChannel().getName();
         String voiceChannelId = user.getVoiceState().getChannel().getId();
 
-
         context.getGuild().kickVoiceMember(user)
             .queue(empty ->
                 Modlog.log(avaire, context, new ModlogAction(
