@@ -46,7 +46,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.EnumSet;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -208,17 +207,17 @@ public class AudioHandler {
         }
 
         AudioManager audioManager = message.getGuild().getAudioManager();
-            if (audioManager.isConnected()) {
-                if (channel.getIdLong() == audioManager.getConnectedChannel().getIdLong()) {
-                    return VoiceConnectStatus.CONNECTED;
-                }
-
-                if (moveChannelIfConnected) {
-                    return connectToVoiceChannel(message, channel, audioManager);
-                }
+        if (audioManager.isConnected()) {
+            if (channel.getIdLong() == audioManager.getConnectedChannel().getIdLong()) {
                 return VoiceConnectStatus.CONNECTED;
             }
-            return connectToVoiceChannel(message, channel, audioManager);
+
+            if (moveChannelIfConnected) {
+                return connectToVoiceChannel(message, channel, audioManager);
+            }
+            return VoiceConnectStatus.CONNECTED;
+        }
+        return connectToVoiceChannel(message, channel, audioManager);
     }
 
     @CheckReturnValue
@@ -243,7 +242,7 @@ public class AudioHandler {
     }
 
     private VoiceConnectStatus canConnectToChannel(Message message, VoiceChannel channel) {
-        EnumSet <Permission> permissions = message.getGuild().getMember(message.getJDA().getSelfUser()).getPermissions(channel);
+        EnumSet<Permission> permissions = message.getGuild().getMember(message.getJDA().getSelfUser()).getPermissions(channel);
         if (!permissions.contains(Permission.VOICE_CONNECT)) {
             return VoiceConnectStatus.MISSING_PERMISSIONS;
         }

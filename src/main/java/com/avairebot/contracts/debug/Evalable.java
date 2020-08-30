@@ -35,7 +35,7 @@ public abstract class Evalable {
      * added onto the main {@link JSONObject JSON object}.
      *
      * @return The {@link JSONObject JSON object} with all the names and values
-     *         of properties for the current class instance.
+     * of properties for the current class instance.
      */
     @SuppressWarnings({"WeakerAccess", "JavaDoc"})
     public final JSONObject toEvalableString() {
@@ -55,7 +55,7 @@ public abstract class Evalable {
      *
      * @param field The field that the value should be retried from.
      * @return The value of the given field, or {@link JSONObject#NULL null}
-     *         on errors or if the value was <code>null</code>.
+     * on errors or if the value was <code>null</code>.
      */
     private Object getValueFromField(Field field) {
         try {

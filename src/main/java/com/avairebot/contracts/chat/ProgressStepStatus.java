@@ -87,7 +87,7 @@ public enum ProgressStepStatus {
      * Gets the value that is used with the current progress step status.
      *
      * @return The boolean value that represents the status
-     *         of the current progress step status.
+     * of the current progress step status.
      */
     public boolean getValue() {
         return value;

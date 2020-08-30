@@ -82,7 +82,7 @@ public class Migrations {
      * If the DBM migrations table isn't found in the database, the table will be created.
      *
      * @return either (1) true if at-least one migration was migrated to the database successfully
-     *         or (2) false if nothing was migrated to the database.
+     * or (2) false if nothing was migrated to the database.
      * @throws SQLException if a database access error occurs,
      *                      this method is called on a closed <code>Statement</code>, the given
      *                      SQL statement produces anything other than a single
@@ -122,7 +122,7 @@ public class Migrations {
      * If the DBM migrations table isn't found in the database, the table will be created.
      *
      * @return either (1) true if at-least one migration was rolled back from the database successfully
-     *         or (2) false if nothing was rolled back from the database.
+     * or (2) false if nothing was rolled back from the database.
      * @throws SQLException if a database access error occurs,
      *                      this method is called on a closed <code>Statement</code>, the given
      *                      SQL statement produces anything other than a single
@@ -163,7 +163,7 @@ public class Migrations {
      *
      * @param steps the amount of steps to rollback
      * @return either (1) true if at-least one migration was rolled back from the database successfully
-     *         or (2) false if nothing was rolled back from the database.
+     * or (2) false if nothing was rolled back from the database.
      * @throws SQLException if a database access error occurs,
      *                      this method is called on a closed <code>Statement</code>, the given
      *                      SQL statement produces anything other than a single

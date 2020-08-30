@@ -94,7 +94,7 @@ public class FeatureToggleContextHandler {
      * @param instance The feature instance that should be checked.
      * @param name     The name of the type that should be checked.
      * @return {@code True} if the feature with the given name on the
-     *         given instance is enabled, {@code False} otherwise.
+     * given instance is enabled, {@code False} otherwise.
      */
     public static boolean isActive(Class<? extends Feature> instance, String name) {
         return !disabledFeature.getOrDefault(

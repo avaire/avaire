@@ -366,7 +366,7 @@ public class CommandHandler {
      *
      * @param commandClass The command class that should be unregistered.
      * @return {@code True} if the command was unregistered successfully,
-     *         {@code False} if the command is not registered.
+     * {@code False} if the command is not registered.
      */
     public static boolean unregister(@Nonnull Class<? extends Command> commandClass) {
         synchronized (COMMANDS) {

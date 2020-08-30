@@ -272,7 +272,7 @@ public class Collection implements Cloneable, Iterable<DataRow> {
      * Gets the first index of the collection.
      *
      * @return either (1) The first <code>DataRow</code> object, generated from the <code>ResultSet</code> object,
-     *         or (2) <code>NULL</code> if the collection doesn't have any items.
+     * or (2) <code>NULL</code> if the collection doesn't have any items.
      */
     public DataRow first() {
         if (items.isEmpty()) {
@@ -351,7 +351,7 @@ public class Collection implements Cloneable, Iterable<DataRow> {
      *
      * @param field the field to use
      * @return either (1) the highest value from the provided field
-     *         or (2) <code>Integer.MIN_VALUE</code>
+     * or (2) <code>Integer.MIN_VALUE</code>
      */
     public int maxInt(String field) {
         if (!has(field)) {
@@ -375,7 +375,7 @@ public class Collection implements Cloneable, Iterable<DataRow> {
      *
      * @param field the field to use
      * @return either (1) the highest value from the provided field
-     *         or (2) <code>Long.MIN_VALUE</code>
+     * or (2) <code>Long.MIN_VALUE</code>
      */
     public long maxLong(String field) {
         if (!has(field)) {
@@ -399,7 +399,7 @@ public class Collection implements Cloneable, Iterable<DataRow> {
      *
      * @param field the field to use
      * @return either (1) the highest value from the provided field
-     *         or (2) <code>Double.MIN_VALUE</code>
+     * or (2) <code>Double.MIN_VALUE</code>
      */
     public double maxDouble(String field) {
         if (!has(field)) {
@@ -423,7 +423,7 @@ public class Collection implements Cloneable, Iterable<DataRow> {
      *
      * @param field the field to use
      * @return either (1) the highest value from the provided field
-     *         or (2) <code>Float.MIN_VALUE</code>
+     * or (2) <code>Float.MIN_VALUE</code>
      */
     public float maxFloat(String field) {
         if (!has(field)) {
@@ -447,7 +447,7 @@ public class Collection implements Cloneable, Iterable<DataRow> {
      *
      * @param field the field to use
      * @return either (1) the lowest value from the provided field
-     *         or (2) <code>Integer.MAX_VALUE</code>
+     * or (2) <code>Integer.MAX_VALUE</code>
      */
     public int minInt(String field) {
         if (!has(field)) {
@@ -471,7 +471,7 @@ public class Collection implements Cloneable, Iterable<DataRow> {
      *
      * @param field the field to use
      * @return either (1) the lowest value from the provided field
-     *         or (2) <code>Long.MAX_VALUE</code>
+     * or (2) <code>Long.MAX_VALUE</code>
      */
     public long minLong(String field) {
         if (!has(field)) {
@@ -495,7 +495,7 @@ public class Collection implements Cloneable, Iterable<DataRow> {
      *
      * @param field the field to use
      * @return either (1) the lowest value from the provided field
-     *         or (2) <code>Double.MAX_VALUE</code>
+     * or (2) <code>Double.MAX_VALUE</code>
      */
     public double minDouble(String field) {
         if (!has(field)) {
@@ -519,7 +519,7 @@ public class Collection implements Cloneable, Iterable<DataRow> {
      *
      * @param field the field to use
      * @return either (1) the lowest value from the provided field
-     *         or (2) <code>Float.MAX_VALUE</code>
+     * or (2) <code>Float.MAX_VALUE</code>
      */
     public float minFloat(String field) {
         if (!has(field)) {
@@ -581,7 +581,7 @@ public class Collection implements Cloneable, Iterable<DataRow> {
      * @param field the field to check
      * @param value the value to use
      * @return either (1) the index of the item that matches the search
-     *         or (2) -1
+     * or (2) -1
      */
     public int search(String field, Object value) {
         if (isEmpty() || !has(field)) {

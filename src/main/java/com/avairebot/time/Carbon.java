@@ -466,7 +466,7 @@ public final class Carbon {
      *
      * @param obj The object to convert to an integer
      * @return either (1) the integer converted from the object
-     *         or (2) 0 if an error occurred or the object is <code>NULL</code>.
+     * or (2) 0 if an error occurred or the object is <code>NULL</code>.
      */
     private static int parseObj(Object obj) {
         if (obj == null) {
@@ -694,6 +694,16 @@ public final class Carbon {
     }
 
     /**
+     * Gets the day of the week.
+     *
+     * @return the Day object that match the current day of the week.
+     * @see Day
+     */
+    public Day getDayOfWeek() {
+        return Day.fromId(get(Calendar.DAY_OF_WEEK));
+    }
+
+    /**
      * Sets the day of the week, this is a calendar-specific value.
      * The days count from 1 to 7, where 1 is a {@link Day#SUNDAY}
      *
@@ -702,16 +712,6 @@ public final class Carbon {
      */
     public Carbon setDayOfWeek(int day) {
         return set(Calendar.DAY_OF_WEEK, day);
-    }
-
-    /**
-     * Gets the day of the week.
-     *
-     * @return the Day object that match the current day of the week.
-     * @see Day
-     */
-    public Day getDayOfWeek() {
-        return Day.fromId(get(Calendar.DAY_OF_WEEK));
     }
 
     /**
@@ -904,6 +904,15 @@ public final class Carbon {
     }
 
     /**
+     * Gets the current timezone used to format the datetime outputs.
+     *
+     * @return the current timezone used to format the datetime outputs.
+     */
+    public TimeZone getTimezone() {
+        return timezone;
+    }
+
+    /**
      * Sets the current timezone used to format the datetime outputs,
      * if <code>NULL</code> parsed nothing will be set.
      *
@@ -916,15 +925,6 @@ public final class Carbon {
         }
 
         return this;
-    }
-
-    /**
-     * Gets the current timezone used to format the datetime outputs.
-     *
-     * @return the current timezone used to format the datetime outputs.
-     */
-    public TimeZone getTimezone() {
-        return timezone;
     }
 
     /**
@@ -1334,7 +1334,7 @@ public final class Carbon {
      *
      * @param value The carbon instance to compare with
      * @return either (1) <code>TRUE</code> if the provided carbon instance matches
-     *         or (2) <code>FALSE</code> if they don't match.
+     * or (2) <code>FALSE</code> if they don't match.
      */
     public boolean eq(Carbon value) {
         return getTimestamp() == value.getTimestamp();
@@ -1345,7 +1345,7 @@ public final class Carbon {
      *
      * @param value The carbon instance to compare with
      * @return either (1) <code>TRUE</code> if the provided carbon instance matches
-     *         or (2) <code>FALSE</code> if they don't match.
+     * or (2) <code>FALSE</code> if they don't match.
      */
     public boolean ne(Carbon value) {
         return !eq(value);
@@ -1361,7 +1361,7 @@ public final class Carbon {
      *
      * @param value The carbon instance to compare with
      * @return either (1) <code>TRUE</code> if the current instance is greater than the provided instance
-     *         or (2) <code>FALSE</code> if it isn't greater than the provided instance.
+     * or (2) <code>FALSE</code> if it isn't greater than the provided instance.
      */
     public boolean gt(Carbon value) {
         return time.after(value.getTime());
@@ -1373,7 +1373,7 @@ public final class Carbon {
      *
      * @param value The carbon instance to compare with
      * @return either (1) <code>TRUE</code> if the current instance is greater than or equal to the provided instance
-     *         or (2) <code>FALSE</code> if it isn't greater than or equal to the provided instance.
+     * or (2) <code>FALSE</code> if it isn't greater than or equal to the provided instance.
      */
     public boolean gte(Carbon value) {
         return gt(value) || eq(value);
@@ -1385,7 +1385,7 @@ public final class Carbon {
      *
      * @param value The carbon instance to compare with
      * @return either (1) <code>TRUE</code> if the current instance is less than the provided instance
-     *         or (2) <code>FALSE</code> if it isn't less than the provided instance.
+     * or (2) <code>FALSE</code> if it isn't less than the provided instance.
      */
     public boolean lt(Carbon value) {
         return time.before(value.getTime());
@@ -1397,7 +1397,7 @@ public final class Carbon {
      *
      * @param value The carbon instance to compare with
      * @return either (1) <code>TRUE</code> if the current instance is less than or equal to the provided instance
-     *         or (2) <code>FALSE</code> if it isn't less than or equal to the provided instance.
+     * or (2) <code>FALSE</code> if it isn't less than or equal to the provided instance.
      */
     public boolean lte(Carbon value) {
         return lt(value) || eq(value);
@@ -1410,7 +1410,7 @@ public final class Carbon {
      * @param first  The first carbon instance to compare with
      * @param second The second carbon instance to compare with
      * @return either (1) <code>TRUE</code> if the current instance is between the two provided instances
-     *         or (2) <code>FALSE</code> if the current instance isn't between the two provided instances.
+     * or (2) <code>FALSE</code> if the current instance isn't between the two provided instances.
      */
     public boolean between(Carbon first, Carbon second) {
         return between(first, second, true);
@@ -1424,7 +1424,7 @@ public final class Carbon {
      * @param second     The second carbon instance to compare with
      * @param matchEqual Determines if a equal operator should be used as-well
      * @return either (1) <code>TRUE</code> if the current instance is between the two provided instances
-     *         or (2) <code>FALSE</code> if the current instance isn't between the two provided instances.
+     * or (2) <code>FALSE</code> if the current instance isn't between the two provided instances.
      */
     public boolean between(Carbon first, Carbon second, boolean matchEqual) {
         return matchEqual
@@ -1438,7 +1438,7 @@ public final class Carbon {
      * Checks to see if the current date of the carbon instance matches yesterdays date.
      *
      * @return either (1) <code>TRUE</code> if the current date is the same as yesterdays date
-     *         or (2) <code>FALSE</code> if it doesn't match.
+     * or (2) <code>FALSE</code> if it doesn't match.
      */
     public boolean isYesterday() {
         Carbon carbon = new Carbon().subDay();
@@ -1450,7 +1450,7 @@ public final class Carbon {
      * Checks to see if the current date of the carbon instance matches todays date.
      *
      * @return either (1) <code>TRUE</code> if the current date is the same as todays date
-     *         or (2) <code>FALSE</code> if it doesn't match.
+     * or (2) <code>FALSE</code> if it doesn't match.
      */
     public boolean isToday() {
         Carbon carbon = new Carbon();
@@ -1466,7 +1466,7 @@ public final class Carbon {
      * Checks to see if the current date of the carbon instance matches tomorrows date.
      *
      * @return either (1) <code>TRUE</code> if the current date is the same as tomorrows date
-     *         or (2) <code>FALSE</code> if it doesn't match.
+     * or (2) <code>FALSE</code> if it doesn't match.
      */
     public boolean isTomorrow() {
         Carbon carbon = new Carbon().addDay();
@@ -1478,7 +1478,7 @@ public final class Carbon {
      * Checks to see if the current date of the carbon instance is set in the past.
      *
      * @return either (1) <code>TRUE</code> if the current date is set to the past
-     *         or (2) <code>FALSE</code> if it's set to the present or future.
+     * or (2) <code>FALSE</code> if it's set to the present or future.
      */
     public boolean isPast() {
         return Calendar.getInstance(Locale.ENGLISH).getTimeInMillis() > time.getTimeInMillis();
@@ -1488,7 +1488,7 @@ public final class Carbon {
      * Checks to see if the current date of the carbon instance is set in the future.
      *
      * @return either (1) <code>TRUE</code> if the current date is set to the future
-     *         or (2) <code>FALSE</code> if it's set to the present or past.
+     * or (2) <code>FALSE</code> if it's set to the present or past.
      */
     public boolean isFuture() {
         return !isPast();
@@ -1498,7 +1498,7 @@ public final class Carbon {
      * Checks to see if the current day of the carbon instance is set on a weekday.
      *
      * @return either (1) <code>TRUE</code> if the current day is set to a weekday
-     *         or (2) <code>FALSE</code> if it's set to a weekend day.
+     * or (2) <code>FALSE</code> if it's set to a weekend day.
      * @see Day#MONDAY
      * @see Day#TUESDAY
      * @see Day#WEDNESDAY
@@ -1513,7 +1513,7 @@ public final class Carbon {
      * Checks to see if the current day of the carbon instance is set on a weekday.
      *
      * @return either (1) <code>TRUE</code> if the current day is set to a weekday
-     *         or (2) <code>FALSE</code> if it's set to a weekend day.
+     * or (2) <code>FALSE</code> if it's set to a weekend day.
      * @see Day#MONDAY
      * @see Day#TUESDAY
      * @see Day#WEDNESDAY

@@ -179,7 +179,7 @@ public class CacheManager extends CacheAdapter {
      *
      * @param type The cache type that should be returned.
      * @return The cache adapter matching the given cache type, or
-     *         the default cache adapter of <code>NULL</code> is given.
+     * the default cache adapter of <code>NULL</code> is given.
      */
     public CacheAdapter getAdapter(@Nullable CacheType type) {
         if (type != null) {

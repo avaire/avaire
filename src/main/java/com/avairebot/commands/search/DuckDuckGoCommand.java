@@ -37,8 +37,8 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 
 public class DuckDuckGoCommand extends Command {
 

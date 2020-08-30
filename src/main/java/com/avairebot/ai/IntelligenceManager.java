@@ -55,7 +55,7 @@ public class IntelligenceManager {
      * the service is enabled and ready to serve requests.
      *
      * @return {@code True} if the registered AI service is ready to serve requests,
-     *         {@code False} otherwise.
+     * {@code False} otherwise.
      */
     public boolean isEnabled() {
         return service != null && service.isEnabled();

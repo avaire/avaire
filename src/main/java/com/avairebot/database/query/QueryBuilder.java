@@ -725,7 +725,7 @@ public final class QueryBuilder {
      * while building the query <code>NULL</code> will be returned instead.
      *
      * @return either (1) the generated SQL query
-     *         or (2) <code>NULL</code> if an error occurred.
+     * or (2) <code>NULL</code> if an error occurred.
      */
     public String toSQL() {
         return toSQL(type);
@@ -736,7 +736,7 @@ public final class QueryBuilder {
      * error occurs while building the query <code>NULL</code> will be returned instead.
      *
      * @return either (1) the generated SQL query
-     *         or (2) <code>NULL</code> if an error occurred.
+     * or (2) <code>NULL</code> if an error occurred.
      */
     public String toSQL(QueryType type) {
         try {
@@ -760,7 +760,7 @@ public final class QueryBuilder {
      * Runs the {@link Database#query(String)} method with the generated query.
      *
      * @return a <code>Collection</code> object that contains the data produced
-     *         by the given query; never <code>null</code>@exception
+     * by the given query; never <code>null</code>@exception
      * @throws SQLException if a database access error occurs,
      *                      this method is called on a closed <code>Statement</code>, the given
      *                      SQL statement produces anything other than a single
@@ -786,7 +786,7 @@ public final class QueryBuilder {
      *
      * @param closure The changeable closure that should be run.
      * @return either (1) the row count for SQL Data Manipulation Language (DML) statements
-     *         or (2) 0 for SQL statements that return nothing
+     * or (2) 0 for SQL statements that return nothing
      * @throws SQLException if a database access error occurs;
      *                      this method is called on a closed  <code>PreparedStatement</code>
      *                      or the SQL statement returns a <code>ResultSet</code> object
@@ -820,7 +820,7 @@ public final class QueryBuilder {
      *
      * @param arrays The list of items that should be updated
      * @return either (1) the row count for SQL Data Manipulation Language (DML) statements
-     *         or (2) 0 for SQL statements that return nothing
+     * or (2) 0 for SQL statements that return nothing
      * @throws SQLException if a database access error occurs;
      *                      this method is called on a closed  <code>PreparedStatement</code>
      *                      or the SQL statement returns a <code>ResultSet</code> object
@@ -835,7 +835,7 @@ public final class QueryBuilder {
      *
      * @param items The map of items that should be updated
      * @return either (1) the row count for SQL Data Manipulation Language (DML) statements
-     *         or (2) 0 for SQL statements that return nothing
+     * or (2) 0 for SQL statements that return nothing
      * @throws SQLException if a database access error occurs;
      *                      this method is called on a closed  <code>PreparedStatement</code>
      *                      or the SQL statement returns a <code>ResultSet</code> object
@@ -942,7 +942,7 @@ public final class QueryBuilder {
      * method with the current instance of the query builder.
      *
      * @return either (1) the row count for SQL Data Manipulation Language (DML) statements
-     *         or (2) 0 for SQL statements that return nothing
+     * or (2) 0 for SQL statements that return nothing
      * @throws SQLException if a database access error occurs;
      *                      this method is called on a closed  <code>PreparedStatement</code>
      *                      or the SQL statement returns a <code>ResultSet</code> object

@@ -36,13 +36,11 @@ import com.avairebot.utilities.RoleUtil;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.entities.VoiceChannel;
 
 import javax.annotation.Nonnull;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.function.Consumer;
 
 @CacheFingerprint(name = "kick-command")
 public class VoiceKickCommand extends Command {
@@ -62,27 +60,27 @@ public class VoiceKickCommand extends Command {
     }
 
     @Override
-    public List <String> getUsageInstructions() {
+    public List<String> getUsageInstructions() {
         return Collections.singletonList("`:command <user> [reason]` - Kicks the mentioned user with the given reason.");
     }
 
     @Override
-    public List <String> getExampleUsage() {
+    public List<String> getExampleUsage() {
         return Collections.singletonList("`:command @Senither Yelling at people`");
     }
 
     @Override
-    public List <Class <? extends Command>> getRelations() {
+    public List<Class<? extends Command>> getRelations() {
         return Collections.singletonList(KickCommand.class);
     }
 
     @Override
-    public List <String> getTriggers() {
+    public List<String> getTriggers() {
         return Arrays.asList("voicekick", "vkick");
     }
 
     @Override
-    public List <String> getMiddleware() {
+    public List<String> getMiddleware() {
         return Arrays.asList(
             "require:user,general.kick_members",
             "require:bot,general.manage_channels,voice.move_members",
@@ -92,7 +90,7 @@ public class VoiceKickCommand extends Command {
 
     @Nonnull
     @Override
-    public List <CommandGroup> getGroups() {
+    public List<CommandGroup> getGroups() {
         return Collections.singletonList(CommandGroups.MODERATION);
     }
 

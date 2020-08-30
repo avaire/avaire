@@ -37,9 +37,8 @@ import com.avairebot.language.I18n;
 import com.avairebot.language.Language;
 import com.avairebot.language.LanguageContainer;
 import com.avairebot.middleware.MiddlewareHandler;
-import net.dv8tion.jda.api.sharding.ShardManager;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-
+import net.dv8tion.jda.api.sharding.ShardManager;
 import net.dv8tion.jda.internal.utils.Checks;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

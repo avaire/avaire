@@ -57,7 +57,7 @@ public class AdminUser {
      * being run this will always return <code>NULL</code>.
      *
      * @return Possibly-null, if the admin type allows admin commands
-     *         being run, the scope for the admin type will be returned.
+     * being run, the scope for the admin type will be returned.
      */
     @Nullable
     public CommandPriority getCommandScope() {

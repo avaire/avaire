@@ -85,7 +85,7 @@ public class ApplicationShutdownEvent extends Event {
          *
          * @param exitCode The exit code the shutdown reason should match with.
          * @return The matching shutdown reason to the given exit code,
-         *         or {@link #UNKNOWN} if there were no match.
+         * or {@link #UNKNOWN} if there were no match.
          */
         @Nonnull
         public static ShutdownReason fromExitCode(int exitCode) {

@@ -56,7 +56,7 @@ public enum PluginSource {
      *
      * @param name The name of the plugin source that should be returned.
      * @return The plugin source matching the given name, or
-     *         {@code NULL} if there were not matches.
+     * {@code NULL} if there were not matches.
      */
     public static PluginSource fromName(String name) {
         for (PluginSource source : values()) {

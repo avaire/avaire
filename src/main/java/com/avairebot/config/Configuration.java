@@ -229,7 +229,7 @@ public class Configuration implements ConfigurationSection {
      *
      * @param path Path to check for existence.
      * @return True if this section contains the requested path, either via
-     *         default or being set.
+     * default or being set.
      * @throws IllegalArgumentException Thrown when path is null.
      */
     @Override
@@ -246,7 +246,7 @@ public class Configuration implements ConfigurationSection {
      *
      * @param path Path to check for existence.
      * @return True if this section contains the requested path, regardless of
-     *         having a default.
+     * having a default.
      * @throws IllegalArgumentException Thrown when path is null.
      */
     @Override

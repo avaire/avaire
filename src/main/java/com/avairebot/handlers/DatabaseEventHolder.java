@@ -49,7 +49,7 @@ public class DatabaseEventHolder {
      * settings and information about the current guild.
      *
      * @return The guild database transformer for the current JDA event,
-     *         or {@code NULL} if the event was not invoked for a guild.
+     * or {@code NULL} if the event was not invoked for a guild.
      */
     public GuildTransformer getGuild() {
         return guild;
@@ -61,7 +61,7 @@ public class DatabaseEventHolder {
      * information about the user who invoked the JDA event.
      *
      * @return The player database transformer for the user who invoked the JDA event,
-     *         or {@code NULL} if the leveling feature is disabled in the guild.
+     * or {@code NULL} if the leveling feature is disabled in the guild.
      */
     @Nullable
     public PlayerTransformer getPlayer() {
