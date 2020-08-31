@@ -1,1005 +1,886 @@
-
+---
 errors:
-    missingArgument: 'Требуется аргумент `сообщение`'
-    invalidProperty: 'Приведенный недопустимый `{0}`, Вы должны указать действительный {1}.'
-    noChannelsWithNameOrId: 'Я не нашел каналов с именем или идентификатором `{0}`'
-    noUsersWithNameOrId: 'Я не нашел пользователей с именем или идентификатором `{0}`'
-    mustBeConnectedToVoice: 'Для использования этой команды необходимо подключиться к голосовому каналу!'
-    mustBeConnectedToSameChannel: 'Вы должны быть подключены к тому же голосовому каналу, в котором я {0}!'
-    missingMusicQueue: 'Отсутствует музыкальный `запрос`, Вы должны вставить ссылку на трек, которую хотите послушать, или, по крайней мере, дать мне название трека!'
-    cantMentionEveryone: "You don't have permissions to mention everyone."
-    requireLevelFeatureToBeEnabled: 'Эта команда требует, чтобы функция `Уровни & Опыт` была включена для сервера. Вы можете попросить администратора сервера включить эту функциию'
-    errorOccurredWhileLoading: 'Произошла ошибка при загрузке {0}, повторите попытку, если проблема не исчезнет, сообщите об этом одному из администраторов или на [сервер поддержки бота](https://avairebot.com/support).'
-
+  missingArgument: 'Требуется аргумент `сообщение`'
+  invalidProperty: 'Приведенный недопустимый `{0}`, Вы должны указать действительный {1}.'
+  noChannelsWithNameOrId: 'Я не нашел каналов с именем или идентификатором `{0}`'
+  noUsersWithNameOrId: 'Я не нашел пользователей с именем или идентификатором `{0}`'
+  mustBeConnectedToVoice: 'Для использования этой команды необходимо подключиться к голосовому каналу!'
+  mustBeConnectedToSameChannel: 'Вы должны быть подключены к тому же голосовому каналу, в котором я {0}!'
+  missingMusicQueue: 'Отсутствует музыкальный `запрос`, Вы должны вставить ссылку на трек, которую хотите послушать, или, по крайней мере, дать мне название трека!'
+  cantMentionEveryone: "You don't have permissions to mention everyone."
+  requireLevelFeatureToBeEnabled: 'Эта команда требует, чтобы функция `Уровни & Опыт` была включена для сервера. Вы можете попросить администратора сервера включить эту функциию'
+  errorOccurredWhileLoading: 'Произошла ошибка при загрузке {0}, повторите попытку, если проблема не исчезнет, сообщите об этом одному из администраторов или на [сервер поддержки бота](https://avairebot.com/support).'
 levelupMessages:
-    - "GG :user, Вы только что достигли **:level уровня**"
-    - "Eyy :user, Вы перешли на новый уровень!\nУ вас сейчас - **:level уровень**"
-    - "🌟 Вы только что достигли **:level уровня**\n :user! Поздравляю 🌟"
-    - "Да Вы 🔥 :user, Вы только что достигли **:level уровня**"
-    - "Поздравляем 🎉 :user 🎉\nВы получили новый уровень!\nУ вас сейчас - **:level уровень**"
-
+  - "GG :user, Вы только что достигли **:level уровня**"
+  - "Eyy :user, Вы перешли на новый уровень!\nУ вас сейчас - **:level уровень**"
+  - "🌟 Вы только что достигли **:level уровня**\n :user! Поздравляю 🌟"
+  - "Да Вы 🔥 :user, Вы только что достигли **:level уровня**"
+  - "Поздравляем 🎉 :user 🎉\nВы получили новый уровень!\nУ вас сейчас - **:level уровень**"
 levelupRoleMessages:
-    - "GG :user, you just reached **Level :level**, you now have the **:role** role"
-    - "Eyy :user, you just leveled up! You're now **Level :level**, have the **:role** role, you earned it."
-    - "Congratulations :user 🎉 You just leveled up! You're now **Level :level**, you have also earned yourself the **:role** role"
-
+  - "GG :user, you just reached **Level :level**, you now have the **:role** role"
+  - "Eyy :user, you just leveled up! You're now **Level :level**, have the **:role** role, you earned it."
+  - "Congratulations :user 🎉 You just leveled up! You're now **Level :level**, you have also earned yourself the **:role** role"
 pagination:
-    simpleFooter: "Page **{0}** out of **{1}** pages.\n`{2} [page]`"
-
+  simpleFooter: "Page **{0}** out of **{1}** pages.\n`{2} [page]`"
 modlog-types:
-    kick:
-        name: "Kick"
-        action: "Kicked"
-    voiceKick:
-        name: "Voice Kick"
-        action: "Voice Kicked"
-    ban:
-        name: "Ban"
-        action: "Banned"
-    softBan:
-        name: "Soft Ban"
-        action: "Soft Banned"
-    unban:
-        name: "Unban"
-        action: "Unbanned"
-    purge:
-        name: "Purge"
-        action: "Purged"
-    warn:
-        name: "Warn"
-        action: "Warned"
-    pardon:
-        name: "Pardon"
-        action: "Pardoned"
-    mute:
-        name: "Mute"
-        action: "Muted"
-    tempMute:
-        name: "Temp Mute"
-        action: "Temp Muted"
-    unmute:
-        name: "Unmute"
-        action: "Unmuted"
-
+  kick:
+    name: "Kick"
+    action: "Kicked"
+  voiceKick:
+    name: "Voice Kick"
+    action: "Voice Kicked"
+  ban:
+    name: "Ban"
+    action: "Banned"
+  softBan:
+    name: "Soft Ban"
+    action: "Soft Banned"
+  unban:
+    name: "Unban"
+    action: "Unbanned"
+  purge:
+    name: "Purge"
+    action: "Purged"
+  warn:
+    name: "Warn"
+    action: "Warned"
+  pardon:
+    name: "Pardon"
+    action: "Pardoned"
+  mute:
+    name: "Mute"
+    action: "Muted"
+  tempMute:
+    name: "Temp Mute"
+    action: "Temp Muted"
+  unmute:
+    name: "Unmute"
+    action: "Unmuted"
 administration:
-    common:
-        invalidRole: ":user Invalid role, I couldn't find any role called **:role**"
-
-    channelModule:
-        invalidColorGiven: "Invalid color value given, the color must be a valid HEX value.\nYou can try this [random color picker](https://www.webpagefx.com/web-design/random-color-picker/) to try and get a random HEX color."
-        message: "The `:type` module message has been set to:\n\n```:message```\n\nYou can test the message by using the command again and mentioning a user.\n`:command <user>`"
-
-    AddLevelRoleCommand:
-        noSlotsLeft: "The server doesn't have any more level role slots, you can remove existing level roles to free up slots."
-        invalidLevel: "Invalid level requirement given, the level requirement must be a positive number."
-        alreadyLevelRole: ":user The **:role** is already a level role, you can't use the same role twice."
-        alreadyARoleAtLevel: "There is already a role assigned to level **:level**, only one role can be given per level."
-        success: "Role **:role** role has been added to the level-up role list.\nThe server has `:slots` more level role slots available."
-
-    AddReactionRoleCommand:
-        emoteDoestBelongToServer: "The emote does not belong to this server, you can only use emotes from this server as reaction emotes."
-        messageHasNoSlots: "The message doesn't have anymore reaction role slots available, you can remove existing reaction-roles to free up slots, or delete reaction role messages to add the role to a new reaction role message."
-        serverHasNoSlots: "Can't create new reaction role messages, the server doesn't have anymore reaction messages slots, you can deleting existing reaction role messages to free up slots, or add your reaction role to a reaction message if there are available slots on the message for more roles."
-        success: "The :role role has been registered as an reaction role for the :emote emote.\nThe message has `:roleSlots` more reaction-role slots available for the message, and `:messageSlots` reaction-message slots available."
-
-    AddSelfAssignableRoleCommand:
-        noSlotsLeft: "The server doesn't have any more self-assignable role slots, you can remove existing self-assignable roles to free up slots."
-        success: "Role **:role** role has been added to the self-assignable list.\nThe server has `:slots` more self-assignable roles slots available."
-
-    AdministrateExperienceCommand:
-        cantUseForBots: "You can't add, remove, or reset XP for bot accounts since they don't earn any, please select a normal user when using this command."
-        invalidAmountGiven: "The `amount` property must be between 1 and {0} to add or take XP from a user."
-        aboutToResetEverything: "You're about to reset the XP for everyone on the entire server. If you're sure you wanna continue, run the command to completely reset the servers XP.\n\n```:command server-reset :token```\nThis command will only work for 60 seconds, after that the token becomes invalid and the command has to be ran again to get a new token."
-        aboutToSyncEverything: "You're about to sync the XP with the global leaderboard, this will effectively revert any custom XP changes made on the entire server. If you're sure you wanna continue, run the command to completely sync the servers XP.\n\n```:command server-sync :token```\nThis command will only work for 60 seconds, after that the token becomes invalid and the command has to be ran again to get a new token."
-        failedToSaveChanges: "Failed to save the changes to the database, please try again, if the error continues to happen, please contact support on the official [AvaIre support server](https://avairebot.com/support)."
-        mustBeAnAdmin: "You must be a server admin to use this action."
-        invalidSecurityToken: "Invalid security token given, please provide the correct security token to reset all the servers XP."
-        warning: "Warning!"
-        success:
-            add: "**:amount** XP has been given to :target, they now have **:newAmount** XP."
-            take: "**:amount** XP has been taken from :target, they now have **:newAmount** XP."
-            reset: ":target has successfully had their XP reset."
-            sync: ":target has successfully had synchronized with the global leaderboard, they now have **:newAmount** XP."
-            syncEveryone: "Everyone on the entire server has been synced with the global leaderboard!"
-            everything: "Everyone on the entire server has now had their XP completely reset!"
-
-    AiCommand:
-        message: "The `Artificial Intelligence` module has been **:status** for the :channel channel."
-        status:
-            enabled: "Enabled"
-            disabled: "Disabled"
-
-    AliasCommand:
-        noSlotsLeft: "The server doesn't have any more alias slots, you can delete existing aliases to free up slots."
-        alreadyExists: "There is already a custom alias called `{0}`"
-        invalidCommand: "Invalid command given, I don't know of any command called `{0}`"
-        invalidAlias: "Invalid alias given, `{0}` is not registered as an alias."
-        created: "The `:alias` alias has been linked to `:command`\nThe server has `:slots` more aliases slots available."
-        deleted: "The `:alias` alias has been deleted successfully."
-
-    AutoAssignRoleCommand:
-        higherInTheHierarchy:
-            user: ":user The **:role** role is positioned higher in the hierarchy than any role you have, you can't add roles with a higher ranking than you have."
-            bot: ":user The **:role** role is positioned higher in the hierarchy, I can't give/remove this role from users."
-        enabled: ":user **Auto assign role** on user join has been **enabled** and set to  **:role**"
-        disabledNow: ":user **Auto assign role** on user join is now **disabled**."
-        disabled: ":user **Auto assign role** on user join is currently **disabled**."
-        status: ":user The **auto assign role** is currently set to **:role**"
-
-    BanCommand:
-        mustMentionUser: "You must mention the user you want to ban."
-        higherRole: "You can't ban people with a higher, or the same role as yourself."
-        userHaveHigherRole: "I can't ban {0}, they have a higher role than me, if you want be to be able to ban the user, please readjust my role position to above {0} highest role."
-        success: "**:target** was permanently banned by :user for \":reason\""
-        failedToBan: "Failed to ban **:target** due to an error: :error"
-
-    CategoriesCommand:
-        title: "Command Category Status for #{0}"
-        status: ":emoteEnabled Enabled   :emoteDisabledInChannel Disabled in Channel   :emoteDisabledGlobally Disabled Globally"
-
-    ChangePrefixCommand:
-        missingArgument: "Missing argument `category`, you must specify the command category you want to change/reset the prefix for."
-        invalidCategory: "Invalid `category` given, there are no command categories that are called, or starts with `{0}`"
-        invalidPrefix: "Invalid command prefix given, `{0}` is not a valid command prefix, all prefixes must **NOT** contain spaces and be between 1 and 16 characters long."
-        update:
-            global: "All commands in every command category now uses the `:prefix` prefix."
-            category: "All commands in the `:category` command category now uses the `:prefix` prefix."
-        reset:
-            global: "All commands in every command category has been reset to use the `:prefix` prefix."
-            category: "All commands in the `:category` command category has been reset to use the `:prefix` prefix."
-
-    ChannelLevelCommand:
-        invalidChannel: "Invalid channel given, the channel must be a valid text channel."
-        cantTalkInChannel: "I can't talk in the {0} channel, so no users will be rewarded any XP for talking in the channel, if you want me to give users XP, please change my permission level for the channel so I can send messages in the channel."
-        noChannelsWithRewardsDisabled: "There are currently no channels with the level rewards disabled, you can add one by using the `{0} <channel>` command"
-        failedToUpdate: "Failed to save the changes to the database, please try again, if the issue persists, please contact one of my developers."
-        listChannels: "All the channels mentioned below currently has their level rewards turned off, any channel not on this list is unaffected.\n\n:channels"
-        listChannelsTitle: "Channels with their Level Rewards disabled ({0})"
-        success: "The XP rewards for the :channel channel has been **:status**!"
-        status:
-            enabled: "Enabled"
-            disabled: "Disabled"
-
-    GoodbyeCommand:
-        note: "\nYou can customize the message by using `{0} [message]`"
-        message: "The `Goodbye` module has been **:status** for the :channel channel."
-        status:
-            enabled: "Enabled"
-            disabled: "Disabled"
-
-    GoodbyeMessageCommand:
-        moduleMustBeEnabled: "The `goodbye` module must be enabled to use this command, you can enable the `goodbye` module by using the `{0}` command."
-        message: "The embed option for goodbye messages has been **:status**\n:note"
-        changedToDefault: "The `Goodbye` module message has been set back to the default."
-        status:
-            enabled: "enabled"
-            disabled: "disabled"
-        note:
-            embed: "Goodbye messages will now be sent using embedded messages with the color: {0}"
-            normal: "Now sending goodbye messages through normal messages."
-
-    IAmCommand:
-        notSelfAssignable: ":user Invalid role, **:role** is not a self-assignable role."
-        roleIsHigherInTheHierarchy: ":user The role is higher in the role hierarchy, I can't give/remove the **:role** role from anyone."
-        message: ":user You now have the **:role** role!"
-
-    IAmNotCommand:
-        notSelfAssignable: ":user Invalid role, **:role** is not a self-assignable role."
-        roleIsHigherInTheHierarchy: ":user The role is higher in the role hierarchy, I can't give/remove the **:role** role from anyone."
-        message: ":user You no longer have the **:role** role!"
-
-    KickCommand:
-        mustMentionUser: "You must mention the user you want to kick."
-        higherOrSameRole: "You can't kick people with a higher, or the same role as yourself."
-        cantKickUser: "I can't kick {0}, they have a higher role than me, if you want be to be able to kick the user, please readjust my role position to above {0} highest role."
-        success: "**:target** was kicked by :user for \":reason\""
-        error: "Failed to kick **:target** due to an error: :error"
-
-    LanguageCommand:
-        invalidLanguageCode: "Invalid language code given, `{0}` is not a valid language code, or it is not yet supported!"
-        changed: "The servers language has been successfully been updated to use the :name language!"
-        note: "AvaIre supports several user-contributed languages that you can select with this command. Translations may not be 100% accurate or complete.\nTo select a language use `{0} <code>`"
-
-    LevelAlertsCommand:
-        message: "`Levels up alerts` has been `:status` for the server.:note"
-        note: "\nAll level up messages will be logged into the <#{0}> channel."
-        status:
-            enabled: "Enabled"
-            disabled: "Disabled"
-
-    LevelCommand:
-        message: "`Levels & Experience` has been `:status` for the server.:note"
-        note: "\nLevel alerts are current `{0}`, you can toggle them on or off with `{1}levelalerts`"
-        status:
-            enabled: "Enabled"
-            disabled: "Disabled"
-
-    LevelHierarchyCommand:
-        invalidTypeGiven: "Invalid type given, to toggle level hierarchy on or off, you must use either `on` or `off`."
-        message: "Level up hierarchy has been `:status` for the server."
-        statusMessage: "Level up hierarchy is currently `:status`, you can toggle it on or off with `:command`"
-        status:
-            enabled: "Enabled"
-            disabled: "Disabled"
-
-    LevelModifierCommand:
-        invalidNumberGiven: "Invalid modifier given, the modifier much be a positive percentage between `0.01%` and `500%`"
-        resetToDefault: "The level modifier has been reset back to using the default **:modifier** modifier."
-        changedTo: "The level and experience modifier have been change to **:modifier**"
-        requiredIsNow: "\n\n**Required XP to reach some levels is now:**\n"
-        statusMessage: "The server is currently using a **:modifier** modifier for levels and experience.\n\n**Required XP to reach some levels**\n"
-        level: "Level {0}"
-
-    ListAliasesCommand:
-        noAliases: "The server doesn't have any aliases right now, you can create one using the\n`{0}alias <alias> <command>` command"
-        listAliases: "List of Aliases ({0})"
-
-    ListLevelRolesCommand:
-        noLevelRoles: "There are currently no level roles, an administrator can add roles to the level up table using the `:command` command"
-        listRoles: "List of Level Roles ({0})"
-
-    ListReactionRoleCommand:
-        noReactionRoles: "The server doesn't have any reaction roles right now, you can create one using\n`{0}arr <emote> <role>`"
-        listReactionRoles: "List of Reaction Roles ({0})"
-
-    ListSelfAssignableRolesCommand:
-        noSelfAssignableRoles: "There are currently no self-assignable roles for this server."
-        title: "There are {0} self-assignable roles"
-
-    ModlogCommand:
-        mustMentionTextChannel: "Invalid channel argument given, you must mention a valid text channel"
-        cantSendEmbedMessages: "I can't send embed messages in the specified channel, please change my permission level for the {0} channel if you want to use it as a modlog channel."
-        enable: ":user **Server Modlogging** is now enabled and set to the :modlog channel."
-        enabled: ":user **Server Modlogging** is currently enabled and set to the :modlog channel."
-        disable: ":user **Server Modlogging** is now disabled for the server."
-        disabled: ":user **Server Modlogging** is currently disabled."
-
-    ModlogHistoryCommand:
-        mustMentionUser: "You must mention a valid `user` you want to display the modlog history for."
-        noHistory: "No modlog history was found for this user."
-        title: "{0}#{1} History ({2})"
-        entry: "**{1}** | **#{0}** | **Moderator:** {2}\n**Date:** {3}\n**Reason:** {4}"
-        noReasonGiven: "No reason was given."
-
-    ModlogPardonCommand:
-        modlogNotEnabled: "No modlog channel has been set, you must set a modlog channel to use this command."
-        invalidCaseId: "Invalid case id given, the ID must be greater than 0 and less than {0}"
-        couldntFindCaseWithId: "Couldn't find a modlog case with an ID of {0} where you were the moderator, are you sure you're the moderator for the given modlog case?"
-        caseAlreadyPardoned: "The modlog case ID with an ID of `{0}` is already pardoned."
-        notAPunishment: "The modlog case ID with an ID of `{0}` is not a punishment!"
-        message: "The modlog case with an ID of **:case** has been been pardoned successfully."
-
-    ModlogReasonCommand:
-        modlogNotEnabled: "No modlog channel has been set, you must set a modlog channel to use this command."
-        invalidCaseId: "Invalid case id given, the ID must be greater than 0 and less than {0}"
-        couldntFindCaseWithId: "Couldn't find a modlog case with an ID of {0} where you were the moderator, are you sure you're the moderator for the given modlog case?"
-        couldntFindModlogChannel: "Couldn't find the modlog channel, was it removed?"
-        success: "The modlog case with an ID of **:id** was successfully edited and set to the reason of `:reason`"
-        modlogCaseWasPardoned: "The modlog case with an ID of `{0}` has been pardoned, you can't edit pardoned modlog cases."
-        failedToEdit: "Failed to edit modlog message: {0}"
-        failedToFindMessage: "Couldn't find the message for the given modlog case, was it deleted?"
-
-    MuteCommand:
-        requiresModlogToBeSet: "This command requires a modlog channel to be set, a modlog channel can be set using the `{0}modlog` command."
-        requireMuteRoleToBeSet: "No mute role have been setup for the server, you can setup a mute role using the `{0}muterole` command."
-        higherOrSameRole: "You can't mute people with a higher, or the same role as yourself."
-        muteRoleIsPositionedHigher: "The {0} role used for mutes are positioned higher in the role hierarchy than any roles I have, so I can't automatically assign the role to other users, please fix this or use another role for mutes."
-        invalidUserMentioned: "Invalid user mentioned, you must mention a user on the server you want to mute to use this command."
-        invalidTimeGiven: "Invalid time given, the time must be at least one minute or more."
-        userHasBeenMuted: ":target has been muted :time!"
-        time:
-            permanently: "permanently"
-            forFormat: "for {0}"
-
-    MuteRoleCommand:
-        onCooldown: "You have recently use a command option that created and/or modified roles and channel permissions, you have to wait **:cooldown** before you can use this command again."
-        roleDoesntExists: "Invalid role given, the `{0}` role doesn't exists."
-        rolePositionedHigher: "The {0} role is positioned higher than any role I have, so I can assign the role to anyone."
-        cantCreateRoleDueToPermissions: "I can't create the muted role because I don't have the \"Manage Roles\" permissions for the server."
-        noMuteRoleSet: "There are currently no mute role set for the server, you can set the role you wanna use as the mute role using `:command set <role>`, or you can make the bot create a new muted role using `:command create-role`."
-        usingRoleMessage: "The server is using the :role role for mutes."
-        roleHasBeenRemoved: "The muted role has been removed, the mute feature is now disabled until another muted role is assigned."
-        roleHasBeenCreated: "The :role role has been successfully created, and all the channel permissions to prevent users with the role from talking in channels have automatically been setup for the channels I have access to."
-        nowUsingRole: "The :role role will now be used for muting users."
-        nowUsingExistingRole: "A role called `Muted` already exists on the server, now using the :role role for mutes, if you want the bot to setup all the channel override permissions to prevent users with the role from talking in the channels, you can use the\n`:command setup-permissions` command."
-
-    NSFWCommand:
-        invalidChannelOrStatus: "Invalid channel or status type given!"
-        notValidChannel: "`{0}` is not a valid text channel!"
-        notValidStatus: "`{0}` is not a valid status type, you must either pass `on` or `off`."
-        message: "The :textChannel channel currently has NSFW **:status**!"
-        updated: "The NSFW status for :textChannel has been changed to **:status**"
-        status:
-            enabled: "Enabled"
-            disabled: "Disabled"
-
-    PurgeCommand:
-        messagesDeletedIn: "{0} messages has been deleted in the {1} channel."
-        messagesDeletedBy: "{0} messages sent by {1} has been deleted in the {2} channel."
-        success: ":white_check_mark: `:number` messages has been deleted!"
-        successBy: ":white_check_mark: `:number` messages has been deleted from :users"
-        nothingToDelete: ":x: Nothing to delete, I am unable to delete messages older than 14 days."
-        nothingToDeleteBy: ":x: Nothing to delete, I am unable to find any messages by :users in the last **:number** messages that was sent within the last 14 days."
-
-    RemoveLevelRoleCommand:
-        noRolesCalled: ":user There are no role called **:role** on the level up table."
-        noRolesLinked: ":user There are no roles linked to level **:role** on the level up table."
-        notALevelRole: ":user Invalid role, the `:name` role is not on the level up table."
-        message: "Role **:role** role has been removed from the level-up role list.\nThe server now have `:slots` level role slots available."
-
-    RemoveReactionRoleCommand:
-            noReactionRoles: "The server doesn't have any reaction roles right now, you can create one using\n`{0}arr <emote> <role>`"
-            messageIdMustBeGreaterThanOne: "Invalid `message id` given, the `message id` must be at least 1 or greater."
-            messageIdMustBeLowerThanRolesSize: "Invalid `message id` given, the `message id` cannot be higher than the amount of reaction roles the server currently has, which is `{0}` right now."
-            failedToFetchMessage: "Something went wrong while trying to fetch the reaction role message with an ID of `{0}`, if this issue continues to happen, please report it to one of my developers."
-            mustIncludeEmote: "You must include the emote you want to remove from the reaction message."
-            emoteDoestBelongToServer: "The emote does not belong to this server, you can only use emotes from this server as reaction emotes."
-            roleNotFoundOnMessage: "The specified reaction message doesn't have a reaction role attached to it using the {0} emote."
-            deletedMessage: "The reaction role message with an ID of **#:id** has successfully been deleted!"
-            deletedEmote: "The :emote emote has been successfully removed from the reaction message.\nThe message has `:roleSlots` more reaction-role slots available for the message, and `:messageSlots` reaction-message slots available."
-
-    RemoveSelfAssignableRoleCommand:
-        message: "Role **:role** role has been removed from the self-assignable list.\nThe server has `:slots` more self-assignable roles slots available."
-
-    RoleLevelCommand:
-        invalidRole: "Invalid role given, I found no role on the server called `{0}`"
-        noRolesWithRewardsDisabled: "There are currently no roles with the level rewards disabled, you can add one by using the `{0} <role>` command."
-        listRoles: "All the roles mentioned below currently have their level rewards turned off, this means that any user with one of those roles won't earn any XP in any channel they talk in, any role not on this list is unaffected.\n\n:roles"
-        listRolesTitle: "Roles with their Level Rewards disabled ({0})"
-        success: "The XP rewards for the :role role has been **:status**!"
-        status:
-            enabled: "Enabled"
-            disabled: "Disabled"
-
-    SetRoleColorCommand:
-        noRoleFound: "No role with the name \"{0}\" was found."
-        invalidColor: "The color \"{0}\" is not recognized, use the following HEX format instead \"#XXXXXX\""
-        userMissingPermissions: "You can't use the this command for the {0} role, you must have greater or equal privileges as the role to successfully run the command."
-        botMissingPermissions: "The Set Role Color command can't be used for the {0} role, I need to have greater or equal privileges as the role to successfully run the command."
-        colorChangeComplete: "The :role role has been successfully changed to **:color**."
-
-    SlowmodeCommand:
-        missingArgument: "Missing argument, you must either pass in the `seconds` value to enable slowmode for this or the mentioned channel, or `off` to disable it."
-        mustBeValidNumbers: "Invalid slowmode value given, you must provide a number between **1** and **120**."
-        message: "Slowmode has been **enabled** for the :textChannel channel.\nThe channel now allows **:slowmode** messages every second per-user."
-        disabled: "Successfully **disabled** slowmode for the :textChannel channel."
-        invalidTextChannel: "`{0}` is not a not a valid text channel, you must target a text channel to setup slowmode."
-        failedToUpdate: "Failed to update the :textChannel channel, error: :message"
-
-    ToggleCategoryCommand:
-        invalidCategory: "Invalid category given, `{0}` is not a valid category"
-        missingArgumentType: "Missing argument `channel/global`, you must include the channel or specify that the command should be run globally."
-        invalidChannelOrGlobalString: "Invalid channel or global string given, you must either mention the channel you want to affect, or write `global` to affect all the channels at the same time."
-        cantEnabledCategory: "Whoops, you can't enable the **:category** command category while it is disabled globally.\nYou can use the command below to enable the category for all channels.\n`:command :category global on`"
-        update:
-            globally: "The `:category` command category has been `:status` for **all channels**."
-            category: "The `:category` command category has been `:status` in :channel."
-        status:
-            enabled: "Enabled"
-            disabled: "Disabled"
-
-    UnbanCommand:
-        success: ':target has been successfully unbanned from the server because ":reason".'
-        failedToUnban: "Failed to unban :target due to an error, message: :error"
-        noUserIsBanned: "No user with an ID of `:id` is currently banned from the server."
-        invalidUserIdGiven: "Invalid `user id` was given, the `user id` must be a numeric string of 18 or more numbers long."
-
-    UnmuteCommand:
-        requiresModlogToBeSet: "This command requires a modlog channel to be set, a modlog channel can be set using the `{0}modlog` command."
-        requireMuteRoleToBeSet: "No mute role have been setup for the server, you can setup a mute role using the `{0}muterole` command."
-        muteRoleIsPositionedHigher: "The {0} role used for mutes are positioned higher in the role hierarchy than any roles I have, so I can't automatically remove the role from other users, please fix this or use another role for mutes."
-        invalidUserMentioned: "Invalid user mentioned, you must mention a user on the server you want to unmute to use this command."
-        userDoesntHaveMuteRole: "{0} doesn't appear to have the mute role, they may already have been unmuted!"
-        userHasBeenUnmuted: ":target has been unmuted!"
-        userAutoUnmutedReason: "*Automatic unmute after the set time has elapsed*"
-
-    VoiceKickCommand:
-        mustMentionUser: "You must mention the user you want to kick."
-        sameOrHigherRole: "You can't kick people with a higher, or the same role as yourself."
-        notConnected: "You can't voice kick people who are not connected to a voice channel."
-        message: "**:target** was kicked from **:voiceChannel** by :user for \":reason\""
-
-    VoteOptCommand:
-        invalidArgument: "Invalid argument, you must either parse `in` or `out` to opt in or out of vote messages."
-        message: "You have now opt-:type of getting vote messages."
-        type:
-            in: "in"
-            out: "out"
-
-    WarnCommand:
-        requiresModlogIsEnabled: "This command requires a modlog channel to be set, a modlog channel can be set using the `{0}modlog` command."
-        mustMentionUse: "You must mention a user you want warn."
-        warnBots: "You can't warn bots!"
-        failedToLogWarning: "Failed to log warning to the set modlog channel, does the modlog channel still exists, can I still send messages in the channel?"
-        message: ":target has been **warned** for \":reason\""
-        failedToSendDM: "Failed to DM the user with the warning, they most likely have their private settings set to disable all DMs from this server."
-
-    WelcomeCommand:
-        note: "\nYou can customize the message by using `{0} [message]`"
-        message: "The `Welcome` module has been **:status** for the :channel channel.:note"
-        status:
-            enabled: "Enabled"
-            disabled: "Disabled"
-
-    WelcomeMessageCommand:
-        moduleMustBeEnabled: "The `welcome` module must be enabled to use this command, you can enable the `welcome` module by using the `{0}welcome` command."
-        message: "The embed option for welcome messages has been **:status**\n:note"
-        changedToDefault: "The `Welcome` module message has been set back to the default."
-        status:
-            enabled: "enabled"
-            disabled: "disabled"
-        note:
-            embed: "Welcome messages will now be sent using embedded messages with the color: {0}"
-            normal: "Now sending welcome messages through normal messages."
-
+  common:
+    invalidRole: ":user Invalid role, I couldn't find any role called **:role**"
+  channelModule:
+    invalidColorGiven: "Invalid color value given, the color must be a valid HEX value.\nYou can try this [random color picker](https://www.webpagefx.com/web-design/random-color-picker/) to try and get a random HEX color."
+    message: "The `:type` module message has been set to:\n\n```:message```\n\nYou can test the message by using the command again and mentioning a user.\n`:command <user>`"
+  AddLevelRoleCommand:
+    noSlotsLeft: "The server doesn't have any more level role slots, you can remove existing level roles to free up slots."
+    invalidLevel: "Invalid level requirement given, the level requirement must be a positive number."
+    alreadyLevelRole: ":user The **:role** is already a level role, you can't use the same role twice."
+    alreadyARoleAtLevel: "There is already a role assigned to level **:level**, only one role can be given per level."
+    success: "Role **:role** role has been added to the level-up role list.\nThe server has `:slots` more level role slots available."
+  AddReactionRoleCommand:
+    emoteDoestBelongToServer: "The emote does not belong to this server, you can only use emotes from this server as reaction emotes."
+    messageHasNoSlots: "The message doesn't have anymore reaction role slots available, you can remove existing reaction-roles to free up slots, or delete reaction role messages to add the role to a new reaction role message."
+    serverHasNoSlots: "Can't create new reaction role messages, the server doesn't have anymore reaction messages slots, you can deleting existing reaction role messages to free up slots, or add your reaction role to a reaction message if there are available slots on the message for more roles."
+    success: "The :role role has been registered as an reaction role for the :emote emote.\nThe message has `:roleSlots` more reaction-role slots available for the message, and `:messageSlots` reaction-message slots available."
+  AddSelfAssignableRoleCommand:
+    noSlotsLeft: "The server doesn't have any more self-assignable role slots, you can remove existing self-assignable roles to free up slots."
+    success: "Role **:role** role has been added to the self-assignable list.\nThe server has `:slots` more self-assignable roles slots available."
+  AdministrateExperienceCommand:
+    cantUseForBots: "You can't add, remove, or reset XP for bot accounts since they don't earn any, please select a normal user when using this command."
+    invalidAmountGiven: "The `amount` property must be between 1 and {0} to add or take XP from a user."
+    aboutToResetEverything: "You're about to reset the XP for everyone on the entire server. If you're sure you wanna continue, run the command to completely reset the servers XP.\n\n```:command server-reset :token```\nThis command will only work for 60 seconds, after that the token becomes invalid and the command has to be ran again to get a new token."
+    aboutToSyncEverything: "You're about to sync the XP with the global leaderboard, this will effectively revert any custom XP changes made on the entire server. If you're sure you wanna continue, run the command to completely sync the servers XP.\n\n```:command server-sync :token```\nThis command will only work for 60 seconds, after that the token becomes invalid and the command has to be ran again to get a new token."
+    failedToSaveChanges: "Failed to save the changes to the database, please try again, if the error continues to happen, please contact support on the official [AvaIre support server](https://avairebot.com/support)."
+    mustBeAnAdmin: "You must be a server admin to use this action."
+    invalidSecurityToken: "Invalid security token given, please provide the correct security token to reset all the servers XP."
+    warning: "Warning!"
+    success:
+      add: "**:amount** XP has been given to :target, they now have **:newAmount** XP."
+      take: "**:amount** XP has been taken from :target, they now have **:newAmount** XP."
+      reset: ":target has successfully had their XP reset."
+      sync: ":target has successfully had synchronized with the global leaderboard, they now have **:newAmount** XP."
+      syncEveryone: "Everyone on the entire server has been synced with the global leaderboard!"
+      everything: "Everyone on the entire server has now had their XP completely reset!"
+  AiCommand:
+    message: "The `Artificial Intelligence` module has been **:status** for the :channel channel."
+    status:
+      enabled: "Enabled"
+      disabled: "Disabled"
+  AliasCommand:
+    noSlotsLeft: "The server doesn't have any more alias slots, you can delete existing aliases to free up slots."
+    alreadyExists: "There is already a custom alias called `{0}`"
+    invalidCommand: "Invalid command given, I don't know of any command called `{0}`"
+    invalidAlias: "Invalid alias given, `{0}` is not registered as an alias."
+    created: "The `:alias` alias has been linked to `:command`\nThe server has `:slots` more aliases slots available."
+    deleted: "The `:alias` alias has been deleted successfully."
+  AutoAssignRoleCommand:
+    higherInTheHierarchy:
+      user: ":user The **:role** role is positioned higher in the hierarchy than any role you have, you can't add roles with a higher ranking than you have."
+      bot: ":user The **:role** role is positioned higher in the hierarchy, I can't give/remove this role from users."
+    enabled: ":user **Auto assign role** on user join has been **enabled** and set to  **:role**"
+    disabledNow: ":user **Auto assign role** on user join is now **disabled**."
+    disabled: ":user **Auto assign role** on user join is currently **disabled**."
+    status: ":user The **auto assign role** is currently set to **:role**"
+  BanCommand:
+    mustMentionUser: "You must mention the user you want to ban."
+    higherRole: "You can't ban people with a higher, or the same role as yourself."
+    userHaveHigherRole: "I can't ban {0}, they have a higher role than me, if you want be to be able to ban the user, please readjust my role position to above {0} highest role."
+    success: "**:target** was permanently banned by :user for \":reason\""
+    failedToBan: "Failed to ban **:target** due to an error: :error"
+  CategoriesCommand:
+    title: "Command Category Status for #{0}"
+    status: ":emoteEnabled Enabled   :emoteDisabledInChannel Disabled in Channel   :emoteDisabledGlobally Disabled Globally"
+  ChangePrefixCommand:
+    missingArgument: "Missing argument `category`, you must specify the command category you want to change/reset the prefix for."
+    invalidCategory: "Invalid `category` given, there are no command categories that are called, or starts with `{0}`"
+    invalidPrefix: "Invalid command prefix given, `{0}` is not a valid command prefix, all prefixes must **NOT** contain spaces and be between 1 and 16 characters long."
+    update:
+      global: "All commands in every command category now uses the `:prefix` prefix."
+      category: "All commands in the `:category` command category now uses the `:prefix` prefix."
+    reset:
+      global: "All commands in every command category has been reset to use the `:prefix` prefix."
+      category: "All commands in the `:category` command category has been reset to use the `:prefix` prefix."
+  ChannelLevelCommand:
+    invalidChannel: "Invalid channel given, the channel must be a valid text channel."
+    cantTalkInChannel: "I can't talk in the {0} channel, so no users will be rewarded any XP for talking in the channel, if you want me to give users XP, please change my permission level for the channel so I can send messages in the channel."
+    noChannelsWithRewardsDisabled: "There are currently no channels with the level rewards disabled, you can add one by using the `{0} <channel>` command"
+    failedToUpdate: "Failed to save the changes to the database, please try again, if the issue persists, please contact one of my developers."
+    listChannels: "All the channels mentioned below currently has their level rewards turned off, any channel not on this list is unaffected.\n\n:channels"
+    listChannelsTitle: "Channels with their Level Rewards disabled ({0})"
+    success: "The XP rewards for the :channel channel has been **:status**!"
+    status:
+      enabled: "Enabled"
+      disabled: "Disabled"
+  GoodbyeCommand:
+    note: "\nYou can customize the message by using `{0} [message]`"
+    message: "The `Goodbye` module has been **:status** for the :channel channel."
+    status:
+      enabled: "Enabled"
+      disabled: "Disabled"
+  GoodbyeMessageCommand:
+    moduleMustBeEnabled: "The `goodbye` module must be enabled to use this command, you can enable the `goodbye` module by using the `{0}` command."
+    message: "The embed option for goodbye messages has been **:status**\n:note"
+    changedToDefault: "The `Goodbye` module message has been set back to the default."
+    status:
+      enabled: "enabled"
+      disabled: "отключен"
+    note:
+      embed: "Goodbye messages will now be sent using embedded messages with the color: {0}"
+      normal: "Now sending goodbye messages through normal messages."
+  IAmCommand:
+    notSelfAssignable: ":user Invalid role, **:role** is not a self-assignable role."
+    roleIsHigherInTheHierarchy: ":user The role is higher in the role hierarchy, I can't give/remove the **:role** role from anyone."
+    message: ":user You now have the **:role** role!"
+  IAmNotCommand:
+    notSelfAssignable: ":user Invalid role, **:role** is not a self-assignable role."
+    roleIsHigherInTheHierarchy: ":user The role is higher in the role hierarchy, I can't give/remove the **:role** role from anyone."
+    message: ":user You no longer have the **:role** role!"
+  KickCommand:
+    mustMentionUser: "You must mention the user you want to kick."
+    higherOrSameRole: "You can't kick people with a higher, or the same role as yourself."
+    cantKickUser: "I can't kick {0}, they have a higher role than me, if you want be to be able to kick the user, please readjust my role position to above {0} highest role."
+    success: "**:target** was kicked by :user for \":reason\""
+    error: "Failed to kick **:target** due to an error: :error"
+  LanguageCommand:
+    invalidLanguageCode: "Invalid language code given, `{0}` is not a valid language code, or it is not yet supported!"
+    changed: "The servers language has been successfully been updated to use the :name language!"
+    note: "AvaIre supports several user-contributed languages that you can select with this command. Translations may not be 100% accurate or complete.\nTo select a language use `{0} <code>`"
+  LevelAlertsCommand:
+    message: "`Levels up alerts` has been `:status` for the server.:note"
+    note: "\nAll level up messages will be logged into the <#{0}> channel."
+    status:
+      enabled: "Enabled"
+      disabled: "Disabled"
+  LevelCommand:
+    message: "`Levels & Experience` has been `:status` for the server.:note"
+    note: "\nLevel alerts are current `{0}`, you can toggle them on or off with `{1}levelalerts`"
+    status:
+      enabled: "Enabled"
+      disabled: "Disabled"
+  LevelHierarchyCommand:
+    invalidTypeGiven: "Invalid type given, to toggle level hierarchy on or off, you must use either `on` or `off`."
+    message: "Level up hierarchy has been `:status` for the server."
+    statusMessage: "Level up hierarchy is currently `:status`, you can toggle it on or off with `:command`"
+    status:
+      enabled: "Enabled"
+      disabled: "Disabled"
+  LevelModifierCommand:
+    invalidNumberGiven: "Invalid modifier given, the modifier much be a positive percentage between `0.01%` and `500%`"
+    resetToDefault: "The level modifier has been reset back to using the default **:modifier** modifier."
+    changedTo: "The level and experience modifier have been change to **:modifier**"
+    requiredIsNow: "\n\n**Required XP to reach some levels is now:**\n"
+    statusMessage: "The server is currently using a **:modifier** modifier for levels and experience.\n\n**Required XP to reach some levels**\n"
+    level: "Level {0}"
+  ListAliasesCommand:
+    noAliases: "The server doesn't have any aliases right now, you can create one using the\n`{0}alias <alias> <command>` command"
+    listAliases: "List of Aliases ({0})"
+  ListLevelRolesCommand:
+    noLevelRoles: "There are currently no level roles, an administrator can add roles to the level up table using the `:command` command"
+    listRoles: "List of Level Roles ({0})"
+  ListReactionRoleCommand:
+    noReactionRoles: "The server doesn't have any reaction roles right now, you can create one using\n`{0}arr <emote> <role>`"
+    listReactionRoles: "List of Reaction Roles ({0})"
+  ListSelfAssignableRolesCommand:
+    noSelfAssignableRoles: "There are currently no self-assignable roles for this server."
+    title: "There are {0} self-assignable roles"
+  ModlogCommand:
+    mustMentionTextChannel: "Invalid channel argument given, you must mention a valid text channel"
+    cantSendEmbedMessages: "I can't send embed messages in the specified channel, please change my permission level for the {0} channel if you want to use it as a modlog channel."
+    enable: ":user **Server Modlogging** is now enabled and set to the :modlog channel."
+    enabled: ":user **Server Modlogging** is currently enabled and set to the :modlog channel."
+    disable: ":user **Server Modlogging** is now disabled for the server."
+    disabled: ":user **Server Modlogging** is currently disabled."
+  ModlogHistoryCommand:
+    mustMentionUser: "You must mention a valid `user` you want to display the modlog history for."
+    noHistory: "No modlog history was found for this user."
+    title: "{0}#{1} History ({2})"
+    entry: "**{1}** | **#{0}** | **Moderator:** {2}\n**Date:** {3}\n**Reason:** {4}"
+    noReasonGiven: "No reason was given."
+  ModlogPardonCommand:
+    modlogNotEnabled: "No modlog channel has been set, you must set a modlog channel to use this command."
+    invalidCaseId: "Invalid case id given, the ID must be greater than 0 and less than {0}"
+    couldntFindCaseWithId: "Couldn't find a modlog case with an ID of {0} where you were the moderator, are you sure you're the moderator for the given modlog case?"
+    caseAlreadyPardoned: "The modlog case ID with an ID of `{0}` is already pardoned."
+    notAPunishment: "The modlog case ID with an ID of `{0}` is not a punishment!"
+    message: "The modlog case with an ID of **:case** has been been pardoned successfully."
+  ModlogReasonCommand:
+    modlogNotEnabled: "No modlog channel has been set, you must set a modlog channel to use this command."
+    invalidCaseId: "Invalid case id given, the ID must be greater than 0 and less than {0}"
+    couldntFindCaseWithId: "Couldn't find a modlog case with an ID of {0} where you were the moderator, are you sure you're the moderator for the given modlog case?"
+    couldntFindModlogChannel: "Couldn't find the modlog channel, was it removed?"
+    success: "The modlog case with an ID of **:id** was successfully edited and set to the reason of `:reason`"
+    modlogCaseWasPardoned: "The modlog case with an ID of `{0}` has been pardoned, you can't edit pardoned modlog cases."
+    failedToEdit: "Failed to edit modlog message: {0}"
+    failedToFindMessage: "Couldn't find the message for the given modlog case, was it deleted?"
+  MuteCommand:
+    requiresModlogToBeSet: "This command requires a modlog channel to be set, a modlog channel can be set using the `{0}modlog` command."
+    requireMuteRoleToBeSet: "No mute role have been setup for the server, you can setup a mute role using the `{0}muterole` command."
+    higherOrSameRole: "You can't mute people with a higher, or the same role as yourself."
+    muteRoleIsPositionedHigher: "The {0} role used for mutes are positioned higher in the role hierarchy than any roles I have, so I can't automatically assign the role to other users, please fix this or use another role for mutes."
+    invalidUserMentioned: "Invalid user mentioned, you must mention a user on the server you want to mute to use this command."
+    invalidTimeGiven: "Invalid time given, the time must be at least one minute or more."
+    userHasBeenMuted: ":target has been muted :time!"
+    time:
+      permanently: "permanently"
+      forFormat: "for {0}"
+  MuteRoleCommand:
+    onCooldown: "You have recently use a command option that created and/or modified roles and channel permissions, you have to wait **:cooldown** before you can use this command again."
+    roleDoesntExists: "Invalid role given, the `{0}` role doesn't exists."
+    rolePositionedHigher: "The {0} role is positioned higher than any role I have, so I can assign the role to anyone."
+    cantCreateRoleDueToPermissions: "I can't create the muted role because I don't have the \"Manage Roles\" permissions for the server."
+    noMuteRoleSet: "There are currently no mute role set for the server, you can set the role you wanna use as the mute role using `:command set <role>`, or you can make the bot create a new muted role using `:command create-role`."
+    usingRoleMessage: "The server is using the :role role for mutes."
+    roleHasBeenRemoved: "The muted role has been removed, the mute feature is now disabled until another muted role is assigned."
+    roleHasBeenCreated: "The :role role has been successfully created, and all the channel permissions to prevent users with the role from talking in channels have automatically been setup for the channels I have access to."
+    nowUsingRole: "The :role role will now be used for muting users."
+    nowUsingExistingRole: "A role called `Muted` already exists on the server, now using the :role role for mutes, if you want the bot to setup all the channel override permissions to prevent users with the role from talking in the channels, you can use the\n`:command setup-permissions` command."
+  NSFWCommand:
+    invalidChannelOrStatus: "Invalid channel or status type given!"
+    notValidChannel: "`{0}` is not a valid text channel!"
+    notValidStatus: "`{0}` is not a valid status type, you must either pass `on` or `off`."
+    message: "The :textChannel channel currently has NSFW **:status**!"
+    updated: "The NSFW status for :textChannel has been changed to **:status**"
+    status:
+      enabled: "Enabled"
+      disabled: "Disabled"
+  PurgeCommand:
+    messagesDeletedIn: "{0} messages has been deleted in the {1} channel."
+    messagesDeletedBy: "{0} messages sent by {1} has been deleted in the {2} channel."
+    success: ":white_check_mark: `:number` messages has been deleted!"
+    successBy: ":white_check_mark: `:number` messages has been deleted from :users"
+    nothingToDelete: ":x: Nothing to delete, I am unable to delete messages older than 14 days."
+    nothingToDeleteBy: ":x: Nothing to delete, I am unable to find any messages by :users in the last **:number** messages that was sent within the last 14 days."
+  RemoveLevelRoleCommand:
+    noRolesCalled: ":user There are no role called **:role** on the level up table."
+    noRolesLinked: ":user There are no roles linked to level **:role** on the level up table."
+    notALevelRole: ":user Invalid role, the `:name` role is not on the level up table."
+    message: "Role **:role** role has been removed from the level-up role list.\nThe server now have `:slots` level role slots available."
+  RemoveReactionRoleCommand:
+    noReactionRoles: "The server doesn't have any reaction roles right now, you can create one using\n`{0}arr <emote> <role>`"
+    messageIdMustBeGreaterThanOne: "Invalid `message id` given, the `message id` must be at least 1 or greater."
+    messageIdMustBeLowerThanRolesSize: "Invalid `message id` given, the `message id` cannot be higher than the amount of reaction roles the server currently has, which is `{0}` right now."
+    failedToFetchMessage: "Something went wrong while trying to fetch the reaction role message with an ID of `{0}`, if this issue continues to happen, please report it to one of my developers."
+    mustIncludeEmote: "You must include the emote you want to remove from the reaction message."
+    emoteDoestBelongToServer: "The emote does not belong to this server, you can only use emotes from this server as reaction emotes."
+    roleNotFoundOnMessage: "The specified reaction message doesn't have a reaction role attached to it using the {0} emote."
+    deletedMessage: "The reaction role message with an ID of **#:id** has successfully been deleted!"
+    deletedEmote: "The :emote emote has been successfully removed from the reaction message.\nThe message has `:roleSlots` more reaction-role slots available for the message, and `:messageSlots` reaction-message slots available."
+  RemoveSelfAssignableRoleCommand:
+    message: "Role **:role** role has been removed from the self-assignable list.\nThe server has `:slots` more self-assignable roles slots available."
+  RoleLevelCommand:
+    invalidRole: "Invalid role given, I found no role on the server called `{0}`"
+    noRolesWithRewardsDisabled: "There are currently no roles with the level rewards disabled, you can add one by using the `{0} <role>` command."
+    listRoles: "All the roles mentioned below currently have their level rewards turned off, this means that any user with one of those roles won't earn any XP in any channel they talk in, any role not on this list is unaffected.\n\n:roles"
+    listRolesTitle: "Roles with their Level Rewards disabled ({0})"
+    success: "The XP rewards for the :role role has been **:status**!"
+    status:
+      enabled: "Enabled"
+      disabled: "Disabled"
+  SetRoleColorCommand:
+    noRoleFound: "No role with the name \"{0}\" was found."
+    invalidColor: "The color \"{0}\" is not recognized, use the following HEX format instead \"#XXXXXX\""
+    userMissingPermissions: "You can't use the this command for the {0} role, you must have greater or equal privileges as the role to successfully run the command."
+    botMissingPermissions: "The Set Role Color command can't be used for the {0} role, I need to have greater or equal privileges as the role to successfully run the command."
+    colorChangeComplete: "The :role role has been successfully changed to **:color**."
+  SlowmodeCommand:
+    missingArgument: "Missing argument, you must either pass in the `seconds` value to enable slowmode for this or the mentioned channel, or `off` to disable it."
+    mustBeValidNumbers: "Invalid slowmode value given, you must provide a number between **1** and **120**."
+    message: "Slowmode has been **enabled** for the :textChannel channel.\nThe channel now allows **:slowmode** messages every second per-user."
+    disabled: "Successfully **disabled** slowmode for the :textChannel channel."
+    invalidTextChannel: "`{0}` is not a not a valid text channel, you must target a text channel to setup slowmode."
+    failedToUpdate: "Failed to update the :textChannel channel, error: :message"
+  ToggleCategoryCommand:
+    invalidCategory: "Invalid category given, `{0}` is not a valid category"
+    missingArgumentType: "Missing argument `channel/global`, you must include the channel or specify that the command should be run globally."
+    invalidChannelOrGlobalString: "Invalid channel or global string given, you must either mention the channel you want to affect, or write `global` to affect all the channels at the same time."
+    cantEnabledCategory: "Whoops, you can't enable the **:category** command category while it is disabled globally.\nYou can use the command below to enable the category for all channels.\n`:command :category global on`"
+    update:
+      globally: "The `:category` command category has been `:status` for **all channels**."
+      category: "The `:category` command category has been `:status` in :channel."
+    status:
+      enabled: "Enabled"
+      disabled: "Disabled"
+  UnbanCommand:
+    success: ':target has been successfully unbanned from the server because ":reason".'
+    failedToUnban: "Failed to unban :target due to an error, message: :error"
+    noUserIsBanned: "No user with an ID of `:id` is currently banned from the server."
+    invalidUserIdGiven: "Invalid `user id` was given, the `user id` must be a numeric string of 18 or more numbers long."
+  UnmuteCommand:
+    requiresModlogToBeSet: "This command requires a modlog channel to be set, a modlog channel can be set using the `{0}modlog` command."
+    requireMuteRoleToBeSet: "No mute role have been setup for the server, you can setup a mute role using the `{0}muterole` command."
+    muteRoleIsPositionedHigher: "The {0} role used for mutes are positioned higher in the role hierarchy than any roles I have, so I can't automatically remove the role from other users, please fix this or use another role for mutes."
+    invalidUserMentioned: "Invalid user mentioned, you must mention a user on the server you want to unmute to use this command."
+    userDoesntHaveMuteRole: "{0} doesn't appear to have the mute role, they may already have been unmuted!"
+    userHasBeenUnmuted: ":target has been unmuted!"
+    userAutoUnmutedReason: "*Automatic unmute after the set time has elapsed*"
+  VoiceKickCommand:
+    mustMentionUser: "You must mention the user you want to kick."
+    sameOrHigherRole: "You can't kick people with a higher, or the same role as yourself."
+    notConnected: "You can't voice kick people who are not connected to a voice channel."
+    message: "**:target** was kicked from **:voiceChannel** by :user for \":reason\""
+  VoteOptCommand:
+    invalidArgument: "Invalid argument, you must either parse `in` or `out` to opt in or out of vote messages."
+    message: "You have now opt-:type of getting vote messages."
+    type:
+      in: "in"
+      out: "out"
+  WarnCommand:
+    requiresModlogIsEnabled: "This command requires a modlog channel to be set, a modlog channel can be set using the `{0}modlog` command."
+    mustMentionUse: "You must mention a user you want warn."
+    warnBots: "You can't warn bots!"
+    failedToLogWarning: "Failed to log warning to the set modlog channel, does the modlog channel still exists, can I still send messages in the channel?"
+    message: ":target has been **warned** for \":reason\""
+    failedToSendDM: "Failed to DM the user with the warning, they most likely have their private settings set to disable all DMs from this server."
+  WelcomeCommand:
+    note: "\nYou can customize the message by using `{0} [message]`"
+    message: "The `Welcome` module has been **:status** for the :channel channel.:note"
+    status:
+      enabled: "Enabled"
+      disabled: "Disabled"
+  WelcomeMessageCommand:
+    moduleMustBeEnabled: "The `welcome` module must be enabled to use this command, you can enable the `welcome` module by using the `{0}welcome` command."
+    message: "The embed option for welcome messages has been **:status**\n:note"
+    changedToDefault: "The `Welcome` module message has been set back to the default."
+    status:
+      enabled: "enabled"
+      disabled: "отключен"
+    note:
+      embed: "Welcome messages will now be sent using embedded messages with the color: {0}"
+      normal: "Now sending welcome messages through normal messages."
 fun:
-    DiceCommand:
-        missingDice: 'Вы должны включить игру в кости, если хотите бросить их.'
-        invalidDiceFormat: '`{0}` не является действительным формантом для костей.'
-        diceFormatMustBeGreaterThan: '`{0}` не является допустимым форматом для кости. Кости должны быть больше 0 и меньше 35.'
-        diceFormatMustBePositive: '`{0}` не является допустимым форматом для кости. Размер кости должен быть действительным, положительным числом от 1 до 35.'
-        sidesFormatMustBeGreaterThan: '`{0}` не является допустимым форматом для кости. Стороны кости должны быть больше 0 и меньше 128'
-        sidesFormatMustBePositive: '`{0}` не является допустимым форматом для кости. Сумма сторон должна быть действительным, положительным числом от 1 до 128.'
-        moreThanFiveRollsWasGiven: '\n_Больше, чем **5** данных о костях не отоброжается. Сейчас отображаются только первые пять._\n'
-        resultedIn: '**{0}** привело к **{1}**  ({2})'
-
-    CoinflipCommand:
-        heads: "You got Heads"
-        tails: "You got Tails"
-
-    EightBallCommand:
-        mustIncludeQuestion: 'Сообщение должено включать в себя вопрос для 8ball.'
-        answers:
-            - 'Это точно'
-            - 'Явно неоднозначно'
-            - 'Без сомнения'
-            - 'Да, безусловно'
-            - 'Вы можете положиться на него'
-            - 'Как я вижу, да'
-            - 'Скорее всего'
-            - 'Перспективы хорошие'
-            - 'Да'
-            - 'Знаки указывают на да'
-            - 'Туманный ответ, я бы попробовал еще раз'
-            - 'Спросите снова, но позже'
-            - 'Лучше не рассказывать сейчас'
-            - 'Невозможно предсказать сейчас'
-            - 'Сконцентрируйтесь и спросите еще раз'
-            - "Не рассчитывайте на это"
-            - 'Мой ответ - нет'
-            - 'Мои источники говорят, что нет'
-            - 'Перспектива, не настолько хорошая'
-            - 'Очень сомнительно'
-    HolidayCommand:
-        tooManyAttempts: "The Holiday API was hit too many times which shouldn't have been possible. D:"
-        notFound: "The Holiday API command could not retrieve any data for this request."
-        somethingWentWrong: "Something went wrong. Perhaps contact a bot administrator for help."
-        noHolidaysToday: "No holidays today...Get back to work!"
-        todayHoliday: "Today is {0}"
-
-    MemeCommand:
-        missingArgument: 'Отсутствует аргумент `действия`, вы должны указать тип мема или пользователя, для которого хотите сгенерировать мем. Вы также можете прописать `!meme list`, чтобы отобразить все доступные типы мемов.'
-        invalidType: '`{0}` Недопустимый тип мема!'
-        mustIncludeTopAndBottomText: 'Вы должны включить аргументы `Заголовок` и `Нижний текст` чтобы создать мем.'
-        listItem: '`{0}` => `{1}`'
-
-    PunCommand:
-        title: "Pun list"
-        noResults: ":user I found no puns, you can with a search or, or just try again later."
-        noResultsWithQuery: ":user I found nothing for `:query`"
-        query: "Search query: {0}"
-
-    RandomCatCommand:
-        tooManyAttempts: "Too many attempts was made to the cat API, try again in a minute, or ask a bot administrator to get an API key at [meow.senither.com](https://meow.senither.com/) to allow for more requests."
-        notFound: "I couldn't find any cat picture D: Try again, maybe they will show up now?"
-        somethingWentWrong: "Something just went horribly wrong, please tell a bot administrator so they can look into this."
-
-    ReverseCommand:
-        palindrome: 'Вы полностью изменили палиндром, что Вы ожидали?'
-
-    RipCommand:
-        hasPaidTheirRespects: '**{0}** отдал дань уважения.'
-        todayAndOverall: '{0} за сегодня. {1} В общем и целом'
-
-    RollCommand:
-        invalidValueGiven: 'Недопустимое `{0}` значение, `{1}` должно быть числом!'
-        rolledNumber: ':user выбросил **:number** из :min - :max'
-
-    SayCommand:
-        userMissingPermissions: "You can't use the this command for the {0} channel, you must have the message write and message manage permissions for the channel to use the command for the channel."
-        botMissingPermissions: "The say command can't be used for the {0} channel, I need both the message write and message manage permissions for the channel to successfully run the command."
-        success: "Your message have been sent to the :name channel."
-
-    UndertaleTextBoxCommand:
-        noArgumentsGiven: "Missing argument, you must either provide `list` to see a list of characters you can choose from, or to generate an image, `character` or a valid image `url` to build the image for."
-        failedToGenerateImage: "Failed to generate the the image, are you sure you provided a correct image URL or character name?"
-        title: "Undertale Character List"
-
+  DiceCommand:
+    missingDice: 'Вы должны включить игру в кости, если хотите бросить их.'
+    invalidDiceFormat: '`{0}` не является действительным формантом для костей.'
+    diceFormatMustBeGreaterThan: '`{0}` не является допустимым форматом для кости. Кости должны быть больше 0 и меньше 35.'
+    diceFormatMustBePositive: '`{0}` не является допустимым форматом для кости. Размер кости должен быть действительным, положительным числом от 1 до 35.'
+    sidesFormatMustBeGreaterThan: '`{0}` не является допустимым форматом для кости. Стороны кости должны быть больше 0 и меньше 128'
+    sidesFormatMustBePositive: '`{0}` не является допустимым форматом для кости. Сумма сторон должна быть действительным, положительным числом от 1 до 128.'
+    moreThanFiveRollsWasGiven: "\n_Больше, чем **5** данных о костях не отоброжается. Сейчас отображаются только первые пять._\n"
+    resultedIn: '**{0}** привело к **{1}**  ({2})'
+  CoinflipCommand:
+    heads: "You got Heads"
+    tails: "You got Tails"
+  EightBallCommand:
+    mustIncludeQuestion: 'Сообщение должено включать в себя вопрос для 8ball.'
+    answers:
+      - 'Это точно'
+      - 'Явно неоднозначно'
+      - 'Без сомнения'
+      - 'Да, безусловно'
+      - 'Вы можете положиться на него'
+      - 'Как я вижу, да'
+      - 'Скорее всего'
+      - 'Перспективы хорошие'
+      - 'Да'
+      - 'Знаки указывают на да'
+      - 'Туманный ответ, я бы попробовал еще раз'
+      - 'Спросите снова, но позже'
+      - 'Лучше не рассказывать сейчас'
+      - 'Невозможно предсказать сейчас'
+      - 'Сконцентрируйтесь и спросите еще раз'
+      - "Не рассчитывайте на это"
+      - 'Мой ответ - нет'
+      - 'Мои источники говорят, что нет'
+      - 'Перспектива, не настолько хорошая'
+      - 'Очень сомнительно'
+  HolidayCommand:
+    tooManyAttempts: "The Holiday API was hit too many times which shouldn't have been possible. D:"
+    notFound: "The Holiday API command could not retrieve any data for this request."
+    somethingWentWrong: "Something went wrong. Perhaps contact a bot administrator for help."
+    noHolidaysToday: "No holidays today...Get back to work!"
+    todayHoliday: "Today is {0}"
+  MemeCommand:
+    missingArgument: 'Отсутствует аргумент `действия`, вы должны указать тип мема или пользователя, для которого хотите сгенерировать мем. Вы также можете прописать `!meme list`, чтобы отобразить все доступные типы мемов.'
+    invalidType: '`{0}` Недопустимый тип мема!'
+    mustIncludeTopAndBottomText: 'Вы должны включить аргументы `Заголовок` и `Нижний текст` чтобы создать мем.'
+    listItem: '`{0}` => `{1}`'
+  PunCommand:
+    title: "Pun list"
+    noResults: ":user I found no puns, you can with a search or, or just try again later."
+    noResultsWithQuery: ":user Я ничего не нашел для: `:query`"
+    query: "Search query: {0}"
+  RandomCatCommand:
+    tooManyAttempts: "Too many attempts was made to the cat API, try again in a minute, or ask a bot administrator to get an API key at [meow.senither.com](https://meow.senither.com/) to allow for more requests."
+    notFound: "I couldn't find any cat picture D: Try again, maybe they will show up now?"
+    somethingWentWrong: "Something just went horribly wrong, please tell a bot administrator so they can look into this."
+  ReverseCommand:
+    palindrome: 'Вы полностью изменили палиндром, что Вы ожидали?'
+  RipCommand:
+    hasPaidTheirRespects: '**{0}** отдал дань уважения.'
+    todayAndOverall: '{0} за сегодня. {1} В общем и целом'
+  RollCommand:
+    invalidValueGiven: 'Недопустимое `{0}` значение, `{1}` должно быть числом!'
+    rolledNumber: ':user выбросил **:number** из :min - :max'
+  SayCommand:
+    userMissingPermissions: "You can't use the this command for the {0} channel, you must have the message write and message manage permissions for the channel to use the command for the channel."
+    botMissingPermissions: "The say command can't be used for the {0} channel, I need both the message write and message manage permissions for the channel to successfully run the command."
+    success: "Your message have been sent to the :name channel."
+  UndertaleTextBoxCommand:
+    noArgumentsGiven: "Missing argument, you must either provide `list` to see a list of characters you can choose from, or to generate an image, `character` or a valid image `url` to build the image for."
+    failedToGenerateImage: "Failed to generate the the image, are you sure you provided a correct image URL or character name?"
+    title: "Undertale Character List"
 help:
-    HelpCommand:
-        listOfCommands: ':page_with_curl: **Список команд**'
-        commandNote: '**Введите `:help <команда>`, чтобы увидеть справку для указанной команды.**\nПример: `:help :command`'
-        categoriesNote: ':information_source: Введите `:help <категория>`, чтобы получить список команд в этой категории.\nПример: `:help {0}` или `:help {1}`'
-        categoriesTitle: ':scroll: Категории команд'
-        invalidCategory: 'Указана недопустимая категория команд, нет категорий под названием `:category`'
-        invalidCommand: 'Указана недействительная команда, нет команды, которая имеет данный `:trigger` триггер'
-        tryingToViewSystemCommands: "У вас нет прав для запуска каких-либо команд в `System` категории, системные команды могут влиять на все сервера, на которых в данный момент работает бот, и из-за этого ограничены администраторами / разработчиками бота."
-        singularHiddenCategories: '_Для этого канала **{0}** есть скрытая категория._'
-        multipleHiddenCategories: '_Для этого канала **{0}** есть скрытые категории._'
-        fields:
-            usage: 'Применение'
-            example: 'Пример'
-            aliases: 'Псевдонимы'
-            seeAlso: 'Смотрите также'
-            footer: 'Категория команд: '
-
+  HelpCommand:
+    listOfCommands: ':page_with_curl: **Список команд**'
+    commandNote: "**Введите `:help <команда>`, чтобы увидеть справку для указанной команды.**\nПример: `:help :command`"
+    categoriesNote: ":information_source: Введите `:help <категория>`, чтобы получить список команд в этой категории.\nПример: `:help {0}` или `:help {1}`"
+    categoriesTitle: ':scroll: Категории команд'
+    invalidCategory: 'Указана недопустимая категория команд, нет категорий под названием `:category`'
+    invalidCommand: 'Указана недействительная команда, нет команды, которая имеет данный `:trigger` триггер'
+    tryingToViewSystemCommands: "У вас нет прав для запуска каких-либо команд в `System` категории, системные команды могут влиять на все сервера, на которых в данный момент работает бот, и из-за этого ограничены администраторами / разработчиками бота."
+    singularHiddenCategories: '_Для этого канала **{0}** есть скрытая категория._'
+    multipleHiddenCategories: '_Для этого канала **{0}** есть скрытые категории._'
+    fields:
+      usage: 'Применение'
+      example: 'Пример'
+      aliases: 'Псевдонимы'
+      seeAlso: 'Смотрите также'
+      footer: 'Категория команд: '
 interaction:
-    BiteCommand: '**{0}** сделал кусь **{1}**'
-    BlushCommand: '**{0}** краснеть **{1}**'
-    CuddleCommand: '**{0}** обнимашки c **{1}**'
-    DivorceCommand: '**{0}** :tongue: развел **{1}**'
-    EatCommand: '**{0}** ест всякую фигню с **{1}**'
-    HandHoldCommand: '**{0}** holds hands with **{1}**'
-    HelloCommand: '**{0}** приветствует **{1}**'
-    HighFiveCommand: '**{0}** дал :raised_hand: **{1}**'
-    HugCommand: '**{0}** обнимашки c **{1}**'
-    KillCommand: '**{0}** хочет убить **{1}**'
-    KissCommand: '**{0}** чмокнул **{1}**'
-    LaughCommand: '**{0}** laughs at **{1}**'
-    MarryCommand: '**{0}** wants to marry **{1}**'
-    MeowCommand: '**{0}** мяукает **{1}**'
-    PanCommand: '**{0}** ударил **{1}** сковородкой! :cooking:'
-    PatCommand: '**{0}** гладит **{1}**'
-    PokeCommand: '**{0}** тыкает **{1}**'
-    PoutCommand: '**{0}** дуется на **{1}**'
-    PunchCommand: '**{0}** бьет **{1}**'
-    SenpaiCommand: '**{0}** хочет быть замеченным **{1}**'
-    ShrugCommand: '**{0}** пожимает плечами перед **{1}**'
-    SlapCommand: '**{0}** дал пощечину **{1}**'
-    TickleCommand: '**{0}** щекочет **{1}**'
-    TriggeredCommand: '**{0}** раздражен **{1}**'
-
+  BiteCommand: '**{0}** сделал кусь **{1}**'
+  BlushCommand: '**{0}** краснеть **{1}**'
+  CuddleCommand: '**{0}** обнимашки c **{1}**'
+  DivorceCommand: '**{0}** :tongue: развел **{1}**'
+  EatCommand: '**{0}** ест всякую фигню с **{1}**'
+  HandHoldCommand: '**{0}** holds hands with **{1}**'
+  HelloCommand: '**{0}** приветствует **{1}**'
+  HighFiveCommand: '**{0}** дал :raised_hand: **{1}**'
+  HugCommand: '**{0}** обнимашки c **{1}**'
+  KillCommand: '**{0}** хочет убить **{1}**'
+  KissCommand: '**{0}** чмокнул **{1}**'
+  LaughCommand: '**{0}** laughs at **{1}**'
+  MarryCommand: '**{0}** wants to marry **{1}**'
+  MeowCommand: '**{0}** мяукает **{1}**'
+  PanCommand: '**{0}** ударил **{1}** сковородкой! :cooking:'
+  PatCommand: '**{0}** гладит **{1}**'
+  PokeCommand: '**{0}** тыкает **{1}**'
+  PoutCommand: '**{0}** дуется на **{1}**'
+  PunchCommand: '**{0}** бьет **{1}**'
+  SenpaiCommand: '**{0}** хочет быть замеченным **{1}**'
+  ShrugCommand: '**{0}** пожимает плечами перед **{1}**'
+  SlapCommand: '**{0}** дал пощечину **{1}**'
+  TickleCommand: '**{0}** щекочет **{1}**'
+  TriggeredCommand: '**{0}** раздражен **{1}**'
 music:
-    internal:
-        songWasSkipped: '[:title](:url) - требуемый :author трек, был пропущен.'
-        nowPlayingSong: 'Теперь играет: [:title](:link) | `:duration`\n- Трек, требуемый :requester\nС громкостью `:volume%`'
-        nowPlayingPlaylist: 'Плей-лист **:playlistName** был добавлен в очередь с `:playlistSize` треками!'
-        nowPlaying: 'Сейчас играет: [:title](:link) | `:duration`\n- Трек, требуемый :requester\nС громкостью `:volume%`'
-        queueHasEnded: 'Бот закончил очередь, оставив вас в одиночестве.'
-        endedDueToInactivity: "The music has ended due to inactivity."
-        endedDueToWebSocketClose: "The audio web socket was forcefully closed, stopping the music."
-        noMatchFound: 'Я ничего не нашел с данным запросом: `{0}`'
-        trackLoadFailed: "Я не могу добавить это в очередь: `{0}`"
-        musicChannel: "Вы можете использовать только музыкальные команды в :channel канале."
-        resumeMusic: "Resuming music, please wait a few seconds while everything is loaded back for you."
-
-    ClearQueueCommand:
-        error: 'Нечего очищать, сначала попросите музыку `{0}play`'
-        emptyQueue: 'Ничего не видно, сейчас в очереди нет песен, ожидающих очереди.'
-        success: 'Я удалил **:queueSize** треки из очереди, теперь очередь пуста!'
-
-    DJLevelCommand:
-            title: "Current DJ Level: {0}"
-            footer: "Use \"{0} types\" to see a full list of the available DJ level types."
-            types:
-                title: "DJ Level Types"
-                footer: "Use \"{0} <type>\" to change the DJ Level to the given type for the server."
-            invalidType: "`{0}` is not a valid `DJ Level` type, please use one of the following:\n`{1}`"
-            changedTo: "The `DJ Level` status has changed to **:type**.\n:info"
-            information:
-                all: "Anyone can run any music commands, even without the `DJ` role."
-                none: "No one can run any music commands without the `DJ` role."
-                normal: "Preventing people from using commands like playlists, volume control, and force skip without the `DJ` role, but still allowing people to use the play command without the role."
-
-    DjRoleCommand:
-        invalidRoleMentioned: "Invalid role mentioned, I found no roles called `{0}`"
-        noDjRoleSelected: "There are currently no custom DJ role setup for the server, however anyone who has a role called `DJ` will still be able to use DJ restricted music commands."
-        currentSelectedRole: "The :role role is used as the music DJ role.\nAnyone with the role will be able to use DJ restricted music commands."
-        resetDjRole: "The DJ role has successfully been reset, however anyone who has a role called `DJ` will still be able to use music commands that requires the DJ role to be used."
-        selectedRoleForMusic: "The :role role will now be used as the music DJ role!"
-
-    MoveHereCommand:
-        error: 'Бот не подключен к голосовому каналу, сначала попросите музыку `{0}play`'
-        hasMusicChannel: "The server has a music voice channel setup, if you'd like me to move to a different voice channel, please get an admin on the server to drag 'n drop me into a different voice channel."
-        nowPlayingIn: 'Сейчас я играю музыку в **:channelName**'
-
-    MusicChannelCommand:
-        updated: "Музыкальный канал **:type** успешно :status"
-        field:
-            title: "Музыкальные каналы"
-            message: "**Text Channel:** :text\n**Voice Channel:** :voice"
-        status:
-            disabled: "отключен"
-            enabled: "установлен в **{0}**"
-        errors:
-            invalidType: "Недействительный тип канала, тип должен быть либо `текст`, либо `голос`"
-            notValidType: "`{0}` не является недействительным {1} каналом, вы должны включить действительный речевой канал, который вы хотите использовать в качестве музыкального канала."
-
-    MusicMessagesCommand:
-        message: "Music messages are currently **:status**.\n\n**Info**\n:info"
-        updated: "The music messages has successfully been **:status**."
-        error: "Invalid argument given, the status must be either `on` or `off` to change the music messages status."
-        footer: "To change the music messages, use {0}"
-        status:
-            disabled: "disabled"
-            enabled: "enabled"
-        info:
-            disabled: "When music messages are disabled, the `Now Playing` messages will no longer be sent, and other music related commands will automatically delete themselves after awhile."
-            enabled: "When music messages are enabled, the `Now Playing` messages will stay, even after the song being played changes, some related messages will also stay.\n**Note:** Most music commands will still be auto deleted after awhile."
-
-    PauseCommand:
-        error: 'Нечего останавливать, сначала попросите музыку `{0}play`'
-        alreadyPaused: 'Музыка приостановлена, используйте `!resume`, чтобы возобновить проигрывание.'
-        paused: 'Музыка была `приостановлена`'
-
-    PlayCommand:
-        addedSong: ':user добавил [:title](:url) в очередь. В очереди есть `:queueSize` песен(ня)(ни), впереди.'
-        addedSongsFromPlaylist: ':user добавил :songs песен(и)(ю) из плейлиста [:title](:url) в очередь. В очереди есть `:queueSize` песен(ня)(ни), впереди.'
-        session:
-            title: 'Результаты поиска для: `{0}`'
-            footer: 'Выберите трек из списка, прописав `{0} <номер>`'
-
-    PlaylistCommand:
-        noPlaylists: 'У этого сервера пока нет музыкальных плейлистов, вы можете создать его с помощью команды:\n`:command`'
-        noPlaylistWithName: 'Нет плейлиста под названием `:playlist`, вы можете создать список воспроизведения с помощью команды:\n`:command`'
-        invalidProperty: 'Указанно недопустимое `свойство`, таких свойств списка воспроизведения нет, называемых `{0}`.\nВы можете узнать больше, запустив `{1}help {2}`'
-        invalidFormat: 'Недопустимый формат, `:type` без свойства!\n`:command`'
-        invalidIdGiven: 'Недействительный идентификатор, указанное число тоже :type\n`:command`'
-        invalidIdNumberGiven: 'Недействительный идентификатор, идентификатор должен быть числом\n`:command`'
-        noMoreSongSlots: "В плейлисте `:playlist` больше нет слотов для песен."
-        noMorePlaylistSlots: "На сервере больше нет мест для плейлистов, вы можете удалить существующие плейлисты, чтобы освободить место для новых."
-        sameIdsGiven: "The two ids given are the same, the song won't be moved anywhere that way.\n`:command`"
-        failedToLoad: 'Ошибка загрузки: {0}'
-        failedToLoadPlaylist: 'Не удалось загрузить :playlist, повторите попытку позже или сообщите об этом одному из администраторов.'
-        failedToSavePlaylist: 'Что-то пошло не так, пытаясь сохранить плейлист: {0}'
-        loadedPlaylist: 'Список воспроизведения **:name** был загружен и добавлен в очередь с **:amount** песнями.'
-        noMatches: 'Нет совпадений..'
-        attemptingToAddLivestreamToPlaylist: "Вы не можете добавлять прямые трансляции в список воспроизведения!"
-        userHasAddedSong: ':user добавил [:name](:url)\n в плейлист - `:playlist`.\nВ плейлисте `:playlist` доступно `:slots` слотов для воспроизведения.'
-        swapSongInPlaylist: '[:selectedTitle](:selectedLink) have swapped position with [:replacedTitle](:replacedLink) in the `:playlist` playlist.'
-        alreadyExists: 'Плейлист с именем `:playlist`, уже существует!'
-        onlyNumbersInName: "Плейлист не может быть только числом, вы должны указать несколько букв в названии!"
-        renamingPlaylistAlreadyExists: "Невозможно переименовать `:oldplaylist` в `:playlist`, плейлист с именем `:playlist`, уже существует!"
-        playlistCreated: 'Плейлист `:playlist` был успешно создан!\nВы можете начать добавлять треки к нему с помощью команды: \n`:command :playlist add <название трека | url>`'
-        playlistDeleted: 'Плейлист `:name` был успешно удален!'
-        playlistRenamed: 'Плейлист `:oldplaylist` был переименован в `:playlist`'
-        playlistIsEmpty: 'В этом плейлисте нет песен, вы можете добавить в него треки с помощью команды: \n`:command`'
-        playlistIsAlreadyEmpty: 'Плейлист `:playlist` пуст, в нем нечего удалять.'
-        songHasBeenRemovedFromPlaylist: ':song успешно удален из `:playlist` плейлиста'
-        playlistTitle: ':musical_note: Список музыкальных плейлистов {0}'
-        playlistSize: '[ {0} из {1} ]'
-        playlistLine: '{0}\n       Количество песен в плейлисте **{1}**'
-        playlistSongLine: '`{0}` [{1}]({2}) [{3}]'
-
-    RemoveSongFromQueueCommand:
-        error: 'Отсутствует аргумент `song id`, вы должны указать ID трека, которую хотите удалить из очереди.'
-        failedToRemoveSong: 'Что-то пошло не так, не удалось удалить трек с индексом `:index`'
-        tooHighNumberGiven: 'Количество песен в очереди `{0}`'
-        invalidRange: 'Invalid range given, give the range of IDs in a start to end format, like `3-6`.'
-        mustBePositiveNumber: 'Идентификатор `song id` должен быть действительным, положительным числом.'
-        nothingToRemove: 'Нечего удалять, сначала попросите музыку `{0}play`'
-        success: ':song успешно удален из музыкальной очереди.'
-        successMultiple: 'Songs from `:start` to `:end` were successfully removed from the music queue.\n:tracks'
-        successMultipleNote: "\nAnd **{0}** more songs were removed from the queue."
-
-    RepeatMusicQueueCommand:
-        error: 'There is nothing to repeat, request music first with `{0}play`'
-        title: 'Current repeat mode: {0}'
-        message: "The music player repeat status have been successfully changed to **:state**, this means:\n\n:note"
-        footer: 'Use "{0} <repeat-mode>" to set the repeat mode.'
-        states:
-            single: 'One'
-            all: 'All'
-            loopoff: 'Off'
-        notes:
-            single: 'The music player will repeat the song that is currently playing without going to the next song in the queue.\n**Note:** This also mutes "Now Playing" messages so the chat is not spammed with the same song over and over again.'
-            all: 'The music player will repeat every song in the queue, after a song finishes playing it will be re-added to the end of the queue automatically.'
-            loopoff: 'The music player will not loop, when a song finishes playing it will get removed from the queue and the next track will begin playing.'
-
-    ResumeCommand:
-        error: 'Нечего возобновлять, сначала попросите музыку `{0}play`'
-        alreadyPlaying: 'Музыка уже воспроизводится, используйте `:prefixpause` для приостановки музыки.'
-        resume: 'Музыка была `resumed`'
-
-    SeekCommand:
-        error: 'Сейчас ничего не играет, попросите что-то `{0}play`'
-        invalidTimeGiven: 'Аргументом `number` должен быть допустимый формат времени, длина которого не менее 0 и более секунды.'
-        seekingLive: 'Вы не можете перейти к другому временному коду для прямых трансляций.'
-        seekingTooFar: '`{0}` это больше, чем длина текущего трека, если вы хотите перейти к следующему треку, то вместо этого используйте `{1}skip`'
-        seekTo: 'Поиск **:title** и `:time`'
-
-    SetDefaultVolumeCommand:
-        currentVolume: 'Громкость музыки для сервера в настоящее время установлена на `:volume%`'
-        changedVolume: 'Громкость музыки по умолчанию установлена на `:volume%`'
-        failedToSave: 'Что-то пошло не так, когда вы пытались сохранить громкость по умолчанию: {0}'
-        mustBeNumber: 'Громкость `volume` должна быть числом от 1 до 100'
-
-    ShuffleCommand:
-        error: 'Музыкальная очередь пуста, вы можете запросить что-то командой\n`{0}play <название трека | url>`'
-        success: '**:amount** трека в очереди, были перемешаны.'
-
-    SkipCommand:
-        error: 'Нечего пропускать, сначала попросите музыку `{0}play`'
-
-    SongCommand:
-        error: 'Нечего проигрывать, сначала попросите музыку `{0}play`'
-        paused: 'Проигрование в настоящее время приостановлено'
-        playing: 'В настоящее время играет мызыку'
-        songsInQueue: 'Песни в очереди'
-        moreSongs: 'Вы можете увидеть больше песен, используя {0} <страница>'
-        noSongs: 'Сейчас в очереди нет других песен.'
-        andXMoreSongs: '_И **{0}** еще трек{1}!_'
-        formats:
-            line: '**{0}** [{1}]({2})'
-            song: '[{0}]({1})\nВоспроизводится `{2}` с громкостью `{3}` слева от трека - Запрошено <@{4}>'
-            stream: '[{0}]({1})\nВоспроизводится `{2}` громкость, поток `{3}` - Запрошенный <@{4}>'
-
-    StopCommand:
-        error: "Сейчас ничего не играет, вы не можете остановить музыку, когда ничего не играет."
-        success: ':requester остановил проигрование, и **:number** песен(ня) была(о) удалена(о) из очереди.'
-
-    VoiceFixCommand:
-        message: "**Swapping to :swap region:** {0}\n**Swapping back to :original region:** {1}"
-        starting: "Starting swapping process...\n\n"
-        finished: "\n\nDone! Music should now work again!"
-        error: "Failed to finish the swap process, error: {0}"
-
-    VolumeCommand:
-        error: 'Ничего не играет, сначала попросите музыку `{0}play`'
-        requireDJRole: 'Nребуется роль `DJ` для изменения громкости!'
-        invalidVolume: 'Недопустимый % громкости, % громкости должен быть действительным числом от 1 до 100.'
-        nowPlaying: ':musical_note: Музыка играет в **:volume** громкость'
-        setTo: ':musical_note: Громкость музыки установлена на **:volume**'
-
-    VoteSkipCommand:
-        error: 'Нечего пропустить, сначала попросите музыку `{0}play`'
-        registered: 'Ваш голос был зарегистрирован! `:votes` необходимо голосов, чтобы пропустить трек.'
-        alreadyVoted: 'Вы можете проголосовать только один раз за трек! `:votes` необходимо голосов, чтобы пропустить трек.'
-
+  internal:
+    songWasSkipped: '[:title](:url) - требуемый :author трек, был пропущен.'
+    nowPlayingSong: "Теперь играет: [:title](:link) | `:duration`\n- Трек, требуемый :requester\nС громкостью `:volume%`"
+    nowPlayingPlaylist: 'Плей-лист **:playlistName** был добавлен в очередь с `:playlistSize` треками!'
+    nowPlaying: "Сейчас играет: [:title](:link) | `:duration`\n- Трек, требуемый :requester\nС громкостью `:volume%`"
+    queueHasEnded: 'Бот закончил очередь, оставив вас в одиночестве.'
+    endedDueToInactivity: "The music has ended due to inactivity."
+    endedDueToWebSocketClose: "The audio web socket was forcefully closed, stopping the music."
+    noMatchFound: 'Я ничего не нашел с данным запросом: `{0}`'
+    trackLoadFailed: "Я не могу добавить это в очередь: `{0}`"
+    musicChannel: "Вы можете использовать только музыкальные команды в :channel канале."
+    resumeMusic: "Resuming music, please wait a few seconds while everything is loaded back for you."
+  ClearQueueCommand:
+    error: 'Нечего очищать, сначала попросите музыку `{0}play`'
+    emptyQueue: 'Ничего не видно, сейчас в очереди нет песен, ожидающих очереди.'
+    success: 'Я удалил **:queueSize** треки из очереди, теперь очередь пуста!'
+  DJLevelCommand:
+    title: "Current DJ Level: {0}"
+    footer: "Use \"{0} types\" to see a full list of the available DJ level types."
+    types:
+      title: "DJ Level Types"
+      footer: "Use \"{0} <type>\" to change the DJ Level to the given type for the server."
+    invalidType: "`{0}` is not a valid `DJ Level` type, please use one of the following:\n`{1}`"
+    changedTo: "The `DJ Level` status has changed to **:type**.\n:info"
+    information:
+      all: "Anyone can run any music commands, even without the `DJ` role."
+      none: "No one can run any music commands without the `DJ` role."
+      normal: "Preventing people from using commands like playlists, volume control, and force skip without the `DJ` role, but still allowing people to use the play command without the role."
+  DjRoleCommand:
+    invalidRoleMentioned: "Invalid role mentioned, I found no roles called `{0}`"
+    noDjRoleSelected: "There are currently no custom DJ role setup for the server, however anyone who has a role called `DJ` will still be able to use DJ restricted music commands."
+    currentSelectedRole: "The :role role is used as the music DJ role.\nAnyone with the role will be able to use DJ restricted music commands."
+    resetDjRole: "The DJ role has successfully been reset, however anyone who has a role called `DJ` will still be able to use music commands that requires the DJ role to be used."
+    selectedRoleForMusic: "The :role role will now be used as the music DJ role!"
+  MoveHereCommand:
+    error: 'Бот не подключен к голосовому каналу, сначала попросите музыку `{0}play`'
+    hasMusicChannel: "The server has a music voice channel setup, if you'd like me to move to a different voice channel, please get an admin on the server to drag 'n drop me into a different voice channel."
+    nowPlayingIn: 'Сейчас я играю музыку в **:channelName**'
+  MusicChannelCommand:
+    updated: "Музыкальный канал **:type** успешно :status"
+    field:
+      title: "Музыкальные каналы"
+      message: "**Text Channel:** :text\n**Voice Channel:** :voice"
+    status:
+      disabled: "отключен"
+      enabled: "установлен в **{0}**"
+    errors:
+      invalidType: "Недействительный тип канала, тип должен быть либо `текст`, либо `голос`"
+      notValidType: "`{0}` не является недействительным {1} каналом, вы должны включить действительный речевой канал, который вы хотите использовать в качестве музыкального канала."
+  MusicMessagesCommand:
+    message: "Music messages are currently **:status**.\n\n**Info**\n:info"
+    updated: "The music messages has successfully been **:status**."
+    error: "Invalid argument given, the status must be either `on` or `off` to change the music messages status."
+    footer: "To change the music messages, use {0}"
+    status:
+      disabled: "отключен"
+      enabled: "enabled"
+    info:
+      disabled: "When music messages are disabled, the `Now Playing` messages will no longer be sent, and other music related commands will automatically delete themselves after awhile."
+      enabled: "When music messages are enabled, the `Now Playing` messages will stay, even after the song being played changes, some related messages will also stay.\n**Note:** Most music commands will still be auto deleted after awhile."
+  PauseCommand:
+    error: 'Нечего останавливать, сначала попросите музыку `{0}play`'
+    alreadyPaused: 'Музыка приостановлена, используйте `!resume`, чтобы возобновить проигрывание.'
+    paused: 'Музыка была `приостановлена`'
+  PlayCommand:
+    addedSong: ':user добавил [:title](:url) в очередь. В очереди есть `:queueSize` песен(ня)(ни), впереди.'
+    addedSongsFromPlaylist: ':user добавил :songs песен(и)(ю) из плейлиста [:title](:url) в очередь. В очереди есть `:queueSize` песен(ня)(ни), впереди.'
+    session:
+      title: 'Результаты поиска для: `{0}`'
+      footer: 'Выберите трек из списка, прописав `{0} <номер>`'
+  PlaylistCommand:
+    noPlaylists: "У этого сервера пока нет музыкальных плейлистов, вы можете создать его с помощью команды:\n`:command`"
+    noPlaylistWithName: "Нет плейлиста под названием `:playlist`, вы можете создать список воспроизведения с помощью команды:\n`:command`"
+    invalidProperty: "Указанно недопустимое `свойство`, таких свойств списка воспроизведения нет, называемых `{0}`.\nВы можете узнать больше, запустив `{1}help {2}`"
+    invalidFormat: "Недопустимый формат, `:type` без свойства!\n`:command`"
+    invalidIdGiven: "Недействительный идентификатор, указанное число тоже :type\n`:command`"
+    invalidIdNumberGiven: "Недействительный идентификатор, идентификатор должен быть числом\n`:command`"
+    noMoreSongSlots: "В плейлисте `:playlist` больше нет слотов для песен."
+    noMorePlaylistSlots: "На сервере больше нет мест для плейлистов, вы можете удалить существующие плейлисты, чтобы освободить место для новых."
+    sameIdsGiven: "The two ids given are the same, the song won't be moved anywhere that way.\n`:command`"
+    failedToLoad: 'Ошибка загрузки: {0}'
+    failedToLoadPlaylist: 'Не удалось загрузить :playlist, повторите попытку позже или сообщите об этом одному из администраторов.'
+    failedToSavePlaylist: 'Что-то пошло не так, пытаясь сохранить плейлист: {0}'
+    loadedPlaylist: 'Список воспроизведения **:name** был загружен и добавлен в очередь с **:amount** песнями.'
+    noMatches: 'Нет совпадений..'
+    attemptingToAddLivestreamToPlaylist: "Вы не можете добавлять прямые трансляции в список воспроизведения!"
+    userHasAddedSong: ":user добавил [:name](:url)\n в плейлист - `:playlist`.\nВ плейлисте `:playlist` доступно `:slots` слотов для воспроизведения."
+    swapSongInPlaylist: '[:selectedTitle](:selectedLink) have swapped position with [:replacedTitle](:replacedLink) in the `:playlist` playlist.'
+    alreadyExists: 'Плейлист с именем `:playlist`, уже существует!'
+    onlyNumbersInName: "Плейлист не может быть только числом, вы должны указать несколько букв в названии!"
+    renamingPlaylistAlreadyExists: "Невозможно переименовать `:oldplaylist` в `:playlist`, плейлист с именем `:playlist`, уже существует!"
+    playlistCreated: "Плейлист `:playlist` был успешно создан!\nВы можете начать добавлять треки к нему с помощью команды: \n`:command :playlist add <название трека | url>`"
+    playlistDeleted: 'Плейлист `:name` был успешно удален!'
+    playlistRenamed: 'Плейлист `:oldplaylist` был переименован в `:playlist`'
+    playlistIsEmpty: "В этом плейлисте нет песен, вы можете добавить в него треки с помощью команды: \n`:command`"
+    playlistIsAlreadyEmpty: 'Плейлист `:playlist` пуст, в нем нечего удалять.'
+    songHasBeenRemovedFromPlaylist: ':song успешно удален из `:playlist` плейлиста'
+    playlistTitle: ':musical_note: Список музыкальных плейлистов {0}'
+    playlistSize: '[ {0} из {1} ]'
+    playlistLine: "{0}\n       Количество песен в плейлисте **{1}**"
+    playlistSongLine: '`{0}` [{1}]({2}) [{3}]'
+  RemoveSongFromQueueCommand:
+    error: 'Отсутствует аргумент `song id`, вы должны указать ID трека, которую хотите удалить из очереди.'
+    failedToRemoveSong: 'Что-то пошло не так, не удалось удалить трек с индексом `:index`'
+    tooHighNumberGiven: 'Количество песен в очереди `{0}`'
+    invalidRange: 'Invalid range given, give the range of IDs in a start to end format, like `3-6`.'
+    mustBePositiveNumber: 'Идентификатор `song id` должен быть действительным, положительным числом.'
+    nothingToRemove: 'Нечего удалять, сначала попросите музыку `{0}play`'
+    success: ':song успешно удален из музыкальной очереди.'
+    successMultiple: "Songs from `:start` to `:end` were successfully removed from the music queue.\n:tracks"
+    successMultipleNote: "\nAnd **{0}** more songs were removed from the queue."
+  RepeatMusicQueueCommand:
+    error: 'There is nothing to repeat, request music first with `{0}play`'
+    title: 'Current repeat mode: {0}'
+    message: "The music player repeat status have been successfully changed to **:state**, this means:\n\n:note"
+    footer: 'Use "{0} <repeat-mode>" to set the repeat mode.'
+    states:
+      single: 'One'
+      all: 'All'
+      loopoff: 'Off'
+    notes:
+      single: "The music player will repeat the song that is currently playing without going to the next song in the queue.\n**Note:** This also mutes \"Now Playing\" messages so the chat is not spammed with the same song over and over again."
+      all: 'The music player will repeat every song in the queue, after a song finishes playing it will be re-added to the end of the queue automatically.'
+      loopoff: 'The music player will not loop, when a song finishes playing it will get removed from the queue and the next track will begin playing.'
+  ResumeCommand:
+    error: 'Нечего возобновлять, сначала попросите музыку `{0}play`'
+    alreadyPlaying: 'Музыка уже воспроизводится, используйте `:prefixpause` для приостановки музыки.'
+    resume: 'Музыка была `resumed`'
+  SeekCommand:
+    error: 'Сейчас ничего не играет, попросите что-то `{0}play`'
+    invalidTimeGiven: 'Аргументом `number` должен быть допустимый формат времени, длина которого не менее 0 и более секунды.'
+    seekingLive: 'Вы не можете перейти к другому временному коду для прямых трансляций.'
+    seekingTooFar: '`{0}` это больше, чем длина текущего трека, если вы хотите перейти к следующему треку, то вместо этого используйте `{1}skip`'
+    seekTo: 'Поиск **:title** и `:time`'
+  SetDefaultVolumeCommand:
+    currentVolume: 'Громкость музыки для сервера в настоящее время установлена на `:volume%`'
+    changedVolume: 'Громкость музыки по умолчанию установлена на `:volume%`'
+    failedToSave: 'Что-то пошло не так, когда вы пытались сохранить громкость по умолчанию: {0}'
+    mustBeNumber: 'Громкость `volume` должна быть числом от 1 до 100'
+  ShuffleCommand:
+    error: "Музыкальная очередь пуста, вы можете запросить что-то командой\n`{0}play <название трека | url>`"
+    success: '**:amount** трека в очереди, были перемешаны.'
+  SkipCommand:
+    error: 'Нечего пропускать, сначала попросите музыку `{0}play`'
+  SongCommand:
+    error: 'Нечего проигрывать, сначала попросите музыку `{0}play`'
+    paused: 'Проигрование в настоящее время приостановлено'
+    playing: 'В настоящее время играет мызыку'
+    songsInQueue: 'Песни в очереди'
+    moreSongs: 'Вы можете увидеть больше песен, используя {0} <страница>'
+    noSongs: 'Сейчас в очереди нет других песен.'
+    andXMoreSongs: '_И **{0}** еще трек{1}!_'
+    formats:
+      line: '**{0}** [{1}]({2})'
+      song: "[{0}]({1})\nВоспроизводится `{2}` с громкостью `{3}` слева от трека - Запрошено <@{4}>"
+      stream: "[{0}]({1})\nВоспроизводится `{2}` громкость, поток `{3}` - Запрошенный <@{4}>"
+  StopCommand:
+    error: "Сейчас ничего не играет, вы не можете остановить музыку, когда ничего не играет."
+    success: ':requester остановил проигрование, и **:number** песен(ня) была(о) удалена(о) из очереди.'
+  VoiceFixCommand:
+    message: "**Swapping to :swap region:** {0}\n**Swapping back to :original region:** {1}"
+    starting: "Starting swapping process...\n\n"
+    finished: "\n\nDone! Music should now work again!"
+    error: "Failed to finish the swap process, error: {0}"
+  VolumeCommand:
+    error: 'Ничего не играет, сначала попросите музыку `{0}play`'
+    requireDJRole: 'Nребуется роль `DJ` для изменения громкости!'
+    invalidVolume: 'Недопустимый % громкости, % громкости должен быть действительным числом от 1 до 100.'
+    nowPlaying: ':musical_note: Музыка играет в **:volume** громкость'
+    setTo: ':musical_note: Громкость музыки установлена на **:volume**'
+  VoteSkipCommand:
+    error: 'Нечего пропустить, сначала попросите музыку `{0}play`'
+    registered: 'Ваш голос был зарегистрирован! `:votes` необходимо голосов, чтобы пропустить трек.'
+    alreadyVoted: 'Вы можете проголосовать только один раз за трек! `:votes` необходимо голосов, чтобы пропустить трек.'
 search:
-
-    DuckDuckGoCommand:
-        nsfwDisabled: "The `Duck Duck GO` command can only be used in NSFW channels, as the search results may return NSFW content."
-        searchResults: 'Результат поиска для: {0}'
-        noResults: 'Я ничего не нашел для: `:query`'
-        seeAlso: '**Смотрите также**'
-        nsfwStatus:
-            enabled: 'Поиск NSFW `включен`'
-            disabled: 'Поиск NSFW `отключен`'
-
-    GfycatCommand:
-        noResults: "Я не нашел ни одного gif, соответствующего вашему запросу: `:query`"
-
-    UrbanDictionaryCommand:
-        noResults: ':user Я ничего не нашел для: `:query`'
-        untitled: 'Без названия'
-        example: 'пример'
-        results: ':percentage процент таких людей. :вверх👍 :вниз👎'
-        nsfwDisabled: "The `Urban Dictionary` command can only be used in NSFW channels, as the content of the command may not be appreciate for all."
-
-    XKCDCommand:
-        invalidArgument: "Invalid argument given, the argument must be a valid number between `1` and `{0}`, or `random` to get a random comic."
-        number: 'Номер XKCD #{0}'
-
+  DuckDuckGoCommand:
+    nsfwDisabled: "The `Duck Duck GO` command can only be used in NSFW channels, as the search results may return NSFW content."
+    searchResults: 'Результат поиска для: {0}'
+    noResults: 'Я ничего не нашел для: `:query`'
+    seeAlso: '**Смотрите также**'
+    nsfwStatus:
+      enabled: 'Поиск NSFW `включен`'
+      disabled: 'Поиск NSFW `отключен`'
+  GfycatCommand:
+    noResults: "Я не нашел ни одного gif, соответствующего вашему запросу: `:query`"
+  UrbanDictionaryCommand:
+    noResults: ':user Я ничего не нашел для: `:query`'
+    untitled: 'Без названия'
+    example: 'пример'
+    results: ':percentage процент таких людей. :вверх👍 :вниз👎'
+    nsfwDisabled: "The `Urban Dictionary` command can only be used in NSFW channels, as the content of the command may not be appreciate for all."
+  XKCDCommand:
+    invalidArgument: "Invalid argument given, the argument must be a valid number between `1` and `{0}`, or `random` to get a random comic."
+    number: 'Номер XKCD #{0}'
 utility:
-    CalculateCommand:
-        boolean:
-            true: 'Правда'
-            false: 'Ложь'
-        eastereggs:
-            quickMaths: '	-	Быстрая математика!'
-            binary: "В мире всего 10 типов людей, те, кто понимает двоичные и тех, кто этого не делает."
-
-    ChangelogCommand:
-        invalidChangelogChannel: "Invalid changelog channel defined, the text channel could not be found!"
-        cantReadChangelogChannel: "I don't have permission to read the message history for the defined changelog channel, this is required in oder to read, load, and display the changelog messages."
-        invalidVersionGiven: "Invalid version given, `{0}` is not a valid version entry."
-        noChangelogMessages: "There are no changelog messages to display yet, try check back again later."
-        latestVersion: "Latest version: {0}"
-        lastFewVersions: "Last 10 Versions"
-        changelogVersions: "Changelog Versions ({0})"
-
-    ChannelIdCommand:
-        message: ':user, ID канала :channel: `:targetChannel`'
-
-    ChannelInfoCommand:
-        fields:
-            id: 'ID'
-            position: 'Должность'
-            users: 'Пользователей'
-            category: 'Категория'
-            bitRate: 'Битрейт'
-            nsfw: 'NSFW'
-            createdAt: 'Дата создания'
-        noTopic: '*Для этого канала не задана тема*'
-        timeFormat: 'EEE, dd MMM yyyy HH:mm'
-
-    ExpandUrlCommand:
-        noRedirect: ":url никуда не перенаправляет."
-        redirects: '{0} перенаправляет в {1}'
-        jumps: '**Ссылка перенаправляет через следующие сайты:**'
-
-    FeedbackCommand:
-        confirmation: "You're about to send the following feedback:```:feedback```The feedback will be sent to the feedback channel in the :server server, are you sure you want to send it?\nUse `:command` in the next 60 seconds with no arguments to send the feedback."
-        success: 'Сообщение успешно отправлено <:tickYes:319985232306765825>'
-        failedToSend: 'Не удалось отправить сообщение с обратной связью: :error'
-        invalidFeedbackChannel: "Invalid feedback channel defined, the text channel could not be found!"
-        mustBe32CharactersOrMore: "The feedback message must be at least 32 characters long."
-
-    GlobalLeaderboardCommand:
-        noData: 'Сейчас нет данных в таблице лидеров, повторите попытку позже.'
-        line: '`:num` **:username** уровень **:level** и с **:experience** xp.'
-        title: 'Глобальный опыт'
-        yourRank: 'Your rank'
-        loading:
-            title: 'Loading global leaderboard'
-            message: 'Please wait a second while the global leaderboard is loaded.'
-
-    InviteCommand:
-        message: 'Вы можете пригласить меня на ваш сервер, нажав [здесь](:oauth) или воспользуйтесь приведенной ниже ссылкой:\n\n:oauth\n\n:note'
-        note: '**Note:**\nIf you would like try out newly developed features before everyone else, you could also try the **Cutting Edge** bot which gets new features added almost daily, you can invite that bot by [clicking here](:edgeInvite) or using the link below:\n\n:edgeInvite'
-
-    IPInfoCommand:
-        hostname: 'Имя хоста'
-        organisation: 'Организация'
-        country: 'Страна'
-
-    LeaderboardCommand:
-        noData: 'Сейчас нет данных в таблице лидеров, повторите попытку позже.'
-        line: '`:num` **:username** уровень **:level** и с **:experience** xp.'
-        title: '{0} Лидер'
-        yourRank: 'Your rank'
-
-    PingCommand:
-        message: 'Pong! Затраченное время :ping ms (:rating) Сердцебиение веб-сокета :heartbeat ms'
-        rating:
-            10: 'быстрее, чем Sonic! :smiley_cat:'
-            100: 'Великий! :smiley:'
-            200: 'nice! :slight_smile:'
-            300: 'достойный. :neutral_face:'
-            400: 'средний... :confused:'
-            500: 'немного медленнее. :slight_frown:'
-            600: 'довольно медленный.. :frowning2:'
-            700: 'медленный.. :worried:'
-            800: 'слишком медленно. :disappointed:'
-            900: 'Плохо. :sob: (помогитемне)'
-            1600: '#BlameDiscord. :angry:'
-            10000: 'это не имеет никакого смысла :thinking: #BlameAlexis'
-            other: 'медленный АФК. :dizzy_face:'
-
-    RankBackgroundCommand:
-        canBeUnlocked: "Rank backgrounds can be unlocked using **[Vote Points](https://discordbots.org/bot/avaire)**,\nyou'll get **1 point** each time you vote for the bot."
-        listTitle: "Rank Backgrounds ({0})"
-        youHaveVotePoints: "You have {0} vote points."
-        exampleTitle: "{0} Example"
-        exampleFooter: "{0} costs {1} vote points"
-        alreadyOwnsBackground: "You already own the **:name** background!"
-        doesntHaveEnoughPoints: "You don't have enough vote points to buy this background, the background costs `{0}`, and you have `{1}` vote points."
-        boughtBackgroundSuccessfully: "Congratulation! You now own the **:name** background!\nYou can use the `:command` command to use the background."
-        youDontOwnThisBackground: "You don't own the **:name** background, however you can buy it for **:cost** Vote Points!"
-        successfullyChangedBackground: "You have successfully changed to use the **:name** background."
-        disabledBackgrounds: "Rank backgrounds have successfully been disabled, you are now using embedded messages for rank commands again."
-        buyNotes:
-            alreadyOwns: "**{0}**\n- _You already own this background._"
-            doesntOwns: "**{0}**\n - Costs {1} vote points."
-        failedToSendExampleMessage: "Something went wrong while trying to send the example image for the {0} background, error: {1}."
-        failedToBuyTheBackground: "Something went wrong while buying the background, error: {0}"
-        failedToSetBackground: "Failed to set the background due to a database error, try again later, if this error continues to appear, please contact one of my developers."
-
-    RankCommand:
-        botsCannotReceiveXp: "Боты не могут получать XP и, следовательно, не могут быть ранжированы, попробуйте вместо этого пометить пользователя."
-        unranked: 'Неоцениваемый'
-        fields:
-            rank: 'Ранг'
-            level: 'Уровень'
-            total: '{0} (Total: {1})'
-            experience: 'XP'
-            experienceToNext: 'XP, необходимый для следующего уровня'
-            youNeedMoreXpToLevelUp: '[{0}] {1}{2}\n\t\t\t\t\t\t\t\t\tВам нужно {3}XP для повышения уровня.'
-
-    RemindCommand:
-        errors:
-            invalidMeHere: 'Недопустимый тип данных, вы должны объявить, где вам нужно напомнить, либо используя `here`, чтобы напомнить в текущем канале, либо `me`, чтобы напомнить в прямом сообщении.'
-            invalidTime: 'Недействительное время, время должно быть больше 60 секунд и менее 3 дней.'
-
-    ServerIdCommand:
-        message: ':user :id: этого сервера `:guildid`'
-
-    ServerInfoCommand:
-        fields:
-            id: 'ID'
-            owner: 'Владелец'
-            textChannels: 'Текстовые каналы'
-            voiceChannels: 'Голосовые каналы'
-            members: 'Члены'
-            users: 'Users'
-            bots: 'Bots'
-            roles: 'Роли'
-            region: 'Регион'
-            createdAt: 'Создан'
-            emotes: 'Custom Emotes'
-        timeFormat: 'EEE, dd MMM yyyy HH:mm'
-
-    ShardCommand:
-        allShards: 'Все осколки'
-        totalShards: 'Всего осколков'
-
-    SourceCommand:
-        noArgs: 'Исходный код AvaIre:'
-        command: 'Исходный код AvaIre для команды **:command**:'
-        invalidCommand: 'Недопустимая команда, вот полный код источника.'
-        externalCommand: "Команда зарегистрирована через внешний плагин, автор плагина не сделал источник команды общедоступным или забыл добавить ссылку на нее, вот полный исходный код для бота."
-
-    StatsCommand:
-        title: 'Приглашение на официальный Bot-сервер'
-        footer: 'В настоящее время музыка играет на {0} серверах, с {1} песнями(ней) в очереди.'
-        formats:
-            perMinute: '{0} ({1} за минуту)'
-            perSecond: '{0} ({1} в секунду)'
-            memory: '{0}Mb / {1}Mb'
-        fields:
-            author: 'Автор'
-            website: 'Website'
-            library: 'Библиотека'
-            database: 'Запущеные запросы ДБ'
-            messages: 'Полученные сообщения'
-            shard: 'Осколков'
-            commands: 'Использовано команд'
-            memory: 'Использование памяти'
-            uptime: 'Время работы'
-            members: 'Членство'
-            channels: 'Каналы'
-            servers: 'Сервера'
-
-    TemperatureConvertCommand:
-        invalidConvertFormat: "`{0}` is not a recognized conversion mode. Valid conversion modes are:\n{1}"
-        invalidNumberFormat: "`{0}` could not be parsed as a number."
-        message: ":input is equal to :one and :two"
-
-    UptimeCommand:
-        message: 'Я был в сети :time'
-        footer: 'Начинается {0} в {1}'
-        dateFormat: 'EEEEEEEE, dd MMM yyyy'
-        timeFormat: 'HH:mm:ss z'
-
-    UserAvatarCommand:
-            noUserFound: "Пользователя с ником/ID `{0}`"
-            title: "Аватар пользователя {0}#{1}"
-
-    UserIdCommand:
-        message: ':id: пользователя **:target** в `:targetid`'
-
-    UserInfoCommand:
-        fields:
-            username: 'Имя пользователя'
-            userId: 'ID пользователя'
-            joinedServer: 'Присоединился на сервер'
-            joinedDiscord: 'Регистрация в Discord'
-            roles: 'Роли ({0})'
-            servers: 'Сервера'
-        inServers: '{0}'
-        noRoles: '*У этого пользователя нет роли*'
-        timeFormat: 'EEE, dd MMM yyyy HH:mm'
-
-    VersionCommand:
-        current: 'Я в настоящее время `:difference` :type версии позади!'
-        getLatest: 'Вы можете скачать последнюю версию здесь: [avaire/avaire](https://github.com/avaire/avaire)'
-        usingLatest: "Вы используете последнюю версию AvaIre!"
-        latestVersion: 'Последняя версия AvaIre: v{0}'
-        latestChanges: 'Последние изменения:'
-        versions:
-            majorName: 'Главный'
-            major: 'Основные обновления версии - это полная перезагрузка бота и его использование, а также большая компиляция незначительных изменений исходного кода. Настоятельно рекомендуется обновлять основные изменения версии, поскольку более старые версии не будут поддерживаться для исправлений или обновлений ошибок.'
-            minorName: 'Незначительный'
-            minor: 'Незначительные обновления версий - это новые дополнения, функции и реорганизация существующей кодовой базы, рекомендуется обновлять небольшие версии, чтобы не отставать от новых функций.'
-            patchName: 'Patch'
-            patch: 'Patch обновления версий - исправления ошибок, реорганизация существующего кода и очень незначительные изменения, которые не влияют на другие вещи в базе кода, рекомендуется обновлять изменения патчей, чтобы не отставать от исправлений ошибок и исправлений.'
-
-    WeatherCommand:
-        noCityFound: "Города с названием **:name** не найдено. Вы уверены, что он существует?"
-        fields:
-            weatherFor: "Погода для {0}, {1}"
-            country: "Страна"
-            temperature: "Температура"
-            windDirection: "Направление ветра"
-            windSpeed: "Скорость ветра"
+  CalculateCommand:
+    boolean:
+      true: 'Правда'
+      false: 'Ложь'
+    eastereggs:
+      quickMaths: '	-	Быстрая математика!'
+      binary: "В мире всего 10 типов людей, те, кто понимает двоичные и тех, кто этого не делает."
+  ChangelogCommand:
+    invalidChangelogChannel: "Invalid changelog channel defined, the text channel could not be found!"
+    cantReadChangelogChannel: "I don't have permission to read the message history for the defined changelog channel, this is required in oder to read, load, and display the changelog messages."
+    invalidVersionGiven: "Invalid version given, `{0}` is not a valid version entry."
+    noChangelogMessages: "There are no changelog messages to display yet, try check back again later."
+    latestVersion: "Latest version: {0}"
+    lastFewVersions: "Last 10 Versions"
+    changelogVersions: "Changelog Versions ({0})"
+  ChannelIdCommand:
+    message: ':user, ID канала :channel: `:targetChannel`'
+  ChannelInfoCommand:
+    fields:
+      id: 'ID'
+      position: 'Должность'
+      users: 'Пользователей'
+      category: 'Категория'
+      bitRate: 'Битрейт'
+      nsfw: 'NSFW'
+      createdAt: 'Дата создания'
+    noTopic: '*Для этого канала не задана тема*'
+    timeFormat: 'EEE, dd MMM yyyy HH:mm'
+  ExpandUrlCommand:
+    noRedirect: ":url никуда не перенаправляет."
+    redirects: '{0} перенаправляет в {1}'
+    jumps: '**Ссылка перенаправляет через следующие сайты:**'
+  FeedbackCommand:
+    confirmation: "You're about to send the following feedback:```:feedback```The feedback will be sent to the feedback channel in the :server server, are you sure you want to send it?\nUse `:command` in the next 60 seconds with no arguments to send the feedback."
+    success: 'Сообщение успешно отправлено <:tickYes:319985232306765825>'
+    failedToSend: 'Не удалось отправить сообщение с обратной связью: :error'
+    invalidFeedbackChannel: "Invalid feedback channel defined, the text channel could not be found!"
+    mustBe32CharactersOrMore: "The feedback message must be at least 32 characters long."
+  GlobalLeaderboardCommand:
+    noData: 'Сейчас нет данных в таблице лидеров, повторите попытку позже.'
+    line: '`:num` **:username** уровень **:level** и с **:experience** xp.'
+    title: 'Глобальный опыт'
+    yourRank: 'Your rank'
+    loading:
+      title: 'Loading global leaderboard'
+      message: 'Please wait a second while the global leaderboard is loaded.'
+  InviteCommand:
+    message: "Вы можете пригласить меня на ваш сервер, нажав [здесь](:oauth) или воспользуйтесь приведенной ниже ссылкой:\n\n:oauth\n\n:note"
+    note: "**Note:**\nIf you would like try out newly developed features before everyone else, you could also try the **Cutting Edge** bot which gets new features added almost daily, you can invite that bot by [clicking here](:edgeInvite) or using the link below:\n\n:edgeInvite"
+  IPInfoCommand:
+    hostname: 'Имя хоста'
+    organisation: 'Организация'
+    country: 'Страна'
+  LeaderboardCommand:
+    noData: 'Сейчас нет данных в таблице лидеров, повторите попытку позже.'
+    line: '`:num` **:username** уровень **:level** и с **:experience** xp.'
+    title: '{0} Лидер'
+    yourRank: 'Your rank'
+  PingCommand:
+    message: 'Pong! Затраченное время :ping ms (:rating) Сердцебиение веб-сокета :heartbeat ms'
+    rating:
+      10: 'быстрее, чем Sonic! :smiley_cat:'
+      100: 'Великий! :smiley:'
+      200: 'nice! :slight_smile:'
+      300: 'достойный. :neutral_face:'
+      400: 'средний... :confused:'
+      500: 'немного медленнее. :slight_frown:'
+      600: 'довольно медленный.. :frowning2:'
+      700: 'медленный.. :worried:'
+      800: 'слишком медленно. :disappointed:'
+      900: 'Плохо. :sob: (помогитемне)'
+      1600: '#BlameDiscord. :angry:'
+      10000: 'это не имеет никакого смысла :thinking: #BlameAlexis'
+      other: 'медленный АФК. :dizzy_face:'
+  RankBackgroundCommand:
+    canBeUnlocked: "Rank backgrounds can be unlocked using **[Vote Points](https://discordbots.org/bot/avaire)**,\nyou'll get **1 point** each time you vote for the bot."
+    listTitle: "Rank Backgrounds ({0})"
+    youHaveVotePoints: "You have {0} vote points."
+    exampleTitle: "{0} Example"
+    exampleFooter: "{0} costs {1} vote points"
+    alreadyOwnsBackground: "You already own the **:name** background!"
+    doesntHaveEnoughPoints: "You don't have enough vote points to buy this background, the background costs `{0}`, and you have `{1}` vote points."
+    boughtBackgroundSuccessfully: "Congratulation! You now own the **:name** background!\nYou can use the `:command` command to use the background."
+    youDontOwnThisBackground: "You don't own the **:name** background, however you can buy it for **:cost** Vote Points!"
+    successfullyChangedBackground: "You have successfully changed to use the **:name** background."
+    disabledBackgrounds: "Rank backgrounds have successfully been disabled, you are now using embedded messages for rank commands again."
+    buyNotes:
+      alreadyOwns: "**{0}**\n- _You already own this background._"
+      doesntOwns: "**{0}**\n - Costs {1} vote points."
+    failedToSendExampleMessage: "Something went wrong while trying to send the example image for the {0} background, error: {1}."
+    failedToBuyTheBackground: "Something went wrong while buying the background, error: {0}"
+    failedToSetBackground: "Failed to set the background due to a database error, try again later, if this error continues to appear, please contact one of my developers."
+  RankCommand:
+    botsCannotReceiveXp: "Боты не могут получать XP и, следовательно, не могут быть ранжированы, попробуйте вместо этого пометить пользователя."
+    unranked: 'Неоцениваемый'
+    fields:
+      rank: 'Ранг'
+      level: 'Уровень'
+      total: '{0} (Total: {1})'
+      experience: 'XP'
+      experienceToNext: 'XP, необходимый для следующего уровня'
+      youNeedMoreXpToLevelUp: "[{0}] {1}{2}\n\\t\\t\\t\\t\\t\\t\\t\\t\\tВам нужно {3}XP для повышения уровня."
+  RemindCommand:
+    errors:
+      invalidMeHere: 'Недопустимый тип данных, вы должны объявить, где вам нужно напомнить, либо используя `here`, чтобы напомнить в текущем канале, либо `me`, чтобы напомнить в прямом сообщении.'
+      invalidTime: 'Недействительное время, время должно быть больше 60 секунд и менее 3 дней.'
+  ServerIdCommand:
+    message: ':user :id: этого сервера `:guildid`'
+  ServerInfoCommand:
+    fields:
+      id: 'ID'
+      owner: 'Владелец'
+      textChannels: 'Текстовые каналы'
+      voiceChannels: 'Голосовые каналы'
+      members: 'Члены'
+      users: 'Пользователей'
+      bots: 'Bots'
+      roles: 'Роли'
+      region: 'Регион'
+      createdAt: 'Создан'
+      emotes: 'Custom Emotes'
+    timeFormat: 'EEE, dd MMM yyyy HH:mm'
+  ShardCommand:
+    allShards: 'Все осколки'
+    totalShards: 'Всего осколков'
+  SourceCommand:
+    noArgs: 'Исходный код AvaIre:'
+    command: 'Исходный код AvaIre для команды **:command**:'
+    invalidCommand: 'Недопустимая команда, вот полный код источника.'
+    externalCommand: "Команда зарегистрирована через внешний плагин, автор плагина не сделал источник команды общедоступным или забыл добавить ссылку на нее, вот полный исходный код для бота."
+  StatsCommand:
+    title: 'Приглашение на официальный Bot-сервер'
+    footer: 'В настоящее время музыка играет на {0} серверах, с {1} песнями(ней) в очереди.'
+    formats:
+      perMinute: '{0} ({1} за минуту)'
+      perSecond: '{0} ({1} в секунду)'
+      memory: '{0}Mb / {1}Mb'
+    fields:
+      author: 'Автор'
+      website: 'Website'
+      library: 'Библиотека'
+      database: 'Запущеные запросы ДБ'
+      messages: 'Полученные сообщения'
+      shard: 'Осколков'
+      commands: 'Использовано команд'
+      memory: 'Использование памяти'
+      uptime: 'Время работы'
+      members: 'Членство'
+      channels: 'Каналы'
+      servers: 'Сервера'
+  TemperatureConvertCommand:
+    invalidConvertFormat: "`{0}` is not a recognized conversion mode. Valid conversion modes are:\n{1}"
+    invalidNumberFormat: "`{0}` could not be parsed as a number."
+    message: ":input is equal to :one and :two"
+  UptimeCommand:
+    message: 'Я был в сети :time'
+    footer: 'Начинается {0} в {1}'
+    dateFormat: 'EEEEEEEE, dd MMM yyyy'
+    timeFormat: 'HH:mm:ss z'
+  UserAvatarCommand:
+    noUserFound: "Пользователя с ником/ID `{0}`"
+    title: "Аватар пользователя {0}#{1}"
+  UserIdCommand:
+    message: ':id: пользователя **:target** в `:targetid`'
+  UserInfoCommand:
+    fields:
+      username: 'Имя пользователя'
+      userId: 'ID пользователя'
+      joinedServer: 'Присоединился на сервер'
+      joinedDiscord: 'Регистрация в Discord'
+      roles: 'Роли ({0})'
+      servers: 'Сервера'
+    inServers: '{0}'
+    noRoles: '*У этого пользователя нет роли*'
+    timeFormat: 'EEE, dd MMM yyyy HH:mm'
+  VersionCommand:
+    current: 'Я в настоящее время `:difference` :type версии позади!'
+    getLatest: 'Вы можете скачать последнюю версию здесь: [avaire/avaire](https://github.com/avaire/avaire)'
+    usingLatest: "Вы используете последнюю версию AvaIre!"
+    latestVersion: 'Последняя версия AvaIre: v{0}'
+    latestChanges: 'Последние изменения:'
+    versions:
+      majorName: 'Главный'
+      major: 'Основные обновления версии - это полная перезагрузка бота и его использование, а также большая компиляция незначительных изменений исходного кода. Настоятельно рекомендуется обновлять основные изменения версии, поскольку более старые версии не будут поддерживаться для исправлений или обновлений ошибок.'
+      minorName: 'Незначительный'
+      minor: 'Незначительные обновления версий - это новые дополнения, функции и реорганизация существующей кодовой базы, рекомендуется обновлять небольшие версии, чтобы не отставать от новых функций.'
+      patchName: 'Patch'
+      patch: 'Patch обновления версий - исправления ошибок, реорганизация существующего кода и очень незначительные изменения, которые не влияют на другие вещи в базе кода, рекомендуется обновлять изменения патчей, чтобы не отставать от исправлений ошибок и исправлений.'
+  WeatherCommand:
+    noCityFound: "Города с названием **:name** не найдено. Вы уверены, что он существует?"
+    fields:
+      weatherFor: "Погода для {0}, {1}"
+      country: "Страна"
+      temperature: "Температура"
+      windDirection: "Направление ветра"
+      windSpeed: "Скорость ветра"
