@@ -1,1006 +1,886 @@
-
+---
 errors:
-    missingArgument: 'Er mist een argument, het argument `{0}` is verplicht!'
-    invalidProperty: 'Ongeldig `{0}` voorzien, je moet een geldige {1} voorzien.'
-    noChannelsWithNameOrId: 'Ik heb geen kanaal kunnen vinden met de naam of ID van `{0}`'
-    noUsersWithNameOrId: 'Ik heb geen gebruikers gevonden met de naam of ID van `{0}`'
-    mustBeConnectedToVoice: 'Je moet verbonden zijn met een spraak kanaal om dit commando te kunnen gebruiken!' 
-    mustBeConnectedToSameChannel: 'Je moet met het zelfde spraak kanaal verbonden zijn als mij {0}!'
-    missingMusicQueue: 'Er mist een muziek `query`, je moet een link naar het nummer die je wilt luisteren leveren of tenminste een titel van een nummer!'
-    cantMentionEveryone: "Je hebt geen toestemming om iedereen te pingen."
-    requireLevelFeatureToBeEnabled: 'Om dit commando te kunnen gebruiken, moet je de `Levels en Experience` module aan hebben op de server, je kan een server admin vragen als ze dit aan willen zetten met `{0}`'
-    errorOccurredWhileLoading: 'Er is een error voorgekomen onder het laden van {0}, A.U.B opnieuw proberen, als dit probleem niet weg gaat, laat het weten bij een van de developers in de [AvaIre support server](https://avairebot.com/support).'
-
+  missingArgument: 'Er mist een argument, het argument `{0}` is verplicht!'
+  invalidProperty: 'Ongeldig `{0}` voorzien, je moet een geldige {1} voorzien.'
+  noChannelsWithNameOrId: 'Ik heb geen kanaal kunnen vinden met de naam of ID van `{0}`'
+  noUsersWithNameOrId: 'Ik heb geen gebruikers gevonden met de naam of ID van `{0}`'
+  mustBeConnectedToVoice: 'Je moet verbonden zijn met een spraak kanaal om dit commando te kunnen gebruiken!'
+  mustBeConnectedToSameChannel: 'Je moet met het zelfde spraak kanaal verbonden zijn als mij {0}!'
+  missingMusicQueue: 'Er mist een muziek `query`, je moet een link naar het nummer die je wilt luisteren leveren of tenminste een titel van een nummer!'
+  cantMentionEveryone: "Je hebt geen toestemming om iedereen te pingen."
+  requireLevelFeatureToBeEnabled: 'Om dit commando te kunnen gebruiken, moet je de `Levels en Experience` module aan hebben op de server, je kan een server admin vragen als ze dit aan willen zetten met `{0}`'
+  errorOccurredWhileLoading: 'Er is een error voorgekomen onder het laden van {0}, A.U.B opnieuw proberen, als dit probleem niet weg gaat, laat het weten bij een van de developers in de [AvaIre support server](https://avairebot.com/support).'
 levelupMessages:
-    - "GG :user, je hebt **Level :level** berijkt"
-    - "Eyy :user, je bent net een level omhoog gegaan! Nu ben je **Level :level**"
-    - "🌟 Je hebt net **Level :level** berijkt, :user! Gefeliciteerd 🌟"
-    - "You're on 🔥 :user, Je hebt **Level :level** berijkt"
-    - "Gefeliciteerd :user 🎉 Je bent net een level omhoog gegaan!! Je bent nu **Level :level**"
-
+  - "GG :user, je hebt **Level :level** berijkt"
+  - "Eyy :user, je bent net een level omhoog gegaan! Nu ben je **Level :level**"
+  - "🌟 Je hebt net **Level :level** berijkt, :user! Gefeliciteerd 🌟"
+  - "You're on 🔥 :user, Je hebt **Level :level** berijkt"
+  - "Gefeliciteerd :user 🎉 Je bent net een level omhoog gegaan!! Je bent nu **Level :level**"
 levelupRoleMessages:
-    - "GG :user, je hebt net **Level :level** berijkt, je hebt nu de **:role** rol"
-    - "Eyy :user, je bent net een level omhoog gegaan! Je bent nu **Level :level**, hier heb je de **:role** rol, je verdient het."
-    - "Gefeliciteerd :user 🎉 Je bent net een level omhoog gegaan! Je bent nu **Level :level**, ook heb je de **:role** rol verdient"
-
+  - "GG :user, je hebt net **Level :level** berijkt, je hebt nu de **:role** rol"
+  - "Eyy :user, je bent net een level omhoog gegaan! Je bent nu **Level :level**, hier heb je de **:role** rol, je verdient het."
+  - "Gefeliciteerd :user 🎉 Je bent net een level omhoog gegaan! Je bent nu **Level :level**, ook heb je de **:role** rol verdient"
 pagination:
-    simpleFooter: "Pagina **{0}** van de **{1}** pagina's.\n`{2} [page]`"
-
+  simpleFooter: "Pagina **{0}** van de **{1}** pagina's.\n`{2} [page]`"
 modlog-types:
-    kick:
-        name: "Uitzet"
-        action: "Uitgezet"
-    voiceKick:
-        name: "Uit spraak kanaal gezet"
-        action: "Uit het spraak kanaal zetten"
-    ban:
-        name: "Verban"
-        action: "Verbannen"
-    softBan:
-        name: "Soft Ban"
-        action: "Soft Banned"
-    unban:
-        name: "Verwelkom"
-        action: "Verwelkomen"
-    purge:
-        name: "Verwijder"
-        action: "Verwijderen"
-    warn:
-        name: "Waarschuwing"
-        action: "Waarschuwen"
-    pardon:
-        name: "Pardon"
-        action: "Pardoned"
-    mute:
-        name: "Demp"
-        action: "dempen"
-    tempMute:
-        name: "Tijdelijke demp"
-        action: "Tijdelijke dempen"
-    unmute:
-        name: "Ontdemp"
-        action: "Ontdempen"
-
+  kick:
+    name: "Uitzet"
+    action: "Uitgezet"
+  voiceKick:
+    name: "Uit spraak kanaal gezet"
+    action: "Uit het spraak kanaal zetten"
+  ban:
+    name: "Verban"
+    action: "Verbannen"
+  softBan:
+    name: "Zachte Ban"
+    action: "Zachte Ban"
+  unban:
+    name: "Verwelkom"
+    action: "Verwelkomen"
+  purge:
+    name: "Verwijder"
+    action: "Verwijderen"
+  warn:
+    name: "Waarschuwing"
+    action: "Waarschuwen"
+  pardon:
+    name: "Pardon"
+    action: "Pardoned"
+  mute:
+    name: "Demp"
+    action: "dempen"
+  tempMute:
+    name: "Tijdelijke demp"
+    action: "Tijdelijke dempen"
+  unmute:
+    name: "Ontdempen"
+    action: "Ontdempen"
 administration:
-    common:
-        invalidRole: ":user Ongeldige rol, ik kon geen rol vinden die **:role** heet"
-
-    channelModule:
-        invalidColorGiven: "Ongeldige kleur waarde gegeven, de kleur moet een geldige HEX waarde zijn.\nJe kan deze [random color picker](https://www.webpagefx.com/web-design/random-color-picker/) proberen om een random HEX kleur waarde te vinden."
-        message: "De `:type` module bericht is vervangen naar:\n\n```:message```\n\nJe kan het bericht testen dooret commande opnieuw uit te voeren en een gebruiker te vermelden\n`:command <user>`"
-
-    AddLevelRoleCommand:
-        noSlotsLeft: "De server heeft geen plek meer voor level up rollen. Je kan bestaande level rollen verwijderen"
-        invalidLevel: "Ongeldige level eis gegeven. Een level eis moet een geldig nummer zijn."
-        alreadyLevelRole: ":user de **:role** is al een level rol, je kan de zelfde rol niet twee keer gebruiken."
-        alreadyARoleAtLevel: "Er is al een rol toegewezen aan level **:level**, er kan maar 1 rol per level gegeven worden."
-        success: "De **:role** rol is toegevoegd aan de level-up rol lijst.\nDe server heeft nog `:slots` level rol plaatsen beschikbaar."
-
-    AddReactionRoleCommand:
-        emoteDoestBelongToServer: "Die emoticon is niet van deze server, je kan alleen emoticons van deze server gebruiken als reactie emoticons."
-        messageHasNoSlots: "Het bericht heeft geen reactie plekken meer over, je kan bestaande reaction rollen verwijderen om meer ruimte vrij te maken, of verwijder reactie rol berichten om de rol toe te voegen aan meer reactie rol berichten."
-        serverHasNoSlots: "Kan geen nieuw reactie rol bericht maken, de server heeft niet meer plek voor reactie rol berichten, je kan bestaande reactie rol berichten verwijderen voor meer ruimte, of voeg je reactie rol toe aan een reactie bericht als hier ruimte voor is."
-        success: "De :role rol is geregistreed als een reactie rol voor de :emote emote.\nHet bericht heeft nog `:roleSlots` reactie rol plekken over voor dit bericht, en nog `:messageSlots` reactie berichten over."
-
-    AddSelfAssignableRoleCommand:
-        noSlotsLeft: "De server heeft geen ruimte meer om zelf uitgeefbare rollen te maken, je kan een paar bestaande uitgeefbare rollen verwijderen voor meer ruimte."
-        success: "De **:role** rol is toegevoegd aan de zelf uitgeefbare rollen.\nDe server heeft nog `:slots` plekken over voor zelf uitgeefbare rollen."
-
-    AdministrateExperienceCommand:
-        cantUseForBots: "Je kan geen exp toevoegen, aanpassen of verwijderen voor bot accounts, aangezien deze geen exp krijgen. Noem A.U.B een gewone gebruiker wanneer je dit commando gebruikt."
-        invalidAmountGiven: "De `amount` waarde moet tussen de 0 en de {0} zijn om exp van een user af te pakken of om exp toe te voegen."
-        aboutToResetEverything: " Je staat op het punt om de XP van iedereen op de gehele server ongedaan te maken. Als je zeker bent van deze actie, typ het commando in om de XP van de server te resetten.\n\n```:command server-reset :token```\nDit commando werkt voor 60 seconden, na dit moment wordt het token ongeldig en moet je het commando opnieuw uitvoeren om een nieuw token te krijgen."
-        aboutToSyncEverything: "Je staat op het punt om de XP te synchroniseren met het wereldwijde scorebord, dit vervangt alle aangepast XP aanpassingen gemaakt op deze server. Als je zeker bent van deze actie, voer het commando uit om de XP te laten synchroniseren met het wereldwijde scorebord.\n\n```:command server-sync :token```\nDit commando werkt voor 60 seconden, daarna wordt het token invalide en moet je het commando nogmaals uitvoeren om een nieuw token te krijgen."
-        failedToSaveChanges: "Het opslaan naar de database is mislukt, probeer het opnieuw, of als het probleem zich blijft voordoen, zoek dan ondersteuning in [de officiele AvaIre server](https://avairebot.com/support)."
-        mustBeAnAdmin: "Je moet een server administrator zijn om dit te kunnen doen."
-        invalidSecurityToken: "Ongeldig security token gegeven, geef A.U.B een geldig security token om de EXP van alle servers te resetten."
-        warning: "Waarschuwing!"
-        success:
-            add: "**:amount** EXP gegeven aan :target, ze hebben nu **:newAmount** XP."
-            take: "**:amount** XP weg genomen van :target, ze hebben nu **:newAmount** XP."
-            reset: ":target zijn XP is succesvol gereset."
-            sync: ":target heeft met success het wereldwijde scorebord gesynchroniseerd, en heeft nu **:newAmount** XP."
-            syncEveryone: "Iedereen op deze server is gesynchroniseerd met het wereldwijde scorebord!"
-            everything: "De XP van iedereen op de server is compleet gereset!"
-
-    AiCommand:
-        message: "De `Artificial Intelligence` module is veranderd naar **:status** voor het :channel kanaal."
-        status:
-            enabled: "Geactiveerd"
-            disabled: "Gedeactiveerd"
-
-    AliasCommand:
-        noSlotsLeft: "De server heeft geen alias plekken meer, je kan bestaande aliassen verwijderen om meer ruimte te maken."
-        alreadyExists: "Er is al een custom alias genaamd `{0}`"
-        invalidCommand: "Ongeldig commando gegeven, ik ken geen een commando die `{0}` heet."
-        invalidAlias: "Ongeldige alias gegeven, `{0}` is geen geregistreerde alias."
-        created: "De `:alias` alias is gelinkt naar `:command`\nDe server heeft nog `:slots` plekken voor aliasses over."
-        deleted: "De `:alias` alias is succesvol verwijderd."
-
-    AutoAssignRoleCommand:
-        higherInTheHierarchy:
-            user: ":user De **:role** rol heeft een hogere rangschikking dan jouw rollen, je kan geen rollen toevoegen die hoger zijn dan die van jou."
-            bot: ":user De **:role** rol is hoger in de rangschikking, ik kan deze rol niet geven/verwijderen van een gebruiker."
-        enabled: ":user **Auto assign role** als een gebruiker toetreed is **geactiveerd** en gebruikt de **:role** rol"
-        disabledNow: ":user **Auto assign role** als een gebruiker toetreed is nu **disabled**."
-        disabled: ":user **Auto assign role** als een gebruiker toetreed is op dit moment **disabled**."
-        status: ":user De **auto assign role** is momenteel de **:role** rol"
-
-    BanCommand:
-        mustMentionUser: "Je moet de gebruiker vermelden die je wil bannen."
-        higherRole: "Je kan mensen met dezelfe, of hogere rol dan jezelf niet bannen."
-        userHaveHigherRole: "Ik kan {0} niet bannen, hij/zij heeft een hogere rol dan mij, als je wil dat ik deze gebruiker kan bannen, verander dan mijn rol om hoger te zijn dan de {0} hoogste rol."
-        success: "**:target** is permanent verbannen door :user voor \":reason\""
-        failedToBan: "Het verbannen van **:target** is mislukt door een error: :error"
-
-    CategoriesCommand:
-        title: "Commando Categorie Status voor #{0}"
-        status: ":emoteEnabled Geactiveerd :emoteDisabledInChannel Gedeactiveerd in kanaal   :emoteDisabledGlobally Globaal Gedeactiveerd"
-
-    ChangePrefixCommand:
-        missingArgument: "Mist `category` argument, je moet een catagorie meegeven waarvoor je de prefix wil instellen/resetten."
-        invalidCategory: "Ongeldige `category` gegeven, er zijn geen commando catagorieën die beginnen met,of de naam `{0}` hebben"
-        invalidPrefix: "Ongeldige commando prefix gegeven, `{0}` is geen geldige commando, een prefix mag **GEEN** spaties bevatten en moet tussen de 1 en 16 karakters lang zijn."
-        update:
-            global: "Alle commando's voor elke catagorie gebruiken nu de `:prefix` prefix."
-            category: "Alle commando's in de `:category` categorie gebruiken nu de `:prefix` prefix."
-        reset:
-            global: "Alle commando's voor elke catagorie zijn gereset en gebruiken weer de `:prefix` prefix."
-            category: "Alle commando's in de `:category` catagorie zijn gereset en gebruiken nu de `:prefix` prefix."
-
-    ChannelLevelCommand:
-        invalidChannel: "Ongeldig kanaal gegeven, het kanaal moet een geldig tekst kanaal zijn."
-        cantTalkInChannel: "Ik kan niet praten in het {0} kanaal, dus gebruikers zullen geen exp krijgen voor het praten in dat kanaal, als je wil dat ik users xp kan geven in dat kanaal, verander dan mijn rechten zodat ik berichten kan versturen in dat kanaal."
-        noChannelsWithRewardsDisabled: "Er zijn op dit moment geen kanalen met de level beloningen uitgeschakeld, je kan er een toevoegen met het `{0} <channel>` commando"
-        failedToUpdate: "Gefaald met het veranderen van de aanpassingen naar de database, probeer A.U.B opnieuw, als dit probleem blijft, kom A.U.B in contact met een van mijn developers."
-        listChannels: "Alle kanalen die hier beneden genoemd zijn hebben op dit moment level beloningen uitgeschakeld, elk kanaal niet op de lijst zal niet aangetast worden.\n\n:kanalen"
-        listChannelsTitle: "Kanalen met level beloningen uitgeschakeld ({0})"
-        success: "De xp beloningen voor het :channel kanaal zijn **:status**!"
-        status:
-            enabled: "Geactiveerd"
-            disabled: "Gedeactiveerd"
-
-    GoodbyeCommand:
-        note: "\nJe kan het bericht veranderen met `{0} [message]`"
-        message: "De `Goodbye` module is veranderd naar **:status** voor het :channel kanaal."
-        status:
-            enabled: "Geactiveerd"
-            disabled: "Gedeactiveerd"
-
-    GoodbyeMessageCommand:
-        moduleMustBeEnabled: "De `goodbye` module moet geactiveerd zijn om dit commando te gebruiken, je kan de `goodbye` module activeren door het `{0}` commando te gebruiken."
-        message: "De embed optie voor de verlaat berichten zijn **:status**\n:note"
-        changedToDefault: "De `Goodbye` module berichten is weer terug naar standaard."
-        status:
-            enabled: "Geactiveerd"
-            disabled: "Gedeactiveerd"
-        note:
-            embed: "Verlaat berichten worden nu vertuurd in een embed bericht met de kleur : {0}"
-            normal: "Verlaat berichten worden nu vertuurd met een normaal bericht."
-
-    IAmCommand:
-        notSelfAssignable: ":user Ongeldige rol, **:role** is geen rol die je aan jezelf kan geven."
-        roleIsHigherInTheHierarchy: ":user Is hoger in de rol rangschikking, Ik kan de **:role** rol niet aan iemand geven/ van iemand afpakken."
-        message: ":user Je hebt nu de **:role** rol!"
-
-    IAmNotCommand:
-        notSelfAssignable: ":user Ongeldige rol, **:role** is geen rol die je aan jezelf kan geven."
-        roleIsHigherInTheHierarchy: ":user Is hoger in de rol rangschikking, Ik kan de **:role** rol niet aan iemand geven/ van iemand afpakken."
-        message: ":user Je hebt nu de **:role** rol niet meer!"
-
-    KickCommand:
-        mustMentionUser: "Je moet een gebruiker meegeven die je wilt kicken."
-        higherOrSameRole: "Je kan geen mensen kicken die dezelfde of een hogere rol dan jou hebben."
-        cantKickUser: "Ik kan de gebruiker {0} niet kicken, ze hebben een hogere rol dan mij. Als je deze gebruiker wilt kicken, verander dan mijn rol positie naar de {0} hoogste rol."
-        success: "**:target** is gekicked door :user for \":reason\""
-        error: "Gefaald om **:target** te kicken door een error: :error"
-
-    LanguageCommand:
-        invalidLanguageCode: "Ongeldige taal code gegeven, `{0}` is geen geldige taal code, of word nog niet geondersteund!"
-        changed: "De servers taal is succesvol veranderd naar: :name!"
-        note: "AvaIre ondersteund meerdere vrijwillig vertaalde talen die kan uitkiezen met dit commando. Vertallingen kunnen niet 100% compleet zijn, en kunnen fouten bevatten.\nOm een taal te selecteren, gebruik `{0} <code>`"
-
-    LevelAlertsCommand:
-        message: "`Level up meldingen` zijn veranderd naar `:status` voor de server.:note"
-        note: "\nAlle level up berichten worden gestuurd in het <#{0}> kanaal."
-        status:
-            enabled: "Geactiveerd"
-            disabled: "Gedeactiveerd"
-
-    LevelCommand:
-        message: "`Levels & Experience` is veranderd naar `:status` voor de server.:note"
-        note: "\nLevel meldingen zijn momenteel `{0}`, je kan deze aan of uit zetten met `{1}levelalerts`"
-        status:
-            enabled: "Geactiveerd"
-            disabled: "Gedeactiveerd"
-
-    LevelHierarchyCommand:
-        invalidTypeGiven: "Ongeldig type gegeven, om level rangschikking aan of uit te zetten, moet je  `on` of `off` gebruiken."
-        message: "Level up rangschikking is `:status` voor de server."
-        statusMessage: "Level up rangschikking is momenteel `:status`, ja kan dit aan of uit zetten met `:command`"
-        status:
-            enabled: "Geactiveerd"
-            disabled: "Gedeactiveerd"
-
-    LevelModifierCommand:
-        invalidNumberGiven: "Ongeldige modifier gegeven, de modifier moet een positief percentage hebben tussen de `0.01%` en `500%`"
-        resetToDefault: "De level modifier is terug gezet naar de standaard **:modifier** modifier."
-        changedTo: "De level and experienceis veranderd naar **:modifier**"
-        requiredIsNow: "\n\n**Required XP to reach some levels is now:**\n"
-        statusMessage: "De server gebruikt momenteel een **:modifier** modifier voor levels and experience.\n\n**Benodigde EXP om sommige levels te berijken**\n"
-        level: "Level {0}"
-
-    ListAliasesCommand:
-        noAliases: "De server heeft momenteel geen aliassen, je kan er een aanmaken met het \n`{0}alias <alias> <command>` commando"
-        listAliases: "Lijst van aliassen ({0})"
-
-    ListLevelRolesCommand:
-        noLevelRoles: "Er zijn momenteel geen level rollen, een administrator kan rollen toevoegen met het `:command` commando"
-        listRoles: "Lijst van Level Rollen ({0})"
-
-    ListReactionRoleCommand:
-        noReactionRoles: "De server heeft momenteel geen reactie rollen, je kan een aanmaken met\n`{0}arr <emote> <role>`"
-        listReactionRoles: "Lijst met reactie rollen ({0})"
-
-    ListSelfAssignableRolesCommand:
-        noSelfAssignableRoles: "Er zijn geen zelf uitgeefbare rollen voor deze server."
-        title: "Er zijn {0} zelf uitgeefbare rollen"
-
-    ModlogCommand:
-        mustMentionTextChannel: "Ongeldig kanaal gegeven, je moet een geldig kanaal benoemen"
-        cantSendEmbedMessages: "Ik kan geen embed berichten versturen in dit kanaal, verander A.U.B mijn rechten voor het {0} kanaal als je het als een modlog kanaal wil gebruiken."
-        enable: ":user **Server Modlogging** is nu geactiveerd en gezet naar het :modlog kanaal."
-        enabled: ":user **Server Modlogging** is momenteel geactiveerd en gezet naar het :modlog kanaal."
-        disable: ":user **Server Modlogging** is nu gedeactiveerd voor de server."
-        disabled: ":user **Server Modlogging** is momenteel gedeactiveerd."
-
-    ModlogHistoryCommand:
-        mustMentionUser: "Je moet een geldige `gebruiker` benoemen waarvan je de modlog geschiedenis wil bekijken."
-        noHistory: "Geen modlog geschiedenis gevonden voor deze gebruiker."
-        title: "{0}#{1} Geschiedenis ({2})"
-        entry: "**{1}** | **#{0}** | **Moderator:** {2}\n**Datum:** {3}\n**Reden:** {4}"
-        noReasonGiven: "Er was geen reden gegeven."
-
-    ModlogPardonCommand:
-        modlogNotEnabled: "Geen modlog kanaal ingesteld, je moet een modlog kanaal instellen om dit commando te gebruiken."
-        invalidCaseId: "Ongeldige case ID gegeven, de ID moet groter zijn dan 0 en kleiner dan {0}"
-        couldntFindCaseWithId: "Kon geen modlog case vinden met de ID van {0} waar jij de moderator bent, weet je zeker dat je de moderator bent voor deze modlog case?"
-        caseAlreadyPardoned: "De modlog case ID met het ID van `{0}` is al vergeven."
-        notAPunishment: "De modlog case ID met het ID van `{0}` is geen straf!"
-        message: "De modlog case met het ID van **:case** is succesvol vergeven."
-
-    ModlogReasonCommand:
-        modlogNotEnabled: "Geen modlog kanaal ingesteld, je moet een modlog kanaal instellen om dit commando te gebruiken."
-        invalidCaseId: "Ongeldige case ID gegeven, de ID moet groter zijn dan 0 en kleiner dan {0}"
-        couldntFindCaseWithId: "Kon geen modlog case vinden met de ID van {0} waar jij de moderator bent, weet je zeker dat je de moderator bent voor deze modlog case?"
-        couldntFindModlogChannel: "Kon het modlog kanaal niet vinden, is het verwijderd?"
-        success: "De modlog case met het ID van **:id** is succesvol veranderd en de reden is veranderd naar `:reason`"
-        modlogCaseWasPardoned: "De modlog case met een ID van `{0}` is vergeven, je kan vergeven modlog cases niet veranderen."
-        failedToEdit: "Gefaald met het veranderen van het modlog bericht: {0}"
-        failedToFindMessage: "Kon het bericht voor de modlog case niet vinden, is het verwijderd?"
-
-    MuteCommand:
-        requiresModlogToBeSet: "Dit commando heeft een ingestelde modlog kanaal nodig , een modlog kanaal kan worden ingesteld door het `{0}modlog` commando."
-        requireMuteRoleToBeSet: "Er is nog geen demp rol ingesteld op deze server, je kunt een demp rol instellen door het `{0}muterole` commando."
-        higherOrSameRole: "Je kunt mensen met een hoger niveau, of gelijke niveau, niet dempen."
-        muteRoleIsPositionedHigher: "De {0} rol voor het dempen van gebruikers staat hoger in die hierarchie dan een van mijn rollen, ik kan hierdoor gebruikers niet automatisch deze rol toekennen, los dit op door een hogere rol te defineren voor de bot, or gebruik een andere rol om gebruikers te dempen."
-        invalidUserMentioned: "Invalide gebruiker genoemd, je moet een gebruiker noemen op de server die je wilt dempen met dit commando."
-        invalidTimeGiven: "De opgegeven tijd is fout, de tijd moet minstens een minuut of hoger zijn."
-        userHasBeenMuted: ":target is gedempt voor :time!"
-        time:
-            permanently: "Permanent"
-            forFormat: "voor {0}"
-
-    MuteRoleCommand:
-        onCooldown: "Je hebt recentelijk een commando optie gebruikt dat het recht van een rol/kanaal aanmaakt/aanpast, je moet **:cooldown** wachten totdat je dit commando weer kunt gebruiken."
-        roleDoesntExists: "Invalide rol opgegeven, de `{0}` rol bestaat niet."
-        rolePositionedHigher: "De {0} rol staat hoger dan de rollen die ik heb, hierdoor kan ik niet de rol aan iemand toekennen."
-        cantCreateRoleDueToPermissions: "Ik kan de demp rol niet aanmaken omdat ik niet het recht \"Manage Roles\" heb op deze server."
-        noMuteRoleSet: "Er zijn momenteel geen demp rollen op deze server ingesteld, je kunt een rol instellen als demp rol door `:command set <role>` te gebruiken, of je laat de bot zelf een demp rol maken door `:command create-role`."
-        usingRoleMessage: "De server gebruikt de :role rol voor te dempen."
-        roleHasBeenRemoved: "De demp rol is verwijdert, de demp functie is nu uitgeschakeld totdat er een nieuwe demp rol aangemaakt is."
-        roleHasBeenCreated: "De :role rol is succesvol aangemaakt, en alle kanalen waar ik toegang to heb, heb ik de rechten aangepast zodat gebruikers met deze rol niet meer kunnen praten."
-        nowUsingRole: "De :role rol wordt nu gebruikt om gebruikers te dempen."
-        nowUsingExistingRole: "Een rol genaamd `Muted` bestaat al op deze server, nu wordt de :role rol gebruikt om te dempen, als je wilt dat de bot de kanaal rechten aanpast om gebruikers met deze rol toegang to praten af te nemen, kun je het commando\n`:command setup-permissions` gebruiken."
-
-    NSFWCommand:
-        invalidChannelOrStatus: "Ongeldig kanaal of status type gegeven!"
-        notValidChannel: "`{0}` is geen geldig tekst kanaal!"
-        notValidStatus: "`{0}` is is geen geldig status type, het type moet `on` of `off` zijn."
-        message: "Het :textChannel kanaal heeft momenteel NSFW **:status**!"
-        updated: "De NSFW status voor :textChannel is veranderd naar **:status**"
-        status:
-            enabled: "Geactiveerd"
-            disabled: "Gedeactiveerd"
-
-    PurgeCommand:
-        messagesDeletedIn: "{0} berichten zijn verwijderd in het {1} kanaal."
-        messagesDeletedBy: "{0} berichten verstuurd door {1} zijn verwijderd in het {2} kanaal."
-        success: ":white_check_mark: `:number` berichten zijn verwijderd!"
-        successBy: ":white_check_mark: `:number` berichten van :users zijn verwijderd!"
-        nothingToDelete: ":x: Niks om te verwijderen, ik kan geen berichten verwijderen die ouder dan 14 dagen zijn."
-        nothingToDeleteBy: ":x: Niks om te verwijderen, ik kan geen berichten vinden van :users in de laatste **:number** berichten die in de afgelopen 14 dagen verstuurd zijn."
-
-    RemoveLevelRoleCommand:
-        noRolesCalled: ":user Er zijn geen rollen met de naam **:role** in de level up tabel."
-        noRolesLinked: ":user Er zijn geen rollen gelinkt naar level **:role** in de level up tabel."
-        notALevelRole: ":user Ongeldige rol, De `:name` rol is niet in de level up tabel."
-        message: "De **:role** rol is verwijderd van de level-up rol lijst.\nDe server heeft nu `:slots` level rol plekken beschikbaar."
-
-    RemoveReactionRoleCommand:
-        noReactionRoles: "De server heeft momenteel geen reactie rollen, je kan er een maken met\n`{0}arr <emote> <role>`"
-        messageIdMustBeGreaterThanOne: "Ongeldige `message id` gegeven, het `message id` moet minstens 1 of groter zijn."
-        messageIdMustBeLowerThanRolesSize: "Ongeldige `message id` gegeven, het `message id` kan niet groter zijn dan de hoeveelheid reactie rollen, wat momenteel `{0}` is."
-        failedToFetchMessage: "Er ging iets fout met het opvragen van het reactie rol bericht met een ID van `{0}`, als dit probleem blijft, laat het dan weten bij een van de developers."
-        mustIncludeEmote: "Je moet de emote meegeven die je wil verwijderen van het reactie bericht."
-        emoteDoestBelongToServer: "Die emote is niet van deze server, je kan alleen emotes gebruiken van deze server als reactie emotes."
-        roleNotFoundOnMessage: "Het gegeven reactie bericht heeft geen reactie emote verbonden met die gebruik maakt van de {0} emote."
-        deletedMessage: "Het reactie rol bericht met het ID van **#:id** is succesvol verwijderd!"
-        deletedEmote: "De :emote emote is succesvol verwijderd van het reactie bericht.\nHet bericht heeft nog `:roleSlots` reactie rol plekken over voor het bericht, en `:messageSlots` reactie berichten beschikbaar."
-
-    RemoveSelfAssignableRoleCommand:
-        message: "De **:role** rol is verwijderd van de zelf toegeven lijst.\nDe server heeft nog `:slots` plekken voor zelf toe te geven rollen."
-
-    RoleLevelCommand:
-        invalidRole: "Invalid role given, I found no role on the server called `{0}`"
-        noRolesWithRewardsDisabled: "There are currently no roles with the level rewards disabled, you can add one by using the `{0} <role>` command."
-        listRoles: "All the roles mentioned below currently have their level rewards turned off, this means that any user with one of those roles won't earn any XP in any channel they talk in, any role not on this list is unaffected.\n\n:roles"
-        listRolesTitle: "Roles with their Level Rewards disabled ({0})"
-        success: "The XP rewards for the :role role has been **:status**!"
-        status:
-            enabled: "Enabled"
-            disabled: "Disabled"
-
-    SetRoleColorCommand:
-        noRoleFound: "Geen rol gevonden met de naam \"{0}\"."
-        invalidColor: "De kleur \"{0}\" is niet herkend, gebruik de HEX notatie \"#XXXXXX\""
-        userMissingPermissions: "Je kunt niet dit commando voor de {0} rol gebruiken, je moet gelijk of meer rechten hebben dan de rol om dit commando succesvol te gebruiken."
-        botMissingPermissions: "De stel rol kleur in commando kan niet gebruikt worden op de {0} rol, ik heb meer of evenveel rechten nodig als die rol om het commando succesvol te gebruiken."
-        colorChangeComplete: "De :role rol is succesvol verandert naar **:color**."
-
-    SlowmodeCommand:
-        missingArgument: "Er mist een argument, je moet of de `seconds` waarde geven voor dit of het genoemde kanaal, of `off` om het uit te schakelen."
-        mustBeValidNumbers: "Ongeldige slowmode waarde gegeven, je moet een nummer tussen de **1** en **120** geven."
-        message: "Slowmode is nu **enabled** voor het :textChannel kanaa;.\nHet kanaal staat nu **1** berictht toe voor elke **:slowmode** seconde per gebruiker."
-        disabled: "Succesvol slowmode **disabled** voor het :textChannel kanaal."
-        invalidTextChannel: "`{0}` is geen geldig tekst kanaal, je moet een tekst kanaal benoemen om slowmode te gebruiken."
-        failedToUpdate: "Gefaald met het updaten van het :textChannel kanaal, error: :message"
-
-    ToggleCategoryCommand:
-        invalidCategory: "Ongeldige catagorie gegeven, `{0}` is geen geldige catagorie"
-        missingArgumentType: "Mist argument `channel/global`, je moet een kanaal meegeven of aangeven dat het commando globaal uitgevoerd moet worden."
-        invalidChannelOrGlobalString: "Ongeldig kanaal of globale string gegeven, je moet het kanaal aangeven die je wil aanpassen, of `global` gebruiken om alle kanalen aan te passen."
-        cantEnabledCategory: "Whoops, je kan de **:category** commando categorie niet aanzetten terwijl deze globaal uitstaat.\nje kan het volgende commando gebruiken om de catagorie globaal aan te zetten.\n`:command :category global on`"
-        update:
-            globally: "De `:category` commandop categorie is `:status` voor **alle kanalen**."
-            category: "De `:category` command categorie is `:status` in :channel."
-        status:
-            enabled: "Geactiveerd"
-            disabled: "Gedeactiveerd"
-
-    UnbanCommand:
-        success: ':target is succesvol verwijderd van de server omdat ":reason".'
-        failedToUnban: "Gefaald met unbannen van :target door een error: :error"
-        noUserIsBanned: "Geen gebruiker met het ID `:id` is momenteel gebanned van de server."
-        invalidUserIdGiven: "Ongeldige `user id` is gegeven, de `user id` moet een nummer van 18 karakters of langer zijn."
-
-    UnmuteCommand:
-        requiresModlogToBeSet: "Dit commando heeft een ingestelde modlog kanaal nodig, je kunt een modlog kanaal instellen door het commando `{0}modlog` te gebruiken."
-        requireMuteRoleToBeSet: "Er is geen demp rol ingesteld voor deze server, je kunt een demp rol instellen door het commando `{0}muterole` te gebruiken."
-        muteRoleIsPositionedHigher: "De {0} rol dat gebruikt wordt om gebruikers te dempen, staat hoger in de hierarchie dan de rollen die ik heb, hierdoor kan ik niet de demp rol van andere gebruikers afnemen, los dit op door een andere rol te gebruiken voor te dempen."
-        invalidUserMentioned: "Invalide gebruiker genoemd, je moet een gebruiker noemen op de server die je wilt ontdempen voor dit commando."
-        userDoesntHaveMuteRole: "{0} heeft geen demp rol, ze kunnen al de demp rol hebben!"
-        userHasBeenUnmuted: ":target is ge-ondempt!"
-        userAutoUnmutedReason: "*ondempt automatisch nadat de ingestelde tijd verlopen is.*"
-
-    VoiceKickCommand:
-        mustMentionUser: "Je moet een gebruiker noemen die je wil kicken."
-        sameOrHigherRole: "Je kan geen mensen kicken met een hogere, of dezelfde rol als jezelf."
-        notConnected: "Je kan iemand niet uit een spraak kanaal kicken als ze niet verbonden zijn met een spraak kanaal."
-        message: "**:target** is gekicked van **:voiceChannel** door :user voor \":reason\""
-
-    VoteOptCommand:
-        invalidArgument: "Ongeldig argument, je moet of `in` of `out` om mee te doen in een vote message."
-        message: "Je krijgt nu :type stem berichten."
-        type:
-            in: "wel"
-            out: "niet"
-
-    WarnCommand:
-        requiresModlogIsEnabled: "Voor dit commando is het nodig om een modlog kanaal te hebben, je kan een modlog kanaal aanmaken met het `{0}modlog` commando."
-        mustMentionUse: "Je moet een gebruiker noemen de je wil waarschuwen."
-        warnBots: "Je kan bots niet waarschuwen!"
-        failedToLogWarning: "Gefaald met het loggen van de waarschuwing naar het modlog kanaal, bestaad het kanaal nog wel? Kan ik nog wel berichten sturen in het modlog kanaal?"
-        message: ":target is **gewaarschuwd** voor \":reason\""
-        failedToSendDM: "Gefaald met het DM'en van de gebruiker, ze hebben waarschijnlijk hun settings zo staan dat ze geen DM's kunnen ontvangen van deze server."
-
-    WelcomeCommand:
-        note: "\nJe kan het bericht aanpassen met `{0} [message]`"
-        message: "De `Welcome` module is **:status** voor het :channel kanaal.:note"
-        status:
-            enabled: "Geactiveerd"
-            disabled: "Gedeactiveerd"
-
-    WelcomeMessageCommand:
-        moduleMustBeEnabled: "De `welcome` module moet aan staan om dit commando te gebruiken, je kan de `welcome` module aanzetten met het `{0}welcome` commando."
-        message: "De embed optie voor berichten is nu **:status**\n:note"
-        changedToDefault: "Het `Welcome` module is weer terug gezet naar de standaard waarde."
-        status:
-            enabled: "Geactiveerd"
-            disabled: "Gedeactiveerd"
-        note:
-            embed: "Welkom berichten worden nu gestuurd in een embedded bericht met de kleur: {0}"
-            normal: "Welkom berichten worden nu gestuurd door normale berichten."
-
+  common:
+    invalidRole: ":user Ongeldige rol, ik kon geen rol vinden die **:role** heet"
+  channelModule:
+    invalidColorGiven: "Ongeldige kleur waarde gegeven, de kleur moet een geldige HEX waarde zijn.\nJe kan deze [random color picker](https://www.webpagefx.com/web-design/random-color-picker/) proberen om een random HEX kleur waarde te vinden."
+    message: "De `:type` module bericht is vervangen naar:\n\n```:message```\n\nJe kan het bericht testen dooret commande opnieuw uit te voeren en een gebruiker te vermelden\n`:command <user>`"
+  AddLevelRoleCommand:
+    noSlotsLeft: "De server heeft geen plek meer voor level up rollen. Je kan bestaande level rollen verwijderen"
+    invalidLevel: "Ongeldige level eis gegeven. Een level eis moet een geldig nummer zijn."
+    alreadyLevelRole: ":user de **:role** is al een level rol, je kan de zelfde rol niet twee keer gebruiken."
+    alreadyARoleAtLevel: "Er is al een rol toegewezen aan level **:level**, er kan maar 1 rol per level gegeven worden."
+    success: "De **:role** rol is toegevoegd aan de level-up rol lijst.\nDe server heeft nog `:slots` level rol plaatsen beschikbaar."
+  AddReactionRoleCommand:
+    emoteDoestBelongToServer: "Die emoticon is niet van deze server, je kan alleen emoticons van deze server gebruiken als reactie emoticons."
+    messageHasNoSlots: "Het bericht heeft geen reactie plekken meer over, je kan bestaande reaction rollen verwijderen om meer ruimte vrij te maken, of verwijder reactie rol berichten om de rol toe te voegen aan meer reactie rol berichten."
+    serverHasNoSlots: "Kan geen nieuw reactie rol bericht maken, de server heeft niet meer plek voor reactie rol berichten, je kan bestaande reactie rol berichten verwijderen voor meer ruimte, of voeg je reactie rol toe aan een reactie bericht als hier ruimte voor is."
+    success: "De :role rol is geregistreed als een reactie rol voor de :emote emote.\nHet bericht heeft nog `:roleSlots` reactie rol plekken over voor dit bericht, en nog `:messageSlots` reactie berichten over."
+  AddSelfAssignableRoleCommand:
+    noSlotsLeft: "De server heeft geen ruimte meer om zelf uitgeefbare rollen te maken, je kan een paar bestaande uitgeefbare rollen verwijderen voor meer ruimte."
+    success: "De **:role** rol is toegevoegd aan de zelf uitgeefbare rollen.\nDe server heeft nog `:slots` plekken over voor zelf uitgeefbare rollen."
+  AdministrateExperienceCommand:
+    cantUseForBots: "Je kan geen exp toevoegen, aanpassen of verwijderen voor bot accounts, aangezien deze geen exp krijgen. Noem A.U.B een gewone gebruiker wanneer je dit commando gebruikt."
+    invalidAmountGiven: "De `amount` waarde moet tussen de 0 en de {0} zijn om exp van een user af te pakken of om exp toe te voegen."
+    aboutToResetEverything: " Je staat op het punt om de XP van iedereen op de gehele server ongedaan te maken. Als je zeker bent van deze actie, typ het commando in om de XP van de server te resetten.\n\n```:command server-reset :token```\nDit commando werkt voor 60 seconden, na dit moment wordt het token ongeldig en moet je het commando opnieuw uitvoeren om een nieuw token te krijgen."
+    aboutToSyncEverything: "Je staat op het punt om de XP te synchroniseren met het wereldwijde scorebord, dit vervangt alle aangepast XP aanpassingen gemaakt op deze server. Als je zeker bent van deze actie, voer het commando uit om de XP te laten synchroniseren met het wereldwijde scorebord.\n\n```:command server-sync :token```\nDit commando werkt voor 60 seconden, daarna wordt het token invalide en moet je het commando nogmaals uitvoeren om een nieuw token te krijgen."
+    failedToSaveChanges: "Het opslaan naar de database is mislukt, probeer het opnieuw, of als het probleem zich blijft voordoen, zoek dan ondersteuning in [de officiele AvaIre server](https://avairebot.com/support)."
+    mustBeAnAdmin: "Je moet een server administrator zijn om dit te kunnen doen."
+    invalidSecurityToken: "Ongeldig security token gegeven, geef A.U.B een geldig security token om de EXP van alle servers te resetten."
+    warning: "Waarschuwing!"
+    success:
+      add: "**:amount** EXP gegeven aan :target, ze hebben nu **:newAmount** XP."
+      take: "**:amount** XP weg genomen van :target, ze hebben nu **:newAmount** XP."
+      reset: ":target zijn XP is succesvol gereset."
+      sync: ":target heeft met success het wereldwijde scorebord gesynchroniseerd, en heeft nu **:newAmount** XP."
+      syncEveryone: "Iedereen op deze server is gesynchroniseerd met het wereldwijde scorebord!"
+      everything: "De XP van iedereen op de server is compleet gereset!"
+  AiCommand:
+    message: "De `Artificial Intelligence` module is veranderd naar **:status** voor het :channel kanaal."
+    status:
+      enabled: "Geactiveerd"
+      disabled: "Gedeactiveerd"
+  AliasCommand:
+    noSlotsLeft: "De server heeft geen alias plekken meer, je kan bestaande aliassen verwijderen om meer ruimte te maken."
+    alreadyExists: "Er is al een custom alias genaamd `{0}`"
+    invalidCommand: "Ongeldig commando gegeven, ik ken geen een commando die `{0}` heet."
+    invalidAlias: "Ongeldige alias gegeven, `{0}` is geen geregistreerde alias."
+    created: "De `:alias` alias is gelinkt naar `:command`\nDe server heeft nog `:slots` plekken voor aliasses over."
+    deleted: "De `:alias` alias is succesvol verwijderd."
+  AutoAssignRoleCommand:
+    higherInTheHierarchy:
+      user: ":user De **:role** rol heeft een hogere rangschikking dan jouw rollen, je kan geen rollen toevoegen die hoger zijn dan die van jou."
+      bot: ":user De **:role** rol is hoger in de rangschikking, ik kan deze rol niet geven/verwijderen van een gebruiker."
+    enabled: ":user **Auto assign role** als een gebruiker toetreed is **geactiveerd** en gebruikt de **:role** rol"
+    disabledNow: ":user **Auto assign role** als een gebruiker toetreed is nu **disabled**."
+    disabled: ":user **Auto assign role** als een gebruiker toetreed is op dit moment **disabled**."
+    status: ":user De **auto assign role** is momenteel de **:role** rol"
+  BanCommand:
+    mustMentionUser: "Je moet de gebruiker vermelden die je wil bannen."
+    higherRole: "Je kan mensen met dezelfe, of hogere rol dan jezelf niet bannen."
+    userHaveHigherRole: "Ik kan {0} niet bannen, hij/zij heeft een hogere rol dan mij, als je wil dat ik deze gebruiker kan bannen, verander dan mijn rol om hoger te zijn dan de {0} hoogste rol."
+    success: "**:target** is permanent verbannen door :user voor \":reason\""
+    failedToBan: "Het verbannen van **:target** is mislukt door een error: :error"
+  CategoriesCommand:
+    title: "Commando Categorie Status voor #{0}"
+    status: ":emoteEnabled Geactiveerd :emoteDisabledInChannel Gedeactiveerd in kanaal   :emoteDisabledGlobally Globaal Gedeactiveerd"
+  ChangePrefixCommand:
+    missingArgument: "Mist `category` argument, je moet een catagorie meegeven waarvoor je de prefix wil instellen/resetten."
+    invalidCategory: "Ongeldige `category` gegeven, er zijn geen commando catagorieën die beginnen met,of de naam `{0}` hebben"
+    invalidPrefix: "Ongeldige commando prefix gegeven, `{0}` is geen geldige commando, een prefix mag **GEEN** spaties bevatten en moet tussen de 1 en 16 karakters lang zijn."
+    update:
+      global: "Alle commando's voor elke catagorie gebruiken nu de `:prefix` prefix."
+      category: "Alle commando's in de `:category` categorie gebruiken nu de `:prefix` prefix."
+    reset:
+      global: "Alle commando's voor elke catagorie zijn gereset en gebruiken weer de `:prefix` prefix."
+      category: "Alle commando's in de `:category` catagorie zijn gereset en gebruiken nu de `:prefix` prefix."
+  ChannelLevelCommand:
+    invalidChannel: "Ongeldig kanaal gegeven, het kanaal moet een geldig tekst kanaal zijn."
+    cantTalkInChannel: "Ik kan niet praten in het {0} kanaal, dus gebruikers zullen geen exp krijgen voor het praten in dat kanaal, als je wil dat ik users xp kan geven in dat kanaal, verander dan mijn rechten zodat ik berichten kan versturen in dat kanaal."
+    noChannelsWithRewardsDisabled: "Er zijn op dit moment geen kanalen met de level beloningen uitgeschakeld, je kan er een toevoegen met het `{0} <channel>` commando"
+    failedToUpdate: "Gefaald met het veranderen van de aanpassingen naar de database, probeer A.U.B opnieuw, als dit probleem blijft, kom A.U.B in contact met een van mijn developers."
+    listChannels: "Alle kanalen die hier beneden genoemd zijn hebben op dit moment level beloningen uitgeschakeld, elk kanaal niet op de lijst zal niet aangetast worden.\n\n:kanalen"
+    listChannelsTitle: "Kanalen met level beloningen uitgeschakeld ({0})"
+    success: "De xp beloningen voor het :channel kanaal zijn **:status**!"
+    status:
+      enabled: "Geactiveerd"
+      disabled: "Gedeactiveerd"
+  GoodbyeCommand:
+    note: "\nJe kan het bericht veranderen met `{0} [message]`"
+    message: "De `Goodbye` module is veranderd naar **:status** voor het :channel kanaal."
+    status:
+      enabled: "Geactiveerd"
+      disabled: "Gedeactiveerd"
+  GoodbyeMessageCommand:
+    moduleMustBeEnabled: "De `goodbye` module moet geactiveerd zijn om dit commando te gebruiken, je kan de `goodbye` module activeren door het `{0}` commando te gebruiken."
+    message: "De embed optie voor de verlaat berichten zijn **:status**\n:note"
+    changedToDefault: "De `Goodbye` module berichten is weer terug naar standaard."
+    status:
+      enabled: "Geactiveerd"
+      disabled: "Gedeactiveerd"
+    note:
+      embed: "Verlaat berichten worden nu vertuurd in een embed bericht met de kleur : {0}"
+      normal: "Verlaat berichten worden nu vertuurd met een normaal bericht."
+  IAmCommand:
+    notSelfAssignable: ":user Ongeldige rol, **:role** is geen rol die je aan jezelf kan geven."
+    roleIsHigherInTheHierarchy: ":user Is hoger in de rol rangschikking, Ik kan de **:role** rol niet aan iemand geven/ van iemand afpakken."
+    message: ":user Je hebt nu de **:role** rol!"
+  IAmNotCommand:
+    notSelfAssignable: ":user Ongeldige rol, **:role** is geen rol die je aan jezelf kan geven."
+    roleIsHigherInTheHierarchy: ":user Is hoger in de rol rangschikking, Ik kan de **:role** rol niet aan iemand geven/ van iemand afpakken."
+    message: ":user Je hebt nu de **:role** rol niet meer!"
+  KickCommand:
+    mustMentionUser: "Je moet een gebruiker meegeven die je wilt kicken."
+    higherOrSameRole: "Je kan geen mensen kicken die dezelfde of een hogere rol dan jou hebben."
+    cantKickUser: "Ik kan de gebruiker {0} niet kicken, ze hebben een hogere rol dan mij. Als je deze gebruiker wilt kicken, verander dan mijn rol positie naar de {0} hoogste rol."
+    success: "**:target** is gekicked door :user for \":reason\""
+    error: "Gefaald om **:target** te kicken door een error: :error"
+  LanguageCommand:
+    invalidLanguageCode: "Ongeldige taal code gegeven, `{0}` is geen geldige taal code, of word nog niet geondersteund!"
+    changed: "De servers taal is succesvol veranderd naar: :name!"
+    note: "AvaIre ondersteund meerdere vrijwillig vertaalde talen die kan uitkiezen met dit commando. Vertallingen kunnen niet 100% compleet zijn, en kunnen fouten bevatten.\nOm een taal te selecteren, gebruik `{0} <code>`"
+  LevelAlertsCommand:
+    message: "`Level up meldingen` zijn veranderd naar `:status` voor de server.:note"
+    note: "\nAlle level up berichten worden gestuurd in het <#{0}> kanaal."
+    status:
+      enabled: "Geactiveerd"
+      disabled: "Gedeactiveerd"
+  LevelCommand:
+    message: "`Levels & Experience` is veranderd naar `:status` voor de server.:note"
+    note: "\nLevel meldingen zijn momenteel `{0}`, je kan deze aan of uit zetten met `{1}levelalerts`"
+    status:
+      enabled: "Geactiveerd"
+      disabled: "Gedeactiveerd"
+  LevelHierarchyCommand:
+    invalidTypeGiven: "Ongeldig type gegeven, om level rangschikking aan of uit te zetten, moet je  `on` of `off` gebruiken."
+    message: "Level up rangschikking is `:status` voor de server."
+    statusMessage: "Level up rangschikking is momenteel `:status`, ja kan dit aan of uit zetten met `:command`"
+    status:
+      enabled: "Geactiveerd"
+      disabled: "Gedeactiveerd"
+  LevelModifierCommand:
+    invalidNumberGiven: "Ongeldige modifier gegeven, de modifier moet een positief percentage hebben tussen de `0.01%` en `500%`"
+    resetToDefault: "De level modifier is terug gezet naar de standaard **:modifier** modifier."
+    changedTo: "De level and experienceis veranderd naar **:modifier**"
+    requiredIsNow: "\n\n**Vereist XP om sommige levels te bereiken is nu:**\n"
+    statusMessage: "De server gebruikt momenteel een **:modifier** modifier voor levels and experience.\n\n**Benodigde EXP om sommige levels te berijken**\n"
+    level: "Level {0}"
+  ListAliasesCommand:
+    noAliases: "De server heeft momenteel geen aliassen, je kan er een aanmaken met het \n`{0}alias <alias> <command>` commando"
+    listAliases: "Lijst van aliassen ({0})"
+  ListLevelRolesCommand:
+    noLevelRoles: "Er zijn momenteel geen level rollen, een administrator kan rollen toevoegen met het `:command` commando"
+    listRoles: "Lijst van Level Rollen ({0})"
+  ListReactionRoleCommand:
+    noReactionRoles: "De server heeft momenteel geen reactie rollen, je kan een aanmaken met\n`{0}arr <emote> <role>`"
+    listReactionRoles: "Lijst met reactie rollen ({0})"
+  ListSelfAssignableRolesCommand:
+    noSelfAssignableRoles: "Er zijn geen zelf uitgeefbare rollen voor deze server."
+    title: "Er zijn {0} zelf uitgeefbare rollen"
+  ModlogCommand:
+    mustMentionTextChannel: "Ongeldig kanaal gegeven, je moet een geldig kanaal benoemen"
+    cantSendEmbedMessages: "Ik kan geen embed berichten versturen in dit kanaal, verander A.U.B mijn rechten voor het {0} kanaal als je het als een modlog kanaal wil gebruiken."
+    enable: ":user **Server Modlogging** is nu geactiveerd en gezet naar het :modlog kanaal."
+    enabled: ":user **Server Modlogging** is momenteel geactiveerd en gezet naar het :modlog kanaal."
+    disable: ":user **Server Modlogging** is nu gedeactiveerd voor de server."
+    disabled: ":user **Server Modlogging** is momenteel gedeactiveerd."
+  ModlogHistoryCommand:
+    mustMentionUser: "Je moet een geldige `gebruiker` benoemen waarvan je de modlog geschiedenis wil bekijken."
+    noHistory: "Geen modlog geschiedenis gevonden voor deze gebruiker."
+    title: "{0}#{1} Geschiedenis ({2})"
+    entry: "**{1}** | **#{0}** | **Moderator:** {2}\n**Datum:** {3}\n**Reden:** {4}"
+    noReasonGiven: "Er was geen reden gegeven."
+  ModlogPardonCommand:
+    modlogNotEnabled: "Geen modlog kanaal ingesteld, je moet een modlog kanaal instellen om dit commando te gebruiken."
+    invalidCaseId: "Ongeldige case ID gegeven, de ID moet groter zijn dan 0 en kleiner dan {0}"
+    couldntFindCaseWithId: "Kon geen modlog case vinden met de ID van {0} waar jij de moderator bent, weet je zeker dat je de moderator bent voor deze modlog case?"
+    caseAlreadyPardoned: "De modlog case ID met het ID van `{0}` is al vergeven."
+    notAPunishment: "De modlog case ID met het ID van `{0}` is geen straf!"
+    message: "De modlog case met het ID van **:case** is succesvol vergeven."
+  ModlogReasonCommand:
+    modlogNotEnabled: "Geen modlog kanaal ingesteld, je moet een modlog kanaal instellen om dit commando te gebruiken."
+    invalidCaseId: "Ongeldige case ID gegeven, de ID moet groter zijn dan 0 en kleiner dan {0}"
+    couldntFindCaseWithId: "Kon geen modlog case vinden met de ID van {0} waar jij de moderator bent, weet je zeker dat je de moderator bent voor deze modlog case?"
+    couldntFindModlogChannel: "Kon het modlog kanaal niet vinden, is het verwijderd?"
+    success: "De modlog case met het ID van **:id** is succesvol veranderd en de reden is veranderd naar `:reason`"
+    modlogCaseWasPardoned: "De modlog case met een ID van `{0}` is vergeven, je kan vergeven modlog cases niet veranderen."
+    failedToEdit: "Gefaald met het veranderen van het modlog bericht: {0}"
+    failedToFindMessage: "Kon het bericht voor de modlog case niet vinden, is het verwijderd?"
+  MuteCommand:
+    requiresModlogToBeSet: "Dit commando heeft een ingestelde modlog kanaal nodig , een modlog kanaal kan worden ingesteld door het `{0}modlog` commando."
+    requireMuteRoleToBeSet: "Er is nog geen demp rol ingesteld op deze server, je kunt een demp rol instellen door het `{0}muterole` commando."
+    higherOrSameRole: "Je kunt mensen met een hoger niveau, of gelijke niveau, niet dempen."
+    muteRoleIsPositionedHigher: "De {0} rol voor het dempen van gebruikers staat hoger in die hierarchie dan een van mijn rollen, ik kan hierdoor gebruikers niet automatisch deze rol toekennen, los dit op door een hogere rol te defineren voor de bot, or gebruik een andere rol om gebruikers te dempen."
+    invalidUserMentioned: "Invalide gebruiker genoemd, je moet een gebruiker noemen op de server die je wilt dempen met dit commando."
+    invalidTimeGiven: "De opgegeven tijd is fout, de tijd moet minstens een minuut of hoger zijn."
+    userHasBeenMuted: ":target is gedempt voor :time!"
+    time:
+      permanently: "Permanent"
+      forFormat: "voor {0}"
+  MuteRoleCommand:
+    onCooldown: "Je hebt recentelijk een commando optie gebruikt dat het recht van een rol/kanaal aanmaakt/aanpast, je moet **:cooldown** wachten totdat je dit commando weer kunt gebruiken."
+    roleDoesntExists: "Invalide rol opgegeven, de `{0}` rol bestaat niet."
+    rolePositionedHigher: "De {0} rol staat hoger dan de rollen die ik heb, hierdoor kan ik niet de rol aan iemand toekennen."
+    cantCreateRoleDueToPermissions: "Ik kan de demp rol niet aanmaken omdat ik niet het recht \"Manage Roles\" heb op deze server."
+    noMuteRoleSet: "Er zijn momenteel geen demp rollen op deze server ingesteld, je kunt een rol instellen als demp rol door `:command set <role>` te gebruiken, of je laat de bot zelf een demp rol maken door `:command create-role`."
+    usingRoleMessage: "De server gebruikt de :role rol voor te dempen."
+    roleHasBeenRemoved: "De demp rol is verwijdert, de demp functie is nu uitgeschakeld totdat er een nieuwe demp rol aangemaakt is."
+    roleHasBeenCreated: "De :role rol is succesvol aangemaakt, en alle kanalen waar ik toegang to heb, heb ik de rechten aangepast zodat gebruikers met deze rol niet meer kunnen praten."
+    nowUsingRole: "De :role rol wordt nu gebruikt om gebruikers te dempen."
+    nowUsingExistingRole: "Een rol genaamd `Muted` bestaat al op deze server, nu wordt de :role rol gebruikt om te dempen, als je wilt dat de bot de kanaal rechten aanpast om gebruikers met deze rol toegang to praten af te nemen, kun je het commando\n`:command setup-permissions` gebruiken."
+  NSFWCommand:
+    invalidChannelOrStatus: "Ongeldig kanaal of status type gegeven!"
+    notValidChannel: "`{0}` is geen geldig tekst kanaal!"
+    notValidStatus: "`{0}` is is geen geldig status type, het type moet `on` of `off` zijn."
+    message: "Het :textChannel kanaal heeft momenteel NSFW **:status**!"
+    updated: "De NSFW status voor :textChannel is veranderd naar **:status**"
+    status:
+      enabled: "Geactiveerd"
+      disabled: "Gedeactiveerd"
+  PurgeCommand:
+    messagesDeletedIn: "{0} berichten zijn verwijderd in het {1} kanaal."
+    messagesDeletedBy: "{0} berichten verstuurd door {1} zijn verwijderd in het {2} kanaal."
+    success: ":white_check_mark: `:number` berichten zijn verwijderd!"
+    successBy: ":white_check_mark: `:number` berichten van :users zijn verwijderd!"
+    nothingToDelete: ":x: Niks om te verwijderen, ik kan geen berichten verwijderen die ouder dan 14 dagen zijn."
+    nothingToDeleteBy: ":x: Niks om te verwijderen, ik kan geen berichten vinden van :users in de laatste **:number** berichten die in de afgelopen 14 dagen verstuurd zijn."
+  RemoveLevelRoleCommand:
+    noRolesCalled: ":user Er zijn geen rollen met de naam **:role** in de level up tabel."
+    noRolesLinked: ":user Er zijn geen rollen gelinkt naar level **:role** in de level up tabel."
+    notALevelRole: ":user Ongeldige rol, De `:name` rol is niet in de level up tabel."
+    message: "De **:role** rol is verwijderd van de level-up rol lijst.\nDe server heeft nu `:slots` level rol plekken beschikbaar."
+  RemoveReactionRoleCommand:
+    noReactionRoles: "De server heeft momenteel geen reactie rollen, je kan er een maken met\n`{0}arr <emote> <role>`"
+    messageIdMustBeGreaterThanOne: "Ongeldige `message id` gegeven, het `message id` moet minstens 1 of groter zijn."
+    messageIdMustBeLowerThanRolesSize: "Ongeldige `message id` gegeven, het `message id` kan niet groter zijn dan de hoeveelheid reactie rollen, wat momenteel `{0}` is."
+    failedToFetchMessage: "Er ging iets fout met het opvragen van het reactie rol bericht met een ID van `{0}`, als dit probleem blijft, laat het dan weten bij een van de developers."
+    mustIncludeEmote: "Je moet de emote meegeven die je wil verwijderen van het reactie bericht."
+    emoteDoestBelongToServer: "Die emote is niet van deze server, je kan alleen emotes gebruiken van deze server als reactie emotes."
+    roleNotFoundOnMessage: "Het gegeven reactie bericht heeft geen reactie emote verbonden met die gebruik maakt van de {0} emote."
+    deletedMessage: "Het reactie rol bericht met het ID van **#:id** is succesvol verwijderd!"
+    deletedEmote: "De :emote emote is succesvol verwijderd van het reactie bericht.\nHet bericht heeft nog `:roleSlots` reactie rol plekken over voor het bericht, en `:messageSlots` reactie berichten beschikbaar."
+  RemoveSelfAssignableRoleCommand:
+    message: "De **:role** rol is verwijderd van de zelf toegeven lijst.\nDe server heeft nog `:slots` plekken voor zelf toe te geven rollen."
+  RoleLevelCommand:
+    invalidRole: "Ongeldige rol gegeven, ik heb geen rol gevonden op de server genaamd `{0}`"
+    noRolesWithRewardsDisabled: "Er zijn op dit moment geen rollen met de level beloningen uitgeschakeld, je kan er een toevoegen met het `{0} <role>` commando."
+    listRoles: "Alle onderstaande rollen hebben hun level beloningen uitgeschakeld, dit betekent dat een gebruiker met een van deze rollen geen XP verdient in elk kanaal waar hij of zij in spreekt elke rol die niet op deze lijst staat, wordt niet beïnvloed.\n\n:roles"
+    listRolesTitle: "Rollen met Level Beloningen uitgeschakeld ({0})"
+    success: "De XP beloningen voor de :role rol is **:status**!"
+    status:
+      enabled: "Geactiveerd"
+      disabled: "Gedeactiveerd"
+  SetRoleColorCommand:
+    noRoleFound: "Geen rol gevonden met de naam \"{0}\"."
+    invalidColor: "De kleur \"{0}\" is niet herkend, gebruik de HEX notatie \"#XXXXXX\""
+    userMissingPermissions: "Je kunt niet dit commando voor de {0} rol gebruiken, je moet gelijk of meer rechten hebben dan de rol om dit commando succesvol te gebruiken."
+    botMissingPermissions: "De stel rol kleur in commando kan niet gebruikt worden op de {0} rol, ik heb meer of evenveel rechten nodig als die rol om het commando succesvol te gebruiken."
+    colorChangeComplete: "De :role rol is succesvol verandert naar **:color**."
+  SlowmodeCommand:
+    missingArgument: "Er mist een argument, je moet of de `seconds` waarde geven voor dit of het genoemde kanaal, of `off` om het uit te schakelen."
+    mustBeValidNumbers: "Ongeldige slowmode waarde gegeven, je moet een nummer tussen de **1** en **120** geven."
+    message: "Slowmode is nu **enabled** voor het :textChannel kanaa;.\nHet kanaal staat nu **1** berictht toe voor elke **:slowmode** seconde per gebruiker."
+    disabled: "Succesvol slowmode **disabled** voor het :textChannel kanaal."
+    invalidTextChannel: "`{0}` is geen geldig tekst kanaal, je moet een tekst kanaal benoemen om slowmode te gebruiken."
+    failedToUpdate: "Gefaald met het updaten van het :textChannel kanaal, error: :message"
+  ToggleCategoryCommand:
+    invalidCategory: "Ongeldige catagorie gegeven, `{0}` is geen geldige catagorie"
+    missingArgumentType: "Mist argument `channel/global`, je moet een kanaal meegeven of aangeven dat het commando globaal uitgevoerd moet worden."
+    invalidChannelOrGlobalString: "Ongeldig kanaal of globale string gegeven, je moet het kanaal aangeven die je wil aanpassen, of `global` gebruiken om alle kanalen aan te passen."
+    cantEnabledCategory: "Whoops, je kan de **:category** commando categorie niet aanzetten terwijl deze globaal uitstaat.\nje kan het volgende commando gebruiken om de catagorie globaal aan te zetten.\n`:command :category global on`"
+    update:
+      globally: "De `:category` commandop categorie is `:status` voor **alle kanalen**."
+      category: "De `:category` command categorie is `:status` in :channel."
+    status:
+      enabled: "Geactiveerd"
+      disabled: "Gedeactiveerd"
+  UnbanCommand:
+    success: ':target is succesvol verwijderd van de server omdat ":reason".'
+    failedToUnban: "Gefaald met unbannen van :target door een error: :error"
+    noUserIsBanned: "Geen gebruiker met het ID `:id` is momenteel gebanned van de server."
+    invalidUserIdGiven: "Ongeldige `user id` is gegeven, de `user id` moet een nummer van 18 karakters of langer zijn."
+  UnmuteCommand:
+    requiresModlogToBeSet: "Dit commando heeft een ingestelde modlog kanaal nodig, je kunt een modlog kanaal instellen door het commando `{0}modlog` te gebruiken."
+    requireMuteRoleToBeSet: "Er is geen demp rol ingesteld voor deze server, je kunt een demp rol instellen door het commando `{0}muterole` te gebruiken."
+    muteRoleIsPositionedHigher: "De {0} rol dat gebruikt wordt om gebruikers te dempen, staat hoger in de hierarchie dan de rollen die ik heb, hierdoor kan ik niet de demp rol van andere gebruikers afnemen, los dit op door een andere rol te gebruiken voor te dempen."
+    invalidUserMentioned: "Invalide gebruiker genoemd, je moet een gebruiker noemen op de server die je wilt ontdempen voor dit commando."
+    userDoesntHaveMuteRole: "{0} heeft geen demp rol, ze kunnen al de demp rol hebben!"
+    userHasBeenUnmuted: ":target is ge-ondempt!"
+    userAutoUnmutedReason: "*ondempt automatisch nadat de ingestelde tijd verlopen is.*"
+  VoiceKickCommand:
+    mustMentionUser: "Je moet een gebruiker noemen die je wil kicken."
+    sameOrHigherRole: "Je kan geen mensen kicken met een hogere, of dezelfde rol als jezelf."
+    notConnected: "Je kan iemand niet uit een spraak kanaal kicken als ze niet verbonden zijn met een spraak kanaal."
+    message: "**:target** is gekicked van **:voiceChannel** door :user voor \":reason\""
+  VoteOptCommand:
+    invalidArgument: "Ongeldig argument, je moet of `in` of `out` om mee te doen in een vote message."
+    message: "Je krijgt nu :type stem berichten."
+    type:
+      in: "wel"
+      out: "niet"
+  WarnCommand:
+    requiresModlogIsEnabled: "Voor dit commando is het nodig om een modlog kanaal te hebben, je kan een modlog kanaal aanmaken met het `{0}modlog` commando."
+    mustMentionUse: "Je moet een gebruiker noemen de je wil waarschuwen."
+    warnBots: "Je kan bots niet waarschuwen!"
+    failedToLogWarning: "Gefaald met het loggen van de waarschuwing naar het modlog kanaal, bestaad het kanaal nog wel? Kan ik nog wel berichten sturen in het modlog kanaal?"
+    message: ":target is **gewaarschuwd** voor \":reason\""
+    failedToSendDM: "Gefaald met het DM'en van de gebruiker, ze hebben waarschijnlijk hun settings zo staan dat ze geen DM's kunnen ontvangen van deze server."
+  WelcomeCommand:
+    note: "\nJe kan het bericht aanpassen met `{0} [message]`"
+    message: "De `Welcome` module is **:status** voor het :channel kanaal.:note"
+    status:
+      enabled: "Geactiveerd"
+      disabled: "Gedeactiveerd"
+  WelcomeMessageCommand:
+    moduleMustBeEnabled: "De `welcome` module moet aan staan om dit commando te gebruiken, je kan de `welcome` module aanzetten met het `{0}welcome` commando."
+    message: "De embed optie voor berichten is nu **:status**\n:note"
+    changedToDefault: "Het `Welcome` module is weer terug gezet naar de standaard waarde."
+    status:
+      enabled: "Geactiveerd"
+      disabled: "Gedeactiveerd"
+    note:
+      embed: "Welkom berichten worden nu gestuurd in een embedded bericht met de kleur: {0}"
+      normal: "Welkom berichten worden nu gestuurd door normale berichten."
 fun:
-    DiceCommand:
-        missingDice: 'Je moet wel een dobbelsteen meegeven die je wilt rollen.'
-        invalidDiceFormat: '`{0}` is geen geldige dobbelsteen format.'
-        diceFormatMustBeGreaterThan: '`{0}` is geen geldige dobbelsteen format, de dobbelsteen moet meer dan 0 zijden hebben en minder dan 35'
-        diceFormatMustBePositive: '`{0}` is geen geldige dobbelsteen format, de dobbelsteen zijden moet een positief nummer tussen 0 en 35 zijn'
-        sidesFormatMustBeGreaterThan: '`{0}` is geen geldige dobbelsteen format, de zijden moeten groter zijn dan 0 en lager dan 128'
-        sidesFormatMustBePositive: '`{0}` is geen geldige dobbelsteen format, het nummer op een zijkant moet een positief nummer zijn tussen de 0 en 128'
-        moreThanFiveRollsWasGiven: '\n_Meer dan **5** keer gerold, alleen de eerste 5 worden laten zien_\n'
-        resultedIn: '**{0}** resulteerde in **{1}**  ({2})'
-
-    CoinflipCommand:
-        heads: "Lande op Kop"
-        tails: "Lande op Munt"
-
-    EightBallCommand:
-        mustIncludeQuestion: 'Je moet wel een vraag geven voor 8ball.'
-        answers:
-            - 'Zekerweten'
-            - 'Zo zal het zijn'
-            - 'Zonder twijvel'
-            - 'Zekerweten'
-            - 'Je mag er van uit gaan'
-            - 'Zoals ik het zie, ja'
-            - 'Waarschijnlijk'
-            - 'Ziet er goed uit'
-            - 'Ja'
-            - 'Signs wijzen naar ja'
-            - 'Beetje verwarend, probeer opnieuw'
-            - 'Vraag later opnieuw'
-            - 'Kan ik je beter niet nu vertellen'
-            - 'Kan ik nu niet voorspellen'
-            - 'Concentreer en probeer zo opnieuw'
-            - "Reken er maar niet op"
-            - 'Mijn antwoord is nee'
-            - 'Mijn bronnen zeggen nee'
-            - 'Ziet er niet goed uit'
-            - 'Onwaarschijnlijk'
-
-    HolidayCommand:
-        tooManyAttempts: "The Holiday API was hit too many times which shouldn't have been possible. D:"
-        notFound: "The Holiday API command could not retrieve any data for this request."
-        somethingWentWrong: "Something went wrong. Perhaps contact a bot administrator for help."
-        noHolidaysToday: "No holidays today...Get back to work!"
-        todayHoliday: "Today is {0}"
-
-    MemeCommand:
-        missingArgument: 'Er mist de `action` argument, je moet het type meme meegeven voor het type meme dat je wilt genereren, of `list` om alle meme types te laten zien.'
-        invalidType: 'Ongeldig meme type gegeven, `{0}` is geen geldig meme type!'
-        mustIncludeTopAndBottomText: 'Je moet de `top text` en `bottom text` arguments toevoegen om een meme te genereren.'
-        listItem: '`{0}` => `{1}`'
-
-    PunCommand:
-        title: "Woordspeling lijst"
-        noResults: ":user Ik heb geen woordspelingen gevonden, je kunt met een zoek opdracht proberen, of probeer het laten nog eens."
-        noResultsWithQuery: ":user Ik heb niks gevonden op `:query`"
-        query: "Zoek vraag: {0}"
-
-    RandomCatCommand:
-        tooManyAttempts: "Teveel aanvragen naar de Cat API, probeer opnieuw in een minuut, of vraag een bot administrator voor een api key op [meow.senither.com](https://meow.senither.com/) om meer aanvragen toe te staan."
-        notFound: "Ik kon geen kat foto's vinden D: probeer opnieuw, mischien kan je ze nu wel zien?"
-        somethingWentWrong: "Er ging iets verschikkelijk fout, vertel A.U.B een bot administrator zodat deze er naar kan kijken."
-
-    ReverseCommand:
-        palindrome: 'Je draait een palidroom om, wat verwachte je?'
-
-    RipCommand:
-        hasPaidTheirRespects: '**{0}** heeft hun respect gegeven.'
-        todayAndOverall: '{0} Vandaag, {1} Overall'
-
-    RollCommand:
-        invalidValueGiven: 'Ongeldige `{0}` waarde gegeven, `{1}` moet een nummer zijn!'
-        rolledNumber: ':user rolde **:number** van :min - :max'
-
-    SayCommand:
-        userMissingPermissions: "Je kan dit commando niet gebruiken voor het {0} kanaal, je moet de `message write` en `message manage` voor dit kanaal hebben om dit commando te kunnen gebruiken in dit kanaal."
-        botMissingPermissions: "Het `say` commando kan niet gebruikt worden voor het {0} kanaal, ik ben de `message write` en `message manage` rechten nodig om het commando hier uit te kunnen voeren."
-        success: "Je bericht is verstuurd naar het :name kanaal."
-
-    UndertaleTextBoxCommand:
-        noArgumentsGiven: "Er mist een argument, je moet of een `list` geven om een lijst van karakters te kunnen zien waar je uit kan kiezen, of om een foto te genereren, `character` of een geldige foto `url` om de foto voor te maken."
-        failedToGenerateImage: "Gefaald met het genereren van de foto, weet je zeker dat je een geldige foto url of geldig karakter gekozen hebt?"
-        title: "Undertale Karakter lijst"
-
+  DiceCommand:
+    missingDice: 'Je moet wel een dobbelsteen meegeven die je wilt rollen.'
+    invalidDiceFormat: '`{0}` is geen geldige dobbelsteen format.'
+    diceFormatMustBeGreaterThan: '`{0}` is geen geldige dobbelsteen format, de dobbelsteen moet meer dan 0 zijden hebben en minder dan 35'
+    diceFormatMustBePositive: '`{0}` is geen geldige dobbelsteen format, de dobbelsteen zijden moet een positief nummer tussen 0 en 35 zijn'
+    sidesFormatMustBeGreaterThan: '`{0}` is geen geldige dobbelsteen format, de zijden moeten groter zijn dan 0 en lager dan 128'
+    sidesFormatMustBePositive: '`{0}` is geen geldige dobbelsteen format, het nummer op een zijkant moet een positief nummer zijn tussen de 0 en 128'
+    moreThanFiveRollsWasGiven: "\n_Meer dan **5** keer gerold, alleen de eerste 5 worden laten zien_\n"
+    resultedIn: '**{0}** resulteerde in **{1}**  ({2})'
+  CoinflipCommand:
+    heads: "Lande op Kop"
+    tails: "Lande op Munt"
+  EightBallCommand:
+    mustIncludeQuestion: 'Je moet wel een vraag geven voor 8ball.'
+    answers:
+      - 'Zekerweten'
+      - 'Zo zal het zijn'
+      - 'Zonder twijvel'
+      - 'Zekerweten'
+      - 'Je mag er van uit gaan'
+      - 'Zoals ik het zie, ja'
+      - 'Waarschijnlijk'
+      - 'Ziet er goed uit'
+      - 'Ja'
+      - 'Signs wijzen naar ja'
+      - 'Beetje verwarend, probeer opnieuw'
+      - 'Vraag later opnieuw'
+      - 'Kan ik je beter niet nu vertellen'
+      - 'Kan ik nu niet voorspellen'
+      - 'Concentreer en probeer zo opnieuw'
+      - "Reken er maar niet op"
+      - 'Mijn antwoord is nee'
+      - 'Mijn bronnen zeggen nee'
+      - 'Ziet er niet goed uit'
+      - 'Onwaarschijnlijk'
+  HolidayCommand:
+    tooManyAttempts: "De Feestdagen API is te vaak geraakt wat niet mogelijk had moeten zijn. D:"
+    notFound: "Het Holiday API-commando kon geen gegevens ophalen voor dit verzoek."
+    somethingWentWrong: "Er is iets fout gegaan. Neem contact op met een bot beheerder voor hulp."
+    noHolidaysToday: "Geen vakantiedagen vandaag... Ga terug naar je werk!"
+    todayHoliday: "Het is vandaag {0}"
+  MemeCommand:
+    missingArgument: 'Er mist de `action` argument, je moet het type meme meegeven voor het type meme dat je wilt genereren, of `list` om alle meme types te laten zien.'
+    invalidType: 'Ongeldig meme type gegeven, `{0}` is geen geldig meme type!'
+    mustIncludeTopAndBottomText: 'Je moet de `top text` en `bottom text` arguments toevoegen om een meme te genereren.'
+    listItem: '`{0}` => `{1}`'
+  PunCommand:
+    title: "Woordspeling lijst"
+    noResults: ":user Ik heb geen woordspelingen gevonden, je kunt met een zoek opdracht proberen, of probeer het laten nog eens."
+    noResultsWithQuery: ":user Ik heb niks gevonden op `:query`"
+    query: "Zoek vraag: {0}"
+  RandomCatCommand:
+    tooManyAttempts: "Teveel aanvragen naar de Cat API, probeer opnieuw in een minuut, of vraag een bot administrator voor een api key op [meow.senither.com](https://meow.senither.com/) om meer aanvragen toe te staan."
+    notFound: "Ik kon geen kat foto's vinden D: probeer opnieuw, mischien kan je ze nu wel zien?"
+    somethingWentWrong: "Er ging iets verschikkelijk fout, vertel A.U.B een bot administrator zodat deze er naar kan kijken."
+  ReverseCommand:
+    palindrome: 'Je draait een palidroom om, wat verwachte je?'
+  RipCommand:
+    hasPaidTheirRespects: '**{0}** heeft hun respect gegeven.'
+    todayAndOverall: '{0} Vandaag, {1} Overall'
+  RollCommand:
+    invalidValueGiven: 'Ongeldige `{0}` waarde gegeven, `{1}` moet een nummer zijn!'
+    rolledNumber: ':user rolde **:number** van :min - :max'
+  SayCommand:
+    userMissingPermissions: "Je kan dit commando niet gebruiken voor het {0} kanaal, je moet de `message write` en `message manage` voor dit kanaal hebben om dit commando te kunnen gebruiken in dit kanaal."
+    botMissingPermissions: "Het `say` commando kan niet gebruikt worden voor het {0} kanaal, ik ben de `message write` en `message manage` rechten nodig om het commando hier uit te kunnen voeren."
+    success: "Je bericht is verstuurd naar het :name kanaal."
+  UndertaleTextBoxCommand:
+    noArgumentsGiven: "Er mist een argument, je moet of een `list` geven om een lijst van karakters te kunnen zien waar je uit kan kiezen, of om een foto te genereren, `character` of een geldige foto `url` om de foto voor te maken."
+    failedToGenerateImage: "Gefaald met het genereren van de foto, weet je zeker dat je een geldige foto url of geldig karakter gekozen hebt?"
+    title: "Undertale Karakter lijst"
 help:
-    HelpCommand:
-        listOfCommands: ":page_with_curl: **Lijst met commando's**"
-        commandNote: '**Typ `:help <command>` om de hulp te zien voor dat commando.**\Voorbeeld: `:help :command`'
-        categoriesNote: ':information_source: Typ `:help <category>` om een lijst met commandos te zien van deze categorie.\nExample: `:help {0}` or `:help {1}`'
-        categoriesTitle: ':scroll: Commando categorieën'
-        invalidCategory: 'ongeldige commando categorie gegeven, er zijn heen categorieën die `:category` heten.'
-        invalidCommand: 'Ongeldig commando gegeven, er zijn geen commandos die de trigger `:trigger` hebben'
-        tryingToViewSystemCommands: "Je hebt geen toestemming om commandos uit de `System` categorie te runnen, System commandos kunnen alle servers beïnvloeden waar de bot nu in zit, en kunnen dus alleen gebruikt worden door bot administrators/developers."
-        singularHiddenCategories: '_Er is **{0}** verborgen categorie voor dit kanaal._'
-        multipleHiddenCategories: '_Er zijn **{0}** verborgen categorie voor dit kanaal._'
-        fields:
-            usage: 'Gebruik'
-            example: 'Voorbeeld'
-            aliases: 'Aliassen'
-            seeAlso: 'Bekijk ook'
-            footer: 'Commando categorie: '
-
+  HelpCommand:
+    listOfCommands: ':page_with_curl: **Lijst met commando''s**'
+    commandNote: '**Typ `:help <command>` om de hulp te zien voor dat commando.**\Voorbeeld: `:help :command`'
+    categoriesNote: ":information_source: Typ `:help <category>` om een lijst met commandos te zien van deze categorie.\nExample: `:help {0}` or `:help {1}`"
+    categoriesTitle: ':scroll: Commando categorieën'
+    invalidCategory: 'ongeldige commando categorie gegeven, er zijn heen categorieën die `:category` heten.'
+    invalidCommand: 'Ongeldig commando gegeven, er zijn geen commandos die de trigger `:trigger` hebben'
+    tryingToViewSystemCommands: "Je hebt geen toestemming om commandos uit de `System` categorie te runnen, System commandos kunnen alle servers beïnvloeden waar de bot nu in zit, en kunnen dus alleen gebruikt worden door bot administrators/developers."
+    singularHiddenCategories: '_Er is **{0}** verborgen categorie voor dit kanaal._'
+    multipleHiddenCategories: '_Er zijn **{0}** verborgen categorie voor dit kanaal._'
+    fields:
+      usage: 'Gebruik'
+      example: 'Voorbeeld'
+      aliases: 'Aliassen'
+      seeAlso: 'Bekijk ook'
+      footer: 'Commando categorie: '
 interaction:
-    BiteCommand: '**{0}** bijt **{1}**'
-    BlushCommand: '**{0}** blozen naar **{1}**'
-    CuddleCommand: '**{0}** knuffels **{1}**'
-    DivorceCommand: '**{0}** scheid met **{1}**'
-    EatCommand: '**{0}** is aan het eten met **{1}**'
-    HandHoldCommand: '**{0}** holds hands with **{1}**'
-    HelloCommand: '**{0}** zegt hallo tegen **{1}**'
-    HighFiveCommand: '**{0}** high fives **{1}**'
-    HugCommand: '**{0}** knuffeld **{1}**'
-    KillCommand: '**{0}** wil **{1}** vermoorden'
-    KissCommand: '**{0}** kusjes **{1}**'
-    LaughCommand: '**{0}** laughs at **{1}**'
-    MarryCommand: '**{0}** wil trouwen met **{1}**'
-    MeowCommand: '**{0}** meows naar **{1}**'
-    PanCommand: '**{0}** heeft zojuist **{1}** geslagen met een pan!'
-    PatCommand: '**{0}** pats **{1}**'
-    PokeCommand: '**{0}** prikt **{1}**'
-    PoutCommand: '**{0}** pouts at **{1}**'
-    PunchCommand: '**{0}** stompt **{1}**'
-    SenpaiCommand: '**{0}** wants to be noticed by **{1}**'
-    ShrugCommand: '**{0}** trekt schouders op naar **{1}**'
-    SlapCommand: '**{0}** slaat **{1}**'
-    TickleCommand: '**{0}** kieteld **{1}**'
-    TriggeredCommand: '**{0}** is geïriteerd door **{1}**'
-
+  BiteCommand: '**{0}** bijt **{1}**'
+  BlushCommand: '**{0}** blozen naar **{1}**'
+  CuddleCommand: '**{0}** knuffels **{1}**'
+  DivorceCommand: '**{0}** scheid met **{1}**'
+  EatCommand: '**{0}** is aan het eten met **{1}**'
+  HandHoldCommand: '**{0}** houdt handen vast met **{1}**'
+  HelloCommand: '**{0}** zegt hallo tegen **{1}**'
+  HighFiveCommand: '**{0}** high fives **{1}**'
+  HugCommand: '**{0}** knuffeld **{1}**'
+  KillCommand: '**{0}** wil **{1}** vermoorden'
+  KissCommand: '**{0}** kusjes **{1}**'
+  LaughCommand: '**{0}** lacht om **{1}**'
+  MarryCommand: '**{0}** wil trouwen met **{1}**'
+  MeowCommand: '**{0}** meows naar **{1}**'
+  PanCommand: '**{0}** heeft zojuist **{1}** geslagen met een pan!'
+  PatCommand: '**{0}** aait **{1}**'
+  PokeCommand: '**{0}** prikt **{1}**'
+  PoutCommand: '**{0}** trekt een pruillip naar **{1}**'
+  PunchCommand: '**{0}** stompt **{1}**'
+  SenpaiCommand: '**{0}** wil opgemerkt worden door **{1}**'
+  ShrugCommand: '**{0}** trekt schouders op naar **{1}**'
+  SlapCommand: '**{0}** slaat **{1}**'
+  TickleCommand: '**{0}** kieteld **{1}**'
+  TriggeredCommand: '**{0}** is geïriteerd door **{1}**'
 music:
-    internal:
-        songWasSkipped: '[:title](:url) aangevraagd :author was overgeslagen.'
-        nowPlayingSong: 'Aan het afspelen: [:title](:link)\n`:duration` op `:volume%` volume - Aangevraagd door :requester'
-        nowPlayingPlaylist: 'De **:playlistName** afspeellijst is toegevoegd aan de wachtrij met `:playlistSize` nummers!!'
-        nowPlaying: 'Aan het afspelen: [:title](:link)\n`:duration` op `:volume%` volume - Aangevraagf door :requester'
-        queueHasEnded: 'wachtrij afgelopen, spraakkanaal verlaten.'
-        endedDueToInactivity: "Muziek is afgelopen omdat niemand er gebruik van maakt."
-        endedDueToWebSocketClose: "de audio web socket is afgesloten, muziek aan het stoppen."
-        noMatchFound: 'Ik heb niks gevonden met die query: `{0}`'
-        trackLoadFailed: "Dat kon ik helaas niet toevoegen aan de wachtrij: `{0}`"
-        musicChannel: "Je kan alleen muziek commando's gebruiken in het :channel kanaal."
-        resumeMusic: "Muziek hervatten, wacht A.U.B even een paar seconden zodat alles gelaad kan worden."
-
-    ClearQueueCommand:
-        error: 'Niks om op te schonen, vraag eerst muziek aan met `{0}play`'
-        emptyQueue: 'Niks om op te schonen, er zijn geen nummers meer over in de wachtrij.'
-        success: 'Ik heb **:queueSize** nummers verwijderdvan de wachtrij, de wachtrij is nu leeg!'
-
-    DJLevelCommand:
-            title: "Huidig DJ niveau: {0}"
-            footer: "Gebruik \"{0} types\" om een lijst te zien van de huidige DJ niveau's."
-            types:
-                title: "DJ Niveau Types"
-                footer: "Gebruik \"{0} <type>\" om het DJ niveau te veranderen naar het gegeven type voor de server."
-            invalidType: "`{0}` is geen geldige `DJ Level` type, gebruik A.U.B een van de volgende:\n`{1}`"
-            changedTo: "Het `DJ Level` status is veranderd naar **:type**.\n:info"
-            information:
-                all: "Iedereen kan elk muziek commando gebruiken, ook zonder de `DJ` rol."
-                none: "Niemand kan ook maar 1 muziek commando afspelen zonder de `DJ` rol."
-                normal: "Voorkom het gebruik van commando's zoals playlist, volume control, en force skip zonder de `DJ` rol, maar mensen kunnen nog wel het play commando gebruiken."
-
-    DjRoleCommand:
-        invalidRoleMentioned: "Genoemde rol is invalide, Ik heb geen rollen gevonden genaamd: `{0}`"
-        noDjRoleSelected: "Er zijn momenteel geen aangepaste DJ rollen opgezet in deze server, maar iemand met de rol `DJ` kan nogsteeds DJ muziek commando's gebruiken."
-        currentSelectedRole: "The :role De rol DJ wordt gebruik voor de muziek DJ rol.\nIedereen met deze rol kan DJ muziek commando's gebruiken."
-        resetDjRole: "De DJ rol is met success gereset, maar iedereen met de rol `DJ` kan nogsteeds muziek commando's gebruiken die alleen de DJ rol mag gebruiken.."
-        selectedRoleForMusic: "De :role rol is vanaf nu de muziek DJ rol!"
-
-    MoveHereCommand:
-        error: 'Niet verbonden met een spraak kanaal, vraag eerst muziek aan met `{0}play`'
-        hasMusicChannel: "De server heeft een muziek kanaal klaar gezet, als je mij graag in een ander spraak kanaal wilt hebben, vraag dan een administrator om mij naar een ander kanaal te slepen."
-        nowPlayingIn: 'Ik ben nu muziek aan het afspelen in **:channelName**'
-
-    MusicChannelCommand:
-        updated: "Het **:type** muziek kanaal is successvol veranderd naar :status"
-        field:
-            title: "Muziek kanalen"
-            message: "**Tekst Kanaal:** :text\n**Spraak kanaal:** :voice"
-        status:
-            disabled: "uitgeschakeld"
-            enabled: "veranderd naar **{0}**"
-        errors:
-            invalidType: "Ongeldig type muziek kanaal gegeven, het type of `text` of `voice` zijn"
-            notValidType: "`{0}` is geen geldig {1} channel, je moet een geldig spraak kanaal geven om te gebuiken als muziek kanaal."
-
-    MusicMessagesCommand:
-        message: "Muziek berichten zijn op dit moment **:status**.\n\n**Info**\n:info"
-        updated: "De muziek berichten zijn **:status**."
-        error: "Ongeldig argument gegeven, de status moet `on` of `off` zijn om de muziek berichten status te veranderen."
-        footer: "Om de muziek berichten te verandern, gebruik {0}"
-        status:
-            disabled: "uitgeschaakeld"
-            enabled: "ingeschakeld"
-        info:
-            disabled: "Wanneer muziek berichten uitgeschakeld zijn, zullen de `Aan het afspelen` berichten niet meer verstuurd worden, en andere muziek gerelateerde berichten zullen zichzelf verwijderen na een tijdje."
-            enabled: "Wanneer muziek berichten zijn ingeschakeld, de `Aan het afspelen` bericthten zullen blijven, ook als het nummer die afgespeeld word veranderd, sommige gerelateerde berichten zullen blijven.\n**Note:** De meeste muziek berichten zullen zichzelf nogsteeds na een tijde verwijderen."
-
-    PauseCommand:
-        error: 'Niks om te pauzeren, vraag eerst een nummer aan met `{0}play`'
-        alreadyPaused: 'De muziek is al gepauseerd, gebruik `!resume` om de muziek te hervatten.'
-        paused: 'De muziek is `gepauseerd`'
-
-    PlayCommand:
-        addedSong: ':user heeft [:title](:url) toegevoegt aan de wachtrij. Er zijn nog `:queueSize` nummer(s) in de wachtrij.'
-        addedSongsFromPlaylist: ':user heeft :songs nummer(s) [:title](:url) van een afspeellijst naar de wachtrij verplaatst. Er zijn nog `:queueSize` nummer(s) in de wachtrij'
-        session:
-            title: 'Resultaten voor {0}'
-            footer: 'Kies een lied {0} <nummer>'
-
-    PlaylistCommand:
-        noPlaylists: 'Deze server heeft nog geen afspeellijsten, je kan er een aanmaken met het commando \n`:command`'
-        noPlaylistWithName: 'Er zijn geen afspeellijsten met de naam `:playlist`, je kan een afspeellijst maken door het \n`:command` commando te gebruiken'
-        invalidProperty: 'Ongeldige `property` gegeven, er zijn geen afspeellijst properties die `{0}`heten.\nJe kan hier meer over leren met het `{1}help {2}` commando'
-        invalidFormat: 'Ongeldige opmaak, het property `:type` mist!\n`:command`'
-        invalidIdGiven: 'Ongeldig ID gegeven, het nummer gegeven is te :type\n`:command`'
-        invalidIdNumberGiven: 'Ongeldig ID gegeven, het ID moet een nummer zijn\n`:command`'
-        noMoreSongSlots: "De `:playlist` afspeellijst heeft geen ruimte meer voor extra nummers."
-        noMorePlaylistSlots: "De server heeft geen ruimte meer voor extra afspeellijsten, je kan een paar afspeellijsten verwijderen voor meer ruimte."
-        sameIdsGiven: "De 2 ID's de gegeven zijn, zijn hetzelfde. Zo zal het nummer niet verplaatst worden.\n`:command`"
-        failedToLoad: 'Gefaald met laden: {0}'
-        failedToLoadPlaylist: 'Gelaafd met het laden van :playlist, probeer dit later opnieuw of geef het aan bij een van de developers.'
-        failedToSavePlaylist: 'Er ging iets fout met het opslaan van de afspeellijst: {0}'
-        loadedPlaylist: 'De **:name** afspeellijst is geladen en toegevoegt aan de wachtrij met **:amount** nummers.'
-        noMatches: 'Geen overeenkomsten'
-        attemptingToAddLivestreamToPlaylist: "Je kan geen livestreams toevoegen aan een afspeellijst!"
-        userHasAddedSong: ':user heeft [:name](:url) toegevoegt aan de `:playlist` afspeellijst.\nDe `:playlist` afspeellijst heeft nog `:slots` plekken over voor meer nummers.'
-        swapSongInPlaylist: '[:selectedTitle](:selectedLink) heeft positie geruild met [:replacedTitle](:replacedLink) in de `:playlist` afspeellijst.'
-        alreadyExists: 'De `:playlist` afspeellijst bestaat al!'
-        onlyNumbersInName: "De afspeellijst kan niet alleen nummers zijn, je moet ook wat letters in de naam toevoegen!"
-        renamingPlaylistAlreadyExists: "Kan `:oldplaylist` niet hernoemen tot `:playlist`, er is al een afspeellijst met de naam `:playlist`"
-        playlistCreated: 'De `:playlist` afspeellijst is succesvol aangemaakt!\nJe kan nu nummers toevoegen op de volgende manier: `:command :playlist add <song>`'
-        playlistDeleted: 'De `:name` afspeellijst is succesvol verwijderd!'
-        playlistRenamed: 'De `:oldplaylist` afspeellijst is hernoemt naar `:playlist`!'
-        playlistIsEmpty: 'Er zijn geen nummers in deze afspeellijst, je kan hier nummers aan toevoegen met het \n`:command` commando.'
-        playlistIsAlreadyEmpty: 'De `:playlist` afspeellijst is al leeg, er is niks om te verwijderen.'
-        songHasBeenRemovedFromPlaylist: ':song is succesvol verwijderd van de `:playlist` afspeellijst'
-        playlistTitle: ':musical_note: Afspeellijst {0}'
-        playlistSize: '[ {0} van de {1} ]'
-        playlistLine: '{0}\n       Afspeellijst heeft **{1}** nummer(s)'
-        playlistSongLine: '`{0}` [{1}]({2}) [{3}]'
-
-    RemoveSongFromQueueCommand:
-        error: 'Argument `song id` mist, je moet de ID geven van het nummer die je wilt verwijderen uit de wachtrijk.'
-        failedToRemoveSong: 'Er ging iets fout, gefaald met het verwijderen van nummer op plaats `:index`'
-        tooHighNumberGiven: 'Er zijn maar `{0}` nummers in de wachtrij, probeer je nummer een beetje te verlagen.'
-        invalidRange: "Ongeldige reeks gegeven, geef een reeks van ID's in een start tot eind format, bijvoorbeeld `3-6`."
-        mustBePositiveNumber: 'Het `song id` moet een positief nummer zijn.'
-        nothingToRemove: 'Niks om te verwijderen, vraag eerst muziek aan met `{0}play`'
-        success: ':song is succesvol verwijderd van de wachtrij.'
-        successMultiple: 'Nummers van `:start` tot `:end` zijn succesvol verwijderd van de wachtrij.\n:tracks'
-        successMultipleNote: "\nEn **{0}** meer nummers zijn succesvol verwijderd van de wacthrij."
-
-    RepeatMusicQueueCommand:
-        error: 'Er is niks om te herhalen, vraag eerst een nummer aan met `{0}play`'
-        title: 'Huidige herhaal mode: {0}'
-        message: "De muziek speler herhaal status is veranderd naar **:state**, dit betekent:\n\n:note"
-        footer: 'Gebruik "{0} <repeat-mode>" om een herhaal mode in te stellen.'
-        states:
-            single: 'Een'
-            all: 'Alles'
-            loopoff: 'Uit'
-        notes:
-            single: 'De muziek speler zal het huidige nummer blijven herhalen en niet overslaan naar het volgende nummer in de wachtrij.\n**Note:** Dit mute ook de "Now Playing" berichten zodat je niet steeds hetzelfde bericht krijgt.'
-            all: 'De muziek speler zal nu de wachtrij blijven herhalen, zodra een nummer klaar is met afspelen zal deze meteen waar achter in de wachtrij geplaatst worden.'
-            loopoff: 'De muziek speler zal stoppen met herhalen, als een nummer eindigt wordt deze uit de wachtrij gehaald en het volgende nummer zal beginnen.'
-
-    ResumeCommand:
-        error: 'Niks om te hervatten, vraag eerst een nummer aan met `{0}play`'
-        alreadyPlaying: 'De muziek is al aan het afspelen, gebruik `:prefixpause` om de muziek te pauseren.'
-        resume: 'De muziek is weer `hervat`'
-
-    SeekCommand:
-        error: 'Er is niks aan het afspelen, vraag eerst een nummer aan met `{0}play`.'
-        invalidTimeGiven: 'Het `nummer` argument moet een geldige tijd zijn die tenmiste 0 seconden of meer is.'
-        seekingLive: 'Je kan niet naar een andere tijd skippen met livestreams.'
-        seekingTooFar: '`{0}` is meer dan de lengte van het huidige nummer, als je het huidige nummer wilt overslaan gebruik `{1}skip`.'
-        seekTo: 'Zoeken **:title** naar `:time`'
-
-    SetDefaultVolumeCommand:
-        currentVolume: 'Het standaard volume van de server is op dit moment `:volume%`'
-        changedVolume: 'Het standaard volume is veranderd naar `:volume%`'
-        failedToSave: 'Er is iets fout gegaan met het opslaan van het standaard volume: {0}'
-        mustBeNumber: 'Hey `volume` moet een nummer zijn tussen de 1 en 100'
-
-    ShuffleCommand:
-        error: 'De wachtrij is leeg, je kan een nummer aanvragen met\n`{0}play <song title | url>`'
-        success: '**:amount** zijn geschud in de wachtrij.'
-
-    SkipCommand:
-        error: 'Niks om over te slaan, vraag eerst een nummer aan met `{0}play`'
-
-    SongCommand:
-        error: 'Niks om te laten zien, vraag eerst muziek aan met `{0}play`'
-        paused: 'Gepauzeerd'
-        playing: 'Aan het afspelen'
-        songsInQueue: 'Nummers in de wachtrij'
-        moreSongs: 'Je kan meer nummers zien met {0} <page>'
-        noSongs: 'Er zijn geen andere nummers in de wachtrij op het moment'
-        andXMoreSongs: '_Nog **{0}** nummers{1}!_'
-        formats:
-            line: '**{0}** [{1}]({2})'
-            song: '[{0}]({1})\nAfspelen op `{2}` volume met `{3}` over op het nummer - Aangevraagd door <@{4}>'
-            stream: '[{0}]({1})\Afspelen op `{2}` volume, de stream is `{3}` - Aangevraagd door <@{4}>'
-
-    StopCommand:
-        error: "Er staat niks in de afspeellijst op het moment, je kan de muziek niet stoppen zonder dat er muziek afgespeeld word."
-        success: 'Het afspelen is gestopt, en **:number** nummers zijn verwijderd van de wachtrij.'
-
-    VoiceFixCommand:
-        message: "**Omwisselen naar naar :swap regio:** {0}\n**Terug wisselen naar :original region:** {1}"
-        starting: "Omwissel process beginnen...\n\n"
-        finished: "\n\nKlaar! Muziek hoort nu weer te werken!"
-        error: "Gefaald met het omwisselen van process, error: {0}"
-
-    VolumeCommand:
-        error: 'Niks is aan het afspelen, vraag eerst een nummer aan met `{0}play`'
-        requireDJRole: 'De `DJ` rol nodig om het vorlume aan te passen!'
-        invalidVolume: 'Ongeldig volume gegeven, de volume moet een geldig zijn tussen de 1 en 100.'
-        nowPlaying: ':musical_note: Muziek is aan het spelen op **:volume** volume'
-        setTo: ':musical_note: Volume gezet naar **:volume**'
-
-    VoteSkipCommand:
-        error: 'Niks om over te slaan, vraag eerst een nummer aan met `{0}play`'
-        registered: 'Je stem is opgeslagen. nog maar `:votes` stemmen nodig om het nummer over te slaan.'
-        alreadyVoted: 'Je mag maar een keer stemmen om een nummer over te slaan per nummer! nog maar `:votes` stemmen nodig om het nummer over te slaan.'
-
+  internal:
+    songWasSkipped: '[:title](:url) aangevraagd :author was overgeslagen.'
+    nowPlayingSong: "Aan het afspelen: [:title](:link)\n`:duration` op `:volume%` volume - Aangevraagd door :requester"
+    nowPlayingPlaylist: 'De **:playlistName** afspeellijst is toegevoegd aan de wachtrij met `:playlistSize` nummers!!'
+    nowPlaying: "Aan het afspelen: [:title](:link)\n`:duration` op `:volume%` volume - Aangevraagf door :requester"
+    queueHasEnded: 'wachtrij afgelopen, spraakkanaal verlaten.'
+    endedDueToInactivity: "Muziek is afgelopen omdat niemand er gebruik van maakt."
+    endedDueToWebSocketClose: "de audio web socket is afgesloten, muziek aan het stoppen."
+    noMatchFound: 'Ik heb niks gevonden met die query: `{0}`'
+    trackLoadFailed: "Dat kon ik helaas niet toevoegen aan de wachtrij: `{0}`"
+    musicChannel: "Je kan alleen muziek commando's gebruiken in het :channel kanaal."
+    resumeMusic: "Muziek hervatten, wacht A.U.B even een paar seconden zodat alles gelaad kan worden."
+  ClearQueueCommand:
+    error: 'Niks om op te schonen, vraag eerst muziek aan met `{0}play`'
+    emptyQueue: 'Niks om op te schonen, er zijn geen nummers meer over in de wachtrij.'
+    success: 'Ik heb **:queueSize** nummers verwijderdvan de wachtrij, de wachtrij is nu leeg!'
+  DJLevelCommand:
+    title: "Huidig DJ niveau: {0}"
+    footer: "Gebruik \"{0} types\" om een lijst te zien van de huidige DJ niveau's."
+    types:
+      title: "DJ Niveau Types"
+      footer: "Gebruik \"{0} <type>\" om het DJ niveau te veranderen naar het gegeven type voor de server."
+    invalidType: "`{0}` is geen geldige `DJ Level` type, gebruik A.U.B een van de volgende:\n`{1}`"
+    changedTo: "Het `DJ Level` status is veranderd naar **:type**.\n:info"
+    information:
+      all: "Iedereen kan elk muziek commando gebruiken, ook zonder de `DJ` rol."
+      none: "Niemand kan ook maar 1 muziek commando afspelen zonder de `DJ` rol."
+      normal: "Voorkom het gebruik van commando's zoals playlist, volume control, en force skip zonder de `DJ` rol, maar mensen kunnen nog wel het play commando gebruiken."
+  DjRoleCommand:
+    invalidRoleMentioned: "Genoemde rol is invalide, Ik heb geen rollen gevonden genaamd: `{0}`"
+    noDjRoleSelected: "Er zijn momenteel geen aangepaste DJ rollen opgezet in deze server, maar iemand met de rol `DJ` kan nogsteeds DJ muziek commando's gebruiken."
+    currentSelectedRole: "The :role De rol DJ wordt gebruik voor de muziek DJ rol.\nIedereen met deze rol kan DJ muziek commando's gebruiken."
+    resetDjRole: "De DJ rol is met success gereset, maar iedereen met de rol `DJ` kan nogsteeds muziek commando's gebruiken die alleen de DJ rol mag gebruiken.."
+    selectedRoleForMusic: "De :role rol is vanaf nu de muziek DJ rol!"
+  MoveHereCommand:
+    error: 'Niet verbonden met een spraak kanaal, vraag eerst muziek aan met `{0}play`'
+    hasMusicChannel: "De server heeft een muziek kanaal klaar gezet, als je mij graag in een ander spraak kanaal wilt hebben, vraag dan een administrator om mij naar een ander kanaal te slepen."
+    nowPlayingIn: 'Ik ben nu muziek aan het afspelen in **:channelName**'
+  MusicChannelCommand:
+    updated: "Het **:type** muziek kanaal is successvol veranderd naar :status"
+    field:
+      title: "Muziek kanalen"
+      message: "**Tekst Kanaal:** :text\n**Spraak kanaal:** :voice"
+    status:
+      disabled: "uitgeschakeld"
+      enabled: "veranderd naar **{0}**"
+    errors:
+      invalidType: "Ongeldig type muziek kanaal gegeven, het type of `text` of `voice` zijn"
+      notValidType: "`{0}` is geen geldig {1} channel, je moet een geldig spraak kanaal geven om te gebuiken als muziek kanaal."
+  MusicMessagesCommand:
+    message: "Muziek berichten zijn op dit moment **:status**.\n\n**Info**\n:info"
+    updated: "De muziek berichten zijn **:status**."
+    error: "Ongeldig argument gegeven, de status moet `on` of `off` zijn om de muziek berichten status te veranderen."
+    footer: "Om de muziek berichten te verandern, gebruik {0}"
+    status:
+      disabled: "uitgeschaakeld"
+      enabled: "ingeschakeld"
+    info:
+      disabled: "Wanneer muziek berichten uitgeschakeld zijn, zullen de `Aan het afspelen` berichten niet meer verstuurd worden, en andere muziek gerelateerde berichten zullen zichzelf verwijderen na een tijdje."
+      enabled: "Wanneer muziek berichten zijn ingeschakeld, de `Aan het afspelen` bericthten zullen blijven, ook als het nummer die afgespeeld word veranderd, sommige gerelateerde berichten zullen blijven.\n**Note:** De meeste muziek berichten zullen zichzelf nogsteeds na een tijde verwijderen."
+  PauseCommand:
+    error: 'Niks om te pauzeren, vraag eerst een nummer aan met `{0}play`'
+    alreadyPaused: 'De muziek is al gepauseerd, gebruik `!resume` om de muziek te hervatten.'
+    paused: 'De muziek is `gepauseerd`'
+  PlayCommand:
+    addedSong: ':user heeft [:title](:url) toegevoegt aan de wachtrij. Er zijn nog `:queueSize` nummer(s) in de wachtrij.'
+    addedSongsFromPlaylist: ':user heeft :songs nummer(s) [:title](:url) van een afspeellijst naar de wachtrij verplaatst. Er zijn nog `:queueSize` nummer(s) in de wachtrij'
+    session:
+      title: 'Resultaten voor {0}'
+      footer: 'Kies een lied {0} <nummer>'
+  PlaylistCommand:
+    noPlaylists: "Deze server heeft nog geen afspeellijsten, je kan er een aanmaken met het commando \n`:command`"
+    noPlaylistWithName: "Er zijn geen afspeellijsten met de naam `:playlist`, je kan een afspeellijst maken door het \n`:command` commando te gebruiken"
+    invalidProperty: "Ongeldige `property` gegeven, er zijn geen afspeellijst properties die `{0}`heten.\nJe kan hier meer over leren met het `{1}help {2}` commando"
+    invalidFormat: "Ongeldige opmaak, het property `:type` mist!\n`:command`"
+    invalidIdGiven: "Ongeldig ID gegeven, het nummer gegeven is te :type\n`:command`"
+    invalidIdNumberGiven: "Ongeldig ID gegeven, het ID moet een nummer zijn\n`:command`"
+    noMoreSongSlots: "De `:playlist` afspeellijst heeft geen ruimte meer voor extra nummers."
+    noMorePlaylistSlots: "De server heeft geen ruimte meer voor extra afspeellijsten, je kan een paar afspeellijsten verwijderen voor meer ruimte."
+    sameIdsGiven: "De 2 ID's de gegeven zijn, zijn hetzelfde. Zo zal het nummer niet verplaatst worden.\n`:command`"
+    failedToLoad: 'Gefaald met laden: {0}'
+    failedToLoadPlaylist: 'Gelaafd met het laden van :playlist, probeer dit later opnieuw of geef het aan bij een van de developers.'
+    failedToSavePlaylist: 'Er ging iets fout met het opslaan van de afspeellijst: {0}'
+    loadedPlaylist: 'De **:name** afspeellijst is geladen en toegevoegt aan de wachtrij met **:amount** nummers.'
+    noMatches: 'Geen overeenkomsten'
+    attemptingToAddLivestreamToPlaylist: "Je kan geen livestreams toevoegen aan een afspeellijst!"
+    userHasAddedSong: ":user heeft [:name](:url) toegevoegt aan de `:playlist` afspeellijst.\nDe `:playlist` afspeellijst heeft nog `:slots` plekken over voor meer nummers."
+    swapSongInPlaylist: '[:selectedTitle](:selectedLink) heeft positie geruild met [:replacedTitle](:replacedLink) in de `:playlist` afspeellijst.'
+    alreadyExists: 'De `:playlist` afspeellijst bestaat al!'
+    onlyNumbersInName: "De afspeellijst kan niet alleen nummers zijn, je moet ook wat letters in de naam toevoegen!"
+    renamingPlaylistAlreadyExists: "Kan `:oldplaylist` niet hernoemen tot `:playlist`, er is al een afspeellijst met de naam `:playlist`"
+    playlistCreated: "De `:playlist` afspeellijst is succesvol aangemaakt!\nJe kan nu nummers toevoegen op de volgende manier: `:command :playlist add <song>`"
+    playlistDeleted: 'De `:name` afspeellijst is succesvol verwijderd!'
+    playlistRenamed: 'De `:oldplaylist` afspeellijst is hernoemt naar `:playlist`!'
+    playlistIsEmpty: "Er zijn geen nummers in deze afspeellijst, je kan hier nummers aan toevoegen met het \n`:command` commando."
+    playlistIsAlreadyEmpty: 'De `:playlist` afspeellijst is al leeg, er is niks om te verwijderen.'
+    songHasBeenRemovedFromPlaylist: ':song is succesvol verwijderd van de `:playlist` afspeellijst'
+    playlistTitle: ':musical_note: Afspeellijst {0}'
+    playlistSize: '[ {0} van de {1} ]'
+    playlistLine: "{0}\n       Afspeellijst heeft **{1}** nummer(s)"
+    playlistSongLine: '`{0}` [{1}]({2}) [{3}]'
+  RemoveSongFromQueueCommand:
+    error: 'Argument `song id` mist, je moet de ID geven van het nummer die je wilt verwijderen uit de wachtrijk.'
+    failedToRemoveSong: 'Er ging iets fout, gefaald met het verwijderen van nummer op plaats `:index`'
+    tooHighNumberGiven: 'Er zijn maar `{0}` nummers in de wachtrij, probeer je nummer een beetje te verlagen.'
+    invalidRange: 'Ongeldige reeks gegeven, geef een reeks van ID''s in een start tot eind format, bijvoorbeeld `3-6`.'
+    mustBePositiveNumber: 'Het `song id` moet een positief nummer zijn.'
+    nothingToRemove: 'Niks om te verwijderen, vraag eerst muziek aan met `{0}play`'
+    success: ':song is succesvol verwijderd van de wachtrij.'
+    successMultiple: "Nummers van `:start` tot `:end` zijn succesvol verwijderd van de wachtrij.\n:tracks"
+    successMultipleNote: "\nEn **{0}** meer nummers zijn succesvol verwijderd van de wacthrij."
+  RepeatMusicQueueCommand:
+    error: 'Er is niks om te herhalen, vraag eerst een nummer aan met `{0}play`'
+    title: 'Huidige herhaal mode: {0}'
+    message: "De muziek speler herhaal status is veranderd naar **:state**, dit betekent:\n\n:note"
+    footer: 'Gebruik "{0} <repeat-mode>" om een herhaal mode in te stellen.'
+    states:
+      single: 'Een'
+      all: 'Alles'
+      loopoff: 'Uit'
+    notes:
+      single: "De muziek speler zal het huidige nummer blijven herhalen en niet overslaan naar het volgende nummer in de wachtrij.\n**Note:** Dit mute ook de \"Now Playing\" berichten zodat je niet steeds hetzelfde bericht krijgt."
+      all: 'De muziek speler zal nu de wachtrij blijven herhalen, zodra een nummer klaar is met afspelen zal deze meteen waar achter in de wachtrij geplaatst worden.'
+      loopoff: 'De muziek speler zal stoppen met herhalen, als een nummer eindigt wordt deze uit de wachtrij gehaald en het volgende nummer zal beginnen.'
+  ResumeCommand:
+    error: 'Niks om te hervatten, vraag eerst een nummer aan met `{0}play`'
+    alreadyPlaying: 'De muziek is al aan het afspelen, gebruik `:prefixpause` om de muziek te pauseren.'
+    resume: 'De muziek is weer `hervat`'
+  SeekCommand:
+    error: 'Er is niks aan het afspelen, vraag eerst een nummer aan met `{0}play`.'
+    invalidTimeGiven: 'Het `nummer` argument moet een geldige tijd zijn die tenmiste 0 seconden of meer is.'
+    seekingLive: 'Je kan niet naar een andere tijd skippen met livestreams.'
+    seekingTooFar: '`{0}` is meer dan de lengte van het huidige nummer, als je het huidige nummer wilt overslaan gebruik `{1}skip`.'
+    seekTo: 'Zoeken **:title** naar `:time`'
+  SetDefaultVolumeCommand:
+    currentVolume: 'Het standaard volume van de server is op dit moment `:volume%`'
+    changedVolume: 'Het standaard volume is veranderd naar `:volume%`'
+    failedToSave: 'Er is iets fout gegaan met het opslaan van het standaard volume: {0}'
+    mustBeNumber: 'Hey `volume` moet een nummer zijn tussen de 1 en 100'
+  ShuffleCommand:
+    error: "De wachtrij is leeg, je kan een nummer aanvragen met\n`{0}play <song title | url>`"
+    success: '**:amount** zijn geschud in de wachtrij.'
+  SkipCommand:
+    error: 'Niks om over te slaan, vraag eerst een nummer aan met `{0}play`'
+  SongCommand:
+    error: 'Niks om te laten zien, vraag eerst muziek aan met `{0}play`'
+    paused: 'Gepauzeerd'
+    playing: 'Aan het afspelen'
+    songsInQueue: 'Nummers in de wachtrij'
+    moreSongs: 'Je kan meer nummers zien met {0} <page>'
+    noSongs: 'Er zijn geen andere nummers in de wachtrij op het moment'
+    andXMoreSongs: '_Nog **{0}** nummers{1}!_'
+    formats:
+      line: '**{0}** [{1}]({2})'
+      song: "[{0}]({1})\nAfspelen op `{2}` volume met `{3}` over op het nummer - Aangevraagd door <@{4}>"
+      stream: '[{0}]({1})\Afspelen op `{2}` volume, de stream is `{3}` - Aangevraagd door <@{4}>'
+  StopCommand:
+    error: "Er staat niks in de afspeellijst op het moment, je kan de muziek niet stoppen zonder dat er muziek afgespeeld word."
+    success: 'Het afspelen is gestopt, en **:number** nummers zijn verwijderd van de wachtrij.'
+  VoiceFixCommand:
+    message: "**Omwisselen naar naar :swap regio:** {0}\n**Terug wisselen naar :original region:** {1}"
+    starting: "Omwissel process beginnen...\n\n"
+    finished: "\n\nKlaar! Muziek hoort nu weer te werken!"
+    error: "Gefaald met het omwisselen van process, error: {0}"
+  VolumeCommand:
+    error: 'Niks is aan het afspelen, vraag eerst een nummer aan met `{0}play`'
+    requireDJRole: 'De `DJ` rol nodig om het vorlume aan te passen!'
+    invalidVolume: 'Ongeldig volume gegeven, de volume moet een geldig zijn tussen de 1 en 100.'
+    nowPlaying: ':musical_note: Muziek is aan het spelen op **:volume** volume'
+    setTo: ':musical_note: Volume gezet naar **:volume**'
+  VoteSkipCommand:
+    error: 'Niks om over te slaan, vraag eerst een nummer aan met `{0}play`'
+    registered: 'Je stem is opgeslagen. nog maar `:votes` stemmen nodig om het nummer over te slaan.'
+    alreadyVoted: 'Je mag maar een keer stemmen om een nummer over te slaan per nummer! nog maar `:votes` stemmen nodig om het nummer over te slaan.'
 search:
-
-    DuckDuckGoCommand:
-        nsfwDisabled: "Het `Duck Duck GO` commando kan alleen gebruikt worden in NSFW kanalen, omdat de resultaten NSFW beelden kan bevatten."
-        searchResults: 'Zoek resultaat voor: {0}'
-        noResults: 'Niks gevonden voor `:query`'
-        seeAlso: '**Bekijk ook**'
-        nsfwStatus:
-            enabled: 'NSFW zoeken is geactiveerd'
-            disabled: 'NSFW zoeken is gedeactiveerd'
-
-    GfycatCommand:
-        noResults: "Ik geen gif vinden met de volgende query: `:query`"
-
-    UrbanDictionaryCommand:
-        noResults: ':user Ik heb niks gevonden voor `:query`'
-        untitled: 'Geen titel'
-        example: 'Voorbeeld'
-        results: ':percentage percentage can mensen vinden dit leuk. :up👍 :down👎'
-        nsfwDisabled: "Het `Urban Dictionary` commando kan alleen gebruikt worden in NSFW kanalen, omdat de resultaten NSFW taalgebruik kan bevatten."
-
-    XKCDCommand:
-        invalidArgument: "Ongeldig argument gegeven, het argument met een geldig nummer zijn tussen de `1` en `{0}`, of `random` voor een random verhaal."
-        number: 'XKCD nummer #{0}'
-
+  DuckDuckGoCommand:
+    nsfwDisabled: "Het `Duck Duck GO` commando kan alleen gebruikt worden in NSFW kanalen, omdat de resultaten NSFW beelden kan bevatten."
+    searchResults: 'Zoek resultaat voor: {0}'
+    noResults: 'Niks gevonden voor `:query`'
+    seeAlso: '**Bekijk ook**'
+    nsfwStatus:
+      enabled: 'NSFW zoeken is geactiveerd'
+      disabled: 'NSFW zoeken is gedeactiveerd'
+  GfycatCommand:
+    noResults: "Ik geen gif vinden met de volgende query: `:query`"
+  UrbanDictionaryCommand:
+    noResults: ':user Ik heb niks gevonden voor `:query`'
+    untitled: 'Geen titel'
+    example: 'Voorbeeld'
+    results: ':percentage percentage can mensen vinden dit leuk. :up👍 :down👎'
+    nsfwDisabled: "Het `Urban Dictionary` commando kan alleen gebruikt worden in NSFW kanalen, omdat de resultaten NSFW taalgebruik kan bevatten."
+  XKCDCommand:
+    invalidArgument: "Ongeldig argument gegeven, het argument met een geldig nummer zijn tussen de `1` en `{0}`, of `random` voor een random verhaal."
+    number: 'XKCD nummer #{0}'
 utility:
-    CalculateCommand:
-        boolean:
-            true: 'Waar'
-            false: 'Nietwaar'
-        eastereggs:
-            quickMaths: '	-	Quick maths!'
-            binary: "Er zijn maar 10 soorten mensen in de wereld, de mensen die binair kennen en de mensen die geen binair kennen."
-
-    ChangelogCommand:
-        invalidChangelogChannel: "Het opgegeven veranderingslogboek kanaal is invalide, het tekst kanaal kon niet worden gevonden!"
-        cantReadChangelogChannel: "Ik heb niet genoeg permissies om de historie van dat veranderingslogboek kanaal uit te lezen, dit is nodig om berichten van het veranderingslogboek te lezen, laden en te toonen."
-        invalidVersionGiven: "Incorecte versie opgegeven, `{0}` is geen valide versie."
-        noChangelogMessages: "Er zijn nog geen veranderingslogboek berichten om te tonen, probeer het later nog eens."
-        latestVersion: "Laatste version: {0}"
-        lastFewVersions: "Laatste 10 versies"
-        changelogVersions: "Veranderingslogboek versies ({0})"
-
-    ChannelIdCommand:
-        message: ':user :id: van het :channel kanaal is `:targetChannel`'
-
-    ChannelInfoCommand:
-        fields:
-            id: 'ID'
-            position: 'Positie'
-            users: 'Gebruikers'
-            category: 'Categorieën'
-            bitRate: 'Bit Rate'
-            nsfw: 'NSFW'
-            createdAt: 'Aangemaakt op'
-        noTopic: '*Er bestaad geen onderwerp voor dit kanaal*'
-        timeFormat: 'EEE, dd MMM yyyy HH:mm'
-
-    ExpandUrlCommand:
-        noRedirect: ":url gaat nergens naar toe."
-        redirects: '{0} gaat naar {1}'
-        jumps: '**De link sprint door de volgende websites:**'
-
-    FeedbackCommand:
-        confirmation: "Je staat op het punt om het volgende als feedback op te sturen:```:feedback``` Deze feedback wordt naar het feedback kanaal gestuurd in de :server server, weet je zeker dat je dit wilt sturen?\nGebruik `:command` binnen 60 seconden zonder argumenten om het op te sturen."
-        success: 'Feedback succesvol verstuurd <:tickYes:319985232306765825>'
-        failedToSend: 'Gefaald om feedback bericht te versturen: :error'
-        invalidFeedbackChannel: "Het gekozen feedback kanaal is invalide, het tekst kanaal kon niet worden gvonden!"
-        mustBe32CharactersOrMore: "Feedback moet minstens 32 lettes lang zijn."
-
-    GlobalLeaderboardCommand:
-        noData: 'Er is geen leaderboard data op het moment, probeer later opnieuw.'
-        line: '`:num` **:username** is level **:level** met **:experience** xp.'
-        title: 'Globale Ervaring Leaderboard'
-        yourRank: 'Jouw rank'
-        loading:
-            title: 'Globale leaderboards laden'
-            message: 'Wacht A.U.B een seconde terwijl het globale leaderboard geladen word.'
-
-    InviteCommand:
-        message: 'Je kan me naar je eigen server uitnodigen door [hier te klikken](:oauth) of gebruik de volgende link:\n\n:oauth\n\n:note'
-        note: 'Als je graag nieuwe features wil proberen voor alle andere mensen, probeer dan de *__Cutting Edge__* bot die bijna elke dag nieuwe features krijgt, je kan de bot uitnodigen door [hier te klikken](:edgeInvite) of door de volgende link:\n\n:edgeInvite'
-
-    IPInfoCommand:
-        hostname: 'Hostnaam'
-        organisation: 'Organisatie'
-        country: 'Land'
-
-    LeaderboardCommand:
-        noData: 'Er is geen leaderboard data op het momemnt, probeer later opnieuw.'
-        line: '`:num` **:username** is level **:level** met **:experience** xp.'
-        title: '{0} Leaderboard'
-        yourRank: 'Jouw rank'
-
-    PingCommand:
-        message: 'Pong! duurde :ping ms (:rating) Websocket heartbeat :heartbeat ms'
-        rating:
-            10: 'sneller dan Sonic! :smiley_cat:'
-            100: 'geweldig! :smiley:'
-            200: 'netjes! :slight_smile:'
-            300: 'fatsoenlijk. :neutral_face:'
-            400: 'average... :confused:'
-            500: 'beetje sloom. :slight_frown:'
-            600: 'best sloom.. :frowning2:'
-            700: 'sloom.. :worried:'
-            800: 'te sloom. :disappointed:'
-            900: 'slecht. :sob: (helpme)'
-            1600: '#BlameDiscord. :angry:'
-            10000: 'dit is niet logisch :thinking: #BlameAlexis'
-            other: 'scheld Alexis uit voor me. :dizzy_face:'
-
-    RankBackgroundCommand:
-        canBeUnlocked: "Rank achtergronden kunnen ontgrendeld worden met **[Vote Points](https://discordbots.org/bot/avaire)**,\nJe krijgt **1 punt** elke keer als je op de bot stempt."
-        listTitle: "Rank achtergronden ({0})"
-        youHaveVotePoints: "Je hebt {0} stem punten."
-        exampleTitle: "{0} Voorbeeld"
-        exampleFooter: "{0} kost {1} vote punten"
-        alreadyOwnsBackground: "Je hebt de **:name** achtergrond al!"
-        doesntHaveEnoughPoints: "Je hebt niet genoeg punten om deze achtergrond te kopen, de achtergrond kost `{0}`, en je hebt `{1}` stem punten."
-        boughtBackgroundSuccessfully: "Gefeliciteerd! Je hebt nu de **:name** achtergrond!\nJe kan het `:command` commando gebruiken om de achtergrond te selecteren."
-        youDontOwnThisBackground: "Je hebt de **:name** achtergrond niet, maar je kan deze kopen met **:cost** stem punten!"
-        successfullyChangedBackground: "Je hebt succesvol je achtergrond veranderd naar **:name**."
-        disabledBackgrounds: "Rank achtergronden zijn succesvol gedeactiveerd, je gerbuikt nu weer embedded berichten voor rank commando's."
-        buyNotes:
-            alreadyOwns: "**{0}**\n- _Je hebt deze achtergrond al._"
-            doesntOwns: "**{0}**\n - Kost {1} stem punten."
-        failedToSendExampleMessage: "Er ging is fout met een voorbeeld laten zien van de {0} achtergrond, error: {1}."
-        failedToBuyTheBackground: "Er ging iets fout met het kopen van de achtergrond, error: {0}"
-        failedToSetBackground: "Gefaald met het instellen van de achtergrond door een database error, probeer het later opnieuw. Als dit probleem blijft, neem dan contact op met een developer."
-
-    RankCommand:
-        botsCannotReceiveXp: "Bots kunnen geen exp ontvangen en kunnen dus geen ranking hebben, probeer het opnieuw met een gebruiker."
-        unranked: 'Unranked'
-        fields:
-            rank: 'Rank'
-            level: 'Level'
-            total: '{0} (Total: {1})'
-            experience: 'Experience'
-            experienceToNext: 'Experience nodig voor het volgende level'
-            youNeedMoreXpToLevelUp: '[{0}] {1}{2}\n\t\t\t\t\t\t\t\t\tJe bent nog {3} meer xp nodig om een level omhoog je gaan.'
-
-    RemindCommand:
-        errors:
-            invalidMeHere: 'Ongeldig type gegeven, je moet aangeven waar je herinnerd wilt worden, door of `here` te gebruiker om in dit kanaal herinnerd te worden, of `me` om herinnerd te worden in een direct bericht.'
-            invalidTime: 'Ongeldige tijd gegeven, de tijd moet meer dan 60 seconden zijn en minder dan 3 dagen.'
-
-    ServerIdCommand:
-        message: ':user :id: van deze server is `:guildid`'
-
-    ServerInfoCommand:
-        fields:
-            id: 'ID'
-            owner: 'Eigenaar'
-            textChannels: 'Tekst kanalen'
-            voiceChannels: 'Spraak kanalen'
-            members: 'Leden'
-            users: 'Gebruikers'
-            bots: 'Bots'
-            roles: 'Rollen'
-            region: 'Regio'
-            createdAt: 'Gemaakt op'
-            emotes: 'Aangepaste Emotes'
-        timeFormat: 'EEE, dd MMM yyyy HH:mm'
-
-    ShardCommand:
-        allShards: 'Alle Shards'
-        totalShards: 'Totale Shards'
-
-    SourceCommand:
-        noArgs: 'AvaIre source code:'
-        command: 'AvaIre source code voor de **:command** command:'
-        invalidCommand: 'Ongeldig commando gegeven, hier is alle source code.'
-        externalCommand: "Het commando is geregisteerd via een externe plugin, de auteur van deze plugin heeft de source code nog niet publiek gemaakt, of ze zijn vergeten een linkje toe te voegen, hier is alle source code voor de bot."
-
-    StatsCommand:
-        title: 'Officiale Bot Server Uitnodiging'
-        footer: 'Op dit moment aan het spelen in {0} servers met {1} nummers in de wachtrij.'
-        formats:
-            perMinute: '{0} ({1} per min)'
-            perSecond: '{0} ({1} per sec)'
-            memory: '{0}Mb / {1}Mb'
-        fields:
-            author: 'Auteur'
-            website: 'Website'
-            library: 'Bibliotkeek'
-            database: 'DB Queries uitgevoerd'
-            messages: 'Berichten ontvangen'
-            shard: 'Shard'
-            commands: "Commando's uitgevoerd"
-            memory: 'Geheugen gebruik'
-            uptime: 'Uptime'
-            members: 'Leden'
-            channels: 'Kanalen'
-            servers: 'Servers'
-
-    TemperatureConvertCommand:
-        invalidConvertFormat: "`{0}` is not a recognized conversion mode. Valid conversion modes are:\n{1}"
-        invalidNumberFormat: "`{0}` could not be parsed as a number."
-        message: ":input is equal to :one and :two"
-
-    UptimeCommand:
-        message: 'Ik ben online geweest voor :time'
-        footer: 'Begonen {0} op {1}'
-        dateFormat: 'EEEEEEEE, dd MMM yyyy'
-        timeFormat: 'HH:mm:ss z'
-
-    UserAvatarCommand:
-            noUserFound: "Ik heb geen gebruikers gevonden met de naam of ID van `{0}`"
-            title: "{0}#{1}'s Avatar"
-
-    UserIdCommand:
-        message: ':id: van de gebruiker **:target** is `:targetid`'
-
-    UserInfoCommand:
-        fields:
-            username: 'Gebruikersnaam'
-            userId: 'Gebruiker ID'
-            joinedServer: 'Server Gejoined'
-            joinedDiscord: 'Discord Gejoined'
-            roles: 'Rollen ({0})'
-            servers: 'Servers'
-        inServers: '{0} the bot knows about'
-        noRoles: '*Deze gebruiker is in geen enkele rol*'
-        timeFormat: 'EEE, dd MMM yyyy HH:mm'
-
-    VersionCommand:
-        current: 'Ik loop op dit moment `:difference` :type versier achter!'
-        getLatest: 'Je kan de laatste versie van mij krijgen op github [avaire/avaire](https://github.com/avaire/avaire)'
-        usingLatest: "Je gebruikt de laatste versie van AvaIre!"
-        latestVersion: 'De laatste versie voor AvaIre is v{0}'
-        latestChanges: 'Laatste veranderingen:'
-        versions:
-            majorName: 'Major'
-            major: 'Major versie updates zijn grote veranderingen voor de bot of een heleboel minor veranderingen, het is zwaar aangeraden dat je update, omdat patches en minor versie updates niet meer ondersteund worden.'
-            minorName: 'Minor'
-            minor: 'Minor versie verschillen zijn kleine toevoegingen, features en veranderingen aan de huidige code, het is aangeraden om up to date te blijven met de nieuwste minor versie updates zodat je altijd toegang hebt tot de niewste features.'
-            patchName: 'Patch'
-            patch: 'Patch versie updates zijn bug fixes, herschrijven van stukjes code of andere aanpassingen die de bot verder niet aanpassen kwa gebruik, het is aangeraden dat je op patch versie veranderingen update zodat je altijd die nieuwste bugfixes hebt.'
-
-    WeatherCommand:
-        noCityFound: "Er was geen stad gevonden met de naam **:name**, weet je zeker dat je het correct gespeld hebt?"
-        fields:
-            weatherFor: "Weer voor {0}, {1}"
-            country: "Land"
-            temperature: "Temperatuur"
-            windDirection: "Wind Richting"
-            windSpeed: "Wind Snelheid"
+  CalculateCommand:
+    boolean:
+      true: 'Waar'
+      false: 'Nietwaar'
+    eastereggs:
+      quickMaths: '	-	Snelle Wiskunde!'
+      binary: "Er zijn maar 10 soorten mensen in de wereld, de mensen die binair kennen en de mensen die geen binair kennen."
+  ChangelogCommand:
+    invalidChangelogChannel: "Het opgegeven veranderingslogboek kanaal is invalide, het tekst kanaal kon niet worden gevonden!"
+    cantReadChangelogChannel: "Ik heb niet genoeg permissies om de historie van dat veranderingslogboek kanaal uit te lezen, dit is nodig om berichten van het veranderingslogboek te lezen, laden en te toonen."
+    invalidVersionGiven: "Incorecte versie opgegeven, `{0}` is geen valide versie."
+    noChangelogMessages: "Er zijn nog geen veranderingslogboek berichten om te tonen, probeer het later nog eens."
+    latestVersion: "Laatste version: {0}"
+    lastFewVersions: "Laatste 10 versies"
+    changelogVersions: "Veranderingslogboek versies ({0})"
+  ChannelIdCommand:
+    message: ':user :id: van het :channel kanaal is `:targetChannel`'
+  ChannelInfoCommand:
+    fields:
+      id: 'ID'
+      position: 'Positie'
+      users: 'Gebruikers'
+      category: 'Categorieën'
+      bitRate: 'Bit snelheid'
+      nsfw: 'NSFW'
+      createdAt: 'Aangemaakt op'
+    noTopic: '*Er bestaad geen onderwerp voor dit kanaal*'
+    timeFormat: 'EEE, dd MMM yyyy HH:mm'
+  ExpandUrlCommand:
+    noRedirect: ":url gaat nergens naar toe."
+    redirects: '{0} gaat naar {1}'
+    jumps: '**De link sprint door de volgende websites:**'
+  FeedbackCommand:
+    confirmation: "Je staat op het punt om het volgende als feedback op te sturen:```:feedback``` Deze feedback wordt naar het feedback kanaal gestuurd in de :server server, weet je zeker dat je dit wilt sturen?\nGebruik `:command` binnen 60 seconden zonder argumenten om het op te sturen."
+    success: 'Feedback succesvol verstuurd <:tickYes:319985232306765825>'
+    failedToSend: 'Gefaald om feedback bericht te versturen: :error'
+    invalidFeedbackChannel: "Het gekozen feedback kanaal is invalide, het tekst kanaal kon niet worden gvonden!"
+    mustBe32CharactersOrMore: "Feedback moet minstens 32 lettes lang zijn."
+  GlobalLeaderboardCommand:
+    noData: 'Er is geen leaderboard data op het moment, probeer later opnieuw.'
+    line: '`:num` **:username** is level **:level** met **:experience** xp.'
+    title: 'Globale Ervaring Leaderboard'
+    yourRank: 'Jouw rank'
+    loading:
+      title: 'Globale leaderboards laden'
+      message: 'Wacht A.U.B een seconde terwijl het globale leaderboard geladen word.'
+  InviteCommand:
+    message: "Je kan me naar je eigen server uitnodigen door [hier te klikken](:oauth) of gebruik de volgende link:\n\n:oauth\n\n:note"
+    note: "Als je graag nieuwe features wil proberen voor alle andere mensen, probeer dan de *__Cutting Edge__* bot die bijna elke dag nieuwe features krijgt, je kan de bot uitnodigen door [hier te klikken](:edgeInvite) of door de volgende link:\n\n:edgeInvite"
+  IPInfoCommand:
+    hostname: 'Hostnaam'
+    organisation: 'Organisatie'
+    country: 'Land'
+  LeaderboardCommand:
+    noData: 'Er is geen leaderboard data op het momemnt, probeer later opnieuw.'
+    line: '`:num` **:username** is level **:level** met **:experience** xp.'
+    title: '{0} Ranglijst'
+    yourRank: 'Jouw rank'
+  PingCommand:
+    message: 'Pong! duurde :ping ms (:rating) Websocket heartbeat :heartbeat ms'
+    rating:
+      10: 'sneller dan Sonic! :smiley_cat:'
+      100: 'geweldig! :smiley:'
+      200: 'netjes! :slight_smile:'
+      300: 'fatsoenlijk. :neutral_face:'
+      400: 'gemiddeld... :confused:'
+      500: 'beetje sloom. :slight_frown:'
+      600: 'best sloom.. :frowning2:'
+      700: 'sloom.. :worried:'
+      800: 'te sloom. :disappointed:'
+      900: 'slecht. :sob: (helpme)'
+      1600: '#BlameDiscord. :angry:'
+      10000: 'dit is niet logisch :thinking: #BlameAlexis'
+      other: 'scheld Alexis uit voor me. :dizzy_face:'
+  RankBackgroundCommand:
+    canBeUnlocked: "Rank achtergronden kunnen ontgrendeld worden met **[Vote Points](https://discordbots.org/bot/avaire)**,\nJe krijgt **1 punt** elke keer als je op de bot stempt."
+    listTitle: "Rank achtergronden ({0})"
+    youHaveVotePoints: "Je hebt {0} stem punten."
+    exampleTitle: "{0} Voorbeeld"
+    exampleFooter: "{0} kost {1} vote punten"
+    alreadyOwnsBackground: "Je hebt de **:name** achtergrond al!"
+    doesntHaveEnoughPoints: "Je hebt niet genoeg punten om deze achtergrond te kopen, de achtergrond kost `{0}`, en je hebt `{1}` stem punten."
+    boughtBackgroundSuccessfully: "Gefeliciteerd! Je hebt nu de **:name** achtergrond!\nJe kan het `:command` commando gebruiken om de achtergrond te selecteren."
+    youDontOwnThisBackground: "Je hebt de **:name** achtergrond niet, maar je kan deze kopen met **:cost** stem punten!"
+    successfullyChangedBackground: "Je hebt succesvol je achtergrond veranderd naar **:name**."
+    disabledBackgrounds: "Rank achtergronden zijn succesvol gedeactiveerd, je gerbuikt nu weer embedded berichten voor rank commando's."
+    buyNotes:
+      alreadyOwns: "**{0}**\n- _Je hebt deze achtergrond al._"
+      doesntOwns: "**{0}**\n - Kost {1} stem punten."
+    failedToSendExampleMessage: "Er ging is fout met een voorbeeld laten zien van de {0} achtergrond, error: {1}."
+    failedToBuyTheBackground: "Er ging iets fout met het kopen van de achtergrond, error: {0}"
+    failedToSetBackground: "Gefaald met het instellen van de achtergrond door een database error, probeer het later opnieuw. Als dit probleem blijft, neem dan contact op met een developer."
+  RankCommand:
+    botsCannotReceiveXp: "Bots kunnen geen exp ontvangen en kunnen dus geen ranking hebben, probeer het opnieuw met een gebruiker."
+    unranked: 'Unranked'
+    fields:
+      rank: 'Rang'
+      level: 'Level'
+      total: '{0} (Totaal: {1})'
+      experience: 'Experience'
+      experienceToNext: 'Experience nodig voor het volgende level'
+      youNeedMoreXpToLevelUp: "[{0}] {1}{2}\n\\t\\t\\t\\t\\t\\t\\t\\t\\tJe bent nog {3} meer xp nodig om een level omhoog je gaan."
+  RemindCommand:
+    errors:
+      invalidMeHere: 'Ongeldig type gegeven, je moet aangeven waar je herinnerd wilt worden, door of `here` te gebruiker om in dit kanaal herinnerd te worden, of `me` om herinnerd te worden in een direct bericht.'
+      invalidTime: 'Ongeldige tijd gegeven, de tijd moet meer dan 60 seconden zijn en minder dan 3 dagen.'
+  ServerIdCommand:
+    message: ':user :id: van deze server is `:guildid`'
+  ServerInfoCommand:
+    fields:
+      id: 'ID'
+      owner: 'Eigenaar'
+      textChannels: 'Tekst kanalen'
+      voiceChannels: 'Spraak kanalen'
+      members: 'Leden'
+      users: 'Gebruikers'
+      bots: 'Robots'
+      roles: 'Rollen'
+      region: 'Regio'
+      createdAt: 'Gemaakt op'
+      emotes: 'Aangepaste Emotes'
+    timeFormat: 'EEE, dd MMM yyyy HH:mm'
+  ShardCommand:
+    allShards: 'Alle Shards'
+    totalShards: 'Totale Shards'
+  SourceCommand:
+    noArgs: 'AvaIre source code:'
+    command: 'AvaIre source code voor de **:command** command:'
+    invalidCommand: 'Ongeldig commando gegeven, hier is alle source code.'
+    externalCommand: "Het commando is geregisteerd via een externe plugin, de auteur van deze plugin heeft de source code nog niet publiek gemaakt, of ze zijn vergeten een linkje toe te voegen, hier is alle source code voor de bot."
+  StatsCommand:
+    title: 'Officiale Bot Server Uitnodiging'
+    footer: 'Op dit moment aan het spelen in {0} servers met {1} nummers in de wachtrij.'
+    formats:
+      perMinute: '{0} ({1} per minuut)'
+      perSecond: '{0} ({1} per seconde)'
+      memory: '{0}Mb / {1}Mb'
+    fields:
+      author: 'Auteur'
+      website: 'Website'
+      library: 'Bibliotkeek'
+      database: 'DB Queries uitgevoerd'
+      messages: 'Berichten ontvangen'
+      shard: 'Shard'
+      commands: 'Commando''s uitgevoerd'
+      memory: 'Geheugen gebruik'
+      uptime: 'Uptime'
+      members: 'Leden'
+      channels: 'Kanalen'
+      servers: 'Servers'
+  TemperatureConvertCommand:
+    invalidConvertFormat: "`{0}` is geen herkende conversiemodus. Geldige conversie modes zijn:\n{1}"
+    invalidNumberFormat: "`{0}` kon niet worden verwerkt als nummer."
+    message: ":input is gelijk aan :one en :two"
+  UptimeCommand:
+    message: 'Ik ben online geweest voor :time'
+    footer: 'Begonen {0} op {1}'
+    dateFormat: 'EEEEEEEE, dd MMM yyyy'
+    timeFormat: 'HH:mm:ss z'
+  UserAvatarCommand:
+    noUserFound: "Ik heb geen gebruikers gevonden met de naam of ID van `{0}`"
+    title: "{0}#{1} zijn Avatar"
+  UserIdCommand:
+    message: ':id: van de gebruiker **:target** is `:targetid`'
+  UserInfoCommand:
+    fields:
+      username: 'Gebruikersnaam'
+      userId: 'Gebruiker ID'
+      joinedServer: 'Server Gejoined'
+      joinedDiscord: 'Discord Gejoined'
+      roles: 'Rollen ({0})'
+      servers: 'Servers'
+    inServers: '{0} die de bot kent'
+    noRoles: '*Deze gebruiker is in geen enkele rol*'
+    timeFormat: 'EEE, dd MMM yyyy HH:mm'
+  VersionCommand:
+    current: 'Ik loop op dit moment `:difference` :type versier achter!'
+    getLatest: 'Je kan de laatste versie van mij krijgen op github [avaire/avaire](https://github.com/avaire/avaire)'
+    usingLatest: "Je gebruikt de laatste versie van AvaIre!"
+    latestVersion: 'De laatste versie voor AvaIre is v{0}'
+    latestChanges: 'Laatste veranderingen:'
+    versions:
+      majorName: 'Belangrijkste'
+      major: 'Major versie updates zijn grote veranderingen voor de bot of een heleboel minor veranderingen, het is zwaar aangeraden dat je update, omdat patches en minor versie updates niet meer ondersteund worden.'
+      minorName: 'Klein'
+      minor: 'Minor versie verschillen zijn kleine toevoegingen, features en veranderingen aan de huidige code, het is aangeraden om up to date te blijven met de nieuwste minor versie updates zodat je altijd toegang hebt tot de niewste features.'
+      patchName: 'Patch'
+      patch: 'Patch versie updates zijn bug fixes, herschrijven van stukjes code of andere aanpassingen die de bot verder niet aanpassen kwa gebruik, het is aangeraden dat je op patch versie veranderingen update zodat je altijd die nieuwste bugfixes hebt.'
+  WeatherCommand:
+    noCityFound: "Er was geen stad gevonden met de naam **:name**, weet je zeker dat je het correct gespeld hebt?"
+    fields:
+      weatherFor: "Weer voor {0}, {1}"
+      country: "Land"
+      temperature: "Temperatuur"
+      windDirection: "Wind Richting"
+      windSpeed: "Wind Snelheid"
