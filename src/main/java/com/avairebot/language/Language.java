@@ -36,11 +36,11 @@ public enum Language {
     ES_ES("es", "ES", "Espanol", "Spanish"),
     FR_FR("fr", "FR", "French", "French"),
     HU_HU("hu", "HU", "Magyar", "Hungarian"),
-    NO_NB("no", "NB", "Norsk", "Norwegian"),
+    NO_NB("no", "NO", "Norsk", "Norwegian"),
     RU_RU("ru", "RU", "Pусский", "Russian"),
     IT_IT("it", "IT", "Italiano", "Italian"),
     NL_NL("nl", "NL", "Nederlands", "Dutch"),
-    ZH_SI("zh", "SI", "中文", "Chinese", "Chinese Simplified", "Zhōngwén"),
+    ZH_SI("zh", "CN", "中文", "Chinese", "Chinese Simplified", "Zhōngwén"),
     JA_JP("ja", "JP", "日本人", "Japanese");
 
     private final String code;
