@@ -60,9 +60,13 @@ public class FetchMemeTypesJob extends Job {
                         HashMap<String, String> meme = new HashMap<>();
                         meme.put("name", entry.getKey());
                         meme.put("url", entry.getValue());
-
-                        cache.put(entry.getValue().substring(apiEndpoint.length(), entry.getValue().length()), meme);
-
+                        
+                        if(entry.getValue().startsWith("https")) {
+                            cache.put(entry.getValue().substring(apiEndpoint.length(), entry.getValue().length()), meme);
+                        }
+                        else {
+                            cache.put(entry.getValue().substring(apiEndpoint.length()-1, entry.getValue().length()), meme);
+                        }
                     }
 
                     avaire.getCache().getAdapter(CacheType.FILE).forever(cacheToken, cache);
