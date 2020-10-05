@@ -39,7 +39,7 @@ public class FetchMemeTypesJob extends Job {
     private final String apiEndpoint = "https://memegen.link/api/templates/";
 
     public FetchMemeTypesJob(AvaIre avaire) {
-        super(avaire, 7, 7, TimeUnit.DAYS);
+        super(avaire, 3, 3, TimeUnit.DAYS);
 
         if (!avaire.getCache().getAdapter(CacheType.FILE).has(cacheToken)) {
             run();
@@ -61,8 +61,11 @@ public class FetchMemeTypesJob extends Job {
                         meme.put("name", entry.getKey());
                         meme.put("url", entry.getValue());
 
-                        cache.put(entry.getValue().substring(apiEndpoint.length(), entry.getValue().length()), meme);
-
+                        if (entry.getValue().startsWith("https")) {
+                            cache.put(entry.getValue().substring(apiEndpoint.length(), entry.getValue().length()), meme);
+                        } else {
+                            cache.put(entry.getValue().substring(apiEndpoint.length() - 1, entry.getValue().length()), meme);
+                        }
                     }
 
                     avaire.getCache().getAdapter(CacheType.FILE).forever(cacheToken, cache);
