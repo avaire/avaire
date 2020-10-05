@@ -91,9 +91,11 @@ public class CommandMessage implements CommandContext {
 
         this.message = message;
 
-        this.guild = message == null ? null : message.getGuild();
-        this.member = message == null ? null : message.getMember();
-        this.channel = message == null ? null : message.getTextChannel();
+        boolean isNull = message == null || !message.isFromGuild();
+
+        this.guild = isNull ? null : message.getGuild();
+        this.member = isNull ? null : message.getMember();
+        this.channel = isNull ? null : message.getTextChannel();
         this.databaseEventHolder = databaseEventHolder;
 
         this.mentionableCommand = mentionableCommand;
@@ -223,7 +225,7 @@ public class CommandMessage implements CommandContext {
 
     @Override
     public boolean isGuildMessage() {
-        return message.getChannelType().isGuild();
+        return message.isFromGuild();
     }
 
     @Override

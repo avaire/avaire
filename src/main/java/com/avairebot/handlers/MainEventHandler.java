@@ -269,8 +269,6 @@ public class MainEventHandler extends EventHandler {
     }
 
     private boolean isValidMessageReactionEvent(GenericMessageReactionEvent event) {
-        return !event.getUser().isBot()
-            && event.getGuild() != null
-            && event.getReactionEmote().getEmote() != null;
+        return event.isFromGuild() && event.getReactionEmote().isEmote();
     }
 }

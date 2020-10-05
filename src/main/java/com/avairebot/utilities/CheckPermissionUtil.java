@@ -38,7 +38,7 @@ public class CheckPermissionUtil {
      * @return <code>True</code> if the bot can send a message in it, <code>False</code> otherwise.
      */
     public static PermissionCheckType canSendMessages(@Nullable MessageChannel channel) {
-        if (channel == null || !(channel instanceof TextChannel)) {
+        if (!(channel instanceof TextChannel)) {
             return PermissionCheckType.EMBED;
         }
 

@@ -76,7 +76,7 @@ public class GfycatCommand extends Command {
             return sendErrorMessage(context, "errors.missingArgument", "queue");
         }
 
-        RequestFactory.makeGET("https://api.gfycat.com/v1test/gfycats/search")
+        RequestFactory.makeGET("https://api.gfycat.com/v1/gfycats/search")
             .addParameter("count", 25)
             .addParameter("search_text", String.join(" ", args))
             .send((Consumer<Response>) response -> {

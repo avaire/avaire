@@ -64,7 +64,7 @@ public class Category {
             return getPrefix();
         }
 
-        if (message.getGuild() == null) {
+        if (!message.isFromGuild()) {
             return getPrefix();
         }
 
