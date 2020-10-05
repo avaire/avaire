@@ -39,7 +39,7 @@ public class FetchMemeTypesJob extends Job {
     private final String apiEndpoint = "https://memegen.link/api/templates/";
 
     public FetchMemeTypesJob(AvaIre avaire) {
-        super(avaire, 7, 7, TimeUnit.DAYS);
+        super(avaire, 3, 3, TimeUnit.DAYS);
 
         if (!avaire.getCache().getAdapter(CacheType.FILE).has(cacheToken)) {
             run();
