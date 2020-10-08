@@ -27,10 +27,7 @@ import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.utilities.CacheUtil;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.Role;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -141,22 +138,11 @@ public class GuildController {
                 .get().first());
 
             if (!transformer.hasData()) {
-                try {
-                    avaire.getDatabase().newQueryBuilder(Constants.GUILD_TABLE_NAME)
-                        .insert(statement -> {
-                            statement.set("id", guild.getId())
-                                .set("owner", guild.getOwner().getUser().getId())
-                                .set("name", guild.getName(), true)
-                                .set("roles_data", buildRoleData(guild.getRoles()), true)
-                                .set("channels_data", buildChannelData(guild.getTextChannels()), true);
+                guild.retrieveOwner().queue(
+                    member -> updateGuildEntry(avaire, guild, member),
+                    throwable -> updateGuildEntry(avaire, guild, null)
+                );
 
-                            if (guild.getIconId() != null) {
-                                statement.set("icon", guild.getIconId());
-                            }
-                        });
-                } catch (Exception ex) {
-                    AvaIre.getLogger().error(ex.getMessage(), ex);
-                }
                 return new GuildTransformer(guild);
             }
 
@@ -165,6 +151,26 @@ public class GuildController {
             log.error("Failed to fetch guild transformer from the database, error: {}", ex.getMessage(), ex);
 
             return null;
+        }
+    }
+
+    private static void updateGuildEntry(AvaIre avaire, Guild guild, Member owner) {
+        try {
+            avaire.getDatabase().newQueryBuilder(Constants.GUILD_TABLE_NAME)
+                .insert(statement -> {
+                    statement
+                        .set("id", guild.getId())
+                        .set("owner", owner == null ? 0 : owner.getIdLong())
+                        .set("name", guild.getName(), true)
+                        .set("roles_data", buildRoleData(guild.getRoles()), true)
+                        .set("channels_data", buildChannelData(guild.getTextChannels()), true);
+
+                    if (guild.getIconId() != null) {
+                        statement.set("icon", guild.getIconId());
+                    }
+                });
+        } catch (Exception ex) {
+            AvaIre.getLogger().error(ex.getMessage(), ex);
         }
     }
 }
