@@ -34,6 +34,7 @@ import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberLeaveEvent;
+import net.dv8tion.jda.api.events.guild.member.GuildMemberRemoveEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -119,7 +120,7 @@ public class MemberEventAdapter extends EventAdapter {
         }
     }
 
-    public void onGuildMemberLeave(GuildMemberLeaveEvent event) {
+    public void onGuildMemberRemove(GuildMemberRemoveEvent event) {
         GuildTransformer transformer = GuildController.fetchGuild(avaire, event.getGuild());
         if (transformer == null) {
             log.warn("Failed to get a valid guild transformer during member leave! User:{}, Guild:{}",

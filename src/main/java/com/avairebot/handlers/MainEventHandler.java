@@ -44,7 +44,7 @@ import net.dv8tion.jda.api.events.emote.EmoteRemovedEvent;
 import net.dv8tion.jda.api.events.guild.GuildJoinEvent;
 import net.dv8tion.jda.api.events.guild.GuildLeaveEvent;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
-import net.dv8tion.jda.api.events.guild.member.GuildMemberLeaveEvent;
+import net.dv8tion.jda.api.events.guild.member.GuildMemberRemoveEvent;
 import net.dv8tion.jda.api.events.guild.update.GuildUpdateNameEvent;
 import net.dv8tion.jda.api.events.guild.update.GuildUpdateRegionEvent;
 import net.dv8tion.jda.api.events.message.GenericMessageEvent;
@@ -68,6 +68,7 @@ import net.dv8tion.jda.api.utils.concurrent.Task;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.Nonnull;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -184,9 +185,9 @@ public class MainEventHandler extends EventHandler {
     }
 
     @Override
-    public void onGuildMemberLeave(GuildMemberLeaveEvent event) {
+    public void onGuildMemberRemove(@Nonnull GuildMemberRemoveEvent event) {
         if (!avaire.getSettings().isMusicOnlyMode()) {
-            memberEvent.onGuildMemberLeave(event);
+            memberEvent.onGuildMemberRemove(event);
         }
     }
 
