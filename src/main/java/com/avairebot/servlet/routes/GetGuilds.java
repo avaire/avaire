@@ -24,6 +24,7 @@ package com.avairebot.servlet.routes;
 import com.avairebot.AvaIre;
 import com.avairebot.contracts.metrics.SparkRoute;
 import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
 import org.json.JSONObject;
 import spark.Request;
 import spark.Response;
@@ -51,10 +52,11 @@ public class GetGuilds extends SparkRoute {
                 guild.put("icon", guildById.getIconUrl());
 
                 JSONObject owner = new JSONObject();
-                owner.put("id", guildById.getOwner().getUser().getId());
-                owner.put("username", guildById.getOwner().getUser().getName());
-                owner.put("discriminator", guildById.getOwner().getUser().getDiscriminator());
-                owner.put("avatar", guildById.getOwner().getUser().getEffectiveAvatarUrl());
+                Member ownerInstance = guildById.getOwner();
+                owner.put("id", ownerInstance == null ? null : guildById.getOwner().getUser().getId());
+                owner.put("username", ownerInstance == null ? null : guildById.getOwner().getUser().getName());
+                owner.put("discriminator", ownerInstance == null ? null : guildById.getOwner().getUser().getDiscriminator());
+                owner.put("avatar", ownerInstance == null ? null : guildById.getOwner().getUser().getEffectiveAvatarUrl());
                 guild.put("owner", owner);
 
                 JSONObject counter = new JSONObject();

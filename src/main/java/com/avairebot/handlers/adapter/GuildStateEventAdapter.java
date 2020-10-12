@@ -36,8 +36,8 @@ import com.avairebot.utilities.RestActionUtil;
 import lavalink.client.io.jda.JdaLink;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.TextChannel;
-import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.guild.GuildJoinEvent;
 import net.dv8tion.jda.api.events.guild.GuildLeaveEvent;
 import net.dv8tion.jda.api.events.guild.update.GuildUpdateNameEvent;
@@ -94,8 +94,13 @@ public class GuildStateEventAdapter extends EventAdapter {
             return;
         }
 
-        User owner = event.getGuild().getOwner().getUser();
+        event.getGuild().retrieveOwner().queue(
+            owner -> sendGuildJoinMessage(event, channel, owner),
+            error -> sendGuildJoinMessage(event, channel, null)
+        );
+    }
 
+    private void sendGuildJoinMessage(GuildJoinEvent event, TextChannel channel, Member owner) {
         double guildMembers = event.getGuild().getMembers().stream().filter(member -> !member.getUser().isBot()).count();
         double guildBots = event.getGuild().getMembers().stream().filter(member -> member.getUser().isBot()).count();
         double percentage = (guildBots / (guildBots + guildMembers)) * 100;
@@ -112,8 +117,8 @@ public class GuildStateEventAdapter extends EventAdapter {
                 .addField("Added", String.format("%s (ID: %s)",
                     event.getGuild().getName(), event.getGuild().getId()
                 ), false)
-                .addField("Owner", String.format("%s#%s (ID: %s)",
-                    owner.getName(), owner.getDiscriminator(), owner.getId()
+                .addField("Owner", owner == null ? "Unknown (Was not found!)" : String.format("%s (ID: %s)",
+                    owner.getUser().getAsTag(), owner.getId()
                 ), false)
                 .build()
         ).queue(null, RestActionUtil.ignore);
