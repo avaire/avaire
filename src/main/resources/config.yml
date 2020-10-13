@@ -208,6 +208,20 @@ playing:
   - 'playing:in %guilds% servers'
 
 #--------------------------------------------------------------------------
+# Music Commands & Events
+#--------------------------------------------------------------------------
+#
+# This option can enable or disable all music features within Ava.
+#
+# when the option is disabled the bot will stop responding to any voice
+# related events from Discord, and all the music commands in Ava won't
+# be registered to the command container, this means that the bot
+# will function as if the music commands doesn't exists.
+#
+
+use-music: true
+
+#--------------------------------------------------------------------------
 # Music Lavalink Nodes (Advanced Music Settings)
 #--------------------------------------------------------------------------
 #
@@ -422,6 +436,7 @@ audio-cache:
 # know what you're doing, music from YouTube will still work with this
 # feature disabled for smaller bots.
 #
+
 audio-ratelimit:
 
     # Determines if the audio ratelimiting IP blocks should be used

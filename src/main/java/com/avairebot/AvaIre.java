@@ -255,6 +255,8 @@ public class AvaIre {
         ));
 
         log.info("Registering commands...");
+        boolean useMusicCommands = config.getBoolean("use-music", true);
+
         if (settings.isMusicOnlyMode()) {
             CommandHandler.register(new StatsCommand(this));
             CommandHandler.register(new UptimeCommand(this));
@@ -264,7 +266,12 @@ public class AvaIre {
             AutoloaderUtil.load(Constants.PACKAGE_COMMAND_PATH + ".music", command -> CommandHandler.register((Command) command));
             AutoloaderUtil.load(Constants.PACKAGE_COMMAND_PATH + ".system", command -> CommandHandler.register((Command) command));
         } else {
-            AutoloaderUtil.load(Constants.PACKAGE_COMMAND_PATH, command -> CommandHandler.register((Command) command));
+            AutoloaderUtil.load(Constants.PACKAGE_COMMAND_PATH, command -> {
+                if (!useMusicCommands && command.getClass().getPackage().getName().endsWith(".music")) {
+                    return;
+                }
+                CommandHandler.register((Command) command);
+            });
         }
         log.info(String.format("\tRegistered %s commands successfully!", CommandHandler.getCommands().size()));
 
@@ -693,6 +700,7 @@ public class AvaIre {
             GatewayIntent.GUILD_INVITES,
             GatewayIntent.GUILD_MESSAGES,
             GatewayIntent.GUILD_MESSAGE_REACTIONS,
+            GatewayIntent.GUILD_VOICE_STATES,
             GatewayIntent.DIRECT_MESSAGES
         ))
             .setToken(getConfig().getString("discord.token"))
@@ -701,11 +709,19 @@ public class AvaIre {
             .setBulkDeleteSplittingEnabled(false)
             .setMemberCachePolicy(MemberCachePolicy.ALL)
             .setChunkingFilter(ChunkingFilter.NONE)
-            .disableCache(CacheFlag.ACTIVITY, CacheFlag.VOICE_STATE, CacheFlag.CLIENT_STATUS)
+            .disableCache(CacheFlag.ACTIVITY, CacheFlag.CLIENT_STATUS)
             .setEnableShutdownHook(true)
             .setAutoReconnect(true)
             .setContextEnabled(true)
             .setShardsTotal(settings.getShardCount());
+
+        if (!getConfig().getBoolean("use-music", true)) {
+            log.info("Disabling voice events and voice caches due to music being disabled globally!");
+
+            builder
+                .disableIntents(GatewayIntent.GUILD_VOICE_STATES)
+                .disableCache(CacheFlag.VOICE_STATE);
+        }
 
         if (settings.getShards() != null) {
             builder.setShards(settings.getShards());
