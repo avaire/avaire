@@ -84,7 +84,7 @@ administration:
     failedToSaveChanges: "Failed to save the changes to the database, please try again, if the error continues to happen, please contact support on the official [AvaIre support server](https://avairebot.com/support)."
     mustBeAnAdmin: "You must be a server admin to use this action."
     invalidSecurityToken: "Invalid security token given, please provide the correct security token to reset all the servers XP."
-    warning: "Warning!"
+    warning: "Attention !"
     success:
       add: "**:amount** XP has been given to :target, they now have **:newAmount** XP."
       take: "**:amount** XP has been taken from :target, they now have **:newAmount** XP."
