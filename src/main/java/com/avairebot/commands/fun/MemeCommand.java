@@ -35,8 +35,8 @@ import java.util.*;
 
 public class MemeCommand extends Command {
 
-    private final String customUrl = "https://memegen.link/custom/%s/%s.jpg?size=256&alt=%s&discordFormat=some-avatar.png";
-    private final String templateUrl = "https://memegen.link/%s/%s/%s.jpg";
+    private final String customUrl = "https://api.memegen.link/images/custom/%s/%s.png?size=256&background=%s&discordFormat=some-avatar.png";
+    private final String templateUrl = "https://api.memegen.link/images/%s/%s/%s.png";
 
     private final Map<String, Map<String, String>> memes = new HashMap<>();
     private final List<String> memeKeys = new ArrayList<>();
