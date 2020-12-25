@@ -25,6 +25,7 @@ import com.avairebot.AppInfo;
 import com.avairebot.AvaIre;
 import com.avairebot.audio.AudioHandler;
 import com.avairebot.chat.MessageType;
+import com.avairebot.chat.PlaceholderMessage;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.contracts.commands.CommandGroup;
@@ -77,7 +78,7 @@ public class StatsCommand extends Command {
 
     @Override
     public boolean onCommand(CommandMessage context, String[] args) {
-        context.makeEmbeddedMessage(MessageType.INFO,
+        PlaceholderMessage message = context.makeEmbeddedMessage(MessageType.INFO,
             new MessageEmbed.Field(context.i18n("fields.author"), "[Senither#0001](https://senither.com/)", true),
             new MessageEmbed.Field(context.i18n("fields.website"), "[avairebot.com](https://avairebot.com/)", true),
             new MessageEmbed.Field(context.i18n("fields.library"), "[JDA](https://github.com/DV8FromTheWorld/JDA)", true),
@@ -90,13 +91,18 @@ public class StatsCommand extends Command {
             new MessageEmbed.Field(context.i18n("fields.members"), NumberUtil.formatNicely(avaire.getShardEntityCounter().getUsers()), true),
             new MessageEmbed.Field(context.i18n("fields.channels"), NumberUtil.formatNicely(avaire.getShardEntityCounter().getChannels()), true),
             new MessageEmbed.Field(context.i18n("fields.servers"), NumberUtil.formatNicely(avaire.getShardEntityCounter().getGuilds()), true)
-        )
-            .setTitle(context.i18n("title"), "https://avairebot.com/support")
-            .setAuthor("AvaIre v" + AppInfo.getAppInfo().version, "https://avairebot.com/support", avaire.getSelfUser().getEffectiveAvatarUrl())
-            .setFooter(context.i18n("footer",
+        );
+
+        if (avaire.getConfig().getBoolean("use-music", true)) {
+            message.setFooter(context.i18n("footer",
                 NumberUtil.formatNicely(AudioHandler.getDefaultAudioHandler().getTotalListenersSize()),
                 NumberUtil.formatNicely(AudioHandler.getDefaultAudioHandler().getTotalQueueSize())
-            ))
+            ));
+        }
+
+        message
+            .setTitle(context.i18n("title"), "https://avairebot.com/support")
+            .setAuthor("AvaIre v" + AppInfo.getAppInfo().version, "https://avairebot.com/support", avaire.getSelfUser().getEffectiveAvatarUrl())
             .queue();
 
         return true;
