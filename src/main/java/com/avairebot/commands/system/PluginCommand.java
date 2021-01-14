@@ -63,7 +63,9 @@ public class PluginCommand extends SystemCommand {
         return Arrays.asList(
             "`:command show <plugin>` - Lists information about the plugin.",
             "`:command list <installed|i> [page]` - Lists installed plugins.",
-            "`:command list <available|a> [page]` - Lists available plugins."
+            "`:command list <available|a> [page]` - Lists available plugins.",
+            "`:command install <plugin> <version>` - Installs the given plugin.",
+            "`:command uninstall <plugin>` - Uninstalls the given plugin."
         );
     }
 
