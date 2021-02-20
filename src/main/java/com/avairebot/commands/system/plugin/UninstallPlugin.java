@@ -99,7 +99,7 @@ public class UninstallPlugin extends PluginSubCommand {
      *
      * @param plugin The plugin that the loader should be fetched for.
      * @return The matching plugin loader for the given plugin,
-     *         or {@code NULL} if there were no match.
+     * or {@code NULL} if there were no match.
      */
     private PluginLoader getPluginLoaderFromPlugin(Plugin plugin) {
         for (PluginLoader pluginLoader : avaire.getPluginManager().getPlugins()) {

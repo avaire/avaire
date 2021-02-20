@@ -28,7 +28,7 @@ import com.avairebot.database.transformers.ChannelTransformer;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.factories.MessageFactory;
 import com.avairebot.utilities.StringReplacementUtil;
-import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.api.entities.User;
 
 import javax.annotation.Nonnull;
 import java.awt.*;
@@ -106,7 +106,7 @@ public abstract class ChannelModuleCommand extends Command {
      * @param guildTransformer The guild database transformer representing the current guild.
      * @param callback         The callback that should be invoked when the database record is updated.
      * @return The result of the {@code callback} if the database record was
-     *         updated successfully, or {@code False} if an error occurred.
+     * updated successfully, or {@code False} if an error occurred.
      */
     protected boolean updateDatabase(CommandMessage context, GuildTransformer guildTransformer, Supplier<Boolean> callback) {
         try {
@@ -183,7 +183,7 @@ public abstract class ChannelModuleCommand extends Command {
      *
      * @param transformer The channel transformer the module should be pulled from.
      * @return The {@link ChannelTransformer.MessageModule channel message module}
-     *         that should be used for the channel module instance.
+     * that should be used for the channel module instance.
      */
     @Nonnull
     public abstract ChannelTransformer.MessageModule getChannelModule(ChannelTransformer transformer);

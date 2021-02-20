@@ -99,7 +99,7 @@ public class MigrationContainer {
      *
      * @param migration the migration to compare with
      * @return either (1) true if the migration matches
-     *         or (2) false if it doesn't match.
+     * or (2) false if it doesn't match.
      */
     public boolean match(Migration migration) {
         return getName() != null && migration.getClass().getName().equals(getName());

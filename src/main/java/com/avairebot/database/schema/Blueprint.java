@@ -40,15 +40,6 @@ public class Blueprint {
     }
 
     /**
-     * Sets the database engine that should be used with the blueprint.
-     *
-     * @param databaseEngine The database engine that should be set
-     */
-    public void setEngine(DatabaseEngine databaseEngine) {
-        setEngine(databaseEngine.getEngine());
-    }
-
-    /**
      * Gets the database engine used by the blueprint,
      * {@link DatabaseEngine#InnoDB} is used by default.
      *
@@ -56,6 +47,15 @@ public class Blueprint {
      */
     public String getEngine() {
         return engine;
+    }
+
+    /**
+     * Sets the database engine that should be used with the blueprint.
+     *
+     * @param databaseEngine The database engine that should be set
+     */
+    public void setEngine(DatabaseEngine databaseEngine) {
+        setEngine(databaseEngine.getEngine());
     }
 
     /**

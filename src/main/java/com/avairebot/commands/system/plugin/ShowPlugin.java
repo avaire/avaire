@@ -78,6 +78,11 @@ public class ShowPlugin extends PluginSubCommand {
             message.addField("Available Versions:", "*There are currently no publicly available versions*", false);
         } else {
             message.addField("Available Versions:", String.join(", ", versions), false);
+            message.addField("Install Command", String.format(
+                "```%s install %s <version|latest>```",
+                command.generateCommandTrigger(context.getMessage()),
+                plugin.getName().toLowerCase()
+            ), false);
         }
 
         message.queue();

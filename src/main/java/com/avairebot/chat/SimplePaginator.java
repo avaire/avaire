@@ -23,7 +23,7 @@ package com.avairebot.chat;
 
 import com.avairebot.contracts.chat.Paginator;
 import com.avairebot.language.I18n;
-import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.api.entities.Guild;
 
 import java.util.Iterator;
 import java.util.List;

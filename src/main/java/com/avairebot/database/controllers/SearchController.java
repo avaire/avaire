@@ -24,7 +24,7 @@ package com.avairebot.database.controllers;
 import com.avairebot.AvaIre;
 import com.avairebot.Constants;
 import com.avairebot.audio.TrackRequestContext;
-import com.avairebot.audio.seracher.SearchProvider;
+import com.avairebot.audio.searcher.SearchProvider;
 import com.avairebot.contracts.database.Database;
 import com.avairebot.database.collection.Collection;
 import com.avairebot.database.transformers.SearchResultTransformer;
@@ -96,7 +96,6 @@ public class SearchController {
      *
      * @param context            The track request context that is used for the cache lookup.
      * @param maxCacheAgeInMilis The max age for cached items to be determined as valid results.
-     * @return
      */
     @Nullable
     public static SearchResultTransformer fetchSearchResult(TrackRequestContext context, long maxCacheAgeInMilis) {

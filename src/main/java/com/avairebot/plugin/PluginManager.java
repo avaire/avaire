@@ -180,7 +180,7 @@ public class PluginManager {
      *
      * @param file The file that should be attempted to be loaded as a plugin.
      * @return The plugin loader associated with the loaded plugin,
-     *         or {@code NULL} if an exception were thrown.
+     * or {@code NULL} if an exception were thrown.
      * @throws InvalidPluginsPathException This is thrown if the plugins directory doesn't exist, or
      *                                     the bot doesn't have read access to the directory.
      * @throws InvalidPluginException      This is thrown if the plugin is not valid in some way.
@@ -290,7 +290,7 @@ public class PluginManager {
      *
      * @param name The name of the plugin that should be returned.
      * @return The plugin translator instance for the matching plugin with
-     *         the given name, or {@code NULL} if there were no match.
+     * the given name, or {@code NULL} if there were no match.
      */
     public final Plugin getPluginByName(String name) {
         List<PluginHolder> pluginHolders = avaire.getPluginManager().getOfficialPluginsList();

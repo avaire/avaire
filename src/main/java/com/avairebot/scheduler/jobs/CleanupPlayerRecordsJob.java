@@ -26,7 +26,7 @@ import com.avairebot.Constants;
 import com.avairebot.contracts.scheduler.Job;
 import com.avairebot.database.collection.Collection;
 import com.avairebot.database.collection.DataRow;
-import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.api.entities.Guild;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -87,6 +87,7 @@ public class CleanupPlayerRecordsJob extends Job {
         try {
             List<InactiveUser> inactiveUsers = new ArrayList<>();
             Guild guild = null;
+            boolean hasMembers = false;
 
             for (DataRow dataRow : getUsersFromDatabase()) {
                 if (guild == null || !guild.getId().equalsIgnoreCase(dataRow.getString("guild_id"))) {
@@ -100,6 +101,10 @@ public class CleanupPlayerRecordsJob extends Job {
 
                 if (guild == null) {
                     inactiveUsers.add(createInactiveUser(dataRow));
+                    continue;
+                }
+
+                if (!guild.isLoaded()) {
                     continue;
                 }
 

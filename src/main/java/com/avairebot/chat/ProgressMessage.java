@@ -26,12 +26,12 @@ import com.avairebot.contracts.chat.ProgressStep;
 import com.avairebot.contracts.chat.ProgressStepStatus;
 import com.avairebot.contracts.chat.Restable;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.MessageChannel;
-import net.dv8tion.jda.core.entities.MessageEmbed;
-import net.dv8tion.jda.core.requests.restaction.MessageAction;
-import net.dv8tion.jda.core.utils.Checks;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.requests.restaction.MessageAction;
+import net.dv8tion.jda.internal.utils.Checks;
 
 import javax.annotation.Nonnull;
 import java.awt.*;

@@ -75,7 +75,7 @@ public class SeederContainer {
      *
      * @param seeder the seeder to compare with
      * @return either (1) true if the seeder matches
-     *         or (2) false if it doesn't match.
+     * or (2) false if it doesn't match.
      */
     public boolean match(Seeder seeder) {
         return getName() != null && seeder.getClass().getName().equals(getName());

@@ -30,7 +30,7 @@ import com.avairebot.utilities.NumberUtil;
 import lavalink.client.io.LavalinkLoadBalancer;
 import lavalink.client.io.LavalinkSocket;
 import lavalink.client.io.RemoteStats;
-import net.dv8tion.jda.core.MessageBuilder;
+import net.dv8tion.jda.api.MessageBuilder;
 
 import javax.annotation.Nonnull;
 import java.net.URI;

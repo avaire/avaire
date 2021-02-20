@@ -21,7 +21,7 @@
 
 package com.avairebot.audio;
 
-import com.avairebot.audio.seracher.SearchProvider;
+import com.avairebot.audio.searcher.SearchProvider;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 
 import javax.annotation.Nonnull;

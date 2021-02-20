@@ -21,7 +21,7 @@
 
 package com.avairebot.utilities;
 
-import net.dv8tion.jda.core.entities.*;
+import net.dv8tion.jda.api.entities.*;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -94,7 +94,7 @@ public class StringReplacementUtil {
      * @param message The message that the guild should be retrieved from.
      * @param string  The original string that should be parsed.
      * @return The parsed string if the given message contains a valid guild instance,
-     *         otherwise it will just return the original unchanged string.
+     * otherwise it will just return the original unchanged string.
      */
     private static String toGuild(Message message, String string) {
         if (!message.getChannelType().isGuild()) {
@@ -127,7 +127,7 @@ public class StringReplacementUtil {
      * @param message The message that the channel should be retrieved from.
      * @param string  The original string that should be parsed.
      * @return The parsed string if the given message contains a valid channel instance,
-     *         otherwise it will just return the original unchanged string.
+     * otherwise it will just return the original unchanged string.
      */
     private static String toChannel(@Nonnull Message message, @Nonnull String string) {
         return parseChannel(message.getTextChannel(), string);
@@ -141,7 +141,7 @@ public class StringReplacementUtil {
      * @param string  The original string that should be parsed.
      * @return The parsed string after all the channel placeholders was parsed.
      */
-    public static String parseChannel(@Nonnull Channel channel, @Nonnull String string) {
+    public static String parseChannel(@Nonnull GuildChannel channel, @Nonnull String string) {
         string = string.replaceAll("%channel%", "<#" + channel.getId() + ">");
         string = string.replaceAll("%channelname%", Matcher.quoteReplacement(channel.getName()));
         string = string.replaceAll("%channelid%", channel.getId());
@@ -217,7 +217,7 @@ public class StringReplacementUtil {
          * @param message The message that the replacement type object should be retrieved from.
          * @param string  The original string that should be parsed.
          * @return The parsed string if the given message object contained the required replacement
-         *         type object, otherwise it will just return the original unchanged string.
+         * type object, otherwise it will just return the original unchanged string.
          */
         String parse(Message message, String string);
     }

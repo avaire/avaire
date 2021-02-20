@@ -46,7 +46,7 @@ public abstract class Renderer {
      * Handles the rendering process.
      *
      * @return The generated image as a buffered image object,
-     *         or <code>NULL</code> if something went wrong.
+     * or <code>NULL</code> if something went wrong.
      * @throws IOException Thrown when underlying render throws an IOException
      */
     @Nullable
@@ -56,7 +56,7 @@ public abstract class Renderer {
      * Render the image to build the buffered image object.
      *
      * @return The generated image as a buffered image object,
-     *         or <code>NULL</code> if something went wrong.
+     * or <code>NULL</code> if something went wrong.
      * @throws IOException Thrown when underlying render throws an IOException.
      */
     @Nullable

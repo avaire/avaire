@@ -129,8 +129,8 @@ public class AudioPlayerManagerConfiguration implements Supplier<AudioPlayerMana
      * Builds the router planner that should be used for YouTube related requests.
      *
      * @return The selected router planner strategy instance, or {@code NULL}
-     *         if no valid IP subnets have been provided, or an invalid
-     *         strategy was given.
+     * if no valid IP subnets have been provided, or an invalid
+     * strategy was given.
      */
     private AbstractRoutePlanner buildRoutePlanner() {
         List<IpBlock> ipBlocks = new ArrayList<>();

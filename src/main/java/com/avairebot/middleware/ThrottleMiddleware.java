@@ -34,7 +34,7 @@ import com.avairebot.utilities.NumberUtil;
 import com.avairebot.utilities.RestActionUtil;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.api.entities.Message;
 
 import javax.annotation.Nonnull;
 import java.util.concurrent.TimeUnit;
@@ -171,7 +171,7 @@ public class ThrottleMiddleware extends Middleware {
         }
 
         public String generateCacheString(Message message, MiddlewareStack stack) {
-            if (!this.equals(ThrottleType.USER) && message.getGuild() == null) {
+            if (!this.equals(ThrottleType.USER) && !message.isFromGuild()) {
                 return USER.generateCacheString(message, stack);
             }
 
@@ -180,7 +180,7 @@ public class ThrottleMiddleware extends Middleware {
             switch (this) {
                 case USER:
                     return String.format(cache,
-                        message.getGuild() == null ? "private" : message.getGuild().getId(),
+                        message.isFromGuild() ? message.getGuild().getId() : "private",
                         message.getAuthor().getId(),
                         cacheFingerprint);
 

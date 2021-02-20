@@ -32,8 +32,8 @@ import com.avairebot.exceptions.InvalidCommandPrefixException;
 import com.avairebot.exceptions.MissingCommandDescriptionException;
 import com.avairebot.metrics.Metrics;
 import com.avairebot.middleware.MiddlewareHandler;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.utils.Checks;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.internal.utils.Checks;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -366,7 +366,7 @@ public class CommandHandler {
      *
      * @param commandClass The command class that should be unregistered.
      * @return {@code True} if the command was unregistered successfully,
-     *         {@code False} if the command is not registered.
+     * {@code False} if the command is not registered.
      */
     public static boolean unregister(@Nonnull Class<? extends Command> commandClass) {
         synchronized (COMMANDS) {

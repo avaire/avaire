@@ -74,7 +74,7 @@ public abstract class Grammar {
      *
      * @param string The string to check.
      * @return either (1) <code>TRUE</code> if the provided string is numeric
-     *         or (2) <code>FALSE</code> if the provided string isn't numeric
+     * or (2) <code>FALSE</code> if the provided string isn't numeric
      */
     protected boolean isNumeric(String string) {
         return string.matches("[-+]?\\d*\\.?\\d+");

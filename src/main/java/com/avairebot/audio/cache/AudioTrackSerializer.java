@@ -99,7 +99,7 @@ public class AudioTrackSerializer {
      *
      * @param input The byte arrays which should be decoded into the AudioTrack instances.
      * @return The decoded LavaPlayer AudioTrack object instances, or {@code null} if
-     *         the given by arrays does not match a audio track.
+     * the given by arrays does not match a audio track.
      */
     @Nullable
     public static List<AudioTrack> decodeTracks(byte[][] input) {
@@ -124,7 +124,7 @@ public class AudioTrackSerializer {
      *
      * @param input The byte array which should be decoded into the AudioTrack instance.
      * @return The decoded LavaPlayer AudioTrack object instance, or {@code null} if
-     *         the given byte array does not match a audio track.
+     * the given byte array does not match a audio track.
      */
     @Nullable
     public static AudioTrack decodeTrack(byte[] input) {

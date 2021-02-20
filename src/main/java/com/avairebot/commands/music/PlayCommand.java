@@ -33,7 +33,7 @@ import com.avairebot.utilities.NumberUtil;
 import com.avairebot.utilities.RestActionUtil;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
-import net.dv8tion.jda.core.Permission;
+import net.dv8tion.jda.api.Permission;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -226,8 +226,8 @@ public class PlayCommand extends Command {
 
                 AudioTrack track = tracks.get(i);
 
-                songs.add(String.format("`%s` [%s](%s)",
-                    (i + 1), track.getInfo().title, track.getInfo().uri
+                songs.add(String.format("`%s` [%s](%s) [%s]",
+                    (i + 1), track.getInfo().title, track.getInfo().uri, NumberUtil.formatTime(track.getDuration())
                 ));
             }
 

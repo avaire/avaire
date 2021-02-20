@@ -33,9 +33,9 @@ import com.avairebot.contracts.commands.Command;
 import com.avairebot.contracts.commands.CommandGroup;
 import com.avairebot.contracts.commands.CommandGroups;
 import com.avairebot.utilities.NumberUtil;
-import net.dv8tion.jda.core.JDA;
-import net.dv8tion.jda.core.entities.MessageEmbed;
-import net.dv8tion.jda.core.entities.SelfUser;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.entities.SelfUser;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -138,7 +138,7 @@ public class ShardCommand extends Command {
             ), String.format("%s users\n%s guilds\n%s ms ping",
                 NumberUtil.formatNicely(shard.getUsers().size()),
                 NumberUtil.formatNicely(shard.getGuilds().size()),
-                NumberUtil.formatNicely(shard.getPing())
+                NumberUtil.formatNicely(shard.getGatewayPing())
             ), true));
         }
 

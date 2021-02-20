@@ -64,7 +64,7 @@ public class CacheItem {
      * the time will always be set to <code>-1</code>.
      *
      * @return The unix timestamp in milliseconds for when the cache item
-     *         expires, or <code>-1</code> if it is set to last forever.
+     * expires, or <code>-1</code> if it is set to last forever.
      */
     public long getTime() {
         return time;

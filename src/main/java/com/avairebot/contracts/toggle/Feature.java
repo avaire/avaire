@@ -42,7 +42,7 @@ public interface Feature {
      * Checks if the current instance is enabled.
      *
      * @return {@code True} if the feature is enabled,
-     *         {@code False} otherwise.
+     * {@code False} otherwise.
      */
     default boolean isActive() {
         return FeatureToggleContextHandler.isActive(getClass(), name());

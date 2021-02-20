@@ -98,7 +98,7 @@ public abstract class AudioEventWrapper extends EvalAudioEventWrapper {
      *
      * @param state The link state that should be checked.
      * @return <code>True</code> if the given link is destroyed or
-     *         being destroyed, <code>False</code> otherwise.
+     * being destroyed, <code>False</code> otherwise.
      */
     protected boolean isNodeStateDestroyed(Link.State state) {
         return !state.equals(Link.State.DESTROYED) && !state.equals(Link.State.DESTROYING);
