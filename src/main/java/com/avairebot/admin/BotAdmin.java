@@ -51,7 +51,7 @@ public class BotAdmin {
                     Long.parseLong(userId), AdminType.BOT_ADMIN
                 ));
             } catch (NumberFormatException e) {
-                log.warn("{} is an invalid bot ID, the ID have not been added to the bot admin whitelist.",
+                log.warn("{} is an invalid bot ID, the ID has not been added to the bot admin whitelist.",
                     userId
                 );
             }
