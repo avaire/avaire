@@ -7,7 +7,7 @@ errors:
   mustBeConnectedToVoice: 'Du musst mit einem Voicechannel verbunden sein, um diesen Befehl ausführen zu können!'
   mustBeConnectedToSameChannel: 'Du musst im selben Voicechannel verbunden sein, um folgenden Befehl ausführen zu können: {0}!'
   missingMusicQueue: 'Fehlende Music `query`. Du musst einen Link zu einem Song angeben, den du dir anhören möchtest. Du kannst mir auch gern den Musiktitel geben.'
-  cantMentionEveryone: "You don't have permissions to mention everyone."
+  cantMentionEveryone: "Du hast nicht die Berechtigung, alle zu erwähnen."
   requireLevelFeatureToBeEnabled: 'Dieser Befehl benötigt das `Levels & Experience` Feature. Du kannst den Server-Administrator anfragen, ob dieser damit einverstanden ist diesen mit folgendem Befehl zu aktivieren: `{0}`'
   errorOccurredWhileLoading: 'Ein Fehler ist beim Laden von {0} aufgetreten. Bitte versuche es später erneut. Sollte dieser Fehler erneut auftreten, so kontaktiere eines unserer Entwickler auf dem [AvaIre Support Server] [https://avairebot.com/support].'
 levelupMessages:
@@ -21,11 +21,11 @@ levelupRoleMessages:
   - "Eyy :user, du bist soeben aufgestiegen! Du bist nun auf **Level :level**. Hier, die **:role** Rolle. Hast du dir verdient!"
   - "Glückwunsch, :user! 🎉 Du bist aufgestiegen! Du bist nun auf **Level :level**. Das heißt: Hier ein **:role** Rang. Nur für dich!"
 pagination:
-  simpleFooter: "Page **{0}** out of **{1}** pages.\n`{2} [page]`"
+  simpleFooter: "Seite **{0}** von **{1}** Seiten.\n`{2} [page]`"
 modlog-types:
   kick:
     name: "Kick"
-    action: "Kicked"
+    action: "Gekickt"
   voiceKick:
     name: "Voice Kick"
     action: "Voice Kicked"
