@@ -50,7 +50,7 @@ public interface PluginSourceManager {
      *
      * @param repository The plugin repository that the latest source URl should
      * @return The URL to the latest downloadable JAR file of the plugin, or {@code NULL}
-     *         if the plugin doesn't have any JAr files released.
+     * if the plugin doesn't have any JAr files released.
      */
     @Nullable
     String getLatestDownloadableJarFile(PluginRepository repository);
@@ -61,7 +61,7 @@ public interface PluginSourceManager {
      *
      * @param repository The plugin repository that the releases should be pulled from.
      * @return A list of plugin releases for the given plugin repository,
-     *         or an empty list if the plugin repo has no no releases.
+     * or an empty list if the plugin repo has no no releases.
      */
     List<PluginRelease> getPluginReleases(PluginRepository repository);
 

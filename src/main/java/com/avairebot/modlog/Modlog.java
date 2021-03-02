@@ -33,11 +33,11 @@ import com.avairebot.factories.MessageFactory;
 import com.avairebot.handlers.events.ModlogActionEvent;
 import com.avairebot.language.I18n;
 import com.avairebot.utilities.RestActionUtil;
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.TextChannel;
-import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.User;
 
 import javax.annotation.Nullable;
 import java.sql.SQLException;
@@ -53,7 +53,7 @@ public class Modlog {
      * @param context The command context the modlog action is occurring in.
      * @param action  The action that should be logged to the modlog.
      * @return Possibly-null, the case ID if the modlog was logged successfully,
-     *         otherwise <code>null</code> will be returned.
+     * otherwise <code>null</code> will be returned.
      */
     @Nullable
     public static String log(AvaIre avaire, CommandMessage context, ModlogAction action) {
@@ -67,7 +67,7 @@ public class Modlog {
      * @param message The message that triggered the modlog action.
      * @param action  The action that should be logged to the modlog.
      * @return Possibly-null, the case ID if the modlog was logged successfully,
-     *         otherwise <code>null</code> will be returned.
+     * otherwise <code>null</code> will be returned.
      */
     @Nullable
     public static String log(AvaIre avaire, Message message, ModlogAction action) {
@@ -81,7 +81,7 @@ public class Modlog {
      * @param guild  The guild the modlog action should be logged in.
      * @param action The action that should be logged to the modlog.
      * @return Possibly-null, the case ID if the modlog was logged successfully,
-     *         otherwise <code>null</code> will be returned.
+     * otherwise <code>null</code> will be returned.
      */
     @Nullable
     public static String log(AvaIre avaire, Guild guild, ModlogAction action) {
@@ -101,7 +101,7 @@ public class Modlog {
      * @param transformer The guild transformer containing all the guild settings used in the modlog action.
      * @param action      The action that should be logged to the modlog.
      * @return Possibly-null, the case ID if the modlog was logged successfully,
-     *         otherwise <code>null</code> will be returned.
+     * otherwise <code>null</code> will be returned.
      */
     @Nullable
     public static String log(AvaIre avaire, Guild guild, GuildTransformer transformer, ModlogAction action) {

@@ -135,7 +135,7 @@ public class MuteManager {
      * @param guildId The ID of the guild that should be checked.
      * @param userId  The ID of the user that should be muted.
      * @return {@code True} if a user with the given ID is muted on a server
-     *         with the given guild ID, {@code False} otherwise.
+     * with the given guild ID, {@code False} otherwise.
      */
     public boolean isMuted(long guildId, long userId) {
         if (!mutes.containsKey(guildId)) {

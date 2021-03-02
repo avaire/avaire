@@ -23,7 +23,7 @@ package com.avairebot.utilities;
 
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.utilities.MentionChannelFinder;
-import net.dv8tion.jda.core.entities.*;
+import net.dv8tion.jda.api.entities.*;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -176,7 +176,7 @@ public class MentionableUtil {
      * @param args    The arguments parsed to the command.
      * @return Possibly-null, or the first channel matching the given arguments.
      */
-    public static Channel getChannel(@Nonnull Message message, @Nonnull String[] args) {
+    public static GuildChannel getChannel(@Nonnull Message message, @Nonnull String[] args) {
         return getChannel(message, args, 0);
     }
 
@@ -197,7 +197,7 @@ public class MentionableUtil {
      * @param index   The index of the argument that should be checked.
      * @return Possibly-null, or the channel matching the given index.
      */
-    public static Channel getChannel(@Nonnull Message message, @Nonnull String[] args, int index) {
+    public static GuildChannel getChannel(@Nonnull Message message, @Nonnull String[] args, int index) {
         return getChannel(message, args, index, ChannelPriorityType.TEXT);
     }
 
@@ -219,7 +219,7 @@ public class MentionableUtil {
      * @param priority The type of channel to prioritise to look for.
      * @return Possibly-null, or the channel matching the given index.
      */
-    public static Channel getChannel(@Nonnull Message message, @Nonnull String[] args, int index, @Nonnull ChannelPriorityType priority) {
+    public static GuildChannel getChannel(@Nonnull Message message, @Nonnull String[] args, int index, @Nonnull ChannelPriorityType priority) {
         if (!message.getMentionedChannels().isEmpty()) {
             return message.getMentionedChannels().get(0);
         }
@@ -239,7 +239,7 @@ public class MentionableUtil {
         }
 
         for (ChannelPriorityType type : channelPriorities.get(priority)) {
-            Channel channel = type.find(message, part);
+            GuildChannel channel = type.find(message, part);
             if (channel != null) {
                 return channel;
             }
@@ -315,7 +315,7 @@ public class MentionableUtil {
          * @param name    The name of the channel to look for.
          * @return Possibly-null, the first channel with the given name.
          */
-        public Channel find(@Nonnull Message message, @Nonnull String name) {
+        public GuildChannel find(@Nonnull Message message, @Nonnull String name) {
             return finder.find(message, name);
         }
     }

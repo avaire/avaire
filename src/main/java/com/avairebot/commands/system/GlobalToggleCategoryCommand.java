@@ -22,6 +22,7 @@
 package com.avairebot.commands.system;
 
 import com.avairebot.AvaIre;
+import com.avairebot.cache.CacheType;
 import com.avairebot.commands.Category;
 import com.avairebot.commands.CategoryHandler;
 import com.avairebot.commands.CommandMessage;
@@ -97,6 +98,8 @@ public class GlobalToggleCategoryCommand extends SystemCommand {
                     : null
             );
         }
+
+        avaire.getCache().getAdapter(CacheType.FILE).forever("command-category.toggle", IsCategoryEnabled.getDisabledCategories());
 
         context.makeInfo("The :category command category have successfully been :status globally!")
             .set("category", category.getName())

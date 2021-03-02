@@ -32,9 +32,9 @@ import com.avairebot.time.Carbon;
 import com.avairebot.utilities.MentionableUtil;
 import com.avairebot.utilities.NumberUtil;
 import com.avairebot.utilities.RoleUtil;
-import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.Role;
-import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Role;
+import net.dv8tion.jda.api.entities.User;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -163,7 +163,7 @@ public class MuteCommand extends MuteableCommand {
         ModlogType type = expiresAt == null ? ModlogType.MUTE : ModlogType.TEMP_MUTE;
 
         final Carbon finalExpiresAt = expiresAt;
-        context.getGuild().getController().addRolesToMember(
+        context.getGuild().addRoleToMember(
             context.getGuild().getMember(user), muteRole
         ).reason(reason).queue(aVoid -> {
             ModlogAction modlogAction = new ModlogAction(

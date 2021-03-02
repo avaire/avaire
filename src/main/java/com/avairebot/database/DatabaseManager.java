@@ -132,7 +132,7 @@ public class DatabaseManager {
      * @param query an SQL statement to be sent to the database, typically a
      *              static SQL <code>SELECT</code> statement
      * @return a <code>Collection</code> object that contains the data produced
-     *         by the given query; never <code>null</code>
+     * by the given query; never <code>null</code>
      * @throws SQLException if a database access error occurs,
      *                      this method is called on a closed <code>Statement</code>, the given
      *                      SQL statement produces anything other than a single
@@ -154,7 +154,7 @@ public class DatabaseManager {
      * @param query a QueryBuilder instance that should be sent to the database, typically a
      *              static SQL <code>SELECT</code> statement
      * @return a <code>Collection</code> object that contains the data produced
-     *         by the given query; never <code>null</code>
+     * by the given query; never <code>null</code>
      * @throws SQLException        if a database access error occurs,
      *                             this method is called on a closed <code>Statement</code>, the given
      *                             SQL statement produces anything other than a single
@@ -177,7 +177,7 @@ public class DatabaseManager {
      *
      * @param query an SQL statement to be sent to the database, typically a static SQL DML statement
      * @return either (1) the row count for SQL Data Manipulation Language (DML) statements
-     *         or (2) 0 for SQL statements that return nothing
+     * or (2) 0 for SQL statements that return nothing
      * @throws SQLException        if a database access error occurs;
      *                             this method is called on a closed  <code>PreparedStatement</code>
      *                             or the SQL statement returns a <code>ResultSet</code> object
@@ -202,7 +202,7 @@ public class DatabaseManager {
      * @param query a QueryBuilder instance that should be sent to the database, typically a
      *              static SQL DML statement
      * @return either (1) the row count for SQL Data Manipulation Language (DML) statements
-     *         or (2) 0 for SQL statements that return nothing
+     * or (2) 0 for SQL statements that return nothing
      * @throws SQLException        if a database access error occurs;
      *                             this method is called on a closed  <code>PreparedStatement</code>
      *                             or the SQL statement returns a <code>ResultSet</code> object

@@ -43,7 +43,7 @@ import io.prometheus.client.Histogram;
 import io.prometheus.client.guava.cache.CacheMetricsCollector;
 import io.prometheus.client.hotspot.DefaultExports;
 import io.prometheus.client.logback.InstrumentedAppender;
-import net.dv8tion.jda.core.events.Event;
+import net.dv8tion.jda.api.events.Event;
 import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -285,7 +285,7 @@ public class Metrics {
     }
 
     private static void initializeEventMetrics() {
-        Set<Class<? extends Event>> types = new Reflections("net.dv8tion.jda.core.events")
+        Set<Class<? extends Event>> types = new Reflections("net.dv8tion.jda.api.events")
             .getSubTypesOf(Event.class);
 
         for (Class<? extends Event> type : types) {

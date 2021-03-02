@@ -25,8 +25,8 @@ import com.avairebot.AvaIre;
 import com.avairebot.contracts.database.transformers.Transformer;
 import com.avairebot.database.collection.DataRow;
 import com.google.gson.reflect.TypeToken;
-import net.dv8tion.jda.core.entities.Emote;
-import net.dv8tion.jda.core.entities.Role;
+import net.dv8tion.jda.api.entities.Emote;
+import net.dv8tion.jda.api.entities.Role;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

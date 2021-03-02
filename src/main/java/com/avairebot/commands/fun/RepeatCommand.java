@@ -24,7 +24,7 @@ package com.avairebot.commands.fun;
 import com.avairebot.AvaIre;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
-import net.dv8tion.jda.core.Permission;
+import net.dv8tion.jda.api.Permission;
 
 import java.util.Arrays;
 import java.util.Collections;

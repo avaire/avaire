@@ -23,7 +23,7 @@ package com.avairebot.shard;
 
 import com.avairebot.AvaIre;
 import com.avairebot.contracts.shard.EntityGenerator;
-import net.dv8tion.jda.core.JDA;
+import net.dv8tion.jda.api.JDA;
 
 public class ShardEntity {
 

@@ -33,11 +33,11 @@ import com.avairebot.modlog.ModlogType;
 import com.avairebot.utilities.MentionableUtil;
 import com.avairebot.utilities.NumberUtil;
 import com.avairebot.utilities.RestActionUtil;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.MessageHistory;
-import net.dv8tion.jda.core.entities.User;
-import net.dv8tion.jda.core.requests.RestAction;
-import net.dv8tion.jda.core.utils.MiscUtil;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageHistory;
+import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.requests.RestAction;
+import net.dv8tion.jda.api.utils.TimeUtil;
 
 import javax.annotation.Nonnull;
 import java.util.*;
@@ -185,7 +185,7 @@ public class PurgeCommand extends Command {
     }
 
     private void loadMessages(MessageHistory history, int toDelete, Set<Long> userIds, Consumer<List<Message>> consumer) {
-        long maxMessageAge = (System.currentTimeMillis() - TimeUnit.DAYS.toMillis(14) - MiscUtil.DISCORD_EPOCH) << MiscUtil.TIMESTAMP_OFFSET;
+        long maxMessageAge = (System.currentTimeMillis() - TimeUnit.DAYS.toMillis(14) - TimeUtil.DISCORD_EPOCH) << TimeUtil.TIMESTAMP_OFFSET;
         List<Message> messages = new ArrayList<>();
 
         history.retrievePast(toDelete).queue(historyMessages -> {

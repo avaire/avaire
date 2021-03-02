@@ -61,7 +61,7 @@ public class PingCommand extends Command {
             long ping = System.currentTimeMillis() - start;
 
             context.makeInfo(context.i18n("message"))
-                .set("heartbeat", context.getJDA().getPing())
+                .set("heartbeat", context.getJDA().getGatewayPing())
                 .set("rating", ratePing(context, ping))
                 .set("ping", ping)
                 .queue();

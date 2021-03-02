@@ -67,7 +67,7 @@ public abstract class Model extends DefaultFields {
      *
      * @param id The ID that should be compared with the primary key
      * @return An empty collection if no results were found, or a
-     *         collection that matches the given ID and primary key.
+     * collection that matches the given ID and primary key.
      * @throws SQLException
      */
     public Collection find(Object id) throws SQLException {
@@ -80,7 +80,7 @@ public abstract class Model extends DefaultFields {
      * Gets all the records matching the eloquent model type from the database.
      *
      * @return All records matching the eloquent model in a collection, if the
-     *         table has no records an empty collection will be returned instead.
+     * table has no records an empty collection will be returned instead.
      */
     public Collection all() throws SQLException {
         builder.table(table()).selectAll();
@@ -346,7 +346,7 @@ public abstract class Model extends DefaultFields {
      * Runs the {@link QueryBuilder#get()} method with the generated query.
      *
      * @return a <code>Collection</code> object that contains the data produced
-     *         by the given query; never <code>null</code>@exception
+     * by the given query; never <code>null</code>@exception
      * @throws SQLException if a database access error occurs,
      *                      this method is called on a closed <code>Statement</code>, the given
      *                      SQL statement produces anything other than a single

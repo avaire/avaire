@@ -96,7 +96,6 @@ public class SearchController {
      *
      * @param context            The track request context that is used for the cache lookup.
      * @param maxCacheAgeInMilis The max age for cached items to be determined as valid results.
-     * @return
      */
     @Nullable
     public static SearchResultTransformer fetchSearchResult(TrackRequestContext context, long maxCacheAgeInMilis) {

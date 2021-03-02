@@ -36,7 +36,7 @@ public @interface DJCheckMessage {
      * false the message will just be appended to the DJ check message instead.
      *
      * @return <code>True</code> if the message should overwrite the throttle message, or
-     *         <code>False</code> if the message should be appended to the default throttle message instead.
+     * <code>False</code> if the message should be appended to the default throttle message instead.
      */
     boolean overwrite() default true;
 

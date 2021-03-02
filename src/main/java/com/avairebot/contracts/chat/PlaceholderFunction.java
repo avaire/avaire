@@ -21,7 +21,7 @@
 
 package com.avairebot.contracts.chat;
 
-import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.api.entities.Message;
 
 @FunctionalInterface
 public interface PlaceholderFunction {

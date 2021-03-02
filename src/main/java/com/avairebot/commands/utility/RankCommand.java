@@ -45,10 +45,10 @@ import com.avairebot.utilities.MentionableUtil;
 import com.avairebot.utilities.NumberUtil;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.MessageBuilder;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.MessageBuilder;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -292,9 +292,9 @@ public class RankCommand extends Command {
 
         try {
             //noinspection ConstantConditions
-            context.getMessageChannel().sendFile(
+            context.getMessageChannel().sendMessage(message.build()).addFile(
                 new ByteArrayInputStream(render.renderToBytes()),
-                attachmentName, message.build()
+                attachmentName
             ).queue();
         } catch (IOException e) {
             log.error("Failed to generate the rank background: {}", e.getMessage(), e);

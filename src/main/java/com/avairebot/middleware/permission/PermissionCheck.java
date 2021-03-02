@@ -23,7 +23,7 @@ package com.avairebot.middleware.permission;
 
 import com.avairebot.middleware.MiddlewareStack;
 import com.avairebot.permissions.Permissions;
-import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.api.entities.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

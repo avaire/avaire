@@ -26,9 +26,9 @@ import com.avairebot.Constants;
 import com.avairebot.database.collection.Collection;
 import com.avairebot.database.query.ChangeableStatement;
 import com.avairebot.time.Carbon;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.User;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -81,7 +81,7 @@ public class Blacklist {
      *
      * @param message The message that should be checked.
      * @return <code>True</code> if either the user, or the entire
-     *         server is blacklisted, <code>False</code> otherwise.
+     * server is blacklisted, <code>False</code> otherwise.
      */
     public boolean isBlacklisted(@Nonnull Message message) {
         return isBlacklisted(message.getAuthor())

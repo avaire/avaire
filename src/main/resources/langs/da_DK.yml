@@ -1,1005 +1,886 @@
-
+---
 errors:
-    missingArgument: 'Manglende argument, `{0}` argumentet er påkrævet!'
-    invalidProperty: 'Ugyldig `{0}` givet, du skal angive en gyldig {1}.'
-    noChannelsWithNameOrId: "Jeg fandt ingen kanaler med navnet eller id'et af `{0}`"
-    noUsersWithNameOrId: "Jeg fandt ingen brugere med navnet eller id'et af `{0}`"
-    mustBeConnectedToVoice: 'Du skal være forbundet til en talekanal for at bruge denne kommando!'
-    mustBeConnectedToSameChannel: 'Du skal være forbundet til den samme talekanal, jeg er i for at {0}!'
-    missingMusicQueue: 'Mangler musik `forespørgsel`, skal du inkludere et link til sangen, du vil lytte til, eller i det mindste give mig en sangtitel!'
-    cantMentionEveryone: "Du har ikke tilladelser til at nævne alle."
-    requireLevelFeatureToBeEnabled: "Denne kommando kræver, at `Level og Experience' funktionen er aktiveret for serveren, du kan spørge en serveradministrator, hvis de vil aktivere den med `{0}`"
-    errorOccurredWhileLoading: "Der opstod en fejl under indlæsningen af {0}. Prøv venligst igen. Hvis problemet fortsætter kan du rapportere dette til et af mine udviklere på [AvaIre support serveren](https://avairebot.com/support)."
-
+  missingArgument: 'Manglende argument, `{0}` argumentet er påkrævet!'
+  invalidProperty: 'Ugyldig `{0}` givet, du skal angive en gyldig {1}.'
+  noChannelsWithNameOrId: 'Jeg fandt ingen kanaler med navnet eller id''et af `{0}`'
+  noUsersWithNameOrId: 'Jeg fandt ingen brugere med navnet eller id''et af `{0}`'
+  mustBeConnectedToVoice: 'Du skal være forbundet til en talekanal for at bruge denne kommando!'
+  mustBeConnectedToSameChannel: 'Du skal være forbundet til den samme talekanal, jeg er i for at {0}!'
+  missingMusicQueue: 'Mangler musik `forespørgsel`, skal du inkludere et link til sangen, du vil lytte til, eller i det mindste give mig en sangtitel!'
+  cantMentionEveryone: "Du har ikke tilladelser til at nævne alle."
+  requireLevelFeatureToBeEnabled: 'Denne kommando kræver, at `Level og Experience'' funktionen er aktiveret for serveren, du kan spørge en serveradministrator, hvis de vil aktivere den med `{0}`'
+  errorOccurredWhileLoading: 'Der opstod en fejl under indlæsningen af {0}. Prøv venligst igen. Hvis problemet fortsætter kan du rapportere dette til et af mine udviklere på [AvaIre support serveren](https://avairebot.com/support).'
 levelupMessages:
-    - "GG :user, du har lige nået **Level :level**"
-    - "Eyy :user, du lige levelet op! Du er nu **Level :level**"
-    - "🌟 Du har lige nået **Level :level** :user! Tillykke 🌟"
-    - "🔥 Det kører bare :user, du er lige nået **Level :level**"
-    - "Tillykke :user 🎉 Du har lige levelet op! Du er nu **Level :level**"
-
+  - "GG :user, du har lige nået **Level :level**"
+  - "Eyy :user, du lige levelet op! Du er nu **Level :level**"
+  - "🌟 Du har lige nået **Level :level** :user! Tillykke 🌟"
+  - "🔥 Det kører bare :user, du er lige nået **Level :level**"
+  - "Tillykke :user 🎉 Du har lige levelet op! Du er nu **Level :level**"
 levelupRoleMessages:
-    - "GG :user, du er lige nået **Level :level**, du har nu fået **:role** rollen."
-    - "Eyy :user, du har lige leveled op! Du er nu **Level :level**, her, hav **:role** rollen, du fortjent det."
-    - "Tillykke :user 🎉 Du har lige leveled op! Du er nu **Level :level**, du har også tjent dig selv **:role** rollen."
-
+  - "GG :user, du er lige nået **Level :level**, du har nu fået **:role** rollen."
+  - "Eyy :user, du har lige leveled op! Du er nu **Level :level**, her, hav **:role** rollen, du fortjent det."
+  - "Tillykke :user 🎉 Du har lige leveled op! Du er nu **Level :level**, du har også tjent dig selv **:role** rollen."
 pagination:
-    simpleFooter: "Page **{0}** out of **{1}** pages.\n`{2} [page]`"
-
+  simpleFooter: "Side **{0}** ud af **{1}** sider.\n`{2} [side]`"
 modlog-types:
-    kick:
-        name: "Kick"
-        action: "Kicked"
-    voiceKick:
-        name: "Voice Kick"
-        action: "Voice Kicked"
-    ban:
-        name: "Ban"
-        action: "Banned"
-    softBan:
-        name: "Soft Ban"
-        action: "Soft Banned"
-    unban:
-        name: "Unban"
-        action: "Unbanned"
-    purge:
-        name: "Purge"
-        action: "Purged"
-    warn:
-        name: "Warn"
-        action: "Warned"
-    pardon:
-        name: "Pardon"
-        action: "Pardoned"
-    mute:
-        name: "Mute"
-        action: "Muted"
-    tempMute:
-        name: "Temp Mute"
-        action: "Temp Muted"
-    unmute:
-        name: "Unmute"
-        action: "Unmuted"
-
+  kick:
+    name: "Kick"
+    action: "Kicked"
+  voiceKick:
+    name: "Stemme Kick"
+    action: "Stemme Kicked"
+  ban:
+    name: "Bandlys"
+    action: "Bandlyst"
+  softBan:
+    name: "Blød Bandlysning"
+    action: "Blød Bandlysning"
+  unban:
+    name: "Unban"
+    action: "Unbanned"
+  purge:
+    name: "Purge"
+    action: "Purge"
+  warn:
+    name: "Advar"
+    action: "Advaret"
+  pardon:
+    name: "Pardon"
+    action: "Forladt"
+  mute:
+    name: "Mute"
+    action: "Muted"
+  tempMute:
+    name: "Temp Mute"
+    action: "Temp Muted"
+  unmute:
+    name: "Unmuted"
+    action: "Unmuted"
 administration:
-    common:
-        invalidRole: ":user Ugyldig rolle, jeg kunne ikke finde nogen rolle kaldet **:role**"
-
-    channelModule:
-        invalidColorGiven: "Ugyldige farveværdi angivet, farven skal være en gyldig HEX-værdi.\nDu kan prøve denne [tilfældige farvevælger](https://www.webpagefx.com/web-design/random-color-picker/) for at prøve at få en tilfældig HEX farve."
-        message: "`:type` modul meddelelsen er blevet sat til:\n\n```:message```\n\nDu kan teste beskeden ved at bruge kommandoen igen og nævne en bruger.\n`:command <user>`"
-
-    AddLevelRoleCommand:
-        noSlotsLeft: "Serveren har ikke flere level roller pladser, du kan fjerne eksisterende level roller for at frigøre plads."
-        invalidLevel: "Ugyldigt niveaukrav givet, niveaukravet skal være et positivt tal."
-        alreadyLevelRole: ":user **:role** er allerede en level rolle, du kan ikke bruge den samme rolle to gange."
-        alreadyARoleAtLevel: "Der er allerede en rolle tildelt level **:level**, kun én rolle kan gives per level."
-        success: "**:role** rollen er blevet tilføjet til level-up rollelisten.\nServeren har `:slots` flere level pladser tilgængelige."
-
-    AddReactionRoleCommand:
-        emoteDoestBelongToServer: "Emojien tilhører ikke denne server, du kan kun bruge emojis fra denne server som reaktion emojis."
-        messageHasNoSlots: "Beskeden har ikke flere reaktionsrolle spots der er tilgængelige. Du kan fjerne eksisterende reaktionsroller for at frigøre slots eller slette reaktionsrollemeddelelser for at tilføje rollen til en ny reaktionsrollebesked."
-        serverHasNoSlots: "Kan ikke oprette nye reaktionsrollemeddelelser, serveren har ikke længere reaktionsmeddelelses spots, du kan slette eksisterende reaktionsrollemeddelelser for at frigøre slots eller tilføje din reaktionsrolle til en reaktionsmeddelelse, hvis der er ledige slots på meddelelsen for flere roller."
-        success: ":role rollen er blevet registreret som en reaktionsrolle for :emote emoji.\nMeddelelsen har `:roleSlots` flere reaktions-rolle spots til rådighed for meddelelsen, og `:messageSlots` reaktionsmeddelelses-slots tilgængelige."
-
-    AddSelfAssignableRoleCommand:
-        noSlotsLeft: "Serveren har ikke flere selvtilladelige rolle pladser, du kan fjerne eksisterende selvtilladelige roller for at frigøre plads."
-        success: "**:role** rollen er blevet tilføjet til selvtilladelige listen.\nServeren har `:slots` flere selvtilladelige roller pladser til rådighed."
-
-    AdministrateExperienceCommand:
-        cantUseForBots: "Du kan ikke tilføje, fjerne, eller nulstille XP for en bot-konti, da de ikke kan få noget XP til at starte med. Vælg venligst en normal bruger, når du bruger denne kommando."
-        invalidAmountGiven: "Egenskaben `amount` skal være mellem 1 og {0} for at tilføje eller tage XP fra en bruger."
-        aboutToResetEverything: "You're about to reset the XP for everyone on the entire server. If you're sure you wanna continue, run the command to completely reset the servers XP.\n\n```:command server-reset :token```\nThis command will only work for 60 seconds, after that the token becomes invalid and the command has to be ran again to get a new token."
-        aboutToSyncEverything: "You're about to sync the XP with the global leaderboard, this will effectively revert any custom XP changes made on the entire server. If you're sure you wanna continue, run the command to completely sync the servers XP.\n\n```:command server-sync :token```\nThis command will only work for 60 seconds, after that the token becomes invalid and the command has to be ran again to get a new token."
-        failedToSaveChanges: "Failed to save the changes to the database, please try again, if the error continues to happen, please contact support on the official [AvaIre support server](https://avairebot.com/support)."
-        mustBeAnAdmin: "You must be a server admin to use this action."
-        invalidSecurityToken: "Ugyldigt sikkerheds token givet, angiv venligst det korrekte sikkerheds token for at nulstille alle XP for all på serveren."
-        warning: "Advarsel!"
-        success:
-            add: "**:amount** XP er blevet givet til :target, de har nu **:newAmount** XP."
-            take: "**:amount** XP er blevet taget fra :target, de har nu **:newAmount** XP."
-            reset: ":target har succesfuldt haft deres XP-nulstilling."
-            sync: ":target has successfully had synchronized with the global leaderboard, they now have **:newAmount** XP."
-            syncEveryone: "Everyone on the entire server has been synced with the global leaderboard!"
-            everything: "Alle på hele serveren har nu fået deres XP nulstillet!"
-
-    AiCommand:
-        message: "Modellen `Artificial Intelligence` er blivet **:status** for :channel kanalen."
-        status:
-            enabled: "aktiveret"
-            disabled: "deaktiveret"
-
-    AliasCommand:
-        noSlotsLeft: "Serveren har ikke flere alias-pladser, du kan slette eksisterende aliaser for at frigøre plads."
-        alreadyExists: "Der er allerede et eksisterende alias kaldet `{0}`"
-        invalidCommand: "Ugyldig kommando givet, jeg kender ikke til nogen kommando kaldet `{0}`"
-        invalidAlias: "Ugyldigt alias givet, `{0}` er ikke et registreret alias."
-        created: "`:alias` er blevet knyttet til `:command`\nServeren har `:slots` flere alias-pladser tilgængelige."
-        deleted: "Aliaset `:alias` er blevet slettet."
-
-    AutoAssignRoleCommand:
-        higherInTheHierarchy:
-            user: ":user **:role** rollen er placeret højere i hierarkiet end nogen rolle du har, du kan ikke tilføje roller med en højere rangering end du har."
-            bot: ":user **:role** rollen er placeret højere i hierarkiet, kan jeg ikke give/fjerne denne rolle til/fra brugere."
-        enabled: ":user **Auto rolle tildeling** ved brugerens deltagelse er blivet **aktiveret** og sat til **:role**"
-        disabledNow: ":user **Auto rolle tildeling** ved bruger deltagelse er blivet **deaktiveret**."
-        disabled: ":user **Auto rolle tildeling** ved bruger deltagelse er i øjeblikket **deaktiveret**."
-        status: ":user **Auto rolle tildeling** er i øjeblikket sat til **:role**"
-
-    BanCommand:
-        mustMentionUser: "Du skal nævne den bruger du ønsker at bandlyse."
-        higherRole: "Du kan ikke bandlyse folk med en højere eller samme rolle som dig selv."
-        userHaveHigherRole: "Jeg kan ikke bandlyse {0}, de har en højere rolle end migselv, hvis du skal kunne bandlyse brugeren, skal du justere min rolleposition til den øverste rolle."
-        success: "**:target** blev permanent bandlyst af :user for \":reason\""
-        failedToBan: "Kunne ikke bandlyse **:target** på grund af en fejl: :error"
-
-    CategoriesCommand:
-        title: "Kommandokategori status for #{0}"
-        status: ":emoteEnabled Aktiveret   :emoteDisabledInChannel Deaktiveret i kanalen   :emoteDisabledGlobally Deaktiveret i hele serveren"
-
-    ChangePrefixCommand:
-        missingArgument: "Manglende argument `kategori`, skal du angive kommandokategorien, som du vil ændre/nulstille præfiks for."
-        invalidCategory: "Ugyldig `kategori` givet, der er ingen kommando kategorier, der kaldes, eller starter med `{0}`"
-        invalidPrefix: "Ugyldigt kommando præfiks angivet, `{0}` er ikke et gyldigt kommando prefix, alle præfikser skal **IKKE** indeholde mellemrum og være imellem 1 og 16 tegn lange."
-        update:
-            global: "Alle kommandoer i all kommando kategorier bruger nu prefixet `:prefix`."
-            category: "Alle kommandoer i komando kategorien `:category` bruger nu prefixet `:prefix`."
-        reset:
-            global: "Alle kommandoer i all kommando kategorier er blevet nulstillet til at bruge `:prefix` prefixet."
-            category: "Alle kommandoer i all kommando kategorien `:category` er blivet nulstillet til at bruge `:prefix` prefixet."
-
-    ChannelLevelCommand:
-        invalidChannel: "En ugyldig kanal er blivet givet, det skal være en gyldig tekstkanal."
-        cantTalkInChannel: "Jeg kan ikke tale i {0}-kanalen, så ingen brugere vil blive belønnet med noget XP til at tale i kanalen. Hvis du vil have mig til at give brugere XP, skal du ændre mit tilladelsesniveau for kanalen, så jeg kan sende beskeder i kanalen."
-        noChannelsWithRewardsDisabled: "Der er i øjeblikket ingen kanaler med XP belønningerne deaktiveret, du kan tilføje en ved hjælp af kommandoen `{0} <channel>`"
-        failedToUpdate: "Kan ikke gemme ændringerne i databasen. Prøv igen, hvis problemet fortsætter, kontakt venligst en af mine udviklere."
-        listChannels: "Alle de kanaler der er nævnt nedenfor, har i øjeblikket deres XP belønninger slukket. All kanaler som ikke er på denne liste, er upåvirket.\n\n:channels"
-        listChannelsTitle: "Kanaler med deres XP belønninger er deaktiveret ({0})"
-        success: "XP-belønningen for :channel er blivet **:status**!"
-        status:
-            enabled: "aktiveret"
-            disabled: "deaktiveret"
-
-    GoodbyeCommand:
-        note: "\nDu kan tilpasse beskeden ved at bruge `{0} [besked]`"
-        message: "`Farvel` modellen er blivet **:status** for :channel kanalen."
-        status:
-            enabled: "aktiveret"
-            disabled: "deaktiveret"
-
-    GoodbyeMessageCommand:
-        moduleMustBeEnabled: "`Farvel` modulet skal være aktiveret for at bruge denne kommando, du kan aktivere modulet `farvel` ved at bruge kommandoen `{0}"
-        message: "Indlejrings indstillingen for farvel beskeder er blivet **:status**\n:note"
-        changedToDefault: "`Farvel` modulet beskeden er blivet nulstillet."
-        status:
-            enabled: "aktiveret"
-            disabled: "deaktiveret"
-        note:
-            embed: "Farvel meddelelser vil nu blive sendt med indlejrede meddelelser og HEX-farven: {0}"
-            normal: "Nu sender farvel beskeder via normale meddelelser."
-
-    IAmCommand:
-        notSelfAssignable: ":user Ugyldig rolle, **:role** er ikke en selvtillæggelig rolle."
-        roleIsHigherInTheHierarchy: ":user Rollen er højere i rollehierarkiet, jeg kan ikke give/fjerne **:role** rollen fra nogen."
-        message: ":user Du har nu **:role** rolle!"
-
-    IAmNotCommand:
-        notSelfAssignable: ":user Ugyldig rolle, **:role** er ikke en selvtillæggelig rolle."
-        roleIsHigherInTheHierarchy: ":user Rollen er højere i rollehierarkiet, jeg kan ikke give/fjerne **:role** rollen fra nogen."
-        message: ":user Du har ikke længere **:role** rollen!"
-
-    KickCommand:
-        mustMentionUser: "Du skal nævne den bruger du ønsker at kicke."
-        higherOrSameRole: "Du kan ikke kicke folk med en højere eller samme rolle som dig selv."
-        cantKickUser: "Jeg kan ikke kicke {0}, de har en højere rolle end mig, hvis du vil hav jeg er i stand til at kicke brugeren, skal du justere min rolleposition til over {0} højeste rolle."
-        success: "**:target** blev kicket af :user for \":reason\""
-        error: "Kunne ikke kicke **:target** på grund af en fejl: :error"
-
-    LanguageCommand:
-        invalidLanguageCode: "Ugyldig sprogkode givet, `{0}` er ikke en gyldig sprogkode, eller sproget er ikke understøttes inu!"
-        changed: "The servers language has been successfully been updated to use the :name language!"
-        note: "AvaIre understøtter flere brugerbidragte sprog som du kan vælge med denne kommando. Oversættelser er nok ikke 100% nøjagtige eller fuldstændige.\nVælg en sprog du vil bruge med `{0} <code>`"
-
-    LevelAlertsCommand:
-        message: "`Levels op alerts` has been `:status` for serveren.:note"
-        note: "\nAlle level op beskeder bliver logget i <#{0}> kanalen."
-        status:
-            enabled: "aktiveret"
-            disabled: "deaktiveret"
-
-    LevelCommand:
-        message: "`Levels & Experience` er blivet `:status` for serveren.:note"
-        note: "\nLevel notifikationer er lige pt `{0}`, du kan slå dem til eller fra med `{1}levelalerts`"
-        status:
-            enabled: "aktiveret"
-            disabled: "deaktiveret"
-
-    LevelHierarchyCommand:
-        invalidTypeGiven: "Ugyldig type angivet, for at skifte niveauhierarki til eller fra, skal du bruge enten `on` eller` off`."
-        message: "Level op hierarki er lige pt `:status` for serveren."
-        statusMessage: "Level op hierarki er i øjeblikket `:status`, du kan slå det til eller fra med `:command`"
-        status:
-            enabled: "aktiveret"
-            disabled: "deaktiveret"
-
-    LevelModifierCommand:
-        invalidNumberGiven: "Ugyldig værdi givet, værdien skal være en positiv procent imellem `0.01%` og `500%`"
-        resetToDefault: "Level ændrings modulet er nulstillet, og bruger nu den standard **:modifier** værdi."
-        changedTo: "Level modifikatoren er blivet ændret til **:modifier**"
-        requiredIsNow: "\n\n**Required XP to reach some levels is now:**\n"
-        statusMessage: "Serveren bruger lige pt **:modifier** modifikator for levels.\n\n**Nødvendig XP at nå nogle niveauer**\n"
-        level: "Level {0}"
-
-    ListAliasesCommand:
-        noAliases: "Serveren har ikke nogen aliaser lige nu, du kan oprette et ved brug af kommandoen\n``{0}alias <alias> <command>`"
-        listAliases: "Liste over aliaser ({0})"
-
-    ListLevelRolesCommand:
-        noLevelRoles: "Der er i øjeblikket ingen level roller, en administrator kan tilføje roller til level op tabellen ved brug af `:command` command"
-        listRoles: "Liste over Niveau Roller ({0})"
-
-    ListReactionRoleCommand:
-        noReactionRoles: "Serveren har ikke nogen reaktionsroller lige nu, du kan oprette en ved hjælp af\n`{0}arr <emote> <role>`"
-        listReactionRoles: "Liste over reaktionsroller ({0})"
-
-    ListSelfAssignableRolesCommand:
-        noSelfAssignableRoles: "Der er i øjeblikket ingen selvoverdragelige roller til denne server."
-        title: "Der er {0} selvoverdragelige roller"
-
-    ModlogCommand:
-        mustMentionTextChannel: "Ugyldigt kanal argument givet, du skal nævne en gyldig tekstkanal."
-        cantSendEmbedMessages: "Jeg kan ikke sende indlejrede meddelelser i den angivne kanal. Du skal ændre mit tilladelsesniveau for {0} kanalen, hvis du vil bruge det som en modlogkanal."
-        enable: ":user **Server Modlogging** er nu aktiveret og sat op til :modlog kanalen."
-        enabled: ":user **Server Modlogging** er lige nu aktiveret og sat op til at bruge :modlog kanalen."
-        disable: ":user **Server Modlogging** er nu deaktiveret for hele serveren."
-        disabled: ":user **Server Modlogging** er i øjeblikket deaktiveret."
-
-    ModlogHistoryCommand:
-        mustMentionUser: "Du skal nævne en gyldig `bruger`, du vil vise modloghistorikken for."
-        noHistory: "Der blev ikke fundet nogen modloghistorik for denne bruger."
-        title: "{0}#{1} Historie ({2})"
-        entry: "**{1}** | **#{0}** | **Moderator:** {2}\n**Date:** {3}\n**Reason:** {4}"
-        noReasonGiven: "Ingen grund blev givet."
-
-    ModlogPardonCommand:
-        modlogNotEnabled: "Ingen modlogkanal er blevet sat op, du skal sette en modlogkanal op for at bruge denne kommando."
-        invalidCaseId: "Ugyldigt case id givet, IDet skal være større end 0 og mindre end {0}"
-        couldntFindCaseWithId: "Kunne ikke finde et modlog case med IDet {0} hvor du var moderatoren, er du sikker på at du er moderatoren for det givne modlog-case?"
-        caseAlreadyPardoned: "Modlog-case-id'et med et ID af `{0}` er allerede tilkaldt."
-        notAPunishment: "Modlog-case-id'et med et ID af `{0}` er ikke en straf!"
-        message: "Modlog-sagen med et ID af **:case** er blevet afskediget med succes."
-
-    ModlogReasonCommand:
-        modlogNotEnabled: "Ingen modlogkanal er blevet set op, du skal sette en modlogkanal op for at bruge denne kommando."
-        invalidCaseId: "Ugyldigt case-id givet, IDet skal være større end 0 og mindre end {0}"
-        couldntFindCaseWithId: "Kunne ikke finde et modlog tilfælde med IDet {0} hvor du var moderator, er du sikker på at du er moderator for det givne modlog-tilfælde?"
-        couldntFindModlogChannel: "Kunne ikke finde modlogkanalen, er den blevet slettet?"
-        success: "Modlog-sagen med IDet **:id** blev redigeret og sat grunden til `:reason`"
-        modlogCaseWasPardoned: "The modlog case with an ID of `{0}` has been pardoned, you can't edit pardoned modlog cases."
-        failedToEdit: "Kunne ikke redigere modlog besked: {0}"
-        failedToFindMessage: "Kunne ikke finde meddelelsen for det givne modlog-case ID, er den blevet slettet?"
-
-    MuteCommand:
-        requiresModlogToBeSet: "This command requires a modlog channel to be set, a modlog channel can be set using the `{0}modlog` command."
-        requireMuteRoleToBeSet: "No mute role have been setup for the server, you can setup a mute role using the `{0}muterole` command."
-        higherOrSameRole: "You can't mute people with a higher, or the same role as yourself."
-        muteRoleIsPositionedHigher: "The {0} role used for mutes are positioned higher in the role hierarchy than any roles I have, so I can't automatically assign the role to other users, please fix this or use another role for mutes."
-        invalidUserMentioned: "Invalid user mentioned, you must mention a user on the server you want to mute to use this command."
-        invalidTimeGiven: "Invalid time given, the time must be at least one minute or more."
-        userHasBeenMuted: ":target has been muted :time!"
-        time:
-            permanently: "permanently"
-            forFormat: "for {0}"
-
-    MuteRoleCommand:
-        onCooldown: "You have recently use a command option that created and/or modified roles and channel permissions, you have to wait **:cooldown** before you can use this command again."
-        roleDoesntExists: "Invalid role given, the `{0}` role doesn't exists."
-        rolePositionedHigher: "The {0} role is positioned higher than any role I have, so I can assign the role to anyone."
-        cantCreateRoleDueToPermissions: "I can't create the muted role because I don't have the \"Manage Roles\" permissions for the server."
-        noMuteRoleSet: "There are currently no mute role set for the server, you can set the role you wanna use as the mute role using `:command set <role>`, or you can make the bot create a new muted role using `:command create-role`."
-        usingRoleMessage: "The server is using the :role role for mutes."
-        roleHasBeenRemoved: "The muted role has been removed, the mute feature is now disabled until another muted role is assigned."
-        roleHasBeenCreated: "The :role role has been successfully created, and all the channel permissions to prevent users with the role from talking in channels have automatically been setup for the channels I have access to."
-        nowUsingRole: "The :role role will now be used for muting users."
-        nowUsingExistingRole: "A role called `Muted` already exists on the server, now using the :role role for mutes, if you want the bot to setup all the channel override permissions to prevent users with the role from talking in the channels, you can use the\n`:command setup-permissions` command."
-
-    NSFWCommand:
-        invalidChannelOrStatus: "Ugyldig kanal eller status type givet!"
-        notValidChannel: "`{0}` er ikke en gyldig tekst kanal!"
-        notValidStatus: "`{0}` er ikke en gyldig statustype, du skal enten bruge `on` eller` off`."
-        message: ":textChannel har lige i øjeblikket NSFW **:status**!"
-        updated: "NSFW status for :textChannel er blivet ændret til **:status**"
-        status:
-            enabled: "aktiveret"
-            disabled: "deaktiveret"
-
-    PurgeCommand:
-        messagesDeletedIn: "{0} meddelelser er blevet slettet i {1} kanalen."
-        messagesDeletedBy: "{0} meddelelser sendt af {1} er blevet slettet i {2} kanalen."
-        success: ":white_check_mark: `:number` beskeder er blevet slettet!"
-        successBy: ":white_check_mark: `:number` beskeder er blevet slettet fra :users"
-        nothingToDelete: ":x: Intet at slette, jeg kan ikke slette meddelelser, der er ældre end 14 dage."
-        nothingToDeleteBy: ":x: Intet at slette, jeg kan ikke finde nogen beskeder af :users i de sidste **:number** meddelelser, der blev sendt inden for de sidste 14 dage."
-
-    RemoveLevelRoleCommand:
-        noRolesCalled: ":user Der er ingen rolle kaldet **:role ** på level-op tabellen."
-        noRolesLinked: ":user Der er ingen roller knyttet til level **:role** på level-op tabellen."
-        notALevelRole: ":user Ugyldig rolle, `:name` rollen er ikke på level-op tabellen."
-        message: "**:role** rollen er blevet fjernet fra level-up rolle liste.\nServeren har nu `:slots' niveau rolle pladser."
-
-    RemoveReactionRoleCommand:
-            noReactionRoles: "Serveren har ikke nogen reaktionsroller lige nu, du kan oprette en ved at bruge\n`{0}arr <emote> <role>`"
-            messageIdMustBeGreaterThanOne: "Ugyldig `besked id` givet,` meddelelses id'en skal være mindst 1 eller større."
-            messageIdMustBeLowerThanRolesSize: "Ugyldig `besked id` givet, 'meddelelses id'en kan ikke være højere end mængden af reaktionsroller serveren aktuelt har, hvilket er `{0}` lige pt."
-            failedToFetchMessage: "Noget gik galt, da vi forsøgte at hente reaktionsrollemeddelelsen med et ID af `{0}`. Hvis dette problem fortsat sker, skal du rapportere det til en af mine udviklere."
-            mustIncludeEmote: "Du skal inkludere den emote du vil fjerne fra reaktionsmeddelelsen."
-            emoteDoestBelongToServer: "Emoten tilhører ikke denne server, du kan kun bruge emotes fra denne server som reaktion emotes."
-            roleNotFoundOnMessage: "Den angivne reaktionsmeddelelse har ikke en reaktionsrolle til knyttet den via {0} emoten."
-            deletedMessage: "Reaktionsmeddelelse med ID'et **#:id** er blivet slettet!"
-            deletedEmote: ":emote emoten er succesfuldt blivet fjernet fra reaktionsmeddelelsen.\nReaktionsmeddelelsen har nu `:roleSlots` reaktionsroller-slots tilgængelige, og `:messageSlots` reaktionsmeddelelses-slots tilgængelig."
-
-    RemoveSelfAssignableRoleCommand:
-        message: "**:role** rollen er blevet fjernet fra selvtilladelige listen.\nServeren har `:slots` flere selvtilladelige roller pladser til rådighed."
-
-    RoleLevelCommand:
-        invalidRole: "Invalid role given, I found no role on the server called `{0}`"
-        noRolesWithRewardsDisabled: "There are currently no roles with the level rewards disabled, you can add one by using the `{0} <role>` command."
-        listRoles: "All the roles mentioned below currently have their level rewards turned off, this means that any user with one of those roles won't earn any XP in any channel they talk in, any role not on this list is unaffected.\n\n:roles"
-        listRolesTitle: "Roles with their Level Rewards disabled ({0})"
-        success: "The XP rewards for the :role role has been **:status**!"
-        status:
-            enabled: "Enabled"
-            disabled: "Disabled"
-
-    SetRoleColorCommand:
-        noRoleFound: "No role with the name \"{0}\" was found."
-        invalidColor: "The color \"{0}\" is not recognized, use the following HEX format instead \"#XXXXXX\""
-        userMissingPermissions: "You can't use the this command for the {0} role, you must have greater or equal privileges as the role to successfully run the command."
-        botMissingPermissions: "The Set Role Color command can't be used for the {0} role, I need to have greater or equal privileges as the role to successfully run the command."
-        colorChangeComplete: "The :role role has been successfully changed to **:color**."
-
-    SlowmodeCommand:
-        missingArgument: "Manglende argument, du skal enten passere en `sekunder'-værdien for at aktivere slowmode for denne eller den nævnte kanal, eller `off` for at deaktivere slowmode."
-        mustBeValidNumbers: "Ugyldig slowmode værdi angivet, du skal angive et tal imellem **1** og **120**."
-        message: "Slowmode er ** aktiveret** for :textChannel.\nKanalen tillader nu **:slowmode** meddelelser hvert sekund pr. Bruger."
-        disabled: "Succesfuldt **deaktiveret** slowmode for :textChannel kanalen."
-        invalidTextChannel: "`{0}` er ikke en gyldig tekstkanal, du kan kun bruge slowmode komandoen for tekstkanaler."
-        failedToUpdate: "Kunne ikke opdatere :textChannel kanalen, fejl: :message"
-
-    ToggleCategoryCommand:
-        invalidCategory: "Ugyldig kategori angivet, `{0}` er ikke en gyldig kategori"
-        missingArgumentType: "Manglende argument `kanal/global`, skal du inkludere kanalen eller angive at kommandoen skal køres globalt."
-        invalidChannelOrGlobalString: "Ugyldig kanal eller global type angivet, du skal enten nævne den kanal du vil påvirke, eller skrive `global` for at påvirke alle kanalerne samtidig."
-        cantEnabledCategory: "Whoops, du kan ikke aktivere kommandokategorien **:category** imens den er deaktiveret globalt.\nDu kan bruge kommandoen nedenfor til at aktivere kategorien for alle kanaler.\n`:command :category global on`"
-        update:
-            globally: "Kommandokategorien `:category` er blivet `:status` for **alle kanaler**."
-            category: "Kommandokategorien `:category` er blivet `:status` i :channel kanalen."
-        status:
-            enabled: "aktiveret"
-            disabled: "deaktiveret"
-
-    UnbanCommand:
-        success: ':target er blevet unbanned fra serveren fordi ":reason".'
-        failedToUnban: "Kunne ikke unbanne :target på grund af det opstod en fejl: :error"
-        noUserIsBanned: "Der er ingen brugerer med ID'et `:id` der er bannet fra serveren i øjeblikket."
-        invalidUserIdGiven: "Ugyldig `bruger id` blev givet,` bruger id` skal være en numerisk streng på 18 eller flere tal lang."
-
-    UnmuteCommand:
-        requiresModlogToBeSet: "This command requires a modlog channel to be set, a modlog channel can be set using the `{0}modlog` command."
-        requireMuteRoleToBeSet: "No mute role have been setup for the server, you can setup a mute role using the `{0}muterole` command."
-        muteRoleIsPositionedHigher: "The {0} role used for mutes are positioned higher in the role hierarchy than any roles I have, so I can't automatically remove the role from other users, please fix this or use another role for mutes."
-        invalidUserMentioned: "Invalid user mentioned, you must mention a user on the server you want to unmute to use this command."
-        userDoesntHaveMuteRole: "{0} doesn't appear to have the mute role, they may already have been unmuted!"
-        userHasBeenUnmuted: ":target has been unmuted!"
-        userAutoUnmutedReason: "*Automatic unmute after the set time has elapsed*"
-
-    VoiceKickCommand:
-        mustMentionUser: "Du skal nævne den bruger du ønsker at kicke."
-        sameOrHigherRole: "Du kan ikke kicke folk med en højere eller samme rolle som dig selv."
-        notConnected: "Du kan ikke voice kicke folk, der ikke er forbundet til en talekanal."
-        message: "**:target** blev kicke fra **:voiceChannel** af :user for \":reason\""
-
-    VoteOptCommand:
-        invalidArgument: "Ugyldigt argument, du skal enten bruge `in` eller `out` for at vælge opte ind eller ud af at modtage vote beskeder."
-        message: "Du har nu opted-:type for at få vote beskeder."
-        type:
-            in: "ind"
-            out: "ud"
-
-    WarnCommand:
-        requiresModlogIsEnabled: "Denne kommando kræver en modlogskanal er blivet satop, en modlogkanal kan settes op ved bruge af `{0}modlog` kommandoen."
-        mustMentionUse: "Du skal nævne en bruger, du vil advare."
-        warnBots: "Du kan ikke advare bots!"
-        failedToLogWarning: "Kunne ikke logge advarsel til den indstillede modlogkanal, eksisterer modlogkanalen stadig, kan jeg stadig sende meddelelser i kanalen?"
-        message: ":target er blivet **advared** for \":reason\""
-        failedToSendDM: "Kunne ikke DM brugeren med advarslen, de har sandsynligvis deres private indstillinger indstillet til at deaktivere alle DM'er fra denne server."
-
-    WelcomeCommand:
-        note: "\nDu kan tilpasse beskeden ved at bruge `{0} [besked]`"
-        message: "`Velkommen` modellen er blivet **:status** for :channel kanalen.:note"
-        status:
-            enabled: "aktiveret"
-            disabled: "deaktiveret"
-
-    WelcomeMessageCommand:
-        moduleMustBeEnabled: "`Velkommen` modulet skal være aktiveret for at bruge denne kommando, du kan aktivere `velkommen` modulet ved at bruge `{0}welcome` kommandoen."
-        message: "Indlejrings indstillingen for velkommen beskeder er blivet **:status**\n:note"
-        changedToDefault: "`Velkommen` modulet beskeden er blivet nulstillet."
-        status:
-            enabled: "aktiveret"
-            disabled: "deaktiveret"
-        note:
-            embed: "Velkommen meddelelser vil nu blive sendt med indlejrede meddelelser og HEX-farven: {0}"
-            normal: "Nu sender velkommen beskeder via normale meddelelser."
-
+  common:
+    invalidRole: ":user Ugyldig rolle, jeg kunne ikke finde nogen rolle kaldet **:role**"
+  channelModule:
+    invalidColorGiven: "Ugyldige farveværdi angivet, farven skal være en gyldig HEX-værdi.\nDu kan prøve denne [tilfældige farvevælger](https://www.webpagefx.com/web-design/random-color-picker/) for at prøve at få en tilfældig HEX farve."
+    message: "`:type` modul meddelelsen er blevet sat til:\n\n```:message```\n\nDu kan teste beskeden ved at bruge kommandoen igen og nævne en bruger.\n`:command <user>`"
+  AddLevelRoleCommand:
+    noSlotsLeft: "Serveren har ikke flere level roller pladser, du kan fjerne eksisterende level roller for at frigøre plads."
+    invalidLevel: "Ugyldigt niveaukrav givet, niveaukravet skal være et positivt tal."
+    alreadyLevelRole: ":user **:role** er allerede en level rolle, du kan ikke bruge den samme rolle to gange."
+    alreadyARoleAtLevel: "Der er allerede en rolle tildelt level **:level**, kun én rolle kan gives per level."
+    success: "**:role** rollen er blevet tilføjet til level-up rollelisten.\nServeren har `:slots` flere level pladser tilgængelige."
+  AddReactionRoleCommand:
+    emoteDoestBelongToServer: "Emojien tilhører ikke denne server, du kan kun bruge emojis fra denne server som reaktion emojis."
+    messageHasNoSlots: "Beskeden har ikke flere reaktionsrolle spots der er tilgængelige. Du kan fjerne eksisterende reaktionsroller for at frigøre slots eller slette reaktionsrollemeddelelser for at tilføje rollen til en ny reaktionsrollebesked."
+    serverHasNoSlots: "Kan ikke oprette nye reaktionsrollemeddelelser, serveren har ikke længere reaktionsmeddelelses spots, du kan slette eksisterende reaktionsrollemeddelelser for at frigøre slots eller tilføje din reaktionsrolle til en reaktionsmeddelelse, hvis der er ledige slots på meddelelsen for flere roller."
+    success: ":role rollen er blevet registreret som en reaktionsrolle for :emote emoji.\nMeddelelsen har `:roleSlots` flere reaktions-rolle spots til rådighed for meddelelsen, og `:messageSlots` reaktionsmeddelelses-slots tilgængelige."
+  AddSelfAssignableRoleCommand:
+    noSlotsLeft: "Serveren har ikke flere selvtilladelige rolle pladser, du kan fjerne eksisterende selvtilladelige roller for at frigøre plads."
+    success: "**:role** rollen er blevet tilføjet til selvtilladelige listen.\nServeren har `:slots` flere selvtilladelige roller pladser til rådighed."
+  AdministrateExperienceCommand:
+    cantUseForBots: "Du kan ikke tilføje, fjerne, eller nulstille XP for en bot-konti, da de ikke kan få noget XP til at starte med. Vælg venligst en normal bruger, når du bruger denne kommando."
+    invalidAmountGiven: "Egenskaben `amount` skal være mellem 1 og {0} for at tilføje eller tage XP fra en bruger."
+    aboutToResetEverything: "You're about to reset the XP for everyone on the entire server. If you're sure you wanna continue, run the command to completely reset the servers XP.\n\n```:command server-reset :token```\nThis command will only work for 60 seconds, after that the token becomes invalid and the command has to be ran again to get a new token."
+    aboutToSyncEverything: "You're about to sync the XP with the global leaderboard, this will effectively revert any custom XP changes made on the entire server. If you're sure you wanna continue, run the command to completely sync the servers XP.\n\n```:command server-sync :token```\nThis command will only work for 60 seconds, after that the token becomes invalid and the command has to be ran again to get a new token."
+    failedToSaveChanges: "Failed to save the changes to the database, please try again, if the error continues to happen, please contact support on the official [AvaIre support server](https://avairebot.com/support)."
+    mustBeAnAdmin: "You must be a server admin to use this action."
+    invalidSecurityToken: "Ugyldigt sikkerheds token givet, angiv venligst det korrekte sikkerheds token for at nulstille alle XP for all på serveren."
+    warning: "Advarsel!"
+    success:
+      add: "**:amount** XP er blevet givet til :target, de har nu **:newAmount** XP."
+      take: "**:amount** XP er blevet taget fra :target, de har nu **:newAmount** XP."
+      reset: ":target har succesfuldt haft deres XP-nulstilling."
+      sync: ":target has successfully had synchronized with the global leaderboard, they now have **:newAmount** XP."
+      syncEveryone: "Everyone on the entire server has been synced with the global leaderboard!"
+      everything: "Alle på hele serveren har nu fået deres XP nulstillet!"
+  AiCommand:
+    message: "Modellen `Artificial Intelligence` er blivet **:status** for :channel kanalen."
+    status:
+      enabled: "aktiveret"
+      disabled: "deaktiveret"
+  AliasCommand:
+    noSlotsLeft: "Serveren har ikke flere alias-pladser, du kan slette eksisterende aliaser for at frigøre plads."
+    alreadyExists: "Der er allerede et eksisterende alias kaldet `{0}`"
+    invalidCommand: "Ugyldig kommando givet, jeg kender ikke til nogen kommando kaldet `{0}`"
+    invalidAlias: "Ugyldigt alias givet, `{0}` er ikke et registreret alias."
+    created: "`:alias` er blevet knyttet til `:command`\nServeren har `:slots` flere alias-pladser tilgængelige."
+    deleted: "Aliaset `:alias` er blevet slettet."
+  AutoAssignRoleCommand:
+    higherInTheHierarchy:
+      user: ":user **:role** rollen er placeret højere i hierarkiet end nogen rolle du har, du kan ikke tilføje roller med en højere rangering end du har."
+      bot: ":user **:role** rollen er placeret højere i hierarkiet, kan jeg ikke give/fjerne denne rolle til/fra brugere."
+    enabled: ":user **Auto rolle tildeling** ved brugerens deltagelse er blivet **aktiveret** og sat til **:role**"
+    disabledNow: ":user **Auto rolle tildeling** ved bruger deltagelse er blivet **deaktiveret**."
+    disabled: ":user **Auto rolle tildeling** ved bruger deltagelse er i øjeblikket **deaktiveret**."
+    status: ":user **Auto rolle tildeling** er i øjeblikket sat til **:role**"
+  BanCommand:
+    mustMentionUser: "Du skal nævne den bruger du ønsker at bandlyse."
+    higherRole: "Du kan ikke bandlyse folk med en højere eller samme rolle som dig selv."
+    userHaveHigherRole: "Jeg kan ikke bandlyse {0}, de har en højere rolle end migselv, hvis du skal kunne bandlyse brugeren, skal du justere min rolleposition til den øverste rolle."
+    success: "**:target** blev permanent bandlyst af :user for \":reason\""
+    failedToBan: "Kunne ikke bandlyse **:target** på grund af en fejl: :error"
+  CategoriesCommand:
+    title: "Kommandokategori status for #{0}"
+    status: ":emoteEnabled Aktiveret   :emoteDisabledInChannel Deaktiveret i kanalen   :emoteDisabledGlobally Deaktiveret i hele serveren"
+  ChangePrefixCommand:
+    missingArgument: "Manglende argument `kategori`, skal du angive kommandokategorien, som du vil ændre/nulstille præfiks for."
+    invalidCategory: "Ugyldig `kategori` givet, der er ingen kommando kategorier, der kaldes, eller starter med `{0}`"
+    invalidPrefix: "Ugyldigt kommando præfiks angivet, `{0}` er ikke et gyldigt kommando prefix, alle præfikser skal **IKKE** indeholde mellemrum og være imellem 1 og 16 tegn lange."
+    update:
+      global: "Alle kommandoer i all kommando kategorier bruger nu prefixet `:prefix`."
+      category: "Alle kommandoer i komando kategorien `:category` bruger nu prefixet `:prefix`."
+    reset:
+      global: "Alle kommandoer i all kommando kategorier er blevet nulstillet til at bruge `:prefix` prefixet."
+      category: "Alle kommandoer i all kommando kategorien `:category` er blivet nulstillet til at bruge `:prefix` prefixet."
+  ChannelLevelCommand:
+    invalidChannel: "En ugyldig kanal er blivet givet, det skal være en gyldig tekstkanal."
+    cantTalkInChannel: "Jeg kan ikke tale i {0}-kanalen, så ingen brugere vil blive belønnet med noget XP til at tale i kanalen. Hvis du vil have mig til at give brugere XP, skal du ændre mit tilladelsesniveau for kanalen, så jeg kan sende beskeder i kanalen."
+    noChannelsWithRewardsDisabled: "Der er i øjeblikket ingen kanaler med XP belønningerne deaktiveret, du kan tilføje en ved hjælp af kommandoen `{0} <channel>`"
+    failedToUpdate: "Kan ikke gemme ændringerne i databasen. Prøv igen, hvis problemet fortsætter, kontakt venligst en af mine udviklere."
+    listChannels: "Alle de kanaler der er nævnt nedenfor, har i øjeblikket deres XP belønninger slukket. All kanaler som ikke er på denne liste, er upåvirket.\n\n:channels"
+    listChannelsTitle: "Kanaler med deres XP belønninger er deaktiveret ({0})"
+    success: "XP-belønningen for :channel er blivet **:status**!"
+    status:
+      enabled: "aktiveret"
+      disabled: "deaktiveret"
+  GoodbyeCommand:
+    note: "\nDu kan tilpasse beskeden ved at bruge `{0} [besked]`"
+    message: "`Farvel` modellen er blivet **:status** for :channel kanalen."
+    status:
+      enabled: "aktiveret"
+      disabled: "deaktiveret"
+  GoodbyeMessageCommand:
+    moduleMustBeEnabled: "`Farvel` modulet skal være aktiveret for at bruge denne kommando, du kan aktivere modulet `farvel` ved at bruge kommandoen `{0}"
+    message: "Indlejrings indstillingen for farvel beskeder er blivet **:status**\n:note"
+    changedToDefault: "`Farvel` modulet beskeden er blivet nulstillet."
+    status:
+      enabled: "aktiveret"
+      disabled: "deaktiveret"
+    note:
+      embed: "Farvel meddelelser vil nu blive sendt med indlejrede meddelelser og HEX-farven: {0}"
+      normal: "Nu sender farvel beskeder via normale meddelelser."
+  IAmCommand:
+    notSelfAssignable: ":user Ugyldig rolle, **:role** er ikke en selvtillæggelig rolle."
+    roleIsHigherInTheHierarchy: ":user Rollen er højere i rollehierarkiet, jeg kan ikke give/fjerne **:role** rollen fra nogen."
+    message: ":user Du har nu **:role** rolle!"
+  IAmNotCommand:
+    notSelfAssignable: ":user Ugyldig rolle, **:role** er ikke en selvtillæggelig rolle."
+    roleIsHigherInTheHierarchy: ":user Rollen er højere i rollehierarkiet, jeg kan ikke give/fjerne **:role** rollen fra nogen."
+    message: ":user Du har ikke længere **:role** rollen!"
+  KickCommand:
+    mustMentionUser: "Du skal nævne den bruger du ønsker at kicke."
+    higherOrSameRole: "Du kan ikke kicke folk med en højere eller samme rolle som dig selv."
+    cantKickUser: "Jeg kan ikke kicke {0}, de har en højere rolle end mig, hvis du vil hav jeg er i stand til at kicke brugeren, skal du justere min rolleposition til over {0} højeste rolle."
+    success: "**:target** blev kicket af :user for \":reason\""
+    error: "Kunne ikke kicke **:target** på grund af en fejl: :error"
+  LanguageCommand:
+    invalidLanguageCode: "Ugyldig sprogkode givet, `{0}` er ikke en gyldig sprogkode, eller sproget er ikke understøttes inu!"
+    changed: "The servers language has been successfully been updated to use the :name language!"
+    note: "AvaIre understøtter flere brugerbidragte sprog som du kan vælge med denne kommando. Oversættelser er nok ikke 100% nøjagtige eller fuldstændige.\nVælg en sprog du vil bruge med `{0} <code>`"
+  LevelAlertsCommand:
+    message: "`Levels op alerts` has been `:status` for serveren.:note"
+    note: "\nAlle level op beskeder bliver logget i <#{0}> kanalen."
+    status:
+      enabled: "aktiveret"
+      disabled: "deaktiveret"
+  LevelCommand:
+    message: "`Levels & Experience` er blivet `:status` for serveren.:note"
+    note: "\nLevel notifikationer er lige pt `{0}`, du kan slå dem til eller fra med `{1}levelalerts`"
+    status:
+      enabled: "aktiveret"
+      disabled: "deaktiveret"
+  LevelHierarchyCommand:
+    invalidTypeGiven: "Ugyldig type angivet, for at skifte niveauhierarki til eller fra, skal du bruge enten `on` eller` off`."
+    message: "Level op hierarki er lige pt `:status` for serveren."
+    statusMessage: "Level op hierarki er i øjeblikket `:status`, du kan slå det til eller fra med `:command`"
+    status:
+      enabled: "aktiveret"
+      disabled: "deaktiveret"
+  LevelModifierCommand:
+    invalidNumberGiven: "Ugyldig værdi givet, værdien skal være en positiv procent imellem `0.01%` og `500%`"
+    resetToDefault: "Level ændrings modulet er nulstillet, og bruger nu den standard **:modifier** værdi."
+    changedTo: "Level modifikatoren er blivet ændret til **:modifier**"
+    requiredIsNow: "\n\n**Required XP to reach some levels is now:**\n"
+    statusMessage: "Serveren bruger lige pt **:modifier** modifikator for levels.\n\n**Nødvendig XP at nå nogle niveauer**\n"
+    level: "Level {0}"
+  ListAliasesCommand:
+    noAliases: "Serveren har ikke nogen aliaser lige nu, du kan oprette et ved brug af kommandoen\n``{0}alias <alias> <command>`"
+    listAliases: "Liste over aliaser ({0})"
+  ListLevelRolesCommand:
+    noLevelRoles: "Der er i øjeblikket ingen level roller, en administrator kan tilføje roller til level op tabellen ved brug af `:command` command"
+    listRoles: "Liste over Niveau Roller ({0})"
+  ListReactionRoleCommand:
+    noReactionRoles: "Serveren har ikke nogen reaktionsroller lige nu, du kan oprette en ved hjælp af\n`{0}arr <emote> <role>`"
+    listReactionRoles: "Liste over reaktionsroller ({0})"
+  ListSelfAssignableRolesCommand:
+    noSelfAssignableRoles: "Der er i øjeblikket ingen selvoverdragelige roller til denne server."
+    title: "Der er {0} selvoverdragelige roller"
+  ModlogCommand:
+    mustMentionTextChannel: "Ugyldigt kanal argument givet, du skal nævne en gyldig tekstkanal."
+    cantSendEmbedMessages: "Jeg kan ikke sende indlejrede meddelelser i den angivne kanal. Du skal ændre mit tilladelsesniveau for {0} kanalen, hvis du vil bruge det som en modlogkanal."
+    enable: ":user **Server Modlogging** er nu aktiveret og sat op til :modlog kanalen."
+    enabled: ":user **Server Modlogging** er lige nu aktiveret og sat op til at bruge :modlog kanalen."
+    disable: ":user **Server Modlogging** er nu deaktiveret for hele serveren."
+    disabled: ":user **Server Modlogging** er i øjeblikket deaktiveret."
+  ModlogHistoryCommand:
+    mustMentionUser: "Du skal nævne en gyldig `bruger`, du vil vise modloghistorikken for."
+    noHistory: "Der blev ikke fundet nogen modloghistorik for denne bruger."
+    title: "{0}#{1} Historie ({2})"
+    entry: "**{1}** | **#{0}** | **Moderator:** {2}\n**Date:** {3}\n**Reason:** {4}"
+    noReasonGiven: "Ingen grund blev givet."
+  ModlogPardonCommand:
+    modlogNotEnabled: "Ingen modlogkanal er blevet sat op, du skal sette en modlogkanal op for at bruge denne kommando."
+    invalidCaseId: "Ugyldigt case id givet, IDet skal være større end 0 og mindre end {0}"
+    couldntFindCaseWithId: "Kunne ikke finde et modlog case med IDet {0} hvor du var moderatoren, er du sikker på at du er moderatoren for det givne modlog-case?"
+    caseAlreadyPardoned: "Modlog-case-id'et med et ID af `{0}` er allerede tilkaldt."
+    notAPunishment: "Modlog-case-id'et med et ID af `{0}` er ikke en straf!"
+    message: "Modlog-sagen med et ID af **:case** er blevet afskediget med succes."
+  ModlogReasonCommand:
+    modlogNotEnabled: "Ingen modlogkanal er blevet set op, du skal sette en modlogkanal op for at bruge denne kommando."
+    invalidCaseId: "Ugyldigt case-id givet, IDet skal være større end 0 og mindre end {0}"
+    couldntFindCaseWithId: "Kunne ikke finde et modlog tilfælde med IDet {0} hvor du var moderator, er du sikker på at du er moderator for det givne modlog-tilfælde?"
+    couldntFindModlogChannel: "Kunne ikke finde modlogkanalen, er den blevet slettet?"
+    success: "Modlog-sagen med IDet **:id** blev redigeret og sat grunden til `:reason`"
+    modlogCaseWasPardoned: "The modlog case with an ID of `{0}` has been pardoned, you can't edit pardoned modlog cases."
+    failedToEdit: "Kunne ikke redigere modlog besked: {0}"
+    failedToFindMessage: "Kunne ikke finde meddelelsen for det givne modlog-case ID, er den blevet slettet?"
+  MuteCommand:
+    requiresModlogToBeSet: "Denne kommando kræver en modlogskanal er blivet satop, en modlogkanal kan settes op ved bruge af `{0}modlog` kommandoen."
+    requireMuteRoleToBeSet: "No mute role have been setup for the server, you can setup a mute role using the `{0}muterole` command."
+    higherOrSameRole: "You can't mute people with a higher, or the same role as yourself."
+    muteRoleIsPositionedHigher: "The {0} role used for mutes are positioned higher in the role hierarchy than any roles I have, so I can't automatically assign the role to other users, please fix this or use another role for mutes."
+    invalidUserMentioned: "Invalid user mentioned, you must mention a user on the server you want to mute to use this command."
+    invalidTimeGiven: "Invalid time given, the time must be at least one minute or more."
+    userHasBeenMuted: ":target has been muted :time!"
+    time:
+      permanently: "permanently"
+      forFormat: "for {0}"
+  MuteRoleCommand:
+    onCooldown: "You have recently use a command option that created and/or modified roles and channel permissions, you have to wait **:cooldown** before you can use this command again."
+    roleDoesntExists: "Invalid role given, the `{0}` role doesn't exists."
+    rolePositionedHigher: "The {0} role is positioned higher than any role I have, so I can assign the role to anyone."
+    cantCreateRoleDueToPermissions: "I can't create the muted role because I don't have the \"Manage Roles\" permissions for the server."
+    noMuteRoleSet: "There are currently no mute role set for the server, you can set the role you wanna use as the mute role using `:command set <role>`, or you can make the bot create a new muted role using `:command create-role`."
+    usingRoleMessage: "The server is using the :role role for mutes."
+    roleHasBeenRemoved: "The muted role has been removed, the mute feature is now disabled until another muted role is assigned."
+    roleHasBeenCreated: "The :role role has been successfully created, and all the channel permissions to prevent users with the role from talking in channels have automatically been setup for the channels I have access to."
+    nowUsingRole: "The :role role will now be used for muting users."
+    nowUsingExistingRole: "A role called `Muted` already exists on the server, now using the :role role for mutes, if you want the bot to setup all the channel override permissions to prevent users with the role from talking in the channels, you can use the\n`:command setup-permissions` command."
+  NSFWCommand:
+    invalidChannelOrStatus: "Ugyldig kanal eller status type givet!"
+    notValidChannel: "`{0}` er ikke en gyldig tekst kanal!"
+    notValidStatus: "`{0}` er ikke en gyldig statustype, du skal enten bruge `on` eller` off`."
+    message: ":textChannel har lige i øjeblikket NSFW **:status**!"
+    updated: "NSFW status for :textChannel er blivet ændret til **:status**"
+    status:
+      enabled: "aktiveret"
+      disabled: "deaktiveret"
+  PurgeCommand:
+    messagesDeletedIn: "{0} meddelelser er blevet slettet i {1} kanalen."
+    messagesDeletedBy: "{0} meddelelser sendt af {1} er blevet slettet i {2} kanalen."
+    success: ":white_check_mark: `:number` beskeder er blevet slettet!"
+    successBy: ":white_check_mark: `:number` beskeder er blevet slettet fra :users"
+    nothingToDelete: ":x: Intet at slette, jeg kan ikke slette meddelelser, der er ældre end 14 dage."
+    nothingToDeleteBy: ":x: Intet at slette, jeg kan ikke finde nogen beskeder af :users i de sidste **:number** meddelelser, der blev sendt inden for de sidste 14 dage."
+  RemoveLevelRoleCommand:
+    noRolesCalled: ":user Der er ingen rolle kaldet **:role ** på level-op tabellen."
+    noRolesLinked: ":user Der er ingen roller knyttet til level **:role** på level-op tabellen."
+    notALevelRole: ":user Ugyldig rolle, `:name` rollen er ikke på level-op tabellen."
+    message: "**:role** rollen er blevet fjernet fra level-up rolle liste.\nServeren har nu `:slots' niveau rolle pladser."
+  RemoveReactionRoleCommand:
+    noReactionRoles: "Serveren har ikke nogen reaktionsroller lige nu, du kan oprette en ved at bruge\n`{0}arr <emote> <role>`"
+    messageIdMustBeGreaterThanOne: "Ugyldig `besked id` givet,` meddelelses id'en skal være mindst 1 eller større."
+    messageIdMustBeLowerThanRolesSize: "Ugyldig `besked id` givet, 'meddelelses id'en kan ikke være højere end mængden af reaktionsroller serveren aktuelt har, hvilket er `{0}` lige pt."
+    failedToFetchMessage: "Noget gik galt, da vi forsøgte at hente reaktionsrollemeddelelsen med et ID af `{0}`. Hvis dette problem fortsat sker, skal du rapportere det til en af mine udviklere."
+    mustIncludeEmote: "Du skal inkludere den emote du vil fjerne fra reaktionsmeddelelsen."
+    emoteDoestBelongToServer: "Emoten tilhører ikke denne server, du kan kun bruge emotes fra denne server som reaktion emotes."
+    roleNotFoundOnMessage: "Den angivne reaktionsmeddelelse har ikke en reaktionsrolle til knyttet den via {0} emoten."
+    deletedMessage: "Reaktionsmeddelelse med ID'et **#:id** er blivet slettet!"
+    deletedEmote: ":emote emoten er succesfuldt blivet fjernet fra reaktionsmeddelelsen.\nReaktionsmeddelelsen har nu `:roleSlots` reaktionsroller-slots tilgængelige, og `:messageSlots` reaktionsmeddelelses-slots tilgængelig."
+  RemoveSelfAssignableRoleCommand:
+    message: "**:role** rollen er blevet fjernet fra selvtilladelige listen.\nServeren har `:slots` flere selvtilladelige roller pladser til rådighed."
+  RoleLevelCommand:
+    invalidRole: "Invalid role given, I found no role on the server called `{0}`"
+    noRolesWithRewardsDisabled: "There are currently no roles with the level rewards disabled, you can add one by using the `{0} <role>` command."
+    listRoles: "All the roles mentioned below currently have their level rewards turned off, this means that any user with one of those roles won't earn any XP in any channel they talk in, any role not on this list is unaffected.\n\n:roles"
+    listRolesTitle: "Roles with their Level Rewards disabled ({0})"
+    success: "The XP rewards for the :role role has been **:status**!"
+    status:
+      enabled: "aktiveret"
+      disabled: "deaktiveret"
+  SetRoleColorCommand:
+    noRoleFound: "No role with the name \"{0}\" was found."
+    invalidColor: "The color \"{0}\" is not recognized, use the following HEX format instead \"#XXXXXX\""
+    userMissingPermissions: "You can't use the this command for the {0} role, you must have greater or equal privileges as the role to successfully run the command."
+    botMissingPermissions: "The Set Role Color command can't be used for the {0} role, I need to have greater or equal privileges as the role to successfully run the command."
+    colorChangeComplete: "The :role role has been successfully changed to **:color**."
+  SlowmodeCommand:
+    missingArgument: "Manglende argument, du skal enten passere en `sekunder'-værdien for at aktivere slowmode for denne eller den nævnte kanal, eller `off` for at deaktivere slowmode."
+    mustBeValidNumbers: "Ugyldig slowmode værdi angivet, du skal angive et tal imellem **1** og **120**."
+    message: "Slowmode er ** aktiveret** for :textChannel.\nKanalen tillader nu **:slowmode** meddelelser hvert sekund pr. Bruger."
+    disabled: "Succesfuldt **deaktiveret** slowmode for :textChannel kanalen."
+    invalidTextChannel: "`{0}` er ikke en gyldig tekstkanal, du kan kun bruge slowmode komandoen for tekstkanaler."
+    failedToUpdate: "Kunne ikke opdatere :textChannel kanalen, fejl: :message"
+  ToggleCategoryCommand:
+    invalidCategory: "Ugyldig kategori angivet, `{0}` er ikke en gyldig kategori"
+    missingArgumentType: "Manglende argument `kanal/global`, skal du inkludere kanalen eller angive at kommandoen skal køres globalt."
+    invalidChannelOrGlobalString: "Ugyldig kanal eller global type angivet, du skal enten nævne den kanal du vil påvirke, eller skrive `global` for at påvirke alle kanalerne samtidig."
+    cantEnabledCategory: "Whoops, du kan ikke aktivere kommandokategorien **:category** imens den er deaktiveret globalt.\nDu kan bruge kommandoen nedenfor til at aktivere kategorien for alle kanaler.\n`:command :category global on`"
+    update:
+      globally: "Kommandokategorien `:category` er blivet `:status` for **alle kanaler**."
+      category: "Kommandokategorien `:category` er blivet `:status` i :channel kanalen."
+    status:
+      enabled: "aktiveret"
+      disabled: "deaktiveret"
+  UnbanCommand:
+    success: ':target er blevet unbanned fra serveren fordi ":reason".'
+    failedToUnban: "Kunne ikke unbanne :target på grund af det opstod en fejl: :error"
+    noUserIsBanned: "Der er ingen brugerer med ID'et `:id` der er bannet fra serveren i øjeblikket."
+    invalidUserIdGiven: "Ugyldig `bruger id` blev givet,` bruger id` skal være en numerisk streng på 18 eller flere tal lang."
+  UnmuteCommand:
+    requiresModlogToBeSet: "Denne kommando kræver en modlogskanal er blivet satop, en modlogkanal kan settes op ved bruge af `{0}modlog` kommandoen."
+    requireMuteRoleToBeSet: "No mute role have been setup for the server, you can setup a mute role using the `{0}muterole` command."
+    muteRoleIsPositionedHigher: "The {0} role used for mutes are positioned higher in the role hierarchy than any roles I have, so I can't automatically remove the role from other users, please fix this or use another role for mutes."
+    invalidUserMentioned: "Invalid user mentioned, you must mention a user on the server you want to unmute to use this command."
+    userDoesntHaveMuteRole: "{0} doesn't appear to have the mute role, they may already have been unmuted!"
+    userHasBeenUnmuted: ":target has been unmuted!"
+    userAutoUnmutedReason: "*Automatic unmute after the set time has elapsed*"
+  VoiceKickCommand:
+    mustMentionUser: "Du skal nævne den bruger du ønsker at kicke."
+    sameOrHigherRole: "Du kan ikke kicke folk med en højere eller samme rolle som dig selv."
+    notConnected: "Du kan ikke voice kicke folk, der ikke er forbundet til en talekanal."
+    message: "**:target** blev kicke fra **:voiceChannel** af :user for \":reason\""
+  VoteOptCommand:
+    invalidArgument: "Ugyldigt argument, du skal enten bruge `in` eller `out` for at vælge opte ind eller ud af at modtage vote beskeder."
+    message: "Du har nu opted-:type for at få vote beskeder."
+    type:
+      in: "ind"
+      out: "ud"
+  WarnCommand:
+    requiresModlogIsEnabled: "Denne kommando kræver en modlogskanal er blivet satop, en modlogkanal kan settes op ved bruge af `{0}modlog` kommandoen."
+    mustMentionUse: "Du skal nævne en bruger, du vil advare."
+    warnBots: "Du kan ikke advare bots!"
+    failedToLogWarning: "Kunne ikke logge advarsel til den indstillede modlogkanal, eksisterer modlogkanalen stadig, kan jeg stadig sende meddelelser i kanalen?"
+    message: ":target er blivet **advared** for \":reason\""
+    failedToSendDM: "Kunne ikke DM brugeren med advarslen, de har sandsynligvis deres private indstillinger indstillet til at deaktivere alle DM'er fra denne server."
+  WelcomeCommand:
+    note: "\nDu kan tilpasse beskeden ved at bruge `{0} [besked]`"
+    message: "`Velkommen` modellen er blivet **:status** for :channel kanalen.:note"
+    status:
+      enabled: "aktiveret"
+      disabled: "deaktiveret"
+  WelcomeMessageCommand:
+    moduleMustBeEnabled: "`Velkommen` modulet skal være aktiveret for at bruge denne kommando, du kan aktivere `velkommen` modulet ved at bruge `{0}welcome` kommandoen."
+    message: "Indlejrings indstillingen for velkommen beskeder er blivet **:status**\n:note"
+    changedToDefault: "`Velkommen` modulet beskeden er blivet nulstillet."
+    status:
+      enabled: "aktiveret"
+      disabled: "deaktiveret"
+    note:
+      embed: "Velkommen meddelelser vil nu blive sendt med indlejrede meddelelser og HEX-farven: {0}"
+      normal: "Nu sender velkommen beskeder via normale meddelelser."
 fun:
-    DiceCommand:
-        missingDice: 'Du skal inkludere de terningerne du vil rulle.'
-        invalidDiceFormat: '`{0}` er ikke en gyldig terningformant.'
-        diceFormatMustBeGreaterThan: '`{0}` er ikke et gyldigt terningformat, terningen skal være større end 0 og mindre end 35'
-        diceFormatMustBePositive: '`{0}` er ikke et gyldigt terningformat, ternings beløbet skal være et gyldigt positivt tal mellem 1 og 35'
-        sidesFormatMustBeGreaterThan: '`{0}` er ikke et gyldigt terningformat, siderne skal være større end 0 og mindre end 128'
-        sidesFormatMustBePositive: '`{0}` er ikke et gyldigt terningformat, side beløbet skal være et gyldigt positivt tal mellem 1 og 128'
-        moreThanFiveRollsWasGiven: '\n_Mere end **5** terninger ruller givet, kun de første fem vil blive vist_\n'
-        resultedIn: '**{0}** resulterede i **{1}**  ({2})'
-
-    CoinflipCommand:
-        heads: "Du fik Krone"
-        tails: "Du fik Plat"
-
-    EightBallCommand:
-        mustIncludeQuestion: 'Du skal inkludere et spørgsmål til 8ball.'
-        answers:
-            - 'Det er sikkert'
-            - 'Det er bestemt så'
-            - 'Uden tvivl'
-            - 'Ja helt sikkert'
-            - 'Du kan stole på det'
-            - 'Som jeg ser det, ja'
-            - 'Højst sandsynlig'
-            - 'Outlook god'
-            - 'Ja'
-            - 'Tegn tyder på ja'
-            - 'Besvar hazy prøv igen'
-            - 'Spørg igen senere'
-            - 'Bedre ikke fortælle dig nu'
-            - 'Kan ikke forudsige nu'
-            - 'Koncentrer og prøv og spørg igen'
-            - "Tæl ikke på det"
-            - 'Mit svar er nej'
-            - 'Mine kilder siger nej'
-            - 'Outlook er ikke så godt'
-            - 'Meget tvivlsomt'
-
-    HolidayCommand:
-        tooManyAttempts: "The Holiday API was hit too many times which shouldn't have been possible. D:"
-        notFound: "The Holiday API command could not retrieve any data for this request."
-        somethingWentWrong: "Something went wrong. Perhaps contact a bot administrator for help."
-        noHolidaysToday: "No holidays today...Get back to work!"
-        todayHoliday: "Today is {0}"
-
-    MemeCommand:
-        missingArgument: "Mangler `action` argument, skal du inkludere den meme type eller bruger du vil generere en meme for, eller `list` for at vise alle de tilgængelige meme typer."
-        invalidType: 'Ugyldig meme type givet, `{0}` er ikke en gyldig meme type!'
-        mustIncludeTopAndBottomText: 'Du skal inkludere "top tekst" og "nederste tekst" argumenterne for at generere en meme.'
-        listItem: '`{0}` => `{1}`'
-
-    PunCommand:
-        title: "Pun list"
-        noResults: ":user I found no puns, you can with a search or, or just try again later."
-        noResultsWithQuery: ":user I found nothing for `:query`"
-        query: "Search query: {0}"
-
-    RandomCatCommand:
-        tooManyAttempts: "Der blevet for mange forsøg på kat-API'et, prøv igen om et minut eller spørg en botadministrator om at få en API-nøgle på [meow.senither.com](https://meow.senither.com/) for at tillade flere commands per minut."
-        notFound: "Jeg kunne ikke finde nogen kat billede D: Prøv igen, måske vil de dukke op nu?"
-        somethingWentWrong: "Noget gik galt imens jeg prøvet at finde et kat bilded for dig, du kan fortæl en botadministrator så de kan se nærmere på dette."
-
-    ReverseCommand:
-        palindrome: 'Du vendte om et palindrom, hvad forventede du?'
-
-    RipCommand:
-        hasPaidTheirRespects: '**{0}** har betalt deres henseender.'
-        todayAndOverall: '{0} I dag, {1} I alt'
-
-    RollCommand:
-        invalidValueGiven: 'Ugyldig værdi givet, `{1}` skal være et tal!'
-        rolledNumber: ':user rullet **:number** ud af :min - :max'
-
-    SayCommand:
-        userMissingPermissions: "Du kan ikke bruge denne kommando for {0}-kanalen, du skal have beskedskrivnings- og meddelelsesstyringsrettighederne for kanalen til at bruge kommandoen til kanalen."
-        botMissingPermissions: "Say-kommandoen kan ikke bruges i {0}-kanalen. Jeg har brug for både meddelelsens skrive og meddelelsesstyringstilladelser for kanalen til at kunne køre kommandoen."
-        success: "Din besked er blevet sendt til :name."
-
-    UndertaleTextBoxCommand:
-        noArgumentsGiven: "Manglende argument, du skal enten give `list` for at se en liste over karaterer du kan vælge imellem, eller for at generere et billede, `character` eller et gyldigt billede `url` for at opbygge billedet."
-        failedToGenerateImage: "Kunne ikke generere billedet, er du sikker på, at du har angivet en korrekt billedwebadresse eller karater navn?"
-        title: "Undertale Karakter Liste"
-
+  DiceCommand:
+    missingDice: 'Du skal inkludere de terningerne du vil rulle.'
+    invalidDiceFormat: '`{0}` er ikke en gyldig terningformant.'
+    diceFormatMustBeGreaterThan: '`{0}` er ikke et gyldigt terningformat, terningen skal være større end 0 og mindre end 35'
+    diceFormatMustBePositive: '`{0}` er ikke et gyldigt terningformat, ternings beløbet skal være et gyldigt positivt tal mellem 1 og 35'
+    sidesFormatMustBeGreaterThan: '`{0}` er ikke et gyldigt terningformat, siderne skal være større end 0 og mindre end 128'
+    sidesFormatMustBePositive: '`{0}` er ikke et gyldigt terningformat, side beløbet skal være et gyldigt positivt tal mellem 1 og 128'
+    moreThanFiveRollsWasGiven: "\n_Mere end **5** terninger ruller givet, kun de første fem vil blive vist_\n"
+    resultedIn: '**{0}** resulterede i **{1}**  ({2})'
+  CoinflipCommand:
+    heads: "Du fik Krone"
+    tails: "Du fik Plat"
+  EightBallCommand:
+    mustIncludeQuestion: 'Du skal inkludere et spørgsmål til 8ball.'
+    answers:
+      - 'Det er sikkert'
+      - 'Det er bestemt så'
+      - 'Uden tvivl'
+      - 'Ja helt sikkert'
+      - 'Du kan stole på det'
+      - 'Som jeg ser det, ja'
+      - 'Højst sandsynlig'
+      - 'Outlook god'
+      - 'Ja'
+      - 'Tegn tyder på ja'
+      - 'Besvar hazy prøv igen'
+      - 'Spørg igen senere'
+      - 'Bedre ikke fortælle dig nu'
+      - 'Kan ikke forudsige nu'
+      - 'Koncentrer og prøv og spørg igen'
+      - "Tæl ikke på det"
+      - 'Mit svar er nej'
+      - 'Mine kilder siger nej'
+      - 'Outlook er ikke så godt'
+      - 'Meget tvivlsomt'
+  HolidayCommand:
+    tooManyAttempts: "The Holiday API was hit too many times which shouldn't have been possible. D:"
+    notFound: "The Holiday API command could not retrieve any data for this request."
+    somethingWentWrong: "Something went wrong. Perhaps contact a bot administrator for help."
+    noHolidaysToday: "No holidays today...Get back to work!"
+    todayHoliday: "Today is {0}"
+  MemeCommand:
+    missingArgument: 'Mangler `action` argument, skal du inkludere den meme type eller bruger du vil generere en meme for, eller `list` for at vise alle de tilgængelige meme typer.'
+    invalidType: 'Ugyldig meme type givet, `{0}` er ikke en gyldig meme type!'
+    mustIncludeTopAndBottomText: 'Du skal inkludere "top tekst" og "nederste tekst" argumenterne for at generere en meme.'
+    listItem: '`{0}` => `{1}`'
+  PunCommand:
+    title: "Pun list"
+    noResults: ":user I found no puns, you can with a search or, or just try again later."
+    noResultsWithQuery: ":user Jeg fandt ikke noget for `:query`"
+    query: "Search query: {0}"
+  RandomCatCommand:
+    tooManyAttempts: "Der blevet for mange forsøg på kat-API'et, prøv igen om et minut eller spørg en botadministrator om at få en API-nøgle på [meow.senither.com](https://meow.senither.com/) for at tillade flere commands per minut."
+    notFound: "Jeg kunne ikke finde nogen kat billede D: Prøv igen, måske vil de dukke op nu?"
+    somethingWentWrong: "Noget gik galt imens jeg prøvet at finde et kat bilded for dig, du kan fortæl en botadministrator så de kan se nærmere på dette."
+  ReverseCommand:
+    palindrome: 'Du vendte om et palindrom, hvad forventede du?'
+  RipCommand:
+    hasPaidTheirRespects: '**{0}** har betalt deres henseender.'
+    todayAndOverall: '{0} I dag, {1} I alt'
+  RollCommand:
+    invalidValueGiven: 'Ugyldig værdi givet, `{1}` skal være et tal!'
+    rolledNumber: ':user rullet **:number** ud af :min - :max'
+  SayCommand:
+    userMissingPermissions: "Du kan ikke bruge denne kommando for {0}-kanalen, du skal have beskedskrivnings- og meddelelsesstyringsrettighederne for kanalen til at bruge kommandoen til kanalen."
+    botMissingPermissions: "Say-kommandoen kan ikke bruges i {0}-kanalen. Jeg har brug for både meddelelsens skrive og meddelelsesstyringstilladelser for kanalen til at kunne køre kommandoen."
+    success: "Din besked er blevet sendt til :name."
+  UndertaleTextBoxCommand:
+    noArgumentsGiven: "Manglende argument, du skal enten give `list` for at se en liste over karaterer du kan vælge imellem, eller for at generere et billede, `character` eller et gyldigt billede `url` for at opbygge billedet."
+    failedToGenerateImage: "Kunne ikke generere billedet, er du sikker på, at du har angivet en korrekt billedwebadresse eller karater navn?"
+    title: "Undertale Karakter Liste"
 help:
-    HelpCommand:
-        listOfCommands: ':page_with_curl: **Liste over kommandoer**'
-        commandNote: '**Skriv `:help <command>` for at se hjælpen til den angivne kommando.**\nExample: `:help :command`'
-        categoriesNote: ':information_source: Skriv `:help <kategori>` for at få en liste over kommandoer i den givet kategori.\nExempel: `:help {0}` eller `:help {1}`'
-        categoriesTitle: ':scroll: Kommandokategorier'
-        invalidCategory: 'Ugyldig kommandokategori givet, der er ingen kategorier kaldet `:category`'
-        invalidCommand: 'Ugyldig kommando givet, der er ingen kommando der hedder `:trigger`'
-        tryingToViewSystemCommands: "Du har ikke tilladelser til at køre nogen af kommandoerne i `System` kategorien, systemkommandoer kan påvirke alle de servere som boten er på, og er således begrænset til botadministratorer/udviklere er botten."
-        singularHiddenCategories: '_Der er **{0}** skjult kategori for denne kanal._'
-        multipleHiddenCategories: '_Der er **{0}** skjulte kategorier for denne kanal._'
-        fields:
-            usage: 'Anvendelse'
-            example: 'Eksempel'
-            aliases: 'Aliasser'
-            seeAlso: 'Se også'
-            footer: 'Kommandokategori: '
-
+  HelpCommand:
+    listOfCommands: ':page_with_curl: **Liste over kommandoer**'
+    commandNote: "**Skriv `:help <command>` for at se hjælpen til den angivne kommando.**\nExample: `:help :command`"
+    categoriesNote: ":information_source: Skriv `:help <kategori>` for at få en liste over kommandoer i den givet kategori.\nExempel: `:help {0}` eller `:help {1}`"
+    categoriesTitle: ':scroll: Kommandokategorier'
+    invalidCategory: 'Ugyldig kommandokategori givet, der er ingen kategorier kaldet `:category`'
+    invalidCommand: 'Ugyldig kommando givet, der er ingen kommando der hedder `:trigger`'
+    tryingToViewSystemCommands: "Du har ikke tilladelser til at køre nogen af kommandoerne i `System` kategorien, systemkommandoer kan påvirke alle de servere som boten er på, og er således begrænset til botadministratorer/udviklere er botten."
+    singularHiddenCategories: '_Der er **{0}** skjult kategori for denne kanal._'
+    multipleHiddenCategories: '_Der er **{0}** skjulte kategorier for denne kanal._'
+    fields:
+      usage: 'Anvendelse'
+      example: 'Eksempel'
+      aliases: 'Aliasser'
+      seeAlso: 'Se også'
+      footer: 'Kommandokategori: '
 interaction:
-    BiteCommand: '**{0}** bider **{1}**'
-    BlushCommand: '**{0}** rødmer på **{1}**'
-    CuddleCommand: '**{0}** cuddles **{1}**'
-    DivorceCommand: '**{0}** skilsmisser **{1}**'
-    EatCommand: '**{0}** spiser noget mad med **{1}**'
-    HandHoldCommand: '**{0}** holds hands with **{1}**'
-    HelloCommand: '**{0}** siger hej til **{1}**'
-    HighFiveCommand: '**{0}** high fives **{1}**'
-    HugCommand: '**{0}** krammer **{1}**'
-    KillCommand: '**{0}** ønsker at dræbe **{1}**'
-    KissCommand: '**{0}** kysser **{1}**'
-    LaughCommand: '**{0}** laughs at **{1}**'
-    MarryCommand: '**{0}** vil gærne gifte sig med **{1}**'
-    MeowCommand: '**{0}** meower af **{1}**'
-    PanCommand: '**{0}** har lige slået **{1}** med en pande!'
-    PatCommand: '**{0}** pats **{1}**'
-    PokeCommand: '**{0}** stikker **{1}**'
-    PoutCommand: '**{0}** pouts af **{1}**'
-    PunchCommand: '**{0}** slår **{1}**'
-    SenpaiCommand: '**{0}** ønsker at blive bemærket af **{1}**'
-    ShrugCommand: '**{0}** ryster skulleren af **{1}**'
-    SlapCommand: '**{0}** slapper **{1}**'
-    TickleCommand: '**{0}** kildre **{1}**'
-    TriggeredCommand: '**{0}** er triggered af **{1}**'
-
+  BiteCommand: '**{0}** bider **{1}**'
+  BlushCommand: '**{0}** rødmer på **{1}**'
+  CuddleCommand: '**{0}** cuddles **{1}**'
+  DivorceCommand: '**{0}** skilsmisser **{1}**'
+  EatCommand: '**{0}** spiser noget mad med **{1}**'
+  HandHoldCommand: '**{0}** holds hands with **{1}**'
+  HelloCommand: '**{0}** siger hej til **{1}**'
+  HighFiveCommand: '**{0}** high fives **{1}**'
+  HugCommand: '**{0}** krammer **{1}**'
+  KillCommand: '**{0}** ønsker at dræbe **{1}**'
+  KissCommand: '**{0}** kysser **{1}**'
+  LaughCommand: '**{0}** laughs at **{1}**'
+  MarryCommand: '**{0}** vil gærne gifte sig med **{1}**'
+  MeowCommand: '**{0}** meower af **{1}**'
+  PanCommand: '**{0}** har lige slået **{1}** med en pande!'
+  PatCommand: '**{0}** pats **{1}**'
+  PokeCommand: '**{0}** stikker **{1}**'
+  PoutCommand: '**{0}** pouts af **{1}**'
+  PunchCommand: '**{0}** slår **{1}**'
+  SenpaiCommand: '**{0}** ønsker at blive bemærket af **{1}**'
+  ShrugCommand: '**{0}** ryster skulleren af **{1}**'
+  SlapCommand: '**{0}** slapper **{1}**'
+  TickleCommand: '**{0}** kildre **{1}**'
+  TriggeredCommand: '**{0}** er triggered af **{1}**'
 music:
-    internal:
-        songWasSkipped: '[:title](:url) foreslået af :author blev springet over.'
-        nowPlayingSong: 'Spiller nu: [:title](:link)\n`:duration` med `:volume%` volume - foreslået af :requester'
-        nowPlayingPlaylist: '**:playlistName** playlisten er blivet tilføjet til musik queuen med `:playlistSize` sange!'
-        nowPlaying: 'Spiller nu: [:title](:link)\n`:duration` med `:volume%` volume - foreslået af :requester'
-        queueHasEnded: 'Køen er afsluttet, efterladt voice channelen.'
-        endedDueToInactivity: "Musikken er afsluttet på grund af inaktivitet."
-        endedDueToWebSocketClose: "Music web socketet blev lukket, stopper musikken."
-        noMatchFound: 'Jeg fandt intet med den givne forespørgsel: `{0}`'
-        trackLoadFailed: "Jeg kunne ikke tilføje det til køen: `{0}`"
-        musicChannel: "Du kan kun bruge musikkommandoer i :channel."
-        resumeMusic: "Genoptag musik, vent et par sekunder imens alt er loaded tilbage for dig."
-
-    ClearQueueCommand:
-        error: 'Intet at rydde, anmode om musik først med `{0}play`'
-        emptyQueue: 'Intet at rydde, der er ingen sange i musik køen lige nu.'
-        success: 'Jeg har fjernet **:queueSize** sange fra køen, køen er nu tom!'
-
-    DJLevelCommand:
-            title: "Nuværende DJ-niveau: {0}"
-            footer: "Brug \"{0} types\" for at se en komplet liste over de tilgængelige DJ niveau typer."
-            types:
-                title: "DJ Niveau Typer"
-                footer: "Brug \"{0} <type>\" at ændre DJ-niveauet til den givne type for serveren."
-            invalidType: "`{0}` er ikke et gyldig `DJ Level` type, brug venligst et af følgende:\n`{1}`"
-            changedTo: "`DJ-niveauet` er blivet ændret til **:type**.\n:info"
-            information:
-                all: "Alle kan køre nogen musikkommandoer, også selvom de ikke har 'DJ'-rollen."
-                none: "Ingen kan køre nogen musikkommandoer uden 'DJ'-rollen."
-                normal: "Folk uden 'DJ'-rollen kan ikke bruge kommandoer som afspilningslister og volumenkontrol, men stadig tillader folk at bruge afspilningskommandoen uden rollen."
-
-    DjRoleCommand:
-        invalidRoleMentioned: "Invalid role mentioned, I found no roles called `{0}`"
-        noDjRoleSelected: "There are currently no custom DJ role setup for the server, however anyone who has a role called `DJ` will still be able to use DJ restricted music commands."
-        currentSelectedRole: "The :role role is used as the music DJ role.\nAnyone with the role will be able to use DJ restricted music commands."
-        resetDjRole: "The DJ role has successfully been reset, however anyone who has a role called `DJ` will still be able to use music commands that requires the DJ role to be used."
-        selectedRoleForMusic: "The :role role will now be used as the music DJ role!"
-
-    MoveHereCommand:
-        error: 'Ikke tilsluttet en stemme kanal, start noget musik først med `{0}play`'
-        hasMusicChannel: "Serveren har en musik-kanal sat op, hvis du vil have mig til at flytte til en anden talekanal, skal du få en administrator på serveren for at trække mig til en anden talekanal."
-        nowPlayingIn: 'Jeg spiller nu musik i **:channelName**'
-
-    MusicChannelCommand:
-        updated: "**:type** musikkanalen er blivet :status"
-        field:
-            title: "Musikkanaler"
-            message: "**Tekstkanal:** :text\n**Musikkanal:** :voice"
-        status:
-            disabled: "deaktiveret"
-            enabled: "sat til at bruge **{0}**"
-        errors:
-            invalidType: "Ugyldig musikkanal type givet, typen skal enten være `text` eller `voice`"
-            notValidType: "`{0}` er ikke en gyldig {1} kanal, du skal inkludere en gyldig stemmekanal, du vil bruge som musikkanal."
-
-    MusicMessagesCommand:
-        message: "Musik meddelelser er i øjeblikket **:status**.\n\n**Info**\n:info"
-        updated: "Musikbeskederne er nu blivet **:status**."
-        error: "Ugyldigt argument givet, status skal enten være `on` eller `off` for at ændre statusen for musikbeskeder."
-        footer: "For at ændre musikmeddelelserne skal du bruge {0}"
-        status:
-            disabled: "deaktiveret"
-            enabled: "aktiveret"
-        info:
-            disabled: "Når musikbeskeder er deaktiveret vil meddelelserne `Spiller nu` ikke længere blive sendt, og andre musikrelaterede kommandoer sletter automatisk selv efter et stykke tid."
-            enabled: "Når musikbeskeder er aktiveret, vil meddelelserne `Spiller nu` blive sendt, musik beskederne vil ikke slette sig selv, også efter at sangen afspilles.\n**Bemærk!** De fleste musikkommandoer bliver stadig automatisk slettet efter et stykke tid."
-
-    PauseCommand:
-        error: 'Intet at pause, start noget musik først med `{0}play`'
-        alreadyPaused: 'Musikken er allerede pause, brug `!resume` for at genoptage musikken.'
-        paused: 'Musikken er blevet `pauset`'
-
-    PlayCommand:
-        addedSong: ':user har tilføjet [:title](:url) til afspilningslisten. Der er `:queueSize` sange forand i køen.'
-        addedSongsFromPlaylist: ':user jar tilføjet :songs sange fra [:title](:url) playlisten til afspilningslisten. Der er `:queueSize` sange forand i køen.'
-        session:
-            title: 'Resultater for {0}'
-            footer: 'Vælg en sang med {0} <number>'
-
-    PlaylistCommand:
-        noPlaylists: 'Denne server har ikke nogen musik playlist endnu, du kan oprette en med\n`:command` for at komme i gang'
-        noPlaylistWithName: 'Der er ingen playlist kaldet `:playlist`, du kan oprette playlisten ved brug af kommandoen\n`:command`'
-        invalidProperty: 'Ugyldigt `property` er givet, der er ingen playliste egenskaber kaldet `{0}`.\nDu kan lære mere ved at køre `{1}help {2}`'
-        invalidFormat: "Ugyldigt format, mangler egenskapen `:type`!\n`:command`"
-        invalidIdGiven: 'Ugyldigt id givet, det angivne tal er for :type\n`:command`'
-        invalidIdNumberGiven: 'Ugyldigt id givet, det angivet ID skal værer et nummer\n`:command`'
-        noMoreSongSlots: "`:playlist` playlisten har ikke flere sang slots tilbage."
-        noMorePlaylistSlots: "Serveren har ikke flere playlister, du kan slette eksisterende playlister for at frigøre slots."
-        sameIdsGiven: "De to angivne ids er de samme, sangen bliver ikke flyttet noget stender på denne måde.\n`:command`"
-        failedToLoad: 'Kunne ikke indlæse: {0}'
-        failedToLoadPlaylist: 'Det lykkedes ikke at indlæse :playlist, du kan prøve igen senere eller rapporter dette til et af mine udviklere.'
-        failedToSavePlaylist: 'Noget gik galt imens du forsøgte at gemme playlisten: {0}'
-        loadedPlaylist: '**:name** playlisten er blevet loaded og tilføjet til musik afspilningslisten med **:amount** sange.'
-        noMatches: 'Ingen matches'
-        attemptingToAddLivestreamToPlaylist: "Du kan ikke tilføje livestreams til en playliste!"
-        userHasAddedSong: ':user har tilføjet [:name](:url) til `:playlist` playlisten.\`:playlist` playlisten har `:slots` flere slots tilgængelige.'
-        swapSongInPlaylist: '[:selectedTitle](:selectedLink) har byttet position med [:replacedTitle](:replacedLink) i `:playlist` playlisten.'
-        alreadyExists: '`:playlist` playlisten eksisterer allerede!'
-        onlyNumbersInName: "Playlisten kan ikke kun være tal, du skal bruge nogle bogstaver i navnet!"
-        renamingPlaylistAlreadyExists: "Kan ikke omdøbe `:oldplaylist` til `:playlist`, der er allerede en playliste kaldet `:playlist`"
-        playlistCreated: '`:playlist` playlisten er blevet oprettet!\nDu kan begynde at tilføje sange til det med `:command :playlist add <song>`'
-        playlistDeleted: '`:name` playlisten er blevet slettet!'
-        playlistRenamed: '`:oldplaylist` playlisten er blevet omdøbt til `:playlist`!'
-        playlistIsEmpty: 'Der er ingen sange i denne playliste, du kan tilføje sange til det ved at bruge\n`:command` command.'
-        playlistIsAlreadyEmpty: '`:playlist` playlisten er allerede tom, der er ikke noget at fjerne.'
-        songHasBeenRemovedFromPlaylist: ':song er blevet fjernet fra `:playlist` playlisten'
-        playlistTitle: ':musical_note: Musik Playlister {0}'
-        playlistSize: '[ {0} ud af {1} ]'
-        playlistLine: '{0}\n       Playlisten har **{1}** sang(e)'
-        playlistSongLine: '`{0}` [{1}]({2}) [{3}]'
-
-    RemoveSongFromQueueCommand:
-        error: "Manglende argument `sang id`, skal du inkludere id'en af sangen, du vil fjerne fra afspilningslisten."
-        failedToRemoveSong: "Noget gik galt, kunne ikke  fjerne sangen med id'et `:index`"
-        tooHighNumberGiven: 'Der er kun `{0}` sange i køen, prøv at sænke dit nummer lidt.'
-        invalidRange: 'Invalid range given, give the range of IDs in a start to end format, like `3-6`.'
-        mustBePositiveNumber: "Sang id'et skal være et gyldigt positivt tal."
-        nothingToRemove: 'Intet at fjerne, start noget musik først med `{0}play`'
-        success: ':songer blevet fjernet fra musikkøen.'
-        successMultiple: 'Songs from `:start` to `:end` were successfully removed from the music queue.\n:tracks'
-        successMultipleNote: "\nAnd **{0}** more songs were removed from the queue."
-
-    RepeatMusicQueueCommand:
-        error: 'Der er ikke noget at gentage, anmode om musik først med `{0}play`'
-        title: 'Nuværende gentagelses mode: {0}'
-        message: "Repeat status for musikafspilleren er blevet ændret til **:state**, det betyder:\n\n:note"
-        footer: 'Brug "{0} <repeat-mode>" for at ændere musik gentagelses moden.'
-        states:
-            single: 'EN'
-            all: 'Alle'
-            loopoff: 'Fra'
-        notes:
-            single: "Musikafspilleren gentager den sang der bliver afspilles nu uden at gå til den næste sang i køen.\n**Bemærk:** Dette dæmper også \"Nu afspilles\" meddelelser, så chatten ikke spammes med den samme sang igen og igen igen."
-            all: "Musikafspilleren gentager hver sang i køen, efter at en sang er færdig med at blive spillet vil den automatisk blivet tilføjet til slutningen af køen."
-            loopoff: "Musikafspilleren vil ikke gentage nogle sange, når en sang slutter med at spille, bliver den fjernet fra køen, og det næste spor begynder afspillet."
-
-    ResumeCommand:
-        error: 'Intet at genoptage, start noget musik først med `{0}play`'
-        alreadyPlaying: 'Musikken spiller allerede, brug `:prefixpause` for at sætte musikken på pause.'
-        resume: 'Musikken er blevet genoptaget'
-
-    SeekCommand:
-        error: 'Intet spiller lige nu, start noget musik føst med `{0}play`.'
-        invalidTimeGiven: 'Nummer-argumentet skal være et gyldigt tidsformat, der er mindst 0 eller flere sekunder langt.'
-        seekingLive: 'Du kan ikke hoppe til en anden tidskode for livestreams.'
-        seekingTooFar: '`{0}` er mere end længden af den sang der bliver spillet lige pt, hvis du vil springe til den næste sang kan du bruge `{1}skip` i stedet.'
-        seekTo: 'Søger **:title** til `:time`'
-
-    SetDefaultVolumeCommand:
-        currentVolume: 'Standard volumenet for serveren er i øjeblikket sat til `:volume%`'
-        changedVolume: 'Standardvolumenet er sat til `:volume%`'
-        failedToSave: 'Noget gik galt, mens du forsøgte at gemme standardvolumenet: {0}'
-        mustBeNumber: 'Volumen skal være et tal mellem `1` og `100`'
-
-    ShuffleCommand:
-        error: 'Musikkøen er allerede tom, du kan starte noget musik med\n`{0}play <song title | url>`'
-        success: '**:amount** sange er blevet blandet i musikkøen.'
-
-    SkipCommand:
-        error: 'Intet at springe over, start noget musik først med `{0}play`'
-
-    SongCommand:
-        error: 'Intet at vise, start noget musik først med `{0}play`'
-        paused: 'For øjeblikket pause'
-        playing: 'Spiller iøjeblikket'
-        songsInQueue: 'Sange i kø'
-        moreSongs: 'Du kan se flere sange ved at bruge {0} <page>'
-        noSongs: 'Der er ingen andre sange i køen lige nu'
-        andXMoreSongs: '_Og **{0}** flere sange!_'
-        formats:
-            line: '**{0}** [{1}]({2})'
-            song: '[{0}]({1})\nSpiller med `{2}` volume med `{3}` tilbage af sangen - foreslået af <@{4}>'
-            stream: '[{0}]({1})\nSpiller med `{2}` volume, streamen er `{3}` - foreslået af <@{4}>'
-
-    StopCommand:
-        error: "Intet spiller lige nu, du kan ikke stoppe musikken når der ikke er noget der bliver spillet."
-        success: 'Musikken er blivet stoppet, og **:number** sange er blevet fjernet fra køen.'
-
-    VoiceFixCommand:
-        message: "**Flytter serveren til :swap region:** {0}\n**Flytter tilbage til :original region:** {1}"
-        starting: "Starter flytte processen...\n\n"
-        finished: "\n\nFærdig! Musik skulle nu virke igen!"
-        error: "Kunne ikke afslutte swapprocessen, fejl: {0}"
-
-    VolumeCommand:
-        error: 'Intet spiller lige nu, du kan starte noget musik føst med `{0}play`'
-        requireDJRole: '`DJ` rolle er nødvendig for at ændre lydstyrken!'
-        invalidVolume: 'Ugyldigt lydstyrke angivet, volumen skal være et gyldigt tal imellem 1 og 100.'
-        nowPlaying: ':musical_note: Musik spiller nu musik med **:volume%** volumen.'
-        setTo: ':musical_note: Musik volumen er sat til **:volume**'
-
-    VoteSkipCommand:
-        error: 'Intet at springe over, du kan starte noget musik føst med `{0}play`'
-        registered: 'Din stemme er blevet registreret! `:votes` flere stemmer er nødvendige for at springe sangen over.'
-        alreadyVoted: 'Du kan kun stemme én gang pr. Sang! `:votes` flere stemmer er nødvendige for at springe sangen over.'
-
+  internal:
+    songWasSkipped: '[:title](:url) foreslået af :author blev springet over.'
+    nowPlayingSong: "Spiller nu: [:title](:link)\n`:duration` med `:volume%` volume - foreslået af :requester"
+    nowPlayingPlaylist: '**:playlistName** playlisten er blivet tilføjet til musik queuen med `:playlistSize` sange!'
+    nowPlaying: "Spiller nu: [:title](:link)\n`:duration` med `:volume%` volume - foreslået af :requester"
+    queueHasEnded: 'Køen er afsluttet, efterladt voice channelen.'
+    endedDueToInactivity: "Musikken er afsluttet på grund af inaktivitet."
+    endedDueToWebSocketClose: "Music web socketet blev lukket, stopper musikken."
+    noMatchFound: 'Jeg fandt intet med den givne forespørgsel: `{0}`'
+    trackLoadFailed: "Jeg kunne ikke tilføje det til køen: `{0}`"
+    musicChannel: "Du kan kun bruge musikkommandoer i :channel."
+    resumeMusic: "Genoptag musik, vent et par sekunder imens alt er loaded tilbage for dig."
+  ClearQueueCommand:
+    error: 'Intet at rydde, anmode om musik først med `{0}play`'
+    emptyQueue: 'Intet at rydde, der er ingen sange i musik køen lige nu.'
+    success: 'Jeg har fjernet **:queueSize** sange fra køen, køen er nu tom!'
+  DJLevelCommand:
+    title: "Nuværende DJ-niveau: {0}"
+    footer: "Brug \"{0} types\" for at se en komplet liste over de tilgængelige DJ niveau typer."
+    types:
+      title: "DJ Niveau Typer"
+      footer: "Brug \"{0} <type>\" at ændre DJ-niveauet til den givne type for serveren."
+    invalidType: "`{0}` er ikke et gyldig `DJ Level` type, brug venligst et af følgende:\n`{1}`"
+    changedTo: "`DJ-niveauet` er blivet ændret til **:type**.\n:info"
+    information:
+      all: "Alle kan køre nogen musikkommandoer, også selvom de ikke har 'DJ'-rollen."
+      none: "Ingen kan køre nogen musikkommandoer uden 'DJ'-rollen."
+      normal: "Folk uden 'DJ'-rollen kan ikke bruge kommandoer som afspilningslister og volumenkontrol, men stadig tillader folk at bruge afspilningskommandoen uden rollen."
+  DjRoleCommand:
+    invalidRoleMentioned: "Invalid role mentioned, I found no roles called `{0}`"
+    noDjRoleSelected: "There are currently no custom DJ role setup for the server, however anyone who has a role called `DJ` will still be able to use DJ restricted music commands."
+    currentSelectedRole: "The :role role is used as the music DJ role.\nAnyone with the role will be able to use DJ restricted music commands."
+    resetDjRole: "The DJ role has successfully been reset, however anyone who has a role called `DJ` will still be able to use music commands that requires the DJ role to be used."
+    selectedRoleForMusic: "The :role role will now be used as the music DJ role!"
+  MoveHereCommand:
+    error: 'Ikke tilsluttet en stemme kanal, start noget musik først med `{0}play`'
+    hasMusicChannel: "Serveren har en musik-kanal sat op, hvis du vil have mig til at flytte til en anden talekanal, skal du få en administrator på serveren for at trække mig til en anden talekanal."
+    nowPlayingIn: 'Jeg spiller nu musik i **:channelName**'
+  MusicChannelCommand:
+    updated: "**:type** musikkanalen er blivet :status"
+    field:
+      title: "Musikkanaler"
+      message: "**Tekstkanal:** :text\n**Musikkanal:** :voice"
+    status:
+      disabled: "deaktiveret"
+      enabled: "sat til at bruge **{0}**"
+    errors:
+      invalidType: "Ugyldig musikkanal type givet, typen skal enten være `text` eller `voice`"
+      notValidType: "`{0}` er ikke en gyldig {1} kanal, du skal inkludere en gyldig stemmekanal, du vil bruge som musikkanal."
+  MusicMessagesCommand:
+    message: "Musik meddelelser er i øjeblikket **:status**.\n\n**Info**\n:info"
+    updated: "Musikbeskederne er nu blivet **:status**."
+    error: "Ugyldigt argument givet, status skal enten være `on` eller `off` for at ændre statusen for musikbeskeder."
+    footer: "For at ændre musikmeddelelserne skal du bruge {0}"
+    status:
+      disabled: "deaktiveret"
+      enabled: "aktiveret"
+    info:
+      disabled: "Når musikbeskeder er deaktiveret vil meddelelserne `Spiller nu` ikke længere blive sendt, og andre musikrelaterede kommandoer sletter automatisk selv efter et stykke tid."
+      enabled: "Når musikbeskeder er aktiveret, vil meddelelserne `Spiller nu` blive sendt, musik beskederne vil ikke slette sig selv, også efter at sangen afspilles.\n**Bemærk!** De fleste musikkommandoer bliver stadig automatisk slettet efter et stykke tid."
+  PauseCommand:
+    error: 'Intet at pause, start noget musik først med `{0}play`'
+    alreadyPaused: 'Musikken er allerede pause, brug `!resume` for at genoptage musikken.'
+    paused: 'Musikken er blevet `pauset`'
+  PlayCommand:
+    addedSong: ':user har tilføjet [:title](:url) til afspilningslisten. Der er `:queueSize` sange forand i køen.'
+    addedSongsFromPlaylist: ':user jar tilføjet :songs sange fra [:title](:url) playlisten til afspilningslisten. Der er `:queueSize` sange forand i køen.'
+    session:
+      title: 'Resultater for {0}'
+      footer: 'Vælg en sang med {0} <number>'
+  PlaylistCommand:
+    noPlaylists: "Denne server har ikke nogen musik playlist endnu, du kan oprette en med\n`:command` for at komme i gang"
+    noPlaylistWithName: "Der er ingen playlist kaldet `:playlist`, du kan oprette playlisten ved brug af kommandoen\n`:command`"
+    invalidProperty: "Ugyldigt `property` er givet, der er ingen playliste egenskaber kaldet `{0}`.\nDu kan lære mere ved at køre `{1}help {2}`"
+    invalidFormat: "Ugyldigt format, mangler egenskapen `:type`!\n`:command`"
+    invalidIdGiven: "Ugyldigt id givet, det angivne tal er for :type\n`:command`"
+    invalidIdNumberGiven: "Ugyldigt id givet, det angivet ID skal værer et nummer\n`:command`"
+    noMoreSongSlots: "`:playlist` playlisten har ikke flere sang slots tilbage."
+    noMorePlaylistSlots: "Serveren har ikke flere playlister, du kan slette eksisterende playlister for at frigøre slots."
+    sameIdsGiven: "De to angivne ids er de samme, sangen bliver ikke flyttet noget stender på denne måde.\n`:command`"
+    failedToLoad: 'Kunne ikke indlæse: {0}'
+    failedToLoadPlaylist: 'Det lykkedes ikke at indlæse :playlist, du kan prøve igen senere eller rapporter dette til et af mine udviklere.'
+    failedToSavePlaylist: 'Noget gik galt imens du forsøgte at gemme playlisten: {0}'
+    loadedPlaylist: '**:name** playlisten er blevet loaded og tilføjet til musik afspilningslisten med **:amount** sange.'
+    noMatches: 'Ingen matches'
+    attemptingToAddLivestreamToPlaylist: "Du kan ikke tilføje livestreams til en playliste!"
+    userHasAddedSong: ':user har tilføjet [:name](:url) til `:playlist` playlisten.\`:playlist` playlisten har `:slots` flere slots tilgængelige.'
+    swapSongInPlaylist: '[:selectedTitle](:selectedLink) har byttet position med [:replacedTitle](:replacedLink) i `:playlist` playlisten.'
+    alreadyExists: '`:playlist` playlisten eksisterer allerede!'
+    onlyNumbersInName: "Playlisten kan ikke kun være tal, du skal bruge nogle bogstaver i navnet!"
+    renamingPlaylistAlreadyExists: "Kan ikke omdøbe `:oldplaylist` til `:playlist`, der er allerede en playliste kaldet `:playlist`"
+    playlistCreated: "`:playlist` playlisten er blevet oprettet!\nDu kan begynde at tilføje sange til det med `:command :playlist add <song>`"
+    playlistDeleted: '`:name` playlisten er blevet slettet!'
+    playlistRenamed: '`:oldplaylist` playlisten er blevet omdøbt til `:playlist`!'
+    playlistIsEmpty: "Der er ingen sange i denne playliste, du kan tilføje sange til det ved at bruge\n`:command` command."
+    playlistIsAlreadyEmpty: '`:playlist` playlisten er allerede tom, der er ikke noget at fjerne.'
+    songHasBeenRemovedFromPlaylist: ':song er blevet fjernet fra `:playlist` playlisten'
+    playlistTitle: ':musical_note: Musik Playlister {0}'
+    playlistSize: '[ {0} ud af {1} ]'
+    playlistLine: "{0}\n       Playlisten har **{1}** sang(e)"
+    playlistSongLine: '`{0}` [{1}]({2}) [{3}]'
+  RemoveSongFromQueueCommand:
+    error: 'Manglende argument `sang id`, skal du inkludere id''en af sangen, du vil fjerne fra afspilningslisten.'
+    failedToRemoveSong: 'Noget gik galt, kunne ikke  fjerne sangen med id''et `:index`'
+    tooHighNumberGiven: 'Der er kun `{0}` sange i køen, prøv at sænke dit nummer lidt.'
+    invalidRange: 'Invalid range given, give the range of IDs in a start to end format, like `3-6`.'
+    mustBePositiveNumber: 'Sang id''et skal være et gyldigt positivt tal.'
+    nothingToRemove: 'Intet at fjerne, start noget musik først med `{0}play`'
+    success: ':songer blevet fjernet fra musikkøen.'
+    successMultiple: "Songs from `:start` to `:end` were successfully removed from the music queue.\n:tracks"
+    successMultipleNote: "\nAnd **{0}** more songs were removed from the queue."
+  RepeatMusicQueueCommand:
+    error: 'Der er ikke noget at gentage, anmode om musik først med `{0}play`'
+    title: 'Nuværende gentagelses mode: {0}'
+    message: "Repeat status for musikafspilleren er blevet ændret til **:state**, det betyder:\n\n:note"
+    footer: 'Brug "{0} <repeat-mode>" for at ændere musik gentagelses moden.'
+    states:
+      single: 'EN'
+      all: 'Alle'
+      loopoff: 'Fra'
+    notes:
+      single: "Musikafspilleren gentager den sang der bliver afspilles nu uden at gå til den næste sang i køen.\n**Bemærk:** Dette dæmper også \"Nu afspilles\" meddelelser, så chatten ikke spammes med den samme sang igen og igen igen."
+      all: 'Musikafspilleren gentager hver sang i køen, efter at en sang er færdig med at blive spillet vil den automatisk blivet tilføjet til slutningen af køen.'
+      loopoff: 'Musikafspilleren vil ikke gentage nogle sange, når en sang slutter med at spille, bliver den fjernet fra køen, og det næste spor begynder afspillet.'
+  ResumeCommand:
+    error: 'Intet at genoptage, start noget musik først med `{0}play`'
+    alreadyPlaying: 'Musikken spiller allerede, brug `:prefixpause` for at sætte musikken på pause.'
+    resume: 'Musikken er blevet genoptaget'
+  SeekCommand:
+    error: 'Intet spiller lige nu, start noget musik føst med `{0}play`.'
+    invalidTimeGiven: 'Nummer-argumentet skal være et gyldigt tidsformat, der er mindst 0 eller flere sekunder langt.'
+    seekingLive: 'Du kan ikke hoppe til en anden tidskode for livestreams.'
+    seekingTooFar: '`{0}` er mere end længden af den sang der bliver spillet lige pt, hvis du vil springe til den næste sang kan du bruge `{1}skip` i stedet.'
+    seekTo: 'Søger **:title** til `:time`'
+  SetDefaultVolumeCommand:
+    currentVolume: 'Standard volumenet for serveren er i øjeblikket sat til `:volume%`'
+    changedVolume: 'Standardvolumenet er sat til `:volume%`'
+    failedToSave: 'Noget gik galt, mens du forsøgte at gemme standardvolumenet: {0}'
+    mustBeNumber: 'Volumen skal være et tal mellem `1` og `100`'
+  ShuffleCommand:
+    error: "Musikkøen er allerede tom, du kan starte noget musik med\n`{0}play <song title | url>`"
+    success: '**:amount** sange er blevet blandet i musikkøen.'
+  SkipCommand:
+    error: 'Intet at springe over, start noget musik først med `{0}play`'
+  SongCommand:
+    error: 'Intet at vise, start noget musik først med `{0}play`'
+    paused: 'For øjeblikket pause'
+    playing: 'Spiller iøjeblikket'
+    songsInQueue: 'Sange i kø'
+    moreSongs: 'Du kan se flere sange ved at bruge {0} <page>'
+    noSongs: 'Der er ingen andre sange i køen lige nu'
+    andXMoreSongs: '_Og **{0}** flere sange!_'
+    formats:
+      line: '**{0}** [{1}]({2})'
+      song: "[{0}]({1})\nSpiller med `{2}` volume med `{3}` tilbage af sangen - foreslået af <@{4}>"
+      stream: "[{0}]({1})\nSpiller med `{2}` volume, streamen er `{3}` - foreslået af <@{4}>"
+  StopCommand:
+    error: "Intet spiller lige nu, du kan ikke stoppe musikken når der ikke er noget der bliver spillet."
+    success: 'Musikken er blivet stoppet, og **:number** sange er blevet fjernet fra køen.'
+  VoiceFixCommand:
+    message: "**Flytter serveren til :swap region:** {0}\n**Flytter tilbage til :original region:** {1}"
+    starting: "Starter flytte processen...\n\n"
+    finished: "\n\nFærdig! Musik skulle nu virke igen!"
+    error: "Kunne ikke afslutte swapprocessen, fejl: {0}"
+  VolumeCommand:
+    error: 'Intet spiller lige nu, du kan starte noget musik føst med `{0}play`'
+    requireDJRole: '`DJ` rolle er nødvendig for at ændre lydstyrken!'
+    invalidVolume: 'Ugyldigt lydstyrke angivet, volumen skal være et gyldigt tal imellem 1 og 100.'
+    nowPlaying: ':musical_note: Musik spiller nu musik med **:volume%** volumen.'
+    setTo: ':musical_note: Musik volumen er sat til **:volume**'
+  VoteSkipCommand:
+    error: 'Intet at springe over, du kan starte noget musik føst med `{0}play`'
+    registered: 'Din stemme er blevet registreret! `:votes` flere stemmer er nødvendige for at springe sangen over.'
+    alreadyVoted: 'Du kan kun stemme én gang pr. Sang! `:votes` flere stemmer er nødvendige for at springe sangen over.'
 search:
-    DuckDuckGoCommand:
-        nsfwDisabled: "`Duck Duck GO` Kommandoen kan kun bruges i NSFW-kanaler, da søgeresultaterne kan returnere NSFW-indhold."
-        searchResults: 'Søgeresultat for: {0}'
-        noResults: 'Jeg fandt ikke noget for `:query`'
-        seeAlso: '**Se også**'
-        nsfwStatus:
-            enabled: 'NSFW Søgning er aktiveret'
-            disabled: 'NSFW Søgning er deaktiveret'
-
-    GfycatCommand:
-        noResults: "Jeg kunne ikke noget der matcher din forespørgsel: `:query`"
-
-    UrbanDictionaryCommand:
-        noResults: ':user Jeg fandt ikke noget for `:query`'
-        untitled: 'Untitled'
-        example: 'Eksempel'
-        results: ':percentage procentdel af folk synes godt om dette. :up👍 :down👎'
-        nsfwDisabled: "`Urban Dictionary` kommandoen kan kun bruges i NSFW-kanaler, da indholdet af kommandoen måske ikke er passende for alle."
-
-    XKCDCommand:
-        invalidArgument: "Ugyldigt argument angivet, argumentet skal være et gyldigt tal mellem `1` og `{0}` eller `random` for at få en tilfældig tegneserie."
-        number: 'XKCD nummer #{0}'
-
+  DuckDuckGoCommand:
+    nsfwDisabled: "`Duck Duck GO` Kommandoen kan kun bruges i NSFW-kanaler, da søgeresultaterne kan returnere NSFW-indhold."
+    searchResults: 'Søgeresultat for: {0}'
+    noResults: 'Jeg fandt ikke noget for `:query`'
+    seeAlso: '**Se også**'
+    nsfwStatus:
+      enabled: 'NSFW Søgning er aktiveret'
+      disabled: 'NSFW Søgning er deaktiveret'
+  GfycatCommand:
+    noResults: "Jeg kunne ikke noget der matcher din forespørgsel: `:query`"
+  UrbanDictionaryCommand:
+    noResults: ':user Jeg fandt ikke noget for `:query`'
+    untitled: 'Untitled'
+    example: 'Eksempel'
+    results: ':percentage procentdel af folk synes godt om dette. :up👍 :down👎'
+    nsfwDisabled: "`Urban Dictionary` kommandoen kan kun bruges i NSFW-kanaler, da indholdet af kommandoen måske ikke er passende for alle."
+  XKCDCommand:
+    invalidArgument: "Ugyldigt argument angivet, argumentet skal være et gyldigt tal mellem `1` og `{0}` eller `random` for at få en tilfældig tegneserie."
+    number: 'XKCD nummer #{0}'
 utility:
-    CalculateCommand:
-        boolean:
-            true: 'Sandt'
-            false: 'Falsk'
-        eastereggs:
-            quickMaths: '   -   Quick maths!'
-            binary: "Der er kun 10 typer mennesker i verden, dem der forstår binære, og dem der ikke gør det."
-
-    ChangelogCommand:
-        invalidChangelogChannel: "Invalid changelog channel defined, the text channel could not be found!"
-        cantReadChangelogChannel: "I don't have permission to read the message history for the defined changelog channel, this is required in oder to read, load, and display the changelog messages."
-        invalidVersionGiven: "Invalid version given, `{0}` is not a valid version entry."
-        noChangelogMessages: "There are no changelog messages to display yet, try check back again later."
-        latestVersion: "Latest version: {0}"
-        lastFewVersions: "Last 10 Versions"
-        changelogVersions: "Changelog Versions ({0})"
-
-    ChannelIdCommand:
-        message: ':user :id: af :channel er `:targetChannel`'
-
-    ChannelInfoCommand:
-        fields:
-            id: 'ID'
-            position: 'Position'
-            users: 'Bruger'
-            category: 'Kategori'
-            bitRate: 'Bit Rate'
-            nsfw: 'NSFW'
-            createdAt: 'Oprettet på'
-        noTopic: '*Der er ikke angivet noget emne for denne kanal*'
-        timeFormat: 'EEE, dd MMM yyyy HH:mm'
-
-    ExpandUrlCommand:
-        noRedirect: ":url redirecter ikke nogle steder hen."
-        redirects: '{0} redirecter til {1}'
-        jumps: '**Linket hopper gennem følgende websteder:**'
-
-    FeedbackCommand:
-        confirmation: "Du er ved at sende følgende feedback:```:feedback```Feedbacken vil blive sendt til feedback-kanalen i :server serveren, er du sikker på, at du vil sende den?\nBrug `:command` i de næste 60 sekunder uden argumenter for at sende feedbacken."
-        success: 'Sendt succesfuldt feedback <:tickYes:319985232306765825>'
-        failedToSend: 'Kunne ikke sende tilbagemelding: :error'
-        invalidFeedbackChannel: "Ugyldig feedback-kanel defineret, tekstkanalen kunne ikke findes!"
-        mustBe32CharactersOrMore: "Feedbackmeddelelsen skal være mindst 32 tegn lang."
-
-    GlobalLeaderboardCommand:
-        noData: 'Der er ingen leaderboard data lige nu, prøv igen senere.'
-        line: '`:num` **:username** er level **:level** med **:experience** xp.'
-        title: 'Globalt Experience Leaderboard'
-        yourRank: 'Dit rang'
-        loading:
-            title: 'Loader det globale leaderboard'
-            message: 'Vent et øjeblik, mens det globale leaderboard er indlæst.'
-
-    InviteCommand:
-        message: 'Du kan invitere mig til din server ved at klikke [her](:oauth) eller bruge linket herunder:\n\n:oauth\n\n:note'
-        note: '**Note:**\nHvis du gerne vil prøve nye udviklede funktioner før alle andre, så kan du også prøve **Cutting Edge** botten, den får nye funktioner tilføjet næsten dagligt. Du kan invitere den ved at [klikke her](:edgeInvite) eller bruge link nedenfor:\n\n:edgeInvite'
-
-    IPInfoCommand:
-        hostname: 'Værtsnavn'
-        organisation: 'Organisation'
-        country: 'Land'
-
-    LeaderboardCommand:
-        noData: 'Der er ingen leaderboard data lige nu, prøv igen senere.'
-        line: '`:num` **:username** er level **:level** med **:experience** xp.'
-        title: '{0} Leaderboard'
-        yourRank: 'Dit rang'
-
-    PingCommand:
-        message: 'Pong! Tid taget :ping ms (:rating) Websocket heartbeat :heartbeat ms'
-        rating:
-            10: 'hurtigere end Sonic! :smiley_cat:'
-            100: 'fantastisk! :smiley:'
-            200: 'god! :slight_smile:'
-            300: 'anstændig. :neutral_face:'
-            400: 'gennemsnit... :confused:'
-            500: 'lidt langsomt. :slight_frown:'
-            600: 'ret langsomt.. :frowning2:'
-            700: 'langsomt.. :worried:'
-            800: 'for langsomt. :disappointed:'
-            900: 'dårligt. :sob: (helpme)'
-            1600: '#BlameDiscord. :angry:'
-            10000: 'det her giver ingen mening :thinking: #BlameAlexis'
-            other: 'langsom af. :dizzy_face:'
-
-    RankBackgroundCommand:
-        canBeUnlocked: "Rang baggrunde kan låses op ved hjælp af **[Vote Points](https://discordbots.org/bot/avaire)**,\nDu får **1 point** hver gang du stemmer for botten, eller **2 points** hvis du voter i weekenderne."
-        listTitle: "Rank Baggrundsbilleder ({0})"
-        youHaveVotePoints: "Du har {0} vote points."
-        exampleTitle: "{0} Eksempel"
-        exampleFooter: "{0} koster {1} vote points"
-        alreadyOwnsBackground: "Du ejer allerede **:name** baggrunden!"
-        doesntHaveEnoughPoints: "Du har ikke nok points til at købe denne baggrund, baggrunden koster `{0}`, og du har `{1}` vote points."
-        boughtBackgroundSuccessfully: "Tillykke! Du ejer nu **:name** baggrunden!\nDu kan bruge kommandoen `:command` for at bruge baggrunden."
-        youDontOwnThisBackground: "Du ejer ikke **:name** baggrunden, men du kan købe den for **:cost** Vote Points!"
-        successfullyChangedBackground: "Du har ændret din baggrund til at bruge **:name** baggrunden."
-        disabledBackgrounds: "Rangebaggrunde er blevet deaktiveret, du bruger nu normale meddelelser for rangkommandoer igen."
-        buyNotes:
-            alreadyOwns: "**{0}**\n- _Du ejer allerede denne baggrund._"
-            doesntOwns: "**{0}**\n - Koster {1} vote points."
-        failedToSendExampleMessage: "Noget gik galt da vi forsøgte at sende eksempelbilledet for {0} baggrunden, fejl: {1}."
-        failedToBuyTheBackground: "Noget gik galt mens du købte baggrunden, fejl: {0}"
-        failedToSetBackground: "Kunne ikke angive baggrunden på grund af en databasefejl, prøv igen senere, hvis denne fejl fortsat vises, skal du kontakte en af mine udviklere."
-
-    RankCommand:
-        botsCannotReceiveXp: "Bots kan ikke modtage xp og kan derfor ikke rangeres, prøv at tagge en bruger i stedet."
-        unranked: 'Unranked'
-        fields:
-            rank: 'Rang'
-            level: 'Level'
-            total: '{0} (i alt: {1})'
-            experience: 'Experience'
-            experienceToNext: 'Experience nødvendig til næste Level'
-            youNeedMoreXpToLevelUp: '[{0}] {1}{2}\n\t\t\t\t\t\t\t\t\tDu mangler {3} mere XP for at levele op.'
-
-    RemindCommand:
-        errors:
-            invalidMeHere: 'Ugyldig type angivet, du skal erklære hvor du vil blive påmindet ved enten at bruge `here` for at blive påmindet i denne kanal, eller `me` skal mindes om beskeden i en direkte besked.'
-            invalidTime: 'Ugyldig tid angivet, klokkeslættet skal være større end 60 sekunder og mindre end 3 dage.'
-
-    ServerIdCommand:
-        message: ':user :id: for serveren er `:guildid`'
-
-    ServerInfoCommand:
-        fields:
-            id: 'ID'
-            owner: 'Ejer'
-            textChannels: 'Tekstkanaler'
-            voiceChannels: 'Stemmekanaler'
-            members: 'Medlemmer'
-            users: 'Users'
-            bots: 'Bots'
-            roles: 'Roller'
-            region: 'Område'
-            createdAt: 'Oprettet på'
-            emotes: 'Custom Emotes'
-        timeFormat: 'EEE, dd MMM yyyy HH:mm'
-
-    ShardCommand:
-        allShards: 'Alle Shards'
-        totalShards: 'Samlede Shards'
-
-    SourceCommand:
-        noArgs: 'Avaire kildekode:'
-        command: 'Avaire kildekoden for kommandoen **:command**:'
-        invalidCommand: 'Ugyldig kommando givet, her er den fulde kildekode i stedet.'
-        externalCommand: "Kommandoen er registreret via et eksternt plugin, forfatteren af plugin'en har ikke lavet kilden til kommandoen public, eller de glemte at tilføje et link til den, her er den fulde kildekode til boten i stedet."
-
-    StatsCommand:
-        title: 'Officielt Bot Server Invitere'
-        footer: 'I øjeblikket spiller i {0} servere med {1} sange i køen.'
-        formats:
-            perMinute: '{0} ({1} per min)'
-            perSecond: '{0} ({1} per sek)'
-            memory: '{0}Mb / {1}Mb'
-        fields:
-            author: 'Forfatter'
-            website: 'Website'
-            library: 'Bibliotek'
-            database: 'DB Queries kørt'
-            messages: 'Beskeder modtaget'
-            shard: 'Shard'
-            commands: 'Kommandoer kørt'
-            memory: 'Hukommelsesforbrug'
-            uptime: 'Uptime'
-            members: 'Medlemmer'
-            channels: 'Kanaler'
-            servers: 'Servere'
-
-    TemperatureConvertCommand:
-        invalidConvertFormat: "`{0}` is not a recognized conversion mode. Valid conversion modes are:\n{1}"
-        invalidNumberFormat: "`{0}` could not be parsed as a number."
-        message: ":input is equal to :one and :two"
-
-    UptimeCommand:
-        message: 'Jeg har været online i :time'
-        footer: 'Startet {0} ved {1}'
-        dateFormat: 'EEEEEEEE, dd MMM yyyy'
-        timeFormat: 'HH:mm:ss z'
-
-    UserAvatarCommand:
-            noUserFound: "Jeg fandt ingen brugere med et navn eller ID der matcher `{0}`"
-            title: "{0}#{1}'s Avatar"
-
-    UserIdCommand:
-        message: ':id: For brugeren **:target** er `:targetid`'
-
-    UserInfoCommand:
-        fields:
-            username: 'Brugernavn'
-            userId: 'Bruger ID'
-            joinedServer: 'Tilmeldt server'
-            joinedDiscord: 'Tilmeldt Discord'
-            roles: 'Roller ({0})'
-            servers: 'Servers'
-        inServers: '{0} boten kender til'
-        noRoles: '*Denne bruger er ikke i nogen roller*'
-        timeFormat: 'EEE, dd MMM yyyy HH:mm'
-
-    VersionCommand:
-        current: 'Jeg er for tiden `:difference` :type versioner bagud!'
-        getLatest: 'Du kan få den nyeste version af mig på github på [avaire/avaire](https://github.com/avaire/avaire)'
-        usingLatest: "Du bruger den nyeste version af AvaIre!"
-        latestVersion: 'Den seneste version af AvaIre er v{0}'
-        latestChanges: 'Seneste ændringer:'
-        versions:
-            majorName: 'Major'
-            major: "Major version opdateringer er de samlede reworks af boten og hvordan det virker eller en stor sammenstilling af mindre ændringer til kildekoden. Det anbefales stærkt at du opdaterer om Major version ændringer, da ældre versioner ikke understøttes for fejlrettelser eller opdateringer."
-            minorName: 'Minor'
-            minor: 'Minor version opdateringer er nye tilføjelser, funktioner og reworks af den eksisterende codebase, det anbefales at du opdaterer om Minor version ændringer for at få alle de nye funktioner.'
-            patchName: 'Patch'
-            patch: 'Opdateringer af patchversioner er fejlrettelser, refactoring af eksisterende kode og meget små ændringer, der ikke påvirker andre ting i kodebase. Det anbefales at opdatere ændringer af patchversioner for at holde op med fejlrettelserne og patcherne.'
-
-    WeatherCommand:
-        noCityFound: "Der blev ikke fundet nogen by med navnet **:name**, er du sikker på at du stavet det korrekt?"
-        fields:
-            weatherFor: "Vejret for {0}, {1}"
-            country: "Land"
-            temperature: "Temperatur"
-            windDirection: "Vindretning"
-            windSpeed: "Vindhastighed"
+  CalculateCommand:
+    boolean:
+      true: 'Sandt'
+      false: 'Falsk'
+    eastereggs:
+      quickMaths: '   -   Quick maths!'
+      binary: "Der er kun 10 typer mennesker i verden, dem der forstår binære, og dem der ikke gør det."
+  ChangelogCommand:
+    invalidChangelogChannel: "Invalid changelog channel defined, the text channel could not be found!"
+    cantReadChangelogChannel: "I don't have permission to read the message history for the defined changelog channel, this is required in oder to read, load, and display the changelog messages."
+    invalidVersionGiven: "Invalid version given, `{0}` is not a valid version entry."
+    noChangelogMessages: "There are no changelog messages to display yet, try check back again later."
+    latestVersion: "Latest version: {0}"
+    lastFewVersions: "Last 10 Versions"
+    changelogVersions: "Changelog Versions ({0})"
+  ChannelIdCommand:
+    message: ':user :id: af :channel er `:targetChannel`'
+  ChannelInfoCommand:
+    fields:
+      id: 'ID'
+      position: 'Position'
+      users: 'Bruger'
+      category: 'Kategori'
+      bitRate: 'Bit Rate'
+      nsfw: 'NSFW'
+      createdAt: 'Oprettet på'
+    noTopic: '*Der er ikke angivet noget emne for denne kanal*'
+    timeFormat: 'EEE, dd MMM yyyy HH:mm'
+  ExpandUrlCommand:
+    noRedirect: ":url redirecter ikke nogle steder hen."
+    redirects: '{0} redirecter til {1}'
+    jumps: '**Linket hopper gennem følgende websteder:**'
+  FeedbackCommand:
+    confirmation: "Du er ved at sende følgende feedback:```:feedback```Feedbacken vil blive sendt til feedback-kanalen i :server serveren, er du sikker på, at du vil sende den?\nBrug `:command` i de næste 60 sekunder uden argumenter for at sende feedbacken."
+    success: 'Sendt succesfuldt feedback <:tickYes:319985232306765825>'
+    failedToSend: 'Kunne ikke sende tilbagemelding: :error'
+    invalidFeedbackChannel: "Ugyldig feedback-kanel defineret, tekstkanalen kunne ikke findes!"
+    mustBe32CharactersOrMore: "Feedbackmeddelelsen skal være mindst 32 tegn lang."
+  GlobalLeaderboardCommand:
+    noData: 'Der er ingen leaderboard data lige nu, prøv igen senere.'
+    line: '`:num` **:username** er level **:level** med **:experience** xp.'
+    title: 'Globalt Experience Leaderboard'
+    yourRank: 'Dit rang'
+    loading:
+      title: 'Loader det globale leaderboard'
+      message: 'Vent et øjeblik, mens det globale leaderboard er indlæst.'
+  InviteCommand:
+    message: "Du kan invitere mig til din server ved at klikke [her](:oauth) eller bruge linket herunder:\n\n:oauth\n\n:note"
+    note: "**Note:**\nHvis du gerne vil prøve nye udviklede funktioner før alle andre, så kan du også prøve **Cutting Edge** botten, den får nye funktioner tilføjet næsten dagligt. Du kan invitere den ved at [klikke her](:edgeInvite) eller bruge link nedenfor:\n\n:edgeInvite"
+  IPInfoCommand:
+    hostname: 'Værtsnavn'
+    organisation: 'Organisation'
+    country: 'Land'
+  LeaderboardCommand:
+    noData: 'Der er ingen leaderboard data lige nu, prøv igen senere.'
+    line: '`:num` **:username** er level **:level** med **:experience** xp.'
+    title: '{0} Leaderboard'
+    yourRank: 'Dit rang'
+  PingCommand:
+    message: 'Pong! Tid taget :ping ms (:rating) Websocket heartbeat :heartbeat ms'
+    rating:
+      10: 'hurtigere end Sonic! :smiley_cat:'
+      100: 'fantastisk! :smiley:'
+      200: 'god! :slight_smile:'
+      300: 'anstændig. :neutral_face:'
+      400: 'gennemsnit... :confused:'
+      500: 'lidt langsomt. :slight_frown:'
+      600: 'ret langsomt.. :frowning2:'
+      700: 'langsomt.. :worried:'
+      800: 'for langsomt. :disappointed:'
+      900: 'dårligt. :sob: (helpme)'
+      1600: '#BlameDiscord. :angry:'
+      10000: 'det her giver ingen mening :thinking: #BlameAlexis'
+      other: 'langsom af. :dizzy_face:'
+  RankBackgroundCommand:
+    canBeUnlocked: "Rang baggrunde kan låses op ved hjælp af **[Vote Points](https://discordbots.org/bot/avaire)**,\nDu får **1 point** hver gang du stemmer for botten, eller **2 points** hvis du voter i weekenderne."
+    listTitle: "Rank Baggrundsbilleder ({0})"
+    youHaveVotePoints: "Du har {0} vote points."
+    exampleTitle: "{0} Eksempel"
+    exampleFooter: "{0} koster {1} vote points"
+    alreadyOwnsBackground: "Du ejer allerede **:name** baggrunden!"
+    doesntHaveEnoughPoints: "Du har ikke nok points til at købe denne baggrund, baggrunden koster `{0}`, og du har `{1}` vote points."
+    boughtBackgroundSuccessfully: "Tillykke! Du ejer nu **:name** baggrunden!\nDu kan bruge kommandoen `:command` for at bruge baggrunden."
+    youDontOwnThisBackground: "Du ejer ikke **:name** baggrunden, men du kan købe den for **:cost** Vote Points!"
+    successfullyChangedBackground: "Du har ændret din baggrund til at bruge **:name** baggrunden."
+    disabledBackgrounds: "Rangebaggrunde er blevet deaktiveret, du bruger nu normale meddelelser for rangkommandoer igen."
+    buyNotes:
+      alreadyOwns: "**{0}**\n- _Du ejer allerede denne baggrund._"
+      doesntOwns: "**{0}**\n - Koster {1} vote points."
+    failedToSendExampleMessage: "Noget gik galt da vi forsøgte at sende eksempelbilledet for {0} baggrunden, fejl: {1}."
+    failedToBuyTheBackground: "Noget gik galt mens du købte baggrunden, fejl: {0}"
+    failedToSetBackground: "Kunne ikke angive baggrunden på grund af en databasefejl, prøv igen senere, hvis denne fejl fortsat vises, skal du kontakte en af mine udviklere."
+  RankCommand:
+    botsCannotReceiveXp: "Bots kan ikke modtage xp og kan derfor ikke rangeres, prøv at tagge en bruger i stedet."
+    unranked: 'Unranked'
+    fields:
+      rank: 'Rang'
+      level: 'Level'
+      total: '{0} (i alt: {1})'
+      experience: 'Experience'
+      experienceToNext: 'Experience nødvendig til næste Level'
+      youNeedMoreXpToLevelUp: "[{0}] {1}{2}\n\\t\\t\\t\\t\\t\\t\\t\\t\\tDu mangler {3} mere XP for at levele op."
+  RemindCommand:
+    errors:
+      invalidMeHere: 'Ugyldig type angivet, du skal erklære hvor du vil blive påmindet ved enten at bruge `here` for at blive påmindet i denne kanal, eller `me` skal mindes om beskeden i en direkte besked.'
+      invalidTime: 'Ugyldig tid angivet, klokkeslættet skal være større end 60 sekunder og mindre end 3 dage.'
+  ServerIdCommand:
+    message: ':user :id: for serveren er `:guildid`'
+  ServerInfoCommand:
+    fields:
+      id: 'ID'
+      owner: 'Ejer'
+      textChannels: 'Tekstkanaler'
+      voiceChannels: 'Stemmekanaler'
+      members: 'Medlemmer'
+      users: 'Bruger'
+      bots: 'Bots'
+      roles: 'Roller'
+      region: 'Område'
+      createdAt: 'Oprettet på'
+      emotes: 'Custom Emotes'
+    timeFormat: 'EEE, dd MMM yyyy HH:mm'
+  ShardCommand:
+    allShards: 'Alle Shards'
+    totalShards: 'Samlede Shards'
+  SourceCommand:
+    noArgs: 'Avaire kildekode:'
+    command: 'Avaire kildekoden for kommandoen **:command**:'
+    invalidCommand: 'Ugyldig kommando givet, her er den fulde kildekode i stedet.'
+    externalCommand: "Kommandoen er registreret via et eksternt plugin, forfatteren af plugin'en har ikke lavet kilden til kommandoen public, eller de glemte at tilføje et link til den, her er den fulde kildekode til boten i stedet."
+  StatsCommand:
+    title: 'Officielt Bot Server Invitere'
+    footer: 'I øjeblikket spiller i {0} servere med {1} sange i køen.'
+    formats:
+      perMinute: '{0} ({1} per min)'
+      perSecond: '{0} ({1} per sek)'
+      memory: '{0}Mb / {1}Mb'
+    fields:
+      author: 'Forfatter'
+      website: 'Website'
+      library: 'Bibliotek'
+      database: 'DB Queries kørt'
+      messages: 'Beskeder modtaget'
+      shard: 'Shard'
+      commands: 'Kommandoer kørt'
+      memory: 'Hukommelsesforbrug'
+      uptime: 'Uptime'
+      members: 'Medlemmer'
+      channels: 'Kanaler'
+      servers: 'Servere'
+  TemperatureConvertCommand:
+    invalidConvertFormat: "`{0}` is not a recognized conversion mode. Valid conversion modes are:\n{1}"
+    invalidNumberFormat: "`{0}` could not be parsed as a number."
+    message: ":input is equal to :one and :two"
+  UptimeCommand:
+    message: 'Jeg har været online i :time'
+    footer: 'Startet {0} ved {1}'
+    dateFormat: 'EEEEEEEE, dd MMM yyyy'
+    timeFormat: 'HH:mm:ss z'
+  UserAvatarCommand:
+    noUserFound: "Jeg fandt ingen brugere med et navn eller ID der matcher `{0}`"
+    title: "{0}#{1}'s Avatar"
+  UserIdCommand:
+    message: ':id: For brugeren **:target** er `:targetid`'
+  UserInfoCommand:
+    fields:
+      username: 'Brugernavn'
+      userId: 'Bruger ID'
+      joinedServer: 'Tilmeldt server'
+      joinedDiscord: 'Tilmeldt Discord'
+      roles: 'Roller ({0})'
+      servers: 'Servere'
+    inServers: '{0} boten kender til'
+    noRoles: '*Denne bruger er ikke i nogen roller*'
+    timeFormat: 'EEE, dd MMM yyyy HH:mm'
+  VersionCommand:
+    current: 'Jeg er for tiden `:difference` :type versioner bagud!'
+    getLatest: 'Du kan få den nyeste version af mig på github på [avaire/avaire](https://github.com/avaire/avaire)'
+    usingLatest: "Du bruger den nyeste version af AvaIre!"
+    latestVersion: 'Den seneste version af AvaIre er v{0}'
+    latestChanges: 'Seneste ændringer:'
+    versions:
+      majorName: 'Major'
+      major: 'Major version opdateringer er de samlede reworks af boten og hvordan det virker eller en stor sammenstilling af mindre ændringer til kildekoden. Det anbefales stærkt at du opdaterer om Major version ændringer, da ældre versioner ikke understøttes for fejlrettelser eller opdateringer.'
+      minorName: 'Minor'
+      minor: 'Minor version opdateringer er nye tilføjelser, funktioner og reworks af den eksisterende codebase, det anbefales at du opdaterer om Minor version ændringer for at få alle de nye funktioner.'
+      patchName: 'Patch'
+      patch: 'Opdateringer af patchversioner er fejlrettelser, refactoring af eksisterende kode og meget små ændringer, der ikke påvirker andre ting i kodebase. Det anbefales at opdatere ændringer af patchversioner for at holde op med fejlrettelserne og patcherne.'
+  WeatherCommand:
+    noCityFound: "Der blev ikke fundet nogen by med navnet **:name**, er du sikker på at du stavet det korrekt?"
+    fields:
+      weatherFor: "Vejret for {0}, {1}"
+      country: "Land"
+      temperature: "Temperatur"
+      windDirection: "Vindretning"
+      windSpeed: "Vindhastighed"

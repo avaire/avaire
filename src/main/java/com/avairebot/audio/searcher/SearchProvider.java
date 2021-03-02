@@ -57,7 +57,7 @@ public enum SearchProvider implements Feature {
      *
      * @param track The audio track the search provider should be loaded for.
      * @return The matching search provider for the given audio track,
-     *         or the {@link #URL url search provider}.
+     * or the {@link #URL url search provider}.
      */
     @Nonnull
     public static SearchProvider fromTrack(@Nonnull AudioTrack track) {
@@ -75,7 +75,7 @@ public enum SearchProvider implements Feature {
      *
      * @param name The name of the search provider that should be returned.
      * @return The matching search provider for the given name,
-     *         or {@code NULL} if there were no match.
+     * or {@code NULL} if there were no match.
      */
     @Nullable
     public static SearchProvider fromName(String name) {
@@ -92,7 +92,7 @@ public enum SearchProvider implements Feature {
      *
      * @param id The ID of the search provider that should be returned.
      * @return The matching search provider for the given ID,
-     *         or {@code NULL} if there were no match.
+     * or {@code NULL} if there were no match.
      */
     @Nullable
     public static SearchProvider fromId(int id) {
@@ -120,7 +120,7 @@ public enum SearchProvider implements Feature {
      * for tracks using the current provider.
      *
      * @return The prefix used for search in LavaPlayer, or {@code NULL} if
-     *         the current instance is not a searchable search provider.
+     * the current instance is not a searchable search provider.
      */
     @Nullable
     public String getPrefix() {
@@ -146,7 +146,7 @@ public enum SearchProvider implements Feature {
      *
      * @param string The string that should be matched against the domains.
      * @return {@code True} if the given string contains one of the domains
-     *         for the current provider, {@code False} otherwise.
+     * for the current provider, {@code False} otherwise.
      */
     public boolean matchesDomain(String string) {
         if (string == null) {
@@ -166,7 +166,7 @@ public enum SearchProvider implements Feature {
      * Checks if the current search provider is searchable or not.
      *
      * @return {@code True} if the search provider is searchable,
-     *         {@code False} otherwise.
+     * {@code False} otherwise.
      */
     public boolean isSearchable() {
         return getPrefix() != null

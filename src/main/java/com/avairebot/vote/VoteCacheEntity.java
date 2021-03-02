@@ -94,7 +94,7 @@ public class VoteCacheEntity {
      * for receiving vote messages through their DMs.
      *
      * @return <code>True</code> if the user is opt-in for receiving
-     *         vote messages, <code>False</code> otherwise.
+     * vote messages, <code>False</code> otherwise.
      */
     public boolean isOptIn() {
         return optIn;

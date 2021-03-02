@@ -30,7 +30,7 @@ import com.avairebot.metrics.Metrics;
 import com.avairebot.middleware.global.IncrementMetricsForCommand;
 import com.avairebot.middleware.global.IsCategoryEnabled;
 import com.avairebot.middleware.global.ProcessCommand;
-import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.api.entities.Message;
 
 import java.util.ArrayList;
 import java.util.List;

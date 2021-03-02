@@ -43,7 +43,7 @@ public enum PermissionType {
      *
      * @param name The name that should be matched against the permission types.
      * @return Never-null, the permission type that matches the given name,
-     *         or the {@link #USER user} permission type.
+     * or the {@link #USER user} permission type.
      */
     @Nonnull
     public static PermissionType fromName(String name) {
@@ -59,7 +59,7 @@ public enum PermissionType {
      * Determines if the user should be checked.
      *
      * @return <code>True</code> if users should be checked for
-     *         this permission type, <code>False</code> otherwise.
+     * this permission type, <code>False</code> otherwise.
      */
     public boolean isCheckUser() {
         return checkUser;
@@ -69,7 +69,7 @@ public enum PermissionType {
      * Determines if the bot should be checked.
      *
      * @return <code>True</code> if bots should be checked for
-     *         this permission type, <code>False</code> otherwise.
+     * this permission type, <code>False</code> otherwise.
      */
     public boolean isCheckBot() {
         return checkBot;

@@ -33,8 +33,8 @@ import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.utilities.ComparatorUtil;
 import com.avairebot.utilities.MentionableUtil;
 import com.avairebot.utilities.NumberUtil;
-import net.dv8tion.jda.core.entities.Channel;
-import net.dv8tion.jda.core.entities.TextChannel;
+import net.dv8tion.jda.api.entities.GuildChannel;
+import net.dv8tion.jda.api.entities.TextChannel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -128,7 +128,7 @@ public class ChannelLevelCommand extends Command {
             return sendDisabledChannels(context, guildTransformer);
         }
 
-        Channel channel = MentionableUtil.getChannel(context.getMessage(), args);
+        GuildChannel channel = MentionableUtil.getChannel(context.getMessage(), args);
         if (channel == null || !(channel instanceof TextChannel)) {
             return sendErrorMessage(context, context.i18n("invalidChannel"));
         }

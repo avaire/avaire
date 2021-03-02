@@ -33,7 +33,7 @@ import com.avairebot.contracts.commands.CommandGroups;
 import com.avairebot.database.transformers.ChannelTransformer;
 import com.avairebot.database.transformers.GuildTransformer;
 import com.avairebot.utilities.ComparatorUtil;
-import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.api.entities.Message;
 
 import javax.annotation.Nonnull;
 import java.sql.SQLException;
