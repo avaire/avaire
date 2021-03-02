@@ -7,7 +7,7 @@ errors:
   mustBeConnectedToVoice: '¡Debes conectarte a un canal de voz para usar este comando!'
   mustBeConnectedToSameChannel: '¡Debes estar en el mismo canal de voz que yo para usar {0}!'
   missingMusicQueue: 'No se ha encontrado cola de música. ¡Debes poner un enlace a una canción o decir al menos un título!'
-  cantMentionEveryone: "You don't have permissions to mention everyone."
+  cantMentionEveryone: "Tu no tienes permisos para mencionar a everyone."
   requireLevelFeatureToBeEnabled: 'Este comando necesita la característica "Niveles y experiencia" activada en el servidor, puedes pedirle al administrador del servidor que la active con "{0}"'
   errorOccurredWhileLoading: 'Se ha producido un error al cargar: {0}. Vuelve a intentarlo y si el problema continúa informa de ello a alguno de mis desarrolladores en el [servidor de atención AvaIre] (https://avairebot.com/support).'
 levelupMessages:
@@ -17,50 +17,50 @@ levelupMessages:
   - "¡Vas a 🔥 :user! Estás al **nivel :level**"
   - "Enhorabuena :user 🎉 ¡Has subido de nivel! Ahora estás al **nivel :level**"
 levelupRoleMessages:
-  - "GG :user, you just reached **Level :level**, you now have the **:role** role"
-  - "Eyy :user, you just leveled up! You're now **Level :level**, have the **:role** role, you earned it."
-  - "Congratulations :user 🎉 You just leveled up! You're now **Level :level**, you have also earned yourself the **:role** role"
+  - "GG:user, acabas de llegar al nivel **Nivel :nivel**, ahora tienes el role **:role**"
+  - "Eyy :user, acabas de subir de nivel! Ahora eres nivel ** Nivel :nivel**, toma el rol **:role**, te lo ganaste."
+  - "Felicitaciones :user 🎉 ¡Acabas de subir de nivel! Ahora eres **Nivel :nivel**, también has ganado el rol **:role**"
 pagination:
-  simpleFooter: "Page **{0}** out of **{1}** pages.\n`{2} [page]`"
+  simpleFooter: "Página **{0}** de **{1}** páginas **.\n`{2} [page]`"
 modlog-types:
   kick:
-    name: "Kick"
-    action: "Kicked"
+    name: "Expulsar"
+    action: "Expulsado"
   voiceKick:
-    name: "Voice Kick"
-    action: "Voice Kicked"
+    name: "Expulsar de voz"
+    action: "Expulsado de voz"
   ban:
     name: "Ban"
-    action: "Banned"
+    action: "Baneado"
   softBan:
-    name: "Soft Ban"
-    action: "Soft Banned"
+    name: "Baneo suave"
+    action: "Levemente baneado"
   unban:
-    name: "Unban"
-    action: "Unbanned"
+    name: "Desbanear"
+    action: "Desbaneado"
   purge:
-    name: "Purge"
-    action: "Purged"
+    name: "Purgar"
+    action: "Purgado"
   warn:
-    name: "Warn"
-    action: "Warned"
+    name: "Advertencia"
+    action: "Advertido"
   pardon:
-    name: "Pardon"
-    action: "Pardoned"
+    name: "Perdonar"
+    action: "Perdonado"
   mute:
-    name: "Mute"
-    action: "Muted"
+    name: "Silenciar"
+    action: "Silenciado"
   tempMute:
-    name: "Temp Mute"
-    action: "Temp Muted"
+    name: "Silenciar temporalmente"
+    action: "Temporalmente silenciado"
   unmute:
-    name: "Unmute"
-    action: "Unmuted"
+    name: "Desmutear"
+    action: "Desmuteado"
 administration:
   common:
-    invalidRole: ":user Invalid role, I couldn't find any role called **:role**"
+    invalidRole: ":user Rol inválido, no pude encontrar ningún rol llamado **:role**"
   channelModule:
-    invalidColorGiven: "Invalid color value given, the color must be a valid HEX value.\nYou can try this [random color picker](https://www.webpagefx.com/web-design/random-color-picker/) to try and get a random HEX color."
+    invalidColorGiven: "Valor de color no válido dado, el color debe ser un valor HEX válido.\nPuedes probar este [selector de color aleatorio](https://www. ebpagefx.com/web-design/random-color-picker/) para intentar obtener un color HEX aleatorio."
     message: "The `:type` module message has been set to:\n\n```:message```\n\nYou can test the message by using the command again and mentioning a user.\n`:command <user>`"
   AddLevelRoleCommand:
     noSlotsLeft: "The server doesn't have any more level role slots, you can remove existing level roles to free up slots."

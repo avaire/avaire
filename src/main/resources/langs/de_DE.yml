@@ -7,7 +7,7 @@ errors:
   mustBeConnectedToVoice: 'Du musst mit einem Voicechannel verbunden sein, um diesen Befehl ausführen zu können!'
   mustBeConnectedToSameChannel: 'Du musst im selben Voicechannel verbunden sein, um folgenden Befehl ausführen zu können: {0}!'
   missingMusicQueue: 'Fehlende Music `query`. Du musst einen Link zu einem Song angeben, den du dir anhören möchtest. Du kannst mir auch gern den Musiktitel geben.'
-  cantMentionEveryone: "You don't have permissions to mention everyone."
+  cantMentionEveryone: "Du hast nicht die Berechtigung, alle zu erwähnen."
   requireLevelFeatureToBeEnabled: 'Dieser Befehl benötigt das `Levels & Experience` Feature. Du kannst den Server-Administrator anfragen, ob dieser damit einverstanden ist diesen mit folgendem Befehl zu aktivieren: `{0}`'
   errorOccurredWhileLoading: 'Ein Fehler ist beim Laden von {0} aufgetreten. Bitte versuche es später erneut. Sollte dieser Fehler erneut auftreten, so kontaktiere eines unserer Entwickler auf dem [AvaIre Support Server] [https://avairebot.com/support].'
 levelupMessages:
@@ -21,11 +21,11 @@ levelupRoleMessages:
   - "Eyy :user, du bist soeben aufgestiegen! Du bist nun auf **Level :level**. Hier, die **:role** Rolle. Hast du dir verdient!"
   - "Glückwunsch, :user! 🎉 Du bist aufgestiegen! Du bist nun auf **Level :level**. Das heißt: Hier ein **:role** Rang. Nur für dich!"
 pagination:
-  simpleFooter: "Page **{0}** out of **{1}** pages.\n`{2} [page]`"
+  simpleFooter: "Seite **{0}** von **{1}** Seiten.\n`{2} [page]`"
 modlog-types:
   kick:
     name: "Kick"
-    action: "Kicked"
+    action: "Gekickt"
   voiceKick:
     name: "Voice Kick"
     action: "Voice Kicked"
@@ -42,8 +42,8 @@ modlog-types:
     name: "Purge"
     action: "Purged"
   warn:
-    name: "Warn"
-    action: "Warned"
+    name: "Warne"
+    action: "Gewarnt"
   pardon:
     name: "Pardon"
     action: "Pardoned"
@@ -69,7 +69,7 @@ administration:
     alreadyARoleAtLevel: "Es existiert bereits einen Rollenaufstieg für Level **:level**. Nur eine Rolle kann per Level vergeben werden."
     success: "Die Rolle **:role** wurde zu der Level-Up-Liste hinzugefügt.\nDer Server hat `:slots` weitere verfügbare Level-Rollenslots."
   AddReactionRoleCommand:
-    emoteDoestBelongToServer: "The emote does not belong to this server, you can only use emotes from this server as reaction emotes."
+    emoteDoestBelongToServer: "Das Emote gehört nicht zu diesem Server. Du kannst nur Emotes von diesem Server als Reaktions-Emotes verwenden."
     messageHasNoSlots: "The message doesn't have anymore reaction role slots available, you can remove existing reaction-roles to free up slots, or delete reaction role messages to add the role to a new reaction role message."
     serverHasNoSlots: "Can't create new reaction role messages, the server doesn't have anymore reaction messages slots, you can deleting existing reaction role messages to free up slots, or add your reaction role to a reaction message if there are available slots on the message for more roles."
     success: "The :role role has been registered as an reaction role for the :emote emote.\nThe message has `:roleSlots` more reaction-role slots available for the message, and `:messageSlots` reaction-message slots available."
@@ -77,10 +77,10 @@ administration:
     noSlotsLeft: "Der Server hat keine weiteren Rollenslots für Rollen, die du dir selbst setzen kannst. Entferne hierzu bitte zuerst eine Rolle, um eine neue hinzuzufügen."
     success: "Die Rolle **:role** wurde zu der Liste der selbst setzbaren Rollen hinzugefügt.\n Der Server hat `:slots` weitere Rollenslots für Rollen, die du dir selbst setzen kannst."
   AdministrateExperienceCommand:
-    cantUseForBots: "You can't add, remove, or reset XP for bot accounts since they don't earn any, please select a normal user when using this command."
-    invalidAmountGiven: "The `amount` property must be between 1 and {0} to add or take XP from a user."
-    aboutToResetEverything: "You're about to reset the XP for everyone on the entire server. If you're sure you wanna continue, run the command to completely reset the servers XP.\n\n```:command server-reset :token```\nThis command will only work for 60 seconds, after that the token becomes invalid and the command has to be ran again to get a new token."
-    aboutToSyncEverything: "You're about to sync the XP with the global leaderboard, this will effectively revert any custom XP changes made on the entire server. If you're sure you wanna continue, run the command to completely sync the servers XP.\n\n```:command server-sync :token```\nThis command will only work for 60 seconds, after that the token becomes invalid and the command has to be ran again to get a new token."
+    cantUseForBots: "Du kannst für Bot-Konten keine XP hinzufügen, entfernen oder zurücksetzen, da sie keine XP verdienen. Bitte wähle einen normalen Benutzer wenn du diesen Befehl verwendest."
+    invalidAmountGiven: "Die Eigenschaft `amount` muss zwischen 1 und {0} sein, um XP von einem Benutzer hinzuzufügen oder zu nehmen."
+    aboutToResetEverything: "Du bist dabei die XP für alle auf dem gesamten Server zurückzusetzen. Wenn du sicher bist, dass du fortfahren willst, führe den Befehl aus, um die Server XP komplett zurückzusetzen.\n\n```:command server-reset :token```\nDieser Befehl funktioniert nur für 60 Sekunden. danach wird das Token ungültig und das Kommando muss erneut ausgeführt werden, um einen neuen Token zu erhalten."
+    aboutToSyncEverything: "Du bist dabei, die XP mit der globalen Rangliste zu synchronisieren. Das wird effektiv alle benutzerdefinierten XP-Änderungen auf dem gesamten Server rückgängig machen. Wenn Du sicher bist, dass Du trotzdem fortfahren willst, führe den Befehl aus, um die Server XP komplett zu synchronisieren.\n\n```:command server-sync :token`\nDieser Befehl funktioniert nur für 60 Sekunden, danach wird der Token ungültig und der Befehl muss erneut ausgeführt werden, um einen neuen Token zu erhalten."
     failedToSaveChanges: "Failed to save the changes to the database, please try again, if the error continues to happen, please contact support on the official [AvaIre support server](https://avairebot.com/support)."
     mustBeAnAdmin: "You must be a server admin to use this action."
     invalidSecurityToken: "Invalid security token given, please provide the correct security token to reset all the servers XP."

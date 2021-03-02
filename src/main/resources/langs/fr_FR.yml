@@ -31,7 +31,7 @@ modlog-types:
     action: "Voice Kicked"
   ban:
     name: "Ban"
-    action: "Banned"
+    action: "Banni"
   softBan:
     name: "Soft Ban"
     action: "Soft Banned"
@@ -82,13 +82,13 @@ administration:
     aboutToResetEverything: "You're about to reset the XP for everyone on the entire server. If you're sure you wanna continue, run the command to completely reset the servers XP.\n\n```:command server-reset :token```\nThis command will only work for 60 seconds, after that the token becomes invalid and the command has to be ran again to get a new token."
     aboutToSyncEverything: "You're about to sync the XP with the global leaderboard, this will effectively revert any custom XP changes made on the entire server. If you're sure you wanna continue, run the command to completely sync the servers XP.\n\n```:command server-sync :token```\nThis command will only work for 60 seconds, after that the token becomes invalid and the command has to be ran again to get a new token."
     failedToSaveChanges: "Failed to save the changes to the database, please try again, if the error continues to happen, please contact support on the official [AvaIre support server](https://avairebot.com/support)."
-    mustBeAnAdmin: "You must be a server admin to use this action."
+    mustBeAnAdmin: "Vous devez être un administrateur du serveur pour utiliser cette action."
     invalidSecurityToken: "Invalid security token given, please provide the correct security token to reset all the servers XP."
-    warning: "Warning!"
+    warning: "Attention !"
     success:
       add: "**:amount** XP has been given to :target, they now have **:newAmount** XP."
       take: "**:amount** XP has been taken from :target, they now have **:newAmount** XP."
-      reset: ":target has successfully had their XP reset."
+      reset: "Le niveau de :target a été réinitialiser avec succès."
       sync: ":target has successfully had synchronized with the global leaderboard, they now have **:newAmount** XP."
       syncEveryone: "Everyone on the entire server has been synced with the global leaderboard!"
       everything: "Everyone on the entire server has now had their XP completely reset!"
@@ -199,7 +199,7 @@ administration:
     invalidNumberGiven: "Modificateur fourni invalide, le modificateur doit être un pourcentage positif entre `0,01%`et `500%`."
     resetToDefault: "Le modificateur de niveau a été réinitialisé en utilisant le modificateur par défaut **:modifier**."
     changedTo: "Le modificateur de niveau et d'expérience est à présent **:modifier**"
-    requiredIsNow: "\n\n**Required XP to reach some levels is now:**\n"
+    requiredIsNow: "\n\n**L'expérience requise pour atteindre certains niveaux est maintenant :**\n"
     statusMessage: "Le serveur utilise un modificateur **:modifier** pour les niveaux et l'expérience.\n\n**XP requis pour atteindre certains niveaux**\n"
     level: "Niveau {0}"
   ListAliasesCommand:
@@ -210,7 +210,7 @@ administration:
     listRoles: "List of Level Roles ({0})"
   ListReactionRoleCommand:
     noReactionRoles: "The server doesn't have any reaction roles right now, you can create one using\n`{0}arr <emote> <role>`"
-    listReactionRoles: "List of Reaction Roles ({0})"
+    listReactionRoles: "Liste des rôles sur réaction ({0})"
   ListSelfAssignableRolesCommand:
     noSelfAssignableRoles: "There are currently no self-assignable roles for this server."
     title: "There are {0} self-assignable roles"
