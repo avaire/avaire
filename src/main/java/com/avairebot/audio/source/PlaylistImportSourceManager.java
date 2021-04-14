@@ -30,7 +30,6 @@ import com.avairebot.audio.AudioPlayerManagerConfiguration;
 import com.avairebot.audio.queue.PlaylistInfo;
 import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
-import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.source.AudioSourceManager;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.*;
@@ -60,7 +59,7 @@ public class PlaylistImportSourceManager implements AudioSourceManager {
     }
 
     @Override
-    public AudioItem loadItem(DefaultAudioPlayerManager manager, AudioReference ar) {
+    public AudioItem loadItem(AudioPlayerManager manager, AudioReference ar) {
         String[] parsed = parse(ar.identifier);
         if (parsed == null) return null;
         String serviceName = parsed[0];
