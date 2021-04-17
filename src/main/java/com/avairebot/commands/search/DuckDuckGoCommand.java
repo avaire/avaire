@@ -45,7 +45,8 @@ public class DuckDuckGoCommand extends Command {
     private static final Map<String, String> HTTP_HEADERS = new HashMap<>();
 
     static {
-        HTTP_HEADERS.put("Accept-Language", "en-US,en;q=0.8,en-GB;q=0.6,da;q=0.4");
+        HTTP_HEADERS.put("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.128 Safari/537.36");
+        HTTP_HEADERS.put("Accept-Language", "en-US,en;q=0.9,en-GB;q=0.8,da;q=0.7");
         HTTP_HEADERS.put("Cache-Control", "no-cache, no-store, must-revalidate");
         HTTP_HEADERS.put("Pragma", "no-cache");
         HTTP_HEADERS.put("Expires", "0");
@@ -96,15 +97,11 @@ public class DuckDuckGoCommand extends Command {
         }
 
         try {
-            Map<String, String> headers = new HashMap<>();
-            headers.putAll(HTTP_HEADERS);
-            headers.put("User-Agent", "AvaIre-Discord-Bot (" + avaire.getSelfUser().getId() + ")");
-
             context.getMessageChannel().sendTyping().queue();
 
             boolean nsfwEnabled = isNSFWEnabled(context);
             Document document = Jsoup.connect(generateUri(args, nsfwEnabled))
-                .headers(headers)
+                .headers(new HashMap<>(HTTP_HEADERS))
                 .timeout(10000)
                 .get();
 
@@ -165,16 +162,16 @@ public class DuckDuckGoCommand extends Command {
     }
 
     private String generateUri(String[] args, boolean isNSFWEnabled) throws UnsupportedEncodingException {
-        return "https://duckduckgo.com/html/?q=" + URLEncoder.encode(
+        return "https://html.duckduckgo.com/html/?q=" + URLEncoder.encode(
             removeBangs(String.join(" ", args)), "UTF-8"
-        ) + "&t=hf&ia=web&kp=" + (isNSFWEnabled ? "-2" : "1");
+        ) + "&kp=" + (isNSFWEnabled ? "-2" : "1");
     }
 
     private String removeBangs(String text) {
         if (!Objects.equals(text.substring(0, 1), "!")) {
             return text;
         }
-        return removeBangs(text.substring(1, text.length()));
+        return removeBangs(text.substring(1));
     }
 
     private boolean isNSFWEnabled(CommandMessage message) {
