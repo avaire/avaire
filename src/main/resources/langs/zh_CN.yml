@@ -8,6 +8,7 @@ errors:
   mustBeConnectedToSameChannel: '您必须连接到我所在的同一语音频道 {0}!'
   missingMusicQueue: '丢失的音乐`query`,您必须包含一个指向您要听的歌曲的链接，或者至少给我一个歌曲标题!'
   cantMentionEveryone: "您没有权限提及所有人."
+  cantMentionUsersOrRoles: "You don't have permission to use this command for mentioning users or roles"
   requireLevelFeatureToBeEnabled: '此命令要求为服务器启用 `级别和体验` 您可以询问服务器管理员是否要使用 `{0}`'
   errorOccurredWhileLoading: '加载时出错 {0}, 请再试一次. 如果问题继续存在, 请将此情况报告给[Avaire支持服务器]上的一个开发人员。(https://avairebot.com/support). 如果你不懂如何操作，请联系我QQ1653573879来帮助操作'
 levelupMessages:

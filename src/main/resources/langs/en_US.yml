@@ -8,6 +8,7 @@ errors:
     mustBeConnectedToSameChannel: 'You must be connected to the same voice channel I am in to {0}!'
     missingMusicQueue: 'Missing music `query`, you must include a link to the song that you want to listen to, or at least give me a song title!'
     cantMentionEveryone: "You don't have permissions to mention everyone."
+    cantMentionUsersOrRoles: "You don't have permission to use this command for mentioning users or roles"
     requireLevelFeatureToBeEnabled: 'This command requires the `Levels & Experience` feature to be enabled for the server, you can ask a server admin if they want to enable it with `{0}`'
     errorOccurredWhileLoading: 'An error occurred while loading the {0}, please try again. If the problem continues, please report this to one of my developers on the [AvaIre support server](https://avairebot.com/support).'
 

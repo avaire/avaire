@@ -8,6 +8,7 @@ errors:
   mustBeConnectedToSameChannel: 'Вы должны быть подключены к тому же голосовому каналу, в котором я {0}!'
   missingMusicQueue: 'Отсутствует музыкальный `запрос`, Вы должны вставить ссылку на трек, которую хотите послушать, или, по крайней мере, дать мне название трека!'
   cantMentionEveryone: "You don't have permissions to mention everyone."
+  cantMentionUsersOrRoles: "You don't have permission to use this command for mentioning users or roles"
   requireLevelFeatureToBeEnabled: 'Эта команда требует, чтобы функция `Уровни & Опыт` была включена для сервера. Вы можете попросить администратора сервера включить эту функциию'
   errorOccurredWhileLoading: 'Произошла ошибка при загрузке {0}, повторите попытку, если проблема не исчезнет, сообщите об этом одному из администраторов или на [сервер поддержки бота](https://avairebot.com/support).'
 levelupMessages:

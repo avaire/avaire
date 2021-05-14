@@ -8,6 +8,7 @@ errors:
   mustBeConnectedToSameChannel: 'Tu dois être connectés au même channel vocal que moi, je suis dans {0}!'
   missingMusicQueue: 'Musique manquante `query`, tu dois inclure lien de la musique que tu souhaites écouter, ou au moins un titre de musique!'
   cantMentionEveryone: "You don't have permissions to mention everyone."
+  cantMentionUsersOrRoles: "You don't have permission to use this command for mentioning users or roles"
   requireLevelFeatureToBeEnabled: 'Cette commande requiert que la fonctionnalité `Levels & Experience` soit active pour le serveur, tu peux demander à un admin serveur si ils veulent l''activer avec `{0}`'
   errorOccurredWhileLoading: 'Une erreur est survenue lors du chargement de {0}, réessayer, si le problème persiste reportez le à l''un de mes développeurs sur le [serveur de support AvaIre](https://avairebot.com/support).'
 levelupMessages:

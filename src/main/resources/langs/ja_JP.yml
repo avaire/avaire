@@ -8,6 +8,7 @@ errors:
   mustBeConnectedToSameChannel: '私が接続しているのと同じ {0} のボイスチャンネルに接続している必要があります！!'
   missingMusicQueue: '音楽の `キュー` がない場合は、聴きたい曲へのリンクを含めるか、少なくとも曲のタイトルを教えてください。'
   cantMentionEveryone: "全員宛にメンションする権限がありません。"
+  cantMentionUsersOrRoles: "You don't have permission to use this command for mentioning users or roles"
   requireLevelFeatureToBeEnabled: 'このコマンドを実行するには、サーバーで「レベルとエクスペリエンス」機能を有効にする必要があります。サーバー管理者に `{0}` で有効にするかどうかを尋ねることができます。'
   errorOccurredWhileLoading: '{0} の読み込み中にエラーが発生しました。もう一度お試しください。 問題が解決しない場合は、[AvaIreサポートサーバー (英語)](https://avairebot.com/support)の開発者に報告してください。'
 levelupMessages:

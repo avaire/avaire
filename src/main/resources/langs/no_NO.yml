@@ -8,6 +8,7 @@ errors:
   mustBeConnectedToSameChannel: 'Du må være tilkoblet samme samtale rom som meg for og endre {0}!'
   missingMusicQueue: 'Manglende musikk `query`, du må inkludere en lenke til sangen du ønsker og lytte til, eller gi meg i det minste en sang tittel!'
   cantMentionEveryone: "You don't have permissions to mention everyone."
+  cantMentionUsersOrRoles: "You don't have permission to use this command for mentioning users or roles"
   requireLevelFeatureToBeEnabled: 'Denne kommandoen krever at `Levels & Experience` fungsjonen er skrudd på for serveren, du kan spørre en admin om de ønsker og skru på fungsjonen `{0}`'
   errorOccurredWhileLoading: 'En feil oppsto ved lasting av {0}, vennligst prøv igjen, om problemet vedvarer, vennligst kontakt en av mine utvikklere på [AvaIre support server](https://avairebot.com/support).'
 levelupMessages:

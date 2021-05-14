@@ -8,6 +8,7 @@ errors:
   mustBeConnectedToSameChannel: 'Ugyan ahhoz a szobához kell csatlakozva lenned mint én, hogy: {0}!'
   missingMusicQueue: 'Hiányzó zene `szám`, egy linket kell küldened a számhoz amit hallgatnál, vagy legalább add meg a címét!'
   cantMentionEveryone: "You don't have permissions to mention everyone."
+  cantMentionUsersOrRoles: "You don't have permission to use this command for mentioning users or roles"
   requireLevelFeatureToBeEnabled: 'Ez a parancs megköveteli a `Levels & Experience` funkciót, hogy be legyen kapcsolva a szerveren. Megkérdheted a szerver tulajdonost, hogy be akarják-e kapcsolni a `{0}`-vel'
   errorOccurredWhileLoading: 'Hiba lépett fel a {0} betöltése közben, kérlek próbáld újra, ha a hiba továbbra is fennáll kérlek jelentsd ezt az egyik fejlesztőmnek az [AvaIre support server](https://avairebot.com/support)-en.'
 levelupMessages:
