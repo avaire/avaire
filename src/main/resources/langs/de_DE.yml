@@ -43,7 +43,7 @@ modlog-types:
     name: "Purge"
     action: "Purged"
   warn:
-    name: "Warne"
+    name: "Warn"
     action: "Gewarnt"
   pardon:
     name: "Pardon"
