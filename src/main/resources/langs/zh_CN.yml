@@ -245,7 +245,7 @@ administration:
     failedToEdit: "无法编辑modlog消息: {0}"
     failedToFindMessage: "找不到给定modlog案例的消息，是否已删除？"
   MuteCommand:
-    requiresModlogToBeSet: "This command requires a modlog channel to be set, a modlog channel can be set using the `{0}modlog` command."
+    requiresModlogToBeSet: "此命令需要设置modlog通道，可以使用 `{0}modlog` 指令."
     requireMuteRoleToBeSet: "No mute role have been setup for the server, you can setup a mute role using the `{0}muterole` command."
     higherOrSameRole: "You can't mute people with a higher, or the same role as yourself."
     muteRoleIsPositionedHigher: "The {0} role used for mutes are positioned higher in the role hierarchy than any roles I have, so I can't automatically assign the role to other users, please fix this or use another role for mutes."
@@ -306,8 +306,8 @@ administration:
     listRolesTitle: "Roles with their Level Rewards disabled ({0})"
     success: "The XP rewards for the :role role has been **:status**!"
     status:
-      enabled: "Enabled"
-      disabled: "Disabled"
+      enabled: "启用"
+      disabled: "关闭"
   SetRoleColorCommand:
     noRoleFound: "No role with the name \"{0}\" was found."
     invalidColor: "The color \"{0}\" is not recognized, use the following HEX format instead \"#XXXXXX\""
@@ -338,7 +338,7 @@ administration:
     noUserIsBanned: "没有ID为 `:id` 当前在服务器上被禁止。."
     invalidUserIdGiven: " `user id` 无效, 这个 `user id` 必须是长度为18个或更多数字的数字字符串."
   UnmuteCommand:
-    requiresModlogToBeSet: "This command requires a modlog channel to be set, a modlog channel can be set using the `{0}modlog` command."
+    requiresModlogToBeSet: "此命令需要设置modlog通道，可以使用 `{0}modlog` 指令."
     requireMuteRoleToBeSet: "No mute role have been setup for the server, you can setup a mute role using the `{0}muterole` command."
     muteRoleIsPositionedHigher: "The {0} role used for mutes are positioned higher in the role hierarchy than any roles I have, so I can't automatically remove the role from other users, please fix this or use another role for mutes."
     invalidUserMentioned: "Invalid user mentioned, you must mention a user on the server you want to unmute to use this command."
@@ -429,7 +429,7 @@ fun:
   PunCommand:
     title: "Pun list"
     noResults: ":user I found no puns, you can with a search or, or just try again later."
-    noResultsWithQuery: ":user I found nothing for `:query`"
+    noResultsWithQuery: ":user 我找不到什么 `:query`"
     query: "Search query: {0}"
   RandomCatCommand:
     tooManyAttempts: "对cat api进行了太多的尝试，一分钟后再试一次，或者要求bot管理员在以下位置获取api密钥： [meow.senither.com](https://meow.senither.com/) 允许更多的请求."
@@ -804,13 +804,13 @@ utility:
       textChannels: '测试频道'
       voiceChannels: '声音频道'
       members: '成员'
-      users: 'Users'
+      users: '用户'
       bots: 'Bots'
       roles: '军衔'
       region: '区域'
       createdAt: '创建在'
       emotes: 'Custom Emotes'
-    timeFormat: 'EEE, dd MMM yyyy HH:mm'
+    timeFormat: 'EEE, 天数 月份 年份 HH:mm'
   ShardCommand:
     allShards: '所有碎片'
     totalShards: '碎片总数'
@@ -863,7 +863,7 @@ utility:
       servers: '服务器'
     inServers: '{0} 机器人知道'
     noRoles: '*This user does not have any roles*'
-    timeFormat: 'EEE, dd MMM yyyy HH:mm'
+    timeFormat: 'EEE, 天数 月份 年份 HH:mm'
   VersionCommand:
     current: '我现在 `:difference` :type 后面的版本!'
     getLatest: '您可以在GitHub上获得我的最新版本： [avaire/avaire](https://github.com/avaire/avaire)'

@@ -155,7 +155,7 @@ administration:
     changedToDefault: "The `Goodbye` module message has been set back to the default."
     status:
       enabled: "enabled"
-      disabled: "disabled"
+      disabled: "avslått"
     note:
       embed: "Goodbye messages will now be sent using embedded messages with the color: {0}"
       normal: "Now sending goodbye messages through normal messages."
@@ -375,7 +375,7 @@ administration:
     changedToDefault: "The `Welcome` module message has been set back to the default."
     status:
       enabled: "enabled"
-      disabled: "disabled"
+      disabled: "avslått"
     note:
       embed: "Welcome messages will now be sent using embedded messages with the color: {0}"
       normal: "Now sending welcome messages through normal messages."
@@ -429,7 +429,7 @@ fun:
   PunCommand:
     title: "Pun list"
     noResults: ":user I found no puns, you can with a search or, or just try again later."
-    noResultsWithQuery: ":user I found nothing for `:query`"
+    noResultsWithQuery: ":user Jeg fant ingenting med `:query`"
     query: "Search query: {0}"
   RandomCatCommand:
     tooManyAttempts: "Too many attempts was made to the cat API, try again in a minute, or ask a bot administrator to get an API key at [meow.senither.com](https://meow.senither.com/) to allow for more requests."
@@ -549,7 +549,7 @@ music:
     error: "Invalid argument given, the status must be either `on` or `off` to change the music messages status."
     footer: "To change the music messages, use {0}"
     status:
-      disabled: "disabled"
+      disabled: "avslått"
       enabled: "enabled"
     info:
       disabled: "When music messages are disabled, the `Now Playing` messages will no longer be sent, and other music related commands will automatically delete themselves after awhile."
@@ -804,7 +804,7 @@ utility:
       textChannels: 'Tekst kanaler'
       voiceChannels: 'Samtale kanaler'
       members: 'Medlemmer'
-      users: 'Users'
+      users: 'Brukere'
       bots: 'Bots'
       roles: 'Roller'
       region: 'Region'
@@ -849,7 +849,7 @@ utility:
     dateFormat: 'EEEEEEEE, dd MMM yyyy'
     timeFormat: 'HH:mm:ss z'
   UserAvatarCommand:
-    noUserFound: "I found no users with the name or ID of `{0}`"
+    noUserFound: "Jeg fant ingen brukere med navn eller ID `{0}`"
     title: "{0}#{1}'s Avatar"
   UserIdCommand:
     message: ':id: til brukeren **:target** er `:targetid`'
@@ -881,7 +881,7 @@ utility:
     noCityFound: "No city was found with the name of **:name**, are you sure you spelt it correctly?"
     fields:
       weatherFor: "Weather for {0}, {1}"
-      country: "Country"
+      country: "Land"
       temperature: "Temperature"
       windDirection: "Wind Direction"
       windSpeed: "Wind Speed"
