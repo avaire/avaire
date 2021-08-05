@@ -293,7 +293,7 @@ administration:
     messageIdMustBeLowerThanRolesSize: "Invalid `message id` given, the `message id` cannot be higher than the amount of reaction roles the server currently has, which is `{0}` right now."
     failedToFetchMessage: "Something went wrong while trying to fetch the reaction role message with an ID of `{0}`, if this issue continues to happen, please report it to one of my developers."
     mustIncludeEmote: "You must include the emote you want to remove from the reaction message."
-    emoteDoestBelongToServer: "The emote does not belong to this server, you can only use emotes from this server as reaction emotes."
+    emoteDoestBelongToServer: "Das Emote gehört nicht zu diesem Server. Du kannst nur Emotes von diesem Server als Reaktions-Emotes verwenden."
     roleNotFoundOnMessage: "The specified reaction message doesn't have a reaction role attached to it using the {0} emote."
     deletedMessage: "The reaction role message with an ID of **#:id** has successfully been deleted!"
     deletedEmote: "The :emote emote has been successfully removed from the reaction message.\nThe message has `:roleSlots` more reaction-role slots available for the message, and `:messageSlots` reaction-message slots available."
