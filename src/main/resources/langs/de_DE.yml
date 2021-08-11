@@ -8,7 +8,7 @@ errors:
   mustBeConnectedToSameChannel: 'Du musst im selben Voicechannel verbunden sein, um folgenden Befehl ausführen zu können: {0}!'
   missingMusicQueue: 'Fehlende Music `query`. Du musst einen Link zu einem Song angeben, den du dir anhören möchtest. Du kannst mir auch gern den Musiktitel geben.'
   cantMentionEveryone: "Du hast nicht die Berechtigung, alle zu erwähnen."
-  cantMentionUsersOrRoles: "You don't have permission to use this command for mentioning users or roles"
+  cantMentionUsersOrRoles: "Dir fehlt die Berechtigung zur Nutzung des Befehls zum Erwähnen von Usern oder Rollen."
   requireLevelFeatureToBeEnabled: 'Dieser Befehl benötigt das `Levels & Experience` Feature. Du kannst den Server-Administrator anfragen, ob dieser damit einverstanden ist diesen mit folgendem Befehl zu aktivieren: `{0}`'
   errorOccurredWhileLoading: 'Ein Fehler ist beim Laden von {0} aufgetreten. Bitte versuche es später erneut. Sollte dieser Fehler erneut auftreten, so kontaktiere eines unserer Entwickler auf dem [AvaIre Support Server] [https://avairebot.com/support].'
 levelupMessages:
@@ -29,34 +29,34 @@ modlog-types:
     action: "Gekickt"
   voiceKick:
     name: "Voice Kick"
-    action: "Voice Kicked"
+    action: "Aus dem VC gekickt"
   ban:
-    name: "Ban"
-    action: "Banned"
+    name: "Bann"
+    action: "Gebannt"
   softBan:
     name: "Soft Ban"
-    action: "Soft Banned"
+    action: "Gebannt ohne Nachrichtenlöschung"
   unban:
-    name: "Unban"
-    action: "Unbanned"
+    name: "Entbannung"
+    action: "Entbannt"
   purge:
-    name: "Purge"
-    action: "Purged"
+    name: "Löschung von Nachrichten"
+    action: "Nachrichten gelöscht"
   warn:
-    name: "Warne"
-    action: "Gewarnt"
+    name: "Verwarnung"
+    action: "Verwarnt"
   pardon:
-    name: "Pardon"
-    action: "Pardoned"
+    name: "Erbarmen"
+    action: "Erbarmt"
   mute:
-    name: "Mute"
-    action: "Muted"
+    name: "Stummschaltung"
+    action: "Stummgeschaltet"
   tempMute:
-    name: "Temp Mute"
-    action: "Temp Muted"
+    name: "Temporäre Stummschaltung"
+    action: "Temporär stummgeschaltet"
   unmute:
-    name: "Unmute"
-    action: "Unmuted"
+    name: "Aufhebung der Stummschaltung"
+    action: "Stummschaltung aufgehoben"
 administration:
   common:
     invalidRole: "Ungültige Rolle, :user! Ich konnte keine Role namens **:role** auffinden."
@@ -71,9 +71,9 @@ administration:
     success: "Die Rolle **:role** wurde zu der Level-Up-Liste hinzugefügt.\nDer Server hat `:slots` weitere verfügbare Level-Rollenslots."
   AddReactionRoleCommand:
     emoteDoestBelongToServer: "Das Emote gehört nicht zu diesem Server. Du kannst nur Emotes von diesem Server als Reaktions-Emotes verwenden."
-    messageHasNoSlots: "The message doesn't have anymore reaction role slots available, you can remove existing reaction-roles to free up slots, or delete reaction role messages to add the role to a new reaction role message."
-    serverHasNoSlots: "Can't create new reaction role messages, the server doesn't have anymore reaction messages slots, you can deleting existing reaction role messages to free up slots, or add your reaction role to a reaction message if there are available slots on the message for more roles."
-    success: "The :role role has been registered as an reaction role for the :emote emote.\nThe message has `:roleSlots` more reaction-role slots available for the message, and `:messageSlots` reaction-message slots available."
+    messageHasNoSlots: "Die Nachricht hat keine Reaktions-Slots mehr verfügbar. Du kannst bereits erstellte Reaktionsrollen entfernen um wieder einen Slot zu erhalten, oder Reaktionsrollennachrichten entfernen um die Rolle zu einer neuen Reaktionsrollennachricht hinzuzufügen."
+    serverHasNoSlots: "Es kann keine neue Reaktionsrtollennachricht erstellen werden. Der Server hat keine Reaktionsnachrichtenslots mehr zur Verfügung. Du kannst bereits erstellte Reaktionsrollennachrichten entfernen um wieder einen Slot zu erhalten, oder deine Reaktionsrolle zu einer Reaktionsnachricht hinzufügen, sofern noch Slots für die Nachricht zum Hinzufügen weiterer Rollen verfügbar sind."
+    success: "Die :role Rolle wurde registiert als Reaktionsrolle für das :emote Emote.\nDie Nachricht hat `:roleSlots` weitere Reaktionsrollenslots und `:messageSlots` Reaktionsnachrichtenslots verfügbar."
   AddSelfAssignableRoleCommand:
     noSlotsLeft: "Der Server hat keine weiteren Rollenslots für Rollen, die du dir selbst setzen kannst. Entferne hierzu bitte zuerst eine Rolle, um eine neue hinzuzufügen."
     success: "Die Rolle **:role** wurde zu der Liste der selbst setzbaren Rollen hinzugefügt.\n Der Server hat `:slots` weitere Rollenslots für Rollen, die du dir selbst setzen kannst."
@@ -82,17 +82,17 @@ administration:
     invalidAmountGiven: "Die Eigenschaft `amount` muss zwischen 1 und {0} sein, um XP von einem Benutzer hinzuzufügen oder zu nehmen."
     aboutToResetEverything: "Du bist dabei die XP für alle auf dem gesamten Server zurückzusetzen. Wenn du sicher bist, dass du fortfahren willst, führe den Befehl aus, um die Server XP komplett zurückzusetzen.\n\n```:command server-reset :token```\nDieser Befehl funktioniert nur für 60 Sekunden. danach wird das Token ungültig und das Kommando muss erneut ausgeführt werden, um einen neuen Token zu erhalten."
     aboutToSyncEverything: "Du bist dabei, die XP mit der globalen Rangliste zu synchronisieren. Das wird effektiv alle benutzerdefinierten XP-Änderungen auf dem gesamten Server rückgängig machen. Wenn Du sicher bist, dass Du trotzdem fortfahren willst, führe den Befehl aus, um die Server XP komplett zu synchronisieren.\n\n```:command server-sync :token`\nDieser Befehl funktioniert nur für 60 Sekunden, danach wird der Token ungültig und der Befehl muss erneut ausgeführt werden, um einen neuen Token zu erhalten."
-    failedToSaveChanges: "Failed to save the changes to the database, please try again, if the error continues to happen, please contact support on the official [AvaIre support server](https://avairebot.com/support)."
-    mustBeAnAdmin: "You must be a server admin to use this action."
-    invalidSecurityToken: "Invalid security token given, please provide the correct security token to reset all the servers XP."
-    warning: "Warning!"
+    failedToSaveChanges: "Fehler beim Versuch die Änderungen in der Datenbank zu speichern. Bitte versuche es erneut. Bei weiterem Misslingen bitten wir dich uns auf unserem offiziellen Discordserver zu kontaktieren: [AvaIre support server](https://avairebot.com/support)"
+    mustBeAnAdmin: "Du musst Serveradmin sein, um diese Aktion ausführen zu können."
+    invalidSecurityToken: "Ungültiger Sicherheitsschlüssel angegeben. Bitte gebe den korrekten Schlüssel ein, um die XP von allen Servern zurückzusetzen."
+    warning: "Warnung!"
     success:
-      add: "**:amount** XP has been given to :target, they now have **:newAmount** XP."
-      take: "**:amount** XP has been taken from :target, they now have **:newAmount** XP."
-      reset: ":target has successfully had their XP reset."
-      sync: ":target has successfully had synchronized with the global leaderboard, they now have **:newAmount** XP."
-      syncEveryone: "Everyone on the entire server has been synced with the global leaderboard!"
-      everything: "Everyone on the entire server has now had their XP completely reset!"
+      add: "**:amount** XP wurden erfolgreich zu :target zugewiesen. Neuer Stand: **:newAmount** XP"
+      take: "**:amount** XP wurden erfolgreich von :target abgezogen. Neuer Stand: **:newAmount** XP"
+      reset: ":target wurden erfolgreich die XP zurückgesetzt."
+      sync: ":target hat sich erfolgreich mit dem globalen Leaderboard sychronisiert. Neuer Stand: **:newAmount** XP"
+      syncEveryone: "Jeder auf dem Server hat sich nun mit dem globalen Leaderboard sychronisiert!"
+      everything: "Jedem auf dem Server wurden die XP zurückgesetzt!"
   AiCommand:
     message: "Der `Künstliche Intelligenz` Modul wurde **:status** für folgenden Channel: :channel"
     status:
@@ -133,13 +133,13 @@ administration:
       global: "Alle Befehle jeder Befehls-Kategorie wurden zurückgesetzt und nutzen nun den`:prefix`-Prefix."
       category: "Alle Befehle der `:category` Befehls-Kategorie wurden zurückgesetzt und nutzen nun den `:prefix`-Prefix."
   ChannelLevelCommand:
-    invalidChannel: "Invalid channel given, the channel must be a valid text channel."
-    cantTalkInChannel: "I can't talk in the {0} channel, so no users will be rewarded any XP for talking in the channel, if you want me to give users XP, please change my permission level for the channel so I can send messages in the channel."
-    noChannelsWithRewardsDisabled: "There are currently no channels with the level rewards disabled, you can add one by using the `{0} <channel>` command"
-    failedToUpdate: "Failed to save the changes to the database, please try again, if the issue persists, please contact one of my developers."
-    listChannels: "All the channels mentioned below currently has their level rewards turned off, any channel not on this list is unaffected.\n\n:channels"
-    listChannelsTitle: "Channels with their Level Rewards disabled ({0})"
-    success: "The XP rewards for the :channel channel has been **:status**!"
+    invalidChannel: "Ungültigen Channel angegeben. Der Channel muss ein gültiger Textchannel sein."
+    cantTalkInChannel: "Ich kann nicht im Channel {0} nicht schreiben. Daher wird keiner für das Schreiben in dem Channel belohnt. Wenn du möchtest, dass ich anderen dafür XP gebe, bitte teile mir die Berechtigung zum Senden von Nachrichten zu."
+    noChannelsWithRewardsDisabled: "Es gibt derzeit keine Channels mit dem Level Rewards, die deaktiviert sind. Du kannst welche mit dem `{0} <channel>` Befehl hinzufügen."
+    failedToUpdate: "Fehler beim Versuch die Änderungen in der Datenbank zu speichern. Bitte versuche es erneut. Bei weiterem Misslingen bitten wir dich uns auf unserem offiziellen Discordserver zu kontaktieren: [AvaIre support server](https://avairebot.com/support)"
+    listChannels: "Alle unten erwähnten Channels haben derzeit Level Rewards deaktiviert. Jeder Channel, der nicht in der Liste steht, ist unbetroffen. \n\n:channels"
+    listChannelsTitle: "Channels mit Level Rewards deaktivert ({0})"
+    success: "Die XP Rewards für den :channel Channel wurden **:status**!"
     status:
       enabled: "aktiviert"
       disabled: "deaktiviert"
@@ -200,7 +200,7 @@ administration:
     invalidNumberGiven: "Ungültige Eingabe. Der Wert muss einen positiven Prozentsatz zwischen `0.01%` und `500%` beinhalten."
     resetToDefault: "Der Level-Modifikator wurde zurückgesetzt und nutzt nun den **:modifier** Wert."
     changedTo: "Der Level & Experience-Wert wurde zu **:modifier** geändert"
-    requiredIsNow: "\n\n**Required XP to reach some levels is now:**\n"
+    requiredIsNow: "\n\n**Benötigte XP zum Erreichen von einigen Level sind nun: **\n"
     statusMessage: "Der Server nutzt momentan einen **:modifier** Wert für Levels & Experience.\n\n**Benötigte XP um Levels zu erreichen.**\n"
     level: "Level {0}"
   ListAliasesCommand:
@@ -210,8 +210,8 @@ administration:
     noLevelRoles: "Derzeit existieren keine Level-Rollen. Ein Administrator kann Rollen zum Level Up-Table festlegen, in dem dieser den`:command`-Befehl nutzt."
     listRoles: "Liste von Level-Rollen:({0})"
   ListReactionRoleCommand:
-    noReactionRoles: "The server doesn't have any reaction roles right now, you can create one using\n`{0}arr <emote> <role>`"
-    listReactionRoles: "List of Reaction Roles ({0})"
+    noReactionRoles: "Der Server hat derzeit keine Reaktionsrollen. Du kannst welche mit folgendem Befehl hinzufügen: \n`{0}arr <emote> <role>`"
+    listReactionRoles: "Liste von Reaktionsrollen ({0})"
   ListSelfAssignableRolesCommand:
     noSelfAssignableRoles: "Derzeit sind keine selbst-zuweisbaren Rollen festgelegt."
     title: "Es existieren {0} selbst-zuweisbare Rollen"
@@ -226,7 +226,7 @@ administration:
     mustMentionUser: "Du musst einen gültigen `User` erwähnen, bei dem du dir den Modlog anschauen möchtest."
     noHistory: "Keinen Modlog für diesen User. Scheint unauffällig gewesen zu sein."
     title: "{0}#{1} Verlauf ({2})"
-    entry: "**{1}** | **#{0}** | **Moderator:** {2}\n**Date:** {3}\n**Reason:** {4}"
+    entry: "**{1}** | **#{0}** | **Moderator:** {2}\n**Datum:** {3}\n**Begründung:** {4}"
     noReasonGiven: "Keine Begründung angegeben."
   ModlogPardonCommand:
     modlogNotEnabled: "Keinen Modlog-Channel gesetzt. Du musst zuerst einen Modlog-Channel festlegen, bevor du diesen Befehl nutzen kannst."
@@ -245,16 +245,16 @@ administration:
     failedToEdit: "Editieren der Modlog-Nachricht fehlgeschlagen: {0}"
     failedToFindMessage: "Die Nachricht für den angegebenen Modlog-Fall konnte nicht aufgefunden werden. Wurde dieser entfernt?"
   MuteCommand:
-    requiresModlogToBeSet: "Dieser Befehl setzt einen Modlog-Channel voraus. Du kannst einen mit dem `{0}modlog` Befehl festlegen.."
-    requireMuteRoleToBeSet: "No mute role have been setup for the server, you can setup a mute role using the `{0}muterole` command."
-    higherOrSameRole: "You can't mute people with a higher, or the same role as yourself."
-    muteRoleIsPositionedHigher: "The {0} role used for mutes are positioned higher in the role hierarchy than any roles I have, so I can't automatically assign the role to other users, please fix this or use another role for mutes."
-    invalidUserMentioned: "Invalid user mentioned, you must mention a user on the server you want to mute to use this command."
-    invalidTimeGiven: "Invalid time given, the time must be at least one minute or more."
-    userHasBeenMuted: ":target has been muted :time!"
+    requiresModlogToBeSet: "Dieser Befehl setzt einen Modlog-Channel voraus. Du kannst einen mit dem `{0}modlog` Befehl festlegen."
+    requireMuteRoleToBeSet: "Keine Muterolle für den Server erstellt. Du kannst eine mit folgendem Befehl erstellen: `{0}muterole`"
+    higherOrSameRole: "Du kannst keinen stummschalten, der eine höhere oder gleichgestellte Rolle hat wie du."
+    muteRoleIsPositionedHigher: "Die {0} Rolle, die für Stummschaltungen genutzt wird, ist höher als ich angesetzt. Daher kann ich keinem diese Rolle zuweisen. Bitte ändere dies in den Servereinstellungen."
+    invalidUserMentioned: "Ungültigen User erwähnt. Du musst einen User auf dem Server erwähnen, der stummgeschaltet werden soll."
+    invalidTimeGiven: "Ungültige Zeit angegeben. Die Zeit muss mindestens eine Minute oder mehr betragen."
+    userHasBeenMuted: ":target wurde für :time stummgeschaltet!"
     time:
-      permanently: "permanently"
-      forFormat: "for {0}"
+      permanently: "permanent"
+      forFormat: "für {0}"
   MuteRoleCommand:
     onCooldown: "You have recently use a command option that created and/or modified roles and channel permissions, you have to wait **:cooldown** before you can use this command again."
     roleDoesntExists: "Invalid role given, the `{0}` role doesn't exists."
@@ -878,10 +878,10 @@ utility:
       patchName: 'Patch'
       patch: 'Patch-Versionen sind Bugfixes, Refactoring des vorhandenen Codes und sehr kleine Änderungen, die andere Dinge in der Code-Basis nicht beeinflussen. Es wird empfohlen, dass du die Änderungen der Patch-Version aktualisieren, um mit den Bugfixes und Patches Schritt zu halten.'
   WeatherCommand:
-    noCityFound: "No city was found with the name of **:name**, are you sure you spelt it correctly?"
+    noCityFound: "Es wurde keine Stadt mit dem Namen **:name** gefunden. Hast du dich möglicherweise verschrieben?"
     fields:
-      weatherFor: "Weather for {0}, {1}"
+      weatherFor: "Wetter für {0}, {1}"
       country: "Land"
-      temperature: "Temperature"
-      windDirection: "Wind Direction"
-      windSpeed: "Wind Speed"
+      temperature: "Temperatur"
+      windDirection: "Windrichtung"
+      windSpeed: "Windgeschwindigkeit"
