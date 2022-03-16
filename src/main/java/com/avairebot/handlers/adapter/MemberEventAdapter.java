@@ -33,14 +33,14 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
-import net.dv8tion.jda.api.events.guild.member.GuildMemberLeaveEvent;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberRemoveEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.awt.*;
 
-public class MemberEventAdapter extends EventAdapter {
+public class MemberEventAdapter extends EventAdapter
+{
 
     private static final Logger log = LoggerFactory.getLogger(MemberEventAdapter.class);
 
@@ -49,27 +49,34 @@ public class MemberEventAdapter extends EventAdapter {
      *
      * @param avaire The AvaIre application class instance.
      */
-    public MemberEventAdapter(AvaIre avaire) {
+    public MemberEventAdapter(AvaIre avaire)
+    {
         super(avaire);
     }
 
-    public void onGuildMemberJoin(GuildMemberJoinEvent event) {
+    public void onGuildMemberJoin(GuildMemberJoinEvent event)
+    {
         GuildTransformer transformer = GuildController.fetchGuild(avaire, event.getGuild());
-        if (transformer == null) {
+        if (transformer == null)
+        {
             log.warn("Failed to get a valid guild transformer during member join! User:{}, Guild:{}",
                 event.getMember().getUser().getId(), event.getGuild().getId()
             );
             return;
         }
 
-        for (ChannelTransformer channelTransformer : transformer.getChannels()) {
-            if (channelTransformer.getWelcome().isEnabled()) {
+        for (ChannelTransformer channelTransformer : transformer.getChannels())
+        {
+            if (channelTransformer.getWelcome().isEnabled())
+            {
                 TextChannel textChannel = event.getGuild().getTextChannelById(channelTransformer.getId());
-                if (textChannel == null) {
+                if (textChannel == null)
+                {
                     continue;
                 }
 
-                if (!event.getGuild().getSelfMember().hasPermission(textChannel, Permission.MESSAGE_READ, Permission.MESSAGE_WRITE)) {
+                if (!event.getGuild().getSelfMember().hasPermission(textChannel, Permission.MESSAGE_HISTORY, Permission.MESSAGE_SEND))
+                {
                     continue;
                 }
 
@@ -81,7 +88,8 @@ public class MemberEventAdapter extends EventAdapter {
                 );
 
                 String embedColor = channelTransformer.getWelcome().getEmbedColor();
-                if (embedColor == null) {
+                if (embedColor == null)
+                {
                     textChannel.sendMessage(message).queue();
                     continue;
                 }
@@ -97,22 +105,27 @@ public class MemberEventAdapter extends EventAdapter {
 
         // Re-mutes the user if a valid mute role have been setup for the guild
         // and the user is still registered as muted for the server.
-        if (transformer.getMuteRole() != null) {
+        if (transformer.getMuteRole() != null)
+        {
             Role mutedRole = event.getGuild().getRoleById(transformer.getMuteRole());
-            if (canGiveRole(event, mutedRole) && avaire.getMuteManger().isMuted(event.getGuild().getIdLong(), event.getUser().getIdLong())) {
+            if (canGiveRole(event, mutedRole) && avaire.getMuteManger().isMuted(event.getGuild().getIdLong(), event.getUser().getIdLong()))
+            {
                 event.getGuild().addRoleToMember(
                     event.getMember(), mutedRole
                 ).queue();
             }
         }
 
-        if (event.getUser().isBot()) {
+        if (event.getUser().isBot())
+        {
             return;
         }
 
-        if (transformer.getAutorole() != null) {
+        if (transformer.getAutorole() != null)
+        {
             Role role = event.getGuild().getRoleById(transformer.getAutorole());
-            if (canGiveRole(event, role)) {
+            if (canGiveRole(event, role))
+            {
                 event.getGuild().addRoleToMember(
                     event.getMember(), role
                 ).queue();
@@ -120,23 +133,29 @@ public class MemberEventAdapter extends EventAdapter {
         }
     }
 
-    public void onGuildMemberRemove(GuildMemberRemoveEvent event) {
+    public void onGuildMemberRemove(GuildMemberRemoveEvent event)
+    {
         GuildTransformer transformer = GuildController.fetchGuild(avaire, event.getGuild());
-        if (transformer == null) {
+        if (transformer == null)
+        {
             log.warn("Failed to get a valid guild transformer during member leave! User:{}, Guild:{}",
                 event.getMember().getUser().getId(), event.getGuild().getId()
             );
             return;
         }
 
-        for (ChannelTransformer channelTransformer : transformer.getChannels()) {
-            if (channelTransformer.getGoodbye().isEnabled()) {
+        for (ChannelTransformer channelTransformer : transformer.getChannels())
+        {
+            if (channelTransformer.getGoodbye().isEnabled())
+            {
                 TextChannel textChannel = event.getGuild().getTextChannelById(channelTransformer.getId());
-                if (textChannel == null) {
+                if (textChannel == null)
+                {
                     continue;
                 }
 
-                if (!event.getGuild().getSelfMember().hasPermission(textChannel, Permission.MESSAGE_READ, Permission.MESSAGE_WRITE)) {
+                if (!event.getGuild().getSelfMember().hasPermission(textChannel, Permission.MESSAGE_HISTORY, Permission.MESSAGE_SEND))
+                {
                     continue;
                 }
 
@@ -148,7 +167,8 @@ public class MemberEventAdapter extends EventAdapter {
                 );
 
                 String embedColor = channelTransformer.getGoodbye().getEmbedColor();
-                if (embedColor == null) {
+                if (embedColor == null)
+                {
                     textChannel.sendMessage(message).queue();
                     continue;
                 }
@@ -163,7 +183,8 @@ public class MemberEventAdapter extends EventAdapter {
         }
     }
 
-    private boolean canGiveRole(GuildMemberJoinEvent event, Role role) {
+    private boolean canGiveRole(GuildMemberJoinEvent event, Role role)
+    {
         return role != null
             && event.getGuild().getSelfMember().canInteract(role)
             && (event.getGuild().getSelfMember().hasPermission(Permissions.MANAGE_ROLES.getPermission())

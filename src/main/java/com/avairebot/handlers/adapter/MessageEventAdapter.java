@@ -44,7 +44,7 @@ import com.avairebot.shared.DiscordConstants;
 import com.avairebot.utilities.ArrayUtil;
 import com.avairebot.utilities.RestActionUtil;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.GuildMessageChannel;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.events.message.MessageUpdateEvent;
@@ -61,7 +61,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
-public class MessageEventAdapter extends EventAdapter {
+public class MessageEventAdapter extends EventAdapter
+{
 
     public static final Set<Long> hasReceivedInfoMessageInTheLastMinute = new HashSet<>();
 
@@ -91,43 +92,55 @@ public class MessageEventAdapter extends EventAdapter {
      *
      * @param avaire The AvaIre application class instance.
      */
-    public MessageEventAdapter(AvaIre avaire) {
+    public MessageEventAdapter(AvaIre avaire)
+    {
         super(avaire);
     }
 
-    public void onMessageReceived(MessageReceivedEvent event) {
-        if (!isValidMessage(event.getAuthor())) {
+    public void onMessageReceived(MessageReceivedEvent event)
+    {
+        if (!isValidMessage(event.getAuthor()))
+        {
             return;
         }
 
-        if (event.getChannelType().isGuild() && !event.getTextChannel().canTalk()) {
+        if (event.getChannelType().isGuild() && !event.getTextChannel().canTalk())
+        {
             return;
         }
 
-        if (avaire.getBlacklist().isBlacklisted(event.getMessage())) {
+        if (avaire.getBlacklist().isBlacklisted(event.getMessage()))
+        {
             return;
         }
 
-        loadDatabasePropertiesIntoMemory(event).thenAccept(databaseEventHolder -> {
-            if (databaseEventHolder.getGuild() != null && databaseEventHolder.getPlayer() != null) {
+        loadDatabasePropertiesIntoMemory(event).thenAccept(databaseEventHolder ->
+        {
+            if (databaseEventHolder.getGuild() != null && databaseEventHolder.getPlayer() != null)
+            {
                 avaire.getLevelManager().rewardPlayer(event, databaseEventHolder.getGuild(), databaseEventHolder.getPlayer());
             }
 
             CommandContainer container = CommandHandler.getCommand(avaire, event.getMessage(), event.getMessage().getContentRaw());
-            if (container != null && canExecuteCommand(event, container)) {
+            if (container != null && canExecuteCommand(event, container))
+            {
                 invokeMiddlewareStack(new MiddlewareStack(event.getMessage(), container, databaseEventHolder));
                 return;
             }
 
-            if (isMentionableAction(event)) {
+            if (isMentionableAction(event))
+            {
                 container = CommandHandler.getLazyCommand(ArrayUtil.toArguments(event.getMessage().getContentRaw())[1]);
-                if (container != null && canExecuteCommand(event, container)) {
+                if (container != null && canExecuteCommand(event, container))
+                {
                     invokeMiddlewareStack(new MiddlewareStack(event.getMessage(), container, databaseEventHolder, true));
                     return;
                 }
 
-                if (avaire.getIntelligenceManager().isEnabled()) {
-                    if (isAIEnabledForChannel(event, databaseEventHolder.getGuild())) {
+                if (avaire.getIntelligenceManager().isEnabled())
+                {
+                    if (isAIEnabledForChannel(event, databaseEventHolder.getGuild()))
+                    {
                         avaire.getIntelligenceManager().handleRequest(
                             event.getMessage(), databaseEventHolder
                         );
@@ -136,35 +149,43 @@ public class MessageEventAdapter extends EventAdapter {
                 }
             }
 
-            if (isSingleBotMention(event.getMessage().getContentRaw().trim())) {
+            if (isSingleBotMention(event.getMessage().getContentRaw().trim()))
+            {
                 sendTagInformationMessage(event);
                 return;
             }
 
-            if (!event.getChannelType().isGuild()) {
+            if (!event.getChannelType().isGuild())
+            {
                 sendInformationMessage(event);
             }
         });
     }
 
-    private boolean isValidMessage(User author) {
+    private boolean isValidMessage(User author)
+    {
         return !author.isBot() || author.getIdLong() == DiscordConstants.SENITHER_BOT_ID;
     }
 
-    private void invokeMiddlewareStack(MiddlewareStack stack) {
+    private void invokeMiddlewareStack(MiddlewareStack stack)
+    {
         commandService.submit(stack::next);
     }
 
-    private boolean canExecuteCommand(MessageReceivedEvent event, CommandContainer container) {
-        if (!container.getCommand().isAllowedInDM() && !event.getChannelType().isGuild()) {
+    private boolean canExecuteCommand(MessageReceivedEvent event, CommandContainer container)
+    {
+        if (!container.getCommand().isAllowedInDM() && !event.getChannelType().isGuild())
+        {
             MessageFactory.makeWarning(event.getMessage(), ":warning: You can not use this command in direct messages!").queue();
             return false;
         }
         return true;
     }
 
-    private boolean isMentionableAction(MessageReceivedEvent event) {
-        if (!event.getMessage().isMentioned(avaire.getSelfUser())) {
+    private boolean isMentionableAction(MessageReceivedEvent event)
+    {
+        if (!event.getMessage().isMentioned(avaire.getSelfUser()))
+        {
             return false;
         }
 
@@ -175,13 +196,16 @@ public class MessageEventAdapter extends EventAdapter {
 
     }
 
-    private boolean isSingleBotMention(String rawContent) {
+    private boolean isSingleBotMention(String rawContent)
+    {
         return rawContent.equals("<@" + avaire.getSelfUser().getId() + ">") ||
             rawContent.equals("<@!" + avaire.getSelfUser().getId() + ">");
     }
 
-    private boolean isAIEnabledForChannel(MessageReceivedEvent event, GuildTransformer transformer) {
-        if (transformer == null) {
+    private boolean isAIEnabledForChannel(MessageReceivedEvent event, GuildTransformer transformer)
+    {
+        if (transformer == null)
+        {
             return true;
         }
 
@@ -189,35 +213,40 @@ public class MessageEventAdapter extends EventAdapter {
         return channel == null || channel.getAI().isEnabled();
     }
 
-    private void sendTagInformationMessage(MessageReceivedEvent event) {
+    private void sendTagInformationMessage(MessageReceivedEvent event)
+    {
         String author = "**Senither#0001**";
-        if (event.getMessage().getChannelType().isGuild() && event.getGuild().getMemberById(88739639380172800L) != null) {
+        if (event.getMessage().getChannelType().isGuild() && event.getGuild().getMemberById(88739639380172800L) != null)
+        {
             author = "<@88739639380172800>";
         }
 
         MessageFactory.makeEmbeddedMessage(event.getMessage().getChannel(), Color.decode("#E91E63"), String.format(mentionMessage,
-            avaire.getSelfUser().getName(),
-            author,
-            CommandHandler.getLazyCommand("help").getCommand().generateCommandTrigger(event.getMessage()),
-            AppInfo.getAppInfo().version
-        ))
+                avaire.getSelfUser().getName(),
+                author,
+                CommandHandler.getLazyCommand("help").getCommand().generateCommandTrigger(event.getMessage()),
+                AppInfo.getAppInfo().version
+            ))
             .setFooter("This message will be automatically deleted in one minute.")
             .queue(message -> message.delete().queueAfter(1, TimeUnit.MINUTES, null, RestActionUtil.ignore));
     }
 
     @SuppressWarnings("ConstantConditions")
-    private void sendInformationMessage(MessageReceivedEvent event) {
+    private void sendInformationMessage(MessageReceivedEvent event)
+    {
         log.info("Private message received from user(ID: {}) that does not match any commands!",
             event.getAuthor().getId()
         );
 
-        if (hasReceivedInfoMessageInTheLastMinute.contains(event.getAuthor().getIdLong())) {
+        if (hasReceivedInfoMessageInTheLastMinute.contains(event.getAuthor().getIdLong()))
+        {
             return;
         }
 
         hasReceivedInfoMessageInTheLastMinute.add(event.getAuthor().getIdLong());
 
-        try {
+        try
+        {
             ArrayList<String> strings = new ArrayList<>();
             strings.addAll(Arrays.asList(
                 "To invite me to your server, use this link:",
@@ -228,7 +257,8 @@ public class MessageEventAdapter extends EventAdapter {
                 "For specific command help, use `{0}help command` (for example `{0}help {1}{2}`,\n`{0}help {2}` also works)"
             ));
 
-            if (avaire.getIntelligenceManager().isEnabled()) {
+            if (avaire.getIntelligenceManager().isEnabled())
+            {
                 strings.add("\nYou can tag me in a message with <@:botId> to send me a message that I should process using my AI.");
             }
 
@@ -241,84 +271,106 @@ public class MessageEventAdapter extends EventAdapter {
                 .get();
 
             MessageFactory.makeEmbeddedMessage(event.getMessage(), Color.decode("#E91E63"), I18n.format(
-                String.join("\n", strings),
-                CommandHandler.getCommand(HelpCommand.class).getCategory().getPrefix(event.getMessage()),
-                commandContainer.getCategory().getPrefix(event.getMessage()),
-                commandContainer.getTriggers().iterator().next()
-            ))
+                    String.join("\n", strings),
+                    CommandHandler.getCommand(HelpCommand.class).getCategory().getPrefix(event.getMessage()),
+                    commandContainer.getCategory().getPrefix(event.getMessage()),
+                    commandContainer.getTriggers().iterator().next()
+                ))
                 .set("oauth", avaire.getConfig().getString("discord.oauth"))
                 .set("botId", avaire.getSelfUser().getId())
                 .queue();
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             ex.printStackTrace();
         }
     }
 
-    private CompletableFuture<DatabaseEventHolder> loadDatabasePropertiesIntoMemory(final MessageReceivedEvent event) {
-        return CompletableFuture.supplyAsync(() -> {
-            if (!event.getChannelType().isGuild()) {
+    private CompletableFuture<DatabaseEventHolder> loadDatabasePropertiesIntoMemory(final MessageReceivedEvent event)
+    {
+        return CompletableFuture.supplyAsync(() ->
+        {
+            if (!event.getChannelType().isGuild())
+            {
                 return new DatabaseEventHolder(null, null);
             }
 
             GuildTransformer guild = GuildController.fetchGuild(avaire, event.getMessage());
 
-            if (guild == null || !guild.isLevels() || event.getAuthor().isBot()) {
+            if (guild == null || !guild.isLevels() || event.getAuthor().isBot())
+            {
                 return new DatabaseEventHolder(guild, null);
             }
             return new DatabaseEventHolder(guild, PlayerController.fetchPlayer(avaire, event.getMessage()));
         });
     }
 
-    public void onMessageDelete(TextChannel channel, List<String> messageIds) {
+    //TODO: maybe
+    public void onMessageDelete(GuildMessageChannel channel, List<String> messageIds)
+    {
         Collection reactions = ReactionController.fetchReactions(avaire, channel.getGuild());
-        if (reactions == null || reactions.isEmpty()) {
+        if (reactions == null || reactions.isEmpty())
+        {
             return;
         }
 
         List<String> removedReactionMessageIds = new ArrayList<>();
-        for (DataRow row : reactions) {
-            for (String messageId : messageIds) {
-                if (Objects.equals(row.getString("message_id"), messageId)) {
+        for (DataRow row : reactions)
+        {
+            for (String messageId : messageIds)
+            {
+                if (Objects.equals(row.getString("message_id"), messageId))
+                {
                     removedReactionMessageIds.add(messageId);
                 }
             }
         }
 
-        if (removedReactionMessageIds.isEmpty()) {
+        if (removedReactionMessageIds.isEmpty())
+        {
             return;
         }
 
         QueryBuilder builder = avaire.getDatabase().newQueryBuilder(Constants.REACTION_ROLES_TABLE_NAME);
-        for (String messageId : removedReactionMessageIds) {
+        for (String messageId : removedReactionMessageIds)
+        {
             builder.orWhere("message_id", messageId);
         }
 
-        try {
+        try
+        {
             builder.delete();
 
             ReactionController.forgetCache(
                 channel.getGuild().getIdLong()
             );
-        } catch (SQLException e) {
+        }
+        catch (SQLException e)
+        {
             log.error("Failed to delete {} reaction messages for the guild with an ID of {}",
                 removedReactionMessageIds.size(), channel.getGuild().getId(), e
             );
         }
     }
 
-    public void onMessageUpdate(MessageUpdateEvent event) {
+    public void onMessageUpdate(MessageUpdateEvent event)
+    {
         Collection reactions = ReactionController.fetchReactions(avaire, event.getGuild());
-        if (reactions == null) {
+        if (reactions == null)
+        {
             return;
         }
 
-        if (reactions.where("message_id", event.getMessage().getId()).isEmpty()) {
+        if (reactions.where("message_id", event.getMessage().getId()).isEmpty())
+        {
             return;
         }
 
-        try {
+        try
+        {
             String messageContent = event.getMessage().getContentStripped();
-            if (messageContent.trim().length() == 0 && !event.getMessage().getEmbeds().isEmpty()) {
+            if (messageContent.trim().length() == 0 && !event.getMessage().getEmbeds().isEmpty())
+            {
                 messageContent = event.getMessage().getEmbeds().get(0).getDescription();
             }
 
@@ -326,14 +378,17 @@ public class MessageEventAdapter extends EventAdapter {
             avaire.getDatabase().newQueryBuilder(Constants.REACTION_ROLES_TABLE_NAME)
                 .where("guild_id", event.getGuild().getId())
                 .where("message_id", event.getMessage().getId())
-                .update(statement -> {
+                .update(statement ->
+                {
                     statement.set("snippet", finalMessageContent.substring(
                         0, Math.min(finalMessageContent.length(), 64)
                     ), true);
                 });
 
             ReactionController.forgetCache(event.getGuild().getIdLong());
-        } catch (SQLException e) {
+        }
+        catch (SQLException e)
+        {
             log.error("Failed to update the reaction role message with a message ID of {}, error: {}",
                 event.getMessage().getId(), e.getMessage(), e
             );

@@ -29,14 +29,14 @@ import com.avairebot.database.controllers.GuildController;
 import com.avairebot.database.controllers.ReactionController;
 import com.avairebot.database.transformers.GuildTransformer;
 import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.events.channel.text.TextChannelDeleteEvent;
-import net.dv8tion.jda.api.events.channel.voice.VoiceChannelDeleteEvent;
+import net.dv8tion.jda.api.events.channel.ChannelDeleteEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.SQLException;
 
-public class ChannelEventAdapter extends EventAdapter {
+public class ChannelEventAdapter extends EventAdapter
+{
 
     private static final Logger log = LoggerFactory.getLogger(ChannelEventAdapter.class);
 
@@ -45,88 +45,116 @@ public class ChannelEventAdapter extends EventAdapter {
      *
      * @param avaire The AvaIre application class instance.
      */
-    public ChannelEventAdapter(AvaIre avaire) {
+    public ChannelEventAdapter(AvaIre avaire)
+    {
         super(avaire);
     }
 
-    public void onTextChannelDelete(TextChannelDeleteEvent event) {
+    public void onTextChannelDelete(ChannelDeleteEvent event)
+    {
         handleTextChannelDeleteReactionsRoles(event);
         handleTextChannelDeleteGuildSettings(event);
     }
 
-    private void handleTextChannelDeleteGuildSettings(TextChannelDeleteEvent event) {
+    private void handleTextChannelDeleteGuildSettings(ChannelDeleteEvent event)
+    {
         GuildTransformer transformer = GuildController.fetchGuild(avaire, event.getGuild());
-        if (transformer == null) {
+        if (transformer == null)
+        {
             return;
         }
 
-        if (transformer.getModlog() != null && transformer.getModlog().equalsIgnoreCase(event.getChannel().getId())) {
+        if (transformer.getModlog() != null && transformer.getModlog().equalsIgnoreCase(event.getChannel().getId()))
+        {
             setDatabaseColumnToNull(event.getGuild().getId(), "modlog");
         }
 
-        if (transformer.getLevelChannel() != null && transformer.getLevelChannel().equals(event.getChannel().getId())) {
+        if (transformer.getLevelChannel() != null && transformer.getLevelChannel().equals(event.getChannel().getId()))
+        {
             setDatabaseColumnToNull(event.getGuild().getId(), "level_channel");
         }
 
-        if (transformer.getMusicChannelText() != null && transformer.getMusicChannelText().equals(event.getChannel().getId())) {
+        if (transformer.getMusicChannelText() != null && transformer.getMusicChannelText().equals(event.getChannel().getId()))
+        {
             setDatabaseColumnToNull(event.getGuild().getId(), "music_channel_text");
         }
     }
 
-    private void handleTextChannelDeleteReactionsRoles(TextChannelDeleteEvent event) {
+    private void handleTextChannelDeleteReactionsRoles(ChannelDeleteEvent event)
+    {
         Collection collection = ReactionController.fetchReactions(avaire, event.getGuild());
-        if (collection == null || collection.isEmpty()) {
+        if (collection == null || collection.isEmpty())
+        {
             return;
         }
 
-        if (collection.where("channel_id", event.getChannel().getId()).isEmpty()) {
+        if (collection.where("channel_id", event.getChannel().getId()).isEmpty())
+        {
             return;
         }
 
-        try {
+        try
+        {
             avaire.getDatabase().newQueryBuilder(Constants.REACTION_ROLES_TABLE_NAME)
                 .where("channel_id", event.getChannel().getId())
                 .delete();
 
             ReactionController.forgetCache(event.getGuild().getIdLong());
-        } catch (SQLException e) {
+        }
+        catch (SQLException e)
+        {
             log.error("Failed to delete reaction roles from {} for channel ID {}, error: {}",
                 event.getGuild().getId(), event.getChannel().getId(), e.getMessage(), e
             );
         }
     }
 
-    public void onVoiceChannelDelete(VoiceChannelDeleteEvent event) {
-        GuildTransformer transformer = GuildController.fetchGuild(avaire, event.getGuild());
-        if (transformer == null) {
-            return;
-        }
+    /**
+     * //TODO: Check if there is not actually a separate channel to override
+     * public void onVoiceChannelDelete(VoiceChannelDeleteEvent event)
+     * {
+     * GuildTransformer transformer = GuildController.fetchGuild(avaire, event.getGuild());
+     * if (transformer == null)
+     * {
+     * return;
+     * }
+     * <p>
+     * if (transformer.getMusicChannelVoice() != null && transformer.getMusicChannelVoice().equals(event.getChannel().getId()))
+     * {
+     * setDatabaseColumnToNull(event.getGuild().getId(), "music_channel_voice");
+     * }
+     * }
+     **/
 
-        if (transformer.getMusicChannelVoice() != null && transformer.getMusicChannelVoice().equals(event.getChannel().getId())) {
-            setDatabaseColumnToNull(event.getGuild().getId(), "music_channel_voice");
-        }
-    }
-
-    public void updateChannelData(Guild guild) {
-        try {
+    public void updateChannelData(Guild guild)
+    {
+        try
+        {
             avaire.getDatabase().newQueryBuilder(Constants.GUILD_TABLE_NAME)
                 .useAsync(true)
                 .where("id", guild.getId())
-                .update(statement -> {
+                .update(statement ->
+                {
                     statement.set("channels_data", GuildController.buildChannelData(guild.getTextChannels()), true);
                 });
-        } catch (SQLException e) {
+        }
+        catch (SQLException e)
+        {
             e.printStackTrace();
         }
     }
 
-    private void setDatabaseColumnToNull(String guildId, String column) {
-        try {
+    private void setDatabaseColumnToNull(String guildId, String column)
+    {
+        try
+        {
             avaire.getDatabase().newQueryBuilder(Constants.GUILD_TABLE_NAME)
                 .useAsync(true)
                 .where("id", guildId)
                 .update(statement -> statement.set(column, null));
-        } catch (SQLException ignored) {
+        }
+        catch (SQLException ignored)
+        {
             //
         }
     }

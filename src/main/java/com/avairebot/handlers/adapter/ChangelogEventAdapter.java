@@ -27,33 +27,40 @@ import com.avairebot.changelog.ChangelogMessage;
 import com.avairebot.contracts.handlers.EventAdapter;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.events.message.MessageDeleteEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.events.message.MessageUpdateEvent;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageDeleteEvent;
 
-public class ChangelogEventAdapter extends EventAdapter {
+public class ChangelogEventAdapter extends EventAdapter
+{
 
-    public ChangelogEventAdapter(AvaIre avaire) {
+    public ChangelogEventAdapter(AvaIre avaire)
+    {
         super(avaire);
     }
 
-    public void onMessageDelete(GuildMessageDeleteEvent event) {
+    public void onMessageDelete(MessageDeleteEvent event)
+    {
         ChangelogHandler.getMessagesMap().remove(event.getMessageIdLong());
     }
 
-    public void onMessageUpdate(MessageUpdateEvent event) {
+    public void onMessageUpdate(MessageUpdateEvent event)
+    {
         createChangelogMessage(event.getMessageIdLong(), event.getMessage());
     }
 
-    public void onMessageReceived(MessageReceivedEvent event) {
+    public void onMessageReceived(MessageReceivedEvent event)
+    {
         createChangelogMessage(event.getMessageIdLong(), event.getMessage());
     }
 
-    public boolean isChangelogMessage(MessageChannel channel) {
+    public boolean isChangelogMessage(MessageChannel channel)
+    {
         return channel.getIdLong() == avaire.getConstants().getChangelogChannelId();
     }
 
-    private void createChangelogMessage(long messageId, Message message) {
+    private void createChangelogMessage(long messageId, Message message)
+    {
         ChangelogHandler.getMessagesMap()
             .put(messageId, new ChangelogMessage(message));
     }

@@ -30,28 +30,24 @@ import com.avairebot.utilities.CacheUtil;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.GuildMessageChannel;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.GenericEvent;
 import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.events.ReconnectedEvent;
 import net.dv8tion.jda.api.events.ResumedEvent;
-import net.dv8tion.jda.api.events.channel.text.TextChannelCreateEvent;
-import net.dv8tion.jda.api.events.channel.text.TextChannelDeleteEvent;
-import net.dv8tion.jda.api.events.channel.text.update.TextChannelUpdateNameEvent;
-import net.dv8tion.jda.api.events.channel.text.update.TextChannelUpdatePositionEvent;
-import net.dv8tion.jda.api.events.channel.voice.VoiceChannelDeleteEvent;
+import net.dv8tion.jda.api.events.channel.ChannelCreateEvent;
+import net.dv8tion.jda.api.events.channel.ChannelDeleteEvent;
+import net.dv8tion.jda.api.events.channel.update.ChannelUpdateNameEvent;
+import net.dv8tion.jda.api.events.channel.update.ChannelUpdatePositionEvent;
+import net.dv8tion.jda.api.events.channel.update.ChannelUpdateRegionEvent;
 import net.dv8tion.jda.api.events.emote.EmoteRemovedEvent;
 import net.dv8tion.jda.api.events.guild.GuildJoinEvent;
 import net.dv8tion.jda.api.events.guild.GuildLeaveEvent;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberRemoveEvent;
 import net.dv8tion.jda.api.events.guild.update.GuildUpdateNameEvent;
-import net.dv8tion.jda.api.events.guild.update.GuildUpdateRegionEvent;
-import net.dv8tion.jda.api.events.message.GenericMessageEvent;
-import net.dv8tion.jda.api.events.message.MessageBulkDeleteEvent;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import net.dv8tion.jda.api.events.message.MessageUpdateEvent;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageDeleteEvent;
+import net.dv8tion.jda.api.events.message.*;
 import net.dv8tion.jda.api.events.message.react.GenericMessageReactionEvent;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 import net.dv8tion.jda.api.events.message.react.MessageReactionRemoveEvent;
@@ -73,7 +69,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class MainEventHandler extends EventHandler {
+public class MainEventHandler extends EventHandler
+{
 
     private final RoleEventAdapter roleEvent;
     private final MemberEventAdapter memberEvent;
@@ -96,7 +93,8 @@ public class MainEventHandler extends EventHandler {
      *
      * @param avaire The AvaIre application class instance.
      */
-    public MainEventHandler(AvaIre avaire) {
+    public MainEventHandler(AvaIre avaire)
+    {
         super(avaire);
 
         this.roleEvent = new RoleEventAdapter(avaire);
@@ -110,90 +108,113 @@ public class MainEventHandler extends EventHandler {
     }
 
     @Override
-    public void onGenericEvent(GenericEvent event) {
+    public void onGenericEvent(GenericEvent event)
+    {
         prepareGuildMembers(event);
 
         Metrics.jdaEvents.labels(event.getClass().getSimpleName()).inc();
     }
 
     @Override
-    public void onReady(ReadyEvent event) {
+    public void onReady(ReadyEvent event)
+    {
         jdaStateEventAdapter.onConnectToShard(event.getJDA());
     }
 
     @Override
-    public void onResume(ResumedEvent event) {
+    public void onResumed(ResumedEvent event)
+    {
         jdaStateEventAdapter.onConnectToShard(event.getJDA());
     }
 
     @Override
-    public void onReconnect(ReconnectedEvent event) {
+    public void onReconnected(ReconnectedEvent event)
+    {
         jdaStateEventAdapter.onConnectToShard(event.getJDA());
     }
 
     @Override
-    public void onGuildUpdateRegion(GuildUpdateRegionEvent event) {
-        guildStateEvent.onGuildUpdateRegion(event);
+    public void onChannelUpdateRegion(ChannelUpdateRegionEvent event)
+    {
+        guildStateEvent.onChannelUpdateRegion(event);
     }
 
     @Override
-    public void onGuildUpdateName(GuildUpdateNameEvent event) {
+    public void onGuildUpdateName(GuildUpdateNameEvent event)
+    {
         guildStateEvent.onGuildUpdateName(event);
     }
 
     @Override
-    public void onGuildJoin(GuildJoinEvent event) {
+    public void onGuildJoin(GuildJoinEvent event)
+    {
         guildStateEvent.onGuildJoin(event);
     }
 
     @Override
-    public void onGuildLeave(GuildLeaveEvent event) {
+    public void onGuildLeave(GuildLeaveEvent event)
+    {
         guildStateEvent.onGuildLeave(event);
     }
 
+    /*
+
+    //TODO: Confirm there is not actually a separate delete event
     @Override
-    public void onVoiceChannelDelete(VoiceChannelDeleteEvent event) {
+    public void onVoiceChannelDelete(VoiceChannelDeleteEvent event)
+    {
         channelEvent.onVoiceChannelDelete(event);
     }
+    */
 
     @Override
-    public void onTextChannelDelete(TextChannelDeleteEvent event) {
+    public void onChannelDelete(ChannelDeleteEvent event)
+    {
         channelEvent.updateChannelData(event.getGuild());
         channelEvent.onTextChannelDelete(event);
     }
 
     @Override
-    public void onTextChannelCreate(TextChannelCreateEvent event) {
+    public void onChannelCreate(ChannelCreateEvent event)
+    {
         channelEvent.updateChannelData(event.getGuild());
     }
 
     @Override
-    public void onTextChannelUpdateName(TextChannelUpdateNameEvent event) {
+    public void onChannelUpdateName(ChannelUpdateNameEvent event)
+    {
         channelEvent.updateChannelData(event.getGuild());
     }
 
     @Override
-    public void onTextChannelUpdatePosition(TextChannelUpdatePositionEvent event) {
+    public void onChannelUpdatePosition(ChannelUpdatePositionEvent event)
+    {
         channelEvent.updateChannelData(event.getGuild());
     }
 
     @Override
-    public void onGuildMemberJoin(GuildMemberJoinEvent event) {
-        if (!avaire.getSettings().isMusicOnlyMode()) {
+    public void onGuildMemberJoin(GuildMemberJoinEvent event)
+    {
+        if (!avaire.getSettings().isMusicOnlyMode())
+        {
             memberEvent.onGuildMemberJoin(event);
         }
     }
 
     @Override
-    public void onGuildMemberRemove(@Nonnull GuildMemberRemoveEvent event) {
-        if (!avaire.getSettings().isMusicOnlyMode()) {
+    public void onGuildMemberRemove(@Nonnull GuildMemberRemoveEvent event)
+    {
+        if (!avaire.getSettings().isMusicOnlyMode())
+        {
             memberEvent.onGuildMemberRemove(event);
         }
     }
 
     @Override
-    public void onMessageReceived(MessageReceivedEvent event) {
-        if (changelogEventAdapter.isChangelogMessage(event.getChannel())) {
+    public void onMessageReceived(MessageReceivedEvent event)
+    {
+        if (changelogEventAdapter.isChangelogMessage(event.getChannel()))
+        {
             changelogEventAdapter.onMessageReceived(event);
         }
 
@@ -201,22 +222,31 @@ public class MainEventHandler extends EventHandler {
     }
 
     @Override
-    public void onGuildMessageDelete(GuildMessageDeleteEvent event) {
-        if (changelogEventAdapter.isChangelogMessage(event.getChannel())) {
+    public void onMessageDelete(MessageDeleteEvent event)
+    {
+        if (changelogEventAdapter.isChangelogMessage(event.getChannel()))
+        {
             changelogEventAdapter.onMessageDelete(event);
         }
 
-        messageEvent.onMessageDelete(event.getChannel(), Collections.singletonList(event.getMessageId()));
+        if (event.getChannel() instanceof GuildMessageChannel)
+        {
+            messageEvent.onMessageDelete((GuildMessageChannel) event.getChannel(), Collections.singletonList(event.getMessageId()));
+        }
+
     }
 
     @Override
-    public void onMessageBulkDelete(MessageBulkDeleteEvent event) {
+    public void onMessageBulkDelete(MessageBulkDeleteEvent event)
+    {
         messageEvent.onMessageDelete(event.getChannel(), event.getMessageIds());
     }
 
     @Override
-    public void onMessageUpdate(MessageUpdateEvent event) {
-        if (changelogEventAdapter.isChangelogMessage(event.getChannel())) {
+    public void onMessageUpdate(MessageUpdateEvent event)
+    {
+        if (changelogEventAdapter.isChangelogMessage(event.getChannel()))
+        {
             changelogEventAdapter.onMessageUpdate(event);
         }
 
@@ -224,102 +254,128 @@ public class MainEventHandler extends EventHandler {
     }
 
     @Override
-    public void onRoleUpdateName(RoleUpdateNameEvent event) {
+    public void onRoleUpdateName(RoleUpdateNameEvent event)
+    {
         roleEvent.updateRoleData(event.getGuild());
         roleEvent.onRoleUpdateName(event);
     }
 
     @Override
-    public void onRoleDelete(RoleDeleteEvent event) {
+    public void onRoleDelete(RoleDeleteEvent event)
+    {
         roleEvent.updateRoleData(event.getGuild());
         roleEvent.onRoleDelete(event);
     }
 
     @Override
-    public void onRoleCreate(RoleCreateEvent event) {
+    public void onRoleCreate(RoleCreateEvent event)
+    {
         roleEvent.updateRoleData(event.getGuild());
     }
 
     @Override
-    public void onRoleUpdatePosition(RoleUpdatePositionEvent event) {
+    public void onRoleUpdatePosition(RoleUpdatePositionEvent event)
+    {
         roleEvent.updateRoleData(event.getGuild());
     }
 
     @Override
-    public void onRoleUpdatePermissions(RoleUpdatePermissionsEvent event) {
+    public void onRoleUpdatePermissions(RoleUpdatePermissionsEvent event)
+    {
         roleEvent.updateRoleData(event.getGuild());
     }
 
     @Override
-    public void onUserUpdateDiscriminator(UserUpdateDiscriminatorEvent event) {
-        if (!avaire.getSettings().isMusicOnlyMode()) {
+    public void onUserUpdateDiscriminator(UserUpdateDiscriminatorEvent event)
+    {
+        if (!avaire.getSettings().isMusicOnlyMode())
+        {
             PlayerController.updateUserData(event.getUser());
         }
     }
 
     @Override
-    public void onUserUpdateAvatar(UserUpdateAvatarEvent event) {
-        if (!avaire.getSettings().isMusicOnlyMode()) {
+    public void onUserUpdateAvatar(UserUpdateAvatarEvent event)
+    {
+        if (!avaire.getSettings().isMusicOnlyMode())
+        {
             PlayerController.updateUserData(event.getUser());
         }
     }
 
     @Override
-    public void onUserUpdateName(UserUpdateNameEvent event) {
-        if (!avaire.getSettings().isMusicOnlyMode()) {
+    public void onUserUpdateName(UserUpdateNameEvent event)
+    {
+        if (!avaire.getSettings().isMusicOnlyMode())
+        {
             PlayerController.updateUserData(event.getUser());
         }
     }
 
     @Override
-    public void onEmoteRemoved(EmoteRemovedEvent event) {
+    public void onEmoteRemoved(EmoteRemovedEvent event)
+    {
         reactionEmoteEventAdapter.onEmoteRemoved(event);
     }
 
     @Override
-    public void onMessageReactionAdd(MessageReactionAddEvent event) {
-        if (isValidMessageReactionEvent(event)) {
+    public void onMessageReactionAdd(MessageReactionAddEvent event)
+    {
+        if (isValidMessageReactionEvent(event))
+        {
             reactionEmoteEventAdapter.onMessageReactionAdd(event);
         }
     }
 
     @Override
-    public void onMessageReactionRemove(MessageReactionRemoveEvent event) {
-        if (isValidMessageReactionEvent(event)) {
+    public void onMessageReactionRemove(MessageReactionRemoveEvent event)
+    {
+        if (isValidMessageReactionEvent(event))
+        {
             reactionEmoteEventAdapter.onMessageReactionRemove(event);
         }
     }
 
-    private boolean isValidMessageReactionEvent(GenericMessageReactionEvent event) {
+    private boolean isValidMessageReactionEvent(GenericMessageReactionEvent event)
+    {
         return event.isFromGuild() && event.getReactionEmote().isEmote();
     }
 
-    private void prepareGuildMembers(GenericEvent event) {
-        if (event instanceof GenericMessageEvent) {
+    private void prepareGuildMembers(GenericEvent event)
+    {
+        if (event instanceof GenericMessageEvent)
+        {
             GenericMessageEvent genericMessageEvent = (GenericMessageEvent) event;
 
-            if (genericMessageEvent.isFromGuild()) {
+            if (genericMessageEvent.isFromGuild())
+            {
                 loadGuildMembers(genericMessageEvent.getGuild());
             }
-        } else if (event instanceof GenericRoleEvent) {
+        }
+        else if (event instanceof GenericRoleEvent)
+        {
             GenericRoleEvent genericRoleEvent = (GenericRoleEvent) event;
 
             loadGuildMembers(genericRoleEvent.getGuild());
         }
     }
 
-    private void loadGuildMembers(Guild guild) {
-        if (guild.isLoaded()) {
+    private void loadGuildMembers(Guild guild)
+    {
+        if (guild.isLoaded())
+        {
             return;
         }
 
-        CacheUtil.getUncheckedUnwrapped(cache, guild.getIdLong(), () -> {
+        CacheUtil.getUncheckedUnwrapped(cache, guild.getIdLong(), () ->
+        {
             log.debug("Lazy-loading members for guild: {} (ID: {})", guild.getName(), guild.getIdLong());
             Task<List<Member>> task = guild.loadMembers();
 
             guild.getMemberCount();
 
-            task.onSuccess(members -> {
+            task.onSuccess(members ->
+            {
                 log.debug("Lazy-loading for guild {} is done, loaded {} members",
                     guild.getId(), members.size()
                 );

@@ -38,48 +38,57 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.events.channel.update.ChannelUpdateRegionEvent;
 import net.dv8tion.jda.api.events.guild.GuildJoinEvent;
 import net.dv8tion.jda.api.events.guild.GuildLeaveEvent;
 import net.dv8tion.jda.api.events.guild.update.GuildUpdateNameEvent;
-import net.dv8tion.jda.api.events.guild.update.GuildUpdateRegionEvent;
 
 import java.awt.*;
 import java.sql.SQLException;
 import java.time.Instant;
 
-public class GuildStateEventAdapter extends EventAdapter {
+public class GuildStateEventAdapter extends EventAdapter
+{
 
     /**
      * Instantiates the event adapter and sets the avaire class instance.
      *
      * @param avaire The AvaIre application class instance.
      */
-    public GuildStateEventAdapter(AvaIre avaire) {
+    public GuildStateEventAdapter(AvaIre avaire)
+    {
         super(avaire);
     }
 
-    public void onGuildUpdateName(GuildUpdateNameEvent event) {
-        try {
+    public void onGuildUpdateName(GuildUpdateNameEvent event)
+    {
+        try
+        {
             avaire.getDatabase().newQueryBuilder(Constants.GUILD_TABLE_NAME)
                 .useAsync(true)
                 .where("id", event.getGuild().getId())
                 .update(statement -> statement.set("name", event.getGuild().getName(), true));
-        } catch (SQLException e) {
+        }
+        catch (SQLException e)
+        {
             e.printStackTrace();
         }
     }
 
-    public void onGuildUpdateRegion(GuildUpdateRegionEvent event) {
-        Metrics.geoTracker.labels(event.getOldRegion().getName()).dec();
-        Metrics.geoTracker.labels(event.getNewRegion().getName()).inc();
+    public void onChannelUpdateRegion(ChannelUpdateRegionEvent event)
+    {
+        Metrics.geoTracker.labels(event.getOldValue().getName()).dec();
+        Metrics.geoTracker.labels(event.getNewValue().getName()).inc();
     }
 
-    public void onGuildJoin(GuildJoinEvent event) {
+    public void onGuildJoin(GuildJoinEvent event)
+    {
         AvaIre.getLogger().info(ConsoleColor.format(
             "%greenJoined guild with an ID of " + event.getGuild().getId() + " called: " + event.getGuild().getName() + "%reset"
         ));
 
-        if (!avaire.areWeReadyYet()) {
+        if (!avaire.areWeReadyYet())
+        {
             return;
         }
 
@@ -90,7 +99,8 @@ public class GuildStateEventAdapter extends EventAdapter {
             avaire.getConstants().getActivityLogChannelId()
         );
 
-        if (channel == null) {
+        if (channel == null)
+        {
             return;
         }
 
@@ -100,7 +110,8 @@ public class GuildStateEventAdapter extends EventAdapter {
         );
     }
 
-    private void sendGuildJoinMessage(GuildJoinEvent event, TextChannel channel, Member owner) {
+    private void sendGuildJoinMessage(GuildJoinEvent event, TextChannel channel, Member owner)
+    {
         double guildMembers = event.getGuild().getMembers().stream().filter(member -> !member.getUser().isBot()).count();
         double guildBots = event.getGuild().getMembers().stream().filter(member -> member.getUser().isBot()).count();
         double percentage = (guildBots / (guildBots + guildMembers)) * 100;
@@ -124,17 +135,20 @@ public class GuildStateEventAdapter extends EventAdapter {
         ).queue(null, RestActionUtil.ignore);
     }
 
-    public void onGuildLeave(GuildLeaveEvent event) {
+    public void onGuildLeave(GuildLeaveEvent event)
+    {
         handleSendGuildLeaveWebhook(event.getGuild());
         handleAudioConnectionOnGuildLeave(event.getGuild());
     }
 
-    private void handleSendGuildLeaveWebhook(Guild guild) {
+    private void handleSendGuildLeaveWebhook(Guild guild)
+    {
         AvaIre.getLogger().info(ConsoleColor.format(
             "%redLeft guild with an ID of " + guild.getId() + " called: " + guild.getName() + "%reset"
         ));
 
-        if (!avaire.areWeReadyYet()) {
+        if (!avaire.areWeReadyYet())
+        {
             return;
         }
 
@@ -145,7 +159,8 @@ public class GuildStateEventAdapter extends EventAdapter {
             avaire.getConstants().getActivityLogChannelId()
         );
 
-        if (channel == null) {
+        if (channel == null)
+        {
             return;
         }
 
@@ -160,14 +175,17 @@ public class GuildStateEventAdapter extends EventAdapter {
         ).queue(null, RestActionUtil.ignore);
     }
 
-    private void handleAudioConnectionOnGuildLeave(Guild guild) {
+    private void handleAudioConnectionOnGuildLeave(Guild guild)
+    {
         long guildId = guild.getIdLong();
 
-        ScheduleHandler.getScheduler().submit(() -> {
+        ScheduleHandler.getScheduler().submit(() ->
+        {
             GuildMusicManager musicManager = AudioHandler.getDefaultAudioHandler()
                 .musicManagers.remove(guildId);
 
-            if (musicManager == null) {
+            if (musicManager == null)
+            {
                 return;
             }
 
@@ -180,12 +198,14 @@ public class GuildStateEventAdapter extends EventAdapter {
 
             musicManager.getScheduler().nextTrack(false);
 
-            if (LavalinkManager.LavalinkManagerHolder.lavalink.isEnabled()) {
+            if (LavalinkManager.LavalinkManagerHolder.lavalink.isEnabled())
+            {
                 JdaLink link = LavalinkManager.LavalinkManagerHolder.lavalink.getLavalink()
                     .getExistingLink(String.valueOf(guildId));
 
 
-                if (link != null && !LavalinkManager.LavalinkManagerHolder.lavalink.isLinkBeingDestroyed(link)) {
+                if (link != null && !LavalinkManager.LavalinkManagerHolder.lavalink.isLinkBeingDestroyed(link))
+                {
                     link.destroy();
                 }
             }
