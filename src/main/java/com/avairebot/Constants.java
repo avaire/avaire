@@ -46,6 +46,7 @@ public class Constants {
     public static final String MUSIC_SEARCH_PROVIDERS_TABLE_NAME = "music_search_providers";
     public static final String MUSIC_SEARCH_CACHE_TABLE_NAME = "music_search_cache";
     public static final String INSTALLED_PLUGINS_TABLE_NAME = "installed_plugins";
+    public static final String ECONOMY_TABLE_NAME = "economy";
 
     // Package Specific Information
     public static final String PACKAGE_MIGRATION_PATH = "com.avairebot.database.migrate";
