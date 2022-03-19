@@ -122,12 +122,12 @@ public class MainEventHandler extends EventHandler {
     }
 
     @Override
-    public void onResume(ResumedEvent event) {
+    public void onResumed(ResumedEvent event) {
         jdaStateEventAdapter.onConnectToShard(event.getJDA());
     }
 
     @Override
-    public void onReconnect(ReconnectedEvent event) {
+    public void onReconnected(ReconnectedEvent event) {
         jdaStateEventAdapter.onConnectToShard(event.getJDA());
     }
 

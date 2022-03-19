@@ -77,7 +77,7 @@ public class GarbageCollectorTask implements Task {
      * @return True if the audio manager is connected, false otherwise.
      */
     private boolean isConnected(AudioManager audioManager) {
-        return audioManager.isConnected() || audioManager.isAttemptingToConnect();
+        return audioManager.isConnected();
     }
 
     /**

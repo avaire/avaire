@@ -297,7 +297,7 @@ public class AudioHandler {
             }
 
             AudioManager audioManager = manager.getLastActiveMessage().getGuild().getAudioManager();
-            if (audioManager.isConnected() || audioManager.isAttemptingToConnect()) {
+            if (audioManager.isConnected()) {
                 total++;
             }
         }
