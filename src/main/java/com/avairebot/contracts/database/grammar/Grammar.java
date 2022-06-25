@@ -131,6 +131,10 @@ public abstract class Grammar {
      * @return the formated field
      */
     protected String formatField(String field) {
+        if (field == null) {
+            return null;
+        }
+
         field = field.trim();
 
         if (field.contains(" ")) {

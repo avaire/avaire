@@ -79,6 +79,12 @@ public class Update extends UpdateGrammar {
                     continue;
                 }
 
+                if (value.startsWith("'RAW:")) {
+                    addPart(" %s = %s, ", formatKey, "'" + value.substring(5));
+
+                    continue;
+                }
+
                 if (value.equalsIgnoreCase("true") || value.equalsIgnoreCase("false")) {
                     addPart(String.format(" %s = %s, ", formatKey, value.equalsIgnoreCase("true") ? 1 : 0));
 

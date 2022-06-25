@@ -125,6 +125,19 @@ public final class QueryBuilder {
     }
 
     /**
+     * Forcefully sets the items that should be used within the query builder.
+     *
+     * @param items The items that are used when updating or inserting new records.
+     * @return the query builder instance.
+     */
+    @SafeVarargs
+    public final QueryBuilder forcefullySetItems(Map<String, Object>... items) {
+        this.items.addAll(Arrays.asList(items));
+
+        return this;
+    }
+
+    /**
      * Sets the table that the query builder should be using, and sets the select state to ALL.
      * This is the same as calling {@link #selectAll() } and {@link #from(java.lang.String) } in one go.
      *
