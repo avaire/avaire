@@ -23,23 +23,26 @@ package com.avairebot.commands.music;
 
 import com.avairebot.AvaIre;
 import com.avairebot.audio.*;
+import com.avairebot.audio.exceptions.InvalidSearchProviderException;
+import com.avairebot.audio.exceptions.SearchingException;
+import com.avairebot.audio.exceptions.TrackLoadFailedException;
+import com.avairebot.audio.searcher.SearchTrackResultHandler;
 import com.avairebot.commands.CommandHandler;
 import com.avairebot.commands.CommandMessage;
 import com.avairebot.contracts.commands.Command;
 import com.avairebot.contracts.commands.CommandGroup;
 import com.avairebot.contracts.commands.CommandGroups;
+import com.avairebot.exceptions.NoMatchFoundException;
 import com.avairebot.metrics.Metrics;
 import com.avairebot.utilities.NumberUtil;
 import com.avairebot.utilities.RestActionUtil;
+import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import net.dv8tion.jda.api.Permission;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
@@ -102,13 +105,31 @@ public class PlayCommand extends Command {
         if (args.length == 0) {
             return sendErrorMessage(context, "errors.missingMusicQueue");
         }
-
+    
         boolean shouldLeaveMessage = false;
-        if (args[args.length - 1].equals("---leave-message")) {
-            shouldLeaveMessage = true;
-            args = Arrays.copyOfRange(args, 0, args.length - 1);
+        boolean quickPlay          = false;
+    
+        ArrayList<String> tempNewArgs = new ArrayList<>();
+    
+        for (String arg : args) {
+            if (arg.equals("---leave-message")) {
+                shouldLeaveMessage = true;
+                continue;
+            }
+            if (arg.equals("---quick-play")) {
+                quickPlay = true;
+                continue;
+            }
+            tempNewArgs.add(arg);
         }
-
+        args = tempNewArgs.toArray(new String[0]);
+    
+        if (quickPlay) {
+            System.out.println("Performing Quick Play");
+            return quickPlay(context, args, musicFailure(context));
+        }
+    
+    
         VoiceConnectStatus voiceConnectStatus = AudioHandler.getDefaultAudioHandler().connectToVoiceChannel(context);
         if (!voiceConnectStatus.isSuccess()) {
             context.makeWarning(voiceConnectStatus.getErrorMessage()).queue();
@@ -213,7 +234,38 @@ public class PlayCommand extends Command {
     private Consumer<Throwable> musicFailure(final CommandMessage context) {
         return throwable -> context.makeError(throwable.getMessage()).queue();
     }
-
+    
+    private boolean quickPlay(final CommandMessage context, final String[] args, final Consumer<Throwable> failure) {
+        TrackRequestContext trackContext = AudioHandler.getDefaultAudioHandler().createTrackRequestContext(context.getAuthor(), args);
+        try {
+            System.out.println("Quickplay Variables");
+            AudioPlaylist     playlist          = new SearchTrackResultHandler(trackContext).searchSync();
+            GuildMusicManager guildMusicManager = AudioHandler.getDefaultAudioHandler().getGuildAudioPlayer(context.getGuild());
+            System.out.println("Checking for music");
+            if (playlist.getTracks() == null || playlist.getTracks().isEmpty() || playlist.getTracks().size() == 0) {
+                failure.accept(new NoMatchFoundException(
+                    context.i18nRaw("music.internal.noMatchFound", trackContext.getQuery()), trackContext));
+            } else {
+                 AudioHandler.getDefaultAudioHandler().createAudioSession(context, playlist);
+                return loadSongFromSession(context, new String[]{"1"});
+            }
+        } catch (InvalidSearchProviderException | TrackLoadFailedException e) {
+            failure.accept(new FriendlyException(
+                context.i18nRaw("music.internal.trackLoadFailed", e.getMessage()),
+                FriendlyException.Severity.COMMON,
+                e
+            ));
+        } catch (SearchingException e) {
+            failure.accept(new NoMatchFoundException(
+                context.i18nRaw("music.internal.noMatchFound", trackContext.getQuery()),
+                trackContext
+            ));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    
     @SuppressWarnings("ConstantConditions")
     private Consumer<AudioSession> musicSession(final CommandMessage context, final String[] args) {
         return (AudioSession audioSession) -> {
